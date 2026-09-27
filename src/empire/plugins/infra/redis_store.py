@@ -33,7 +33,6 @@ class RedisPlugin:
         self.settings = settings
         self.prefix = settings.get("namespace", "empire:dev")
         self.stream = f"{self.prefix}:ingest"
-        self.group = "archive"
         self.client = None
         self.task = None
         self.stats = {"status": "stopped"}
@@ -44,11 +43,10 @@ class RedisPlugin:
         persistence = await self.client.info("persistence")
         memory = await self.client.info("memory")
         commands = await self.client.execute_command(
-            "COMMAND", "INFO", "XADD", "XGROUP", "XREADGROUP", "XAUTOCLAIM",
-            "XACK", "XDEL", "EVAL", "TIME",
+            "COMMAND", "INFO", "XADD", "XRANGE", "XREVRANGE", "XINFO", "XLEN", "XDEL", "EVAL", "TIME",
         )
         if not commands or not all(commands.values()):
-            raise RuntimeError("Redis 缺少 Streams / XAUTOCLAIM / Lua 必要命令")
+            raise RuntimeError("Redis 缺少 Streams / Lua 必要命令")
         if memory.get("maxmemory_policy") != "noeviction":
             raise RuntimeError("Redis 必须使用 noeviction，避免未归档数据被淘汰")
         self.stats = {"status": "ok", "version": server.get("redis_version"),
@@ -64,7 +62,7 @@ class RedisPlugin:
                 except Exception as exc:
                     self.stats.update(status="degraded", error=str(exc))
 
-        self.task = context.spawn(monitor(), name="health")
+        self.task = context.spawn(monitor(), name="health", critical=True)
         return {"redis.store": self}
 
     async def refresh(self) -> None:

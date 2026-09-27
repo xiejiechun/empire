@@ -1,26 +1,31 @@
-import json
-from datetime import datetime
-
 from sqlalchemy import text
 
 from empire.contracts.plugin import PluginContext, PluginManifest
 from empire.contracts.stocks import MARKET_NAMES
+from empire.plugins.infra.collection_state import read_state
 
 
 class StockDataPlugin:
     manifest = PluginManifest(
-        "data.stocks", "股票列表查询", requires=("mysql.store", "redis.store"), provides=("stocks.query",),
+        "data.stocks", "股票列表查询", requires=("mysql.store",),
+        provides=("stocks.query", "stocks.schema"),
         description="查询唯一一份当前股票列表；未完成采集不会覆盖当前列表",
     )
 
-    def __init__(self, source: str = "sina"):
-        self.mysql = self.redis = None
+    def __init__(self, namespace: str = "empire", source: str = "sina",
+                 job_key: str = "sina-universe-v1", project_id: str = "sina-stocks"):
+        self.mysql = None
+        self.namespace = namespace
         self.source = source
+        self.job_key = job_key
+        self.project_id = project_id
 
     async def start(self, context: PluginContext) -> dict:
         self.mysql = context.get("mysql.store")
-        self.redis = context.get("redis.store")
-        return {"stocks.query": self}
+        await self.mysql.require_schema({"stock": {
+            "source", "node", "unified_code", "code", "name", "market", "source_symbol",
+        }}, {"stock": ["source", "unified_code"]})
+        return {"stocks.query": self, "stocks.schema": self}
 
     async def list_stocks(self, search: str = "", offset: int = 0, limit: int = 200,
                           market: str | None = None) -> dict:
@@ -28,21 +33,12 @@ class StockDataPlugin:
             raise ValueError("Invalid stock-list query bounds")
         if market is not None and market not in MARKET_NAMES:
             raise ValueError("不支持的股票市场，请选择 SH、SZ 或 BJ")
-        confirmed = await self.redis.client.get(f"{self.redis.prefix}:stocks:committed:{self.source}")
-        result = await self.mysql.read(self._list, search.strip(), offset, limit, market)
-        if confirmed and result["snapshot"]:
-            marker = json.loads(confirmed)
-            if datetime.fromisoformat(marker["started_at"]) >= datetime.fromisoformat(result["snapshot"]["started_at"]):
-                result["verified_snapshot_id"] = marker["snapshot_id"]
-        return result
+        return await self.mysql.read(self._list, search.strip(), offset, limit, market)
 
     def _list(self, search, offset, limit, market=None):
-        with self.mysql.engine.connect() as connection:
-            snapshot = connection.execute(text("""
-                SELECT generation AS snapshot_id, MIN(started_at) AS started_at,
-                       MAX(updated_at) AS finished_at, COUNT(*) AS row_count
-                FROM stock WHERE source=:source GROUP BY generation
-            """), {"source": self.source}).mappings().first()
+        with self.mysql.read_engine.connect() as connection:
+            state = read_state(connection, self.namespace, self.project_id, self.source)
+            snapshot = state.get("publication")
             if not snapshot:
                 return {"snapshot": None, "total": 0, "rows": [], "offset": 0, "limit": limit}
             pattern = "%" + search.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
@@ -54,37 +50,14 @@ class StockDataPlugin:
                 params["market"] = market
             total = connection.execute(text(f"SELECT COUNT(*) FROM stock WHERE {where}"), params).scalar_one()
             rows = connection.execute(text(f"""
-                SELECT code, name, unified_code, market, source_symbol
+                SELECT source, code, name, unified_code, market, source_symbol
                 FROM stock WHERE {where} ORDER BY unified_code LIMIT :limit OFFSET :offset
             """), params).mappings().all()
             return {"snapshot": {k: str(v) if hasattr(v, "isoformat") else v for k, v in snapshot.items()},
                     "total": total, "rows": [dict(row) for row in rows], "offset": offset, "limit": limit}
 
-    async def batch_status(self, snapshot_id: str) -> dict | None:
-        confirmed = await self.redis.client.get(f"{self.redis.prefix}:stocks:committed:{self.source}")
-        if confirmed:
-            value = json.loads(confirmed)
-            if value["snapshot_id"] == snapshot_id:
-                return value
-            result = await self.redis.client.get(f"{self.redis.prefix}:stocks:result:{self.source}")
-            value = json.loads(result) if result else None
-            return value if value and value["snapshot_id"] == snapshot_id and value["status"] == "invalid" else None
-        def read():
-            with self.mysql.engine.connect() as connection:
-                count = connection.execute(text("""
-                    SELECT COUNT(*) FROM stock WHERE source=:source AND generation=:id
-                """), {"source": self.source, "id": snapshot_id}).scalar_one()
-                return {"status": "complete", "row_count": count, "expected_count": count,
-                        "error_text": ""} if count else None
-        committed = await self.mysql.read(read)
-        if committed:
-            return committed
-        result = await self.redis.client.get(f"{self.redis.prefix}:stocks:result:{self.source}")
-        value = json.loads(result) if result else None
-        return value if value and value["snapshot_id"] == snapshot_id and value["status"] == "invalid" else None
-
     async def stop(self):
-        self.mysql = self.redis = None
+        self.mysql = None
 
     def health(self):
         return {"status": "ok" if self.mysql else "stopped"}

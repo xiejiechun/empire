@@ -55,14 +55,24 @@ class MemoryIngest:
     def __init__(self):
         self.state = {"revision": 0, "cursor": {}}
         self.events = []
+        self.reservations = []
+        self.releases = 0
 
     async def checkpoint(self, key):
         return copy.deepcopy(self.state)
 
-    async def ensure_capacity(self):
+    async def ensure_capacity(self, reservation=None):
         pass
 
-    async def publish_page(self, envelopes, *, job_key, expected_revision, cursor):
+    async def reserve_batch(self, job_key, entries):
+        self.reservations.append((job_key, entries))
+        owner = self
+        class Reservation:
+            async def release(self):
+                owner.releases += 1
+        return Reservation()
+
+    async def publish_page(self, envelopes, *, job_key, expected_revision, cursor, reservation=None):
         assert expected_revision == self.state["revision"]
         for event in envelopes:
             DatasetPlugin().normalize(event)
@@ -71,8 +81,20 @@ class MemoryIngest:
         return copy.deepcopy(self.state)
 
 
-class Source:
+class ResponsePolicies:
+    def response_policy(self, profile):
+        from empire.contracts.download import STOCK_RESPONSE
+        assert profile == "stocks"
+        return STOCK_RESPONSE
+
+
+class Source(ResponsePolicies):
+    async def parallelism(self, *args):
+        return 1
+
     def __init__(self, pages, count=3, count_after=None, fail_page=None):
+        from empire.plugins.infra.resources import ByteBudget
+        self.buffer_budget = ByteBudget(64 * 1024 * 1024)
         self.pages, self.count, self.count_after = pages, count, count_after
         self.count_calls = 0
         self.fail_page = fail_page
@@ -122,6 +144,8 @@ async def test_collects_all_pages_and_persists_completion_evidence():
     assert item.ingest.state["cursor"]["phase"] == "complete"
     assert item.records.errors == []
     assert item._response is None
+    assert item.ingest.reservations == [("sina-universe-v1", 4)]
+    assert item.ingest.releases == 1
 
 
 async def test_resume_starts_at_uncommitted_page_not_page_one():
@@ -130,6 +154,7 @@ async def test_resume_starts_at_uncommitted_page_not_page_one():
     with pytest.raises(ConnectionError):
         await first._collect()
     assert first.ingest.state["cursor"]["next_page"] == 2
+    assert first.ingest.releases == 1
     second = collector(Source(pages), first.ingest)
     result = await second._collect()
     assert second.http.requested == [2, 3]
@@ -143,12 +168,14 @@ async def test_control_recovery_after_enqueue_does_not_create_a_second_snapshot(
     result = await item._collect()
     before = len(item.ingest.events)
 
-    class Query:
-        async def batch_status(self, snapshot_id):
+    class Confirmation:
+        async def stock_status(self, source, job_key, project_id, snapshot_id):
+            assert source == "sina" and job_key == "sina-universe-v1"
+            assert project_id == "sina-stocks"
             assert snapshot_id == result["snapshot_id"]
             return {"status": "complete"}
 
-    item.query = Query()
+    item.confirmation = Confirmation()
     recovered = await item.execute(fresh=True, baseline_revision=0)
     assert recovered["snapshot_id"] == result["snapshot_id"]
     assert len(item.ingest.events) == before
@@ -206,7 +233,7 @@ async def test_invalid_page_captures_the_original_failed_response_and_stage():
 
 
 async def test_http_error_keeps_response_while_network_error_has_only_request_metadata():
-    class FailingSource:
+    class FailingSource(ResponsePolicies):
         async def request(self, method, url, **kwargs):
             response = httpx.Response(503, content=b"upstream unavailable", request=httpx.Request(method, url))
             response.raise_for_status()
@@ -224,7 +251,7 @@ async def test_http_error_keeps_response_while_network_error_has_only_request_me
 
 
 async def test_invalid_json_count_and_sort_errors_are_recorded_without_checkpoint_advance():
-    class BadJson:
+    class BadJson(ResponsePolicies):
         async def request(self, *args, **kwargs):
             return httpx.Response(200, content=b"<html>temporarily blocked</html>")
 
@@ -248,7 +275,7 @@ async def test_invalid_json_count_and_sort_errors_are_recorded_without_checkpoin
 
 
 async def test_cancel_is_not_an_error_and_clears_transient_response():
-    class CancelledSource:
+    class CancelledSource(ResponsePolicies):
         async def request(self, *args, **kwargs):
             raise asyncio.CancelledError
 
@@ -257,6 +284,22 @@ async def test_cancel_is_not_an_error_and_clears_transient_response():
         await item._collect()
     assert item.records.errors == []
     assert item._response is None
+    assert item.ingest.releases == 0  # Cancellation happened before the count established a batch size.
+
+
+async def test_cancel_after_count_releases_batch_reservation():
+    class CancelledPageSource(Source):
+        async def request(self, method, url, *, params, **kwargs):
+            if "getHQNodeStockCount" not in url:
+                raise asyncio.CancelledError
+            return await super().request(method, url, params=params, **kwargs)
+
+    item = collector(CancelledPageSource({}, count=3))
+    with pytest.raises(asyncio.CancelledError):
+        await item._collect()
+    assert item.ingest.reservations == [("sina-universe-v1", 4)]
+    assert item.ingest.releases == 1
+    assert item.records.errors == []
 
 
 async def test_redis_diagnostic_failure_does_not_mask_original_source_error():
@@ -272,7 +315,7 @@ async def test_redis_diagnostic_failure_does_not_mask_original_source_error():
 
 
 async def test_http_layer_recorded_error_is_not_logged_twice_by_collector():
-    class RecordedFailureSource:
+    class RecordedFailureSource(ResponsePolicies):
         async def request(self, *args, **kwargs):
             assert kwargs["project_id"] == "sina-stocks"
             error = ConnectionError("Already diagnosed by HTTP plugin")
@@ -286,7 +329,7 @@ async def test_http_layer_recorded_error_is_not_logged_twice_by_collector():
 
 
 async def test_collector_health_redacts_error_url_without_changing_http_exception_response():
-    class SourceFailure:
+    class SourceFailure(ResponsePolicies):
         async def request(self, *args, **kwargs):
             url = "https://example.com/list?token=hidden-credential"
             response = httpx.Response(503, content=b"failed-response", request=httpx.Request("GET", url))

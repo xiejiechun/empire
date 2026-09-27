@@ -1,7 +1,7 @@
 import asyncio
 import copy
 import os
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
 import pytest
@@ -24,11 +24,15 @@ async def stock_database():
     cfg["archive"]["interval_seconds"] = 3600
     manager = build_manager(cfg)
     manager.entries["data.stocks"].plugin.source = f"test-{token}"
+    manager.entries["data.stocks"].plugin.job_key = "test"
+    manager.entries["data.stocks"].plugin.project_id = "test"
     events = []
     snapshots = []
+    last_started = datetime.now(UTC)
     try:
         await manager.start("pipeline.ingest")
         await manager.start("data.stocks")
+        await manager.start("infra.archive_confirmation")
         ingest = manager.registry.get("ingest.publish")
         archive = manager.registry.get("archive.worker")
         mysql = manager.registry.get("mysql.store")
@@ -37,7 +41,11 @@ async def stock_database():
         await asyncio.sleep(.03)
 
         def snapshot():
-            value = {"snapshot_id": uuid4().hex, "started_at": datetime.now(UTC).isoformat(),
+            nonlocal last_started
+            # Windows clock resolution can give consecutive batches equal timestamps;
+            # these tests explicitly model chronological batches, not UUID tie breaks.
+            last_started = max(datetime.now(UTC), last_started + timedelta(microseconds=1))
+            value = {"snapshot_id": uuid4().hex, "started_at": last_started.isoformat(),
                      "node": "hs_a", "expected_count": 2, "page_size": 2}
             snapshots.append(value["snapshot_id"])
             return value
@@ -62,7 +70,9 @@ async def stock_database():
                 with mysql.engine.begin() as connection:
                     connection.execute(text("DELETE FROM stock WHERE source=:source"),
                                        {"source": f"test-{token}"})
-            await mysql.read(cleanup)
+                    connection.execute(text("DELETE FROM collection_state WHERE source=:source"),
+                                       {"source": f"test-{token}"})
+            await mysql.control(cleanup)
         if manager.entries["infra.redis"].state == "RUNNING":
             keys = [key async for key in redis.client.scan_iter(f"{redis.prefix}:*")]
             if keys:
@@ -72,6 +82,54 @@ async def stock_database():
 
 ROWS = [{"symbol": "sz000001", "code": "000001", "name": "平安银行"},
         {"symbol": "sh600519", "code": "600519", "name": "贵州茅台"}]
+
+
+async def test_stock_hash_hit_avoids_sql_and_removes_all_pages(stock_database, monkeypatch):
+    snapshot, publish, query, manager = stock_database
+    archive = manager.registry.get("archive.worker")
+    mysql = manager.registry.get("mysql.store")
+    store = manager.registry.get("redis.store")
+    async def complete():
+        batch = snapshot()
+        await publish("page", batch, page=1, rows=ROWS)
+        await publish("complete", batch, pages=1, collected=2, count_after=2, terminal_rows=[])
+    await complete()
+    original = mysql.archive
+    calls = []
+    async def capture(records):
+        calls.append(records)
+        return await original(records)
+    async def forbidden(*args):
+        raise AssertionError("cache hit must not read MySQL")
+    monkeypatch.setattr(mysql, "archive", capture)
+    monkeypatch.setattr(mysql, "read", forbidden)
+    await complete()
+    assert not calls and await store.client.xlen(store.stream) == 0
+    await archive.fingerprints.invalidate("stocks", query.source)
+    # committed is display progress only; a lost fingerprint must consult SQL.
+    monkeypatch.setattr(mysql, "read", type(mysql).read.__get__(mysql))
+    await complete()
+    assert len(calls) == 1 and await store.client.xlen(store.stream) == 0
+    monkeypatch.undo()
+
+
+async def test_stock_hash_hit_without_progress_key_still_skips_all_sql(stock_database, monkeypatch):
+    snapshot, publish, query, manager = stock_database
+    async def complete():
+        batch = snapshot()
+        await publish("page", batch, page=1, rows=ROWS)
+        await publish("complete", batch, pages=1, collected=2, count_after=2, terminal_rows=[])
+    await complete()
+    store = manager.registry.get("redis.store")
+    await store.client.delete(f"{store.prefix}:stocks:committed:{query.source}")
+    async def forbidden(*args, **kwargs):
+        raise AssertionError("Stock fingerprint hit must not access MySQL")
+    mysql = manager.registry.get("mysql.store")
+    monkeypatch.setattr(mysql, "read", forbidden)
+    monkeypatch.setattr(mysql, "archive", forbidden)
+    await complete()
+    assert await store.client.xlen(store.stream) == 0
+    monkeypatch.undo()
 
 
 async def test_identical_stock_list_has_no_dml_and_late_batch_cannot_regress(stock_database):
@@ -91,9 +149,10 @@ async def test_identical_stock_list_has_no_dml_and_late_batch_cannot_regress(sto
         await publish("page", identical, page=1, rows=ROWS)
         await publish("complete", identical, pages=1, collected=2, count_after=2, terminal_rows=[])
         assert not writes
-        assert (await query.batch_status(identical["snapshot_id"]))["status"] == "complete"
+        assert (await manager.registry.get("archive.confirmation").stock_status(
+            query.source, query.job_key, query.project_id, identical["snapshot_id"]))["status"] == "complete"
         assert (await query.list_stocks())["snapshot"]["snapshot_id"] == first["snapshot_id"]
-        assert (await query.list_stocks())["verified_snapshot_id"] == identical["snapshot_id"]
+        assert "verified_snapshot_id" not in await query.list_stocks()
         await publish("page", delayed, page=1, rows=[{**ROWS[0], "name": "过时内容"}, ROWS[1]])
         await publish("complete", delayed, pages=1, collected=2, count_after=2, terminal_rows=[])
         assert not writes
@@ -111,6 +170,7 @@ async def test_only_complete_snapshot_visible_and_partial_refresh_preserves_prev
     await publish("complete", first, pages=1, collected=2, count_after=2, terminal_rows=[])
     listing = await query.list_stocks()
     assert listing["total"] == 2
+    assert {row["source"] for row in listing["rows"]} == {query.source}
     assert listing["rows"][0]["unified_code"] == "000001.SZ"
     assert listing["rows"][0]["name"] == "平安银行"
     assert (await query.list_stocks("贵州"))["total"] == 1
@@ -120,7 +180,8 @@ async def test_only_complete_snapshot_visible_and_partial_refresh_preserves_prev
     assert (await query.list_stocks())["snapshot"]["snapshot_id"] == first["snapshot_id"]
     await publish("complete", second, pages=1, collected=2, count_after=2, terminal_rows=[])
     assert (await query.list_stocks())["snapshot"]["snapshot_id"] == second["snapshot_id"]
-    assert await query.batch_status(first["snapshot_id"]) is None
+    assert await manager.registry.get("archive.confirmation").stock_status(
+        query.source, query.job_key, query.project_id, first["snapshot_id"]) is None
     mysql = manager.registry.get("mysql.store")
 
     def retained_counts():
@@ -128,11 +189,12 @@ async def test_only_complete_snapshot_visible_and_partial_refresh_preserves_prev
             return conn.execute(text("SELECT COUNT(*) FROM stock WHERE source=:source"),
                                 {"source": query.source}).scalar_one()
 
-    assert await mysql.read(retained_counts) == 2
+    assert await mysql.control(retained_counts) == 2
     # Delayed old data cannot recreate the retired complete list or its raw pages.
     await publish("page", first, page=1, rows=ROWS)
     await publish("complete", first, pages=1, collected=2, count_after=2, terminal_rows=[])
-    assert await query.batch_status(first["snapshot_id"]) is None
+    assert await manager.registry.get("archive.confirmation").stock_status(
+        query.source, query.job_key, query.project_id, first["snapshot_id"]) is None
     assert (await query.list_stocks())["snapshot"]["snapshot_id"] == second["snapshot_id"]
 
 
@@ -147,7 +209,8 @@ async def test_replacement_removes_missing_stock_updates_name_and_bounds_failed_
     replacement = snapshot()
     replacement.update(expected_count=1)
     await publish("page", replacement, page=1, rows=[{**ROWS[0], "name": "更新名称"}])
-    assert (await query.batch_status(failed["snapshot_id"]))["status"] == "invalid"
+    assert (await manager.registry.get("archive.confirmation").stock_status(
+        query.source, query.job_key, query.project_id, failed["snapshot_id"]))["status"] == "invalid"
     assert (await query.list_stocks())["total"] == 2
     await publish("complete", replacement, pages=1, collected=1, count_after=1, terminal_rows=[])
     listing = await query.list_stocks()
@@ -157,23 +220,24 @@ async def test_replacement_removes_missing_stock_updates_name_and_bounds_failed_
 
     def counts():
         with mysql.engine.connect() as conn:
-            return conn.execute(text("SELECT COUNT(DISTINCT generation) FROM stock WHERE source=:source"),
+            return conn.execute(text("SELECT COUNT(*) FROM collection_state WHERE source=:source"),
                                 {"source": query.source}).scalar_one()
 
-    assert await mysql.read(counts) == 1
+    assert await mysql.control(counts) == 1
 
 
 async def test_page_and_completion_replay_do_not_duplicate_members(stock_database):
-    snapshot, publish, query, _ = stock_database
+    snapshot, publish, query, manager = stock_database
     batch = snapshot()
     await publish("page", batch, page=1, rows=ROWS)
     await publish("page", batch, page=1, rows=ROWS)
-    for _ in range(2):
+    for _attempt in range(2):
         await publish("complete", batch, pages=1, collected=2, count_after=2, terminal_rows=[])
     assert (await query.list_stocks())["total"] == 2
     await publish("page", batch, page=1, rows=[{**ROWS[0], "name": "事后修订"}, ROWS[1]])
     assert (await query.list_stocks())["rows"][0]["name"] == "平安银行"
-    assert (await query.batch_status(batch["snapshot_id"]))["status"] == "complete"
+    assert (await manager.registry.get("archive.confirmation").stock_status(
+        query.source, query.job_key, query.project_id, batch["snapshot_id"]))["status"] == "complete"
 
 
 async def test_replacement_cleanup_failure_rolls_back_publication(stock_database, monkeypatch):
@@ -194,23 +258,27 @@ async def test_replacement_cleanup_failure_rolls_back_publication(stock_database
     with pytest.raises(RuntimeError, match="injected"):
         await publish("complete", second, pages=1, collected=2, count_after=2, terminal_rows=[])
     assert (await query.list_stocks())["snapshot"]["snapshot_id"] == first["snapshot_id"]
-    assert await query.batch_status(second["snapshot_id"]) is None
+    assert await manager.registry.get("archive.confirmation").stock_status(
+        query.source, query.job_key, query.project_id, second["snapshot_id"]) is None
     monkeypatch.setattr(stocks, "insert_rows", original)
     await manager.registry.get("archive.worker").flush()
     assert (await query.list_stocks())["snapshot"]["snapshot_id"] == second["snapshot_id"]
-    assert await query.batch_status(first["snapshot_id"]) is None
+    assert await manager.registry.get("archive.confirmation").stock_status(
+        query.source, query.job_key, query.project_id, first["snapshot_id"]) is None
 
 
 async def test_missing_page_or_changed_page_never_becomes_current(stock_database):
-    snapshot, publish, query, _ = stock_database
+    snapshot, publish, query, manager = stock_database
     missing = snapshot()
     await publish("complete", missing, pages=1, collected=2, count_after=2, terminal_rows=[])
-    assert (await query.batch_status(missing["snapshot_id"]))["status"] == "invalid"
+    assert (await manager.registry.get("archive.confirmation").stock_status(
+        query.source, query.job_key, query.project_id, missing["snapshot_id"]))["status"] == "invalid"
     changed = snapshot()
     await publish("page", changed, page=1, rows=ROWS)
     await publish("page", changed, page=1, rows=[{**ROWS[0], "name": "名称修订"}, ROWS[1]])
     await publish("complete", changed, pages=1, collected=2, count_after=2, terminal_rows=[])
-    assert (await query.batch_status(changed["snapshot_id"]))["status"] == "invalid"
+    assert (await manager.registry.get("archive.confirmation").stock_status(
+        query.source, query.job_key, query.project_id, changed["snapshot_id"]))["status"] == "invalid"
     assert (await query.list_stocks())["total"] == 0
 
 

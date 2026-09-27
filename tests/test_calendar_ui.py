@@ -33,13 +33,14 @@ def test_calendar_month_changes_discard_stale_results_and_missing_is_not_closed(
         page.set_month(2026, 9)
         page.tick()
         first_month = runtime.calls[0][-1]
+        runtime.futures[0].set_running_or_notify_cancel()
         page.set_month(2027, 12)
         runtime.futures[0].set_result({"month": first_month, "rows": [], "complete": False})
         page.tick()
         assert runtime.calls[-1] == ("calendar.query", "month", "2027-12")
         runtime.futures[-1].set_result({"month": "2027-12", "complete": False, "rows": [
-            {"trade_date": "2027-12-01", "is_trade": True, "updated_at": "2026-09-23T00:00:00"},
-            {"trade_date": "2027-12-02", "is_trade": False, "updated_at": "2026-09-23T00:00:00"},
+                {"trade_date": "2027-12-01", "is_trade": True, "updated_at": "2026-09-23T08:00:00"},
+                {"trade_date": "2027-12-02", "is_trade": False, "updated_at": "2026-09-23T08:00:00"},
         ]})
         page.tick()
         assert page.table.rowCount() == 31

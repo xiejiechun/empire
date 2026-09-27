@@ -1,4 +1,5 @@
-# Copy to config/local.toml. Local credentials are ignored by version control.
+# Default user configuration: %LOCALAPPDATA%\Empire\config.toml.
+# The packaged program contains this blank template, never the user's credentials.
 # EMPIRE_MYSQL_PASSWORD and EMPIRE_REDIS_PASSWORD override passwords below.
 [app]
 environment = "dev"
@@ -21,6 +22,14 @@ connect_timeout = 5
 [archive]
 interval_seconds = 60
 batch_size = 100
+scan_max_messages = 500 # per scheduling quantum, cursor resumes across quanta
+scan_max_bytes = 8388608 # returned Stream payload per quantum; oversized records remain queued
+scan_time_ms = 50 # cooperative boundary between Redis windows, not an I/O timeout
+work_max_units = 32 # one independent page or one complete stock snapshot per unit
+work_time_ms = 50 # yield between units; never interrupt a stock transaction to meet this budget
+index_max_entries = 100000 # bounded disposable Stream-ID index; align with ingest queue capacity
+fingerprint_ttl_seconds = 604800 # 7 days since last successful confirmation
+fingerprint_max_entries = 10000 # per dataset/source; eviction falls back to MySQL
 
 [ingest]
 high_watermark = 0.70
@@ -31,14 +40,23 @@ max_page_bytes = 524288
 [sina_universe]
 page_size = 80
 
+# Resource sizes are managed in Collection Management > Download Resources (MySQL).
+# Only a machine-specific directory belongs in TOML.
+[http]
+# download_directory = 'D:\EmpireDownloads' # default: user data directory / downloads
+
 # Sina news uses 50 items per page; first run reads one page, later runs stop at the prior watermark.
 
 [rate_groups.sina]
 domains = ["sina.com.cn"]
 min_interval_ms = 2000
+proxy_interval_ms = 2000
+total_interval_ms = 500
 max_concurrency = 1
 
 [rate_groups.cninfo]
 domains = ["cninfo.com.cn"]
 min_interval_ms = 2000
+proxy_interval_ms = 2000
+total_interval_ms = 500
 max_concurrency = 1

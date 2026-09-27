@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-09-27T09:08:52Z",
+  "source": {
+    "commit": "3eef47236b5acdd9b84e9bdb28ed879851c51b64",
+    "working_tree_dirty": true,
+    "version": "0.1.0"
+  },
+  "gate": {
+    "command": ".\\verify-release.ps1",
+    "tests_passed": 911,
+    "tests_skipped": 2,
+    "ruff": true,
+    "mypy": true,
+    "pip_check": true,
+    "capacity": true,
+    "dpi_scales": [1, 1.25, 1.5, 2],
+    "packaged_smoke": true
+  },
+  "artifacts": {
+    "requirements_sha256": "324f4a8b9e382288beb7ec54de8ea4a51e99b012140d1ecf56cdc5c033d21c91",
+    "dependency_report_sha256": "427fa063b5fc64aab2b06cab4cd3cb23183a8175c2ebbe9abf71d920aa713557",
+    "executable_sha256": "6d73248ce8b3321a93c90065f9509dc9bc65bc3b195257833193b2ef28dba9fe",
+    "dependency_components": 41
+  },
+  "portable_distribution": {
+    "chinese_space_path": true,
+    "packaged_smoke": true,
+    "first_run_prepared_config": true,
+    "config_recheck": true
+  },
+  "scope_limitations": [
+    "The source checkout contained uncommitted changes; Git history will identify the exact tree only after those changes are committed.",
+    "Capacity and DPI checks are deterministic local simulations, not real 100-device or physical-display certification.",
+    "Detailed screenshots, wheel caches, logs and business data remain untracked local artifacts."
+  ]
+}

@@ -1,14 +1,19 @@
 """Sina flash-news business fields and idempotent historical storage."""
 import json
 import re
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime
 from html.parser import HTMLParser
 from urllib.parse import urlsplit
 
 from sqlalchemy import bindparam, text
 
+from empire.contracts.archive_version import ArchiveVersion
+from empire.core.time import CHINA, mysql_time
+from empire.plugins.infra.collection_state import confirmed_page
+
 DATASETS = {"news.flash.page"}
-CHINA = timezone(timedelta(hours=8))
+FINGERPRINT_NAMESPACE = "news"
+FINGERPRINT_VERSION = ArchiveVersion(("utc", "utc"), observed_index=1, source_indices=(0,))
 
 
 class PlainText(HTMLParser):
@@ -123,11 +128,12 @@ def canonical_payload(envelope, normalized):
 
 def write(connection, envelope, data):
     values = []
-    observed = envelope.observed_at.astimezone(UTC).replace(tzinfo=None)
+    confirmed = []
+    observed = mysql_time(envelope.observed_at)
     for row in data["rows"]:
         values.append({**row, "source": envelope.source,
-                       "published_at": datetime.fromisoformat(row["published_at"]).astimezone(UTC).replace(tzinfo=None),
-                       "source_updated_at": datetime.fromisoformat(row["source_updated_at"]).astimezone(UTC).replace(tzinfo=None),
+                       "published_at": mysql_time(datetime.fromisoformat(row["published_at"])),
+                       "source_updated_at": mysql_time(datetime.fromisoformat(row["source_updated_at"])),
                        "tags": json.dumps(row["tags"], ensure_ascii=False), "observed": observed})
     processed = len(values)
     if values:
@@ -143,25 +149,45 @@ def write(connection, envelope, data):
             old = previous.get(value["news_id"])
             if old is not None:
                 old["tags"] = json.loads(old["tags"]) if isinstance(old["tags"], str) else old["tags"]
-                if ((value["source_updated_at"], observed) < (old["source_updated_at"], old["last_seen_at"])
-                        or all((json.loads(value[k]) if k == "tags" else value[k]) == old[k]
-                               for k in data["rows"][0])):
+                if (value["source_updated_at"], observed) < (old["source_updated_at"], old["version_observed_at"]):
                     continue
+                if all((json.loads(value[k]) if k == "tags" else value[k]) == old[k]
+                       for k in data["rows"][0]):
+                    confirmed.append(str(value["news_id"]))
+                    continue
+            confirmed.append(str(value["news_id"]))
             changed.append(value)
         values = changed
-    newer = "(VALUES(source_updated_at)>source_updated_at OR (VALUES(source_updated_at)=source_updated_at AND VALUES(last_seen_at)>=last_seen_at))"
+    newer = "(VALUES(source_updated_at)>source_updated_at OR (VALUES(source_updated_at)=source_updated_at AND VALUES(version_observed_at)>=version_observed_at))"
     updates = ",".join(f"{field}=IF({newer},VALUES({field}),{field})" for field in (
         "title", "content", "published_at", "is_important", "tags", "url"))
     if values:
         connection.execute(text(f"""
             INSERT INTO finance_news (source,news_id,title,content,published_at,source_updated_at,
-                                      is_important,tags,url,first_seen_at,last_seen_at)
+                                      is_important,tags,url,first_seen_at,version_observed_at)
             VALUES (:source,:news_id,:title,:content,:published_at,:source_updated_at,
                     :is_important,:tags,:url,:observed,:observed)
             ON DUPLICATE KEY UPDATE {updates},
                 source_updated_at=GREATEST(source_updated_at,VALUES(source_updated_at)),
                 first_seen_at=LEAST(first_seen_at,VALUES(first_seen_at)),
-                last_seen_at=GREATEST(last_seen_at,VALUES(last_seen_at))
+                version_observed_at=GREATEST(version_observed_at,VALUES(version_observed_at))
         """), values)
     return {"status": "complete", "row_count": processed, "written_count": len(values),
-            "skipped_count": processed - len(values)}
+            "skipped_count": processed - len(values), "confirmed": confirmed}
+
+
+def fingerprint_plan(envelope, data):
+    observed = envelope.observed_at.astimezone(UTC).isoformat(timespec="microseconds")
+    return FINGERPRINT_NAMESPACE, {str(row["news_id"]): (row, [
+        datetime.fromisoformat(row["source_updated_at"]).astimezone(UTC).isoformat(timespec="microseconds"),
+        observed,
+    ]) for row in data["rows"]}
+
+
+def fingerprint_subset(data, identities):
+    rows = [row for row in data["rows"] if str(row["news_id"]) in identities]
+    return {**data, "rows": rows, "row_count": len(rows)}
+
+
+def archive_state(envelope, data, outcome, previous):
+    return {"progress": confirmed_page(envelope, data, previous)}

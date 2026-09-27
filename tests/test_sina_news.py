@@ -4,6 +4,7 @@ from types import SimpleNamespace
 import httpx
 import pytest
 
+from empire.contracts.download import NEWS_RESPONSE
 from empire.plugins.collection.records import RecordsPlugin
 from empire.plugins.collectors.sina_news import API_URL, SinaNewsCollector, parse_feed
 from empire.plugins.datasets.astock import DatasetPlugin
@@ -31,10 +32,10 @@ class MemoryIngest:
     async def checkpoint(self, job):
         return copy.deepcopy(self.state)
 
-    async def ensure_capacity(self):
+    async def ensure_capacity(self, incoming=1, reservation=None):
         pass
 
-    async def publish_page(self, events, *, job_key, expected_revision, cursor):
+    async def publish_page(self, events, *, job_key, expected_revision, cursor, reservation=None):
         for event in events:
             DatasetPlugin().normalize(event)
         self.events.extend(events)
@@ -56,6 +57,10 @@ class Diagnostics(RecordsPlugin):
 
 
 class Source:
+    def response_policy(self, profile):
+        assert profile == "news"
+        return NEWS_RESPONSE
+
     def __init__(self, pages):
         self.pages = pages
         self.calls = []
@@ -75,10 +80,12 @@ def collector(pages):
     item = SinaNewsCollector()
     item.http, item.ingest, item.records = Source(pages), MemoryIngest(), Diagnostics()
 
-    async def archived(batch, page):
+    async def archived(source, job_key, project_id, batch, page):
+        assert source == "sina" and job_key == "sina-news-v1"
+        assert project_id == "sina-news"
         return {"status": "complete", "page": page}
 
-    item.query = SimpleNamespace(page_status=archived)
+    item.confirmation = SimpleNamespace(page_status=archived)
     return item
 
 

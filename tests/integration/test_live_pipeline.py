@@ -16,6 +16,7 @@ from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginContext
 from empire.core.config import load_config
 from empire.core.manager import Registry
+from empire.core.redaction import Redactor
 from empire.plugins.collection.records import RecordsPlugin
 from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.infra.http import HttpService
@@ -40,6 +41,13 @@ async def live():
     archive = ArchivePlugin({"interval_seconds": 3600, "batch_size": 20})
     ingest = IngestPlugin(cfg["ingest"])
     registry = Registry()
+    redactor = Redactor.from_config(cfg)
+    contexts = []
+
+    def context(ident):
+        result = PluginContext(ident, registry, sanitize_error=redactor.text)
+        contexts.append(result)
+        return result
     records = RecordsPlugin()
     plugins = [catalog, redis, mysql, records]
     started = []
@@ -48,10 +56,10 @@ async def live():
     started_at = datetime.now(UTC).isoformat()
     try:
         for plugin in plugins:
-            registry.values.update(await plugin.start(PluginContext(plugin.manifest.id, registry)))
+            registry.values.update(await plugin.start(context(plugin.manifest.id)))
             started.append(plugin)
         registry.values["archive.worker"] = archive
-        registry.values.update(await ingest.start(PluginContext("pipeline.ingest", registry)))
+        registry.values.update(await ingest.start(context("pipeline.ingest")))
         started.append(ingest)
 
         def event(sequence):
@@ -75,7 +83,7 @@ async def live():
             return values
 
         async def start_archive():
-            await archive.start(PluginContext("pipeline.archive", registry))
+            await archive.start(context("pipeline.archive"))
             started.append(archive)
             # Wait until its startup flush has finished before explicit failure injection.
             await asyncio.sleep(.05)
@@ -83,11 +91,14 @@ async def live():
 
         def count(event_id):
             with mysql.engine.connect() as conn:
-                return conn.execute(text("SELECT COUNT(*) FROM stock WHERE source=:source AND generation=:id"),
+                return conn.execute(text("SELECT COUNT(*) FROM collection_state WHERE source=:source "
+                                    "AND JSON_UNQUOTE(JSON_EXTRACT(payload,'$.publication.snapshot_id'))=:id"),
                                     {"source": f"test-{token}", "id": snapshots[event_id]}).scalar_one()
 
         yield redis, mysql, archive, ingest, event, start_archive, count, registry
     finally:
+        for owned in contexts:
+            owned.begin_stop()
         if archive in started:
             await archive.stop()
         if mysql.engine:
@@ -95,7 +106,9 @@ async def live():
                 with mysql.engine.begin() as conn:
                     conn.execute(text("DELETE FROM stock WHERE source=:source"),
                                  {"source": f"test-{token}"})
-            await mysql._call(clean_rows)
+                    conn.execute(text("DELETE FROM collection_state WHERE source=:source"),
+                                 {"source": f"test-{token}"})
+            await mysql.control(clean_rows)
         if redis.client:
             keys = [key async for key in redis.client.scan_iter(f"{redis.prefix}:*")]
             if keys:
@@ -113,7 +126,7 @@ async def test_preexisting_message_and_checkpoint_are_archived(live):
     assert await ingest.checkpoint("test") == {"revision": 1, "cursor": {"page": 1}}
     await start()
     assert await redis.client.xlen(redis.stream) == 0
-    assert await mysql._call(count, value[0].event_id) == 1
+    assert await mysql.control(count, value[0].event_id) == 1
 
 
 async def test_commit_before_ack_failure_replays_without_duplicates(live):
@@ -129,14 +142,14 @@ async def test_commit_before_ack_failure_replays_without_duplicates(live):
     archive.acknowledge = failed_ack
     with pytest.raises(ConnectionError):
         await archive.flush()
-    assert await mysql._call(count, value[0].event_id) == 1
+    assert await mysql.control(count, value[0].event_id) == 1
     assert await redis.client.xlen(redis.stream) == 3
-    assert (await redis.client.xpending(redis.stream, redis.group))["pending"] == 0
+    assert await redis.client.xinfo_groups(redis.stream) == []
     archive.acknowledge = real_ack
     await archive.flush()
-    assert await mysql._call(count, value[0].event_id) == 1
+    assert await mysql.control(count, value[0].event_id) == 1
     assert await redis.client.xlen(redis.stream) == 0
-    assert (await redis.client.xpending(redis.stream, redis.group))["pending"] == 0
+    assert await redis.client.xinfo_groups(redis.stream) == []
 
 
 async def test_stale_checkpoint_cannot_advance_or_enqueue(live):
@@ -153,9 +166,10 @@ async def test_invalid_record_is_durably_recorded_in_redis_before_delete(live):
     await start()
     stream_id = await redis.client.xadd(redis.stream, {"envelope": "{invalid JSON"})
     await archive.flush()
-    errors = await registry.get("collection.records").list_errors("unknown")
-    assert len(errors) == 1
-    assert errors[0]["metadata"]["stream_id"] == stream_id
+    records = registry.get("collection.records")
+    errors = await records.list_error_summaries("unknown")
+    assert errors["total"] == 1
+    assert (await records.get_error("unknown", errors["rows"][0]["id"]))["metadata"]["stream_id"] == stream_id
     assert await redis.client.xlen(redis.stream) == 0
 
 
@@ -172,10 +186,10 @@ async def test_mysql_failure_preserves_pending_data(live):
     with pytest.raises(ConnectionError):
         await archive.flush()
     assert await redis.client.xlen(redis.stream) == 3
-    assert await mysql._call(count, value[0].event_id) == 0
+    assert await mysql.control(count, value[0].event_id) == 0
     mysql.archive = original
     await archive.flush()
-    assert await mysql._call(count, value[0].event_id) == 1
+    assert await mysql.control(count, value[0].event_id) == 1
 
 
 async def test_real_redis_limiter_is_shared_between_hosts(live):
@@ -189,9 +203,13 @@ async def test_real_redis_limiter_is_shared_between_hosts(live):
     service = HttpService(redis.client, redis.prefix, {
         "sina": {"domains": ["sina.com.cn"], "min_interval_ms": 50, "max_concurrency": 1}
     }, transport=httpx.MockTransport(respond))
+    async def consume(host):
+        response = await service.request("GET", f"https://{host}/", allowed_domains=("sina.com.cn",))
+        response.close()
+
     try:
         await asyncio.gather(*[
-            service.request("GET", f"https://{host}/", allowed_domains=("sina.com.cn",))
+            consume(host)
             for host in ("finance.sina.com.cn", "vip.stock.finance.sina.com.cn", "finance.sina.com.cn")
         ])
         assert len(starts) == 3
@@ -229,11 +247,11 @@ asyncio.run(main())
                                      capture_output=True, timeout=30)
     assert result.returncode == 23, result.stderr.decode(errors="replace")
     assert await redis.client.xlen(redis.stream) == 3
-    assert await mysql._call(count, value[0].event_id) == 1
-    assert (await redis.client.xpending(redis.stream, redis.group))["pending"] == 0
+    assert await mysql.control(count, value[0].event_id) == 1
+    assert await redis.client.xinfo_groups(redis.stream) == []
     await start()
     assert await redis.client.xlen(redis.stream) == 0
-    assert await mysql._call(count, value[0].event_id) == 1
+    assert await mysql.control(count, value[0].event_id) == 1
     assert (await ingest.checkpoint("test"))["revision"] == 1
 
 
@@ -280,7 +298,7 @@ async def test_sql_outage_records_archive_failure_without_error_response_evictio
         await archive.flush()
     assert await redis.client.xlen(redis.stream) == 3
     operational = registry.get("collection.records")
-    assert await operational.list_errors("test") == []
+    assert not (await operational.list_error_summaries("test"))["total"]
     assert (await operational.list_archives("test"))[0]["status"] == "failed"
     mysql.archive = original
     await archive.flush()
@@ -298,8 +316,8 @@ async def test_unsupported_schema_keeps_original_pending_data(live):
         await archive.flush()
     assert archive.blocked is True
     assert await redis.client.xlen(redis.stream) == 1
-    errors = await archive.records.list_errors("test")
-    assert errors[0]["stage"] == "archive.schema"
+    errors = await archive.records.list_error_summaries("test")
+    assert errors["rows"][0]["stage"] == "archive.schema"
     assert (await archive.records.list_archives("test"))[0]["status"] == "failed"
 
 
@@ -312,7 +330,7 @@ async def test_invalid_known_batch_removes_all_partial_messages(live):
     await redis.client.xadd(redis.stream, {"envelope": invalid.model_dump_json()})
     await archive.flush()
     assert await redis.client.xlen(redis.stream) == 0
-    assert len(await registry.get("collection.records").list_errors("test")) == 1
+    assert (await registry.get("collection.records").list_error_summaries("test"))["total"] == 1
 
 
 async def test_record_write_failure_does_not_drop_bad_response(live):
@@ -375,7 +393,8 @@ async def test_fresh_retry_releases_abandoned_partial_at_full_queue(live):
     await archive.flush()
     assert await redis.client.xlen(redis.stream) == 0
     archives = await archive.records.list_archives("test")
-    assert archives[0]["status"] == "complete" and archives[0]["row_count"] == 40
+    assert archives[0]["status"] == "complete" and archives[0]["processed_count"] == 40
+    assert archives[0]["written_count"] == 40
     assert archives[1]["status"] == "superseded"
 
 
@@ -438,10 +457,10 @@ async def test_completion_after_scan_cutoff_survives_fresh_checkpoint_and_sql_ou
         with pytest.raises(ConnectionError):
             await archive.flush()
         assert await redis.client.xlen(redis.stream) == 4
-        assert await archive.records.list_errors("test") == []
+        assert not (await archive.records.list_error_summaries("test"))["total"]
         mysql.archive = original_archive
         await archive.flush()
         assert await redis.client.xlen(redis.stream) == 1
-        assert await mysql._call(count, previous[0].event_id) == 1
+        assert await mysql.control(count, previous[0].event_id) == 1
     finally:
         archive._scan, mysql.archive = original_scan, original_archive

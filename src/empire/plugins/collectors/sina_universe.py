@@ -3,15 +3,25 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import re
 from datetime import UTC, datetime
+from functools import partial
+from time import monotonic
 from urllib.parse import urlencode
 from uuid import uuid4
 
-from empire.contracts.data import BackpressureError, make_envelope
+from empire.contracts.collector import StockRunResult
+from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginContext, PluginManifest
-from empire.contracts.stocks import normalize_sina_stock
+from empire.plugins.collectors.stock_pages import StockPages
+from empire.plugins.collectors.support import (
+    publish_with_capacity,
+    record_error_safely,
+    wait_for_archive,
+    wait_for_capacity,
+)
 
 BASE_URL = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/"
 DATA_URL = BASE_URL + "Market_Center.getHQNodeData"
@@ -39,10 +49,11 @@ def parse_count(data) -> int:
     return data
 
 
-class SinaUniverseCollector:
+class SinaUniverseCollector(StockPages):
     manifest = PluginManifest(
         "collector.sina_universe", "新浪 A 股股票列表",
-        requires=("http.fetch", "ingest.publish", "stocks.query", "collection.records"),
+        requires=("http.fetch", "ingest.publish", "stocks.schema", "archive.confirmation",
+                  "collection.records"),
         provides=("collector.sina_universe",),
         description="沪深北股票代码、名称、统一代码与市场；完整分页校验后发布",
     )
@@ -53,20 +64,22 @@ class SinaUniverseCollector:
         if not 1 <= self.page_size <= 80:
             raise ValueError("Sina page size must be between 1 and 80")
         self.job_key = "sina-universe-v1"
-        self.query = None
+        self.confirmation = None
         self.context = self.http = self.ingest = None
         self.records = None
         self.project_id = "sina-stocks"
+        self.init_diagnostics()
         self._response = None
         self._stage = "collection"
         self.stats = {"status": "stopped", "collected": 0, "expected_count": 0}
         self.request_retries = 2
+        self.queue_reservation = None
 
     async def start(self, context: PluginContext) -> dict:
         self.context = context
         self.http = context.get("http.fetch")
         self.ingest = context.get("ingest.publish")
-        self.query = context.get("stocks.query")
+        self.confirmation = context.get("archive.confirmation")
         self.records = context.get("collection.records")
         self.stats["status"] = "idle"
         return {"collector.sina_universe": self}
@@ -75,27 +88,32 @@ class SinaUniverseCollector:
         return (await self.ingest.checkpoint(self.job_key))["revision"]
 
     def _error_text(self, error):
-        sanitize = getattr(self.records, "sanitize_text", str)
-        return sanitize(error)
+        return self.records.sanitize_text(error)
 
-    async def execute(self, *, fresh=False, baseline_revision=0):
+    async def execute(self, *, fresh=False, baseline_revision=0) -> StockRunResult:
+        download_started = monotonic()
         try:
             state = await self.ingest.checkpoint(self.job_key)
             cursor = state["cursor"]
             progressed = state["revision"] > baseline_revision
             if progressed and cursor.get("phase") == "complete":
-                result = {k: cursor[k] for k in ("snapshot_id", "collected", "expected_count")}
+                result: StockRunResult = {
+                    "snapshot_id": cursor["snapshot_id"],
+                    "collected": cursor["collected"],
+                    "expected_count": cursor["expected_count"],
+                }
             else:
                 result = await self._collect(force_new=fresh and not progressed)
+            result["download_seconds"] = round(monotonic() - download_started, 3)
+            archive_started = monotonic()
             self.stats.update(status="awaiting_archive", error="", **result)
-            while True:
-                batch = await self.query.batch_status(result["snapshot_id"])
-                if batch and batch["status"] == "complete":
-                    self.stats.update(status="complete", error="")
-                    return result
-                if batch and batch["status"] == "invalid":
-                    raise ValueError(batch["error_text"])
-                await asyncio.sleep(2)
+            await wait_for_archive(partial(
+                self.confirmation.stock_status,
+                "sina", self.job_key, self.project_id, result["snapshot_id"],
+            ), retry_seconds=2)
+            result["archive_wait_seconds"] = round(monotonic() - archive_started, 3)
+            self.stats.update(status="complete", error="")
+            return result
         except asyncio.CancelledError:
             self.stats["status"] = "paused"
             raise
@@ -104,16 +122,17 @@ class SinaUniverseCollector:
             raise
 
     async def _capacity(self):
-        while True:
-            try:
-                await self.ingest.ensure_capacity()
-                self.stats.update(status="collecting", error="")
-                return
-            except BackpressureError as exc:
-                self.stats.update(status="paused", error=self._error_text(exc))
-                await asyncio.sleep(5)
+        await wait_for_capacity(
+            self.ingest, self.stats, reservation=self.queue_reservation,
+            error_text=self._error_text,
+        )
 
-    async def _get(self, url, params):
+    def _capture_response(self, response):
+        content = response.content
+        self._response.update(raw_body=content[:65536], status_code=response.status_code,
+                              observed_bytes=len(content), body_sha256=hashlib.sha256(content).hexdigest())
+
+    async def _get_response(self, url, params, *, reservation=None, policy=None):
         await self._capacity()
         self._stage = "http_request"
         self._response = {"request_url": url + "?" + urlencode(params),
@@ -123,22 +142,34 @@ class SinaUniverseCollector:
                 "GET", url, params=params, allowed_domains=("sina.com.cn",),
                 project_id=self.project_id,
                 max_retries=self.request_retries,
+                policy=policy if policy is not None else self.http.response_policy("stocks"), reservation=reservation,
                 headers={"Referer": "https://vip.stock.finance.sina.com.cn/mkt/"},
             )
         except Exception as exc:
             failed = getattr(exc, "response", None)
             if failed is not None:
-                self._response.update(raw_body=failed.content, status_code=failed.status_code)
+                self._capture_response(failed)
             raise
-        self._response.update(raw_body=response.content, status_code=response.status_code)
-        self._stage = "json_decode"
-        return decode_json(response)
+        return response
 
-    async def _page(self, page, page_size):
-        data = await self._get(DATA_URL, {
+    async def _get(self, url, params):
+        response = await self._get_response(url, params)
+        try:
+            self._capture_response(response)
+            self._stage = "json_decode"
+            return decode_json(response)
+        finally:
+            response.close()
+
+    async def _page_response(self, page, page_size, *, reservation=None, policy=None):
+        return await self._get_response(DATA_URL, {
             "page": page, "num": page_size, "sort": "symbol", "asc": 0,
             "node": "hs_a", "symbol": "", "_s_r_a": "sort",
-        })
+        }, reservation=reservation, policy=policy)
+
+    def _decode_page(self, response):
+        self._stage = "json_decode"
+        data = decode_json(response)
         # Some Sina deployments use JSON null for the page after the end.
         self._stage = "page_validation"
         if data is None:
@@ -146,6 +177,14 @@ class SinaUniverseCollector:
         if not isinstance(data, list):
             raise ValueError("新浪分页返回错误对象而非股票数组，游标未推进")
         return data
+
+    async def _page(self, page, page_size):
+        response = await self._page_response(page, page_size)
+        try:
+            self._capture_response(response)
+            return self._decode_page(response)
+        finally:
+            response.close()
 
     async def _publish(self, dataset, state, cursor, extra, page_id):
         # Once validated, only normalized business fields are retained in Redis.
@@ -159,19 +198,16 @@ class SinaUniverseCollector:
             job_key=self.job_key, run_id=cursor["snapshot_id"], batch_id=cursor["snapshot_id"],
             payload={**common, **extra},
         ).model_copy(update={"source_url": DATA_URL if dataset.endswith("page") else COUNT_URL})
-        while True:
-            try:
-                result = await self.ingest.publish_page(
-                    [event], job_key=self.job_key, expected_revision=state["revision"], cursor=cursor,
-                )
-                self.stats.update(snapshot_id=cursor["snapshot_id"], collected=cursor["collected"],
-                                  expected_count=cursor["expected_count"], next_page=cursor["next_page"])
-                return result
-            except BackpressureError as exc:
-                self.stats.update(status="paused", error=self._error_text(exc))
-                await asyncio.sleep(5)
+        result = await publish_with_capacity(
+            self.ingest, self.stats, [event], job_key=self.job_key,
+            expected_revision=state["revision"], cursor=cursor,
+            reservation=self.queue_reservation, error_text=self._error_text,
+        )
+        self.stats.update(snapshot_id=cursor["snapshot_id"], collected=cursor["collected"],
+                          expected_count=cursor["expected_count"], next_page=cursor["next_page"])
+        return result
 
-    async def _collect(self, force_new=False):
+    async def _collect(self, force_new=False) -> StockRunResult:
         self._response = None
         self._stage = "checkpoint"
         try:
@@ -179,18 +215,17 @@ class SinaUniverseCollector:
         except asyncio.CancelledError:
             raise
         except Exception as exc:
-            if self.records and not getattr(exc, "diagnostic_recorded", False):
-                try:
-                    await self.records.add_error(
-                        self.project_id, stage=self._stage, error=str(exc),
-                        **(self._response or {}),
-                    )
-                    self.stats.pop("diagnostic_error", None)
-                except Exception:
-                    # The original error and unchanged checkpoint remain the retry authority.
-                    self.stats["diagnostic_error"] = "错误记录暂未写入 Redis，恢复连接后重试采集"
+            if self.records:
+                await record_error_safely(
+                    self.records, self.stats, self.project_id, exc, stage=self._stage,
+                    unavailable_message="错误记录暂未写入 Redis，恢复连接后重试采集",
+                    fields=self._response,
+                )
             raise
         finally:
+            if self.queue_reservation is not None:
+                await asyncio.shield(self.queue_reservation.release())
+                self.queue_reservation = None
             self._response = None
 
     async def _count(self):
@@ -198,7 +233,7 @@ class SinaUniverseCollector:
         self._stage = "count_validation"
         return parse_count(data)
 
-    async def _collect_pages(self, force_new=False):
+    async def _collect_pages(self, force_new=False) -> StockRunResult:
         state = await self.ingest.checkpoint(self.job_key)
         cursor = state["cursor"]
         # Finished runs are immutable; an explicit new invocation takes a new snapshot.
@@ -207,29 +242,19 @@ class SinaUniverseCollector:
             cursor = {"snapshot_id": uuid4().hex, "started_at": datetime.now(UTC).isoformat(),
                       "expected_count": expected, "page_size": self.page_size, "node": "hs_a",
                       "next_page": 1, "collected": 0, "last_symbol": "", "phase": "pages"}
+            pages = (expected + self.page_size - 1) // self.page_size
+            self.queue_reservation = await self.ingest.reserve_batch(self.job_key, pages + 2)
             state = await self._publish("stock.universe.start", state, cursor,
                                         {"count_before": expected}, "start")
+        elif self.queue_reservation is None:
+            pages = (cursor["expected_count"] + cursor["page_size"] - 1) // cursor["page_size"]
+            remaining = ((pages - cursor["next_page"] + 1)
+                         if cursor.get("phase") == "pages" else 0) + 1
+            self.queue_reservation = await self.ingest.reserve_batch(self.job_key, remaining)
         if cursor.get("node") != "hs_a" or cursor.get("page_size") != self.page_size:
             raise ValueError("采集配置与断点不一致，请使用“重新采集”创建新批次")
-        while cursor["phase"] == "pages":
-            page = cursor["next_page"]
-            rows = await self._page(page, cursor["page_size"])
-            needed = min(cursor["page_size"], cursor["expected_count"] - cursor["collected"])
-            if len(rows) != needed or needed <= 0:
-                raise ValueError(f"第 {page} 页应有 {needed} 条，实际 {len(rows)} 条；未发布完整列表")
-            self._stage = "stock_validation"
-            normalized = [normalize_sina_stock(row) for row in rows]
-            symbols = [row["source_symbol"] for row in normalized]
-            if any(a <= b for a, b in zip(symbols, symbols[1:])) or (
-                cursor["last_symbol"] and cursor["last_symbol"] <= symbols[0]
-            ):
-                raise ValueError(f"第 {page} 页出现重复或排序边界变化，请重新采集")
-            updated = {**cursor, "next_page": page + 1, "collected": cursor["collected"] + len(rows),
-                       "last_symbol": symbols[-1]}
-            if updated["collected"] == updated["expected_count"]:
-                updated["phase"] = "verify"
-            state = await self._publish("stock.universe.page", state, updated,
-                                        {"page": page, "rows": normalized}, f"page:{page}")
+        if cursor["phase"] == "pages":
+            state = await self.collect_pages(state, DATA_URL)
             cursor = state["cursor"]
         if cursor["phase"] == "verify":
             terminal = await self._page(cursor["next_page"], cursor["page_size"])

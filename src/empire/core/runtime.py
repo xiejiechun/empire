@@ -6,14 +6,17 @@ import json
 import threading
 from collections.abc import Callable
 
-from empire.core.config import redact, user_data_dir
+from empire.core.config import user_data_dir
 from empire.core.manager import PluginManager
+from empire.core.redaction import Redactor
 
 
 class Runtime:
     def __init__(self, factory: Callable[[], PluginManager], cfg: dict) -> None:
         self.factory = factory
         self.cfg = cfg
+        self.redactor = Redactor.from_config(cfg)
+        self._shutdown_complete = False
         self.loop: asyncio.AbstractEventLoop | None = None
         self.manager: PluginManager | None = None
         self.ready = threading.Event()
@@ -46,13 +49,15 @@ class Runtime:
             self.loop.run_until_complete(self._serve())
         except Exception as exc:
             with self.guard:
-                self.latest = {"plugins": [], "error": redact(exc, self.cfg)}
+                self.latest = {"plugins": [], "error": self.redactor.text(exc)}
             self.ready.set()
         finally:
-            self.loop.run_until_complete(self.loop.shutdown_asyncgens())
-            self.loop.run_until_complete(self.loop.shutdown_default_executor())
-            self.loop.close()
-            self.closed.set()
+            try:
+                self.loop.run_until_complete(self.loop.shutdown_asyncgens())
+                self.loop.run_until_complete(self.loop.shutdown_default_executor())
+            finally:
+                self.loop.close()
+                self.closed.set()
 
     async def _serve(self) -> None:
         self.exit_event = asyncio.Event()
@@ -60,10 +65,13 @@ class Runtime:
         try:
             while not self.exit_event.is_set():
                 with self.guard:
-                    self.pages = self.manager.registry.values.get("ui.pages", ())
-                    self.latest = json.loads(redact(json.dumps(
-                        self.manager.snapshot(), ensure_ascii=False
-                    ), self.cfg))
+                    self.pages = tuple(
+                        page
+                        for capability, pages in self.manager.registry.values.items()
+                        if capability.startswith("ui.pages.")
+                        for page in pages
+                    )
+                    self.latest = self.redactor.value(self.manager.snapshot())
                 try:
                     await asyncio.wait_for(self.exit_event.wait(), timeout=.5)
                 except TimeoutError:
@@ -72,6 +80,9 @@ class Runtime:
             if not self.boot_task.done():
                 self.boot_task.cancel()
             await asyncio.gather(self.boot_task, return_exceptions=True)
+            if not self._shutdown_complete:
+                await self.manager.shutdown()
+                self._shutdown_complete = True
 
     def snapshot(self) -> dict:
         with self.guard:
@@ -106,15 +117,21 @@ class Runtime:
             elif action == "flush":
                 archive = self.manager.registry.get("archive.worker")
                 await archive.flush()
+            elif action == "restore_ui":
+                for ident, entry in self.manager.entries.items():
+                    if any(cap.startswith("ui.pages.")
+                           for cap in entry.plugin.manifest.provides):
+                        await self.manager.start(ident)
             elif action == "shutdown":
                 if not self.boot_task.done():
                     self.boot_task.cancel()
                     await asyncio.gather(self.boot_task, return_exceptions=True)
                 await self.manager.shutdown()
+                self._shutdown_complete = True
                 self.exit_event.set()
             else:
                 raise ValueError(f"Unknown command: {action}")
-            if action in ("start", "stop", "cascade"):
+            if action in ("start", "stop", "cascade", "restore_ui"):
                 desired = {key: entry.enabled for key, entry in self.manager.entries.items()}
                 temporary = self.state_file.with_suffix(".tmp")
                 temporary.write_text(json.dumps(desired, indent=2), encoding="utf-8")

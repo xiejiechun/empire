@@ -22,9 +22,9 @@
 4. 验证页内数量、身份唯一性、降序排序与跨页边界，发现明显分页漂移时停止。
 5. 只将规范化身份字段和必要批次证据封装入 Redis，再原子推进游标。成功 HTTP 响应原文在解析结束后不持久保存。
 6. 最后一页后验证下一页为空，并再次核对总数，然后入队完成证据。
-7. 归档器每 60 秒检查，完整列表通过页连续性、数量与身份校验后，在一个 MySQL 事务中替换当前 `stock` 数据。提交后删除对应 Redis 消息。
+7. 完整列表入队后立即唤醒归档器；归档器另每 60 秒恢复扫描。列表通过页连续性、数量与身份校验后，在一个 MySQL 事务中替换当前 `stock` 数据，提交后删除对应 Redis 消息。
 
-请求总数、分页、重试和尾页校验都经过共享 `http.fetch`，与其他新浪插件共用 sina.com.cn 网站组。默认间隔 2 秒、并发 1 是项目初值，不是新浪官方限额。请求前检查容量，背压时保留数据和断点，不提前推进分页。
+请求总数、分页、重试和尾页校验都经过共享 `http.fetch`，与其他新浪插件共用 sina.com.cn 站点组。直连顺序下载；代理模式按健康出口 IP 与站点规则有界并行下载，再按页序校验、提交断点。自动扩展策略见 [采集出口](proxy-collection.md)，配置值不是新浪官方限额。
 
 ## 运行与续采
 
@@ -41,7 +41,7 @@
 
 Redis 断点为 `<namespace>:checkpoint:sina-universe-v1`，保存批次、节点、页大小、预期总数、下一页、累计量、最后来源代码和阶段，无 TTL。开始、规范化分页及完成证据只在 Redis 业务队列中暂存，不另建 SQL 暂存表。
 
-股票功能在 MySQL 仅保留当前 `stock` 表，主键为 `(source, unified_code)`；`generation` 标识当前发布批次。新列表不完整或数据库失败时不覆盖旧列表。显式重新开始后，已被游标证明替代的旧不完整暂存页可清除并记录原因；已完整有效、等待故障恢复的归档数据不能丢弃。
+股票业务记录存于 `stock`，主键为 `(source, unified_code)`；统一 `collection_state` 每项目一行保存进度与发布信息，与股票列表同事务更新。新列表不完整或数据库失败时不覆盖旧列表。已完整有效、等待故障恢复的归档数据不能丢弃。
 
 ```sql
 SELECT code, name, unified_code, market, source_symbol
@@ -57,3 +57,9 @@ ORDER BY unified_code;
 ## 已有数据基准
 
 2026-09-22 首次真实采集验证为 70 页、5,566 条；上海 2,319、深圳 2,902、北京 345。该数字是当次结果，后续数量由当前成功采集决定。存储简化时核验保留当前 5,566 条身份字段一致；具体 SQL 变更记录位于 `sql/changes`。
+
+## 内容更新时间与采集时间
+
+collection_state.payload.publication 的 snapshot_id、started_at、finished_at、row_count 保存最后一次整份列表实际变化的批次。finished_at 为该批次采集完成的北京时间，不是 SQL 提交时间。内容不变不更新 publication；SQL 回源确认可推进 progress/version，Redis 可信命中则完全不访问 SQL。
+
+股票页面“更新于”取 collection_state.payload.publication.finished_at。最近成功核验查看运行记录或 Redis `<namespace>:stocks:committed:<source>`。SQL 保留最近回源确认的版本，不保证恢复 Redis 丢失后的全部无变化核验上界。

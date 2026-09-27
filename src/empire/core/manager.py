@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from empire.contracts.plugin import Plugin, PluginContext
+from empire.core.redaction import Redactor
 
 
 class DependencyError(RuntimeError):
@@ -21,6 +22,9 @@ class Registry:
             raise DependencyError(f"Capability is not running: {capability}")
         return self.values[capability]
 
+    def optional(self, capability: str) -> Any | None:
+        return self.values.get(capability)
+
 
 @dataclass
 class Entry:
@@ -33,7 +37,8 @@ class Entry:
 
 
 class PluginManager:
-    def __init__(self, plugins: list[Plugin]) -> None:
+    def __init__(self, plugins: list[Plugin], *, redactor: Redactor | None = None) -> None:
+        self.redactor = redactor or Redactor()
         self.registry = Registry()
         self.entries: dict[str, Entry] = {}
         self.providers: dict[str, str] = {}
@@ -80,8 +85,12 @@ class PluginManager:
 
     async def _start(self, plugin_id: str) -> None:
         entry = self.entries[plugin_id]
+        if entry.context:
+            entry.context.reap_finished()
         entry.enabled = True
         if entry.state == "RUNNING":
+            for cap in entry.plugin.manifest.requires:
+                await self._start(self.providers[cap])
             return
         if entry.context is not None:
             raise DependencyError(f"Stop incomplete or failed plugin before restart: {plugin_id}")
@@ -91,29 +100,40 @@ class PluginManager:
                 await self._start(self.providers[cap])
         except Exception as exc:
             entry.state = "BLOCKED"
-            entry.error = f"Dependency unavailable: {exc}"
+            entry.error = self.redactor.text(f"Dependency unavailable: {exc}", 2048)
             raise DependencyError(entry.error) from exc
         entry.state = "STARTING"
-        context = PluginContext(plugin_id, self.registry)
+        context = PluginContext(plugin_id, self.registry, sanitize_error=self.redactor.text,
+                                on_critical_failure=lambda error: self._task_failed(entry, error))
         entry.context = context
         try:
             provided = await entry.plugin.start(context)
+            context.reap_finished()
+            if context.critical_failures:
+                raise DependencyError("关键后台任务已退出，启动未完成")
             if set(provided) != set(entry.plugin.manifest.provides):
                 raise DependencyError(f"Invalid capabilities returned by {plugin_id}")
             self.registry.values.update(provided)
             entry.state = "RUNNING"
         except BaseException as exc:
             entry.state = "FAILED"
-            entry.error = f"{type(exc).__name__}: {exc}"
+            entry.error = entry.error or self.redactor.text(f"{type(exc).__name__}: {exc}", 2048)
             try:
+                context.begin_stop()
                 await entry.plugin.stop()
                 await self._cancel_owned(context)
                 entry.context = None
             except Exception as cleanup_error:
-                entry.error += f"; cleanup incomplete: {cleanup_error}"
+                entry.error = self.redactor.text(f"{entry.error}; cleanup incomplete: {cleanup_error}", 2048)
             raise
 
+    @staticmethod
+    def _task_failed(entry: Entry, error: str) -> None:
+        if entry.state in ("STARTING", "RUNNING"):
+            entry.state, entry.error = "FAILED", error
+
     async def _cancel_owned(self, context: PluginContext) -> None:
+        context.begin_stop()
         tasks = list(context.tasks)
         for task in tasks:
             task.cancel()
@@ -146,6 +166,7 @@ class PluginManager:
             entry.error = ""
             return
         entry.state = "STOPPING"
+        entry.context.begin_stop()
         try:
             await entry.plugin.stop()
             await self._cancel_owned(entry.context)
@@ -155,7 +176,7 @@ class PluginManager:
             entry.error = ""
             entry.state = "STOPPED"
         except BaseException as exc:
-            entry.error = f"stop_incomplete: {exc}"
+            entry.error = self.redactor.text(f"stop_incomplete: {exc}", 2048)
             entry.state = "FAILED"
             raise
 
@@ -171,20 +192,37 @@ class PluginManager:
                 raise RuntimeError("; ".join(errors))
 
     def snapshot(self) -> dict:
-        result = []
+        projected = {}
         for plugin_id, entry in self.entries.items():
+            tasks = entry.context.task_health() if entry.context else {}
             try:
-                entry.health = entry.plugin.health()
+                entry.health = dict(entry.plugin.health())
             except Exception as exc:
-                entry.health = {"status": "error", "error": str(exc)}
-            task_errors = entry.context.task_errors if entry.context else []
-            result.append({
+                entry.health = {"status": "error", "error": self.redactor.text(exc, 2048)}
+            if tasks:
+                entry.health["background_tasks"] = tasks
+            state = entry.state
+            error = (entry.error or entry.health.get("error", "") or
+                     "; ".join(tasks.get("recent_errors", [])))
+            if state == "RUNNING" and (error or entry.health.get("status") in
+                                        ("error", "degraded", "blocked", "failed")):
+                state = "DEGRADED"
+                error = error or "服务报告异常，请检查运行诊断"
+            projected[plugin_id] = {
                 "id": plugin_id, "name": entry.plugin.manifest.name,
                 "description": entry.plugin.manifest.description,
-                "state": entry.state, "enabled": entry.enabled,
-                "error": entry.error or "; ".join(task_errors[-3:]),
+                "state": state, "enabled": entry.enabled, "error": error,
+                "can_start": entry.context is None and state not in ("STARTING", "STOPPING"),
                 "requires": list(entry.plugin.manifest.requires),
                 "health": entry.health,
-            })
+            }
+        for plugin_id in self.order:
+            value = projected[plugin_id]
+            if value["state"] != "RUNNING":
+                continue
+            unavailable = [projected[self.providers[cap]]["name"] for cap in value["requires"]
+                           if projected[self.providers[cap]]["state"] != "RUNNING"]
+            if unavailable:
+                value.update(state="DEGRADED", error="依赖服务异常：" + "、".join(unavailable))
         # Defensive immutable boundary for the GUI/background thread bridge.
-        return json.loads(json.dumps({"plugins": result}, default=str))
+        return json.loads(json.dumps(self.redactor.value({"plugins": list(projected.values())}), default=str))

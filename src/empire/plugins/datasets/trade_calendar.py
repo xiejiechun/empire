@@ -5,7 +5,13 @@ from datetime import UTC, date, timedelta
 
 from sqlalchemy import text
 
+from empire.contracts.archive_version import ArchiveVersion
+from empire.core.time import mysql_time
+from empire.plugins.infra.collection_state import confirmed_page
+
 DATASETS = {"calendar.month"}
+FINGERPRINT_NAMESPACE = "calendar"
+FINGERPRINT_VERSION = ArchiveVersion(("utc",), observed_index=0)
 FIRST_DATE = date(1990, 12, 19)
 
 
@@ -63,8 +69,11 @@ def canonical_payload(envelope, normalized):
 
 
 def write(connection, envelope, data):
-    observed = envelope.observed_at.astimezone(UTC).replace(tzinfo=None)
+    observed = mysql_time(envelope.observed_at)
     rows = data["rows"]
+    previous = data["archive_state"].get("observed", {}).get(data["month"])
+    if previous and envelope.observed_at.isoformat(timespec="microseconds") <= previous:
+        return {"status": "complete", "row_count": len(rows), "written_count": 0, "confirmed": []}
     params = {"source": envelope.source, "start": rows[0]["trade_date"], "end": rows[-1]["trade_date"]}
     existing = connection.execute(text("""
         SELECT trade_date,is_trade,updated_at FROM trade_calendar
@@ -73,7 +82,7 @@ def write(connection, envelope, data):
     existing = {row["trade_date"].isoformat(): row for row in existing}
     # A late full month must not partly roll back a newer month.
     if any(row["updated_at"] > observed for row in existing.values()):
-        return {"status": "complete", "row_count": len(rows), "written_count": 0}
+        return {"status": "complete", "row_count": len(rows), "written_count": 0, "confirmed": []}
     inserts, updates = [], []
     for row in rows:
         old = existing.get(row["trade_date"])
@@ -92,4 +101,20 @@ def write(connection, envelope, data):
             UPDATE trade_calendar SET is_trade=:is_trade,updated_at=:updated_at
             WHERE source=:source AND trade_date=:trade_date
         """), updates)
-    return {"status": "complete", "row_count": len(rows), "written_count": len(inserts) + len(updates)}
+    return {"status": "complete", "row_count": len(rows), "written_count": len(inserts) + len(updates),
+            "confirmed": [data["month"]]}
+
+
+def fingerprint_plan(envelope, data):
+    return FINGERPRINT_NAMESPACE, {data["month"]: (data["rows"], [
+        envelope.observed_at.astimezone(UTC).isoformat(timespec="microseconds")])}
+
+
+def fingerprint_subset(data, identities):
+    return data
+
+
+def archive_state(envelope, data, outcome, previous):
+    observed = {**previous.get("observed", {}),
+                data["month"]: envelope.observed_at.isoformat(timespec="microseconds")}
+    return {"progress": confirmed_page(envelope, data, previous), "observed": observed}

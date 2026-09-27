@@ -3,13 +3,24 @@
 import hashlib
 import json
 import re
-from datetime import UTC, datetime
+from datetime import datetime
 
 from sqlalchemy import text
 
+from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.stocks import normalize_sina_stock
+from empire.core.time import mysql_time
 
 DATASETS = {"stock.universe.start", "stock.universe.page", "stock.universe.complete"}
+FINGERPRINT_NAMESPACE = "stocks"
+FINGERPRINT_VERSION = ArchiveVersion(("china", "snapshot"), observed_index=0)
+
+
+def aggregate_result_keys(prefix, source):
+    return {
+        "committed": f"{prefix}:stocks:committed:{source}",
+        "result": f"{prefix}:stocks:result:{source}",
+    }
 
 
 def normalize(envelope) -> dict:
@@ -35,7 +46,7 @@ def normalize(envelope) -> dict:
     if payload.get("node") != "hs_a":
         raise ValueError("Only the explicitly configured hs_a universe is supported")
     result = {"snapshot_id": snapshot, "source": envelope.source, "node": "hs_a",
-              "started_at": started.astimezone(UTC).replace(tzinfo=None),
+              "started_at": mysql_time(started),
               "expected_count": count, "page_size": size}
     if envelope.dataset == "stock.universe.page":
         page = payload["page"]
@@ -57,7 +68,7 @@ def normalize(envelope) -> dict:
         if (payload.get("collected") != count or payload.get("count_after") != count
                 or payload.get("pages") != pages or payload.get("terminal_rows") != []):
             raise ValueError("Stock completion evidence does not match expected coverage")
-        result.update(pages=pages, finished_at=envelope.observed_at.astimezone(UTC).replace(tzinfo=None))
+        result.update(pages=pages, finished_at=mysql_time(envelope.observed_at))
     return result
 
 
@@ -118,44 +129,51 @@ def assemble(records: list[dict], *, include_rows: bool = True) -> dict | None:
     return {**data, "rows": rows}
 
 
-def current(engine, source: str) -> dict | None:
-    with engine.connect() as connection:
-        row = connection.execute(text("""
-            SELECT generation, started_at, updated_at FROM stock WHERE source=:source
-            ORDER BY started_at DESC, generation DESC LIMIT 1
-        """), {"source": source}).mappings().first()
-        return dict(row) if row else None
-
-
 def write(connection, envelope, data: dict) -> dict:
-    latest = connection.execute(text("""
-        SELECT generation, started_at FROM stock WHERE source=:source
-        ORDER BY started_at DESC, generation DESC LIMIT 1 FOR UPDATE
-    """), data).mappings().first()
-    if latest and (data["started_at"], data["snapshot_id"]) <= (latest["started_at"], latest["generation"]):
-        return {"status": "replayed" if data["snapshot_id"] == latest["generation"] else "superseded",
-                "row_count": 0}
+    latest = data["archive_state"].get("version")
+    incoming = [data["started_at"].isoformat(timespec="microseconds"), data["snapshot_id"]]
+    if latest and incoming <= latest:
+        return {"status": "replayed" if data["snapshot_id"] == latest[1] else "superseded",
+                "row_count": 0, "confirmed": []}
     previous = connection.execute(text("""
         SELECT node,unified_code,code,name,market,source_symbol FROM stock
         WHERE source=:source FOR UPDATE
     """), data).mappings().all()
     incoming = {row["unified_code"]: {**row, "node": data["node"]} for row in data["rows"]}
     if {row["unified_code"]: dict(row) for row in previous} == incoming:
-        return {"status": "complete", "row_count": len(data["rows"]), "written_count": 0}
+        return {"status": "complete", "row_count": len(data["rows"]), "written_count": 0,
+                "confirmed": ["current"]}
     # Both removal and insertion are inside MySQLPlugin's single InnoDB transaction.
     connection.execute(text("DELETE FROM stock WHERE source=:source"), data)
     insert_rows(connection, data)
-    return {"status": "complete", "row_count": len(data["rows"])}
+    return {"status": "complete", "row_count": len(data["rows"]),
+            "written_count": len(data["rows"]), "confirmed": ["current"]}
 
 
 def insert_rows(connection, data: dict) -> None:
     for offset in range(0, len(data["rows"]), 1000):
         connection.execute(text("""
-            INSERT INTO stock (source, node, unified_code, code, name, market, source_symbol,
-                               generation, started_at, updated_at)
-            VALUES (:source, :node, :unified_code, :code, :name, :market, :source_symbol,
-                    :generation, :started_at, :updated_at)
-        """), [{**row, "source": data["source"], "node": data["node"],
-                 "generation": data["snapshot_id"], "started_at": data["started_at"],
-                 "updated_at": data["finished_at"]}
+            INSERT INTO stock (source, node, unified_code, code, name, market, source_symbol)
+            VALUES (:source, :node, :unified_code, :code, :name, :market, :source_symbol)
+        """), [{**row, "source": data["source"], "node": data["node"]}
                 for row in data["rows"][offset:offset + 1000]])
+
+
+def fingerprint_plan(envelope, data):
+    content = {"node": data["node"], "rows": sorted(data["rows"], key=lambda row: row["unified_code"])}
+    return FINGERPRINT_NAMESPACE, {"current": (content, [data["started_at"].isoformat(timespec="microseconds"),
+                                             data["snapshot_id"]])}
+
+
+def fingerprint_subset(data, identities):
+    return data
+
+
+def archive_state(envelope, data, outcome, previous):
+    snapshot = {"snapshot_id": data["snapshot_id"], "started_at": data["started_at"].isoformat(),
+                "finished_at": data["finished_at"].isoformat(), "row_count": data["expected_count"]}
+    return {"version": [data["started_at"].isoformat(timespec="microseconds"), data["snapshot_id"]],
+            "progress": {**snapshot, "status": "complete", "expected_count": data["expected_count"],
+                         "error_text": ""},
+            "publication": snapshot if outcome["written_count"] or not previous.get("publication")
+            else previous["publication"]}

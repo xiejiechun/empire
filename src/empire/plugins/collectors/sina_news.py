@@ -1,10 +1,19 @@
 """Newest-window refresh and durable ID-anchored catch-up of Sina's public flash feed."""
 import asyncio
 from datetime import UTC, datetime
+from functools import partial
+from typing import Any
 from uuid import uuid4
 
-from empire.contracts.data import BackpressureError, make_envelope
+from empire.contracts.collector import NewsRunResult
+from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.plugins.collectors.support import (
+    publish_with_capacity,
+    record_error_safely,
+    wait_for_archive,
+    wait_for_capacity,
+)
 from empire.plugins.datasets.news import news_id, normalize_source
 
 API_URL = "https://app.cj.sina.com.cn/api/news/pc"
@@ -32,7 +41,8 @@ def parse_feed(response, before_id=0):
 
 class SinaNewsCollector:
     manifest = PluginManifest("collector.sina_news", "新浪 7×24 财经新闻",
-        requires=("http.fetch", "ingest.publish", "news.query", "collection.records"),
+        requires=("http.fetch", "ingest.publish", "news.schema", "archive.confirmation",
+                  "collection.records"),
         provides=("collector.sina_news",), description="全球实时财经新闻直播；按 ID 增量补采、历史去重及近期修订刷新")
 
     def __init__(self, settings=None):
@@ -40,13 +50,14 @@ class SinaNewsCollector:
         self.job_key = "sina-news-v1"
         self.project_id = "sina-news"
         self.source = "sina"
-        self.http = self.ingest = self.query = self.records = None
+        self.http = self.ingest = self.confirmation = self.records = None
         self.request_retries = 2
         self.stats = {"status": "stopped", "collected": 0}
 
     async def start(self, context):
         self.http, self.ingest = context.get("http.fetch"), context.get("ingest.publish")
-        self.query, self.records = context.get("news.query"), context.get("collection.records")
+        self.confirmation = context.get("archive.confirmation")
+        self.records = context.get("collection.records")
         self.stats["status"] = "idle"
         return {"collector.sina_news": self}
 
@@ -54,15 +65,9 @@ class SinaNewsCollector:
         return (await self.ingest.checkpoint(self.job_key))["revision"]
 
     async def _capacity(self):
-        while True:
-            try:
-                await self.ingest.ensure_capacity()
-                return
-            except BackpressureError as exc:
-                self.stats.update(status="paused", error=str(exc))
-                await asyncio.sleep(5)
+        await wait_for_capacity(self.ingest, self.stats)
 
-    async def execute(self, *, fresh=False, baseline_revision=0):
+    async def execute(self, *, fresh=False, baseline_revision=0) -> NewsRunResult:
         response = None
         stage = "checkpoint"
         try:
@@ -85,6 +90,7 @@ class SinaNewsCollector:
                     params.update(id=cursor["before_id"], type=1)
                 response = await self.http.request("GET", API_URL, params=params,
                     allowed_domains=("sina.com.cn",), project_id=self.project_id,
+                    policy=self.http.response_policy("news"),
                     max_retries=self.request_retries, headers={"Referer": "https://finance.sina.com.cn/7x24/"})
                 stage = "news_validation"
                 rows = parse_feed(response, cursor["before_id"])
@@ -103,27 +109,22 @@ class SinaNewsCollector:
                 event = make_envelope(source=self.source, dataset="news.flash.page", job_key=self.job_key,
                     business_key=f"{cursor['batch_id']}:{page}", run_id=cursor["batch_id"], batch_id=cursor["batch_id"],
                     payload={"page": page, "rows": rows}).model_copy(update={"source_url": API_URL})
+                response.close()
                 response = None  # Valid raw responses do not enter durable storage.
                 stage = "queue_publish"
-                while True:
-                    try:
-                        state = await self.ingest.publish_page([event], job_key=self.job_key,
-                            expected_revision=state["revision"], cursor=updated)
-                        break
-                    except BackpressureError:
-                        await self._capacity()
+                state = await publish_with_capacity(
+                    self.ingest, self.stats, [event], job_key=self.job_key,
+                    expected_revision=state["revision"], cursor=updated,
+                )
                 cursor = state["cursor"]
                 self.stats.update(status=cursor["phase"] if finished else "collecting", error="",
                                   collected=cursor["collected"], pages=cursor["pages"])
             stage = "archive_confirmation"
             self.stats.update(status="awaiting_archive", error="", collected=cursor["collected"], pages=cursor["pages"])
-            while True:
-                status = await self.query.page_status(cursor["batch_id"], cursor["pages"])
-                if status and status["status"] == "invalid":
-                    raise ValueError(status["error_text"])
-                if status and status["status"] == "complete":
-                    break
-                await asyncio.sleep(1)
+            await wait_for_archive(partial(
+                self.confirmation.page_status,
+                self.source, self.job_key, self.project_id, cursor["batch_id"], cursor["pages"],
+            ), retry_seconds=1)
             cursor = {**cursor, "phase": "complete", "high_watermark": cursor["upper_id"] or cursor["high_watermark"]}
             await self.ingest.advance_checkpoint(job_key=self.job_key, expected_revision=state["revision"], cursor=cursor)
             self.stats.update(status="complete", error="", collected=cursor["collected"], pages=cursor["pages"])
@@ -133,17 +134,22 @@ class SinaNewsCollector:
             raise
         except Exception as exc:
             self.stats.update(status="error", error=self.records.sanitize_text(exc))
-            if not getattr(exc, "diagnostic_recorded", False):
-                try:
-                    await self.records.add_error(self.project_id, stage=stage, error=str(exc),
-                        raw_body=response.content if response is not None else None,
-                        request_url=str(response.url) if response is not None else API_URL,
-                        status_code=response.status_code if response is not None else None)
-                except Exception:
-                    self.stats["diagnostic_error"] = "错误记录暂未写入 Redis；断点保留"
+            await record_error_safely(
+                self.records, self.stats, self.project_id, exc, stage=stage,
+                unavailable_message="错误记录暂未写入 Redis；断点保留",
+                fields={
+                    "raw_body": response.content if response is not None else None,
+                    "request_url": str(response.url) if response is not None else API_URL,
+                    "status_code": response.status_code if response is not None else None,
+                },
+            )
             raise
 
-    def _result(self, cursor):
+        finally:
+            if response is not None:
+                response.close()
+
+    def _result(self, cursor: dict[str, Any]) -> NewsRunResult:
         return {"collected": cursor["collected"], "pages": cursor["pages"],
                 "high_watermark": cursor["high_watermark"], "batch_id": cursor["batch_id"]}
 

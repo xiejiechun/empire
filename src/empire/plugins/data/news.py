@@ -1,70 +1,96 @@
 import json
+from datetime import datetime
 
-from sqlalchemy import inspect, text
+from sqlalchemy import text
 
 from empire.contracts.plugin import PluginManifest
 
-NEWS_COLUMNS = {"source", "news_id", "title", "content", "published_at", "source_updated_at",
-                "is_important", "tags", "url", "first_seen_at", "last_seen_at"}
-
 
 class NewsDataPlugin:
-    manifest = PluginManifest("data.news", "财经新闻查询", requires=("mysql.store", "redis.store"),
-                              provides=("news.query",), description="检索已归档的财经直播，保留历史并去重更新")
+    manifest = PluginManifest("data.news", "财经新闻查询", requires=("mysql.store",),
+                              provides=("news.query", "news.schema"),
+                              description="检索已归档的财经直播，保留历史并去重更新")
 
-    def __init__(self, source="sina", job_key="sina-news-v1"):
-        self.source, self.job_key = source, job_key
-        self.mysql = self.redis = None
+    def __init__(self, source="sina", job_key="sina-news-v1", project_id="sina-news"):
+        self.source, self.job_key, self.project_id = source, job_key, project_id
+        self.mysql = None
 
     async def start(self, context):
-        self.mysql, self.redis = context.get("mysql.store"), context.get("redis.store")
-        await self.mysql.read(self._validate)
-        return {"news.query": self}
+        self.mysql = context.get("mysql.store")
+        await self.mysql.require_schema({"finance_news": {
+            "source", "news_id", "title", "content", "published_at", "source_updated_at",
+            "is_important", "tags", "url", "first_seen_at", "version_observed_at",
+        }}, {"finance_news": ["source", "news_id"]})
+        return {"news.query": self, "news.schema": self}
 
-    def _validate(self):
-        with self.mysql.engine.connect() as conn:
-            schema = inspect(conn)
-            if "finance_news" not in schema.get_table_names():
-                raise RuntimeError("缺少 finance_news 业务表，请显式建表；启动不会自动改库")
-            if not NEWS_COLUMNS <= {c["name"] for c in schema.get_columns("finance_news")}:
-                raise RuntimeError("finance_news 字段不完整")
-            if (schema.get_pk_constraint("finance_news")["constrained_columns"] != ["source", "news_id"]
-                    or schema.get_table_options("finance_news").get("mysql_engine", "").lower() != "innodb"):
-                raise RuntimeError("finance_news 必须有来源/新闻 ID 主键并使用 InnoDB")
-
-    async def page_status(self, batch_id, page):
-        raw = await self.redis.client.get(f"{self.redis.prefix}:archive:progress:{self.job_key}")
-        value = json.loads(raw) if raw else {}
-        if value.get("batch_id") == batch_id and (value.get("status") == "invalid" or value.get("page", 0) >= page):
-            return value
-        return None
-
-    async def list_news(self, search="", offset=0, limit=50, important=False):
-        if not isinstance(search, str) or len(search) > 100 or not 0 <= offset <= 100000 or not 1 <= limit <= 200:
+    async def list_news(self, search="", limit=50, important=False, before=None, anchor=None,
+                        include_total=True):
+        if (not isinstance(search, str) or len(search) > 100 or not 1 <= limit <= 200
+                or type(important) is not bool or type(include_total) is not bool):
             raise ValueError("新闻查询参数超出范围")
-        return await self.mysql.read(self._list, search.strip(), offset, limit, bool(important))
+        return await self.mysql.read(self._list, search.strip(), limit, important,
+                                     self._cursor(before), self._cursor(anchor), include_total)
 
-    def _list(self, search, offset, limit, important):
-        pattern = "%" + search.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
-        params = {"source": self.source, "search": pattern, "offset": offset, "limit": limit}
-        where = "source=:source AND (title LIKE :search OR content LIKE :search)"
+    @staticmethod
+    def _cursor(value):
+        if value is None:
+            return None
+        try:
+            if not isinstance(value, dict) or set(value) != {"published_at", "news_id"}:
+                raise ValueError
+            published = datetime.fromisoformat(value["published_at"])
+            ident = value["news_id"]
+            if published.tzinfo is not None or type(ident) is not int or ident < 0:
+                raise ValueError
+            return published, ident
+        except (ValueError, TypeError, KeyError, OverflowError):
+            raise ValueError("新闻分页游标无效") from None
+
+    @staticmethod
+    def _encode_cursor(row):
+        return {"published_at": row["published_at"].isoformat(), "news_id": row["news_id"]}
+
+    def _list(self, search, limit, important, before, anchor, include_total):
+        params = {"source": self.source, "fetch_limit": limit + 1}
+        filters = ["source=:source"]
+        if search:
+            params["search"] = ("%" + search.replace("\\", "\\\\").replace("%", "\\%")
+                                .replace("_", "\\_") + "%")
+            filters.append("(title LIKE :search OR content LIKE :search)")
         if important:
-            where += " AND is_important=1"
-        with self.mysql.engine.connect() as conn:
-            total = conn.execute(text(f"SELECT COUNT(*) FROM finance_news WHERE {where}"), params).scalar_one()
+            filters.append("is_important=1")
+        if anchor:
+            params.update(anchor_at=anchor[0], anchor_id=anchor[1])
+            filters.append("(published_at<:anchor_at OR (published_at=:anchor_at AND news_id<=:anchor_id))")
+        if before:
+            params.update(before_at=before[0], before_id=before[1])
+            filters.append("(published_at<:before_at OR (published_at=:before_at AND news_id<:before_id))")
+        where = " AND ".join(filters)
+        with self.mysql.read_engine.connect() as conn:
             data = conn.execute(text(f"""
-                SELECT news_id,title,content,published_at,source_updated_at,is_important,tags,url,last_seen_at
-                FROM finance_news WHERE {where} ORDER BY published_at DESC,news_id DESC LIMIT :limit OFFSET :offset
-            """), params).mappings()
+                SELECT news_id,title,content,published_at,source_updated_at,is_important,tags,url,version_observed_at
+                FROM finance_news WHERE {where} ORDER BY published_at DESC,news_id DESC LIMIT :fetch_limit
+            """), params).mappings().all()
+            if anchor is None and data:
+                anchor = (data[0]["published_at"], data[0]["news_id"])
+            total = None
+            if include_total:
+                count_filters = [item for item in filters if not item.startswith("(published_at<:before_at")]
+                total = conn.execute(text(
+                    f"SELECT COUNT(*) FROM finance_news WHERE {' AND '.join(count_filters)}"), params).scalar_one()
+            visible = data[:limit]
             rows = []
-            for row in data:
+            for row in visible:
                 value = {k: v.isoformat() if hasattr(v, "isoformat") else v for k, v in row.items()}
                 value["tags"] = json.loads(value["tags"]) if isinstance(value["tags"], str) else value["tags"]
                 rows.append(value)
-        return {"total": total, "rows": rows, "offset": offset, "limit": limit}
+        return {"total": total, "rows": rows, "limit": limit,
+                "anchor": ({"published_at": anchor[0].isoformat(), "news_id": anchor[1]}
+                           if anchor else None),
+                "next_cursor": self._encode_cursor(visible[-1]) if len(data) > limit else None}
 
     async def stop(self):
-        self.mysql = self.redis = None
+        self.mysql = None
 
     def health(self):
         return {"status": "ok" if self.mysql else "stopped"}

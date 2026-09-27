@@ -1,4 +1,5 @@
 -- Initial business schema only; application startup never executes DDL.
+-- DATETIME values use Asia/Shanghai wall-clock time (UTC+08:00).
 -- source separates internal datasets; each source keeps one current stock list.
 CREATE TABLE IF NOT EXISTS stock (
     source VARCHAR(80) NOT NULL,
@@ -8,12 +9,19 @@ CREATE TABLE IF NOT EXISTS stock (
     name VARCHAR(100) NOT NULL,
     market CHAR(2) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     source_symbol CHAR(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    generation CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    started_at DATETIME(6) NOT NULL,
-    updated_at DATETIME(6) NOT NULL,
     PRIMARY KEY (source, unified_code),
-    UNIQUE KEY uq_stock_source_symbol (source, source_symbol),
-    INDEX ix_stock_generation (source, started_at, generation)
+    UNIQUE KEY uq_stock_source_symbol (source, source_symbol)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- One last SQL-confirmed archive state per collection project, not a run history.
+CREATE TABLE IF NOT EXISTS collection_state (
+    namespace VARCHAR(160) NOT NULL,
+    project_id VARCHAR(100) NOT NULL,
+    source VARCHAR(80) NOT NULL,
+    dataset VARCHAR(80) NOT NULL,
+    payload JSON NOT NULL,
+    updated_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (namespace, project_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- One row per calendar date, including explicit non-trading days; no raw response storage.
@@ -37,8 +45,18 @@ CREATE TABLE IF NOT EXISTS finance_news (
     tags JSON NOT NULL,
     url VARCHAR(2048) NOT NULL,
     first_seen_at DATETIME(6) NOT NULL,
-    last_seen_at DATETIME(6) NOT NULL,
+    version_observed_at DATETIME(6) NOT NULL,
     PRIMARY KEY (source, news_id),
     INDEX ix_news_published (source, published_at, news_id),
     INDEX ix_news_important (source, is_important, published_at, news_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- User configuration only; runtime cursors and logs remain in Redis.
+CREATE TABLE IF NOT EXISTS app_setting (
+    namespace VARCHAR(160) NOT NULL,
+    kind VARCHAR(16) NOT NULL,
+    setting_key VARCHAR(120) NOT NULL,
+    payload JSON NOT NULL,
+    updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    PRIMARY KEY (namespace, kind, setting_key)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

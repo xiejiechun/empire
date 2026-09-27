@@ -15,11 +15,15 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from empire.core.config import redact
-from empire.plugins.ui.collection import rows, table
-from empire.plugins.ui.home import local_date
+from empire.build_info import build_summary
+from empire.contracts.plugin import PluginManifest
+from empire.contracts.ui import PageContribution
+from empire.core.redaction import Redactor, redact
+from empire.plugins.ui.common import accessible, local_date, rows, table
+from empire.plugins.ui.plugin import UiPlugin
 
 STATES = {"RUNNING": "已启用", "STOPPED": "已停用", "FAILED": "运行失败",
+          "DEGRADED": "运行异常",
           "BLOCKED": "依赖未就绪", "STARTING": "启动中", "STOPPING": "停止中"}
 
 
@@ -40,6 +44,13 @@ class SystemStatusPage(QWidget):
         note = QLabel("检查服务连接、入库进度和需要处理的异常。")
         note.setObjectName("muted")
         layout.addWidget(note)
+        build_text, build_detail = build_summary()
+        self.build_info = QLabel(build_text)
+        self.build_info.setObjectName("muted")
+        self.build_info.setToolTip(build_detail)
+        self.build_info.setAccessibleName("当前 Empire 构建")
+        self.build_info.setAccessibleDescription(build_detail)
+        layout.addWidget(self.build_info)
         grid = QGridLayout()
         self.values = {}
         for index, (key, label) in enumerate((("redis", "缓存与进度服务"), ("mysql", "持久化存储"),
@@ -85,19 +96,33 @@ class SystemStatusPage(QWidget):
         for key, ident in (("redis", "infra.redis"), ("mysql", "infra.mysql"), ("archive", "pipeline.archive")):
             plugin = plugins.get(ident, {})
             value = STATES.get(plugin.get("state"), "未就绪")
-            if plugin.get("error") or plugin.get("health", {}).get("error"):
+            if value == "已启用" and (plugin.get("error") or plugin.get("health", {}).get("error")):
                 value = "需要处理"
             self.values[key].setText(value)
         cache = plugins.get("infra.redis", {}).get("health", {})
         archive = plugins.get("pipeline.archive", {}).get("health", {})
+        lanes = plugins.get("infra.mysql", {}).get("health", {}).get("lanes", {})
+        sql_metrics = []
+        for name, label in (("read", "数据库浏览"), ("control", "数据库归档与配置")):
+            lane = lanes.get(name, {})
+            sql_metrics.extend([
+                (f"{label}执行 / 等待", f"{lane.get('active', 0)} / {lane.get('waiting', 0)}"),
+                (f"{label}容量 / 满队拒绝", f"{lane.get('capacity', '—')} / {lane.get('rejected', 0)}")])
         ratio = cache.get("memory_ratio")
         rows(self.metrics, [("待归档消息", cache.get("queued", "—")),
             ("等待完整列表的批次", archive.get("staging_batches", "—")),
-            ("本次启动已归档", archive.get("archived", 0)),
+            ("归档扫描待继续", "是，正在分轮处理" if archive.get("scan_more") else "否"),
+            ("归档已索引消息", archive.get("indexed_messages", 0)),
+            ("契约隔离消息", archive.get("isolated_messages", 0)),
+            ("契约隔离项目", "、".join(archive.get("blocked_projects", [])) or "无"),
+            ("可调度 / 等待重试项目", f"{archive.get('ready_projects', 0)} / {archive.get('retry_projects', 0)}"),
+            ("最近一轮扫描条数 / KiB", f"{archive.get('scan_messages', 0)} / {archive.get('scan_bytes', 0) / 1024:.1f}"),
+            ("最近一轮处理单元", archive.get("work_units", 0)),
+            ("本次启动已确认消息", archive.get("archived", 0)),
             ("本次记录的归档错误", archive.get("errors", 0)),
             ("最近归档成功（北京时间）", local_date(archive["last_success"])
              if archive.get("last_success") else "本次启动尚无归档"),
-            ("共享 Redis 服务内存使用率", f"{ratio:.1%}" if ratio is not None else "—")])
+            ("共享 Redis 服务内存使用率", f"{ratio:.1%}" if ratio is not None else "—")] + sql_metrics)
         errors = [f"{p['name']}：{redact(p.get('error') or p.get('health', {}).get('error'), self.shell.cfg)}"
                   for p in plugins.values() if p.get("error") or p.get("health", {}).get("error")]
         if snapshot.get("error"):
@@ -123,6 +148,7 @@ class PluginsPage(QWidget):
         note.setWordWrap(True)
         layout.addWidget(note)
         self.filter = QComboBox()
+        accessible(self.filter, "按插件分类筛选")
         self.filter.addItems(["全部分类", "采集来源", "采集管理", "数据查询", "数据规范", "数据管道", "基础服务", "界面", "其他"])
         self.filter.currentIndexChanged.connect(self.tick)
         layout.addWidget(self.filter)
@@ -158,13 +184,25 @@ class PluginsPage(QWidget):
         self.timer.start(1000)
         self.tick()
 
+    def save_ui_state(self):
+        selected = self.selected()
+        return {"filter": self.filter.currentText(),
+                "selected": selected["id"] if selected else None,
+                "technical": self.technical.isChecked()}
+
+    def restore_ui_state(self, state):
+        self.filter.setCurrentIndex(max(0, self.filter.findText(state["filter"])))
+        self.technical.setChecked(state["technical"])
+        self._restore_plugin_id = state["selected"]
+
     def selected(self):
         index = self.table.currentRow()
         return self.visible_plugins[index] if 0 <= index < len(self.visible_plugins) else None
 
     def tick(self):
         selected = self.selected()
-        ident = selected["id"] if selected else None
+        ident = getattr(self, "_restore_plugin_id", None) or (selected["id"] if selected else None)
+        self._restore_plugin_id = None
         plugins = self.shell.runtime.snapshot().get("plugins", [])
         choice = self.filter.currentText()
         self.visible_plugins = [p for p in plugins if choice == "全部分类" or category(p["id"]) == choice]
@@ -180,7 +218,7 @@ class PluginsPage(QWidget):
     def show_detail(self):
         plugin = self.selected()
         for action, button in self.buttons.items():
-            button.setEnabled(bool(plugin and (plugin["state"] != "RUNNING" if action == "start"
+            button.setEnabled(bool(plugin and (plugin.get("can_start", False) if action == "start"
                                                 else plugin["state"] != "STOPPED")))
         if not plugin:
             self.description.setText("此分类暂无插件。")
@@ -189,8 +227,11 @@ class PluginsPage(QWidget):
         self.description.setText(plugin.get("description", "") or plugin["name"])
         if plugin.get("error"):
             self.description.setText(self.description.text() + "\n" + redact(plugin["error"], self.shell.cfg))
-        diagnostic = redact(json.dumps({"标识": plugin["id"], "依赖能力": plugin.get("requires", []),
-                                      "运行状态": plugin.get("health", {})}, ensure_ascii=False, indent=2), self.shell.cfg)
+        if plugin["state"] == "FAILED" and not plugin.get("can_start", False):
+            self.description.setText(self.description.text() + "\n关键任务或资源异常；请先正常停用并处理原因，再启用。")
+        diagnostic = json.dumps(Redactor.from_config(self.shell.cfg).value(
+            {"标识": plugin["id"], "依赖能力": plugin.get("requires", []),
+             "运行状态": plugin.get("health", {})}), ensure_ascii=False, indent=2)
         if self.diagnostics.toPlainText() != diagnostic:
             self.diagnostics.setPlainText(diagnostic)
 
@@ -198,3 +239,18 @@ class PluginsPage(QWidget):
         plugin = self.selected()
         if plugin:
             self.shell.command(action, plugin["id"])
+
+
+class SystemUiPlugin(UiPlugin):
+    manifest = PluginManifest(
+        "ui.system", "系统管理界面", provides=("ui.pages.system",), autostart=True,
+        description="系统管理界面的独立页面贡献",
+    )
+
+    def create_pages(self):
+        return (
+            PageContribution("system", "运行状态", SystemStatusPage, "系统设置", 0,
+                             "服务连接与归档状态", cache_policy="lru"),
+            PageContribution("plugins", "插件管理", PluginsPage, "系统设置", 1,
+                             "按功能分类维护内部插件", cache_policy="lru"),
+        )

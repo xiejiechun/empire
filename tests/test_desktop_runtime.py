@@ -1,4 +1,6 @@
 import asyncio
+import json
+import time
 
 import pytest
 
@@ -48,3 +50,64 @@ def test_runtime_bridge_stops_thread_and_persists_desired_state(tmp_path, monkey
         runtime.thread.join(timeout=5)
     assert runtime.closed.is_set()
     assert not runtime.thread.is_alive()
+
+
+@pytest.mark.parametrize("password", ['"', 'escaped"quote\\'])
+def test_runtime_snapshot_redacts_values_without_breaking_json(tmp_path, monkeypatch, password):
+    from empire.core.manager import PluginManager
+
+    manager = PluginManager([])
+    manager.snapshot = lambda: {"plugins": [], 'quoted"key': {"error": "failed " + password}}
+    monkeypatch.setattr("empire.core.runtime.user_data_dir", lambda: tmp_path)
+    runtime = Runtime(lambda: manager, {"mysql": {"password": password}})
+    runtime.start()
+    try:
+        deadline = time.monotonic() + 3
+        while 'quoted"key' not in runtime.snapshot() and time.monotonic() < deadline:
+            time.sleep(.01)
+        snapshot = runtime.snapshot()
+        assert json.loads(json.dumps(snapshot))['quoted"key']["error"] == "failed [REDACTED]"
+        assert not runtime.closed.is_set()
+    finally:
+        if not runtime.closed.is_set():
+            runtime.command("shutdown").result(timeout=5)
+        runtime.thread.join(timeout=5)
+
+
+def test_unexpected_snapshot_failure_still_shuts_down_plugins(tmp_path, monkeypatch):
+    from empire.core.manager import PluginManager
+
+    class ResourcePlugin:
+        manifest = PluginManifest("test.plugin", "test", provides=("test",), autostart=True)
+        open = False
+        stopped = False
+
+        async def start(self, context):
+            self.open = True
+            return {"test": self}
+
+        async def stop(self):
+            self.open = False
+            self.stopped = True
+
+        def health(self):
+            return {}
+
+    plugin = ResourcePlugin()
+    manager = PluginManager([plugin])
+    snapshot = manager.snapshot
+
+    def fail_after_start():
+        if plugin.open:
+            raise RuntimeError('snapshot failed: synthetic"password')
+        return snapshot()
+
+    manager.snapshot = fail_after_start
+    monkeypatch.setattr("empire.core.runtime.user_data_dir", lambda: tmp_path)
+    runtime = Runtime(lambda: manager, {"mysql": {"password": 'synthetic"password'}})
+    runtime.start()
+    runtime.thread.join(timeout=5)
+    assert runtime.closed.is_set() and not runtime.thread.is_alive()
+    assert plugin.stopped and not plugin.open
+    assert manager.registry.values == {}
+    assert runtime.snapshot()["error"] == "snapshot failed: [REDACTED]"

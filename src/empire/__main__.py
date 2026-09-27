@@ -8,7 +8,8 @@ import sys
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
-from empire.core.config import RedactingFormatter, load_config, redact, user_data_dir
+from empire.core.config import load_config, user_data_dir
+from empire.core.redaction import RedactingFormatter, Redactor, redact
 
 
 def configure_logging(cfg: dict) -> None:
@@ -17,6 +18,9 @@ def configure_logging(cfg: dict) -> None:
     )
     handler.setFormatter(RedactingFormatter(cfg))
     logging.basicConfig(level=logging.INFO, handlers=[handler], force=True)
+    # Successful request URLs are not operational events; avoid verbose URL logs.
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("httpcore").setLevel(logging.WARNING)
 
 
 def acquire_instance_lock():
@@ -27,6 +31,19 @@ def acquire_instance_lock():
     if not lock.tryLock(0):
         raise RuntimeError("Empire 已在当前用户下运行，请先关闭其他窗口或写入任务。")
     return lock
+
+
+def show_startup_error(message: str) -> None:
+    """Show packaged GUI startup failures that would otherwise be hidden without a console."""
+    from PySide6.QtWidgets import QApplication, QMessageBox
+
+    owns_app = QApplication.instance() is None
+    app = QApplication.instance() or QApplication(sys.argv[:1])
+    box = QMessageBox(QMessageBox.Icon.Critical, "Empire 无法启动", message)
+    box.setInformativeText("配置文件只保存在当前 Windows 用户目录，不会写入程序目录。")
+    box.exec()
+    if owns_app:
+        app.quit()
 
 
 async def doctor(cfg: dict) -> dict:
@@ -45,7 +62,7 @@ async def doctor(cfg: dict) -> dict:
         memory = await client.info("memory")
         persistence = await client.info("persistence")
         capabilities = await client.execute_command(
-            "COMMAND", "INFO", "XADD", "XREADGROUP", "XAUTOCLAIM", "EVAL", "TIME"
+            "COMMAND", "INFO", "XADD", "XRANGE", "XREVRANGE", "XINFO", "XLEN", "XDEL", "EVAL", "TIME"
         )
         result["redis"] = {
             "connected": True, "version": server.get("redis_version"),
@@ -89,37 +106,97 @@ def run_gui(cfg: dict, screenshot: str | None = None, smoke_seconds: int = 0) ->
 
     from empire.bootstrap import build_manager
     from empire.core.runtime import Runtime
+    from empire.desktop.icon import application_icon
+    from empire.desktop.interaction import install_input_rules
     from empire.desktop.window import MainWindow
 
     app = QApplication(sys.argv[:1])
-    if not QFontDatabase.families():
-        # Qt's offscreen platform does not discover Windows fonts automatically.
-        for name in ("msyh.ttc", "msyhbd.ttc", "segoeui.ttf"):
-            font = Path("C:/Windows/Fonts") / name
-            if font.is_file():
-                QFontDatabase.addApplicationFont(str(font))
+    for name in ("msyh.ttc", "msyhbd.ttc", "segoeui.ttf"):
+        font = Path("C:/Windows/Fonts") / name
+        if font.is_file():
+            QFontDatabase.addApplicationFont(str(font))
     app.setApplicationName("Empire")
     app.setOrganizationName("EmpireResearch")
+    app.setWindowIcon(application_icon())
+    install_input_rules(app)
     lock = acquire_instance_lock()
     runtime = Runtime(lambda: build_manager(cfg), cfg)
-    runtime.start()
-    window = MainWindow(runtime, cfg)
-    window.show()
-    if smoke_seconds:
-        def finish():
-            if screenshot:
-                target = Path(screenshot).resolve()
-                target.parent.mkdir(parents=True, exist_ok=True)
-                window.grab().save(str(target))
-            window.close()
-        QTimer.singleShot(smoke_seconds * 1000, finish)
     try:
+        runtime.start()
+        window = MainWindow(runtime, cfg)
+        window.show()
+        if smoke_seconds:
+            def finish():
+                if screenshot:
+                    target = Path(screenshot).resolve()
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    window.grab().save(str(target))
+                window.close()
+            QTimer.singleShot(smoke_seconds * 1000, finish)
         return app.exec()
     finally:
-        if not runtime.closed.is_set():
+        if runtime.loop is not None and not runtime.closed.is_set():
             runtime.command("shutdown").result(timeout=60)
-        runtime.thread.join(timeout=60)
+        if runtime.thread.ident is not None:
+            runtime.thread.join(timeout=60)
         lock.unlock()
+
+
+def package_smoke(screenshot: str | None = None) -> int:
+    """Exercise the packaged Qt shell without connecting to Redis or MySQL."""
+    import threading
+    from concurrent.futures import Future
+
+    from PySide6.QtCore import QTimer
+    from PySide6.QtGui import QFontDatabase
+    from PySide6.QtWidgets import QApplication
+
+    from empire.desktop.icon import application_icon
+    from empire.desktop.interaction import install_input_rules
+    from empire.desktop.window import MainWindow
+
+    class SmokeRuntime:
+        def __init__(self):
+            self.closed = threading.Event()
+
+        def snapshot(self):
+            return {"plugins": []}
+
+        def page_contributions(self):
+            return []
+
+        def command(self, *args):
+            result = Future()
+            result.set_result(None)
+            return result
+
+    app = QApplication(sys.argv[:1])
+    for name in ("msyh.ttc", "msyhbd.ttc", "segoeui.ttf"):
+        font = Path("C:/Windows/Fonts") / name
+        if font.is_file():
+            QFontDatabase.addApplicationFont(str(font))
+    app.setApplicationName("Empire package smoke")
+    app.setWindowIcon(application_icon())
+    install_input_rules(app)
+    runtime = SmokeRuntime()
+    window = MainWindow(runtime, {})
+    window.timer.stop()
+    window.show()
+
+    def finish():
+        if screenshot:
+            target = Path(screenshot).resolve()
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if not window.grab().save(str(target)):
+                app.exit(2)
+                return
+        runtime.closed.set()
+        window.can_close = True
+        window.close()
+        app.quit()
+
+    QTimer.singleShot(500, finish)
+    return app.exec()
 
 
 def main() -> int:
@@ -128,6 +205,7 @@ def main() -> int:
     commands = parser.add_subparsers(dest="command")
     commands.add_parser("run", help="启动桌面（默认）")
     commands.add_parser("doctor", help="只读检查数据库连接与必要能力")
+    commands.add_parser("check-config", help="只校验本机配置，不连接 Redis/MySQL")
     commands.add_parser("init-db", help="在已配置的数据库中显式创建首次使用的表")
     collect = commands.add_parser("collect-stocks", help="采集完整股票列表、归档并退出")
     collect.add_argument("--fresh", action="store_true", help="创建新批次，放弃续跑旧断点")
@@ -138,10 +216,17 @@ def main() -> int:
     smoke = commands.add_parser("smoke", help="启动桌面并在指定秒数后安全退出")
     smoke.add_argument("--seconds", type=int, default=8)
     smoke.add_argument("--screenshot")
+    package = commands.add_parser("package-smoke", help="隔离验证打包界面，不连接业务服务")
+    package.add_argument("--screenshot")
     args = parser.parse_args()
     try:
+        if args.command == "package-smoke":
+            return package_smoke(args.screenshot)
         cfg = load_config(args.config)
         configure_logging(cfg)
+        if args.command == "check-config":
+            print(f"配置有效：{cfg['_path']}")
+            return 0
         if args.command == "doctor":
             result = asyncio.run(doctor(cfg))
             print(json.dumps(result, ensure_ascii=False, indent=2))
@@ -173,14 +258,16 @@ def main() -> int:
                         done, _ = await asyncio.wait({waiter}, timeout=10)
                         if not done:
                             definition = control.definitions[task_id]
-                            print(json.dumps(manager.registry.get(definition.capability).health(),
+                            health = manager.registry.get(definition.capability).health()
+                            print(json.dumps(Redactor.from_config(cfg).value(health),
                                              ensure_ascii=False), flush=True)
                     await waiter
                     record = next(row for row in control.state["history"] if row["run_id"] == run_id)
                     if record["status"] != "complete":
                         raise RuntimeError(record["error"] or record["status"])
                     result = record["result"]
-                    print(json.dumps({**result, "status": "complete"}, ensure_ascii=False), flush=True)
+                    print(json.dumps(Redactor.from_config(cfg).value(
+                        {**result, "status": "complete"}), ensure_ascii=False), flush=True)
                 finally:
                     await manager.shutdown()
             try:
@@ -192,7 +279,10 @@ def main() -> int:
             return run_gui(cfg, args.screenshot, args.seconds)
         return run_gui(cfg)
     except Exception as exc:
-        print(redact(exc, locals().get("cfg", {})), file=sys.stderr)
+        message = redact(exc, locals().get("cfg", {}))
+        print(message, file=sys.stderr)
+        if getattr(sys, "frozen", False) and args.command in (None, "run"):
+            show_startup_error(message)
         return 1
 
 

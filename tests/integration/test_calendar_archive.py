@@ -25,11 +25,12 @@ async def calendar_db():
     cfg["archive"]["interval_seconds"] = 3600
     manager = build_manager(cfg)
     query = manager.entries["data.trade_calendar"].plugin
-    query.source, query.job_key = source, "calendar-test"
+    query.source, query.job_key, query.project_id = source, "calendar-test", "calendar-test"
     mysql = store = None
     try:
         await manager.start("pipeline.ingest")
         await manager.start("data.trade_calendar")
+        await manager.start("infra.archive_confirmation")
         await asyncio.sleep(.02)
         ingest, archive = manager.registry.get("ingest.publish"), manager.registry.get("archive.worker")
         mysql, store = manager.registry.get("mysql.store"), manager.registry.get("redis.store")
@@ -53,7 +54,8 @@ async def calendar_db():
             def cleanup():
                 with mysql.engine.begin() as conn:
                     conn.execute(text("DELETE FROM trade_calendar WHERE source=:source"), {"source": source})
-            await mysql.read(cleanup)
+                    conn.execute(text("DELETE FROM collection_state WHERE source=:source"), {"source": source})
+            await mysql.control(cleanup)
         if store:
             keys = [k async for k in store.client.scan_iter(match=cfg["redis"]["namespace"] + ":*")]
             if keys:
@@ -128,8 +130,10 @@ async def test_invalid_month_does_not_replace_existing_or_confirm_run(calendar_d
     await store.client.xadd(store.stream, {"envelope": bad.model_dump_json()})
     await manager.registry.get("archive.worker").flush()
     assert await query.month("2027-01") == before
-    assert (await query.page_status(batch, 1))["status"] == "invalid"
-    assert len(await manager.registry.get("collection.records").list_errors("calendar-test")) == 1
+    assert (await manager.registry.get("archive.confirmation").page_status(
+        query.source, query.job_key, query.project_id, batch, 1))["status"] == "invalid"
+    assert (await manager.registry.get("collection.records").list_error_summaries(
+        "calendar-test"))["total"] == 1
 
 
 async def test_sql_coverage_planning_survives_lost_redis_checkpoint(calendar_db):
@@ -141,3 +145,54 @@ async def test_sql_coverage_planning_survives_lost_redis_checkpoint(calendar_db)
     assert plan["months"][0] == "1991-01"
     assert plan["months"][-1] == "2027-12"
     assert len(plan["months"]) == 444
+
+
+async def test_calendar_hash_hit_and_cache_loss_both_drain_queue(calendar_db, monkeypatch):
+    manager, query, publish = calendar_db
+    archive = manager.registry.get("archive.worker")
+    mysql = manager.registry.get("mysql.store")
+    store = manager.registry.get("redis.store")
+    await publish()
+    original = mysql.archive
+    calls = []
+    async def capture(records):
+        calls.append(records)
+        return await original(records)
+    monkeypatch.setattr(mysql, "archive", capture)
+    await publish()
+    assert not calls and await store.client.xlen(store.stream) == 0
+    await archive.fingerprints.invalidate("calendar", query.source)
+    await publish()
+    assert len(calls) == 1 and await store.client.xlen(store.stream) == 0
+    await publish(trading=False)
+    assert len(calls) == 2 and await store.client.xlen(store.stream) == 0
+    assert all(not row["is_trade"] for row in (await query.month("2027-01"))["rows"])
+
+
+async def test_calendar_state_rejects_old_month_after_cache_loss(calendar_db):
+    manager, query, publish = calendar_db
+    archive = manager.registry.get("archive.worker")
+    store = manager.registry.get("redis.store")
+    earlier = datetime.now(UTC) - timedelta(minutes=10)
+    await publish(observed=earlier)
+    await archive.fingerprints.invalidate("calendar", query.source)
+    latest = await publish(observed=earlier + timedelta(minutes=3))
+    await archive.fingerprints.invalidate("calendar", query.source)
+    await store.client.delete(f"{store.prefix}:archive:progress:{query.job_key}")
+    assert (await manager.registry.get("archive.confirmation").page_status(
+        query.source, query.job_key, query.project_id, latest.batch_id, 1))["status"] == "complete"
+    await publish(trading=False, observed=earlier + timedelta(minutes=2))
+    assert all(row["is_trade"] for row in (await query.month("2027-01"))["rows"])
+    assert await store.client.xlen(store.stream) == 0
+
+
+async def test_calendar_cache_hit_has_zero_mysql_access(calendar_db, monkeypatch):
+    manager, query, publish = calendar_db
+    await publish()
+    mysql = manager.registry.get("mysql.store")
+    async def forbidden(*args, **kwargs):
+        raise AssertionError("Calendar Redis hit must not access MySQL")
+    monkeypatch.setattr(mysql, "read", forbidden)
+    monkeypatch.setattr(mysql, "archive", forbidden)
+    await publish()
+    monkeypatch.undo()

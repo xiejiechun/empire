@@ -18,6 +18,10 @@ class BackpressureError(RuntimeError):
     """A producer must pause while durable storage is at capacity."""
 
 
+class BatchReservationError(BackpressureError):
+    """A batch reservation is invalid and cannot recover by waiting."""
+
+
 class StaleCheckpointError(RuntimeError):
     """Re-read the durable cursor before retrying a publication."""
 

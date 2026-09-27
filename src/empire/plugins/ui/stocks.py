@@ -1,4 +1,4 @@
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import datetime
 
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QKeySequence, QShortcut
@@ -13,13 +13,23 @@ from PySide6.QtWidgets import (
     QPushButton,
     QStackedWidget,
     QTableWidget,
-    QTableWidgetItem,
     QVBoxLayout,
     QWidget,
 )
 
+from empire.contracts.plugin import PluginManifest
 from empire.contracts.stocks import MARKET_NAMES
-from empire.core.config import redact
+from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
+from empire.core.redaction import redact
+from empire.core.time import CHINA
+from empire.plugins.ui.common import (
+    accessible,
+    bind_find,
+    restore_table_identity,
+    rows,
+    table_identity_state,
+)
+from empire.plugins.ui.plugin import UiPlugin
 
 PAGE_SIZE = 200
 
@@ -28,6 +38,8 @@ class StockListPage(QWidget):
     def __init__(self, shell):
         super().__init__()
         self.shell = shell
+        from empire.plugins.ui.queries import QueryScope
+        self.query_scope = QueryScope(self)
         self.offset = 0
         self.total = 0
         self.future = None
@@ -45,7 +57,7 @@ class StockListPage(QWidget):
         heading.addStretch()
         collect = QPushButton("前往采集任务")
         collect.setToolTip("查看股票列表采集进度、设置自动采集计划")
-        collect.clicked.connect(lambda: self.shell.navigate("collection"))
+        collect.clicked.connect(lambda: self.shell.navigate_management("stocks"))
         heading.addWidget(collect)
         layout.addLayout(heading)
         self.status = QLabel("正在读取已归档的股票列表…")
@@ -61,12 +73,15 @@ class StockListPage(QWidget):
             self.market.addItem(f"{name} · {code}", code)
         market_label.setBuddy(self.market)
         self.market.setMinimumWidth(135)
+        accessible(self.market, "股票市场筛选")
         filters.addWidget(market_label)
         filters.addWidget(self.market)
         self.search = QLineEdit()
         self.search.setPlaceholderText("代码 / 名称 / 统一代码，如 000001.SZ")
         self.search.setMaxLength(100)
         self.search.setClearButtonEnabled(True)
+        accessible(self.search, "搜索股票", "输入代码、名称或统一代码；按 Ctrl+F 可回到此处。")
+        bind_find(self, self.search)
         self.search.returnPressed.connect(self.search_changed)
         filters.addWidget(self.search, 1)
         self.find = QPushButton("查询")
@@ -94,6 +109,7 @@ class StockListPage(QWidget):
         result_bar.addWidget(self.copy_button)
         layout.addLayout(result_bar)
         self.table = QTableWidget(0, 5)
+        accessible(self.table, "股票列表结果", "使用方向键浏览，空格选择，Ctrl+C 复制所选行。")
         self.table.setHorizontalHeaderLabels(["代码", "名称", "统一代码", "市场", "来源代码"])
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -126,6 +142,7 @@ class StockListPage(QWidget):
 
         pagination = QHBoxLayout()
         self.page_label = QLabel("每页 200 条")
+        self.page_label.setAccessibleName("股票列表分页状态")
         self.page_label.setObjectName("muted")
         pagination.addWidget(self.page_label)
         pagination.addStretch()
@@ -146,6 +163,21 @@ class StockListPage(QWidget):
     def current_query(self):
         return self.applied_search, self.offset, self.market.currentData()
 
+    def save_ui_state(self):
+        return {"search": self.search.text(), "applied_search": self.applied_search,
+                "market": self.market.currentData(), "offset": self.offset,
+                "table": table_identity_state(self.table)}
+
+    def restore_ui_state(self, state):
+        self.search.setText(state["search"])
+        self.applied_search = state["applied_search"]
+        self.market.blockSignals(True)
+        self.market.setCurrentIndex(max(0, self.market.findData(state["market"])))
+        self.market.blockSignals(False)
+        self.offset = state["offset"]
+        restore_table_identity(self.table, state["table"])
+        self.force_reload = True
+
     def search_changed(self):
         self.applied_search = self.search.text().strip()
         self.offset = 0
@@ -156,6 +188,9 @@ class StockListPage(QWidget):
         self.search_changed()
 
     def reload(self):
+        if self.future is not None:
+            self.query_scope.cancel("stocks")
+            self.future = None
         self.force_reload = True
         self.tick()
 
@@ -182,21 +217,25 @@ class StockListPage(QWidget):
         health = plugins.get("collector.sina_universe", {}).get("health", {})
         state = health.get("status", "stopped")
         if self.future and self.future.done():
+            future = self.future
+            self.future = None
             try:
-                result = self.future.result()
                 if self.query_spec == self.current_query():
+                    result = self.query_scope.result("stocks", future)
                     self.show_result(result)
                     self.loaded = True
                 else:
+                    self.query_scope.discard("stocks", future)
                     self.force_reload = True
             except Exception as exc:
-                self.result_summary.setText(f"读取失败：{redact(exc, self.shell.cfg)} · 可点击刷新重试")
+                self.result_summary.setText(self.query_scope.failure_message(
+                    "stocks", "读取失败", redact(exc, self.shell.cfg), stale=self.loaded,
+                ) + " · 可点击刷新重试")
                 if not self.loaded:
                     self.empty.setText("暂时无法读取股票列表\n请检查系统状态后点击刷新")
                 # A failed query is retried only by an explicit refresh or a new snapshot.
                 self.loaded = True
                 self.previous_snapshot = health.get("snapshot_id")
-            self.future = None
         ready = plugins.get("data.stocks", {}).get("state") == "RUNNING"
         if not self.future and ready:
             pending_snapshot = health.get("snapshot_id") != self.previous_snapshot and state in (
@@ -206,9 +245,9 @@ class StockListPage(QWidget):
                 self.force_reload = False
                 self.query_spec = self.current_query()
                 self.result_summary.setText("正在读取筛选结果…")
-                self.future = self.shell.runtime.invoke(
-                    "stocks.query", "list_stocks", self.applied_search, self.offset,
-                    PAGE_SIZE, self.market.currentData(),
+                self.future = self.query_scope.invoke(
+                    "stocks", self.shell.runtime, "stocks.query", "list_stocks",
+                    self.applied_search, self.offset, PAGE_SIZE, self.market.currentData(),
                 )
         elif not ready:
             self.result_summary.setText("股票查询服务尚未就绪，请在系统状态中查看服务状态")
@@ -229,24 +268,20 @@ class StockListPage(QWidget):
             self.previous_snapshot = result.get("verified_snapshot_id", snapshot["snapshot_id"])
             finished = datetime.fromisoformat(snapshot["finished_at"])
             if finished.tzinfo is None:
-                finished = finished.replace(tzinfo=UTC)
-            local_time = finished.astimezone(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
+                finished = finished.replace(tzinfo=CHINA)
+            local_time = finished.astimezone(CHINA).strftime("%Y-%m-%d %H:%M:%S")
             self.status.setText(
                 f"新浪 A 股 · 当前列表 {snapshot['row_count']:,} 条 · 更新于 {local_time}（北京时间）"
             )
         else:
             self.status.setText("尚无完整股票列表；采集和归档完成后会自动显示。")
-        rows = result["rows"]
-        self.table.setRowCount(len(rows))
-        for index, stock in enumerate(rows):
-            values = [stock["code"], stock["name"], stock["unified_code"],
-                      f"{MARKET_NAMES[stock['market']]} ({stock['market']})", stock["source_symbol"]]
-            for column, value in enumerate(values):
-                item = QTableWidgetItem(value)
-                item.setToolTip(value)
-                self.table.setItem(index, column, item)
-        self.content.setCurrentWidget(self.table if rows else self.empty)
-        if not rows:
+        stocks = result["rows"]
+        rows(self.table, [[stock["code"], stock["name"], stock["unified_code"],
+                          f"{MARKET_NAMES[stock['market']]} ({stock['market']})", stock["source_symbol"]]
+                         for stock in stocks],
+             keys=[(stock["source"], stock["unified_code"]) for stock in stocks])
+        self.content.setCurrentWidget(self.table if stocks else self.empty)
+        if not stocks:
             self.empty.setText(
                 "没有匹配的股票\n试试其他代码、名称或市场，或清空搜索。" if snapshot else
                 "还没有可查看的股票列表\n点击右上角“前往采集任务”，完成首次采集。"
@@ -256,9 +291,25 @@ class StockListPage(QWidget):
         self.result_summary.setText(f"{market}{query} · 匹配 {self.total:,} 条")
         pages = (self.total + PAGE_SIZE - 1) // PAGE_SIZE
         current = self.offset // PAGE_SIZE + 1 if pages else 0
-        visible_range = f"{self.offset + 1}–{self.offset + len(rows)}" if rows else "0"
+        visible_range = f"{self.offset + 1}–{self.offset + len(stocks)}" if stocks else "0"
         self.page_label.setText(
             f"第 {current} / {pages} 页 · 显示 {visible_range} 条 · 每页 {PAGE_SIZE} 条"
         )
         self.previous.setEnabled(self.offset > 0)
         self.next.setEnabled(self.offset + PAGE_SIZE < self.total)
+
+
+class StockUiPlugin(UiPlugin):
+    manifest = PluginManifest(
+        "ui.stocks", "股票列表界面", provides=("ui.pages.stocks",), autostart=True,
+        description="股票列表界面的独立页面贡献",
+    )
+
+    def create_pages(self):
+        return (
+            PageContribution("stocks", "股票列表", StockListPage, "数据浏览", 0,
+                             "查找股票、筛选市场、复制数据 · Alt+2", catalogued=True,
+                             category="基础数据", source="新浪财经", cache_policy="lru",
+                             management=NavigationTarget(
+                                 "collection", NavigationContext(task_id="sina-stocks"))),
+        )

@@ -14,7 +14,7 @@
 
 正常关闭 Empire 窗口并取得原有单实例锁后，先核实待归档队列为空、没有活动采集；原库存有一份完整列表、5,566 条股票、70 条分页记录、72 条原始事件和 0 条隔离错误。
 
-使用 [显式维护脚本](../../scripts/simplify_stock_storage.py) 创建当前业务表、在事务中复制股票字段并逐项核对，再移除本次已确认不用的旧表：`stock_universe_member`、`stock_universe_page`、`stock_universe_batch`、`ingest_event`、`ingest_quarantine`。运行时代码和首次建表 SQL 不再依赖这些表。
+当时通过显式维护创建业务表，在事务中复制股票字段并逐项核对，再移除已确认不用的旧表：`stock_universe_member`、`stock_universe_page`、`stock_universe_batch`、`ingest_event`、`ingest_quarantine`。该历史脚本已退役，本文仅保留变更证据；当前维护见 [正式路径维护](2026-09-26-formal-paths.md)。
 
 2026-09-22 23:35:21（北京时间）的转换结果：
 

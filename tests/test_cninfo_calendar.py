@@ -6,6 +6,7 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
+from empire.contracts.download import CALENDAR_RESPONSE
 from empire.plugins.collectors.cninfo_calendar import API_URL, CninfoCalendarCollector, parse_month
 from empire.plugins.data.trade_calendar import CalendarDataPlugin
 from empire.plugins.datasets.astock import DatasetPlugin
@@ -46,12 +47,12 @@ def test_invalid_month_is_not_treated_as_nontrading(issue):
 
 async def test_plan_full_history_then_maintenance_and_missing_history_after_redis_loss():
     query = CalendarDataPlugin()
-    query.mysql = SimpleNamespace(read=AsyncMock(return_value={}))
+    query.mysql = SimpleNamespace(control=AsyncMock(return_value={}))
     initial = await query.plan(date(2026, 9, 23))
     assert len(initial["months"]) == 445
     assert initial["months"][0] == "1990-12" and initial["months"][-1] == "2027-12"
     coverage = {month: len(month_dates(month)) for month in initial["months"]}
-    query.mysql.read.return_value = coverage
+    query.mysql.control.return_value = coverage
     maintenance = await query.plan(date(2026, 9, 23))
     assert maintenance["months"] == months_between("2026-09", "2027-12")
     assert maintenance["expected_count"] == 487
@@ -71,10 +72,10 @@ class MemoryIngest:
     async def checkpoint(self, job):
         return copy.deepcopy(self.state)
 
-    async def ensure_capacity(self):
+    async def ensure_capacity(self, incoming=1, reservation=None):
         pass
 
-    async def publish_page(self, events, *, job_key, expected_revision, cursor):
+    async def publish_page(self, events, *, job_key, expected_revision, cursor, reservation=None):
         for event in events:
             DatasetPlugin().normalize(event)
         self.events.extend(events)
@@ -92,13 +93,13 @@ def collector():
     item.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
     item.query = SimpleNamespace(
         plan=AsyncMock(return_value={"months": ["2026-09", "2026-10"], "maintenance_start": "2026-09",
-                                    "end_month": "2027-12", "expected_count": 61}),
-        page_status=AsyncMock(return_value={"status": "complete"}))
+                                    "end_month": "2027-12", "expected_count": 61}))
+    item.confirmation = SimpleNamespace(page_status=AsyncMock(return_value={"status": "complete"}))
     async def get(method, url, **kwargs):
         assert url == API_URL and kwargs["project_id"] == "cninfo-calendar"
         assert kwargs["allowed_domains"] == ("cninfo.com.cn",)
         return response(kwargs["params"]["month"])
-    item.http = SimpleNamespace(request=AsyncMock(side_effect=get))
+    item.http = SimpleNamespace(request=AsyncMock(side_effect=get), response_policy=lambda _: CALENDAR_RESPONSE)
     return item
 
 
@@ -107,7 +108,8 @@ async def test_collects_months_and_finishes_only_after_archive_confirmation():
     result = await item.execute()
     assert result["collected"] == 61 and result["pages"] == 2
     assert [call.kwargs["params"]["month"] for call in item.http.request.call_args_list] == ["2026-09", "2026-10"]
-    item.query.page_status.assert_awaited()
+    item.confirmation.page_status.assert_awaited_with(
+        "cninfo", "cninfo-calendar-v1", "cninfo-calendar", result["batch_id"], 2)
     assert item.ingest.state["cursor"]["phase"] == "complete"
     assert await item.execute(baseline_revision=0) == result
     assert item.http.request.await_count == 2
@@ -130,7 +132,7 @@ async def test_month_failure_keeps_progress_and_resumes_exact_failed_month():
 
 async def test_invalid_archive_does_not_mark_run_complete():
     item = collector()
-    item.query.page_status.return_value = {"status": "invalid", "error_text": "invalid page"}
+    item.confirmation.page_status.return_value = {"status": "invalid", "error_text": "invalid page"}
     with pytest.raises(ValueError, match="invalid page"):
         await item.execute()
     assert item.ingest.state["cursor"]["phase"] == "awaiting_archive"

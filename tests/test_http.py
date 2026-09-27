@@ -8,8 +8,9 @@ from empire.plugins.infra.http import (
     COOLDOWN_LUA,
     HttpService,
     RateRules,
-    retry_after_seconds,
 )
+from empire.plugins.infra.http_safety import parse_retry_after
+from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_PERMIT, USE_PROXY
 
 
 class MemoryPermits:
@@ -19,16 +20,21 @@ class MemoryPermits:
         self.cooldown = {}
         self.permits = []
 
-    async def eval(self, script, count, key, milliseconds):
+    async def eval(self, script, count, *args):
         now = time.monotonic() * 1000
         if script == COOLDOWN_LUA:
+            key, milliseconds = args
             self.cooldown[key] = max(self.cooldown.get(key, 0), now + milliseconds)
             return self.cooldown[key]
-        wait = max(self.next.get(key, 0), self.cooldown.get(key, 0)) - now
+        assert script == ROUTE_PERMIT
+        site, total, device, total_ms, device_ms, _direct = args
+        wait = max(self.next.get(total, 0), self.next.get(device, 0),
+                   self.cooldown.get(site, 0)) - now
         if wait > 0:
             return max(1, int(wait))
-        self.next[key] = now + milliseconds
-        self.permits.append((key, now))
+        self.next[total] = now + total_ms
+        self.next[device] = now + device_ms
+        self.permits.append((device, now))
         return 0
 
 
@@ -50,26 +56,32 @@ def test_domain_grouping_and_suffix_boundaries():
 
 
 async def test_different_collectors_share_intervals_and_concurrency():
-    starts = []
+    permits = MemoryPermits()
     active = peak = 0
 
     async def respond(request):
         nonlocal active, peak
         active += 1
         peak = max(peak, active)
-        starts.append(time.monotonic())
         await asyncio.sleep(.005)
         active -= 1
         return httpx.Response(200, json={"ok": True})
 
-    service = HttpService(MemoryPermits(), "test", groups(), transport=httpx.MockTransport(respond))
+    service = HttpService(permits, "test", groups(), transport=httpx.MockTransport(respond))
+    async def consume(host):
+        response = await service.request("GET", f"https://{host}/", allowed_domains=("sina.com.cn",))
+        response.close()
+
     try:
         await asyncio.gather(*[
-            service.request("GET", f"https://{host}/", allowed_domains=("sina.com.cn",))
+            consume(host)
             for host in ("finance.sina.com.cn", "vip.stock.finance.sina.com.cn", "finance.sina.com.cn")
         ])
         assert peak == 1
-        assert all(b - a >= .025 for a, b in zip(starts, starts[1:]))
+        # The contract spaces permits. First-use client overhead can delay a mock
+        # callback after its permit, especially under Windows timer granularity.
+        assert len(permits.permits) == 3
+        assert all(b[1] - a[1] >= 30 for a, b in zip(permits.permits, permits.permits[1:]))
     finally:
         await service.close()
 
@@ -86,7 +98,8 @@ async def test_redirect_gets_fresh_permit_and_rejects_undeclared_domain():
 
     service = HttpService(permits, "test", groups(1), transport=httpx.MockTransport(respond))
     try:
-        await service.request("GET", "https://finance.sina.com.cn/start", allowed_domains=("sina.com.cn",))
+        response = await service.request("GET", "https://finance.sina.com.cn/start", allowed_domains=("sina.com.cn",))
+        response.close()
         assert len(permits.permits) == 2
         with pytest.raises(ValueError, match="not declared"):
             await service.request("GET", "https://finance.sina.com.cn/bad", allowed_domains=("sina.com.cn",))
@@ -114,9 +127,25 @@ async def test_429_applies_to_other_plugin_and_wait_is_cancellable():
         await service.close()
 
 
+async def test_proxy_only_request_never_uses_direct_route_when_pool_is_unavailable():
+    service = HttpService(MemoryPermits(), "test", groups(1),
+        transport=httpx.MockTransport(lambda request: httpx.Response(200)))
+    proxy_token = USE_PROXY.set(True)
+    fallback_token = PROXY_FALLBACK.set(False)
+    try:
+        with pytest.raises(RuntimeError, match="禁止本机直连"):
+            await service.request("GET", "https://finance.sina.com.cn/",
+                allowed_domains=("sina.com.cn",))
+        assert service.stats["sina"]["requests"] == 0
+    finally:
+        PROXY_FALLBACK.reset(fallback_token)
+        USE_PROXY.reset(proxy_token)
+        await service.close()
+
+
 def test_retry_after_invalid_falls_back():
-    assert retry_after_seconds("invalid") == 30
-    assert retry_after_seconds("5") == 5
+    assert parse_retry_after("invalid").milliseconds == 30000
+    assert parse_retry_after("5").milliseconds == 5000
 
 
 class ErrorRecorder:
@@ -136,7 +165,10 @@ async def test_retry_keeps_failed_response_even_when_next_attempt_succeeds():
     try:
         result = await service.request("GET", "https://finance.sina.com.cn/",
             allowed_domains=("sina.com.cn",), project_id="sina-news", max_retries=1)
-        assert result.status_code == 200
+        try:
+            assert result.status_code == 200
+        finally:
+            result.close()
         assert len(records.errors) == 1
         assert records.errors[0]["project_id"] == "sina-news"
         assert records.errors[0]["raw_body"] == b"temporary failure"
