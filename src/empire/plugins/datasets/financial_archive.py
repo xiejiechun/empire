@@ -6,6 +6,8 @@ from datetime import UTC
 from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
+from empire.contracts.business_schema import require_fixed_source
+from empire.contracts.security import unified_code
 from empire.core.time import mysql_time
 from empire.plugins.datasets.financial_statements import KINDS, digest, validate_rows
 from empire.plugins.datasets.financial_wire import pack_rows, unpack_rows
@@ -50,7 +52,12 @@ class FinancialDataset:
     def fingerprint_subset(self, data, identities):
         return {**data, 'write_unit': data['unit'] in identities}
 
+    @staticmethod
+    def state_unit(data):
+        return data['unit']
+
     def write(self, conn, envelope, data):
+        require_fixed_source(self.table, envelope.source)
         unit = data['unit']
         prior = data['archive_state'].get('units', {}).get(unit, {})
         if unit == 'manifest':
@@ -59,10 +66,10 @@ class FinancialDataset:
         written = 0
         if accepted and unit != 'manifest':
             market, code = unit.split(':')
-            params = dict(source=envelope.source, market=market, code=code)
+            params = dict(unified_code=unified_code(market, code))
             stored = {r['report_date'].isoformat(): dict(r) for r in conn.execute(text(
                 f'SELECT report_date,payload,content_hash FROM {self.table} '
-                'WHERE source=:source AND market=:market AND code=:code FOR UPDATE'), params).mappings()}
+                'WHERE unified_code=:unified_code FOR UPDATE'), params).mappings()}
             for row in data['rows']:
                 old = stored.get(row['report_date'])
                 checksum = digest(row)
@@ -71,8 +78,8 @@ class FinancialDataset:
                     if actual == row:
                         continue
                 conn.execute(text(f'INSERT INTO {self.table} '
-                    '(source,market,code,report_date,payload,content_hash,version_observed_at) '
-                    'VALUES (:source,:market,:code,:report_date,:payload,:content_hash,:observed) '
+                    '(unified_code,report_date,payload,content_hash,version_observed_at) '
+                    'VALUES (:unified_code,:report_date,:payload,:content_hash,:observed) '
                     'ON DUPLICATE KEY UPDATE payload=VALUES(payload),content_hash=VALUES(content_hash),'
                     'version_observed_at=VALUES(version_observed_at)'),
                     {**params, 'report_date': row['report_date'], 'payload': json.dumps(row, ensure_ascii=False),

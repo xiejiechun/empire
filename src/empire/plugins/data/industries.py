@@ -4,6 +4,7 @@ from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import text
 
+from empire.contracts.business_schema import require_fixed_source
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
@@ -37,6 +38,7 @@ class IndustryDataPlugin:
 
     async def start(self, context):
         self.context, self.mysql = context, context.get('mysql.store')
+        require_fixed_source('industry', self.source)
         await self.mysql.require_schema(TABLES, KEYS)
         return {'industries.query': self}
 
@@ -54,12 +56,12 @@ class IndustryDataPlugin:
                 state = read_state(conn, self.namespace, PROJECT, self.source)
                 pattern = '%' + search.strip().replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_') + '%'
                 params = dict(source=self.source, search=pattern, offset=offset, limit=limit)
-                where = ('m.source=:source AND (i.name LIKE :search OR m.name LIKE :search '
-                         'OR m.code LIKE :search OR i.industry_code LIKE :search)')
-                join = 'industry_member m JOIN industry i ON i.source=m.source AND i.industry_code=m.industry_code'
+                where = ('(i.name LIKE :search OR m.name LIKE :search '
+                         'OR CONVERT(m.unified_code USING utf8mb4) LIKE :search OR i.industry_code LIKE :search)')
+                join = 'industry_member m JOIN industry i ON i.industry_code=m.industry_code'
                 total = conn.execute(text(f'SELECT COUNT(*) FROM {join} WHERE {where}'), params).scalar_one()
-                rows = conn.execute(text(f'SELECT i.industry_code,i.name AS industry_name,m.market,m.code,m.name '
-                    f'FROM {join} WHERE {where} ORDER BY i.industry_code,m.code LIMIT :limit OFFSET :offset'), params).mappings()
+                rows = conn.execute(text(f'SELECT i.industry_code,i.name AS industry_name,RIGHT(m.unified_code,2) AS market,LEFT(m.unified_code,6) AS code,m.name '
+                    f'FROM {join} WHERE {where} ORDER BY i.industry_code,m.unified_code LIMIT :limit OFFSET :offset'), params).mappings()
                 return dict(rows=[dict(r) for r in rows], total=total, offset=offset, limit=limit,
                             industry_count=state.get('industry_count', 0), publication=state.get('publication'))
         return await self.mysql.read(read)

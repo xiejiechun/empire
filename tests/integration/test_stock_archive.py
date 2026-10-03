@@ -24,7 +24,7 @@ async def stock_database():
     cfg["redis"]["namespace"] = f"empire:test:{token}"
     cfg["archive"]["interval_seconds"] = 3600
     manager = build_manager(cfg)
-    manager.entries["data.stocks"].plugin.source = f"test-{token}"
+    manager.entries["data.stocks"].plugin.source = 'sina'
     manager.entries["data.stocks"].plugin.job_key = "test"
     manager.entries["data.stocks"].plugin.project_id = "test"
     events = []
@@ -57,7 +57,7 @@ async def stock_database():
         async def publish(kind, batch, **payload):
             state = await ingest.checkpoint("test")
             event = make_envelope(
-                source=f"test-{token}", dataset=f"stock.universe.{kind}",
+                source='sina', dataset=f"stock.universe.{kind}",
                 business_key=f"{batch['snapshot_id']}:{kind}:{payload.get('page', '')}",
                 job_key="test", run_id=token, batch_id=batch["snapshot_id"], payload={**batch, **payload},
             )
@@ -72,10 +72,10 @@ async def stock_database():
         if manager.entries["infra.mysql"].state == "RUNNING":
             def cleanup():
                 with mysql.engine.begin() as connection:
-                    connection.execute(text("DELETE FROM stock WHERE source=:source"),
-                                       {"source": f"test-{token}"})
-                    connection.execute(text("DELETE FROM collection_state WHERE source=:source"),
-                                       {"source": f"test-{token}"})
+                    connection.execute(text("DELETE FROM stock"),
+                                       {"source": 'sina'})
+                    connection.execute(text("DELETE FROM collection_state"),
+                                       {"source": 'sina'})
             await mysql.control(cleanup)
         if manager.entries["infra.redis"].state == "RUNNING":
             keys = [key async for key in redis.client.scan_iter(f"{redis.prefix}:*")]
@@ -193,7 +193,7 @@ async def test_only_complete_snapshot_visible_and_partial_refresh_preserves_prev
 
     def retained_counts():
         with mysql.engine.connect() as conn:
-            return conn.execute(text("SELECT COUNT(*) FROM stock WHERE source=:source"),
+            return conn.execute(text("SELECT COUNT(*) FROM stock"),
                                 {"source": query.source}).scalar_one()
 
     assert await mysql.control(retained_counts) == 2
@@ -227,7 +227,7 @@ async def test_replacement_removes_missing_stock_updates_name_and_bounds_failed_
 
     def counts():
         with mysql.engine.connect() as conn:
-            return conn.execute(text("SELECT COUNT(*) FROM collection_state WHERE source=:source"),
+            return conn.execute(text("SELECT COUNT(*) FROM collection_state"),
                                 {"source": query.source}).scalar_one()
 
     assert await mysql.control(counts) == 1

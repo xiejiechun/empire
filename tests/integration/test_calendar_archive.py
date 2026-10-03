@@ -62,7 +62,7 @@ async def test_preparation_uses_recent_noop_proofs_without_writes(calendar_db):
 async def calendar_db():
     cfg = copy.deepcopy(load_config())
     token = uuid4().hex
-    source = "test-" + token
+    source = 'cninfo'
     cfg["redis"]["namespace"] = "empire:test:" + token
     cfg["archive"]["interval_seconds"] = 3600
     manager = build_manager(cfg)
@@ -101,8 +101,8 @@ async def calendar_db():
         if mysql:
             def cleanup():
                 with mysql.engine.begin() as conn:
-                    conn.execute(text("DELETE FROM trade_calendar WHERE source=:source"), {"source": source})
-                    conn.execute(text("DELETE FROM collection_state WHERE source=:source"), {"source": source})
+                    conn.execute(text("DELETE FROM trade_calendar"), {"source": source})
+                    conn.execute(text("DELETE FROM collection_state"), {"source": source})
             await mysql.control(cleanup)
         if store:
             keys = [k async for k in store.client.scan_iter(match=cfg["redis"]["namespace"] + ":*")]

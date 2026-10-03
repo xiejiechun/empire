@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 from sqlalchemy import text
 
 from empire.core.time import mysql_time
+from empire.plugins.infra.collection_state_unit import read_unit, save_unit
 
 
 def read_state(connection, namespace, project_id, source, *, lock=False):
@@ -52,6 +53,19 @@ class CollectionState:
         with self.mysql.engine.connect() as connection:
             return read_state(connection, self.namespace, project_id, source)
 
+    def read_progress(self, source, project_id):
+        with self.mysql.engine.connect() as connection:
+            row = connection.execute(text('SELECT source,JSON_EXTRACT(payload,\'$.progress\') AS progress '
+                'FROM collection_state WHERE namespace=:namespace AND project_id=:project_id'),
+                {'namespace': self.namespace, 'project_id': project_id}).mappings().first()
+            if row is None:
+                return {}
+            if row['source'] != source:
+                raise ValueError('采集项目的来源与已归档状态不一致')
+            value = row['progress']
+            value = json.loads(value) if isinstance(value, str) else value
+            return value if isinstance(value, dict) else {}
+
     async def page_status(self, redis, source, job_key, project_id, batch_id, page):
         raw = await redis.client.get(f"{redis.prefix}:archive:progress:{job_key}")
         try:
@@ -59,8 +73,7 @@ class CollectionState:
         except (ValueError, TypeError):
             value = None
         if not isinstance(value, dict):
-            value = (
-            await self.mysql.control(self.read, source, project_id)).get("progress", {})
+            value = await self.mysql.control(self.read_progress, source, project_id)
         if value.get("batch_id") == batch_id and (
                 value.get("status") == "invalid" or value.get("page", 0) >= page):
             if value.get("status") == "complete" and await self._pending_batch(
@@ -98,12 +111,21 @@ class CollectionState:
     def writer(self, catalog, full_data):
         def archive(connection, envelope, data):
             project = catalog.project_id(envelope)
-            previous = read_state(connection, self.namespace, project, envelope.source, lock=True)
+            unit = catalog.state_unit(envelope, data)
+            dataset = catalog.fingerprint_plan(envelope, data)[0]
+            if unit is not None:
+                previous, exists = read_unit(connection, self.namespace, project, envelope.source, unit)
+            else:
+                previous = read_state(connection, self.namespace, project, envelope.source, lock=True)
             outcome = catalog.write(connection, envelope, {**data, "archive_state": previous})
             # Rejected versions cannot advance either persisted progress or publication.
             if outcome["confirmed"] or not data.get("rows"):
                 payload = catalog.archive_state(envelope, full_data, outcome, previous)
-                save_state(connection, self.namespace, project, envelope.source,
-                           catalog.fingerprint_plan(envelope, data)[0], payload, previous)
+                if unit is not None:
+                    save_unit(connection, self.namespace, project, envelope.source, dataset,
+                              unit, payload, previous, exists)
+                else:
+                    save_state(connection, self.namespace, project, envelope.source,
+                               dataset, payload, previous)
             return outcome
         return archive

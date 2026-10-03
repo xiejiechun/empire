@@ -6,6 +6,7 @@ from itertools import groupby
 
 from sqlalchemy import text
 
+from empire.contracts.business_schema import require_fixed_source, schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.plugins.datasets.capital_actions import (
@@ -44,9 +45,8 @@ class CapitalDataPlugin:
     async def start(self, context):
         self.context = context
         self.mysql = context.get('mysql.store')
-        await self.mysql.require_schema({self.table: {'source', 'record_key', 'market', 'code', 'name',
-            'event_date', 'payload', 'content_hash', 'version_observed_at'}},
-            {self.table: ['source', 'record_key']})
+        require_fixed_source(self.table, self.source)
+        await self.mysql.require_schema(*schema_contract(self.table, 'name','event_date','payload','content_hash','version_observed_at'))
         if self.kind == 'dividends':
             await self.mysql.read(self._require_dividend_identity)
         if self.kind == 'additional_issues':
@@ -56,7 +56,7 @@ class CapitalDataPlugin:
     def _require_issue_contract(self):
         with self.mysql.read_engine.connect() as conn:
             state = read_state(conn, self.namespace, self.project_id, self.source)
-            exists = conn.execute(text('SELECT 1 FROM additional_issue WHERE source=:source LIMIT 1'),
+            exists = conn.execute(text('SELECT 1 FROM additional_issue WHERE TRUE LIMIT 1'),
                                   {'source': self.source}).first()
             if state.get('detail_migration_pending') or (exists and state.get('contract_version') != 3):
                 raise ValueError('增发详情状态需要显式维护：关闭 Empire 后运行 scripts/migrate_issue_availability.py')
@@ -64,14 +64,14 @@ class CapitalDataPlugin:
     def _require_dividend_identity(self):
         with self.mysql.read_engine.connect() as conn:
             state = read_state(conn, self.namespace, self.project_id, self.source)
-            exists = conn.execute(text('SELECT 1 FROM dividend_plan WHERE source=:source LIMIT 1'),
+            exists = conn.execute(text('SELECT 1 FROM dividend_plan WHERE TRUE LIMIT 1'),
                                   {'source': self.source}).first()
             if (state.get('identity_migration_pending') or
                     (exists and state.get('contract_version') != 2)):
                 raise ValueError('分红业务键需要显式维护：关闭 Empire 后运行 scripts/migrate_dividend_identity.py')
 
     def _securities(self, conn):
-        rows = conn.execute(text('SELECT market,code,name FROM stock WHERE source=:source '
+        rows = conn.execute(text('SELECT RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code,name FROM stock WHERE TRUE '
                                  'ORDER BY market,code'), {'source': 'sina'}).mappings().all()
         if not rows or len(rows) > 15000 or len({unit_key(r) for r in rows}) != len(rows):
             raise ValueError('当前股票目录为空、重复或超出支持上限；不能建立分红股票池')
@@ -89,7 +89,7 @@ class CapitalDataPlugin:
             raise ValueError('仅增发支持详情增量比较')
         def read():
             with self.mysql.read_engine.connect() as conn:
-                records = conn.execute(text('SELECT * FROM additional_issue WHERE source=:source '
+                records = conn.execute(text('SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code FROM additional_issue WHERE TRUE '
                     'ORDER BY record_key LIMIT 10001'), {'source': self.source}).mappings().all()
                 if len(records) > 10000:
                     raise ValueError('已归档增发详情比较范围超出安全上限')
@@ -107,10 +107,20 @@ class CapitalDataPlugin:
             raise ValueError('查询分页范围无效')
         def read():
             with self.mysql.read_engine.connect() as conn:
-                records = conn.execute(text(f'SELECT * FROM {self.table} WHERE source=:source '
-                    "AND code LIKE :code AND (:market='' OR market=:market) "
-                    'ORDER BY event_date DESC,market,code,record_key LIMIT :limit OFFSET :offset'),
-                    dict(source=self.source, code=code + '%', market=market, limit=limit, offset=offset)).mappings()
+                filters, params = [], dict(limit=limit, offset=offset)
+                if code:
+                    filters.append('unified_code LIKE :code')
+                    params['code'] = code + ('.%' if len(code) == 6 else '%')
+                if market:
+                    filters.append('RIGHT(unified_code,2)=:market')
+                    params['market'] = market
+                where = ' WHERE ' + ' AND '.join(filters) if filters else ''
+                records = conn.execute(text(f'SELECT s.*,RIGHT(s.unified_code,2) AS market,'
+                    f'LEFT(s.unified_code,6) AS code FROM {self.table} s JOIN ('
+                    f'SELECT record_key FROM {self.table}' + where +
+                    ' ORDER BY event_date DESC,RIGHT(unified_code,2),unified_code,record_key '
+                    'LIMIT :limit OFFSET :offset) chosen USING(record_key) '
+                    'ORDER BY s.event_date DESC,RIGHT(s.unified_code,2),s.unified_code,s.record_key'), params).mappings()
                 return [decode(r) for r in records]
         return await self.mysql.read(read)
 
@@ -120,7 +130,7 @@ class CapitalDataPlugin:
             manifest = state.get('manifest', {})
             wanted = sorted(unit_key(r) for r in self._securities(conn)) if self.kind == 'dividends' else None
             records = conn.execution_options(stream_results=True).execute(text(
-                f'SELECT * FROM {self.table} WHERE source=:source ORDER BY market,code,record_key'),
+                f'SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code FROM {self.table} FORCE INDEX(ix_security_order) ORDER BY RIGHT(unified_code,2),unified_code,record_key'),
                 {'source': self.source}).mappings()
             try:
                 groups = ((unit, [decode(row) for row in group]) for unit, group in groupby(records, unit_key))

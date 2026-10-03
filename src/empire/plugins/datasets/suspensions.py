@@ -7,6 +7,8 @@ from datetime import UTC, date, datetime, timedelta
 from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
+from empire.contracts.business_schema import require_fixed_source
+from empire.contracts.security import unified_code
 from empire.core.time import CHINA, mysql_time
 from empire.plugins.infra.collection_state import confirmed_page
 
@@ -197,63 +199,50 @@ def _db_content(row):
 
 
 def write(connection, envelope, data):
-    rows = data["rows"]
+    require_fixed_source('suspension_event', envelope.source)
     observed = mysql_time(envelope.observed_at)
-    confirmed, inserts, updates = [], [], []
-    for row in rows:
-        params = {"source": envelope.source, "market": row["market"], "code": row["code"],
-                  "resume_key": resume_key(row), "record_key": record_key(row),
-                  "suspended_at": datetime.fromisoformat(row["suspended_at"]).replace(tzinfo=None)}
-        old = connection.execute(text("""
-            SELECT market,code,name,suspended_at,resumed_at,suspension_type,source_note,reason,version_observed_at,
-                   source_dates
-            FROM suspension_event WHERE source=:source AND market=:market
-              AND code=:code AND suspended_at=:suspended_at AND resume_key=:resume_key
-              AND record_key=:record_key FOR UPDATE
-        """), params).mappings().first()
-        identity = fingerprint_identity(row)
-        value = {**params, "name": row["name"],
-                 "resumed_at": (datetime.fromisoformat(row["resumed_at"]).replace(tzinfo=None)
-                                if row["resumed_at"] else None),
-                 "suspension_type": row["suspension_type"], "source_note": row["source_note"],
-                 "reason": row["reason"], "version_observed_at": observed,
-                 'source_dates': json.dumps(row['source_dates'])}
+    confirmed, written = [], 0
+    key_filter = ('unified_code=:unified_code AND suspended_at=:suspended_at '
+                  'AND resume_key=:resume_key AND record_key=:record_key')
+    for row in data['rows']:
+        params = dict(unified_code=unified_code(row['market'], row['code']),
+                      suspended_at=datetime.fromisoformat(row['suspended_at']).replace(tzinfo=None),
+                      resume_key=resume_key(row), record_key=record_key(row))
+        old = connection.execute(text('SELECT *,RIGHT(unified_code,2) AS market,'
+            'LEFT(unified_code,6) AS code FROM suspension_event WHERE ' + key_filter +
+            ' FOR UPDATE'), params).mappings().first()
+        prior_dates = {r[0].isoformat() for r in connection.execute(text(
+            'SELECT source_date FROM suspension_source_date WHERE ' + key_filter), params)}
+        incoming_dates = set(row['source_dates'])
+        value = {**params, **{k: row[k] for k in ('name', 'suspension_type', 'source_note', 'reason')},
+                 'resumed_at': datetime.fromisoformat(row['resumed_at']).replace(tzinfo=None) if row['resumed_at'] else None,
+                 'observed': observed}
+        same = old is not None and _db_content(old) == {k: row[k] for k in EVENT_FIELDS}
+        stale = old is not None and old['version_observed_at'] > observed
         if old is None:
-            inserts.append(value)
-            confirmed.append(identity)
-        else:
-            prior_dates = old['source_dates'] or []
-            if isinstance(prior_dates, str):
-                prior_dates = json.loads(prior_dates)
-            merged_dates = sorted(set(prior_dates) | set(row['source_dates']))
-            same = _db_content(old) == {key: row[key] for key in EVENT_FIELDS}
-            stale = old['version_observed_at'] > observed
-            value['source_dates'] = json.dumps(merged_dates)
-            if stale or same:
-                for key in ('name', 'resumed_at', 'suspension_type', 'source_note', 'reason',
-                            'version_observed_at'):
-                    value[key] = old[key]
-            if merged_dates != prior_dates or (not same and not stale):
-                updates.append(value)
-            if same or not stale:
-                confirmed.append(identity)
-    if inserts:
-        connection.execute(text("""
-            INSERT INTO suspension_event
-              (source,market,code,name,suspended_at,resumed_at,resume_key,record_key,
-               suspension_type,source_note,reason,version_observed_at,source_dates)
-            VALUES
-              (:source,:market,:code,:name,:suspended_at,:resumed_at,:resume_key,:record_key,
-               :suspension_type,:source_note,:reason,:version_observed_at,:source_dates)
-        """), inserts)
-    if updates:
-        connection.execute(text("""
-            UPDATE suspension_event SET name=:name,resumed_at=:resumed_at,
-              suspension_type=:suspension_type,source_note=:source_note,reason=:reason,
-              version_observed_at=:version_observed_at,source_dates=:source_dates
-            WHERE source=:source AND market=:market AND code=:code AND suspended_at=:suspended_at
-              AND resume_key=:resume_key AND record_key=:record_key
-        """), updates)
+            connection.execute(text('INSERT INTO suspension_event '
+                '(unified_code,name,suspended_at,resumed_at,resume_key,record_key,suspension_type,'
+                'source_note,reason,version_observed_at,source_dates_known) VALUES '
+                '(:unified_code,:name,:suspended_at,:resumed_at,:resume_key,:record_key,:suspension_type,'
+                ':source_note,:reason,:observed,TRUE)'), value)
+            written += 1
+        elif not same and not stale:
+            connection.execute(text('UPDATE suspension_event SET name=:name,resumed_at=:resumed_at,'
+                'suspension_type=:suspension_type,source_note=:source_note,reason=:reason,'
+                'version_observed_at=:observed,source_dates_known=TRUE WHERE ' + key_filter), value)
+            written += 1
+        elif not old['source_dates_known']:
+            connection.execute(text('UPDATE suspension_event SET source_dates_known=TRUE WHERE ' + key_filter), params)
+            written += 1
+        added = sorted(incoming_dates - prior_dates)
+        if added:
+            connection.execute(text('INSERT INTO suspension_source_date '
+                '(source_date,unified_code,suspended_at,resume_key,record_key) '
+                'VALUES(:source_date,:unified_code,:suspended_at,:resume_key,:record_key)'),
+                [{**params, 'source_date': date.fromisoformat(day)} for day in added])
+            written += len(added)
+        if same or not stale:
+            confirmed.append(fingerprint_identity(row))
 
     coverage_key = data["coverage_key"]
     if data.get("confirm_coverage"):
@@ -266,7 +255,7 @@ def write(connection, envelope, data):
             raise ValueError("停复牌覆盖存在日期缺口")
         confirmed.append(coverage_key)
     return {"status": "complete", "row_count": data["row_count"],
-            "written_count": len(inserts) + len(updates), "confirmed": confirmed}
+            "written_count": written, "confirmed": confirmed}
 
 
 def fingerprint_plan(envelope, data):

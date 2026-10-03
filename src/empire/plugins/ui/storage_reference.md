@@ -642,19 +642,14 @@ Redis 是纯内存状态：Redis 或电脑重启后，未归档消息、断点�
 
 本页是数据库字段参考。查看实际股票请打开 **数据浏览 → 数据目录 → 股票列表**。
 
-`stock` 按来源保存一份当前完整列表，每行是一只股票。主键为 `(source, unified_code)`，另有唯一约束 `(source, source_symbol)`。所有字段均不允许为空。
+`stock` 保存新浪的一份当前完整列表，每行是一只股票，主键为 `unified_code`。来源由数据集登记固定声明；表内只存统一证券代码和名称，所有字段均不允许为空。
 
 ## 股票身份与名称
 
 | 字段 | SQL 类型 | 含义与示例 |
 | --- | --- | --- |
-| source | VARCHAR(80) | 数据来源，当前为 `sina`。 |
-| node | VARCHAR(40) | 来源节点，当前为 `hs_a`。 |
-| unified_code | VARCHAR(9) | 项目统一代码，如 `000001.SZ`。与 source 共同唯一定位股票。 |
-| code | CHAR(6) | 六位字符串代码，如 `000001`；保留前导零。 |
+| unified_code | VARCHAR(9) | 项目统一代码，如 `000001.SZ`。唯一定位市场及代码，不代表跨换码永久身份。 |
 | name | VARCHAR(100) | 来源股票名称，保留 ST 等标记。 |
-| market | CHAR(2) | 市场：SH 上海、SZ 深圳、BJ 北京；根据来源代码前缀校验。 |
-| source_symbol | CHAR(8) | 新浪来源代码，如 `sz000001`；与 source 组成另一唯一约束。 |
 
 ## 发布批次与时间
 
@@ -718,8 +713,7 @@ Redis 是纯内存状态：Redis 或电脑重启后，未归档消息、断点�
 
 | 字段 | 用途 |
 | --- | --- |
-| source | 来源，当前为 cninfo。 |
-| trade_date | 自然日 DATE，与 source 组成主键，同一天不重复插入。 |
+| trade_date | 自然日 DATE，独立主键，同一天不重复插入；巨潮来源由数据集声明。 |
 | is_trade | BOOLEAN，来源 isTrade=1 表示交易日，0 表示休市；不以星期自行推断。 |
 | updated_at | 最近一次业务内容变更的北京时间；相同内容不更新。 |
 
@@ -919,16 +913,17 @@ Hash，共享频控。`next` 是下次发送许可的 Redis 毫秒时间戳，`c
 
 ## 历史停复牌
 
-项目 `tdx-suspensions`，job_key=`tdx-suspensions-v1`。业务表 `suspension_event` 主键为 `(source, market, code, suspended_at, resume_key, record_key)`；不同复牌时间以及同一时间下不同来源说明/原因分别保留，未知复牌也不合并。字段如下：
+项目 `tdx-suspensions`，job_key=`tdx-suspensions-v1`。业务表 `suspension_event` 主键为 `(unified_code, suspended_at, resume_key, record_key)`；不同复牌时间以及同一时间下不同来源说明/原因分别保留，未知复牌也不合并。字段如下：
 
 | 字段 | 含义 |
 | --- | --- |
-| source | 来源，当前为 `tdx`。 |
-| market / code / name | SH 或 SZ、六位代码和来源名称。 |
+| unified_code | 市场及证券代码的统一身份，如 `600001.SH`；来源固定为通达信。 |
+| name | 来源证券名称；页面 market/code 从 unified_code 解析，不另存重复列。 |
 | suspended_at / resumed_at | 北京时间停牌开始和可空复牌时间。 |
 | resume_key | 复牌时间的非空主键表示；未知用内部 `1000-01-01` 占位，不作为业务复牌时间返回。 |
 | record_key | 来源说明和原因的 SHA-256 身份摘要，仅用于分开通达信并列来源记录，不作为业务字段返回。 |
-| source_dates | 该条记录实际出现过的来源日历日期集合，JSON 排序去重；跨月按并集补齐。旧记录 NULL 表示未补采，不猜测日期；日历按此字段查询。 |
+| source_dates_known | BOOLEAN，已知来源日期为真，旧记录未知为假，不能冒充当天无记录。 |
+| suspension_source_date / source_date | 来源日期关联表；source_date 与事件完整键 unified_code、suspended_at、resume_key、record_key 组成主键。同事务并集合并，重复不写；跨日查询同一事件只显示一次。 |
 | suspension_type | `full_day` 全天停牌或 `intraday` 盘中临停；来源明确同日复牌时按时间归为盘中停牌，即使文字写“停牌1天”，仍保留原说明。 |
 | source_note / reason | 来源停复牌说明和原因。两项可选文字的 null/空白规范为空串，不编造说明、原因或时长；复牌时间未知仍为 null。 |
 | version_observed_at | 当前入库存储版本的北京时间观测时间，用于防止旧响应覆盖。 |
@@ -1133,7 +1128,7 @@ policy 的持久来源是 MySQL app_setting，以下 Redis 字段仅作为运行
 
 分红送转、增发和配股各自独立任务与查询页面，入口在数据浏览目录的“增发送配”。分红以当前股票目录逐股读取全部详情，增发、配股核验全部来源集合。普通采集续跑未完成断点，完成后下一轮重查全部可得历史；重新初始化重建范围，不删除历史。Redis 丢失后从完整范围重查。
 
-`dividend_plan`、`additional_issue`、`rights_issue` 均使用 `(source, record_key)` 主键；`market`、`code`、`name` 保存证券关联，`event_date` 保存本类型的报告/发行/除权日期，`payload` 为规范业务 JSON，`content_hash` 为规范内容摘要，`version_observed_at` 为该入库版本请求开始时间（MySQL 北京时间）。每十股比例与派息换为每股，万股换为股；不保存成功 HTTP 原文或实时行情价。JSON 字段由对应数据契约严格校验。
+`dividend_plan`、`additional_issue`、`rights_issue` 均使用 `(record_key)` 主键；`unified_code`、`name` 保存证券关联，`event_date` 保存本类型的报告/发行/除权日期，`payload` 为规范业务 JSON，`content_hash` 为规范内容摘要，`version_observed_at` 为该入库版本请求开始时间（MySQL 北京时间）。每十股比例与派息换为每股，万股换为股；不保存成功 HTTP 原文或实时行情价。JSON 字段由对应数据契约严格校验。
 
 增发的来源 rec_id 可同时关联新旧代码，分别保留；配股同登记日的不同认购代码或缴款起日分别保留。缺少的旧发行日、缴款结束日、上市日不编造。增发/配股不包含来源未提供的公告时间、预案取消历史，不能用于公告前选股。
 
@@ -1148,12 +1143,18 @@ policy 的持久来源是 MySQL app_setting，以下 Redis 字段仅作为运行
 
 ## 字段与规则
 
-`income_statement`、`balance_statement`、`cashflow_statement` 分别保存利润、资产负债和现金流量报表，以 `(source, market, code, report_date)` 为主键，当前只支持来源 report 口径。JSON payload 保存规范科目、单位和舍入精度，不保存原始响应。三项目各自使用统一 collection_state；恢复清单包括三张表。运行前显式执行 scripts/migrate_financial_statements.py，应用启动不自动建表。
+`income_statement`、`balance_statement`、`cashflow_statement` 分别保存利润、资产负债和现金流量报表，以 `(unified_code, report_date)` 为主键，当前只支持来源 report 口径。JSON payload 保存规范科目、单位和舍入精度，不保存原始响应。三项目各自使用统一 collection_state；恢复清单包括三张表。运行前显式执行 scripts/migrate_business_schema.py，应用启动不自动建表。
 
 财报来源缺值以 JSON null 原样规范保存，金额矛盾不自动更正；来源质量由规范内容即时计算，在三表页面和数据准备分别显示，不进入错误重试队列、不额外建质量副本表。结构无效仍拒绝入队。
 
 同花顺三表 schema 2 仅改变 Redis 传输为共享科目名称的金额矩阵，SQL payload 与业务摘要仍为完整规范行；升级前清空的含义仅为旧统一归档成功清队，不允许手工丢弃旧消息。
 
+
+## 状态读取与恢复
+
+财报及分红、增发、配股仍各保存一条项目状态。归档只读取当前证券的集合/版本及项目进度、范围证明，局部更新不会丢失其他证券；范围审计继续核对完整集合。完成等待只读进度，但仍须确认整轮待归档消息清理，最高页不能替代整轮完成。此改造不改变查询、采集、保存或重启操作，也不保证 JSON 扩容时减少物理磁盘写入。
+
+MySQL 升级入口 scripts/migrate_business_schema.py 提供 preflight、migrate、resume、verify、status、rollback。正常关闭程序并排空待归档后才能迁移；影子表复制及完整集合核验后原子切换。单独 preflight 通过不能代替完整核验。恢复业务写入后不能回退到旧副本；应用启动不改表。
 
 <!-- topic:数据说明|同花顺当前行业 -->
 # 同花顺当前行业
@@ -1182,9 +1183,9 @@ policy 的持久来源是 MySQL app_setting，以下 Redis 字段仅作为运行
 
 ## 存储与维护参考
 
-`industry` 仅保存 source、industry_code、name，主键 source + industry_code。`industry_member` 保存 source、industry_code、market、code、name，主键 source + industry_code + market + code。每项目一条 collection_state 保存完整集合摘要、数量、请求代次与 publication；不另存历史。可信 Redis 摘要命中免 SQL，SQL/Redis 失败均保留原消息，成功后公共归档器清队。
+`industry` 保存 industry_code、name，主键 industry_code。`industry_member` 保存 industry_code、unified_code、name，主键 industry_code + unified_code；来源固定同花顺。每项目一条 collection_state 保存完整集合摘要、数量、请求代次与 publication；不另存历史。可信 Redis 摘要命中免 SQL，SQL/Redis 失败均保留原消息，成功后公共归档器清队。
 
-结构新增通过 scripts/migrate_industries.py 显式执行，维护前正常关闭程序并核对队列及已有业务数据；启动不自动建表。命令行 collect-industries 使用相同任务和归档路径。程序连接仍取程序目录 config.toml。
+结构新增通过 scripts/migrate_business_schema.py 显式执行，维护前正常关闭程序并核对队列及已有业务数据；启动不自动建表。命令行 collect-industries 使用相同任务和归档路径。程序连接仍取程序目录 config.toml。
 
 完整响应必须明确没有剩余分页；若采集提示“同花顺要求登录”，表示来源未提供数据，本轮不发布、不更新数据准备成功状态。当前完整性证明为契约 2，旧分页规则的状态及摘要不能代替新规则验收；重新采集后重建证明。命令行 collect-industries 启动该任务所需插件并执行一轮。
 
@@ -1223,13 +1224,13 @@ policy 的持久来源是 MySQL app_setting，以下 Redis 字段仅作为运行
 
 ## 存储与维护参考
 
-数据集 `intraday.day@1`，任务 `kaipanla-intraday-v1`，项目 `kaipanla-intraday`；独立 UI 页面 `intraday` 按需创建。命令行 `collect-intraday` 使用同一任务与归档路径。新表通过 `scripts/migrate_intraday.py` 显式维护，启动不建表；执行前正常关闭 Empire，前后核对并保留既有业务和待归档消息。
+数据集 `intraday.day@1`，任务 `kaipanla-intraday-v1`，项目 `kaipanla-intraday`；独立 UI 页面 `intraday` 按需创建。命令行 `collect-intraday` 使用同一任务与归档路径。新表通过 `scripts/migrate_business_schema.py` 显式维护，启动不建表；执行前正常关闭 Empire，前后核对并保留既有业务和待归档消息。
 
-`stock_intraday` 的主键为 `(source, market, code, trade_date)`，每行是一份完整证券日，不存成功原始 HTTP 正文：
+`stock_intraday` 的主键为 `(unified_code, trade_date)`，每行是一份完整证券日，不存成功原始 HTTP 正文：
 
 | 字段 | 含义 |
 | --- | --- |
-| source / market / code / trade_date | 来源、市场、当前六位证券代码、交易日期；与 payload 关联一致 |
+| unified_code / trade_date | 统一证券代码及交易日期；与 payload 的市场/代码关联一致，来源固定开盘啦 |
 | payload | preclose_px 昨收；trend 有序价格/均价点；auction 有序竞价点；source_times 两响应时间；source_codes 两实际来源代码；aliases 经北交所核实的对应关系；lifecycle 上市日期、元数据来源及市场起点 |
 | content_hash | 规范业务内容 SHA-256，包含来源时间及上市关联，不包含批次/页号/本次观测时间 |
 | version_observed_at | 当前入库存储版本的观测时间，MySQL 按北京时间保存；相同业务内容不刷新 |
@@ -1237,3 +1238,10 @@ policy 的持久来源是 MySQL app_setting，以下 Redis 字段仅作为运行
 可信 Redis 摘要命中免 SQL，冷摘要回 SQL 比较；重复不写业务表，有效修订更新，迟到旧代次不覆盖当前保存版本。不保存完整旧版本。插入、更新、同内容确认或旧版拒绝均由统一归档器成功清队；失败保留。collection_state 每项目一条，断点和有界运行/错误记录仍在纯内存 Redis。
 
 任务进度按证券日展示，点位数量另列，当前项包含证券与日期；数量不等于已归档行数。请求观测代次固定于该证券日下载开始，避免较早请求迟到后冒充新版本。日期范围验收不要求范围外的最新数据，也不声称旧历史修订已全部持续回看。
+
+
+## 业务结构升级后的操作
+
+日常仍从“数据浏览”查看股票、财报、行业、事件及分时；筛选市场、输入证券代码的方式不变。市场和六位代码从 unified_code 解析，股票来源符号从该身份推导；采集消息中的 node/source_symbol 仍用于来源校验。历史证券不因退出当前股票列表而删除；缺少当前名称时显示代码。来源变更须显式维护，不能切换配置后混存不同来源。
+
+结构升级不改变 payload 科目、金额精度、来源日期语义或摘要。规范内容相同的缓存继续有效；证券代码变更仅沿已有来源别名证明处理，不按名称合并。财报仍缺历史公告日期，升级不使其自动适用于历史选股。

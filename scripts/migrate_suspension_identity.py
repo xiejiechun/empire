@@ -1,4 +1,4 @@
-"""Explicit, non-destructive source-record identity migration; Empire must be closed."""
+"""Historical pre-v1 maintenance only; not the current business-v2 upgrade entrance. Explicit, non-destructive source-record identity migration; Empire must be closed."""
 import asyncio
 import hashlib
 import json
@@ -83,7 +83,7 @@ async def migrate(cfg):
                      or old.get('source_calendar_version') != 1 or old.get('collection_integrity_version') != 2
                      or old.get('identity_migration_pending', False))
             if reset:
-                save_state(conn, namespace, 'tdx-suspensions', 'tdx', 'suspensions.period',
+                save_state(conn, namespace, 'tdx-suspensions', 'tdx', 'suspensions',
                            {'record_identity': 'source-record-v3', 'source_calendar_version': 1, 'collection_integrity_version': 2,
                             'identity_migration_pending': True}, old)
         if reset:
@@ -91,7 +91,7 @@ async def migrate(cfg):
                                 namespace+':archive:progress:tdx-suspensions-v1')
             with engine.begin() as conn:
                 old = read_state(conn, namespace, 'tdx-suspensions', 'tdx', lock=True)
-                save_state(conn, namespace, 'tdx-suspensions', 'tdx', 'suspensions.period',
+                save_state(conn, namespace, 'tdx-suspensions', 'tdx', 'suspensions',
                            {'record_identity': 'source-record-v3', 'source_calendar_version': 1,
                             'collection_integrity_version': 2}, old)
         report['historical_recheck_required'] = reset

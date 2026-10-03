@@ -6,6 +6,7 @@ from datetime import UTC, date, timedelta
 from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
+from empire.contracts.business_schema import require_fixed_source
 from empire.core.time import mysql_time
 from empire.plugins.infra.collection_state import confirmed_page
 
@@ -69,6 +70,7 @@ def canonical_payload(envelope, normalized):
 
 
 def write(connection, envelope, data):
+    require_fixed_source("trade_calendar", envelope.source)
     observed = mysql_time(envelope.observed_at)
     rows = data["rows"]
     previous = data["archive_state"].get("observed", {}).get(data["month"])
@@ -77,7 +79,7 @@ def write(connection, envelope, data):
     params = {"source": envelope.source, "start": rows[0]["trade_date"], "end": rows[-1]["trade_date"]}
     existing = connection.execute(text("""
         SELECT trade_date,is_trade,updated_at FROM trade_calendar
-        WHERE source=:source AND trade_date BETWEEN :start AND :end FOR UPDATE
+        WHERE trade_date BETWEEN :start AND :end FOR UPDATE
     """), params).mappings()
     existing = {row["trade_date"].isoformat(): row for row in existing}
     # A late full month must not partly roll back a newer month.
@@ -93,13 +95,13 @@ def write(connection, envelope, data):
             updates.append(value)
     if inserts:
         connection.execute(text("""
-            INSERT INTO trade_calendar (source,trade_date,is_trade,updated_at)
-            VALUES (:source,:trade_date,:is_trade,:updated_at)
+            INSERT INTO trade_calendar (trade_date,is_trade,updated_at)
+            VALUES (:trade_date,:is_trade,:updated_at)
         """), inserts)
     if updates:
         connection.execute(text("""
             UPDATE trade_calendar SET is_trade=:is_trade,updated_at=:updated_at
-            WHERE source=:source AND trade_date=:trade_date
+            WHERE trade_date=:trade_date
         """), updates)
     return {"status": "complete", "row_count": len(rows), "written_count": len(inserts) + len(updates),
             "confirmed": [data["month"]]}

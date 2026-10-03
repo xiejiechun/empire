@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 
+from empire.contracts.business_schema import require_dataset_source
 from empire.contracts.data import Envelope, UnsupportedSchema, make_envelope
 from empire.contracts.dataset import DatasetContribution
 from empire.contracts.plugin import PluginContext, PluginManifest
@@ -91,6 +92,7 @@ class DatasetPlugin:
         return contribution.mapping.aggregate_result_keys(prefix, envelope.source)
 
     def normalize(self, envelope: Envelope) -> dict:
+        require_dataset_source(envelope.dataset, envelope.source)
         mapping = self.mapping(envelope)
         payload = envelope.raw_payload
         digest = hashlib.sha256(json.dumps(
@@ -124,6 +126,7 @@ class DatasetPlugin:
         return contribution.mapping.assemble(records, include_rows=include_rows)
 
     def write(self, connection, envelope: Envelope, normalized: dict) -> dict:
+        require_dataset_source(envelope.dataset, envelope.source)
         return self.mapping(envelope).mapping.write(connection, envelope, normalized)
 
     def fingerprint_plan(self, envelope, data):
@@ -141,3 +144,7 @@ class DatasetPlugin:
 
     def archive_state(self, envelope, data, outcome, previous):
         return self.mapping(envelope).mapping.archive_state(envelope, data, outcome, previous)
+
+    def state_unit(self, envelope, data):
+        declaration = getattr(self.mapping(envelope).mapping, 'state_unit', None)
+        return declaration(data) if declaration else None

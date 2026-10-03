@@ -7,6 +7,8 @@ from datetime import UTC, date, datetime
 from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
+from empire.contracts.business_schema import require_fixed_source
+from empire.contracts.security import unified_code
 from empire.core.time import CHINA, mysql_time
 from empire.plugins.collectors.kaipanla_alias import validate_proof
 from empire.plugins.collectors.kaipanla_source import combine_day, parse_response
@@ -17,9 +19,9 @@ JOB = PROJECT + '-v1'
 DATASETS = {'intraday.day'}
 FINGERPRINT_NAMESPACE = 'kaipanla_intraday_v1'
 FINGERPRINT_VERSION = ArchiveVersion(('utc',), observed_index=0)
-TABLES = {'stock_intraday': {'source', 'market', 'code', 'trade_date', 'payload',
+TABLES = {'stock_intraday': {'unified_code', 'trade_date', 'payload',
                             'content_hash', 'version_observed_at'}}
-KEYS = {'stock_intraday': ['source', 'market', 'code', 'trade_date']}
+KEYS = {'stock_intraday': ['unified_code', 'trade_date']}
 FIELDS = {'code', 'trade_date', 'preclose_px', 'trend', 'auction', 'source_times', 'market', 'lifecycle',
           'source_codes', 'aliases'}
 
@@ -97,21 +99,22 @@ def fingerprint_subset(data, identities):
 
 
 def write(conn, envelope, data):
+    require_fixed_source("stock_intraday", envelope.source)
     confirmed, writes = [], 0
     observed = mysql_time(envelope.observed_at)
     for row in data['rows']:
-        params = dict(source=envelope.source, market=row['market'], code=row['code'],
+        params = dict(unified_code=unified_code(row['market'], row['code']),
                       trade_date=date.fromisoformat(row['trade_date']))
         old = conn.execute(text('SELECT payload,content_hash,version_observed_at FROM stock_intraday '
-            'WHERE source=:source AND market=:market AND code=:code AND trade_date=:trade_date FOR UPDATE'),
+            'WHERE unified_code=:unified_code AND trade_date=:trade_date FOR UPDATE'),
             params).mappings().first()
         if old and observed < old['version_observed_at']:
             continue
         checksum = digest(row)
         prior = json.loads(old['payload']) if old and isinstance(old['payload'], str) else old['payload'] if old else None
         if prior != row or not old or old['content_hash'] != checksum:
-            conn.execute(text('INSERT INTO stock_intraday(source,market,code,trade_date,payload,content_hash,version_observed_at) '
-                'VALUES(:source,:market,:code,:trade_date,:payload,:hash,:observed) ON DUPLICATE KEY UPDATE '
+            conn.execute(text('INSERT INTO stock_intraday(unified_code,trade_date,payload,content_hash,version_observed_at) '
+                'VALUES(:unified_code,:trade_date,:payload,:hash,:observed) ON DUPLICATE KEY UPDATE '
                 'payload=VALUES(payload),content_hash=VALUES(content_hash),version_observed_at=VALUES(version_observed_at)'),
                 {**params, 'payload': json.dumps(row, ensure_ascii=False, separators=(',', ':')),
                  'hash': checksum, 'observed': observed})

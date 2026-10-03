@@ -251,7 +251,7 @@ async def news_db():
             with mysql.engine.begin() as conn:
                 conn.execute(text("DELETE FROM finance_news WHERE source=:source"), {"source": source})
                 conn.execute(text("DELETE FROM collection_state WHERE source=:source"), {"source": source})
-                conn.execute(text("DELETE FROM stock WHERE source=:source"), {"source": source})
+                conn.execute(text("DELETE FROM stock"), {"source": source})
         await mysql.control(cleanup)
         store = manager.registry.get("redis.store")
         keys = [key async for key in store.client.scan_iter(match=store.prefix + ":*")]
@@ -402,7 +402,7 @@ async def test_incomplete_stock_does_not_block_news_or_replace_stock(news_db):
     manager, publish, query = news_db
     ingest = manager.registry.get("ingest.publish")
     batch = uuid4().hex
-    value = make_envelope(source=query.source, dataset="stock.universe.start", job_key="stocks-test",
+    value = make_envelope(source='sina', dataset="stock.universe.start", job_key="stocks-test",
         run_id=batch, batch_id=batch, business_key=batch, payload={"snapshot_id": batch,
         "started_at": datetime.now(UTC).isoformat(), "expected_count": 1, "page_size": 80, "node": "hs_a"})
     await ingest.publish_page([value], job_key="stocks-test", expected_revision=0, cursor={})

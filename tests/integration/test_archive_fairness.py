@@ -63,7 +63,7 @@ async def test_large_project_does_not_drain_before_other_projects(archive_case):
     for page in range(1, 21):
         await enqueue("large", page)
     await enqueue("news", 1)
-    calendar = make_envelope(source="test", dataset="calendar.month", business_key="2026-09",
+    calendar = make_envelope(source="cninfo", dataset="calendar.month", business_key="2026-09",
         job_key="calendar-project", run_id="run", batch_id="calendar", payload={"page": 1,
         "month": "2026-09", "rows": [{"trade_date": day.isoformat(), "is_trade": True}
                                      for day in month_dates("2026-09")]})

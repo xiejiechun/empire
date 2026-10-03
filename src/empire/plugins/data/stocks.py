@@ -1,5 +1,6 @@
 from sqlalchemy import text
 
+from empire.contracts.business_schema import require_fixed_source, schema_contract
 from empire.contracts.plugin import PluginContext, PluginManifest
 from empire.contracts.preparation import PreparationContribution
 from empire.contracts.stocks import MARKET_NAMES
@@ -27,9 +28,8 @@ class StockDataPlugin:
 
     async def start(self, context: PluginContext) -> dict:
         self.mysql = context.get("mysql.store")
-        await self.mysql.require_schema({"stock": {
-            "source", "node", "unified_code", "code", "name", "market", "source_symbol",
-        }}, {"stock": ["source", "unified_code"]})
+        require_fixed_source('stock', self.source)
+        await self.mysql.require_schema(*schema_contract('stock', 'name'))
         return {"stocks.query": self, "stocks.schema": self}
 
     async def list_stocks(self, search: str = "", offset: int = 0, limit: int = 200,
@@ -48,14 +48,14 @@ class StockDataPlugin:
                 return {"snapshot": None, "total": 0, "rows": [], "offset": 0, "limit": limit}
             pattern = "%" + search.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
             params = {"source": self.source, "search": pattern, "offset": offset, "limit": limit}
-            where = ("source=:source AND (CONVERT(unified_code USING utf8mb4) LIKE :search "
-                     "OR name LIKE :search OR CONVERT(source_symbol USING utf8mb4) LIKE :search)")
+            where = ("(CONVERT(unified_code USING utf8mb4) LIKE :search "
+                     "OR name LIKE :search OR CONVERT(CONCAT(LOWER(RIGHT(unified_code,2)),LEFT(unified_code,6)) USING utf8mb4) LIKE :search)")
             if market is not None:
-                where += " AND market=:market"
+                where += " AND RIGHT(unified_code,2)=:market"
                 params["market"] = market
             total = connection.execute(text(f"SELECT COUNT(*) FROM stock WHERE {where}"), params).scalar_one()
             rows = connection.execute(text(f"""
-                SELECT source, code, name, unified_code, market, source_symbol
+                SELECT :source AS source, LEFT(unified_code,6) AS code, name, unified_code, RIGHT(unified_code,2) AS market, CONCAT(LOWER(RIGHT(unified_code,2)),LEFT(unified_code,6)) AS source_symbol
                 FROM stock WHERE {where} ORDER BY unified_code LIMIT :limit OFFSET :offset
             """), params).mappings().all()
             return {"snapshot": {k: str(v) if hasattr(v, "isoformat") else v for k, v in snapshot.items()},

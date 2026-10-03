@@ -16,7 +16,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.skipif(
 def test_identity_migration_preserves_rows_and_allows_distinct_source_records():
     engine = make_engine(load_config()['mysql'])
     table = 'test_suspension_'+uuid4().hex
-    schema = (project_root()/'sql/schema.sql').read_text(encoding='utf-8')
+    schema = (project_root()/'sql/legacy/business-v1.sql').read_text(encoding='utf-8')
     ddl = 'CREATE TABLE '+table+schema.split('CREATE TABLE IF NOT EXISTS suspension_event', 1)[1].split(';', 1)[0]
     ddl = ddl.replace('    resume_key DATETIME(6) NOT NULL,\n', '')
     ddl = ddl.replace('    record_key CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,\n', '')

@@ -85,7 +85,7 @@ flowchart TB
 
 ## 4. 股票数据与存储
 
-股票业务表 `stock` 主键为 `(source, unified_code)`，只存股票属性。统一 `collection_state` 主键为 `(namespace, project_id)`，保存项目最近 SQL 确认进度；股票 publication 记录最后实际变化批次，日历 observed 记录每月 SQL 确认观测上界。业务修改和状态写入同事务完成。Redis 可信摘要命中时整个 SQL 阶段均跳过。
+股票业务表 `stock` 主键为 `(unified_code)`，只存股票属性。统一 `collection_state` 主键为 `(namespace, project_id)`，保存项目最近 SQL 确认进度；股票 publication 记录最后实际变化批次，日历 observed 记录每月 SQL 确认观测上界。业务修改和状态写入同事务完成。Redis 可信摘要命中时整个 SQL 阶段均跳过。
 
 日历准备验收通过共享 FingerprintCache.peek 只读原子获取当前维护月份的摘要及版本（Redis TIME 校验到期索引，不清理或续期）；与一次 SQL 快照中的规范月份内容比较后补充观测上界。Redis 仅为查询插件的可选运行时证据，不增加启动硬依赖；不可用时保留 SQL 检查。该验收不改变归档免 SQL 路径，也不持久化额外状态。
 
@@ -152,7 +152,7 @@ MySQL 写入失败时保留规范化待归档消息，并在 Redis 留下归档�
 
 执行计划支持手动、固定间隔和北京时间每日定时；同一任务不重叠。正常暂停同时禁用后续计划并保留断点；恢复前启用并保存。错过的计划只补执行一次，不堆积历史周期。计划草稿与已保存配置分开，刷新不覆盖输入。
 
-股票表格按 `(source, unified_code)` 维护选中身份，不依赖行号；刷新、名称变化或排序变化后仅恢复仍在当前结果中的对象，已消失对象清除选择。公共控件负责一致行为，页面不复制一套选择恢复逻辑。
+股票表格按 `(unified_code)` 维护选中身份，不依赖行号；刷新、名称变化或排序变化后仅恢复仍在当前结果中的对象，已消失对象清除选择。公共控件负责一致行为，页面不复制一套选择恢复逻辑。
 
 全部后台只读 `invoke` 通过公共 `QueryScope` 按页面和请求键管理。同步提交失败与 Future 异步失败进入同一结果路径；切换筛选、月份、项目或分页时先取消旧读，已经开始且无法取消的结果即使稍后返回也按请求身份丢弃。成功读取时间与当前失败分开记录：刷新失败时保留已有数据并明确标为旧数据，不把旧表格伪装成此次刷新成功。页面销毁会取消其只读请求；保存配置、执行任务和精确清除错误等写命令不归 `QueryScope` 所有，不因切页销毁而取消。
 
@@ -190,11 +190,11 @@ calendar.query 按 SQL 日期完整性生成历史补采计划；collector.cninf
 
 ## 通达信历史停复牌扩展
 
-来源日历日期单独保存为每条业务记录的 `source_dates` JSON 集合。采集月聚合保留每个已核实查询日，归档按并集合并并保持内容旧版防覆盖；可信摘要身份包括该日期集合，防止不同日期的迟到响应被旧版缓存短路。浏览日历以真实来源日期过滤，与停复牌生效时间分别展示；SQL 连续覆盖重建后才用作日期完整性证据。现行入队契约 `suspensions.period@3` 使用完整日集合及唯一业务键核验，避免同证券跨偏移页重排。各数据贡献声明现行 schema_version，统一目录不保留旧版本运行时兼容路径。显式迁移保留旧业务记录并重建完整性版本与覆盖，详见 [完整性修复](tdx-completeness-fix-2026-09-29.md)。
+来源日历日期单独保存为`suspension_source_date` 关联表，事件以 `source_dates_known` 表达已知性；消息仍携带 `source_dates` 集合。采集月聚合保留每个已核实查询日，归档按并集合并并保持内容旧版防覆盖；可信摘要身份包括该日期集合，防止不同日期的迟到响应被旧版缓存短路。浏览日历以真实来源日期过滤，与停复牌生效时间分别展示；SQL 连续覆盖重建后才用作日期完整性证据。现行入队契约 `suspensions.period@3` 使用完整日集合及唯一业务键核验，避免同证券跨偏移页重排。各数据贡献声明现行 schema_version，统一目录不保留旧版本运行时兼容路径。显式迁移保留旧业务记录并重建完整性版本与覆盖，详见 [完整性修复](tdx-completeness-fix-2026-09-29.md)。
 
 停复牌断点仅保存起止日期、月份索引和下一未发布日期，完整月份计划在内存重建。月份超过公共单次入队字节上限时按连续日期分段，按序入队后继续采集，不逐段等待归档；Redis 存在时恢复未发布范围，Redis 丢失时从 SQL 连续覆盖上界重查。采集和归档独立运行，整轮入队后公共完成确认检查成功标记及本轮 Stream 消息已清理，不能只凭最高成功页码。
 
-`suspensions.query` 根据 `collection_state.coverage.through` 生成连续日期计划；`collector.tdx_suspensions` 首次逐自然日核验 2004-12-27 至北京时间当天，后续从最后 SQL 确认日重查至当天。每天翻页到空页，允许分页夹带 B 股，但过滤后的沪深 A 股数量必须等于来源 A 股计数；整月全部日期通过后才发布归档消息。来源记录以 `source + market + code + suspended_at + resume_key + record_key` 唯一，不同复牌时间（含未知）以及同一时间下不同来源说明/原因分别保留；完全相同内容不写 SQL，迟到的完全相同响应不覆盖，来源遗漏不触发删除。详见 [通达信停复牌](tdx-suspensions.md)。
+`suspensions.query` 根据 `collection_state.coverage.through` 生成连续日期计划；`collector.tdx_suspensions` 首次逐自然日核验 2004-12-27 至北京时间当天，后续从最后 SQL 确认日重查至当天。每天翻页到空页，允许分页夹带 B 股，但过滤后的沪深 A 股数量必须等于来源 A 股计数；整月全部日期通过后才发布归档消息。来源记录以 `unified_code + suspended_at + resume_key + record_key` 唯一，不同复牌时间（含未知）以及同一时间下不同来源说明/原因分别保留；完全相同内容不写 SQL，迟到的完全相同响应不覆盖，来源遗漏不触发删除。详见 [通达信停复牌](tdx-suspensions.md)。
 
 ## 配置持久化与二级导航
 
@@ -218,7 +218,7 @@ Requirement.fields 表示本用途必需信息，optional_fields 表示缺少不
 
 数据准备进一步校验采集能力及实际插件提供者不能对应不同采集输出；各数据独立插件、独立任务、独立验收，共享基础设施。详见数据准备全目录复核说明。
 
-通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。显式维护入口为 `scripts/migrate_capital_actions.py`，应用启动不改表。生命周期、来源口径与操作见 [通达信增发送配](tdx-capital-actions.md)。
+通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。显式维护入口为 `scripts/migrate_business_schema.py`，应用启动不改表。生命周期、来源口径与操作见 [通达信增发送配](tdx-capital-actions.md)。
 
 增发现行 additional_issues.unit@3 在同一 additional_issue.payload.detail 保存有效明细或明确暂无可用详情状态，并保留接口码和可选上次有效明细。未采、损坏和网络异常不能冒充暂无；明确空/-1005状态归档后可完成采集，明细用途仍有限制。未变内容复用统一指纹、相同内容无业务DML，归档成功清队。维护入口 scripts/migrate_issue_availability.py，无DDL或业务身份变更；保留既有业务和可验证未变摘要，重建受影响证明/断点。当前完整来源证明必须精确匹配SQL规范集合，才能将额外未知历史记录单列为范围外；否则仍失败。见[现行暂无规则](tdx-issue-availability.md)。
 
@@ -254,6 +254,10 @@ collector.ths_industries 复用共享 HTTP、代理与频控，本地固定版�
 
 ## 开盘啦分时与竞价
 
-collector.kaipanla_intraday 负责当前上市证券的完整证券日，每日普通分时与开盘竞价都校验后原子入队。上市元数据、正式日历及明确有界全天停牌只确定请求范围；源站错误不会变成空日。数据集 intraday.day@1 以 source/market/code/trade_date 保存 stock_intraday，每行规范有序数组保留同分钟竞价多点。data.intraday 负责 SQL 查询、关联/摘要核对及范围验收，ui.intraday 按需创建目录页面。
+collector.kaipanla_intraday 负责当前上市证券的完整证券日，每日普通分时与开盘竞价都校验后原子入队。上市元数据、正式日历及明确有界全天停牌只确定请求范围；源站错误不会变成空日。数据集 intraday.day@1 以 unified_code/trade_date 保存 stock_intraday，每行规范有序数组保留同分钟竞价多点。data.intraday 负责 SQL 查询、关联/摘要核对及范围验收，ui.intraday 按需创建目录页面。
 
 共享下载器的 attempt_options 只允许内部调用者生成 data/headers，并明确禁用重定向；每次实际尝试在原重试预算和频控内生成匿名设备字段。普通采集逐证券补 SQL 缺日并回看五个必要交易日；只有全轮入队结束才等统一归档确认。业务成功由统一归档器删除消息，不增加另一队列、摘要或归档器。详见[生命周期与维护](kaipanla-intraday.md)。
+
+## 项目状态的局部访问
+
+财报及分红、增发、配股数据集通过 state_unit 显式声明当前证券单元或 manifest。统一归档器仍锁定 collection_state 的项目行，但只投影 contract_version、progress、manifest 和当前 units 单元；JSON_SET 只提交变化路径，保留其他证券。全状态审计读取继续用于范围证明核验。完成等待的 SQL 回源只读取 progress，不传输整个财报状态。业务写入和局部状态更新处于原事务，缓存可信命中仍免 SQL。

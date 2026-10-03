@@ -4,19 +4,20 @@ import asyncio
 
 from sqlalchemy import URL, create_engine, inspect, text
 
+from empire.contracts.business_schema import FIXED_SOURCES
 from empire.contracts.plugin import PluginContext, PluginManifest
 from empire.core.config import resource_root
 from empire.plugins.infra.sql_lane import SQLLane, settle
 
 
-def make_engine(settings: dict, *, pool_size=2):
+def make_engine(settings: dict, *, pool_size=2, read_timeout=20):
     return create_engine(URL.create(
         "mysql+pymysql", username=settings["user"], password=settings.get("password"),
         host=settings.get("host", "127.0.0.1"), port=int(settings.get("port", 3306)),
         database=settings["database"], query={"charset": "utf8mb4"},
     ), pool_size=pool_size, max_overflow=0, pool_pre_ping=True,
         connect_args={"connect_timeout": settings.get("connect_timeout", 5),
-                      "read_timeout": 20, "write_timeout": 20,
+                      "read_timeout": read_timeout, "write_timeout": 20,
                       "init_command": "SET time_zone = '+08:00'"})
 
 
@@ -50,6 +51,8 @@ def validate_tables(connection, columns_by_table, primary_keys):
         if name not in tables:
             raise RuntimeError(f"缺少表 {name}，请显式执行 empire init-db；启动不会自动改库")
         columns = {column["name"] for column in metadata.get_columns(name)}
+        if name in FIXED_SOURCES and 'source' in columns:
+            raise RuntimeError(f'表 {name} 仍为旧结构，请关闭 Empire 并执行显式业务结构迁移')
         if not required <= columns:
             raise RuntimeError(f"表 {name} 缺少字段 {sorted(required - columns)}")
         primary = metadata.get_pk_constraint(name)["constrained_columns"]

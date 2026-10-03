@@ -73,8 +73,9 @@ def audit_stocks(rows, state, now):
 def check_stocks(plugin):
     with plugin.mysql.read_engine.connect() as conn:
         state = read_state(conn, plugin.namespace, plugin.project_id, plugin.source)
-        rows = conn.execute(text('''SELECT code,name,unified_code,market,source_symbol
-            FROM stock WHERE source=:source LIMIT 100001'''), {'source': plugin.source}).mappings().all()
+        rows = conn.execute(text('''SELECT LEFT(unified_code,6) AS code,name,unified_code,RIGHT(unified_code,2) AS market,
+            CONCAT(LOWER(RIGHT(unified_code,2)),LEFT(unified_code,6)) AS source_symbol
+            FROM stock LIMIT 100001'''), {'source': plugin.source}).mappings().all()
         return audit_stocks(rows, state, datetime.now(CHINA))
 
 
@@ -94,7 +95,7 @@ def audit_calendar(rows, state, now, *, cache_months=(), cache_note='未读取 R
     invalid_stamps = [m for m, stamp in zip(active, stamps, strict=True) if stamp.status == 'fail']
     return (
         evidence('fields', bool(rows) and not invalid, f'逐行核验日期与 0/1 标记；无效 {len(invalid)}'),
-        evidence('keys', bool(rows) and not duplicates, f'source + trade_date 重复 {duplicates}'),
+        evidence('keys', bool(rows) and not duplicates, f'trade_date 重复 {duplicates}'),
         evidence('coverage', not missing and len(rows) < 20001,
                  f'目标 {FIRST_DATE} 至 {end}-31，共 {len(expected)} 天；缺 {len(missing)} 天；'
                  f'缺失月份及天数：{dict(sorted(missing_months.items()))}'),
@@ -112,7 +113,7 @@ def audit_calendar(rows, state, now, *, cache_months=(), cache_note='未读取 R
 def calendar_snapshot(plugin):
     with plugin.mysql.read_engine.connect() as conn:
         rows = conn.execute(text('''SELECT trade_date,is_trade FROM trade_calendar
-            WHERE source=:source ORDER BY trade_date LIMIT 20001'''), {'source': plugin.source}).mappings().all()
+            ORDER BY trade_date LIMIT 20001'''), {'source': plugin.source}).mappings().all()
         state = read_state(conn, plugin.namespace, plugin.project_id, plugin.source)
         return rows, state
 
@@ -122,15 +123,16 @@ def check_suspensions(plugin):
     with plugin.mysql.read_engine.connect() as conn:
         row = conn.execute(text('''
             SELECT COUNT(*) AS total,
-              COUNT(DISTINCT market,code,suspended_at,resume_key,record_key) AS identities,
+              COUNT(DISTINCT unified_code,suspended_at,resume_key,record_key) AS identities,
               MIN(suspended_at) AS earliest,MAX(suspended_at) AS latest,
-              SUM(market NOT IN ('SH','SZ') OR code NOT REGEXP '^[0-9]{6}$'
+              SUM(RIGHT(unified_code,2) NOT IN ('SH','SZ') OR unified_code NOT REGEXP '^[0-9]{6}[.](SH|SZ)$'
                   OR suspension_type NOT IN ('full_day','intraday') OR TRIM(name)=''
                   OR resumed_at<suspended_at) AS bad,
-              COUNT(DISTINCT market) AS markets
-              , SUM(source_dates IS NULL OR JSON_TYPE(source_dates)<>'ARRAY'
-                    OR JSON_LENGTH(source_dates)=0) AS missing_dates
-            FROM suspension_event WHERE source=:source
+              COUNT(DISTINCT RIGHT(unified_code,2)) AS markets
+              , SUM(NOT source_dates_known OR NOT EXISTS (SELECT 1 FROM suspension_source_date d
+                    WHERE d.unified_code=s.unified_code AND d.suspended_at=s.suspended_at
+                    AND d.resume_key=s.resume_key AND d.record_key=s.record_key)) AS missing_dates
+            FROM suspension_event s
         '''), {'source': plugin.source}).mappings().one()
         state = read_state(conn, plugin.namespace, plugin.project_id, plugin.source)
         try:
@@ -151,7 +153,7 @@ def check_suspensions(plugin):
                  f'已存 {total} 条；市场、代码、类型、名称和日期异常 {row["bad"] or 0} 条；'
                  f'缺少来源日期 {row["missing_dates"] or 0} 条'),
         evidence('keys', total > 0 and total == row['identities'],
-                 f'{total} 行，唯一业务键 {row["identities"]}；source + market + code + suspended_at + resume_key + record_key'),
+                 f'{total} 行，唯一业务键 {row["identities"]}；unified_code + suspended_at + resume_key + record_key'),
         CheckEvidence('coverage', 'pass' if complete else 'unknown' if cutoff is None or stamp_status == 'unknown' else 'fail',
                  f'来源起点 {SUSPENSION_FIRST_DATE}；SQL 连续覆盖 {from_date or "缺少"} ～ {through or "缺少"}；'
                  f'{calendar_note}；事件日期 {row["earliest"]} ～ {row["latest"]}；'

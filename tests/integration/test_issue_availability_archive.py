@@ -75,14 +75,14 @@ async def test_unknown_historical_row_is_excluded_only_by_exact_source_proof(cap
         await archive.fingerprints.invalidate(query.kind, query.source)
         with mysql.engine.begin() as conn:
             conn.execute(text('INSERT INTO additional_issue '
-                '(source,record_key,market,code,name,event_date,payload,content_hash,version_observed_at) '
-                'VALUES (:source,:record_key,:market,:code,:name,:event_date,:payload,:content_hash,:observed)'),
-                {**old, 'source': query.source, 'payload': json.dumps(old['data']),
+                '(record_key,unified_code,name,event_date,payload,content_hash,version_observed_at) '
+                'VALUES (:record_key,:unified_code,:name,:event_date,:payload,:content_hash,:observed)'),
+                {**old, 'unified_code': old['code']+'.'+old['market'], 'payload': json.dumps(old['data']),
                  'content_hash': digest(old), 'observed': mysql_time(datetime.now(UTC))})
     assert len(await query.list_events()) == 2
     assert all(check.status == 'pass' for check in await query.preparation_check())
     async with archive.lock:
         with mysql.engine.begin() as conn:
             conn.execute(text("UPDATE additional_issue SET payload=JSON_REMOVE(payload,'$.detail') "
-                              "WHERE source=:source AND code='688110'"), {'source': query.source})
+                              "WHERE unified_code='688110.SH'"), {'source': query.source})
     assert any(check.status == 'fail' for check in await query.preparation_check())

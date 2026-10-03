@@ -32,7 +32,7 @@ def audit_financial(plugin, request=None):
                 if not codes:
                     continue
                 # Primary-key order avoids sorting hundreds of thousands of JSON bodies.
-                predicates = ['source=:source', 'market=:market']
+                predicates = ['RIGHT(unified_code,2)=:market']
                 params = dict(source=plugin.source, market=market)
                 if scope.codes:
                     names = []
@@ -40,10 +40,10 @@ def audit_financial(plugin, request=None):
                         name = f'code{index}'
                         names.append(':' + name)
                         params[name] = code
-                    predicates.append('code IN (' + ','.join(names) + ')')
+                    predicates.append('LEFT(unified_code,6) IN (' + ','.join(names) + ')')
                 records = conn.execution_options(stream_results=True).execute(text(
-                    f'SELECT market,code,report_date,payload FROM {plugin.table} WHERE ' + ' AND '.join(predicates) +
-                    ' ORDER BY code,report_date'), params).mappings()
+                    f'SELECT RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code,report_date,payload FROM {plugin.table} WHERE ' + ' AND '.join(predicates) +
+                    ' ORDER BY unified_code,report_date'), params).mappings()
                 try:
                     for unit, group in groupby(records, lambda r: r['market'] + ':' + r['code']):
                         if unit not in missing:

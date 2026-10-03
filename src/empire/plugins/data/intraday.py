@@ -4,6 +4,7 @@ from datetime import date, datetime, time, timedelta
 
 from sqlalchemy import text
 
+from empire.contracts.business_schema import require_fixed_source
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import PreparationContribution
 from empire.core.time import CHINA
@@ -26,6 +27,7 @@ class IntradayDataPlugin:
 
     async def start(self, context):
         self.mysql = context.get('mysql.store')
+        require_fixed_source('stock_intraday', self.source)
         await self.mysql.require_schema(TABLES, KEYS)
         return {'intraday.query': self}
 
@@ -34,8 +36,8 @@ class IntradayDataPlugin:
 
     def _plan(self):
         with self.mysql.read_engine.begin() as conn:
-            stocks = [dict(r) for r in conn.execute(text('SELECT market,code,name,unified_code,source_symbol FROM stock '
-                'WHERE source=:source ORDER BY market,code'), {'source': 'sina'}).mappings()]
+            stocks = [dict(r) for r in conn.execute(text('SELECT RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code,name,unified_code,CONCAT(LOWER(RIGHT(unified_code,2)),LEFT(unified_code,6)) AS source_symbol FROM stock '
+                'WHERE TRUE ORDER BY market,code'), {'source': 'sina'}).mappings()]
             keys = [(r['market'], r['code']) for r in stocks]
             if not keys or len(keys) > 15000 or len(set(keys)) != len(keys):
                 raise ValueError('当前股票名单为空、重复或超过声明边界')
@@ -49,7 +51,7 @@ class IntradayDataPlugin:
                 raise ValueError(problem)
             start, end = date(2021, 1, 1), cutoff.date()
             rows = conn.execute(text('SELECT trade_date,is_trade FROM trade_calendar WHERE '
-                'source=:source AND trade_date BETWEEN :start AND :end ORDER BY trade_date'),
+                'trade_date BETWEEN :start AND :end ORDER BY trade_date'),
                 dict(source='cninfo', start=start, end=end)).mappings().all()
             calendar = {r['trade_date']: r['is_trade'] for r in rows}
             expected = (end - start).days + 1
@@ -64,7 +66,7 @@ class IntradayDataPlugin:
     def _covered(self, market, code, start, end, lifecycle=None):
         with self.mysql.read_engine.begin() as conn:
             rows = conn.execute(text('SELECT trade_date,payload,content_hash FROM stock_intraday '
-                'WHERE source=:source AND market=:market AND code=:code AND trade_date BETWEEN '
+                'WHERE unified_code=CONCAT(:code,CHAR(46),:market) AND trade_date BETWEEN '
                 ':start AND :end ORDER BY trade_date'),
                 dict(source=self.source, market=market, code=code, start=start, end=end)).mappings()
             covered = set()
@@ -88,7 +90,7 @@ class IntradayDataPlugin:
         def read():
             with self.mysql.read_engine.begin() as conn:
                 events = conn.execute(text('SELECT suspended_at,resumed_at FROM suspension_event '
-                    'WHERE source=:source AND market=:market AND code=:code AND suspension_type=:kind '
+                    'WHERE unified_code=CONCAT(:code,CHAR(46),:market) AND suspension_type=:kind '
                     'AND suspended_at<:end AND resumed_at>:start ORDER BY suspended_at LIMIT 1001'),
                     dict(source='tdx', market=market, code=code, kind='full_day',
                          start=start, end=end + timedelta(days=1))).mappings().all()
@@ -119,7 +121,7 @@ class IntradayDataPlugin:
         def read():
             with self.mysql.read_engine.connect() as conn:
                 row = conn.execute(text('SELECT payload,content_hash,version_observed_at FROM stock_intraday '
-                    'WHERE source=:source AND market=:market AND code=:code AND trade_date=:day'),
+                    'WHERE unified_code=CONCAT(:code,CHAR(46),:market) AND trade_date=:day'),
                     dict(source=self.source, market=market, code=code, day=day)).mappings().first()
                 if not row:
                     return None

@@ -1,4 +1,4 @@
-"""Explicit migration to one SQL-confirmed state per project; never run at startup."""
+"""Historical pre-v1 maintenance only; not the current business-v2 upgrade entrance. Explicit migration to one SQL-confirmed state per project; never run at startup."""
 import asyncio
 import hashlib
 import json

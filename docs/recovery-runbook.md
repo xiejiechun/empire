@@ -98,7 +98,7 @@ mysql.exe --host=127.0.0.1 --port=3307 --user=<维护用户名> --password `
 - 尚未用真实备份完成隔离 MySQL 恢复，所以真实 RPO/RTO 仍为空，不得写成已达标。
 - 当前不恢复 Redis AOF/RDB，也不启用 MySQL binlog；这是已确认的低写盘策略。若以后要求时间点恢复或跨机容灾，需要重新审阅写盘、容量、安全和权限影响。
 
-通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。显式维护入口为 `scripts/migrate_capital_actions.py`，应用启动不改表。生命周期、来源口径与操作见 [通达信增发送配](tdx-capital-actions.md)。
+通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。显式维护入口为 `scripts/migrate_business_schema.py`，应用启动不改表。生命周期、来源口径与操作见 [通达信增发送配](tdx-capital-actions.md)。
 
 分红旧业务键升级为 dividends.unit@2 时执行 scripts/migrate_dividend_identity.py：关闭 Empire 且队列为空，保留业务内容和观测水位，重算键并失效旧证明/断点，重新核验全范围。应用不自动迁移；pending 维护须重跑同一脚本完成后再启动。
 
@@ -110,4 +110,10 @@ mysql.exe --host=127.0.0.1 --port=3307 --user=<维护用户名> --password `
 
 ## 当前行业恢复
 
-恢复清单包含 `industry`、`industry_member` 和对应 `collection_state`。Redis 丢失后保留 SQL 当前完整集合，下轮完整刷新；历史行业归属不能由当前集合重建。新增表须正常关闭 Empire 后执行 `scripts/migrate_industries.py`，该入口核验队列为空及已有表前后内容，启动不自动建表。
+恢复清单包含 `industry`、`industry_member` 和对应 `collection_state`。Redis 丢失后保留 SQL 当前完整集合，下轮完整刷新；历史行业归属不能由当前集合重建。旧版完整库须正常关闭 Empire 后执行 `scripts/migrate_business_schema.py migrate`，该入口核验队列为空及前后规范内容，影子转换后保留原表；新空库使用 init-db，启动不自动建表。
+
+## MySQL 升级只读检查与当前边界
+
+升级唯一入口为 scripts/migrate_business_schema.py。preflight 只读观察；migrate 正常停机、确认 Stream 为零后，流式核对业务键/规范内容/版本/来源日期，复制影子表并原子切换；resume 使用同一 journal 续跑；verify 核对迁移基线；status 查看阶段；rollback 仅在切换后内容未变时恢复旧表。旧表保留为 empire_v1_* 本机恢复副本，不供运行时读取，不包含 router_*。恢复业务写入后禁止直接回退旧快照。默认日志 build/mysql-upgrade-final/migration.json，显式 --journal 可覆盖。
+
+操作顺序：关闭 Empire → preflight → migrate → verify → 配套新程序启动及正式查询验收。失败保持停机，根据日志阶段 resume；不可删除日志后覆盖已有影子表。程序目录 config.toml 必须保留。旧新增表脚本不作为本次升级入口，新空库仍使用 init-db。

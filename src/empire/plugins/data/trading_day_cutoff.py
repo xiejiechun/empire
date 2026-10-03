@@ -39,7 +39,7 @@ def last_closed_trade_day(rows, now):
 
 def read_trade_day_cutoff(conn, now):
     rows = conn.execute(text('SELECT trade_date,is_trade FROM trade_calendar '
-        'WHERE source=:source AND trade_date BETWEEN :start AND :end ORDER BY trade_date'),
+        'WHERE trade_date BETWEEN :start AND :end ORDER BY trade_date'),
         dict(source='cninfo', start=now.date() - timedelta(days=366), end=now.date())).mappings().all()
     return last_closed_trade_day(rows, now)
 

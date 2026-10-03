@@ -9,7 +9,7 @@ from urllib.parse import unquote
 
 EXPECTED_TABLES = {
     'industry', 'industry_member',
-    "stock", "finance_news", "trade_calendar", "suspension_event", "stock_intraday",
+    "stock", "finance_news", "trade_calendar", "suspension_event", "suspension_source_date", "stock_intraday",
     "income_statement", "balance_statement", "cashflow_statement",
     "collection_state", "app_setting", "dividend_plan", "additional_issue", "rights_issue",
 }

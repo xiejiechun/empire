@@ -46,4 +46,4 @@
 
 `stock_intraday` 每来源/市场/当前代码/交易日一行，保存规范有序数组与上市关联，排除原始成功正文。来源代码回溯以实际响应验证，不自行猜旧代码。统一归档器管理 SHA-256、版本、事务及 XDEL；可信摘要命中免 MySQL，冷摘要回 SQL，同内容无业务 DML，SQL 提交后安全重放。持久状态仍每项目仅一条 `collection_state`。
 
-新增表只通过 `scripts/migrate_intraday.py` 显式维护，应用启动不建表。执行前正常关闭 Empire；该维护只新增独立表，既有业务内容及既有项目的队列消息前后核对完全一致，全部原位保留。首次新库仍使用正式 init-db。配置保持程序目录 `config.toml`，不迁移 Redis/MySQL 服务或业务数据。
+旧版完整业务库通过 `scripts/migrate_business_schema.py` 显式转换结构，应用启动不建表。执行前正常关闭 Empire、待归档队列清零；影子复制和原子切换前后核对全部业务内容、版本及关联集合，旧表作为恢复副本保留。新空库使用 init-db。程序目录 config.toml 保留，数据库服务不变。

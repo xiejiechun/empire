@@ -1,0 +1,221 @@
+{
+  "status": "implementation_incomplete",
+  "captured_at": "2026-10-03T13:01:35.633358+00:00",
+  "head_at_start": "a7e1b95c959b457640f51be13c0745f69b0ae7ba",
+  "production_changed": false,
+  "production_deployed": false,
+  "real_desktop_changed": false,
+  "root_and_deployed_mysql_target_matches": true,
+  "tests": {
+    "non_integration": {
+      "tests": 1204,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "time_seconds": 58.156,
+      "path": "D:\\project\\empire\\build\\mysql-upgrade-20261003\\regression-final.xml",
+      "skipped_reasons": [
+        "Windows symbolic link privilege is unavailable",
+        "Windows symbolic link privilege is unavailable"
+      ]
+    },
+    "archive_e2e": {
+      "tests": 87,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 101.923,
+      "path": "D:\\project\\empire\\build\\mysql-upgrade-20261003\\state-regression-final\\pipeline.xml",
+      "skipped_reasons": []
+    },
+    "state_isolation": {
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 7.969,
+      "path": "D:\\project\\empire\\build\\mysql-upgrade-20261003\\isolated-state.xml",
+      "skipped_reasons": []
+    }
+  },
+  "documentation": "PASS: documents=91, links=436, schema_tables=15",
+  "source_preflight": {
+    "version": "8.4.9",
+    "passed": true,
+    "sources": {
+      "stock": [
+        "sina"
+      ],
+      "industry": [
+        "ths"
+      ],
+      "industry_member": [
+        "ths"
+      ],
+      "income_statement": [
+        "ths"
+      ],
+      "balance_statement": [
+        "ths"
+      ],
+      "cashflow_statement": [
+        "ths"
+      ],
+      "dividend_plan": [
+        "tdx"
+      ],
+      "additional_issue": [
+        "tdx"
+      ],
+      "rights_issue": [
+        "tdx"
+      ],
+      "suspension_event": [
+        "tdx"
+      ],
+      "stock_intraday": [
+        "kaipanla"
+      ],
+      "trade_calendar": [
+        "cninfo"
+      ]
+    },
+    "queue_observation": {
+      "stream_length": 0,
+      "snapshot_atomic_with_sql": false,
+      "drained_for_migration": false
+    },
+    "not_a_complete_migration_gate": true
+  },
+  "performance": {
+    "server": "private MySQL instance",
+    "units": 15000,
+    "measurements": {
+      "whole_state": {
+        "seconds": [
+          0.18054560000018682,
+          0.21546500000113156,
+          0.21925609999743756,
+          0.310050100000808,
+          0.44654949998948723
+        ],
+        "median_seconds": 0.21925609999743756,
+        "decoded_json_bytes": [
+          4740126,
+          4740126,
+          4740126,
+          4740126,
+          4740126
+        ],
+        "python_traced_peak_bytes": [
+          27916210,
+          27912344,
+          27893800,
+          27893624,
+          27893672
+        ]
+      },
+      "unit_state": {
+        "seconds": [
+          0.004293100006179884,
+          0.0020013000030303374,
+          0.0027021999994758517,
+          0.002491599996574223,
+          0.0021164000063436106
+        ],
+        "median_seconds": 0.002491599996574223,
+        "decoded_json_bytes": [
+          442,
+          442,
+          442,
+          442,
+          442
+        ],
+        "python_traced_peak_bytes": [
+          19229,
+          12750,
+          12190,
+          11982,
+          11934
+        ]
+      },
+      "update": {
+        "statements": 3,
+        "parameter_bytes": [
+          176,
+          49,
+          335
+        ],
+        "max_parameter_bytes": 335
+      }
+    },
+    "cache": "same connection pool, sequential warm reads, no buffer-pool reset",
+    "limitations": [
+      "decoded JSON size, not network packet byte count",
+      "Python traced allocation, not total process memory",
+      "synthetic state only; no physical disk benefit measurement"
+    ]
+  },
+  "changed_file_sha256": {
+    "src/empire/contracts/stocks.py": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
+    "src/empire/plugins/datasets/astock.py": "4ca823fce0bed251085841143bb4f261828819dfb7cb6217e9ecfa3a27f803ba",
+    "src/empire/plugins/datasets/capital_archive.py": "3755e5a183741388216a36855bb9612219f1001e7cb091141f064387434bc00f",
+    "src/empire/plugins/datasets/financial_archive.py": "7ec57b89b72718030fbb61d59d52de1d966115f92e2fdd1465487d9b863984c7",
+    "src/empire/plugins/infra/collection_state.py": "3e96d8d217bde8ce0fba4ad3ead3aa0c3a822d9c88b14c1dc03167f14723af31",
+    "src/empire/plugins/ui/storage_reference.md": "8ed549ca568dfe4cdb566669970dcb5a19096ec7edaf361618db253403d8d7e3",
+    "docs/architecture.md": "0a3503ea9f874a4708545d88eacdf1117ce5f3fcd415bab03badfffd80355159",
+    "docs/archive-deduplication.md": "1f628f9ad540f7dce58fcbf6f911b6ea8e14db88d62fd7aa7017dceb1b8f4d11",
+    "docs/documentation-review.json": "fdba4babdf0a1b88537a9bd2939ee3e774a9f6823003ad21268413d26aff433b",
+    "docs/implementation-status.md": "669b78d0a6fd8ad72ad9f6fd0e6612148a1248af7f57ab2faa657cc53d6b02f8",
+    "docs/recovery-runbook.md": "bb82fe60b4e59d9144e03033630bfa6ef1506499f3c43e8d91eea0d72443db36",
+    "docs/tdx-capital-actions.md": "f37f64b4fae1ce785965a35699ac637ecdbb06e673413685a85f04087a8522a1",
+    "docs/ths-financial-statements.md": "d7cdf6d61a01e4045867e8d6d7f7123f1dd712c53de25d13bc714572a0a380eb",
+    "src/empire/contracts/business_schema.py": "3c1358762016f5a75e61394043fe6c4735e5ead74d039de0aad7f809cc1a2267",
+    "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
+    "src/empire/plugins/infra/collection_state_unit.py": "56a748e6c7bdffa461ae32b9260140ea6967ff6290f297e21b5965c6f08c9ba4",
+    "scripts/migrate_business_schema.py": "8f9d598097fab0d789a9b0c9cc1e46f802fd7e78a0d41473aad8183587082054",
+    "scripts/verify_mysql_upgrade_state.py": "9a7b794cf82622d6ba69ccd9b7a0c9beb002ee75d1e11bb50fbcc123f42cbe78",
+    "tests/test_collection_state_unit.py": "a088532b19a6def299ad97620f7ec60122858c1a8e6e695ed562815568ecb535",
+    "tests/test_security_identity.py": "26cc2b61177eb963dea8edd2264eb441dda58aced306d99dc7181db2805b35e3",
+    "tests/integration/test_state_unit_isolated.py": "7e4bc453a62947fc7321d6fbf9eaa6cbcd1a6a8bddcce06b5a8a943add52c2ff",
+    "docs/mysql-upgrade-handoff-2026-10-03.md": "c68f2d68ce22c9c87db8bdea44906df2bf3b6df01790cfcbef18c3abdc31c7fb"
+  },
+  "task_patch": {
+    "path": "D:\\project\\empire\\build\\mysql-upgrade-20261003\\task.patch",
+    "sha256": "c5a0c3aa1961e907f6bcd64ac06881add7d9d24af2e559c8fe41fd6740a6254f",
+    "verified_baseline_files": [
+      "src/empire/plugins/datasets/financial_archive.py",
+      "src/empire/plugins/datasets/capital_archive.py",
+      "src/empire/contracts/stocks.py",
+      "src/empire/plugins/infra/collection_state.py",
+      "docs/architecture.md",
+      "docs/archive-deduplication.md",
+      "docs/recovery-runbook.md",
+      "docs/ths-financial-statements.md",
+      "docs/tdx-capital-actions.md",
+      "src/empire/plugins/ui/storage_reference.md",
+      "docs/implementation-status.md",
+      "src/empire/plugins/datasets/astock.py"
+    ],
+    "new_files": [
+      "src/empire/contracts/business_schema.py",
+      "src/empire/contracts/security.py",
+      "src/empire/plugins/infra/collection_state_unit.py",
+      "scripts/migrate_business_schema.py",
+      "scripts/verify_mysql_upgrade_state.py",
+      "tests/test_collection_state_unit.py",
+      "tests/test_security_identity.py",
+      "tests/integration/test_state_unit_isolated.py",
+      "docs/mysql-upgrade-handoff-2026-10-03.md"
+    ],
+    "generated_review_record": "docs/documentation-review.json"
+  },
+  "pending": [
+    "runtime fixed-source enforcement and physical source removal",
+    "all SQL security keys and callers",
+    "suspension_source_date and source_dates_known",
+    "query indexes and comparative plans",
+    "migration/verify/resume/rollback and full content inventories",
+    "other dataset matrix, independent review, production release and acceptance"
+  ]
+}

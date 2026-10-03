@@ -31,7 +31,7 @@ async def financial_db(request, monkeypatch):
     manager = build_manager(cfg)
     query = manager.entries['data.' + kind].plugin
     collector = manager.entries['collector.ths_' + kind].plugin
-    query.source = collector.source = 'test-' + token
+    query.source = collector.source = 'ths'
     mysql = store = None
     try:
         await manager.start('collector.ths_' + kind)
@@ -59,7 +59,7 @@ async def financial_db(request, monkeypatch):
         if mysql:
             def cleanup():
                 with mysql.engine.begin() as conn:
-                    conn.execute(text(f'DELETE FROM {query.table} WHERE source=:source'), {'source': query.source})
+                    conn.execute(text(f'DELETE FROM {query.table}'), {'source': query.source})
                     conn.execute(text('DELETE FROM collection_state WHERE namespace=:namespace'),
                                  {'namespace': cfg['redis']['namespace']})
             await mysql.control(cleanup)
@@ -206,7 +206,7 @@ async def test_hot_cold_revision_old_and_repair(financial_db, monkeypatch):
         async with archive.lock:
             await archive.fingerprints.invalidate('ths_' + query.kind, query.source)
             with mysql.engine.begin() as conn:
-                conn.execute(text(f'UPDATE {query.table} SET payload=JSON_OBJECT() WHERE source=:source'),
+                conn.execute(text(f'UPDATE {query.table} SET payload=JSON_OBJECT()'),
                              {'source': query.source})
         assert any(c.status == 'fail' for c in await query.preparation_check())
         await publish(revised, early + timedelta(minutes=5))
@@ -362,7 +362,7 @@ async def test_scoped_financial_acceptance_proves_content_and_use(financial_db):
     def corrupt():
         with query.mysql.engine.begin() as conn:
             conn.execute(text(f'UPDATE {query.table} SET payload=JSON_SET(payload, :path, :value) '
-                'WHERE source=:source AND report_date=:day'),
+                'WHERE report_date=:day'),
                 dict(path='$.name', value='篡改名称', source=query.source, day='2025-09-30'))
     cache = manager.registry.get('archive.worker').fingerprints
     await manager.stop('pipeline.archive', cascade=True)

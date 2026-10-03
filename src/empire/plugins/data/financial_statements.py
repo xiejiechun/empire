@@ -5,6 +5,7 @@ from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import text
 
+from empire.contracts.business_schema import require_fixed_source, schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
@@ -33,14 +34,13 @@ class FinancialDataPlugin:
     async def start(self, context):
         self.context = context
         self.mysql = context.get('mysql.store')
-        await self.mysql.require_schema({self.table: {'source', 'market', 'code', 'report_date',
-            'payload', 'content_hash', 'version_observed_at'}},
-            {self.table: ['source', 'market', 'code', 'report_date']})
+        require_fixed_source(self.table, self.source)
+        await self.mysql.require_schema(*schema_contract(self.table, 'payload','content_hash','version_observed_at'))
         return {self.kind + '.query': self}
 
     def _securities(self, conn):
         values = [dict(r) for r in conn.execute(text(
-            "SELECT market,code,name FROM stock WHERE source='sina' ORDER BY market,code")).mappings()]
+            "SELECT RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code,name FROM stock WHERE TRUE ORDER BY market,code")).mappings()]
         keys = [s['market'] + ':' + s['code'] for s in values]
         if not values or len(values) > 15000 or len(set(keys)) != len(keys):
             raise ValueError('当前股票池为空、重复或超限')
@@ -59,15 +59,16 @@ class FinancialDataPlugin:
             raise ValueError('分页范围无效')
         def read():
             with self.mysql.read_engine.connect() as conn:
-                match = 'code=:code' if len(code) == 6 else 'code LIKE :code'
-                # Select bounded keys first, so broad browsing never sorts JSON report bodies.
+                filters, params = [], dict(limit=limit, offset=offset)
+                if code:
+                    filters.append('unified_code LIKE :code')
+                    params['code'] = code + ('.%' if len(code) == 6 else '%')
+                where = ' WHERE ' + ' AND '.join(filters) if filters else ''
                 return [decode(r) for r in conn.execute(text(f'SELECT s.payload FROM {self.table} s JOIN ('
-                    f'SELECT source,market,code,report_date FROM {self.table} '
-                    f"WHERE source=:source AND market IN ('BJ','SH','SZ') AND {match} "
-                    'ORDER BY report_date DESC,market,code LIMIT :limit OFFSET :offset) chosen '
-                    'USING (source,market,code,report_date) ORDER BY s.report_date DESC,s.market,s.code'),
-                    dict(source=self.source, code=code if len(code) == 6 else code + '%',
-                         limit=limit, offset=offset)).mappings()]
+                    f'SELECT unified_code,report_date FROM {self.table}' + where +
+                    ' ORDER BY report_date DESC,RIGHT(unified_code,2),unified_code LIMIT :limit OFFSET :offset) chosen '
+                    'USING (unified_code,report_date) ORDER BY s.report_date DESC,RIGHT(s.unified_code,2),s.unified_code'),
+                    params).mappings()]
         return await self.mysql.read(read)
 
     async def list_statement_securities(self, code='', limit=51, offset=0):
@@ -77,15 +78,13 @@ class FinancialDataPlugin:
             raise ValueError('证券分页范围无效')
         def read():
             with self.mysql.read_engine.connect() as conn:
-                match = 's.code=:code' if len(code) == 6 else 's.code LIKE :code'
+                where = 'WHERE s.unified_code LIKE :code' if code else ''
                 return [dict(r) for r in conn.execute(text(
-                    f'SELECT DISTINCT s.market,s.code,COALESCE(t.name,s.code) AS name FROM {self.table} s '
-                    "LEFT JOIN stock t ON t.source='sina' AND t.market=s.market AND t.code=s.code "
-                    "WHERE s.source=:source AND s.market IN ('BJ','SH','SZ') AND " + match +
-                    ' ORDER BY s.market,s.code '
-                    'LIMIT :limit OFFSET :offset'),
-                    dict(source=self.source, code=code if len(code) == 6 else code + '%',
-                         limit=limit, offset=offset)).mappings()]
+                    f'SELECT DISTINCT RIGHT(s.unified_code,2) AS market,LEFT(s.unified_code,6) AS code,'
+                    f'COALESCE(t.name,LEFT(s.unified_code,6)) AS name FROM {self.table} s '
+                    'LEFT JOIN stock t ON t.unified_code=s.unified_code ' + where +
+                    ' ORDER BY market,code LIMIT :limit OFFSET :offset'),
+                    dict(code=code + ('.%' if len(code) == 6 else '%'), limit=limit, offset=offset)).mappings()]
         return await self.mysql.read(read)
 
     def _audit(self, request=None):

@@ -30,7 +30,7 @@ async def intraday_db():
     manager = build_manager(cfg)
     query = manager.entries['data.intraday'].plugin
     collector = manager.entries['collector.kaipanla_intraday'].plugin
-    query.source = collector.source = 'test-' + token
+    query.source = collector.source = 'kaipanla'
     store = mysql = None
     try:
         await manager.start('collector.kaipanla_intraday')
@@ -64,7 +64,7 @@ async def intraday_db():
         if mysql:
             def cleanup():
                 with mysql.engine.begin() as conn:
-                    conn.execute(text('DELETE FROM stock_intraday WHERE source=:source'), {'source': query.source})
+                    conn.execute(text('DELETE FROM stock_intraday'), {'source': query.source})
                     conn.execute(text('DELETE FROM collection_state WHERE namespace=:namespace'),
                                  {'namespace': cfg['redis']['namespace']})
             await mysql.control(cleanup)
@@ -172,7 +172,7 @@ async def test_old_missing_lifecycle_and_same_count_wrong_set_are_repaired(intra
     async with archive.lock:
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text("UPDATE stock_intraday SET payload=JSON_REMOVE(payload,'$.lifecycle') WHERE source=:source"),
+            conn.execute(text("UPDATE stock_intraday SET payload=JSON_REMOVE(payload,'$.lifecycle')"),
                          {'source': query.source})
     assert not await query.covered_days('SZ', '000001', date(2021, 1, 4), date(2021, 1, 5), lifecycle=None)
     with pytest.raises(ValueError):
@@ -182,7 +182,7 @@ async def test_old_missing_lifecycle_and_same_count_wrong_set_are_repaired(intra
     async with archive.lock:
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text("UPDATE stock_intraday SET payload=JSON_SET(payload,'$.trend[1][0]','09:30') WHERE source=:source"),
+            conn.execute(text("UPDATE stock_intraday SET payload=JSON_SET(payload,'$.trend[1][0]','09:30')"),
                          {'source': query.source})
     checks = await query.preparation_check({'codes': ['000001']})
     assert next(c for c in checks if c.criterion == 'fields').status == 'fail'
@@ -197,7 +197,7 @@ async def test_lost_checkpoint_uses_sql_content_and_restores_missing_day(intrada
     async with manager.registry.get('archive.worker').lock:
         await manager.registry.get('archive.worker').fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text("DELETE FROM stock_intraday WHERE source=:source AND trade_date='2021-01-04'"),
+            conn.execute(text("DELETE FROM stock_intraday WHERE trade_date='2021-01-04'"),
                          {'source': query.source})
     await store.client.delete(collector.ingest._checkpoint_key(JOB))
     await collector.execute()

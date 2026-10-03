@@ -197,7 +197,7 @@ async def capital_db(request, monkeypatch):
     kind = request.param
     cfg = copy.deepcopy(load_config())
     token = uuid4().hex
-    test_source = 'test-' + token
+    test_source = 'tdx'
     cfg['redis']['namespace'] = 'empire:test:' + token
     manager = build_manager(cfg)
     query = manager.entries['data.' + kind].plugin
@@ -233,7 +233,7 @@ async def capital_db(request, monkeypatch):
         if mysql:
             def cleanup():
                 with mysql.engine.begin() as conn:
-                    conn.execute(text(f'DELETE FROM {query.table} WHERE source=:source'), {'source': test_source})
+                    conn.execute(text(f'DELETE FROM {query.table}'), {'source': test_source})
                     conn.execute(text('DELETE FROM collection_state WHERE namespace=:namespace'),
                                  {'namespace': cfg['redis']['namespace']})
             await mysql.control(cleanup)
@@ -294,7 +294,7 @@ async def test_repeat_hot_cold_revision_old_response_and_missing_fields(capital_
         async with archive.lock:
             await archive.fingerprints.invalidate(query.kind, query.source)
             with mysql.engine.begin() as conn:
-                conn.execute(text(f"UPDATE {query.table} SET payload=JSON_OBJECT() WHERE source=:source"), {'source': query.source})
+                conn.execute(text(f"UPDATE {query.table} SET payload=JSON_OBJECT()"), {'source': query.source})
         assert any(c.status == 'fail' for c in await query.preparation_check())
         await publish(revised, earlier + timedelta(minutes=5))
         assert await query.list_events() == new
@@ -352,7 +352,7 @@ async def test_cache_freshness_cannot_hide_missing_sql_content(capital_db):
     async with archive.lock:
         # Keep the proof deliberately to verify preparation always compares real SQL.
         with mysql.engine.begin() as conn:
-            conn.execute(text(f'DELETE FROM {query.table} WHERE source=:source'), {'source': query.source})
+            conn.execute(text(f'DELETE FROM {query.table}'), {'source': query.source})
     assert any(c.status == 'fail' for c in await query.preparation_check())
 
 
@@ -399,7 +399,7 @@ async def test_dividend_identity_migration_retains_business_and_observations(cap
     async with archive.lock:
         await archive.fingerprints.invalidate('dividends', query.source)
         with mysql.engine.begin() as conn:
-            conn.execute(text('UPDATE dividend_plan SET record_key=:key WHERE source=:source'),
+            conn.execute(text('UPDATE dividend_plan SET record_key=:key'),
                          dict(key=legacy, source=query.source))
             before = read_state(conn, query.namespace, query.project_id, query.source)
         report = migrate_rows(mysql.engine, query.namespace, query.source)
@@ -425,7 +425,7 @@ async def test_issue_detail_backfill_migration_and_detail_only_revision(capital_
     async with archive.lock:
         await archive.fingerprints.invalidate(query.kind, query.source)
         with mysql.engine.begin() as conn:
-            conn.execute(text("UPDATE additional_issue SET payload=JSON_REMOVE(payload,'$.detail') WHERE source=:source"),
+            conn.execute(text("UPDATE additional_issue SET payload=JSON_REMOVE(payload,'$.detail')"),
                          {'source': query.source})
             old = read_state(conn, query.namespace, query.project_id, query.source, lock=True)
             save_state(conn, query.namespace, query.project_id, query.source, query.kind + '.unit',

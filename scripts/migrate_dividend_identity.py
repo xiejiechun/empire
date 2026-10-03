@@ -6,6 +6,7 @@ from types import SimpleNamespace
 from sqlalchemy import text
 
 from empire.__main__ import acquire_instance_lock
+from empire.contracts.business_schema import require_fixed_source
 from empire.core.config import load_config
 from empire.core.redaction import redact
 from empire.plugins.data.capital_actions import decode
@@ -25,9 +26,10 @@ def business_snapshot(rows):
 
 
 def migrate_rows(engine, namespace, source='tdx'):
+    require_fixed_source('dividend_plan', source)
     with engine.begin() as conn:
         records = [dict(r) for r in conn.execute(text(
-            'SELECT * FROM dividend_plan WHERE source=:source FOR UPDATE'), {'source': source}).mappings()]
+            'SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code FROM dividend_plan WHERE TRUE FOR UPDATE'), {'source': source}).mappings()]
         # Snapshot normalized JSON and immutable observation times, independent of keys.
         def snapshot(records):
             values = []
@@ -51,11 +53,11 @@ def migrate_rows(engine, namespace, source='tdx'):
             checksum = digest(current)
             if old['record_key'] != current['record_key'] or old['content_hash'] != checksum:
                 conn.execute(text('UPDATE dividend_plan SET record_key=:new_key,content_hash=:hash '
-                    'WHERE source=:source AND record_key=:old_key'),
+                    'WHERE record_key=:old_key'),
                     dict(new_key=current['record_key'], hash=checksum, source=source, old_key=old['record_key']))
                 changed += 1
         after = snapshot([dict(r) for r in conn.execute(text(
-            'SELECT * FROM dividend_plan WHERE source=:source'), {'source': source}).mappings()])
+            'SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code FROM dividend_plan WHERE TRUE'), {'source': source}).mappings()])
         if before != after:
             raise RuntimeError('分红业务内容发生变化；事务回滚')
         old = read_state(conn, namespace, 'tdx-dividends', source, lock=True)
@@ -63,7 +65,7 @@ def migrate_rows(engine, namespace, source='tdx'):
         if reset:
             # Retain SQL observation watermarks to reject late old responses.
             units = {k: {'observed_at': v['observed_at']} for k, v in old.get('units', {}).items()}
-            save_state(conn, namespace, 'tdx-dividends', source, 'dividends.unit',
+            save_state(conn, namespace, 'tdx-dividends', source, 'dividends',
                        dict(contract_version=2, units=units, identity_migration_pending=True), old)
         return dict(before=before, after=after, changed_keys=changed, reset_required=reset)
 
@@ -85,7 +87,7 @@ async def migrate(cfg):
             with engine.begin() as conn:
                 old = read_state(conn, namespace, 'tdx-dividends', 'tdx', lock=True)
                 current = {k: v for k, v in old.items() if k != 'identity_migration_pending'}
-                save_state(conn, namespace, 'tdx-dividends', 'tdx', 'dividends.unit', current, old)
+                save_state(conn, namespace, 'tdx-dividends', 'tdx', 'dividends', current, old)
         print(json.dumps(report))
         return report
     finally:

@@ -1,0 +1,856 @@
+{
+  "completed_at": "2026-10-03T23:21:19.040804+08:00",
+  "status": "deployed_and_verified",
+  "scope": "mysql business schema v2; no full-market recollection claim",
+  "source_sha256": "d9b15e233466c2fd38ca9c467adc0e3450fb540783d46cd26653fc64fd8d152a",
+  "executable_sha256": "f6679a6f680fd42e009e161731c60855328f3a1eb54b3934ba7318d132ab9458",
+  "build_manifest": {
+    "version": "0.1.0",
+    "commit": "a7e1b95c959b457640f51be13c0745f69b0ae7ba",
+    "dirty": true,
+    "requirements_sha256": "324f4a8b9e382288beb7ec54de8ea4a51e99b012140d1ecf56cdc5c033d21c91",
+    "dependency_count": 41,
+    "dependency_report_sha256": "b0a77d1c8115e54c02d2ee819474008b9d577907992ce405f976fbad13cea627",
+    "built_at_utc": "2026-10-03T15:12:16Z",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3"
+  },
+  "tests": {
+    "passed": 1493,
+    "skipped": 2,
+    "failed": 0
+  },
+  "skips": [
+    "Windows symbolic-link privilege unavailable: two file-storage tests"
+  ],
+  "release_gate": "build/mysql-upgrade-final/release-gate-guarded.log",
+  "migration": {
+    "phase": "verified",
+    "started_at": "2026-10-03T14:38:21.242208+00:00",
+    "schema_sha256": "6981f425fc123ce391edf72df43d1f6e59c8cbd9cc2784530ea90393bf9e5dc7",
+    "before": {
+      "stock": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "industry": {
+        "rows": 90,
+        "sha256": "bde3324150af835b59ecde04c4ecdb9439ff476a155f2a984465608be0edfb0f"
+      },
+      "industry_member": {
+        "rows": 5572,
+        "sha256": "34e842714602f129da0a8e32a65d9b20cabd0ae19d32c7580e1f80996d4298c1"
+      },
+      "income_statement": {
+        "rows": 331136,
+        "sha256": "9889a94560a5bb419e4fd47dc6abfe7fd6ac30e5dbd5adb103465cf53f92031d"
+      },
+      "balance_statement": {
+        "rows": 319507,
+        "sha256": "d02a92d77d191c6105275899f56254ba95891827b38154cb50369edda5d61690"
+      },
+      "cashflow_statement": {
+        "rows": 320482,
+        "sha256": "1c980b7c8b75fa13a096499c19722547ef5d0e38fb0bcb4b5238ac851a4ae29f"
+      },
+      "dividend_plan": {
+        "rows": 55060,
+        "sha256": "80ee0cd01db3de35f5efe2575f220da65f28c38c849cafe752ca3e606fc38c5f"
+      },
+      "additional_issue": {
+        "rows": 6536,
+        "sha256": "1b28ef5b5799055d005786a6b5a09c9609c6e93095df702acd7cbe35fda630c0"
+      },
+      "rights_issue": {
+        "rows": 1191,
+        "sha256": "ec4927e605c4b0672d89d4deb3756262d80c0aa25ea4d7f481a25287687301a5"
+      },
+      "suspension_event": {
+        "rows": 104733,
+        "sha256": "8a56dfbb0982f5e40131ba0e0e08da9e66c2d6b718c6573c5004c3c812ffa984"
+      },
+      "stock_intraday": {
+        "rows": 1445,
+        "sha256": "aaa253a705d9ba1ad2a68cc41d358418463929da447757638736fe196bdc1ff2"
+      },
+      "trade_calendar": {
+        "rows": 13527,
+        "sha256": "5c73837c56ef9a26f954ba2e42b236020274841ee43561a6ff369d2b983a25fc"
+      },
+      "finance_news": {
+        "rows": 13390,
+        "sha256": "062e24cccb81480ee53ce5861badfbd82ff1877b0e097d42dc0b247c58b503b5"
+      },
+      "collection_state": {
+        "rows": 12,
+        "sha256": "b86d487b2079fa7c119e42aa9f1c444129dc1a201bebb3ffe4f51e3517424dc5"
+      },
+      "app_setting": {
+        "rows": 20,
+        "sha256": "70eeb3962f901b183a45dbac114c1861f0a8573a6cc0dbc003fa4b41e734eef7"
+      },
+      "suspension_source_date": {
+        "rows": 145358,
+        "sha256": "de784fa9c1b3d4ea3ebb7e6cd15e34d5ed754246237b1a5437f6ac3b8530792c"
+      }
+    },
+    "after": {
+      "stock": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "industry": {
+        "rows": 90,
+        "sha256": "bde3324150af835b59ecde04c4ecdb9439ff476a155f2a984465608be0edfb0f"
+      },
+      "industry_member": {
+        "rows": 5572,
+        "sha256": "34e842714602f129da0a8e32a65d9b20cabd0ae19d32c7580e1f80996d4298c1"
+      },
+      "income_statement": {
+        "rows": 331136,
+        "sha256": "9889a94560a5bb419e4fd47dc6abfe7fd6ac30e5dbd5adb103465cf53f92031d"
+      },
+      "balance_statement": {
+        "rows": 319507,
+        "sha256": "d02a92d77d191c6105275899f56254ba95891827b38154cb50369edda5d61690"
+      },
+      "cashflow_statement": {
+        "rows": 320482,
+        "sha256": "1c980b7c8b75fa13a096499c19722547ef5d0e38fb0bcb4b5238ac851a4ae29f"
+      },
+      "dividend_plan": {
+        "rows": 55060,
+        "sha256": "80ee0cd01db3de35f5efe2575f220da65f28c38c849cafe752ca3e606fc38c5f"
+      },
+      "additional_issue": {
+        "rows": 6536,
+        "sha256": "1b28ef5b5799055d005786a6b5a09c9609c6e93095df702acd7cbe35fda630c0"
+      },
+      "rights_issue": {
+        "rows": 1191,
+        "sha256": "ec4927e605c4b0672d89d4deb3756262d80c0aa25ea4d7f481a25287687301a5"
+      },
+      "suspension_event": {
+        "rows": 104733,
+        "sha256": "8a56dfbb0982f5e40131ba0e0e08da9e66c2d6b718c6573c5004c3c812ffa984"
+      },
+      "stock_intraday": {
+        "rows": 1445,
+        "sha256": "aaa253a705d9ba1ad2a68cc41d358418463929da447757638736fe196bdc1ff2"
+      },
+      "trade_calendar": {
+        "rows": 13527,
+        "sha256": "5c73837c56ef9a26f954ba2e42b236020274841ee43561a6ff369d2b983a25fc"
+      },
+      "finance_news": {
+        "rows": 13390,
+        "sha256": "062e24cccb81480ee53ce5861badfbd82ff1877b0e097d42dc0b247c58b503b5"
+      },
+      "collection_state": {
+        "rows": 12,
+        "sha256": "b86d487b2079fa7c119e42aa9f1c444129dc1a201bebb3ffe4f51e3517424dc5"
+      },
+      "app_setting": {
+        "rows": 20,
+        "sha256": "70eeb3962f901b183a45dbac114c1861f0a8573a6cc0dbc003fa4b41e734eef7"
+      },
+      "suspension_source_date": {
+        "rows": 145358,
+        "sha256": "de784fa9c1b3d4ea3ebb7e6cd15e34d5ed754246237b1a5437f6ac3b8530792c"
+      }
+    },
+    "backups": "empire_v1_* (15 tables)",
+    "stock_baseline_was_empty_due_to_test_incident": true,
+    "subsequent_live_writes": true
+  },
+  "stock_incident": {
+    "cause": "Early fixture isolation missed imported module aliases; news fixture cleanup deleted production stock. Alias binding and child configuration were corrected; global Engine SQL target ownership guard added.",
+    "scope": "Stock table deletion confirmed. Migration inventories for other tables are before/after migration evidence, not an unavailable pre-test whole-database snapshot.",
+    "recovery": {
+      "original_fingerprint": {
+        "hash": "c596298781560b77fe697a17d5a46ff94b05e11154e0a617066ce4e0c48847ea",
+        "version": [
+          "2026-10-03T21:35:44.308291",
+          "34cec13c1da14875bbd1bfc7d1fd27e4"
+        ]
+      },
+      "recovered_fingerprint": "c596298781560b77fe697a17d5a46ff94b05e11154e0a617066ce4e0c48847ea",
+      "rows": 5571,
+      "publication_rows": 5571,
+      "same_entire_business_content": true
+    },
+    "live_archive": {
+      "latest_stock_run": {
+        "run_id": "deb69b7ba65f4ee394a4656f40497166",
+        "task_id": "sina-stocks",
+        "started_at": 1791039892.6381545,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 1368,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 73
+        },
+        "finished_at": 1791039902.561168,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "snapshot_id": "61a6455974cf4c0fbb0fc60edcb3397d",
+          "collected": 5571,
+          "expected_count": 5571,
+          "pages": 70,
+          "download_seconds": 7.922,
+          "archive_wait_seconds": 2.0
+        }
+      },
+      "queued": 0
+    },
+    "normalized_local_backup": "build/mysql-upgrade-final/stock-recovered-normalized.json",
+    "old_stock_backup_empty": true
+  },
+  "query_performance": {
+    "before": {
+      "plan": [
+        {
+          "id": 1,
+          "select_type": "PRIMARY",
+          "table": "<derived2>",
+          "partitions": null,
+          "type": "ALL",
+          "possible_keys": null,
+          "key": null,
+          "key_len": null,
+          "ref": null,
+          "rows": 51,
+          "filtered": 100.0,
+          "Extra": "Using temporary; Using filesort"
+        },
+        {
+          "id": 1,
+          "select_type": "PRIMARY",
+          "table": "s",
+          "partitions": null,
+          "type": "eq_ref",
+          "possible_keys": "PRIMARY",
+          "key": "PRIMARY",
+          "key_len": "333",
+          "ref": "chosen.source,chosen.market,chosen.code,chosen.report_date",
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": null
+        },
+        {
+          "id": 2,
+          "select_type": "DERIVED",
+          "table": "income_statement",
+          "partitions": null,
+          "type": "range",
+          "possible_keys": "PRIMARY",
+          "key": "PRIMARY",
+          "key_len": "324",
+          "ref": null,
+          "rows": 6002,
+          "filtered": 11.11,
+          "Extra": "Using where; Using index; Using filesort"
+        }
+      ],
+      "seconds": [
+        0.06597060000058264,
+        0.07342719999724068,
+        0.0685014000046067,
+        0.06987340000341646,
+        0.07732389999728184
+      ],
+      "median_seconds": 0.06987340000341646
+    },
+    "after": {
+      "plan": [
+        {
+          "id": 1,
+          "select_type": "PRIMARY",
+          "table": "<derived2>",
+          "partitions": null,
+          "type": "ALL",
+          "possible_keys": null,
+          "key": null,
+          "key_len": null,
+          "ref": null,
+          "rows": 51,
+          "filtered": 100.0,
+          "Extra": "Using temporary; Using filesort"
+        },
+        {
+          "id": 1,
+          "select_type": "PRIMARY",
+          "table": "s",
+          "partitions": null,
+          "type": "eq_ref",
+          "possible_keys": "PRIMARY,ix_report_date",
+          "key": "PRIMARY",
+          "key_len": "14",
+          "ref": "chosen.unified_code,chosen.report_date",
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": null
+        },
+        {
+          "id": 2,
+          "select_type": "DERIVED",
+          "table": "income_statement",
+          "partitions": null,
+          "type": "index",
+          "possible_keys": null,
+          "key": "ix_report_date",
+          "key_len": "19",
+          "ref": null,
+          "rows": 51,
+          "filtered": 100.0,
+          "Extra": "Using index"
+        }
+      ],
+      "seconds": [
+        0.0053850999975111336,
+        0.0007036999886622652,
+        0.0005466000002343208,
+        0.0006170999986352399,
+        0.0006061000021873042
+      ],
+      "median_seconds": 0.0006170999986352399
+    },
+    "migration_seconds": 7.062463899987051,
+    "rows": 12001,
+    "capital": {
+      "before": {
+        "plan": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "dividend_plan",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "PRIMARY,ix_security_date",
+            "key": "PRIMARY",
+            "key_len": "322",
+            "ref": "const",
+            "rows": 5002,
+            "filtered": 100.0,
+            "Extra": "Using filesort"
+          }
+        ],
+        "seconds": [
+          0.0636571999930311,
+          0.06890070000372361,
+          0.07243319999543019,
+          0.06386409999686293,
+          0.06583389999286737
+        ],
+        "median_seconds": 0.06583389999286737
+      },
+      "after": {
+        "plan": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "dividend_plan",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_event_date",
+            "key_len": "84",
+            "ref": null,
+            "rows": 51,
+            "filtered": 100.0,
+            "Extra": "Using index"
+          }
+        ],
+        "seconds": [
+          0.0009157000022241846,
+          0.0004189000028418377,
+          0.00027439999394118786,
+          0.00021290000586304814,
+          0.00024819999816827476
+        ],
+        "median_seconds": 0.00027439999394118786
+      }
+    },
+    "suspension_dates": {
+      "before": {
+        "plan": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "suspension_event",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "PRIMARY,ix_suspension_start,ix_suspension_resume",
+            "key": "PRIMARY",
+            "key_len": "322",
+            "ref": "const",
+            "rows": 6001,
+            "filtered": 100.0,
+            "Extra": "Using where; Using filesort"
+          }
+        ],
+        "seconds": [
+          0.019680800003698096,
+          0.0103306000091834,
+          0.010171299989451654,
+          0.010121900006197393,
+          0.010526899990509264
+        ],
+        "median_seconds": 0.0103306000091834
+      },
+      "after": {
+        "plan": [
+          {
+            "id": 1,
+            "select_type": "PRIMARY",
+            "table": "s",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": "PRIMARY,ix_suspension_start",
+            "key": "ix_suspension_start",
+            "key_len": "19",
+            "ref": null,
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": "Using index; Using filesort"
+          },
+          {
+            "id": 1,
+            "select_type": "PRIMARY",
+            "table": "<derived2>",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "<auto_key0>",
+            "key": "<auto_key0>",
+            "key_len": "91",
+            "ref": "empire_5b3862210e9b477f973fa5faa58885ea_test.s.unified_code,empire_5b3862210e9b477f973fa5faa58885ea_test.s.suspended_at,empire_5b3862210e9b477f973fa5faa58885ea_test.s.resume_key,empire_5b3862210e9b477f973fa5faa58885ea_test.s.record_key",
+            "rows": 2,
+            "filtered": 100.0,
+            "Extra": "Using index"
+          },
+          {
+            "id": 2,
+            "select_type": "DERIVED",
+            "table": "suspension_source_date",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "94",
+            "ref": null,
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": "Using where; Using index; Using temporary"
+          }
+        ],
+        "seconds": [
+          0.015497999993385747,
+          0.01120979999541305,
+          0.012325300005613826,
+          0.013483299990184605,
+          0.010291300000972115
+        ],
+        "median_seconds": 0.012325300005613826
+      }
+    },
+    "scope": "isolated synthetic reports; five sequential warm runs; no physical disk/cold-cache claim",
+    "index_bytes": 1589248
+  },
+  "state_performance": {
+    "server": "private MySQL instance",
+    "units": 15000,
+    "measurements": {
+      "whole_state": {
+        "seconds": [
+          0.19399220000195783,
+          0.19699159999436233,
+          0.2533426000009058,
+          0.2204055000038352,
+          0.20464490000449587
+        ],
+        "median_seconds": 0.20464490000449587,
+        "decoded_json_bytes": [
+          4740126,
+          4740126,
+          4740126,
+          4740126,
+          4740126
+        ],
+        "python_traced_peak_bytes": [
+          27916746,
+          27912992,
+          27894136,
+          27894136,
+          27894360
+        ]
+      },
+      "unit_state": {
+        "seconds": [
+          0.0025910000113071874,
+          0.0017084000137401745,
+          0.0011468000011518598,
+          0.0010399000020697713,
+          0.0010837000008905306
+        ],
+        "median_seconds": 0.0011468000011518598,
+        "decoded_json_bytes": [
+          442,
+          442,
+          442,
+          442,
+          442
+        ],
+        "python_traced_peak_bytes": [
+          18658,
+          13118,
+          12150,
+          12150,
+          12310
+        ]
+      },
+      "update": {
+        "statements": 3,
+        "parameter_bytes": [
+          176,
+          49,
+          335
+        ],
+        "max_parameter_bytes": 335
+      }
+    },
+    "cache": "same connection pool, sequential warm reads, no buffer-pool reset",
+    "limitations": [
+      "decoded JSON size, not network packet byte count",
+      "Python traced allocation, not total process memory",
+      "synthetic state only; no physical disk benefit measurement"
+    ]
+  },
+  "formal_queries": {
+    "stocks_SH": {
+      "seconds": 0.0031810999935260043,
+      "returned_rows": 10,
+      "sha256": "6f71abd575621a5a467e507240e1f24b7139c19c9993db57eb155ae30a213913"
+    },
+    "stocks_SZ": {
+      "seconds": 0.0022387999924831092,
+      "returned_rows": 10,
+      "sha256": "ea16a9d8f75e4fb641355c14fb747e2161aaff1785a0bdfd90032cb8e86d1b93"
+    },
+    "stocks_BJ": {
+      "seconds": 0.0026711000100476667,
+      "returned_rows": 10,
+      "sha256": "e50ff8c1e6efba4aafc4e5a6e0b189491aeb5ca965a355644dcb244192281ee8"
+    },
+    "industry_unicode": {
+      "seconds": 0.014174500000081025,
+      "returned_rows": 20,
+      "sha256": "01b8c9af8415a578ca6c5b2297f464d910e0a7948e4d87d83b02640a70d9fc5c"
+    },
+    "calendar_2026_10": {
+      "seconds": 0.0013466000091284513,
+      "returned_rows": 31,
+      "sha256": "ba587a4435b06ec2f091f1a367153e5740b7e8308a48afb02a7ae5c9be4a224d"
+    },
+    "income_first": {
+      "seconds": 0.006737899995641783,
+      "returned_rows": 51,
+      "sha256": "537a4118c1f1eeeab34ab43442462839cd5e6256b33f11d2eec3478789490dd7"
+    },
+    "income_middle": {
+      "seconds": 0.04588599999260623,
+      "returned_rows": 51,
+      "sha256": "085268a6e56d3957b0fea78381abf5dbec10cd92617e3621874b60ace41712b0"
+    },
+    "income_last": {
+      "seconds": 0.10907430000952445,
+      "returned_rows": 51,
+      "sha256": "ef3c1d8ce0a6d77d675bced53a28fe557e0d4954c76bc70750b1792aaa218838"
+    },
+    "income_security_names": {
+      "seconds": 0.0042794000037247315,
+      "returned_rows": 1,
+      "sha256": "020dedbdf798d0c6af222ae059d46b569f970237fe586771ef33341497ec047a"
+    },
+    "income_history": {
+      "seconds": 0.009093699991353787,
+      "returned_rows": 122,
+      "sha256": "108968131b22aa39fc943d6d881fb699ad9fd76496fc8053f7fe4f1fa3ff6392"
+    },
+    "balance_first": {
+      "seconds": 0.012912400008644909,
+      "returned_rows": 51,
+      "sha256": "bad27795b828b424570d6527895ee2322e960bf47f32422d48cdeaff7ad46ef0"
+    },
+    "balance_middle": {
+      "seconds": 0.06854239999665879,
+      "returned_rows": 51,
+      "sha256": "885671832a1ae53b51cb9d2f4dc9231dab6fbbf2cc715cfb589f1daf9459cfef"
+    },
+    "balance_last": {
+      "seconds": 0.10945109999738634,
+      "returned_rows": 51,
+      "sha256": "ab47ca99ff93289e6d0975feeb20d65650e1f8897a92e3ce15a2c893cacc4340"
+    },
+    "balance_security_names": {
+      "seconds": 0.005053999993833713,
+      "returned_rows": 1,
+      "sha256": "020dedbdf798d0c6af222ae059d46b569f970237fe586771ef33341497ec047a"
+    },
+    "balance_history": {
+      "seconds": 0.011475599996629171,
+      "returned_rows": 119,
+      "sha256": "69af2ae4d753aa6e80f347dbe157695e53306d7e2374fa76f006b910244e8e82"
+    },
+    "cashflow_first": {
+      "seconds": 0.015416899987030774,
+      "returned_rows": 51,
+      "sha256": "5343735b9ab83c8be800c75fa11626b784161a8793d1f01bad94f8c0be123aaa"
+    },
+    "cashflow_middle": {
+      "seconds": 0.08759939999436028,
+      "returned_rows": 51,
+      "sha256": "766141ff7ef3ce7ce8fd2a3f1b8d2b92f7222b09a6919e81e920f4e87ca18774"
+    },
+    "cashflow_last": {
+      "seconds": 0.11171189999731723,
+      "returned_rows": 51,
+      "sha256": "8602753c2df76e5bc9fa3f8004758344ca328296471e2ba1b3bd46a3c581b67b"
+    },
+    "cashflow_security_names": {
+      "seconds": 0.006548100005602464,
+      "returned_rows": 1,
+      "sha256": "020dedbdf798d0c6af222ae059d46b569f970237fe586771ef33341497ec047a"
+    },
+    "cashflow_history": {
+      "seconds": 0.011996900007943623,
+      "returned_rows": 104,
+      "sha256": "86102bb3cd27b8e256604d692c1d8a74b630a1b03877c4b45577213120e3717a"
+    },
+    "dividends": {
+      "seconds": 0.0022535999887622893,
+      "returned_rows": 30,
+      "sha256": "6d87ded562e5a1503c1d8f011e1e0f5be0ec9e99cdf93509776df4da02f37e71"
+    },
+    "additional_issues": {
+      "seconds": 0.006402200000593439,
+      "returned_rows": 30,
+      "sha256": "07115a798d563fc1e1e89ffb1349d4d6370ffaf8897b95c2cb7b6b4cc6783c12"
+    },
+    "rights_issues": {
+      "seconds": 0.0050389999960316345,
+      "returned_rows": 30,
+      "sha256": "dfd5d3fec811f7abbd12abcbf7b59223a20c2c29960047f4e578f7af0542c5c6"
+    },
+    "news": {
+      "seconds": 0.005410800004028715,
+      "returned_rows": 10,
+      "sha256": "4c5a4883b00accab3e20ba01088dda2704b7c5424fa1c2f03ca99e481f93f7a4"
+    },
+    "suspension_source_day": {
+      "seconds": 0.001210899994475767,
+      "returned_rows": 9,
+      "sha256": "cdaa34cfa2621543cc2d6cfbef8db99e68d0d51530462948ffab8289b4485335"
+    },
+    "intraday": {
+      "unified_code": "000001.SZ",
+      "trade_date": "2021-01-04",
+      "validated_hash": true
+    },
+    "all_started": true,
+    "read_only": true
+  },
+  "production_plans_before": {
+    "income_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "income_statement",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "322",
+        "ref": "const",
+        "rows": 99750,
+        "filtered": 100.0,
+        "Extra": "Using index; Using filesort"
+      }
+    ],
+    "dividend_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "dividend_plan",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_security_date",
+        "key": "PRIMARY",
+        "key_len": "322",
+        "ref": "const",
+        "rows": 24039,
+        "filtered": 100.0,
+        "Extra": "Using filesort"
+      }
+    ],
+    "source_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "suspension_event",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_suspension_start,ix_suspension_resume",
+        "key": "PRIMARY",
+        "key_len": "322",
+        "ref": "const",
+        "rows": 48200,
+        "filtered": 100.0,
+        "Extra": "Using where; Using filesort"
+      }
+    ]
+  },
+  "production_plans_after": {
+    "income_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "income_statement",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_report_date",
+        "key_len": "19",
+        "ref": null,
+        "rows": 51,
+        "filtered": 100.0,
+        "Extra": "Using index"
+      }
+    ],
+    "dividend_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "dividend_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_event_date",
+        "key_len": "84",
+        "ref": null,
+        "rows": 51,
+        "filtered": 100.0,
+        "Extra": "Using index"
+      }
+    ],
+    "source_date": [
+      {
+        "id": 1,
+        "select_type": "PRIMARY",
+        "table": "<derived2>",
+        "partitions": null,
+        "type": "ALL",
+        "possible_keys": null,
+        "key": null,
+        "key_len": null,
+        "ref": null,
+        "rows": 9,
+        "filtered": 100.0,
+        "Extra": "Using temporary; Using filesort"
+      },
+      {
+        "id": 1,
+        "select_type": "PRIMARY",
+        "table": "s",
+        "partitions": null,
+        "type": "eq_ref",
+        "possible_keys": "PRIMARY,ix_suspension_start",
+        "key": "PRIMARY",
+        "key_len": "91",
+        "ref": "d.unified_code,d.suspended_at,d.resume_key,d.record_key",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": "Using index"
+      },
+      {
+        "id": 2,
+        "select_type": "DERIVED",
+        "table": "suspension_source_date",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "3",
+        "ref": null,
+        "rows": 9,
+        "filtered": 100.0,
+        "Extra": "Using where; Using index; Using temporary"
+      }
+    ],
+    "suspension_unknown_rows": 0,
+    "legacy_backup_tables": 15
+  },
+  "packaged_live": {
+    "record": {
+      "run_id": "83ab4ef4d41e4d4e87a37904cff1b748",
+      "task_id": "tdx-suspensions",
+      "started_at": 1791040474.3566985,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 2,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1791040475.7354882,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 0,
+        "pages": 1,
+        "source_pages": 1,
+        "dates_checked": 1,
+        "batch_id": "31ede0824f324944a1494b320491e498",
+        "start_date": "2026-10-03",
+        "end_date": "2026-10-03"
+      }
+    },
+    "queue": 0,
+    "config_preserved": true,
+    "different_cwd_exe_checks": true
+  },
+  "desktop": {
+    "window": "Empire · 投资研究工作台",
+    "process_path": "D:/project/empire/dist/Empire/Empire.exe",
+    "visible": true,
+    "services_connected": true,
+    "stocks": 5571,
+    "income_security": "601139",
+    "income_periods": 75,
+    "suspension_source_date": "2026-09-30",
+    "suspension_rows": 9,
+    "market_wheel_unchanged": true,
+    "left_open": true,
+    "screenshots": {
+      "desktop-stocks.png": "54959e00610ca1c662d6e494cf82c3a370020264d979fec117c7c78ab8ab3d45",
+      "desktop-income.png": "b414b5e22967120beb2a68cc79ee604348ef7d2e5639e977865f95789b2eb698",
+      "desktop-suspensions.png": "4ddd8ee607453962db417907bb61c4d00a2896282fc291bebaaefd3a4a15a5aa"
+    }
+  },
+  "service_policy": {
+    "production_mysql_restarted": false,
+    "shared_redis_restarted": false,
+    "shared_redis_cleared": false,
+    "router_tables_modified": false,
+    "private_mysql_13317_stopped": true
+  },
+  "limitations": [
+    "Existing historical collection progress and source-quality limitations remain.",
+    "Warm synthetic performance is not a physical cold-cache or disk-write benchmark.",
+    "Rollback to migration snapshot is now refused because live writes resumed. Preserve current additions before any future restore."
+  ]
+}

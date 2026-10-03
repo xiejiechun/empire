@@ -32,7 +32,7 @@ def suspension_row(*, resumed=None, reason="重大事项"):
 async def suspension_db():
     cfg = copy.deepcopy(load_config())
     token = uuid4().hex
-    source = "test-" + token
+    source = 'tdx'
     cfg["redis"]["namespace"] = "empire:test:" + token
     cfg["archive"]["interval_seconds"] = 3600
     manager = build_manager(cfg)
@@ -77,8 +77,8 @@ async def suspension_db():
         if mysql:
             def cleanup():
                 with mysql.engine.begin() as conn:
-                    conn.execute(text("DELETE FROM suspension_event WHERE source=:source"), {"source": source})
-                    conn.execute(text("DELETE FROM collection_state WHERE source=:source"), {"source": source})
+                    conn.execute(text("DELETE FROM suspension_event"), {"source": source})
+                    conn.execute(text("DELETE FROM collection_state"), {"source": source})
             await mysql.control(cleanup)
         if store:
             keys = [key async for key in store.client.scan_iter(
@@ -224,7 +224,12 @@ async def test_commit_ack_failure_replays_safely_and_sql_outage_retains_message(
 
 
 async def test_preparation_reports_partial_history(suspension_db):
-    _, query, publish = suspension_db
+    manager, query, publish = suspension_db
+    from empire.core.time import CHINA
+    today = datetime.now(CHINA).date()
+    with manager.registry.get('mysql.store').engine.begin() as conn:
+        conn.execute(text('INSERT INTO trade_calendar VALUES(:day,:flag,NOW())'),
+                     [dict(day=today,flag=0),dict(day=today-timedelta(days=1),flag=1)])
     await publish([suspension_row()])
     checks = {item.criterion: item for item in await query.preparation_check()}
     assert checks["fields"].status == "pass" and checks["keys"].status == "pass"
@@ -242,7 +247,8 @@ async def test_legacy_missing_source_day_is_repaired_and_query_verified_after_re
     await archive.fingerprints.invalidate('suspensions', query.source)
     # The isolated test owns this source; emulate a preserved pre-migration row.
     with mysql.engine.begin() as conn:
-        conn.execute(text('UPDATE suspension_event SET source_dates=NULL WHERE source=:s'), {'s': query.source})
+        conn.execute(text('UPDATE suspension_event SET source_dates_known=FALSE'))
+        conn.execute(text('DELETE FROM suspension_source_date'))
     assert await query.list_events(code='600423', start='2004-12-27', end='2004-12-27') == []
     checks = {c.criterion: c for c in await query.preparation_check()}
     assert checks['fields'].status == 'fail' and checks['quality'].status == 'fail'

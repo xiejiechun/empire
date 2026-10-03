@@ -73,7 +73,7 @@ async def live():
                                 ("complete", {"pages": 1, "collected": 1, "count_after": 1,
                                               "terminal_rows": []})):
                 value = make_envelope(
-                    source=f"test-{token}", dataset=f"stock.universe.{kind}",
+                    source='sina', dataset=f"stock.universe.{kind}",
                     business_key=f"{snapshot_id}:{kind}", job_key="test", run_id=token,
                     batch_id=snapshot_id, payload={**base, **extra},
                 )
@@ -91,9 +91,9 @@ async def live():
 
         def count(event_id):
             with mysql.engine.connect() as conn:
-                return conn.execute(text("SELECT COUNT(*) FROM collection_state WHERE source=:source "
-                                    "AND JSON_UNQUOTE(JSON_EXTRACT(payload,'$.publication.snapshot_id'))=:id"),
-                                    {"source": f"test-{token}", "id": snapshots[event_id]}).scalar_one()
+                return conn.execute(text("SELECT COUNT(*) FROM collection_state "
+                                    "WHERE source=:source AND JSON_UNQUOTE(JSON_EXTRACT(payload,'$.publication.snapshot_id'))=:id"),
+                                    {"source": 'sina', "id": snapshots[event_id]}).scalar_one()
 
         yield redis, mysql, archive, ingest, event, start_archive, count, registry
     finally:
@@ -104,10 +104,10 @@ async def live():
         if mysql.engine:
             def clean_rows():
                 with mysql.engine.begin() as conn:
-                    conn.execute(text("DELETE FROM stock WHERE source=:source"),
-                                 {"source": f"test-{token}"})
-                    conn.execute(text("DELETE FROM collection_state WHERE source=:source"),
-                                 {"source": f"test-{token}"})
+                    conn.execute(text("DELETE FROM stock"),
+                                 {"source": 'sina'})
+                    conn.execute(text("DELETE FROM collection_state"),
+                                 {"source": 'sina'})
             await mysql.control(clean_rows)
         if redis.client:
             keys = [key async for key in redis.client.scan_iter(f"{redis.prefix}:*")]
@@ -239,13 +239,18 @@ async def test_process_crash_after_commit_recovers_on_restart(live, tmp_path):
     value = event(1)
     await ingest.publish_page(value, job_key="test", expected_revision=0, cursor={"page": 1})
     script = tmp_path / "crash_after_commit.py"
+    import json
+    child_settings = tmp_path / 'isolated-mysql.json'
+    child_settings.write_text(json.dumps(load_config()['mysql']), encoding='utf-8')
     script.write_text('''
-import asyncio, os, sys
+import asyncio, json, os, sys
+from pathlib import Path
 from empire.core.config import load_config
 from empire.bootstrap import build_manager
 
 async def main():
     cfg = load_config(os.environ.get("EMPIRE_CONFIG"))
+    cfg['mysql'] = json.loads(Path(sys.argv[2]).read_text(encoding='utf-8'))
     cfg["redis"]["namespace"] = sys.argv[1]
     manager = build_manager(cfg)
     archive = manager.entries["pipeline.archive"].plugin
@@ -257,7 +262,7 @@ async def main():
 
 asyncio.run(main())
 ''', encoding="utf-8")
-    result = await asyncio.to_thread(subprocess.run, [sys.executable, str(script), redis.prefix],
+    result = await asyncio.to_thread(subprocess.run, [sys.executable, str(script), redis.prefix, str(child_settings)],
                                      capture_output=True, timeout=30)
     assert result.returncode == 23, result.stderr.decode(errors="replace")
     assert await redis.client.xlen(redis.stream) == 3

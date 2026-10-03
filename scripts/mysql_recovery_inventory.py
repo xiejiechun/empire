@@ -14,26 +14,15 @@ from typing import Any
 
 from sqlalchemy import inspect, text
 
+from empire.contracts.business_schema import PRIMARY_KEYS
 from empire.core.config import load_config
 from empire.core.redaction import redact
 from empire.plugins.infra.mysql_store import make_engine
 
-TABLES = {
-    'stock_intraday': ('source', 'market', 'code', 'trade_date'),
-    'industry': ('source', 'industry_code'),
-    'industry_member': ('source', 'industry_code', 'market', 'code'),
-    **{name: ("source", "market", "code", "report_date") for name in
-       ("income_statement", "balance_statement", "cashflow_statement")},
-    "dividend_plan": ("source", "record_key"),
-    "additional_issue": ("source", "record_key"),
-    "rights_issue": ("source", "record_key"),
-    "stock": ("source", "unified_code"),
-    "finance_news": ("source", "news_id"),
-    "trade_calendar": ("source", "trade_date"),
-    "suspension_event": ("source", "market", "code", "suspended_at", "resume_key", "record_key"),
-    "collection_state": ("namespace", "project_id"),
-    "app_setting": ("namespace", "kind", "setting_key"),
-}
+TABLES = {**{k: tuple(v) for k,v in PRIMARY_KEYS.items()},
+          'finance_news': ('source','news_id'), 'collection_state': ('namespace','project_id'),
+          'app_setting': ('namespace','kind','setting_key')}
+
 
 
 def file_identity(path: Path | None) -> dict[str, Any] | None:

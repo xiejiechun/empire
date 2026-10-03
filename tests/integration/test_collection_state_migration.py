@@ -33,7 +33,7 @@ def test_migration_preserves_rows_versions_and_is_repeatable():
 
     event.listen(engine, "before_cursor_execute", isolate, retval=True)
     try:
-        schema = (Path(__file__).parents[2] / "sql/schema.sql").read_text(encoding="utf-8")
+        schema = (Path(__file__).parents[2] / "sql/legacy/business-v1.sql").read_text(encoding="utf-8")
         schema = "\n".join(line for line in schema.splitlines() if not line.startswith("--"))
         with engine.begin() as conn:
             for statement in schema.split(";"):

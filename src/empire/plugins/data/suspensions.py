@@ -3,6 +3,7 @@ from datetime import date, datetime, timedelta
 
 from sqlalchemy import text
 
+from empire.contracts.business_schema import require_fixed_source, schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import PreparationContribution
 from empire.core.time import CHINA
@@ -43,12 +44,9 @@ class SuspensionDataPlugin:
 
     async def start(self, context):
         self.mysql = context.get("mysql.store")
-        await self.mysql.require_schema({"suspension_event": {
-            "source", "market", "code", "name", "suspended_at", "resumed_at",
-            "suspension_type", "source_note", "reason", "version_observed_at", "resume_key",
-            "record_key", "source_dates",
-        }}, {"suspension_event": ["source", "market", "code", "suspended_at", "resume_key",
-                                  "record_key"]})
+        require_fixed_source('suspension_event', self.source)
+        await self.mysql.require_schema(*schema_contract('suspension_event', 'name','resumed_at','source_dates_known','suspension_type','source_note','reason','version_observed_at'))
+        await self.mysql.require_schema(*schema_contract('suspension_source_date'))
         state = await self.mysql.control(self._state)
         if state.get('identity_migration_pending') or (state and (
                 state.get('source_calendar_version') != 1 or state.get('collection_integrity_version') != 2)):
@@ -92,26 +90,25 @@ class SuspensionDataPlugin:
                                      sort_by, direction)
 
     def _list_events(self, market, code, start, end, limit, offset, sort_by, direction):
-        filters = ["source=:source"]
-        if start == end:
-            filters.append("JSON_CONTAINS(source_dates, JSON_QUOTE(:day))")
-        else:
-            filters.append("EXISTS (SELECT 1 FROM JSON_TABLE(source_dates, '$[*]' "
-                           "COLUMNS (day DATE PATH '$')) AS appearances "
-                           "WHERE appearances.day>=:start AND appearances.day<:end)")
+        filters = ["TRUE"]
         params = {"source": self.source, "start": start,
                   "end": end + timedelta(days=1), "day": start.isoformat(),
                   "limit": limit, "offset": offset}
         if market:
-            filters.append("market=:market")
+            filters.append("RIGHT(s.unified_code,2)=:market")
             params["market"] = market
         if code:
-            filters.append("code LIKE :code")
+            filters.append("s.unified_code LIKE :code")
             params["code"] = code + "%"
         with self.mysql.read_engine.connect() as conn:
             rows = conn.execute(text(f"""
-                SELECT market,code,name,suspended_at,resumed_at,suspension_type,source_note,reason
-                FROM suspension_event WHERE {' AND '.join(filters)}
+                SELECT RIGHT(s.unified_code,2) AS market,LEFT(s.unified_code,6) AS code,name,suspended_at,resumed_at,suspension_type,source_note,reason
+                FROM suspension_event s JOIN (
+                    SELECT DISTINCT unified_code,suspended_at,resume_key,record_key
+                    FROM suspension_source_date FORCE INDEX(PRIMARY)
+                    WHERE source_date>=:start AND source_date<:end
+                ) d USING (unified_code,suspended_at,resume_key,record_key)
+                WHERE {' AND '.join(filters)}
                 ORDER BY {sort_by} {direction},suspended_at DESC,market,code,resume_key,record_key
                 LIMIT :limit OFFSET :offset
             """), params).mappings().all()

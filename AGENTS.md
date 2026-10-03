@@ -160,3 +160,7 @@
 新增或实质修改功能时同步程序内说明主题和 docs/documentation-coverage.json 页面关联；每个页面必须有操作或数据说明，不得仅补技术字段。正文按入门、日常操作、数据说明、故障处理、技术参考组织，写明入口、操作、保存/生效、结果与限制。动态实采进度与开发验收分别记载，不写成永久规则。
 
 最后一次实现修改后执行 scripts/documentation_contract.py review --note <具体审阅说明>，再运行文档契约及相关回归；正式发布执行统一门禁。源码或正文改变会使旧审阅失效，不能只更新摘要冒充内容同步；确实不影响用户行为的调整须以 --unchanged-reason 记录具体理由。完整流程见 [说明文档维护](docs/documentation-maintenance.md)。
+
+## 2026-10-03 用户授权的 MySQL 结构升级
+
+按 [业务结构升级](docs/mysql-business-schema.md) 执行现行 SQL 契约：固定来源由数据集登记，业务证券键统一为 unified_code；新闻和 collection_state 保留 source。停复牌来源日期以 suspension_source_date 关联表保存，消息中的 source_dates 集合语义不变。旧章节中的 SQL source/market/code 组合键和 source_dates JSON 列描述由该现行契约替代，业务身份、来源差异、版本防覆盖和未知日期规则不变。旧完整库仅通过 scripts/migrate_business_schema.py 显式转换，新空库使用 init-db，启动不迁移。

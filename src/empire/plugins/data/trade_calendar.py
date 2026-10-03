@@ -1,5 +1,6 @@
 from sqlalchemy import text
 
+from empire.contracts.business_schema import require_fixed_source, schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import PreparationContribution
 from empire.plugins.datasets.trade_calendar import (
@@ -31,9 +32,8 @@ class CalendarDataPlugin:
     async def start(self, context):
         self.context = context
         self.mysql = context.get("mysql.store")
-        await self.mysql.require_schema({"trade_calendar": {
-            "source", "trade_date", "is_trade", "updated_at",
-        }}, {"trade_calendar": ["source", "trade_date"]})
+        require_fixed_source('trade_calendar', self.source)
+        await self.mysql.require_schema(*schema_contract('trade_calendar', 'is_trade','updated_at'))
         return {"calendar.query": self, "calendar.schema": self}
 
     async def plan(self, today, fresh=False):
@@ -50,7 +50,7 @@ class CalendarDataPlugin:
         with self.mysql.engine.connect() as conn:
             return dict(conn.execute(text("""
                 SELECT DATE_FORMAT(trade_date,'%Y-%m'),COUNT(*) FROM trade_calendar
-                WHERE source=:source GROUP BY DATE_FORMAT(trade_date,'%Y-%m')
+                WHERE TRUE GROUP BY DATE_FORMAT(trade_date,'%Y-%m')
             """), {"source": self.source}).all())
 
     async def month(self, month):
@@ -64,7 +64,7 @@ class CalendarDataPlugin:
         with self.mysql.read_engine.connect() as conn:
             data = conn.execute(text("""
                 SELECT trade_date,is_trade,updated_at FROM trade_calendar
-                WHERE source=:source AND trade_date BETWEEN :start AND :end ORDER BY trade_date
+                WHERE trade_date BETWEEN :start AND :end ORDER BY trade_date
             """), {"source": self.source, "start": dates[0], "end": dates[-1]}).mappings()
             rows = [{"trade_date": row["trade_date"].isoformat(), "is_trade": bool(row["is_trade"]),
                      "updated_at": row["updated_at"].isoformat()} for row in data]

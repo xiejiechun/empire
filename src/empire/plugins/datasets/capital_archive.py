@@ -6,6 +6,8 @@ from datetime import UTC
 from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
+from empire.contracts.business_schema import require_fixed_source
+from empire.contracts.security import unified_code
 from empire.core.time import mysql_time
 from empire.plugins.datasets.capital_actions import KINDS, SCHEMA_VERSIONS, digest, validate_rows
 from empire.plugins.infra.collection_state import confirmed_page
@@ -54,7 +56,12 @@ class CapitalDataset:
     def fingerprint_subset(self, data, identities):
         return {**data, 'write_unit': data['unit'] in identities}
 
+    @staticmethod
+    def state_unit(data):
+        return data['unit']
+
     def write(self, conn, envelope, data):
+        require_fixed_source(self.table, envelope.source)
         unit, previous = data['unit'], data['archive_state']
         observed = envelope.observed_at.isoformat(timespec='microseconds')
         prior = previous.get('units', {}).get(unit, {}) if unit != 'manifest' else previous.get('manifest', {})
@@ -62,10 +69,10 @@ class CapitalDataset:
         written = 0
         if accepted and unit != 'manifest':
             market, code = unit.split(':')
-            params = dict(source=envelope.source, market=market, code=code)
+            params = dict(unified_code=unified_code(market, code))
             old = {r['record_key']: dict(r) for r in conn.execute(text(
-                f'SELECT * FROM {self.table} '
-                'WHERE source=:source AND market=:market AND code=:code FOR UPDATE'), params).mappings()}
+                f'SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code FROM {self.table} '
+                'WHERE unified_code=:unified_code FOR UPDATE'), params).mappings()}
             for row in data['rows']:
                 checksum = digest(row)
                 stored = old.get(row['record_key'])
@@ -79,8 +86,8 @@ class CapitalDataset:
                           'payload': json.dumps(row['data'], ensure_ascii=False, sort_keys=True),
                           'content_hash': checksum, 'version_observed_at': mysql_time(envelope.observed_at)}
                 conn.execute(text(f'INSERT INTO {self.table} '
-                    '(source,record_key,market,code,name,event_date,payload,content_hash,version_observed_at) '
-                    'VALUES (:source,:record_key,:market,:code,:name,:event_date,:payload,:content_hash,:version_observed_at) '
+                    '(record_key,unified_code,name,event_date,payload,content_hash,version_observed_at) '
+                    'VALUES (:record_key,:unified_code,:name,:event_date,:payload,:content_hash,:version_observed_at) '
                     'ON DUPLICATE KEY UPDATE name=VALUES(name),event_date=VALUES(event_date),payload=VALUES(payload),'
                     'content_hash=VALUES(content_hash),version_observed_at=VALUES(version_observed_at)'), values)
                 written += 1

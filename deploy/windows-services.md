@@ -27,9 +27,9 @@
 .\.venv\Scripts\python.exe -X utf8 -m empire init-db
 ```
 
-这是显式操作，仅在已配置的数据库中创建缺失的 `stock`、`finance_news`、`trade_calendar`、`suspension_event` 七张业务表，以及 `collection_state` 统一归档状态表和 `app_setting` 配置表。不会创建数据库、删除旧表、修改已有字段或搬运历史记录。旧结构的简化通过针对性 SQL 和变更记录单独处理，`init-db` 不代替该过程。
+这是新空库的显式操作，按 sql/schema.sql 创建十四张业务表（含停复牌来源日期关系表），以及 collection_state 统一归档状态表和 app_setting 配置表。不会创建数据库、删除旧表、修改已有字段或搬运历史记录。旧结构的简化通过针对性 SQL 和变更记录单独处理，`init-db` 不代替该过程。
 
-已有表结构不兼容时，保留实际结构并报错；需要按具体差异直接修改 MySQL，不能通过反复初始化覆盖已有表。
+已有表结构不兼容时，保留实际结构并报错；旧版完整业务库须走 scripts/migrate_business_schema.py 显式升级，不能通过反复初始化覆盖已有表。
 
 ## 容量设置
 
@@ -43,15 +43,21 @@
 
 采集与归档记录每项目各保留 100 条，错误每项目保留 300 条且原文样本每条最多 64 KiB，都不写 MySQL。Redis 服务或电脑重启后，待归档数据、断点、next_due、频控许可/冷却及运行记录会丢失；任务、网站频控和下载资源配置保存在 MySQL `app_setting`，不会随 Redis 重启丢失。只重启 Empire 且 Redis 仍运行时可以续跑。
 
-通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。显式维护入口为 `scripts/migrate_capital_actions.py`，应用启动不改表。生命周期、来源口径与操作见 [通达信增发送配](../docs/tdx-capital-actions.md)。
+通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。显式维护入口为 `scripts/migrate_business_schema.py`，应用启动不改表。生命周期、来源口径与操作见 [通达信增发送配](../docs/tdx-capital-actions.md)。
 
 财务报表使用 `income_statement`（利润表）、`balance_statement`（资产负债表）和 `cashflow_statement`（现金流量表）。这些表属于独立财报功能，本次增发详情增量优化不修改这些表，也不执行其数据库维护。
 
 
 ### 同花顺财报存储
 
-`income_statement`、`balance_statement`、`cashflow_statement` 分别保存利润、资产负债和现金流量报表，以 `(source, market, code, report_date)` 为主键，当前只支持来源 report 口径。JSON payload 保存规范科目、单位和舍入精度，不保存原始响应。三项目各自使用统一 collection_state；恢复清单包括三张表。运行前显式执行 scripts/migrate_financial_statements.py，应用启动不自动建表。
+`income_statement`、`balance_statement`、`cashflow_statement` 分别保存利润、资产负债和现金流量报表，以 `(unified_code, report_date)` 为主键，当前只支持来源 report 口径。JSON payload 保存规范科目、单位和舍入精度，不保存原始响应。三项目各自使用统一 collection_state；恢复清单包括三张表。运行前显式执行 scripts/migrate_business_schema.py，应用启动不自动建表。
 
-行业业务表：`industry` 保存最新目录，`industry_member` 保存最新成分；统一状态仍为 `collection_state`。新增结构使用 `scripts/migrate_industries.py` 显式维护，既有业务不删除，无历史变化记录。
+行业业务表：`industry` 保存最新目录，`industry_member` 保存最新成分；统一状态仍为 `collection_state`。新增结构使用 `scripts/migrate_business_schema.py` 显式维护，既有业务不删除，无历史变化记录。
 
-开盘啦 `stock_intraday` 按 `(source, market, code, trade_date)` 保存普通分时、开盘竞价完整有序数组及上市关联；不保存成功原始响应。新增表通过 `scripts/migrate_intraday.py` 显式维护，启动不建表。维护正常关闭 Empire，前后核对并保留既有业务及待归档消息。所有十五张 Empire 表纳入正式结构清单（十三张业务表、collection_state、app_setting）。
+开盘啦 `stock_intraday` 按 `(unified_code, trade_date)` 保存普通分时、开盘竞价完整有序数组及上市关联；不保存成功原始响应。旧版完整库通过 `scripts/migrate_business_schema.py migrate` 显式转换，启动不建表。维护前正常关闭 Empire，待归档业务经正式链路排空，前后核对规范内容；旧表保留为恢复副本。全部十六张 Empire 表纳入正式结构清单（十四张业务表、collection_state、app_setting）。
+
+## 2026-10 业务结构升级
+
+`suspension_source_date` 保存事件出现的来源日期关系；`suspension_event.source_dates_known` 表达未知与已知。固定来源业务表不再重复保存 source，证券键统一为 unified_code；新闻和项目状态仍保存 source。升级前关闭程序，用 scripts/migrate_business_schema.py 的 migrate / verify 显式转换并核对，正常启动不改表。旧单表新增脚本已退役，新空库使用 init-db。迁移失败保持停机并用同一日志 resume；恢复业务写入后不直接回滚旧副本。
+
+现行完整表清单：`stock`、`industry`、`industry_member`、`income_statement`、`balance_statement`、`cashflow_statement`、`dividend_plan`、`additional_issue`、`rights_issue`、`suspension_event`、`stock_intraday`、`trade_calendar`、`finance_news`、`collection_state`、`app_setting`、`suspension_source_date`。

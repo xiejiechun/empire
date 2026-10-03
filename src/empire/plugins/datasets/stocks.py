@@ -8,6 +8,7 @@ from datetime import datetime
 from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
+from empire.contracts.business_schema import require_fixed_source
 from empire.contracts.stocks import normalize_sina_stock
 from empire.core.time import mysql_time
 
@@ -130,21 +131,21 @@ def assemble(records: list[dict], *, include_rows: bool = True) -> dict | None:
 
 
 def write(connection, envelope, data: dict) -> dict:
+    require_fixed_source("stock", envelope.source)
     latest = data["archive_state"].get("version")
     incoming = [data["started_at"].isoformat(timespec="microseconds"), data["snapshot_id"]]
     if latest and incoming <= latest:
         return {"status": "replayed" if data["snapshot_id"] == latest[1] else "superseded",
                 "row_count": 0, "confirmed": []}
     previous = connection.execute(text("""
-        SELECT node,unified_code,code,name,market,source_symbol FROM stock
-        WHERE source=:source FOR UPDATE
+        SELECT unified_code,name FROM stock FOR UPDATE
     """), data).mappings().all()
-    incoming = {row["unified_code"]: {**row, "node": data["node"]} for row in data["rows"]}
+    incoming = {row["unified_code"]: {k: row[k] for k in ("unified_code", "name")} for row in data["rows"]}
     if {row["unified_code"]: dict(row) for row in previous} == incoming:
         return {"status": "complete", "row_count": len(data["rows"]), "written_count": 0,
                 "confirmed": ["current"]}
     # Both removal and insertion are inside MySQLPlugin's single InnoDB transaction.
-    connection.execute(text("DELETE FROM stock WHERE source=:source"), data)
+    connection.execute(text("DELETE FROM stock"), data)
     insert_rows(connection, data)
     return {"status": "complete", "row_count": len(data["rows"]),
             "written_count": len(data["rows"]), "confirmed": ["current"]}
@@ -153,8 +154,8 @@ def write(connection, envelope, data: dict) -> dict:
 def insert_rows(connection, data: dict) -> None:
     for offset in range(0, len(data["rows"]), 1000):
         connection.execute(text("""
-            INSERT INTO stock (source, node, unified_code, code, name, market, source_symbol)
-            VALUES (:source, :node, :unified_code, :code, :name, :market, :source_symbol)
+            INSERT INTO stock (unified_code, name)
+            VALUES (:unified_code, :name)
         """), [{**row, "source": data["source"], "node": data["node"]}
                 for row in data["rows"][offset:offset + 1000]])
 

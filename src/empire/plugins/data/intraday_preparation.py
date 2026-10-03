@@ -23,7 +23,7 @@ async def audit(query, request=None):
         def read():
             with query.mysql.read_engine.begin() as conn:
                 return [dict(r) for r in conn.execute(text('SELECT trade_date,payload,content_hash,version_observed_at '
-                    'FROM stock_intraday WHERE source=:source AND market=:market AND code=:code '
+                    'FROM stock_intraday WHERE unified_code=CONCAT(:code,CHAR(46),:market) '
                     'AND trade_date BETWEEN :start AND :end ORDER BY trade_date LIMIT 10001'),
                     dict(source=query.source, market=stock['market'], code=stock['code'], start=lower, end=upper)).mappings()]
         records = await query.mysql.read(read)

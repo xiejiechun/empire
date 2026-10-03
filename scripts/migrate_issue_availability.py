@@ -6,6 +6,7 @@ from types import SimpleNamespace
 from sqlalchemy import text
 
 from empire.__main__ import acquire_instance_lock
+from empire.contracts.business_schema import require_fixed_source
 from empire.core.config import load_config
 from empire.core.redaction import redact
 from empire.plugins.data.capital_actions import decode
@@ -18,8 +19,9 @@ from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
 def snapshot(conn, source):
+    require_fixed_source('additional_issue', source)
     rows = [dict(row) for row in conn.execute(text(
-        'SELECT * FROM additional_issue WHERE source=:source ORDER BY record_key'),
+        'SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code FROM additional_issue WHERE TRUE ORDER BY record_key'),
         {'source': source}).mappings()]
     if len(rows) > 10000:
         raise ValueError('增发维护范围超过安全上限')
@@ -27,13 +29,14 @@ def snapshot(conn, source):
 
 
 def migrate_rows(engine, namespace, source='tdx'):
+    require_fixed_source('additional_issue', source)
     with engine.begin() as conn:
         before, _ = snapshot(conn, source)
         old = read_state(conn, namespace, 'tdx-additional-issues', source, lock=True)
         reset = old.get('contract_version') != 3 or bool(old.get('detail_migration_pending'))
         if reset:
             units = {key: {'observed_at': value['observed_at']} for key, value in old.get('units', {}).items()}
-            save_state(conn, namespace, 'tdx-additional-issues', source, 'additional_issues.unit',
+            save_state(conn, namespace, 'tdx-additional-issues', source, 'additional_issues',
                 dict(contract_version=3, units=units, detail_migration_pending=True), old)
         after, _ = snapshot(conn, source)
         if before != after:
@@ -77,7 +80,7 @@ async def migrate(cfg):
                                 namespace + ':archive:progress:tdx-additional-issues-v1')
             with engine.begin() as conn:
                 old = read_state(conn, namespace, 'tdx-additional-issues', 'tdx', lock=True)
-                save_state(conn, namespace, 'tdx-additional-issues', 'tdx', 'additional_issues.unit',
+                save_state(conn, namespace, 'tdx-additional-issues', 'tdx', 'additional_issues',
                            {key: value for key, value in old.items() if key != 'detail_migration_pending'}, old)
         report['unchanged_unit_fingerprints_retained'] = retained
         with engine.connect() as conn:

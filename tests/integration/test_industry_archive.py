@@ -29,7 +29,7 @@ async def industry_db():
     manager = build_manager(cfg)
     query = manager.entries['data.industries'].plugin
     collector = manager.entries['collector.ths_industries'].plugin
-    query.source = collector.source = 'test-' + token
+    query.source = collector.source = 'ths'
     mysql = store = None
     try:
         await manager.start('collector.ths_industries')
@@ -55,7 +55,7 @@ async def industry_db():
             def cleanup():
                 with mysql.engine.begin() as conn:
                     for table in ('industry_member', 'industry'):
-                        conn.execute(text(f'DELETE FROM {table} WHERE source=:source'), {'source': query.source})
+                        conn.execute(text(f'DELETE FROM {table}'), {'source': query.source})
                     conn.execute(text('DELETE FROM collection_state WHERE namespace=:namespace'),
                                  {'namespace': cfg['redis']['namespace']})
             await mysql.control(cleanup)
@@ -149,7 +149,7 @@ async def test_hot_cold_same_content_revisions_removal_stale_and_repair(industry
         async with archive.lock:
             await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
             with mysql.engine.begin() as conn:
-                conn.execute(text("UPDATE industry_member SET name='' WHERE source=:source"), {'source': query.source})
+                conn.execute(text("UPDATE industry_member SET name=''"), {'source': query.source})
         assert next(c for c in await query.preparation_check() if c.criterion == 'fields').status == 'fail'
         await publish(changed, start + timedelta(minutes=5))
         assert (await query.list_members())['rows'] == rows['rows']
@@ -213,7 +213,7 @@ async def test_cache_cannot_hide_same_count_wrong_key_or_missing_relation(indust
     async with archive.lock:
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text("UPDATE industry_member SET code='600001' WHERE source=:source AND code='600000'"),
+            conn.execute(text("UPDATE industry_member SET unified_code='600001.SH' WHERE unified_code='600000.SH'"),
                          {'source': query.source})
     assert next(c for c in await query.preparation_check() if c.criterion == 'coverage').status == 'fail'
     await publish()
@@ -221,7 +221,7 @@ async def test_cache_cannot_hide_same_count_wrong_key_or_missing_relation(indust
     async with archive.lock:
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text('DELETE FROM industry WHERE source=:source'), {'source': query.source})
+            conn.execute(text('DELETE FROM industry'), {'source': query.source})
     with pytest.raises(ValueError, match='关联'):
         await query.preparation_check()
     await publish()

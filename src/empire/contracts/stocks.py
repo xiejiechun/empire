@@ -2,6 +2,8 @@
 
 import re
 
+from empire.contracts.security import unified_code
+
 MARKETS = {"sh": "SH", "sz": "SZ", "bj": "BJ"}
 MARKET_NAMES = {"SH": "上海", "SZ": "深圳", "BJ": "北京"}
 
@@ -19,5 +21,5 @@ def normalize_sina_stock(row: dict) -> dict:
     if not isinstance(name, str) or not name.strip() or len(name.strip()) > 100:
         raise ValueError("股票名称为空或超出长度限制")
     market = MARKETS[symbol[:2]]
-    return {"code": code, "name": name.strip(), "unified_code": f"{code}.{market}",
+    return {"code": code, "name": name.strip(), "unified_code": unified_code(market, code),
             "market": market, "source_symbol": symbol}

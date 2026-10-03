@@ -7,7 +7,9 @@ from datetime import UTC
 from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
+from empire.contracts.business_schema import require_fixed_source
 from empire.contracts.industries import MEMBER_LIMIT, market, name
+from empire.contracts.security import unified_code
 from empire.core.time import mysql_time
 from empire.plugins.infra.collection_state import confirmed_page
 
@@ -17,10 +19,10 @@ FINGERPRINT_NAMESPACE = 'ths_industries_v2'
 FINGERPRINT_VERSION = ArchiveVersion(('utc',), observed_index=0)
 PROJECT = 'ths-industries'
 JOB = PROJECT + '-v1'
-TABLES = {'industry': {'source', 'industry_code', 'name'},
-          'industry_member': {'source', 'industry_code', 'market', 'code', 'name'}}
-KEYS = {'industry': ['source', 'industry_code'],
-        'industry_member': ['source', 'industry_code', 'market', 'code']}
+TABLES = {'industry': {'industry_code', 'name'},
+          'industry_member': {'industry_code', 'unified_code', 'name'}}
+KEYS = {'industry': ['industry_code'],
+        'industry_member': ['industry_code', 'unified_code']}
 
 
 def digest(value):
@@ -82,14 +84,15 @@ def fingerprint_subset(data, identities):
 
 
 def read_snapshot(conn, source, *, lock=False):
+    require_fixed_source("industry", source)
     params = {'source': source}
     suffix = ' FOR UPDATE' if lock else ''
-    rows = conn.execute(text('SELECT industry_code,name FROM industry WHERE source=:source '
+    rows = conn.execute(text('SELECT industry_code,name FROM industry '
                              'ORDER BY industry_code LIMIT 501' + suffix), params).mappings()
     industries = {r['industry_code']: dict(code=r['industry_code'], name=r['name'], members=[])
                   for r in rows}
-    members = conn.execute(text('SELECT industry_code,market,code,name FROM industry_member '
-        'WHERE source=:source ORDER BY industry_code,code LIMIT 15001' + suffix), params).mappings()
+    members = conn.execute(text('SELECT industry_code,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code,name FROM industry_member '
+        'ORDER BY industry_code,code LIMIT 15001' + suffix), params).mappings()
     for row in members:
         if row['industry_code'] not in industries or row['market'] != market(row['code']):
             raise ValueError('行业归档成员关联字段缺失或市场错误')
@@ -98,6 +101,7 @@ def read_snapshot(conn, source, *, lock=False):
 
 
 def write(conn, envelope, data):
+    require_fixed_source("industry", envelope.source)
     prior = data['archive_state']
     observed = envelope.observed_at.isoformat(timespec='microseconds')
     outcome = dict(status='complete', row_count=data['row_count'], written_count=0, confirmed=[])
@@ -106,30 +110,30 @@ def write(conn, envelope, data):
     # Read raw keys here so a new complete source set can repair broken associations.
     params = {'source': envelope.source}
     old_industries = {r['industry_code']: r['name'] for r in conn.execute(text(
-        'SELECT industry_code,name FROM industry WHERE source=:source FOR UPDATE'), params).mappings()}
+        'SELECT industry_code,name FROM industry FOR UPDATE'), params).mappings()}
     old_members = {(r['industry_code'], r['market'], r['code']): r['name'] for r in conn.execute(text(
-        'SELECT industry_code,market,code,name FROM industry_member WHERE source=:source FOR UPDATE'), params).mappings()}
+        'SELECT industry_code,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code,name FROM industry_member FOR UPDATE'), params).mappings()}
     industries = {r['code']: r['name'] for r in data['industries']}
     members = {(r['code'], market(m[0]), m[0]): m[1] for r in data['industries'] for m in r['members']}
     for key in old_members.keys() - members.keys():
-        conn.execute(text('DELETE FROM industry_member WHERE source=:source AND industry_code=:industry '
-                          'AND market=:market AND code=:code'),
-                     {**params, 'industry': key[0], 'market': key[1], 'code': key[2]})
+        conn.execute(text('DELETE FROM industry_member WHERE industry_code=:industry '
+                          'AND unified_code=:unified_code'),
+                     {**params, 'industry': key[0], 'unified_code': unified_code(key[1], key[2])})
         outcome['written_count'] += 1
     for key in old_industries.keys() - industries.keys():
-        conn.execute(text('DELETE FROM industry WHERE source=:source AND industry_code=:industry'),
+        conn.execute(text('DELETE FROM industry WHERE industry_code=:industry'),
                      {**params, 'industry': key})
         outcome['written_count'] += 1
     for key, label in industries.items():
         if old_industries.get(key) != label:
-            conn.execute(text('INSERT INTO industry(source,industry_code,name) VALUES(:source,:industry,:name) '
+            conn.execute(text('INSERT INTO industry(industry_code,name) VALUES(:industry,:name) '
                 'ON DUPLICATE KEY UPDATE name=VALUES(name)'), {**params, 'industry': key, 'name': label})
             outcome['written_count'] += 1
     for key, label in members.items():
         if old_members.get(key) != label:
-            conn.execute(text('INSERT INTO industry_member(source,industry_code,market,code,name) '
-                'VALUES(:source,:industry,:market,:code,:name) ON DUPLICATE KEY UPDATE name=VALUES(name)'),
-                {**params, 'industry': key[0], 'market': key[1], 'code': key[2], 'name': label})
+            conn.execute(text('INSERT INTO industry_member(industry_code,unified_code,name) '
+                'VALUES(:industry,:unified_code,:name) ON DUPLICATE KEY UPDATE name=VALUES(name)'),
+                {**params, 'industry': key[0], 'unified_code': unified_code(key[1], key[2]), 'name': label})
             outcome['written_count'] += 1
     outcome['confirmed'] = ['current']
     return outcome
