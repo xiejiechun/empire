@@ -7,10 +7,12 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
+from empire.contracts.download import ResponsePolicy
 from empire.plugins.collectors.kaipanla_intraday import KaipanlaIntradayCollector
 from empire.plugins.collectors.kaipanla_scope import lifecycle, parse_listing_page, required_days
 from empire.plugins.datasets.intraday import validate
 from empire.plugins.infra.http import HttpService
+from empire.plugins.infra.resources import ByteBudget
 from tests.test_http import MemoryPermits
 from tests.test_kaipanla_source import sample
 
@@ -55,7 +57,8 @@ def collector(days=None):
     days = days or [date(2021, 1, 4), date(2021, 1, 5)]
     c.ingest = Publisher()
     c.query = SimpleNamespace(plan=AsyncMock(return_value=([STOCK], days)),
-        covered_days=AsyncMock(return_value=set()), suspended_days=AsyncMock(return_value=set()))
+        covered_days=AsyncMock(return_value=set()), suspended_days=AsyncMock(return_value=set()),
+        suspension_plan=AsyncMock(return_value={'000001.SZ': set()}))
     c.records = SimpleNamespace(add_error=AsyncMock(), sanitize_text=str)
     c.confirmation = SimpleNamespace(page_status=AsyncMock(return_value={'status': 'complete'}))
     async def request(method, url, **options):
@@ -66,7 +69,8 @@ def collector(days=None):
         body = sample(kind)
         body['day'] = data['Day'].replace('-', '')
         return httpx.Response(200, json=body)
-    c.http = SimpleNamespace(request=AsyncMock(side_effect=request), response_policy=lambda _: None)
+    c.http = SimpleNamespace(request=AsyncMock(side_effect=request), response_policy=lambda _: ResponsePolicy(),
+                             buffer_budget=ByteBudget(64 * 1024 * 1024), parallelism=AsyncMock(return_value=4))
     return c
 
 
@@ -178,6 +182,64 @@ async def test_middle_source_gap_keeps_frontier_and_archives_later_valid_day():
     assert c.ingest.state['cursor']['first_gap']['trade_date'] == '2021-01-05'
     assert c.stats['status'] == 'error'
     assert c.ingest.state['cursor']['phase'] == 'collecting'
+
+
+async def test_prefetch_parallel_reads_publish_in_date_order_and_release_all_budget():
+    c = collector([date(2021, 1, 4), date(2021, 1, 5), date(2021, 1, 6)])
+    original = c.http.request.side_effect
+    active, peak = 0, 0
+    async def delayed(method, url, **options):
+        nonlocal active, peak
+        if 'attempt_options' not in options:
+            return await original(method, url, **options)
+        active += 1
+        peak = max(peak, active)
+        try:
+            day = options['attempt_options']()['data']['Day']
+            await asyncio.sleep(.05 if day == '2021-01-04' else .002)
+            return await original(method, url, **options)
+        finally:
+            active -= 1
+    c.http.request.side_effect = delayed
+    await c.execute()
+    assert 1 < peak <= 4
+    assert [e.raw_payload['rows'][0]['trade_date'] for e in c.ingest.published] == [
+        '2021-01-04', '2021-01-05', '2021-01-06']
+    assert c.http.buffer_budget.used == 0
+
+
+async def test_prefetch_cancellation_drains_children_and_keeps_unpublished_frontier():
+    c = collector()
+    original = c.http.request.side_effect
+    active = 0
+    ready = asyncio.Event()
+    async def blocked(method, url, **options):
+        nonlocal active
+        if 'attempt_options' not in options:
+            return await original(method, url, **options)
+        active += 1
+        ready.set()
+        try:
+            await asyncio.Event().wait()
+        finally:
+            active -= 1
+    c.http.request.side_effect = blocked
+    task = asyncio.create_task(c.execute())
+    await asyncio.wait_for(ready.wait(), 2)
+    task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await task
+    assert active == 0 and c.http.buffer_budget.used == 0
+    assert not c.ingest.published and c.ingest.state['revision'] == 0
+
+
+async def test_minimum_single_response_budget_makes_progress_without_self_wait():
+    c = collector()
+    size = c.http.response_policy('generic').reservation_bytes
+    c.http.buffer_budget = ByteBudget(size)
+    result = await asyncio.wait_for(c.execute(), 2)
+    assert result['phase'] == 'complete'
+    assert c.http.buffer_budget.peak == size and c.http.buffer_budget.used == 0
 
 
 async def test_transport_retry_gets_new_device_and_keeps_shared_permits():

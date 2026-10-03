@@ -51,7 +51,7 @@ def test_equal_count_different_minute_keys_rejected():
 
 
 @pytest.mark.parametrize('change', [dict(code='600519'), dict(day=20210105),
-    dict(errcode='1020'), dict(trend=[]), dict(time=None), dict(preclose_px=0)])
+    dict(errcode='1020'), dict(trend=[]), dict(preclose_px=0)])
 def test_wrong_identity_errors_and_empty_are_not_coverage(change):
     with pytest.raises(SourceError):
         parse_response({**sample('trend'), **change}, '000001', DAY, 'trend')
@@ -71,6 +71,35 @@ def test_conflicting_two_responses_rejected():
     auction = parse_response({**sample('auction'), 'preclose_px': 11}, '000001', DAY, 'auction')
     with pytest.raises(SourceError, match='冲突'):
         combine_day(trend, auction)
+
+
+@pytest.mark.parametrize('stamp', [None, 0])
+def test_unknown_source_time_does_not_reject_valid_business_data(stamp):
+    value = parse_response({**sample('trend'), 'time': stamp}, '000001', DAY, 'trend')
+    assert value['source_time'] == stamp and len(value['points']) == 241
+
+
+def test_zero_placeholder_is_not_mistaken_for_valid_full_minute_data():
+    payload = sample('trend')
+    payload.update(time=0, preclose_px=0)
+    payload['trend'] = [[r[0], 0, 0, 0, 2] for r in payload['trend']]
+    with pytest.raises(SourceError) as error:
+        parse_response(payload, '000001', DAY, 'trend')
+    assert error.value.category == 'placeholder'
+
+
+def test_missing_minute_remains_a_gap_even_with_zero_volume_neighbors():
+    payload = sample('trend')
+    payload['trend'] = [r for r in payload['trend'] if r[0] != '09:52']
+    with pytest.raises(SourceError) as error:
+        parse_response(payload, '000001', DAY, 'trend')
+    assert error.value.category == 'minute_gap'
+    assert error.value.details['missing_minutes'] == ['09:52']
+
+
+def test_boolean_source_time_is_not_an_unknown_integer_marker():
+    with pytest.raises(SourceError):
+        parse_response({**sample('trend'), 'time': False}, '000001', DAY, 'trend')
 
 
 @pytest.mark.asyncio

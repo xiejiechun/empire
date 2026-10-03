@@ -88,6 +88,7 @@ def build_manager(cfg: dict) -> PluginManager:
         CollectionControl([TaskContribution('kaipanla-intraday', '开盘啦历史分时及竞价',
             'collector.kaipanla_intraday', 'kaipanla', '当前上市沪深北证券 · 2021 年起 · 不含退市证券 · 竞价保留全部点位',
             category='高频行情', source_name='开盘啦', interval_seconds=86400,
+            parallel_downloads=True,
             fresh_description='逐证券日重新核验声明范围，保留已归档历史；普通采集补 SQL 缺日并回看最近五个交易日。'),
             TaskContribution('ths-industries', '同花顺当前行业',
             'collector.ths_industries', 'ths', '最新行业名单与全部成分股票 · 不保存变化历史',

@@ -24,6 +24,10 @@ TREND_TIMES = tuple(
 class SourceError(ValueError):
     """An unsuccessful/ambiguous response must not advance collection coverage."""
 
+    def __init__(self, message, *, category='invalid_fields', details=None):
+        super().__init__(message)
+        self.category, self.details = category, details or {}
+
 
 def request_options(code, day, kind):
     if not isinstance(code, str) or not re.fullmatch(r'[0-9]{6}', code):
@@ -51,7 +55,8 @@ def parse_response(payload, code, day, kind, aliases=None):
     if not isinstance(payload, dict) or str(payload.get('errcode')) != '0':
         error = str(payload.get('errcode', 'missing')) if isinstance(payload, dict) else 'structure'
         # Error codes are diagnostics, never evidence of holidays, suspension or pre-listing.
-        raise SourceError(f'开盘啦 {kind} 请求未成功（errcode={error[:40]}），不能确认空日期')
+        raise SourceError(f'开盘啦 {kind} 请求未成功（errcode={error[:40]}），不能确认空日期',
+                          category='source_request', details={'interface_code': error[:40]})
     source_code = payload.get('code')
     proof = None
     if source_code != code:
@@ -61,12 +66,13 @@ def parse_response(payload, code, day, kind, aliases=None):
         validate_proof(proof, code, source_code)
     if str(payload.get('day')) != day.strftime('%Y%m%d'):
         raise SourceError('开盘啦返回证券或日期与请求不一致')
-    number(payload.get('time'), '来源时间', integer=True, positive=True)
-    number(payload.get('preclose_px'), '昨收', positive=True)
     field, width = ('trend', 5) if kind == 'trend' else ('bid', 4)
     rows = payload.get(field)
     if not isinstance(rows, list) or not 1 <= len(rows) <= 5000:
         raise SourceError('开盘啦点位为空或超过声明边界；不能证明完整')
+    if all(isinstance(r, list) and len(r) == width and r[1] == 0 and r[3] == 0 for r in rows):
+        raise SourceError('开盘啦返回全零价格/量占位点，未取得有效行情；不能推断停牌或空日', category='placeholder')
+    number(payload.get('preclose_px'), '昨收', positive=True)
     previous = ''
     for row in rows:
         if not isinstance(row, list) or len(row) != width:
@@ -87,10 +93,17 @@ def parse_response(payload, code, day, kind, aliases=None):
             if not '09:15' <= clock <= '09:25':
                 raise SourceError('开盘啦开盘竞价点位超出时间范围')
     if kind == 'trend' and tuple(row[0] for row in rows) != TREND_TIMES:
-        raise SourceError('开盘啦分时分钟键集合不完整或重复')
+        missing = sorted(set(TREND_TIMES) - {r[0] for r in rows})
+        raise SourceError('开盘啦分时分钟键集合不完整或重复', category='minute_gap',
+                          details={'point_count': len(rows), 'missing_minutes': missing[:20]})
+    # This is optional source metadata, not the business date or version guard.
+    # Zero/missing means unknown; never manufacture an epoch or reject valid prices.
+    source_time = payload.get('time')
+    if source_time is not None and not (type(source_time) is int and source_time == 0):
+        number(source_time, '来源时间', integer=True, positive=True)
     # No source count/sequence metadata exists for bid. A structurally valid full
     # response preserves all points, but cannot prove upstream tick completeness.
-    return dict(code=code, source_code=source_code, alias=proof, day=day.isoformat(), source_time=payload['time'],
+    return dict(code=code, source_code=source_code, alias=proof, day=day.isoformat(), source_time=source_time,
                 preclose_px=payload['preclose_px'], points=[list(row) for row in rows])
 
 
@@ -113,6 +126,11 @@ async def fetch_part(collector, code, day, kind, market=None, listed=None):
         attempt_options=partial(request_options, code, day, kind), max_redirects=0,
         allowed_domains=(DOMAIN,), project_id=collector.project_id,
         policy=collector.http.response_policy('generic'), max_retries=collector.request_retries)
+    return await consume_part(collector, response, code, day, kind, market, listed)
+
+
+async def consume_part(collector, response, code, day, kind, market=None, listed=None):
+    """The ordered consumer alone validates a downloaded response and alias identity."""
     body = response.content
     diagnostic = dict(request_url=URL, status_code=response.status_code,
                       raw_body=body[:65536], observed_bytes=len(body),
@@ -134,6 +152,8 @@ async def fetch_part(collector, code, day, kind, market=None, listed=None):
             return {**parsed, 'source_code': source_code, 'alias': proof}
         return parse_response(payload, code, day, kind, aliases)
     except (ValueError, TypeError, KeyError) as exc:
+        if isinstance(exc, SourceError):
+            diagnostic['metadata'].update(category=exc.category, **exc.details)
         if not getattr(exc, 'diagnostic_recorded', False):
             exc.diagnostic_recorded = await record_error_safely(
                 collector.records, collector.stats, collector.project_id, exc,

@@ -122,15 +122,22 @@ def render_runtime(owner, job):
     started = active.get('started_at') if isinstance(active, dict) else None
     error = redact(job.get('error') or (latest or {}).get('error') or '', owner.shell.cfg)
     if job['active']:
-        error = redact(job.get('error', ''), owner.shell.cfg)
+        error = redact(result.get('error') or job.get('error', ''), owner.shell.cfg)
+    failure_summary = (f"失败 {result['failed_units']:,} {result.get('unit_name', '个证券')}"
+                       if 'failed_units' in result else '—')
+    category_labels = {'source_request': '来源请求无有效数据', 'minute_gap': '来源缺分钟点',
+                       'placeholder': '全零占位行情', 'invalid_fields': '字段/关联校验失败'}
+    categories = result.get('failure_categories', {})
+    if categories:
+        failure_summary += '；' + '，'.join(f'{category_labels.get(k, k)} {v}'
+                                           for k, v in categories.items() if v)
     archive = ('等待本轮归档确认' if state == 'awaiting_archive' else
                '整轮已确认，可查询' if state == 'complete' else
                '尚未确认本轮完成；已归档部分可查询')
     values = dict(status=STATUS.get(state, state), count=count, units=units,
                   current=result.get('current_security') or result.get('current_date') or result.get('current_month') or '—',
                   frontier=(f"连续已入队 {result['continuous_collected']:,} 条" if 'continuous_collected' in result else '—'),
-                  failed=(f"失败 {result['failed_units']:,} {result.get('unit_name', '个证券')}"
-                          if 'failed_units' in result else '—'),
+                  failed=failure_summary,
                   unavailable=(f"{result['details_unavailable']:,} 条" if 'details_unavailable' in result else '—'),
                   archive=archive, plan=schedule_text(job['policy']),
                   next='本轮结束后安排' if job['active'] else stamp(job.get('next_due')),

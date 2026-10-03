@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-03T14:48:45.596598+00:00",
-  "note": "补充测试数据库执行边界硬拦截和股票发布数量一致性准入；记录影子迁移、来源证明及数据恢复边界，避免旧完成标记掩盖空业务表。",
+  "reviewed_at": "2026-10-03T20:29:38.828439+00:00",
+  "note": "开盘啦失败处理与性能：可选time未知保留、全零占位及真实分钟缺口不放行；源1017不能推断为空日。失败分类、最早缺口提示、共享有界响应预取/按序校验入队/取消及最小预算回收、停牌批量规划均同步操作与限制。登记错误ID并保留未解决源记录，有限真实性能样本与发布证据分开。",
   "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -32,7 +32,7 @@
     "sql/schema.sql": "3cef6006953c8f6373aafc49cf33768e7bb754f98b5e0b14ae88456c0ca83deb",
     "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
     "src/empire/__main__.py": "ca767712c23e80044d03d1ca76e2d451b72a8e38fc522e43b0134a20f1738614",
-    "src/empire/bootstrap.py": "703759a46b179e04cd29d5b56d5b0ef77f1687f892f01d4a78839beba398a482",
+    "src/empire/bootstrap.py": "6da6b706a1c67d1ef7194f25932e200f94705a5fcfd6b3963ef448e726fa9086",
     "src/empire/build_info.py": "beac8f6c25236dce13e1ecb6e18c067324edcad095cece72ae8e3d46bb145ff7",
     "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
     "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -82,9 +82,10 @@
     "src/empire/plugins/collectors/capital_recovery.py": "3e600bdac5e2319ce879a2fb9bba772903df22b21f0c778384f93222894dab65",
     "src/empire/plugins/collectors/cninfo_calendar.py": "50ec8f4418f9ed9dd771078628a98f2ce0d37dfc43a1433d18b4ff15da7a0f94",
     "src/empire/plugins/collectors/kaipanla_alias.py": "93958b515819aaac98a4fb66d7016c776d3edbe073a3c38143f8d41e99f8ff06",
-    "src/empire/plugins/collectors/kaipanla_intraday.py": "db84f93585d27e5e4ce83a6a9c7fbd3439219ab49e07cd40319ee651f6da59c2",
+    "src/empire/plugins/collectors/kaipanla_download.py": "926a8c9cf7db949e05029ff630fc68b51c7e585274af6df538fb344b6fc2d869",
+    "src/empire/plugins/collectors/kaipanla_intraday.py": "1ed8d6be0025b754cea51624615d4be80697c4a488fe323c6251011b0d52afaf",
     "src/empire/plugins/collectors/kaipanla_scope.py": "43d9ae7cc06bad4825f7a6a60b180e90aeb4470dcbf6e998c8239f96320a52a1",
-    "src/empire/plugins/collectors/kaipanla_source.py": "21211ab9966393f49d88e2488bf28dc0a167ba1daa07aa95fdc76d8a5974e9f4",
+    "src/empire/plugins/collectors/kaipanla_source.py": "2bd2409374e07c1432e625fcf12c0a6a6666b696434649ea0c2b35b497775cf4",
     "src/empire/plugins/collectors/resources/ths.js": "0163e41dfdcbd889755142f4179a83a8d9f575f5343a56413546cc7fc0262376",
     "src/empire/plugins/collectors/sina_news.py": "2ecba195a1c8021068b324963c513c983bc78c5af143d2eb790c16318d9d8321",
     "src/empire/plugins/collectors/sina_universe.py": "ead69ea9fe409283a953dba501effe2ff44c99f09d8584e87f48b3493704ad6a",
@@ -107,7 +108,7 @@
     "src/empire/plugins/data/financial_preparation.py": "c6383e08985241d39ed664b94509b1ea9c4ae5515a456021485c88b16425ed91",
     "src/empire/plugins/data/financial_statements.py": "c4493fe51c321a085ecef70be968ce4b3a8c43c88b017aaaba248b4cb46a0581",
     "src/empire/plugins/data/industries.py": "a2daa9054ffc14eabaeb6949becaf5c96e3b95397494cd8cd86ae891b869b6d4",
-    "src/empire/plugins/data/intraday.py": "b580e3fdd0d49a5a27f410268adb1f640a44cba66edb2c871ec8c4158d525a21",
+    "src/empire/plugins/data/intraday.py": "9d1857dc476f809b57ea23f9087b1dac47bea182ed7ee2d30743e26bada9ad05",
     "src/empire/plugins/data/intraday_preparation.py": "d31b170cf6a36851fc3ecd4261c941dfc41839f9a280264bd1b32b87987a55b9",
     "src/empire/plugins/data/issue_candidates.py": "fd1ea369efc4d9d3c7eb86c5f09ceb679da23a6bd570f0b7bb21139421b42695",
     "src/empire/plugins/data/news.py": "a34447b4c6539fb83e51f12e7dbf4575a0e9c414e2e4868e7e6de8426fe3f08b",
@@ -165,12 +166,12 @@
     "src/empire/plugins/ui/collection_views/__init__.py": "c4dc44ccec3af7a8366f5556a64e5a3b80bd65a73b4b0d268bd8da76545d1c53",
     "src/empire/plugins/ui/collection_views/base.py": "fb4b0bebc91f2335a421453f6794d82593d2009e383121bc4b8126b33bfeb240",
     "src/empire/plugins/ui/collection_views/history.py": "f39db41a69e26a4a44f6e0a0ad4dfa4d74a7838a583289379189fbd2eb1c2cb9",
-    "src/empire/plugins/ui/collection_views/network_summary.py": "1f9f694bb49d084d7ad631728f74e2d2abb24e4e5ef85f50c87c94d9c53d17ae",
+    "src/empire/plugins/ui/collection_views/network_summary.py": "2475a5da82c03eaefd6d7c284f9c900c0e615315e8cab907f87364699ccec9b2",
     "src/empire/plugins/ui/collection_views/site_fields.py": "76aba655e6a88ff8937ff736e7e4d878c29530fd89dd2efbc47fc65391a75759",
     "src/empire/plugins/ui/collection_views/sites.py": "e398277d6021de01528724b1f4613c607f58f6cbf7bc46f9187af9bf6ee79c7f",
     "src/empire/plugins/ui/collection_views/task_layout.py": "f220743879d12a3098b7df42cf161ac544e9e308c99a41a6b819d5c20eb29bd2",
     "src/empire/plugins/ui/collection_views/task_menu.py": "7a6ba300942e63c5e345253c2f6b8ad592c436743f09fd51116d7c08a3d4e368",
-    "src/empire/plugins/ui/collection_views/task_runtime.py": "c0c606e7ac91e38251a15b17492a4a9fef49dcf3cec700d993dd6d445a4d9347",
+    "src/empire/plugins/ui/collection_views/task_runtime.py": "1602cb04f66692928ae670b6a9778139aba9567550235ec8f4fd03df2d0ced36",
     "src/empire/plugins/ui/collection_views/tasks.py": "1d1a84580b44d328bc6265069cfe7c83beca335badce60a5298fa76c6b09f5cf",
     "src/empire/plugins/ui/common.py": "85d5fff311ee0bda6cbc9596a39246a262e34023135911bd3c57e474590c4b9f",
     "src/empire/plugins/ui/download_fields.py": "a44504a8a4abe9ff3e663ad998dab6b656f781d7b44bc9b9cae7239c71e06656",
@@ -200,5 +201,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "438fe73b5f850ab04d81827ef55d3137cbca1a01c0c97f016f02997b8dc615b2"
+  "content_sha256": "c2148fea2eb8faf098e902f4ae8a0a208300d68194f95e19178da3df7c69e19c"
 }

@@ -13,11 +13,12 @@ PHASE_LABELS = {
 def running_download_summary(job):
     """Runtime windows contain pending and ready pages, not only active requests."""
     progress = job.get("progress", {})
+    unit = progress.get('download_item_name', '页')
     if not job.get("active") or "download_concurrency" not in progress:
         return "尚无本轮下载窗口数据；窗口还受任务缓冲预算与剩余页数限制。"
-    text = (f"本轮综合预取窗口 {progress['download_concurrency']} 页 · "
-            f"待处理 {progress.get('download_pending_pages', 0)} 页"
-            f"（其中已下载待按序处理 {progress.get('download_ready_pages', 0)} 页）")
+    text = (f"本轮综合预取窗口 {progress['download_concurrency']} {unit} · "
+            f"待处理 {progress.get('download_pending_pages', 0)} {unit}"
+            f"（其中已下载待按序处理 {progress.get('download_ready_pages', 0)} {unit}）")
     if "download_buffer_capacity" in progress:
         text += f" · 总缓冲理论可容本类 {progress['download_buffer_capacity']} 页"
     failed = progress.get("download_failed_pages", 0)

@@ -114,6 +114,41 @@ class IntradayDataPlugin:
                 return days
         return await self.mysql.read(read)
 
+    async def suspension_plan(self, stocks, start, end):
+        """One bounded SQL snapshot, rather than one query per security at startup."""
+        def read():
+            wanted = {s['code'] + '.' + s['market'] for s in stocks}
+            result = {key: set() for key in wanted}
+            with self.mysql.read_engine.begin() as conn:
+                rows = conn.execute(text('SELECT unified_code,suspended_at,resumed_at FROM suspension_event '
+                    'WHERE suspension_type=:kind AND suspended_at<:end AND resumed_at>:start '
+                    'ORDER BY unified_code,suspended_at LIMIT 100001'),
+                    dict(kind='full_day', start=start, end=end + timedelta(days=1))).mappings().all()
+                if len(rows) > 100000:
+                    raise ValueError('停牌范围超过批量规划的有界上限')
+                intervals, counts = {}, {}
+                for row in rows:
+                    key = row['unified_code']
+                    if key not in wanted:
+                        continue
+                    counts[key] = counts.get(key, 0) + 1
+                    if counts[key] > 1000:
+                        raise ValueError('单证券停牌生命周期证据超过上限')
+                    lower, upper = row['suspended_at'].date(), row['resumed_at'].date()
+                    if row['resumed_at'] <= row['suspended_at']:
+                        continue
+                    if row['suspended_at'].time() > time(9, 30):
+                        lower += timedelta(days=1)
+                    pair = (key, lower)
+                    intervals[pair] = min(intervals.get(pair, upper), upper)
+                for (key, lower), upper in intervals.items():
+                    day = max(lower, start)
+                    while day < upper and day <= end:
+                        result[key].add(day)
+                        day += timedelta(days=1)
+                return result
+        return await self.mysql.read(read)
+
     async def day(self, market, code, trade_date):
         if market not in ('SH', 'SZ', 'BJ') or not isinstance(code, str) or not code.isdigit() or len(code) != 6:
             raise ValueError('请选择有效市场及六位证券代码')

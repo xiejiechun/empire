@@ -13,8 +13,10 @@ from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
+from empire.contracts.download import ResponsePolicy
 from empire.core.config import load_config
 from empire.plugins.datasets.intraday import FINGERPRINT_NAMESPACE, JOB, identity
+from empire.plugins.infra.resources import ByteBudget
 from tests.test_kaipanla_intraday import STOCK, listing, row
 from tests.test_kaipanla_source import sample
 
@@ -37,6 +39,7 @@ async def intraday_db():
         mysql, store = query.mysql, manager.registry.get('redis.store')
         query.plan = AsyncMock(return_value=([STOCK], [date(2021, 1, 4), date(2021, 1, 5)]))
         query.suspended_days = AsyncMock(return_value=set())
+        query.suspension_plan = AsyncMock(return_value={'000001.SZ': set()})
         async def request(method, url, **options):
             if 'eastmoney.com' in url:
                 return httpx.Response(200, json=listing())
@@ -45,7 +48,8 @@ async def intraday_db():
             body = sample(kind)
             body['day'] = data['Day'].replace('-', '')
             return httpx.Response(200, json=body)
-        collector.http = SimpleNamespace(request=AsyncMock(side_effect=request), response_policy=lambda _: None)
+        collector.http = SimpleNamespace(request=AsyncMock(side_effect=request), response_policy=lambda _: ResponsePolicy(),
+            buffer_budget=ByteBudget(64 * 1024 * 1024), parallelism=AsyncMock(return_value=4))
         async def publish(value=None, observed=None):
             value = copy.deepcopy(value or row())
             batch = uuid4().hex

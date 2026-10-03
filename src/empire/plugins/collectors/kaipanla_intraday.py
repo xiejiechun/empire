@@ -8,8 +8,9 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.plugins.collectors.kaipanla_download import download_days
 from empire.plugins.collectors.kaipanla_scope import attach_listing_dates, lifecycle, required_days
-from empire.plugins.collectors.kaipanla_source import URL, SourceError, fetch_day
+from empire.plugins.collectors.kaipanla_source import URL, SourceError
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
@@ -26,7 +27,8 @@ class KaipanlaIntradayCollector:
     def __init__(self):
         self.source, self.project_id, self.job_key = 'kaipanla', PROJECT, JOB
         self.request_retries = 2
-        self.stats = {'status': 'stopped', 'collected': 0, 'record_name': '点位', 'unit_name': '证券日'}
+        self.stats = {'status': 'stopped', 'collected': 0, 'record_name': '点位', 'unit_name': '证券日',
+                      'download_item_name': '个响应'}
 
     async def start(self, context):
         self.http, self.ingest = context.get('http.fetch'), context.get('ingest.publish')
@@ -52,10 +54,11 @@ class KaipanlaIntradayCollector:
             if not days:
                 raise ValueError('分时计划没有已结束交易日')
             stocks = await attach_listing_dates(self, stocks)
+            exclusions = await self.query.suspension_plan(stocks, days[0], days[-1])
             plans = []
             checksum = hashlib.sha256(json.dumps([d.isoformat() for d in days]).encode())
             for stock in stocks:
-                excluded = await self.query.suspended_days(stock['market'], stock['code'], days[0], days[-1])
+                excluded = exclusions[stock['code'] + '.' + stock['market']]
                 count = len(required_days(stock, days, excluded))
                 plans.append((excluded, count))
                 checksum.update(digest([stock['market'], stock['code'], lifecycle(stock),
@@ -71,7 +74,7 @@ class KaipanlaIntradayCollector:
             first_gap, failed = None, 0
             cursor = {**cursor, 'first_gap': None, 'failed_units': 0}
             self.stats.update(status='collecting', total_units=total, completed_units=cursor['index'],
-                              failed_units=0, error='')
+                              failed_units=0, error='', failure_categories={})
             # Independent valid days continue after a source gap, while the
             # durable frontier stays at the first missing day. Never claim full
             # completion from later success; SQL recovers all later archived days.
@@ -83,48 +86,45 @@ class KaipanlaIntradayCollector:
                 planned = required_days(stock, days, excluded)
                 life = lifecycle(stock)
                 covered = await self.query.covered_days(stock['market'], stock['code'], days[0], days[-1], life)
-                for di, day in enumerate(planned):
-                    index = offset + di
-                    if index < cursor['index']:
-                        continue
-                    self.stats.update(current_security=stock['market'] + ':' + stock['code'] + ' / ' + day.isoformat(),
-                                      current_date=day.isoformat(), completed_units=index - failed)
-                    # Missing/malformed SQL days always recollect. The newest five
-                    # trading days are also refreshed for revisions each round.
-                    if not fresh and day in covered and di < len(planned) - 5:
-                        cursor = {**cursor, 'index': first_gap['index'] if first_gap else index + 1}
-                        continue
-                    stage = 'source_validation'
-                    observed = datetime.now(UTC)
-                    try:
-                        row = {**await fetch_day(self, stock['code'], day, stock['market'], stock['listing_date']),
-                               'market': stock['market'], 'lifecycle': life}
-                    except SourceError as exc:
-                        # A source error is not proof of an empty trading day.
-                        # Keep only the first unresolved position in the cursor;
-                        # bounded error records and actual SQL holes describe gaps.
-                        failed += 1
-                        first_gap = first_gap or dict(index=index, market=stock['market'], code=stock['code'],
-                                                     trade_date=day.isoformat(), error=str(exc)[:256])
-                        cursor = {**cursor, 'index': first_gap['index'], 'first_gap': first_gap,
-                                  'failed_units': failed}
-                        state = await self.ingest.advance_checkpoint(job_key=self.job_key,
-                            expected_revision=state['revision'], cursor=cursor)
-                        self.stats.update(failed_units=failed, first_gap=first_gap, error=str(exc))
-                        continue
-                    page = cursor['pages'] + 1
-                    envelope = make_envelope(source=self.source, dataset='intraday.day', business_key=identity(row),
-                        job_key=self.job_key, run_id=cursor['batch_id'], batch_id=cursor['batch_id'],
-                        payload=dict(page=page, rows=[row]))
-                    envelope = envelope.model_copy(update={'source_url': URL, 'available_at': None, 'observed_at': observed})
-                    next_cursor = {**cursor, 'index': first_gap['index'] if first_gap else index + 1, 'pages': page,
-                                   'collected': cursor['collected'] + len(row['trend']) + len(row['auction'])}
-                    stage = 'queue_publish'
-                    state = await publish_with_capacity(self.ingest, self.stats, [envelope], job_key=self.job_key,
-                        expected_revision=state['revision'], cursor=next_cursor)
-                    cursor = state['cursor']
-                    self.stats.update(collected=cursor['collected'], pages=page, completed_units=index + 1 - failed)
-                    # No page waits for SQL; only the end of the download round does.
+                todo = [(offset + di, day) for di, day in enumerate(planned)
+                        if offset + di >= cursor['index'] and
+                        (fresh or day not in covered or di >= len(planned) - 5)]
+                if not todo:
+                    cursor = {**cursor, 'index': first_gap['index'] if first_gap else offset + len(planned)}
+                async with download_days(self, stock, [day for _, day in todo]) as reads:
+                    async for position, day, downloaded, observed, source_error in reads:
+                        index = todo[position][0]
+                        self.stats.update(current_security=stock['market'] + ':' + stock['code'] + ' / ' + day.isoformat(),
+                                          current_date=day.isoformat(), completed_units=index - failed)
+                        stage = 'source_validation'
+                        if source_error:
+                            failed += 1
+                            categories = self.stats['failure_categories']
+                            categories[source_error.category] = categories.get(source_error.category, 0) + 1
+                            first_gap = first_gap or dict(index=index, market=stock['market'], code=stock['code'],
+                                                         trade_date=day.isoformat(), error=str(source_error)[:256])
+                            cursor = {**cursor, 'index': first_gap['index'], 'first_gap': first_gap,
+                                      'failed_units': failed}
+                            state = await self.ingest.advance_checkpoint(job_key=self.job_key,
+                                expected_revision=state['revision'], cursor=cursor)
+                            self.stats.update(failed_units=failed, first_gap=first_gap, error=str(source_error))
+                            continue
+                        row = {**downloaded, 'market': stock['market'], 'lifecycle': life}
+                        page = cursor['pages'] + 1
+                        envelope = make_envelope(source=self.source, dataset='intraday.day', business_key=identity(row),
+                            job_key=self.job_key, run_id=cursor['batch_id'], batch_id=cursor['batch_id'],
+                            payload=dict(page=page, rows=[row]))
+                        envelope = envelope.model_copy(update={'source_url': URL, 'available_at': None, 'observed_at': observed})
+                        next_cursor = {**cursor, 'index': first_gap['index'] if first_gap else index + 1, 'pages': page,
+                                       'collected': cursor['collected'] + len(row['trend']) + len(row['auction'])}
+                        stage = 'queue_publish'
+                        state = await publish_with_capacity(self.ingest, self.stats, [envelope], job_key=self.job_key,
+                            expected_revision=state['revision'], cursor=next_cursor)
+                        cursor = state['cursor']
+                        self.stats.update(collected=cursor['collected'], pages=page, completed_units=index + 1 - failed)
+                        if first_gap:
+                            self.stats['error'] = '尚有来源缺口：' + first_gap['code'] + ' / ' + first_gap['trade_date']
+                        # No page waits for SQL; only the end of the download round does.
                 offset += len(planned)
             if not cursor['pages']:
                 # A validated SQL-only recovery plan can finish without inventing
