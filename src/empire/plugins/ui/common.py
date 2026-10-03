@@ -153,8 +153,9 @@ def hint(text=""):
 class Pager(QWidget):
     changed = Signal(int)
 
-    def __init__(self, limit=25):
+    def __init__(self, limit=25, *, compact=False):
         super().__init__()
+        self.compact = compact
         self.offset, self.limit, self.total = 0, limit, 0
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -163,8 +164,12 @@ class Pager(QWidget):
         self.label.setObjectName("muted")
         layout.addWidget(self.label)
         layout.addStretch()
-        self.previous = QPushButton("上一页")
-        self.next = QPushButton("下一页")
+        self.previous = QPushButton("‹" if compact else "上一页")
+        self.next = QPushButton("›" if compact else "下一页")
+        self.previous.setAccessibleName("上一页")
+        self.next.setAccessibleName("下一页")
+        self.previous.setToolTip("上一页")
+        self.next.setToolTip("下一页")
         self.previous.clicked.connect(lambda: self.changed.emit(max(0, self.offset - self.limit)))
         self.next.clicked.connect(lambda: self.changed.emit(self.offset + self.limit))
         layout.addWidget(self.previous)
@@ -175,6 +180,9 @@ class Pager(QWidget):
         self.total, self.offset = total, offset
         self.label.setText(f"共 {total:,} 项 · 第 {offset // self.limit + 1} / "
                            f"{max(1, (total + self.limit - 1) // self.limit)} 页 · 每页 {self.limit} 项")
+        self.label.setToolTip(self.label.text())
+        if self.compact:
+            self.label.setText(f"{total:,} 项 · {offset // self.limit + 1}/{max(1, (total + self.limit - 1) // self.limit)} 页")
         self.previous.setEnabled(offset > 0)
         self.next.setEnabled(offset + self.limit < total)
 

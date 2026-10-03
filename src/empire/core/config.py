@@ -32,11 +32,12 @@ def user_data_dir() -> Path:
 
 
 def default_config_path() -> Path:
-    return user_data_dir() / "config.toml"
+    directory = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else project_root()
+    return directory / "config.toml"
 
 
 class ConfigurationRequiredError(ValueError):
-    """Raised after preparing the only default user configuration path."""
+    """Raised after preparing the only default application-local configuration."""
 
 
 def _prepare_config(target: Path) -> None:
@@ -49,6 +50,10 @@ def _prepare_config(target: Path) -> None:
             shutil.copyfileobj(source, destination)
     except FileExistsError:
         return
+    except PermissionError:
+        raise ConfigurationRequiredError(
+            f"程序目录不可写，无法创建配置：{target}。请将完整程序目录移至可写位置，或使用 --config 指定配置。"
+        ) from None
 
 
 def load_config(path: str | Path | None = None) -> dict:

@@ -38,12 +38,14 @@ class Runtime:
         if self.read is not None:
             return self.read
         result = Future()
-        if args[1] == "list_error_summaries":
+        if args[1] in ("list_error_summaries", "list_all_records"):
             _, _, _, offset, limit, known = args
             changed = known != self.revision
             summaries = [{key: row.get(key) for key in (
                 "id", "project_id", "created_at", "stage", "error", "status_code")}
                 for row in self.values[offset:offset + limit]] if changed else []
+            if args[1] == 'list_all_records' and args[2] == 'archives':
+                summaries = deepcopy(self.values[offset:offset + limit]) if changed else []
             result.set_result({"revision": self.revision, "total": len(self.values),
                                "offset": offset, "limit": limit,
                                "changed": changed, "rows": deepcopy(summaries)})
@@ -59,11 +61,13 @@ def page_factory():
     app = QApplication.instance() or QApplication([])
     pages = []
 
-    def create(kind="errors"):
+    def create(kind="errors", *, all_projects=False):
         runtime = Runtime()
         page = RecordsPage(SimpleNamespace(runtime=runtime, cfg={}), kind)
         page.timer.stop()
         page.set_projects([{"id": "stocks", "name": "股票列表"}, {"id": "news", "name": "财经新闻"}])
+        if not all_projects:
+            page.project.setCurrentIndex(page.project.findData('stocks'))
         pages.append(page)
         return page, runtime
 
@@ -226,6 +230,26 @@ def test_records_stop_polling_during_shutdown(page_factory):
     assert record_time(None) == "—"
 
 
+@pytest.mark.parametrize('kind', ['errors', 'archives'])
+def test_all_projects_is_default_paginated_and_keeps_project_identity(page_factory, kind):
+    page, runtime = page_factory(kind, all_projects=True)
+    assert page.project.currentData() == '*'
+    runtime.values = [error('same', 'stocks'), error('same', 'news')]
+    page.reload()
+    page.tick()
+    assert runtime.calls[0] == ('collection.records', 'list_all_records', kind, 0, 50, None)
+    assert page.records[0]['id'] != page.records[1]['id']
+    assert page.table.item(0, page.table.columnCount()-1).text() == '股票列表'
+    select(page, 1)
+    page.tick()
+    page.verified.setChecked(True)
+    page.clear_selected()
+    assert not page.clear_button.isEnabled()
+    assert not any(call[1] == 'clear_errors' for call in runtime.calls)
+    if kind == 'errors':
+        assert ('collection.records', 'get_error', 'news', 'same') in runtime.calls
+
+
 def test_partial_download_displays_unknown_original_and_observed_size(page_factory):
     page, runtime = page_factory()
     page.records = runtime.values = [{**error("partial"), "original_bytes": None,
@@ -245,7 +269,7 @@ def test_partial_download_displays_unknown_original_and_observed_size(page_facto
 def test_paginated_error_layout_keeps_navigation_and_actions_visible(page_factory, width, height):
     from empire.desktop.theme import STYLE
 
-    page, runtime = page_factory()
+    page, runtime = page_factory(all_projects=True)
     for name in ("msyh.ttc", "msyhbd.ttc", "segoeui.ttf"):
         font = Path("C:/Windows/Fonts") / name
         if font.is_file():

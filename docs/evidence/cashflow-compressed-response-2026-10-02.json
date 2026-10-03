@@ -1,0 +1,74 @@
+{
+  "checked_at": "2026-10-02T12:16:13.848679+08:00",
+  "project": "ths-cashflow",
+  "error_id": "2f71cd489bfd43f38a077cbeba4ef001",
+  "found": true,
+  "classification": "传输中断，且程序误归类为不可重试错误；原始截断在源站还是代理不可仅凭前缀裁定",
+  "cleared": true,
+  "fixed": true,
+  "checked_after": "2026-10-02T13:00:07.678722+08:00",
+  "source_sha256": "fb054d648120e73acd8399a1423a9e5a82333ef3a4cbf8614f3cb346e73b8df1",
+  "gate": {
+    "tests": 1368,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "passed": 1366
+  },
+  "live_securities": [
+    "SH:601139",
+    "SZ:002641",
+    "SZ:002642"
+  ],
+  "live_reports": 615,
+  "live_passed": true,
+  "scope_limit": "3证券×3表；未重新审计全市场，生产轮次仍在运行",
+  "production_resume": {
+    "checked_at": "2026-10-02T12:44:09.559143+08:00",
+    "target_at_failed_index": "002641",
+    "before": {
+      "code": "002641",
+      "reports": 66,
+      "source_query_equal": true,
+      "checkpoint_revision": "14967",
+      "cursor_index": 3798,
+      "batch_id": "86c4b68c46c847f2810fb8a745c5cdd2"
+    },
+    "after_index": 4318,
+    "same_batch": true,
+    "passed_failed_security": true
+  },
+  "cleanup": {
+    "checked_at": "2026-10-02T12:53:11.593455+08:00",
+    "project": "ths-cashflow",
+    "selected_ids": [
+      "2f71cd489bfd43f38a077cbeba4ef001"
+    ],
+    "cleared_count": 1,
+    "before_count": 5,
+    "after_count": 4,
+    "other_ids_missing": [],
+    "new_ids_retained": []
+  },
+  "restored_tasks": {
+    "ths-income": {
+      "active": true,
+      "status": "running",
+      "error": ""
+    },
+    "ths-balance": {
+      "active": true,
+      "status": "running",
+      "error": ""
+    },
+    "ths-cashflow": {
+      "active": true,
+      "status": "running",
+      "error": ""
+    }
+  },
+  "config_preserved": true,
+  "redis_connected": true,
+  "mysql_connected": true,
+  "desktop_reopened": true
+}

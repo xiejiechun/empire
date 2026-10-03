@@ -192,9 +192,22 @@ async def test_mysql_failure_preserves_pending_data(live):
     assert await mysql.control(count, value[0].event_id) == 1
 
 
-async def test_real_redis_limiter_is_shared_between_hosts(live):
+async def test_real_redis_limiter_is_shared_between_hosts(live, monkeypatch):
     redis, *_ = live
     starts = []
+    permits = []
+    from empire.plugins.infra.routing import ROUTE_PERMIT
+    original_eval = redis.client.eval
+
+    async def observe_permit(script, numkeys, *args):
+        result = await original_eval(script, numkeys, *args)
+        if script == ROUTE_PERMIT and int(result) == 0:
+            # The service holds its sole direct slot until this call returns.
+            # Measure the authoritative Redis clock, not variable response delivery latency.
+            permits.append(int(await redis.client.hget(args[2], 'next')))
+        return result
+
+    monkeypatch.setattr(redis.client, 'eval', observe_permit)
 
     async def respond(request):
         starts.append(time.monotonic())
@@ -213,7 +226,8 @@ async def test_real_redis_limiter_is_shared_between_hosts(live):
             for host in ("finance.sina.com.cn", "vip.stock.finance.sina.com.cn", "finance.sina.com.cn")
         ])
         assert len(starts) == 3
-        assert all(b - a >= .040 for a, b in zip(starts, starts[1:]))
+        assert len(permits) == 3
+        assert all(b - a >= 50 for a, b in zip(permits, permits[1:])), permits
     finally:
         await service.close()
 

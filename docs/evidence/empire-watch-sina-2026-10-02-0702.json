@@ -1,0 +1,207 @@
+{
+  "registered_at": "2026-10-02T07:05:33.278486+08:00",
+  "project_id": "sina-news",
+  "error_ids": [
+    "805f2905ce484bcd91d2370e0e020da9"
+  ],
+  "cleanup": "not performed",
+  "error": {
+    "id": "805f2905ce484bcd91d2370e0e020da9",
+    "created_at": "2026-10-01T22:14:42.404776+00:00",
+    "stage": "http",
+    "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+    "status_code": null
+  },
+  "job": {
+    "active": null,
+    "last_status": "complete",
+    "error": "",
+    "next_due": 1790895941.5336282
+  },
+  "runs": [
+    {
+      "run_id": "b2a29e66696c4118b6e65235daafeb96",
+      "task_id": "sina-news",
+      "started_at": 1790895919.8876083,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 36971,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1790895921.5336282,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 50,
+        "pages": 1,
+        "high_watermark": 5123442,
+        "batch_id": "c4adc3f8d07e4f5ba47a62ea5654a1c6"
+      }
+    },
+    {
+      "run_id": "c4588e6a9aa747ceabf224e92f053ca3",
+      "task_id": "sina-news",
+      "started_at": 1790895897.7793596,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 36969,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1790895899.3320184,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 50,
+        "pages": 1,
+        "high_watermark": 5123440,
+        "batch_id": "194c8852510b4378a968d3852f866a83"
+      }
+    },
+    {
+      "run_id": "fcef992aea5d43ae81eddb431c8b55ce",
+      "task_id": "sina-news",
+      "started_at": 1790895875.558645,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 36967,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1790895876.9526625,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 50,
+        "pages": 1,
+        "high_watermark": 5123440,
+        "batch_id": "eea25f04f9a54d11b85941f88df8e40f"
+      }
+    },
+    {
+      "run_id": "44cf9274eeff4719bab51703b3c0d2de",
+      "task_id": "sina-news",
+      "started_at": 1790895853.38875,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 36965,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1790895854.8588936,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 50,
+        "pages": 1,
+        "high_watermark": 5123439,
+        "batch_id": "002b47d59ef6474cb30a86bcb14610fb"
+      }
+    },
+    {
+      "run_id": "866313874545456e9d0cd4973ceb9172",
+      "task_id": "sina-news",
+      "started_at": 1790895831.281197,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 36963,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1790895832.7449822,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 50,
+        "pages": 1,
+        "high_watermark": 5123439,
+        "batch_id": "7df3f5fdba874d5aab310ddd5755c6cc"
+      }
+    }
+  ],
+  "archives": [
+    {
+      "id": "50ce4c2ac8c5c505e0d6a93281387dfa19bc7acb9ae2889d2231f76751ee232c:complete",
+      "snapshot_id": "50ce4c2ac8c5c505e0d6a93281387dfa19bc7acb9ae2889d2231f76751ee232c",
+      "status": "complete",
+      "started_at": "2026-10-01T23:05:20.506185+00:00",
+      "finished_at": "2026-10-01T23:05:20.520146+00:00",
+      "error": "",
+      "processed_count": 50,
+      "written_count": 2,
+      "project_id": "sina-news",
+      "created_at": "2026-10-01T23:05:20.520146+00:00",
+      "version": "0.1.0 (2c434e90c4f0+dirty)"
+    },
+    {
+      "id": "10036dd3055056c0a60c07a4fc98e6a06a5cbcb47928c05c09a532c08470db21:complete",
+      "snapshot_id": "10036dd3055056c0a60c07a4fc98e6a06a5cbcb47928c05c09a532c08470db21",
+      "status": "complete",
+      "started_at": "2026-10-01T23:04:58.330980+00:00",
+      "finished_at": "2026-10-01T23:04:58.334630+00:00",
+      "error": "",
+      "processed_count": 50,
+      "written_count": 0,
+      "project_id": "sina-news",
+      "created_at": "2026-10-01T23:04:58.334630+00:00",
+      "version": "0.1.0 (2c434e90c4f0+dirty)"
+    },
+    {
+      "id": "1324d8bd96a5abe73653f06afe16c812166885a6ded539f18588bd1d54671cd1:complete",
+      "snapshot_id": "1324d8bd96a5abe73653f06afe16c812166885a6ded539f18588bd1d54671cd1",
+      "status": "complete",
+      "started_at": "2026-10-01T23:04:35.948615+00:00",
+      "finished_at": "2026-10-01T23:04:35.959042+00:00",
+      "error": "",
+      "processed_count": 50,
+      "written_count": 1,
+      "project_id": "sina-news",
+      "created_at": "2026-10-01T23:04:35.959042+00:00",
+      "version": "0.1.0 (2c434e90c4f0+dirty)"
+    },
+    {
+      "id": "859f3b22a146d0410a01933ae0d56caacebf52ea49a127b73f7f27707baa8fc7:complete",
+      "snapshot_id": "859f3b22a146d0410a01933ae0d56caacebf52ea49a127b73f7f27707baa8fc7",
+      "status": "complete",
+      "started_at": "2026-10-01T23:04:13.867418+00:00",
+      "finished_at": "2026-10-01T23:04:13.871485+00:00",
+      "error": "",
+      "processed_count": 50,
+      "written_count": 0,
+      "project_id": "sina-news",
+      "created_at": "2026-10-01T23:04:13.871485+00:00",
+      "version": "0.1.0 (2c434e90c4f0+dirty)"
+    },
+    {
+      "id": "e5a24d137fbc9290ca1671fa46de3cbf4acdcf1c3b2512d83f73ff22e41d6d40:complete",
+      "snapshot_id": "e5a24d137fbc9290ca1671fa46de3cbf4acdcf1c3b2512d83f73ff22e41d6d40",
+      "status": "complete",
+      "started_at": "2026-10-01T23:03:51.734547+00:00",
+      "finished_at": "2026-10-01T23:03:51.734547+00:00",
+      "error": "",
+      "processed_count": 50,
+      "written_count": 0,
+      "project_id": "sina-news",
+      "created_at": "2026-10-01T23:03:51.734547+00:00",
+      "version": "0.1.0 (2c434e90c4f0+dirty)"
+    }
+  ],
+  "pending_queue": 0,
+  "verdict": {
+    "classification": "transient proxy transport failure; no demonstrated application defect",
+    "evidence": "latest five scheduled rounds and archive records complete without errors; pending stream zero; unchanged pages have zero business writes",
+    "action": "preserve exact diagnostic; no code, task, queue or source changes; no active proxy health probes",
+    "limitation": "later success does not prove a program fix or establish the failed historical round outcome"
+  }
+}

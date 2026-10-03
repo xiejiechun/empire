@@ -36,6 +36,7 @@ class PageContribution:
     source: str = ""
     cache_policy: Literal["persistent", "lru"] = "persistent"
     management: NavigationTarget | None = None
+    database_tables: tuple[str, ...] = ()
 
     def __post_init__(self):
         if self.cache_policy not in ("persistent", "lru"):

@@ -1,0 +1,100 @@
+{
+  "checked_at": "2026-10-01T23:55:55.856505+08:00",
+  "error": {
+    "id": "7bc62781561e47f0a20e36cbd59efb2b",
+    "project_id": "tdx-additional-issues",
+    "created_at": "2026-09-30T18:07:46.491848+00:00",
+    "version": "0.1.0 (2c434e90c4f0+dirty)",
+    "stage": "source_validation",
+    "error": "增发详情请求失败：通达信 ErrorCode=-1005，数据库执行失败；数据未补齐",
+    "request_url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_xgzx_zfmx",
+    "status_code": 200,
+    "metadata": {
+      "source_id": "1040982",
+      "code": "302132"
+    },
+    "body": "{\"ErrorCode\": -1005, \"ErrorInfo\": \"数据库执行失败\", \"hitCache\": false}",
+    "body_truncated": false,
+    "body_complete": true,
+    "observed_bytes": 72,
+    "original_bytes": 72,
+    "original_sha256": "2306463df24cac2631d867fdb90bc839a4ba038c7841a89f60cdaa12cd8b9d95",
+    "sample_sha256": "abdbc2a7e6ae6a51adf33d761e7acd1457b9ad498725babe0448bd6d2380ba7a"
+  },
+  "source_id_rows": [
+    {
+      "market": "SZ",
+      "code": "300114",
+      "name": "中航电测",
+      "event_date": "2025-01-06",
+      "payload": "{\"status\": \"来源发行记录\", \"source_id\": \"1040982\", \"issue_date\": \"2025-01-06\", \"issue_price\": \"8.36\", \"lock_months\": \"36\", \"record_date\": null, \"issue_method\": \"定向增发\", \"listing_date\": \"2025-01-22\", \"shares_after\": \"2676782376\", \"issued_shares\": \"2086021877\", \"shares_before\": \"590760499\", \"announcement_date\": null, \"public_issue_date\": null, \"subscription_code\": null, \"private_issue_date\": \"2025-01-06\"}"
+    },
+    {
+      "market": "SZ",
+      "code": "302132",
+      "name": "中航成飞",
+      "event_date": "2025-01-06",
+      "payload": "{\"status\": \"来源发行记录\", \"source_id\": \"1040982\", \"issue_date\": \"2025-01-06\", \"issue_price\": \"8.36\", \"lock_months\": \"36\", \"record_date\": null, \"issue_method\": \"定向增发\", \"listing_date\": \"2025-01-22\", \"shares_after\": \"2676782376\", \"issued_shares\": \"2086021877\", \"shares_before\": \"590760499\", \"announcement_date\": null, \"public_issue_date\": null, \"subscription_code\": null, \"private_issue_date\": \"2025-01-06\"}"
+    }
+  ],
+  "sql": {
+    "records": 6536,
+    "details": "6485"
+  },
+  "checkpoint": {
+    "revision": "11594",
+    "cursor": {
+      "phase": "fetch",
+      "batch_id": "ebee98b6c2a946b1ab2c65321b9f7b62",
+      "index": 0,
+      "pages": 0,
+      "collected": 0,
+      "source_hash": "99bcf6d2dfad91ec6215cb8369be0dfb84a6ccad56747324664c1a5f863b0d2c",
+      "scope_hash": "436ca487a1abee0e849f82806ef81c417bd267f47dc1cacb066c6a22b17d9a5b",
+      "units": 3026,
+      "rolling": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "started_at": "2026-09-30T18:19:46.851438+00:00",
+      "schema_version": 2,
+      "detail_refresh_all": true,
+      "detail_refresh_day": "2026-10-01",
+      "detail_refresh_recent": false
+    }
+  },
+  "latest_archive": {
+    "id": "c94a9a06d4e41a8cebd01ec1e01cc02037f614032fba9132a8846bd6ea955cb1:complete",
+    "snapshot_id": "c94a9a06d4e41a8cebd01ec1e01cc02037f614032fba9132a8846bd6ea955cb1",
+    "status": "complete",
+    "started_at": "2026-10-01T15:40:12.469593+00:00",
+    "finished_at": "2026-10-01T15:40:12.470646+00:00",
+    "error": "",
+    "processed_count": 1,
+    "written_count": 0,
+    "project_id": "tdx-additional-issues",
+    "created_at": "2026-10-01T15:40:12.470646+00:00",
+    "version": "0.1.0 (2c434e90c4f0+dirty)"
+  },
+  "pending_queue": 0,
+  "job_state": {
+    "active": null,
+    "last_status": "error",
+    "error": "增发详情请求失败：通达信 ErrorCode=-1005，数据库执行失败；数据未补齐",
+    "next_due": 1790912412.8082917
+  },
+  "latest_run": {
+    "run_id": "41aa6f3b9b4c4512b914f69bf4ffcce5",
+    "task_id": "tdx-additional-issues",
+    "started_at": 1790866653.988757,
+    "origin": "manual",
+    "fresh": false,
+    "baseline_revision": 8598,
+    "use_proxy": true,
+    "proxy_fallback": true,
+    "network": {
+      "proxy_requests": 6508
+    },
+    "finished_at": 1790869212.8082917,
+    "status": "error",
+    "error": "增发详情请求失败：通达信 ErrorCode=-1005，数据库执行失败；数据未补齐",
+    "result": {}
+  }
+}

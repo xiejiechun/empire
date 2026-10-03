@@ -1,0 +1,37 @@
+{
+  "change": "数据准备分层与三表范围用途验收",
+  "implemented": [
+    "开发验收/采集完整性/来源质量/用途条件分列",
+    "财务分析限制与历史选股阻断分开",
+    "证券与报告期范围",
+    "结构化问题定位，每检查项最多100样例",
+    "只读一致快照与完整证券内容证明",
+    "不重复定时全历史扫描"
+  ],
+  "related_ui_tests": 124,
+  "integration_regressions": [
+    "三表正常范围",
+    "历史选股公告日期阻断",
+    "未知证券拒绝",
+    "来源无所选报告期保持未确认",
+    "范围外内容篡改不被子范围掩盖",
+    "可信摘要不能掩盖覆盖失败"
+  ],
+  "live_scope": {
+    "codes": [
+      "601139",
+      "920009",
+      "920748",
+      "600036"
+    ],
+    "start": "2024-01-01",
+    "end": "2026-10-02"
+  },
+  "evidence": "preparation-scope-live-2026-10-02.json",
+  "collector_changes": false,
+  "ddl": false,
+  "business_data_changes": false,
+  "publication": "正式门禁1309通过/2权限跳过，当前源码证据一致；不同工作目录配置验证通过，配置摘要保留，实际桌面显示独立判定列及601139财务分析可用（有限制）",
+  "release_report": "preparation-scope-release-2026-10-02.json",
+  "desktop_image": "D:/project/empire/build/preparation-scope-desktop.png"
+}

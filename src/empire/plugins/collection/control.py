@@ -59,7 +59,7 @@ def validate_policy(value):
         raise ValueError("单次请求重试次数须为 0～5")
     if type(result.get("enabled")) is not bool:
         raise ValueError("任务开关无效")
-    for field, default in (("use_proxy", False), ("proxy_fallback", True)):
+    for field, default in (("use_proxy", True), ("proxy_fallback", True)):
         result.setdefault(field, default)
         if type(result[field]) is not bool:
             raise ValueError("代理采集开关无效")
@@ -169,7 +169,7 @@ class CollectionControl:
                     "baseline_revision": baseline}
             if job["active"] and fresh:
                 raise ValueError("存在待恢复任务，请先停止后再重新采集")
-            job.update(active=active, last_status="running")
+            job.update(active=active, last_status="running", error="")
             try:
                 await self._persist()
             except Exception:
@@ -192,7 +192,7 @@ class CollectionControl:
                 await self._persist()
             return
         status, error, result = "complete", "", {}
-        proxy_token = USE_PROXY.set(job["policy"].get("use_proxy", False))
+        proxy_token = USE_PROXY.set(job["policy"]["use_proxy"])
         fallback_token = PROXY_FALLBACK.set(job["policy"].get("proxy_fallback", True))
         network_counts = {}
         counts_token = ROUTE_COUNTS.set(network_counts)
@@ -287,6 +287,7 @@ class CollectionControl:
         base = {"jobs": [], "sites": [], "history": [], "projects": projects,
                 "counts": counts, "error": self.error,
                 "categories": sorted({d.category for d in specs}),
+                "source_names": {d.rate_group: d.source_name or d.rate_group for d in specs},
                 "sources": sorted({d.rate_group for d in specs})}
         if section == "overview":
             base["history"] = copy.deepcopy(self.state["history"][:5])
@@ -318,6 +319,7 @@ class CollectionControl:
             base["focused_task_id"] = focus_task_id
             base["focus_missing"] = focused is None
         total = len(candidates)
+        candidates.sort(key=lambda spec: (spec.source_name or spec.rate_group, spec.rate_group, spec.name, spec.id))
         offset = min(offset, max(0, (total - 1) // limit * limit))
         page = candidates[offset:offset + limit]
         site_limits = {site["name"]: site for site in await self.http.settings()}

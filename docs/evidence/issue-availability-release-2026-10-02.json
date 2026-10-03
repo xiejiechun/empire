@@ -1,0 +1,22 @@
+{
+  "contract_version": 3,
+  "gate": "passed",
+  "tests_passed": 1339,
+  "tests_skipped": 2,
+  "skip_reason": "Windows symbolic link privilege unavailable",
+  "targeted_and_isolated_tests_passed": 125,
+  "historical_scope_regressions_passed": 6,
+  "executable_sha256": "ad782285e29dc06d5dc7f37a3ffa5737869b11b792fe2d68246f97f88e1f23ab",
+  "different_cwd": "C:/Windows/Temp",
+  "redis_connected": true,
+  "mysql_connected": true,
+  "program_config_preserved": true,
+  "visible_desktop_reopened": true,
+  "formal_desktop_task": {"last_status": "complete", "collected": 6535, "finished_at_china": "2026-10-02T02:47:09+08:00", "error": ""},
+  "availability": {"current_source_records": 6535, "source_unavailable_records": 50, "failed_units": 0, "pending_queue": 0, "historical_unknown_outside_verified_scope": 1},
+  "schema_migration": "Explicit state-contract upgrade; no DDL and no existing business-row modification. Snapshot unchanged; 2995 unchanged trusted unit proofs retained",
+  "old_diagnostic_cleanup": {"registered": 121, "verified_and_removed_by_exact_ids": 121, "remaining_other_issue_errors": 5, "evidence": "issue-availability-cleanup-2026-10-02.json"},
+  "documentation": "Offline issue operation/fault/reference updated, coverage and explicit review verified; old negative-retry runtime and old maintenance entry retired",
+  "automation": {"id": "empire", "status": "ACTIVE", "interval_hours": 1, "updated_to_current_availability_contract": true},
+  "limitations": ["No usable source detail does not mean no issue plan or no upstream database data", "Unavailable detail fields are a use limitation, not fabricated zeros", "Last available details remain historical reference", "Only exact matching confirmed source-set proofs can exclude unknown retained historical rows"]
+}

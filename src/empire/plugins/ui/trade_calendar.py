@@ -183,7 +183,7 @@ class CalendarUiPlugin(UiPlugin):
     def create_pages(self):
         return (
             PageContribution("calendar", "交易日历", TradeCalendarPage, "数据浏览", 2,
-                             "巨潮 A 股交易日、休市日与月份完整性", catalogued=True,
+                             "巨潮 A 股交易日、休市日与月份完整性", catalogued=True, database_tables=("trade_calendar",),
                              category="基础数据", source="巨潮资讯", cache_policy="lru",
                              management=NavigationTarget(
                                  "collection", NavigationContext(task_id="cninfo-calendar"))),

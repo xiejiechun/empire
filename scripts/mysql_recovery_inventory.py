@@ -19,9 +19,18 @@ from empire.core.redaction import redact
 from empire.plugins.infra.mysql_store import make_engine
 
 TABLES = {
+    'stock_intraday': ('source', 'market', 'code', 'trade_date'),
+    'industry': ('source', 'industry_code'),
+    'industry_member': ('source', 'industry_code', 'market', 'code'),
+    **{name: ("source", "market", "code", "report_date") for name in
+       ("income_statement", "balance_statement", "cashflow_statement")},
+    "dividend_plan": ("source", "record_key"),
+    "additional_issue": ("source", "record_key"),
+    "rights_issue": ("source", "record_key"),
     "stock": ("source", "unified_code"),
     "finance_news": ("source", "news_id"),
     "trade_calendar": ("source", "trade_date"),
+    "suspension_event": ("source", "market", "code", "suspended_at", "resume_key", "record_key"),
     "collection_state": ("namespace", "project_id"),
     "app_setting": ("namespace", "kind", "setting_key"),
 }

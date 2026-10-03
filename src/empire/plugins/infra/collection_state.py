@@ -54,12 +54,46 @@ class CollectionState:
 
     async def page_status(self, redis, source, job_key, project_id, batch_id, page):
         raw = await redis.client.get(f"{redis.prefix}:archive:progress:{job_key}")
-        value = json.loads(raw) if raw else (
+        try:
+            value = json.loads(raw) if raw else None
+        except (ValueError, TypeError):
+            value = None
+        if not isinstance(value, dict):
+            value = (
             await self.mysql.control(self.read, source, project_id)).get("progress", {})
         if value.get("batch_id") == batch_id and (
                 value.get("status") == "invalid" or value.get("page", 0) >= page):
+            if value.get("status") == "complete" and await self._pending_batch(
+                    redis, source, job_key, batch_id):
+                return None
             return value
         return None
+
+    @staticmethod
+    async def _pending_batch(redis, source, job_key, batch_id):
+        """A last-page marker is not proof that earlier messages were removed.
+
+        Scan the existing Stream in bounded windows only after the final marker
+        is available; no second queue/index or per-page SQL queries are needed.
+        Publishers have finished this batch before requesting completion.
+        """
+        start = "-"
+        while True:
+            records = await redis.client.xrange(redis.stream, min=start, max="+", count=32)
+            if not records:
+                return False
+            for _, fields in records:
+                try:
+                    envelope = json.loads(fields["envelope"])
+                    if not isinstance(envelope, dict):
+                        return True
+                    if (envelope.get("source"), envelope.get("job_key"), envelope.get("batch_id")) == (
+                            source, job_key, batch_id):
+                        return True
+                except (KeyError, ValueError, TypeError):
+                    # Unreadable ownership cannot prove this batch is drained.
+                    return True
+            start = "(" + records[-1][0]
 
     def writer(self, catalog, full_data):
         def archive(connection, envelope, data):

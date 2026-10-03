@@ -1,4 +1,5 @@
 """Render deterministic desktop layouts without databases or production mutations."""
+import asyncio
 import os
 import sys
 from concurrent.futures import Future
@@ -8,16 +9,19 @@ from types import SimpleNamespace
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tests"))
 
-from PySide6.QtCore import QPoint  # noqa: E402
+from PySide6.QtCore import QDate, QPoint  # noqa: E402
 from PySide6.QtGui import QFontDatabase  # noqa: E402
 from PySide6.QtWidgets import QApplication  # noqa: E402
 from test_collection_ui import snapshot  # noqa: E402
 
 from empire.contracts.ui import PageContribution  # noqa: E402
 from empire.desktop.window import MainWindow  # noqa: E402
+from empire.plugins.data.preparation import PreparationPlugin  # noqa: E402
 from empire.plugins.ui.collection_views.sites import SitesPage  # noqa: E402
 from empire.plugins.ui.collection_views.tasks import TasksPage  # noqa: E402
+from empire.plugins.ui.preparation import PreparationPage  # noqa: E402
 from empire.plugins.ui.proxies import ProxyPage  # noqa: E402
+from empire.plugins.ui.suspensions import SuspensionsPage  # noqa: E402
 
 
 class Runtime:
@@ -30,12 +34,20 @@ class Runtime:
         return [PageContribution(key, title, factory, "采集管理", order)
                 for order, (key, title, factory) in enumerate([
                     ("collection", "采集任务", TasksPage), ("sites", "站点访问规则", SitesPage),
-                    ("proxies", "采集出口", ProxyPage)])]
+                    ("proxies", "采集出口", ProxyPage), ("preparation", "数据准备", PreparationPage),
+                    ("suspensions", "历史停复牌", SuspensionsPage)])]
 
     def invoke(self, *args):
         return Future()
 
 
+async def preparation_report():
+    plugin = PreparationPlugin([])
+    await plugin.start(SimpleNamespace(optional=lambda cap: None))
+    return await plugin.report()
+
+
+preparation_data = asyncio.run(preparation_report())
 app = QApplication.instance() or QApplication([])
 for font in ("msyh.ttc", "msyhbd.ttc", "segoeui.ttf"):
     QFontDatabase.addApplicationFont(str(Path(os.environ["WINDIR"]) / "Fonts" / font))
@@ -47,11 +59,21 @@ scale = os.environ.get("QT_SCALE_FACTOR", "1")
 for width, height in [(1320, 860), (880, 560)]:
     window.resize(width, height)
     window.show()
-    for page_id in ("collection", "sites", "proxies"):
+    for page_id in ("collection", "sites", "proxies", "preparation", "suspensions"):
         window.navigate(page_id)
         page = window.page_widgets[page_id]
         page.timer.stop()
-        if page_id != "proxies":
+        if page_id == "suspensions":
+            page.calendar.setSelectedDate(QDate(2006, 7, 10))
+            page.render([dict(market='SZ', code='000411', name='英特集团',
+                suspended_at='2006-07-10T09:30:00', resumed_at=None,
+                suspension_type='full_day', source_note='今起停牌', reason='进行股权分置改革的提示性公告')])
+            assert page.table.rowCount() == 1
+        elif page_id == "preparation":
+            page.render(preparation_data)
+            assert page.table.rowCount() == sum(r['kind'] == '采集' for r in preparation_data['rows'])
+            assert page.detail.table.rowCount() == 12
+        elif page_id != "proxies":
             page.data = snapshot()
             page.data.update(total=1, offset=0)
             page.render()
@@ -69,6 +91,9 @@ for width, height in [(1320, 860), (880, 560)]:
             page.task_inspector.setCurrentIndex(1)
             page.interval.setValue(42)
             app.processEvents()
+            if width >= 1200:
+                assert window.page_containers[page_id].verticalScrollBar().maximum() == 0
+                assert window.page_containers[page_id].horizontalScrollBar().maximum() == 0
             window.page_containers[page_id].ensureWidgetVisible(page.save_button)
             app.processEvents()
             point = page.save_button.mapTo(window, QPoint(0, 0))

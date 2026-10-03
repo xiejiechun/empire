@@ -1,0 +1,1004 @@
+{
+  "checked_at": "2026-10-02T18:42:41.081965+00:00",
+  "project": "ths-industries",
+  "collection_result": {
+    "phase": "complete",
+    "batch_id": "4dce31d3266b4bf890df997f9fac2df6",
+    "pages": 1,
+    "collected": 5572,
+    "industries": 90,
+    "requests": 91,
+    "status": "complete"
+  },
+  "contract_version": 2,
+  "industry_count": 90,
+  "member_count": 5572,
+  "formal_paged_key_count": 5572,
+  "digest": "db6978ed88f728e133f8f7b2d41301f06a1c8895c9ebdd11fb73d951f417fb86",
+  "preparation": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "90 个行业、5572 个成员；仅最新状态；行业编号/名称、证券/市场关联完整",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "行业编号唯一，证券在本目录中唯一，规范集合已核对",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "90 个行业、5572 个成员；仅最新状态；整份来源摘要与正式查询比较；集合证明一致",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "名称非空，代码与市场有效；未把首屏当完整集合",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "SQL 完整集合与有效 Redis 摘要一致；最近完整请求代次 2026-10-02T18:40:00.968984+00:00；上限 3 个自然日",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "temporal",
+      "status": "pass",
+      "measured": "只供当前行业筛选及估值分组；无历史归属、变化记录或生效日期，不能还原历史行业",
+      "blocking": true,
+      "findings": []
+    }
+  ],
+  "pending_stream_total": 0,
+  "industry_units": [
+    {
+      "code": "881101",
+      "name": "种植业与林业",
+      "count": 29,
+      "digest": "d66fa9b037c19600b1066320ed31b87f26efc3fbeeff55db2cb74e4b0781ed60"
+    },
+    {
+      "code": "881102",
+      "name": "养殖业",
+      "count": 36,
+      "digest": "9ee4f6b73f33283ac28bb253f9a497d2e73e3710aa8df0ebc9ebe39b769ef5e2"
+    },
+    {
+      "code": "881103",
+      "name": "农产品加工",
+      "count": 43,
+      "digest": "5911dc1843c243844751636aa01a7c05f18f3a30980e2d2f1c57a59619322882"
+    },
+    {
+      "code": "881105",
+      "name": "煤炭开采加工",
+      "count": 34,
+      "digest": "625c5f33f3423672bfe61012a5bfd438ab2e7b51e0c93538fefc91a171d86316"
+    },
+    {
+      "code": "881107",
+      "name": "油气开采及服务",
+      "count": 19,
+      "digest": "806b1802b698f06658127736d21c0a98546f4ae14fb1bde8402884b270120ba5"
+    },
+    {
+      "code": "881108",
+      "name": "化学原料",
+      "count": 59,
+      "digest": "01c36c89509c46ca5b27a4163063bdf8be7491e882aa585b37481542d9eb23b3"
+    },
+    {
+      "code": "881109",
+      "name": "化学制品",
+      "count": 183,
+      "digest": "c63aed72bfe8e7bca93b9d4e72b10a29bbe89a833b0b0458315de102ca56e513"
+    },
+    {
+      "code": "881112",
+      "name": "钢铁",
+      "count": 44,
+      "digest": "a6c5f5247d6796a43787f5754aa284e56ab6ec15d292a106d3a1cf9b904d86a8"
+    },
+    {
+      "code": "881114",
+      "name": "金属新材料",
+      "count": 34,
+      "digest": "b3819c070eabfa54b565275c4c742f5ec6557119f5e226d6a7939f585ed777f6"
+    },
+    {
+      "code": "881115",
+      "name": "建筑材料",
+      "count": 73,
+      "digest": "0a3cc22c1933fa69e8210e9bda634fae8d998c5713bd04f2ac9c3de84296ae7e"
+    },
+    {
+      "code": "881116",
+      "name": "建筑装饰",
+      "count": 143,
+      "digest": "f7e094071334ab1bb328c6db2f80ee50408d25e427a48851fe8f1219fb0ec408"
+    },
+    {
+      "code": "881117",
+      "name": "通用设备",
+      "count": 254,
+      "digest": "2dddbbcc81757989a135b3a6a7643f4b314a3ec5d0e5e8ee4ba6cb256f530883"
+    },
+    {
+      "code": "881118",
+      "name": "专用设备",
+      "count": 204,
+      "digest": "18bd28c4eed9d928779736ed78e5d018e510339eb22acbf9930403f600477825"
+    },
+    {
+      "code": "881121",
+      "name": "半导体",
+      "count": 189,
+      "digest": "2104a694c26f85179842ff3a16d09b8573b20373c5e2f28c9f019c2927daa540"
+    },
+    {
+      "code": "881122",
+      "name": "光学光电子",
+      "count": 107,
+      "digest": "eaba8449da9a814e1a37f0508a27ad588e2cd1a92e99c43f3a63cd2f604e2a59"
+    },
+    {
+      "code": "881123",
+      "name": "其他电子",
+      "count": 34,
+      "digest": "32898fe5892857017da04d72e3821c337379ee8da56b899761c059f561d73e7f"
+    },
+    {
+      "code": "881124",
+      "name": "消费电子",
+      "count": 96,
+      "digest": "de9738748d8489c6ba715c86983a3603b6dd3a820c4728560a393f538fffbf34"
+    },
+    {
+      "code": "881125",
+      "name": "汽车整车",
+      "count": 23,
+      "digest": "83bec3a6c13dd732622fc8da9db913aaf507ab386cc3fce069e189b6a6466a67"
+    },
+    {
+      "code": "881126",
+      "name": "汽车零部件",
+      "count": 276,
+      "digest": "87ab43599421b21e5dcda0a2a0d7358fa249690c4fb267114537936e46b462b6"
+    },
+    {
+      "code": "881128",
+      "name": "汽车服务及其他",
+      "count": 26,
+      "digest": "0ac02bc13966ab0a81e0bb6e851c14dd4a2874f9b021d7aeb0528d8b0c005739"
+    },
+    {
+      "code": "881129",
+      "name": "通信设备",
+      "count": 91,
+      "digest": "2d955e2d378c2e365bb9bf40104eb19ea09f2482c5b730d0b5259d30c8f4455e"
+    },
+    {
+      "code": "881130",
+      "name": "计算机设备",
+      "count": 83,
+      "digest": "0707a43cba81e3f641e120bcab094c898fc8968ece219d526740a2267480c81b"
+    },
+    {
+      "code": "881131",
+      "name": "白色家电",
+      "count": 44,
+      "digest": "f0725337217f4d3c980d9e2f0beb8f663799a3009acec7144ab511225deb2f8e"
+    },
+    {
+      "code": "881132",
+      "name": "黑色家电",
+      "count": 9,
+      "digest": "9ab9c9d76c743dabb1de65c78c80fca8af791a234cf3e3d83100181cfa2e0c57"
+    },
+    {
+      "code": "881133",
+      "name": "饮料制造",
+      "count": 47,
+      "digest": "c68bbe3f545516ada1ad1b18ad629a0ebae73da485048d431cec1b8dda50fd3e"
+    },
+    {
+      "code": "881134",
+      "name": "食品加工制造",
+      "count": 66,
+      "digest": "629ce81dd61e91b468ea0c098da731785f7376ebf2cf3d3003760e444385a9c0"
+    },
+    {
+      "code": "881135",
+      "name": "纺织制造",
+      "count": 33,
+      "digest": "4c5333cd1bcc731475a911e64a5955a31745d94c0b6ee372c111c83d564e0278"
+    },
+    {
+      "code": "881136",
+      "name": "服装家纺",
+      "count": 75,
+      "digest": "bf87903c8b83ce13a1c393298992a7ff9430fe4d57e438cf36e918423fb41af2"
+    },
+    {
+      "code": "881137",
+      "name": "造纸",
+      "count": 24,
+      "digest": "9c23e41d78a9a1dba7027c56ea7432d1628f9454f57462e8cbff81acc1859811"
+    },
+    {
+      "code": "881138",
+      "name": "包装印刷",
+      "count": 46,
+      "digest": "c66849b64ef5cb7d56dea443a0c2200dd035790f1d42636a20ff1308253c213d"
+    },
+    {
+      "code": "881139",
+      "name": "家居用品",
+      "count": 98,
+      "digest": "9b40f39148cad4a998e3f3434711c7e26b5b78b403245ca3d2c7ae2e0fb282c2"
+    },
+    {
+      "code": "881140",
+      "name": "化学制药",
+      "count": 159,
+      "digest": "a74cff22e031071b97e9bf195c4be535123a902e3b26462f42785c67eb5cd0b2"
+    },
+    {
+      "code": "881141",
+      "name": "中药",
+      "count": 68,
+      "digest": "10078b852b3ec93ccc763aeefe8672fe7bd176da279fe2149525e0c040bddbd1"
+    },
+    {
+      "code": "881142",
+      "name": "生物制品",
+      "count": 56,
+      "digest": "0bd67151c8b457344fa6d25717ae9f936a7c3f781620fd474577399ad1972223"
+    },
+    {
+      "code": "881143",
+      "name": "医药商业",
+      "count": 32,
+      "digest": "48aabbeb327f0084e1f13f3deaeb18eaae1082ea2a8e77eb50ff795dcd5e487a"
+    },
+    {
+      "code": "881144",
+      "name": "医疗器械",
+      "count": 142,
+      "digest": "2a45fa27eb5e833e26ce86b969d8ade148f5182b6b130ecd24eae4dadfdfbf5f"
+    },
+    {
+      "code": "881145",
+      "name": "电力",
+      "count": 110,
+      "digest": "0eed95d4043dfc3b20e92b7e17654e3ec74fa13a8328a402011b4edfbbf4f2ef"
+    },
+    {
+      "code": "881146",
+      "name": "燃气",
+      "count": 27,
+      "digest": "eee3023310068d7ad05d0ca0ccb67ecf997765cbf8c8847b0ac17811cc32efad"
+    },
+    {
+      "code": "881148",
+      "name": "港口航运",
+      "count": 36,
+      "digest": "3da563f7002cdc5c0eeb93dd69f223d6c1481340638456aab95b7278805bb248"
+    },
+    {
+      "code": "881149",
+      "name": "公路铁路运输",
+      "count": 32,
+      "digest": "54f445d7c1310b019bef1d0a12ffcbf7358ad90cff7eeac9a2c4b523219bb862"
+    },
+    {
+      "code": "881151",
+      "name": "机场航运",
+      "count": 13,
+      "digest": "b5b16156737692bfb7ee5fbd5a5753f34b9481c4004c96e6cbd4e73f183fb80b"
+    },
+    {
+      "code": "881152",
+      "name": "物流",
+      "count": 50,
+      "digest": "b5b6779630a0e765e2338b7a3d87e39fbf156073ee0642dd969e81cba949d2eb"
+    },
+    {
+      "code": "881153",
+      "name": "房地产",
+      "count": 88,
+      "digest": "7c6f5f5921ccea1954b9d03e75720556b303aa39ba8ae0fee6b510734bfcc5cd"
+    },
+    {
+      "code": "881155",
+      "name": "银行",
+      "count": 42,
+      "digest": "989727edbe7bf2c659e24df4287175e94a686f8d1ccd79a61374c20cff6524b5"
+    },
+    {
+      "code": "881156",
+      "name": "保险",
+      "count": 5,
+      "digest": "8131e52cdeda982ba60a80ae293bf2c1ec5a02c9764508e964b66847dac42af1"
+    },
+    {
+      "code": "881157",
+      "name": "证券",
+      "count": 50,
+      "digest": "747f0a67e297a88d70dba2573c6a62beef9e286fe2ac406a6d4a3d4c5281b2aa"
+    },
+    {
+      "code": "881158",
+      "name": "零售",
+      "count": 71,
+      "digest": "78a4ada88c3b0a1c1076555bbf18322e07e4334dc575b46d0e4b996b324267d8"
+    },
+    {
+      "code": "881159",
+      "name": "贸易",
+      "count": 14,
+      "digest": "c253dda6364540fb34bd5d83abb116d6f5f3c875f20d1a69e9593c02ab9b9408"
+    },
+    {
+      "code": "881160",
+      "name": "旅游及酒店",
+      "count": 35,
+      "digest": "052e25618df764639c90f17c0440ea417b673dc7a4815a03c1237b2720255325"
+    },
+    {
+      "code": "881162",
+      "name": "通信服务",
+      "count": 44,
+      "digest": "007003a799cc1e2dd1d72ab6e1bb9f522ccec28ecfc0473d14bb322d79eb20c1"
+    },
+    {
+      "code": "881164",
+      "name": "文化传媒",
+      "count": 85,
+      "digest": "66309f35cb6ba326771f9ddd9bc386bd7d610d03afe0e98e642106eb8dc63071"
+    },
+    {
+      "code": "881165",
+      "name": "综合",
+      "count": 18,
+      "digest": "a625027f9227e9c18cb51b5ada92f2015aa73a24c83c8ecbf89b2195bfbcbd9d"
+    },
+    {
+      "code": "881166",
+      "name": "军工装备",
+      "count": 82,
+      "digest": "9450ba20dbad654de9f012206b2a213a38ba4638462dbec0edc1d7a753099d85"
+    },
+    {
+      "code": "881167",
+      "name": "非金属材料",
+      "count": 17,
+      "digest": "c632ad031502d4514636063cd7589a184f04102072914434ae9f4c75ba587f43"
+    },
+    {
+      "code": "881168",
+      "name": "工业金属",
+      "count": 55,
+      "digest": "acadeb33321c3b4c64cc56501d84b79a818e2bb55923e20698009ab522a3c4c4"
+    },
+    {
+      "code": "881169",
+      "name": "贵金属",
+      "count": 14,
+      "digest": "e7b8415136bbb77db508366bf82389e3cfd1ca2a987e4acbdb07033c8d1737fb"
+    },
+    {
+      "code": "881170",
+      "name": "小金属",
+      "count": 30,
+      "digest": "9dd90908976a691abbcdd9a79d71d2eb2dbb0002bb7555e609a3517ec79a0479"
+    },
+    {
+      "code": "881171",
+      "name": "自动化设备",
+      "count": 99,
+      "digest": "d8120989ba38ba5f213f5d54552ab0e23b7d4a7e08fd00571b9456ecdcab4f45"
+    },
+    {
+      "code": "881172",
+      "name": "电子化学品",
+      "count": 44,
+      "digest": "b57abe789469cd37140940d95aa63d011e554015609f6236db3985174c887b8b"
+    },
+    {
+      "code": "881173",
+      "name": "小家电",
+      "count": 26,
+      "digest": "78688842d5df99fff1d1cb2625791f82846612d241a16e6d19255728cba00c66"
+    },
+    {
+      "code": "881174",
+      "name": "厨卫电器",
+      "count": 9,
+      "digest": "d1e8dd321ceb1961e320deac100dc2acdf1690fc7bc7e7adbda016cd92b7c477"
+    },
+    {
+      "code": "881175",
+      "name": "医疗服务",
+      "count": 56,
+      "digest": "12e07e03413651182065aa9c927cb5998e13d8ae3e3997d2ee4df135817339c2"
+    },
+    {
+      "code": "881177",
+      "name": "互联网电商",
+      "count": 20,
+      "digest": "865a3923dbf24a202c45d1f1018f3921924b174be93693df939d7d9aeabf9003"
+    },
+    {
+      "code": "881178",
+      "name": "教育",
+      "count": 15,
+      "digest": "0c56bbdc53b301007d5d1d7eea1677d93c9b1fbbdcebe3ca6e73ee7d3133d742"
+    },
+    {
+      "code": "881179",
+      "name": "其他社会服务",
+      "count": 42,
+      "digest": "1f3fdd37cd98c9f93d0af14de80a22947f6e02b086d87245fc6261d3f94b98af"
+    },
+    {
+      "code": "881180",
+      "name": "石油加工贸易",
+      "count": 27,
+      "digest": "06cbcfff4ec88f142ce9214e121dd7ad1ab453e7de8d4ef2423371114857676e"
+    },
+    {
+      "code": "881181",
+      "name": "环境治理",
+      "count": 111,
+      "digest": "8482f2bb756ec2062d49f488137fc66fa3fcafbb160c33c5b0bd3f2d86e63a11"
+    },
+    {
+      "code": "881182",
+      "name": "美容护理",
+      "count": 34,
+      "digest": "1402cb3bc9b6d0d366e8c1efb3a72be6be414c348531e864cd2b1bcd32d1be9e"
+    },
+    {
+      "code": "881263",
+      "name": "农化制品",
+      "count": 61,
+      "digest": "4d2274b6b2cd90091bd5604b96f7097766cc8d24020d5c18d70c43881545a633"
+    },
+    {
+      "code": "881264",
+      "name": "化学纤维",
+      "count": 29,
+      "digest": "4504e06cbcd1d08fae8f8507147c65be38a389cf65dade3cf51d5ea6fe03bed3"
+    },
+    {
+      "code": "881265",
+      "name": "塑料制品",
+      "count": 78,
+      "digest": "e5166233926212a2090284c7599c381c22712c0378450570b3049b459cc49bdf"
+    },
+    {
+      "code": "881266",
+      "name": "橡胶制品",
+      "count": 22,
+      "digest": "1f4806a9a933594550ad71380e0e7e4611664242a2f35ff57d8080235997407e"
+    },
+    {
+      "code": "881267",
+      "name": "能源金属",
+      "count": 14,
+      "digest": "6cc898006efd95f6ab6b975672008447024d5fb871841e7afd5746246f48caca"
+    },
+    {
+      "code": "881268",
+      "name": "工程机械",
+      "count": 36,
+      "digest": "4823fdc1143d9763154a4b4bfd0c7cfd6e8ef52c92cd365a953af8d1ad5c08c6"
+    },
+    {
+      "code": "881269",
+      "name": "轨交设备",
+      "count": 30,
+      "digest": "37872f4be7b69d9fb067569f471c6b8bcfab6de52bacc1ce8d1d72ae0a4dab5e"
+    },
+    {
+      "code": "881270",
+      "name": "元件",
+      "count": 63,
+      "digest": "6a88754b50838781177ae660ed4d7e161bc15941bbbcf73180ef6c5c512a9499"
+    },
+    {
+      "code": "881271",
+      "name": "IT服务",
+      "count": 129,
+      "digest": "5b3d651c52429eb89c7be6ee787c9ed9502dce8c998d88a6a11a47e23080b02e"
+    },
+    {
+      "code": "881272",
+      "name": "软件开发",
+      "count": 138,
+      "digest": "cbc83060fc20d04643fa01cc93ede33875c79703b243e51de9a22b536092e6b0"
+    },
+    {
+      "code": "881273",
+      "name": "白酒",
+      "count": 19,
+      "digest": "2e33598bebd80f5c5b5343e364a6e154eaa7e1cd1e1c1e16727c281936f42e13"
+    },
+    {
+      "code": "881274",
+      "name": "影视院线",
+      "count": 20,
+      "digest": "47440a1351781cbb3ff648a963dedb5ea9efdc0da2e7f17ce778a919dbde2f43"
+    },
+    {
+      "code": "881275",
+      "name": "游戏",
+      "count": 23,
+      "digest": "2a7581edd16940fd9fb782ae10fe1c3ab344352d1d616ffbaa081a1b34558f0d"
+    },
+    {
+      "code": "881276",
+      "name": "军工电子",
+      "count": 61,
+      "digest": "4e4f72c2c381b36d0bba52793c7c061db9af88cc9948eb553e8dfceea2a000f9"
+    },
+    {
+      "code": "881277",
+      "name": "电机",
+      "count": 26,
+      "digest": "90bd2085973ca8e2e78ef78e8dfbfb08c09e772087debaa53189021bf32a9c5f"
+    },
+    {
+      "code": "881278",
+      "name": "电网设备",
+      "count": 140,
+      "digest": "03d653b97cb10504202cb939875fdff62eab9e92608dc2a6aa5336dcb3ad2209"
+    },
+    {
+      "code": "881279",
+      "name": "光伏设备",
+      "count": 73,
+      "digest": "4bf8de34aa15a40bef5d5171f80e7d4074d831614475eec8a35a8f9d7720775c"
+    },
+    {
+      "code": "881280",
+      "name": "风电设备",
+      "count": 32,
+      "digest": "f3e496cfad67b42ae69d19f88feda69b0814d199d0c358e515415c72c277d595"
+    },
+    {
+      "code": "881281",
+      "name": "电池",
+      "count": 107,
+      "digest": "20ffcc7cd2f9f7282dc0bcc0472ee8e650c01567ab92f53756fca490ddfb06d3"
+    },
+    {
+      "code": "881282",
+      "name": "其他电源设备",
+      "count": 35,
+      "digest": "025c0b709fa19dc7f37726411adff960ee3b1ebe56f5e992fdccb0adbc20cc31"
+    },
+    {
+      "code": "881283",
+      "name": "多元金融",
+      "count": 26,
+      "digest": "e9b1cdf28477a022ad6faef6fefa87345c12864634ccb114823971e83e4f0592"
+    },
+    {
+      "code": "881284",
+      "name": "环保设备",
+      "count": 30,
+      "digest": "b31d4f3bf4fced08d9d437271218bdab767da1b7b0cd572e3e2d866d3d153fcc"
+    }
+  ],
+  "largest_source_keys_match_sql": true,
+  "errors_before_cleanup": {
+    "revision": "5",
+    "total": 3,
+    "changed": true,
+    "offset": 0,
+    "limit": 50,
+    "rows": [
+      {
+        "status_code": 403,
+        "error": "Client error '403 Forbidden' for url 'https://q.10jqka.com.cn/thshy/detail/field/199112/order/desc/page/1/size/1000/ajax/1/code/881126/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403",
+        "id": "2fbaf82676a94f0f82c8cda9803fefe8",
+        "project_id": "ths-industries",
+        "created_at": "2026-10-02T18:36:42.866692+00:00",
+        "stage": "http"
+      },
+      {
+        "status_code": 403,
+        "error": "Client error '403 Forbidden' for url 'https://q.10jqka.com.cn/thshy/detail/field/199112/order/desc/page/1/size/1000/ajax/1/code/881126'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403",
+        "id": "6eab3613f189424ca2ec757777656afc",
+        "project_id": "ths-industries",
+        "created_at": "2026-10-02T18:36:24.155174+00:00",
+        "stage": "http"
+      },
+      {
+        "status_code": 200,
+        "error": "行业成分响应为空、校验页或被截断",
+        "id": "33905342441e48d0913f9610d7f3bf0e",
+        "project_id": "ths-industries",
+        "created_at": "2026-10-02T17:29:43.159161+00:00",
+        "stage": "source_validation"
+      }
+    ]
+  },
+  "formal_preparation_dashboard": {
+    "id": "industries",
+    "title": "当前行业与成分股票",
+    "category": "证券基础",
+    "priority": "研究",
+    "kind": "采集",
+    "specification": "Requirement(id='industries', title='当前行业与成分股票', category='证券基础', priority='研究', purpose='当前行业筛选与估值分组', grain='来源当前完整行业及成员集合', fields='行业编号、行业名称、证券代码、证券名称、市场', key='来源 + 行业编号；来源 + 行业编号 + 市场 + 证券代码', coverage='同花顺 thshy 本轮行业目录及每个行业完整成分；核对业务集合与归档摘要', cadence='每日完整刷新；最近成功核验不超过 3 个自然日', dependencies=(), criteria=(Criterion(id='fields', title='字段与单位', expected='行业编号、行业名称、证券代码、证券名称、市场', action='检查必需字段和单位；可选字段未提供不影响本项通过'), Criterion(id='keys', title='唯一键与重复', expected='来源 + 行业编号；来源 + 行业编号 + 市场 + 证券代码；重复键为 0', action='明确业务键，清查重复与版本冲突'), Criterion(id='coverage', title='历史与对象覆盖', expected='同花顺 thshy 本轮行业目录及每个行业完整成分；核对业务集合与归档摘要', action='补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明'), Criterion(id='quality', title='业务质量', expected='成员代码升序、名称非空、身份一致，不把分页首屏当完整名单', action='修复数据或解析规则，并补充业务语义回归'), Criterion(id='freshness', title='更新与时效', expected='每日完整刷新；最近成功核验不超过 3 个自然日', action='验证最新成功核验时间与数据水位，恢复更新计划'), Criterion(id='temporal', title='日期与使用范围', expected='仅最新分类；不保存变化历史，不能还原历史行业归属或用于当时行业信号', action='检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史')), kind='采集', boundary='仅行业名单及成员分类，不包含行情、指数历史或行业变更事件。', related=(), optional_fields='')",
+    "providers": [
+      {
+        "source": "同花顺",
+        "checks": [
+          {
+            "id": "task",
+            "phase": "开发",
+            "title": "采集任务登记",
+            "expected": "任务 ID、采集能力、分类和来源明确",
+            "action": "开发并登记采集任务",
+            "status": "pass",
+            "measured": "项目 ths-industries / 采集能力 collector.ths_industries；匹配任务 1、提供者 1",
+            "kind": "采集",
+            "dimension": "开发验收"
+          },
+          {
+            "id": "dataset",
+            "phase": "开发",
+            "title": "归档与版本契约",
+            "expected": "数据集精确归属项目；具备摘要、版本和写入契约",
+            "action": "登记统一归档贡献与版本规则",
+            "status": "pass",
+            "measured": "industry.snapshot / ths-industries-v1 → ths-industries；契约匹配 1 项",
+            "kind": "采集",
+            "dimension": "开发验收"
+          },
+          {
+            "id": "query",
+            "phase": "开发",
+            "title": "查询及检查接口",
+            "expected": "查询插件提供逐条验收结果，不接受整体布尔完成标记",
+            "action": "实现查询、结构校验与专项检查器",
+            "status": "pass",
+            "measured": "industries.query.preparation_check；登记实现 1 项；实际结构/内容另看数据验收",
+            "kind": "采集",
+            "dimension": "开发验收"
+          },
+          {
+            "id": "source_tests",
+            "phase": "开发",
+            "title": "来源语义回归",
+            "expected": "本版本来源专项测试实际执行且全部通过",
+            "action": "补测字段、分页/范围、断点和异常响应并运行发布门禁",
+            "status": "pass",
+            "measured": "30 项测试通过；2026-10-02T19:00:14.576658+00:00；tests/test_ths_industries.py",
+            "kind": "采集",
+            "dimension": "开发验收"
+          },
+          {
+            "id": "archive_tests",
+            "phase": "开发",
+            "title": "归档业务回归",
+            "expected": "本版本归档专项集成测试实际执行且全部通过",
+            "action": "验证重复无 DML、修订、旧版拒绝、提交重放与成功清队",
+            "status": "pass",
+            "measured": "9 项测试通过；2026-10-02T19:00:14.576658+00:00；tests/integration/test_industry_archive.py",
+            "kind": "采集",
+            "dimension": "开发验收"
+          },
+          {
+            "id": "shared_tests",
+            "phase": "开发",
+            "title": "公共流程回归",
+            "expected": "公共入队隔离、生命周期、版本信任及归档公平性回归通过",
+            "action": "运行包含隔离集成测试的正式发布门禁",
+            "status": "pass",
+            "measured": "80 项测试通过；2026-10-02T19:00:14.576658+00:00；tests/test_ingest_reservations.py、tests/test_collector_support.py、tests/test_collection_integrity.py、tests/test_fingerprint_versions.py、tests/integration/test_archive_fairness.py",
+            "kind": "采集",
+            "dimension": "开发验收"
+          },
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "行业编号、行业名称、证券代码、证券名称、市场",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "90 个行业、5572 个成员；仅最新状态；行业编号/名称、证券/市场关联完整",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与矛盾标记；排除受影响记录，或按需核实公司公告。不要填零或修改来源金额来凑齐合计。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "来源 + 行业编号；来源 + 行业编号 + 市场 + 证券代码；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "行业编号唯一，证券在本目录中唯一，规范集合已核对",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺 thshy 本轮行业目录及每个行业完整成分；核对业务集合与归档摘要",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "90 个行业、5572 个成员；仅最新状态；整份来源摘要与正式查询比较；集合证明一致",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "成员代码升序、名称非空、身份一致，不把分页首屏当完整名单",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "pass",
+            "measured": "名称非空，代码与市场有效；未把首屏当完整集合",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与矛盾标记；排除受影响记录，或按需核实公司公告。不要填零或修改来源金额来凑齐合计。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日完整刷新；最近成功核验不超过 3 个自然日",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "SQL 完整集合与有效 Redis 摘要一致；最近完整请求代次 2026-10-02T18:40:00.968984+00:00；上限 3 个自然日",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "仅最新分类；不保存变化历史，不能还原历史行业归属或用于当时行业信号",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "pass",
+            "measured": "只供当前行业筛选及估值分组；无历史归属、变化记录或生效日期，不能还原历史行业",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          }
+        ],
+        "scope": "当前财务分析；当前股票池全部证券；报告期 来源最早 ～ 来源最新；核心科目与金额关系检查",
+        "running": false,
+        "project": "ths-industries"
+      }
+    ],
+    "source": "同花顺",
+    "project": "ths-industries",
+    "running": false,
+    "checks": [
+      {
+        "id": "task",
+        "phase": "开发",
+        "title": "采集任务登记",
+        "expected": "任务 ID、采集能力、分类和来源明确",
+        "action": "开发并登记采集任务",
+        "status": "pass",
+        "measured": "项目 ths-industries / 采集能力 collector.ths_industries；匹配任务 1、提供者 1",
+        "kind": "采集",
+        "dimension": "开发验收"
+      },
+      {
+        "id": "dataset",
+        "phase": "开发",
+        "title": "归档与版本契约",
+        "expected": "数据集精确归属项目；具备摘要、版本和写入契约",
+        "action": "登记统一归档贡献与版本规则",
+        "status": "pass",
+        "measured": "industry.snapshot / ths-industries-v1 → ths-industries；契约匹配 1 项",
+        "kind": "采集",
+        "dimension": "开发验收"
+      },
+      {
+        "id": "query",
+        "phase": "开发",
+        "title": "查询及检查接口",
+        "expected": "查询插件提供逐条验收结果，不接受整体布尔完成标记",
+        "action": "实现查询、结构校验与专项检查器",
+        "status": "pass",
+        "measured": "industries.query.preparation_check；登记实现 1 项；实际结构/内容另看数据验收",
+        "kind": "采集",
+        "dimension": "开发验收"
+      },
+      {
+        "id": "source_tests",
+        "phase": "开发",
+        "title": "来源语义回归",
+        "expected": "本版本来源专项测试实际执行且全部通过",
+        "action": "补测字段、分页/范围、断点和异常响应并运行发布门禁",
+        "status": "pass",
+        "measured": "30 项测试通过；2026-10-02T19:00:14.576658+00:00；tests/test_ths_industries.py",
+        "kind": "采集",
+        "dimension": "开发验收"
+      },
+      {
+        "id": "archive_tests",
+        "phase": "开发",
+        "title": "归档业务回归",
+        "expected": "本版本归档专项集成测试实际执行且全部通过",
+        "action": "验证重复无 DML、修订、旧版拒绝、提交重放与成功清队",
+        "status": "pass",
+        "measured": "9 项测试通过；2026-10-02T19:00:14.576658+00:00；tests/integration/test_industry_archive.py",
+        "kind": "采集",
+        "dimension": "开发验收"
+      },
+      {
+        "id": "shared_tests",
+        "phase": "开发",
+        "title": "公共流程回归",
+        "expected": "公共入队隔离、生命周期、版本信任及归档公平性回归通过",
+        "action": "运行包含隔离集成测试的正式发布门禁",
+        "status": "pass",
+        "measured": "80 项测试通过；2026-10-02T19:00:14.576658+00:00；tests/test_ingest_reservations.py、tests/test_collector_support.py、tests/test_collection_integrity.py、tests/test_fingerprint_versions.py、tests/integration/test_archive_fairness.py",
+        "kind": "采集",
+        "dimension": "开发验收"
+      },
+      {
+        "id": "fields",
+        "phase": "数据",
+        "title": "字段与单位",
+        "expected": "行业编号、行业名称、证券代码、证券名称、市场",
+        "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+        "status": "pass",
+        "measured": "90 个行业、5572 个成员；仅最新状态；行业编号/名称、证券/市场关联完整",
+        "kind": "采集",
+        "blocking": true,
+        "findings": [],
+        "recommended_action": "保留来源缺值与矛盾标记；排除受影响记录，或按需核实公司公告。不要填零或修改来源金额来凑齐合计。",
+        "dimension": "来源质量"
+      },
+      {
+        "id": "keys",
+        "phase": "数据",
+        "title": "唯一键与重复",
+        "expected": "来源 + 行业编号；来源 + 行业编号 + 市场 + 证券代码；重复键为 0",
+        "action": "明确业务键，清查重复与版本冲突",
+        "status": "pass",
+        "measured": "行业编号唯一，证券在本目录中唯一，规范集合已核对",
+        "kind": "采集",
+        "blocking": true,
+        "findings": [],
+        "dimension": "采集完整性"
+      },
+      {
+        "id": "coverage",
+        "phase": "数据",
+        "title": "历史与对象覆盖",
+        "expected": "同花顺 thshy 本轮行业目录及每个行业完整成分；核对业务集合与归档摘要",
+        "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+        "status": "pass",
+        "measured": "90 个行业、5572 个成员；仅最新状态；整份来源摘要与正式查询比较；集合证明一致",
+        "kind": "采集",
+        "blocking": true,
+        "findings": [],
+        "dimension": "采集完整性"
+      },
+      {
+        "id": "quality",
+        "phase": "数据",
+        "title": "业务质量",
+        "expected": "成员代码升序、名称非空、身份一致，不把分页首屏当完整名单",
+        "action": "修复数据或解析规则，并补充业务语义回归",
+        "status": "pass",
+        "measured": "名称非空，代码与市场有效；未把首屏当完整集合",
+        "kind": "采集",
+        "blocking": true,
+        "findings": [],
+        "recommended_action": "保留来源缺值与矛盾标记；排除受影响记录，或按需核实公司公告。不要填零或修改来源金额来凑齐合计。",
+        "dimension": "来源质量"
+      },
+      {
+        "id": "freshness",
+        "phase": "数据",
+        "title": "更新与时效",
+        "expected": "每日完整刷新；最近成功核验不超过 3 个自然日",
+        "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+        "status": "pass",
+        "measured": "SQL 完整集合与有效 Redis 摘要一致；最近完整请求代次 2026-10-02T18:40:00.968984+00:00；上限 3 个自然日",
+        "kind": "采集",
+        "blocking": true,
+        "findings": [],
+        "dimension": "用途条件"
+      },
+      {
+        "id": "temporal",
+        "phase": "数据",
+        "title": "日期与使用范围",
+        "expected": "仅最新分类；不保存变化历史，不能还原历史行业归属或用于当时行业信号",
+        "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+        "status": "pass",
+        "measured": "只供当前行业筛选及估值分组；无历史归属、变化记录或生效日期，不能还原历史行业",
+        "kind": "采集",
+        "blocking": true,
+        "findings": [],
+        "dimension": "用途条件"
+      }
+    ],
+    "registered": true,
+    "development": 6,
+    "development_total": 6,
+    "data": 6,
+    "data_total": 6,
+    "own_complete": true,
+    "assessment": {
+      "development": "通过",
+      "integrity": "通过",
+      "quality": "通过",
+      "usage": "通过",
+      "usable": true,
+      "use_state": "可用"
+    },
+    "scope": "当前财务分析；当前股票池全部证券；报告期 来源最早 ～ 来源最新；核心科目与金额关系检查",
+    "blockers": [],
+    "related": [],
+    "complete": true,
+    "status": "已验收"
+  },
+  "final_pending_stream_total": 0,
+  "release_gate": "fbfca8ea9d1b1cffe8abb42b6085270666454e14a2990bc009cf6374ed3a12f2",
+  "deployment": {
+    "program_config_preserved": true,
+    "doctor_cwd": "C:/Windows/Temp",
+    "doctor_exit": 0,
+    "redis_connected": true,
+    "mysql_connected": true,
+    "desktop_pid": 28628,
+    "desktop_window_title": "Empire · 投资研究工作台",
+    "visible_desktop_verified": true,
+    "catalog_and_industry_page_verified": true,
+    "industry_page_count": 90,
+    "member_page_total": 5572,
+    "auto_parts_search_count": 276,
+    "preparation_page_dimensions": [
+      "开发验收通过",
+      "采集完整性通过",
+      "来源质量通过",
+      "用途条件通过",
+      "用途可用"
+    ],
+    "preserved_preparation_security_scope": "601139"
+  },
+  "tests": {
+    "passed": 1407,
+    "skipped": 2,
+    "skip_reason": "Windows symbolic link privilege unavailable",
+    "source_tests": 30,
+    "industry_archive_tests": 9
+  }
+}

@@ -25,7 +25,11 @@ from empire.plugins.infra.http_safety import (
 )
 from empire.plugins.infra.request_activity import RequestRate
 from empire.plugins.infra.resources import ByteBudget
-from empire.plugins.infra.response_reader import DownloadLimitError, read_response
+from empire.plugins.infra.response_reader import (
+    DownloadIncompleteError,
+    DownloadReadError,
+    read_response,
+)
 from empire.plugins.infra.routing import USE_PROXY, routed_request, site_policy
 from empire.plugins.infra.settings import SettingsStore
 
@@ -130,7 +134,7 @@ class HttpService:
     async def _record_failure(self, project_id, method, url, error, response=None, attempt=1):
         if self.records is None or getattr(error, "diagnostic_recorded", False):
             return
-        incomplete = isinstance(error, DownloadLimitError)
+        incomplete = isinstance(error, DownloadReadError)
         extra = {"raw_body_complete": False, "observed_bytes": error.observed_bytes} if incomplete else {}
         await self.records.add_error(
             project_id, stage="http", error=str(error),
@@ -198,7 +202,7 @@ class HttpService:
     async def _request(
         self, method: str, url: str, *, allowed_domains: tuple[str, ...],
         max_retries: int = 2, max_redirects: int = 5, total_timeout: float = 120,
-        project_id: str | None = None,
+        project_id: str | None = None, attempt_options=None,
         **kwargs,
     ) -> httpx.Response:
         if self.closed:
@@ -208,14 +212,22 @@ class HttpService:
         if self.records is not None and not project_id:
             raise ValueError("采集 HTTP 请求必须声明 project_id，用于按项目保存错误记录")
         retries = redirects = 0
+        if attempt_options is not None and (not callable(attempt_options) or max_redirects != 0):
+            raise ValueError('动态请求字段必须使用无重定向的显式请求契约')
         response = None
         try:
             async with asyncio.timeout(total_timeout):
                 while True:
                     response = None
                     try:
-                        response = await self._one(method, url, allowed_domains, **kwargs)
-                    except httpx.TransportError as exc:
+                        options = dict(kwargs)
+                        if attempt_options is not None:
+                            generated = attempt_options()
+                            if not isinstance(generated, dict) or set(generated) - {'data', 'headers'}:
+                                raise ValueError('动态请求字段只允许正文 data 与请求头 headers')
+                            options.update(generated)
+                        response = await self._one(method, url, allowed_domains, **options)
+                    except (httpx.TransportError, DownloadIncompleteError) as exc:
                         await self._record_failure(project_id, method, url, exc, attempt=retries + 1)
                         if retries >= max_retries:
                             raise

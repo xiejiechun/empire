@@ -26,11 +26,12 @@ from empire.plugins.pipeline.fingerprints import FingerprintCache
     ("calendar", ["2026-09-26T00:00:00.000000+00:00", "extra"]),
     ("calendar", [(datetime.now(UTC) + timedelta(days=1)).isoformat(timespec="microseconds")]),
 ])
-async def test_malformed_dataset_versions_are_not_archive_evidence(namespace, version):
+@pytest.mark.parametrize('method', ['get', 'peek'])
+async def test_malformed_dataset_versions_are_not_archive_evidence(namespace, version, method):
     store = SimpleNamespace(prefix="test", client=SimpleNamespace(eval=AsyncMock(return_value=[
         json.dumps({"hash": "a" * 64, "version": version})])))
     cache = FingerprintCache(store, {}, DatasetPlugin().fingerprint_version)
-    assert await cache.get(namespace, "test-source", ["key"]) == {}
+    assert await getattr(cache, method)(namespace, "test-source", ["key"]) == {}
 
 
 def test_version_contract_compares_parsed_times_and_limits_only_cache_trust():

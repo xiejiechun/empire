@@ -44,6 +44,16 @@ class CalendarRunResult(TypedDict):
     maintenance_start: str
 
 
+class SuspensionRunResult(TypedDict):
+    collected: int
+    pages: int
+    source_pages: int
+    dates_checked: int
+    batch_id: str
+    start_date: str
+    end_date: str
+
+
 class QueueReservation(Protocol):
     job_key: str
     remaining_entries: int
@@ -86,6 +96,7 @@ class CollectionRecords(Protocol):
     async def add_error(
         self, project_id: str, *, stage: str, error: str, **fields: Any,
     ) -> dict[str, Any]: ...
+
 
 
 ArchiveStatusCall = Callable[[], Awaitable[ArchiveStatus | None]]

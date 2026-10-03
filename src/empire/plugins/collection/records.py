@@ -208,6 +208,10 @@ class RecordsPlugin:
             self._key("archives", project_id), 0, ARCHIVE_LIMIT - 1,
         )]
 
+    async def list_all_records(self, kind, offset=0, limit=50, known_revision=None):
+        from empire.plugins.collection.record_query import all_records
+        return await all_records(self, kind, offset, limit, known_revision)
+
     async def stop(self):
         self.stats["status"] = "stopped"
 

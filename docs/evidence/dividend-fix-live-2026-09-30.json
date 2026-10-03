@@ -1,0 +1,57 @@
+{
+  "checked_at": "2026-09-29T18:37:33.482059+00:00",
+  "cursor": {
+    "phase": "fetch",
+    "batch_id": "4865af52b75e4f0383b27fa9ea06397e",
+    "index": 352,
+    "pages": 352,
+    "collected": 1147,
+    "source_hash": "830ebb9b5559b98c1763ceed143dbbeea9fda1cb4bae18d29a4a7ab1350194dd",
+    "scope_hash": "830ebb9b5559b98c1763ceed143dbbeea9fda1cb4bae18d29a4a7ab1350194dd",
+    "units": 5570,
+    "rolling": "f82730ab51997bc6c9f2d4b886b4622925f2daf3a6ffd5e90442a93eb7e26fdd",
+    "started_at": "2026-09-29T18:34:24.507264+00:00",
+    "schema_version": 2
+  },
+  "rows_600007": 25,
+  "same_date_payouts": [
+    "0.5",
+    "0.8"
+  ],
+  "queue": 0,
+  "error_ids": [
+    "dc83fde12bfd404d92e13c0520841b6a"
+  ],
+  "checks": [
+    {
+      "criterion": "fields",
+      "status": "fail",
+      "measured": "正式查询 1147 条 / 5570 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "keys",
+      "status": "fail",
+      "measured": "正式查询 1147 条 / 5570 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "coverage",
+      "status": "fail",
+      "measured": "正式查询 1147 条 / 5570 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "quality",
+      "status": "fail",
+      "measured": "正式查询 1147 条 / 5570 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "freshness",
+      "status": "fail",
+      "measured": "缺少三日内可信完整范围核验"
+    },
+    {
+      "criterion": "temporal",
+      "status": "unknown",
+      "measured": "按来源日期保存；缺失日期保持未知，不作为公告前信号；详见增发送配说明"
+    }
+  ]
+}

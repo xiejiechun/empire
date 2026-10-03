@@ -10,6 +10,9 @@ a = Analysis(
     pathex=[str(source_root)],
     binaries=[],
     datas=[
+        (str(source_root / "empire" / "plugins" / "collectors" / "resources"), "empire/plugins/collectors/resources"),
+        (str(source_root / "empire" / "plugins" / "ui" / "statement_layouts.json"), "empire/plugins/ui"),
+        (str(project_root / "build" / "generated" / "preparation-release.json"), "empire"),
         (str(source_root / "empire" / "desktop" / "assets"), "empire/desktop/assets"),
         (str(project_root / "config" / "app.example.toml"), "config"),
         (str(project_root / "sql" / "schema.sql"), "sql"),

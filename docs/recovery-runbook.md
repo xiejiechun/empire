@@ -15,10 +15,12 @@ Empire 是 Windows 单机桌面应用，不是跨主机高可用系统。MySQL �
 | Redis 服务或电脑重启 | MySQL 业务数据和 app_setting | 待归档消息、断点、next_due、许可/冷却、摘要、采集/归档/错误记录 | 所有仅在 Redis 的未归档及运行状态全部丢失 | 服务恢复后重新采集；没有持久 Redis 恢复时间承诺 |
 | MySQL 正常重启且数据目录完好 | 已提交事务由 InnoDB redo/undo 恢复 | 未提交事务 | 预期为最后已提交事务 | 未实测，取决于 InnoDB 恢复和数据量 |
 | MySQL 逻辑损坏、数据目录或磁盘丢失 | 仅能恢复到最近一次已验证备份 | 该备份之后的 MySQL 修改；没有备份时可能全部丢失 | **当前无已登记备份，无法保证** | **当前未完成真实备份恢复演练，无法保证** |
-| `%LOCALAPPDATA%\Empire\config.toml` 丢失 | MySQL 中 app_setting 与业务数据 | 数据库/Redis 密码及本机路径配置 | 当前未登记安全副本 | 由随包空白模板重新安全配置后重启；未实测 |
+| `程序目录/config.toml` 丢失 | MySQL 中 app_setting 与业务数据 | 数据库/Redis 密码及本机路径配置 | 当前未登记安全副本 | 由随包空白模板重新安全配置后重启；未实测 |
 | 应用目录损坏 | MySQL及独立服务数据目录 | 未提交源码修改、未另存的本地配置 | 取决于 Git/制品和配置副本 | 重新部署同一构建并恢复配置；未实测 |
 
 Redis 丢失后不得从 `collection_state` 推断未归档消息已经存在，也不得伪造运行记录、断点或最近 Redis 核验时间。重新打开 Empire 后，从头或按 MySQL 完整性重新采集；股票重新形成完整列表，新闻从第一页及已归档上界继续，日历根据 SQL 完整月份补齐。MySQL 中已归档数据仍可浏览。
+
+开盘啦分时在 Redis 丢失后重建当前上市池及必要日期，逐证券检查 stock_intraday 的业务内容、摘要和上市关联，补历史缺口并回看最近五个必要交易日。成功响应已归档到 SQL 的部分保留，内存中尚未归档的响应须重采；不得仅按最大日期跳过中间缺口。新表只通过 migrate_intraday.py 显式添加，维护核对并保留已有业务及既有项目待归档消息。
 
 ## 日常故障处理顺序
 
@@ -45,7 +47,7 @@ mysqldump.exe --host=127.0.0.1 --port=3307 --user=<用户名> --password `
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\mysql_recovery_inventory.py `
-  --config "$env:LOCALAPPDATA\Empire\config.toml" `
+  --config "D:\project\empire\config.toml" `
   --backup-file D:\EmpireBackups\empire-YYYYMMDD-HHMMSS.sql `
   --output D:\EmpireBackups\empire-YYYYMMDD-HHMMSS.inventory.json
 ```
@@ -71,7 +73,7 @@ mysql.exe --host=127.0.0.1 --port=3307 --user=<维护用户名> --password `
 ```
 
 3. 从随包空白模板单独创建恢复配置，只把 `[mysql].database` 指向 `empire_restore_drill`。Redis 配置不会被此只读验证工具使用，但仍不得指向或清理共享 Redis。
-4. 比对全部五张正式表的列、主键、索引、引擎、逐行数量和稳定内容摘要：
+4. 比对全部九张正式表的列、主键、索引、引擎、逐行数量和稳定内容摘要：
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\mysql_recovery_inventory.py `
@@ -80,7 +82,7 @@ mysql.exe --host=127.0.0.1 --port=3307 --user=<维护用户名> --password `
   --output D:\EmpireBackups\empire-YYYYMMDD-HHMMSS.restore-result.json
 ```
 
-结果必须为 `passed=true` 且 differences 为空。`stock`、`finance_news`、`trade_calendar`、`collection_state` 和 `app_setting` 缺一不可；只比较行数不算通过。记录开始/完成时间，才可得到本机实际 RTO；备份时间与故障点的间隔才是可声明的 RPO。
+结果必须为 `passed=true` 且 differences 为空。`stock`、`finance_news`、`trade_calendar`、`suspension_event`、`collection_state` 和 `app_setting` 缺一不可；只比较行数不算通过。记录开始/完成时间，才可得到本机实际 RTO；备份时间与故障点的间隔才是可声明的 RPO。
 
 5. 演练完成后保留 SQL、源清单和结果报告作为证据。隔离数据库的删除属于独立破坏性维护，不由验证工具执行；明确核实名称和证据后再由数据库管理员处理。
 
@@ -88,10 +90,24 @@ mysql.exe --host=127.0.0.1 --port=3307 --user=<维护用户名> --password `
 
 只有在原业务库不可继续使用、已选择一份 `passed=true` 的备份并明确接受其 RPO 后，才可以计划生产恢复。生产恢复会改变或替换业务数据，不属于本手册自动授权范围，必须单独确认准确目标、停机窗口、回退副本和执行人。应用启动、`init-db`、迁移脚本和恢复清单工具都不得自动完成这一步。
 
-恢复完成后至少核对：五表清单一致；三类业务页面可读；`collection_state` 每项目一行；任务、网站和下载配置存在；Redis 作为空的临时状态重新开始；首次采集不得用旧摘要授权清队。随后执行 `empire doctor` 和当前版本发布门禁，再正常打开应用。
+恢复完成后至少核对：六表清单一致；已归档业务可查询；`collection_state` 每项目一行；任务、网站和下载配置存在；Redis 作为空的临时状态重新开始；首次采集不得用旧摘要授权清队。随后执行 `empire doctor` 和当前版本发布门禁，再正常打开应用。
 
 ## 尚未完成的外部保障
 
 - 尚未登记备份介质、周期、加密、ACL、离机副本、保留周期和告警责任人。
 - 尚未用真实备份完成隔离 MySQL 恢复，所以真实 RPO/RTO 仍为空，不得写成已达标。
 - 当前不恢复 Redis AOF/RDB，也不启用 MySQL binlog；这是已确认的低写盘策略。若以后要求时间点恢复或跨机容灾，需要重新审阅写盘、容量、安全和权限影响。
+
+通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。显式维护入口为 `scripts/migrate_capital_actions.py`，应用启动不改表。生命周期、来源口径与操作见 [通达信增发送配](tdx-capital-actions.md)。
+
+分红旧业务键升级为 dividends.unit@2 时执行 scripts/migrate_dividend_identity.py：关闭 Empire 且队列为空，保留业务内容和观测水位，重算键并失效旧证明/断点，重新核验全范围。应用不自动迁移；pending 维护须重跑同一脚本完成后再启动。
+
+增发详情状态升级：关闭 Empire 且待归档队列为空后执行 `python scripts/migrate_issue_availability.py`。保留 additional_issue 全部业务及 SQL 观察水位，重建受影响完成证明/断点；内容不变且校验匹配的证券摘要保留。若留下 detail_migration_pending，重跑维护完成 Redis 步骤，启动不自动转换。未知缺字段不得批量冒充暂无。详见[暂无详情规则](tdx-issue-availability.md)。
+
+## 同花顺三大报表
+
+利润表、资产负债表、现金流量表分别由独立任务和查询插件提供。生命周期、来源精度及验收限制见 [同花顺三大报表](ths-financial-statements.md)。历史选股所需公告日期尚未提供，不宣称信号数据准备完成。
+
+## 当前行业恢复
+
+恢复清单包含 `industry`、`industry_member` 和对应 `collection_state`。Redis 丢失后保留 SQL 当前完整集合，下轮完整刷新；历史行业归属不能由当前集合重建。新增表须正常关闭 Empire 后执行 `scripts/migrate_industries.py`，该入口核验队列为空及已有表前后内容，启动不自动建表。

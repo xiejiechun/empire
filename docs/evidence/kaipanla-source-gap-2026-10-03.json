@@ -1,0 +1,14 @@
+{
+  "project": "kaipanla-intraday",
+  "error_id": "42ba5bd1030a4b40b7d5cd61014b5eca",
+  "security": "BJ:920000",
+  "trade_date": "2021-11-25",
+  "classification": "source auction response unavailable or invalid; not proof of zero auction points",
+  "trend": {"errcode": "0", "points": 241},
+  "auction": {"errcode": "1017", "valid_points": null},
+  "diagnostic_variants": ["compact Day with w44", "ISO Day with w55"],
+  "variants_provided_valid_auction": false,
+  "remediation": "keep earliest unresolved frontier, continue independent valid security days, never claim whole-round completion with gaps",
+  "error_cleared": false,
+  "reason_not_cleared": "required auction data for this security day remains unresolved"
+}

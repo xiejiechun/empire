@@ -35,8 +35,12 @@ try {
     & git -C $projectRoot -c core.whitespace=cr-at-eol diff --check
     if ($LASTEXITCODE -ne 0) { throw 'Git whitespace check failed.' }
     $env:EMPIRE_INTEGRATION = '1'
-    & $python -m pytest -q --tb=short -rs
+    & $python (Join-Path $projectRoot 'scripts\preparation_evidence.py') begin
+    if ($LASTEXITCODE -ne 0) { throw 'Preparation evidence baseline failed.' }
+    & $python -m pytest -q --tb=short -rs --junitxml=build/release-tests.xml
     if ($LASTEXITCODE -ne 0) { throw 'Test suite failed.' }
+    & $python (Join-Path $projectRoot 'scripts\preparation_evidence.py') finish
+    if ($LASTEXITCODE -ne 0) { throw 'Preparation test evidence failed.' }
     & $python (Join-Path $projectRoot 'scripts\measure_capacity.py') --quick --output $capacityReport
     if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $capacityReport)) {
         throw 'Isolated capacity baseline failed.'
@@ -65,7 +69,14 @@ try {
     }
     New-Item -ItemType Directory -Path (Split-Path $portableDirectory) -Force | Out-Null
     Move-Item -LiteralPath $packageDirectory -Destination $portableDirectory
+    $preparedConfig = Join-Path $portableDirectory 'config.toml'
+    $preservedConfig = Join-Path $portableRoot 'preserved-config.toml'
+    $configIsolated = $false
     try {
+        if (Test-Path -LiteralPath $preparedConfig) {
+            Move-Item -LiteralPath $preparedConfig -Destination $preservedConfig
+        }
+        $configIsolated = $true
         $portableExecutable = Join-Path $portableDirectory 'Empire.exe'
         $env:QT_QPA_PLATFORM = 'offscreen'
         $smoke = Start-Process -FilePath $portableExecutable `
@@ -79,17 +90,22 @@ try {
         $env:LOCALAPPDATA = Join-Path $portableRoot '用户 数据'
         $firstRun = Start-Process -FilePath $portableExecutable -ArgumentList @('check-config') `
             -WorkingDirectory $portableDirectory -WindowStyle Hidden -Wait -PassThru
-        $preparedConfig = Join-Path $env:LOCALAPPDATA 'Empire\config.toml'
         if ($firstRun.ExitCode -ne 1 -or -not (Test-Path -LiteralPath $preparedConfig)) {
-            throw 'Packaged first-run configuration guidance did not prepare the user config.'
+            throw 'Packaged first-run configuration guidance did not prepare the program-local config.'
         }
         $portableEvidence.first_run_prepared_config = $true
         $configCheck = Start-Process -FilePath $portableExecutable -ArgumentList @('check-config') `
             -WorkingDirectory $portableDirectory -WindowStyle Hidden -Wait -PassThru
-        if ($configCheck.ExitCode -ne 0) { throw 'Packaged user configuration validation failed.' }
+        if ($configCheck.ExitCode -ne 0) { throw 'Packaged program configuration validation failed.' }
         $portableEvidence.config_recheck = $true
     } finally {
         $env:LOCALAPPDATA = $previousLocalAppData
+        if ($configIsolated -and (Test-Path -LiteralPath $preparedConfig)) {
+            Remove-Item -LiteralPath $preparedConfig
+        }
+        if (Test-Path -LiteralPath $preservedConfig) {
+            Move-Item -LiteralPath $preservedConfig -Destination $preparedConfig
+        }
         if (Test-Path -LiteralPath $portableDirectory) {
             Move-Item -LiteralPath $portableDirectory -Destination $packageDirectory
         }

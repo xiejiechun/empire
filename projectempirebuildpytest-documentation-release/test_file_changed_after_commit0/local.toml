@@ -1,0 +1,16 @@
+# local configuration
+[mysql]
+user = "empire"
+password = 'private@pass#word' # preserve credentials and comment
+database = "test"
+[redis]
+namespace = "empire:test-migration"
+[http] # directory remains local
+buffer_budget_bytes = 100_663_296 # buffer comment
+download_quota_bytes = 2147483648
+disk_free_margin_bytes = 134217728
+file_concurrency = 4
+download_directory = 'D:\Downloads' # preserve directory
+[other]
+value = "preserve me"
+# concurrent edit

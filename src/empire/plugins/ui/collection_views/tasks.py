@@ -1,19 +1,34 @@
 from copy import deepcopy
 
 from PySide6.QtCore import Qt, QTime
+from PySide6.QtWidgets import QHBoxLayout, QLabel
 
 from empire.contracts.ui import NavigationContext
-from empire.core.redaction import redact
-from empire.plugins.ui.common import STATUS, rows, stamp, update_options
+from empire.plugins.ui.common import hint, update_options
 
 from .base import CollectionView
-from .network_summary import network_summary
 from .task_layout import TaskLayout
+from .task_runtime import render_runtime
 
 
 class TasksPage(TaskLayout, CollectionView):
     section = "tasks"
     build_view = TaskLayout._tasks_page
+
+    def heightForWidth(self, width):
+        # Detail tabs already scroll. Their preferred text height must not expand
+        # the shell's entire page and push the menu/actions/footer off screen.
+        return self.minimumSizeHint().height()
+
+    def build_heading(self, layout):
+        row = QHBoxLayout()
+        self.title = QLabel('采集任务')
+        self.title.setObjectName('compactPageTitle')
+        self.summary = hint('正在连接采集管理服务……')
+        self.summary.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        row.addWidget(self.title)
+        row.addWidget(self.summary, 1)
+        layout.addLayout(row)
 
     def apply_navigation_context(self, context: NavigationContext):
         if not context.task_id:
@@ -21,10 +36,10 @@ class TasksPage(TaskLayout, CollectionView):
         if self.focus_task_id is None:
             self.focus_return_offset = self.offset
         self.focus_task_id = context.task_id
-        self.loaded_id = context.task_id
         self.focus_notice.setText(f"已从数据页面定位采集任务：{context.task_id}。原筛选和分页保持不变。")
         self.focus_notice.show()
         self.clear_focus_button.show()
+        self.focus_panel.show()
         if self.query is not None:
             self.query_scope.cancel("workspace")
         self.query = None
@@ -39,6 +54,7 @@ class TasksPage(TaskLayout, CollectionView):
         self.offset = self.focus_return_offset
         self.focus_notice.hide()
         self.clear_focus_button.hide()
+        self.focus_panel.hide()
         if self.query is not None:
             self.query_scope.cancel("workspace")
         self.query = None
@@ -51,26 +67,24 @@ class TasksPage(TaskLayout, CollectionView):
         if hasattr(self, "focus_notice"):
             self.focus_notice.hide()
             self.clear_focus_button.hide()
+            self.focus_panel.hide()
         super().filters_changed()
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
         if hasattr(self, "task_split"):
             narrow = self.width() < 950
+            self.task_menu.setMinimumHeight(110 if narrow else 180)
             orientation = Qt.Orientation.Vertical if narrow else Qt.Orientation.Horizontal
             self._arrange_task_filters(narrow)
-            for column in (1, 2, 4):
-                self.jobs.setColumnHidden(column, self.width() < 720)
-            if self.task_split.orientation() != orientation:
+            if self.task_split.orientation() != orientation or not self._task_layout_ready:
+                self._task_layout_ready = True
                 self.task_split.setOrientation(orientation)
-                self.task_inspector.setMinimumWidth(0 if orientation == Qt.Orientation.Vertical else 320)
-                self.task_inspector.setMinimumHeight(140)
-                self.task_split.setSizes([280, 330] if orientation == Qt.Orientation.Vertical else [650, 370])
+                self.task_split.setSizes([170, 400] if narrow else [320, max(320, self.width() - 320)])
 
     def selected(self):
-        if not self.data or not 0 <= self.jobs.currentRow() < len(self.data["jobs"]):
-            return None
-        return self.data["jobs"][self.jobs.currentRow()]
+        ident = self.task_menu.selected_id()
+        return next((job for job in (self.data or {}).get("jobs", []) if job["id"] == ident), None)
 
     def _policy(self):
         route_mode = self.route_mode.currentData()
@@ -83,13 +97,25 @@ class TasksPage(TaskLayout, CollectionView):
 
     def select_job(self):
         job = self.selected()
+        self.task_inspector.setEnabled(bool(job))
+        self.detail_stack.setCurrentIndex(1 if job else 0)
         if not job:
+            self.task_name.setText("展开来源并选择具体任务")
+            self.detail.clear()
+            self.runtime_description.clear()
+            self.operation_feedback.setText("采集操作使用已保存的设置；暂停后保留断点。")
+            for field in self.runtime_fields.values():
+                field.setText("—")
+            self.progress.setRange(0, 100)
+            self.progress.setValue(0)
+            self._update_buttons()
             return
         self.job_baselines[job["id"]] = deepcopy(job["policy"])
         if self.loaded_id != job["id"]:
             self.loaded_id = job["id"]
             self._load_job(self.job_drafts.get(job["id"], job["policy"]))
             self.task_feedback.setText("有未保存修改，采集仍使用已保存的计划" if job["id"] in self.job_drafts else "")
+            self.operation_feedback.setText("采集操作使用已保存的设置；暂停后保留断点。")
         elif job["id"] not in self.job_drafts and self._policy() != job["policy"]:
             self._load_job(job["policy"])
         self._render_job_detail(job)
@@ -102,7 +128,7 @@ class TasksPage(TaskLayout, CollectionView):
         self.interval.setValue(policy["interval_seconds"])
         self.daily.setTime(QTime.fromString(policy["daily_time"], "HH:mm"))
         self.retries.setValue(policy["request_retries"])
-        route_mode = ("direct" if not policy.get("use_proxy", False) else
+        route_mode = ("direct" if not policy.get("use_proxy", True) else
                       "proxy_fallback" if policy.get("proxy_fallback", True) else "proxy_only")
         self.route_mode.setCurrentIndex(self.route_mode.findData(route_mode))
         self._loading = False
@@ -151,43 +177,15 @@ class TasksPage(TaskLayout, CollectionView):
 
     def _render_job_detail(self, job):
         self.task_name.setText(job["name"])
+        self.task_name.setToolTip(job['id'])
         self.fresh_button.setToolTip(job.get("fresh_description", "创建新批次；已归档数据保留。"))
-        self.detail.setText(f"{job['description']} · 网站：{job['rate_group']}\n{network_summary(job)}")
-        progress = job["progress"]
-        state = progress.get("status", "running") if job["active"] else job["last_status"]
-        self.run_button.setText("继续采集" if state in ("paused", "error") else "立即采集")
-        self.run_button.setToolTip("先勾选“启用任务”并保存执行计划。" if not job["policy"]["enabled"]
-                                  else "有未完成批次时从断点继续，否则开始新的采集。")
-        self.progress.setRange(0, 100)
-        if job["active"]:
-            collected, expected = progress.get("collected", 0), progress.get("expected_count", 0)
-            text = (f"{STATUS.get(state, state)} · {collected:,} / {expected:,} 条" if expected
-                    else f"{STATUS.get(state, state)} · 已处理 {collected:,} 条")
-            if progress.get("current_month"):
-                text += f" · 当前 {progress['current_month']} · {progress.get('pages', 0)} / {progress.get('total_months', 0)} 个月"
-            if expected:
-                self.progress.setValue(min(100, int(collected * 100 / expected)))
-            else:
-                self.progress.setRange(0, 0)
-        else:
-            latest = next((h for h in self.data["history"] if h["task_id"] == job["id"]), None)
-            self.progress.setValue(100 if state == "complete" else 0)
-            text = STATUS.get(state, state)
-            if latest:
-                count = latest.get("result", {}).get("collected")
-                if count is not None:
-                    text += f" · {count:,} 条"
-                text += f" · 最近结束 {stamp(latest.get('finished_at'))}"
-            else:
-                text += " · 尚无运行记录"
-        self.progress_label.setText(text)
-        error = redact(job.get("error", ""), self.shell.cfg)
-        self.progress_label.setToolTip(error)
-        if error:
-            self.detail.setText(self.detail.text() + "\n失败原因：" + error[:160]
-                                + ("……请到运行记录查看完整详情" if len(error) > 160 else ""))
+        self.detail.setText(f"{job.get('source_name', job['rate_group'])} · {job.get('category', '其他')}")
+        self.runtime_description.setText(job['description'])
+        render_runtime(self, job)
 
     def _update_buttons(self):
+        message = self.operation_feedback.text()
+        self.operation_feedback.setVisible(bool(message) and message != "采集操作使用已保存的设置；暂停后保留断点。")
         ready = self.data is not None and self.action is None
         for button in self.buttons:
             button.setEnabled(ready)
@@ -195,43 +193,22 @@ class TasksPage(TaskLayout, CollectionView):
         for button in self.run_buttons:
             button.setEnabled(bool(ready and job and job["policy"]["enabled"] and not job["active"]))
         self.pause_button.setEnabled(bool(ready and job and (job["policy"]["enabled"] or job["active"])))
-        self.save_button.setEnabled(bool(ready and self.loaded_id in self.job_drafts))
-        self.reset_button.setEnabled(bool(ready and self.loaded_id in self.job_drafts))
+        self.save_button.setEnabled(bool(ready and job and self.loaded_id in self.job_drafts))
+        self.reset_button.setEnabled(bool(ready and job and self.loaded_id in self.job_drafts))
 
     def render_content(self):
         jobs = self.data["jobs"]
         update_options(self.task_category, self.data.get("categories", []), "全部分类")
         update_options(self.task_source, self.data.get("sources", []), "全部来源")
+        self.task_source.blockSignals(True)
+        for index in range(1, self.task_source.count()):
+            ident = self.task_source.itemData(index)
+            self.task_source.setItemText(index, self.data.get("source_names", {}).get(ident, ident))
+        self.task_source.blockSignals(False)
         self.task_empty.setVisible(not jobs)
-        self.task_inspector.setEnabled(bool(jobs))
-        if not jobs:
-            self.loaded_id = None
-            self.task_name.setText("未选择任务")
-            self.detail.clear()
-            if self.focus_task_id and self.data.get("focus_missing"):
-                self.focus_notice.setText(f"关联采集任务不可用：{self.focus_task_id}")
-        selected = next((i for i, job in enumerate(jobs) if job["id"] == self.loaded_id), 0)
-        self.jobs.blockSignals(True)
-        values = []
-        for job in jobs:
-            policy = job["policy"]
-            plan = {"manual": "仅手动", "interval": f"结束后 {policy['interval_seconds']} 秒",
-                    "daily": f"每天 {policy['daily_time']}"}[policy["mode"]]
-            if not policy["enabled"]:
-                plan = "已停用 · " + plan
-            if not policy.get("use_proxy"):
-                plan += " · 本机直连"
-            elif policy.get("proxy_fallback", True):
-                plan += " · 代理优先"
-            else:
-                plan += " · 仅代理"
-            state = job["progress"].get("status", "running") if job["active"] else job["last_status"]
-            values.append([job["name"], f"{job.get('source_name', job['rate_group'])} / {job.get('category', '其他')}",
-                           plan, STATUS.get(state, state) if policy["enabled"] else "已停用", stamp(job["next_due"])])
-        rows(self.jobs, values, keys=[job["id"] for job in jobs])
-        if jobs:
-            self.jobs.selectRow(selected)
-        self.jobs.blockSignals(False)
+        if not jobs and self.focus_task_id and self.data.get("focus_missing"):
+            self.focus_notice.setText(f"关联采集任务不可用：{self.focus_task_id}")
+        self.task_menu.render_jobs(jobs, self.focus_task_id or self.loaded_id, bool(self.focus_task_id))
         self.select_job()
 
     @property
@@ -239,6 +216,7 @@ class TasksPage(TaskLayout, CollectionView):
         return self.task_pager
 
     def initialize_state(self):
+        self._task_layout_ready = False
         self.loaded_id = None
         self.job_drafts, self.job_baselines = {}, {}
         self.focus_task_id = None

@@ -308,7 +308,7 @@ class StockUiPlugin(UiPlugin):
     def create_pages(self):
         return (
             PageContribution("stocks", "股票列表", StockListPage, "数据浏览", 0,
-                             "查找股票、筛选市场、复制数据 · Alt+2", catalogued=True,
+                             "查找股票、筛选市场、复制数据 · Alt+2", catalogued=True, database_tables=("stock",),
                              category="基础数据", source="新浪财经", cache_policy="lru",
                              management=NavigationTarget(
                                  "collection", NavigationContext(task_id="sina-stocks"))),

@@ -9,14 +9,22 @@ from empire.contracts.download import CHUNK_BYTES, FilePolicy
 from empire.plugins.infra.http_safety import SENSITIVE_HEADERS
 
 
-class DownloadLimitError(ValueError):
-    """Resource/format failure, not a failed proxy or a retryable transport error."""
+class DownloadReadError(ValueError):
+    """A rejected response with bounded, explicitly incomplete diagnostics."""
 
     def __init__(self, message, *, sample=b"", observed_bytes=0, status_code=None):
         super().__init__(message)
         self.sample = sample
         self.observed_bytes = observed_bytes
         self.status_code = status_code
+
+
+class DownloadLimitError(DownloadReadError):
+    """Non-retryable resource or format failure."""
+
+
+class DownloadIncompleteError(DownloadReadError):
+    """Retryable incomplete transfer; never accept a partially decoded body."""
 
 
 class ManagedResponse(httpx.Response):
@@ -160,9 +168,11 @@ async def read_response(client, method, url, *, policy, storage, on_headers,
                     chunk = decoder.unconsumed_tail
             await asyncio.sleep(0)
         if decoder and not decoder.eof:
-            raise DownloadLimitError("压缩响应未完整结束")
+            raise DownloadIncompleteError("压缩响应未完整结束")
         if (declared is not None and not consumed and method.upper() != "HEAD"
                 and response.status_code not in (204, 304) and wire_count != declared):
+            if wire_count < declared:
+                raise DownloadIncompleteError("响应实际长度短于声明，未完整读取")
             raise DownloadLimitError("响应实际长度与声明不一致，文件未发布")
         # Publishing is a commit point: once entered, return its successful artifact
         # even if cancellation arrives during fsync/link. Never orphan a valid file.
@@ -171,8 +181,8 @@ async def read_response(client, method, url, *, policy, storage, on_headers,
         result.extensions["download"] = {"wire_bytes": wire_count, "body_bytes": body_count,
                                          "sha256": sha.hexdigest()}
         return result
-    except (DownloadLimitError, zlib.error, ValueError, OSError) as exc:
-        if not isinstance(exc, DownloadLimitError):
+    except (DownloadReadError, zlib.error, ValueError, OSError) as exc:
+        if not isinstance(exc, DownloadReadError):
             message = "压缩响应损坏，未推进采集断点" if isinstance(exc, zlib.error) else str(exc)
             exc = DownloadLimitError(message)
         exc.sample, exc.observed_bytes = bytes(prefix), body_count

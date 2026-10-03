@@ -248,7 +248,7 @@ class NewsUiPlugin(UiPlugin):
     def create_pages(self):
         return (
             PageContribution("news", "财经快讯", NewsPage, "数据浏览", 1,
-                             "新浪 7×24 新闻、搜索与重点筛选", catalogued=True,
+                             "新浪 7×24 新闻、搜索与重点筛选", catalogued=True, database_tables=("finance_news",),
                              category="资讯", source="新浪财经", cache_policy="lru",
                              management=NavigationTarget(
                                  "collection", NavigationContext(task_id="sina-news"))),

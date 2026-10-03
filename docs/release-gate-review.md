@@ -18,7 +18,7 @@
 4. 运行隔离容量基线并生成 `build/capacity-report.json`，验证 10/30/50/100 虚拟出口、故障矩阵及 1000 次抖动/取消后的资源回收。
 5. 在 100%、125%、150%、200% 四档缩放分别执行基础界面布局渲染。
 6. 调用纯打包入口 `build.ps1`；它不再安装构建依赖，也不接受其他 PyInstaller 或 Python 主次版本。
-7. 把打包目录移动到带中文和空格、且不具备仓库父目录结构的临时位置，运行 `Empire.exe package-smoke`；再以隔离 `LOCALAPPDATA` 验证首次配置引导和 `check-config`。smoke 只创建 Qt 外壳并截图，不连接 Redis/MySQL、不执行采集、归档、DDL 或业务写入。
+7. 把打包目录移动到带中文和空格、且不具备仓库父目录结构的临时位置，运行 `Empire.exe package-smoke`；暂存真实配置后验证 EXE 同目录首次配置引导和 `check-config`，结束时恢复原配置。隔离 LOCALAPPDATA 只隔离用户状态。smoke 不连接 Redis/MySQL、不执行采集、归档、DDL 或业务写入。
 8. 生成 `build/release-report.json`，嵌入依赖与容量证据并记录构建清单、EXE SHA-256 和 smoke 截图位置。
 
 任一步失败即停止，不更新为已通过发布。`build.ps1` 保留为门禁内部纯打包能力，不是另一条验收路径。

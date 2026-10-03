@@ -1,0 +1,779 @@
+{
+  "income": {
+    "601139": {
+      "seconds": 0.11,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；601139；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    },
+    "920009": {
+      "seconds": 0.093,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "有异常",
+        "usage": "有限制",
+        "usable": false,
+        "use_state": "不可用"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；920009；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 1 项；BJ:920009 2025-09-30 来源未提供核心金额：*营业总收入",
+          "findings": [
+            {
+              "code": "BJ:920009",
+              "report_date": "2025-09-30",
+              "criterion": "fields",
+              "message": "来源未提供核心金额：*营业总收入"
+            }
+          ]
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    },
+    "920748": {
+      "seconds": 0.079,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；920748；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    },
+    "600036": {
+      "seconds": 0.109,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；600036；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    }
+  },
+  "balance": {
+    "601139": {
+      "seconds": 0.109,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；601139；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    },
+    "920009": {
+      "seconds": 0.078,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；920009；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    },
+    "920748": {
+      "seconds": 0.125,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "有异常",
+        "usage": "有限制",
+        "usable": false,
+        "use_state": "不可用"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；920748；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 1 项；BJ:920748 2024-03-31 来源合计不符：*资产合计；差额 285000000 元，舍入容差 1500000 元",
+          "findings": [
+            {
+              "code": "BJ:920748",
+              "report_date": "2024-03-31",
+              "criterion": "quality",
+              "message": "来源合计不符：*资产合计；差额 285000000 元，舍入容差 1500000 元"
+            }
+          ]
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    },
+    "600036": {
+      "seconds": 0.125,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；600036；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    }
+  },
+  "cashflow": {
+    "601139": {
+      "seconds": 0.094,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；601139；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    },
+    "920009": {
+      "seconds": 0.125,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "有异常",
+        "usage": "有限制",
+        "usable": false,
+        "use_state": "不可用"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；920009；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 4 项；BJ:920009 2025-09-30 来源未提供核心金额：*投资活动产生的现金流量净额；BJ:920009 2025-09-30 来源未提供核心金额：*筹资活动产生的现金流量净额；BJ:920009 2025-09-30 来源未提供核心金额：*现金及现金等价物净增加额；BJ:920009 2025-09-30 来源未提供核心金额：*期末现金及现金等价物余额",
+          "findings": [
+            {
+              "code": "BJ:920009",
+              "report_date": "2025-09-30",
+              "criterion": "fields",
+              "message": "来源未提供核心金额：*投资活动产生的现金流量净额"
+            },
+            {
+              "code": "BJ:920009",
+              "report_date": "2025-09-30",
+              "criterion": "fields",
+              "message": "来源未提供核心金额：*筹资活动产生的现金流量净额"
+            },
+            {
+              "code": "BJ:920009",
+              "report_date": "2025-09-30",
+              "criterion": "fields",
+              "message": "来源未提供核心金额：*现金及现金等价物净增加额"
+            },
+            {
+              "code": "BJ:920009",
+              "report_date": "2025-09-30",
+              "criterion": "fields",
+              "message": "来源未提供核心金额：*期末现金及现金等价物余额"
+            }
+          ]
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    },
+    "920748": {
+      "seconds": 0.125,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；920748；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    },
+    "600036": {
+      "seconds": 0.094,
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "checks": [
+        {
+          "id": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配",
+          "findings": []
+        },
+        {
+          "id": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；当前财务分析；600036；报告期 2024-01-01 ～ 2026-10-02",
+          "findings": []
+        },
+        {
+          "id": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源fields问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "10 份报表；来源报告期集合及金额精度匹配；来源quality问题 0 项",
+          "findings": []
+        },
+        {
+          "id": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "最近三日 SQL / 匹配的只读摘要完整核验",
+          "findings": []
+        },
+        {
+          "id": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源无公告日期，当前历史值可能含修订；财务分析可使用当前值，历史选股不可提前使用",
+          "findings": []
+        }
+      ]
+    }
+  }
+}

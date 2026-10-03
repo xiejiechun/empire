@@ -1,0 +1,9 @@
+{
+  "change": "增发详情按新增、列表业务变化、缺失或损坏增量请求；未变化复用 SQL",
+  "targeted_tests": "70 passed (首次专项验证)",
+  "live_evidence": "issue-incremental-live-2026-09-30.json",
+  "release_gate": "未通过：工作区财报测试 tests/test_ths_statements.py 导入排序；前次全套 1143 passed, 3 failed, 2 skipped，3 项旧登记断言已同步",
+  "packaged": false,
+  "database_migration": "不适用：本次 schema 不变",
+  "unresolved_source_error_preserved": "e944de284d044e39b4157b9c5f6d0960"
+}

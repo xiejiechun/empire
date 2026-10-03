@@ -34,7 +34,7 @@ def test_help_is_offline_searchable_and_has_empty_search_feedback():
     app = QApplication.instance() or QApplication([])
     page = StorageHelpPage(None)
     try:
-        assert page.index.count() == 3
+        assert page.index.count() == 2
         page.search.setText("baseline_revision")
         assert page.index.count() == 1
         assert "baseline_revision" in page.browser.toPlainText()
@@ -49,7 +49,7 @@ def test_help_is_offline_searchable_and_has_empty_search_feedback():
         assert page.index.count() == 0
         assert "没有匹配" in page.browser.toPlainText()
         page.search.clear()
-        assert page.index.count() == 3
+        assert page.index.count() == 2
         assert Path(__import__("empire.plugins.ui.help", fromlist=["__file__"]).__file__).with_name("storage_reference.md").exists()
     finally:
         page.deleteLater()
@@ -64,9 +64,10 @@ def test_document_categories_and_stock_reference_rendering():
         assert len({a.title for a in articles()}) == len(articles())
         assert tuple(page.tabs.tabText(i) for i in range(page.tabs.count())) == CATEGORIES
         assert page.index.item(0).text() == "开始使用"
-        page.tabs.setCurrentIndex(1)
+        page.tabs.setCurrentIndex(CATEGORIES.index("数据说明"))
         assert [page.index.item(i).text() for i in range(page.index.count())] == [
-            "股票列表", "财经快讯", "交易日历"]
+            "股票列表", "财经快讯", "交易日历", "历史停复牌",
+            "分红送转", "增发", "配股", "同花顺三大报表", "同花顺当前行业", "开盘啦分时及竞价"]
         page.search.setText("stock")
         assert "全部分类" in page.scope.text()
         page.show_topic("股票表字段（stock）")
@@ -76,13 +77,39 @@ def test_document_categories_and_stock_reference_rendering():
         assert "09:10" in visible and "09:00" in visible
         assert "DATETIME(6)" in visible
         assert "数据的新鲜度" not in visible
-        page.tabs.setCurrentIndex(2)
+        page.tabs.setCurrentIndex(CATEGORIES.index("技术参考"))
         assert not page.search.text()
         assert page.current_topic == "股票表字段（stock）"
         assert "系统架构" in [page.index.item(i).text() for i in range(page.index.count())]
         for article in articles():
             page.show_topic(article.title)
             assert article.title in page.browser.toPlainText()
+    finally:
+        page.deleteLater()
+        app.processEvents()
+
+
+def test_related_topics_and_chapter_navigation_restore_reader_state():
+    from PySide6.QtCore import QUrl
+
+    app = QApplication.instance() or QApplication([])
+    page = StorageHelpPage(None)
+    try:
+        page.search.setText("增发")
+        page.open_link(QUrl("help:增发"))
+        assert page.current_topic == "增发"
+        assert page.tabs.tabText(page.tabs.currentIndex()) == "数据说明"
+        assert not page.search.text()
+        assert page.chapters.count() >= 3
+        page.chapters.setCurrentIndex(2)
+        assert page.browser.textCursor().position() == page.chapters.itemData(2)
+        state = page.save_ui_state()
+        page.open_topic("开始使用")
+        page.restore_ui_state(state)
+        assert page.current_topic == "增发"
+        page.search.setText("不存在的参数XYZ")
+        assert page.chapters.count() == 0
+        assert not page.location.text()
     finally:
         page.deleteLater()
         app.processEvents()

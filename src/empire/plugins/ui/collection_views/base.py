@@ -14,7 +14,7 @@ from empire.plugins.ui.common import hint
 from empire.plugins.ui.queries import QueryScope
 
 SECTIONS = {
-    "tasks": ("采集任务", "设置执行计划、开始采集与恢复断点，在这里统一管理。"),
+    "tasks": ("采集任务", "展开数据来源，选择具体任务；运行详情与执行计划分别查看。"),
     "sites": ("站点访问规则", "按出口 IP 控制对同一站点的访问节奏，同站点的采集任务共享规则。"),
     "history": ("运行记录", "采集、归档与错误分别查看；仅存 Redis，按项目独立限量保留。"),
 }
@@ -40,18 +40,21 @@ class CollectionView(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(PAGE_SPACING)
-        self.title = QLabel(SECTIONS[section][0])
-        self.title.setObjectName("pageTitle")
-        layout.addWidget(self.title)
-        layout.addWidget(hint(SECTIONS[section][1]))
-        self.summary = hint("正在连接采集管理服务……")
-        layout.addWidget(self.summary)
+        self.build_heading(layout)
         layout.addWidget(self.build_view(), 1)
         self.feedback = self.action_feedback("configure")
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
         self.timer.start(700)
         self._update_buttons()
+
+    def build_heading(self, layout):
+        self.title = QLabel(SECTIONS[self.section][0])
+        self.title.setObjectName("pageTitle")
+        layout.addWidget(self.title)
+        layout.addWidget(hint(SECTIONS[self.section][1]))
+        self.summary = hint("正在连接采集管理服务……")
+        layout.addWidget(self.summary)
 
     def filters_changed(self):
         self.offset = 0

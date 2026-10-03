@@ -10,6 +10,7 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
+from empire.plugins.collectors.support import wait_for_archive
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get("EMPIRE_INTEGRATION") != "1", reason="Set EMPIRE_INTEGRATION=1 explicitly"
@@ -28,7 +29,7 @@ async def stock_database():
     manager.entries["data.stocks"].plugin.project_id = "test"
     events = []
     snapshots = []
-    last_started = datetime.now(UTC)
+    last_started = datetime.now(UTC) - timedelta(seconds=1)
     try:
         await manager.start("pipeline.ingest")
         await manager.start("data.stocks")
@@ -44,7 +45,10 @@ async def stock_database():
             nonlocal last_started
             # Windows clock resolution can give consecutive batches equal timestamps;
             # these tests explicitly model chronological batches, not UUID tie breaks.
-            last_started = max(datetime.now(UTC), last_started + timedelta(microseconds=1))
+            # Keep modeled starts in the past; a coarse clock must not make
+            # the synthetic monotonic increment later than the archive finish.
+            last_started = max(datetime.now(UTC) - timedelta(seconds=1),
+                               last_started + timedelta(microseconds=1))
             value = {"snapshot_id": uuid4().hex, "started_at": last_started.isoformat(),
                      "node": "hs_a", "expected_count": 2, "page_size": 2}
             snapshots.append(value["snapshot_id"])
@@ -149,8 +153,11 @@ async def test_identical_stock_list_has_no_dml_and_late_batch_cannot_regress(sto
         await publish("page", identical, page=1, rows=ROWS)
         await publish("complete", identical, pages=1, collected=2, count_after=2, terminal_rows=[])
         assert not writes
-        assert (await manager.registry.get("archive.confirmation").stock_status(
-            query.source, query.job_key, query.project_id, identical["snapshot_id"]))["status"] == "complete"
+        # flush() is one bounded scheduling quantum, not a completion barrier.
+        confirmation = manager.registry.get("archive.confirmation")
+        status = await asyncio.wait_for(wait_for_archive(lambda: confirmation.stock_status(
+            query.source, query.job_key, query.project_id, identical["snapshot_id"]), retry_seconds=.01), 5)
+        assert status["status"] == "complete"
         assert (await query.list_stocks())["snapshot"]["snapshot_id"] == first["snapshot_id"]
         assert "verified_snapshot_id" not in await query.list_stocks()
         await publish("page", delayed, page=1, rows=[{**ROWS[0], "name": "过时内容"}, ROWS[1]])
@@ -306,3 +313,23 @@ async def test_market_filter_counts_entire_snapshot_and_composes_with_search(sto
     assert (await query.list_stocks("银行", market="BJ"))["total"] == 0
     with pytest.raises(ValueError, match="不支持的股票市场"):
         await query.list_stocks(market="invalid")
+
+
+async def test_preparation_audit_is_read_only_and_requires_all_markets(stock_database):
+    snapshot, publish, query, manager = stock_database
+    batch = snapshot()
+    await publish('page', batch, page=1, rows=ROWS)
+    await publish('complete', batch, pages=1, collected=2, count_after=2, terminal_rows=[])
+    statements = []
+    engine = manager.registry.get('mysql.store').read_engine
+    def capture(conn, cursor, statement, parameters, context, many):
+        statements.append(statement.strip().split()[0].upper())
+    event.listen(engine, 'before_cursor_execute', capture)
+    try:
+        checks = {c.criterion: c for c in await query.preparation_check()}
+    finally:
+        event.remove(engine, 'before_cursor_execute', capture)
+    assert statements and set(statements) == {'SELECT'}
+    assert checks['fields'].status == 'pass' and checks['keys'].status == 'pass'
+    assert checks['coverage'].status == 'fail'  # Fixture has no Beijing securities.
+    assert checks['freshness'].status == 'pass'

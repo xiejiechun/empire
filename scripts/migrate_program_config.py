@@ -1,4 +1,4 @@
-"""Move the legacy checkout-local configuration to Empire's user-data location."""
+"""Explicitly copy a selected old configuration into the application directory."""
 from __future__ import annotations
 
 import argparse
@@ -6,7 +6,7 @@ import os
 import tempfile
 from pathlib import Path
 
-from empire.core.config import default_config_path, project_root
+from empire.core.config import default_config_path, load_config
 
 
 def migrate(source: Path, destination: Path) -> str:
@@ -15,6 +15,7 @@ def migrate(source: Path, destination: Path) -> str:
     if not source.is_file():
         raise RuntimeError(f"Legacy configuration does not exist: {source}")
     payload = source.read_bytes()
+    load_config(source)
     if destination.is_file():
         if destination.read_bytes() == payload:
             return "already-current"
@@ -31,8 +32,8 @@ def migrate(source: Path, destination: Path) -> str:
             stream.write(payload)
             stream.flush()
             os.fsync(stream.fileno())
-        os.replace(temporary, destination)
-        temporary = None
+        # Atomic, non-replacing publication; the temporary file is on the same volume.
+        os.link(temporary, destination)
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
@@ -41,12 +42,11 @@ def migrate(source: Path, destination: Path) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", type=Path,
-                        default=project_root() / "config" / "local.toml")
+    parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--destination", type=Path, default=default_config_path())
     args = parser.parse_args()
     status = migrate(args.source, args.destination)
-    print(f"PASS user configuration {status}: {args.destination.resolve()}")
+    print(f"PASS program configuration {status}: {args.destination.resolve()}")
     return 0
 
 

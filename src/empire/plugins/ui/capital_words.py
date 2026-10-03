@@ -1,0 +1,23 @@
+"""User-facing names for canonical event fields."""
+LABELS = {
+    'report_date': '报告期', 'announcement_date': '预案公告日', 'record_date': '股权登记日',
+    'ex_date': '除权除息日', 'bonus_per_share': '每股送股', 'transfer_per_share': '每股转增',
+    'cash_per_share': '每股派息（元）', 'total_bonus_per_share': '每股送转合计',
+    'status': '方案进度', 'tax_basis': '税收口径', 'earnings_per_share': '每股收益（元）',
+    'net_assets_per_share': '每股净资产（元）', 'capital_reserve_per_share': '每股公积金（元）',
+    'retained_profit_per_share': '每股未分配利润（元）', 'source_id': '来源方案编号',
+    'issue_method': '发行方式', 'issued_shares': '发行数量（股）', 'shares_before': '发行前总股本（股）',
+    'shares_after': '发行后总股本（股）', 'issue_price': '发行价（元）', 'issue_date': '发行日期',
+    'public_issue_date': '公开发行日期', 'private_issue_date': '定向发行日期', 'listing_date': '上市日期',
+    'subscription_code': '认购代码', 'lock_months': '锁定月数', 'rights_per_share': '每股配股比例',
+    'rights_price': '配股价（元）', 'payment_start': '缴款起始日', 'payment_end': '缴款截止日',
+    'subscription_name': '增发简称', 'lead_underwriter': '主承销商', 'underwriting_method': '承销方式',
+    'issue_targets': '发行对象', 'pricing_method': '发行定价方式',
+    'online_shares': '网上发行数量（股）', 'offline_shares': '网下配售数量（股）',
+    'gross_proceeds': '实际募资总额（元）', 'online_winning_percent': '网上发行中签率（%）',
+    'post_issue_eps': '发行后每股收益（元）', 'post_issue_net_assets': '发行后每股净资产（元）',
+    'first_day_open': '增发上市首日开盘价（元）', 'first_day_close': '增发上市首日收盘价（元）',
+    'first_day_open_change_percent': '首日开盘相对增发价涨幅（%）',
+    'first_day_close_change_percent': '首日收盘相对增发价涨幅（%）',
+    'online_allotment_date': '网上配售日期', 'winning_announcement_date': '网上中签结果公告日',
+}

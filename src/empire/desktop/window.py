@@ -20,7 +20,7 @@ from empire.core.redaction import redact
 from empire.desktop.page_lifecycle import PageRegistry
 from empire.desktop.theme import SIDEBAR_WIDTH, desktop_style
 
-GROUP_ORDER = {"工作台": 0, "数据浏览": 1, "采集管理": 2, "系统设置": 3, "说明文档": 4}
+GROUP_ORDER = {"工作台": 0, "数据准备": 1, "数据浏览": 2, "采集管理": 3, "系统设置": 4, "说明文档": 5}
 ACTION_NAMES = {"start": "启用插件", "stop": "停用插件", "cascade": "停止插件及依赖功能",
                 "flush": "立即归档", "shutdown": "退出应用", "restore_ui": "恢复界面插件"}
 
@@ -250,7 +250,7 @@ class MainWindow(QMainWindow):
         contributions = sorted(self.runtime.page_contributions(),
             key=lambda p: (GROUP_ORDER.get(p.group, 9), p.order, p.id))
         signature = tuple((p.id, p.title, p.group, p.order, p.top_level, p.catalogued,
-                           p.category, p.source, p.cache_policy, p.management) for p in contributions)
+                           p.category, p.source, p.cache_policy, p.management, p.database_tables) for p in contributions)
         if signature == self.contributed_ids:
             return
         selected = self.current_page_id

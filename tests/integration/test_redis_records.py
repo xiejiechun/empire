@@ -84,6 +84,26 @@ async def test_error_redaction_and_idempotent_retry_are_persisted(records):
     assert not (await records.list_error_summaries("stocks"))["total"]
 
 
+@pytest.mark.parametrize('kind', ['errors', 'archives'])
+async def test_all_projects_history_is_paginated_and_revision_sensitive(records, kind):
+    for index in range(55):
+        project = 'stocks' if index % 2 else 'retired-project'
+        if kind == 'errors':
+            await records.add_error(project, stage='test', error=str(index), raw_body='large body')
+        else:
+            await records.add_archive(project, {'status': 'complete'})
+    first = await records.list_all_records(kind)
+    assert first['total'] == 55 and len(first['rows']) == 50
+    assert {r['project_id'] for r in first['rows']} == {'stocks', 'retired-project'}
+    assert 'body' not in first['rows'][0]
+    assert first['rows'] == sorted(first['rows'], key=lambda r: r['created_at'], reverse=True)
+    second = await records.list_all_records(kind, 50)
+    assert len(second['rows']) == 5
+    assert not {r['id'] for r in first['rows']} & {r['id'] for r in second['rows']}
+    unchanged = await records.list_all_records(kind, 50, 50, second['revision'])
+    assert not unchanged['changed'] and not unchanged['rows']
+
+
 async def test_full_large_error_set_transfers_summaries_then_one_detail(records):
     body = "x" * (64 * 1024)
     values = [json.dumps({"id": f"large-{number}", "project_id": "large",

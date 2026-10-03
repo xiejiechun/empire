@@ -1,11 +1,16 @@
 from sqlalchemy import text
 
 from empire.contracts.plugin import PluginContext, PluginManifest
+from empire.contracts.preparation import PreparationContribution
 from empire.contracts.stocks import MARKET_NAMES
 from empire.plugins.infra.collection_state import read_state
 
 
 class StockDataPlugin:
+    preparation = (PreparationContribution(
+        "universe", "stocks.query", "新浪财经", "sina-stocks", "sina-universe-v1", "stock.universe.page",
+        "collector.sina_universe", ("tests/test_sina_universe.py",), ("tests/integration/test_stock_archive.py",)),)
+
     manifest = PluginManifest(
         "data.stocks", "股票列表查询", requires=("mysql.store",),
         provides=("stocks.query", "stocks.schema"),
@@ -55,6 +60,10 @@ class StockDataPlugin:
             """), params).mappings().all()
             return {"snapshot": {k: str(v) if hasattr(v, "isoformat") else v for k, v in snapshot.items()},
                     "total": total, "rows": [dict(row) for row in rows], "offset": offset, "limit": limit}
+
+    async def preparation_check(self):
+        from empire.plugins.data.preparation_checks import check_stocks
+        return await self.mysql.read(check_stocks, self)
 
     async def stop(self):
         self.mysql = None

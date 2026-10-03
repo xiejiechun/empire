@@ -1,0 +1,18 @@
+{
+  "project_id": "tdx-additional-issues",
+  "error_ids": ["7bc62781561e47f0a20e36cbd59efb2b"],
+  "source_id": "1040982",
+  "code": "302132",
+  "reported_at": "2026-10-01T02:07:46+08:00",
+  "reported_error_code": -1005,
+  "status": "inspected: reported source business failure; no evidence of invalid code filtering or lost admitted data",
+  "sql_associations": ["SZ:300114", "SZ:302132"],
+  "missing_detail": "Both code associations lack detail for the same source_id 1040982",
+  "sql_progress": {"records": 6536, "with_detail": 6485, "missing_detail": 51},
+  "latest_sample_archive": {"processed_count": 1, "written_count": 0},
+  "pending_queue_at_check": 0,
+  "job_at_check": {"active": false, "last_status": "error", "round_finished_with_unresolved_gaps": true},
+  "repair": "No source workaround or application change applied: reported error cannot be turned into valid empty detail; same ID joins both old/new codes and code is not a request parameter",
+  "inspection_evidence": "issue-error-7bc62781-inspection-2026-10-01.json",
+  "cleanup": "not performed: source detail remains unresolved; exact error is retained"
+}

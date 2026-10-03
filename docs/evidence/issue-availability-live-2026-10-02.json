@@ -1,0 +1,106 @@
+{
+  "checked_at": "2026-10-02T02:07:49.866108+08:00",
+  "result": {
+    "batch_id": "87063b4fa1e1457b8634fb02489693cc",
+    "pages": 3027,
+    "collected": 6535,
+    "units": 3026
+  },
+  "stats": {
+    "status": "complete",
+    "collected": 6535,
+    "error": "",
+    "details_reused": 6410,
+    "details_requested": 100,
+    "details_unavailable": 50,
+    "failed_units": 0,
+    "queued_records": 6535,
+    "continuous_collected": 6535,
+    "processed_units": 3026,
+    "expected_count": 6535,
+    "current_security": "SZ:302132",
+    "pages": 3027,
+    "total_units": 3026
+  },
+  "sql": {
+    "records": 6536,
+    "with_detail": "6535",
+    "unavailable": "50"
+  },
+  "target_1040982": [
+    {
+      "record_key": "719668756ee99de401334553a3ce83b0b852df3ede1dd5cdff52517469df637c",
+      "market": "SZ",
+      "code": "302132",
+      "name": "中航成飞",
+      "event_date": "2025-01-06",
+      "data": {
+        "detail": {
+          "availability": "unavailable",
+          "source_error_code": -1005
+        },
+        "status": "来源发行记录",
+        "source_id": "1040982",
+        "issue_date": "2025-01-06",
+        "issue_price": "8.36",
+        "lock_months": "36",
+        "record_date": null,
+        "issue_method": "定向增发",
+        "listing_date": "2025-01-22",
+        "shares_after": "2676782376",
+        "issued_shares": "2086021877",
+        "shares_before": "590760499",
+        "announcement_date": null,
+        "public_issue_date": null,
+        "subscription_code": null,
+        "private_issue_date": "2025-01-06"
+      }
+    }
+  ],
+  "preparation": [
+    {
+      "criterion": "fields",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "keys",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "coverage",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "quality",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "freshness",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录",
+      "blocking": true,
+      "findings": []
+    }
+  ],
+  "pending_queue": 0,
+  "task_config_unchanged": true
+}

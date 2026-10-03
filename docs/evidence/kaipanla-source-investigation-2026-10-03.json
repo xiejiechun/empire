@@ -1,0 +1,96 @@
+{
+  "checked_at": "2026-10-03T03:25:43.248759+08:00",
+  "scope": "有限来源核实，未接入正式任务或归档",
+  "authentication": "no account, no Token, fresh random DeviceID per request",
+  "transport": "bounded diagnostic httpx; not production pipeline acceptance",
+  "samples": [
+    {
+      "code": "000001",
+      "trade_date": "2021-01-04",
+      "checks": [
+        {
+          "kind": "trend",
+          "http": 200,
+          "response_bytes": 7416,
+          "response_sha256": "6488b91c5703c3075f9662aaf9909754ad7ae9e93f5e7fbd28bf2af2ce837cf7",
+          "point_count": 241
+        },
+        {
+          "kind": "auction",
+          "http": 200,
+          "response_bytes": 1733,
+          "response_sha256": "d886a734e4225a8bc1ca4d7c2517f6a8e2c9fe834b013f490b186da1db2e53ad",
+          "point_count": 68
+        }
+      ],
+      "trend_minutes_complete": true,
+      "auction_points_preserved": 68,
+      "auction_distinct_minutes": 10,
+      "auction_volume_decreases": 2,
+      "auction_first_minute": "09:15",
+      "auction_last_minute": "09:24"
+    },
+    {
+      "code": "600519",
+      "trade_date": "2025-01-02",
+      "checks": [
+        {
+          "kind": "trend",
+          "http": 200,
+          "response_bytes": 7961,
+          "response_sha256": "aa3d32c29e2bc1fb544f394fb4195e731657a24f102c9a81768d4ff1eab4c50f",
+          "point_count": 241
+        },
+        {
+          "kind": "auction",
+          "http": 200,
+          "response_bytes": 2966,
+          "response_sha256": "b4d3eea7c0325e58ac6cbcbc3c9a5b6b2093a4e657b5d2d252670860d77cf2f6",
+          "point_count": 132
+        }
+      ],
+      "trend_minutes_complete": true,
+      "auction_points_preserved": 132,
+      "auction_distinct_minutes": 10,
+      "auction_volume_decreases": 2,
+      "auction_first_minute": "09:15",
+      "auction_last_minute": "09:24"
+    },
+    {
+      "code": "920002",
+      "trade_date": "2025-09-01",
+      "checks": [
+        {
+          "kind": "trend",
+          "http": 200,
+          "response_bytes": 7333,
+          "response_sha256": "5790ea4c2ef99f5f280d395bbeef1a9472145cd8df2d96a67ee62d07257a62c7",
+          "point_count": 241
+        },
+        {
+          "kind": "auction",
+          "http": 200,
+          "response_bytes": 680,
+          "response_sha256": "90deb909b6c9e265d1b1749487f8690b2efb5b8b5b74143daffdb3c1d60028bd",
+          "point_count": 25
+        }
+      ],
+      "trend_minutes_complete": true,
+      "auction_points_preserved": 25,
+      "auction_distinct_minutes": 8,
+      "auction_volume_decreases": 0,
+      "auction_first_minute": "09:15",
+      "auction_last_minute": "09:24"
+    }
+  ],
+  "sql_written": false,
+  "redis_written": false,
+  "limits": [
+    "Not a 2021-to-present or full-universe audit",
+    "Bid has minute labels, no second timestamps or source total counter",
+    "Volume units and marker meanings are not yet verified; values preserved",
+    "Error responses do not prove holiday, suspension or pre-listing",
+    "Stock scope and inclusion of delisted securities await user selection",
+    "No registered collector, dataset, table, query, scheduling, archive, release or desktop acceptance"
+  ]
+}

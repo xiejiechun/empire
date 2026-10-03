@@ -39,6 +39,37 @@ def snapshot():
                    "max_concurrency": 1}], "history": [], "error": ""}
 
 
+def test_capital_progress_shows_admitted_data_beyond_failed_frontier(page_factory):
+    page = page_factory()
+    page.data = snapshot()
+    page.data['jobs'][0].update(active='run', progress={
+        'status': 'collecting', 'collected': 12, 'queued_records': 12, 'expected_count': 20,
+        'continuous_collected': 0, 'processed_units': 6, 'total_units': 10,
+        'failed_units': 1, 'current_security': 'SH:600962'})
+    page.render_content()
+    page._render_job_detail(page.data['jobs'][0])
+    text = ' · '.join(field.text() for field in page.runtime_fields.values())
+    assert '已入队 12 / 20 条' in text
+    assert '连续已入队 0 条' in text
+    assert '失败 1 个证券' in text and page.runtime_fields['current'].text() == 'SH:600962'
+    assert page.progress.value() == 60
+
+
+def test_proxy_default_and_full_schedule_column(page_factory):
+    page = page_factory()
+    page.data = snapshot()
+    page.data['jobs'][0]['policy'].update(mode='interval', interval_seconds=2592000, enabled=False)
+    page.render_content()
+    page.resize(680, 560)
+    page.show()
+    QApplication.processEvents()
+    assert page.route_mode.currentData() == 'proxy_fallback'
+    assert page.task_menu.task_items['stocks'].text(1) == '已停用'
+    assert '2,592,000 秒' in page.runtime_fields['plan'].text()
+    assert page.runtime_fields['network'].text()
+    assert page.task_menu.task_items['stocks'].parent() is not None
+
+
 def test_primary_actions_are_outside_editor_scroll_areas(page_factory):
     from PySide6.QtWidgets import QScrollArea
 
@@ -70,13 +101,143 @@ def test_primary_actions_are_outside_editor_scroll_areas(page_factory):
     QApplication.processEvents()
     assert tasks.task_split.orientation() == Qt.Orientation.Vertical
     assert tasks.task_filters.getItemPosition(tasks.task_filters.indexOf(tasks.task_search)) == (0, 0, 1, 3)
-    assert tasks.jobs.isColumnHidden(1)
-    assert not tasks.jobs.isColumnHidden(3)
+    assert tasks.task_menu.columnCount() == 2
     tasks.resize(1200, 700)
     QApplication.processEvents()
     assert tasks.task_split.orientation() == Qt.Orientation.Horizontal
     assert tasks.task_filters.getItemPosition(tasks.task_filters.indexOf(tasks.task_status))[0] == 0
-    assert not tasks.jobs.isColumnHidden(1)
+    assert tasks.task_menu.task_items["stocks"].parent().isExpanded()
+
+
+def test_task_sources_are_named_and_separate_from_business_categories(page_factory):
+    page = page_factory()
+    page.data['sources'] = ['sina']
+    page.data['source_names'] = {'sina': '新浪财经'}
+    page.data['jobs'][0].update(source_name='新浪财经', category='基础数据')
+    page.render()
+    assert page.task_source.itemText(page.task_source.findData('sina')) == '新浪财经'
+    group = page.task_menu.group_items['sina']
+    assert '新浪财经' in group.text(0)
+    assert '基础数据' in page.task_menu.task_items['stocks'].toolTip(0)
+    assert group.font(0).bold()
+
+
+def test_source_parent_has_no_task_actions_and_keeps_draft(page_factory):
+    page = page_factory()
+    page.operation_feedback.setText('任务已启动')
+    page.interval.setValue(37)
+    group = page.task_menu.group_items['sina']
+    page.task_menu.setCurrentItem(group)
+    assert page.selected() is None
+    assert '任务已启动' not in page.operation_feedback.text()
+    assert not page.run_button.isEnabled() and not page.save_button.isEnabled()
+    page.render()
+    assert page.task_menu.currentItem() is group
+    assert page.runtime_fields['count'].text() == '—'
+    page.task_menu.select_task('stocks')
+    assert page.interval.value() == 37 and 'stocks' in page.job_drafts
+
+
+def test_menu_refresh_keeps_items_collapse_selection_and_live_state(page_factory):
+    page = page_factory()
+    menu = page.task_menu
+    child = menu.task_items['stocks']
+    group = child.parent()
+    group.setExpanded(False)
+    page.data['jobs'][0].update(active='run', progress={'status': 'awaiting_archive', 'collected': 50})
+    page.render()
+    assert menu.task_items['stocks'] is child
+    assert not group.isExpanded()
+    assert menu.selected_id() == 'stocks'
+    assert page.runtime_fields['archive'].text() == '等待本轮归档确认'
+    assert page.progress.maximum() == 0
+
+
+def test_focused_task_opens_parent_and_restores_saved_draft(page_factory):
+    page = page_factory()
+    page.interval.setValue(37)
+    page.task_menu.setCurrentItem(page.task_menu.group_items['sina'])
+    page.apply_navigation_context(NavigationContext(task_id='stocks'))
+    page.data = snapshot()
+    page.render()
+    assert page.selected()['id'] == 'stocks'
+    assert page.interval.value() == 37
+    assert page.task_menu.currentItem().parent().isExpanded()
+
+
+def test_empty_menu_clears_stale_detail_and_actions(page_factory):
+    page = page_factory()
+    page.data['jobs'] = []
+    page.render()
+    assert page.task_menu.topLevelItemCount() == 0
+    assert page.selected() is None
+    assert page.runtime_fields['status'].text() == '—'
+    assert not page.run_button.isEnabled()
+
+
+def test_runtime_uses_last_run_and_keeps_full_plain_error(page_factory):
+    page = page_factory()
+    error = '<b>source failure</b>\n' * 80
+    page.data['jobs'][0].update(last_status='error', error=error)
+    page.data['history'] = [{'task_id': 'stocks', 'result': {'collected': 12, 'pages': 2},
+                            'started_at': 100, 'finished_at': 150, 'error': error}]
+    page.render()
+    assert page.runtime_fields['count'].text() == '12 条'
+    assert page.runtime_fields['error'].text() == error
+    assert page.runtime_fields['error'].textFormat() == Qt.TextFormat.PlainText
+    assert page.runtime_fields['start'].text() != '—'
+    assert page.progress.value() == 0
+    assert '整轮已确认' not in page.runtime_fields['archive'].text()
+
+
+def test_failed_run_without_statistics_does_not_claim_zero_records(page_factory):
+    page = page_factory()
+    page.data['jobs'][0].update(last_status='error', error='网络失败')
+    page.data['history'] = [{'task_id': 'stocks', 'result': {}, 'finished_at': 150}]
+    page.render()
+    assert page.runtime_fields['count'].text() == '暂无数量统计'
+    assert page.runtime_fields['archive'].text() == '尚未确认本轮完成；已归档部分可查询'
+
+
+def test_save_controls_only_show_on_configuration_tab(page_factory):
+    page = page_factory()
+    page.show()
+    QApplication.processEvents()
+    assert page.save_panel.isHidden()
+    page.task_inspector.setCurrentIndex(1)
+    assert not page.save_panel.isHidden()
+    page.task_inspector.setCurrentIndex(0)
+    assert page.save_panel.isHidden()
+
+
+@pytest.mark.parametrize('width,height', [(880, 720), (1320, 900)])
+def test_source_group_layout(page_factory, width, height):
+    from pathlib import Path
+
+    from PySide6.QtGui import QFontDatabase
+
+    from empire.desktop.theme import STYLE
+    for name in ('msyh.ttc', 'msyhbd.ttc', 'segoeui.ttf'):
+        font = Path('C:/Windows/Fonts') / name
+        if font.is_file():
+            QFontDatabase.addApplicationFont(str(font))
+    page = page_factory()
+    first = page.data['jobs'][0]
+    page.data['jobs'] = [dict(deepcopy(first), id=str(i), name=name, source_name=source,
+                              category=category, rate_group=source) for i, (name, source, category) in enumerate([
+        ('A股交易日历', '巨潮资讯', '基础数据'), ('沪深北股票列表', '新浪财经', '基础数据'),
+        ('财经快讯', '新浪财经', '资讯'), ('历史停复牌', '通达信', '交易可实现性')])]
+    page.setStyleSheet(STYLE)
+    page.render()
+    page.resize(width, height)
+    page.show()
+    QApplication.processEvents()
+    assert page.task_menu.columnCount() == 2
+    assert page.task_menu.topLevelItemCount() == 3
+    assert page.task_menu.group_items['新浪财经'].childCount() == 2
+    target = Path(__file__).resolve().parents[1] / 'artifacts' / f'task-sources-{width}.png'
+    target.parent.mkdir(exist_ok=True)
+    assert page.grab().save(str(target))
 
 
 @pytest.fixture
@@ -141,7 +302,7 @@ def test_sections_are_independent_pages_without_duplicate_tabs(page_factory, sec
     else:
         assert page.history_tabs.count() == 3
         assert "采集 100 条 · 归档 100 条 · 错误 300 条" in page.summary.text()
-    assert hasattr(page, "jobs") == (section == "tasks")
+    assert hasattr(page, "task_menu") == (section == "tasks")
     assert hasattr(page, "site_interval") == (section == "sites")
 
 
@@ -156,10 +317,10 @@ def test_only_relevant_schedule_fields_show_and_drafts_survive_task_switch(page_
     second.update(id="news", name="财经新闻")
     page.data["jobs"].append(second)
     page.render()
-    page.jobs.selectRow(1)
+    page.task_menu.select_task("news")
     page.mode.setCurrentIndex(page.mode.findData("daily"))
     assert page.interval.isHidden() and not page.daily.isHidden()
-    page.jobs.selectRow(0)
+    page.task_menu.select_task("stocks")
     assert page.interval.value() == 30
     assert page.mode.currentData() == "interval"
     assert page.save_button.isEnabled()
@@ -262,7 +423,7 @@ def test_shutdown_stops_collection_polling(page_factory):
 
 def test_proxy_choices_survive_refresh_and_save_with_task_policy(page_factory):
     page = page_factory()
-    assert page.route_mode.currentData() == "direct"
+    assert page.route_mode.currentData() == "proxy_fallback"
     page.route_mode.setCurrentIndex(page.route_mode.findData("proxy_only"))
     page.render()
     assert page.route_mode.currentData() == "proxy_only"

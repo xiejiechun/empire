@@ -33,10 +33,10 @@ class DataCatalogPage(QWidget):
         layout.addWidget(hint("按业务分类或来源查找数据，打开后查看对应的数据列表。"))
         filters = QHBoxLayout()
         self.search = QLineEdit()
-        self.search.setPlaceholderText("搜索数据名称、来源或用途")
+        self.search.setPlaceholderText("搜索数据名称、来源、数据库表或用途")
         self.search.setClearButtonEnabled(True)
         self.category, self.source = QComboBox(), QComboBox()
-        accessible(self.search, "搜索数据目录", "输入数据名称、来源或用途；按 Ctrl+F 可回到此处。")
+        accessible(self.search, "搜索数据目录", "输入数据名称、来源、数据库表或用途；按 Ctrl+F 可回到此处。")
         accessible(self.category, "按业务分类筛选")
         accessible(self.source, "按数据来源筛选")
         bind_find(self, self.search)
@@ -44,11 +44,11 @@ class DataCatalogPage(QWidget):
         filters.addWidget(self.category)
         filters.addWidget(self.source)
         layout.addLayout(filters)
-        self.table = table(["数据名称", "业务分类", "来源", "用途"])
+        self.table = table(["数据名称", "业务分类", "来源", "数据库表", "用途"])
         self.table.setAccessibleName("数据目录结果")
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Interactive)
         self.table.setColumnWidth(0, 220)
-        self.table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+        self.table.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)
         layout.addWidget(self.table, 1)
         self.pager = Pager()
         self.pager.changed.connect(self.change_page)
@@ -105,11 +105,11 @@ class DataCatalogPage(QWidget):
         query = self.search.text().strip().casefold()
         matches = [p for p in pages if (not self.category.currentData() or p.category == self.category.currentData())
                    and (not self.source.currentData() or p.source == self.source.currentData())
-                   and query in f"{p.title} {p.source} {p.description}".casefold()]
+                   and query in f"{p.title} {p.source} {' '.join(p.database_tables)} {p.description}".casefold()]
         matches.sort(key=lambda p: (p.category, p.order, p.id))
         self.offset = min(self.offset, max(0, (len(matches) - 1) // self.pager.limit * self.pager.limit))
         self.entries = matches[self.offset:self.offset + self.pager.limit]
-        rows(self.table, [[p.title, p.category, p.source, p.description] for p in self.entries],
+        rows(self.table, [[p.title, p.category, p.source, ", ".join(p.database_tables), p.description] for p in self.entries],
              keys=[p.id for p in self.entries])
         if self.entries and self.table.currentRow() < 0:
             self.table.selectRow(0)

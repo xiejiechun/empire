@@ -4,16 +4,22 @@ from datetime import datetime
 from sqlalchemy import text
 
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.preparation import PreparationContribution
 
 
 class NewsDataPlugin:
+    preparation = (PreparationContribution(
+        "news", "news.query", "新浪财经", "sina-news", "sina-news-v1", "news.flash.page",
+        "collector.sina_news", ("tests/test_sina_news.py",), ("tests/integration/test_news_archive.py",)),)
+
     manifest = PluginManifest("data.news", "财经新闻查询", requires=("mysql.store",),
                               provides=("news.query", "news.schema"),
                               description="检索已归档的财经直播，保留历史并去重更新")
 
-    def __init__(self, source="sina", job_key="sina-news-v1", project_id="sina-news"):
+    def __init__(self, source="sina", job_key="sina-news-v1", project_id="sina-news", namespace="empire"):
         self.source, self.job_key, self.project_id = source, job_key, project_id
         self.mysql = None
+        self.namespace = namespace
 
     async def start(self, context):
         self.mysql = context.get("mysql.store")
@@ -88,6 +94,10 @@ class NewsDataPlugin:
                 "anchor": ({"published_at": anchor[0].isoformat(), "news_id": anchor[1]}
                            if anchor else None),
                 "next_cursor": self._encode_cursor(visible[-1]) if len(data) > limit else None}
+
+    async def preparation_check(self):
+        from empire.plugins.data.preparation_checks import check_news
+        return await self.mysql.read(check_news, self)
 
     async def stop(self):
         self.mysql = None

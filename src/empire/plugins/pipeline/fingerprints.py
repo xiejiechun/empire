@@ -52,6 +52,18 @@ def digest(content):
                                     separators=(',', ':')).encode()).hexdigest()
 
 
+READ_CACHE_LUA = """
+local now = tonumber(redis.call('TIME')[1])
+local result = {}
+for i = 2, #ARGV do
+    local expires = tonumber(redis.call('ZSCORE', KEYS[2], ARGV[i]) or '0')
+    local valid = expires > now and expires <= now + tonumber(ARGV[1]) and expires == math.floor(expires)
+    result[#result + 1] = valid and redis.call('HGET', KEYS[1], ARGV[i]) or false
+end
+return result
+"""
+
+
 class FingerprintCache:
     def __init__(self, store, settings, version_contract):
         self.store = store
@@ -70,6 +82,17 @@ class FingerprintCache:
             return {}
         values = await self.store.client.eval(CACHE_LUA, 2, *self.keys(namespace, source),
                                               'get', self.ttl, self.limit, *identities)
+        return self._decode(namespace, identities, values)
+
+    async def peek(self, namespace, source, identities):
+        """Read proofs atomically without refreshing TTL or pruning Redis."""
+        if not identities:
+            return {}
+        values = await self.store.client.eval(READ_CACHE_LUA, 2, *self.keys(namespace, source),
+                                              self.ttl, *identities)
+        return self._decode(namespace, identities, values)
+
+    def _decode(self, namespace, identities, values):
         result = {}
         for ident, raw in zip(identities, values):
             try:
@@ -106,3 +129,9 @@ class FingerprintCache:
     async def invalidate(self, namespace, source):
         """Call while archiving is stopped, before manual SQL maintenance."""
         await self.store.client.delete(*self.keys(namespace, source))
+
+    async def invalidate_entries(self, namespace, source, identities):
+        """Explicitly invalidate affected proofs without discarding unchanged ones."""
+        if identities:
+            await self.store.client.eval(CACHE_LUA, 2, *self.keys(namespace, source),
+                                         'forget', self.ttl, self.limit, *identities)

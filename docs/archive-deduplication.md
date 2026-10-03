@@ -44,7 +44,7 @@ Redis 可信命中仅推进缓存版本，不访问 SQL。缓存缺失回 SQL �
 | fingerprint_ttl_seconds | 604800（7 天） | 1～31536000 秒；最后成功确认后的有效期 |
 | fingerprint_max_entries | 10000 | 1～100000；每数据集/来源最大业务键数 |
 
-配置在 `%LOCALAPPDATA%\Empire\config.toml` 的 `[archive]` 下填写，应用重启后生效。Redis 纯内存模式不变，服务重启后摘要丢失，归档自动回 SQL 核对。
+配置在 `程序目录/config.toml` 的 `[archive]` 下填写，应用重启后生效。Redis 纯内存模式不变，服务重启后摘要丢失，归档自动回 SQL 核对。
 
 ## SQL 手工维护
 

@@ -1,0 +1,95 @@
+{
+  "checked_at": "2026-10-02T17:33:07.230235+00:00",
+  "project": "ths-industries",
+  "single_page_error_id": "817f4b963645470690f728f18b00e994",
+  "single_page_replay_members": 19,
+  "single_page_replay_pages": 1,
+  "query": {
+    "rows": [],
+    "total": 0,
+    "offset": 0,
+    "limit": 200,
+    "industry_count": 0,
+    "publication": null
+  },
+  "preparation": [
+    {
+      "criterion": "fields",
+      "status": "fail",
+      "measured": "行业完整集合无效",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "keys",
+      "status": "fail",
+      "measured": "行业完整集合无效",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "coverage",
+      "status": "fail",
+      "measured": "0 个行业、0 个成员；仅最新状态；整份来源摘要与正式查询比较；缺少完整归档证明或内容不一致",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "quality",
+      "status": "fail",
+      "measured": "行业完整集合无效",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "freshness",
+      "status": "fail",
+      "measured": "SQL 确认；最近完整请求代次 未知；上限 3 个自然日",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "temporal",
+      "status": "pass",
+      "measured": "只供当前行业筛选及估值分组；无历史归属、变化记录或生效日期，不能还原历史行业",
+      "blocking": true,
+      "findings": []
+    }
+  ],
+  "cleared_errors": 1,
+  "remaining_errors": {
+    "revision": "3",
+    "total": 1,
+    "changed": true,
+    "offset": 0,
+    "limit": 50,
+    "rows": [
+      {
+        "status_code": 200,
+        "error": "行业成分响应为空、校验页或被截断",
+        "id": "33905342441e48d0913f9610d7f3bf0e",
+        "project_id": "ths-industries",
+        "created_at": "2026-10-02T17:29:43.159161+00:00",
+        "stage": "source_validation"
+      }
+    ]
+  },
+  "pending_stream_total": 0,
+  "release_gate": {
+    "passed": true,
+    "tests_passed": 1401,
+    "tests_skipped": 2,
+    "skip_reason": "Windows symbolic link privilege unavailable"
+  },
+  "deployment": {
+    "config_preserved": true,
+    "doctor_different_cwd": "C:/Windows/Temp",
+    "redis_connected": true,
+    "mysql_connected": true,
+    "desktop_pid": 25400,
+    "desktop_window_title": "Empire · 投资研究工作台",
+    "desktop_accessibility_read": true,
+    "visible_render_and_industry_interaction_verified": false,
+    "limitation": "Desktop automation activation returned GetCursorPos access denied; main window accessibility read succeeded, navigation did not visibly change."
+  }
+}

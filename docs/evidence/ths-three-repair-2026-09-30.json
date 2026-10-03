@@ -1,0 +1,135 @@
+{
+  "at": "2026-09-30T20:38:17.416844+08:00",
+  "errors": [
+    {
+      "status_code": 200,
+      "error": "财报核心金额缺失",
+      "id": "459dae7b70b3473d82dda1dc412ace3f",
+      "project_id": "ths-income",
+      "created_at": "2026-09-30T12:35:36.917347+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/api/stock/finance/920009_benefit.json"
+    },
+    {
+      "status_code": 200,
+      "error": "财报核心金额缺失",
+      "id": "95b402cfcef24219a99e8dfe87146152",
+      "project_id": "ths-income",
+      "created_at": "2026-09-30T11:21:27.766660+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/api/stock/finance/920009_benefit.json"
+    },
+    {
+      "status_code": 200,
+      "error": "财报分项合计不符（含来源舍入容差）",
+      "id": "68566ea552d343a8b703686cfd331c99",
+      "project_id": "ths-balance",
+      "created_at": "2026-09-30T11:22:44.573390+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/api/stock/finance/920748_debt.json"
+    },
+    {
+      "status_code": 200,
+      "error": "财报核心金额缺失",
+      "id": "9bc80be44bad47d99ce6807790f96bb3",
+      "project_id": "ths-cashflow",
+      "created_at": "2026-09-30T11:19:53.104037+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/api/stock/finance/920000_cash.json"
+    }
+  ],
+  "status": "completed",
+  "root_causes": [
+    "Source blank monetary cells were treated as transport/structure failures",
+    "Source arithmetic contradictions blocked otherwise lossless complete matrices",
+    "1989-12-31 reports were rejected by an arbitrary 1990 lower bound"
+  ],
+  "sample_securities": 55,
+  "sample_responses": 165,
+  "sample_reports": 9750,
+  "production": {
+    "income": {
+      "verified_units": 20,
+      "reports": 572,
+      "next": {
+        "market": "BJ",
+        "code": "920033",
+        "name": "康普化学"
+      },
+      "index": 28,
+      "total": 5571
+    },
+    "balance": {
+      "verified_units": 20,
+      "reports": 724,
+      "next": {
+        "market": "BJ",
+        "code": "920826",
+        "name": "盖世食品"
+      },
+      "index": 305,
+      "total": 5571
+    },
+    "cashflow": {
+      "verified_units": 20,
+      "reports": 591,
+      "next": {
+        "market": "BJ",
+        "code": "920022",
+        "name": "世昌股份"
+      },
+      "index": 20,
+      "total": 5571
+    }
+  },
+  "production_pending": 0,
+  "cleanup": {
+    "at": "2026-09-30T20:51:43.010042+08:00",
+    "results": [
+      {
+        "project": "ths-income",
+        "ids": [
+          "459dae7b70b3473d82dda1dc412ace3f",
+          "95b402cfcef24219a99e8dfe87146152"
+        ],
+        "removed": 2,
+        "remaining": 0,
+        "other_ids_preserved": true
+      },
+      {
+        "project": "ths-balance",
+        "ids": [
+          "68566ea552d343a8b703686cfd331c99"
+        ],
+        "removed": 1,
+        "remaining": 0,
+        "other_ids_preserved": true
+      },
+      {
+        "project": "ths-cashflow",
+        "ids": [
+          "9bc80be44bad47d99ce6807790f96bb3"
+        ],
+        "removed": 1,
+        "remaining": 0,
+        "other_ids_preserved": true
+      }
+    ]
+  },
+  "release_note": "Two full runs found the existing HTTP limiter callback timing assertion unstable while isolated recheck passed. Test now observes authoritative Redis permit timestamps under the held sole direct slot and asserts >=50ms rather than Python callback >=40ms. Runtime limiter unchanged. Full gate rerunning.",
+  "release": {
+    "gate": "passed",
+    "tests_passed": 1260,
+    "tests_skipped": 2,
+    "skip_reason": "Windows symbolic link privilege unavailable",
+    "evidence": "ths-three-release-2026-09-30.json"
+  },
+  "desktop": {
+    "visible": true,
+    "program": "dist/Empire/Empire.exe",
+    "config_check_working_directory": "C:/Windows",
+    "config_check_exit": 0,
+    "verified": "920009 income, 25 reports; 2025-09-30 marked needs review; missing total revenue explicitly displayed",
+    "production_config_preserved": true
+  }
+}

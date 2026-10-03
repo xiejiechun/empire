@@ -64,6 +64,10 @@ def normalize_source(row):
         raise ValueError("新闻正文缺失或过大")
     parser = PlainText()
     parser.feed(raw)
+    # HTMLParser may retain trailing plain text while an ampersand could still
+    # begin a character reference (for example, "H&M").  Closing the parser
+    # flushes that valid text before we decide whether the article is empty.
+    parser.close()
     content = "\n".join(line.strip() for line in "".join(parser.parts).splitlines() if line.strip())
     if not content:
         raise ValueError("新闻正文为空，不推进该页断点")

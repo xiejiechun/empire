@@ -9,14 +9,14 @@ from empire.plugins.datasets.stocks import FINGERPRINT_VERSION
 from empire.plugins.infra.collection_state import CollectionState
 
 
-def _stock_marker_version(value):
+def _snapshot_marker_version(value):
     started = datetime.fromisoformat(value["started_at"])
     if started.tzinfo is not None or started.isoformat() != value["started_at"]:
         raise ValueError("股票状态开始时间格式无效")
     return [started.isoformat(timespec="microseconds"), value["snapshot_id"]]
 
 
-def _read_stock_marker(raw, status):
+def _read_snapshot_marker(raw, status):
     """Untrusted Redis progress must never fabricate archive completion."""
     try:
         value = json.loads(raw) if raw else None
@@ -34,7 +34,7 @@ def _read_stock_marker(raw, status):
             mysql_time(finished).isoformat(timespec="microseconds"), value["snapshot_id"]
         ])
         if status == "complete":
-            version = _stock_marker_version(value)
+            version = _snapshot_marker_version(value)
             FINGERPRINT_VERSION.key(version)
             if not count or value["error_text"] or datetime.fromisoformat(version[0]) > mysql_time(finished):
                 return None
@@ -62,7 +62,7 @@ class ArchiveConfirmationPlugin:
 
     async def stock_status(self, source, job_key, project_id, snapshot_id):
         confirmed = await self.redis.client.get(f"{self.redis.prefix}:stocks:committed:{source}")
-        value = _read_stock_marker(confirmed, "complete")
+        value = _read_snapshot_marker(confirmed, "complete")
         if value and value["snapshot_id"] == snapshot_id:
             return value
         if value is None:
@@ -72,7 +72,7 @@ class ArchiveConfirmationPlugin:
             if committed.get("snapshot_id") == snapshot_id:
                 return committed
         result = await self.redis.client.get(f"{self.redis.prefix}:stocks:result:{source}")
-        value = _read_stock_marker(result, "invalid")
+        value = _read_snapshot_marker(result, "invalid")
         return value if value and value["snapshot_id"] == snapshot_id else None
 
     async def page_status(self, source, job_key, project_id, batch_id, page):

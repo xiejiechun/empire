@@ -1,0 +1,67 @@
+{
+  "checked_at": "2026-10-03T18:03:55.208218+08:00",
+  "release_tests_passed": 1444,
+  "release_skips": 2,
+  "exe_sha256": "447329a6e5320baa15246770906e25d1861fe18fdd37fab48cab1df187f16019",
+  "config_preserved": true,
+  "doctor_from_desktop_directory": true,
+  "redis_mysql_connected": true,
+  "real_visible_desktop": true,
+  "ui_verified": "directory opens intraday; SZ000001/2026-09-30 shows 241 trend and 54 auction points, same-minute duplicates and decreasing quantity remain; task navigation and resume clicked",
+  "task_active": true,
+  "status": "running",
+  "checkpoint": {
+    "phase": "collecting",
+    "scope": "b04eb957173b931f88f3312108032a55dd2cd5eec89cea7f6d35a4a569fd40b0",
+    "batch_id": "37e445456a994657a495c446ae769d86",
+    "index": 8,
+    "pages": 92,
+    "collected": 22839,
+    "started_at": "2026-10-03T08:44:22.804285+00:00",
+    "start_date": "2021-01-04",
+    "end_date": "2026-09-30",
+    "first_gap": {
+      "index": 8,
+      "market": "BJ",
+      "code": "920000",
+      "trade_date": "2021-11-25",
+      "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+    },
+    "failed_units": 250
+  },
+  "archived_ranges": [
+    {
+      "market": "BJ",
+      "days": 9,
+      "first_day": "2021-11-15",
+      "last_day": "2026-09-30"
+    },
+    {
+      "market": "SH",
+      "days": 3,
+      "first_day": "2021-01-04",
+      "last_day": "2026-09-30"
+    },
+    {
+      "market": "SZ",
+      "days": 4,
+      "first_day": "2021-01-04",
+      "last_day": "2026-09-30"
+    }
+  ],
+  "limits": [
+    "Full current-pool historical collection is still incomplete",
+    "Known unresolved auction gap BJ920000/2021-11-25 kept",
+    "Original working tree contained other task changes; no mixed Git commit created"
+  ],
+  "archived_security_days": 101,
+  "first_archived_day": "2021-01-04",
+  "last_archived_day": "2026-09-30",
+  "unresolved_first_gap": {
+    "index": 8,
+    "market": "BJ",
+    "code": "920000",
+    "trade_date": "2021-11-25",
+    "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+  }
+}

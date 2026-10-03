@@ -46,8 +46,9 @@ def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_pat
             time.sleep(.02)
         raise AssertionError(f"Expected {expected}, got {runtime.page_contributions()}")
 
-    all_ids = {"home", "catalog", "stocks", "news", "calendar", "collection", "history",
-               "sites", "system", "plugins", "help", "proxies", "downloads"}
+    all_ids = {"dividends", "additional_issues", "rights_issues", "home", "catalog", "stocks", "news", "calendar", "collection", "history",
+               "sites", "system", "plugins", "help", "proxies", "downloads", "preparation", "suspensions",
+               "income", "balance", "cashflow", "industries", "intraday"}
     runtime.start()
     try:
         wait_pages(all_ids)

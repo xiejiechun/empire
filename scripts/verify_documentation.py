@@ -7,7 +7,12 @@ import tomllib
 from pathlib import Path
 from urllib.parse import unquote
 
-EXPECTED_TABLES = {"stock", "finance_news", "trade_calendar", "collection_state", "app_setting"}
+EXPECTED_TABLES = {
+    'industry', 'industry_member',
+    "stock", "finance_news", "trade_calendar", "suspension_event", "stock_intraday",
+    "income_statement", "balance_statement", "cashflow_statement",
+    "collection_state", "app_setting", "dividend_plan", "additional_issue", "rights_issue",
+}
 HASH_RE = re.compile(r"^[0-9a-f]{64}$")
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 
@@ -34,7 +39,7 @@ def broken_links(root: Path) -> list[str]:
         for number, line in enumerate(text.splitlines(), 1):
             for matched in LINK_RE.finditer(line):
                 target = unquote(_link_target(matched.group(1)))
-                if target.startswith(("http://", "https://", "mailto:", "codex://", "#")):
+                if target.startswith(("http://", "https://", "mailto:", "codex://", "help:", "#")):
                     continue
                 if re.match(r"^[A-Za-z]:[/\\]", target) or target.startswith(("/", "\\\\")):
                     errors.append(f"{document.relative_to(root)}:{number}: absolute link {target}")
@@ -110,6 +115,12 @@ def verify(root: Path) -> dict[str, int]:
                 raise RuntimeError(
                     f"{document.relative_to(root)}:{number}: legacy config path is presented as current"
                 )
+    if __package__:
+        from .documentation_contract import verify_review
+    else:
+        from documentation_contract import verify_review
+
+    verify_review(root)
     _assert_evidence(root)
     return {"documents": len(documentation_files(root)), "links": sum(
         len(LINK_RE.findall(path.read_text(encoding="utf-8")))

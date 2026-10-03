@@ -1,0 +1,136 @@
+import calendar
+from datetime import date, datetime, timedelta
+
+from sqlalchemy import text
+
+from empire.contracts.plugin import PluginManifest
+from empire.contracts.preparation import PreparationContribution
+from empire.core.time import CHINA
+from empire.plugins.datasets.suspensions import FIRST_DATE
+from empire.plugins.infra.collection_state import read_state
+
+
+def periods_between(start, end):
+    if start > end:
+        return []
+    result = []
+    current = start
+    while current <= end:
+        month_end = current.replace(day=calendar.monthrange(current.year, current.month)[1])
+        period_end = min(month_end, end)
+        result.append({"period": current.strftime("%Y-%m"), "start_date": current.isoformat(),
+                       "end_date": period_end.isoformat()})
+        current = period_end + timedelta(days=1)
+    return result
+
+
+class SuspensionDataPlugin:
+    preparation = (PreparationContribution(
+        "suspensions", "suspensions.query", "通达信", "tdx-suspensions",
+        "tdx-suspensions-v1", "suspensions.period", "collector.tdx_suspensions",
+        ("tests/test_tdx_suspensions.py",), ("tests/integration/test_suspension_archive.py",)),)
+
+    manifest = PluginManifest(
+        "data.suspensions", "沪深 A 股历史停复牌查询",
+        requires=("mysql.store",), provides=("suspensions.query", "suspensions.schema"),
+        description="查询通达信停复牌事件、生成连续日期补采计划并检查准备状态",
+    )
+
+    def __init__(self, source="tdx", job_key="tdx-suspensions-v1",
+                 project_id="tdx-suspensions", namespace="empire"):
+        self.source, self.job_key, self.project_id = source, job_key, project_id
+        self.namespace, self.mysql = namespace, None
+
+    async def start(self, context):
+        self.mysql = context.get("mysql.store")
+        await self.mysql.require_schema({"suspension_event": {
+            "source", "market", "code", "name", "suspended_at", "resumed_at",
+            "suspension_type", "source_note", "reason", "version_observed_at", "resume_key",
+            "record_key", "source_dates",
+        }}, {"suspension_event": ["source", "market", "code", "suspended_at", "resume_key",
+                                  "record_key"]})
+        state = await self.mysql.control(self._state)
+        if state.get('identity_migration_pending') or (state and (
+                state.get('source_calendar_version') != 1 or state.get('collection_integrity_version') != 2)):
+            raise RuntimeError('停复牌身份迁移未完成，请重新运行显式维护入口')
+        return {"suspensions.query": self, "suspensions.schema": self}
+
+    def _state(self):
+        with self.mysql.engine.connect() as conn:
+            return read_state(conn, self.namespace, self.project_id, self.source)
+
+    async def plan(self, today, fresh=False):
+        if not isinstance(today, date) or today < FIRST_DATE:
+            raise ValueError("停复牌采集截止日期无效")
+        state = await self.mysql.control(self._state)
+        coverage = state.get("coverage", {})
+        through = date.fromisoformat(coverage["through"]) if coverage.get("through") else None
+        if through and (through < FIRST_DATE or through > today):
+            raise ValueError("停复牌 SQL 连续覆盖上界无效")
+        start = FIRST_DATE if fresh or through is None else through
+        periods = periods_between(start, today)
+        return {"periods": periods, "start_date": start.isoformat(), "end_date": today.isoformat(),
+                "expected_days": (today - start).days + 1,
+                "coverage_through": through.isoformat() if through else None}
+
+    async def list_events(self, market="", code="", start=None, end=None, limit=200, offset=0,
+                          sort_by="suspended_at", direction="desc"):
+        if market not in ("", "SH", "SZ") or (code and (not code.isdigit() or len(code) > 6)):
+            raise ValueError("停复牌查询市场或代码无效")
+        if type(limit) is not int or not 1 <= limit <= 500:
+            raise ValueError("停复牌查询条数须为 1～500")
+        if type(offset) is not int or offset < 0:
+            raise ValueError("停复牌查询偏移须为非负整数")
+        if sort_by not in ("code", "name", "market", "suspended_at", "resumed_at",
+                           "suspension_type", "source_note", "reason") or direction not in ("asc", "desc"):
+            raise ValueError("停复牌排序字段或方向无效")
+        first = date.fromisoformat(start) if start else FIRST_DATE
+        last = date.fromisoformat(end) if end else datetime.now(CHINA).date()
+        if first < FIRST_DATE or last < first:
+            raise ValueError("停复牌查询日期范围无效")
+        return await self.mysql.read(self._list_events, market, code, first, last, limit, offset,
+                                     sort_by, direction)
+
+    def _list_events(self, market, code, start, end, limit, offset, sort_by, direction):
+        filters = ["source=:source"]
+        if start == end:
+            filters.append("JSON_CONTAINS(source_dates, JSON_QUOTE(:day))")
+        else:
+            filters.append("EXISTS (SELECT 1 FROM JSON_TABLE(source_dates, '$[*]' "
+                           "COLUMNS (day DATE PATH '$')) AS appearances "
+                           "WHERE appearances.day>=:start AND appearances.day<:end)")
+        params = {"source": self.source, "start": start,
+                  "end": end + timedelta(days=1), "day": start.isoformat(),
+                  "limit": limit, "offset": offset}
+        if market:
+            filters.append("market=:market")
+            params["market"] = market
+        if code:
+            filters.append("code LIKE :code")
+            params["code"] = code + "%"
+        with self.mysql.read_engine.connect() as conn:
+            rows = conn.execute(text(f"""
+                SELECT market,code,name,suspended_at,resumed_at,suspension_type,source_note,reason
+                FROM suspension_event WHERE {' AND '.join(filters)}
+                ORDER BY {sort_by} {direction},suspended_at DESC,market,code,resume_key,record_key
+                LIMIT :limit OFFSET :offset
+            """), params).mappings().all()
+        return [{key: value.isoformat() if hasattr(value, "isoformat") else value
+                 for key, value in row.items()} for row in rows]
+
+    async def calendar_coverage(self):
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                state = read_state(conn, self.namespace, self.project_id, self.source)
+                return state.get('coverage', {})
+        return await self.mysql.read(read)
+
+    async def preparation_check(self):
+        from empire.plugins.data.preparation_checks import check_suspensions
+        return await self.mysql.read(check_suspensions, self)
+
+    async def stop(self):
+        self.mysql = None
+
+    def health(self):
+        return {"status": "ok" if self.mysql else "stopped"}

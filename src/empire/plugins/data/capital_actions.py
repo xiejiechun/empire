@@ -1,0 +1,215 @@
+"""Bounded formal queries and independently measured preparation for capital actions."""
+import asyncio
+import json
+from datetime import UTC, datetime, timedelta
+from itertools import groupby
+
+from sqlalchemy import text
+
+from empire.contracts.plugin import PluginManifest
+from empire.contracts.preparation import CheckEvidence, PreparationContribution
+from empire.plugins.datasets.capital_actions import (
+    KINDS,
+    digest,
+    ordered,
+    security,
+    unit_key,
+    validate_rows,
+)
+from empire.plugins.datasets.capital_archive import CapitalDataset, chain
+from empire.plugins.infra.collection_state import read_state
+from empire.plugins.pipeline.fingerprints import FingerprintCache
+
+
+def decode(row):
+    data = json.loads(row['payload']) if isinstance(row['payload'], str) else row['payload']
+    return {k: row[k] for k in ('record_key', 'market', 'code', 'name')} | {
+        'event_date': row['event_date'].isoformat() if row['event_date'] else None, 'data': data}
+
+
+class CapitalDataPlugin:
+    def __init__(self, kind, namespace='empire', source='tdx', archive_settings=None):
+        self.kind, self.namespace, self.source = kind, namespace, source
+        title, self.table, self.project_id = KINDS[kind]
+        self.job_key, self.mysql = self.project_id + '-v1', None
+        self.context, self.archive_settings = None, archive_settings or {}
+        self.manifest = PluginManifest('data.' + kind, title + '查询', requires=('mysql.store',),
+            provides=(kind + '.query', kind + '.schema'), description='规范事件查询与完整来源集合核验')
+        self.preparation = (PreparationContribution(kind, kind + '.query', '通达信', self.project_id,
+            self.job_key, kind + '.unit', 'collector.tdx_' + kind,
+            ('tests/test_tdx_' + kind + '.py', 'tests/test_capital_lifecycle.py') +
+            (('tests/test_tdx_issue_details.py',) if kind == 'additional_issues' else ()),
+            ('tests/integration/test_capital_archive.py',)),)
+
+    async def start(self, context):
+        self.context = context
+        self.mysql = context.get('mysql.store')
+        await self.mysql.require_schema({self.table: {'source', 'record_key', 'market', 'code', 'name',
+            'event_date', 'payload', 'content_hash', 'version_observed_at'}},
+            {self.table: ['source', 'record_key']})
+        if self.kind == 'dividends':
+            await self.mysql.read(self._require_dividend_identity)
+        if self.kind == 'additional_issues':
+            await self.mysql.read(self._require_issue_contract)
+        return {self.kind + '.query': self, self.kind + '.schema': self}
+
+    def _require_issue_contract(self):
+        with self.mysql.read_engine.connect() as conn:
+            state = read_state(conn, self.namespace, self.project_id, self.source)
+            exists = conn.execute(text('SELECT 1 FROM additional_issue WHERE source=:source LIMIT 1'),
+                                  {'source': self.source}).first()
+            if state.get('detail_migration_pending') or (exists and state.get('contract_version') != 3):
+                raise ValueError('增发详情状态需要显式维护：关闭 Empire 后运行 scripts/migrate_issue_availability.py')
+
+    def _require_dividend_identity(self):
+        with self.mysql.read_engine.connect() as conn:
+            state = read_state(conn, self.namespace, self.project_id, self.source)
+            exists = conn.execute(text('SELECT 1 FROM dividend_plan WHERE source=:source LIMIT 1'),
+                                  {'source': self.source}).first()
+            if (state.get('identity_migration_pending') or
+                    (exists and state.get('contract_version') != 2)):
+                raise ValueError('分红业务键需要显式维护：关闭 Empire 后运行 scripts/migrate_dividend_identity.py')
+
+    def _securities(self, conn):
+        rows = conn.execute(text('SELECT market,code,name FROM stock WHERE source=:source '
+                                 'ORDER BY market,code'), {'source': 'sina'}).mappings().all()
+        if not rows or len(rows) > 15000 or len({unit_key(r) for r in rows}) != len(rows):
+            raise ValueError('当前股票目录为空、重复或超出支持上限；不能建立分红股票池')
+        return [security(**dict(row)) for row in rows]
+
+    async def securities(self):
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                return self._securities(conn)
+        return await self.mysql.read(read)
+
+    async def issue_detail_candidates(self):
+        """One bounded SQL read per incremental round, independent of Redis survival."""
+        if self.kind != 'additional_issues':
+            raise ValueError('仅增发支持详情增量比较')
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                records = conn.execute(text('SELECT * FROM additional_issue WHERE source=:source '
+                    'ORDER BY record_key LIMIT 10001'), {'source': self.source}).mappings().all()
+                if len(records) > 10000:
+                    raise ValueError('已归档增发详情比较范围超出安全上限')
+                return [decode(row) for row in records]
+        return await self.mysql.read(read)
+
+    async def verified_issue_candidates(self, rows, cutoff):
+        from empire.plugins.data.issue_candidates import verified_candidates
+        return await verified_candidates(self, rows, cutoff)
+
+    async def list_events(self, code='', market='', limit=51, offset=0):
+        if market not in ('', 'SH', 'SZ', 'BJ') or (code and (not code.isascii() or not code.isdigit() or len(code) > 6)):
+            raise ValueError('证券查询条件无效')
+        if type(limit) is not int or not 1 <= limit <= 500 or type(offset) is not int or not 0 <= offset <= 1000000:
+            raise ValueError('查询分页范围无效')
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                records = conn.execute(text(f'SELECT * FROM {self.table} WHERE source=:source '
+                    "AND code LIKE :code AND (:market='' OR market=:market) "
+                    'ORDER BY event_date DESC,market,code,record_key LIMIT :limit OFFSET :offset'),
+                    dict(source=self.source, code=code + '%', market=market, limit=limit, offset=offset)).mappings()
+                return [decode(r) for r in records]
+        return await self.mysql.read(read)
+
+    def _audit(self):
+        with self.mysql.read_engine.connect() as conn:
+            state = read_state(conn, self.namespace, self.project_id, self.source)
+            manifest = state.get('manifest', {})
+            wanted = sorted(unit_key(r) for r in self._securities(conn)) if self.kind == 'dividends' else None
+            records = conn.execution_options(stream_results=True).execute(text(
+                f'SELECT * FROM {self.table} WHERE source=:source ORDER BY market,code,record_key'),
+                {'source': self.source}).mappings()
+            try:
+                groups = ((unit, [decode(row) for row in group]) for unit, group in groupby(records, unit_key))
+                def selected():
+                    if wanted is None:
+                        yield from groups
+                        return
+                    current = next(groups, None)
+                    for unit in wanted:
+                        while current is not None and current[0] < unit:
+                            current = next(groups, None)
+                        if current is not None and current[0] == unit:
+                            yield current
+                            current = next(groups, None)
+                        else:
+                            yield unit, []
+                    # Drain the cursor, including out-of-pool historical securities.
+                    for _ in groups:
+                        pass
+                count, keys, rolling, unavailable, historical_unknown = 0, [], digest([]), 0, 0
+                for unit, unit_rows in selected():
+                    unit_rows = ordered(unit_rows)
+                    if self.kind == 'additional_issues':
+                        known = [row for row in unit_rows if row['data'].get('detail') is not None]
+                        historical_unknown += len(unit_rows) - len(known)
+                        if not known and unit_rows:
+                            continue
+                        unit_rows = known
+                    validate_rows(self.kind, unit, unit_rows)
+                    count += len(unit_rows)
+                    if self.kind == 'additional_issues':
+                        unavailable += sum(row['data']['detail'].get('availability') == 'unavailable' for row in unit_rows)
+                    keys.append(unit)
+                    rolling = chain(rolling, unit, unit_rows)
+                    if count > 1000000 or len(keys) > 15000:
+                        raise ValueError('业务核验范围超过安全上限')
+                actual = dict(units=len(keys), count=count, scope_hash=digest(keys), digest=rolling)
+                complete = bool(manifest) and all(manifest.get(k) == v for k, v in actual.items())
+                observed = datetime.fromisoformat(manifest['observed_at']) if manifest.get('observed_at') else None
+                fresh = bool(observed and datetime.now(UTC) - timedelta(days=3) <= observed <= datetime.now(UTC))
+                detail = f"正式查询 {count} 条 / {len(keys)} 个证券；完整来源集合{'匹配' if complete else '未证实或不匹配'}"
+                if unavailable:
+                    detail += f'；来源暂无可用详情 {unavailable} 条，明细字段为用途限制'
+                if historical_unknown:
+                    detail += (f'；另保留 {historical_unknown} 条未知历史详情，'
+                               + ('完整集合摘要证实不在本次来源范围' if complete else '尚不能证明其在来源范围之外'))
+                return actual, complete, fresh, detail, observed
+            finally:
+                records.close()
+
+    async def preparation_check(self):
+        try:
+            actual, complete, fresh, detail, observed = await self.mysql.read(self._audit)
+        except (KeyError, ValueError, TypeError) as exc:
+            message = ('增发详情尚未补齐，请继续采集；接口失败请查看错误记录'
+                       if str(exc) == '增发详情尚未补齐' else '必需字段或完整集合损坏，请重新采集核验')
+            return tuple(CheckEvidence(key, 'fail', message)
+                         for key in ('fields', 'keys', 'coverage', 'quality', 'freshness', 'temporal'))
+        store = self.context.optional('redis.store') if self.context else None
+        if store is not None:
+            try:
+                raw = await asyncio.wait_for(store.client.hget(
+                    f'{store.prefix}:checkpoint:{self.job_key}', 'cursor'), 3)
+                cursor = json.loads(raw or '{}')
+                if cursor.get('scope_changed') is True and cursor.get('phase') in ('fetch', 'awaiting_archive'):
+                    complete, fresh = False, False
+                    detail += '；来源范围已变化，新范围完整证明尚未确认'
+            except Exception:
+                pass  # Optional negative evidence; never authorizes queue cleanup.
+        if complete and store is not None:
+            try:
+                cache = FingerprintCache(store, self.archive_settings, lambda _: CapitalDataset.FINGERPRINT_VERSION)
+                proof = (await asyncio.wait_for(cache.peek(self.kind, self.source, ['manifest']), 3)).get('manifest')
+                if proof and proof['hash'] == digest({'rows': [], 'manifest': actual}):
+                    stamp = CapitalDataset.FINGERPRINT_VERSION.key(proof['version'])[0]
+                    if observed is not None and stamp >= observed:
+                        fresh = datetime.now(UTC) - timedelta(days=3) <= stamp <= datetime.now(UTC)
+            except Exception:
+                pass  # Optional read-only evidence; SQL remains independently usable.
+        checks = [CheckEvidence(key, 'pass' if complete else 'fail', detail)
+                  for key in ('fields', 'keys', 'coverage', 'quality')]
+        checks.append(CheckEvidence('freshness', 'pass' if fresh else 'fail',
+            'SQL / 匹配的只读可信摘要证明最近三日内核验' if fresh else '缺少三日内可信完整范围核验'))
+        checks.append(CheckEvidence('temporal', 'pass' if complete else 'unknown',
+            '按来源日期保存；缺失日期保持未知，不作为公告前信号；详见增发送配说明'))
+        return tuple(checks)
+
+    async def stop(self):
+        self.mysql = None
+
+    def health(self):
+        return {'status': 'ok' if self.mysql else 'stopped'}

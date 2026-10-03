@@ -24,6 +24,13 @@ POLICY = {"enabled": True, "mode": "manual", "interval_seconds": 300,
           "daily_time": "18:00", "request_retries": 2}
 
 
+def test_all_new_task_policies_default_to_proxy_first():
+    assert validate_policy(POLICY)['use_proxy'] is True
+    assert validate_policy(POLICY)['proxy_fallback'] is True
+    direct = validate_policy({**POLICY, 'use_proxy': False, 'proxy_fallback': False})
+    assert direct['use_proxy'] is False and direct['proxy_fallback'] is False
+
+
 class Redis:
     def __init__(self):
         self.data = {}
@@ -102,6 +109,49 @@ async def test_control_remains_available_when_one_collector_is_disabled():
     assert run_id
     await control.pause("stocks")
     await control.stop()
+
+
+@pytest.mark.parametrize('persist_fails', [False, True])
+async def test_new_run_clears_only_current_failure_and_failed_admission_rolls_back(persist_fails):
+    control, collector, redis, http = await setup()
+    previous = {'run_id': 'previous', 'task_id': 'stocks', 'started_at': 1,
+                'finished_at': 2, 'status': 'error', 'error': '旧传输错误', 'result': {}}
+    control.state['history'] = [previous.copy()]
+    control.state['jobs']['stocks'].update(last_status='error', error='旧传输错误')
+    redis.fail = persist_fails
+    try:
+        if persist_fails:
+            with pytest.raises(ConnectionError):
+                await control.run('stocks')
+            assert control.state['jobs']['stocks']['error'] == '旧传输错误'
+            assert control.state['jobs']['stocks']['active'] is None
+        else:
+            await control.run('stocks')
+            assert control.state['jobs']['stocks']['error'] == ''
+            assert json.loads(redis.data[control.key])['jobs']['stocks']['error'] == ''
+        assert control.state['history'] == [previous]
+    finally:
+        redis.fail = False
+        collector.gate.set()
+        await control.stop()
+        await http.close()
+
+
+async def test_task_pagination_groups_by_source_before_slicing():
+    from copy import deepcopy
+    from dataclasses import replace
+    control, _, _, _ = await setup()
+    try:
+        template = control.definitions['stocks']
+        for ident, source in [('z', 'B来源'), ('a', 'A来源'), ('b', 'B来源')]:
+            control.definitions[ident] = replace(template, id=ident, name=ident, source_name=source)
+            control.state['jobs'][ident] = deepcopy(control.state['jobs']['stocks'])
+        result = await control.workspace('tasks', limit=2)
+        following = await control.workspace('tasks', offset=2, limit=2)
+        jobs = result['jobs'] + following['jobs']
+        assert [job['id'] for job in jobs] == ['a', 'b', 'z', 'stocks']
+    finally:
+        await control.stop()
 
 
 def test_schedule_beijing_and_missed_days_coalesce():

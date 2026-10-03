@@ -20,6 +20,7 @@ QLabel#muted { color: #667085; }
 QLabel#breadcrumb { color: #667085; font-size: 9pt; }
 QLabel#pageTitle { font-size: 21pt; font-weight: 600; margin: 4px 0 8px; color: #202938; }
 QLabel#sectionTitle { font-size: 12pt; font-weight: 600; }
+QLabel#compactPageTitle { font-size: 16pt; font-weight: 600; }
 QLabel#cardValue { font-size: 26pt; font-weight: 600; color: #202938; }
 QFrame#card, QGroupBox { background: #ffffff; border: 1px solid #e3e7ed; border-radius: 8px; }
 QFrame#card QLabel, QGroupBox QLabel { background: transparent; }
@@ -65,6 +66,11 @@ QTableWidget { gridline-color: #eef0f3; outline: none; }
 QTableWidget::item { padding: 6px; }
 QTableWidget::item:focus { border-bottom: 2px solid #2459b8; }
 QTableWidget::item:selected { background: #e8f0ff; color: #204b91; }
+QTreeWidget#taskMenu { border: 1px solid #e3e7ed; border-radius: 6px; outline: none; }
+QTreeWidget#taskMenu::item:hover { background: #f7f9fc; }
+QTreeWidget#taskMenu::item:selected { background: #e8f0ff; color: #204b91; }
+QTreeWidget#taskMenu::item:focus { border-bottom: 2px solid #2459b8; }
+QWidget#taskRuntime QGroupBox { margin-top: 10px; padding: 4px; }
 QHeaderView::section { background: #f7f8fa; color: #586477; border: none; border-bottom: 1px solid #e3e7ed; padding: 10px; font-weight: 600; }
 QTableCornerButton::section { background: #f7f8fa; border: none; }
 QTabWidget::pane { border: 1px solid #e3e7ed; background: #ffffff; }

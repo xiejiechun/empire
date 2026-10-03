@@ -16,7 +16,11 @@ from empire.plugins.infra.download_storage import FileSink
 from empire.plugins.infra.http import HttpService
 from empire.plugins.infra.proxy_pool import ProxyPool
 from empire.plugins.infra.resources import ByteBudget
-from empire.plugins.infra.response_reader import DownloadLimitError, read_response
+from empire.plugins.infra.response_reader import (
+    DownloadIncompleteError,
+    DownloadLimitError,
+    read_response,
+)
 from empire.plugins.infra.routing import USE_PROXY
 
 URL = "https://finance.sina.com.cn/data"
@@ -153,14 +157,14 @@ async def test_gzip_expansion_never_requests_unbounded_decoder_output(tmp_path, 
         await service.close()
 
 
-@pytest.mark.parametrize("encoded", [gzip.compress(b"abc")[:-3], b"broken-gzip",
-                                      gzip.compress(b"abc") + gzip.compress(b"def")])
-async def test_corrupt_truncated_and_extra_gzip_members_do_not_succeed(tmp_path, encoded):
+@pytest.mark.parametrize("encoded,error", [(gzip.compress(b"abc")[:-3], DownloadIncompleteError),
+    (b"broken-gzip", DownloadLimitError), (gzip.compress(b"abc") + gzip.compress(b"def"), DownloadLimitError)])
+async def test_corrupt_truncated_and_extra_gzip_members_do_not_succeed(tmp_path, encoded, error):
     stream = RawStream([encoded])
     service = service_for(tmp_path, lambda request: httpx.Response(200,
         headers={"Content-Encoding": "gzip"}, stream=stream))
     try:
-        with pytest.raises(DownloadLimitError):
+        with pytest.raises(error):
             await get(service, ResponsePolicy(max_body_bytes=1000, max_wire_bytes=1000))
         assert stream.closed and not service.responses and service.buffer_budget.used == 0
     finally:

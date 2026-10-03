@@ -1,4 +1,4 @@
-# Default user configuration: %LOCALAPPDATA%\Empire\config.toml.
+# Default configuration: config.toml beside Empire.exe (project root for source runs).
 # The packaged program contains this blank template, never the user's credentials.
 # EMPIRE_MYSQL_PASSWORD and EMPIRE_REDIS_PASSWORD override passwords below.
 [app]
@@ -59,4 +59,16 @@ domains = ["cninfo.com.cn"]
 min_interval_ms = 2000
 proxy_interval_ms = 2000
 total_interval_ms = 500
+max_concurrency = 1
+
+[rate_groups.tdx]
+domains = ["tdx.com.cn"]
+min_interval_ms = 2000
+proxy_interval_ms = 2000
+total_interval_ms = 500
+max_concurrency = 1
+
+[rate_groups.ths]
+domains = ["10jqka.com.cn"]
+min_interval_ms = 2000
 max_concurrency = 1

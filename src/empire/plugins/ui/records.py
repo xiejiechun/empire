@@ -1,4 +1,4 @@
-from PySide6.QtCore import QItemSelectionModel, Qt, QTimer
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QCheckBox,
@@ -13,7 +13,8 @@ from PySide6.QtWidgets import (
 )
 
 from empire.core.redaction import redact
-from empire.plugins.ui.record_detail import ARCHIVE_STATUS, record_detail, record_time
+from empire.plugins.ui.record_detail import record_detail
+from empire.plugins.ui.record_table import render_records
 
 
 class RecordsPage(QWidget):
@@ -26,7 +27,7 @@ class RecordsPage(QWidget):
         self.shell, self.kind = shell, kind
         from empire.plugins.ui.queries import QueryScope
         self.query_scope = QueryScope(self)
-        self.records = []
+        self.records, self.project_names = [], {}
         self.query = self.query_spec = self.clear_action = None
         self.detail_query = self.detail_spec = self.detail_record = self.detail_id = None
         self.offset = self.total = 0
@@ -39,6 +40,7 @@ class RecordsPage(QWidget):
         self.project = QComboBox()
         self.project.setEditable(True)
         self.project.setInsertPolicy(QComboBox.InsertPolicy.NoInsert)
+        self.project.addItem("全部项目", "*")
         self.project.completer().setFilterMode(Qt.MatchFlag.MatchContains)
         accessible(self.project, "选择采集项目")
         self.project.currentIndexChanged.connect(self.project_changed)
@@ -50,8 +52,8 @@ class RecordsPage(QWidget):
         description = ("每个项目最近 300 条错误，仅存 Redis。样本最多 64 KiB；未完整下载时，仅记录已读长度与样本摘要。"
                        if kind == "errors" else "每个项目最近 100 条归档记录，仅存 Redis；已处理包含确认无需写入，业务写入才表示数据发生变化。")
         layout.addWidget(hint(description))
-        self.table = table(["发生时间 · 北京时间", "阶段", "错误原因", "HTTP 状态"] if kind == "errors"
-                           else ["归档时间 · 北京时间", "结果", "已处理记录", "业务写入记录", "批次标识"])
+        self.table = table(["发生时间 · 北京时间", "阶段", "错误原因", "HTTP 状态", "采集项目"] if kind == "errors"
+                           else ["归档时间 · 北京时间", "结果", "已处理记录", "业务写入记录", "批次标识", "采集项目"])
         if kind == "errors":
             self.table.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
             self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
@@ -72,10 +74,7 @@ class RecordsPage(QWidget):
         self.navigation.addWidget(self.next)
         self.navigation.addStretch()
         layout.addLayout(self.navigation)
-        if kind != "errors":
-            self.previous.hide()
-            self.next.hide()
-        self.status = hint("请选择采集项目")
+        self.status = hint("默认查看全部项目，可按项目筛选")
         self.status.setAccessibleName("运行记录读取状态")
         layout.addWidget(self.status)
         self.detail = QTextEdit()
@@ -96,7 +95,7 @@ class RecordsPage(QWidget):
             actions.addWidget(self.clear_button)
             actions.addStretch()
             layout.addLayout(actions)
-            layout.addWidget(hint("清除仅针对当前选中的记录，不会清空项目或删除之后产生的新错误。查看记录、采集成功都不会自动清除。"))
+            layout.addWidget(hint("清理前请筛选具体项目并选择已修复记录；全部项目视图仅供查看，不批量清空。"))
         else:
             self.verified.hide()
             self.clear_button.hide()
@@ -108,7 +107,8 @@ class RecordsPage(QWidget):
         self.update_actions()
 
     def set_projects(self, values):
-        options = {value["id"]: value["name"] for value in values}
+        self.project_names = {value["id"]: value["name"] for value in values}
+        options = {"*": "全部项目", **self.project_names}
         if self.kind == "errors":
             options.setdefault("unknown", "未识别项目")
         if list(options) == [self.project.itemData(i) for i in range(self.project.count())]:
@@ -143,7 +143,14 @@ class RecordsPage(QWidget):
             return
         try:
             ident = self.project.currentData()
-            if self.kind == "errors":
+            if ident == "*":
+                if force:
+                    self.revision = None
+                self.query = self.query_scope.invoke(
+                    "records", self.shell.runtime, "collection.records",
+                    "list_all_records", self.kind, self.offset, 50, self.revision)
+                self.query_spec = (ident, self.offset)
+            elif self.kind == "errors":
                 if force:
                     self.revision = None
                 self.query = self.query_scope.invoke(
@@ -202,12 +209,13 @@ class RecordsPage(QWidget):
             if spec == (self.project.currentData(), self.offset):
                 try:
                     result = self.query_scope.result("records", future)
-                    if self.kind == "errors":
+                    if self.kind == "errors" or spec[0] == "*":
                         self.revision = result["revision"]
                         self.total = result["total"]
                         if result["changed"]:
                             self.offset = result["offset"]
-                            self.records = result["rows"]
+                            self.records = [{**r, "record_id": r["id"],
+                                             "id": f"{r['project_id']}:{r['id']}"} for r in result["rows"]] if spec[0] == "*" else result["rows"]
                             self.detail_record = self.detail_id = None
                             self.render()
                     else:
@@ -242,36 +250,18 @@ class RecordsPage(QWidget):
             self.reload()
 
     def render(self):
-        from empire.plugins.ui.common import rows
-
         selected_ids = self.selected_ids() if self.table.rowCount() else self.selection
         current = self.table.currentRow()
         current_id = self.table.item(current, 0).data(Qt.ItemDataRole.UserRole) if current >= 0 and self.table.item(current, 0) else None
-        self.table.blockSignals(True)
-        if self.kind == "errors":
-            values = [[record_time(r.get("created_at")), r.get("stage", "—"),
-                       redact(r.get("error", ""), self.shell.cfg), r.get("status_code") or "—"]
-                      for r in self.records]
-        else:
-            values = [[record_time(r.get("created_at")), ARCHIVE_STATUS.get(r.get("status"), r.get("status", "—")),
-                       r.get("processed_count", "—"), r.get("written_count", "—"),
-                       r.get("snapshot_id", "—")] for r in self.records]
-        rows(self.table, values)
-        self.table.clearSelection()
-        selection_model = self.table.selectionModel()
-        for index, record in enumerate(self.records):
-            self.table.item(index, 0).setData(Qt.ItemDataRole.UserRole, record["id"])
-            if record["id"] in selected_ids:
-                selection_model.select(self.table.model().index(index, 0),
-                                       QItemSelectionModel.SelectionFlag.Select | QItemSelectionModel.SelectionFlag.Rows)
-            if record["id"] == current_id:
-                selection_model.setCurrentIndex(self.table.model().index(index, 0), QItemSelectionModel.SelectionFlag.NoUpdate)
-        self.table.blockSignals(False)
-        if self.kind == "errors":
+        render_records(self.table, self.records, self.kind, self.shell.cfg, self.project_names, selected_ids, current_id)
+        paged = self.kind == "errors" or self.project.currentData() == "*"
+        self.previous.setVisible(paged)
+        self.next.setVisible(paged)
+        if paged:
             self.previous.setEnabled(self.offset > 0)
             self.next.setEnabled(self.offset + len(self.records) < self.total)
             self.status.setText((f"共 {self.total} 条 · 第 {self.offset // 50 + 1} 页 · 时间为北京时间"
-                                 if self.total else "当前项目暂无记录"))
+                                 if self.total else "当前筛选暂无记录"))
         else:
             self.status.setText(f"{len(self.records)} 条记录 · 时间为北京时间" if self.records else "当前项目暂无记录")
         self.show_detail()
@@ -294,11 +284,11 @@ class RecordsPage(QWidget):
             if self.detail_id != record["id"]:
                 if not self.detail_query:
                     try:
-                        ident = self.project.currentData()
+                        ident = record.get("project_id", self.project.currentData())
                         self.detail_query = self.query_scope.invoke(
                             "record-detail", self.shell.runtime, "collection.records",
-                            "get_error", ident, record["id"])
-                        self.detail_spec = (ident, record["id"], self.revision)
+                            "get_error", ident, record.get("record_id", record["id"]))
+                        self.detail_spec = (self.project.currentData(), record["id"], self.revision)
                     except Exception as exc:
                         self.detail.setPlaceholderText("读取详情失败：" + redact(exc, self.shell.cfg))
                 self.detail.clear()
@@ -316,12 +306,14 @@ class RecordsPage(QWidget):
 
     def update_actions(self):
         self.clear_button.setEnabled(bool(self.kind == "errors" and self.selection
+                                          and self.project.currentData() != "*"
                                           and self.verified.isChecked() and not self.clear_action
                                           and not getattr(self.shell, "shutting_down", False)))
 
     def clear_selected(self):
         ids = sorted(self.selected_ids())
-        if not ids or not self.verified.isChecked() or self.clear_action or getattr(self.shell, "shutting_down", False):
+        if (self.project.currentData() == "*" or not ids or not self.verified.isChecked()
+                or self.clear_action or getattr(self.shell, "shutting_down", False)):
             return
         ident = self.project.currentData()
         try:

@@ -1,0 +1,44 @@
+[
+  {
+    "criterion": "fields",
+    "status": "pass",
+    "measured": "已存 104733 条；市场、代码、类型、名称和日期异常 0 条；缺少来源日期 0 条",
+    "blocking": true,
+    "findings": []
+  },
+  {
+    "criterion": "keys",
+    "status": "pass",
+    "measured": "104733 行，唯一业务键 104733；source + market + code + suspended_at + resume_key + record_key",
+    "blocking": true,
+    "findings": []
+  },
+  {
+    "criterion": "coverage",
+    "status": "pass",
+    "measured": "来源起点 2004-12-27；SQL 连续覆盖 2004-12-27 ～ 2026-10-01；今天为来源明确的休市日；日频验收目标为最近已结束交易日 2026-09-30 15:30（北京时间）；事件日期 2004-12-27 09:30:00 ～ 2026-09-30 11:13:00；更早历史属于来源限制，休市日或盘中未结束日期不作为已完成日要求",
+    "blocking": true,
+    "findings": []
+  },
+  {
+    "criterion": "quality",
+    "status": "pass",
+    "measured": "字段异常 0；已出现市场数 2；复牌为空保持未知，临停单独分类",
+    "blocking": true,
+    "findings": []
+  },
+  {
+    "criterion": "freshness",
+    "status": "pass",
+    "measured": "最近确认 2026-10-01T07:20:46.482185+08:00 已覆盖目标交易日结束；休市期间不按自然日过期",
+    "blocking": true,
+    "findings": []
+  },
+  {
+    "criterion": "temporal",
+    "status": "pass",
+    "measured": "按停牌和复牌生效时间保存；用于日频成交约束，不将原因文字作为事前信号",
+    "blocking": true,
+    "findings": []
+  }
+]

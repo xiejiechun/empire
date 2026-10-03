@@ -40,7 +40,7 @@ def show_startup_error(message: str) -> None:
     owns_app = QApplication.instance() is None
     app = QApplication.instance() or QApplication(sys.argv[:1])
     box = QMessageBox(QMessageBox.Icon.Critical, "Empire 无法启动", message)
-    box.setInformativeText("配置文件只保存在当前 Windows 用户目录，不会写入程序目录。")
+    box.setInformativeText("默认配置为 Empire.exe 同目录的 config.toml；源码运行使用项目根目录。")
     box.exec()
     if owns_app:
         app.quit()
@@ -213,6 +213,12 @@ def main() -> int:
     news.add_argument("--fresh", action="store_true", help="从最新窗口重新建立基线，保留已归档新闻")
     calendar = commands.add_parser("collect-calendar", help="补齐巨潮交易日历并维护本月至下一年年底")
     calendar.add_argument("--fresh", action="store_true", help="重新核验全部历史和未来范围，保留已归档日期")
+    suspensions = commands.add_parser("collect-suspensions", help="补齐通达信沪深 A 股历史停复牌并维护至今")
+    suspensions.add_argument("--fresh", action="store_true", help="从 2004-12-27 重新核验至今，保留已归档事件")
+    industries = commands.add_parser('collect-industries', help='刷新同花顺当前行业及全部成员，归档后退出')
+    industries.add_argument('--fresh', action='store_true', help='完整刷新当前分类，不保存变化历史')
+    intraday = commands.add_parser('collect-intraday', help='回补当前上市证券 2021 年起分时及竞价，归档后退出')
+    intraday.add_argument('--fresh', action='store_true', help='重新核验声明范围，保留已归档历史')
     smoke = commands.add_parser("smoke", help="启动桌面并在指定秒数后安全退出")
     smoke.add_argument("--seconds", type=int, default=8)
     smoke.add_argument("--screenshot")
@@ -240,18 +246,25 @@ def main() -> int:
             finally:
                 lock.unlock()
             return 0
-        if args.command in ("collect-stocks", "collect-news", "collect-calendar"):
+        if args.command in ("collect-stocks", "collect-news", "collect-calendar", "collect-suspensions", 'collect-industries', 'collect-intraday'):
+            from PySide6.QtCore import QCoreApplication
+
             from empire.bootstrap import build_manager
+            qt_app = QCoreApplication.instance() or QCoreApplication(sys.argv[:1])
             lock = acquire_instance_lock()
 
             async def collect_once():
                 manager = build_manager(cfg)
                 task_id = {"collect-news": "sina-news", "collect-stocks": "sina-stocks",
-                           "collect-calendar": "cninfo-calendar"}[args.command]
+                           "collect-calendar": "cninfo-calendar",
+                           "collect-suspensions": "tdx-suspensions", 'collect-industries': 'ths-industries',
+                           'collect-intraday': 'kaipanla-intraday'}[args.command]
                 try:
                     await manager.start("collection.control")
                     await manager.start("pipeline.archive")
                     control = manager.registry.get("collection.control")
+                    definition = control.definitions[task_id]
+                    await manager.start(manager.providers[definition.capability])
                     run_id = await control.run(task_id, fresh=args.fresh)
                     waiter = control.tasks[task_id]
                     while not waiter.done():
@@ -274,6 +287,7 @@ def main() -> int:
                 asyncio.run(collect_once())
             finally:
                 lock.unlock()
+                del qt_app
             return 0
         if args.command == "smoke":
             return run_gui(cfg, args.screenshot, args.seconds)

@@ -23,7 +23,8 @@ async def test_mysql_settings_survive_loss_of_redis_runtime_without_collection()
         await manager.start("collection.control")
         control = manager.registry.get("collection.control")
         data = await control.workspace("tasks")
-        policy = {**data["jobs"][0]["policy"], "mode": "daily", "daily_time": "18:30",
+        stock = next(job for job in data['jobs'] if job['id'] == 'sina-stocks')
+        policy = {**stock["policy"], "mode": "daily", "daily_time": "18:30",
                   "use_proxy": True, "proxy_fallback": True}
         site_policy = {"min_interval_ms": 4100, "proxy_interval_ms": 2100,
                        "total_interval_ms": 600, "max_concurrency": 64,
@@ -56,9 +57,10 @@ async def test_mysql_settings_survive_loss_of_redis_runtime_without_collection()
         tasks = await control.workspace("tasks")
         sites = await control.workspace("sites")
         history = await control.workspace("history")
-        assert tasks["jobs"][0]["policy"] == policy
-        assert tasks["jobs"][0]["next_due"]
-        assert tasks["jobs"][0]["active"] is None
+        stock = next(job for job in tasks['jobs'] if job['id'] == 'sina-stocks')
+        assert stock["policy"] == policy
+        assert stock["next_due"]
+        assert stock["active"] is None
         assert next(s for s in sites["sites"] if s["name"] == "sina")["min_interval_ms"] == 4100
         saved_site = next(s for s in sites["sites"] if s["name"] == "sina")
         assert all(saved_site[k] == v for k, v in site_policy.items())

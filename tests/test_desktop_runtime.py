@@ -111,3 +111,33 @@ def test_unexpected_snapshot_failure_still_shuts_down_plugins(tmp_path, monkeypa
     assert plugin.stopped and not plugin.open
     assert manager.registry.values == {}
     assert runtime.snapshot()["error"] == "snapshot failed: [REDACTED]"
+
+
+def test_collect_cli_starts_only_requested_provider(monkeypatch):
+    from types import SimpleNamespace
+    from unittest.mock import AsyncMock
+
+    from empire.__main__ import main
+
+    started = []
+    control = SimpleNamespace(definitions={'ths-industries': SimpleNamespace(capability='collector.ths_industries')},
+                              tasks={}, state={'history': []})
+    async def run(task_id, fresh=False):
+        assert started == ['collection.control', 'pipeline.archive', 'provider.industry']
+        task = asyncio.create_task(asyncio.sleep(0))
+        control.tasks[task_id] = task
+        control.state['history'].append({'run_id': 'one', 'status': 'complete', 'result': {}})
+        return 'one'
+    control.run = run
+    async def start(provider):
+        started.append(provider)
+    manager = SimpleNamespace(start=start, shutdown=AsyncMock(),
+        providers={'collector.ths_industries': 'provider.industry'},
+        registry=SimpleNamespace(get=lambda _: control))
+    monkeypatch.setattr('empire.bootstrap.build_manager', lambda _: manager)
+    monkeypatch.setattr('empire.__main__.load_config', lambda _: {})
+    monkeypatch.setattr('empire.__main__.configure_logging', lambda _: None)
+    monkeypatch.setattr('empire.__main__.acquire_instance_lock', lambda: SimpleNamespace(unlock=lambda: None))
+    monkeypatch.setattr('sys.argv', ['empire', 'collect-industries'])
+    assert main() == 0
+    manager.shutdown.assert_awaited_once()

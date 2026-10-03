@@ -99,6 +99,13 @@ def test_normalizes_only_business_fields_and_china_time():
     assert "evil" not in normalize_source(raw_row(99, "<script>evil()</script>新闻"))["content"]
 
 
+def test_plain_text_with_ampersand_is_flushed_before_empty_validation():
+    content = "瑞典金融监管局称，Ramsbury Invest购入H&M股票总值约12亿瑞典克朗。"
+    row = normalize_source(raw_row(5118159, content))
+    assert row["content"] == content
+    assert row["title"] == content
+
+
 @pytest.mark.parametrize("changes", [{"id": True}, {"rich_text": ""}, {"create_time": "invalid"},
                                       {"docurl": "javascript:alert(1)"}, {"tag": "wrong"}])
 def test_invalid_news_is_rejected(changes):

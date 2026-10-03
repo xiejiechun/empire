@@ -38,7 +38,7 @@ def running_download_summary(job):
 
 def network_summary(job):
     policy, limits = job["policy"], job.get("network_capacity", {})
-    if not policy.get("use_proxy"):
+    if not policy.get("use_proxy", True):
         return "已保存：本机直连 · 逐页采集"
     healthy = limits.get("healthy_egresses", limits.get("healthy_proxies", 0))
     slots = max(0, min(healthy, limits.get("effective_concurrency", 0)))

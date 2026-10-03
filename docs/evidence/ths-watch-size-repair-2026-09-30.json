@@ -1,0 +1,155 @@
+{
+  "at": "2026-09-30T23:09:48.308841+08:00",
+  "errors": [
+    {
+      "status_code": 502,
+      "error": "Server error '502 Bad Gateway' for url 'https://basic.10jqka.com.cn/api/stock/finance/600018_benefit.json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+      "id": "a9e9d8971bb3454cac29a4285210b3c1",
+      "project_id": "ths-income",
+      "created_at": "2026-09-30T13:20:18.710452+00:00",
+      "stage": "http",
+      "metadata": {
+        "method": "GET",
+        "attempt": 2
+      },
+      "request_url": "https://basic.10jqka.com.cn/api/stock/finance/600018_benefit.json"
+    },
+    {
+      "status_code": 502,
+      "error": "Server error '502 Bad Gateway' for url 'https://basic.10jqka.com.cn/api/stock/finance/600018_benefit.json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+      "id": "4b9ee31854b24f4aa8b15c4f30e996cb",
+      "project_id": "ths-income",
+      "created_at": "2026-09-30T13:20:17.665188+00:00",
+      "stage": "http",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "request_url": "https://basic.10jqka.com.cn/api/stock/finance/600018_benefit.json"
+    },
+    {
+      "status_code": null,
+      "error": "Page exceeds configured byte limit",
+      "id": "98b40a0abde94f53be0d899ba9bb3b49",
+      "project_id": "ths-balance",
+      "created_at": "2026-09-30T15:06:32.181035+00:00",
+      "stage": "queue_publish",
+      "metadata": {},
+      "request_url": ""
+    },
+    {
+      "status_code": null,
+      "error": "Page exceeds configured byte limit",
+      "id": "bb632e1f8fcc441dbb271b16eb23bbac",
+      "project_id": "ths-balance",
+      "created_at": "2026-09-30T13:23:57.204051+00:00",
+      "stage": "queue_publish",
+      "metadata": {},
+      "request_url": ""
+    }
+  ],
+  "state": {
+    "income": {
+      "checkpoint": {
+        "revision": 865,
+        "cursor": {
+          "phase": "fetch",
+          "batch_id": "ed4b1234a5004a8d989b441ed873bbbb",
+          "index": 826,
+          "pages": 826,
+          "collected": 61904,
+          "units": 5571,
+          "scope_hash": "39a3fb3f22cd27c72f1d3fb812b599d5c7e1bf3b5c40821dcb7e5b255f11654e",
+          "rolling": "af9f067853bf0e1479979c230b5175e2fd22c2a05a64ed4d6fb12f87e773c149"
+        }
+      },
+      "next": {
+        "market": "SH",
+        "code": "600644",
+        "name": "乐山电力"
+      }
+    },
+    "balance": {
+      "checkpoint": {
+        "revision": 729,
+        "cursor": {
+          "phase": "fetch",
+          "batch_id": "e22a56d720a34024a9b520186531415c",
+          "index": 421,
+          "pages": 421,
+          "collected": 18149,
+          "units": 5571,
+          "scope_hash": "39a3fb3f22cd27c72f1d3fb812b599d5c7e1bf3b5c40821dcb7e5b255f11654e",
+          "rolling": "9220c2d296ec4010869096bd3f98cd85605798c6eeec733b2f660f9320252d82"
+        }
+      },
+      "next": {
+        "market": "SH",
+        "code": "600104",
+        "name": "上汽集团"
+      }
+    },
+    "cashflow": {
+      "checkpoint": {
+        "revision": 732,
+        "cursor": {
+          "phase": "fetch",
+          "batch_id": "cee824d5786444c8a9c99e751116cac0",
+          "index": 709,
+          "pages": 709,
+          "collected": 47502,
+          "units": 5571,
+          "scope_hash": "39a3fb3f22cd27c72f1d3fb812b599d5c7e1bf3b5c40821dcb7e5b255f11654e",
+          "rolling": "5b540cb89b1da86b1014a42b3aeb4d989460eeb4238aebec13cf296f3117b29b"
+        }
+      },
+      "next": {
+        "market": "SH",
+        "code": "600502",
+        "name": "安徽建工"
+      }
+    }
+  },
+  "status": "completed; monitoring active",
+  "pending": 1,
+  "schema_upgrade": {
+    "old_queue_drained_before_change": true,
+    "pending_before_upgrade": 0,
+    "new_schema": 2,
+    "sql_migration": false,
+    "fingerprint_contents_unchanged": true
+  },
+  "cleanup": {
+    "at": "2026-09-30T23:20:38.971475+08:00",
+    "project": "ths-balance",
+    "ids": [
+      "98b40a0abde94f53be0d899ba9bb3b49",
+      "bb632e1f8fcc441dbb271b16eb23bbac"
+    ],
+    "removed": 2,
+    "other_ids_preserved": true
+  },
+  "network_records": "Two historical HTTP 502 records retained for monitoring, no code defect proven",
+  "real_query_recheck": "ths-watch-query-recheck-2026-09-30.json",
+  "automation": {
+    "id": "automation",
+    "interval_minutes": 30,
+    "status": "ACTIVE"
+  },
+  "release": {
+    "passed": true,
+    "tests_passed": 1274,
+    "tests_skipped": 2,
+    "evidence": "ths-watch-release-2026-09-30.json"
+  },
+  "desktop": {
+    "reopened": true,
+    "config_preserved": true,
+    "config_check_from": "C:/Windows",
+    "resumed_via_official_ui": [
+      "ths-income",
+      "ths-cashflow",
+      "ths-balance"
+    ]
+  }
+}

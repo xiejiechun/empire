@@ -1,0 +1,58 @@
+{
+  "checked_at": "2026-10-02T11:41:57.801381+08:00",
+  "scope": "采集任务页面排版",
+  "source_sha256": "9d3476faad427919e6185aebef087305b68ea8062f37a395c5532cf962f94cee",
+  "gate": {
+    "tests": 1355,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "passed": 1353
+  },
+  "config_preserved": true,
+  "config_sha256": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+  "redis_connected": true,
+  "mysql_connected": true,
+  "different_working_directory": "build",
+  "desktop": {
+    "visible": true,
+    "observed": [
+      "4来源10任务两级菜单",
+      "约320逻辑像素菜单",
+      "单行按钮",
+      "进度与时间并排",
+      "网络与异常完整显示",
+      "配置标签输入两列",
+      "底部保存栏可见",
+      "默认窗口无整页滚动"
+    ],
+    "geometry_offscreen": [
+      "1320x860",
+      "1320x700",
+      "1024/880/680宽度",
+      "四档缩放"
+    ],
+    "screenshot_file_saved": false
+  },
+  "restored_tasks": {
+    "checked_at": "2026-10-02T11:37:10.459648+08:00",
+    "restored": {
+      "ths-income": {
+        "active": true,
+        "status": "running"
+      },
+      "ths-cashflow": {
+        "active": true,
+        "status": "running"
+      }
+    }
+  },
+  "error_ids_cleared": [],
+  "schema_changed": false,
+  "collector_semantics_changed": false,
+  "limitations": [
+    "不代表全市场采集完成或重新数据质量审计",
+    "较小窗口仍允许整页滚动，窄窗口为离屏验证",
+    "未执行真实代理压力测试"
+  ]
+}

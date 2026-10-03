@@ -254,7 +254,12 @@ async def test_workspace_direct_help_and_collection_grouping():
             pages.extend(next(iter(provided.values())))
     management = {page.id: page.management for page in pages if page.management is not None}
     assert {key: value.context.task_id for key, value in management.items()} == {
-        "stocks": "sina-stocks", "news": "sina-news", "calendar": "cninfo-calendar"
+        'industries': 'ths-industries',
+        'intraday': 'kaipanla-intraday',
+        "stocks": "sina-stocks", "news": "sina-news", "calendar": "cninfo-calendar",
+        "suspensions": "tdx-suspensions", "dividends": "tdx-dividends",
+        "additional_issues": "tdx-additional-issues", "rights_issues": "tdx-rights-issues",
+        "income": "ths-income", "balance": "ths-balance", "cashflow": "ths-cashflow",
     }
     assert all(value.page_id == "collection" for value in management.values())
     runtime.contributions = [replace(p, factory=lambda shell: QLineEdit()) for p in pages]
@@ -262,10 +267,10 @@ async def test_workspace_direct_help_and_collection_grouping():
     window.timer.stop()
     try:
         assert [window.nav.item(i).text() for i in range(window.nav.count())] == [
-            "工作台", "数据浏览", "采集管理", "系统设置", "说明文档"]
+            "工作台", "数据准备", "数据浏览", "采集管理", "系统设置", "说明文档"]
         assert window.current_page_id == "home"
         assert window.subnav.isHidden()
-        window.nav.setCurrentRow(4)
+        window.nav.setCurrentRow(5)
         assert window.current_page_id == "help"
         assert window.breadcrumb.text() == "说明文档"
         assert window.subnav.isHidden()
@@ -274,8 +279,8 @@ async def test_workspace_direct_help_and_collection_grouping():
         assert not window.subnav.isHidden()
         assert [window.subnav.item(i).text() for i in range(window.subnav.count())] == [
             "采集任务", "运行记录", "站点访问规则", "采集出口", "下载资源"]
-        window.nav.setCurrentRow(4)
-        window.nav.setCurrentRow(2)
+        window.nav.setCurrentRow(5)
+        window.nav.setCurrentRow(3)
         assert window.current_page_id == "sites"
         assert window.navigate("system")
         assert [window.subnav.item(i).text() for i in range(window.subnav.count())] == [

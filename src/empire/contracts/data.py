@@ -58,15 +58,16 @@ class Envelope(BaseModel):
 
 def make_envelope(
     *, source: str, dataset: str, business_key: str, job_key: str,
-    run_id: str, batch_id: str, payload: dict[str, Any],
+    run_id: str, batch_id: str, payload: dict[str, Any], schema_version: int = 1,
 ) -> Envelope:
     encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     content_hash = hashlib.sha256(encoded.encode()).hexdigest()
-    identity = json.dumps([source, dataset, 1, business_key, content_hash], separators=(",", ":"))
+    identity = json.dumps([source, dataset, schema_version, business_key, content_hash], separators=(",", ":"))
     now = datetime.now(UTC)
     return Envelope(
         event_id=hashlib.sha256(identity.encode()).hexdigest(),
-        source=source, dataset=dataset, business_key=business_key, content_hash=content_hash,
+        source=source, dataset=dataset, schema_version=schema_version,
+        business_key=business_key, content_hash=content_hash,
         job_key=job_key, run_id=run_id, batch_id=batch_id,
         observed_at=now, available_at=now, raw_payload=payload,
     )

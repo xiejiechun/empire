@@ -1,0 +1,19 @@
+{
+  "project_id": "tdx-additional-issues",
+  "error_ids": ["e54819406fd64d5696d8b6b54b7fcf23"],
+  "source_id": "1040982",
+  "code": "302132",
+  "reported_at": "2026-10-01T23:40:12+08:00",
+  "source_error_code": -1005,
+  "status": "program recurrence fixed and packaged; source detail still unavailable",
+  "root_cause": "Incomplete forced-round cursor kept detail_refresh_all=true and repeatedly fetched already verified details; missing details were retried on each manual continuation with fresh random diagnostic IDs",
+  "fix": ["Reuse unchanged SQL details only with matching trusted existing fingerprints not older than forced-round verification cutoff", "Carry verification cutoff across ordinary source-scope replans; new explicit fresh resets it", "Use existing bounded diagnostic metadata for six-hour -1005 retry deferral and stable same-condition error IDs", "Defer incomplete security units before wasting sibling requests; preserve gaps and continuous checkpoint"],
+  "live_evidence": "issue-retry-live-2026-10-02.json",
+  "live": {"source_error_still_minus_1005": true, "repeat_detail_requests": 0, "repeat_new_diagnostic_records": 0, "verified_existing_forced_candidates": 6484, "checkpoint_preserved": true, "reported_error_preserved": true, "pending_queue": 0},
+  "tests": {"targeted_and_isolated_redis_mysql": 105, "additional_replan_and_retry_regressions": 31, "full_gate_passed": 1309, "full_gate_skipped": 2, "skip_reason": "Windows symbolic link privilege unavailable", "post_gate_documentation_and_preparation_regressions": 38},
+  "release": {"gate": "passed", "executable_sha256": "daa4722aeea8dca03e44e3b0d9f84e9fb26120fee1c602ce34147b906b87fb04", "different_cwd": "C:/Windows/Temp", "redis_connected": true, "mysql_connected": true, "desktop_reopened_and_visible": true, "program_config_preserved": true},
+  "documentation": "Offline issue operation/fault topic, coverage association, lifecycle and explicit review updated; external help resource synchronized; concurrent financial scope changes separately reviewed with related regressions",
+  "schema_migration": "not applicable: no business schema, identity or persisted business proof changes",
+  "automation": {"id": "empire", "kind": "heartbeat", "status": "ACTIVE", "interval_hours": 1, "scope": "This thread's Empire collection/archive errors; quiet when unchanged"},
+  "cleanup": "Not performed: e54819406fd64d5696d8b6b54b7fcf23 remains a real unresolved source error; verified preserved, no whole-list deletion"
+}

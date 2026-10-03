@@ -10,10 +10,52 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
-from empire.plugins.datasets.trade_calendar import month_dates
+from empire.core.time import CHINA
+from empire.plugins.datasets.trade_calendar import month_dates, months_between
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get("EMPIRE_INTEGRATION") != "1", reason="Set EMPIRE_INTEGRATION=1 explicitly")]
+
+
+async def test_preparation_uses_recent_noop_proofs_without_writes(calendar_db):
+    manager, query, publish = calendar_db
+    now = datetime.now(CHINA)
+    months = months_between(now.strftime('%Y-%m'), f'{now.year + 1}-12')
+    for month in months:
+        await publish(month, observed=datetime.now(UTC) - timedelta(days=4))
+        await publish(month)
+    store = manager.registry.get('redis.store')
+    archive = manager.registry.get('archive.worker')
+    keys = archive.fingerprints.keys('calendar', query.source)
+    before = (await store.client.hgetall(keys[0]), await store.client.zrange(keys[1], 0, -1, withscores=True))
+    mysql = manager.registry.get('mysql.store')
+    writes = []
+    def capture(conn, cursor, statement, parameters, context, executemany):
+        if statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
+            writes.append(statement)
+    event.listen(mysql.read_engine, 'before_cursor_execute', capture)
+    event.listen(mysql.engine, 'before_cursor_execute', capture)
+    try:
+        checks = {c.criterion: c for c in await query.preparation_check()}
+    finally:
+        event.remove(mysql.read_engine, 'before_cursor_execute', capture)
+        event.remove(mysql.engine, 'before_cursor_execute', capture)
+    assert checks['freshness'].status == checks['temporal'].status == 'pass'
+    assert not writes
+    assert before == (await store.client.hgetall(keys[0]), await store.client.zrange(keys[1], 0, -1, withscores=True))
+    # Expired/missing expiry proofs are ignored without pruning either Redis structure.
+    await store.client.zadd(keys[1], {months[0]: 1})
+    await store.client.zrem(keys[1], months[1])
+    clock, _ = await store.client.time()
+    await store.client.zadd(keys[1], {months[2]: clock + archive.fingerprints.ttl + 100,
+                                    months[3]: clock + .5})
+    expired = await archive.fingerprints.peek('calendar', query.source, months)
+    assert months[0] not in expired and months[1] not in expired
+    assert months[2] not in expired and months[3] not in expired
+    assert await store.client.hexists(keys[0], months[0])
+    assert await store.client.zscore(keys[1], months[0]) == 1
+    checks = {c.criterion: c for c in await query.preparation_check()}
+    assert checks['freshness'].status == checks['temporal'].status == 'unknown'
 
 
 @pytest.fixture
@@ -34,14 +76,20 @@ async def calendar_db():
         await asyncio.sleep(.02)
         ingest, archive = manager.registry.get("ingest.publish"), manager.registry.get("archive.worker")
         mysql, store = manager.registry.get("mysql.store"), manager.registry.get("redis.store")
+        last_observed = datetime.now(UTC)
         async def publish(month="2027-01", *, trading=True, observed=None, flush=True, batch=None, page=1):
+            nonlocal last_observed
             batch = batch or uuid4().hex
             rows = [{"trade_date": day.isoformat(), "is_trade": trading} for day in month_dates(month)]
             value = make_envelope(source=source, dataset="calendar.month", job_key="calendar-test",
                 business_key=f"{batch}:{month}", run_id=batch, batch_id=batch,
                 payload={"month": month, "page": page, "rows": rows})
-            if observed:
-                value = value.model_copy(update={"observed_at": observed})
+            if observed is None:
+                # Sequential valid revisions need distinct modeled versions,
+                # even when Windows returns the same wall-clock tick twice.
+                last_observed = max(datetime.now(UTC), last_observed + timedelta(microseconds=1))
+                observed = last_observed
+            value = value.model_copy(update={"observed_at": observed})
             state = await ingest.checkpoint("calendar-test")
             await ingest.publish_page([value], job_key="calendar-test", expected_revision=state["revision"], cursor={"page": page})
             if flush:
@@ -196,3 +244,13 @@ async def test_calendar_cache_hit_has_zero_mysql_access(calendar_db, monkeypatch
     monkeypatch.setattr(mysql, "archive", forbidden)
     await publish()
     monkeypatch.undo()
+
+
+async def test_calendar_preparation_uses_project_namespace_and_reports_missing_history(calendar_db):
+    manager, query, publish = calendar_db
+    await publish()
+    checks = {c.criterion: c for c in await query.preparation_check()}
+    assert checks['fields'].status == 'pass' and checks['keys'].status == 'pass'
+    assert checks['coverage'].status == 'fail'
+    assert '1990-12' in checks['coverage'].measured
+    assert checks['freshness'].status == 'unknown'

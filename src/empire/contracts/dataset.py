@@ -12,8 +12,11 @@ class DatasetContribution:
     mode: str
     projects: dict[str, str] = field(default_factory=dict)
     stale_outcome: str = "complete"
+    schema_version: int = 1
 
     def __post_init__(self):
+        if type(self.schema_version) is not int or self.schema_version < 1:
+            raise ValueError('数据贡献 schema_version 须为正整数')
         datasets = getattr(self.mapping, "DATASETS", None)
         namespace = getattr(self.mapping, "FINGERPRINT_NAMESPACE", None)
         if (not isinstance(datasets, set) or not datasets

@@ -1,0 +1,20 @@
+{
+  "project_id": "tdx-additional-issues",
+  "error_ids": ["23f518a5e9b64d36ae3ba5659c98db59"],
+  "reported_at": "2026-10-01T00:46:58+08:00",
+  "stage": "plan",
+  "status": "fixed, verified, packaged; exact processed error cleaned",
+  "root_cause": "Old code required manual fresh whenever a validated current list differed from the interrupted cursor's source_hash",
+  "fix": "Use a new batch and reset ordered proof; atomically commit its frontier with a valid unit; preserve old pending messages, SQL business and forced refresh preference; active scope_changed is negative readiness evidence",
+  "targeted_and_isolated_integration_passed": 91,
+  "live_evidence": "issue-plan-23f518a5-live-2026-10-01.json",
+  "live_source_rows": 6535,
+  "bounded_real_query_verified_rows": 2,
+  "live_full_cursor_preserved": true,
+  "pending_queue_scope": "Remaining sample belongs to ths-balance-v1, not an additional-issue validation failure; preserved for its existing task to resume",
+  "schema_migration": "not applicable: no business schema or identity changes",
+  "release": {"gate": "passed", "tests_passed": 1282, "tests_skipped": 2, "skip_reason": "Windows symbolic link privilege unavailable", "executable_sha256": "4cd1ec49336cb0d4aab5e76617422765782d12ec06d690d4c2573d21357901eb", "different_cwd": "C:/Windows/Temp", "redis_connected": true, "mysql_connected": true, "visible_desktop_reopened": true, "program_config_preserved": true},
+  "cleanup": "Removed only 23f518a5e9b64d36ae3ba5659c98db59 (one record); confirmed absent; unresolved source error 580b8db2ab6d413480d817190b16244a retained",
+  "cleanup_evidence": "issue-plan-23f518a5-cleanup-2026-10-01.json",
+  "interrupted_task": {"project_id": "ths-balance", "pending_messages_at_check": 98, "state": "paused checkpoint preserved; unable to click resume while repeated live user input was detected in the window; no force or queue deletion"}
+}

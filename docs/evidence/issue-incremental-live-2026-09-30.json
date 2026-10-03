@@ -1,0 +1,191 @@
+{
+  "errors_before": {
+    "revision": "1",
+    "total": 1,
+    "changed": true,
+    "offset": 0,
+    "limit": 50,
+    "rows": [
+      {
+        "status_code": 200,
+        "error": "增发详情请求失败",
+        "id": "e944de284d044e39b4157b9c5f6d0960",
+        "project_id": "tdx-additional-issues",
+        "created_at": "2026-09-29T19:20:29.288797+00:00",
+        "stage": "source_validation"
+      }
+    ]
+  },
+  "source_count": 6531,
+  "reusable_plans": 8,
+  "scoped_verified": {
+    "codes": [
+      "600962",
+      "601966",
+      "600590"
+    ],
+    "records": 8,
+    "canonical_sha256": "a7863cdde108423e0066caba338bc841bc6945bb0672c2f3f972a592782cae42",
+    "detail_fields": [
+      "first_day_close",
+      "first_day_close_change_percent",
+      "first_day_open",
+      "first_day_open_change_percent",
+      "gross_proceeds",
+      "issue_targets",
+      "lead_underwriter",
+      "offline_shares",
+      "online_allotment_date",
+      "online_shares",
+      "online_winning_percent",
+      "post_issue_eps",
+      "post_issue_net_assets",
+      "pricing_method",
+      "subscription_name",
+      "underwriting_method",
+      "winning_announcement_date"
+    ],
+    "examples": [
+      {
+        "code": "600962",
+        "source_id": "1043936",
+        "detail": {
+          "issue_targets": "购买资产的发行对象为国家开发投资集团有限公司、宁波市新世达壹号管理咨询合伙企业(有限合伙)、国家集成电路产业投资基金二期股份有限公司、广州产投建广股权投资合伙企业(有限合伙)等共计7名交易对方。",
+          "online_shares": null,
+          "first_day_open": null,
+          "gross_proceeds": "6025810352",
+          "offline_shares": null,
+          "post_issue_eps": null,
+          "pricing_method": "购买资产的发行价格不低于定价基准日（2025年07月05日）前120个交易日公司股票交易均价的80%，即10.98元/股。",
+          "first_day_close": null,
+          "lead_underwriter": null,
+          "subscription_name": null,
+          "underwriting_method": null,
+          "online_allotment_date": null,
+          "post_issue_net_assets": null,
+          "online_winning_percent": null,
+          "winning_announcement_date": null,
+          "first_day_open_change_percent": null,
+          "first_day_close_change_percent": null
+        }
+      },
+      {
+        "code": "601966",
+        "source_id": "1033161",
+        "detail": {
+          "issue_targets": "在中国证券登记结算有限责任公司上海分公司开立A股股票账户的境内自然人、法人和证券投资基金以及符合相关法律、法规规定的其他投资者（国家法律、法规、规章和政策禁止者除外）。",
+          "online_shares": "14903000",
+          "first_day_open": "31.28",
+          "gross_proceeds": "1991135580",
+          "offline_shares": "35645659",
+          "post_issue_eps": "1.13",
+          "pricing_method": "发行价格不低于募集说明书刊登日(2020年11月18日）前20个交易日公司股票交易均价，最终确定为31.21元/股。",
+          "first_day_close": "32.65",
+          "lead_underwriter": null,
+          "subscription_name": "玲珑增发",
+          "underwriting_method": "余额包销",
+          "online_allotment_date": "2020-11-20",
+          "post_issue_net_assets": "9.47",
+          "online_winning_percent": "38.49312946",
+          "winning_announcement_date": "2020-11-26",
+          "first_day_open_change_percent": "0.22",
+          "first_day_close_change_percent": "4.61"
+        }
+      },
+      {
+        "code": "600590",
+        "source_id": "1033154",
+        "detail": {
+          "issue_targets": "于股权登记日登记在册的原社会公众股股东及其他在上证所开立股票帐户的机构投资者（法律、法规禁止购买者除外）",
+          "online_shares": "0",
+          "first_day_open": "8.1",
+          "gross_proceeds": "340632022",
+          "offline_shares": "45600003",
+          "post_issue_eps": null,
+          "pricing_method": "询价发行",
+          "first_day_close": "8.53",
+          "lead_underwriter": null,
+          "subscription_name": "泰豪配售",
+          "underwriting_method": "余额包销",
+          "online_allotment_date": "2006-05-31",
+          "post_issue_net_assets": null,
+          "online_winning_percent": null,
+          "winning_announcement_date": null,
+          "first_day_open_change_percent": "8.43",
+          "first_day_close_change_percent": "14.19"
+        }
+      }
+    ]
+  },
+  "scoped_requests": [
+    {
+      "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_xgzx_zf",
+      "params": [
+        "0",
+        "",
+        "1",
+        "1",
+        "10000"
+      ]
+    }
+  ],
+  "cursor": {
+    "revision": 6,
+    "cursor": {}
+  },
+  "errors_after": {
+    "revision": "1",
+    "total": 1,
+    "changed": true,
+    "offset": 0,
+    "limit": 50,
+    "rows": [
+      {
+        "status_code": 200,
+        "error": "增发详情请求失败",
+        "id": "e944de284d044e39b4157b9c5f6d0960",
+        "project_id": "tdx-additional-issues",
+        "created_at": "2026-09-29T19:20:29.288797+00:00",
+        "stage": "source_validation"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "criterion": "fields",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录"
+    },
+    {
+      "criterion": "keys",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录"
+    },
+    {
+      "criterion": "coverage",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录"
+    },
+    {
+      "criterion": "quality",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录"
+    },
+    {
+      "criterion": "freshness",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录"
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "增发详情尚未补齐，请继续采集；接口失败请查看错误记录"
+    }
+  ],
+  "sql": {
+    "records": 6531,
+    "with_details": "8"
+  },
+  "queue": 0,
+  "checked_at": "2026-09-29T19:40:51.777096+00:00"
+}

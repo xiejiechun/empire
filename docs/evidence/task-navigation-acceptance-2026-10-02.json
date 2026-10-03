@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-10-02T04:20:26.546875+08:00",
+  "scope": "采集任务菜单和运行详情UI",
+  "source_sha256": "62ad966db985a57f5397252309e1c567987929335aa42957d9912c4348c2e884",
+  "gate": {
+    "tests": 1348,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2,
+    "passed": 1346
+  },
+  "config_preserved": true,
+  "config_sha256": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+  "different_working_directory": "build",
+  "redis_connected": true,
+  "mysql_connected": true,
+  "desktop": {
+    "visible": true,
+    "sources": 4,
+    "tasks": 10,
+    "observed": [
+      "来源→任务两级菜单",
+      "财报、日历及增发共用四分区",
+      "运行、完成和失败状态",
+      "一级来源操作禁用",
+      "配置标签与保存栏可达",
+      "最终暂无数量统计文案"
+    ],
+    "offscreen_only": [
+      "窄窗口回归",
+      "四档缩放布局"
+    ],
+    "screenshot_file_saved": false
+  },
+  "collector_semantics_changed": false,
+  "schema_changed": false,
+  "unrelated_network": {
+    "project": "tdx-additional-issues",
+    "classification": "代理连接/读取故障",
+    "restore_attempted": true,
+    "last_status": "error",
+    "next_due": "2026-10-02T16:05:34+08:00",
+    "inspected_error_ids": [
+      "c9203b2d554d459cbba0a51ddc39d85b",
+      "4d8ddfe28f504a1fb2539fc3ea8e4f68",
+      "3347e6c6f3c74de2817d687ece603d3e"
+    ],
+    "cleared_error_ids": [],
+    "resolution": "保留断点及错误，未改网络策略或无限重试；此项未解决"
+  },
+  "limitations": [
+    "未重新做全市场数据质量审计",
+    "未执行真实代理压力测试",
+    "用户开始操作桌面后保留其选择，停止输入"
+  ]
+}

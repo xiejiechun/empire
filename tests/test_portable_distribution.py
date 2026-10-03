@@ -1,12 +1,14 @@
 import pytest
 
 from empire.core import config
-from scripts.migrate_user_config import migrate
+from scripts.migrate_program_config import migrate
 
 
-def test_default_config_is_created_once_in_user_data_and_requires_edit(tmp_path, monkeypatch):
+def test_default_config_is_created_once_in_program_directory_and_requires_edit(tmp_path, monkeypatch):
     user = tmp_path / "用户 数据"
-    monkeypatch.setattr(config, "user_data_dir", lambda: user)
+    original_resources = config.resource_root()
+    monkeypatch.setattr(config, "project_root", lambda: user)
+    monkeypatch.setattr(config, "resource_root", lambda: original_resources)
     with pytest.raises(config.ConfigurationRequiredError, match="首次运行配置已创建"):
         config.load_config()
     target = user / "config.toml"
@@ -42,16 +44,60 @@ def test_packaged_resources_use_meipass_not_executable_parents(tmp_path, monkeyp
     monkeypatch.setattr(config.sys, "_MEIPASS", str(resources), raising=False)
     monkeypatch.setattr(config.sys, "executable", str(executable))
     assert config.resource_root() == resources.resolve()
+    assert config.default_config_path() == executable.resolve().parent / 'config.toml'
 
 
 def test_user_config_migration_never_overwrites_different_destination(tmp_path):
     source = tmp_path / "legacy.toml"
     destination = tmp_path / "user" / "config.toml"
-    source.write_text("secret-source", encoding="utf-8")
+    source.write_text("[redis]\npassword='secret-source'\n", encoding="utf-8")
     assert migrate(source, destination) == "migrated"
-    assert source.read_text(encoding="utf-8") == "secret-source"
+    assert source.read_text(encoding="utf-8") == "[redis]\npassword='secret-source'\n"
     assert migrate(source, destination) == "already-current"
     destination.write_text("different", encoding="utf-8")
     with pytest.raises(RuntimeError, match="refusing to overwrite"):
         migrate(source, destination)
     assert destination.read_text(encoding="utf-8") == "different"
+
+
+def test_default_path_ignores_cwd_and_localappdata(tmp_path, monkeypatch):
+    program = tmp_path / 'program'
+    monkeypatch.setattr(config, 'project_root', lambda: program)
+    monkeypatch.setenv('LOCALAPPDATA', str(tmp_path / 'other-user'))
+    monkeypatch.chdir(tmp_path)
+    assert config.default_config_path() == program / 'config.toml'
+
+
+def test_invalid_migration_does_not_create_destination(tmp_path):
+    source, destination = tmp_path / 'old.toml', tmp_path / 'config.toml'
+    source.write_text('not valid toml', encoding='utf-8')
+    with pytest.raises(ValueError):
+        migrate(source, destination)
+    assert not destination.exists()
+
+
+def test_packaged_load_ignores_other_config_locations(tmp_path, monkeypatch):
+    program = tmp_path / '程序 空格'
+    program.mkdir()
+    (program / 'config.toml').write_text("[redis]\nnamespace='empire:program'\n", encoding='utf-8')
+    other = tmp_path / 'other'
+    other.mkdir()
+    (other / 'config.toml').write_text("[redis]\nnamespace='empire:wrong'\n", encoding='utf-8')
+    monkeypatch.setattr(config.sys, 'frozen', True, raising=False)
+    monkeypatch.setattr(config.sys, 'executable', str(program / 'Empire.exe'))
+    monkeypatch.setenv('LOCALAPPDATA', str(other))
+    monkeypatch.chdir(other)
+    assert config.load_config()['redis']['namespace'] == 'empire:program'
+
+
+def test_unwritable_program_config_reports_error_without_fallback(tmp_path, monkeypatch):
+    target = tmp_path / 'config.toml'
+    original = type(target).open
+    def denied(path, *args, **kwargs):
+        if path == target:
+            raise PermissionError('read only')
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(type(target), 'open', denied)
+    with pytest.raises(config.ConfigurationRequiredError, match='程序目录不可写'):
+        config._prepare_config(target)
+    assert not target.exists()

@@ -1,0 +1,15 @@
+{
+  "project_id": "tdx-additional-issues",
+  "error_ids": ["580b8db2ab6d413480d817190b16244a"],
+  "source_id": "1039423",
+  "code": "430047",
+  "reported_at": "2026-09-30T21:17:01+08:00",
+  "reported_source_error": {"ErrorCode": -1005, "ErrorInfo": "数据库执行失败", "hitCache": false},
+  "status": "program failure isolation fixed; source detail remains unavailable",
+  "root_cause": "Source page calls the same rec_id-only endpoint; SQL has aliases 430047/920047 for source_id 1039423; current source still returns -1005",
+  "program_fix": ["Explicit -1005 no longer triggers five-consecutive network/structure failure stop", "An issue ID business failure is reused for aliases within the round", "Error text includes source ErrorCode and data remains incomplete"],
+  "validation": {"targeted_and_isolated_integration_passed": 92, "live_evidence": "issue-error-580b8db2-live-2026-09-30.json", "five_failed_bj_units_then_valid_sh_unit": "passed", "real_query_verified_rows": 2, "pending_queue": 0, "full_cursor_preserved": true},
+  "schema_migration": "not applicable: no schema, identity or fingerprint changes",
+  "release": {"gate": "passed", "tests_passed": 1263, "tests_skipped": 2, "skip_reason": "Windows symbolic link privilege unavailable", "executable_sha256": "fe2918ab0fefd423fdeee1c866f5eadd1b250b28125c458a3a68b8916df61217", "different_cwd": "C:/Windows/Temp", "redis_connected": true, "mysql_connected": true, "desktop_reopened_and_visible": true, "program_config_preserved": true},
+  "cleanup": "not performed: 580b8db2ab6d413480d817190b16244a still describes an unresolved source error; verified retained, no whole-list cleanup"
+}

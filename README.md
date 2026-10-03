@@ -10,7 +10,7 @@ Windows 环境直接连接本机运行或已有的 Redis / MySQL 服务，不使
 
 ## 当前状态
 
-架构已确认；桌面与可靠采集管道已实现，并已接入新浪 A 股股票列表与新浪 7×24 财经新闻。其余金融渠道、选股与回测按后续阶段接入。
+桌面与可靠采集管道已实现，已接入股票列表、财经快讯、交易日历、历史停复牌、分红送转、增发、配股、同花顺三大财报、当前行业以及开盘啦历史分时和竞价。具体来源范围与验证边界见下方说明和实现状态；选股与回测按后续阶段接入。
 
 - [架构设计与实施阶段](docs/architecture.md)
 - [需求基线、默认方案与待确定事项](docs/architecture.md#1-需求基线与设计假设)
@@ -23,10 +23,11 @@ Windows 环境直接连接本机运行或已有的 Redis / MySQL 服务，不使
 - [独立分发与配置路径](docs/portable-distribution-review.md)
 - [文档契约与稳定证据](docs/documentation-governance-review.md)
 - [新浪股票列表：字段、采集与续跑](docs/sina-stock-list.md)
+- [开盘啦分时及竞价：范围、匿名请求与续采](docs/kaipanla-intraday.md)
 
 ## 启动
 
-动态代理采集已接入：在采集任务中按项目开启，在网站频控设置各出口和总上限，代理池页面查看在线设备及直连回退。现有任务默认直连，配置下一轮生效；详见 [动态代理采集](docs/proxy-collection.md)。
+动态代理采集已接入：在采集任务中按项目设置，在网站频控设置各出口和总上限，代理池页面查看在线设备及直连回退。公共策略缺省为代理优先、允许直连回退；用户已保存的选择优先，配置下一轮生效；详见 [动态代理采集](docs/proxy-collection.md)。
 
 当前机器直接双击项目根目录的 `Empire` 快捷方式即可打开，不需要先执行命令。快捷方式启动无控制台窗口的打包程序：
 
@@ -34,7 +35,7 @@ Windows 环境直接连接本机运行或已有的 Redis / MySQL 服务，不使
 dist/Empire/Empire.exe
 ```
 
-`dist/Empire` 是完整可搬移程序目录，可整体复制到带中文或空格的普通目录后直接双击其中的 `Empire.exe`。本机配置和密码不随程序复制，统一保存在 `%LOCALAPPDATA%\Empire\config.toml`；首次运行会生成空白模板并提示填写，不会自动连接或修改数据库。
+`dist/Empire` 是完整可搬移程序目录，可整体复制到带中文或空格的可写目录后直接双击其中的 `Empire.exe`。配置固定为 EXE 同目录的 `config.toml`；源码运行使用项目根目录。首次缺配置会生成空白模板并提示填写，不会自动连接或修改数据库。复制带配置的目录会同时复制密码，请勿把真实配置对外分发；打包重建会保留已有本机配置。
 
 开发时也可在项目目录执行：
 
@@ -68,7 +69,7 @@ dist/Empire/Empire.exe
 
 项目统一代码采用 `000001.SZ`、`600519.SH`、`920000.BJ` 格式，原始六位代码保持字符串类型。
 
-本地密码位于 `%LOCALAPPDATA%\Empire\config.toml`；可以用 `EMPIRE_MYSQL_PASSWORD` 和 `EMPIRE_REDIS_PASSWORD` 环境变量覆盖。日志、单实例锁和插件启停偏好也位于 `%LOCALAPPDATA%\Empire\`，采集断点位于 Redis。旧版 `config/local.toml` 只通过 `python scripts/migrate_user_config.py` 一次性迁入，不作为运行时兼容路径。任务与网站频控配置保存到 MySQL，电脑重启后仍保留。当前版本数据库升级须正常退出后显式运行 `python scripts/migrate_collection_state.py`，详见 [统一状态维护](sql/changes/2026-09-26-collection-state.md)。
+本地密码位于程序目录 `config.toml`；可以用 `EMPIRE_MYSQL_PASSWORD` 和 `EMPIRE_REDIS_PASSWORD` 环境变量覆盖。日志、单实例锁和插件启停偏好仍位于 `%LOCALAPPDATA%\Empire\`，采集断点位于 Redis。旧用户配置或旧版 `config/local.toml` 通过 `python scripts/migrate_program_config.py --source <旧文件> --destination <目标config.toml>` 显式复制，拒绝覆盖不同目标，不作为运行时兼容路径。任务与网站频控配置保存到 MySQL，电脑重启后仍保留。当前版本数据库升级须正常退出后显式运行 `python scripts/migrate_collection_state.py`，详见 [统一状态维护](sql/changes/2026-09-26-collection-state.md)。
 
 ## 新环境准备
 
@@ -76,8 +77,7 @@ dist/Empire/Empire.exe
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements.lock
 .\.venv\Scripts\python.exe -m pip install --no-deps -e .
-New-Item -ItemType Directory -Force "$env:LOCALAPPDATA\Empire"
-Copy-Item config/app.example.toml "$env:LOCALAPPDATA\Empire\config.toml"
+Copy-Item config/app.example.toml config.toml # 仅首次源码配置；已有文件不要覆盖
 ```
 
 编辑本地连接配置后，执行只读检查与首次建表：
@@ -87,9 +87,11 @@ Copy-Item config/app.example.toml "$env:LOCALAPPDATA\Empire\config.toml"
 .\.venv\Scripts\python.exe -X utf8 -m empire init-db
 ```
 
-`init-db` 仅在目标数据库创建缺失的 `stock`、`finance_news`、`trade_calendar` 业务表、`collection_state` 统一已归档状态表和 `app_setting` 配置表；应用启动不自动改表。已有安装通过显式维护入口升级。
+`init-db` 在目标数据库按 `sql/schema.sql` 创建缺失的正式表，包含股票、新闻、日历、停复牌、增发送配、三大财报，以及 `collection_state` 统一状态表和 `app_setting` 配置表；应用启动不自动改表。已有表的结构升级通过对应显式维护入口执行。
 
 ## 开发入口
+
+每次任务先按 [开发、排错与交付流程](docs/development-workflow.md) 确认范围、共享工作区、反例和验收证据。该文档包含任务记录模板，并区分现有门禁和待建工具，不新增用户逐步审批。
 
 新增或修改采集功能先阅读 [项目协作约定](AGENTS.md) 和 [新增采集功能开发指南](docs/collector-development-guide.md)。指南集中说明插件登记、公共下载/入队/归档路径、业务专项测试和交付核对清单；不要求复制既有采集器或新增通用框架。
 
@@ -111,9 +113,9 @@ Remove-Item Env:EMPIRE_INTEGRATION
 
 集成测试使用独立命名空间和随机事件身份，只清理本次测试的数据。不会清空 Redis 或业务表。
 
-存储说明位于桌面“说明文档”，涵盖 Redis 键、MySQL `stock` / `finance_news` / `trade_calendar` 表字段和配置参数，可离线搜索。运行记录页面分为采集、归档、错误三个标签：每个项目分别保留最近 100、100、300 条，仅存 Redis，不归档。
+存储说明位于桌面“说明文档”，涵盖 Redis 键、MySQL `stock` / `finance_news` / `trade_calendar` / `suspension_event` 表字段和配置参数，可离线搜索。运行记录页面分为采集、归档、错误三个标签：每个项目分别保留最近 100、100、300 条，仅存 Redis，不归档。
 
-MySQL 使用 stock 保留当前股票列表、collection_state 保留每项目一条已归档状态、finance_news 保留历史新闻、trade_calendar 保留交易与休市日期；不保存每日完整股票快照或成功 HTTP 原文。规范化业务数据进入 Redis 后立即唤醒统一归档器，60 秒周期扫描作为恢复兜底；事务提交、确认已有相同内容（含可信摘要命中）或确认消息过时后，均删除对应队列消息。失败保留重试。统一 SHA-256 摘要默认每数据集/来源最多 10000 条、7 天过期，可信缓存命中完全不访问 MySQL，缓存缺失自动回 SQL 核对，详见 [统一归档去重](docs/archive-deduplication.md)。错误原文样本只留 Redis，每条最多 64 KiB，并保存脱敏、截断和摘要信息。
+MySQL 使用 stock 保留当前股票列表、collection_state 保留每项目一条已归档状态、finance_news 保留历史新闻、trade_calendar 保留交易与休市日期、suspension_event 保留沪深 A 股停复牌事件；不保存每日完整股票快照或成功 HTTP 原文。规范化业务数据进入 Redis 后立即唤醒统一归档器，60 秒周期扫描作为恢复兜底；事务提交、确认已有相同内容（含可信摘要命中）或确认消息过时后，均删除对应队列消息。失败保留重试。统一 SHA-256 摘要默认每数据集/来源最多 10000 条、7 天过期，可信缓存命中完全不访问 MySQL，缓存缺失自动回 SQL 核对，详见 [统一归档去重](docs/archive-deduplication.md)。错误原文样本只留 Redis，每条最多 64 KiB，并保存脱敏、截断和摘要信息。
 
 错误应先修复并验证，再选中具体记录清除。清除使用精确记录 ID，不影响操作期间新产生的错误；查看页面和后续采集成功都不会自动清理。
 
@@ -124,3 +126,17 @@ MySQL 使用 stock 保留当前股票列表、collection_state 保留每项目�
 [巨潮 A 股交易日历](docs/cninfo-calendar.md) 首次补齐 1990-12-19 至下一年年底，之后维护本月至下一年 12 月，并补齐历史缺月。在“交易日历”按月查看交易、休市及未采集日期，在“采集任务”设置更新计划。命令行入口为 `python -m empire collect-calendar`。
 
 后台按多项目规模组织：数据目录按分类/来源检索，任务列表和采集记录分页，详情独立展示，业务页面按需创建；见 [可扩展工作区](docs/scalable-workspace.md)。
+
+通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。显式维护入口为 `scripts/migrate_capital_actions.py`，应用启动不改表。生命周期、来源口径与操作见 [通达信增发送配](docs/tdx-capital-actions.md)。
+
+## 已接入数据与说明（2026-10-01）
+
+“数据浏览 → 数据目录”可查询股票列表、财经快讯、交易日历、历史停复牌、分红送转、增发、配股及利润表、资产负债表、现金流量表。按名称、分类、来源或表名搜索，选择记录查看明细；各采集项目在“采集管理 → 采集任务”独立设置计划。
+
+“数据准备”检查每份数据的声明范围、缺口与用途；目录里的规划项不代表已开发，采集完成也不代表质量和历史信号用途全部通过。增发送配显示成功入队、核验证券、失败和连续进度，成功入队不等于全部归档，有缺口不能显示完成。
+
+程序内“说明文档”已按入门、日常操作、数据说明、故障处理、技术参考整理，支持离线全文搜索；增发送配和三大财报有独立说明主题。详细来源规则见 [通达信增发送配](docs/tdx-capital-actions.md)、[增发详情](docs/tdx-issue-details.md)、[同花顺三大报表](docs/ths-financial-statements.md) 和 [数据准备](docs/data-preparation.md)。财报金额含来源舍入，缺值及合计矛盾在来源质量中标记；无公告日期，不宣称历史公告前选股可用。实采范围以各项目证据和当前查询为准。
+
+说明文档支持跨分类搜索、本页章节跳转和相关主题导航。开发维护与自动覆盖门禁见 [说明文档维护](docs/documentation-maintenance.md)。
+
+当前行业：已接入同花顺 thshy 行业名单与成分股票，每行业以 size/1000 单次获取完整响应，只保留最新集合，不记录变化历史；从数据目录浏览，并在数据准备独立验收。详见 [同花顺当前行业](docs/ths-industries.md)。

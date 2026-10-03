@@ -1,0 +1,25 @@
+{
+  "verified_at_utc": "2026-09-28T14:41:43Z",
+  "gate": "verify-release.ps1",
+  "tests_passed": 935,
+  "tests_skipped": 2,
+  "skipped_reason": "Windows symbolic-link privilege unavailable for two download-storage tests.",
+  "executable_sha256": "6b97a2e5c775ef548e6fe23f9d0ce44f5b43b70b414b7fecb74faf86e401180b",
+  "source_sha256": "c720a351c7b92741c825f9e579a0702f17f264dfb41276c891f30635b23c1b2e",
+  "portable_distribution": {
+    "chinese_space_path": true,
+    "packaged_smoke": true,
+    "first_run_prepared_config": true,
+    "config_recheck": true
+  },
+  "requirements": {
+    "single_source_sufficient": true,
+    "optional_fields_explicit": true,
+    "coverage_limited_to_declared_scope": true,
+    "complete_revision_history_not_generic_requirement": true,
+    "signal_availability_dates_retained": true,
+    "in_scope_gaps_still_fail": true
+  },
+  "regression": "Single source can pass; another source failure does not block it; in-scope missing pages still fail. UI displays required and optional information.",
+  "scope": "Requirement catalogue, UI wording and development guidance only. No new collector, schema or production data changes. Layout verification was offscreen at four scale factors and two window sizes. No claim of historical suspension coverage acceptance."
+}

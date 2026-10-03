@@ -29,7 +29,7 @@
 .venv\Scripts\python.exe scripts\migrate_download_settings.py --apply
 ```
 
-当时的旧版 `config/local.toml` 已核实没有旧 `[http]` 资源数值，因此不需要在生产执行这项维护；当前正式配置位置已迁至 `%LOCALAPPDATA%\Empire\config.toml`。不输出连接密码，不清空共享 Redis，不删除业务数据、下载文件或生产错误记录。本轮问题来自功能要求及测试，不按生产错误 ID 清理记录。
+当时的旧版 `config/local.toml` 已核实没有旧 `[http]` 资源数值，因此不需要在生产执行这项维护；当前正式配置位置已迁至 `程序目录/config.toml`。不输出连接密码，不清空共享 Redis，不删除业务数据、下载文件或生产错误记录。本轮问题来自功能要求及测试，不按生产错误 ID 清理记录。
 
 ## 最终执行结果
 

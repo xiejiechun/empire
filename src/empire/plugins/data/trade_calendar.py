@@ -1,6 +1,7 @@
 from sqlalchemy import text
 
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.preparation import PreparationContribution
 from empire.plugins.datasets.trade_calendar import (
     FIRST_DATE,
     month_dates,
@@ -10,15 +11,25 @@ from empire.plugins.datasets.trade_calendar import (
 
 
 class CalendarDataPlugin:
+    preparation = (PreparationContribution(
+        "calendar", "calendar.query", "巨潮资讯", "cninfo-calendar", "cninfo-calendar-v1", "calendar.month",
+        "collector.cninfo_calendar", ("tests/test_cninfo_calendar.py", "tests/test_calendar_preparation.py"),
+        ("tests/integration/test_calendar_archive.py",)),)
+
     manifest = PluginManifest("data.trade_calendar", "A 股交易日历查询",
         requires=("mysql.store",), provides=("calendar.query", "calendar.schema"),
         description="按月查看交易/休市日期，检查历史完整性与归档进度")
 
-    def __init__(self, source="cninfo", job_key="cninfo-calendar-v1", project_id="cninfo-calendar"):
+    def __init__(self, source="cninfo", job_key="cninfo-calendar-v1", project_id="cninfo-calendar",
+                 namespace="empire", archive_settings=None):
         self.source, self.job_key, self.project_id = source, job_key, project_id
         self.mysql = None
+        self.namespace = namespace
+        self.context = None
+        self.archive_settings = dict(archive_settings or {})
 
     async def start(self, context):
+        self.context = context
         self.mysql = context.get("mysql.store")
         await self.mysql.require_schema({"trade_calendar": {
             "source", "trade_date", "is_trade", "updated_at",
@@ -59,8 +70,13 @@ class CalendarDataPlugin:
                      "updated_at": row["updated_at"].isoformat()} for row in data]
         return {"month": month, "rows": rows, "expected_count": len(dates), "complete": len(rows) == len(dates)}
 
+    async def preparation_check(self):
+        from empire.plugins.data.calendar_preparation import check_calendar
+        return await check_calendar(self)
+
     async def stop(self):
         self.mysql = None
+        self.context = None
 
     def health(self):
         return {"status": "ok" if self.mysql else "stopped"}

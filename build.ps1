@@ -31,6 +31,10 @@ try {
     if ($LASTEXITCODE -ne 0 -or $actualPyInstaller -ne $requiredPyInstaller) {
         throw "Release build requires PyInstaller $requiredPyInstaller; found $actualPyInstaller. Install requirements.lock."
     }
+    & $python (Join-Path $projectRoot 'scripts\preparation_evidence.py') package
+    if ($LASTEXITCODE -ne 0) { throw 'Preparation package evidence failed.' }
+    & $python (Join-Path $projectRoot 'scripts\verify_documentation.py')
+    if ($LASTEXITCODE -ne 0) { throw 'Documentation verification failed.' }
     & $python -m pip check
     if ($LASTEXITCODE -ne 0) { throw 'Installed dependencies are inconsistent.' }
 
@@ -68,11 +72,21 @@ try {
     $env:PATH = (Join-Path $projectRoot '.venv\Scripts') + ';' + $basePython + ';' +
         $env:SystemRoot + '\System32;' + $env:SystemRoot + ';' +
         $env:SystemRoot + '\System32\Wbem'
+    $localConfig = Join-Path $projectRoot 'dist\Empire\config.toml'
+    $savedConfig = if (Test-Path -LiteralPath $localConfig) { [IO.File]::ReadAllBytes($localConfig) } else { $null }
+    try {
     & $python -m PyInstaller --noconfirm --clean `
         --distpath (Join-Path $projectRoot 'dist') `
         --workpath (Join-Path $projectRoot 'build') `
         (Join-Path $projectRoot 'Empire.spec')
     if ($LASTEXITCODE -ne 0) { throw 'Build failed.' }
+    } finally {
+        # PyInstaller recreates the bundle. Preserve the user's configuration even on failure.
+        if ($null -ne $savedConfig) {
+            New-Item -ItemType Directory -Path (Split-Path $localConfig) -Force | Out-Null
+            [IO.File]::WriteAllBytes($localConfig, [byte[]]$savedConfig)
+        }
+    }
 
     $shell = New-Object -ComObject WScript.Shell
     $shortcut = $shell.CreateShortcut($shortcutPath)
