@@ -14,9 +14,6 @@ JOB = PROJECT + '-v1'
 DATASETS = {'intraday.day'}
 FINGERPRINT_NAMESPACE = 'kaipanla_intraday_v1'
 FINGERPRINT_VERSION = ArchiveVersion(('utc',), observed_index=0)
-TABLES = {'stock_intraday': {'unified_code', 'trade_date', 'payload',
-                            'content_hash', 'version_observed_at'}}
-KEYS = {'stock_intraday': ['unified_code', 'trade_date']}
 FIELDS = {'code', 'trade_date', 'preclose_px', 'trend', 'auction', 'source_times', 'market', 'lifecycle',
           'source_codes', 'aliases'}
 

@@ -6,7 +6,7 @@ FIXED_SOURCES = MappingProxyType({
     'industry': 'ths', 'industry_member': 'ths',
     'income_statement': 'ths', 'balance_statement': 'ths', 'cashflow_statement': 'ths',
     'dividend_plan': 'tdx', 'additional_issue': 'tdx', 'rights_issue': 'tdx',
-    'suspension_event': 'tdx', 'stock_intraday': 'kaipanla', 'stock_market_day': 'kaipanla', 'trade_calendar': 'cninfo',
+    'suspension_event': 'tdx', 'stock_market_day': 'kaipanla', 'trade_calendar': 'cninfo',
 })
 TABLES = tuple(FIXED_SOURCES) + ('finance_news', 'collection_state', 'app_setting')
 
@@ -18,7 +18,7 @@ DATASET_TABLES = {
     'income.statement': 'income_statement', 'balance.statement': 'balance_statement',
     'cashflow.statement': 'cashflow_statement', 'dividends.unit': 'dividend_plan',
     'additional_issues.unit': 'additional_issue', 'rights_issues.unit': 'rights_issue',
-    'intraday.day': 'stock_intraday', 'calendar.month': 'trade_calendar',
+    'calendar.month': 'trade_calendar',
     'suspensions.period': 'suspension_event',
 }
 
@@ -31,7 +31,6 @@ PRIMARY_KEYS = {
     **{t: ['record_key'] for t in ('dividend_plan', 'additional_issue', 'rights_issue')},
     **{t: ['unified_code', 'report_date'] for t in
        ('income_statement', 'balance_statement', 'cashflow_statement')},
-    'stock_intraday': ['unified_code', 'trade_date'],
     'stock_market_day': ['kind', 'unified_code', 'trade_date'],
 }
 

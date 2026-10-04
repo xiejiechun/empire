@@ -9,7 +9,8 @@ from sqlalchemy import inspect, text
 from empire.contracts.business_schema import FIXED_SOURCES
 
 ROOT = Path(__file__).resolve().parents[1]
-OLD = tuple(t for t in FIXED_SOURCES if t != 'stock_market_day') + ('finance_news', 'collection_state', 'app_setting')
+LEGACY_SOURCES = {**{t: s for t, s in FIXED_SOURCES.items() if t != 'stock_market_day'}, 'stock_intraday': 'kaipanla'}
+OLD = tuple(LEGACY_SOURCES) + ('finance_news', 'collection_state', 'app_setting')
 NEW = OLD + ('suspension_source_date',)
 PREFIX = 'empire_v2_'
 BACKUP = 'empire_v1_'
@@ -17,6 +18,7 @@ BACKUP = 'empire_v1_'
 
 def definitions():
     body = (ROOT / 'sql/schema.sql').read_text(encoding='utf-8')
+    body += '\n' + (ROOT / 'sql/legacy/intraday-v2.sql').read_text(encoding='utf-8')
     return {
         m.group(1): m.group(0) for m in re.finditer(
             r'CREATE TABLE IF NOT EXISTS (\w+) \(.*?\) ENGINE=.*?;', body, re.S)}
@@ -91,9 +93,7 @@ def validate_old(engine):
         for count in publications:
             if count is None or int(count) != stock_count:
                 raise ValueError('股票业务数量与已发布状态不一致，先修复数据再迁移')
-        for table, source in FIXED_SOURCES.items():
-            if table == 'stock_market_day':
-                continue  # Later independent-product migration, absent in the v1 contract.
+        for table, source in LEGACY_SOURCES.items():
             columns = {c['name'] for c in inspect(conn).get_columns(table)}
             if 'source' not in columns:
                 raise ValueError(f'{table} 不是待迁移旧结构')

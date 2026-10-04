@@ -54,12 +54,12 @@
 
 行业业务表：`industry` 保存最新目录，`industry_member` 保存最新成分；统一状态仍为 `collection_state`。新增结构使用 `scripts/migrate_business_schema.py` 显式维护，既有业务不删除，无历史变化记录。
 
-开盘啦七项使用 `stock_market_day`，按 `(kind, unified_code, trade_date)` 保存各项独立证券日；旧 `stock_intraday` 经显式拆分后为空，不作为运行时业务路径。成功原文不保存。旧版完整库通过 `scripts/migrate_business_schema.py migrate` 显式转换，启动不建表。维护前正常关闭 Empire，待归档业务经正式链路排空，前后核对规范内容；旧表保留为恢复副本。现行清单共十七张表，包含一张空的历史迁移表；各项业务仍共用 collection_state 与 app_setting。
+开盘啦七项使用 `stock_market_day`，按 `(kind, unified_code, trade_date)` 保存各项独立证券日；旧 `stock_intraday` 经显式拆分核验后删除。成功原文不保存。旧版完整库通过 `scripts/migrate_business_schema.py migrate` 显式转换，启动不建表。维护前正常关闭 Empire，待归档业务经正式链路排空，前后核对规范内容；旧表保留为恢复副本。现行清单共十六张表；各项业务仍共用 collection_state 与 app_setting。
 
 ## 2026-10 业务结构升级
 
 `suspension_source_date` 保存事件出现的来源日期关系；`suspension_event.source_dates_known` 表达未知与已知。固定来源业务表不再重复保存 source，证券键统一为 unified_code；新闻和项目状态仍保存 source。升级前关闭程序，用 scripts/migrate_business_schema.py 的 migrate / verify 显式转换并核对，正常启动不改表。旧单表新增脚本已退役，新空库使用 init-db。迁移失败保持停机并用同一日志 resume；恢复业务写入后不直接回滚旧副本。
 
-现行完整表清单：`stock`、`industry`、`industry_member`、`income_statement`、`balance_statement`、`cashflow_statement`、`dividend_plan`、`additional_issue`、`rights_issue`、`suspension_event`、`stock_intraday`、`trade_calendar`、`finance_news`、`collection_state`、`app_setting`、`suspension_source_date`、`stock_market_day`。
+现行完整表清单：`stock`、`industry`、`industry_member`、`income_statement`、`balance_statement`、`cashflow_statement`、`dividend_plan`、`additional_issue`、`rights_issue`、`suspension_event`、`trade_calendar`、`finance_news`、`collection_state`、`app_setting`、`suspension_source_date`、`stock_market_day`。
 
-新增证券日业务表 `stock_market_day`：七个开盘啦项目独立归档，共享类型、证券及日期主键。旧 `stock_intraday` 只作为显式迁移来源，转换后为空。新任务默认停用，不自动下载历史。
+新增证券日业务表 `stock_market_day`：七个开盘啦项目独立归档，共享类型、证券及日期主键。旧 `stock_intraday` 只作为显式迁移来源，核验转换后删除。新任务默认停用，不自动下载历史。

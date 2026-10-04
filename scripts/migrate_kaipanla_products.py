@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from sqlalchemy import text
+from sqlalchemy import inspect, text
 
 from empire.core.config import load_config
 from empire.core.redaction import Redactor
@@ -34,7 +34,11 @@ def split(row):
 
 
 def migrate(engine, namespace, *, apply=False):
-    report = {'old_rows': 0, 'verified_products': 0, 'applied': apply}
+    report = {'old_rows': 0, 'verified_products': 0, 'applied': apply, 'old_table_dropped': False}
+    with engine.connect() as conn:
+        if not inspect(conn).has_table('stock_intraday'):
+            report['old_table_absent'] = True
+            return report
     if not apply:
         with engine.connect() as conn:
             records = conn.execute(text('SELECT unified_code,trade_date,payload,content_hash FROM stock_intraday '
@@ -101,6 +105,15 @@ def migrate(engine, namespace, *, apply=False):
             if not exists:
                 settings.save_in_transaction(conn, 'task', project(kind), dict(enabled=False, mode='manual',
                     interval_seconds=86400, daily_time='18:00', request_retries=2, use_proxy=True, proxy_fallback=True))
+    # DDL commits implicitly in MySQL. Recheck after all conversion transactions;
+    # never drop a table containing unconverted business data.
+    with engine.connect() as conn:
+        if conn.execute(text('SELECT 1 FROM stock_intraday LIMIT 1')).first():
+            raise ValueError('旧表仍有业务数据，拒绝删除')
+        conn.exec_driver_sql('DROP TABLE stock_intraday')
+        if inspect(conn).has_table('stock_intraday'):
+            raise ValueError('旧表删除验证失败')
+        report['old_table_dropped'] = True
     return report
 
 

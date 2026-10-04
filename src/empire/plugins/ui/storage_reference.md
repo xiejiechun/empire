@@ -619,7 +619,7 @@ Empire 是运行在本机 Windows 上的单体桌面应用。界面、计划调�
 | 存储 | 保存内容 | 持久性 |
 | --- | --- | --- |
 | Redis | 待归档消息、断点、next_due、许可与冷却、内容摘要、运行及错误记录 | 纯内存；Redis 或电脑重启后丢失 |
-| MySQL | `stock`、`finance_news`、`trade_calendar`、`suspension_event`、`dividend_plan`、`additional_issue`、`rights_issue`、`income_statement`、`balance_statement`、`cashflow_statement`、`industry`、`industry_member`、`stock_intraday`、`collection_state`、`app_setting` | 保存业务数据、每项目一条已归档状态及任务/网站/下载资源配置 |
+| MySQL | `stock`、`finance_news`、`trade_calendar`、`suspension_event`、`dividend_plan`、`additional_issue`、`rights_issue`、`income_statement`、`balance_statement`、`cashflow_statement`、`industry`、`industry_member`、`collection_state`、`app_setting` | 保存业务数据、每项目一条已归档状态及任务/网站/下载资源配置 |
 
 正确业务数据先进入 Redis，归档器确认 MySQL 事务提交、内容已经相同或消息已经过时后，才确认并删除对应队列消息。SQL 出错时消息保留重试。内容摘要只是有期限的加速缓存；缺失时回到 MySQL 比较，不能作为永久真相。
 
@@ -753,7 +753,7 @@ MySQL 保存值优先；没有保存值的新任务默认手动，新网站组�
 
 ## 字段与规则
 
-**MySQL 保存每项目一条 collection_state 已归档状态和十三张业务表：`stock` 保留一份当前股票列表，`finance_news` 保留去重后的历史财经新闻，`trade_calendar` 保存交易和休市日期，`suspension_event` 保存沪深 A 股历史停复牌。另有 `dividend_plan`、`additional_issue`、`rights_issue` 保存增发送配，`income_statement`、`balance_statement`、`cashflow_statement` 保存三大财报，`industry`、`industry_member` 保存当前行业，`stock_intraday` 保存分时及竞价。成功 HTTP 请求原文不持久保存。**
+**MySQL 保存每项目一条 collection_state 已归档状态和十四张业务表：`stock` 保留一份当前股票列表，`finance_news` 保留去重后的历史财经新闻，`trade_calendar` 保存交易和休市日期，`suspension_event` 保存沪深 A 股历史停复牌。另有 `dividend_plan`、`additional_issue`、`rights_issue` 保存增发送配，`income_statement`、`balance_statement`、`cashflow_statement` 保存三大财报，`industry`、`industry_member` 保存当前行业，`stock_market_day` 保存七项独立行情证券日。成功 HTTP 请求原文不持久保存。**
 
 有效响应解析、校验和规范化后，业务消息先进入 Redis 并立即唤醒归档器；归档器每 60 秒恢复扫描可归档批次。新数据提交 MySQL 后、确认 MySQL 已有相同内容后（含可信摘要命中）、或确认消息过时后，均确认并删除对应 Redis 消息。SQL 或后续 Redis 操作失败时保留消息重试；不完整批次继续留在 Redis，旧股票列表仍可查询。
 
@@ -1228,7 +1228,7 @@ MySQL 升级入口 scripts/migrate_business_schema.py 提供 preflight、migrate
 | content_hash | 规范业务 SHA-256；包含生命周期，排除 metadata 和本次观测时间 |
 | version_observed_at | 当前存储版本的下载观测代次；北京时间 DATETIME(6)，相同内容不刷新 |
 
-显式迁移入口 `scripts/migrate_kaipanla_products.py`，默认只核查，`--apply` 才转换。必须正常关闭 Empire 并排空待归档；每个旧 stock_intraday 证券日拆成 trend 和 auction，在事务内精确读回两条数据、摘要及版本后移除旧行。旧完成状态和计划不继承，七项初始化为停用手动计划；旧表为空，作为旧结构显式维护入口的历史表保留，不是运行时业务路径。程序启动不迁移或建表。命令行 `collect-intraday --kind <kind>` 执行独立项目，须先在任务配置启用。
+显式迁移入口 `scripts/migrate_kaipanla_products.py`，默认只核查，`--apply` 才转换。必须正常关闭 Empire 并排空待归档；每个旧 stock_intraday 证券日拆成 trend 和 auction，在事务内精确读回两条数据、摘要及版本后移除旧行。旧完成状态和计划不继承，七项初始化为停用手动计划；验证转换完成后删除旧表；正式建表不再创建旧表。程序启动不迁移或建表。命令行 `collect-intraday --kind <kind>` 执行独立项目，须先在任务配置启用。
 
 容量实验 `scripts/measure_kaipanla_day.py` 是临时测量入口，十个接口、gzip 文件与正式七项 MySQL 存储范围不同，不能直接把原文容量当 MySQL容量；实验结束删除正文，保留摘要报告。
 

@@ -254,7 +254,7 @@ collector.ths_industries 复用共享 HTTP、代理与频控，本地固定版�
 
 ## 开盘啦分时与竞价
 
-原 collector.kaipanla_intraday 合并任务已于 2026-10-05 退役；七个 collector.kaipanla_<kind> 分别校验和原子入队本项完整证券日。上市元数据、正式日历及明确有界全天停牌只确定请求范围；源站错误不会变成空日。七个数据集 kaipanla.<kind>.day@1 以 kind/unified_code/trade_date 保存 stock_market_day，每项独立有序数组保留同分钟或同秒多点。七个 data.kaipanla_<kind> 负责本项 SQL 查询与范围验收，ui.kaipanla_<kind> 按需创建目录页面；旧 stock_intraday 仅为显式迁移来源，转换后为空。
+原 collector.kaipanla_intraday 合并任务已于 2026-10-05 退役；七个 collector.kaipanla_<kind> 分别校验和原子入队本项完整证券日。上市元数据、正式日历及明确有界全天停牌只确定请求范围；源站错误不会变成空日。七个数据集 kaipanla.<kind>.day@1 以 kind/unified_code/trade_date 保存 stock_market_day，每项独立有序数组保留同分钟或同秒多点。七个 data.kaipanla_<kind> 负责本项 SQL 查询与范围验收，ui.kaipanla_<kind> 按需创建目录页面；旧 stock_intraday 仅为显式迁移来源，验证转换后删除。
 
 独立容量实验 `scripts/measure_kaipanla_day.py` 只启动HTTP基础设施依赖和只读分时查询，通过正式代理/频控与文件契约将已核实接口内容写入专属临时目录。历史回放去除来源百分号/zlib编码后按完整数组测量，与gzip和实际文件分配空间分别报告；实验结束核实目录所有权并删除正文。它不贡献新数据集、业务表、正式入队或归档路径；范围限制及失败保留在容量报告中，未来正式接入另走插件准入。详见[容量实验](kaipanla-storage-measurement.md)。
 

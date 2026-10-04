@@ -99,13 +99,16 @@ async def test_explicit_split_preserves_both_arrays_and_disables_new_tasks():
     try:
         with engine.begin() as conn:
             import json
+            from pathlib import Path
+            conn.exec_driver_sql(Path('sql/legacy/intraday-v2.sql').read_text('utf-8'))
             conn.execute(text('INSERT INTO stock_intraday VALUES(:code,:day,:payload,:hash,:observed)'),
                 dict(code='000001.SZ', day='2021-01-04', payload=json.dumps(value),
                      hash=digest(value), observed=datetime.now()))
         assert migrate(engine, cfg['redis']['namespace'])['old_rows'] == 1
         assert migrate(engine, cfg['redis']['namespace'], apply=True)['verified_products'] == 2
         with engine.connect() as conn:
-            assert conn.execute(text('SELECT COUNT(*) FROM stock_intraday')).scalar_one() == 0
+            from sqlalchemy import inspect
+            assert not inspect(conn).has_table('stock_intraday')
             assert conn.execute(text('SELECT COUNT(*) FROM stock_market_day')).scalar_one() == 2
             assert conn.execute(text("SELECT COUNT(*) FROM app_setting WHERE kind='task' AND JSON_EXTRACT(payload,'$.enabled')=false")).scalar_one() == 7
         assert migrate(engine, cfg['redis']['namespace'], apply=True)['old_rows'] == 0
