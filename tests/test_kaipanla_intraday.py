@@ -8,7 +8,7 @@ import httpx
 import pytest
 
 from empire.contracts.download import ResponsePolicy
-from empire.plugins.collectors.kaipanla_intraday import KaipanlaIntradayCollector
+from empire.plugins.collectors.kaipanla_products import KaipanlaProductCollector
 from empire.plugins.collectors.kaipanla_scope import lifecycle, parse_listing_page, required_days
 from empire.plugins.datasets.intraday import validate
 from empire.plugins.infra.http import HttpService
@@ -53,7 +53,7 @@ class Publisher:
 
 
 def collector(days=None):
-    c = KaipanlaIntradayCollector()
+    c = KaipanlaProductCollector('trend')
     days = days or [date(2021, 1, 4), date(2021, 1, 5)]
     c.ingest = Publisher()
     c.query = SimpleNamespace(plan=AsyncMock(return_value=([STOCK], days)),
@@ -112,12 +112,12 @@ async def test_two_days_queued_before_archive_confirmation():
     c = collector()
     async def confirm(*args):
         assert len(c.ingest.published) == 2
-        assert c.http.request.await_count == 5  # One lifecycle page + each response once.
+        assert c.http.request.await_count == 3  # One lifecycle page + one necessary response per day.
         return {'status': 'complete'}
     c.confirmation.page_status.side_effect = confirm
     result = await c.execute()
     assert result['phase'] == 'complete' and result['index'] == 2
-    assert len(c.ingest.published[0].raw_payload['rows'][0]['auction']) == 5
+    assert len(c.ingest.published[0].raw_payload['rows'][0]['data']['trend']) == 241
     assert 'DeviceID' not in str(c.ingest.state)
 
 

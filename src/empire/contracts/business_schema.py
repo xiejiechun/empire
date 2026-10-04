@@ -6,11 +6,13 @@ FIXED_SOURCES = MappingProxyType({
     'industry': 'ths', 'industry_member': 'ths',
     'income_statement': 'ths', 'balance_statement': 'ths', 'cashflow_statement': 'ths',
     'dividend_plan': 'tdx', 'additional_issue': 'tdx', 'rights_issue': 'tdx',
-    'suspension_event': 'tdx', 'stock_intraday': 'kaipanla', 'trade_calendar': 'cninfo',
+    'suspension_event': 'tdx', 'stock_intraday': 'kaipanla', 'stock_market_day': 'kaipanla', 'trade_calendar': 'cninfo',
 })
 TABLES = tuple(FIXED_SOURCES) + ('finance_news', 'collection_state', 'app_setting')
 
 DATASET_TABLES = {
+    **{'kaipanla.' + kind + '.day': 'stock_market_day' for kind in
+       ('trend', 'auction', 'volume', 'trades', 'entrust', 'large_order', 'quote')},
     'stock.universe.start': 'stock', 'stock.universe.page': 'stock',
     'stock.universe.complete': 'stock', 'industry.snapshot': 'industry',
     'income.statement': 'income_statement', 'balance.statement': 'balance_statement',
@@ -30,6 +32,7 @@ PRIMARY_KEYS = {
     **{t: ['unified_code', 'report_date'] for t in
        ('income_statement', 'balance_statement', 'cashflow_statement')},
     'stock_intraday': ['unified_code', 'trade_date'],
+    'stock_market_day': ['kind', 'unified_code', 'trade_date'],
 }
 
 

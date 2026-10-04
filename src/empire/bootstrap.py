@@ -5,7 +5,8 @@ from empire.core.redaction import Redactor
 from empire.plugins.collection.control import CollectionControl, TaskContribution
 from empire.plugins.collection.records import RecordsPlugin
 from empire.plugins.collectors.cninfo_calendar import CninfoCalendarCollector
-from empire.plugins.collectors.kaipanla_intraday import KaipanlaIntradayCollector
+from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
+from empire.plugins.collectors.kaipanla_products import KaipanlaProductCollector
 from empire.plugins.collectors.sina_news import SinaNewsCollector
 from empire.plugins.collectors.sina_universe import SinaUniverseCollector
 from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
@@ -17,7 +18,7 @@ from empire.plugins.collectors.ths_statements import ThsStatementCollector
 from empire.plugins.data.capital_actions import CapitalDataPlugin
 from empire.plugins.data.financial_statements import FinancialDataPlugin
 from empire.plugins.data.industries import IndustryDataPlugin
-from empire.plugins.data.intraday import IntradayDataPlugin
+from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
 from empire.plugins.data.news import NewsDataPlugin
 from empire.plugins.data.preparation import PreparationPlugin
 from empire.plugins.data.stocks import StockDataPlugin
@@ -35,7 +36,7 @@ from empire.plugins.ui.downloads import DownloadSettingsUiPlugin
 from empire.plugins.ui.financial_statements import FinancialUiPlugin
 from empire.plugins.ui.help import HelpUiPlugin
 from empire.plugins.ui.industries import IndustryUiPlugin
-from empire.plugins.ui.intraday import IntradayUiPlugin
+from empire.plugins.ui.kaipanla_products import KaipanlaProductUiPlugin
 from empire.plugins.ui.news import NewsUiPlugin
 from empire.plugins.ui.preparation import PreparationUiPlugin
 from empire.plugins.ui.proxies import ProxyUiPlugin
@@ -70,8 +71,9 @@ def build_manager(cfg: dict) -> PluginManager:
         IndustryDataPlugin(namespace=cfg['redis'].get('namespace', 'empire'),
                            archive_settings=cfg.get('archive', {})),
         ThsIndustryCollector(), IndustryUiPlugin(),
-        IntradayDataPlugin(namespace=cfg['redis'].get('namespace', 'empire')),
-        KaipanlaIntradayCollector(), IntradayUiPlugin(),
+        *(KaipanlaProductDataPlugin(kind, namespace=cfg['redis'].get('namespace', 'empire')) for kind in PRODUCTS),
+        *(KaipanlaProductCollector(kind) for kind in PRODUCTS),
+        *(KaipanlaProductUiPlugin(kind) for kind in PRODUCTS),
         SinaUniverseCollector(cfg.get("sina_universe", {})),
         NewsDataPlugin(namespace=cfg["redis"].get("namespace", "empire")), SinaNewsCollector(cfg.get("sina_news", {})),
         CalendarDataPlugin(namespace=cfg["redis"].get("namespace", "empire"),
@@ -85,11 +87,12 @@ def build_manager(cfg: dict) -> PluginManager:
                              archive_settings=cfg.get('archive', {})) for kind in FINANCIAL_KINDS),
         *(ThsStatementCollector(kind) for kind in FINANCIAL_KINDS),
         *(FinancialUiPlugin(kind) for kind in FINANCIAL_KINDS),
-        CollectionControl([TaskContribution('kaipanla-intraday', '开盘啦历史分时及竞价',
-            'collector.kaipanla_intraday', 'kaipanla', '当前上市沪深北证券 · 2021 年起 · 不含退市证券 · 竞价保留全部点位',
+        CollectionControl([*(TaskContribution(project(kind), '开盘啦' + item.title,
+            'collector.kaipanla_' + kind, 'kaipanla', item.note,
             category='高频行情', source_name='开盘啦', interval_seconds=86400,
-            parallel_downloads=True,
-            fresh_description='逐证券日重新核验声明范围，保留已归档历史；普通采集补 SQL 缺日并回看最近五个交易日。'),
+            parallel_downloads=True, default_enabled=False,
+            fresh_description='从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺并回看最近五个交易日。')
+            for kind, item in PRODUCTS.items()),
             TaskContribution('ths-industries', '同花顺当前行业',
             'collector.ths_industries', 'ths', '最新行业名单与全部成分股票 · 不保存变化历史',
             category='证券基础', source_name='同花顺', interval_seconds=86400,

@@ -254,10 +254,16 @@ collector.ths_industries 复用共享 HTTP、代理与频控，本地固定版�
 
 ## 开盘啦分时与竞价
 
-collector.kaipanla_intraday 负责当前上市证券的完整证券日，每日普通分时与开盘竞价都校验后原子入队。上市元数据、正式日历及明确有界全天停牌只确定请求范围；源站错误不会变成空日。数据集 intraday.day@1 以 unified_code/trade_date 保存 stock_intraday，每行规范有序数组保留同分钟竞价多点。data.intraday 负责 SQL 查询、关联/摘要核对及范围验收，ui.intraday 按需创建目录页面。
+原 collector.kaipanla_intraday 合并任务已于 2026-10-05 退役；七个 collector.kaipanla_<kind> 分别校验和原子入队本项完整证券日。上市元数据、正式日历及明确有界全天停牌只确定请求范围；源站错误不会变成空日。七个数据集 kaipanla.<kind>.day@1 以 kind/unified_code/trade_date 保存 stock_market_day，每项独立有序数组保留同分钟或同秒多点。七个 data.kaipanla_<kind> 负责本项 SQL 查询与范围验收，ui.kaipanla_<kind> 按需创建目录页面；旧 stock_intraday 仅为显式迁移来源，转换后为空。
+
+独立容量实验 `scripts/measure_kaipanla_day.py` 只启动HTTP基础设施依赖和只读分时查询，通过正式代理/频控与文件契约将已核实接口内容写入专属临时目录。历史回放去除来源百分号/zlib编码后按完整数组测量，与gzip和实际文件分配空间分别报告；实验结束核实目录所有权并删除正文。它不贡献新数据集、业务表、正式入队或归档路径；范围限制及失败保留在容量报告中，未来正式接入另走插件准入。详见[容量实验](kaipanla-storage-measurement.md)。
 
 共享下载器的 attempt_options 只允许内部调用者生成 data/headers，并明确禁用重定向；每次实际尝试在原重试预算和频控内生成匿名设备字段。普通采集逐证券补 SQL 缺日并回看五个必要交易日；只有全轮入队结束才等统一归档确认。业务成功由统一归档器删除消息，不增加另一队列、摘要或归档器。详见[生命周期与维护](kaipanla-intraday.md)。
 
 ## 项目状态的局部访问
 
 财报及分红、增发、配股数据集通过 state_unit 显式声明当前证券单元或 manifest。统一归档器仍锁定 collection_state 的项目行，但只投影 contract_version、progress、manifest 和当前 units 单元；JSON_SET 只提交变化路径，保留其他证券。全状态审计读取继续用于范围证明核验。完成等待的 SQL 回源只读取 progress，不传输整个财报状态。业务写入和局部状态更新处于原事务，缓存可信命中仍免 SQL。
+
+## 2026-10-05 开盘啦七项拆分
+
+分时走势与开盘竞价拆为独立项目，并新增分钟量额、分笔、分钟委托汇总、大单净额、历史盘口摘要，共七项采集/查询/UI 插件。共享 `stock_market_day` 的类型、证券、日期业务键，沿统一 Redis 入队与归档；重复内容及仅元数据时间变化不写业务表。新增任务默认停用，开发与重启不会启动全历史采集。旧合并任务由显式维护入口迁移，启动不自动转换。日常操作、生命周期和限制见 [开盘啦七项历史数据](kaipanla-intraday.md)。

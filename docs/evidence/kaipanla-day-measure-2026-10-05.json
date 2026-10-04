@@ -1,0 +1,244 @@
+{
+  "started_at": "2026-10-04T22:10:03.571274+08:00",
+  "status": "measured",
+  "source": "kaipanla",
+  "requested_scope": "all current listed stocks / latest ended trading day",
+  "interfaces": [
+    "GetStockTrend",
+    "GetStockBid",
+    "GetStockVolTur",
+    "GetStockFenBi2",
+    "GetStockBsvolume",
+    "GetStockDaDanTrend",
+    "GetStockPanKou",
+    "GetStockZJMMMin",
+    "GetStockChouMa_New",
+    "StockTrendInfo"
+  ],
+  "unconfirmed_complete_scope": [
+    "大单明细及筛选统计的独立接口/与分笔字段的可还原关系",
+    "竞价主力净额等附加统计的完整字段契约",
+    "每分钟独立 OHLC"
+  ],
+  "proxy_only": true,
+  "business_archive_modified": false,
+  "storage_format": "per-security lossless framed decoded bodies / gzip level 6; source percent/zlib codec removed",
+  "not_measured": [
+    "MySQL rows/indexes",
+    "directory/MFT overhead",
+    "backup capacity"
+  ],
+  "capture_validation": "identity/date, widths, ordered full minute keys, source Count/total; no deduplication",
+  "run_id": "e29cad62cdc546969b96dfc1ff4ad538",
+  "trade_date": "2026-09-30",
+  "planned_stocks": 5571,
+  "healthy_exit_count_at_start": 6,
+  "workers": 6,
+  "scope_sha256": "75af7f15ecb51becb4d5ce294d271f5cdaf0e51d9122527819de5e25394f4589",
+  "site_policy": [
+    {
+      "name": "kaipanla",
+      "domains": [
+        "longhuvip.com"
+      ],
+      "min_interval_ms": 2000,
+      "max_concurrency": 0,
+      "proxy_interval_ms": 1000,
+      "total_interval_ms": 500,
+      "scaling_mode": "auto",
+      "max_rps": 0,
+      "active_requests": 0,
+      "recent_rps": 0.0,
+      "global_active_requests": 0,
+      "buffer_limit_bytes": 536870912,
+      "buffer_reserved_bytes": 0,
+      "buffer_available_bytes": 536870912,
+      "response_reservation_bytes": {
+        "stocks": 3407872,
+        "news": 12845056,
+        "calendar": 3407872,
+        "generic": 6553600
+      },
+      "effective_concurrency": 6,
+      "effective_interval_ms": 167,
+      "site_concurrency_limit": 128,
+      "global_concurrency_limit": 128,
+      "site_gate_interval_ms": 0,
+      "healthy_egresses": 6,
+      "healthy_proxies": 6,
+      "rate_ceiling_rps": 6.0,
+      "waiting_reasons": {}
+    }
+  ],
+  "completed_stocks": 5571,
+  "elapsed_seconds": 11463.0,
+  "route_counts": {
+    "proxy_requests": 55735
+  },
+  "valid_known_stocks": 4756,
+  "storage": {
+    "raw": {
+      "file_count": 5571,
+      "logical_bytes": 7740851072,
+      "allocated_bytes": 7752323072
+    },
+    "gzip": {
+      "file_count": 5571,
+      "logical_bytes": 840613447,
+      "allocated_bytes": 851980424
+    }
+  },
+  "cleanup": {
+    "deleted": true,
+    "owned_directory": "D:\\project\\empire\\build\\kaipanla-measure-data\\run-e29cad62cdc546969b96dfc1ff4ad538"
+  },
+  "finished_at": "2026-10-05T01:21:05.515418+08:00",
+  "by_interface": {
+    "GetStockTrend": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5524,
+      "returned_body_bytes": 38341262,
+      "valid_body_bytes": 38102021,
+      "source_encoded_bytes": 38341262,
+      "valid_rows": 1331284
+    },
+    "GetStockBid": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5463,
+      "returned_body_bytes": 5183378,
+      "valid_body_bytes": 5175602,
+      "source_encoded_bytes": 5183378,
+      "valid_rows": 199962
+    },
+    "GetStockVolTur": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5524,
+      "returned_body_bytes": 30518383,
+      "valid_body_bytes": 30342913,
+      "source_encoded_bytes": 30518383,
+      "valid_rows": 1331284
+    },
+    "GetStockFenBi2": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5560,
+      "returned_body_bytes": 457969145,
+      "valid_body_bytes": 457968353,
+      "source_encoded_bytes": 457969145,
+      "valid_rows": 12947514
+    },
+    "GetStockBsvolume": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5145,
+      "returned_body_bytes": 50102909,
+      "valid_body_bytes": 46441363,
+      "source_encoded_bytes": 50102909,
+      "valid_rows": 1239945
+    },
+    "GetStockDaDanTrend": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5212,
+      "returned_body_bytes": 23669422,
+      "valid_body_bytes": 23643574,
+      "source_encoded_bytes": 23669422,
+      "valid_rows": 1256092
+    },
+    "GetStockPanKou": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5560,
+      "returned_body_bytes": 6168604,
+      "valid_body_bytes": 6167812,
+      "source_encoded_bytes": 6168604,
+      "valid_rows": 5560
+    },
+    "GetStockZJMMMin": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5560,
+      "returned_body_bytes": 45856236,
+      "valid_body_bytes": 45855652,
+      "source_encoded_bytes": 45856236,
+      "valid_rows": 1339960
+    },
+    "GetStockChouMa_New": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5560,
+      "returned_body_bytes": 21384743,
+      "valid_body_bytes": 21383964,
+      "source_encoded_bytes": 21384743,
+      "valid_rows": 272440
+    },
+    "StockTrendInfo": {
+      "attempted_stocks": 5571,
+      "valid_stocks": 5051,
+      "returned_body_bytes": 7059445303,
+      "valid_body_bytes": 6937551383,
+      "source_encoded_bytes": 1634832410,
+      "valid_rows": 19498707
+    }
+  },
+  "error_counts": {
+    "changed_row_structure": 36,
+    "source_error:1017": 522,
+    "minute_key_gap_or_duplicate": 451,
+    "missing_or_empty_series": 22,
+    "replay_price_orderbook_shape_or_alignment": 359,
+    "replay_minute_index_shape": 161
+  },
+  "known_scope_complete": false,
+  "requested_full_scope_complete": false,
+  "full_metadata_report_sha256": "b57af5b6f02cedf234a9dffbf9939c289a42da5b144c0d3336aded88a84171e9",
+  "temporary_runs_remaining": 0,
+  "cadence_samples": [
+    {
+      "unified_code": "600000.SH",
+      "points": 4807,
+      "median_adjacent_seconds": 3.0,
+      "three_second_intervals": 4800,
+      "total_adjacent_intervals_under_one_minute": 4804
+    },
+    {
+      "unified_code": "600009.SH",
+      "points": 4193,
+      "median_adjacent_seconds": 3.0,
+      "three_second_intervals": 3694,
+      "total_adjacent_intervals_under_one_minute": 4190
+    },
+    {
+      "unified_code": "600036.SH",
+      "points": 4807,
+      "median_adjacent_seconds": 3.0,
+      "three_second_intervals": 4800,
+      "total_adjacent_intervals_under_one_minute": 4804
+    }
+  ],
+  "run_code_note": "Collection/validation/storage functions match delivered script; import/bootstrap lint cleanup happened during the run and did not change these functions.",
+  "storage_GB": {
+    "raw": {
+      "logical_bytes": 7.740851,
+      "allocated_bytes": 7.752323
+    },
+    "gzip": {
+      "logical_bytes": 0.840613,
+      "allocated_bytes": 0.85198
+    }
+  },
+  "markets": {
+    "BJ": {
+      "stocks": 348,
+      "all_interfaces_valid": 0,
+      "raw_bytes": 17998577,
+      "gzip_bytes": 4432592
+    },
+    "SH": {
+      "stocks": 2319,
+      "all_interfaces_valid": 2027,
+      "raw_bytes": 3467718063,
+      "gzip_bytes": 376124897
+    },
+    "SZ": {
+      "stocks": 2904,
+      "all_interfaces_valid": 2729,
+      "raw_bytes": 4255134432,
+      "gzip_bytes": 460055958
+    }
+  }
+}

@@ -5,9 +5,11 @@ from unittest.mock import MagicMock
 import pytest
 
 from empire.contracts.business_schema import DATASET_TABLES, FIXED_SOURCES, require_dataset_source
-from empire.plugins.datasets import industries, intraday, stocks, suspensions, trade_calendar
+from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
+from empire.plugins.datasets import industries, stocks, suspensions, trade_calendar
 from empire.plugins.datasets.capital_archive import CapitalDataset
 from empire.plugins.datasets.financial_archive import FinancialDataset
+from empire.plugins.datasets.kaipanla_products import ProductDataset
 
 
 @pytest.mark.parametrize('dataset,table', DATASET_TABLES.items())
@@ -17,7 +19,8 @@ def test_wrong_source_cannot_enter_fixed_dataset(dataset,table):
         require_dataset_source(dataset,'another')
 
 
-@pytest.mark.parametrize('mapping', [stocks,industries,intraday,suspensions,trade_calendar,
+@pytest.mark.parametrize('mapping', [stocks,industries,suspensions,trade_calendar,
+                                    *(ProductDataset(kind) for kind in PRODUCTS),
                                     CapitalDataset('dividends'),FinancialDataset('income')])
 def test_direct_sql_writer_rejects_wrong_source_before_sql(mapping):
     conn=MagicMock()

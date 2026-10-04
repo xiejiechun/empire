@@ -8,7 +8,8 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
-from empire.plugins.collectors.kaipanla_download import download_days
+from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, capability, project
+from empire.plugins.collectors.kaipanla_product_download import download_days
 from empire.plugins.collectors.kaipanla_scope import attach_listing_dates, lifecycle, required_days
 from empire.plugins.collectors.kaipanla_source import URL, SourceError
 from empire.plugins.collectors.support import (
@@ -16,26 +17,31 @@ from empire.plugins.collectors.support import (
     record_error_safely,
     wait_for_archive,
 )
-from empire.plugins.datasets.intraday import JOB, PROJECT, digest, identity
+from empire.plugins.datasets.intraday import digest, identity
+from empire.plugins.datasets.kaipanla_products import point_count
 
 
-class KaipanlaIntradayCollector:
-    manifest = PluginManifest('collector.kaipanla_intraday', '开盘啦历史分时及竞价',
-        requires=('http.fetch', 'ingest.publish', 'intraday.query', 'archive.confirmation', 'collection.records'),
-        provides=('collector.kaipanla_intraday',), description='当前上市证券的历史逐日补采；不以源站错误证明空日')
-
-    def __init__(self):
-        self.source, self.project_id, self.job_key = 'kaipanla', PROJECT, JOB
+class KaipanlaProductCollector:
+    def __init__(self, kind):
+        self.kind = kind
+        self.source, self.project_id = 'kaipanla', project(kind)
+        self.job_key = self.project_id + '-v1'
+        self.dataset = 'kaipanla.' + kind + '.day'
+        self.collector_capability = 'collector.kaipanla_' + kind
+        self.manifest = PluginManifest(self.collector_capability, '开盘啦' + PRODUCTS[kind].title,
+            requires=('http.fetch', 'ingest.publish', capability(kind),
+                      'archive.confirmation', 'collection.records'),
+            provides=(self.collector_capability,), description=PRODUCTS[kind].note)
         self.request_retries = 2
         self.stats = {'status': 'stopped', 'collected': 0, 'record_name': '点位', 'unit_name': '证券日',
                       'download_item_name': '个响应'}
 
     async def start(self, context):
         self.http, self.ingest = context.get('http.fetch'), context.get('ingest.publish')
-        self.query, self.records = context.get('intraday.query'), context.get('collection.records')
+        self.query, self.records = context.get(capability(self.kind)), context.get('collection.records')
         self.confirmation = context.get('archive.confirmation')
         self.stats['status'] = 'idle'
-        return {'collector.kaipanla_intraday': self}
+        return {self.collector_capability: self}
 
     async def checkpoint_revision(self):
         return (await self.ingest.checkpoint(self.job_key))['revision']
@@ -111,12 +117,12 @@ class KaipanlaIntradayCollector:
                             continue
                         row = {**downloaded, 'market': stock['market'], 'lifecycle': life}
                         page = cursor['pages'] + 1
-                        envelope = make_envelope(source=self.source, dataset='intraday.day', business_key=identity(row),
+                        envelope = make_envelope(source=self.source, dataset=self.dataset, business_key=identity(row),
                             job_key=self.job_key, run_id=cursor['batch_id'], batch_id=cursor['batch_id'],
                             payload=dict(page=page, rows=[row]))
                         envelope = envelope.model_copy(update={'source_url': URL, 'available_at': None, 'observed_at': observed})
                         next_cursor = {**cursor, 'index': first_gap['index'] if first_gap else index + 1, 'pages': page,
-                                       'collected': cursor['collected'] + len(row['trend']) + len(row['auction'])}
+                                       'collected': cursor['collected'] + point_count(row)}
                         stage = 'queue_publish'
                         state = await publish_with_capacity(self.ingest, self.stats, [envelope], job_key=self.job_key,
                             expected_revision=state['revision'], cursor=next_cursor)

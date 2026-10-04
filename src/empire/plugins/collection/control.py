@@ -40,6 +40,7 @@ class TaskContribution:
     category: str = "其他"
     source_name: str = ""
     parallel_downloads: bool = False
+    default_enabled: bool = True
     fresh_description: str = "创建新批次；已归档数据按对应业务规则保留。"
 
 
@@ -113,14 +114,14 @@ class CollectionControl:
         self.state = json.loads(raw) if raw else {"jobs": {}, "history": []}
         for ident in self.definitions:
             self.state["jobs"].setdefault(ident, {
-                "policy": {"enabled": True, "mode": "manual", "interval_seconds": self.definitions[ident].interval_seconds,
+                "policy": {"enabled": self.definitions[ident].default_enabled, "mode": "manual", "interval_seconds": self.definitions[ident].interval_seconds,
                            "daily_time": "18:00", "request_retries": 2},
                 "next_due": None, "active": None, "last_status": "idle",
             })
             job = self.state["jobs"][ident]
             cached = validate_policy(job["policy"])
             policy = validate_policy(policies.get(ident, {
-                "enabled": True, "mode": "manual",
+                "enabled": self.definitions[ident].default_enabled, "mode": "manual",
                 "interval_seconds": self.definitions[ident].interval_seconds,
                 "daily_time": "18:00", "request_retries": 2}))
             job["policy"] = policy

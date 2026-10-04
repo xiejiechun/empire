@@ -1,0 +1,307 @@
+{
+  "migration": {
+    "old_rows": 105969,
+    "verified_products": 211938,
+    "applied": true,
+    "captured_at": "2026-10-04T19:01:53.504860+00:00",
+    "new_tasks_default_disabled": true,
+    "full_history_collection_started": false
+  },
+  "live": {
+    "checked_at": "2026-10-05T03:02:54.910161+08:00",
+    "samples": [
+      {
+        "kind": "trend",
+        "security": "600000.SH",
+        "trade_date": "2026-09-30",
+        "points": 241,
+        "business_hash": "3815038c9a3ab194eeb51e5b6cf22f16cdfc0fadf530f6b618dc66b75a3fc960"
+      },
+      {
+        "kind": "trend",
+        "security": "000001.SZ",
+        "trade_date": "2026-09-30",
+        "points": 241,
+        "business_hash": "80f5b42c262f2eadf6e965713b783a483ee2af25e231f413243b03d63f856b0e"
+      },
+      {
+        "kind": "auction",
+        "security": "600000.SH",
+        "trade_date": "2026-09-30",
+        "points": 84,
+        "business_hash": "167ac35452e928b58fd0707682ca5971afdc54f71db960e2ef6b8540967b7a61"
+      },
+      {
+        "kind": "auction",
+        "security": "000001.SZ",
+        "trade_date": "2026-09-30",
+        "points": 54,
+        "business_hash": "26159d317630e9b04fe27a34fb326cdde90cf51c395b930a12815977b2c57da1"
+      },
+      {
+        "kind": "volume",
+        "security": "600000.SH",
+        "trade_date": "2026-09-30",
+        "points": 241,
+        "business_hash": "dbad64a60c9420bf8cde491d7434bb0d449ca2ac7cb544949ddaa520daaeda55"
+      },
+      {
+        "kind": "volume",
+        "security": "000001.SZ",
+        "trade_date": "2026-09-30",
+        "points": 241,
+        "business_hash": "25b6917ede2f9235f083b05583992e6ef5af195e231274c7f37d0715104edbb6"
+      },
+      {
+        "kind": "trades",
+        "security": "600000.SH",
+        "trade_date": "2026-09-30",
+        "points": 4668,
+        "business_hash": "58b78a2d4372946654377596ce99815ea34a1b52ff63bd6629631f46f24de4e4"
+      },
+      {
+        "kind": "trades",
+        "security": "000001.SZ",
+        "trade_date": "2026-09-30",
+        "points": 4499,
+        "business_hash": "fbf9711e3423f39b4b8ee87e5d6ef98eaf9cc67d543bd8854148d7c5a6cc72cb"
+      },
+      {
+        "kind": "entrust",
+        "security": "600000.SH",
+        "trade_date": "2026-09-30",
+        "points": 241,
+        "business_hash": "73a1a33332ae5c2814c8454526d886880f47e65c1d5846f62196554ffb6ff78c"
+      },
+      {
+        "kind": "entrust",
+        "security": "000001.SZ",
+        "trade_date": "2026-09-30",
+        "points": 241,
+        "business_hash": "7c5564ad177ee479fbb42b5a97f10809e5ef4cc893bf86aaa2a1de482721879e"
+      },
+      {
+        "kind": "large_order",
+        "security": "600000.SH",
+        "trade_date": "2026-09-30",
+        "points": 241,
+        "business_hash": "009b40d4d93de10e3dba57fe0a43691c7ff3d77334cc815daea271ef5a842963"
+      },
+      {
+        "kind": "large_order",
+        "security": "000001.SZ",
+        "trade_date": "2026-09-30",
+        "points": 241,
+        "business_hash": "1778aa8df2e6d2645a90c157f7ea5061abb91c02dabbd28889e1b9d2532851b2"
+      },
+      {
+        "kind": "quote",
+        "security": "600000.SH",
+        "trade_date": "2026-09-30",
+        "points": 1,
+        "business_hash": "a7e8bec34e2d669da673411067d902950924457b98aa839a4f13b4ce3296043e"
+      },
+      {
+        "kind": "quote",
+        "security": "000001.SZ",
+        "trade_date": "2026-09-30",
+        "points": 1,
+        "business_hash": "84dffa46d933e6b6ea0fb58026e69128d614abdb957e1f331d3534e9d9e730aa"
+      }
+    ],
+    "bounded": true,
+    "full_history_collection_started": false,
+    "automatic_policies_changed": false,
+    "preparation": {
+      "trend": [
+        {
+          "criterion": "fields",
+          "status": "pass"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass"
+        }
+      ],
+      "auction": [
+        {
+          "criterion": "fields",
+          "status": "pass"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass"
+        }
+      ],
+      "volume": [
+        {
+          "criterion": "fields",
+          "status": "pass"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass"
+        }
+      ],
+      "trades": [
+        {
+          "criterion": "fields",
+          "status": "pass"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass"
+        }
+      ],
+      "entrust": [
+        {
+          "criterion": "fields",
+          "status": "pass"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass"
+        }
+      ],
+      "large_order": [
+        {
+          "criterion": "fields",
+          "status": "pass"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass"
+        }
+      ],
+      "quote": [
+        {
+          "criterion": "fields",
+          "status": "pass"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass"
+        }
+      ]
+    },
+    "pending_messages": 0,
+    "passed": true,
+    "route_counts": {
+      "proxy_requests": 98,
+      "direct_requests": 0,
+      "fallback_requests": 0
+    }
+  }
+}

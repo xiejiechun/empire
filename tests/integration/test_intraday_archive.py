@@ -15,10 +15,19 @@ from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.contracts.download import ResponsePolicy
 from empire.core.config import load_config
-from empire.plugins.datasets.intraday import FINGERPRINT_NAMESPACE, JOB, identity
+from empire.plugins.datasets.intraday import identity
+from empire.plugins.datasets.kaipanla_products import ProductDataset
 from empire.plugins.infra.resources import ByteBudget
-from tests.test_kaipanla_intraday import STOCK, listing, row
+from tests.test_kaipanla_intraday import STOCK, listing
+from tests.test_kaipanla_products import business_row
 from tests.test_kaipanla_source import sample
+
+JOB = ProductDataset('trend').JOB
+FINGERPRINT_NAMESPACE = ProductDataset('trend').FINGERPRINT_NAMESPACE
+
+
+def row():
+    return business_row('trend')
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get('EMPIRE_INTEGRATION') != '1', reason='Set EMPIRE_INTEGRATION=1 explicitly')]
@@ -30,12 +39,12 @@ async def intraday_db():
     token = uuid4().hex
     cfg['redis']['namespace'] = 'empire:test:' + token
     manager = build_manager(cfg)
-    query = manager.entries['data.intraday'].plugin
-    collector = manager.entries['collector.kaipanla_intraday'].plugin
+    query = manager.entries['data.kaipanla_trend'].plugin
+    collector = manager.entries['collector.kaipanla_trend'].plugin
     query.source = collector.source = 'kaipanla'
     store = mysql = None
     try:
-        await manager.start('collector.kaipanla_intraday')
+        await manager.start('collector.kaipanla_trend')
         mysql, store = query.mysql, manager.registry.get('redis.store')
         query.plan = AsyncMock(return_value=([STOCK], [date(2021, 1, 4), date(2021, 1, 5)]))
         query.suspended_days = AsyncMock(return_value=set())
@@ -53,7 +62,7 @@ async def intraday_db():
         async def publish(value=None, observed=None):
             value = copy.deepcopy(value or row())
             batch = uuid4().hex
-            envelope = make_envelope(source=query.source, dataset='intraday.day', business_key=identity(value),
+            envelope = make_envelope(source=query.source, dataset='kaipanla.trend.day', business_key=identity(value),
                 job_key=JOB, batch_id=batch, run_id=batch, payload=dict(page=1, rows=[value]))
             if observed:
                 envelope = envelope.model_copy(update={'observed_at': observed})
@@ -68,7 +77,7 @@ async def intraday_db():
         if mysql:
             def cleanup():
                 with mysql.engine.begin() as conn:
-                    conn.execute(text('DELETE FROM stock_intraday'), {'source': query.source})
+                    conn.execute(text('DELETE FROM stock_market_day'), {'source': query.source})
                     conn.execute(text('DELETE FROM collection_state WHERE namespace=:namespace'),
                                  {'namespace': cfg['redis']['namespace']})
             await mysql.control(cleanup)
@@ -89,14 +98,13 @@ async def test_two_source_days_to_lossless_formal_query_and_no_per_page_wait(int
             if collector.stats['status'] == 'awaiting_archive':
                 break
             await asyncio.sleep(.02)
-        assert collector.http.request.await_count == 5
+        assert collector.http.request.await_count == 3
         assert await manager.registry.get('redis.store').client.xlen(archive.redis.stream) == 2
         assert not task.done()
     await asyncio.wait_for(task, 10)
     for day in ('2021-01-04', '2021-01-05'):
         result = await query.day('SZ', '000001', day)
-        assert result['data']['auction'] == sample('auction')['bid']
-        assert [r[0] for r in result['data']['trend']] == [r[0] for r in sample('trend')['trend']]
+        assert [r[0] for r in result['data']['data']['trend']] == [r[0] for r in sample('trend')['trend']]
     assert all(c.status == 'pass' for c in await query.preparation_check({'codes': ['000001']}))
     assert all(c.status == 'pass' for c in await query.preparation_check(
         {'codes': ['000001'], 'start': '2021-01-04', 'end': '2021-01-04'}))
@@ -110,7 +118,7 @@ async def test_hot_cold_no_dml_revision_and_late_old_response(intraday_db, monke
     await publish(observed=start)
     writes = []
     def capture(conn, cursor, statement, parameters, context, executemany):
-        if 'stock_intraday' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
+        if 'stock_market_day' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
     try:
@@ -126,14 +134,14 @@ async def test_hot_cold_no_dml_revision_and_late_old_response(intraday_db, monke
         await publish(observed=start + timedelta(minutes=2))
         assert calls and not writes
         changed = row()
-        changed['auction'][0][1] = 11
+        changed['data']['trend'][0][1] = 11
         await publish(changed, start + timedelta(minutes=4))
-        assert (await query.day('SZ', '000001', '2021-01-04'))['data']['auction'][0][1] == 11
+        assert (await query.day('SZ', '000001', '2021-01-04'))['data']['data']['trend'][0][1] == 11
         count = len(writes)
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         await publish(observed=start + timedelta(minutes=3))
         assert len(writes) == count
-        assert (await query.day('SZ', '000001', '2021-01-04'))['data']['auction'][0][1] == 11
+        assert (await query.day('SZ', '000001', '2021-01-04'))['data']['data']['trend'][0][1] == 11
         assert await archive.redis.client.xlen(archive.redis.stream) == 0
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', capture)
@@ -157,7 +165,7 @@ async def test_commit_ack_replay_and_sql_failure_retain_message(intraday_db, mon
     assert await store.client.xlen(store.stream) == 1
     writes = []
     def capture(conn, cursor, statement, parameters, context, executemany):
-        if 'stock_intraday' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
+        if 'stock_market_day' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(query.mysql.engine, 'before_cursor_execute', capture)
     try:
@@ -176,7 +184,7 @@ async def test_old_missing_lifecycle_and_same_count_wrong_set_are_repaired(intra
     async with archive.lock:
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text("UPDATE stock_intraday SET payload=JSON_REMOVE(payload,'$.lifecycle')"),
+            conn.execute(text("UPDATE stock_market_day SET payload=JSON_REMOVE(payload,'$.lifecycle')"),
                          {'source': query.source})
     assert not await query.covered_days('SZ', '000001', date(2021, 1, 4), date(2021, 1, 5), lifecycle=None)
     with pytest.raises(ValueError):
@@ -186,7 +194,7 @@ async def test_old_missing_lifecycle_and_same_count_wrong_set_are_repaired(intra
     async with archive.lock:
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text("UPDATE stock_intraday SET payload=JSON_SET(payload,'$.trend[1][0]','09:30')"),
+            conn.execute(text("UPDATE stock_market_day SET payload=JSON_SET(payload,'$.data.trend[1][0]','09:30')"),
                          {'source': query.source})
     checks = await query.preparation_check({'codes': ['000001']})
     assert next(c for c in checks if c.criterion == 'fields').status == 'fail'
@@ -201,7 +209,7 @@ async def test_lost_checkpoint_uses_sql_content_and_restores_missing_day(intrada
     async with manager.registry.get('archive.worker').lock:
         await manager.registry.get('archive.worker').fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text("DELETE FROM stock_intraday WHERE trade_date='2021-01-04'"),
+            conn.execute(text("DELETE FROM stock_market_day WHERE trade_date='2021-01-04'"),
                          {'source': query.source})
     await store.client.delete(collector.ingest._checkpoint_key(JOB))
     await collector.execute()
@@ -216,7 +224,7 @@ async def test_source_middle_gap_does_not_block_later_archive_or_fake_complete(i
     async def request(method, url, **options):
         if 'attempt_options' in options:
             data = options['attempt_options']()['data']
-            if data['Day'] == '2021-01-05' and data['a'] == 'GetStockBid':
+            if data['Day'] == '2021-01-05' and data['a'] == 'GetStockTrend':
                 return httpx.Response(200, json={'errcode': '1017'})
         return await original(method, url, **options)
     collector.http.request.side_effect = request

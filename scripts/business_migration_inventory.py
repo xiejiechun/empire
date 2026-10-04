@@ -9,7 +9,7 @@ from sqlalchemy import inspect, text
 from empire.contracts.business_schema import FIXED_SOURCES
 
 ROOT = Path(__file__).resolve().parents[1]
-OLD = tuple(FIXED_SOURCES) + ('finance_news', 'collection_state', 'app_setting')
+OLD = tuple(t for t in FIXED_SOURCES if t != 'stock_market_day') + ('finance_news', 'collection_state', 'app_setting')
 NEW = OLD + ('suspension_source_date',)
 PREFIX = 'empire_v2_'
 BACKUP = 'empire_v1_'
@@ -92,6 +92,8 @@ def validate_old(engine):
             if count is None or int(count) != stock_count:
                 raise ValueError('股票业务数量与已发布状态不一致，先修复数据再迁移')
         for table, source in FIXED_SOURCES.items():
+            if table == 'stock_market_day':
+                continue  # Later independent-product migration, absent in the v1 contract.
             columns = {c['name'] for c in inspect(conn).get_columns(table)}
             if 'source' not in columns:
                 raise ValueError(f'{table} 不是待迁移旧结构')

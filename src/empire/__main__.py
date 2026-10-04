@@ -217,7 +217,8 @@ def main() -> int:
     suspensions.add_argument("--fresh", action="store_true", help="从 2004-12-27 重新核验至今，保留已归档事件")
     industries = commands.add_parser('collect-industries', help='刷新同花顺当前行业及全部成员，归档后退出')
     industries.add_argument('--fresh', action='store_true', help='完整刷新当前分类，不保存变化历史')
-    intraday = commands.add_parser('collect-intraday', help='回补当前上市证券 2021 年起分时及竞价，归档后退出')
+    intraday = commands.add_parser('collect-intraday', help='回补一个开盘啦独立项目，归档后退出')
+    intraday.add_argument('--kind', choices=('trend','auction','volume','trades','entrust','large_order','quote'), default='trend')
     intraday.add_argument('--fresh', action='store_true', help='重新核验声明范围，保留已归档历史')
     smoke = commands.add_parser("smoke", help="启动桌面并在指定秒数后安全退出")
     smoke.add_argument("--seconds", type=int, default=8)
@@ -258,7 +259,7 @@ def main() -> int:
                 task_id = {"collect-news": "sina-news", "collect-stocks": "sina-stocks",
                            "collect-calendar": "cninfo-calendar",
                            "collect-suspensions": "tdx-suspensions", 'collect-industries': 'ths-industries',
-                           'collect-intraday': 'kaipanla-intraday'}[args.command]
+                           'collect-intraday': 'kaipanla-' + getattr(args, 'kind', 'trend').replace('_', '-')}[args.command]
                 try:
                     await manager.start("collection.control")
                     await manager.start("pipeline.archive")
