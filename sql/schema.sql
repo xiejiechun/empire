@@ -335,6 +335,8 @@ CREATE TABLE IF NOT EXISTS security_name_change (
     old_name VARCHAR(200) NULL,
     new_name VARCHAR(200) NULL,
     source_occurrences INT UNSIGNED NOT NULL,
+    csrc_industry VARCHAR(200) NULL,
+    tdx_industry VARCHAR(200) NULL,
     PRIMARY KEY (name_kind, record_key),
     KEY ix_name_security (name_kind, unified_code, event_date, record_key),
     KEY ix_name_date (name_kind, event_date, unified_code, record_key),

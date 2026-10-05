@@ -1,0 +1,146 @@
+{
+  "bindings": {
+    "sql/schema.sql": "a0dafe542ac91896dde3b68f4a0d4cfb37c54382aa554ed396ef59576b50d468",
+    "sql/schema-contract.json": "2b5fd72a84c3495f4b0d5890402a2e488a42d9471ab715804d9020e1db3472b5",
+    "src/empire/contracts/name_changes.py": "c8b9ed32c06bd0bf19f3cf1dac5d4fc9a4a79a87889075eb08590416051581e8",
+    "src/empire/plugins/datasets/name_changes.py": "a7ddb5f4b0f4f5184d9ea320c9971ebe01ffd8b3e20f84a6622605fa599a5c1a",
+    "src/empire/plugins/data/name_changes.py": "7d3067c5e60f58f7912cd27fbf2f81366f8407c728c109965d45edd618cf75d9",
+    "scripts/measure_name_changes.py": "1122a33df0b22c937d1382938def9da98c8ebd47f729ec2809ffca17afb22a07"
+  },
+  "measurements": {
+    "page_p95_ms": 1.5352000045822933,
+    "security_p95_ms": 0.3569999971659854,
+    "coverage_p95_ms": 126.36799999745563,
+    "import_seconds": 1.973719000001438,
+    "allocated_bytes": 14303232,
+    "real_page_p95_ms": 1.8906000041170046,
+    "real_coverage_p95_ms": 69.16180001280736
+  },
+  "limits": {
+    "page_p95_ms": 50,
+    "security_p95_ms": 50,
+    "coverage_p95_ms": 500,
+    "import_seconds": 10,
+    "allocated_bytes": 134217728,
+    "real_page_p95_ms": 50,
+    "real_coverage_p95_ms": 500
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 25000,
+    "cache": "first query unforced; subsequent hot repetitions",
+    "synthetic": true
+  },
+  "reviewed_tradeoffs": "紧凑事件字段有SQL索引；覆盖检查全读本类型至30000上限，普通页面200行。25000条是容量实验，不冒充可一次入队的真实响应；超单次消息预算明确失败。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_name_change",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_name_security,ix_name_date",
+        "key": "ix_name_date",
+        "key_len": "10",
+        "ref": "const",
+        "rows": 12415,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_name_change",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_name_security,ix_name_date",
+        "key": "ix_name_security",
+        "key_len": "24",
+        "ref": null,
+        "rows": 5,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_name_change",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_name_security,ix_name_date",
+        "key": "PRIMARY",
+        "key_len": "10",
+        "ref": "const",
+        "rows": 12415,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 20470
+    },
+    "security": {
+      "returned": 5,
+      "read_bytes": 485
+    },
+    "coverage": {
+      "returned": 25000,
+      "read_bytes": 2558756
+    }
+  },
+  "python_peak_bytes": 11314262,
+  "initial": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 25000,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "repeat": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 0,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "revision": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 2,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "cleanup": "UUID-owned test database dropped in finally",
+  "passed": true,
+  "production_sample": {
+    "page": {
+      "p95_ms": 1.8906000041170046,
+      "returned": 200,
+      "read_bytes": 33484,
+      "explain_analyze": [
+        "-> Limit: 200 row(s)  (cost=588 rows=200) (actual time=0.0556..0.25 rows=200 loops=1)\n    -> Index lookup on security_name_change using ix_name_date (name_kind='security')  (cost=588 rows=5810) (actual time=0.0544..0.241 rows=200 loops=1)\n"
+      ]
+    },
+    "coverage": {
+      "p95_ms": 69.16180001280736,
+      "returned": 8368,
+      "read_bytes": 1432032,
+      "explain_analyze": [
+        "-> Limit: 30001 row(s)  (cost=588 rows=5810) (actual time=0.0418..2.58 rows=8368 loops=1)\n    -> Index lookup on security_name_change using PRIMARY (name_kind='security')  (cost=588 rows=5810) (actual time=0.0408..2.26 rows=8368 loops=1)\n"
+      ]
+    },
+    "allocated_bytes": 10764288
+  }
+}

@@ -137,7 +137,7 @@ class PreparationPlugin:
             if c and c.scoped and criterion.id in ('fields', 'quality'):
                 checks[-1]['recommended_action'] = '保留来源缺值与矛盾标记；排除受影响记录，或按需核实公司公告。不要填零或修改来源金额来凑齐合计。'
             if evidence and not evidence.blocking:
-                checks[-1]['recommended_action'] = '当前用途保留此限制；切换历史选股回测后，必须补充公告/可用日期才能通过。'
+                checks[-1]['recommended_action'] = '按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。'
         return self.provider_result(c, checks, request)
 
     def provider_result(self, c, checks, request):

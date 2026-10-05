@@ -8,7 +8,14 @@ import httpx
 import pytest
 
 from empire.bootstrap import build_manager
-from empire.contracts.name_changes import MARKETS, identity, validate_rows
+from empire.contracts.name_changes import (
+    MARKETS,
+    SCHEMA_VERSION,
+    identity,
+    pack_rows,
+    unpack_rows,
+    validate_rows,
+)
 from empire.plugins.collectors.tdx_name_changes import NameChangeCollector
 from empire.plugins.collectors.tdx_name_source import COLUMN_SETS, parse
 from empire.plugins.datasets.name_changes import NameDataset
@@ -29,7 +36,7 @@ def source(kind='security', missing=False):
 def test_complete_source_null_and_code_trim(kind):
     groups, count = parse(kind, source(kind, missing=True), '2026-10-05')
     assert count == 2 and len(groups['SZ']) == 1 and groups['BJ'] == []
-    assert groups['SZ'][0] == ['000001.SZ', '2020-01-02', None, '新名称', 1]
+    assert groups['SZ'][0] == ['000001.SZ', '2020-01-02', None, '新名称', 1, '行业', '行业']
 
 
 @pytest.mark.parametrize('fault', ['count', 'page', 'duplicate', 'date', 'market', 'type', 'long', 'nonstock'])
@@ -115,7 +122,7 @@ def test_registration_defaults_schema_and_independence():
 
 
 def test_capacity_boundary_and_order():
-    rows = [['000001.SZ', '2020-01-01', '旧', '新', 30000]]
+    rows = [['000001.SZ', '2020-01-01', '旧', '新', 30000, None, None]]
     with pytest.raises(ValueError):
         validate_rows('company', 'SZ', rows)
     with pytest.raises(ValueError):
@@ -146,7 +153,7 @@ def test_ui_lazy_independence_draft_and_missing_name_display(monkeypatch):
     queries = []
     future = concurrent.futures.Future()
     future.set_result(dict(rows=[dict(record_key='a' * 64, unified_code='000001.SZ',
-        event_date='2020-01-01', old_name=None, new_name='新名', source_occurrences=1)], next=None))
+        event_date='2020-01-01', old_name=None, new_name='新名', source_occurrences=1, csrc_industry='批发业', tdx_industry='其他电子')], next=None))
     runtime = SimpleNamespace(invoke=lambda *args: queries.append(args) or future)
     shell = SimpleNamespace(runtime=runtime, cfg={}, shutting_down=False)
     ui = NameUiPlugin('security')
@@ -180,7 +187,7 @@ def test_midnight_beijing_request_scope_and_empty_markets():
     from empire.contracts.data import make_envelope
     e = make_envelope(source='tdx', dataset='names.security.market', business_key='BJ',
         job_key='tdx-security-renames-v1', run_id='test', batch_id='test',
-        payload=dict(page=3, market='BJ', through='2026-10-05', rows=[], source_count=0))
+        schema_version=SCHEMA_VERSION, payload=dict(page=3, market='BJ', through='2026-10-05', **pack_rows([]), source_count=0))
     e = e.model_copy(update={'observed_at': datetime(2026, 10, 4, 16, 5, tzinfo=UTC)})
     assert NameDataset('security').normalize(e)['row_count'] == 0
 
@@ -188,3 +195,32 @@ def test_midnight_beijing_request_scope_and_empty_markets():
 def test_old_business_migration_never_claims_new_name_table():
     from scripts.business_migration_inventory import NEW, OLD
     assert 'security_name_change' not in OLD and 'security_name_change' not in NEW
+
+
+def test_industry_dictionary_roundtrip_and_conflicting_source():
+    groups, _ = parse('company', source('company'), '2026-10-05')
+    rows = groups['SZ']
+    packed = pack_rows(rows)
+    assert unpack_rows(**packed) == rows
+    assert identity(rows[0]) == identity(rows[0][:5] + ['其他行业', '其他标签'])
+    for invalid in ({'rows':packed['rows'], 'industries':[]},
+                    {'rows':[rows[0][:4]+[True]], 'industries':packed['industries']},
+                    {'rows':packed['rows'], 'industries':packed['industries']*2}):
+        with pytest.raises(ValueError):
+            unpack_rows(**invalid)
+    data = source('company')
+    duplicate = list(data['ResultSets'][0]['Content'][0])
+    duplicate[COLUMN_SETS['company'].index('tdxhy')] = '冲突行业'
+    data['ResultSets'][0]['Content'].append(duplicate)
+    data['ResultSets'][0]['Count'] = 3
+    data['ResultSets'][2]['Content'] = [[3]]
+    with pytest.raises(ValueError, match='行业冲突'):
+        parse('company', data, '2026-10-05')
+
+
+@pytest.mark.parametrize('value', [123, '', '名'*201])
+def test_industry_invalid_value_rejected(value):
+    data = source()
+    data['ResultSets'][0]['Content'][0][COLUMN_SETS['security'].index('zjhhy')] = value
+    with pytest.raises(ValueError):
+        parse('security', data, '2026-10-05')

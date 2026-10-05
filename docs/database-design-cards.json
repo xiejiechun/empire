@@ -589,9 +589,9 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/name-changes-capacity-2026-10-05.json",
+        "evidence": "docs/evidence/name-changes-capacity-2026-10-06.json",
         "sample": "25000合成事件；真实源公司3576/股票8368",
-        "growth": "一年15000、五年25000；两类总分配预算60MiB",
+        "growth": "一年15000、五年25000；两类含行业字段分配预算128MiB",
         "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
       },
       "integrity": [
@@ -602,7 +602,7 @@
         "旧响应及成功清队"
       ],
       "lifecycle": "docs/tdx-name-changes.md：全历史单请求、三市场原子入队、整轮等待归档；每天18:00修订检查；Redis丢失重查",
-      "delivery": "scripts/create_name_change_schema.py显式新建；typed读写路径；代理优先；两项目独立",
+      "delivery": "scripts/migrate_name_industries.py显式加列；schema2/contract2/v2摘要；全响应补齐行业；普通查询按用途验收",
       "tests": [
         "tests/test_name_changes.py",
         "tests/integration/test_name_archive.py"
@@ -622,9 +622,9 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/name-changes-capacity-2026-10-05.json",
+        "evidence": "docs/evidence/name-changes-capacity-2026-10-06.json",
         "sample": "25000合成事件；真实源公司3576/股票8368",
-        "growth": "一年15000、五年25000；两类总分配预算60MiB",
+        "growth": "一年15000、五年25000；两类含行业字段分配预算128MiB",
         "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
       },
       "integrity": [
@@ -635,7 +635,7 @@
         "旧响应及成功清队"
       ],
       "lifecycle": "docs/tdx-name-changes.md：全历史单请求、三市场原子入队、整轮等待归档；每天18:00修订检查；Redis丢失重查",
-      "delivery": "scripts/create_name_change_schema.py显式新建；typed读写路径；代理优先；两项目独立",
+      "delivery": "scripts/migrate_name_industries.py显式加列；schema2/contract2/v2摘要；全响应补齐行业；普通查询按用途验收",
       "tests": [
         "tests/test_name_changes.py",
         "tests/integration/test_name_archive.py"

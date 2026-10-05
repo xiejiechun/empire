@@ -9,7 +9,9 @@ KINDS = {'company': ('公司更名', 'company_renames', '0'),
          'security': ('股票更名', 'renames', '1')}
 MARKETS = ('SH', 'SZ', 'BJ')
 CAPACITY = 30000
-COLUMNS = ('unified_code', 'event_date', 'old_name', 'new_name', 'source_occurrences')
+COLUMNS = ('unified_code', 'event_date', 'old_name', 'new_name', 'source_occurrences',
+           'csrc_industry', 'tdx_industry')
+SCHEMA_VERSION = 2
 
 
 def digest(value):
@@ -30,14 +32,14 @@ def validate_rows(kind, market, rows):
         raise ValueError('更名类型、市场或集合上限无效')
     previous, source_count, dated = '', 0, set()
     for row in rows:
-        if not isinstance(row, list) or len(row) != 5:
+        if not isinstance(row, list) or len(row) != 7:
             raise ValueError('更名事件字段无效')
         if split_unified_code(row[0])[0] != market:
             raise ValueError('更名事件市场不一致')
         if (not isinstance(row[1], str) or date.fromisoformat(row[1]).isoformat() != row[1]
                 or not '1990-01-01' <= row[1] <= date.today().isoformat()):
             raise ValueError('更名日期无效')
-        for value in row[2:4]:
+        for value in row[2:4] + row[5:7]:
             if value is not None and (not isinstance(value, str) or not value.strip() or len(value) > 200):
                 raise ValueError('更名名称类型或长度无效')
         if type(row[4]) is not int or not 1 <= row[4] < CAPACITY:
@@ -54,3 +56,29 @@ def validate_rows(kind, market, rows):
     if source_count >= CAPACITY:
         raise ValueError('更名来源集合达到容量边界')
     return source_count
+
+
+def pack_rows(rows):
+    labels = sorted({tuple(r[5:7]) for r in rows}, key=digest)
+    indexes = {label: i for i, label in enumerate(labels)}
+    return dict(rows=[r[:4] + [indexes[tuple(r[5:7])]] + ([r[4]] if r[4] != 1 else []) for r in rows],
+                industries=[list(label) for label in labels])
+
+
+def unpack_rows(rows, industries):
+    if (not isinstance(rows, list) or len(rows) >= CAPACITY or not isinstance(industries, list)
+            or len(industries) > len(rows) or any(not isinstance(r, list) or len(r) != 2 for r in industries)):
+        raise ValueError('更名行业字典结构无效')
+    if [digest(r) for r in industries] != sorted({digest(r) for r in industries}):
+        raise ValueError('更名行业字典重复或未排序')
+    result, used = [], set()
+    for row in rows:
+        if (not isinstance(row, list) or len(row) not in (5, 6) or type(row[4]) is not int
+                or not 0 <= row[4] < len(industries)
+                or (len(row) == 6 and (type(row[5]) is not int or row[5] <= 1))):
+            raise ValueError('更名行业字典索引无效')
+        used.add(row[4])
+        result.append(row[:4] + [row[5] if len(row) == 6 else 1] + industries[row[4]])
+    if used != set(range(len(industries))):
+        raise ValueError('更名行业字典含未使用标签')
+    return result

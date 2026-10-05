@@ -34,6 +34,7 @@ def parse(kind, body, through):
     if counts[0][0] != len(raw) or len(raw) >= CAPACITY:
         raise ValueError('通达信更名完整响应被截断或总数不符')
     groups = {market: Counter() for market in MARKETS}
+    labels = {}
     for values in raw:
         row = dict(zip(COLUMN_SETS[kind], values, strict=True))
         if type(row['sc']) is not int or row['sc'] not in (0, 1, 2):
@@ -48,10 +49,15 @@ def parse(kind, body, through):
         day = date.fromisoformat(rq[:4] + '-' + rq[4:6] + '-' + rq[6:]).isoformat()
         if not '1990-01-01' <= day <= through:
             raise ValueError('通达信更名日期超出请求范围')
-        groups[market][(code, day, row['prename'], row['lastname'])] += 1
+        key = (code, day, row['prename'], row['lastname'])
+        industry = tuple(None if row[k] in (None, '无') else row[k] for k in ('zjhhy', 'tdxhy'))
+        if key in labels and labels[key] != industry:
+            raise ValueError('相同更名事件的行业冲突，不能静默合并')
+        labels[key] = industry
+        groups[market][key] += 1
     result = {}
     for market, group in groups.items():
-        rows = sorted([list(key) + [count] for key, count in group.items()], key=identity)
+        rows = sorted([list(key) + [count] + list(labels[key]) for key, count in group.items()], key=identity)
         validate_rows(kind, market, rows)
         result[market] = rows
     return result, len(raw)

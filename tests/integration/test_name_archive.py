@@ -12,6 +12,7 @@ import pytest
 from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
+from empire.contracts.name_changes import SCHEMA_VERSION, pack_rows
 from empire.core.config import load_config
 from tests.test_name_changes import source
 
@@ -54,6 +55,7 @@ async def test_end_to_end_and_source_quality(names):
     assert result['collected'] == 2 and c.http.request.await_count == 1
     rows = (await q.list_events())['rows']
     assert {r['unified_code'] for r in rows} == {'000001.SZ', '600000.SH'}
+    assert all(r['csrc_industry'] == r['tdx_industry'] == '行业' for r in rows)
     assert (await q.list_events(limit=1))['next']
     first = await q.list_events(limit=1)
     assert len((await q.list_events(after=first['next'], limit=1))['rows']) == 1
@@ -64,7 +66,10 @@ async def test_end_to_end_and_source_quality(names):
     c.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=source(c.kind, missing=True))
     await collect(c)
     assert (await q.list_events(code='000001'))['rows'][0]['old_name'] is None
-    assert next(e for e in await q.preparation_check() if e.criterion == 'fields').status == 'fail'
+    assert next(e for e in await q.preparation_check() if e.criterion == 'fields').status == 'pass'
+    historical = await q.preparation_check({'purpose':'historical_signal'})
+    assert next(e for e in historical if e.criterion == 'fields').status == 'fail'
+    assert next(e for e in await q.preparation_check() if e.criterion == 'temporal').blocking is False
 
 
 async def test_hot_cold_duplicate_revision_stale_and_same_count_wrong_sql(names, monkeypatch):
@@ -87,6 +92,21 @@ async def test_hot_cold_duplicate_revision_stale_and_same_count_wrong_sql(names,
         await archive.fingerprints.invalidate(q.mapping.FINGERPRINT_NAMESPACE, 'tdx')
         await collect(c)
         assert calls and not writes
+        # Old rows missing the added fields must be repaired through the formal source/archive path.
+        async with archive.lock:
+            await archive.fingerprints.invalidate(q.mapping.FINGERPRINT_NAMESPACE, 'tdx')
+            with q.mysql.engine.begin() as conn:
+                conn.execute(text('UPDATE security_name_change SET csrc_industry=NULL,tdx_industry=NULL WHERE name_kind=:kind'), {'kind':c.kind})
+        assert next(e for e in await q.preparation_check() if e.criterion == 'coverage').status == 'fail'
+        await collect(c)
+        assert all(r['csrc_industry'] == '行业' for r in (await q.list_events())['rows'])
+        changed_industry = source(c.kind)
+        changed_industry['ResultSets'][0]['Content'][0][changed_industry['ResultSets'][0]['ColName'].index('tdxhy')] = '新行业'
+        old_key = (await q.list_events(code='000001'))['rows'][0]['record_key']
+        c.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=changed_industry)
+        await collect(c)
+        revised = (await q.list_events(code='000001'))['rows'][0]
+        assert revised['record_key'] == old_key and revised['tdx_industry'] == '新行业'
         changed = source(c.kind)
         changed['ResultSets'][0]['Content'][0][changed['ResultSets'][0]['ColName'].index('lastname')] = '修订名称'
         c.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=changed)
@@ -100,7 +120,7 @@ async def test_hot_cold_duplicate_revision_stale_and_same_count_wrong_sql(names,
         batch = uuid4().hex
         e = make_envelope(source='tdx', dataset='names.' + c.kind + '.market', business_key='SZ',
             job_key=c.job_key, run_id=batch, batch_id=batch,
-            payload=dict(page=2, market='SZ', through='2026-10-05', rows=groups['SZ'], source_count=1))
+            schema_version=SCHEMA_VERSION, payload=dict(page=2, market='SZ', through='2026-10-05', **pack_rows(groups['SZ']), source_count=1))
         e = e.model_copy(update={'observed_at': datetime.now(UTC) - timedelta(hours=1)})
         await archive.fingerprints.invalidate(q.mapping.FINGERPRINT_NAMESPACE, 'tdx')
         state = await c.ingest.checkpoint(c.job_key)

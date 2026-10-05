@@ -12,7 +12,7 @@ from uuid import uuid4
 from sqlalchemy import text
 
 from empire.contracts.data import make_envelope
-from empire.contracts.name_changes import identity
+from empire.contracts.name_changes import SCHEMA_VERSION, identity, pack_rows
 from empire.core.config import load_config, project_root
 from empire.plugins.datasets.name_changes import NameDataset
 from empire.plugins.infra.mysql_store import initialize_database, make_engine
@@ -36,11 +36,11 @@ def run(args):
         engine = make_engine(settings)
         mapping, now = NameDataset('security'), datetime.now(UTC)
         rows = sorted([[f'{i % 5000:06d}.SH', (date(2020, 1, 1) + timedelta(days=i // 5000)).isoformat(),
-                        '原名称' + str(i // 5000), '新名称' + str(i // 5000), 1] for i in range(25000)], key=identity)
+                        '原名称' + str(i // 5000), '新名称' + str(i // 5000), 1, '证监会行业'+str(i%100), '通达信行业'+str(i%200)] for i in range(25000)], key=identity)
         batch = uuid4().hex
         e = make_envelope(source='tdx', dataset='names.security.market', business_key='SH',
             job_key=mapping.JOB, batch_id=batch, run_id=batch,
-            payload=dict(page=1, market='SH', through=now.date().isoformat(), rows=rows, source_count=len(rows)))
+            schema_version=SCHEMA_VERSION, payload=dict(page=1, market='SH', through=now.date().isoformat(), **pack_rows(rows), source_count=len(rows)))
         normalized = mapping.normalize(e)
         data = {**normalized, 'archive_state': {}}
         tracemalloc.start()
@@ -58,9 +58,9 @@ def run(args):
         with engine.begin() as conn:
             revision = mapping.write(conn, e, {**data, 'rows': revised})
         sqls = {
-            'page': "SELECT unified_code,event_date,old_name,new_name,source_occurrences FROM security_name_change WHERE name_kind='security' ORDER BY event_date,unified_code,record_key LIMIT 200",
-            'security': "SELECT unified_code,event_date,old_name,new_name FROM security_name_change WHERE name_kind='security' AND unified_code='000001.SH' AND event_date BETWEEN '2020-01-01' AND '2026-10-05' ORDER BY event_date,record_key LIMIT 200",
-            'coverage': "SELECT unified_code,event_date,old_name,new_name,source_occurrences FROM security_name_change WHERE name_kind='security' ORDER BY record_key LIMIT 30001",
+            'page': "SELECT unified_code,event_date,old_name,new_name,source_occurrences,csrc_industry,tdx_industry FROM security_name_change WHERE name_kind='security' ORDER BY event_date,unified_code,record_key LIMIT 200",
+            'security': "SELECT unified_code,event_date,old_name,new_name,csrc_industry,tdx_industry FROM security_name_change WHERE name_kind='security' AND unified_code='000001.SH' AND event_date BETWEEN '2020-01-01' AND '2026-10-05' ORDER BY event_date,record_key LIMIT 200",
+            'coverage': "SELECT unified_code,event_date,old_name,new_name,source_occurrences,csrc_industry,tdx_industry FROM security_name_change WHERE name_kind='security' ORDER BY record_key LIMIT 30001",
         }
         timings, explain, actual = {}, {}, {}
         with engine.connect() as conn:
@@ -83,7 +83,7 @@ def run(args):
         report = dict(bindings={p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in bindings},
             measurements=dict(page_p95_ms=timings['page'], security_p95_ms=timings['security'],
                 coverage_p95_ms=timings['coverage'], import_seconds=import_seconds, allocated_bytes=int(allocation)),
-            limits=dict(page_p95_ms=50, security_p95_ms=50, coverage_p95_ms=500, import_seconds=10, allocated_bytes=60 * 1024**2),
+            limits=dict(page_p95_ms=50, security_p95_ms=50, coverage_p95_ms=500, import_seconds=10, allocated_bytes=128 * 1024**2),
             conditions=dict(platform=platform.platform(), mysql=version, rows=25000, cache='first query unforced; subsequent hot repetitions', synthetic=True),
             reviewed_tradeoffs='紧凑事件字段有SQL索引；覆盖检查全读本类型至30000上限，普通页面200行。25000条是容量实验，不冒充可一次入队的真实响应；超单次消息预算明确失败。',
             explain=explain, queries=actual, python_peak_bytes=peak, initial=initial, repeat=repeat, revision=revision,

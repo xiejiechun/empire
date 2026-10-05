@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "fd66c30053bd4807bb5d89d8cfbab2c71c1f6ee8eaaa76ed33c303ecebce7e4e",
+  "schema_sha256": "a0dafe542ac91896dde3b68f4a0d4cfb37c54382aa554ed396ef59576b50d468",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -1507,6 +1507,16 @@
           "type": "integer",
           "nullable": false,
           "unsigned": true
+        },
+        "csrc_industry": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "tdx_industry": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
         }
       },
       "primary": [

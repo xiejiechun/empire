@@ -6,7 +6,7 @@ from functools import partial
 from uuid import uuid4
 
 from empire.contracts.data import make_envelope
-from empire.contracts.name_changes import KINDS, MARKETS, project
+from empire.contracts.name_changes import KINDS, MARKETS, SCHEMA_VERSION, pack_rows, project
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
 from empire.plugins.collectors.support import (
@@ -63,8 +63,11 @@ class NameChangeCollector:
         try:
             state = await self.ingest.checkpoint(self.job_key)
             cursor = state['cursor']
-            if state['revision'] > baseline_revision and cursor.get('phase') == 'complete':
+            if (state['revision'] > baseline_revision and cursor.get('phase') == 'complete'
+                    and cursor.get('contract') == SCHEMA_VERSION):
                 return cursor
+            if cursor.get('phase') == 'awaiting_archive' and cursor.get('contract') != SCHEMA_VERSION:
+                raise ValueError('旧更名待归档断点必须先显式维护，不能跳过')
             if cursor.get('phase') != 'awaiting_archive':
                 observed = datetime.now(UTC)
                 through, batch = observed.astimezone(CHINA).date().isoformat(), uuid4().hex
@@ -75,14 +78,15 @@ class NameChangeCollector:
                     rows = groups[market]
                     event = make_envelope(source='tdx', dataset='names.' + self.kind + '.market',
                         business_key=market, job_key=self.job_key, batch_id=batch, run_id=batch,
-                        payload=dict(page=page, market=market, through=through, rows=rows,
+                        schema_version=SCHEMA_VERSION,
+                        payload=dict(page=page, market=market, through=through, **pack_rows(rows),
                                      source_count=sum(r[4] for r in rows)))
                     envelopes.append(event.model_copy(update={'observed_at': observed,
                                                               'source_url': PAGE, 'available_at': None}))
                 stage = 'queue_publish'
                 cursor = dict(phase='awaiting_archive', batch_id=batch, pages=3, requests=1,
                               collected=sum(len(rows) for rows in groups.values()), source_count=count,
-                              through=through)
+                              through=through, contract=SCHEMA_VERSION)
                 # All three markets fit or publication fails before any checkpoint/DML.
                 state = await publish_with_capacity(self.ingest, self.stats, envelopes,
                     job_key=self.job_key, expected_revision=state['revision'], cursor=cursor)

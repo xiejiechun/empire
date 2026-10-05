@@ -32,7 +32,7 @@ class NamePage(QWidget):
         title = QLabel(KINDS[kind][0] + '（通达信）')
         title.setObjectName('pageTitle')
         layout.addWidget(title)
-        layout.addWidget(hint('来源更名日期及旧新名称；空白表示来源未给。采集完成不等于历史名称回放通过。'))
+        layout.addWidget(hint('来源更名日期、旧新名称及行业标签；空白表示来源未给。行业没有历史归属日期，普通查询不要求完整名称链。'))
         bar = QHBoxLayout()
         self.code = accessible(QLineEdit(), '更名证券代码')
         self.code.setMaxLength(6)
@@ -49,7 +49,7 @@ class NamePage(QWidget):
         layout.addLayout(bar)
         self.status = hint('正在读取已归档事件…')
         layout.addWidget(self.status)
-        self.table = table(['证券', '更名日期', '原名称', '新名称', '来源出现次数'])
+        self.table = table(['证券', '更名日期', '原名称', '新名称', '来源出现次数', '证监会行业', '通达信行业'])
         layout.addWidget(self.table, 1)
         bar = QHBoxLayout()
         self.previous, self.next = QPushButton('上一页'), QPushButton('下一页')
@@ -93,7 +93,7 @@ class NamePage(QWidget):
             else:
                 try:
                     result = self.scope.result('events', future)
-                    rows(self.table, [[r[k] if r[k] is not None else '' for k in ('unified_code', 'event_date', 'old_name', 'new_name', 'source_occurrences')]
+                    rows(self.table, [[r[k] if r[k] is not None else '' for k in ('unified_code', 'event_date', 'old_name', 'new_name', 'source_occurrences', 'csrc_industry', 'tdx_industry')]
                                       for r in result['rows']], keys=[r['record_key'] for r in result['rows']])
                     self.next_cursor = result['next']
                     self.previous.setEnabled(bool(self.history))

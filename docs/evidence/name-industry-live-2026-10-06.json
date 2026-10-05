@@ -1,0 +1,298 @@
+{
+  "checked_at": "2026-10-06T01:29:01.379511+08:00",
+  "tasks": {
+    "tdx-company-renames": {
+      "status": "complete",
+      "stored_events": 3546,
+      "source_count": 3576,
+      "markets": {
+        "BJ": {
+          "digest": "ea423a7f302212626fb2fe01ea327923a443867647badd2de4d0bfb0bbd32cb6",
+          "through": "2026-10-06",
+          "contract": 2,
+          "row_count": 19,
+          "observed_at": "2026-10-05T17:27:26.111263+00:00",
+          "source_count": 34
+        },
+        "SH": {
+          "digest": "dfdca987689346f3fff8fee67050116e42698c0ca437d244e5024c51106ce40b",
+          "through": "2026-10-06",
+          "contract": 2,
+          "row_count": 1541,
+          "observed_at": "2026-10-05T17:27:26.111263+00:00",
+          "source_count": 1549
+        },
+        "SZ": {
+          "digest": "65233e95bd7bc049797fd9124244106b1a65e2bfb54d0540ce8fae9cdac1bc10",
+          "through": "2026-10-06",
+          "contract": 2,
+          "row_count": 1986,
+          "observed_at": "2026-10-05T17:27:26.111263+00:00",
+          "source_count": 1993
+        }
+      },
+      "preparation": [
+        {
+          "id": "fields",
+          "criterion": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "范围内3546条；证券/日期/行业字段及来源原值已核验；缺原名/新名69条；空值保持未知"
+        },
+        {
+          "id": "keys",
+          "criterion": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "事件完整身份含名称组合；公司完全重复保留出现次数，股票同证券同日唯一"
+        },
+        {
+          "id": "coverage",
+          "criterion": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "SH 1541条；SZ 1986条；BJ 19条；SQL规范集合与三市场来源证明一致"
+        },
+        {
+          "id": "quality",
+          "criterion": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "来源内容一致；名称链不衔接22处；600687.SH 2013-11-08、000503.SZ 2018-05-23、000737.SZ 2022-09-09、000803.SZ 2020-08-11、600767.SH 2015-06-03；不填补来源缺口"
+        },
+        {
+          "id": "freshness",
+          "criterion": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内；最新事件日期不作为更新时效"
+        },
+        {
+          "id": "temporal",
+          "criterion": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "普通查询保留来源事件；缺名69条、断链22处不阻断查阅。行业仅为接口返回标签，没有历史归属日期；更名日期不是公告可用日；公司早期旧新名称方向未确认，不保证完整历史全称回放"
+        }
+      ],
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true
+      },
+      "history": {
+        "run_id": "81874289fca649609d5506d291acdd18",
+        "task_id": "tdx-company-renames",
+        "started_at": 1791221341.6692986,
+        "origin": "explicit-name-collection",
+        "fresh": false,
+        "baseline_revision": 8,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 1
+        },
+        "finished_at": 1791221343.3734055,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "phase": "complete",
+          "batch_id": "54d982aaeec2445d94c254f55a0d266a",
+          "pages": 3,
+          "requests": 1,
+          "collected": 3546,
+          "source_count": 3576,
+          "through": "2026-10-06",
+          "contract": 2
+        }
+      },
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "industries": {
+        "csrc_industry": {
+          "nonnull": 3546,
+          "missing": 0
+        },
+        "tdx_industry": {
+          "nonnull": 3443,
+          "missing": 103
+        }
+      },
+      "source_wire_payload_bytes": 432099,
+      "error_count": 0
+    },
+    "tdx-security-renames": {
+      "status": "complete",
+      "stored_events": 8368,
+      "source_count": 8368,
+      "markets": {
+        "BJ": {
+          "digest": "951d1dc4b6858cdc987467a980891bd9c20f3ba702d1eb0e8f5842eef1a1af6b",
+          "through": "2026-10-06",
+          "contract": 2,
+          "row_count": 102,
+          "observed_at": "2026-10-05T17:27:28.111806+00:00",
+          "source_count": 102
+        },
+        "SH": {
+          "digest": "0ac90e67eefb6a3df0af7542bb713f5319cd88d1fb504a128e2f7d9811e45f0c",
+          "through": "2026-10-06",
+          "contract": 2,
+          "row_count": 4141,
+          "observed_at": "2026-10-05T17:27:28.111806+00:00",
+          "source_count": 4141
+        },
+        "SZ": {
+          "digest": "d3814ee117c7fc84ae7be3eb4d30d82e1ec4fd42537ca95ddde057d432e4ac06",
+          "through": "2026-10-06",
+          "contract": 2,
+          "row_count": 4125,
+          "observed_at": "2026-10-05T17:27:28.111806+00:00",
+          "source_count": 4125
+        }
+      },
+      "preparation": [
+        {
+          "id": "fields",
+          "criterion": "fields",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "范围内8368条；证券/日期/行业字段及来源原值已核验；缺原名/新名129条；空值保持未知"
+        },
+        {
+          "id": "keys",
+          "criterion": "keys",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "事件完整身份含名称组合；公司完全重复保留出现次数，股票同证券同日唯一"
+        },
+        {
+          "id": "coverage",
+          "criterion": "coverage",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "SH 4141条；SZ 4125条；BJ 102条；SQL规范集合与三市场来源证明一致"
+        },
+        {
+          "id": "quality",
+          "criterion": "quality",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "来源内容一致；名称链不衔接17处；600750.SH 2026-01-30、600277.SH 2015-12-23、000691.SZ 2009-02-26、000416.SZ 2014-04-14、000629.SZ 2016-05-03；不填补来源缺口"
+        },
+        {
+          "id": "freshness",
+          "criterion": "freshness",
+          "phase": "数据",
+          "status": "pass",
+          "blocking": true,
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内；最新事件日期不作为更新时效"
+        },
+        {
+          "id": "temporal",
+          "criterion": "temporal",
+          "phase": "数据",
+          "status": "fail",
+          "blocking": false,
+          "measured": "普通查询保留来源事件；缺名129条、断链17处不阻断查阅。行业仅为接口返回标签，没有历史归属日期；更名日期不是公告可用日；缺名或断链区间不保证完整名称回放"
+        }
+      ],
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true
+      },
+      "history": {
+        "run_id": "f7040ea385a6492499b4443760a34570",
+        "task_id": "tdx-security-renames",
+        "started_at": 1791221343.5356805,
+        "origin": "explicit-name-collection",
+        "fresh": false,
+        "baseline_revision": 8,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 1
+        },
+        "finished_at": 1791221345.1394622,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "phase": "complete",
+          "batch_id": "ca4906068dc84311bcda59ac4c503eba",
+          "pages": 3,
+          "requests": 1,
+          "collected": 8368,
+          "source_count": 8368,
+          "through": "2026-10-06",
+          "contract": 2
+        }
+      },
+      "assessment": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      },
+      "industries": {
+        "csrc_industry": {
+          "nonnull": 8225,
+          "missing": 143
+        },
+        "tdx_industry": {
+          "nonnull": 7897,
+          "missing": 471
+        }
+      },
+      "source_wire_payload_bytes": 519528,
+      "error_count": 0
+    }
+  },
+  "pending_stream": 0,
+  "repeat_business_dml": 0,
+  "production_queries": {
+    "page": {
+      "p95_ms": 1.8906000041170046,
+      "returned": 200,
+      "read_bytes": 33484,
+      "explain_analyze": [
+        "-> Limit: 200 row(s)  (cost=588 rows=200) (actual time=0.0556..0.25 rows=200 loops=1)\n    -> Index lookup on security_name_change using ix_name_date (name_kind='security')  (cost=588 rows=5810) (actual time=0.0544..0.241 rows=200 loops=1)\n"
+      ]
+    },
+    "coverage": {
+      "p95_ms": 69.16180001280736,
+      "returned": 8368,
+      "read_bytes": 1432032,
+      "explain_analyze": [
+        "-> Limit: 30001 row(s)  (cost=588 rows=5810) (actual time=0.0418..2.58 rows=8368 loops=1)\n    -> Index lookup on security_name_change using PRIMARY (name_kind='security')  (cost=588 rows=5810) (actual time=0.0408..2.26 rows=8368 loops=1)\n"
+      ]
+    },
+    "allocated_bytes": 10764288
+  }
+}

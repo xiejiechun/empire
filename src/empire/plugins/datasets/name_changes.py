@@ -10,7 +10,9 @@ from empire.contracts.name_changes import (
     MARKETS,
     digest,
     identity,
+    pack_rows,
     project,
+    unpack_rows,
     validate_rows,
 )
 from empire.core.time import CHINA
@@ -19,7 +21,7 @@ from empire.plugins.infra.collection_state import confirmed_page
 TABLE = 'security_name_change'
 TABLES = {TABLE: {'name_kind', 'record_key', *COLUMNS}}
 KEYS = {TABLE: ['name_kind', 'record_key']}
-CONTRACT = 1
+CONTRACT = 2
 
 
 def read_rows(conn, kind, market=None, *, lock=False, include_keys=False):
@@ -29,7 +31,7 @@ def read_rows(conn, kind, market=None, *, lock=False, include_keys=False):
     records = conn.execute(text(f'SELECT record_key,{",".join(COLUMNS)} FROM {TABLE} WHERE {where} '
         'ORDER BY record_key LIMIT 30001' + (' FOR UPDATE' if lock else '')),
         {'kind': kind, 'market': '%.' + (market or '')}).all()
-    rows = [[r[1], r[2].isoformat(), r[3], r[4], r[5]] for r in records]
+    rows = [[r[1], r[2].isoformat(), *r[3:]] for r in records]
     return (rows, sum(r[0] != identity(row) for r, row in zip(records, rows, strict=True))) if include_keys else rows
 
 
@@ -39,14 +41,15 @@ class NameDataset:
     def __init__(self, kind):
         self.kind = kind
         self.DATASETS = {'names.' + kind + '.market'}
-        self.FINGERPRINT_NAMESPACE = 'tdx_names_' + kind + '_v1'
+        self.FINGERPRINT_NAMESPACE = 'tdx_names_' + kind + '_v2'
         self.PROJECT = project(kind)
         self.JOB = self.PROJECT + '-v1'
 
     def normalize(self, envelope):
         p = envelope.raw_payload
-        if set(p) != {'page', 'market', 'through', 'rows', 'source_count'}:
+        if set(p) != {'page', 'market', 'through', 'rows', 'industries', 'source_count'}:
             raise ValueError('更名消息字段不符')
+        p = {**p, 'rows': unpack_rows(p['rows'], p['industries'])}
         if p['market'] not in MARKETS or type(p['page']) is not int or p['page'] != MARKETS.index(p['market']) + 1:
             raise ValueError('更名市场消息顺序无效')
         if (not isinstance(p['through'], str) or date.fromisoformat(p['through']).isoformat() != p['through']
@@ -59,7 +62,7 @@ class NameDataset:
         return {**p, 'row_count': len(p['rows'])}
 
     def canonical_payload(self, envelope, data):
-        return {k: data[k] for k in ('page', 'market', 'through', 'rows', 'source_count')}
+        return {**{k: data[k] for k in ('page', 'market', 'through', 'source_count')}, **pack_rows(data['rows'])}
 
     def fingerprint_plan(self, envelope, data):
         return self.FINGERPRINT_NAMESPACE, {data['market']: (data['rows'], [
@@ -78,7 +81,7 @@ class NameDataset:
         records = conn.execute(text(f'SELECT record_key,{",".join(COLUMNS)} FROM {TABLE} '
             'WHERE name_kind=:kind AND unified_code LIKE :market LIMIT 30001 FOR UPDATE'),
             {'kind': self.kind, 'market': '%.' + data['market']}).all()
-        old = {r[0]: [r[1], r[2].isoformat(), r[3], r[4], r[5]] for r in records}
+        old = {r[0]: [r[1], r[2].isoformat(), *r[3:]] for r in records}
         new = {identity(row): row for row in data['rows']}
         removed = old.keys() - new.keys()
         if removed:
@@ -90,7 +93,8 @@ class NameDataset:
             conn.execute(text(f'INSERT INTO {TABLE}(name_kind,record_key,{",".join(COLUMNS)}) '
                 f'VALUES(:name_kind,:record_key,{",".join(":" + k for k in COLUMNS)}) '
                 'ON DUPLICATE KEY UPDATE unified_code=VALUES(unified_code),event_date=VALUES(event_date),'
-                'old_name=VALUES(old_name),new_name=VALUES(new_name),source_occurrences=VALUES(source_occurrences)'), changed[offset:offset + 500])
+                'old_name=VALUES(old_name),new_name=VALUES(new_name),source_occurrences=VALUES(source_occurrences),'
+                'csrc_industry=VALUES(csrc_industry),tdx_industry=VALUES(tdx_industry)'), changed[offset:offset + 500])
         outcome.update(written_count=len(removed) + len(changed), confirmed=[data['market']])
         return outcome
 
