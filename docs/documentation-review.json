@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-05T15:29:01.574701+00:00",
-  "note": "补齐程序内更名表七字段技术说明，新增两页面管理导航及独立生命周期登记；更新25张表和新增容量报告的契约回归，保留过期和超预算反例。",
+  "reviewed_at": "2026-10-05T16:13:08.688361+00:00",
+  "note": "按用户确认现有分钟委托汇总和日盘口已足够，移除独立日内五档回放准备项，同步85项采集清单；七项采集和业务数据保留",
   "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -64,7 +64,7 @@
     "src/empire/contracts/preparation_catalog.py": "982c1741c6e10717a4425f56a781c9c3f07b751e606d58fed67c4aea77358306",
     "src/empire/contracts/preparation_definition.py": "477165d7cebf12de9a54928a35e908ec6f58c9ae972effdc90403481c4d825d8",
     "src/empire/contracts/preparation_events.py": "42d379e42d648a0cd91b664b9ca04c69868fe2e83e3de52695fe84804c504c05",
-    "src/empire/contracts/preparation_existing.py": "687cbc976f4b242891ffb73cf15be15a67b5a09e6ba3cc047ace3309d6b19596",
+    "src/empire/contracts/preparation_existing.py": "cf828a51d9ab004dc181f2eca04f810795893de1a88f798d9f7c0fa6d8fb9ce1",
     "src/empire/contracts/preparation_foundation.py": "2aa597f07a7f8d5fafd9512c1cbbdb1dc56804a847f32038eb172542f767108d",
     "src/empire/contracts/preparation_markets.py": "3e4f3312f6efcfc2b2343d5d2102fcb5ab245f513c5624e6033767596e8af2bf",
     "src/empire/contracts/preparation_processing.py": "b90cf020058e05cc7bfe7d4de3baed889db93ce1173ed9038a7ec4127194ea13",
@@ -235,5 +235,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "718c9ace9b8b63ac0c5e84ec8c5ca1c38ff0cd3b0b0e8c139d0a3ad058e68f5f"
+  "content_sha256": "1ddbe083c74e60fd363e1ed05885357aa6a240c10b00907ac35ab684ec569b4f"
 }
