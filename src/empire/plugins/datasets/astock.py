@@ -6,6 +6,7 @@ import json
 from empire.contracts.business_schema import require_dataset_source
 from empire.contracts.data import Envelope, UnsupportedSchema, make_envelope
 from empire.contracts.dataset import DatasetContribution
+from empire.contracts.name_changes import KINDS as NAME_KINDS
 from empire.contracts.plugin import PluginContext, PluginManifest
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
 from empire.plugins.datasets import industries, news, stocks, suspensions, trade_calendar
@@ -15,6 +16,7 @@ from empire.plugins.datasets.financial_archive import FinancialDataset
 from empire.plugins.datasets.financial_statements import KINDS as FINANCIAL_KINDS
 from empire.plugins.datasets.financial_wire import SCHEMA_VERSION as FINANCIAL_SCHEMA_VERSION
 from empire.plugins.datasets.kaipanla_products import ProductDataset
+from empire.plugins.datasets.name_changes import NameDataset
 
 
 class DatasetPlugin:
@@ -25,6 +27,8 @@ class DatasetPlugin:
 
     def __init__(self, contributions=None):
         self.contributions = tuple(contributions or (
+            *(DatasetContribution(NameDataset(kind), 'incremental',
+                {NameDataset(kind).JOB: NameDataset(kind).PROJECT}) for kind in NAME_KINDS),
             *(DatasetContribution(ProductDataset(kind), 'incremental',
                 {ProductDataset(kind).JOB: ProductDataset(kind).PROJECT}) for kind in PRODUCTS),
             DatasetContribution(industries, 'incremental', {industries.JOB: industries.PROJECT}),

@@ -66,3 +66,6 @@
 
 
 七项有类型行情事实表：`stock_intraday_trend`、`stock_opening_auction`、`stock_minute_volume`、`stock_intraday_trade_block`、`stock_minute_entrust`、`stock_large_order_trend`、`stock_daily_quote`、`stock_daily_quote_level`。`stock_market_day`为聚合业务头，分笔块解码受契约字节上限约束；这些表与其他业务同属正式备份/恢复范围，旧维护副本另行保留。
+
+
+更名事件使用`security_name_change`有类型业务表；公司全称/股票简称由独立任务采集，新增表通过scripts/create_name_change_schema.py显式维护，启动不建表。

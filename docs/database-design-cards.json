@@ -574,6 +574,72 @@
       ],
       "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
       "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "names.company.market": {
+      "tables": [
+        "security_name_change"
+      ],
+      "grain": "一次证券名称变更；类型及市场为完整归档单位",
+      "identity": "name_kind+record_key（统一代码/日期/旧新名称）；固定tdx",
+      "dictionary": "docs/tdx-name-changes.md",
+      "queries": [
+        "200行日期游标列表",
+        "证券日期范围",
+        "类型市场有界覆盖扫描"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/name-changes-capacity-2026-10-05.json",
+        "sample": "25000合成事件；真实源公司3576/股票8368",
+        "growth": "一年15000、五年25000；两类总分配预算60MiB",
+        "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
+      },
+      "integrity": [
+        "来源全响应统计与规范集合",
+        "缺名不填补",
+        "来源重复出现次数",
+        "SQL状态同事务",
+        "旧响应及成功清队"
+      ],
+      "lifecycle": "docs/tdx-name-changes.md：全历史单请求、三市场原子入队、整轮等待归档；每天18:00修订检查；Redis丢失重查",
+      "delivery": "scripts/create_name_change_schema.py显式新建；typed读写路径；代理优先；两项目独立",
+      "tests": [
+        "tests/test_name_changes.py",
+        "tests/integration/test_name_archive.py"
+      ]
+    },
+    "names.security.market": {
+      "tables": [
+        "security_name_change"
+      ],
+      "grain": "一次证券名称变更；类型及市场为完整归档单位",
+      "identity": "name_kind+record_key（统一代码/日期/旧新名称）；固定tdx",
+      "dictionary": "docs/tdx-name-changes.md",
+      "queries": [
+        "200行日期游标列表",
+        "证券日期范围",
+        "类型市场有界覆盖扫描"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/name-changes-capacity-2026-10-05.json",
+        "sample": "25000合成事件；真实源公司3576/股票8368",
+        "growth": "一年15000、五年25000；两类总分配预算60MiB",
+        "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
+      },
+      "integrity": [
+        "来源全响应统计与规范集合",
+        "缺名不填补",
+        "来源重复出现次数",
+        "SQL状态同事务",
+        "旧响应及成功清队"
+      ],
+      "lifecycle": "docs/tdx-name-changes.md：全历史单请求、三市场原子入队、整轮等待归档；每天18:00修订检查；Redis丢失重查",
+      "delivery": "scripts/create_name_change_schema.py显式新建；typed读写路径；代理优先；两项目独立",
+      "tests": [
+        "tests/test_name_changes.py",
+        "tests/integration/test_name_archive.py"
+      ]
     }
   },
   "json_roles": {

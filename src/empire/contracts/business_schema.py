@@ -7,6 +7,7 @@ FIXED_SOURCES = MappingProxyType({
     **{table: 'kaipanla' for table in MARKET_TABLES},
     'stock': 'sina',
     'industry': 'ths', 'industry_member': 'ths',
+    'security_name_change': 'tdx',
     'income_statement': 'ths', 'balance_statement': 'ths', 'cashflow_statement': 'ths',
     'dividend_plan': 'tdx', 'additional_issue': 'tdx', 'rights_issue': 'tdx',
     'suspension_event': 'tdx', 'stock_market_day': 'kaipanla', 'trade_calendar': 'cninfo',
@@ -14,6 +15,7 @@ FIXED_SOURCES = MappingProxyType({
 TABLES = tuple(FIXED_SOURCES) + ('finance_news', 'collection_state', 'app_setting')
 
 DATASET_TABLES = {
+    'names.company.market': 'security_name_change', 'names.security.market': 'security_name_change',
     **{'kaipanla.' + kind + '.day': 'stock_market_day' for kind in
        ('trend', 'auction', 'volume', 'trades', 'entrust', 'large_order', 'quote')},
     'stock.universe.start': 'stock', 'stock.universe.page': 'stock',
@@ -30,6 +32,7 @@ DATASET_TABLE_GROUPS = {dataset: dataset_tables(dataset.split('.')[1]) if datase
                         for dataset, table in DATASET_TABLES.items()}
 
 PRIMARY_KEYS = {
+    'security_name_change': ['name_kind', 'record_key'],
     'stock': ['unified_code'], 'industry': ['industry_code'],
     'industry_member': ['industry_code', 'unified_code'],
     'trade_calendar': ['trade_date'],

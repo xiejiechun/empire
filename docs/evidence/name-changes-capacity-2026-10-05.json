@@ -1,0 +1,123 @@
+{
+  "bindings": {
+    "sql/schema.sql": "fd66c30053bd4807bb5d89d8cfbab2c71c1f6ee8eaaa76ed33c303ecebce7e4e",
+    "sql/schema-contract.json": "347760f701b0a7054faaa86004ed1c991ec967ef20c9d75ce2dfbe131b3f8779",
+    "src/empire/contracts/name_changes.py": "cc49c4d7d975dfd9bbba4fff800fe89ab7fa88d29b263b200af9b58faecb4324",
+    "src/empire/plugins/datasets/name_changes.py": "d4188b88ca43dafd8f938ec2e150ba36b9d0e3554d175d0c9ec069f02426570a",
+    "src/empire/plugins/data/name_changes.py": "9c337c01bbf96dfc2b3633a2748957c0a34650dc9491cfbd3d1460e946cee6f0",
+    "scripts/measure_name_changes.py": "92337ea0d5d75a4b0fac23e74369a1fe567b3d5a7258f932fef2fcb8a8e8f7f9"
+  },
+  "measurements": {
+    "page_p95_ms": 1.3553000026149675,
+    "security_p95_ms": 0.4415000003064051,
+    "coverage_p95_ms": 109.49259999324568,
+    "import_seconds": 1.6757750999968266,
+    "allocated_bytes": 13254656
+  },
+  "limits": {
+    "page_p95_ms": 50,
+    "security_p95_ms": 50,
+    "coverage_p95_ms": 500,
+    "import_seconds": 10,
+    "allocated_bytes": 62914560
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 25000,
+    "cache": "first query unforced; subsequent hot repetitions",
+    "synthetic": true
+  },
+  "reviewed_tradeoffs": "紧凑事件字段有SQL索引；覆盖检查全读本类型至30000上限，普通页面200行。25000条是容量实验，不冒充可一次入队的真实响应；超单次消息预算明确失败。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_name_change",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_name_security,ix_name_date",
+        "key": "ix_name_date",
+        "key_len": "10",
+        "ref": "const",
+        "rows": 12104,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_name_change",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_name_security,ix_name_date",
+        "key": "ix_name_security",
+        "key_len": "24",
+        "ref": null,
+        "rows": 5,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_name_change",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_name_security,ix_name_date",
+        "key": "PRIMARY",
+        "key_len": "10",
+        "ref": "const",
+        "rows": 12104,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 12000
+    },
+    "security": {
+      "returned": 5,
+      "read_bytes": 285
+    },
+    "coverage": {
+      "returned": 25000,
+      "read_bytes": 1500006
+    }
+  },
+  "python_peak_bytes": 11219031,
+  "initial": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 25000,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "repeat": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 0,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "revision": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 2,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "cleanup": "UUID-owned test database dropped in finally",
+  "passed": true
+}

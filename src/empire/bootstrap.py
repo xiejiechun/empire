@@ -1,10 +1,12 @@
 from dataclasses import replace
 
+from empire.contracts.name_changes import KINDS as NAME_KINDS
+from empire.contracts.name_changes import project as name_project
 from empire.core.manager import PluginManager
 from empire.core.redaction import Redactor
 from empire.plugins.collection.control import CollectionControl, TaskContribution
 from empire.plugins.collection.records import RecordsPlugin
-from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS
+from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS, TaskDefaults
 from empire.plugins.collectors.cninfo_calendar import CninfoCalendarCollector
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
 from empire.plugins.collectors.kaipanla_products import KaipanlaProductCollector
@@ -12,6 +14,7 @@ from empire.plugins.collectors.sina_news import SinaNewsCollector
 from empire.plugins.collectors.sina_universe import SinaUniverseCollector
 from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
 from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
+from empire.plugins.collectors.tdx_name_changes import NameChangeCollector
 from empire.plugins.collectors.tdx_rights_issues import TdxRightsIssuesCollector
 from empire.plugins.collectors.tdx_suspensions import TdxSuspensionCollector
 from empire.plugins.collectors.ths_industries import ThsIndustryCollector
@@ -20,6 +23,7 @@ from empire.plugins.data.capital_actions import CapitalDataPlugin
 from empire.plugins.data.financial_statements import FinancialDataPlugin
 from empire.plugins.data.industries import IndustryDataPlugin
 from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
+from empire.plugins.data.name_changes import NameDataPlugin
 from empire.plugins.data.news import NewsDataPlugin
 from empire.plugins.data.preparation import PreparationPlugin
 from empire.plugins.data.stocks import StockDataPlugin
@@ -38,6 +42,7 @@ from empire.plugins.ui.financial_statements import FinancialUiPlugin
 from empire.plugins.ui.help import HelpUiPlugin
 from empire.plugins.ui.industries import IndustryUiPlugin
 from empire.plugins.ui.kaipanla_products import KaipanlaProductUiPlugin
+from empire.plugins.ui.name_changes import NameUiPlugin
 from empire.plugins.ui.news import NewsUiPlugin
 from empire.plugins.ui.preparation import PreparationUiPlugin
 from empire.plugins.ui.proxies import ProxyUiPlugin
@@ -72,6 +77,9 @@ def build_manager(cfg: dict) -> PluginManager:
         IndustryDataPlugin(namespace=cfg['redis'].get('namespace', 'empire'),
                            archive_settings=cfg.get('archive', {})),
         ThsIndustryCollector(), IndustryUiPlugin(),
+        *(NameDataPlugin(kind, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for kind in NAME_KINDS),
+        *(NameChangeCollector(kind) for kind in NAME_KINDS),
+        *(NameUiPlugin(kind) for kind in NAME_KINDS),
         *(KaipanlaProductDataPlugin(kind, namespace=cfg['redis'].get('namespace', 'empire')) for kind in PRODUCTS),
         *(KaipanlaProductCollector(kind) for kind in PRODUCTS),
         *(KaipanlaProductUiPlugin(kind) for kind in PRODUCTS),
@@ -88,7 +96,12 @@ def build_manager(cfg: dict) -> PluginManager:
                              archive_settings=cfg.get('archive', {})) for kind in FINANCIAL_KINDS),
         *(ThsStatementCollector(kind) for kind in FINANCIAL_KINDS),
         *(FinancialUiPlugin(kind) for kind in FINANCIAL_KINDS),
-        CollectionControl([*(TaskContribution(project(kind), '开盘啦' + item.title,
+        CollectionControl([*(TaskContribution(name_project(kind), item[0] + '（通达信）',
+            'collector.tdx_' + kind + '_renames', 'tdx', '一次完整历史响应；缺名及链断裂独立显示',
+            category='证券基础', source_name='通达信', default_schedule=TaskDefaults('daily',
+                description='每天北京时间18:00核验全部历史，一次请求发现新增与历史修订；可编辑计划。'),
+            fresh_description='核验来源全部更名历史；已入队轮次先完成归档，缺失名称保持未知。')
+            for kind, item in NAME_KINDS.items()), *(TaskContribution(project(kind), '开盘啦' + item.title,
             'collector.kaipanla_' + kind, 'kaipanla', item.note,
             category='高频行情', source_name='开盘啦', interval_seconds=86400,
             parallel_downloads=True, default_enabled=False,

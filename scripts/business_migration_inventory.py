@@ -10,7 +10,10 @@ from empire.contracts.business_schema import FIXED_SOURCES
 from empire.contracts.market_storage import MARKET_TABLES
 
 ROOT = Path(__file__).resolve().parents[1]
-LEGACY_SOURCES = {**{t: s for t, s in FIXED_SOURCES.items() if t not in MARKET_TABLES}, 'stock_intraday': 'kaipanla'}
+LEGACY_TABLES = set(re.findall(r'CREATE TABLE IF NOT EXISTS (\w+)',
+    (ROOT / 'sql/legacy/business-v1.sql').read_text('utf-8')))
+LEGACY_SOURCES = {**{t: s for t, s in FIXED_SOURCES.items()
+                    if t not in MARKET_TABLES and t in LEGACY_TABLES}, 'stock_intraday': 'kaipanla'}
 OLD = tuple(LEGACY_SOURCES) + ('finance_news', 'collection_state', 'app_setting')
 NEW = OLD + ('suspension_source_date',)
 PREFIX = 'empire_v2_'

@@ -148,3 +148,6 @@ MySQL 使用 stock 保留当前股票列表、collection_state 保留每项目�
 ## 开盘啦存储与设计门禁
 
 七项各自使用证券日业务头与类型化事实表，分笔按200点无损压缩块保存；数据页从SQL有界分页，覆盖规划只读业务头。旧证券日JSON通过显式维护入口迁移，启动不改表。字段、公共设计门禁及容量限制见[业务设计规范](docs/database-design-standard.md)和[实施方案](docs/kaipanla-storage-optimization-plan.md)，当次结果见[交付证据](docs/evidence/kaipanla-storage-optimization-2026-10-05.md)。
+
+
+通达信公司全称与股票简称更名分别接入采集与浏览，默认每天北京时间18:00核验全部来源历史；采集完成与缺名/断链数据质量检查分别显示。见[公司与股票更名](docs/tdx-name-changes.md)。

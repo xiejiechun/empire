@@ -34,6 +34,8 @@ status 查看阶段，resume 持同一日志续跑。日志绑定数据库 serve
 
 ## 结构与验证参考
 
+旧版完整库迁移的源表集合绑定sql/legacy/business-v1.sql，不随新增插件表扩张。公司与股票更名为新业务，使用create_name_change_schema.py显式新增，不参与旧库证券键转换，也不改写已有更名数据。
+
 固定来源：股票 sina；行业和三表 ths；分红/增发/配股/停复牌 tdx；分时 kaipanla；日历 cninfo。权威登记见 contracts/business_schema.py。未知来源在入队规范化及 SQL 写入前拒绝。新闻和 collection_state 继续保留行级 source。
 
 主键：股票 unified_code；行业 industry_code；成分 industry_code + unified_code；财报 unified_code + report_date；分时 unified_code + trade_date；资本事件 record_key；停复牌 unified_code + suspended_at + resume_key + record_key；来源日期在完整事件键前加 source_date；日历 trade_date。事件和财报日期索引包含市场表达式以保持原市场/代码排序。

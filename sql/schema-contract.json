@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "e23624a4e8d141f6203b7e503863e213985c80846c289346f04c6237742f99e3",
+  "schema_sha256": "fd66c30053bd4807bb5d89d8cfbab2c71c1f6ee8eaaa76ed33c303ecebce7e4e",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -1470,6 +1470,77 @@
       ],
       "indexes": {},
       "checks": {}
+    },
+    "security_name_change": {
+      "columns": {
+        "name_kind": {
+          "type": "varchar(8) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "old_name": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "new_name": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "source_occurrences": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        }
+      },
+      "primary": [
+        "name_kind",
+        "record_key"
+      ],
+      "indexes": {
+        "ix_name_date": {
+          "columns": [
+            "name_kind",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_name_security": {
+          "columns": [
+            "name_kind",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_name_kind": "(name_kindin('company','security'))",
+        "ck_name_new": "((new_nameisnull)or(char_length(trim(new_name))>0))",
+        "ck_name_occurrences": "(source_occurrencesbetween1and29999)",
+        "ck_name_old": "((old_nameisnull)or(char_length(trim(old_name))>0))"
+      }
     }
   }
 }

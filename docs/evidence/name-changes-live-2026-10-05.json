@@ -1,0 +1,202 @@
+{
+  "checked_at": "2026-10-05T23:09:18.329974+08:00",
+  "tasks": {
+    "tdx-company-renames": {
+      "status": "complete",
+      "stored_events": 3546,
+      "source_count": 3576,
+      "markets": {
+        "BJ": {
+          "digest": "32c5f4c607bb8d7e3cb41767c3ed76bfb70371fe6bafa5a9f716822341ef0ee6",
+          "through": "2026-10-05",
+          "contract": 1,
+          "row_count": 19,
+          "observed_at": "2026-10-05T15:03:20.737209+00:00",
+          "source_count": 34
+        },
+        "SH": {
+          "digest": "d999238648383ded8affe3f6a86c299961dadf67e20c1de50e71b860d7042359",
+          "through": "2026-10-05",
+          "contract": 1,
+          "row_count": 1541,
+          "observed_at": "2026-10-05T15:03:20.737209+00:00",
+          "source_count": 1549
+        },
+        "SZ": {
+          "digest": "6d076074ca497abf777882b791942223143efc0a87cc54477ba8c1dc7419f354",
+          "through": "2026-10-05",
+          "contract": 1,
+          "row_count": 1986,
+          "observed_at": "2026-10-05T15:03:20.737209+00:00",
+          "source_count": 1993
+        }
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "范围内3546条；缺原名/新名69条；空值保持未知"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "事件完整身份含名称组合；公司完全重复保留出现次数，股票同证券同日唯一"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "SH 1541条；SZ 1986条；BJ 19条；SQL规范集合与三市场来源证明一致"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "名称链不衔接22处；600687.SH 2013-11-08、000503.SZ 2018-05-23、000737.SZ 2022-09-09、000803.SZ 2020-08-11、600767.SH 2015-06-03；不填补来源缺口"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内；最新事件日期不作为更新时效"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "股票按来源更名日期使用；缺名/断链范围不支持完整回放；公司早期旧新名称方向未确认，不能宣称历史全称回放"
+        }
+      ],
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true
+      },
+      "history": {
+        "run_id": "64bd9e220570497faaaae253a38b4814",
+        "task_id": "tdx-company-renames",
+        "started_at": 1791212958.6073182,
+        "origin": "explicit-name-collection",
+        "fresh": false,
+        "baseline_revision": 2,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 1
+        },
+        "finished_at": 1791212960.2839391,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "phase": "complete",
+          "batch_id": "3210c23100a44a59a7bf6ff807eaf436",
+          "pages": 3,
+          "requests": 1,
+          "collected": 3546,
+          "source_count": 3576,
+          "through": "2026-10-05"
+        }
+      }
+    },
+    "tdx-security-renames": {
+      "status": "complete",
+      "stored_events": 8368,
+      "source_count": 8368,
+      "markets": {
+        "BJ": {
+          "digest": "d5f05e96a534f922bb8aec2dc6601a487339b1126b3992d57b6c585fadec1a23",
+          "through": "2026-10-05",
+          "contract": 1,
+          "row_count": 102,
+          "observed_at": "2026-10-05T15:03:22.556536+00:00",
+          "source_count": 102
+        },
+        "SH": {
+          "digest": "395d67bf557a5cb5026bd3f44bc4b5a6129a342166e7c3fee440117a2401a6c7",
+          "through": "2026-10-05",
+          "contract": 1,
+          "row_count": 4141,
+          "observed_at": "2026-10-05T15:03:22.556536+00:00",
+          "source_count": 4141
+        },
+        "SZ": {
+          "digest": "20cde987c3b77a24271c8bf301236e19dcc66f5e9fe5e23a504b8511a21854a7",
+          "through": "2026-10-05",
+          "contract": 1,
+          "row_count": 4125,
+          "observed_at": "2026-10-05T15:03:22.556536+00:00",
+          "source_count": 4125
+        }
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "范围内8368条；缺原名/新名129条；空值保持未知"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "事件完整身份含名称组合；公司完全重复保留出现次数，股票同证券同日唯一"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "SH 4141条；SZ 4125条；BJ 102条；SQL规范集合与三市场来源证明一致"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "名称链不衔接17处；600750.SH 2026-01-30、600277.SH 2015-12-23、000691.SZ 2009-02-26、000416.SZ 2014-04-14、000629.SZ 2016-05-03；不填补来源缺口"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内；最新事件日期不作为更新时效"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "股票按来源更名日期使用；缺名/断链范围不支持完整回放；公司早期旧新名称方向未确认，不能宣称历史全称回放"
+        }
+      ],
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true
+      },
+      "history": {
+        "run_id": "04d86ca86b2e4ce5af1a896632852dd0",
+        "task_id": "tdx-security-renames",
+        "started_at": 1791212960.3826654,
+        "origin": "explicit-name-collection",
+        "fresh": false,
+        "baseline_revision": 2,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 1
+        },
+        "finished_at": 1791212962.9955695,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "phase": "complete",
+          "batch_id": "0944e19b0627469e9c5629ffd213798f",
+          "pages": 3,
+          "requests": 1,
+          "collected": 8368,
+          "source_count": 8368,
+          "through": "2026-10-05"
+        }
+      }
+    }
+  },
+  "pending_stream": 0,
+  "repeat_business_dml": 0,
+  "repeat_scope": "正式源完整响应重复核验；规范摘要可信命中，未执行更名业务INSERT/UPDATE/DELETE"
+}

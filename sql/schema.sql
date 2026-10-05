@@ -327,6 +327,23 @@ CREATE TABLE IF NOT EXISTS cashflow_statement (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Source appearances are business associations, not collection run history.
+CREATE TABLE IF NOT EXISTS security_name_change (
+    name_kind VARCHAR(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    record_key CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    event_date DATE NOT NULL,
+    old_name VARCHAR(200) NULL,
+    new_name VARCHAR(200) NULL,
+    source_occurrences INT UNSIGNED NOT NULL,
+    PRIMARY KEY (name_kind, record_key),
+    KEY ix_name_security (name_kind, unified_code, event_date, record_key),
+    KEY ix_name_date (name_kind, event_date, unified_code, record_key),
+    CONSTRAINT ck_name_kind CHECK (name_kind IN ('company','security')),
+    CONSTRAINT ck_name_occurrences CHECK (source_occurrences BETWEEN 1 AND 29999),
+    CONSTRAINT ck_name_old CHECK (old_name IS NULL OR CHAR_LENGTH(TRIM(old_name))>0),
+    CONSTRAINT ck_name_new CHECK (new_name IS NULL OR CHAR_LENGTH(TRIM(new_name))>0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
 CREATE TABLE IF NOT EXISTS suspension_source_date (
     source_date DATE NOT NULL,
     unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,

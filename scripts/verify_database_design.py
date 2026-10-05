@@ -16,6 +16,16 @@ LEGACY_BASELINES = frozenset({
     'additional_issues.unit', 'rights_issues.unit', 'calendar.month', 'suspensions.period', 'news.flash.page',
 })  # Approved pre-existing contracts, not an escape hatch for future datasets.
 
+
+def verify_scoped_ddl(evidence, schema, tables):
+    statements = {m[1]: m[0] for m in re.finditer(
+        r'CREATE TABLE IF NOT EXISTS (\w+)\s*\([\s\S]*?;', schema.replace('\r\n', '\n'))}
+    for table in tables:
+        actual = hashlib.sha256(statements[table].encode()).hexdigest()
+        if evidence.get('ddl_scopes', {}).get(table) != actual:
+            raise ValueError(f'已测量业务表DDL变化，须重新测量：{table}')
+
+
 def verify(root):
     schema = (root/'sql/schema.sql').read_bytes()
     manifest = json.loads((root/'sql/schema-contract.json').read_text('utf-8'))
@@ -51,6 +61,10 @@ def verify(root):
             raise ValueError(f'{dataset} 新数据集不能冒充历史容量基线')
         if capacity['status'] == 'measured':
             evidence = json.loads((root/capacity['evidence']).read_text('utf-8'))
+            if 'sql/schema.sql' not in evidence['bindings']:
+                # Existing measurements may bind an archived DDL, but must still
+                # prove every table used by this dataset unchanged in current SQL.
+                verify_scoped_ddl(evidence, schema.decode(), card['tables'])
             for path, checksum in evidence['bindings'].items():
                 if hashlib.sha256((root/path).read_bytes()).hexdigest() != checksum:
                     raise ValueError(f'{dataset} 容量证据已过期：{path}')
