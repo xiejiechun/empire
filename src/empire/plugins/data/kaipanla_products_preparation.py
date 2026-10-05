@@ -19,23 +19,24 @@ async def audit(query, request=None):
     missing, invalid, count, checked = [], [], 0, 0
     for stock in selected:
         def read():
-            with query.mysql.read_engine.connect() as conn:
-                return query._records(conn, stock['market'], stock['code'], lower, upper)
-        records = await query.mysql.read(read)
+            local_life, local_covered, local_count, local_invalid = None, set(), 0, []
+            with query.mysql.read_engine.begin() as conn:
+                for stored in query._records(conn, stock['market'], stock['code'], lower, upper):
+                    try:
+                        row = query._decode(stored, stock['market'], stock['code'])
+                        local_life = local_life or row['lifecycle']
+                        if local_life != row['lifecycle']:
+                            raise ValueError('上市生命周期改变，需要补采')
+                        local_covered.add(stored['trade_date'])
+                        local_count += point_count(row)
+                    except (ValueError, KeyError, TypeError) as exc:
+                        if len(local_invalid) < 5:
+                            local_invalid.append(stock['code'] + '：' + str(exc))
+            return local_life, local_covered, local_count, local_invalid
+        life, covered, points, problems = await query.mysql.read(read)
         checked += 1
-        if len(records) > 10000:
-            raise ValueError('证券日核验超限')
-        life, covered = None, set()
-        for stored in sorted(records, key=lambda r: r['version_observed_at'], reverse=True):
-            try:
-                row = query._decode(stored, stock['market'], stock['code'])
-                life = life or row['lifecycle']
-                if life != row['lifecycle']:
-                    raise ValueError('上市生命周期改变，需要补采')
-                covered.add(stored['trade_date'])
-                count += point_count(row)
-            except (ValueError, KeyError, TypeError) as exc:
-                invalid.append(stock['code'] + '：' + str(exc))
+        count += points
+        invalid.extend(problems)
         if life is None:
             missing.append(stock['code'] + ' 缺少有效数据及上市关联')
             break

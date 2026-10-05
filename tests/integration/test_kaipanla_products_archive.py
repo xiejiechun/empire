@@ -56,6 +56,17 @@ async def test_each_source_no_dml_revision_old_response_and_ack_replay(kind, mon
             await archive.fingerprints.invalidate(dataset.FINGERPRINT_NAMESPACE, 'kaipanla')
             await publish(changed_metadata, now + timedelta(minutes=2))
             assert not writes
+            # SQL-confirmed no-change B is newer than an intervening changed C,
+            # even after the disposable fingerprint is explicitly lost.
+            intervening = copy.deepcopy(row)
+            if kind == 'quote':
+                intervening['data']['real']['last_px'] += .01
+            else:
+                intervening['data'][PRODUCTS[kind].field][0][1] += 1
+            await archive.fingerprints.invalidate(dataset.FINGERPRINT_NAMESPACE, 'kaipanla')
+            await publish(intervening, now + timedelta(minutes=1, seconds=30))
+            assert not writes
+            assert (await query.day('SZ', '000001', '2021-01-04'))['data']['data'] == row['data']
             changed = copy.deepcopy(row)
             if kind == 'quote':
                 changed['data']['real']['last_px'] += .01

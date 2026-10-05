@@ -1,0 +1,247 @@
+{
+  "date": "2026-10-05",
+  "scope": "50真实证券3交易日1016单元；500合成证券60日208200业务头；另有100000点合成最大分笔单元",
+  "bindings": {
+    "sql/schema.sql": "e23624a4e8d141f6203b7e503863e213985c80846c289346f04c6237742f99e3",
+    "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+    "src/empire/plugins/datasets/market_mapping.py": "802e345a3794c82e205d328285e094ad46927f062727f3886c3cc5e3833c5639",
+    "src/empire/plugins/datasets/market_repository.py": "721c02a558efa12b0587ebbcfdeb09a6f963b3f1e9abe01b29fa711377008011",
+    "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
+    "src/empire/plugins/data/kaipanla_products.py": "d456d418004ca129e6e1365166ef6771645f8f216fd8c2ffb95b664c615102ad",
+    "scripts/measure_market_storage.py": "804259b388483484f61a12c2d662f36e84397e7aa908616bd40d8de334097417",
+    "src/empire/plugins/datasets/kaipanla_products.py": "31a90500dfe07bb7999227e2601320cab03040befcaa3ee49947f4d04c7be4d6",
+    "src/empire/plugins/collectors/kaipanla_products_source.py": "eb93e3686e6b06e098ad9b1d2106b36da80a828e5546355c98c0db6fd6d3ef72",
+    "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2"
+  },
+  "measurements": {
+    "page_p95_ms": 2.516,
+    "next_page_p95_ms": 2.837,
+    "time_page_p95_ms": 3.099,
+    "sample_full_day_p95_ms": 36.391,
+    "import_seconds": 7.768633499996213,
+    "allocation_ratio": 0.9475913181577554,
+    "scale_gib": 7.64581298828125,
+    "max_page_p95_ms": 2.574,
+    "max_page_python_peak_bytes": 290047,
+    "cold_repeat_p95_ms": 38.2,
+    "revision_pair_p95_ms": 122.682
+  },
+  "limits": {
+    "page_p95_ms": 5,
+    "next_page_p95_ms": 5,
+    "time_page_p95_ms": 5,
+    "sample_full_day_p95_ms": 45,
+    "import_seconds": 12,
+    "allocation_ratio": 1.5,
+    "scale_gib": 10,
+    "max_page_p95_ms": 5,
+    "max_page_python_peak_bytes": 350000,
+    "cold_repeat_p95_ms": 45,
+    "revision_pair_p95_ms": 150
+  },
+  "comparison": {
+    "old_allocation_bytes": 30949376,
+    "new_allocation_bytes": 29327360,
+    "old_insert_seconds": 3.0910970000040834,
+    "new_insert_seconds": 7.768633499996213,
+    "old_day": {
+      "p50_ms": 17.963,
+      "p95_ms": 19.236,
+      "max_ms": 21.462
+    },
+    "new_day": {
+      "p50_ms": 22.32,
+      "p95_ms": 36.391,
+      "max_ms": 36.991
+    },
+    "ratios": {
+      "day_p95_ratio": 1.8918174256602203,
+      "insert_time_ratio": 2.513228636948614
+    },
+    "python_peak": {
+      "old_day": 1741120,
+      "new_day": 1964614,
+      "page": 296532
+    }
+  },
+  "scale": {
+    "planned_securities": 500,
+    "days": 60,
+    "restriction": "SQL shape/load experiment; source gaps retained by templates; hashes not coverage proofs",
+    "insert_seconds": {
+      "stock_market_day": 2.09909609999886,
+      "stock_intraday_trend": 168.55447520000598,
+      "stock_opening_auction": 3.9553806000039913,
+      "stock_minute_volume": 142.66147240000282,
+      "stock_intraday_trade_block": 24.632658399998036,
+      "stock_minute_entrust": 132.5941724000004,
+      "stock_large_order_trend": 126.118533199995,
+      "stock_daily_quote": 0.34750530000019353,
+      "stock_daily_quote_level": 1.8835939999989932
+    },
+    "allocation": {
+      "tables": [
+        {
+          "TABLE_NAME": "additional_issue",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 49152
+        },
+        {
+          "TABLE_NAME": "app_setting",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 0
+        },
+        {
+          "TABLE_NAME": "balance_statement",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 16384
+        },
+        {
+          "TABLE_NAME": "capacity_days",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 0
+        },
+        {
+          "TABLE_NAME": "capacity_keys",
+          "DATA_LENGTH": 49152,
+          "INDEX_LENGTH": 0
+        },
+        {
+          "TABLE_NAME": "cashflow_statement",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 16384
+        },
+        {
+          "TABLE_NAME": "collection_state",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 0
+        },
+        {
+          "TABLE_NAME": "dividend_plan",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 49152
+        },
+        {
+          "TABLE_NAME": "finance_news",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 32768
+        },
+        {
+          "TABLE_NAME": "income_statement",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 16384
+        },
+        {
+          "TABLE_NAME": "industry",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 0
+        },
+        {
+          "TABLE_NAME": "industry_member",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 16384
+        },
+        {
+          "TABLE_NAME": "rights_issue",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 49152
+        },
+        {
+          "TABLE_NAME": "stock",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 0
+        },
+        {
+          "TABLE_NAME": "stock_daily_quote",
+          "DATA_LENGTH": 21544960,
+          "INDEX_LENGTH": 1589248
+        },
+        {
+          "TABLE_NAME": "stock_daily_quote_level",
+          "DATA_LENGTH": 134037504,
+          "INDEX_LENGTH": 0
+        },
+        {
+          "TABLE_NAME": "stock_intraday_trade_block",
+          "DATA_LENGTH": 1837072384,
+          "INDEX_LENGTH": 29966336
+        },
+        {
+          "TABLE_NAME": "stock_intraday_trend",
+          "DATA_LENGTH": 1305477120,
+          "INDEX_LENGTH": 270532608
+        },
+        {
+          "TABLE_NAME": "stock_large_order_trend",
+          "DATA_LENGTH": 939524096,
+          "INDEX_LENGTH": 258981888
+        },
+        {
+          "TABLE_NAME": "stock_market_day",
+          "DATA_LENGTH": 107790336,
+          "INDEX_LENGTH": 8929280
+        },
+        {
+          "TABLE_NAME": "stock_minute_entrust",
+          "DATA_LENGTH": 1342177280,
+          "INDEX_LENGTH": 270532608
+        },
+        {
+          "TABLE_NAME": "stock_minute_volume",
+          "DATA_LENGTH": 1111490560,
+          "INDEX_LENGTH": 274726912
+        },
+        {
+          "TABLE_NAME": "stock_opening_auction",
+          "DATA_LENGTH": 294649856,
+          "INDEX_LENGTH": 0
+        },
+        {
+          "TABLE_NAME": "suspension_event",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 32768
+        },
+        {
+          "TABLE_NAME": "suspension_source_date",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 16384
+        },
+        {
+          "TABLE_NAME": "trade_calendar",
+          "DATA_LENGTH": 16384,
+          "INDEX_LENGTH": 0
+        }
+      ],
+      "bytes": 8209629184
+    },
+    "counts": {
+      "stock_market_day": 208200,
+      "stock_intraday_trend": 7230000,
+      "stock_opening_auction": 1285200,
+      "stock_minute_volume": 7230000,
+      "stock_intraday_trade_block": 433260,
+      "stock_minute_entrust": 7230000,
+      "stock_large_order_trend": 6796200,
+      "stock_daily_quote": 30000,
+      "stock_daily_quote_level": 600000
+    },
+    "explain": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_daily_quote",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_quote_date",
+        "key": "ix_quote_date",
+        "key_len": "3",
+        "ref": "const",
+        "rows": 500,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "conditions": "同机MySQL8.4.9独立13320；warm缓存30次、100000点页Python tracemalloc；最终小样本无并发实验；规模实验有并行测试负载，仅容量/访问形状，不称冷盘/多年压测。",
+  "reviewed_tradeoffs": "原整日相对1.2倍和归档吞吐80%门槛未达到。优化整数映射和重复编码后保留类型化查询，接受一次性导入成本及整日详细校验成本，正式UI改用有界页；用明确绝对预算持续约束，不能宣称原指标通过。分笔字段无法SQL逐笔聚合；全市场多年预测超本机预算，未授权启动该范围。"
+}

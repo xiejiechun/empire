@@ -1,8 +1,5 @@
 """Independent product/day snapshots, consumed solely by the shared archiver."""
-import json
 from datetime import UTC, date, datetime
-
-from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.security import unified_code
@@ -11,11 +8,11 @@ from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
 from empire.plugins.collectors.kaipanla_products_source import parse
 from empire.plugins.datasets.intraday import digest as hash_value
 from empire.plugins.datasets.intraday import identity
+from empire.plugins.datasets.market_repository import write_day
 from empire.plugins.infra.collection_state import confirmed_page
+from empire.plugins.infra.schema_manifest import market_contract
 
-TABLES = {'stock_market_day': {'kind', 'unified_code', 'trade_date', 'payload',
-                              'content_hash', 'version_observed_at'}}
-KEYS = {'stock_market_day': ['kind', 'unified_code', 'trade_date']}
+TABLES, KEYS = market_contract()
 FIELDS = {'kind', 'code', 'market', 'trade_date', 'source_code', 'aliases', 'data', 'lifecycle', 'metadata'}
 
 
@@ -29,7 +26,7 @@ def digest(row):
     return hash_value(business_content(row))
 
 
-def validate(row, kind=None):
+def validate(row, kind=None, *, storage_check=True):
     if not isinstance(row, dict) or set(row) != FIELDS:
         raise ValueError('证券日字段不完整')
     item = PRODUCTS.get(row['kind'])
@@ -60,6 +57,9 @@ def validate(row, kind=None):
     parsed = parse(payload, row['code'], day, row['kind'], row['aliases'])
     if parsed['data'] != row['data']:
         raise ValueError('业务数据未按现行契约规范化')
+    from empire.plugins.datasets.market_mapping import encode
+    if storage_check:
+        encode(row, '', datetime.now(CHINA).replace(tzinfo=None))
     return row
 
 
@@ -106,23 +106,15 @@ class ProductDataset:
         confirmed, writes = [], 0
         observed = mysql_time(envelope.observed_at)
         for row in data['rows']:
-            params = dict(kind=self.kind, unified_code=unified_code(row['market'], row['code']),
-                          trade_date=date.fromisoformat(row['trade_date']))
-            old = conn.execute(text('SELECT payload,content_hash,version_observed_at FROM stock_market_day '
-                'WHERE kind=:kind AND unified_code=:unified_code AND trade_date=:trade_date FOR UPDATE'),
-                params).mappings().first()
-            if old and observed < old['version_observed_at']:
+            previous = data.get('archive_state', {})
+            progress = previous.get('progress', {})
+            if (previous.get('last_security_day') == identity(row) and progress.get('observed_at')
+                    and envelope.observed_at < datetime.fromisoformat(progress['observed_at'])):
                 continue
-            checksum = digest(row)
-            prior = json.loads(old['payload']) if old and isinstance(old['payload'], str) else old['payload'] if old else None
-            if not old or business_content(prior) != business_content(row) or old['content_hash'] != checksum:
-                conn.execute(text('INSERT INTO stock_market_day(kind,unified_code,trade_date,payload,content_hash,version_observed_at) '
-                    'VALUES(:kind,:unified_code,:trade_date,:payload,:hash,:observed) ON DUPLICATE KEY UPDATE '
-                    'payload=VALUES(payload),content_hash=VALUES(content_hash),version_observed_at=VALUES(version_observed_at)'),
-                    {**params, 'payload': json.dumps(row, ensure_ascii=False, separators=(',', ':')),
-                     'hash': checksum, 'observed': observed})
-                writes += 1
-            confirmed.append(identity(row))
+            accepted, changed = write_day(conn, row, digest(row), observed)
+            writes += changed
+            if accepted:
+                confirmed.append(identity(row))
         return dict(status='complete', row_count=len(data['rows']), written_count=writes, confirmed=confirmed)
 
     def archive_state(self, envelope, data, outcome, previous):

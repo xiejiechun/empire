@@ -133,10 +133,167 @@ CREATE TABLE IF NOT EXISTS stock_market_day (
     kind VARCHAR(16) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     trade_date DATE NOT NULL,
-    payload JSON NOT NULL,
+    source_code VARCHAR(6) CHARACTER SET ascii COLLATE ascii_bin NULL,
+    listing_date DATE NOT NULL,
+    listing_source VARCHAR(16) NOT NULL,
+    market_start DATE NOT NULL,
+    identity_extra JSON NOT NULL,
+    product_extra JSON NOT NULL,
+    source_metadata JSON NOT NULL,
     content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     version_observed_at DATETIME(6) NOT NULL,
-    PRIMARY KEY (kind, unified_code, trade_date)
+    contract_version SMALLINT UNSIGNED NOT NULL,
+    point_count INT UNSIGNED NOT NULL,
+    key_set_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    PRIMARY KEY (kind, unified_code, trade_date),
+    KEY ix_market_date (kind, trade_date, unified_code),
+    CONSTRAINT ck_market_kind CHECK (kind IN ('trend','auction','volume','trades','entrust','large_order','quote')),
+    CONSTRAINT ck_market_count CHECK (point_count BETWEEN 1 AND 100000),
+    CONSTRAINT ck_market_contract CHECK (contract_version=2),
+    CONSTRAINT ck_market_extra CHECK (JSON_STORAGE_SIZE(identity_extra)<=16384 AND JSON_STORAGE_SIZE(product_extra)<=16384 AND JSON_STORAGE_SIZE(source_metadata)<=16384)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS stock_intraday_trend (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    seq INT UNSIGNED NOT NULL,
+    source_time TIME(0) NOT NULL,
+    float_mask SMALLINT UNSIGNED NOT NULL,
+    price DECIMAL(30,12) NOT NULL,
+    average_price DECIMAL(30,12) NOT NULL,
+    source_volume DECIMAL(30,12) NOT NULL,
+    source_flag DECIMAL(30,12) NOT NULL,
+    PRIMARY KEY (unified_code, trade_date, source_time),
+    KEY ix_minute_date (trade_date, source_time, unified_code),
+    CONSTRAINT ck_trend_seq CHECK (seq<241),
+    CONSTRAINT ck_trend_mask CHECK (float_mask<256)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS stock_opening_auction (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    seq INT UNSIGNED NOT NULL,
+    source_time TIME(0) NOT NULL,
+    float_mask SMALLINT UNSIGNED NOT NULL,
+    price DECIMAL(30,12) NOT NULL,
+    source_flag DECIMAL(30,12) NOT NULL,
+    source_volume DECIMAL(30,12) NOT NULL,
+    PRIMARY KEY (unified_code, trade_date, seq),
+    CONSTRAINT ck_auction_seq CHECK (seq<100000),
+    CONSTRAINT ck_auction_mask CHECK (float_mask<64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS stock_minute_volume (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    seq INT UNSIGNED NOT NULL,
+    source_time TIME(0) NOT NULL,
+    float_mask SMALLINT UNSIGNED NOT NULL,
+    source_volume DECIMAL(30,12) NOT NULL,
+    source_turnover DECIMAL(30,12) NOT NULL,
+    source_flag DECIMAL(30,12) NOT NULL,
+    PRIMARY KEY (unified_code, trade_date, source_time),
+    KEY ix_minute_date (trade_date, source_time, unified_code),
+    CONSTRAINT ck_volume_seq CHECK (seq<241),
+    CONSTRAINT ck_volume_mask CHECK (float_mask<64)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS stock_intraday_trade_block (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    block_seq INT UNSIGNED NOT NULL,
+    first_seq INT UNSIGNED NOT NULL,
+    last_seq INT UNSIGNED NOT NULL,
+    first_time TIME(0) NOT NULL,
+    last_time TIME(0) NOT NULL,
+    point_count SMALLINT UNSIGNED NOT NULL,
+    format_version SMALLINT UNSIGNED NOT NULL,
+    body BLOB NOT NULL,
+    block_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    PRIMARY KEY (unified_code, trade_date, block_seq),
+    KEY ix_trade_time (unified_code, trade_date, first_time, block_seq),
+    CONSTRAINT ck_trade_block CHECK (format_version=1 AND point_count BETWEEN 1 AND 200 AND first_seq=block_seq*200 AND last_seq=first_seq+point_count-1 AND last_time>=first_time AND OCTET_LENGTH(body)<=24576)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS stock_minute_entrust (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    seq INT UNSIGNED NOT NULL,
+    source_time TIME(0) NOT NULL,
+    float_mask SMALLINT UNSIGNED NOT NULL,
+    buy_volume DECIMAL(30,12) NOT NULL,
+    sell_volume DECIMAL(30,12) NOT NULL,
+    buy_turnover DECIMAL(30,12) NOT NULL,
+    sell_turnover DECIMAL(30,12) NOT NULL,
+    PRIMARY KEY (unified_code, trade_date, source_time),
+    KEY ix_minute_date (trade_date, source_time, unified_code),
+    CONSTRAINT ck_entrust_seq CHECK (seq<241),
+    CONSTRAINT ck_entrust_mask CHECK (float_mask<256)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS stock_large_order_trend (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    seq INT UNSIGNED NOT NULL,
+    source_time TIME(0) NOT NULL,
+    float_mask SMALLINT UNSIGNED NOT NULL,
+    net_amount DECIMAL(30,12) NOT NULL,
+    PRIMARY KEY (unified_code, trade_date, source_time),
+    KEY ix_minute_date (trade_date, source_time, unified_code),
+    CONSTRAINT ck_large_order_seq CHECK (seq<241),
+    CONSTRAINT ck_large_order_mask CHECK (float_mask<4)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS stock_daily_quote (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    float_mask BIGINT UNSIGNED NOT NULL,
+    present_mask BIGINT UNSIGNED NOT NULL,
+    `time` DECIMAL(30,12) NULL,
+    `up_px` DECIMAL(30,12) NULL,
+    `avg_px` DECIMAL(30,12) NULL,
+    `low_px` DECIMAL(30,12) NULL,
+    `down_px` DECIMAL(30,12) NULL,
+    `high_px` DECIMAL(30,12) NULL,
+    `last_px` DECIMAL(30,12) NULL,
+    `open_px` DECIMAL(30,12) NULL,
+    `pe_rate` DECIMAL(30,12) NULL,
+    `jtPeRate` DECIMAL(30,12) NULL,
+    `TTMPeRate` DECIMAL(30,12) NULL,
+    `amount_in` DECIMAL(30,12) NULL,
+    `amplitude` DECIMAL(30,12) NULL,
+    `px_change` DECIMAL(30,12) NULL,
+    `vol_ratio` DECIMAL(30,12) NULL,
+    `amount_out` DECIMAL(30,12) NULL,
+    `dyn_pb_rate` DECIMAL(30,12) NULL,
+    `phcj_volume` DECIMAL(30,12) NULL,
+    `entrust_rate` DECIMAL(30,12) NULL,
+    `market_value` DECIMAL(30,12) NULL,
+    `total_amount` DECIMAL(30,12) NULL,
+    `total_shares` DECIMAL(30,12) NULL,
+    `phcj_turnover` DECIMAL(30,12) NULL,
+    `px_change_rate` DECIMAL(30,12) NULL,
+    `total_turnover` DECIMAL(30,12) NULL,
+    `turnover_ratio` DECIMAL(30,12) NULL,
+    `circulation_value` DECIMAL(30,12) NULL,
+    `circulation_amount` DECIMAL(30,12) NULL,
+    `actualcirculation_value` DECIMAL(30,12) NULL,
+    PRIMARY KEY (unified_code, trade_date),
+    KEY ix_quote_date (trade_date, unified_code),
+    CONSTRAINT ck_quote_mask CHECK (float_mask<288230376151711744 AND present_mask<536870912)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS stock_daily_quote_level (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    side CHAR(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    level TINYINT UNSIGNED NOT NULL,
+    price DECIMAL(30,12) NOT NULL,
+    source_volume DECIMAL(30,12) NOT NULL,
+    float_mask TINYINT UNSIGNED NOT NULL,
+    PRIMARY KEY (unified_code, trade_date, side, level),
+    CONSTRAINT ck_quote_level CHECK (side IN ('b','s') AND level BETWEEN 1 AND 10),
+    CONSTRAINT ck_quote_level_value CHECK (price>=0 AND source_volume>=0 AND float_mask<16)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE IF NOT EXISTS income_statement (

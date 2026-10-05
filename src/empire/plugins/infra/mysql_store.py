@@ -62,6 +62,9 @@ def validate_tables(connection, columns_by_table, primary_keys):
         if str(options.get("mysql_engine", "")).lower() != "innodb":
             raise RuntimeError(f"表 {name} 必须使用 InnoDB 事务引擎")
 
+    from empire.plugins.infra.schema_manifest import validate_shapes
+    validate_shapes(connection, columns_by_table)
+
 
 class MySQLPlugin:
     manifest = PluginManifest(

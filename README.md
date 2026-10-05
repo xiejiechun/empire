@@ -144,3 +144,7 @@ MySQL 使用 stock 保留当前股票列表、collection_state 保留每项目�
 ## 2026-10-05 开盘啦七项拆分
 
 分时走势与开盘竞价拆为独立项目，并新增分钟量额、分笔、分钟委托汇总、大单净额、历史盘口摘要，共七项采集/查询/UI 插件。共享 `stock_market_day` 的类型、证券、日期业务键，沿统一 Redis 入队与归档；重复内容及仅元数据时间变化不写业务表。新增任务默认停用，开发与重启不会启动全历史采集。旧合并任务由显式维护入口迁移，启动不自动转换。日常操作、生命周期和限制见 [开盘啦七项历史数据](docs/kaipanla-intraday.md)。
+
+## 开盘啦存储与设计门禁
+
+七项各自使用证券日业务头与类型化事实表，分笔按200点无损压缩块保存；数据页从SQL有界分页，覆盖规划只读业务头。旧证券日JSON通过显式维护入口迁移，启动不改表。字段、公共设计门禁及容量限制见[业务设计规范](docs/database-design-standard.md)和[实施方案](docs/kaipanla-storage-optimization-plan.md)，当次结果见[交付证据](docs/evidence/kaipanla-storage-optimization-2026-10-05.md)。

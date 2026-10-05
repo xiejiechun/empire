@@ -184,7 +184,7 @@ async def test_old_missing_lifecycle_and_same_count_wrong_set_are_repaired(intra
     async with archive.lock:
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text("UPDATE stock_market_day SET payload=JSON_REMOVE(payload,'$.lifecycle')"),
+            conn.execute(text("UPDATE stock_market_day SET listing_source=''"),
                          {'source': query.source})
     assert not await query.covered_days('SZ', '000001', date(2021, 1, 4), date(2021, 1, 5), lifecycle=None)
     with pytest.raises(ValueError):
@@ -194,7 +194,7 @@ async def test_old_missing_lifecycle_and_same_count_wrong_set_are_repaired(intra
     async with archive.lock:
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
         with query.mysql.engine.begin() as conn:
-            conn.execute(text("UPDATE stock_market_day SET payload=JSON_SET(payload,'$.data.trend[1][0]','09:30')"),
+            conn.execute(text("UPDATE stock_intraday_trend SET source_time='09:29:00' WHERE seq=1"),
                          {'source': query.source})
     checks = await query.preparation_check({'codes': ['000001']})
     assert next(c for c in checks if c.criterion == 'fields').status == 'fail'

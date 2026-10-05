@@ -1,0 +1,641 @@
+{
+  "datasets": {
+    "kaipanla.trend.day": {
+      "tables": [
+        "stock_market_day",
+        "stock_intraday_trend"
+      ],
+      "grain": "独立类型证券日父头及来源事实",
+      "identity": "见schema-contract.json主键；固定来源由数据集校验",
+      "dictionary": "docs/kaipanla-field-dictionary.md",
+      "queries": [
+        "单证券范围",
+        "指定日期截面",
+        "有界详情/分页",
+        "轻量覆盖"
+      ],
+      "capacity": {
+        "sample": "50证券3交易日1016单元",
+        "growth": "5000证券250交易日；分笔以200点块计量",
+        "page_limit": 200,
+        "response": "公共下载预算",
+        "regression": "详情P95/吞吐需同机对照",
+        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
+        "status": "measured",
+        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+      },
+      "integrity": [
+        "现行来源集合验证",
+        "规范摘要",
+        "旧响应",
+        "同事务关联",
+        "显式迁移"
+      ],
+      "tests": [
+        "tests/test_kaipanla_products.py",
+        "tests/integration/test_kaipanla_products_archive.py",
+        "tests/integration/test_market_storage.py"
+      ],
+      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
+      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
+    },
+    "kaipanla.auction.day": {
+      "tables": [
+        "stock_market_day",
+        "stock_opening_auction"
+      ],
+      "grain": "独立类型证券日父头及来源事实",
+      "identity": "见schema-contract.json主键；固定来源由数据集校验",
+      "dictionary": "docs/kaipanla-field-dictionary.md",
+      "queries": [
+        "单证券范围",
+        "指定日期截面",
+        "有界详情/分页",
+        "轻量覆盖"
+      ],
+      "capacity": {
+        "sample": "50证券3交易日1016单元",
+        "growth": "5000证券250交易日；分笔以200点块计量",
+        "page_limit": 200,
+        "response": "公共下载预算",
+        "regression": "详情P95/吞吐需同机对照",
+        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
+        "status": "measured",
+        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+      },
+      "integrity": [
+        "现行来源集合验证",
+        "规范摘要",
+        "旧响应",
+        "同事务关联",
+        "显式迁移"
+      ],
+      "tests": [
+        "tests/test_kaipanla_products.py",
+        "tests/integration/test_kaipanla_products_archive.py",
+        "tests/integration/test_market_storage.py"
+      ],
+      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
+      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
+    },
+    "kaipanla.volume.day": {
+      "tables": [
+        "stock_market_day",
+        "stock_minute_volume"
+      ],
+      "grain": "独立类型证券日父头及来源事实",
+      "identity": "见schema-contract.json主键；固定来源由数据集校验",
+      "dictionary": "docs/kaipanla-field-dictionary.md",
+      "queries": [
+        "单证券范围",
+        "指定日期截面",
+        "有界详情/分页",
+        "轻量覆盖"
+      ],
+      "capacity": {
+        "sample": "50证券3交易日1016单元",
+        "growth": "5000证券250交易日；分笔以200点块计量",
+        "page_limit": 200,
+        "response": "公共下载预算",
+        "regression": "详情P95/吞吐需同机对照",
+        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
+        "status": "measured",
+        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+      },
+      "integrity": [
+        "现行来源集合验证",
+        "规范摘要",
+        "旧响应",
+        "同事务关联",
+        "显式迁移"
+      ],
+      "tests": [
+        "tests/test_kaipanla_products.py",
+        "tests/integration/test_kaipanla_products_archive.py",
+        "tests/integration/test_market_storage.py"
+      ],
+      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
+      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
+    },
+    "kaipanla.trades.day": {
+      "tables": [
+        "stock_market_day",
+        "stock_intraday_trade_block"
+      ],
+      "grain": "独立类型证券日父头及来源事实",
+      "identity": "见schema-contract.json主键；固定来源由数据集校验",
+      "dictionary": "docs/kaipanla-field-dictionary.md",
+      "queries": [
+        "单证券范围",
+        "指定日期截面",
+        "有界详情/分页",
+        "轻量覆盖"
+      ],
+      "capacity": {
+        "sample": "50证券3交易日1016单元",
+        "growth": "5000证券250交易日；分笔以200点块计量",
+        "page_limit": 200,
+        "response": "公共下载预算",
+        "regression": "详情P95/吞吐需同机对照",
+        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
+        "status": "measured",
+        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+      },
+      "integrity": [
+        "现行来源集合验证",
+        "规范摘要",
+        "旧响应",
+        "同事务关联",
+        "显式迁移"
+      ],
+      "tests": [
+        "tests/test_kaipanla_products.py",
+        "tests/integration/test_kaipanla_products_archive.py",
+        "tests/integration/test_market_storage.py"
+      ],
+      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
+      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
+    },
+    "kaipanla.entrust.day": {
+      "tables": [
+        "stock_market_day",
+        "stock_minute_entrust"
+      ],
+      "grain": "独立类型证券日父头及来源事实",
+      "identity": "见schema-contract.json主键；固定来源由数据集校验",
+      "dictionary": "docs/kaipanla-field-dictionary.md",
+      "queries": [
+        "单证券范围",
+        "指定日期截面",
+        "有界详情/分页",
+        "轻量覆盖"
+      ],
+      "capacity": {
+        "sample": "50证券3交易日1016单元",
+        "growth": "5000证券250交易日；分笔以200点块计量",
+        "page_limit": 200,
+        "response": "公共下载预算",
+        "regression": "详情P95/吞吐需同机对照",
+        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
+        "status": "measured",
+        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+      },
+      "integrity": [
+        "现行来源集合验证",
+        "规范摘要",
+        "旧响应",
+        "同事务关联",
+        "显式迁移"
+      ],
+      "tests": [
+        "tests/test_kaipanla_products.py",
+        "tests/integration/test_kaipanla_products_archive.py",
+        "tests/integration/test_market_storage.py"
+      ],
+      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
+      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
+    },
+    "kaipanla.large_order.day": {
+      "tables": [
+        "stock_market_day",
+        "stock_large_order_trend"
+      ],
+      "grain": "独立类型证券日父头及来源事实",
+      "identity": "见schema-contract.json主键；固定来源由数据集校验",
+      "dictionary": "docs/kaipanla-field-dictionary.md",
+      "queries": [
+        "单证券范围",
+        "指定日期截面",
+        "有界详情/分页",
+        "轻量覆盖"
+      ],
+      "capacity": {
+        "sample": "50证券3交易日1016单元",
+        "growth": "5000证券250交易日；分笔以200点块计量",
+        "page_limit": 200,
+        "response": "公共下载预算",
+        "regression": "详情P95/吞吐需同机对照",
+        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
+        "status": "measured",
+        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+      },
+      "integrity": [
+        "现行来源集合验证",
+        "规范摘要",
+        "旧响应",
+        "同事务关联",
+        "显式迁移"
+      ],
+      "tests": [
+        "tests/test_kaipanla_products.py",
+        "tests/integration/test_kaipanla_products_archive.py",
+        "tests/integration/test_market_storage.py"
+      ],
+      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
+      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
+    },
+    "kaipanla.quote.day": {
+      "tables": [
+        "stock_market_day",
+        "stock_daily_quote",
+        "stock_daily_quote_level"
+      ],
+      "grain": "独立类型证券日父头及来源事实",
+      "identity": "见schema-contract.json主键；固定来源由数据集校验",
+      "dictionary": "docs/kaipanla-field-dictionary.md",
+      "queries": [
+        "单证券范围",
+        "指定日期截面",
+        "有界详情/分页",
+        "轻量覆盖"
+      ],
+      "capacity": {
+        "sample": "50证券3交易日1016单元",
+        "growth": "5000证券250交易日；分笔以200点块计量",
+        "page_limit": 200,
+        "response": "公共下载预算",
+        "regression": "详情P95/吞吐需同机对照",
+        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
+        "status": "measured",
+        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+      },
+      "integrity": [
+        "现行来源集合验证",
+        "规范摘要",
+        "旧响应",
+        "同事务关联",
+        "显式迁移"
+      ],
+      "tests": [
+        "tests/test_kaipanla_products.py",
+        "tests/integration/test_kaipanla_products_archive.py",
+        "tests/integration/test_market_storage.py"
+      ],
+      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
+      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
+    },
+    "stock.universe.start": {
+      "tables": [
+        "stock"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "stock.universe.page": {
+      "tables": [
+        "stock"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "stock.universe.complete": {
+      "tables": [
+        "stock"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "industry.snapshot": {
+      "tables": [
+        "industry",
+        "industry_member"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "income.statement": {
+      "tables": [
+        "income_statement"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "balance.statement": {
+      "tables": [
+        "balance_statement"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "cashflow.statement": {
+      "tables": [
+        "cashflow_statement"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "dividends.unit": {
+      "tables": [
+        "dividend_plan"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "additional_issues.unit": {
+      "tables": [
+        "additional_issue"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "rights_issues.unit": {
+      "tables": [
+        "rights_issue"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "calendar.month": {
+      "tables": [
+        "trade_calendar"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "suspensions.period": {
+      "tables": [
+        "suspension_event",
+        "suspension_source_date"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    },
+    "news.page": {
+      "tables": [
+        "finance_news"
+      ],
+      "grain": "现行业务完整单位，见已登记来源契约",
+      "identity": "现行SQL主键与固定/多来源声明",
+      "dictionary": "docs/mysql-business-schema.md",
+      "queries": [
+        "现行正式查询与数据准备；新增访问模式须补充预算"
+      ],
+      "capacity": {
+        "status": "legacy_baseline",
+        "bound": "现行来源契约的单元及查询上限"
+      },
+      "integrity": [
+        "现行专项完整性、摘要及版本防覆盖"
+      ],
+      "tests": [
+        "tests/test_business_schema_contract.py"
+      ],
+      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
+      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+    }
+  },
+  "json_roles": {
+    "additional_issue.payload": {
+      "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
+      "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
+      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+    },
+    "app_setting.payload": {
+      "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
+      "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
+      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+    },
+    "balance_statement.payload": {
+      "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
+      "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
+      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+    },
+    "cashflow_statement.payload": {
+      "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
+      "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
+      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+    },
+    "collection_state.payload": {
+      "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
+      "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
+      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+    },
+    "dividend_plan.payload": {
+      "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
+      "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
+      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+    },
+    "finance_news.tags": {
+      "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
+      "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
+      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+    },
+    "income_statement.payload": {
+      "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
+      "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
+      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+    },
+    "rights_issue.payload": {
+      "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
+      "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
+      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+    },
+    "stock_market_day.identity_extra": {
+      "purpose": "有界来源扩展或关联证明",
+      "limit": "16KiB",
+      "policy": "明确白名单，不保存事实序列或成功响应"
+    },
+    "stock_market_day.product_extra": {
+      "purpose": "有界来源扩展或关联证明",
+      "limit": "16KiB",
+      "policy": "明确白名单，不保存事实序列或成功响应"
+    },
+    "stock_market_day.source_metadata": {
+      "purpose": "有界来源扩展或关联证明",
+      "limit": "16KiB",
+      "policy": "明确白名单，不保存事实序列或成功响应"
+    }
+  }
+}

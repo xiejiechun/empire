@@ -33,6 +33,8 @@ try {
     }
     & $python (Join-Path $projectRoot 'scripts\preparation_evidence.py') package
     if ($LASTEXITCODE -ne 0) { throw 'Preparation package evidence failed.' }
+    & $python (Join-Path $projectRoot 'scripts\verify_database_design.py')
+    if ($LASTEXITCODE -ne 0) { throw 'Database design gate failed.' }
     & $python (Join-Path $projectRoot 'scripts\verify_documentation.py')
     if ($LASTEXITCODE -ne 0) { throw 'Documentation verification failed.' }
     & $python -m pip check

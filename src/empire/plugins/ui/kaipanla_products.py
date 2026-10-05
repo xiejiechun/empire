@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from empire.contracts.market_storage import dataset_tables
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
@@ -38,6 +39,7 @@ class ProductPage(QWidget):
         self.shell, self.kind, self.scope = shell, kind, QueryScope(self)
         self.future, self.applied, self.requested, self.dirty = None, None, None, False
         self.points, self.offset, self.payload = [], 0, None
+        self.cursors, self.page_index, self.next_cursor, self.total = [None], 0, None, 0
         item = PRODUCTS[kind]
         layout = QVBoxLayout(self)
         title = QLabel('开盘啦' + item.title)
@@ -90,12 +92,21 @@ class ProductPage(QWidget):
         layout.addLayout(paging)
 
     def find(self):
+        self.cursors, self.page_index, self.next_cursor = [None], 0, None
         self.applied = (self.market.currentText(), self.code.text().strip(), self.day.date().toString('yyyy-MM-dd'))
         self.dirty = True
 
     def move(self, step):
-        self.offset = max(0, min(max(0, ((len(self.points) - 1) // 200) * 200), self.offset + step))
-        self.render()
+        if self.future:
+            return
+        if step < 0 and self.page_index:
+            self.page_index -= 1
+        elif step > 0 and self.next_cursor:
+            self.page_index += 1
+            self.cursors = self.cursors[:self.page_index] + [self.next_cursor]
+        else:
+            return
+        self.dirty = True
 
     def render(self):
         item = PRODUCTS[self.kind]
@@ -103,9 +114,9 @@ class ProductPage(QWidget):
         self.table.setColumnCount(width)
         headers = ['来源序号', *HEADERS[self.kind]] if item.field else ['字段', '内容']
         self.table.setHorizontalHeaderLabels(headers)
-        values = self.points[self.offset:self.offset + 200]
+        values = self.points[:200]
         rows(self.table, [[self.offset + i + 1, *r] for i, r in enumerate(values)] if item.field else values)
-        self.position.setText(f'{self.offset + 1 if self.points else 0}～{min(self.offset + 200, len(self.points))} / {len(self.points)}')
+        self.position.setText(f'{self.offset + 1 if self.points else 0}～{self.offset + len(values)} / {self.total}')
 
     def tick(self):
         if getattr(self.shell, 'shutting_down', False):
@@ -119,21 +130,27 @@ class ProductPage(QWidget):
             else:
                 try:
                     result = self.scope.result('day', future)
-                    self.points, self.offset, self.payload = [], 0, result['data'] if result else None
+                    self.points, self.offset, self.payload = [], 0, result.get('data') if result else None
                     if result is None:
+                        self.total, self.next_cursor = 0, None
                         self.status.setText('本项证券日没有已归档数据；请核对采集状态。')
                     else:
-                        data = result['data']['data']
-                        field = PRODUCTS[self.kind].field
-                        self.points = data[field] if field else []
-                        self.status.setText('已读取本项完整证券日；按来源顺序分页展示，未合并同分钟或同秒记录。')
+                        if self.kind == 'quote':
+                            self.payload = result['data']
+                        else:
+                            self.points = result['points']
+                            self.offset, self.total = result['start'], result['total']
+                            self.next_cursor = result['next_cursor']
+                        self.status.setText('已读取本项已归档数据页；按来源顺序展示，同分钟或同秒记录均保留。')
                     self.render()
                 except Exception as exc:
                     self.status.setText(self.scope.failure_message('day', '查询失败', redact(exc, self.shell.cfg),
                                                                   stale=bool(self.points or self.payload)))
         if self.isVisible() and self.dirty and not self.future:
             self.dirty, self.requested = False, self.applied
-            self.future = self.scope.invoke('day', self.shell.runtime, capability(self.kind), 'day', *self.requested)
+            method = 'day' if self.kind == 'quote' else 'page'
+            args = self.requested if self.kind == 'quote' else (*self.requested, self.cursors[self.page_index])
+            self.future = self.scope.invoke('day', self.shell.runtime, capability(self.kind), method, *args)
 
     def save_ui_state(self):
         return dict(market=self.market.currentText(), code=self.code.text(), day=self.day.date().toString('yyyy-MM-dd'),
@@ -164,5 +181,5 @@ class KaipanlaProductUiPlugin(UiPlugin):
         item = PRODUCTS[self.kind]
         return (PageContribution('kaipanla_' + self.kind, '开盘啦' + item.title,
             partial(create_product_page, kind=self.kind), '数据浏览', 11, item.note,
-            database_tables=('stock_market_day',), catalogued=True, category='高频行情', source='开盘啦',
+            database_tables=dataset_tables(self.kind), catalogued=True, category='高频行情', source='开盘啦',
             cache_policy='lru', management=NavigationTarget('collection', NavigationContext(task_id=project(self.kind)))),)

@@ -755,7 +755,7 @@ MySQL 保存值优先；没有保存值的新任务默认手动，新网站组�
 
 ## 字段与规则
 
-**MySQL 保存每项目一条 collection_state 已归档状态和十四张业务表：`stock` 保留一份当前股票列表，`finance_news` 保留去重后的历史财经新闻，`trade_calendar` 保存交易和休市日期，`suspension_event` 保存沪深 A 股历史停复牌。另有 `dividend_plan`、`additional_issue`、`rights_issue` 保存增发送配，`income_statement`、`balance_statement`、`cashflow_statement` 保存三大财报，`industry`、`industry_member` 保存当前行业，`stock_market_day` 保存七项独立行情证券日。成功 HTTP 请求原文不持久保存。**
+**MySQL 保存每项目一条 collection_state 已归档状态和二十二张业务表：`stock` 保留一份当前股票列表，`finance_news` 保留去重后的历史财经新闻，`trade_calendar` 保存交易和休市日期，`suspension_event` 保存沪深 A 股历史停复牌。另有 `dividend_plan`、`additional_issue`、`rights_issue` 保存增发送配，`income_statement`、`balance_statement`、`cashflow_statement` 保存三大财报，`industry`、`industry_member` 保存当前行业，`stock_market_day` 保存七项独立证券日业务头，另有四种分钟事实、竞价序列、分笔类型化块、日摘要及盘口档位表。成功 HTTP 请求原文不持久保存。**
 
 有效响应解析、校验和规范化后，业务消息先进入 Redis 并立即唤醒归档器；归档器每 60 秒恢复扫描可归档批次。新数据提交 MySQL 后、确认 MySQL 已有相同内容后（含可信摘要命中）、或确认消息过时后，均确认并删除对应 Redis 消息。SQL 或后续 Redis 操作失败时保留消息重试；不完整批次继续留在 Redis，旧股票列表仍可查询。
 
@@ -1220,13 +1220,15 @@ MySQL 升级入口 scripts/migrate_business_schema.py 提供 preflight、migrate
 
 七个 collector/data/ui 插件分别以 `kaipanla_<kind>` 登记，kind 为 trend、auction、volume、trades、entrust、large_order、quote。项目为 `kaipanla-<kind>`（下划线转换连字符），任务在项目后加 `-v1`，数据集为 `kaipanla.<kind>.day@1`，每项目一条 collection_state。
 
-`stock_market_day` 主键 `(kind, unified_code, trade_date)`，每项每证券日一行有序业务数组；共享物理表不共享完成状态。字段如下：
+`stock_market_day` 主键 `(kind, unified_code, trade_date)`，每项每证券日一行业务头；有类型明细和分笔块保存实际事实，共享业务头不共享完成状态。字段如下：
 
 | 字段 | 含义 |
 | --- | --- |
 | kind | 七个独立数据类型，限制为已登记产品 |
 | unified_code / trade_date | 统一证券代码与交易日期，和业务内容关联一致 |
-| payload | kind、market、code、trade_date、source_code、aliases、lifecycle、data 与 metadata；data 保留本接口业务字段，metadata 保留可选来源时间 |
+| source_code / listing_date / listing_source / market_start | 来源证券回显与上市/市场生命周期 |
+| identity_extra / product_extra / source_metadata | 有界映射证明、来源日级附加字段及元数据；不含事实序列 |
+| contract_version / point_count / key_set_hash | 完整单元校验契约、点数与有序键集合证明 |
 | content_hash | 规范业务 SHA-256；包含生命周期，排除 metadata 和本次观测时间 |
 | version_observed_at | 当前存储版本的下载观测代次；北京时间 DATETIME(6)，相同内容不刷新 |
 
@@ -1263,3 +1265,22 @@ MySQL 升级入口 scripts/migrate_business_schema.py 提供 preflight、migrate
 ## 技术参考
 
 盘口使用 kaipanla_quote.query.day，可选走势通过 kaipanla_trend.query.day 只读查询，二者均对应 stock_market_day 的各自 kind。页面布局、格式与异步查询职责分别由独立模块负责，通过公共 QueryScope 管理页面销毁取消，不访问来源网络或写数据库。
+
+
+## 七项有类型存储、分页与维护
+
+日常从“数据浏览→数据目录”打开所需开盘啦页面，输入证券和交易日查询。序列每次最多200个来源点，上一页/下一页在数据库按顺序取页，保留同分钟竞价和同秒分笔；若该日发生来源修订，旧页游标明确失效，点击查询重新开始。盘口仍只读取同日独立分时，不要求其他项目全部完成。已保存任务计划不受结构升级影响，数据持久保存在MySQL。
+
+stock_market_day为每项证券日业务头，保存身份、上市关联、业务摘要、版本、点数、键集合摘要和校验契约；不再保存整份payload。普通补缺只查当前证明和生命周期，详细数据准备另核验实际明细。四种分钟明细为stock_intraday_trend、stock_minute_volume、stock_minute_entrust、stock_large_order_trend；竞价stock_opening_auction按来源序号；日摘要stock_daily_quote与20档stock_daily_quote_level分别保存指标和价量。stock_intraday_trade_block每200笔保存一个类型化压缩块，单块最多12400字节解码正文，包含原时刻和7个数值，不是HTTP原文，也不表示交易所完整逐笔流水。扩展JSON只保留有白名单的日统计、别名证明和来源元数据，每字段16KiB上限。
+
+旧七项JSON布局须正常关闭Empire、待归档为0，通过scripts/migrate_market_storage.py的preflight、migrate、verify显式升级，默认项目根config.toml、--config覆盖。日志支持status/resume；影子数据逐单元及全集核验后切换。启动不迁移，结构不符明确报错。旧恢复副本不作为应用读写路径；恢复运行有业务变化后禁止回退旧快照。数据库结构与发布验收记录和实际来源缺口分别报告，34个历史样本缺口不能通过改表消除。
+
+
+### 类型化事实字段参考
+
+所有证券日关联列为unified_code、trade_date。序列source_time保存真实来源时刻，seq保序；float_mask保留来源整数/浮点规范类型。分时price、average_price、source_volume、source_flag；分钟量额source_turnover；委托buy_volume、sell_volume、buy_turnover、sell_turnover；大单net_amount。竞价同分钟按seq分别保存。分笔块block_seq、first_seq、last_seq、first_time、last_time、point_count、format_version、body、block_hash有明确边界和压缩解码限制；块内source_field_4、source_field_5、source_field_6、source_field_7保留未知来源位置，不猜测业务含义。盘口side、level、price、source_volume分别表示买卖方、档位、价与来源量，零档位保留。
+
+日指标present_mask区分可选字段缺失与零值。来源real字段为time、up_px、avg_px、low_px、down_px、high_px、last_px、open_px、pe_rate、jtPeRate、TTMPeRate、amount_in、amplitude、px_change、vol_ratio、amount_out、dyn_pb_rate、phcj_volume、entrust_rate、market_value、total_amount、total_shares、phcj_turnover、px_change_rate、total_turnover、turnover_ratio、circulation_value、circulation_amount、actualcirculation_value。每项按来源数值存储，单位未确认不擅自转换；来源time不猜测时间戳。稳定指标可直接做日期截面和字段投影查询，分笔块支持边界定位及有界解码，未提供逐笔任意SQL字段筛选。
+
+
+分笔技术查询支持HH:MM:SS起止时段与版本绑定游标，保留同秒跨块多笔；日摘要分析查询按字段投影与日期/证券键有界分页。页面仍用当前页查询，详细整日与数据准备会完整核验，耗时更高。有限样本容量结果不能证明全市场多年存储可用，分笔块不能直接在SQL逐笔聚合；扩展范围前先核对磁盘与容量预算。

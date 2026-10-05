@@ -31,7 +31,7 @@ def test_lazy_query_preserves_new_drafts_and_all_same_minute_points():
         page.tick()
         assert len(pending) == 1
         page.code.setText('600519')
-        pending[0][1].set_result(dict(data=business_row('auction'), observed_at=None))
+        pending[0][1].set_result(dict(points=business_row('auction')['data']['bid'], total=5, start=0, next_cursor=None))
         page.tick()
         assert page.code.text() == '600519'
         assert page.table.rowCount() == 5
@@ -43,6 +43,12 @@ def test_lazy_query_preserves_new_drafts_and_all_same_minute_points():
         saved = page.save_ui_state()
         page.restore_ui_state(saved)
         assert page.code.text() == '600519'
+        page.show()
+        page.find()
+        page.tick()
+        pending[-1][1].set_result(None)
+        page.tick()
+        assert page.total == 0 and page.table.rowCount() == 0 and page.next_cursor is None
     finally:
         page.close()
         page.deleteLater()

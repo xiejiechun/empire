@@ -26,6 +26,8 @@ try {
     }
     & $python (Join-Path $projectRoot 'scripts\verify_documentation.py')
     if ($LASTEXITCODE -ne 0) { throw 'Documentation contract verification failed.' }
+    & $python (Join-Path $projectRoot 'scripts\verify_database_design.py')
+    if ($LASTEXITCODE -ne 0) { throw 'Database design gate failed.' }
     & $python -m ruff check src tests scripts
     if ($LASTEXITCODE -ne 0) { throw 'Ruff failed.' }
     & $python -m mypy

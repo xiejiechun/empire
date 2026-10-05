@@ -43,3 +43,23 @@ status 查看阶段，resume 持同一日志续跑。日志绑定数据库 serve
 ## 2026-10-05 开盘啦七项拆分
 
 分时走势与开盘竞价拆为独立项目，并新增分钟量额、分笔、分钟委托汇总、大单净额、历史盘口摘要，共七项采集/查询/UI 插件。共享 `stock_market_day` 的类型、证券、日期业务键，沿统一 Redis 入队与归档；重复内容及仅元数据时间变化不写业务表。新增任务默认停用，开发与重启不会启动全历史采集。旧合并任务由显式维护入口迁移，启动不自动转换。日常操作、生命周期和限制见 [开盘啦七项历史数据](kaipanla-intraday.md)。
+
+## 2026-10-05 后续设计规范与待实施优化
+
+新增或实质改造执行 [业务数据库设计规范](database-design-standard.md)。开盘啦目标结构、迁移和验收见 [七项存储优化方案](kaipanla-storage-optimization-plan.md)。后续实现以本页“七项有类型结构显式升级”及交付证据为准；前面的方案条目记录设计阶段边界。
+
+## 七项有类型结构显式升级（2026-10-05）
+
+七项新表结构为证券日业务头、四种分钟事实、竞价序列、分笔类型化压缩块、日摘要和盘口档位。完整字段及数值可逆规则见 [字段字典](kaipanla-field-dictionary.md)。统一表设计门禁登记24张正式表和多表数据集归属，运行启动校验列类型、NULL、unsigned、主键、索引和CHECK；发布/构建检查DDL摘要、设计卡、字典与JSON用途，不能只改SQL绕过登记。
+
+正常关闭Empire并等待原归档器清空业务队列，保留程序config.toml。执行：
+
+```powershell
+.\.venv\Scripts\python.exe scripts/migrate_market_storage.py preflight
+.\.venv\Scripts\python.exe scripts/migrate_market_storage.py migrate
+.\.venv\Scripts\python.exe scripts/migrate_market_storage.py verify
+```
+
+预检只读观察，不代表停写保证。维护通过正常单实例锁和共享数据库维护锁拒绝并发，日志默认为build/kaipanla-optimization/migration.json；status/resume继续同一日志，目标结构/实现或旧业务变化拒绝续跑。转换逐完整证券日提交影子表、读回验证规范内容和版本，再核对全集及其他业务表后多表原子切换；MySQL DDL隐式提交，恢复由阶段日志负责。不得跳过坏行或填平缺口。
+
+旧 `empire_market_v1_stock_market_day` 仅用于显式维护恢复，不双写。rollback要求停机、队列为空、新业务及其他表仍匹配迁移基线，并校验旧副本；有增量时拒绝回退，须前向修复或另行保全增量。切换后配套程序正常打开，遇旧结构明确拒绝。真实迁移及容量证据由本次交付报告记录，不将目标设计当作验收。

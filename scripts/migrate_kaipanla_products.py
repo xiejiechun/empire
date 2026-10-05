@@ -2,7 +2,6 @@
 import argparse
 import asyncio
 import json
-import re
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
@@ -52,10 +51,11 @@ def migrate(engine, namespace, *, apply=False):
                 list(split(row))
                 report['old_rows'] += 1
         return report
-    ddl = re.search(r'CREATE TABLE IF NOT EXISTS stock_market_day \(.*?;',
-        (Path(__file__).resolve().parents[1] / 'sql/schema.sql').read_text('utf-8'), re.S)[0]
-    with engine.begin() as conn:
-        conn.exec_driver_sql(ddl)
+    from empire.plugins.datasets.kaipanla_products import KEYS, TABLES
+    from empire.plugins.datasets.market_repository import head_record, read_day, write_day
+    from empire.plugins.infra.mysql_store import validate_tables
+    with engine.connect() as conn:
+        validate_tables(conn, TABLES, KEYS)
     # Keyset batches remain bounded; old rows are retired only after both new
     # snapshots are read back, including exact business content and version.
     while True:
@@ -70,22 +70,13 @@ def migrate(engine, namespace, *, apply=False):
                         stored['unified_code'], stored['trade_date'].isoformat()):
                     raise ValueError('旧业务关联或摘要损坏')
                 for value in split(row):
-                    params = dict(kind=value['kind'], security=stored['unified_code'], day=stored['trade_date'])
-                    old = conn.execute(text('SELECT payload,content_hash,version_observed_at FROM stock_market_day '
-                        'WHERE kind=:kind AND unified_code=:security AND trade_date=:day FOR UPDATE'), params).mappings().first()
-                    if old:
-                        prior = json.loads(old['payload']) if isinstance(old['payload'], str) else old['payload']
-                        if prior != value or old['content_hash'] != digest(value) or old['version_observed_at'] != stored['version_observed_at']:
-                            raise ValueError('新旧数据冲突，拒绝覆盖或清理旧记录')
-                    else:
-                        conn.execute(text('INSERT INTO stock_market_day(kind,unified_code,trade_date,payload,content_hash,version_observed_at) '
-                            'VALUES(:kind,:security,:day,:payload,:hash,:version)'),
-                            {**params, 'payload': json.dumps(value, ensure_ascii=False), 'hash': digest(value),
-                             'version': stored['version_observed_at']})
-                    actual = conn.execute(text('SELECT payload,content_hash,version_observed_at FROM stock_market_day '
-                        'WHERE kind=:kind AND unified_code=:security AND trade_date=:day'), params).mappings().one()
-                    body = json.loads(actual['payload']) if isinstance(actual['payload'], str) else actual['payload']
-                    if body != value or actual['content_hash'] != digest(value) or actual['version_observed_at'] != stored['version_observed_at']:
+                    old = head_record(conn, value['kind'], stored['unified_code'], stored['trade_date'], lock=True)
+                    if old and (read_day(conn, old) != value or old['version_observed_at'] != stored['version_observed_at']):
+                        raise ValueError('新旧数据冲突，拒绝覆盖或清理旧记录')
+                    if not old:
+                        write_day(conn, value, digest(value), stored['version_observed_at'])
+                    actual = head_record(conn, value['kind'], stored['unified_code'], stored['trade_date'])
+                    if read_day(conn, actual) != value or actual['version_observed_at'] != stored['version_observed_at']:
                         raise ValueError('迁移读回验证失败')
                     report['verified_products'] += 1
                 conn.execute(text('DELETE FROM stock_intraday WHERE unified_code=:security AND trade_date=:day'),

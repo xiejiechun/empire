@@ -12,7 +12,7 @@ from empire.plugins.datasets.financial_archive import FinancialDataset
 from empire.plugins.datasets.kaipanla_products import ProductDataset
 
 
-@pytest.mark.parametrize('dataset,table', DATASET_TABLES.items())
+@pytest.mark.parametrize('dataset,table', [(d,t) for d,t in DATASET_TABLES.items() if t in FIXED_SOURCES])
 def test_wrong_source_cannot_enter_fixed_dataset(dataset,table):
     require_dataset_source(dataset,FIXED_SOURCES[table])
     with pytest.raises(ValueError,match='固定来源'):

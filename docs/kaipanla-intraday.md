@@ -61,9 +61,13 @@
 
 ## 结构与维护
 
-`stock_market_day` 主键为 `(kind, unified_code, trade_date)`，每项每证券日一条 JSON 业务记录，含 source_code、aliases、lifecycle、data、metadata、内容摘要和版本观测时间。JSON 是规范业务内容，不是原始 HTTP 副本。独立类型共享表不共享断点、摘要或完成状态。
+`stock_market_day` 保存每项每证券日的业务头、上市关联、规范摘要、版本和完整性证明，主键仍为 `(kind, unified_code, trade_date)`。分时、量额、委托、大单分别保存到有类型分钟明细；竞价按来源序号保存同分钟多点；盘口为日指标及20档价量。分笔按200点有类型二进制块保存，保留秒时刻、顺序和7个来源数值，单块解码上限12400字节；不保存原始HTTP正文。字段及限制见 [字段字典](kaipanla-field-dictionary.md)。
 
-`python scripts/migrate_kaipanla_products.py` 只核查；加 `--apply` 显式迁移。正常关闭 Empire，待归档队列为空后运行，默认读取项目根 config.toml。逐条验证旧摘要与身份，事务内拆分、读回核对业务和版本后移除旧行；可中断重跑，目标冲突拒绝覆盖。旧表完整转换核验后删除，正式建表不再创建；旧合并项目从正式登记退役。旧版拆分入口产生的停用手动配置须通过 `scripts/configure_kaipanla_task_defaults.py --apply` 显式设置推荐默认计划。现行拆分入口直接创建停用的推荐默认计划；计划升级入口只改七项任务计划，保留启停、代理及重试选择，不改业务数据和表结构；重复执行无配置 DML，启动不自动迁移。
+序列页面通过数据库游标分页，每次最多200点；同证券日修订后旧游标明确失效，点击查询重开。盘口关联分时仍可独立缺失。普通补缺只读取业务头和当前契约证明，数据准备另按有界批次详细核验实际明细、必需关联和摘要；不得用日期存在或数量相等代替完整性。
+
+旧七项JSON布局须正常关闭Empire、待归档Stream为0后，通过 `scripts/migrate_market_storage.py preflight/migrate/verify` 显式升级，默认根目录config.toml，`--config`可覆盖。维护日志绑定数据库和实现，支持status/resume；影子表逐单元重建规范内容及版本等价后原子切换。启动只验证列类型、索引和约束，不自动迁移。旧表改名为维护恢复副本，应用只使用新结构；有新写入后不能直接rollback覆盖增量。详细操作见 [结构维护](mysql-business-schema.md)。
+
+早期合并分时/竞价的旧输入仍由 `scripts/migrate_kaipanla_products.py` 这个明确历史入口转换到现行已初始化结构，不在运行时猜测历史布局或串联维护。保存过的合法任务计划、启停、代理与重试设置继续优先；本次结构维护不修改计划或重新下载来源。
 
 有限实采验收入口 `scripts/verify_kaipanla.py` 固定仅取 000001.SZ 与 600000.SH 的最近已结束交易日，共 14 个独立证券日；强制代理，禁止直连回退，并核对正式查询与数据准备。保留有效业务，不开启自动计划。
 
@@ -72,3 +76,9 @@ CLI 为 `collect-intraday --kind trend|auction|volume|trades|entrust|large_order
 ## 开发与实采证据
 
 本轮开发与实际验证见 [七项插件交付证据](evidence/kaipanla-seven-2026-10-05.md)。容量实验另见 [单日容量测量](kaipanla-storage-measurement.md)，十接口临时原文测量不能替代本次七项归档验收或全历史覆盖证明。
+
+## 查询容量限制
+
+序列页面每次只从SQL取当前页；分笔正式查询还支持HH:MM:SS起止时段，保留同秒多笔，时段不能沿用其他范围的游标。日摘要分析接口可选择字段并按日期/证券键分页，日期跨度最多366日、证券最多500只、每页最多1000行。详细整日读取和详细数据准备需完整解码校验，耗时高于页查询；分笔块不能直接在SQL逐笔聚合。
+
+当前容量证据为有限真实样本及500股60日合成实验，不代表全市场多年部署能力。空间预测、首次导入与整日成本取舍见[存储实施评审](kaipanla-storage-optimization-plan.md)，最终迁移及桌面结果见[存储交付证据](evidence/kaipanla-storage-optimization-2026-10-05.md)。
