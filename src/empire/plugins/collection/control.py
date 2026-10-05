@@ -11,6 +11,7 @@ from uuid import uuid4
 from empire.contracts.plugin import PluginManifest
 from empire.core.identity import safe_project_id
 from empire.core.time import CHINA
+from empire.plugins.collection.execution_rules import ExecutionRule
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
 from empire.plugins.infra.settings import SettingsStore
 
@@ -42,6 +43,7 @@ class TaskContribution:
     parallel_downloads: bool = False
     default_enabled: bool = True
     fresh_description: str = "创建新批次；已归档数据按对应业务规则保留。"
+    execution_rule: ExecutionRule | None = None
 
 
 def validate_policy(value):
@@ -120,10 +122,14 @@ class CollectionControl:
             })
             job = self.state["jobs"][ident]
             cached = validate_policy(job["policy"])
-            policy = validate_policy(policies.get(ident, {
+            default = {
                 "enabled": self.definitions[ident].default_enabled, "mode": "manual",
                 "interval_seconds": self.definitions[ident].interval_seconds,
-                "daily_time": "18:00", "request_retries": 2}))
+                "daily_time": "18:00", "request_retries": 2}
+            rule = self.definitions[ident].execution_rule
+            policy = validate_policy(policies.get(ident, rule.policy(default) if rule else default))
+            if rule and not rule.matches(policy):
+                raise ValueError(f"{ident} 执行规则已更新；关闭程序后运行 scripts/migrate_kaipanla_task_rules.py --apply")
             job["policy"] = policy
             if cached != policy or (job["next_due"] is None and not job["active"]):
                 job["next_due"] = next_due(policy, time.time())
@@ -139,6 +145,9 @@ class CollectionControl:
 
     async def configure(self, ident, policy):
         policy = validate_policy(policy)
+        rule = self.definitions[ident].execution_rule
+        if rule and not rule.matches(policy):
+            raise ValueError("执行规则由插件确定，只能修改启停、重试及网络设置")
         async with self.lock:
             job = self.state["jobs"][ident]
             await self.settings.save("task", ident, policy)
@@ -331,6 +340,7 @@ class CollectionControl:
                 "source_name": spec.source_name or spec.rate_group,
                 "parallel_downloads": spec.parallel_downloads,
                 "fresh_description": spec.fresh_description,
+                "execution_rule": spec.execution_rule.description if spec.execution_rule else None,
                 "network_capacity": site_limits.get(spec.rate_group, {}),
                 "progress": (self.context.optional(spec.capability).health()
                              if self.context.optional(spec.capability) else {"status": "unavailable"})})

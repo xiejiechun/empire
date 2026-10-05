@@ -48,6 +48,33 @@ def settle(app):
     app.processEvents()
 
 
+def test_plugin_owned_rule_hides_schedule_controls_and_preserves_drafts(task_window):
+    from empire.plugins.collection.execution_rules import HISTORICAL_DAY_RULE
+    window, page, app = task_window
+    job = page.data['jobs'][0]
+    job['execution_rule'] = HISTORICAL_DAY_RULE.description
+    job['policy'] = HISTORICAL_DAY_RULE.policy(job['policy'])
+    page.render()
+    window.show()
+    page.task_inspector.setCurrentIndex(1)
+    settle(app)
+    assert page.mode.isHidden()
+    assert page.interval.isHidden()
+    assert page.daily.isHidden()
+    assert page.plan_note.text() == HISTORICAL_DAY_RULE.description
+    page.enabled.setChecked(False)
+    draft = page._policy()
+    assert draft['mode'] == 'daily' and draft['daily_time'] == '18:00'
+    page.render()
+    assert page._policy() == draft and page.loaded_id in page.job_drafts
+    page.reset_job()
+    assert page.enabled.isChecked() is job['policy']['enabled']
+    job['execution_rule'] = None
+    page.render()
+    page.mode_changed()
+    assert not page.mode.isHidden() and not page.daily.isHidden()
+
+
 def in_view(widget, area):
     point = widget.mapTo(area.viewport(), QPoint(0, 0))
     return (point.x() >= 0 and point.y() >= 0

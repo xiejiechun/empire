@@ -10,6 +10,7 @@ from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, capability, project
 from empire.plugins.collectors.kaipanla_product_download import download_days
+from empire.plugins.collectors.kaipanla_refresh import review_days
 from empire.plugins.collectors.kaipanla_scope import attach_listing_dates, lifecycle, required_days
 from empire.plugins.collectors.kaipanla_source import URL, SourceError
 from empire.plugins.collectors.support import (
@@ -62,7 +63,7 @@ class KaipanlaProductCollector:
             stocks = await attach_listing_dates(self, stocks)
             exclusions = await self.query.suspension_plan(stocks, days[0], days[-1])
             plans = []
-            checksum = hashlib.sha256(json.dumps([d.isoformat() for d in days]).encode())
+            checksum = hashlib.sha256(('weekly-review-v1:' + json.dumps([d.isoformat() for d in days])).encode())
             for stock in stocks:
                 excluded = exclusions[stock['code'] + '.' + stock['market']]
                 count = len(required_days(stock, days, excluded))
@@ -70,12 +71,15 @@ class KaipanlaProductCollector:
                 checksum.update(digest([stock['market'], stock['code'], lifecycle(stock),
                                        sorted(d.isoformat() for d in excluded)]).encode())
             scope = checksum.hexdigest()
+            last_review = cursor.get('last_review')
             if fresh or cursor.get('scope') != scope or cursor.get('phase') == 'complete':
                 cursor = {}
             if not cursor:
+                token, review = review_days(days, last_review)
                 cursor = dict(phase='collecting', scope=scope, batch_id=uuid4().hex,
                               index=0, pages=0, collected=0, started_at=datetime.now(UTC).isoformat(),
-                              start_date=days[0].isoformat(), end_date=days[-1].isoformat())
+                              start_date=days[0].isoformat(), end_date=days[-1].isoformat(),
+                              last_review=last_review, review_token=token, review_days=review)
             total = sum(count for _, count in plans)
             first_gap, failed = None, 0
             cursor = {**cursor, 'first_gap': None, 'failed_units': 0}
@@ -94,7 +98,7 @@ class KaipanlaProductCollector:
                 covered = await self.query.covered_days(stock['market'], stock['code'], days[0], days[-1], life)
                 todo = [(offset + di, day) for di, day in enumerate(planned)
                         if offset + di >= cursor['index'] and
-                        (fresh or day not in covered or di >= len(planned) - 5)]
+                        (fresh or day not in covered or day.isoformat() in cursor['review_days'])]
                 if not todo:
                     cursor = {**cursor, 'index': first_gap['index'] if first_gap else offset + len(planned)}
                 async with download_days(self, stock, [day for _, day in todo]) as reads:
@@ -137,7 +141,7 @@ class KaipanlaProductCollector:
                 # an archive progress message or entering the business queue.
                 if first_gap:
                     raise SourceError('本轮仍有来源缺口：' + first_gap['code'] + ' / ' + first_gap['trade_date'])
-                cursor = {**cursor, 'phase': 'complete', 'index': total}
+                cursor = {**cursor, 'phase': 'complete', 'index': total, 'last_review': cursor['review_token']}
                 await self.ingest.advance_checkpoint(job_key=self.job_key,
                     expected_revision=state['revision'], cursor=cursor)
                 self.stats.update(status='complete', completed_units=total)
@@ -170,7 +174,7 @@ class KaipanlaProductCollector:
                                 + ' / ' + cursor['first_gap']['trade_date'])
             error.diagnostic_recorded = True  # Original precise source failures remain in bounded records.
             raise error
-        cursor = {**cursor, 'phase': 'complete'}
+        cursor = {**cursor, 'phase': 'complete', 'last_review': cursor.get('review_token', cursor.get('last_review'))}
         await self.ingest.advance_checkpoint(job_key=self.job_key,
             expected_revision=state['revision'], cursor=cursor)
         self.stats.update(status='complete', error='')

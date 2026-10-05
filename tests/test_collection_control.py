@@ -163,6 +163,26 @@ def test_schedule_beijing_and_missed_days_coalesce():
     assert next_due({**daily, "enabled": False}, now) is None
 
 
+async def test_plugin_owned_rule_rejects_schedule_edit_and_allows_disable():
+    from dataclasses import replace
+
+    from empire.plugins.collection.execution_rules import HISTORICAL_DAY_RULE
+    control, _, _, http = await setup()
+    control.definitions['stocks'] = replace(control.definitions['stocks'], execution_rule=HISTORICAL_DAY_RULE)
+    try:
+        with pytest.raises(ValueError, match='插件确定'):
+            await control.configure('stocks', POLICY)
+        fixed = HISTORICAL_DAY_RULE.policy({**POLICY, 'enabled': False})
+        await control.configure('stocks', fixed)
+        assert control.state['jobs']['stocks']['next_due'] is None
+        result = await control.workspace('tasks')
+        assert result['jobs'][0]['execution_rule'] == HISTORICAL_DAY_RULE.description
+        assert control.settings.mysql.data['task']['stocks']['enabled'] is False
+    finally:
+        await control.stop()
+        await http.close()
+
+
 async def test_proxy_policy_is_snapshotted_for_run_and_does_not_leak_context():
     from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
 
