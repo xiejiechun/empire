@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-05T17:36:54.075084+00:00",
-  "note": "核对更名普通查询、历史回放以及行业字段说明与最终验收提示一致",
-  "unchanged_reason": "上一轮已同步正文完整描述普通查阅保留缺名断链、历史回放严格检查。本次只把股票验收清单及通用异常提示文字对齐已记录的规则，不改变操作或判定行为。",
+  "reviewed_at": "2026-10-05T17:45:35.391494+00:00",
+  "note": "补齐行业升级中SQL已提交但旧断点仍等待归档的恢复边界：持锁且队列清零才通过公共CAS重置旧契约断点，新断点与计划不动；专项覆盖队列非空拒绝与全响应补齐",
+  "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "14e87d36ab18628d39fb9d8f98cadac1c7daf523f652bb7ea816631d19b1f006",
@@ -28,7 +28,7 @@
     "scripts/migrate_issue_availability.py": "89be7325206ca1bcd2dd1bf51cf62100779db73914c7916a01fb8267f8f6fb7c",
     "scripts/migrate_kaipanla_products.py": "8f5b43488680d6fab7692127c23a7b510a013d7a91d7358ac82f2848f640dbc2",
     "scripts/migrate_market_storage.py": "b29100f56ff43de27682acdaa58d0d2157d968f8f4fe5301d3192af53b2436bb",
-    "scripts/migrate_name_industries.py": "1ab0b24722152b598c24e0c96a0e2e60f33239f01619f652f04acca4e2128c9f",
+    "scripts/migrate_name_industries.py": "4f7ef6a06f400a9970a8d9a102644f89786feea56f174a2d65dd48c09dcc2d91",
     "scripts/migrate_program_config.py": "3c204a7c5d28a22c5608376e22f18f594789607fa1cd1665fbdab8631769e02e",
     "scripts/migrate_suspension_identity.py": "593b7e6f0414069ad6cd8b449a0afd1fa76ff33baa5cd0ec067066a1cb20894a",
     "scripts/mysql_recovery_inventory.py": "5232ea7b8738949174e30a8a6ac5d59f2e5e3f2122a52d109503e80ef2042e77",
@@ -236,5 +236,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "eda8968f9660ba3afd660ad0a1cfc02f328414d896380b43b40201b03b2e086c"
+  "content_sha256": "f1528c4a839561ce1e8eb4763c1c87e9ee2c5af8eb124d610738f5d4494555cd"
 }

@@ -184,3 +184,27 @@ async def test_transaction_failure_retains_and_bad_source_preserves_checkpoint(n
         await collect(c)
     assert await c.ingest.checkpoint(c.job_key) == before
     assert len((await q.list_events())['rows']) == 2
+
+
+async def test_explicit_upgrade_resets_only_legacy_empty_queue_checkpoint(names):
+    from scripts.migrate_name_industries import reset_legacy_checkpoints
+    _, c, q, store = names
+    await collect(c)
+    prior = await c.ingest.checkpoint(c.job_key)
+    await c.ingest.advance_checkpoint(job_key=c.job_key, expected_revision=prior['revision'],
+        cursor={'phase':'awaiting_archive','contract':1,'batch_id':'old-committed'})
+    await store.client.set(store.prefix+':unrelated-plan', 'preserve')
+    resets = await reset_legacy_checkpoints(store)
+    assert resets[c.job_key] == 'awaiting_archive'
+    assert (await c.ingest.checkpoint(c.job_key))['cursor'] == {}
+    assert await store.client.get(store.prefix+':unrelated-plan') == 'preserve'
+    calls = c.http.request.await_count
+    await collect(c)
+    assert c.http.request.await_count == calls+1 and len((await q.list_events())['rows']) == 2
+    before = await c.ingest.checkpoint(c.job_key)
+    assert await reset_legacy_checkpoints(store) == {}
+    assert await c.ingest.checkpoint(c.job_key) == before
+    await store.client.xadd(store.stream, {'test':'pending'})
+    with pytest.raises(RuntimeError, match='待归档'):
+        await reset_legacy_checkpoints(store)
+    assert await c.ingest.checkpoint(c.job_key) == before

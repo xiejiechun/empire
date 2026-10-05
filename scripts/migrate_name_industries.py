@@ -8,6 +8,7 @@ from pathlib import Path
 from sqlalchemy import inspect, text
 
 from empire.__main__ import acquire_instance_lock
+from empire.contracts.name_changes import SCHEMA_VERSION, project
 from empire.core.config import load_config
 from empire.core.redaction import redact
 from empire.plugins.datasets.name_changes import TABLE
@@ -15,6 +16,23 @@ from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import validate_shapes
 from empire.plugins.pipeline.fingerprints import FingerprintCache
+from empire.plugins.pipeline.ingest import IngestPlugin
+
+
+async def reset_legacy_checkpoints(store):
+    if await store.client.xlen(store.prefix + ':ingest'):
+        raise RuntimeError('待归档未清零，不能重置旧格式断点')
+    ingest = IngestPlugin({})
+    ingest.redis = store
+    resets = {}
+    for kind in ('company', 'security'):
+        job = project(kind) + '-v1'
+        state = await ingest.checkpoint(job)
+        cursor = state['cursor']
+        if cursor and cursor.get('contract') != SCHEMA_VERSION:
+            await ingest.advance_checkpoint(job_key=job, expected_revision=state['revision'], cursor={})
+            resets[job] = cursor.get('phase', 'unknown')
+    return resets
 
 
 def events(conn):
@@ -57,6 +75,8 @@ async def run(args):
                     for kind in ('company', 'security'):
                         for version in (1, 2):
                             await cache.invalidate(f'tdx_names_{kind}_v{version}', 'tdx')
+                    report['reset_legacy_checkpoints'] = await reset_legacy_checkpoints(
+                        SimpleNamespace(client=client, prefix=namespace))
                     report.update(applied=True, original_events_preserved=True,
                         coverage='old contract1 cannot satisfy contract2; full source refresh required')
                 finally:
