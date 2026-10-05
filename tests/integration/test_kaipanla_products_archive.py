@@ -121,7 +121,7 @@ async def test_task_rule_upgrade_is_atomic_preserves_choices_and_repeats_without
 
     from empire.plugins.infra.mysql_store import make_engine
     from empire.plugins.infra.settings import SettingsStore
-    from scripts.migrate_kaipanla_task_rules import migrate_database
+    from scripts.configure_kaipanla_task_defaults import migrate_database
     cfg = load_config()
     engine = make_engine(cfg['mysql'])
     store = SettingsStore(SimpleNamespace(engine=engine), cfg['redis']['namespace'])

@@ -164,3 +164,7 @@
 ## 2026-10-03 用户授权的 MySQL 结构升级
 
 按 [业务结构升级](docs/mysql-business-schema.md) 执行现行 SQL 契约：固定来源由数据集登记，业务证券键统一为 unified_code；新闻和 collection_state 保留 source。停复牌来源日期以 suspension_source_date 关联表保存，消息中的 source_dates 集合语义不变。旧章节中的 SQL source/market/code 组合键和 source_dates JSON 列描述由该现行契约替代，业务身份、来源差异、版本防覆盖和未知日期规则不变。旧完整库仅通过 scripts/migrate_business_schema.py 显式转换，新空库使用 init-db，启动不迁移。
+
+## 2026-10-05 用户澄清：开发时配好任务默认配置
+
+新增采集插件由开发者根据实际更新规律、生命周期及资源消耗配好合理的默认任务配置，用户无需自行选择初始执行方式。保留执行方式、间隔与每日时间的编辑能力；推荐默认值不锁定用户选择。已保存的合法配置优先，升级、重启和Redis丢失不得静默覆盖用户设置。

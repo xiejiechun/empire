@@ -3,8 +3,8 @@ from dataclasses import replace
 from empire.core.manager import PluginManager
 from empire.core.redaction import Redactor
 from empire.plugins.collection.control import CollectionControl, TaskContribution
-from empire.plugins.collection.execution_rules import HISTORICAL_DAY_RULE
 from empire.plugins.collection.records import RecordsPlugin
+from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS
 from empire.plugins.collectors.cninfo_calendar import CninfoCalendarCollector
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
 from empire.plugins.collectors.kaipanla_products import KaipanlaProductCollector
@@ -92,7 +92,7 @@ def build_manager(cfg: dict) -> PluginManager:
             'collector.kaipanla_' + kind, 'kaipanla', item.note,
             category='高频行情', source_name='开盘啦', interval_seconds=86400,
             parallel_downloads=True, default_enabled=False,
-            execution_rule=HISTORICAL_DAY_RULE,
+            default_schedule=HISTORICAL_DAY_DEFAULTS,
             fresh_description='从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。')
             for kind, item in PRODUCTS.items()),
             TaskContribution('ths-industries', '同花顺当前行业',

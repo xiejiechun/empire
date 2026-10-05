@@ -1,4 +1,4 @@
-"""Explicitly set seven historical task rules; preserve enabled and routing choices."""
+"""Explicitly apply seven recommended schedules; preserve enabled and routing choices."""
 import argparse
 import json
 
@@ -8,7 +8,7 @@ from empire.__main__ import acquire_instance_lock
 from empire.core.config import load_config
 from empire.core.redaction import redact
 from empire.plugins.collection.control import validate_policy
-from empire.plugins.collection.execution_rules import HISTORICAL_DAY_RULE
+from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.settings import SettingsStore
@@ -20,7 +20,7 @@ def task_plan(rows):
         ident = project(kind)
         old = rows.get(ident, dict(enabled=False, mode='manual', interval_seconds=86400,
                                   daily_time='18:00', request_retries=2))
-        result[ident] = validate_policy(HISTORICAL_DAY_RULE.policy(validate_policy(old)))
+        result[ident] = validate_policy(HISTORICAL_DAY_DEFAULTS.policy(validate_policy(old)))
     return result
 
 

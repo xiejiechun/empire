@@ -163,21 +163,34 @@ def test_schedule_beijing_and_missed_days_coalesce():
     assert next_due({**daily, "enabled": False}, now) is None
 
 
-async def test_plugin_owned_rule_rejects_schedule_edit_and_allows_disable():
+@pytest.mark.parametrize('mode', ['manual', 'interval', 'daily'])
+async def test_plugin_defaults_allow_saved_overrides_and_preserve_them_on_restart(mode):
     from dataclasses import replace
 
-    from empire.plugins.collection.execution_rules import HISTORICAL_DAY_RULE
-    control, _, _, http = await setup()
-    control.definitions['stocks'] = replace(control.definitions['stocks'], execution_rule=HISTORICAL_DAY_RULE)
+    from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS
+    control, collector, redis, http = await setup()
+    context = control.context
+    definition = replace(control.definitions['stocks'], default_schedule=HISTORICAL_DAY_DEFAULTS)
+    await control.stop()
+    control = CollectionControl([definition])
     try:
-        with pytest.raises(ValueError, match='插件确定'):
-            await control.configure('stocks', POLICY)
-        fixed = HISTORICAL_DAY_RULE.policy({**POLICY, 'enabled': False})
-        await control.configure('stocks', fixed)
+        await control.start(context)
+        initial = control.state['jobs']['stocks']['policy']
+        assert initial['mode'] == 'daily' and initial['daily_time'] == '18:00'
+        custom = validate_policy({**POLICY, 'mode': mode, 'interval_seconds': 123,
+                                  'daily_time': '09:00', 'enabled': False,
+                                  'use_proxy': False, 'proxy_fallback': False})
+        await control.configure('stocks', custom)
         assert control.state['jobs']['stocks']['next_due'] is None
         result = await control.workspace('tasks')
-        assert result['jobs'][0]['execution_rule'] == HISTORICAL_DAY_RULE.description
-        assert control.settings.mysql.data['task']['stocks']['enabled'] is False
+        assert result['jobs'][0]['default_schedule'] == HISTORICAL_DAY_DEFAULTS.description
+        await control.stop()
+        redis.data.clear()  # Isolated fake Redis restart; durable SQL choice must still win.
+        control = CollectionControl([definition])
+        await control.start(context)
+        assert control.state['jobs']['stocks']['policy'] == custom
+        assert control.settings.mysql.data['task']['stocks'] == custom
+        assert collector.calls == []
     finally:
         await control.stop()
         await http.close()

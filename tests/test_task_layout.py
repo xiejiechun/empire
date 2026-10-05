@@ -48,31 +48,30 @@ def settle(app):
     app.processEvents()
 
 
-def test_plugin_owned_rule_hides_schedule_controls_and_preserves_drafts(task_window):
-    from empire.plugins.collection.execution_rules import HISTORICAL_DAY_RULE
+def test_plugin_defaults_keep_schedule_controls_editable_and_preserve_drafts(task_window):
+    from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS
     window, page, app = task_window
     job = page.data['jobs'][0]
-    job['execution_rule'] = HISTORICAL_DAY_RULE.description
-    job['policy'] = HISTORICAL_DAY_RULE.policy(job['policy'])
+    job['default_schedule'] = HISTORICAL_DAY_DEFAULTS.description
+    job['policy'] = HISTORICAL_DAY_DEFAULTS.policy(job['policy'])
     page.render()
     window.show()
     page.task_inspector.setCurrentIndex(1)
     settle(app)
-    assert page.mode.isHidden()
+    assert not page.mode.isHidden() and not page.daily.isHidden()
     assert page.interval.isHidden()
-    assert page.daily.isHidden()
-    assert page.plan_note.text() == HISTORICAL_DAY_RULE.description
-    page.enabled.setChecked(False)
+    assert HISTORICAL_DAY_DEFAULTS.description in page.plan_note.text()
+    baseline = page._policy()
+    page.mode.setCurrentIndex(page.mode.findData('interval'))
+    page.interval.setValue(123)
+    assert not page.interval.isHidden() and page.daily.isHidden()
     draft = page._policy()
-    assert draft['mode'] == 'daily' and draft['daily_time'] == '18:00'
     page.render()
     assert page._policy() == draft and page.loaded_id in page.job_drafts
     page.reset_job()
-    assert page.enabled.isChecked() is job['policy']['enabled']
-    job['execution_rule'] = None
-    page.render()
-    page.mode_changed()
-    assert not page.mode.isHidden() and not page.daily.isHidden()
+    assert page._policy() == baseline
+    page.mode.setCurrentIndex(page.mode.findData('manual'))
+    assert not page.mode.isHidden() and page.daily.isHidden() and page.interval.isHidden()
 
 
 def in_view(widget, area):

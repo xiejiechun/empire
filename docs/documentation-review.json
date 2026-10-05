@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-05T04:38:39.218200+00:00",
-  "note": "核对七项18:00插件规则、每周五18点复核五日与归档成功标记、SQL补缺和Redis丢失恢复；同步内置操作、来源生命周期、架构、维护及未来组件规则登记，保留现有启停/网络，当前证券池不变。",
+  "reviewed_at": "2026-10-05T04:59:21.504435+00:00",
+  "note": "按用户澄清恢复七项手动/间隔/每日方式和时间编辑；插件声明推荐默认配置，仅未保存任务使用，后台接受合法覆盖，重启及Redis丢失保留SQL选择。同步内置操作、来源指南、架构、开发约定和显式推荐配置入口，保留现有18:00及启停网络。",
   "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -10,6 +10,7 @@
     "scripts/build_icon.py": "1f9fab6a7f0dbe95dad2bcfb56a28d58b3446c772be6a557849bc7dda4355ae3",
     "scripts/business_migration_engine.py": "c9a9704e856b9429557f01a98e399e19e35de3c02a5b18f90f34bdf20cdebda8",
     "scripts/business_migration_inventory.py": "661ccff079df2cc1713c0bb920a58063e715ad8b7dcc8159611c59be20dfcc89",
+    "scripts/configure_kaipanla_task_defaults.py": "d4a504edea3c161fb93bf3e0be4188471903baaf7e4ce9c3b8bd64d924b4a5fe",
     "scripts/documentation_contract.py": "493c86be284c1bac443cbe961b9efa26fd2d0ca57d68a12ac7349ae34144fa99",
     "scripts/kaipanla_measure_support.py": "519c97aae1c349c3dcc65fd1ab61600391a181d39e1b2b39cc3512764934a1d9",
     "scripts/measure_capacity.py": "a153686cde0ac357678eefb45e6a646a2856711ebff0f6c52823717531adb6e8",
@@ -20,8 +21,7 @@
     "scripts/migrate_download_capacity.py": "0b64aaa170a5cd79c567d3a124dd880ac5e64719a2593f2e85d2b9c791d6d269",
     "scripts/migrate_download_settings.py": "235b9098c44d86770fff90997de484ad7462581f554fee568e7e3b1873107a1d",
     "scripts/migrate_issue_availability.py": "89be7325206ca1bcd2dd1bf51cf62100779db73914c7916a01fb8267f8f6fb7c",
-    "scripts/migrate_kaipanla_products.py": "75bc6260388f52f2debe84e6db7823c5f0e32cc591dbe38bbc025c2a6bd9cc0d",
-    "scripts/migrate_kaipanla_task_rules.py": "9facff8fd71812dfc2d4c76a0d4ecd63e457c5c8d6428f67f88146805dbb06f1",
+    "scripts/migrate_kaipanla_products.py": "326b86fc18c8309d8f982a1732daf31bbd1a89044f055291dcbd062bc960f6f3",
     "scripts/migrate_program_config.py": "3c204a7c5d28a22c5608376e22f18f594789607fa1cd1665fbdab8631769e02e",
     "scripts/migrate_suspension_identity.py": "593b7e6f0414069ad6cd8b449a0afd1fa76ff33baa5cd0ec067066a1cb20894a",
     "scripts/mysql_recovery_inventory.py": "5232ea7b8738949174e30a8a6ac5d59f2e5e3f2122a52d109503e80ef2042e77",
@@ -37,7 +37,7 @@
     "sql/schema.sql": "c60afa78c565cfe01dfa828151c8f186ed6cedcf66609436256f142ad8528672",
     "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
     "src/empire/__main__.py": "6fab43f3f2c61e9582b8190cb011ff14257274ac2a8f945882379606974619bb",
-    "src/empire/bootstrap.py": "37a285505479dab14f7ac8e87fc0818f10545c7d492c9ab5bfd517c3dbadd032",
+    "src/empire/bootstrap.py": "c0e40d9b40d017c4d72700210f27fdd6da39b8fe33c184c18c79b82cb380cfee",
     "src/empire/build_info.py": "beac8f6c25236dce13e1ecb6e18c067324edcad095cece72ae8e3d46bb145ff7",
     "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
     "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -78,11 +78,11 @@
     "src/empire/desktop/window.py": "f5b01ddd386c32e8233c56f8bdb0615e62a8bd0383d1e5215b8ca5bfad6e4ecf",
     "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
     "src/empire/plugins/collection/__init__.py": "d243b838e06bbf6e511af8a86fde0da0eaa2494f81cb08001151a1a4a721b5e2",
-    "src/empire/plugins/collection/control.py": "082e0908b0453c9c5af689f8e28c29228908a7e133a503ca26f6ecb1560b50e8",
-    "src/empire/plugins/collection/execution_rules.py": "74802a52f1c98d6635b110e1c66a30219cc0d52e5ffebc0e070302a709bf1fdc",
+    "src/empire/plugins/collection/control.py": "1c9ff51d3405ee6b6339eae2b8a942355cdcff9f847068d3d6355615910ef84a",
     "src/empire/plugins/collection/prefetch.py": "7e4adddc4ff2c296954eeeb98bb07a349483e96ff6c061c662f8992f1298b4e0",
     "src/empire/plugins/collection/record_query.py": "7c1f1409c686f54968f8d78a5e3eb7c69fe73ce93a2277343c3a3dfd3f5fe85f",
     "src/empire/plugins/collection/records.py": "3bb75f35de94568b77162318943f667a876d1020fd1a15b0cd3c2e89f36741d9",
+    "src/empire/plugins/collection/task_defaults.py": "f03c80d65740cc711ffc084945ec66ff04bbbe766845a7eb4eabadc7130af7b0",
     "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
     "src/empire/plugins/collectors/capital_lifecycle.py": "92124a3d228581d68c3ff69d934a3ce3acb3bc1ab18f2ce500bfe07ff9014323",
     "src/empire/plugins/collectors/capital_recovery.py": "3e600bdac5e2319ce879a2fb9bba772903df22b21f0c778384f93222894dab65",
@@ -183,7 +183,7 @@
     "src/empire/plugins/ui/collection_views/task_layout.py": "f220743879d12a3098b7df42cf161ac544e9e308c99a41a6b819d5c20eb29bd2",
     "src/empire/plugins/ui/collection_views/task_menu.py": "7a6ba300942e63c5e345253c2f6b8ad592c436743f09fd51116d7c08a3d4e368",
     "src/empire/plugins/ui/collection_views/task_runtime.py": "1602cb04f66692928ae670b6a9778139aba9567550235ec8f4fd03df2d0ced36",
-    "src/empire/plugins/ui/collection_views/tasks.py": "5a879a2fbf82e93d51c8602045b028a4d43123a3e5ffddb01b299bc99c73d572",
+    "src/empire/plugins/ui/collection_views/tasks.py": "b15fe3c0ccec7798f6beb866bc310ee1913e70cfe32de2b8b5be23d659a34a3d",
     "src/empire/plugins/ui/common.py": "85d5fff311ee0bda6cbc9596a39246a262e34023135911bd3c57e474590c4b9f",
     "src/empire/plugins/ui/download_fields.py": "a44504a8a4abe9ff3e663ad998dab6b656f781d7b44bc9b9cae7239c71e06656",
     "src/empire/plugins/ui/download_recommendation.py": "6bbafeb52d11bdabcbbfa14d7341989d2adaff33e6148b76b9875ef6dd6b7ab4",
@@ -216,5 +216,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "b5e60583c475d2659453889e5aa8a693d961f2b536909727d517e351813edc03"
+  "content_sha256": "3a30f91dfd8746baee9211c37ea99c00bb245a9798525a3b467f158a4399a298"
 }

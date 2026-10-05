@@ -8,18 +8,18 @@ from empire.core.config import load_config
 from empire.core.time import CHINA
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
 from empire.plugins.collectors.kaipanla_refresh import review_days, review_token
-from scripts.migrate_kaipanla_task_rules import task_plan
+from scripts.configure_kaipanla_task_defaults import task_plan
 from tests.test_kaipanla_products import product_collector
 
 
-def test_fixed_rules_and_setting_upgrade_preserve_business_choices():
+def test_recommended_defaults_and_explicit_configuration_preserve_business_choices():
     definitions = build_manager(load_config()).entries['collection.control'].plugin.definitions
     original = dict(mode='interval', enabled=True, interval_seconds=1,
                     daily_time='09:00', request_retries=3, use_proxy=False, proxy_fallback=False)
     plan = task_plan({'kaipanla-quote': original})
     for kind in PRODUCTS:
         policy = plan[project(kind)]
-        assert definitions[project(kind)].execution_rule.matches(policy)
+        assert definitions[project(kind)].default_schedule.policy(policy) == policy
         assert policy['mode'] == 'daily' and policy['daily_time'] == '18:00'
         assert policy['enabled'] is (kind == 'quote')
     assert plan['kaipanla-quote']['request_retries'] == 3

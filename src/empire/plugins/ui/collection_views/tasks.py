@@ -137,15 +137,16 @@ class TasksPage(TaskLayout, CollectionView):
     def mode_changed(self):
         mode = self.mode.currentData()
         job = self.selected()
-        rule = job.get('execution_rule') if job else None
-        self.job_form.setRowVisible(self.mode, not bool(rule))
-        self.job_form.setRowVisible(self.interval, not rule and mode == "interval")
-        self.job_form.setRowVisible(self.daily, not rule and mode == "daily")
-        self.plan_note.setText(rule or {
+        recommendation = job.get('default_schedule') if job else None
+        self.job_form.setRowVisible(self.mode, True)
+        self.job_form.setRowVisible(self.interval, mode == "interval")
+        self.job_form.setRowVisible(self.daily, mode == "daily")
+        note = {
             "manual": "仅在点击采集按钮时执行，不会自动启动。",
             "interval": "当前运行结束后开始计时；同一任务不会重复并行启动。",
             "daily": "每天按北京时间执行；运行中遇到下一次计划时不会重复启动。",
-        }.get(mode, ""))
+        }.get(mode, "")
+        self.plan_note.setText(note + ('\n' + recommendation if recommendation else ''))
 
     def job_edited(self):
         if self._loading or not self.loaded_id:

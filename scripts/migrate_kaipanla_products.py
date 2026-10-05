@@ -13,7 +13,7 @@ from sqlalchemy import inspect, text
 
 from empire.core.config import load_config
 from empire.core.redaction import Redactor
-from empire.plugins.collection.execution_rules import HISTORICAL_DAY_RULE
+from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
 from empire.plugins.datasets.intraday import digest as old_digest
 from empire.plugins.datasets.intraday import validate as validate_old
@@ -104,7 +104,7 @@ def migrate(engine, namespace, *, apply=False):
             exists = conn.execute(text("SELECT 1 FROM app_setting WHERE namespace=:namespace AND kind='task' AND setting_key=:key"),
                                   dict(namespace=namespace, key=project(kind))).first()
             if not exists:
-                settings.save_in_transaction(conn, 'task', project(kind), HISTORICAL_DAY_RULE.policy(dict(enabled=False,
+                settings.save_in_transaction(conn, 'task', project(kind), HISTORICAL_DAY_DEFAULTS.policy(dict(enabled=False,
                     request_retries=2, use_proxy=True, proxy_fallback=True)))
     # DDL commits implicitly in MySQL. Recheck after all conversion transactions;
     # never drop a table containing unconverted business data.
