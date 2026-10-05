@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-05T12:44:25.782036+00:00",
-  "note": "完成七项生产无损迁移、全量正式查询、真实七页面验收及交付证据；更正生产E盘与D盘工作区容量区别，保留性能取舍和34来源缺口；本次仅补交付记录，不改变发布实现或用户操作正文",
+  "reviewed_at": "2026-10-05T14:18:06.779905+00:00",
+  "note": "按用户要求删除数据准备独立分钟行情规划，保留开盘啦分时及分钟量额项目和业务数据；同步85项采集数量及分钟OHLC尚未核实的限制",
   "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -60,7 +60,7 @@
     "src/empire/contracts/preparation_catalog.py": "982c1741c6e10717a4425f56a781c9c3f07b751e606d58fed67c4aea77358306",
     "src/empire/contracts/preparation_definition.py": "477165d7cebf12de9a54928a35e908ec6f58c9ae972effdc90403481c4d825d8",
     "src/empire/contracts/preparation_events.py": "42d379e42d648a0cd91b664b9ca04c69868fe2e83e3de52695fe84804c504c05",
-    "src/empire/contracts/preparation_existing.py": "14e1e29e8326aba5685de54e19164e0781e62bdbd847ab2a0ff38d134152b79f",
+    "src/empire/contracts/preparation_existing.py": "d6e5d166e45219d4d446a286b63b4453825228a2cc3d856fd4f42a093eb4bf8f",
     "src/empire/contracts/preparation_foundation.py": "ea08f903c3bb6e34d1ded639c9d1c8d5d53054df4d4ec76f688781c8dd080eb7",
     "src/empire/contracts/preparation_markets.py": "3e4f3312f6efcfc2b2343d5d2102fcb5ab245f513c5624e6033767596e8af2bf",
     "src/empire/contracts/preparation_processing.py": "b90cf020058e05cc7bfe7d4de3baed889db93ce1173ed9038a7ec4127194ea13",
@@ -226,5 +226,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "ee894a78b492ad477f64110545e374cdc82c7ffa6eb0337b3cc50a87e47a2de3"
+  "content_sha256": "281f23cbe42eebd3e4d7c4c96aced1e521c3d69f52242f4695d4cd04bc5be1ae"
 }
