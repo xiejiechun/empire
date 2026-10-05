@@ -8,6 +8,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from empire.contracts.business_schema import DATASET_TABLE_GROUPS, PRIMARY_KEYS
+from empire.plugins.datasets.astock import DatasetPlugin
 
 
 def verify(root):
@@ -18,6 +19,11 @@ def verify(root):
     tables = set(re.findall(r'CREATE TABLE IF NOT EXISTS (\w+)', schema.decode()))
     if tables != set(manifest['tables']):
         raise ValueError('DDL与结构契约表集合不一致')
+    if set(DatasetPlugin().datasets) != set(DATASET_TABLE_GROUPS):
+        raise ValueError('正式数据贡献与业务表归属登记不一致')
+    owned = {table for group in DATASET_TABLE_GROUPS.values() for table in group}
+    if tables != owned | {'app_setting', 'collection_state'}:
+        raise ValueError('业务表必须登记实际数据集归属；配置/状态表单独登记')
     for table, keys in PRIMARY_KEYS.items():
         if manifest['tables'][table]['primary'] != keys:
             raise ValueError(f'{table} 主键与公共业务身份登记不一致')

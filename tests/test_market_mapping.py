@@ -107,3 +107,13 @@ def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
         pattern = '容量预算超限'
     with pytest.raises(ValueError, match=pattern):
         verify(tmp_path)
+
+
+def test_unregistered_actual_dataset_cannot_bypass_design_gate(monkeypatch):
+    from types import SimpleNamespace
+
+    import scripts.verify_database_design as gate
+    actual = gate.DatasetPlugin().datasets
+    monkeypatch.setattr(gate, 'DatasetPlugin', lambda: SimpleNamespace(datasets={**actual, 'new.unregistered': object()}))
+    with pytest.raises(ValueError, match='正式数据贡献'):
+        gate.verify(Path(__file__).resolve().parents[1])
