@@ -12,14 +12,18 @@
     "security_p95_ms": 0.4415000003064051,
     "coverage_p95_ms": 109.49259999324568,
     "import_seconds": 1.6757750999968266,
-    "allocated_bytes": 13254656
+    "allocated_bytes": 13254656,
+    "real_page_p95_ms": 1.9147999992128462,
+    "real_coverage_p95_ms": 36.950500012608245
   },
   "limits": {
     "page_p95_ms": 50,
     "security_p95_ms": 50,
     "coverage_p95_ms": 500,
     "import_seconds": 10,
-    "allocated_bytes": 62914560
+    "allocated_bytes": 62914560,
+    "real_page_p95_ms": 50,
+    "real_coverage_p95_ms": 500
   },
   "conditions": {
     "platform": "Windows-11-10.0.26200-SP0",
@@ -119,5 +123,51 @@
     ]
   },
   "cleanup": "UUID-owned test database dropped in finally",
-  "passed": true
+  "passed": true,
+  "production_sample": {
+    "read_only": true,
+    "sample": {
+      "company": {
+        "rows_count": 3546,
+        "first_date": "1990-12-10",
+        "last_date": "2026-09-29",
+        "max_name_chars": 23,
+        "avg_names_bytes": 74.5643
+      },
+      "security": {
+        "rows_count": 8368,
+        "first_date": "1994-01-03",
+        "last_date": "2026-09-30",
+        "max_name_chars": 6,
+        "avg_names_bytes": 20.2413
+      }
+    },
+    "queries": {
+      "company_page": {
+        "p95_ms": 1.7853000026661903,
+        "returned_rows": 200,
+        "read_bytes": 22991,
+        "explain_analyze": "-> Limit: 200 row(s)  (cost=538 rows=200) (actual time=0.147..0.32 rows=200 loops=1)\n    -> Index lookup on security_name_change using ix_name_date (name_kind='company')  (cost=538 rows=5330) (actual time=0.134..0.299 rows=200 loops=1)\n"
+      },
+      "company_coverage": {
+        "p95_ms": 11.167999997269362,
+        "returned_rows": 3546,
+        "read_bytes": 406521,
+        "explain_analyze": "-> Limit: 30001 row(s)  (cost=538 rows=5330) (actual time=0.0287..0.827 rows=3546 loops=1)\n    -> Index lookup on security_name_change using PRIMARY (name_kind='company')  (cost=538 rows=5330) (actual time=0.0282..0.69 rows=3546 loops=1)\n"
+      },
+      "security_page": {
+        "p95_ms": 1.9147999992128462,
+        "returned_rows": 200,
+        "read_bytes": 12455,
+        "explain_analyze": "-> Limit: 200 row(s)  (cost=538 rows=200) (actual time=0.0926..0.284 rows=200 loops=1)\n    -> Index lookup on security_name_change using ix_name_date (name_kind='security')  (cost=538 rows=5330) (actual time=0.0918..0.26 rows=200 loops=1)\n"
+      },
+      "security_coverage": {
+        "p95_ms": 36.950500012608245,
+        "returned_rows": 8368,
+        "read_bytes": 504357,
+        "explain_analyze": "-> Limit: 30001 row(s)  (cost=538 rows=5330) (actual time=0.0366..1.99 rows=8368 loops=1)\n    -> Index lookup on security_name_change using PRIMARY (name_kind='security')  (cost=538 rows=5330) (actual time=0.0356..1.67 rows=8368 loops=1)\n"
+      }
+    },
+    "allocation_bytes": 11108352
+  }
 }

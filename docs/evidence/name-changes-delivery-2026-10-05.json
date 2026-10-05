@@ -1,0 +1,44 @@
+{
+  "checked_at": "2026-10-05T23:44:18.4477686+08:00",
+  "release_verified_at_utc": "2026-10-05T15:39:40Z",
+  "implementation_commit": "05a327975ceaa8dcbe025dd3887f979f28b698f5",
+  "executable_sha256": "c3d510eb06f93db1913d1e26721f68574e751e1bd1083b95a7a439a6c67b7a73",
+  "tests_passed": 1637,
+  "tests_skipped": 7,
+  "release_gate": "passed",
+  "config_preserved": [
+    "config.toml",
+    "dist/Empire/config.toml"
+  ],
+  "packaged_doctor_cwd": "C:/Windows/Temp",
+  "packaged_doctor_exit": 0,
+  "desktop": {
+    "task_policy": "security task: enabled, daily 18:00, proxy preferred with direct fallback",
+    "company_page": "200 actual SQL rows displayed; 000005.SZ 1990-12-10",
+    "help_topic": "公司与股票更名 searchable",
+    "security_page": "200 actual SQL rows displayed; 000005.SZ 1994-01-03",
+    "reopened": true
+  },
+  "collection": {
+    "security_events": 8368,
+    "repeated_business_dml": 0,
+    "pending_stream_at_collection": 0,
+    "company_events": 3546,
+    "company_source_occurrences": 3576
+  },
+  "limitations": [
+    "Company missing names:69; chain gaps:22; early old/new direction unconfirmed",
+    "Security missing names:129; chain gaps:17",
+    "No announcement availability dates; historical replay preparation not passed"
+  ],
+  "evidence": [
+    "name-changes-schema-2026-10-05.json",
+    "name-changes-live-2026-10-05.json",
+    "name-changes-capacity-2026-10-05.json"
+  ],
+  "not_applicable": [
+    "No legacy name dataset migration",
+    "No incremental pagination: one full source response per kind",
+    "No cross-source corroboration required for baseline collection"
+  ]
+}
