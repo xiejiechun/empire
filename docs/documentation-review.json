@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-04T19:58:53.416743+00:00",
-  "note": "删除旧行情空表，正式结构十六表；显式迁移可处理缺表和有数据旧库，同步恢复说明和表数回归",
+  "reviewed_at": "2026-10-05T03:40:28.850836+00:00",
+  "note": "盘口页面新增行情分区与独立说明主题，补齐帮助目录回归及实现状态，核对静态快照、数量单位和可选分时查询边界。",
   "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -190,7 +190,11 @@
     "src/empire/plugins/ui/help_content.py": "a4d562961130d6875945facd5b0bc630cfd49f7c15c7ed1ec1b68814fa8238f9",
     "src/empire/plugins/ui/home.py": "37581582960ae631ee7867b2619e22169cfecc4e82cc184e492f07a47ab9bb63",
     "src/empire/plugins/ui/industries.py": "85d2b5a57fe23e5178266967495409f2c42921eb1d1a03ab13caee59a447aed4",
-    "src/empire/plugins/ui/kaipanla_products.py": "828d3c37b13a2bf53ddcf4d02029212fabd3d13cba5426b4d04e3e38b7b61324",
+    "src/empire/plugins/ui/kaipanla_products.py": "1bf2a905f466fa511219ff5c74b3d8068d3f9ffab3fbc65ba7b93673d368bf05",
+    "src/empire/plugins/ui/kaipanla_quote_chart.py": "e8f744a2af1109c74d0fa595a86b338bce9be8d4aa637837a2071513f1d5822a",
+    "src/empire/plugins/ui/kaipanla_quote_format.py": "ae5070a2c53db2c20b65082279005cbd12c82f350c475c031e941e59fabbc1ce",
+    "src/empire/plugins/ui/kaipanla_quote_page.py": "7c2882111e9234c291dc2d48eccf2ecbd13bbc8072c918b25b55527f3973d4ef",
+    "src/empire/plugins/ui/kaipanla_quote_view.py": "46248d75fc39ca551820d1477096f957103c05c9e59257efd08e4b247776bcab",
     "src/empire/plugins/ui/news.py": "9ada1507c144c74ced1564671dfdb736813f9cf471cefd879d3c4fd21ee83ec6",
     "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
     "src/empire/plugins/ui/preparation.py": "91217e1d29ad028b51e19fee48e8489997cf047e95d6eb70eaa5eea8b1ac6443",
@@ -209,5 +213,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "20e91e0856eabb7f67cd63245c33395a707fbc35519598b1c80b61dacd410c26"
+  "content_sha256": "3c38fdbc3203e350e1d71e34ad81f1405683be23d747e35321296629c5097f88"
 }

@@ -67,7 +67,8 @@ def test_document_categories_and_stock_reference_rendering():
         page.tabs.setCurrentIndex(CATEGORIES.index("数据说明"))
         assert [page.index.item(i).text() for i in range(page.index.count())] == [
             "股票列表", "财经快讯", "交易日历", "历史停复牌",
-            "分红送转", "增发", "配股", "同花顺三大报表", "同花顺当前行业", "开盘啦分时及竞价"]
+            "分红送转", "增发", "配股", "同花顺三大报表", "同花顺当前行业", "开盘啦分时及竞价",
+            "历史盘口与日行情摘要"]
         page.search.setText("stock")
         assert "全部分类" in page.scope.text()
         page.show_topic("股票表字段（stock）")

@@ -1,5 +1,4 @@
 """Lazy independent product pages, displaying bounded slices of archived arrays."""
-import json
 from functools import partial
 
 from PySide6.QtCore import QDate, QTimer
@@ -33,31 +32,12 @@ HEADERS = {
 }
 
 
-def quote_rows(data):
-    values = []
-    labels = {'last_px': '最新价', 'open_px': '开盘价', 'high_px': '最高价', 'low_px': '最低价',
-              'total_amount': '成交量（来源单位）', 'total_turnover': '成交额（来源单位）',
-              'total_shares': '总股本', 'circulation_amount': '流通股本', 'market_value': '总市值',
-              'circulation_value': '流通市值', 'pe_rate': '市盈率', 'dyn_pb_rate': '市净率'}
-    for key, value in data.items():
-        if isinstance(value, dict):
-            for field, number in value.items():
-                if key == 'weituo' and field[:1] in ('b', 's') and field[1:].isdigit():
-                    label = ('买' if field[0] == 'b' else '卖') + field[1:] + '档'
-                    values.append([label, '价格 ' + str(number[0]) + '；数量 ' + str(number[1])])
-                else:
-                    values.append([labels.get(field, field), json.dumps(number, ensure_ascii=False)])
-        else:
-            values.append([labels.get(key, key), json.dumps(value, ensure_ascii=False)])
-    return values
-
-
 class ProductPage(QWidget):
     def __init__(self, shell, kind):
         super().__init__()
         self.shell, self.kind, self.scope = shell, kind, QueryScope(self)
         self.future, self.applied, self.requested, self.dirty = None, None, None, False
-        self.points, self.offset = [], 0
+        self.points, self.offset, self.payload = [], 0, None
         item = PRODUCTS[kind]
         layout = QVBoxLayout(self)
         title = QLabel('开盘啦' + item.title)
@@ -88,6 +68,13 @@ class ProductPage(QWidget):
         self.status = QLabel('选择证券日查询；没有数据不能推断为无成交或停牌。')
         self.status.setWordWrap(True)
         layout.addWidget(self.status)
+        self.build_body(layout)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.tick)
+        self.timer.start(500)
+
+    def build_body(self, layout):
+        item = PRODUCTS[self.kind]
         self.table = QTableWidget(0, 2)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.table.setAlternatingRowColors(True)
@@ -101,9 +88,6 @@ class ProductPage(QWidget):
         self.position = QLabel('每页最多 200 条')
         paging.addWidget(self.position)
         layout.addLayout(paging)
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.tick)
-        self.timer.start(500)
 
     def find(self):
         self.applied = (self.market.currentText(), self.code.text().strip(), self.day.date().toString('yyyy-MM-dd'))
@@ -135,18 +119,18 @@ class ProductPage(QWidget):
             else:
                 try:
                     result = self.scope.result('day', future)
-                    self.points, self.offset = [], 0
+                    self.points, self.offset, self.payload = [], 0, result['data'] if result else None
                     if result is None:
                         self.status.setText('本项证券日没有已归档数据；请核对采集状态。')
                     else:
                         data = result['data']['data']
                         field = PRODUCTS[self.kind].field
-                        self.points = data[field] if field else quote_rows(data)
+                        self.points = data[field] if field else []
                         self.status.setText('已读取本项完整证券日；按来源顺序分页展示，未合并同分钟或同秒记录。')
                     self.render()
                 except Exception as exc:
                     self.status.setText(self.scope.failure_message('day', '查询失败', redact(exc, self.shell.cfg),
-                                                                  stale=bool(self.points)))
+                                                                  stale=bool(self.points or self.payload)))
         if self.isVisible() and self.dirty and not self.future:
             self.dirty, self.requested = False, self.applied
             self.future = self.scope.invoke('day', self.shell.runtime, capability(self.kind), 'day', *self.requested)
@@ -162,6 +146,13 @@ class ProductPage(QWidget):
         self.applied, self.dirty = state.get('applied'), bool(state.get('applied'))
 
 
+def create_product_page(shell, kind):
+    if kind == 'quote':
+        from empire.plugins.ui.kaipanla_quote_page import QuotePage
+        return QuotePage(shell, kind)
+    return ProductPage(shell, kind)
+
+
 class KaipanlaProductUiPlugin(UiPlugin):
     def __init__(self, kind):
         super().__init__()
@@ -172,6 +163,6 @@ class KaipanlaProductUiPlugin(UiPlugin):
     def create_pages(self):
         item = PRODUCTS[self.kind]
         return (PageContribution('kaipanla_' + self.kind, '开盘啦' + item.title,
-            partial(ProductPage, kind=self.kind), '数据浏览', 11, item.note,
+            partial(create_product_page, kind=self.kind), '数据浏览', 11, item.note,
             database_tables=('stock_market_day',), catalogued=True, category='高频行情', source='开盘啦',
             cache_policy='lru', management=NavigationTarget('collection', NavigationContext(task_id=project(self.kind)))),)
