@@ -255,6 +255,7 @@ async def test_workspace_direct_help_and_collection_grouping():
     management = {page.id: page.management for page in pages if page.management is not None}
     assert {key: value.context.task_id for key, value in management.items()} == {
         'industries': 'ths-industries',
+        'names_company': 'tdx-company-renames', 'names_security': 'tdx-security-renames',
         **{'kaipanla_' + k: 'kaipanla-' + k.replace('_', '-') for k in
            ('trend','auction','volume','trades','entrust','large_order','quote')},
         "stocks": "sina-stocks", "news": "sina-news", "calendar": "cninfo-calendar",

@@ -9,7 +9,7 @@ def test_current_documentation_contracts() -> None:
     result = verify(root)
     assert result["documents"] > 20
     assert result["links"] > 50
-    assert result["schema_tables"] == 24
+    assert result["schema_tables"] == 25
 
 
 def test_link_checker_rejects_missing_absolute_and_out_of_range_targets(tmp_path: Path) -> None:

@@ -1313,4 +1313,4 @@ stock_market_day为每项证券日业务头，保存身份、上市关联、业�
 
 ## 技术参考
 
-两个栏目共用CWServ.tdxsj_bfzl_bfzl，参数0为公司更名、1为股票更名。正式存储security_name_change使用有类型的证券、日期、旧新名称和来源出现次数；两个项目独立维护collection_state。程序启动不建表，新增表通过create_name_change_schema.py显式维护。迟到旧响应不覆盖新数据，归档成功或确认无需写入即清除相应待归档消息。
+两个栏目共用CWServ.tdxsj_bfzl_bfzl，参数0为公司更名、1为股票更名。正式存储security_name_change使用有类型字段：name_kind区分company/security，record_key是事件身份摘要，unified_code为证券，event_date为来源更名日期，old_name/new_name为旧新名称，source_occurrences保留来源出现次数；两个项目独立维护collection_state。程序启动不建表，新增表通过create_name_change_schema.py显式维护。迟到旧响应不覆盖新数据，归档成功或确认无需写入即清除相应待归档消息。

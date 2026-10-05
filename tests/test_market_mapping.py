@@ -110,11 +110,15 @@ def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
     paths = {'sql/schema.sql', 'sql/schema-contract.json', 'docs/database-design-cards.json', evidence_path, *evidence['bindings']}
     for card in cards['datasets'].values():
         paths.update([card['dictionary'], *card['tests']])
+        if card['capacity']['status'] == 'measured':
+            path = card['capacity']['evidence']
+            measured = json.loads((root/path).read_text('utf-8'))
+            paths.update([path, *measured['bindings']])
     for path in paths:
         target = tmp_path/path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((root/path).read_bytes())
-    assert verify(tmp_path)['tables'] == 24
+    assert verify(tmp_path)['tables'] == 25
     if failure == 'stale':
         (tmp_path/'src/empire/plugins/datasets/trade_blocks.py').write_text('changed', encoding='utf-8')
         pattern = '证据已过期'

@@ -48,7 +48,8 @@ def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_pat
 
     all_ids = {"dividends", "additional_issues", "rights_issues", "home", "catalog", "stocks", "news", "calendar", "collection", "history",
                "sites", "system", "plugins", "help", "proxies", "downloads", "preparation", "suspensions",
-               "income", "balance", "cashflow", "industries", *('kaipanla_' + k for k in ('trend','auction','volume','trades','entrust','large_order','quote'))}
+               "income", "balance", "cashflow", "industries", "names_company", "names_security",
+               *('kaipanla_' + k for k in ('trend','auction','volume','trades','entrust','large_order','quote'))}
     runtime.start()
     try:
         wait_pages(all_ids)
