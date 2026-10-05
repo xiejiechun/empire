@@ -135,7 +135,15 @@
         }
       },
       "source_wire_payload_bytes": 432099,
-      "error_count": 0
+      "error_count": 0,
+      "ordinary_empty_scope": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      }
     },
     "tdx-security-renames": {
       "status": "complete",
@@ -271,26 +279,34 @@
         }
       },
       "source_wire_payload_bytes": 519528,
-      "error_count": 0
+      "error_count": 0,
+      "ordinary_empty_scope": {
+        "development": "未确认",
+        "integrity": "通过",
+        "quality": "通过",
+        "usage": "有限制",
+        "usable": true,
+        "use_state": "可用（有限制）"
+      }
     }
   },
   "pending_stream": 0,
   "repeat_business_dml": 0,
   "production_queries": {
     "page": {
-      "p95_ms": 1.8906000041170046,
+      "p95_ms": 1.6666000010445714,
       "returned": 200,
       "read_bytes": 33484,
       "explain_analyze": [
-        "-> Limit: 200 row(s)  (cost=588 rows=200) (actual time=0.0556..0.25 rows=200 loops=1)\n    -> Index lookup on security_name_change using ix_name_date (name_kind='security')  (cost=588 rows=5810) (actual time=0.0544..0.241 rows=200 loops=1)\n"
+        "-> Limit: 200 row(s)  (cost=625 rows=200) (actual time=0.0842..0.317 rows=200 loops=1)\n    -> Index lookup on security_name_change using ix_name_date (name_kind='security')  (cost=625 rows=6175) (actual time=0.083..0.307 rows=200 loops=1)\n"
       ]
     },
     "coverage": {
-      "p95_ms": 69.16180001280736,
+      "p95_ms": 61.81849999120459,
       "returned": 8368,
       "read_bytes": 1432032,
       "explain_analyze": [
-        "-> Limit: 30001 row(s)  (cost=588 rows=5810) (actual time=0.0418..2.58 rows=8368 loops=1)\n    -> Index lookup on security_name_change using PRIMARY (name_kind='security')  (cost=588 rows=5810) (actual time=0.0408..2.26 rows=8368 loops=1)\n"
+        "-> Limit: 30001 row(s)  (cost=625 rows=6175) (actual time=0.0565..3.05 rows=8368 loops=1)\n    -> Index lookup on security_name_change using PRIMARY (name_kind='security')  (cost=625 rows=6175) (actual time=0.0554..2.64 rows=8368 loops=1)\n"
       ]
     },
     "allocated_bytes": 10764288

@@ -147,9 +147,10 @@ class NameDataPlugin:
             evidence('fields', complete and (analysis or missing == 0),
                 f'范围内{len(selected)}条；证券/日期/行业字段及来源原值已核验；缺原名/新名{missing}条；空值保持未知'),
             evidence('keys', complete, '事件完整身份含名称组合；公司完全重复保留出现次数，股票同证券同日唯一'),
-            evidence('coverage', complete and not unknown_codes,
+            evidence('coverage', complete and (analysis or not unknown_codes),
                 '；'.join(notes) + ('；SQL规范集合与三市场来源证明一致' if complete else '；缺完整证明或SQL内容不一致')
-                + ('；所选证券没有来源事件，不能证明首个名称：' + '、'.join(unknown_codes) if unknown_codes else '')),
+                + ('；所选证券在完整来源响应中没有更名事件，普通查询为空是合法结果，不能据此还原首个名称：'
+                   + '、'.join(unknown_codes) if unknown_codes else '')),
             evidence('quality', complete and (analysis or quality),
                 f'来源内容一致；名称链不衔接{len(breaks)}处；' + '、'.join(breaks[:5]) + '；不填补来源缺口'),
             evidence('freshness', fresh, 'SQL及匹配缓存的完整核验时间须在3天内；最新事件日期不作为更新时效'),

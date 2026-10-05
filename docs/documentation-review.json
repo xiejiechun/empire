@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-05T17:45:35.391494+00:00",
-  "note": "补齐行业升级中SQL已提交但旧断点仍等待归档的恢复边界：持锁且队列清零才通过公共CAS重置旧契约断点，新断点与计划不动；专项覆盖队列非空拒绝与全响应补齐",
+  "reviewed_at": "2026-10-05T18:03:56.370162+00:00",
+  "note": "真实桌面发现检查范围601139无来源更名事件被当漏采；完整来源证据下普通查询空结果合法，初始名称未知保留限制，历史回放仍阻断；行业列与用途说明同步",
   "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -134,7 +134,7 @@
     "src/empire/plugins/data/kaipanla_products.py": "d456d418004ca129e6e1365166ef6771645f8f216fd8c2ffb95b664c615102ad",
     "src/empire/plugins/data/kaipanla_products_preparation.py": "4ef5451ad4ba30becd1f02dd9676db3b60a3dc8c01656c4052e0ebbdff1193d1",
     "src/empire/plugins/data/kaipanla_scope.py": "34ea67794176a533073703fd688d7604ff8ae3c761d167109b3a5b2b0582dd0e",
-    "src/empire/plugins/data/name_changes.py": "7d3067c5e60f58f7912cd27fbf2f81366f8407c728c109965d45edd618cf75d9",
+    "src/empire/plugins/data/name_changes.py": "63bff37ffb074af79e7814e55089bd5ec6f0d59bde776e053f286a7bef74c8ef",
     "src/empire/plugins/data/news.py": "a34447b4c6539fb83e51f12e7dbf4575a0e9c414e2e4868e7e6de8426fe3f08b",
     "src/empire/plugins/data/preparation.py": "b577bf652943a9734fa986829f3338f52c184d20c37dc745fede8a02eff588f7",
     "src/empire/plugins/data/preparation_checks.py": "256d20cdf80ed960b016b8e4a9cff7962ef1f27bd02b2d8f3a68897a217a222e",
@@ -236,5 +236,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "f1528c4a839561ce1e8eb4763c1c87e9ee2c5af8eb124d610738f5d4494555cd"
+  "content_sha256": "a8cb86b7e157e6edd004462357988a3eb98155889a4df4455b5ded2dfbf756e4"
 }

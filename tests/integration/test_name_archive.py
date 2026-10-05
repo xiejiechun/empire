@@ -63,6 +63,10 @@ async def test_end_to_end_and_source_quality(names):
     assert await store.client.xlen(store.stream) == 0
     checks = {e.criterion: e.status for e in await q.preparation_check()}
     assert checks['coverage'] == checks['fields'] == 'pass'
+    absent = await q.preparation_check({'codes':['601139']})
+    assert next(e for e in absent if e.criterion == 'coverage').status == 'pass'
+    historical_absent = await q.preparation_check({'purpose':'historical_signal','codes':['601139']})
+    assert next(e for e in historical_absent if e.criterion == 'coverage').status == 'fail'
     c.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=source(c.kind, missing=True))
     await collect(c)
     assert (await q.list_events(code='000001'))['rows'][0]['old_name'] is None

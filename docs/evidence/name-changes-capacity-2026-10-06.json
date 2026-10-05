@@ -4,17 +4,17 @@
     "sql/schema-contract.json": "2b5fd72a84c3495f4b0d5890402a2e488a42d9471ab715804d9020e1db3472b5",
     "src/empire/contracts/name_changes.py": "c8b9ed32c06bd0bf19f3cf1dac5d4fc9a4a79a87889075eb08590416051581e8",
     "src/empire/plugins/datasets/name_changes.py": "a7ddb5f4b0f4f5184d9ea320c9971ebe01ffd8b3e20f84a6622605fa599a5c1a",
-    "src/empire/plugins/data/name_changes.py": "7d3067c5e60f58f7912cd27fbf2f81366f8407c728c109965d45edd618cf75d9",
+    "src/empire/plugins/data/name_changes.py": "63bff37ffb074af79e7814e55089bd5ec6f0d59bde776e053f286a7bef74c8ef",
     "scripts/measure_name_changes.py": "1122a33df0b22c937d1382938def9da98c8ebd47f729ec2809ffca17afb22a07"
   },
   "measurements": {
-    "page_p95_ms": 1.5352000045822933,
-    "security_p95_ms": 0.3569999971659854,
-    "coverage_p95_ms": 126.36799999745563,
-    "import_seconds": 1.973719000001438,
+    "page_p95_ms": 1.8262999947182834,
+    "security_p95_ms": 0.3105999930994585,
+    "coverage_p95_ms": 207.71409998997115,
+    "import_seconds": 2.2421136000048136,
     "allocated_bytes": 14303232,
-    "real_page_p95_ms": 1.8906000041170046,
-    "real_coverage_p95_ms": 69.16180001280736
+    "real_page_p95_ms": 1.6666000010445714,
+    "real_coverage_p95_ms": 61.81849999120459
   },
   "limits": {
     "page_p95_ms": 50,
@@ -97,7 +97,7 @@
       "read_bytes": 2558756
     }
   },
-  "python_peak_bytes": 11314262,
+  "python_peak_bytes": 11314326,
   "initial": {
     "status": "complete",
     "row_count": 25000,
@@ -126,19 +126,19 @@
   "passed": true,
   "production_sample": {
     "page": {
-      "p95_ms": 1.8906000041170046,
+      "p95_ms": 1.6666000010445714,
       "returned": 200,
       "read_bytes": 33484,
       "explain_analyze": [
-        "-> Limit: 200 row(s)  (cost=588 rows=200) (actual time=0.0556..0.25 rows=200 loops=1)\n    -> Index lookup on security_name_change using ix_name_date (name_kind='security')  (cost=588 rows=5810) (actual time=0.0544..0.241 rows=200 loops=1)\n"
+        "-> Limit: 200 row(s)  (cost=625 rows=200) (actual time=0.0842..0.317 rows=200 loops=1)\n    -> Index lookup on security_name_change using ix_name_date (name_kind='security')  (cost=625 rows=6175) (actual time=0.083..0.307 rows=200 loops=1)\n"
       ]
     },
     "coverage": {
-      "p95_ms": 69.16180001280736,
+      "p95_ms": 61.81849999120459,
       "returned": 8368,
       "read_bytes": 1432032,
       "explain_analyze": [
-        "-> Limit: 30001 row(s)  (cost=588 rows=5810) (actual time=0.0418..2.58 rows=8368 loops=1)\n    -> Index lookup on security_name_change using PRIMARY (name_kind='security')  (cost=588 rows=5810) (actual time=0.0408..2.26 rows=8368 loops=1)\n"
+        "-> Limit: 30001 row(s)  (cost=625 rows=6175) (actual time=0.0565..3.05 rows=8368 loops=1)\n    -> Index lookup on security_name_change using PRIMARY (name_kind='security')  (cost=625 rows=6175) (actual time=0.0554..2.64 rows=8368 loops=1)\n"
       ]
     },
     "allocated_bytes": 10764288
