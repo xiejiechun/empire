@@ -23,7 +23,7 @@ DATASET_TABLES = {
     'additional_issues.unit': 'additional_issue', 'rights_issues.unit': 'rights_issue',
     'calendar.month': 'trade_calendar',
     'suspensions.period': 'suspension_event',
-    'news.page': 'finance_news',
+    'news.flash.page': 'finance_news',
 }
 
 DATASET_TABLE_GROUPS = {dataset: dataset_tables(dataset.split('.')[1]) if dataset.startswith('kaipanla.') else ('industry', 'industry_member') if dataset == 'industry.snapshot' else ('suspension_event', 'suspension_source_date') if dataset == 'suspensions.period' else (table,)

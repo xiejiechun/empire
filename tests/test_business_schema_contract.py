@@ -31,5 +31,5 @@ def test_direct_sql_writer_rejects_wrong_source_before_sql(mapping):
 
 
 def test_news_keeps_independent_source_namespace():
-    require_dataset_source('news.page','sina')
-    require_dataset_source('news.page','another')
+    require_dataset_source('news.flash.page','sina')
+    require_dataset_source('news.flash.page','another')

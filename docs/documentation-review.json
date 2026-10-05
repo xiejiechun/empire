@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-05T11:18:22.618608+00:00",
-  "note": "公共门禁补齐真实DatasetPlugin贡献与表归属、配置/状态例外核对，新增未登记真实贡献拒绝反例。七项代码和最终容量绑定未改变。",
-  "unchanged_reason": "仅补齐现有说明要求的实际数据贡献/表归属自动检查；程序数据读写、查询、迁移、界面和用户操作未改变，已说明每个新增数据集必须登记设计卡及表归属。",
+  "reviewed_at": "2026-10-05T11:19:12.355257+00:00",
+  "note": "实际贡献核对发现新闻设计登记误写news.page，改为正式news.flash.page并保留多来源业务身份；公共门禁现拒绝未登记真实贡献和无归属业务表，七项读写及容量不变。",
+  "unchanged_reason": "修正内部设计登记为既有正式新闻数据集名称，不改变新闻采集、来源身份、SQL表、界面或操作；七项性能代码和容量证据绑定未改变。",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "14e87d36ab18628d39fb9d8f98cadac1c7daf523f652bb7ea816631d19b1f006",
@@ -46,7 +46,7 @@
     "src/empire/build_info.py": "beac8f6c25236dce13e1ecb6e18c067324edcad095cece72ae8e3d46bb145ff7",
     "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
     "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-    "src/empire/contracts/business_schema.py": "3f6de814dd65f69025c1c2042cf3e9c5d7502bca5c9fc625cbde4387393211a8",
+    "src/empire/contracts/business_schema.py": "9235db3fc8747e64bc72236efec854db3ba0078431dbc2d652f5ce6d9e03339a",
     "src/empire/contracts/collection_integrity.py": "a0ed9089362c388cb58e06590ce4fcf026689dc42d5ad680214f4fdd0be64cf6",
     "src/empire/contracts/collector.py": "29019a498d7cc0844ec000536f99f7caf278c80f7e5c5cec80f3cc23706e741a",
     "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
