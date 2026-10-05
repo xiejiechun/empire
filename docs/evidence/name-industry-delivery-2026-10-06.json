@@ -1,0 +1,42 @@
+{
+  "verified_at": "2026-10-06T02:19:07.7319851+08:00",
+  "release_commit": "c5fe607bb20edefc6bb577cce28a1abda8a14f1c",
+  "executable_sha256": "3a9b1b10aef8d6c48cf96602516d93c0a3cc982ab58fa6e56231477cd48effef",
+  "release_gate": "passed",
+  "tests_passed": 1643,
+  "tests_skipped": 7,
+  "portable_distribution": {
+    "chinese_space_path": true,
+    "packaged_smoke": true,
+    "first_run_prepared_config": true,
+    "config_recheck": true
+  },
+  "config_preserved": true,
+  "doctor_different_working_directory_exit": 0,
+  "desktop": {
+    "visible": true,
+    "company_industry_columns": true,
+    "security_industry_columns": true,
+    "query_page_rows": 200,
+    "ordinary_scope": "601139",
+    "company_availability": "可用（有限制）",
+    "security_availability": "可用（有限制）",
+    "collection_completeness": "通过",
+    "source_quality": "通过"
+  },
+  "archived_events": {
+    "company": 3546,
+    "security": 8368,
+    "total_preserved": 11914
+  },
+  "evidence": [
+    "name-industry-migration-2026-10-06.json",
+    "name-industry-live-2026-10-06.json",
+    "name-changes-capacity-2026-10-06.json"
+  ],
+  "limitations": [
+    "来源未给的行业保留空值",
+    "行业标签没有历史归属日期",
+    "严格历史名称回放单独验收"
+  ]
+}
