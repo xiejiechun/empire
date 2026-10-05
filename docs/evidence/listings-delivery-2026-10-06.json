@@ -1,0 +1,64 @@
+{
+  "project": "ths-listings",
+  "released_at": "2026-10-05T20:05:12.831278+00:00",
+  "contract": 2,
+  "interface_count": 1,
+  "interface": "/fuyao/info/company/v1/issuance/detail",
+  "market_mapping": {
+    "SH": 17,
+    "SZ": 33,
+    "BJ": 151
+  },
+  "source_sha256": "29edd68b36afde4e6272a4fa75567dada6f1d82aa46c5deb731c30f7639710c7",
+  "executable_sha256": "0f2c7fc47a275bfd235f83872d8dffcfac8472f206e6e0d5315eeee09d2b31dc",
+  "release": {
+    "passed": 1681,
+    "skipped": 7,
+    "gate_passed": true,
+    "portable_config_and_smoke": true
+  },
+  "desktop": {
+    "visible": true,
+    "production_connected": true,
+    "listing_query": true,
+    "history_detail": true,
+    "date_conflict_warning": true,
+    "task_started": true,
+    "screenshots": [
+      "listings-desktop-date-warning-2026-10-06.png",
+      "listings-desktop-running-2026-10-06.png"
+    ]
+  },
+  "sql_progress": {
+    "checked_at": "2026-10-05T20:05:58.519202+00:00",
+    "stored": 627,
+    "contract2": 627,
+    "pool": 5571
+  },
+  "redis_task": {
+    "checked_at": "2026-10-05T20:05:58.526065+00:00",
+    "status": "running",
+    "active": true,
+    "error": "",
+    "errors": 2,
+    "policy": {
+      "mode": "daily",
+      "interval_seconds": 86400,
+      "daily_time": "18:00",
+      "request_retries": 2,
+      "enabled": true,
+      "use_proxy": true,
+      "proxy_fallback": true
+    }
+  },
+  "progress_note": "SQL与Redis分别读取，非原子快照；当前动态进度不代表全池采完，8证券来源一致性验收另见listings-live-2026-10-06.json",
+  "limitation": "当前股票池与已存证券首次上市资料，不覆盖全部历史退市或重新上市事件",
+  "transient_network": {
+    "record_id": "d562a94506ff45b69ebb96295583983e",
+    "stage": "http",
+    "classification": "代理RemoteProtocolError，共享有界重试；不是本次程序缺陷修复",
+    "security": "001282.SZ",
+    "archived_after_retry": true,
+    "error_record_retained": true
+  }
+}

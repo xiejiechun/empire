@@ -1,0 +1,146 @@
+{
+  "bindings": {
+    "src/empire/contracts/listings.py": "d45b6d8410a00fbd0a12683f64e8c8d0afe6e23e65f5ce072b8d6f7e7fd72a00",
+    "src/empire/plugins/datasets/listings.py": "b5bfcf0d8a8327703477d03dc82b6a4474f33e97e8195f65a4c00203b8dc4876",
+    "src/empire/plugins/data/listings.py": "d22a7c5434b4a959ed243e5599372cb2cce5da738fa4a2b677b563c9d421ec4b",
+    "scripts/measure_listings.py": "43322542617793d379f1e79a6d85455a36bfa635ab2db45064735d4e1c8ca94e"
+  },
+  "ddl_scopes": {
+    "stock_listing": "f19ccd52cdd1958626f6263e80ec3473187942cff2b62fdcd675bebe85bfdc0f"
+  },
+  "measurements": {
+    "page_p95_ms": 1.3832999975420535,
+    "detail_p95_ms": 0.21440000273287296,
+    "range_p95_ms": 0.6672000017715618,
+    "coverage_p95_ms": 56.8621999991592,
+    "import_seconds": 11.927401900000405,
+    "audit_seconds": 0.6975663000048371,
+    "allocated_bytes": 64880640
+  },
+  "limits": {
+    "page_p95_ms": 50,
+    "detail_p95_ms": 50,
+    "range_p95_ms": 50,
+    "coverage_p95_ms": 500,
+    "import_seconds": 60,
+    "audit_seconds": 5,
+    "allocated_bytes": 1610612736
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 15000,
+    "audited": 15000,
+    "cache": "unforced first; subsequent hot repetitions",
+    "synthetic": true,
+    "history_sizes_bytes": [
+      2049,
+      29364
+    ],
+    "maximum_history_bytes": 65536
+  },
+  "reviewed_tradeoffs": "一证券一行；列表/补缺不读历史沿革；详细审计有界200行页读正文，来源范围只限当前池和已存记录。容量按真实正文尺寸放大，不代表全市场实采。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_listing",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_listing_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_listing",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "range": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_listing",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_listing_date",
+        "key": "ix_listing_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 6355,
+        "filtered": 100.0,
+        "Extra": "Using where; Using index"
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_listing",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "11",
+        "ref": null,
+        "rows": 12711,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 11000
+    },
+    "detail": {
+      "returned": 1,
+      "read_bytes": 29621
+    },
+    "range": {
+      "returned": 200,
+      "read_bytes": 5800
+    },
+    "coverage": {
+      "returned": 15000,
+      "read_bytes": 1500000
+    }
+  },
+  "python_peak_bytes": 3363415,
+  "repeat": {
+    "status": "complete",
+    "row_count": 1,
+    "written_count": 0,
+    "confirmed": [
+      "SZ:000001"
+    ]
+  },
+  "revision": {
+    "status": "complete",
+    "row_count": 1,
+    "written_count": 1,
+    "confirmed": [
+      "SZ:000001"
+    ]
+  },
+  "cleanup": "UUID-owned database dropped in finally",
+  "passed": true
+}

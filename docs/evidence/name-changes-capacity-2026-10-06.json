@@ -1,11 +1,11 @@
 {
   "bindings": {
-    "sql/schema.sql": "a0dafe542ac91896dde3b68f4a0d4cfb37c54382aa554ed396ef59576b50d468",
-    "sql/schema-contract.json": "2b5fd72a84c3495f4b0d5890402a2e488a42d9471ab715804d9020e1db3472b5",
     "src/empire/contracts/name_changes.py": "c8b9ed32c06bd0bf19f3cf1dac5d4fc9a4a79a87889075eb08590416051581e8",
     "src/empire/plugins/datasets/name_changes.py": "a7ddb5f4b0f4f5184d9ea320c9971ebe01ffd8b3e20f84a6622605fa599a5c1a",
     "src/empire/plugins/data/name_changes.py": "63bff37ffb074af79e7814e55089bd5ec6f0d59bde776e053f286a7bef74c8ef",
-    "scripts/measure_name_changes.py": "1122a33df0b22c937d1382938def9da98c8ebd47f729ec2809ffca17afb22a07"
+    "scripts/measure_name_changes.py": "1122a33df0b22c937d1382938def9da98c8ebd47f729ec2809ffca17afb22a07",
+    "docs/evidence/schema-before-listings-2026-10-06.sql": "a0dafe542ac91896dde3b68f4a0d4cfb37c54382aa554ed396ef59576b50d468",
+    "docs/evidence/schema-contract-before-listings-2026-10-06.json": "2b5fd72a84c3495f4b0d5890402a2e488a42d9471ab715804d9020e1db3472b5"
   },
   "measurements": {
     "page_p95_ms": 1.8262999947182834,
@@ -142,5 +142,9 @@
       ]
     },
     "allocated_bytes": 10764288
-  }
+  },
+  "ddl_scopes": {
+    "security_name_change": "9b6dde1312b4526d8a74970a977f79430567424afabb2c63d8e20028dcf8fb9d"
+  },
+  "scope_note": "新增stock_listing；原测量DDL及manifest原样归档，按未改动的security_name_change表DDL核验。"
 }

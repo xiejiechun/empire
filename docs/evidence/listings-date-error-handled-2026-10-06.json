@@ -1,0 +1,12 @@
+{
+  "project": "ths-listings",
+  "error_ids": [
+    "2eb5803faa484d65ad03bd150d775d8f"
+  ],
+  "root_cause": "成立日是来源附加字段，不能要求早于上市日；000032真实响应1993-12-04晚于1993-10-28",
+  "fix": "契约2原值保留并显示警告；SQL约束显式升级；旧完整性证明须重建",
+  "verification": "单位回归、隔离来源→Redis→SQL→查询及警告证明通过；8只真实证券内容一致且队列0",
+  "cleaned_count": 1,
+  "remaining_error_records": 0,
+  "checked_at": "2026-10-05T19:49:00.147264+00:00"
+}

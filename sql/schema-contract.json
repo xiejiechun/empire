@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "a0dafe542ac91896dde3b68f4a0d4cfb37c54382aa554ed396ef59576b50d468",
+  "schema_sha256": "da24147e7e5fd861133e43f783b4be67fab8fa262c938da975ee58ce3c5f02ec",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -1550,6 +1550,109 @@
         "ck_name_new": "((new_nameisnull)or(char_length(trim(new_name))>0))",
         "ck_name_occurrences": "(source_occurrencesbetween1and29999)",
         "ck_name_old": "((old_nameisnull)or(char_length(trim(old_name))>0))"
+      }
+    },
+    "stock_listing": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "listing_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "establish_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "issuance_num": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "issuance_price": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "first_day_open_price": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "estimated_raised": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_raised": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "issuance_pe": {
+          "type": "decimal(20, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "winning_rate": {
+          "type": "decimal(20, 10)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "lead_underwriter": {
+          "type": "varchar(2048) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "sponsor": {
+          "type": "varchar(2048) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "history": {
+          "type": "mediumtext",
+          "nullable": true,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "contract_version": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code"
+      ],
+      "indexes": {
+        "ix_listing_date": {
+          "columns": [
+            "listing_date",
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_listing_contract": "(contract_versionin(1,2))",
+        "ck_listing_dates": "((listing_date>='1900-01-01')and((establish_dateisnull)or(establish_date>='1900-01-01')))",
+        "ck_listing_history": "((historyisnull)or(length(history)<=65536))",
+        "ck_listing_numbers": "(((issuance_numisnull)or(issuance_num>=0))and((issuance_priceisnull)or(issuance_price>=0))and((first_day_open_priceisnull)or(first_day_open_price>=0))and((estimated_raisedisnull)or(estimated_raised>=0))and((actual_raisedisnull)or(actual_raised>=0))and((winning_rateisnull)or(winning_ratebetween0and100)))"
       }
     }
   }

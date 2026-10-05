@@ -1,0 +1,132 @@
+{
+  "checked_at": "2026-10-06T03:47:59.443828+08:00",
+  "project": "ths-listings",
+  "job": "ths-listings-v1",
+  "production": true,
+  "scope": [
+    "000001.SZ",
+    "000002.SZ",
+    "000032.SZ",
+    "300750.SZ",
+    "600000.SH",
+    "600519.SH",
+    "688981.SH",
+    "920009.BJ"
+  ],
+  "source_query_equal": true,
+  "details": {
+    "000001.SZ": {
+      "listing_date": "1991-04-03",
+      "history_bytes": 3117,
+      "null_fields": [
+        "issuance_pe",
+        "winning_rate"
+      ],
+      "content_hash": "9282c65e47a780d5e36d4de3804dc93a1094f31d1cf63d2b35f690f5ed629fff"
+    },
+    "000002.SZ": {
+      "listing_date": "1991-01-29",
+      "history_bytes": 893,
+      "null_fields": [
+        "issuance_pe",
+        "winning_rate"
+      ],
+      "content_hash": "afeec51b109f628aa5016815b9a29f4b19865c531a3c139a2d6e4c6c3c3c85b5"
+    },
+    "000032.SZ": {
+      "listing_date": "1993-10-28",
+      "history_bytes": 4290,
+      "null_fields": [
+        "winning_rate"
+      ],
+      "content_hash": "b748c38cee22a81d81cf43bed39e0d1cff0aad50544d3cbd9600c4cf4ea16aad"
+    },
+    "300750.SZ": {
+      "listing_date": "2018-06-11",
+      "history_bytes": 2798,
+      "null_fields": [],
+      "content_hash": "271c9ab19b5d98487c520808d9e4774162520296139490793e07f94703ca25ee"
+    },
+    "600000.SH": {
+      "listing_date": "1999-11-10",
+      "history_bytes": 2051,
+      "null_fields": [],
+      "content_hash": "4b2837727fda0ad30fcf57becadedb5e683323108893cc6befa8f8fecea20aa6"
+    },
+    "600519.SH": {
+      "listing_date": "2001-08-27",
+      "history_bytes": 4859,
+      "null_fields": [],
+      "content_hash": "f289a218ed5aa5a3cc5cec6ecad2de4f94478eb899368903e262b0a508bd3682"
+    },
+    "688981.SH": {
+      "listing_date": "2020-07-16",
+      "history_bytes": 15726,
+      "null_fields": [],
+      "content_hash": "3d01728bb5738c63e460e3e78b4fedf1bd3dce35282a5e93519d00466f46a045"
+    },
+    "920009.BJ": {
+      "listing_date": "2025-11-03",
+      "history_bytes": 29366,
+      "null_fields": [],
+      "content_hash": "59e27b7312c8ffb5964ddfe17f7f3938431027d0d715b960778558531cf9d7c3"
+    }
+  },
+  "cursor": {
+    "phase": "complete",
+    "batch_id": "bfade70e9592451a98715496757a6ea3",
+    "index": 8,
+    "pages": 9,
+    "collected": 8,
+    "units": 8,
+    "scope_hash": "8b6bfe2fa483373ca54d3dd572658834cebe540f75eb80ea8e245751482b9180",
+    "full_refresh": true,
+    "refresh_started_at": "2026-10-05T19:47:56.769291+00:00"
+  },
+  "pending": 0,
+  "preparation": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "检查8证券；缺记录0，未知证券0，内容错误0；来源成立日晚于上市日1条（附加字段警告，保留原值）；当前池及已存记录，不包含从未采集的退市证券；上市日必需；发行附加字段来源NULL保留",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "检查8证券；缺记录0，未知证券0，内容错误0；来源成立日晚于上市日1条（附加字段警告，保留原值）；当前池及已存记录，不包含从未采集的退市证券；统一代码主键及规范内容摘要核对",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "检查8证券；缺记录0，未知证券0，内容错误0；来源成立日晚于上市日1条（附加字段警告，保留原值）；当前池及已存记录，不包含从未采集的退市证券；按键集合检查；指定证券可单独核验，全历史含退市范围没有完整证明",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "检查8证券；缺记录0，未知证券0，内容错误0；来源成立日晚于上市日1条（附加字段警告，保留原值）；当前池及已存记录，不包含从未采集的退市证券；日期、单位、精度、完整字段及正文核验",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "检查8证券；缺记录0，未知证券0，内容错误0；来源成立日晚于上市日1条（附加字段警告，保留原值）；当前池及已存记录，不包含从未采集的退市证券；八天内全池复核；普通轮次仅补缺",
+      "blocking": true,
+      "findings": []
+    },
+    {
+      "criterion": "temporal",
+      "status": "pass",
+      "measured": "检查8证券；缺记录0，未知证券0，内容错误0；来源成立日晚于上市日1条（附加字段警告，保留原值）；当前池及已存记录，不包含从未采集的退市证券；上市日可作交易起点；不提供历史修订版本或全市场退市覆盖",
+      "blocking": false,
+      "findings": []
+    }
+  ],
+  "limitation": "有限真实证券验证；不是全市场采完，不包含从未采集退市证券"
+}

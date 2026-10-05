@@ -640,6 +640,40 @@
         "tests/test_name_changes.py",
         "tests/integration/test_name_archive.py"
       ]
+    },
+    "listing.detail": {
+      "tables": [
+        "stock_listing"
+      ],
+      "grain": "一证券一条当前首次上市与发行详情",
+      "identity": "unified_code；固定来源ths",
+      "dictionary": "docs/ths-listings.md",
+      "queries": [
+        "主键详情1行",
+        "日期范围游标200行",
+        "池覆盖15000",
+        "正文审计200行页"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/listings-capacity-2026-10-06.json",
+        "sample": "四证券实证及15000行放大",
+        "growth": "一年/五年每证券一行；最大正文64KiB",
+        "budget": "列表/详情P95<=50ms、覆盖<=500ms、审计<=5秒、表索引<=1.5GiB"
+      },
+      "integrity": [
+        "十二字段",
+        "键集合与摘要",
+        "旧消息拒绝",
+        "状态同事务",
+        "成功清队"
+      ],
+      "tests": [
+        "tests/test_ths_listings.py",
+        "tests/integration/test_listing_archive.py"
+      ],
+      "lifecycle": "docs/ths-listings.md：当前池逐证券补缺，每七天复核；整轮末等归档；Redis丢失回SQL。",
+      "delivery": "单一类型化路径；scripts/create_listing_schema.py显式增表；有限实采及发布分别报告。"
     }
   },
   "json_roles": {

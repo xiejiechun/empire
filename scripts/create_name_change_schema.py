@@ -16,15 +16,15 @@ from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import shape, validate_shapes
 
 
-def ddl():
+def ddl(table=TABLE):
     sql = (project_root() / 'sql/schema.sql').read_text('utf-8')
-    return sql[sql.index('CREATE TABLE IF NOT EXISTS ' + TABLE):].split(';', 1)[0]
+    return sql[sql.index('CREATE TABLE IF NOT EXISTS ' + table):].split(';', 1)[0]
 
 
-def inventory(conn):
+def inventory(conn, added_table=TABLE):
     result = {}
     for table in inspect(conn).get_table_names():
-        if table != TABLE:
+        if table != added_table:
             result[table] = dict(rows=conn.exec_driver_sql(f'SELECT COUNT(*) FROM `{table}`').scalar_one(),
                 ddl_hash=hashlib.sha256(conn.exec_driver_sql(f'SHOW CREATE TABLE `{table}`').first()[1].encode()).hexdigest())
     states = conn.execute(text('SELECT namespace,project_id,payload FROM collection_state ORDER BY namespace,project_id')).all()
@@ -32,30 +32,30 @@ def inventory(conn):
     return result
 
 
-async def run(args):
+async def run(args, table=TABLE):
     cfg = load_config(args.config)
     lock = acquire_instance_lock() if args.apply else None
     engine, redis = make_engine(cfg['mysql']), create_client(cfg['redis'])
     try:
         queue = await redis.xlen(cfg['redis'].get('namespace', 'empire') + ':ingest')
         with engine.connect() as conn:
-            report = dict(applied=False, queue=queue, table=TABLE,
-                          exists=TABLE in inspect(conn).get_table_names(),
-                          ddl_sha256=hashlib.sha256(ddl().encode()).hexdigest())
+            report = dict(applied=False, queue=queue, table=table,
+                          exists=table in inspect(conn).get_table_names(),
+                          ddl_sha256=hashlib.sha256(ddl(table).encode()).hexdigest())
             if args.apply:
                 if queue:
                     raise RuntimeError('待归档消息未清零，拒绝建表')
                 if conn.execute(text("SELECT GET_LOCK('empire-business-schema-v2',0)")).scalar_one() != 1:
                     raise RuntimeError('已有数据库维护，拒绝并发')
                 try:
-                    report['before'] = inventory(conn)
-                    conn.exec_driver_sql(ddl())
+                    report['before'] = inventory(conn, table)
+                    conn.exec_driver_sql(ddl(table))
                     conn.commit()
-                    validate_shapes(conn, [TABLE])
-                    report['after'] = inventory(conn)
+                    validate_shapes(conn, [table])
+                    report['after'] = inventory(conn, table)
                     if report['before'] != report['after']:
                         raise RuntimeError('已有业务数量、结构或状态内容变化，停止交付')
-                    report.update(applied=True, shape=shape(conn, TABLE), unchanged_existing_business=True)
+                    report.update(applied=True, shape=shape(conn, table), unchanged_existing_business=True)
                 finally:
                     conn.execute(text("SELECT RELEASE_LOCK('empire-business-schema-v2')"))
             if args.report:

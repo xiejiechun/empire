@@ -118,7 +118,7 @@ def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
         target = tmp_path/path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((root/path).read_bytes())
-    assert verify(tmp_path)['tables'] == 25
+    assert verify(tmp_path)['tables'] == 26
     if failure == 'stale':
         (tmp_path/'src/empire/plugins/datasets/trade_blocks.py').write_text('changed', encoding='utf-8')
         pattern = '证据已过期'

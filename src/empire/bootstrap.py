@@ -18,11 +18,13 @@ from empire.plugins.collectors.tdx_name_changes import NameChangeCollector
 from empire.plugins.collectors.tdx_rights_issues import TdxRightsIssuesCollector
 from empire.plugins.collectors.tdx_suspensions import TdxSuspensionCollector
 from empire.plugins.collectors.ths_industries import ThsIndustryCollector
+from empire.plugins.collectors.ths_listings import ThsListingCollector
 from empire.plugins.collectors.ths_statements import ThsStatementCollector
 from empire.plugins.data.capital_actions import CapitalDataPlugin
 from empire.plugins.data.financial_statements import FinancialDataPlugin
 from empire.plugins.data.industries import IndustryDataPlugin
 from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
+from empire.plugins.data.listings import ListingDataPlugin
 from empire.plugins.data.name_changes import NameDataPlugin
 from empire.plugins.data.news import NewsDataPlugin
 from empire.plugins.data.preparation import PreparationPlugin
@@ -42,6 +44,7 @@ from empire.plugins.ui.financial_statements import FinancialUiPlugin
 from empire.plugins.ui.help import HelpUiPlugin
 from empire.plugins.ui.industries import IndustryUiPlugin
 from empire.plugins.ui.kaipanla_products import KaipanlaProductUiPlugin
+from empire.plugins.ui.listings import ListingUiPlugin
 from empire.plugins.ui.name_changes import NameUiPlugin
 from empire.plugins.ui.news import NewsUiPlugin
 from empire.plugins.ui.preparation import PreparationUiPlugin
@@ -74,6 +77,7 @@ def build_manager(cfg: dict) -> PluginManager:
         ProxyPoolPlugin(), DownloadSettingsPlugin(), HttpPlugin(rate_groups, cfg.get("http", {})),
         ArchivePlugin(cfg["archive"]), IngestPlugin(cfg["ingest"]), ArchiveConfirmationPlugin(),
         StockDataPlugin(cfg["redis"].get("namespace", "empire")),
+        ListingDataPlugin(cfg['redis'].get('namespace', 'empire')), ThsListingCollector(), ListingUiPlugin(),
         IndustryDataPlugin(namespace=cfg['redis'].get('namespace', 'empire'),
                            archive_settings=cfg.get('archive', {})),
         ThsIndustryCollector(), IndustryUiPlugin(),
@@ -108,6 +112,11 @@ def build_manager(cfg: dict) -> PluginManager:
             default_schedule=HISTORICAL_DAY_DEFAULTS,
             fresh_description='从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。')
             for kind, item in PRODUCTS.items()),
+            TaskContribution('ths-listings', '股票上市与发行资料（同花顺）',
+            'collector.ths_listings', 'ths', '逐证券补缺，每七天回查当前股票池；保留已存退市证券资料',
+            category='证券基础', source_name='同花顺', default_schedule=TaskDefaults('daily',
+                description='每天北京时间18:00补新增和缺失；每七天全池回查独立修订；计划可编辑。'),
+            fresh_description='逐只重查当前股票池的上市及发行资料；保留已有记录及已入队消息。'),
             TaskContribution('ths-industries', '同花顺当前行业',
             'collector.ths_industries', 'ths', '最新行业名单与全部成分股票 · 不保存变化历史',
             category='证券基础', source_name='同花顺', interval_seconds=86400,

@@ -355,3 +355,27 @@ CREATE TABLE IF NOT EXISTS suspension_source_date (
     PRIMARY KEY (source_date, unified_code, suspended_at, resume_key, record_key),
     INDEX ix_suspension_identity (unified_code, suspended_at, resume_key, record_key, source_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+CREATE TABLE IF NOT EXISTS stock_listing (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    listing_date DATE NOT NULL,
+    establish_date DATE NULL,
+    issuance_num DECIMAL(24,4) NULL,
+    issuance_price DECIMAL(24,4) NULL,
+    first_day_open_price DECIMAL(24,4) NULL,
+    estimated_raised DECIMAL(24,4) NULL,
+    actual_raised DECIMAL(24,4) NULL,
+    issuance_pe DECIMAL(20,4) NULL,
+    winning_rate DECIMAL(20,10) NULL,
+    lead_underwriter VARCHAR(2048) NULL,
+    sponsor VARCHAR(2048) NULL,
+    history MEDIUMTEXT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    contract_version SMALLINT UNSIGNED NOT NULL,
+    version_observed_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (unified_code),
+    KEY ix_listing_date (listing_date, unified_code),
+    CONSTRAINT ck_listing_dates CHECK (listing_date >= '1900-01-01' AND (establish_date IS NULL OR establish_date >= '1900-01-01')),
+    CONSTRAINT ck_listing_numbers CHECK ((issuance_num IS NULL OR issuance_num >= 0) AND (issuance_price IS NULL OR issuance_price >= 0) AND (first_day_open_price IS NULL OR first_day_open_price >= 0) AND (estimated_raised IS NULL OR estimated_raised >= 0) AND (actual_raised IS NULL OR actual_raised >= 0) AND (winning_rate IS NULL OR winning_rate BETWEEN 0 AND 100)),
+    CONSTRAINT ck_listing_history CHECK (history IS NULL OR OCTET_LENGTH(history) <= 65536),
+    CONSTRAINT ck_listing_contract CHECK (contract_version IN (1, 2))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
