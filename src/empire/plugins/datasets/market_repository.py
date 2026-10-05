@@ -68,8 +68,10 @@ def synchronize(conn, table, old, new):
             prior = {**prior, **{k: clock(prior[k], True) for k in ('first_time', 'last_time')}}
         if prior is None:
             inserts.append(row)
-        elif any(prior[c] != v for c, v in row.items()):
-            updates.append(row)
+        else:
+            dirty = tuple(c for c, v in row.items() if prior[c] != v)
+            if dirty:
+                updates.append((row, dirty))
     deletes = [row for key, row in previous.items() if key not in incoming]
     identity = ['unified_code', 'trade_date'] + (['block_seq'] if table.endswith('_block') else ['side', 'level'] if table.endswith('_level') else
                 ['source_time'] if table in {SERIES[k][0] for k in ('trend', 'volume', 'entrust', 'large_order')}
@@ -78,8 +80,12 @@ def synchronize(conn, table, old, new):
     if deletes:
         conn.execute(text(f'DELETE FROM {table} WHERE '+where), deletes)
     if updates:
-        columns = [c for c in updates[0] if c not in identity]
-        conn.execute(text(f'UPDATE {table} SET '+','.join('`'+c+'`=:'+c for c in columns)+' WHERE '+where), updates)
+        groups = {}
+        for row, dirty in updates:
+            columns = tuple(c for c in dirty if c not in identity)
+            groups.setdefault(columns, []).append(row)
+        for columns, records in groups.items():
+            conn.execute(text(f'UPDATE {table} SET '+','.join('`'+c+'`=:'+c for c in columns)+' WHERE '+where), records)
     insert_rows(conn, table, inserts)
     return len(inserts) + len(updates) + len(deletes)
 
@@ -115,9 +121,19 @@ def write_day(conn, row, checksum, observed, *, prefix='', compare=True):
         if not existing:
             insert_rows(conn, prefix+table, records)
     if old:
-        columns = [c for c in head if c not in ('kind', 'unified_code', 'trade_date')]
-        conn.execute(text(f'UPDATE {prefix}stock_market_day SET '+','.join('`'+c+'`=:'+c for c in columns)+
-            ' WHERE kind=:kind AND unified_code=:unified_code AND trade_date=:trade_date'), head)
+        import json
+
+        from empire.plugins.datasets.market_mapping import obj
+        def value(column, raw):
+            return json.dumps(obj(raw), sort_keys=True, ensure_ascii=False) if column in (
+                'identity_extra', 'product_extra', 'source_metadata') else raw
+        columns = [c for c in head if c not in ('kind', 'unified_code', 'trade_date')
+                   and value(c, head[c]) != value(c, old[c])]
+        if columns:
+            conn.execute(text(f'UPDATE {prefix}stock_market_day SET '+','.join('`'+c+'`=:'+c for c in columns)+
+                ' WHERE kind=:kind AND unified_code=:unified_code AND trade_date=:trade_date'), head)
+        head_changed = bool(columns)
     else:
         insert_rows(conn, prefix+'stock_market_day', [head])
-    return True, changed + 1
+        head_changed = True
+    return True, changed + int(head_changed)

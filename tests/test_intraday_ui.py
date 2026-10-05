@@ -35,6 +35,7 @@ def test_lazy_query_preserves_new_drafts_and_all_same_minute_points():
         page.tick()
         assert page.code.text() == '600519'
         assert page.table.rowCount() == 5
+        assert '000001.SZ' in page.status.text()
         assert page.table.item(3, 4).text() == '5'
         page.hide()
         page.dirty = True

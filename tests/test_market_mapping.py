@@ -84,6 +84,23 @@ def test_quote_optional_presence_zero_and_book_extras_roundtrip():
     assert 'jtPeRate' not in actual['data']['real']
 
 
+def test_optional_null_zero_and_absence_are_distinct():
+    from datetime import datetime
+
+    from empire.plugins.datasets.kaipanla_products import validate
+    for value in (None, 0, 0.0):
+        row = business_row('quote')
+        row['data']['real']['pe_rate'] = value
+        validate(row)
+        head, facts = encode(row, digest(row), datetime.now())
+        actual = decode(head, facts)
+        assert digest(actual) == digest(row) and actual['data']['real']['pe_rate'] == value
+        assert 'jtPeRate' not in actual['data']['real']
+    row['data']['real']['last_px'] = None
+    with pytest.raises(ValueError):
+        validate(row)
+
+
 @pytest.mark.parametrize('failure', ['stale', 'over_budget'])
 def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
     root = Path(__file__).resolve().parents[1]

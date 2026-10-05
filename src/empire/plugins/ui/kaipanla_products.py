@@ -40,6 +40,7 @@ class ProductPage(QWidget):
         self.future, self.applied, self.requested, self.dirty = None, None, None, False
         self.points, self.offset, self.payload = [], 0, None
         self.cursors, self.page_index, self.next_cursor, self.total = [None], 0, None, 0
+        self.loaded_scope = None
         item = PRODUCTS[kind]
         layout = QVBoxLayout(self)
         title = QLabel('开盘啦' + item.title)
@@ -133,7 +134,8 @@ class ProductPage(QWidget):
                     self.points, self.offset, self.payload = [], 0, result.get('data') if result else None
                     if result is None:
                         self.total, self.next_cursor = 0, None
-                        self.status.setText('本项证券日没有已归档数据；请核对采集状态。')
+                        self.loaded_scope = None
+                        self.status.setText(f'{self.requested[1]}.{self.requested[0]} / {self.requested[2]}：本项没有已归档数据；请核对采集状态。')
                     else:
                         if self.kind == 'quote':
                             self.payload = result['data']
@@ -141,11 +143,16 @@ class ProductPage(QWidget):
                             self.points = result['points']
                             self.offset, self.total = result['start'], result['total']
                             self.next_cursor = result['next_cursor']
-                        self.status.setText('已读取本项已归档数据页；按来源顺序展示，同分钟或同秒记录均保留。')
+                        self.loaded_scope = self.requested
+                        self.status.setText(f'{self.requested[1]}.{self.requested[0]} / {self.requested[2]}：已读取归档数据页；同分钟或同秒记录均保留。')
                     self.render()
                 except Exception as exc:
-                    self.status.setText(self.scope.failure_message('day', '查询失败', redact(exc, self.shell.cfg),
-                                                                  stale=bool(self.points or self.payload)))
+                    message = self.scope.failure_message('day', '查询失败', redact(exc, self.shell.cfg),
+                                                         stale=bool(self.points or self.payload))
+                    if self.loaded_scope:
+                        market, code, day = self.loaded_scope
+                        message += f'；显示上次结果 {code}.{market} / {day}'
+                    self.status.setText(message)
         if self.isVisible() and self.dirty and not self.future:
             self.dirty, self.requested = False, self.applied
             method = 'day' if self.kind == 'quote' else 'page'

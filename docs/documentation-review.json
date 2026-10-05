@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-05T11:19:12.355257+00:00",
-  "note": "实际贡献核对发现新闻设计登记误写news.page，改为正式news.flash.page并保留多来源业务身份；公共门禁现拒绝未登记真实贡献和无归属业务表，七项读写及容量不变。",
-  "unchanged_reason": "修正内部设计登记为既有正式新闻数据集名称，不改变新闻采集、来源身份、SQL表、界面或操作；七项性能代码和容量证据绑定未改变。",
+  "reviewed_at": "2026-10-05T11:59:39.482300+00:00",
+  "note": "最终字段与交互验收：盘口可选NULL/零/缺字段可逆、必需NULL拒绝、只更新变化列及同版本修复、旧结果明确证券日期；实际贡献和历史容量基线门禁限定；最终容量重测、迁移与程序说明同步。",
+  "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "14e87d36ab18628d39fb9d8f98cadac1c7daf523f652bb7ea816631d19b1f006",
@@ -29,7 +29,7 @@
     "scripts/migrate_suspension_identity.py": "593b7e6f0414069ad6cd8b449a0afd1fa76ff33baa5cd0ec067066a1cb20894a",
     "scripts/mysql_recovery_inventory.py": "5232ea7b8738949174e30a8a6ac5d59f2e5e3f2122a52d109503e80ef2042e77",
     "scripts/preparation_evidence.py": "831645bd3e6e0f13c6a0f520ddae7ea6ef38046db0b12845f9d9efa441e0098d",
-    "scripts/verify_database_design.py": "74fb3bfcf07e224c622303469c877b712c998b8c1a41adb15db2625ff2d28137",
+    "scripts/verify_database_design.py": "2d52fff6d64217ca59d31170993120f6729eab9ff7e03bf8d8dc4e2be81eaba8",
     "scripts/verify_documentation.py": "a82fc2eda0d816834ade251b648454c49725e0e671f9d70dbea3927d1e6756c3",
     "scripts/verify_foundation_ui.py": "92c36a13f64eaa95de6ebb8136431868c97f0fb5f09a5b6c460a094e6d4ff0d2",
     "scripts/verify_kaipanla.py": "91060ed35f5f381d3181d74de9e891ff4462a433985f7dd6fe1ce5ab52a88dcc",
@@ -148,8 +148,8 @@
     "src/empire/plugins/datasets/intraday.py": "1acfb3616ffc2a6b902c844cbf858927e286924d92e16cfd3ee73a04053d40a7",
     "src/empire/plugins/datasets/issue_detail.py": "7b42067f60349c18d3c78812ba8397898c428eb9eef6a9ae5628a518580b818c",
     "src/empire/plugins/datasets/kaipanla_products.py": "31a90500dfe07bb7999227e2601320cab03040befcaa3ee49947f4d04c7be4d6",
-    "src/empire/plugins/datasets/market_mapping.py": "802e345a3794c82e205d328285e094ad46927f062727f3886c3cc5e3833c5639",
-    "src/empire/plugins/datasets/market_repository.py": "721c02a558efa12b0587ebbcfdeb09a6f963b3f1e9abe01b29fa711377008011",
+    "src/empire/plugins/datasets/market_mapping.py": "6188364064a52f55ce6086efeb7fc1c0452f16c7a56a33f4798bcb3037c485b7",
+    "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
     "src/empire/plugins/datasets/news.py": "9ad086bc9db40a8f0d201012621e3d5c1f84bd1c442e1fdf65d6076246af17c2",
     "src/empire/plugins/datasets/stocks.py": "083efd93037736d919903261f625511f17967bb879697fbf8b28ac0f955e937c",
     "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
@@ -203,7 +203,7 @@
     "src/empire/plugins/ui/help_content.py": "a4d562961130d6875945facd5b0bc630cfd49f7c15c7ed1ec1b68814fa8238f9",
     "src/empire/plugins/ui/home.py": "37581582960ae631ee7867b2619e22169cfecc4e82cc184e492f07a47ab9bb63",
     "src/empire/plugins/ui/industries.py": "85d2b5a57fe23e5178266967495409f2c42921eb1d1a03ab13caee59a447aed4",
-    "src/empire/plugins/ui/kaipanla_products.py": "f7d12fbe2423c469c82c5d7423910489a8d9e6e7e1eed60a87caf6ad2b1b5195",
+    "src/empire/plugins/ui/kaipanla_products.py": "f78269e1391b0d4f2f742d220992d4804cbe98c4f443ca5ce35242b71f198671",
     "src/empire/plugins/ui/kaipanla_quote_chart.py": "e8f744a2af1109c74d0fa595a86b338bce9be8d4aa637837a2071513f1d5822a",
     "src/empire/plugins/ui/kaipanla_quote_format.py": "ae5070a2c53db2c20b65082279005cbd12c82f350c475c031e941e59fabbc1ce",
     "src/empire/plugins/ui/kaipanla_quote_page.py": "7c2882111e9234c291dc2d48eccf2ecbd13bbc8072c918b25b55527f3973d4ef",
@@ -226,5 +226,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "ca4bb5bd478b14a8f1763b509a42d0c07863dc36401cf77b2bae37e74c837589"
+  "content_sha256": "4a298765460181850ae2ea09c3f772b5856ce4ac9ab7ac3833a401282599abb1"
 }

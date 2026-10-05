@@ -4,8 +4,8 @@
   "bindings": {
     "sql/schema.sql": "e23624a4e8d141f6203b7e503863e213985c80846c289346f04c6237742f99e3",
     "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
-    "src/empire/plugins/datasets/market_mapping.py": "802e345a3794c82e205d328285e094ad46927f062727f3886c3cc5e3833c5639",
-    "src/empire/plugins/datasets/market_repository.py": "721c02a558efa12b0587ebbcfdeb09a6f963b3f1e9abe01b29fa711377008011",
+    "src/empire/plugins/datasets/market_mapping.py": "6188364064a52f55ce6086efeb7fc1c0452f16c7a56a33f4798bcb3037c485b7",
+    "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
     "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
     "src/empire/plugins/data/kaipanla_products.py": "d456d418004ca129e6e1365166ef6771645f8f216fd8c2ffb95b664c615102ad",
     "scripts/measure_market_storage.py": "804259b388483484f61a12c2d662f36e84397e7aa908616bd40d8de334097417",
@@ -14,17 +14,17 @@
     "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2"
   },
   "measurements": {
-    "page_p95_ms": 2.516,
-    "next_page_p95_ms": 2.837,
-    "time_page_p95_ms": 3.099,
-    "sample_full_day_p95_ms": 36.391,
-    "import_seconds": 7.768633499996213,
+    "page_p95_ms": 2.91,
+    "next_page_p95_ms": 3.598,
+    "time_page_p95_ms": 2.948,
+    "sample_full_day_p95_ms": 37.433,
+    "import_seconds": 7.681475000004866,
     "allocation_ratio": 0.9475913181577554,
     "scale_gib": 7.64581298828125,
-    "max_page_p95_ms": 2.574,
-    "max_page_python_peak_bytes": 290047,
-    "cold_repeat_p95_ms": 38.2,
-    "revision_pair_p95_ms": 122.682
+    "max_page_p95_ms": 2.677,
+    "max_page_python_peak_bytes": 290093,
+    "cold_repeat_p95_ms": 38.532,
+    "revision_pair_p95_ms": 117.338
   },
   "limits": {
     "page_p95_ms": 5,
@@ -42,26 +42,26 @@
   "comparison": {
     "old_allocation_bytes": 30949376,
     "new_allocation_bytes": 29327360,
-    "old_insert_seconds": 3.0910970000040834,
-    "new_insert_seconds": 7.768633499996213,
+    "old_insert_seconds": 3.1458915999974124,
+    "new_insert_seconds": 7.681475000004866,
     "old_day": {
-      "p50_ms": 17.963,
-      "p95_ms": 19.236,
-      "max_ms": 21.462
+      "p50_ms": 17.844,
+      "p95_ms": 19.141,
+      "max_ms": 19.272
     },
     "new_day": {
-      "p50_ms": 22.32,
-      "p95_ms": 36.391,
-      "max_ms": 36.991
+      "p50_ms": 22.59,
+      "p95_ms": 37.433,
+      "max_ms": 38.737
     },
     "ratios": {
-      "day_p95_ratio": 1.8918174256602203,
-      "insert_time_ratio": 2.513228636948614
+      "day_p95_ratio": 1.9556449506295388,
+      "insert_time_ratio": 2.441748151783483
     },
     "python_peak": {
-      "old_day": 1741120,
-      "new_day": 1964614,
-      "page": 296532
+      "old_day": 1741275,
+      "new_day": 1964517,
+      "page": 296577
     }
   },
   "scale": {

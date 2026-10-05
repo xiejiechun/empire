@@ -77,10 +77,11 @@ def encode(row, checksum, observed):
         head['product_extra'] = wire({'fields': {k: v for k, v in data.items() if k not in ('real', 'weituo')},
             'book': {k: v for k, v in data['weituo'].items() if k not in levels}})
         present = [k in data['real'] for k in QUOTE_FIELDS]
-        numbers, mask = numeric_values([data['real'].get(k, 0) for k in QUOTE_FIELDS])
+        supplied = [data['real'].get(k) for k in QUOTE_FIELDS]
+        numbers, mask = numeric_values([v if v is not None else 0 for v in supplied])
         facts['stock_daily_quote'] = [dict(**params, float_mask=mask,
             present_mask=sum(1 << i for i, yes in enumerate(present) if yes),
-            **{k: v if yes else None for k, v, yes in zip(QUOTE_FIELDS, numbers, present, strict=True)})]
+            **{k: v if value is not None else None for k, v, value in zip(QUOTE_FIELDS, numbers, supplied, strict=True)})]
         facts['stock_daily_quote_level'] = []
         for side in ('b', 's'):
             for level in range(1, 11):
@@ -117,7 +118,8 @@ def decode(head, facts):
             raise ValueError('日行情摘要缺失或重复')
         q = q[0]
         values = restore_values([q[k] if q[k] is not None else 0 for k in QUOTE_FIELDS], q['float_mask'])
-        real = {k: v for i, (k, v) in enumerate(zip(QUOTE_FIELDS, values, strict=True)) if q['present_mask'] & (1 << i)}
+        real = {k: v if q[k] is not None else None
+                for i, (k, v) in enumerate(zip(QUOTE_FIELDS, values, strict=True)) if q['present_mask'] & (1 << i)}
         book = {r['side'] + str(r['level']): restore_values([r['price'], r['source_volume']], r['float_mask'])
                 for r in facts['stock_daily_quote_level']}
         if set(book) != {s + str(i) for s in ('b', 's') for i in range(1, 11)}:

@@ -56,8 +56,16 @@ async def test_typed_roundtrip_no_dml_diff_and_coverage_projection(kind):
             from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
             changed['data'][PRODUCTS[kind].field][0][1] += 1
             with engine.begin() as c:
+                statements.clear()
                 accepted, count = write_day(c, changed, digest(changed), now+timedelta(seconds=2))
                 assert accepted and count == 2  # Exactly one fact/block and its parent.
+            updates = [s for s in statements if s.startswith('UPDATE')]
+            assert len(updates) == 2
+            assert 'product_extra' not in updates[-1] and 'identity_extra' not in updates[-1]
+            if kind == 'trades':
+                assert 'point_count' not in updates[0] and 'first_time' not in updates[0]
+            else:
+                assert 'float_mask' not in updates[0] and 'seq=' not in updates[0]
             if first['next_cursor']:
                 with pytest.raises(ValueError, match='版本'):
                     await query.page('SZ', '000001', '2021-01-04', first['next_cursor'])
@@ -67,6 +75,41 @@ async def test_typed_roundtrip_no_dml_diff_and_coverage_projection(kind):
                 read_day(c, head_record(c, kind, '000001.SZ', date(2021, 1, 4)))
     finally:
         event.remove(engine, 'before_cursor_execute', capture)
+        engine.dispose()
+
+
+def test_optional_null_sql_roundtrip_and_column_only_revision():
+    engine = make_engine(load_config()['mysql'])
+    row = business_row('quote')
+    row['data']['real']['pe_rate'] = None
+    now = datetime.now()
+    statements = []
+    def capture(conn, cursor, statement, parameters, context, executemany):
+        statements.append(statement)
+    try:
+        with engine.begin() as c:
+            write_day(c, row, digest(row), now)
+            assert read_day(c, head_record(c, 'quote', '000001.SZ', date(2021, 1, 4))) == row
+        event.listen(engine, 'before_cursor_execute', capture)
+        changed = copy.deepcopy(row)
+        changed['data']['real']['pe_rate'] = 0
+        with engine.begin() as c:
+            assert write_day(c, changed, digest(changed), now+timedelta(seconds=1))[1] == 2
+            assert read_day(c, head_record(c, 'quote', '000001.SZ', date(2021, 1, 4))) == changed
+        updates = [s for s in statements if s.startswith('UPDATE')]
+        assert len(updates) == 2 and updates[0].split(' SET ')[1].split(' WHERE ')[0].startswith('`pe_rate`=')
+        assert ',' not in updates[0].split(' SET ')[1].split(' WHERE ')[0]
+        assert 'last_px' not in updates[0] and 'present_mask' not in updates[0]
+        with engine.begin() as c:
+            c.exec_driver_sql('UPDATE stock_daily_quote SET pe_rate=999')
+        statements.clear()
+        with engine.begin() as c:
+            assert write_day(c, changed, digest(changed), now+timedelta(seconds=1))[1] == 1
+            assert read_day(c, head_record(c, 'quote', '000001.SZ', date(2021, 1, 4))) == changed
+        assert not any(s.startswith('UPDATE stock_market_day') for s in statements)
+    finally:
+        if event.contains(engine, 'before_cursor_execute', capture):
+            event.remove(engine, 'before_cursor_execute', capture)
         engine.dispose()
 
 

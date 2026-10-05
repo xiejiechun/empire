@@ -10,6 +10,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from empire.contracts.business_schema import DATASET_TABLE_GROUPS, PRIMARY_KEYS
 from empire.plugins.datasets.astock import DatasetPlugin
 
+LEGACY_BASELINES = frozenset({
+    'stock.universe.start', 'stock.universe.page', 'stock.universe.complete', 'industry.snapshot',
+    'income.statement', 'balance.statement', 'cashflow.statement', 'dividends.unit',
+    'additional_issues.unit', 'rights_issues.unit', 'calendar.month', 'suspensions.period', 'news.flash.page',
+})  # Approved pre-existing contracts, not an escape hatch for future datasets.
 
 def verify(root):
     schema = (root/'sql/schema.sql').read_bytes()
@@ -42,6 +47,8 @@ def verify(root):
         capacity = card['capacity']
         if capacity.get('status') not in ('measured', 'legacy_baseline'):
             raise ValueError(f'{dataset} 缺少容量验收状态')
+        if capacity['status'] == 'legacy_baseline' and dataset not in LEGACY_BASELINES:
+            raise ValueError(f'{dataset} 新数据集不能冒充历史容量基线')
         if capacity['status'] == 'measured':
             evidence = json.loads((root/capacity['evidence']).read_text('utf-8'))
             for path, checksum in evidence['bindings'].items():

@@ -41,7 +41,7 @@ seq保存来源顺序，分钟主键按source_time；竞价按seq，同分钟所
 
 ## 日摘要字段
 
-real中的以下字段分别存入同名DECIMAL列；time为来源数值，不转为时间戳。缺失可选字段在SQL为NULL、present_mask未置位，原值为零则保存零。必需行情继续由来源校验器约束。
+real中的以下字段分别存入同名DECIMAL列；time为来源数值，不转为时间戳。缺失可选字段在SQL为NULL、present_mask未置位；显式可选NULL仍保存SQL NULL且存在位置位，反向返回None；原值为零则保存非NULL的零。必需字段为空仍由来源校验拒绝。必需行情继续由来源校验器约束。
 
 time, up_px, avg_px, low_px, down_px, high_px, last_px, open_px, pe_rate, jtPeRate, TTMPeRate, amount_in, amplitude, px_change, vol_ratio, amount_out, dyn_pb_rate, phcj_volume, entrust_rate, market_value, total_amount, total_shares, phcj_turnover, px_change_rate, total_turnover, turnover_ratio, circulation_value, circulation_amount, actualcirculation_value
 
