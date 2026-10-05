@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-05T15:12:19.005568+00:00",
-  "note": "将旧版完整库迁移表集合绑定实际business-v1.sql，新增更名表不参与历史证券键迁移；同步结构维护说明，未更改已采集更名事实。",
+  "reviewed_at": "2026-10-05T15:18:21.362352+00:00",
+  "note": "更名查询切换证券筛选后清除旧分页游标并禁用翻页，收到新结果再启用，防止跨筛选跳页；程序内操作说明及专项回归同步。",
   "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -216,7 +216,7 @@
     "src/empire/plugins/ui/kaipanla_quote_format.py": "ae5070a2c53db2c20b65082279005cbd12c82f350c475c031e941e59fabbc1ce",
     "src/empire/plugins/ui/kaipanla_quote_page.py": "7c2882111e9234c291dc2d48eccf2ecbd13bbc8072c918b25b55527f3973d4ef",
     "src/empire/plugins/ui/kaipanla_quote_view.py": "46248d75fc39ca551820d1477096f957103c05c9e59257efd08e4b247776bcab",
-    "src/empire/plugins/ui/name_changes.py": "0bae0768c368ca64c13f54e0a24edb8b6b3ba301f6f462b90e8fe9afdf7d606f",
+    "src/empire/plugins/ui/name_changes.py": "56a6fbd4ff513a4f13744239571544af90f51fc0d0469d75ec0206e5a43113f4",
     "src/empire/plugins/ui/news.py": "9ada1507c144c74ced1564671dfdb736813f9cf471cefd879d3c4fd21ee83ec6",
     "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
     "src/empire/plugins/ui/preparation.py": "91217e1d29ad028b51e19fee48e8489997cf047e95d6eb70eaa5eea8b1ac6443",
@@ -235,5 +235,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "7ad2819af212ce373999d01e568b5c0f648ec5ecb7515791daf9cab199dc104c"
+  "content_sha256": "bc6f5af5f44dc58e378ff9dddc949ad9e0d691e2ba4cba0e6b50ceae20825b1b"
 }

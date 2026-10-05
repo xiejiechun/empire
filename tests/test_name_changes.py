@@ -160,6 +160,10 @@ def test_ui_lazy_independence_draft_and_missing_name_display(monkeypatch):
     page.tick()
     assert page.code.text() == '600000' and page.table.item(0, 2).text() == ''
     assert queries[0][0] == 'names.security.query'
+    page.next_cursor = ['2020-01-01', '000001.SZ', 'a' * 64]
+    page.next.setEnabled(True)
+    page.find()
+    assert page.next_cursor is None and not page.next.isEnabled() and not page.previous.isEnabled()
     state = page.save_ui_state()
     page.close()
     other = NamePage(shell, 'company')

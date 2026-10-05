@@ -65,6 +65,9 @@ class NamePage(QWidget):
 
     def find(self):
         self.applied, self.after, self.history = self.code.text().strip(), None, []
+        self.next_cursor = None
+        self.previous.setEnabled(False)
+        self.next.setEnabled(False)
         self.dirty = True
 
     def move(self, forward):
