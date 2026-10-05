@@ -1,0 +1,707 @@
+{
+  "checked_at": "2026-10-05T12:42:05.789838+00:00",
+  "implementation_commit": "0b08068",
+  "exe_sha256": "49aef92967248c730db2c8729353943749ddf49505b62ce3a2b02535d9565f5d",
+  "target": {
+    "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+    "port": 3307,
+    "database": "empire"
+  },
+  "migration_phase": "verified",
+  "migration_implementation_sha256": "167718bcecc9a55c23ed424b8d46e94bd7b0c774db52fe4ed4bff8b47af1418d",
+  "before": {
+    "units": 1016,
+    "kinds": {
+      "auction": 144,
+      "entrust": 146,
+      "large_order": 138,
+      "quote": 147,
+      "trades": 147,
+      "trend": 147,
+      "volume": 147
+    },
+    "sha256": "9d95e4077fc0c9152c01318a0abd5726f038e488f685e339d7e65aafb2235ba1",
+    "facts": {
+      "stock_intraday_trend": 35427,
+      "stock_opening_auction": 5758,
+      "stock_minute_volume": 35427,
+      "stock_intraday_trade_block": 2001,
+      "stock_minute_entrust": 35186,
+      "stock_large_order_trend": 33258,
+      "stock_daily_quote": 147,
+      "stock_daily_quote_level": 2940
+    }
+  },
+  "after": {
+    "units": 1016,
+    "kinds": {
+      "auction": 144,
+      "entrust": 146,
+      "large_order": 138,
+      "quote": 147,
+      "trades": 147,
+      "trend": 147,
+      "volume": 147
+    },
+    "sha256": "9d95e4077fc0c9152c01318a0abd5726f038e488f685e339d7e65aafb2235ba1",
+    "facts": {
+      "stock_intraday_trend": 35427,
+      "stock_opening_auction": 5758,
+      "stock_minute_volume": 35427,
+      "stock_intraday_trade_block": 2001,
+      "stock_minute_entrust": 35186,
+      "stock_large_order_trend": 33258,
+      "stock_daily_quote": 147,
+      "stock_daily_quote_level": 2940
+    }
+  },
+  "untouched": {
+    "additional_issue": {
+      "rows": 6536,
+      "sha256": "dbe5522737e4a484067da6ff43ba799f180d0ea2bf2cd479677896fd8dc1b4da"
+    },
+    "app_setting": {
+      "rows": 27,
+      "sha256": "474df26ec5795054ce0574f43d154d0d7c8bfa6dfd6d31ad988ff046f91937f5"
+    },
+    "balance_statement": {
+      "rows": 319507,
+      "sha256": "6d1cc5a09951ca9d9c27e62a09696a9b2bc6efd35f5883b27df16bd9a1393a55"
+    },
+    "cashflow_statement": {
+      "rows": 320482,
+      "sha256": "cf26dedb3d96060e27e2113740bde364e0374b2df18786c805579767a6ed6ecc"
+    },
+    "collection_state": {
+      "rows": 18,
+      "sha256": "7486419924e9467998df929e3bee1c3f97c9bb07920d482671e38ad3027a3ae9"
+    },
+    "dividend_plan": {
+      "rows": 55060,
+      "sha256": "56fa584b44e293cd0db113ad929983eed5b81bdda18ce3ee5793751d42cc4ae3"
+    },
+    "finance_news": {
+      "rows": 14381,
+      "sha256": "ea9130acec7a55ae7440c2ac1d99ee89018b8920c2be56282925c957a218046a"
+    },
+    "income_statement": {
+      "rows": 331136,
+      "sha256": "48fe7e23c238891defaa517055889c0f7b22195d43dd02dd29fa697e52c9d4b7"
+    },
+    "industry": {
+      "rows": 90,
+      "sha256": "2bd0bb19c56418f3d74f7b7ded8f4674fdaf0e82fe038faaac33d57e132a6ecf"
+    },
+    "industry_member": {
+      "rows": 5572,
+      "sha256": "417a3a5805cac48cd71bc5606039335ce42d55e34335ab1c156e7f3da0250485"
+    },
+    "rights_issue": {
+      "rows": 1191,
+      "sha256": "63f6633787681a4c8372e9ae6a67adc28b9b1858f4958242111bd0fb9cb091f2"
+    },
+    "stock": {
+      "rows": 5571,
+      "sha256": "7e6e78fa43706dd00dc6d63957e27f708793d1ec6f2ff91e2694449d04c19ab6"
+    },
+    "suspension_event": {
+      "rows": 104733,
+      "sha256": "14299620762b0687892f6ea0a58aaf4c31229781300f24af66c03e14dd0c23e1"
+    },
+    "suspension_source_date": {
+      "rows": 145358,
+      "sha256": "4eff571d06f0c644b6616415b0d1a718287738842cdd8f47d068108d413d4ada"
+    },
+    "trade_calendar": {
+      "rows": 13527,
+      "sha256": "115b653e245c4ea1adf236afaa1209e57f90bbfd5f619f599e773a8384a968f5"
+    }
+  },
+  "query_queue_snapshot": {
+    "stream_length": 49,
+    "snapshot_atomic_with_sql": false,
+    "drained_for_migration": false
+  },
+  "post_desktop": {
+    "checked_at": "2026-10-05T12:31:29.176821+00:00",
+    "inventory": {
+      "units": 1016,
+      "kinds": {
+        "auction": 144,
+        "entrust": 146,
+        "large_order": 138,
+        "quote": 147,
+        "trades": 147,
+        "trend": 147,
+        "volume": 147
+      },
+      "sha256": "9d95e4077fc0c9152c01318a0abd5726f038e488f685e339d7e65aafb2235ba1",
+      "facts": {
+        "stock_intraday_trend": 35427,
+        "stock_opening_auction": 5758,
+        "stock_minute_volume": 35427,
+        "stock_intraday_trade_block": 2001,
+        "stock_minute_entrust": 35186,
+        "stock_large_order_trend": 33258,
+        "stock_daily_quote": 147,
+        "stock_daily_quote_level": 2940
+      }
+    },
+    "untouched": {
+      "additional_issue": {
+        "rows": 6536,
+        "sha256": "dbe5522737e4a484067da6ff43ba799f180d0ea2bf2cd479677896fd8dc1b4da"
+      },
+      "app_setting": {
+        "rows": 27,
+        "sha256": "474df26ec5795054ce0574f43d154d0d7c8bfa6dfd6d31ad988ff046f91937f5"
+      },
+      "balance_statement": {
+        "rows": 319507,
+        "sha256": "6d1cc5a09951ca9d9c27e62a09696a9b2bc6efd35f5883b27df16bd9a1393a55"
+      },
+      "cashflow_statement": {
+        "rows": 320482,
+        "sha256": "cf26dedb3d96060e27e2113740bde364e0374b2df18786c805579767a6ed6ecc"
+      },
+      "collection_state": {
+        "rows": 18,
+        "sha256": "b17c40959ebc18a2e65ec4643d518bc72c25e18c8e91c5dd3d986aa5dbc8a7a9"
+      },
+      "dividend_plan": {
+        "rows": 55060,
+        "sha256": "56fa584b44e293cd0db113ad929983eed5b81bdda18ce3ee5793751d42cc4ae3"
+      },
+      "finance_news": {
+        "rows": 14523,
+        "sha256": "e8c992a49e900f89d09b811757e7a3b45e9733f9399dbba6bb32d0d31fe99ec6"
+      },
+      "income_statement": {
+        "rows": 331136,
+        "sha256": "48fe7e23c238891defaa517055889c0f7b22195d43dd02dd29fa697e52c9d4b7"
+      },
+      "industry": {
+        "rows": 90,
+        "sha256": "2bd0bb19c56418f3d74f7b7ded8f4674fdaf0e82fe038faaac33d57e132a6ecf"
+      },
+      "industry_member": {
+        "rows": 5572,
+        "sha256": "417a3a5805cac48cd71bc5606039335ce42d55e34335ab1c156e7f3da0250485"
+      },
+      "rights_issue": {
+        "rows": 1191,
+        "sha256": "63f6633787681a4c8372e9ae6a67adc28b9b1858f4958242111bd0fb9cb091f2"
+      },
+      "stock": {
+        "rows": 5571,
+        "sha256": "7e6e78fa43706dd00dc6d63957e27f708793d1ec6f2ff91e2694449d04c19ab6"
+      },
+      "suspension_event": {
+        "rows": 104733,
+        "sha256": "14299620762b0687892f6ea0a58aaf4c31229781300f24af66c03e14dd0c23e1"
+      },
+      "suspension_source_date": {
+        "rows": 145358,
+        "sha256": "4eff571d06f0c644b6616415b0d1a718287738842cdd8f47d068108d413d4ada"
+      },
+      "trade_calendar": {
+        "rows": 13527,
+        "sha256": "115b653e245c4ea1adf236afaa1209e57f90bbfd5f619f599e773a8384a968f5"
+      }
+    },
+    "queue": {
+      "stream_length": 0,
+      "snapshot_atomic_with_sql": false,
+      "drained_for_migration": false
+    }
+  },
+  "query_scope": "frozen 50 stocks x 3 dates x 7; readonly formal queries; no collectors/archive started",
+  "query_results": {
+    "trend": {
+      "units": 147,
+      "points": 35427,
+      "pages": 294,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "002731 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "本项范围 2026-09-28～2026-09-30；核对 38/50 只证券、26751 个来源点位；来源有序数组、证券日及摘要核对"
+        },
+        {
+          "criterion": "coverage",
+          "status": "fail",
+          "measured": "002731 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "价格、均价、来源量与标记；不代表分钟 OHLC"
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "按所选范围至 2026-09-30 核验；未证明的来源错误不当空日"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "用于历史来源数据分析；当前股票池有幸存者偏差，未提供当时可用的历史版本"
+        }
+      ]
+    },
+    "auction": {
+      "units": 144,
+      "points": 5758,
+      "pages": 144,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "920112 缺 1 日，首个 2026-09-29"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "本项范围 2026-09-28～2026-09-30；核对 1/50 只证券、4 个来源点位；来源有序数组、证券日及摘要核对"
+        },
+        {
+          "criterion": "coverage",
+          "status": "fail",
+          "measured": "920112 缺 1 日，首个 2026-09-29"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "完整来源点序列；同分钟多点保留，源端无总点数"
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "按所选范围至 2026-09-30 核验；未证明的来源错误不当空日"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "用于历史来源数据分析；当前股票池有幸存者偏差，未提供当时可用的历史版本"
+        }
+      ]
+    },
+    "volume": {
+      "units": 147,
+      "points": 35427,
+      "pages": 294,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "002731 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "本项范围 2026-09-28～2026-09-30；核对 38/50 只证券、26751 个来源点位；来源有序数组、证券日及摘要核对"
+        },
+        {
+          "criterion": "coverage",
+          "status": "fail",
+          "measured": "002731 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "来源分钟量额与标记；不提供每分钟 OHLC"
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "按所选范围至 2026-09-30 核验；未证明的来源错误不当空日"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "用于历史来源数据分析；当前股票池有幸存者偏差，未提供当时可用的历史版本"
+        }
+      ]
+    },
+    "trades": {
+      "units": 147,
+      "points": 386603,
+      "pages": 2001,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "002731 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "本项范围 2026-09-28～2026-09-30；核对 38/50 只证券、289678 个来源点位；来源有序数组、证券日及摘要核对"
+        },
+        {
+          "criterion": "coverage",
+          "status": "fail",
+          "measured": "002731 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "完整分笔数组及来源总数；不冒充交易所逐笔事件流"
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "按所选范围至 2026-09-30 核验；未证明的来源错误不当空日"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "用于历史来源数据分析；当前股票池有幸存者偏差，未提供当时可用的历史版本"
+        }
+      ]
+    },
+    "entrust": {
+      "units": 146,
+      "points": 35186,
+      "pages": 292,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "605333 缺 1 日，首个 2026-09-28"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "本项范围 2026-09-28～2026-09-30；核对 17/50 只证券、12050 个来源点位；来源有序数组、证券日及摘要核对"
+        },
+        {
+          "criterion": "coverage",
+          "status": "fail",
+          "measured": "605333 缺 1 日，首个 2026-09-28"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "分钟买卖委托量额汇总；不含券商席位身份或逐笔委托撤单"
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "按所选范围至 2026-09-30 核验；未证明的来源错误不当空日"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "用于历史来源数据分析；当前股票池有幸存者偏差，未提供当时可用的历史版本"
+        }
+      ]
+    },
+    "large_order": {
+      "units": 138,
+      "points": 33258,
+      "pages": 276,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "920112 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "keys",
+          "status": "fail",
+          "measured": "本项范围 2026-09-28～2026-09-30；核对 1/50 只证券、0 个来源点位；来源有序数组、证券日及摘要核对"
+        },
+        {
+          "criterion": "coverage",
+          "status": "fail",
+          "measured": "920112 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "来源大单净额可为负；不包含独立大单明细筛选"
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "按所选范围至 2026-09-30 核验；未证明的来源错误不当空日"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "用于历史来源数据分析；当前股票池有幸存者偏差，未提供当时可用的历史版本"
+        }
+      ]
+    },
+    "quote": {
+      "units": 147,
+      "points": 147,
+      "pages": 0,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "002731 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "本项范围 2026-09-28～2026-09-30；核对 38/50 只证券、111 个来源点位；来源有序数组、证券日及摘要核对"
+        },
+        {
+          "criterion": "coverage",
+          "status": "fail",
+          "measured": "002731 缺少有效数据及上市关联"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放"
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "按所选范围至 2026-09-30 核验；未证明的来源错误不当空日"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "用于历史来源数据分析；当前股票池有幸存者偏差，未提供当时可用的历史版本"
+        }
+      ]
+    }
+  },
+  "gaps": [
+    {
+      "kind": "trend",
+      "security": "002731.SZ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "trend",
+      "security": "002731.SZ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "trend",
+      "security": "002731.SZ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "auction",
+      "security": "002731.SZ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "auction",
+      "security": "002731.SZ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "auction",
+      "security": "002731.SZ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "auction",
+      "security": "920112.BJ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "auction",
+      "security": "920175.BJ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "auction",
+      "security": "920304.BJ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "volume",
+      "security": "002731.SZ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "volume",
+      "security": "002731.SZ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "volume",
+      "security": "002731.SZ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "trades",
+      "security": "002731.SZ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "trades",
+      "security": "002731.SZ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "trades",
+      "security": "002731.SZ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "entrust",
+      "security": "002731.SZ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "entrust",
+      "security": "002731.SZ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "entrust",
+      "security": "002731.SZ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "entrust",
+      "security": "605333.SH",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "large_order",
+      "security": "002731.SZ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "large_order",
+      "security": "002731.SZ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "large_order",
+      "security": "002731.SZ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "large_order",
+      "security": "920112.BJ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "large_order",
+      "security": "920112.BJ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "large_order",
+      "security": "920112.BJ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "large_order",
+      "security": "920175.BJ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "large_order",
+      "security": "920175.BJ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "large_order",
+      "security": "920175.BJ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "large_order",
+      "security": "920304.BJ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "large_order",
+      "security": "920304.BJ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "large_order",
+      "security": "920304.BJ",
+      "day": "2026-09-30"
+    },
+    {
+      "kind": "quote",
+      "security": "002731.SZ",
+      "day": "2026-09-28"
+    },
+    {
+      "kind": "quote",
+      "security": "002731.SZ",
+      "day": "2026-09-29"
+    },
+    {
+      "kind": "quote",
+      "security": "002731.SZ",
+      "day": "2026-09-30"
+    }
+  ],
+  "quote_projected_rows": 147,
+  "config_preserved": {
+    "source_config_sha256": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "program_config_sha256": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f"
+  },
+  "gate": {
+    "passed": true,
+    "tests_passed": 1608,
+    "tests_skipped": 7,
+    "skips": [
+      "5 explicit opt-in old-schema state drills",
+      "2 Windows symbolic-link privileges"
+    ],
+    "log_sha256": "f3f642ee543bbba50eef75676cea9e374ba9b7a492b3bcb2666ef316f5b00c18"
+  },
+  "disk": {
+    "production_e_free_bytes_at_preflight": 3991327617024,
+    "maintenance_required_bytes": 14653456384,
+    "workspace_d_free_bytes_at_delivery": 918614142976
+  },
+  "desktop": {
+    "visible": true,
+    "method": "computer-use sky native window, real packaged EXE and production MySQL",
+    "security": "000820.SZ",
+    "day": "2026-09-30",
+    "pages": {
+      "trades": "1-200/1435 and 201-400/1435",
+      "trend": "1-200/241 and 201-241/241",
+      "auction": "1-20/20",
+      "entrust": "1-200/241",
+      "large_order": "1-200/241",
+      "volume": "1-200/241",
+      "quote": "five/ten level switch and linked price/average chart"
+    },
+    "missing": "002731.SZ/2026-09-30 volume missing; old rows cleared, total 0; draft security did not change previous result identity"
+  },
+  "private_cleanup": {
+    "port": 13320,
+    "normal_shutdown": true,
+    "exact_capacity_databases_removed": [
+      "empire_market_30b33fc151774beba101b61208d4efe1_test",
+      "empire_market_390ca60b00514d799205321b9e127ba0_test",
+      "empire_market_3d91e34076724d16b67a800d5b7e192f_test",
+      "empire_market_4f570c305d3d43e4a637a723e64b6b55_test",
+      "empire_market_511dfc66a9174b459d63c5de62218baa_test",
+      "empire_market_683202f57815496d9743ba1602b6449a_test",
+      "empire_market_c5348a957f64460f8e4c0e2b06c034ff_test",
+      "empire_market_capacity_test",
+      "empire_market_ddcb30d5e3984cd28011cb41db0d1838_test",
+      "empire_market_fbc5c975f800494a9dba50d9e22163fe_test",
+      "empire_market_fce2053591e54dab9156de3b48ce1156_test"
+    ],
+    "residual_private_test_files_retained": true,
+    "note": "Server SHUTDOWN succeeded; SQLAlchemy connection close then reported expected disconnected rollback. Process exit and removed database directories verified; no production server restart."
+  }
+}
