@@ -14,6 +14,7 @@ from empire.plugins.collectors.sina_news import SinaNewsCollector
 from empire.plugins.collectors.sina_universe import SinaUniverseCollector
 from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
 from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
+from empire.plugins.collectors.tdx_listing_status import TdxListingStatusCollector
 from empire.plugins.collectors.tdx_name_changes import NameChangeCollector
 from empire.plugins.collectors.tdx_rights_issues import TdxRightsIssuesCollector
 from empire.plugins.collectors.tdx_suspensions import TdxSuspensionCollector
@@ -24,6 +25,7 @@ from empire.plugins.data.capital_actions import CapitalDataPlugin
 from empire.plugins.data.financial_statements import FinancialDataPlugin
 from empire.plugins.data.industries import IndustryDataPlugin
 from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
+from empire.plugins.data.listing_status import ListingStatusDataPlugin
 from empire.plugins.data.listings import ListingDataPlugin
 from empire.plugins.data.name_changes import NameDataPlugin
 from empire.plugins.data.news import NewsDataPlugin
@@ -44,6 +46,7 @@ from empire.plugins.ui.financial_statements import FinancialUiPlugin
 from empire.plugins.ui.help import HelpUiPlugin
 from empire.plugins.ui.industries import IndustryUiPlugin
 from empire.plugins.ui.kaipanla_products import KaipanlaProductUiPlugin
+from empire.plugins.ui.listing_status import ListingStatusUiPlugin
 from empire.plugins.ui.listings import ListingUiPlugin
 from empire.plugins.ui.name_changes import NameUiPlugin
 from empire.plugins.ui.news import NewsUiPlugin
@@ -78,6 +81,8 @@ def build_manager(cfg: dict) -> PluginManager:
         ArchivePlugin(cfg["archive"]), IngestPlugin(cfg["ingest"]), ArchiveConfirmationPlugin(),
         StockDataPlugin(cfg["redis"].get("namespace", "empire")),
         ListingDataPlugin(cfg['redis'].get('namespace', 'empire')), ThsListingCollector(), ListingUiPlugin(),
+        ListingStatusDataPlugin(cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})),
+        TdxListingStatusCollector(), ListingStatusUiPlugin(),
         IndustryDataPlugin(namespace=cfg['redis'].get('namespace', 'empire'),
                            archive_settings=cfg.get('archive', {})),
         ThsIndustryCollector(), IndustryUiPlugin(),
@@ -100,7 +105,12 @@ def build_manager(cfg: dict) -> PluginManager:
                              archive_settings=cfg.get('archive', {})) for kind in FINANCIAL_KINDS),
         *(ThsStatementCollector(kind) for kind in FINANCIAL_KINDS),
         *(FinancialUiPlugin(kind) for kind in FINANCIAL_KINDS),
-        CollectionControl([*(TaskContribution(name_project(kind), item[0] + '（通达信）',
+        CollectionControl([TaskContribution('tdx-listing-status', '暂停恢复终止上市（通达信）',
+            'collector.tdx_listing_status', 'tdx', '沪深A股三类事件；逐日核验，按月独立归档',
+            category='证券基础', source_name='通达信', default_schedule=TaskDefaults('daily',
+                description='每天北京时间18:00补缺并回查最近一个月；首次补历史，计划可编辑。'),
+            fresh_description='从1990-12-19逐日重新核验至本轮启动日；保留已归档事件，先继续活跃轮次。'),
+            *(TaskContribution(name_project(kind), item[0] + '（通达信）',
             'collector.tdx_' + kind + '_renames', 'tdx', '一次完整历史响应；缺名及链断裂独立显示',
             category='证券基础', source_name='通达信', default_schedule=TaskDefaults('daily',
                 description='每天北京时间18:00核验全部历史，一次请求发现新增与历史修订；可编辑计划。'),

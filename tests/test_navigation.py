@@ -254,6 +254,7 @@ async def test_workspace_direct_help_and_collection_grouping():
             pages.extend(next(iter(provided.values())))
     management = {page.id: page.management for page in pages if page.management is not None}
     assert {key: value.context.task_id for key, value in management.items()} == {
+        'listing_status': 'tdx-listing-status',
         'listings': 'ths-listings',
         'industries': 'ths-industries',
         'names_company': 'tdx-company-renames', 'names_security': 'tdx-security-renames',

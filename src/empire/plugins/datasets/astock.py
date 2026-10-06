@@ -6,13 +6,23 @@ import json
 from empire.contracts.business_schema import require_dataset_source
 from empire.contracts.data import Envelope, UnsupportedSchema, make_envelope
 from empire.contracts.dataset import DatasetContribution
+from empire.contracts.listing_status import JOB as STATUS_JOB
+from empire.contracts.listing_status import PROJECT as STATUS_PROJECT
 from empire.contracts.listings import JOB as LISTING_JOB
 from empire.contracts.listings import PROJECT as LISTING_PROJECT
 from empire.contracts.name_changes import KINDS as NAME_KINDS
 from empire.contracts.name_changes import SCHEMA_VERSION as NAME_SCHEMA_VERSION
 from empire.contracts.plugin import PluginContext, PluginManifest
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
-from empire.plugins.datasets import industries, listings, news, stocks, suspensions, trade_calendar
+from empire.plugins.datasets import (
+    industries,
+    listing_status,
+    listings,
+    news,
+    stocks,
+    suspensions,
+    trade_calendar,
+)
 from empire.plugins.datasets.capital_actions import KINDS, SCHEMA_VERSIONS
 from empire.plugins.datasets.capital_archive import CapitalDataset
 from empire.plugins.datasets.financial_archive import FinancialDataset
@@ -30,6 +40,7 @@ class DatasetPlugin:
 
     def __init__(self, contributions=None):
         self.contributions = tuple(contributions or (
+            DatasetContribution(listing_status, 'incremental', {STATUS_JOB: STATUS_PROJECT}),
             DatasetContribution(listings, 'incremental', {LISTING_JOB: LISTING_PROJECT}),
             *(DatasetContribution(NameDataset(kind), 'incremental',
                 {NameDataset(kind).JOB: NameDataset(kind).PROJECT}, schema_version=NAME_SCHEMA_VERSION) for kind in NAME_KINDS),

@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "da24147e7e5fd861133e43f783b4be67fab8fa262c938da975ee58ce3c5f02ec",
+  "schema_sha256": "4984bb4fb35e11c7f220780a430a6e59e0498b2d0f539ef2b1fabe3a4903e621",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -1653,6 +1653,73 @@
         "ck_listing_dates": "((listing_date>='1900-01-01')and((establish_dateisnull)or(establish_date>='1900-01-01')))",
         "ck_listing_history": "((historyisnull)or(length(history)<=65536))",
         "ck_listing_numbers": "(((issuance_numisnull)or(issuance_num>=0))and((issuance_priceisnull)or(issuance_price>=0))and((first_day_open_priceisnull)or(first_day_open_price>=0))and((estimated_raisedisnull)or(estimated_raised>=0))and((actual_raisedisnull)or(actual_raised>=0))and((winning_rateisnull)or(winning_ratebetween0and100)))"
+      }
+    },
+    "security_listing_event": {
+      "columns": {
+        "event_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_type": {
+          "type": "varchar(16) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "description": {
+          "type": "text collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "event_date",
+        "unified_code",
+        "event_type",
+        "record_key"
+      ],
+      "indexes": {
+        "ix_security_date": {
+          "columns": [
+            "unified_code",
+            "event_date",
+            "event_type",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_type_date": {
+          "columns": [
+            "event_type",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_listing_event_date": "(event_date>='1990-12-19')",
+        "ck_listing_event_description": "((descriptionisnull)or(char_length(description)<=2000))",
+        "ck_listing_event_type": "(event_typein('suspended','resumed','terminated'))"
       }
     }
   }

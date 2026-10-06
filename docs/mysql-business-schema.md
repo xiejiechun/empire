@@ -65,3 +65,7 @@ status 查看阶段，resume 持同一日志续跑。日志绑定数据库 serve
 预检只读观察，不代表停写保证。维护通过正常单实例锁和共享数据库维护锁拒绝并发，日志默认为build/kaipanla-optimization/migration.json；status/resume继续同一日志，目标结构/实现或旧业务变化拒绝续跑。转换逐完整证券日提交影子表、读回验证规范内容和版本，再核对全集及其他业务表后多表原子切换；MySQL DDL隐式提交，恢复由阶段日志负责。不得跳过坏行或填平缺口。
 
 旧 `empire_market_v1_stock_market_day` 仅用于显式维护恢复，不双写。rollback要求停机、队列为空、新业务及其他表仍匹配迁移基线，并校验旧副本；有增量时拒绝回退，须前向修复或另行保全增量。切换后配套程序正常打开，遇旧结构明确拒绝。真实迁移及容量证据由本次交付报告记录，不将目标设计当作验收。
+
+## 2026-10-06 上市状态事件
+
+新增security_listing_event，固定tdx来源，由(event_date,unified_code,event_type,record_key)标识；证券历史不依赖当前stock。说明为有上限TEXT，其余核心字段结构化；SQL每项目唯一collection_state保存月份范围、集合摘要及来源计数证明。既有库通过scripts/create_listing_event_schema.py在正常停机、队列清零并获取维护锁后显式新增空表；新空库init-db，启动不维护。字段及查询设计见[来源文档](tdx-listing-status.md)。

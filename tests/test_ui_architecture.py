@@ -46,7 +46,7 @@ def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_pat
             time.sleep(.02)
         raise AssertionError(f"Expected {expected}, got {runtime.page_contributions()}")
 
-    all_ids = {"listings", "dividends", "additional_issues", "rights_issues", "home", "catalog", "stocks", "news", "calendar", "collection", "history",
+    all_ids = {"listing_status", "listings", "dividends", "additional_issues", "rights_issues", "home", "catalog", "stocks", "news", "calendar", "collection", "history",
                "sites", "system", "plugins", "help", "proxies", "downloads", "preparation", "suspensions",
                "income", "balance", "cashflow", "industries", "names_company", "names_security",
                *('kaipanla_' + k for k in ('trend','auction','volume','trades','entrust','large_order','quote'))}

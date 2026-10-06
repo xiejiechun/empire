@@ -4,6 +4,7 @@ from types import MappingProxyType
 from empire.contracts.market_storage import MARKET_TABLES, SERIES, dataset_tables
 
 FIXED_SOURCES = MappingProxyType({
+    'security_listing_event': 'tdx',
     'stock_listing': 'ths',
     **{table: 'kaipanla' for table in MARKET_TABLES},
     'stock': 'sina',
@@ -16,6 +17,7 @@ FIXED_SOURCES = MappingProxyType({
 TABLES = tuple(FIXED_SOURCES) + ('finance_news', 'collection_state', 'app_setting')
 
 DATASET_TABLES = {
+    'listing_status.month': 'security_listing_event',
     'listing.detail': 'stock_listing',
     'names.company.market': 'security_name_change', 'names.security.market': 'security_name_change',
     **{'kaipanla.' + kind + '.day': 'stock_market_day' for kind in
@@ -34,6 +36,7 @@ DATASET_TABLE_GROUPS = {dataset: dataset_tables(dataset.split('.')[1]) if datase
                         for dataset, table in DATASET_TABLES.items()}
 
 PRIMARY_KEYS = {
+    'security_listing_event': ['event_date', 'unified_code', 'event_type', 'record_key'],
     'stock_listing': ['unified_code'],
     'security_name_change': ['name_kind', 'record_key'],
     'stock': ['unified_code'], 'industry': ['industry_code'],

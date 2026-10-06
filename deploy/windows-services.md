@@ -70,4 +70,6 @@
 
 更名事件使用`security_name_change`有类型业务表；公司全称/股票简称由独立任务采集，新增表通过scripts/create_name_change_schema.py显式维护，启动不建表。
 
+暂停恢复终止上市使用 `security_listing_event` 结构化事件表，纳入正式备份与恢复；每项目一条 `collection_state` 保存月份集合证明，不能只恢复事件表后冒充完整。既有库通过 `scripts/create_listing_event_schema.py` 正常停机、待归档清零后显式新增空表，核对已有业务不变；应用启动不维护。Redis丢失后依据SQL月份证明补缺，来源范围及日期限制见[暂停恢复终止上市](../docs/tdx-listing-status.md)。
+
 上市与发行资料使用 `stock_listing`，每证券保存一行类型化资料及有上限的历史沿革，纳入正式备份与恢复。既有库通过 `scripts/create_listing_schema.py` 显式新增表，维护前关闭 Empire 并排空待归档队列，核对已有业务不变；启动不建表。采集范围为当前沪深北股票池及已留存记录，不保证从未采集的退市证券完整覆盖，见 [上市与发行资料](../docs/ths-listings.md)。

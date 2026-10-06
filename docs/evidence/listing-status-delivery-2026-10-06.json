@@ -1,0 +1,49 @@
+{
+  "checked_at": "2026-10-06T13:58:06.0416301+08:00",
+  "project": "tdx-listing-status",
+  "scope": "通达信暂停恢复终止上市，沪深A股来源日历",
+  "development": {
+    "source_archive_tests": 26,
+    "related_tests": 59,
+    "source_tests": "tests/test_listing_status.py",
+    "archive_tests": "tests/integration/test_listing_status_archive.py",
+    "lifecycle_design": "docs/tdx-listing-status.md"
+  },
+  "production_schema": "docs/evidence/listing-status-schema-2026-10-06.json",
+  "live": "docs/evidence/listing-status-live-2026-10-06.json",
+  "capacity": "docs/evidence/listing-status-capacity-2026-10-06.json",
+  "release": {
+    "status": "passed",
+    "gate": "verify-release.ps1",
+    "log": "build/listing-status-release.log",
+    "tests_passed": 1712,
+    "tests_skipped": 7,
+    "junit": "build/release-tests.xml",
+    "packaged_executable": "dist/Empire/Empire.exe",
+    "executable_sha256": "af950290054e71c9cbdd03828c3539526426af13231d3d0c473938b3e1282a84",
+    "config_preserved": true,
+    "portable_config_smoke": "passed",
+    "dpi": "1,1.25,1.5,2 passed"
+  },
+  "not_applicable": [
+    "新表无旧格式业务行需转换；模拟同键旧内容通过正式采集归档修复验证",
+    "来源无单独详情接口，sjcontent为栏目返回的完整可得说明",
+    "无独立分页预取或文件业务；单日1000完整响应边界拒绝",
+    "无来源修订编号及公告可用日期，不宣称完整版本回放或公告前信号"
+  ],
+  "actual_history": "仅四个完整月份；连续核验到1990-12-31，普通任务从缺失月份1991-01起补齐，其余已核验月份可跳过；全部历史未完成",
+  "errors": "本次开发未按生产错误记录修复，不清理既有其他项目错误",
+  "desktop": {
+    "method": "native visible Windows EXE via computer-use",
+    "catalog": "数据浏览 → 数据目录 → 暂停恢复终止上市",
+    "rows": 21,
+    "security": "000792.SZ",
+    "suspended": "2020-05-22",
+    "resumed": "2021-08-10",
+    "type_filter": "暂停上市筛选后1条",
+    "description": "2021年8月10日为恢复上市日，处理后公司上市状态为：*ST",
+    "task": "已启用，每天北京时间18:00；代理优先，可回退直连",
+    "documentation": "说明文档搜索暂停恢复终止上市，正文可见",
+    "application_left_open": true
+  }
+}

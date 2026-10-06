@@ -1,0 +1,242 @@
+{
+  "checked_at": "2026-10-06T13:23:14.945471+08:00",
+  "production": true,
+  "project": "tdx-listing-status",
+  "job": "tdx-listing-status-v1",
+  "months": {
+    "1990-12": {
+      "days": 13,
+      "events": 0,
+      "digest": "d260ed9884175b0b139952c5ba8203c8e262a36c521e20292445375bca9cc08a",
+      "types": {
+        "suspended": 0,
+        "resumed": 0,
+        "terminated": 0
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内0事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内0事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内0事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内0事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+          "blocking": true,
+          "findings": []
+        }
+      ]
+    },
+    "2020-05": {
+      "days": 31,
+      "events": 6,
+      "digest": "522cbf616766885b2cfce8eeaee89c95f98161a5a3a5931797c4038289f25f9e",
+      "types": {
+        "suspended": 6,
+        "resumed": 0,
+        "terminated": 0
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内6事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内6事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内6事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内6事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+          "blocking": true,
+          "findings": []
+        }
+      ]
+    },
+    "2021-08": {
+      "days": 31,
+      "events": 2,
+      "digest": "6579450265cc4bca9c09adbabb38f5ca692db8b70e49b09726c69a184ae660e7",
+      "types": {
+        "suspended": 0,
+        "resumed": 1,
+        "terminated": 1
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内2事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内2事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内2事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内2事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+          "blocking": true,
+          "findings": []
+        }
+      ]
+    },
+    "2024-07": {
+      "days": 31,
+      "events": 13,
+      "digest": "7757f1ebccfbc6895303c3bb7bf1ba3600b64955c31ea6a6854a04b61e581ac2",
+      "types": {
+        "suspended": 0,
+        "resumed": 0,
+        "terminated": 13
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内13事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内13事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内13事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内13事件；缺失或集合不符月份0：",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+          "blocking": true,
+          "findings": []
+        }
+      ]
+    }
+  },
+  "requests": 106,
+  "source_query_equal": true,
+  "pending": 0,
+  "cursor": {
+    "phase": "complete",
+    "batch_id": "9b93f0c046f94310823e16193690cef0",
+    "through": "2026-10-06",
+    "fresh": true,
+    "next_month": "2024-08",
+    "pages": 4,
+    "collected": 21,
+    "dates_checked": 106,
+    "contract": 1
+  },
+  "continuous_through": "1990-12-31",
+  "full_history_complete": false,
+  "next_run": "SQL缺失月份及最近一个月；普通任务仍需补全未采历史",
+  "limitation": "仅所列完整月份的真实来源到正式查询验收，不证明其他月份、北交所或重新上市事件完整"
+}

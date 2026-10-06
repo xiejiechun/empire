@@ -282,3 +282,7 @@ stock_market_day是聚合业务头，七个数据集声明各自父子表集合�
 ## 更名行业字段和普通查询验收（2026-10-06）
 
 更名接口zjhhy/tdxhy接入两类事件的有类型列及数据浏览，行业标签不冒充历史归属。普通查询保留缺名、断链及方向限制，可用性按用途核验；历史回放要求仍单列。schema2、contract2及v2摘要通过显式加列和完整重采建立新证明。见[升级设计与维护](name-change-industry-upgrade.md)，实际验收另存日期证据。
+
+## 通达信上市状态事件
+
+listing_status.month贡献security_listing_event结构化事件表；独立采集、查询和按需数据目录UI插件使用公共下载、代理、tdx频控、入队、统一归档与摘要。逐日验证、按月入队后继续下载，整轮等待归档；每项目一条collection_state保存月份完整集合证明。正式查询列表不投影说明，详情按身份查询，不依赖Redis。见[来源与生命周期](tdx-listing-status.md)。

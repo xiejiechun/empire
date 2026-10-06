@@ -674,6 +674,43 @@
       ],
       "lifecycle": "docs/ths-listings.md：当前池逐证券补缺，每七天复核；整轮末等归档；Redis丢失回SQL。",
       "delivery": "单一类型化路径；scripts/create_listing_schema.py显式增表；有限实采及发布分别报告。"
+    },
+    "listing_status.month": {
+      "tables": [
+        "security_listing_event"
+      ],
+      "grain": "一个证券、来源日期、上市事件类型及来源说明的来源事件；完整归档单元为自然月",
+      "identity": "event_date + unified_code + event_type + record_key；固定tdx来源；无当前股票外键",
+      "dictionary": "docs/tdx-listing-status.md",
+      "queries": [
+        "日期范围全市场游标200行",
+        "证券范围游标200行",
+        "类型范围游标200行",
+        "身份点查说明",
+        "整月集合及空日期覆盖审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/listing-status-capacity-2026-10-06.json",
+        "sample": "真实三类日历事件；独立服务合成5万事件、120月份，正文32/160/2000字符",
+        "growth": "预算每年2000事件、五年1万；实际增长以来源为准",
+        "page_limit": 200,
+        "response": "generic公共响应预算，单日1000边界拒绝、单月5000上限",
+        "budget": "列表/证券/类型/详情P95<=50ms，月审计<=100ms，5万条导入<=15秒、分配<=128MiB"
+      },
+      "integrity": [
+        "逐日来源总数、元数据、身份及边界",
+        "月范围日期计数与规范集合摘要同事务",
+        "冷热摘要免SQL与旧版拒绝",
+        "失败不推进断点",
+        "提交后重放及成功清队"
+      ],
+      "tests": [
+        "tests/test_listing_status.py",
+        "tests/integration/test_listing_status_archive.py"
+      ],
+      "lifecycle": "docs/tdx-listing-status.md：初始化1990-12-19至固定启动日；按月补缺、回查最近一个月；整轮统一等归档；Redis丢失回SQL月份证明",
+      "delivery": "scripts/create_listing_event_schema.py显式新增空表；启动不DDL；正式查询/入队/归档各一条路径，动态进度见验收记录"
     }
   },
   "json_roles": {
