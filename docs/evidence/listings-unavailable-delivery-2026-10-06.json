@@ -1,0 +1,73 @@
+{
+  "project": "ths-listings",
+  "error_id": "28a1bf510d3e4beda160a930c4b8fd23",
+  "checked_at": "2026-10-06T13:37:25.740544+08:00",
+  "root_cause": "Source explicitly unavailable was rejected as an interface failure and stopped iteration",
+  "repair": "Exact unavailable protocol archived as coverage state; continue next security; preserve last valid details",
+  "verification": {
+    "specialized_passed": 41,
+    "live": "listings-unavailable-live-2026-10-06.json",
+    "successor": "301141.SZ",
+    "source_empty": "301139.SZ",
+    "pending": 0
+  },
+  "cleanup": {
+    "exact_ids": [
+      "28a1bf510d3e4beda160a930c4b8fd23"
+    ],
+    "removed": 1,
+    "before": 5,
+    "remaining": 4,
+    "remaining_ids": [
+      "ac49c39dd47f4b7cad7a34e6d4ba103f",
+      "03cf24d949c24e3fb86c43e453382ade",
+      "87a563d1c982423f8af7f5a7fc7ebb43",
+      "d562a94506ff45b69ebb96295583983e"
+    ]
+  },
+  "executable_sha256": "9c4f8de66af39c6f9fdf4502a8e0ce696a80238c7755c3b6441c69377d7a486a",
+  "release": {
+    "passed": 1685,
+    "skipped": 7,
+    "gate_passed": true,
+    "isolated": true,
+    "commit": "6003401",
+    "package_files_verified": 2963,
+    "log": "build/listings-unavailable-isolated-release.log",
+    "manifest": {
+      "version": "0.1.0",
+      "commit": "6003401b6e3d43593929debea53d33b9b83b69ee",
+      "dirty": true,
+      "requirements_sha256": "324f4a8b9e382288beb7ec54de8ea4a51e99b012140d1ecf56cdc5c033d21c91",
+      "dependency_count": 41,
+      "dependency_report_sha256": "734bca538d8f1e606fead8e21fa3abf16eb9ca2a4e6c0b9d5e37eb710c5f9fe5",
+      "built_at_utc": "2026-10-06T05:32:10Z",
+      "python": "3.12.9",
+      "pyinstaller": "6.22.3"
+    }
+  },
+  "desktop": {
+    "visible": true,
+    "production_connected": true,
+    "unavailable_query": true,
+    "task_started": true,
+    "current_security_observed": "SZ:301202",
+    "screenshots": [
+      "listings-unavailable-desktop-2026-10-06.png",
+      "listings-unavailable-running-2026-10-06.png"
+    ]
+  },
+  "progress": {
+    "checked_from_redis": true,
+    "checkpoint": {
+      "revision": "2939",
+      "cursor": "{\"phase\":\"fetch\",\"batch_id\":\"2db7ad91d4304d49b425ab741f8555b1\",\"index\":2883,\"pages\":324,\"collected\":323,\"units\":5571,\"scope_hash\":\"de1beadea5e4d85168cf0c5e8a8a1fe004802f27eae39670c1911f840d910968\",\"full_refresh\":false,\"refresh_started_at\":\"2026-10-06T05:06:36.078414+00:00\",\"unavailable\":1}"
+    },
+    "pending": 0,
+    "note": "Live progress snapshot, not whole-pool completion"
+  },
+  "interface_count": 1,
+  "interface": "/fuyao/info/company/v1/issuance/detail",
+  "config_preserved": true,
+  "limitation": "Explicit source unavailable is not a general delisting test; network and unknown protocol failures still retain checkpoint"
+}
