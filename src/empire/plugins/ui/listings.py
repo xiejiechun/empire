@@ -28,7 +28,7 @@ from empire.plugins.ui.queries import QueryScope
 
 FIELDS = ('unified_code', 'name', 'listing_date', 'establish_date', 'issuance_num', 'issuance_price',
           'first_day_open_price', 'issuance_pe', 'winning_rate', 'estimated_raised', 'actual_raised',
-          'lead_underwriter', 'sponsor')
+          'lead_underwriter', 'sponsor', 'detail_status')
 
 
 class ListingPage(QWidget):
@@ -61,7 +61,7 @@ class ListingPage(QWidget):
         self.status = hint('正在读取已归档上市记录…')
         layout.addWidget(self.status)
         self.table = table(['证券', '当前名称', '上市日期', '成立日期', '发行数量(股)', '发行价(元)',
-            '首日开盘(元)', '发行市盈率', '中签率(%)', '预计募资(元)', '实际募资(元)', '主承销商', '保荐人'])
+            '首日开盘(元)', '发行市盈率', '中签率(%)', '预计募资(元)', '实际募资(元)', '主承销商', '保荐人', '来源资料状态'])
         self.table.itemSelectionChanged.connect(self.select)
         layout.addWidget(self.table, 1)
         self.body = QTextBrowser()
@@ -123,7 +123,8 @@ class ListingPage(QWidget):
             else:
                 try:
                     result = self.scope.result('listings', future)
-                    rows(self.table, [[r[k] if r[k] is not None else '' for k in FIELDS] for r in result['rows']],
+                    rows(self.table, [[('来源暂无（旧资料）' if r.get(k) == 'unavailable' else '有资料') if k == 'detail_status'
+                        else r[k] if r[k] is not None else '' for k in FIELDS] for r in result['rows']],
                          keys=[r['unified_code'] for r in result['rows']])
                     self.next_cursor = result['next']
                     self.previous.setEnabled(bool(self.history))
@@ -132,13 +133,23 @@ class ListingPage(QWidget):
                     conflicts = sum(date_warning(r) for r in result['rows'])
                     if conflicts:
                         self.status.setText(self.status.text() + f' 来源成立日晚于上市日{conflicts}条，原值保留。')
+                    unavailable = result.get('unavailable_count', 0)
+                    if unavailable:
+                        self.status.setText(self.status.text() + f' 来源暂无资料{unavailable}只；无有效资料者不生成上市记录。')
+                        if not result['rows']:
+                            self.body.setPlainText('来源明确暂无发行资料；稍后自动复查，不推断退市或填造上市日期。')
                 except Exception as exc:
                     self.status.setText(self.scope.failure_message('listings', '查询失败', redact(exc, self.shell.cfg), stale=self.table.rowCount() > 0))
         if self.detail_future and self.detail_future.done():
             future, self.detail_future = self.detail_future, None
             try:
                 result = self.scope.result('detail', future)
+                unavailable = (result or {}).get('detail_status') == 'unavailable'
+                if unavailable:
+                    result = result.get('last_valid') or {}
                 warning = '来源日期警告：成立日晚于上市日，保留两项原值，不据成立日推算上市日。\n\n' if date_warning(result or {}) else ''
+                if unavailable:
+                    warning = '来源当前暂无发行资料；以下为上次有效资料，仅作历史参考。\n\n' + warning
                 self.body.setPlainText(warning + ((result or {}).get('history') or '来源未提供历史沿革。'))
             except Exception as exc:
                 self.body.setPlainText('历史沿革读取失败：' + redact(exc, self.shell.cfg))

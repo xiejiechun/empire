@@ -1,20 +1,20 @@
 {
   "bindings": {
-    "src/empire/contracts/listings.py": "d45b6d8410a00fbd0a12683f64e8c8d0afe6e23e65f5ce072b8d6f7e7fd72a00",
-    "src/empire/plugins/datasets/listings.py": "b5bfcf0d8a8327703477d03dc82b6a4474f33e97e8195f65a4c00203b8dc4876",
-    "src/empire/plugins/data/listings.py": "d22a7c5434b4a959ed243e5599372cb2cce5da738fa4a2b677b563c9d421ec4b",
-    "scripts/measure_listings.py": "43322542617793d379f1e79a6d85455a36bfa635ab2db45064735d4e1c8ca94e"
+    "src/empire/contracts/listings.py": "f642d2f04b15f476080a11e48e9e013eadb3479fa07b1c596dd0ffa1bf08a599",
+    "src/empire/plugins/datasets/listings.py": "536bbe0fc243d416dbd554934b2f86a81d018db6c26d2985cbb7a2131a6070ca",
+    "src/empire/plugins/data/listings.py": "8df6f82d6ab98e19bf0f2a7b8593ac757f24b25decd5beef24527c98ebec4467",
+    "scripts/measure_listings.py": "4d417d658cb4b05e360cc54a1c7e5baa835814277f589bba15324497cf92cad4"
   },
   "ddl_scopes": {
     "stock_listing": "f19ccd52cdd1958626f6263e80ec3473187942cff2b62fdcd675bebe85bfdc0f"
   },
   "measurements": {
-    "page_p95_ms": 1.3832999975420535,
-    "detail_p95_ms": 0.21440000273287296,
-    "range_p95_ms": 0.6672000017715618,
-    "coverage_p95_ms": 56.8621999991592,
-    "import_seconds": 11.927401900000405,
-    "audit_seconds": 0.6975663000048371,
+    "page_p95_ms": 35.577699993154965,
+    "detail_p95_ms": 34.99519999604672,
+    "range_p95_ms": 36.40879999147728,
+    "coverage_p95_ms": 146.53630000248086,
+    "import_seconds": 11.938365900001372,
+    "audit_seconds": 0.7358832000027178,
     "allocated_bytes": 64880640
   },
   "limits": {
@@ -30,6 +30,8 @@
     "platform": "Windows-11-10.0.26200-SP0",
     "mysql": "8.4.9",
     "rows": 15000,
+    "state_units": 15000,
+    "formal_queries": true,
     "audited": 15000,
     "cache": "unforced first; subsequent hot repetitions",
     "synthetic": true,
@@ -124,7 +126,7 @@
       "read_bytes": 1500000
     }
   },
-  "python_peak_bytes": 3363415,
+  "python_peak_bytes": 3366185,
   "repeat": {
     "status": "complete",
     "row_count": 1,

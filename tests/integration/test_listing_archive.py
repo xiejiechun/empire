@@ -53,6 +53,94 @@ async def collect(c, fresh=False):
     return await asyncio.wait_for(c.execute(fresh=fresh,baseline_revision=await c.checkpoint_revision()),20)
 
 
+def unavailable_source(*args, **kwargs):
+    return httpx.Response(200, json=dict(status_code=10001, data={}, status_msg='result empty'))
+
+
+async def test_unavailable_archives_proof_continues_next_and_rechecks_daily(listing):
+    _, c, q, store = listing
+    c.http.request.side_effect = lambda *a, **kw: unavailable_source() if 'code=000001' in a[1] else httpx.Response(200, json=source())
+    result = await collect(c)
+    assert result['collected'] == 1 and result['unavailable'] == 1 and c.http.request.await_count == 2
+    assert await q.detail('000001.SZ') == dict(unified_code='000001.SZ', detail_status='unavailable', source_status_code=10001, last_valid=None)
+    assert (await q.detail('600000.SH'))['listing_date'] == '1991-04-03'
+    with q.mysql.engine.connect() as conn:
+        assert conn.execute(text('SELECT COUNT(*) FROM stock_listing')).scalar() == 1
+    assert (await q.list_records('000001'))['unavailable_count'] == 1
+    checks = await q.preparation_check({'codes': ['000001']})
+    assert next(e for e in checks if e.criterion == 'fields').status != 'pass'
+    assert all('来源暂无资料1' in e.measured for e in checks)
+    await collect(c)
+    assert c.http.request.await_count == 3  # Only unavailable rechecked in an ordinary round.
+    assert await store.client.xlen(store.stream) == 0
+
+
+async def test_unavailable_preserves_valid_duplicate_and_late_responses_then_recovers(listing):
+    manager, c, q, store = listing
+    await collect(c)
+    old = await q.detail('000001.SZ')
+    archive = manager.registry.get('archive.worker')
+    writes = []
+    def capture(conn, cursor, sql, params, context, many):
+        if 'stock_listing' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
+            writes.append(sql)
+    event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    async def late(row):
+        e = make_envelope(source='ths', dataset=DATASET, business_key='SZ:000001', job_key=JOB,
+            run_id='late', batch_id='late', payload=dict(page=1, unit='SZ:000001', row=row, manifest=None))
+        e = e.model_copy(update={'observed_at': datetime.now(UTC)-timedelta(hours=1)})
+        state = await c.ingest.checkpoint(JOB)
+        await archive.fingerprints.invalidate(listings.FINGERPRINT_NAMESPACE, 'ths')
+        await c.ingest.publish_page([e], job_key=JOB, expected_revision=state['revision'], cursor=state['cursor'])
+        await archive.flush()
+    try:
+        c.http.request.side_effect = unavailable_source
+        await collect(c, True)
+        assert (await q.detail('000001.SZ'))['last_valid'] == old and not writes
+        assert all(r['detail_status'] == 'unavailable' for r in (await q.list_records())['rows'])
+        await collect(c, True)  # Trusted duplicate.
+        await archive.fingerprints.invalidate(listings.FINGERPRINT_NAMESPACE, 'ths')
+        await collect(c, True)  # Cold duplicate.
+        await late(old)
+        assert (await q.detail('000001.SZ'))['detail_status'] == 'unavailable' and not writes
+        c.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=source())
+        await collect(c, True)
+        assert await q.detail('000001.SZ') == old and not writes
+        await late(parse(dict(status_code=10001, data={}, status_msg='result empty'), STOCKS[0], '2026-10-06'))
+        assert await q.detail('000001.SZ') == old and not writes
+        assert await store.client.xlen(store.stream) == 0
+    finally:
+        event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+
+
+async def test_unavailable_sql_and_ack_failures_replay_without_redownload(listing, monkeypatch):
+    manager, c, q, store = listing
+    archive = manager.registry.get('archive.worker')
+    original, ack = q.mysql.archive, archive.acknowledge
+    c.http.request.side_effect = unavailable_source
+    monkeypatch.setattr(q.mysql, 'archive', AsyncMock(side_effect=RuntimeError('sql failed')))
+    task = asyncio.create_task(collect(c))
+    for _ in range(100):
+        if (await c.ingest.checkpoint(JOB))['cursor'].get('phase') == 'awaiting_archive':
+            break
+        await asyncio.sleep(.02)
+    task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await task
+    calls = c.http.request.await_count
+    assert await store.client.xlen(store.stream) > 0
+    monkeypatch.setattr(q.mysql, 'archive', original)
+    monkeypatch.setattr(archive, 'acknowledge', AsyncMock(side_effect=RuntimeError('ack failed')))
+    with pytest.raises(RuntimeError, match='ack failed'):
+        await archive.flush()
+    assert (await q.detail('000001.SZ'))['detail_status'] == 'unavailable'
+    assert await store.client.xlen(store.stream) > 0
+    monkeypatch.setattr(archive, 'acknowledge', ack)
+    archive.request_flush()
+    await collect(c)
+    assert c.http.request.await_count == calls and await store.client.xlen(store.stream) == 0
+
+
 async def test_source_date_conflict_archived_and_reported_without_changing_listing(listing):
     _, c, q, store = listing
     body = source()

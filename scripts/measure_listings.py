@@ -1,5 +1,6 @@
 """UUID-owned schema capacity measurement on a separate MySQL instance."""
 import argparse
+import asyncio
 import hashlib
 import json
 import platform
@@ -8,15 +9,27 @@ import time
 import tracemalloc
 from datetime import UTC, datetime
 from pathlib import Path
+from types import SimpleNamespace
 from uuid import uuid4
 
 from sqlalchemy import text
 
 from empire.contracts.data import make_envelope
-from empire.contracts.listings import COLUMNS, CONTRACT, DATASET, JOB, TABLE, digest, validate
+from empire.contracts.listings import (
+    COLUMNS,
+    CONTRACT,
+    DATASET,
+    JOB,
+    PROJECT,
+    TABLE,
+    digest,
+    validate,
+)
 from empire.core.config import load_config, project_root
 from empire.core.time import mysql_time
+from empire.plugins.data.listings import ListingDataPlugin
 from empire.plugins.datasets import listings
+from empire.plugins.infra.collection_state import save_state
 from empire.plugins.infra.mysql_store import initialize_database, make_engine
 
 
@@ -53,6 +66,30 @@ def run(args):
         import_seconds=time.perf_counter()-started
         peak=tracemalloc.get_traced_memory()[1]
         tracemalloc.stop()
+        proofs={f'SZ:{i:06d}':dict(contract=CONTRACT,digest=digest(r),observed_at=now.isoformat(),
+            availability='unavailable' if i%20==0 else 'available',availability_contract=1,
+            source_status_code=10001 if i%20==0 else 0) for i,r in enumerate(rows)}
+        with engine.begin() as conn:
+            conn.execute(text('INSERT INTO stock(unified_code,name) VALUES(:unified_code,:name)'),
+                [dict(unified_code=r['unified_code'],name='容量样本') for r in rows])
+            save_state(conn,'capacity',PROJECT,'ths',DATASET,dict(units=proofs,contract_version=CONTRACT),{})
+        async def read(callback):
+            return callback()
+        query=ListingDataPlugin('capacity')
+        query.mysql=SimpleNamespace(read_engine=engine,read=read)
+        async def formal_measure():
+            results={}
+            for name,call in [('page',lambda:query.list_records()),('detail',lambda:query.detail('000020.SZ')),
+                              ('range',lambda:query.list_records(start='1990-01-01',end='2000-01-01')),
+                              ('coverage',query.plan)]:
+                samples=[]
+                for _ in range(20):
+                    started=time.perf_counter()
+                    await call()
+                    samples.append((time.perf_counter()-started)*1000)
+                results[name]=sorted(samples)[18]
+            return results
+        formal_timings=asyncio.run(formal_measure())
         e=make_envelope(source='ths',dataset=DATASET,business_key='SZ:000001',job_key=JOB,
             batch_id='measure',run_id='measure',payload=dict(page=1,unit='SZ:000001',row=rows[1],manifest=None))
         e=e.model_copy(update={'observed_at':now})
@@ -98,10 +135,10 @@ def run(args):
         ddl=re.search(r'CREATE TABLE IF NOT EXISTS stock_listing\s*\([\s\S]*?;', (root/'sql/schema.sql').read_text()).group()
         report=dict(bindings={p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in bindings},
             ddl_scopes={TABLE:hashlib.sha256(ddl.encode()).hexdigest()},
-            measurements=dict(page_p95_ms=timings['page'],detail_p95_ms=timings['detail'],range_p95_ms=timings['range'],
-                coverage_p95_ms=timings['coverage'],import_seconds=import_seconds,audit_seconds=audit_seconds,allocated_bytes=int(allocation)),
+            measurements=dict(page_p95_ms=formal_timings['page'],detail_p95_ms=formal_timings['detail'],range_p95_ms=formal_timings['range'],
+                coverage_p95_ms=formal_timings['coverage'],import_seconds=import_seconds,audit_seconds=audit_seconds,allocated_bytes=int(allocation)),
             limits=dict(page_p95_ms=50,detail_p95_ms=50,range_p95_ms=50,coverage_p95_ms=500,import_seconds=60,audit_seconds=5,allocated_bytes=1536*1024**2),
-            conditions=dict(platform=platform.platform(),mysql=version,rows=15000,audited=audited,cache='unforced first; subsequent hot repetitions',
+            conditions=dict(platform=platform.platform(),mysql=version,rows=15000,state_units=15000,formal_queries=True,audited=audited,cache='unforced first; subsequent hot repetitions',
                 synthetic=True,history_sizes_bytes=[2049,29364],maximum_history_bytes=65536),
             reviewed_tradeoffs='一证券一行；列表/补缺不读历史沿革；详细审计有界200行页读正文，来源范围只限当前池和已存记录。容量按真实正文尺寸放大，不代表全市场实采。',
             explain=explains,queries=actual,python_peak_bytes=peak,repeat=repeat,revision=revision,

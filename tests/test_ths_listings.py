@@ -46,6 +46,17 @@ def test_source_establishment_after_listing_is_preserved_with_warning():
     assert date_warning(row) and not date_warning(parse(source(), STOCKS[0], '2026-10-06'))
 
 
+def test_only_exact_source_empty_is_unavailable():
+    from empire.contracts.listings import is_unavailable
+    empty = dict(status_code=10001, data={}, status_msg='result empty')
+    row = parse(empty, STOCKS[0], '2026-10-06')
+    assert is_unavailable(row) and row['unified_code'] == '000001.SZ' and 'listing_date' not in row
+    for change in ({'status_code': 10002}, {'status_code': '10001'}, {'status_msg': 'error'},
+                   {'data': None}, {'data': {'listing_date': None}}, {'extra': True}):
+        with pytest.raises(ValueError):
+            parse({**empty, **change}, STOCKS[0], '2026-10-06')
+
+
 @pytest.mark.parametrize('field,value', [('listing_date',None), ('listing_date','2099-01-01'),
     ('listing_date','1991-4-3'), ('establish_date','2099-01-01'), ('issuance_price','0.00001'),
     ('issuance_num','-1'), ('winning_rate','100.1'), ('winning_rate','0.00000000001'),

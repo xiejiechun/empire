@@ -47,6 +47,9 @@ def number(value, field):
 
 
 def validate(row, through):
+    if is_unavailable(row):
+        split_unified_code(row['unified_code'])
+        return dict(row)
     if not isinstance(row, dict) or set(row) != set(COLUMNS):
         raise ValueError('发行资料字段集合无效')
     split_unified_code(row['unified_code'])
@@ -76,7 +79,24 @@ def date_warning(row):
                 and row['establish_date'] > row['listing_date'])
 
 
+def is_unavailable(row):
+    return (isinstance(row, dict) and set(row) == {'unified_code', 'detail_status', 'source_status_code'}
+            and row['detail_status'] == 'unavailable' and type(row['source_status_code']) is int
+            and row['source_status_code'] == 10001)
+
+
+def unavailable_proof(proof):
+    return (isinstance(proof, dict) and proof.get('availability') == 'unavailable'
+            and type(proof.get('source_status_code')) is int and proof['source_status_code'] == 10001
+            and proof.get('availability_contract') == 1)
+
+
 def parse(body, stock, through):
+    if (isinstance(body, dict) and set(body) == {'status_code', 'data', 'status_msg'}
+            and type(body['status_code']) is int and body['status_code'] == 10001
+            and type(body['data']) is dict and not body['data'] and body['status_msg'] == 'result empty'):
+        return dict(unified_code=unified_code(stock['market'], stock['code']),
+                    detail_status='unavailable', source_status_code=10001)
     if not isinstance(body, dict) or type(body.get('status_code')) is not int or body['status_code'] != 0:
         raise ValueError('发行详情接口未成功')
     data = body.get('data')

@@ -13,6 +13,7 @@ from empire.contracts.listings import (
     TABLE,
     decode,
     digest,
+    is_unavailable,
     validate,
 )
 from empire.contracts.security import unit_identity
@@ -20,7 +21,7 @@ from empire.core.time import CHINA, mysql_time
 from empire.plugins.infra.collection_state import confirmed_page
 
 DATASETS = {DATASET}
-FINGERPRINT_NAMESPACE = 'ths_listings_v2'
+FINGERPRINT_NAMESPACE = 'ths_listings_v3'
 FINGERPRINT_VERSION = ArchiveVersion(('utc',), observed_index=0)
 
 
@@ -44,7 +45,7 @@ def normalize(envelope):
         row = validate(p['row'], envelope.observed_at.astimezone(CHINA).date().isoformat())
         if row['unified_code'] != unit_identity(p['unit']) or row != p['row']:
             raise ValueError('上市证券身份或数字规范不符')
-    return {**p, 'row_count': int(p['row'] is not None)}
+    return {**p, 'row_count': int(p['row'] is not None and not is_unavailable(p['row']))}
 
 
 def canonical_payload(envelope, data):
@@ -73,9 +74,14 @@ def write(conn, envelope, data):
     if not accepted or unit == 'manifest':
         return outcome
     row = data['row']
-    old = conn.execute(text(f'SELECT * FROM {TABLE} WHERE unified_code=:unified_code FOR UPDATE'), row).mappings().first()
+    projection = 'version_observed_at' if is_unavailable(row) else '*'
+    old = conn.execute(text(f'SELECT {projection} FROM {TABLE} WHERE unified_code=:unified_code FOR UPDATE'),
+                       {'unified_code': row['unified_code']}).mappings().first()
     if old and mysql_time(envelope.observed_at) < old['version_observed_at']:
         return {**outcome, 'confirmed': []}
+    if is_unavailable(row):
+        # Availability proof is committed with state; the last valid business row remains intact.
+        return outcome
     checksum = digest(row)
     if old and old['contract_version'] == CONTRACT and old['content_hash'] == checksum and decode(old) == row:
         return outcome
@@ -96,5 +102,7 @@ def archive_state(envelope, data, outcome, previous):
         result['manifest'] = {**data['manifest'], 'observed_at': observed}
     else:
         result['units'] = {**previous.get('units', {}), data['unit']: {'observed_at': observed,
-            'digest': digest(data['row']), 'contract': CONTRACT}}
+            'digest': digest(data['row']), 'contract': CONTRACT, 'availability_contract': 1,
+            'availability': 'unavailable' if is_unavailable(data['row']) else 'available',
+            'source_status_code': 10001 if is_unavailable(data['row']) else 0}}
     return result

@@ -6,7 +6,16 @@ from functools import partial
 from uuid import uuid4
 
 from empire.contracts.data import make_envelope
-from empire.contracts.listings import DATASET, JOB, PROJECT, REFERER, digest, parse, url
+from empire.contracts.listings import (
+    DATASET,
+    JOB,
+    PROJECT,
+    REFERER,
+    digest,
+    is_unavailable,
+    parse,
+    url,
+)
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
 from empire.plugins.collectors.support import (
@@ -101,7 +110,8 @@ class ThsListingCollector:
                     stage = 'source_validation'
                     row, observed, request_url = await self.fetch(stocks[index])
                     following = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
-                                 'collected': cursor['collected'] + 1}
+                                 'collected': cursor['collected'] + int(not is_unavailable(row)),
+                                 'unavailable': cursor.get('unavailable', 0) + int(is_unavailable(row))}
                     stage = 'queue_publish'
                     state = await self.publish(state, following, keys[index], row, None, observed, request_url)
                     cursor = state['cursor']
@@ -115,7 +125,8 @@ class ThsListingCollector:
                 cursor['batch_id'], cursor['pages']), retry_seconds=1)
             cursor = {**cursor, 'phase': 'complete'}
             await self.ingest.advance_checkpoint(job_key=JOB, expected_revision=state['revision'], cursor=cursor)
-            self.stats.update(status='complete', completed_units=cursor['units'], error='')
+            self.stats.update(status='complete', completed_units=cursor['units'],
+                              unavailable=cursor.get('unavailable', 0), error='')
             return cursor
         except asyncio.CancelledError:
             self.stats['status'] = 'paused'
