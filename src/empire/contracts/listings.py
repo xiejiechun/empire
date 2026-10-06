@@ -9,6 +9,7 @@ from empire.contracts.security import split_unified_code, unified_code
 
 PROJECT, JOB, DATASET = 'ths-listings', 'ths-listings-v1', 'listing.detail'
 TABLE, CONTRACT = 'stock_listing', 2
+HISTORY_MAX_BYTES = 256 * 1024
 MARKETS = {'SH': '17', 'SZ': '33', 'BJ': '151'}
 NUMBERS = {'issuance_num': (24, 4), 'issuance_price': (24, 4),
            'first_day_open_price': (24, 4), 'estimated_raised': (24, 4),
@@ -67,7 +68,7 @@ def validate(row, through):
         elif field in NUMBERS:
             value = number(value, field)
         elif value is not None:
-            bound = 65536 if field == 'history' else 2048
+            bound = HISTORY_MAX_BYTES if field == 'history' else 2048
             if not isinstance(value, str) or '\x00' in value or (len(value.encode()) if field == 'history' else len(value)) > bound:
                 raise ValueError('发行文本类型或上限无效：' + field)
         result[field] = value

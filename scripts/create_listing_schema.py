@@ -42,7 +42,11 @@ async def upgrade_dates(args):
                 if conn.execute(text("SELECT GET_LOCK('empire-business-schema-v2',0)")).scalar_one() != 1:
                     raise RuntimeError('另有SQL维护操作')
                 try:
-                    conn.exec_driver_sql("ALTER TABLE stock_listing DROP CHECK ck_listing_dates, DROP CHECK ck_listing_contract, "
+                    if args.upgrade_history_limit:
+                        conn.exec_driver_sql("ALTER TABLE stock_listing DROP CHECK ck_listing_history, "
+                            "ADD CONSTRAINT ck_listing_history CHECK (history IS NULL OR OCTET_LENGTH(history) <= 262144)")
+                    else:
+                        conn.exec_driver_sql("ALTER TABLE stock_listing DROP CHECK ck_listing_dates, DROP CHECK ck_listing_contract, "
                         "ADD CONSTRAINT ck_listing_dates CHECK (listing_date >= '1900-01-01' AND (establish_date IS NULL OR establish_date >= '1900-01-01')), "
                         "ADD CONSTRAINT ck_listing_contract CHECK (contract_version IN (1, 2))")
                     conn.commit()
@@ -50,6 +54,10 @@ async def upgrade_dates(args):
                     report['after'] = content(conn)
                     if report['before'] != report['after']:
                         raise RuntimeError('原有上市内容变化，停止交付')
+                    if args.upgrade_history_limit:
+                        report.update(applied=True, original_content_preserved=True, checkpoint_preserved=True,
+                                      history_max_bytes=262144, coverage='Existing contract2 proofs unchanged; retry retained failed position')
+                        return write_report(args, report)
                     store = SimpleNamespace(client=client, prefix=namespace)
                     cache = FingerprintCache(store, cfg.get('archive', {}), lambda _: None)
                     await cache.invalidate('ths_listings_v1', 'ths')
@@ -61,23 +69,29 @@ async def upgrade_dates(args):
                     report.update(applied=True, original_content_preserved=True, coverage='contract1 remains stored; contract2 full refresh required')
                 finally:
                     conn.execute(text("SELECT RELEASE_LOCK('empire-business-schema-v2')"))
-        if args.report:
-            Path(args.report).write_text(json.dumps(report, ensure_ascii=False, indent=2), 'utf-8')
-        print(json.dumps(report, ensure_ascii=False))
+        write_report(args, report)
     finally:
         engine.dispose()
         await client.aclose()
         if lock:
             lock.unlock()
 
+def write_report(args, report):
+    if args.report:
+        Path(args.report).write_text(json.dumps(report, ensure_ascii=False, indent=2), 'utf-8')
+    print(json.dumps(report, ensure_ascii=False))
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config')
     parser.add_argument('--apply', action='store_true')
     parser.add_argument('--report')
-    parser.add_argument('--upgrade-date-contract', action='store_true')
+    upgrades = parser.add_mutually_exclusive_group()
+    upgrades.add_argument('--upgrade-date-contract', action='store_true')
+    upgrades.add_argument('--upgrade-history-limit', action='store_true')
     args = parser.parse_args()
     try:
-        asyncio.run(upgrade_dates(args) if args.upgrade_date_contract else run(args, table=TABLE))
+        asyncio.run(upgrade_dates(args) if args.upgrade_date_contract or args.upgrade_history_limit else run(args, table=TABLE))
     except Exception as exc:
         raise SystemExit(redact(exc, load_config(args.config))) from None

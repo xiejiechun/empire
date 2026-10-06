@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "4984bb4fb35e11c7f220780a430a6e59e0498b2d0f539ef2b1fabe3a4903e621",
+  "schema_sha256": "d58613efbe8cd6a7f5613383b5ef922fa68eb0bf87a2e31add6c47e9ac87edc1",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -1651,7 +1651,7 @@
       "checks": {
         "ck_listing_contract": "(contract_versionin(1,2))",
         "ck_listing_dates": "((listing_date>='1900-01-01')and((establish_dateisnull)or(establish_date>='1900-01-01')))",
-        "ck_listing_history": "((historyisnull)or(length(history)<=65536))",
+        "ck_listing_history": "((historyisnull)or(length(history)<=262144))",
         "ck_listing_numbers": "(((issuance_numisnull)or(issuance_num>=0))and((issuance_priceisnull)or(issuance_price>=0))and((first_day_open_priceisnull)or(first_day_open_price>=0))and((estimated_raisedisnull)or(estimated_raised>=0))and((actual_raisedisnull)or(actual_raised>=0))and((winning_rateisnull)or(winning_ratebetween0and100)))"
       }
     },

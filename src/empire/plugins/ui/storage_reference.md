@@ -1048,7 +1048,7 @@ policy 的持久来源是 MySQL app_setting，以下 Redis 字段仅作为运行
 | buffer_budget_bytes | 536870912（512 MiB），所有项目、直连及代理共享的下载缓冲预留预算，不是进程总内存上限。 |
 | stock_response_bytes | 1048576（1024 KiB），股票单响应的传输与解压正文各自上限。 |
 | news_response_bytes | 4194304（4096 KiB），新闻单响应的传输与解压正文各自上限。 |
-| calendar_response_bytes | 524288（512 KiB），日历单响应的传输与解压正文各自上限。 |
+| calendar_response_bytes | 262144（512 KiB），日历单响应的传输与解压正文各自上限。 |
 | generic_response_bytes | 2097152（2048 KiB），通用内存响应上限；正式采集器使用自身响应分类。 |
 | file_response_bytes | 268435456（256 MiB），文件传输与解压后的统一上限；插件可另外声明更严格值。 |
 | download_quota_bytes | 2147483648（2048 MiB），下载目录占用与活动文件最大预留总量上限；不足则拒绝新文件，不删已有文件。 |
@@ -1069,7 +1069,7 @@ policy 的持久来源是 MySQL app_setting，以下 Redis 字段仅作为运行
 | --- | --- |
 | high_watermark / low_watermark | 共享 Redis 内存达到高水位暂停、低于低水位恢复；默认 0.70 / 0.50，要求 0 < low < high < 1。 |
 | max_queue_entries | 本项目消息队列与所有未消耗整批预留的合计上限，默认 100000；达到上限暂停，不删除未归档消息。 |
-| max_page_bytes | 单次入队消息正文限制及整批准入的每消息最坏预算，默认 524288，即 512 KiB。 |
+| max_page_bytes | 单次入队消息正文限制及整批准入的每消息最坏预算，默认 262144，即 512 KiB。 |
 
 股票取得总数后、发布 `start` 前一次预留 `start + 剩余分页 + complete` 的容量；断点恢复只预留剩余分页和 `complete`。普通新闻、日历及其他批次不能占用已经预留的槽位。消息成功写入 Stream 才消耗预留，发布失败、取消或提前结束释放未使用部分；同一任务不能重复预留。容量不足时在首条业务消息前显示暂停原因，不会先留下一个永远收不齐的批次。
 
@@ -1339,7 +1339,9 @@ stock_market_day为每项证券日业务头，保存身份、上市关联、业�
 
 ## 技术参考
 
-正式业务表为stock_listing，一证券一条首次上市资料，核心日期和金额为类型列，历史沿革上限64KiB。相同内容不执行业务写入；可信摘要免SQL确认，成功即清理对应待归档消息，失败保留。来源没有修订版本号，按请求开始时间防迟到覆盖，不承诺识别源站语义旧版。新表仅由scripts/create_listing_schema.py显式维护，启动不迁移。
+正式业务表为stock_listing，一证券一条首次上市资料，核心日期和金额为类型列，历史沿革上限256KiB，完整保存，不截断。相同内容不执行业务写入；可信摘要免SQL确认，成功即清理对应待归档消息，失败保留。来源没有修订版本号，按请求开始时间防迟到覆盖，不承诺识别源站语义旧版。新表仅由scripts/create_listing_schema.py显式维护，启动不迁移。
+
+旧64KiB历史沿革约束使用 `scripts/create_listing_schema.py --upgrade-history-limit --apply` 显式扩容：关闭程序、待归档排空、核对原数据不变，保留断点，升级程序后继续采集失败位置。
 
 | SQL字段 | 数据含义 |
 | --- | --- |

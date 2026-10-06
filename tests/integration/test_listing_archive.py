@@ -13,7 +13,7 @@ from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.listings import DATASET, JOB, parse
+from empire.contracts.listings import DATASET, JOB, digest, parse
 from empire.core.config import load_config
 from empire.plugins.datasets import listings
 from tests.test_ths_listings import STOCKS, source
@@ -281,3 +281,26 @@ async def test_same_count_different_sql_keys_missing_coverage_and_sql_failure(li
     archive.request_flush()
     await collect(c)
     assert await store.client.xlen(store.stream)==0
+
+
+async def test_large_utf8_history_full_archive_and_repeat_without_business_dml(listing):
+    from empire.contracts.listings import HISTORY_MAX_BYTES
+    _, c, q, store = listing
+    body = source()
+    history = '文' * (HISTORY_MAX_BYTES // 3) + 'x' * (HISTORY_MAX_BYTES % 3)
+    body['data']['history'] = history
+    c.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=body)
+    await collect(c)
+    row = await q.detail('000001.SZ')
+    assert row['history'] == history and digest(row) == digest(parse(body, STOCKS[0], '2026-10-06'))
+    assert 'history' not in (await q.list_records())['rows'][0]
+    writes = []
+    def capture(conn, cursor, sql, params, context, many):
+        if 'stock_listing' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
+            writes.append(sql)
+    event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    try:
+        await collect(c, True)
+        assert not writes and await store.client.xlen(store.stream) == 0
+    finally:
+        event.remove(q.mysql.engine, 'before_cursor_execute', capture)

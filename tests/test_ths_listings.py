@@ -8,7 +8,16 @@ import pytest
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.listings import DATASET, FIELDS, JOB, PROJECT, digest, parse, url
+from empire.contracts.listings import (
+    DATASET,
+    FIELDS,
+    HISTORY_MAX_BYTES,
+    JOB,
+    PROJECT,
+    digest,
+    parse,
+    url,
+)
 from empire.core.config import load_config
 from empire.plugins.collectors.ths_listings import ThsListingCollector
 from empire.plugins.datasets import listings
@@ -60,7 +69,7 @@ def test_only_exact_source_empty_is_unavailable():
 @pytest.mark.parametrize('field,value', [('listing_date',None), ('listing_date','2099-01-01'),
     ('listing_date','1991-4-3'), ('establish_date','2099-01-01'), ('issuance_price','0.00001'),
     ('issuance_num','-1'), ('winning_rate','100.1'), ('winning_rate','0.00000000001'),
-    ('issuance_price',True), ('history','文' * 21846), ('sponsor','机'*2049), ('issuance_num','1e3')],
+    ('issuance_price',True), ('history','x' * (HISTORY_MAX_BYTES+1)), ('sponsor','机'*2049), ('issuance_num','1e3')],
     ids=['missing-date','future-date','bad-date','future-establish','precision','negative','percent-high',
          'percent-precision','bool','large-history','large-sponsor','exponent'])
 def test_invalid_source_fails(field, value):
@@ -68,6 +77,18 @@ def test_invalid_source_fails(field, value):
     body['data'][field] = value
     with pytest.raises(ValueError):
         parse(body, STOCKS[0], '2026-10-06')
+
+
+def test_history_utf8_boundary_preserved_and_invalid_types_rejected():
+    body = source()
+    history = '文' * (HISTORY_MAX_BYTES // 3) + 'x' * (HISTORY_MAX_BYTES % 3)
+    body['data']['history'] = history
+    assert len(history.encode()) == HISTORY_MAX_BYTES
+    assert parse(body, STOCKS[0], '2026-10-06')['history'] == history
+    for bad in (history + 'x', {}, 123, 'valid\x00text'):
+        body['data']['history'] = bad
+        with pytest.raises(ValueError, match='history'):
+            parse(body, STOCKS[0], '2026-10-06')
 
 
 @pytest.mark.parametrize('field', FIELDS)

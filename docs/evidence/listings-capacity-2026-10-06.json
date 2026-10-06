@@ -1,21 +1,21 @@
 {
   "bindings": {
-    "src/empire/contracts/listings.py": "f642d2f04b15f476080a11e48e9e013eadb3479fa07b1c596dd0ffa1bf08a599",
+    "src/empire/contracts/listings.py": "01c1380da90cbb51ee0ecff128eb28f2e120067823cd89cf55e562ecd20e07c0",
     "src/empire/plugins/datasets/listings.py": "536bbe0fc243d416dbd554934b2f86a81d018db6c26d2985cbb7a2131a6070ca",
     "src/empire/plugins/data/listings.py": "8df6f82d6ab98e19bf0f2a7b8593ac757f24b25decd5beef24527c98ebec4467",
-    "scripts/measure_listings.py": "4d417d658cb4b05e360cc54a1c7e5baa835814277f589bba15324497cf92cad4"
+    "scripts/measure_listings.py": "2f595b39acaa4268f06b870c58e24c5b4f95426c69267c766e597f8b115dbd95"
   },
   "ddl_scopes": {
-    "stock_listing": "f19ccd52cdd1958626f6263e80ec3473187942cff2b62fdcd675bebe85bfdc0f"
+    "stock_listing": "e15abb1412885c165061d610da69fd86abd49f60b7130a975f0ebf0481ac9d93"
   },
   "measurements": {
-    "page_p95_ms": 35.577699993154965,
-    "detail_p95_ms": 34.99519999604672,
-    "range_p95_ms": 36.40879999147728,
-    "coverage_p95_ms": 146.53630000248086,
-    "import_seconds": 11.938365900001372,
-    "audit_seconds": 0.7358832000027178,
-    "allocated_bytes": 64880640
+    "page_p95_ms": 44.88349999883212,
+    "detail_p95_ms": 34.071900008711964,
+    "range_p95_ms": 38.39549999975134,
+    "coverage_p95_ms": 150.95569999539293,
+    "import_seconds": 28.96007039998949,
+    "audit_seconds": 1.0579921000025934,
+    "allocated_bytes": 126746624
   },
   "limits": {
     "page_p95_ms": 50,
@@ -37,9 +37,10 @@
     "synthetic": true,
     "history_sizes_bytes": [
       2049,
-      29364
+      105078,
+      262144
     ],
-    "maximum_history_bytes": 65536
+    "maximum_history_bytes": 262144
   },
   "reviewed_tradeoffs": "一证券一行；列表/补缺不读历史沿革；详细审计有界200行页读正文，来源范围只限当前池和已存记录。容量按真实正文尺寸放大，不代表全市场实采。",
   "explain": {
@@ -86,7 +87,7 @@
         "key": "ix_listing_date",
         "key_len": "3",
         "ref": null,
-        "rows": 6355,
+        "rows": 6474,
         "filtered": 100.0,
         "Extra": "Using where; Using index"
       }
@@ -102,7 +103,7 @@
         "key": "PRIMARY",
         "key_len": "11",
         "ref": null,
-        "rows": 12711,
+        "rows": 12949,
         "filtered": 100.0,
         "Extra": null
       }
@@ -115,7 +116,7 @@
     },
     "detail": {
       "returned": 1,
-      "read_bytes": 29621
+      "read_bytes": 262401
     },
     "range": {
       "returned": 200,
@@ -126,7 +127,7 @@
       "read_bytes": 1500000
     }
   },
-  "python_peak_bytes": 3366185,
+  "python_peak_bytes": 4604255,
   "repeat": {
     "status": "complete",
     "row_count": 1,

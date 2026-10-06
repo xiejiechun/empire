@@ -376,7 +376,7 @@ CREATE TABLE IF NOT EXISTS stock_listing (
     KEY ix_listing_date (listing_date, unified_code),
     CONSTRAINT ck_listing_dates CHECK (listing_date >= '1900-01-01' AND (establish_date IS NULL OR establish_date >= '1900-01-01')),
     CONSTRAINT ck_listing_numbers CHECK ((issuance_num IS NULL OR issuance_num >= 0) AND (issuance_price IS NULL OR issuance_price >= 0) AND (first_day_open_price IS NULL OR first_day_open_price >= 0) AND (estimated_raised IS NULL OR estimated_raised >= 0) AND (actual_raised IS NULL OR actual_raised >= 0) AND (winning_rate IS NULL OR winning_rate BETWEEN 0 AND 100)),
-    CONSTRAINT ck_listing_history CHECK (history IS NULL OR OCTET_LENGTH(history) <= 65536),
+    CONSTRAINT ck_listing_history CHECK (history IS NULL OR OCTET_LENGTH(history) <= 262144),
     CONSTRAINT ck_listing_contract CHECK (contract_version IN (1, 2))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

@@ -19,6 +19,7 @@ from empire.contracts.listings import (
     COLUMNS,
     CONTRACT,
     DATASET,
+    HISTORY_MAX_BYTES,
     JOB,
     PROJECT,
     TABLE,
@@ -54,7 +55,9 @@ def run(args):
         for i in range(15000):
             row=validate(dict(unified_code=f'{i:06d}.SZ',**template), '2026-10-06')
             if i%20==0:
-                row['history']='文'*9788  # Measured sample high end, 29364 bytes.
+                row['history']='文'*35026  # Real 603107 UTF-8 size: 105078 bytes.
+            if i == 20:
+                row['history']='文'*(HISTORY_MAX_BYTES//3)+'x'*(HISTORY_MAX_BYTES%3)
             rows.append(row)
         columns=(*COLUMNS,'content_hash','contract_version','version_observed_at')
         sql=text(f'INSERT INTO {TABLE} ({",".join(columns)}) VALUES ({",".join(":"+k for k in columns)})')
@@ -139,7 +142,7 @@ def run(args):
                 coverage_p95_ms=formal_timings['coverage'],import_seconds=import_seconds,audit_seconds=audit_seconds,allocated_bytes=int(allocation)),
             limits=dict(page_p95_ms=50,detail_p95_ms=50,range_p95_ms=50,coverage_p95_ms=500,import_seconds=60,audit_seconds=5,allocated_bytes=1536*1024**2),
             conditions=dict(platform=platform.platform(),mysql=version,rows=15000,state_units=15000,formal_queries=True,audited=audited,cache='unforced first; subsequent hot repetitions',
-                synthetic=True,history_sizes_bytes=[2049,29364],maximum_history_bytes=65536),
+                synthetic=True,history_sizes_bytes=[2049,105078,HISTORY_MAX_BYTES],maximum_history_bytes=HISTORY_MAX_BYTES),
             reviewed_tradeoffs='一证券一行；列表/补缺不读历史沿革；详细审计有界200行页读正文，来源范围只限当前池和已存记录。容量按真实正文尺寸放大，不代表全市场实采。',
             explain=explains,queries=actual,python_peak_bytes=peak,repeat=repeat,revision=revision,
             cleanup='UUID-owned database dropped in finally')
