@@ -1,0 +1,74 @@
+{
+  "project": "ths-listings",
+  "error_ids": [
+    "91fb02cc8a96400eb4a5cf5a20090402",
+    "b2ac2cd3f21948598dd6b30f68451766"
+  ],
+  "checked_at": "2026-10-06T14:31:26.930324+08:00",
+  "root_cause": "Valid 105078-byte UTF-8 history exceeded old 64KiB parser and SQL CHECK",
+  "repair": "Parser and SQL CHECK widened to 256KiB; no truncation, checkpoint and old rows preserved",
+  "specialized_passed": 43,
+  "release_summary": "1714 passed, 7 skipped in 631.50s (0:10:31)",
+  "gate_passed": true,
+  "live": "listings-history-live-2026-10-06.json",
+  "migration": "listings-history-schema-2026-10-06.json",
+  "desktop": {
+    "visible": true,
+    "history_detail": true,
+    "complete_sql_bytes": 105078,
+    "screenshot": "listings-history-desktop-2026-10-06.png"
+  },
+  "cleanup": {
+    "exact_ids": [
+      "91fb02cc8a96400eb4a5cf5a20090402",
+      "b2ac2cd3f21948598dd6b30f68451766"
+    ],
+    "removed": 2,
+    "before": 6,
+    "remaining": 4,
+    "remaining_ids": [
+      "ac49c39dd47f4b7cad7a34e6d4ba103f",
+      "03cf24d949c24e3fb86c43e453382ade",
+      "87a563d1c982423f8af7f5a7fc7ebb43",
+      "d562a94506ff45b69ebb96295583983e"
+    ]
+  },
+  "source_commit": "2f95d8e",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "2f95d8e8101bb4356d8779c1ee5409da73d3b05a",
+    "dirty": false,
+    "requirements_sha256": "324f4a8b9e382288beb7ec54de8ea4a51e99b012140d1ecf56cdc5c033d21c91",
+    "dependency_count": 41,
+    "dependency_report_sha256": "313701e332a372a0c2a008816c04be858086e849be4acedae267dd0e2e8a5ec6",
+    "built_at_utc": "2026-10-06T06:27:39Z",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3"
+  },
+  "executable_sha256": "fa0e75b122886c0ee766ca74cb23b252ff3a34aea6dd7032fd9be23309be31dd",
+  "duplicate_error": {
+    "id": "b2ac2cd3f21948598dd6b30f68451766",
+    "stage": "source_validation",
+    "request_url": "https://basic.10jqka.com.cn/fuyao/info/company/v1/issuance/detail?code=603107&market=17",
+    "original_sha256": "d3b1ac5f57441546e9b821f18290593a3ed7a5a2979635595a275a5c6e2fe0a5"
+  },
+  "task_restoration": {
+    "ths_listings": {
+      "started_at": "2026-10-06T14:34:04+08:00",
+      "status": "collecting",
+      "position": "SH:603137",
+      "pages": 1438,
+      "records": 1390,
+      "screenshot": "listings-history-resumed-2026-10-06.png"
+    },
+    "tdx_listing_status": {
+      "started_at": "2026-10-06T14:34:51+08:00",
+      "status": "collecting",
+      "position": "1994-08-12",
+      "pages": 43,
+      "screenshot": "listings-history-other-task-restored-2026-10-06.png"
+    },
+    "method": "Desktop continue action; original checkpoints retained",
+    "program_config": "Existing program-directory configuration preserved; desktop services connected"
+  }
+}
