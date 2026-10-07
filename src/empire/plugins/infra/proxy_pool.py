@@ -12,6 +12,7 @@ from urllib.parse import quote, urlsplit
 
 import httpx
 
+from empire.contracts.download_settings import MAX_PARALLEL_DOWNLOADS
 from empire.contracts.plugin import PluginManifest
 
 DIRECTORY = """
@@ -53,8 +54,7 @@ class Endpoint:
     protocol: str = "SOCKS5"
     exit_ip: str = ""
     proxy_address: str = ""
-    busy: int = 0
-    active_site: str = ""
+    active_sites: set[str] = field(default_factory=set, repr=False)
     cooldown: float = 0
     failures: int = 0
     requests: int = 0
@@ -65,6 +65,10 @@ class Endpoint:
     @property
     def egress_identity(self):
         return self.exit_ip
+
+    @property
+    def busy(self):
+        return len(self.active_sites)
 
 
 _SCHEMES = {"http": "HTTP", "https": "HTTPS", "socks5": "SOCKS5", "socks5h": "SOCKS5"}
@@ -158,7 +162,9 @@ class ProxyPool:
             self.ssl_context = httpx.create_ssl_context(verify=True, trust_env=False)
         return httpx.AsyncClient(proxy=url, verify=self.ssl_context, trust_env=False,
             timeout=httpx.Timeout(30, connect=10),
-            limits=httpx.Limits(max_connections=1, max_keepalive_connections=1),
+            # Real transfers are bounded by the downloader's shared global window.
+            # A single connection here would silently serialize different sites.
+            limits=httpx.Limits(max_connections=MAX_PARALLEL_DOWNLOADS, max_keepalive_connections=1),
             follow_redirects=False, headers={"User-Agent": "EmpireResearch/0.1 personal-research"})
 
     async def refresh(self, *, waiting=False):
@@ -291,32 +297,31 @@ class ProxyPool:
                     break
                 now = monotonic()
                 busy_egresses = {e.egress_identity for e in [*self.entries.values(), *self.retired]
-                                  if e.busy and e.active_site == site}
+                                  if site in e.active_sites}
                 candidates = [e for e in self.entries.values()
-                              if e.expires > now and e.cooldown <= now and e.busy == 0
+                              if e.expires > now and e.cooldown <= now and site not in e.active_sites
                               and e.ready_at.get(site, 0) <= now
                               and e.egress_identity not in busy_egresses
                               and not any(old.code == e.code and old.busy for old in self.retired)]
                 if candidates:
                     entry = min(candidates, key=lambda e: (e.requests, e.last_used, e.code))
-                    entry.busy += 1
-                    entry.active_site = site
+                    entry.active_sites.add(site)
                     entry.last_used = now
                     try:
                         # Reserve synchronously before the Redis await: concurrent
-                        # acquisition cannot select this device/exit IP again.
+                        # acquisition cannot select this exit IP again for this site.
                         if not await self._validate_candidate(entry):
-                            await self.release(entry)
+                            await self.release(entry, site=site)
                             continue
                         if entry.client is None:
                             entry.client = self.factory(entry.url)
                     except asyncio.CancelledError:
-                        if entry.busy:
-                            await self.release(entry)
+                        if site in entry.active_sites:
+                            await self.release(entry, site=site)
                         raise
                     except Exception:
-                        if entry.busy:
-                            await self.release(entry)
+                        if site in entry.active_sites:
+                            await self.release(entry, site=site)
                         self.failed(entry)
                         raise RuntimeError("代理客户端初始化失败，请检查代理协议支持") from None
                     return entry
@@ -339,12 +344,10 @@ class ProxyPool:
         entry.failures += 1
         entry.cooldown = monotonic() + min(120, 10 * 2 ** min(entry.failures - 1, 4))
 
-    async def release(self, entry):
-        if entry.busy <= 0:
+    async def release(self, entry, *, site=""):
+        if site not in entry.active_sites:
             raise RuntimeError("代理请求许可已释放")
-        entry.busy -= 1
-        if not entry.busy:
-            entry.active_site = ""
+        entry.active_sites.remove(site)
         self.changed.set()
         await self._reap(wait=False)
 

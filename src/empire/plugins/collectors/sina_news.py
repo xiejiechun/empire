@@ -8,6 +8,7 @@ from uuid import uuid4
 from empire.contracts.collector import NewsRunResult
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
@@ -88,37 +89,43 @@ class SinaNewsCollector:
                 params = {"page": 1, "size": PAGE_SIZE, "tag": 0}
                 if cursor["before_id"]:
                     params.update(id=cursor["before_id"], type=1)
-                response = await self.http.request("GET", API_URL, params=params,
-                    allowed_domains=("sina.com.cn",), project_id=self.project_id,
-                    policy=self.http.response_policy("news"),
-                    max_retries=self.request_retries, headers={"Referer": "https://finance.sina.com.cn/7x24/"})
-                stage = "news_validation"
-                rows = parse_feed(response, cursor["before_id"])
-                covered = cursor["covered"] or cursor["high_watermark"] == 0 or any(
-                    row["news_id"] <= cursor["high_watermark"] for row in rows)
-                if not rows and not covered:
-                    stage = "coverage"
-                    raise ValueError("来源可见窗口已结束，未接上上次新闻断点；缺口未跳过。可检查后从头重新采集建立最新基线。")
-                page = cursor["pages"] + 1
-                finished = not rows or covered
-                updated = {**cursor, "pages": page, "covered": covered,
-                           "before_id": rows[-1]["news_id"] if rows else cursor["before_id"],
-                           "upper_id": cursor["upper_id"] or (rows[0]["news_id"] if rows else 0),
-                           "collected": cursor["collected"] + len(rows),
-                           "phase": "awaiting_archive" if finished else "fetch"}
-                event = make_envelope(source=self.source, dataset="news.flash.page", job_key=self.job_key,
-                    business_key=f"{cursor['batch_id']}:{page}", run_id=cursor["batch_id"], batch_id=cursor["batch_id"],
-                    payload={"page": page, "rows": rows}).model_copy(update={"source_url": API_URL})
-                response.close()
-                response = None  # Valid raw responses do not enter durable storage.
-                stage = "queue_publish"
-                state = await publish_with_capacity(
-                    self.ingest, self.stats, [event], job_key=self.job_key,
-                    expected_revision=state["revision"], cursor=updated,
-                )
-                cursor = state["cursor"]
-                self.stats.update(status=cursor["phase"] if finished else "collecting", error="",
-                                  collected=cursor["collected"], pages=cursor["pages"])
+                async with prefetch_units(self, [params], self.download, url=API_URL,
+                        domains=("sina.com.cn",), profile="news", independent=False, item_name='页') as reads:
+                    async for _, read in reads:
+                        stage = "news_validation"
+                        rows = await read.resolve()
+                        covered = cursor["covered"] or cursor["high_watermark"] == 0 or any(
+                            row["news_id"] <= cursor["high_watermark"] for row in rows)
+                        if not rows and not covered:
+                            stage = "coverage"
+                            exc = ValueError("来源可见窗口已结束，未接上上次新闻断点；缺口未跳过。可检查后从头重新采集建立最新基线。")
+                            raw = read.value.response
+                            exc.diagnostic_recorded = await record_error_safely(
+                                self.records, self.stats, self.project_id, exc, stage=stage,
+                                unavailable_message='新闻覆盖错误样本暂未写入 Redis；断点保留',
+                                fields={'raw_body': raw.content, 'request_url': str(raw.url),
+                                        'status_code': raw.status_code})
+                            raise exc
+                        page = cursor["pages"] + 1
+                        finished = not rows or covered
+                        updated = {**cursor, "pages": page, "covered": covered,
+                                   "before_id": rows[-1]["news_id"] if rows else cursor["before_id"],
+                                   "upper_id": cursor["upper_id"] or (rows[0]["news_id"] if rows else 0),
+                                   "collected": cursor["collected"] + len(rows),
+                                   "phase": "awaiting_archive" if finished else "fetch"}
+                        event = make_envelope(source=self.source, dataset="news.flash.page", job_key=self.job_key,
+                            business_key=f"{cursor['batch_id']}:{page}", run_id=cursor["batch_id"], batch_id=cursor["batch_id"],
+                            payload={"page": page, "rows": rows}).model_copy(update={"source_url": API_URL})
+                        read.close()
+                        response = None  # Valid raw responses do not enter durable storage.
+                        stage = "queue_publish"
+                        state = await publish_with_capacity(
+                            self.ingest, self.stats, [event], job_key=self.job_key,
+                            expected_revision=state["revision"], cursor=updated,
+                        )
+                        cursor = state["cursor"]
+                        self.stats.update(status=cursor["phase"] if finished else "collecting", error="",
+                                          collected=cursor["collected"], pages=cursor["pages"])
             stage = "archive_confirmation"
             self.stats.update(status="awaiting_archive", error="", collected=cursor["collected"], pages=cursor["pages"])
             await wait_for_archive(partial(
@@ -145,9 +152,25 @@ class SinaNewsCollector:
             )
             raise
 
-        finally:
-            if response is not None:
-                response.close()
+    async def download(self, params, *, reservation):
+        await self._capacity()
+        response = await self.http.request("GET", API_URL, params=params,
+            allowed_domains=("sina.com.cn",), project_id=self.project_id,
+            policy=self.http.response_policy("news"),
+            max_retries=self.request_retries, reservation=reservation, headers={"Referer": "https://finance.sina.com.cn/7x24/"})
+
+        async def consume():
+            try:
+                return parse_feed(response, params.get('id', 0))
+            except (ValueError, TypeError, KeyError) as exc:
+                exc.diagnostic_recorded = await record_error_safely(
+                    self.records, self.stats, self.project_id, exc, stage='news_validation',
+                    unavailable_message='新闻错误样本暂未写入 Redis；断点保留',
+                    fields={'raw_body': response.content, 'request_url': str(response.url),
+                            'status_code': response.status_code})
+                raise
+
+        return DeferredResponse(response, consume)
 
     def _result(self, cursor: dict[str, Any]) -> NewsRunResult:
         return {"collected": cursor["collected"], "pages": cursor["pages"],

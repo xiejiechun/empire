@@ -38,9 +38,9 @@ class CapitalDataPlugin:
             provides=(kind + '.query', kind + '.schema'), description='规范事件查询与完整来源集合核验')
         self.preparation = (PreparationContribution(kind, kind + '.query', '通达信', self.project_id,
             self.job_key, kind + '.unit', 'collector.tdx_' + kind,
-            ('tests/test_tdx_' + kind + '.py', 'tests/test_capital_lifecycle.py') +
+            ('tests/test_tdx_' + kind + '.py', 'tests/test_capital_lifecycle.py', 'tests/test_all_collector_prefetch.py') +
             (('tests/test_tdx_issue_details.py',) if kind == 'additional_issues' else ()),
-            ('tests/integration/test_capital_archive.py',)),)
+            ('tests/integration/test_capital_archive.py', 'tests/integration/test_prefetch_pipeline.py')),)
 
     async def start(self, context):
         self.context = context

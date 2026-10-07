@@ -27,6 +27,7 @@ from empire.plugins.datasets.industries import (
     normalize,
     validate,
 )
+from tests.prefetch_source import prefetch_http
 
 CATALOG = '<html><div class="cate_inner"><a href="http://q.10jqka.com.cn/thshy/detail/code/881155/">银行</a></div></html>'
 SNAPSHOT = [dict(code='881155', name='银行', members=[['000001', '平安银行'], ['600000', '浦发银行']])]
@@ -102,7 +103,7 @@ def test_market_identity_does_not_label_shanghai_b_share_as_beijing():
 def collector():
     c = ThsIndustryCollector()
     c.session = SimpleNamespace(headers=lambda _: {'Cookie': 'v=test'})
-    c.http = SimpleNamespace(request=AsyncMock(side_effect=lambda method, url, **kw: response(url)),
+    c.http = prefetch_http(request=AsyncMock(side_effect=lambda method, url, **kw: response(url)),
                              response_policy=lambda _: None)
     c.records = SimpleNamespace(sanitize_text=str, error=AsyncMock())
     c.ingest = SimpleNamespace(checkpoint=AsyncMock(return_value={'revision': 0, 'cursor': {}}),

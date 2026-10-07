@@ -1,4 +1,5 @@
 """Source HTML → shared Redis/SQL archive → formal query, in UUID-owned scope."""
+
 import asyncio
 import copy
 import os
@@ -15,6 +16,7 @@ from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
 from empire.plugins.datasets.industries import FINGERPRINT_NAMESPACE, JOB
+from tests.prefetch_source import prefetch_http
 from tests.test_ths_industries import SNAPSHOT, member_page, response
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
@@ -35,7 +37,7 @@ async def industry_db():
         await manager.start('collector.ths_industries')
         mysql, store = manager.registry.get('mysql.store'), manager.registry.get('redis.store')
         collector.session = SimpleNamespace(headers=lambda _: {})
-        collector.http = SimpleNamespace(request=AsyncMock(side_effect=lambda method, url, **kw: response(url)),
+        collector.http = prefetch_http(request=AsyncMock(side_effect=lambda method, url, **kw: response(url)),
                                          response_policy=lambda _: None)
         async def publish(data=None, observed=None):
             batch = uuid4().hex

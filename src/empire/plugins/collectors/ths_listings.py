@@ -18,6 +18,7 @@ from empire.contracts.listings import (
 )
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
@@ -47,25 +48,32 @@ class ThsListingCollector:
     async def checkpoint_revision(self):
         return (await self.ingest.checkpoint(JOB))['revision']
 
-    async def fetch(self, stock):
+    async def fetch(self, stock, *, reservation=None, defer=False):
         await wait_for_capacity(self.ingest, self.stats)
         if self.session is None:
             self.session = ThsSession()
         request_url, observed = url(stock), datetime.now(UTC)
         response = await self.http.request('GET', request_url, headers=self.session.headers(REFERER),
             allowed_domains=('10jqka.com.cn',), project_id=PROJECT,
-            policy=self.http.response_policy('generic'), max_retries=self.request_retries)
-        try:
-            return parse(response.json(), stock, observed.astimezone(CHINA).date().isoformat()), observed, request_url
-        except (ValueError, TypeError, KeyError) as exc:
-            body = response.content
-            exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, PROJECT,
-                exc, stage='source_validation', unavailable_message='发行错误样本暂不可用',
-                fields=dict(request_url=request_url, status_code=response.status_code, raw_body=body[:65536],
-                    observed_bytes=len(body), body_sha256=hashlib.sha256(body).hexdigest()))
-            raise
-        finally:
-            response.close()
+            policy=self.http.response_policy('generic'), max_retries=self.request_retries,
+            reservation=reservation)
+        async def consume():
+            try:
+                return parse(response.json(), stock, observed.astimezone(CHINA).date().isoformat()), observed, request_url
+            except (ValueError, TypeError, KeyError) as exc:
+                body = response.content
+                exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, PROJECT,
+                    exc, stage='source_validation', unavailable_message='发行错误样本暂不可用',
+                    fields=dict(request_url=request_url, status_code=response.status_code, raw_body=body[:65536],
+                        observed_bytes=len(body), body_sha256=hashlib.sha256(body).hexdigest()))
+                raise
+            finally:
+                if not defer:
+                    response.close()
+
+        if defer:
+            return DeferredResponse(response, consume)
+        return await consume()
 
     async def publish(self, state, cursor, unit, row, manifest, observed, request_url):
         e = make_envelope(source='ths', dataset=DATASET, business_key=unit, job_key=JOB,
@@ -102,19 +110,24 @@ class ThsListingCollector:
                     cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0, collected=0,
                         units=len(keys), scope_hash=scope, full_refresh=full,
                         refresh_started_at=now.isoformat() if full else stamp)
-                for index in range(cursor['index'], len(stocks)):
-                    self.stats.update(status='collecting', current_security=keys[index],
-                        completed_units=index, total_units=len(keys), collected=cursor['collected'], pages=cursor['pages'])
-                    if not cursor['full_refresh'] and keys[index] in existing:
-                        continue
-                    stage = 'source_validation'
-                    row, observed, request_url = await self.fetch(stocks[index])
-                    following = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
-                                 'collected': cursor['collected'] + int(not is_unavailable(row)),
-                                 'unavailable': cursor.get('unavailable', 0) + int(is_unavailable(row))}
-                    stage = 'queue_publish'
-                    state = await self.publish(state, following, keys[index], row, None, observed, request_url)
-                    cursor = state['cursor']
+                selected = [(i, stocks[i]) for i in range(cursor['index'], len(stocks))
+                         if cursor['full_refresh'] or keys[i] not in existing]
+                async def download(item, *, reservation):
+                    return await self.fetch(item[1], reservation=reservation, defer=True)
+                async with prefetch_units(self, selected, download,
+                        url='https://basic.10jqka.com.cn/', domains=('10jqka.com.cn',), item_name='证券') as reads:
+                    async for number, read in reads:
+                        index = selected[number][0]
+                        self.stats.update(status='collecting', current_security=keys[index],
+                            completed_units=index, total_units=len(keys), collected=cursor['collected'], pages=cursor['pages'])
+                        stage = 'source_validation'
+                        row, observed, request_url = await read.resolve()
+                        following = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
+                                     'collected': cursor['collected'] + int(not is_unavailable(row)),
+                                     'unavailable': cursor.get('unavailable', 0) + int(is_unavailable(row))}
+                        stage = 'queue_publish'
+                        state = await self.publish(state, following, keys[index], row, None, observed, request_url)
+                        cursor = state['cursor']
                 following = {**cursor, 'phase': 'awaiting_archive', 'index': len(keys), 'pages': cursor['pages'] + 1}
                 manifest = {k: cursor[k] for k in ('scope_hash', 'units', 'refresh_started_at')}
                 state = await self.publish(state, following, 'manifest', None, manifest, datetime.now(UTC), None)

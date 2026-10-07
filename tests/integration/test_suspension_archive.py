@@ -2,7 +2,6 @@ import asyncio
 import copy
 import os
 from datetime import UTC, datetime, timedelta
-from types import SimpleNamespace
 from unittest.mock import AsyncMock
 from uuid import uuid4
 
@@ -13,6 +12,7 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
+from tests.prefetch_source import prefetch_http
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get("EMPIRE_INTEGRATION") != "1", reason="Set EMPIRE_INTEGRATION=1 explicitly")]
@@ -264,7 +264,7 @@ async def test_legacy_missing_source_day_is_repaired_and_query_verified_after_re
              'Content': [[1, 'mrtbts', '2004-12-27', 'hstfp']]},
             {'Count': 1, 'ColName': ['count'], 'Content': [[1]]},
         ]})
-    collector.http = SimpleNamespace(response_policy=lambda _: None,
+    collector.http = prefetch_http(response_policy=lambda _: None,
                                      request=AsyncMock(return_value=response))
     collected, _ = await collector._collect_day('2004-12-27')
     assert collected == [row]
@@ -338,11 +338,12 @@ async def test_full_initialization_real_ingest_checkpoint_and_redis_loss(suspens
     collector.query = query
     collector.confirmation = manager.registry.get('archive.confirmation')
     collector.records = manager.registry.get('collection.records')
-    async def collect(day):
+    async def collect(day, **options):
         if day == '2005-01-01':
             raise asyncio.CancelledError
         return [], 1
-    collector._collect_day = collect
+    collector.http = prefetch_http()
+    collector.download_day = collect
     with pytest.raises(asyncio.CancelledError):
         await collector.execute()
     checkpoint = await collector.ingest.checkpoint(query.job_key)

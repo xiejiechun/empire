@@ -8,6 +8,7 @@ import httpx
 
 from empire.contracts.data import make_envelope
 from empire.core.time import CHINA
+from empire.plugins.collection.unit_prefetch import prefetch_units
 from empire.plugins.collectors.capital_recovery import recent_plans, retain_failure
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -50,13 +51,18 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
                 source_hash = digest(sorted(units))
                 observed = None
             else:
-                rows, observed = await complete_response(c, c.kind)
+                async def download_list(_, *, reservation):
+                    return await complete_response(c, c.kind, reservation=reservation, defer=True)
+                async with prefetch_units(c, [None], download_list, url=PAGE_URL,
+                        domains=("tdx.com.cn",), item_name='响应') as reads:
+                    async for _, read in reads:
+                        rows, observed = await read.resolve()
                 units = {}
                 for row in rows:
                     units.setdefault(unit_key(row), []).append(row)
                 source_hash = digest(rows)
             keys = sorted(units)
-            aliases, detail_cache = {}, {}
+            aliases = {}
             if c.kind == 'additional_issues':
                 for group in units.values():
                     for row in group:
@@ -115,51 +121,56 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
                            continuous_collected=cursor['collected'], processed_units=cursor['index'])
             if c.kind != 'dividends':
                 c.stats['expected_count'] = sum(len(group) for group in units.values())
-            for index in range(cursor['index'], len(keys)):
-                unit = keys[index]
-                c.stats.update(status='collecting', current_security=unit, collected=queued_records,
-                               continuous_collected=cursor['collected'],
-                               pages=cursor['pages'], total_units=len(keys), error='')
-                stage = 'source_validation'
-                try:
-                    if c.kind == 'dividends':
-                        rows, observed = await complete_response(c, c.kind, units[unit])
+            async def download_unit(unit, *, reservation):
+                if c.kind == 'dividends':
+                    return await complete_response(c, c.kind, units[unit], reservation=reservation, defer=True)
+                return units[unit], observed
+            if c.kind == 'additional_issues':
+                from empire.plugins.collectors.issue_prefetch import issue_units
+                downloads = issue_units(c, keys, units, aliases, reusable, previous, observed, first=cursor['index'])
+            else:
+                downloads = prefetch_units(c, keys, download_unit, url=PAGE_URL,
+                                           domains=('tdx.com.cn',), first=cursor['index'], item_name='证券')
+            async with downloads as reads:
+                async for index, read in reads:
+                    unit = keys[index]
+                    c.stats.update(status='collecting', current_security=unit, collected=queued_records,
+                                   continuous_collected=cursor['collected'],
+                                   pages=cursor['pages'], total_units=len(keys), error='')
+                    stage = 'source_validation'
+                    try:
+                        rows, unit_observed = await read.resolve()
+                    except (ValueError, TypeError, KeyError, httpx.HTTPError) as exc:
+                        if not isinstance(exc, httpx.HTTPError) and not hasattr(exc, 'diagnostic_recorded'):
+                            raise  # Local resource/configuration errors are not a missing source security.
+                        await retain_failure(c, exc, unit)
+                        failures.append(unit)
+                        c.stats['processed_units'] = index + 1
+                        first_error = first_error or exc
+                        # Several missing source records are not evidence that the
+                        # whole endpoint is unreachable. Keep the real gaps open.
+                        record_unavailable = isinstance(exc, TdxSourceError) and exc.source_error_code == -1005
+                        consecutive_failures = 0 if record_unavailable else consecutive_failures + 1
+                        if consecutive_failures >= 5:
+                            break
+                        continue
+                    consecutive_failures = 0
+                    next_cursor = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
+                                   'collected': cursor['collected'] + len(rows),
+                                   'rolling': chain(cursor['rolling'], unit, rows)}
+                    stage = 'queue_publish'
+                    if failures:
+                        # Independent successful units are useful, but cannot advance
+                        # the continuous frontier or contribute to its manifest.
+                        side_cursor = {**cursor, 'batch_id': uuid4().hex, 'pages': 1}
+                        state = await publish(c, state, side_cursor, unit, rows, None, unit_observed,
+                                              checkpoint_cursor=cursor)
                     else:
-                        rows = units[unit]
-                        if c.kind == 'additional_issues':
-                            from empire.plugins.collectors.tdx_issue_detail import enrich
-                            rows = await enrich(c, rows, aliases, detail_cache, reusable, previous)
-                except (ValueError, TypeError, KeyError, httpx.HTTPError) as exc:
-                    if not isinstance(exc, httpx.HTTPError) and not hasattr(exc, 'diagnostic_recorded'):
-                        raise  # Local resource/configuration errors are not a missing source security.
-                    await retain_failure(c, exc, unit)
-                    failures.append(unit)
-                    c.stats['processed_units'] = index + 1
-                    first_error = first_error or exc
-                    # Several missing source records are not evidence that the
-                    # whole endpoint is unreachable. Keep the real gaps open.
-                    record_unavailable = isinstance(exc, TdxSourceError) and exc.source_error_code == -1005
-                    consecutive_failures = 0 if record_unavailable else consecutive_failures + 1
-                    if consecutive_failures >= 5:
-                        break
-                    continue
-                consecutive_failures = 0
-                next_cursor = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
-                               'collected': cursor['collected'] + len(rows),
-                               'rolling': chain(cursor['rolling'], unit, rows)}
-                stage = 'queue_publish'
-                if failures:
-                    # Independent successful units are useful, but cannot advance
-                    # the continuous frontier or contribute to its manifest.
-                    side_cursor = {**cursor, 'batch_id': uuid4().hex, 'pages': 1}
-                    state = await publish(c, state, side_cursor, unit, rows, None, observed,
-                                          checkpoint_cursor=cursor)
-                else:
-                    state = await publish(c, state, next_cursor, unit, rows, None, observed)
-                cursor = state['cursor']
-                queued_records += len(rows)
-                c.stats.update(collected=queued_records, queued_records=queued_records,
-                               continuous_collected=cursor['collected'], processed_units=index + 1)
+                        state = await publish(c, state, next_cursor, unit, rows, None, unit_observed)
+                    cursor = state['cursor']
+                    queued_records += len(rows)
+                    c.stats.update(collected=queued_records, queued_records=queued_records,
+                                   continuous_collected=cursor['collected'], processed_units=index + 1)
             if failures:
                 first_error.diagnostic_recorded = True
                 raise first_error

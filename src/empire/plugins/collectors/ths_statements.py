@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
@@ -42,7 +43,7 @@ class ThsStatementCollector:
     async def checkpoint_revision(self):
         return (await self.ingest.checkpoint(self.job_key))['revision']
 
-    async def fetch(self, stock):
+    async def fetch(self, stock, *, reservation=None, defer=False):
         await wait_for_capacity(self.ingest, self.stats)
         url = f"https://basic.10jqka.com.cn/api/stock/finance/{stock['code']}_{KINDS[self.kind][1]}.json"
         observed = datetime.now(UTC)
@@ -50,18 +51,25 @@ class ThsStatementCollector:
             headers={'User-Agent': 'Mozilla/5.0',
                      'Referer': f"https://basic.10jqka.com.cn/{stock['code']}/finance.html"},
             allowed_domains=('10jqka.com.cn',), project_id=self.project_id,
-            policy=self.http.response_policy('generic'), max_retries=self.request_retries)
-        try:
-            return parse(self.kind, response.json(), stock), observed, url
-        except (ValueError, TypeError, KeyError) as exc:
-            body = response.content
-            exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, self.project_id,
-                exc, stage='source_validation', unavailable_message='财报错误样本暂未写入 Redis',
-                fields={'request_url': url, 'status_code': response.status_code, 'raw_body': body[:65536],
-                        'observed_bytes': len(body), 'body_sha256': hashlib.sha256(body).hexdigest()})
-            raise
-        finally:
-            response.close()
+            policy=self.http.response_policy('generic'), max_retries=self.request_retries,
+            reservation=reservation)
+        async def consume():
+            try:
+                return parse(self.kind, response.json(), stock), observed, url
+            except (ValueError, TypeError, KeyError) as exc:
+                body = response.content
+                exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, self.project_id,
+                    exc, stage='source_validation', unavailable_message='财报错误样本暂未写入 Redis',
+                    fields={'request_url': url, 'status_code': response.status_code, 'raw_body': body[:65536],
+                            'observed_bytes': len(body), 'body_sha256': hashlib.sha256(body).hexdigest()})
+                raise
+            finally:
+                if not defer:
+                    response.close()
+
+        if defer:
+            return DeferredResponse(response, consume)
+        return await consume()
 
     async def publish(self, state, cursor, unit, rows, manifest, observed, url):
         envelope = make_envelope(source=self.source, dataset=self.kind + '.statement', business_key=unit,
@@ -91,17 +99,23 @@ class ThsStatementCollector:
                 if not cursor:
                     cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0, collected=0,
                                   units=len(keys), scope_hash=scope, rolling=digest([]))
-                for index in range(cursor['index'], len(stocks)):
-                    stage = 'source_validation'
-                    self.stats.update(status='collecting', current_security=keys[index],
-                                      collected=cursor['collected'], pages=cursor['pages'], total_units=len(keys))
-                    rows, observed, url = await self.fetch(stocks[index])
-                    following = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
-                                 'collected': cursor['collected'] + len(rows),
-                                 'rolling': chain(cursor['rolling'], keys[index], rows)}
-                    stage = 'queue_publish'
-                    state = await self.publish(state, following, keys[index], rows, None, observed, url)
-                    cursor = state['cursor']
+                selected = list(enumerate(stocks))[cursor['index']:]
+                async def download(item, *, reservation):
+                    return await self.fetch(item[1], reservation=reservation, defer=True)
+                async with prefetch_units(self, selected, download,
+                        url='https://basic.10jqka.com.cn/', domains=('10jqka.com.cn',), item_name='证券') as reads:
+                    async for number, read in reads:
+                        index = selected[number][0]
+                        stage = 'source_validation'
+                        self.stats.update(status='collecting', current_security=keys[index],
+                                          collected=cursor['collected'], pages=cursor['pages'], total_units=len(keys))
+                        rows, observed, url = await read.resolve()
+                        following = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
+                                     'collected': cursor['collected'] + len(rows),
+                                     'rolling': chain(cursor['rolling'], keys[index], rows)}
+                        stage = 'queue_publish'
+                        state = await self.publish(state, following, keys[index], rows, None, observed, url)
+                        cursor = state['cursor']
                 manifest = dict(units=cursor['units'], count=cursor['collected'],
                                 scope_hash=scope, digest=cursor['rolling'])
                 following = {**cursor, 'phase': 'awaiting_archive', 'pages': cursor['pages'] + 1}

@@ -16,6 +16,7 @@ from empire.plugins.datasets.financial_statements import (
     parse,
     validate_rows,
 )
+from tests.prefetch_source import prefetch_http
 
 STOCK = dict(market='SH', code='601139', name='深圳燃气')
 
@@ -183,7 +184,7 @@ def test_bad_matrix_rejected(kind, problem):
 async def test_one_request_response_closed_shared_transport(kind):
     c = ThsStatementCollector(kind)
     response = httpx.Response(200, json=source(kind))
-    c.http = SimpleNamespace(request=AsyncMock(return_value=response), response_policy=lambda x: x)
+    c.http = prefetch_http(request=AsyncMock(return_value=response), response_policy=lambda x: x)
     c.ingest = SimpleNamespace(capacity=AsyncMock(return_value={'can_collect': True}))
     c.records = SimpleNamespace(sanitize_text=str)
     # Only transport capacity is stubbed; normal source fetch remains the implementation.

@@ -112,5 +112,9 @@ def decode(row):
         if result[field] is not None:
             result[field] = result[field].isoformat()
     for field in NUMBERS:
-        result[field] = number(str(result[field]) if result[field] is not None else None, field)
+        value = result[field]
+        # SQL DECIMAL may stringify zero/small values as 0E-10 or 1E-10.
+        # Its fixed-point value still follows the strict source/wire contract.
+        value = format(value, 'f') if isinstance(value, Decimal) else str(value) if value is not None else None
+        result[field] = number(value, field)
     return result

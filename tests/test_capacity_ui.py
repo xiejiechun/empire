@@ -56,7 +56,7 @@ def test_task_summary_ignores_old_window_for_finished_run_and_handles_ordered_wa
            "progress": {"download_concurrency": 128, "download_wait_reason": "ordered"}}
     assert "综合预取窗口 128" not in network_summary(job)
     job["active"] = True
-    assert "当前阶段：按页序校验发布 / 等待前页" in network_summary(job)
+    assert "当前阶段：按序校验发布 / 等待前项" in network_summary(job)
 
 
 def test_normal_request_phase_and_budget_limit_are_separate_from_failed_pages():
@@ -74,3 +74,16 @@ def test_normal_request_phase_and_budget_limit_are_separate_from_failed_pages():
     assert "预取暂受共享缓冲限制" in text
     assert "已下载待按序处理 3 页" in text
     assert "已返回失败页 2 页" in text
+
+
+def test_independent_security_units_and_single_response_tasks_are_described_accurately():
+    job = {'policy': {'use_proxy': True}, 'parallel_downloads': True, 'active': True,
+           'network_capacity': {'healthy_egresses': 7, 'effective_concurrency': 7},
+           'progress': {'download_item_name': '证券', 'download_concurrency': 3,
+                        'download_pending_pages': 2, 'download_ready_pages': 1,
+                        'download_buffer_capacity': 19, 'download_failed_pages': 1}}
+    text = network_summary(job)
+    assert '窗口 3 证券' in text and '理论可容本类 19 证券' in text
+    assert '已返回失败证券 1 证券' in text
+    job['parallel_downloads'] = False
+    assert '单次完整响应或前后依赖' in network_summary(job)

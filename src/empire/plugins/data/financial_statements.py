@@ -29,7 +29,7 @@ class FinancialDataPlugin:
             provides=(kind + '.query',), description='独立财报查询及来源覆盖、时点限制核验')
         self.preparation = (PreparationContribution(kind, kind + '.query', '同花顺', self.project_id,
             self.project_id + '-v1', kind + '.statement', 'collector.ths_' + kind,
-            ('tests/test_ths_statements.py',), ('tests/integration/test_financial_archive.py',), scoped=True),)
+            ('tests/test_ths_statements.py', 'tests/test_all_collector_prefetch.py', 'tests/test_unit_prefetch.py'), ('tests/integration/test_financial_archive.py', 'tests/integration/test_prefetch_pipeline.py'), scoped=True),)
 
     async def start(self, context):
         self.context = context

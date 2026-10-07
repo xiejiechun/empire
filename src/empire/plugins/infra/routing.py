@@ -83,7 +83,7 @@ async def routed_request(service, method, url, allowed, **kwargs):
         if (service.global_active >= service.global_limit or
                 service.active.get(group.name, 0) >= limits["effective_concurrency"]):
             if entry:
-                await service.pool.release(entry)
+                await service.pool.release(entry, site=group.name)
             reason = "global" if service.global_active >= service.global_limit else "site"
             await wait_for_admission(service, stats, reason)
             continue
@@ -143,6 +143,6 @@ async def routed_request(service, method, url, allowed, **kwargs):
             if entry is None:
                 service.direct_active[group.name] -= 1
             if entry:
-                await service.pool.release(entry)
+                await service.pool.release(entry, site=group.name)
         # Re-select on short waits: another device may already have an available permit.
         await wait_for_admission(service, stats, "rate", min(.05, max(.001, delay / 1000)))

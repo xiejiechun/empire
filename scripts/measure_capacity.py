@@ -348,7 +348,7 @@ async def measure_churn(iterations: int) -> dict[str, Any]:
         directory.expires.clear()
         pool.refreshed_at = 0
         await pool.refresh()
-        await pool.release(entry)
+        await pool.release(entry, site="virtual")
         directory.put(0, 1, revision=iteration)
         pool.refreshed_at = 0
         await pool.refresh()

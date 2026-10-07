@@ -11,6 +11,7 @@ from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesC
 from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
 from empire.plugins.collectors.tdx_rights_issues import TdxRightsIssuesCollector
 from tests.capital_samples import STOCK, issue_detail, source
+from tests.prefetch_source import prefetch_http
 
 CLASSES = (TdxDividendsCollector, TdxAdditionalIssuesCollector, TdxRightsIssuesCollector)
 
@@ -49,7 +50,7 @@ def configured(cls):
         params = json.loads(kw['content'])['Params']
         bodies.append(params)
         return httpx.Response(200, json=issue_detail() if url.endswith('tdxsj_xgzx_zfmx') else source(c.kind))
-    c.http = SimpleNamespace(request=AsyncMock(side_effect=request), response_policy=lambda value: value)
+    c.http = prefetch_http(request=AsyncMock(side_effect=request), response_policy=lambda value: value)
     return c, bodies
 
 

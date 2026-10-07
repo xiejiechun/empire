@@ -4,6 +4,7 @@ import json
 from datetime import UTC, datetime
 
 from empire.contracts.collection_integrity import require_complete_set
+from empire.plugins.collection.unit_prefetch import DeferredResponse
 from empire.plugins.collectors.support import record_error_safely, wait_for_capacity
 from empire.plugins.datasets.capital_actions import (
     DIVIDEND_COLUMNS,
@@ -81,7 +82,7 @@ def parse(kind, body, capacity, stock=None):
     return rows, total
 
 
-async def complete_response(collector, kind, stock=None):
+async def complete_response(collector, kind, stock=None, *, reservation=None, defer=False):
     started = datetime.now(UTC)
     capacity = 1 if kind == 'dividends' else 10000
     await wait_for_capacity(collector.ingest, collector.stats)
@@ -94,19 +95,26 @@ async def complete_response(collector, kind, stock=None):
         headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                  'Origin': 'http://page2.tdx.com.cn:7615', 'Referer': PAGE_URL},
         allowed_domains=('tdx.com.cn',), project_id=collector.project_id,
-        policy=collector.http.response_policy('generic'), max_retries=collector.request_retries)
-    try:
-        rows, _ = parse(kind, response.json(), capacity, stock)
-    except (ValueError, TypeError, KeyError) as exc:
-        content = response.content
-        exc.diagnostic_recorded = await record_error_safely(
-            collector.records, collector.stats, collector.project_id, exc,
-            stage='source_validation', unavailable_message='错误样本暂未写入 Redis',
-            fields=dict(request_url='http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.' + ENTRIES[kind],
-                status_code=response.status_code, raw_body=content[:65536],
-                observed_bytes=len(content), body_sha256=hashlib.sha256(content).hexdigest(),
-                metadata={'kind': kind, 'security': stock, 'capacity': capacity}))
-        raise
-    finally:
-        response.close()
-    return rows, started
+        policy=collector.http.response_policy('generic'), max_retries=collector.request_retries,
+        reservation=reservation)
+    async def consume():
+        try:
+            rows, _ = parse(kind, response.json(), capacity, stock)
+        except (ValueError, TypeError, KeyError) as exc:
+            content = response.content
+            exc.diagnostic_recorded = await record_error_safely(
+                collector.records, collector.stats, collector.project_id, exc,
+                stage='source_validation', unavailable_message='错误样本暂未写入 Redis',
+                fields=dict(request_url='http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.' + ENTRIES[kind],
+                    status_code=response.status_code, raw_body=content[:65536],
+                    observed_bytes=len(content), body_sha256=hashlib.sha256(content).hexdigest(),
+                    metadata={'kind': kind, 'security': stock, 'capacity': capacity}))
+            raise
+        finally:
+            if not defer:
+                response.close()
+        return rows, started
+
+    if defer:
+        return DeferredResponse(response, consume)
+    return await consume()

@@ -14,8 +14,8 @@ from empire.plugins.datasets.trade_calendar import (
 class CalendarDataPlugin:
     preparation = (PreparationContribution(
         "calendar", "calendar.query", "巨潮资讯", "cninfo-calendar", "cninfo-calendar-v1", "calendar.month",
-        "collector.cninfo_calendar", ("tests/test_cninfo_calendar.py", "tests/test_calendar_preparation.py"),
-        ("tests/integration/test_calendar_archive.py",)),)
+        "collector.cninfo_calendar", ("tests/test_cninfo_calendar.py", "tests/test_calendar_preparation.py", "tests/test_all_collector_prefetch.py", "tests/test_unit_prefetch.py"),
+        ("tests/integration/test_calendar_archive.py", "tests/integration/test_prefetch_pipeline.py")),)
 
     manifest = PluginManifest("data.trade_calendar", "A 股交易日历查询",
         requires=("mysql.store",), provides=("calendar.query", "calendar.schema"),

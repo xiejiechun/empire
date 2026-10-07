@@ -9,6 +9,7 @@ from empire.contracts.data import make_envelope
 from empire.contracts.name_changes import KINDS, MARKETS, SCHEMA_VERSION, pack_rows, project
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
@@ -39,24 +40,31 @@ class NameChangeCollector:
     async def checkpoint_revision(self):
         return (await self.ingest.checkpoint(self.job_key))['revision']
 
-    async def fetch(self, through):
+    async def fetch(self, through, *, reservation=None, defer=False):
         await wait_for_capacity(self.ingest, self.stats)
         response = await self.http.request('POST', URL, content=request_body(self.kind, through),
             headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                      'Origin': 'http://page2.tdx.com.cn:7615', 'Referer': PAGE},
             allowed_domains=('tdx.com.cn',), project_id=self.project_id,
-            policy=self.http.response_policy('generic'), max_retries=self.request_retries)
-        try:
-            return parse(self.kind, response.json(), through)
-        except (ValueError, TypeError, KeyError) as exc:
-            body = response.content
-            exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, self.project_id,
-                exc, stage='source_validation', unavailable_message='更名错误样本暂不可用',
-                fields=dict(request_url=URL, status_code=response.status_code, raw_body=body[:65536],
-                            observed_bytes=len(body), body_sha256=hashlib.sha256(body).hexdigest()))
-            raise
-        finally:
-            response.close()
+            policy=self.http.response_policy('generic'), max_retries=self.request_retries,
+            reservation=reservation)
+        async def consume():
+            try:
+                return parse(self.kind, response.json(), through)
+            except (ValueError, TypeError, KeyError) as exc:
+                body = response.content
+                exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, self.project_id,
+                    exc, stage='source_validation', unavailable_message='更名错误样本暂不可用',
+                    fields=dict(request_url=URL, status_code=response.status_code, raw_body=body[:65536],
+                                observed_bytes=len(body), body_sha256=hashlib.sha256(body).hexdigest()))
+                raise
+            finally:
+                if not defer:
+                    response.close()
+
+        if defer:
+            return DeferredResponse(response, consume)
+        return await consume()
 
     async def execute(self, *, fresh=False, baseline_revision=0):
         stage = 'source_validation'
@@ -72,7 +80,12 @@ class NameChangeCollector:
                 observed = datetime.now(UTC)
                 through, batch = observed.astimezone(CHINA).date().isoformat(), uuid4().hex
                 self.stats.update(status='collecting', collected=0, pages=0, error='')
-                groups, count = await self.fetch(through)
+                async def download(day, *, reservation):
+                    return await self.fetch(day, reservation=reservation, defer=True)
+                async with prefetch_units(self, [through], download, url=URL,
+                        domains=('tdx.com.cn',), item_name='响应') as reads:
+                    async for _, read in reads:
+                        groups, count = await read.resolve()
                 envelopes = []
                 for page, market in enumerate(MARKETS, 1):
                     rows = groups[market]

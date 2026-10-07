@@ -1,9 +1,9 @@
 """Source → Redis → unified archive → indexed queries, UUID-owned SQL and Redis."""
+
 import asyncio
 import copy
 import os
 from datetime import UTC, date, datetime, timedelta
-from types import SimpleNamespace
 from unittest.mock import AsyncMock
 from uuid import uuid4
 
@@ -16,6 +16,7 @@ from empire.contracts.data import make_envelope
 from empire.contracts.listing_status import DATASET, JOB
 from empire.core.config import load_config
 from empire.plugins.datasets import listing_status as mapping
+from tests.prefetch_source import prefetch_http
 from tests.test_listing_status import envelope, row, source
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(os.environ.get('EMPIRE_INTEGRATION') != '1', reason='Opt in to isolated integration')]
@@ -41,7 +42,7 @@ async def status():
             if day == '2001-06-16':
                 values = [row(code='832317', market=2)]
             return httpx.Response(200, json=source(day, values))
-        c.http = SimpleNamespace(request=AsyncMock(side_effect=response), response_policy=lambda _: None)
+        c.http = prefetch_http(request=AsyncMock(side_effect=response), response_policy=lambda _: None)
         yield manager, c, q, store
     finally:
         await manager.shutdown()

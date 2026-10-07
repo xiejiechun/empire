@@ -28,8 +28,8 @@ class IndustryDataPlugin:
     manifest = PluginManifest('data.industries', '当前行业查询', requires=('mysql.store',),
         provides=('industries.query',), description='查询最新行业及成分；独立检查数据准备')
     preparation = (PreparationContribution('industries', 'industries.query', '同花顺', PROJECT, JOB,
-        'industry.snapshot', 'collector.ths_industries', ('tests/test_ths_industries.py',),
-        ('tests/integration/test_industry_archive.py',), scoped=True),)
+        'industry.snapshot', 'collector.ths_industries', ('tests/test_ths_industries.py', 'tests/test_all_collector_prefetch.py'),
+        ('tests/integration/test_industry_archive.py', 'tests/integration/test_prefetch_pipeline.py'), scoped=True),)
 
     def __init__(self, namespace='empire', source='ths', archive_settings=None):
         self.namespace, self.source = namespace, source

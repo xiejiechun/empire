@@ -51,12 +51,12 @@ async def test_large_directory_uses_one_scan_and_constant_size_candidate_checks(
         assert directory.full_reads == 1 and directory.candidate_reads == count
         assert sum(entry.busy for entry in pool.entries.values()) == count
         assert pool.healthy_count() == count
-        await asyncio.gather(*(pool.release(entry) for entry in entries))
+        await asyncio.gather(*(pool.release(entry, site="sina") for entry in entries))
         assert all(not entry.busy for entry in entries)
     finally:
         for entry in entries:
             if entry.busy:
-                await pool.release(entry)
+                await pool.release(entry, site="sina")
         await pool.close()
     assert all(entry.client.closed for entry in entries)
 
@@ -74,7 +74,7 @@ async def test_cached_candidate_is_checked_for_removal_expiry_rotation_and_rejoi
         chosen = await pool.acquire(site="sina")
         assert chosen.code == "node0002" and "rotated" in chosen.url
         assert directory.full_reads == 1  # No full scan per invalid candidate.
-        await pool.release(chosen)
+        await pool.release(chosen, site="sina")
         raw = directory_entry("node0000", "http://u:p@localhost:31000", "198.18.0.1")
         directory.mapping["node0000"] = raw
         directory.expires[raw] = time.monotonic() + 180
@@ -110,7 +110,7 @@ async def test_candidate_validation_is_reserved_before_await_and_cancel_releases
             await first
         gate.set()
         entry = await asyncio.wait_for(second, 2)
-        await pool.release(entry)
+        await pool.release(entry, site="sina")
         assert all(not item.busy for item in pool.entries.values()) and pool.waiting == 0
     finally:
         gate.set()
@@ -135,7 +135,7 @@ async def test_cancelled_retirement_retains_close_task_until_real_close_finishes
     entry = await pool.acquire(site="sina")
     directory.mapping.clear()
     await pool.refresh()
-    await pool.release(entry)
+    await pool.release(entry, site="sina")
     release = asyncio.create_task(pool._reap())
     await started.wait()
     release.cancel()

@@ -1,6 +1,7 @@
 import copy
 import json
 from datetime import UTC, datetime
+from decimal import Decimal
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
@@ -21,6 +22,7 @@ from empire.contracts.listings import (
 from empire.core.config import load_config
 from empire.plugins.collectors.ths_listings import ThsListingCollector
 from empire.plugins.datasets import listings
+from tests.prefetch_source import prefetch_http
 
 STOCKS = [dict(market='SZ', code='000001', name='平安银行'), dict(market='SH', code='600000', name='浦发银行')]
 
@@ -44,6 +46,26 @@ def test_real_source_units_nulls_precision_and_market_mapping():
     body['data'].update(winning_rate='0.0200842635', issuance_pe='-1', issuance_price='0')
     row = parse(body, STOCKS[0], '2026-10-06')
     assert row['winning_rate'] == '0.0200842635' and row['issuance_pe'] == '-1' and row['issuance_price'] == '0'
+
+
+@pytest.mark.parametrize('rate', ['0', '0.0000000001', '0.0000001'])
+def test_sql_decimal_scientific_repr_decodes_without_relaxing_source(rate):
+    from datetime import date
+
+    from empire.contracts.listings import NUMBERS, decode
+    body = source()
+    body['data']['winning_rate'] = rate
+    canonical = parse(body, STOCKS[0], '2026-10-07')
+    stored = dict(canonical)
+    for field in ('listing_date', 'establish_date'):
+        stored[field] = date.fromisoformat(stored[field])
+    for field, (_, scale) in NUMBERS.items():
+        if stored[field] is not None:
+            stored[field] = Decimal(stored[field]).quantize(Decimal(10) ** -scale)
+    assert decode(stored) == canonical
+    body['data']['winning_rate'] = str(Decimal(rate).quantize(Decimal('0.0000000001')))
+    with pytest.raises(ValueError, match='数值格式'):
+        parse(body, STOCKS[0], '2026-10-07')
 
 
 def test_source_establishment_after_listing_is_preserved_with_warning():
@@ -124,6 +146,7 @@ def test_registration_defaults_and_scope_contract():
 
 def collector():
     c = ThsListingCollector()
+    c.http = prefetch_http()
     state = dict(revision=0, cursor={})
     async def checkpoint(_):
         return copy.deepcopy(state)
@@ -136,7 +159,7 @@ def collector():
     c.records = SimpleNamespace(sanitize_text=str, record_error=AsyncMock())
     c.query = SimpleNamespace(plan=AsyncMock(return_value=(STOCKS, set(), {})))
     c.confirmation = SimpleNamespace(page_status=AsyncMock(return_value={'status':'complete'}))
-    c.fetch = AsyncMock(side_effect=lambda stock: (parse(source(), stock, '2026-10-06'), datetime.now(UTC), url(stock)))
+    c.fetch = AsyncMock(side_effect=lambda stock, **options: (parse(source(), stock, '2026-10-06'), datetime.now(UTC), url(stock)))
     return c, state
 
 
@@ -152,7 +175,7 @@ async def test_enqueue_all_before_archive_and_failure_resume(monkeypatch):
     with pytest.raises(ValueError):
         await c.execute()
     assert state['cursor']['index'] == 1 and state['cursor']['pages'] == 1
-    c.fetch.side_effect = lambda stock: (parse(source(), stock, '2026-10-06'), datetime.now(UTC), url(stock))
+    c.fetch.side_effect = lambda stock, **options: (parse(source(), stock, '2026-10-06'), datetime.now(UTC), url(stock))
     result = await c.execute(baseline_revision=state['revision'])
     assert result['phase'] == 'complete' and len(events) == 3
     assert c.fetch.await_count == 3 and c.confirmation.page_status.await_count == 1

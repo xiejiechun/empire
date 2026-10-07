@@ -1,4 +1,5 @@
 """Actual TDX name-column semantics, complete-set failures and public lifecycle boundaries."""
+
 import copy
 import json
 from types import SimpleNamespace
@@ -19,6 +20,7 @@ from empire.contracts.name_changes import (
 from empire.plugins.collectors.tdx_name_changes import NameChangeCollector
 from empire.plugins.collectors.tdx_name_source import COLUMN_SETS, parse
 from empire.plugins.datasets.name_changes import NameDataset
+from tests.prefetch_source import prefetch_http
 
 
 def source(kind='security', missing=False):
@@ -76,7 +78,7 @@ def test_company_parallel_and_identical_source_occurrences():
 
 async def test_normal_request_once_atomic_publish_no_intermediate_archive_wait():
     c = NameChangeCollector('security')
-    c.http = SimpleNamespace(request=AsyncMock(return_value=httpx.Response(200, json=source())), response_policy=lambda _: None)
+    c.http = prefetch_http(request=AsyncMock(return_value=httpx.Response(200, json=source())), response_policy=lambda _: None)
     c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
     c.ingest = SimpleNamespace(checkpoint=AsyncMock(return_value={'revision': 0, 'cursor': {}}),
         ensure_capacity=AsyncMock(), publish_page=AsyncMock(side_effect=lambda ev, **kw: {'revision': 1, 'cursor': kw['cursor']}),
@@ -97,7 +99,7 @@ async def test_bad_source_never_publishes_or_advances():
     c = NameChangeCollector('security')
     bad = source()
     bad['ResultSets'][0]['Content'][1] = copy.deepcopy(bad['ResultSets'][0]['Content'][0])
-    c.http = SimpleNamespace(request=AsyncMock(return_value=httpx.Response(200, json=bad)), response_policy=lambda _: None)
+    c.http = prefetch_http(request=AsyncMock(return_value=httpx.Response(200, json=bad)), response_policy=lambda _: None)
     c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
     c.ingest = SimpleNamespace(checkpoint=AsyncMock(return_value={'revision': 0, 'cursor': {}}),
         ensure_capacity=AsyncMock(), publish_page=AsyncMock(), advance_checkpoint=AsyncMock())

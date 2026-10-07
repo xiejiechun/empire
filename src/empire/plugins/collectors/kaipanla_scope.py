@@ -3,6 +3,7 @@ import json
 from datetime import date, datetime
 
 from empire.core.time import CHINA
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import wait_for_capacity
 
 LISTING_URL = 'https://datacenter.eastmoney.com/api/data/v1/get'
@@ -37,29 +38,47 @@ def parse_listing_page(payload, page):
     return result['count'], result['pages'], clean
 
 
+async def download_listing_page(collector, page, *, reservation=None):
+    await wait_for_capacity(collector.ingest, collector.stats)
+    response = await collector.http.request('GET', LISTING_URL, allowed_domains=('eastmoney.com',),
+        project_id=collector.project_id, policy=collector.http.response_policy('generic'),
+        reservation=reservation, max_retries=collector.request_retries,
+        params=dict(reportName='RPT_F10_ORG_BASICINFO', columns=LISTING_COLUMNS,
+            filter='(LISTING_STATE="0")(SECURITY_TYPE_CODE="058001001")',
+            pageSize='500', pageNumber=str(page), sortColumns='SECUCODE', sortTypes='1'))
+
+    async def consume():
+        return parse_listing_page(json.loads(response.content), page)
+
+    return DeferredResponse(response, consume)
+
+
 async def attach_listing_dates(collector, stocks):
-    listings, previous, total = {}, '', None
-    page, pages = 1, 1
-    while page <= pages:
-        await wait_for_capacity(collector.ingest, collector.stats)
-        response = await collector.http.request('GET', LISTING_URL, allowed_domains=('eastmoney.com',),
-            project_id=collector.project_id, policy=collector.http.response_policy('generic'),
-            max_retries=collector.request_retries, params=dict(reportName='RPT_F10_ORG_BASICINFO',
-                columns=LISTING_COLUMNS, filter='(LISTING_STATE="0")(SECURITY_TYPE_CODE="058001001")',
-                pageSize='500', pageNumber=str(page), sortColumns='SECUCODE', sortTypes='1'))
-        try:
-            count, pages, rows = parse_listing_page(json.loads(response.content), page)
-        finally:
-            response.close()
-        if total is not None and count != total:
-            raise ValueError('上市日期目录分页总数改变，保留断点')
-        total = count
-        for symbol, listed in rows:
+    listings, previous = {}, ''
+    first = await download_listing_page(collector, 1)
+    try:
+        total, pages, rows = await first.consume()
+    finally:
+        first.close()
+
+    def append(values):
+        nonlocal previous
+        for symbol, listed in values:
             if symbol <= previous or symbol in listings:
                 raise ValueError('上市日期目录存在重复、重排或同条数不同证券集合')
             previous = symbol
             listings[symbol] = listed
-        page += 1
+
+    append(rows)
+    async def download(page, *, reservation):
+        return await download_listing_page(collector, page, reservation=reservation)
+    async with prefetch_units(collector, list(range(2, pages + 1)), download,
+            url=LISTING_URL, domains=('eastmoney.com',), item_name='目录页') as reads:
+        async for _, read in reads:
+            count, reported_pages, rows = await read.resolve()
+            if count != total or reported_pages != pages:
+                raise ValueError('上市日期目录分页总数改变，保留断点')
+            append(rows)
     if len(listings) != total:
         raise ValueError('上市日期目录集合不完整')
     result = []

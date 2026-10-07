@@ -1,8 +1,10 @@
 """Source to formal queries, UUID-owned SQL and Redis; no production business edits."""
+
 import asyncio
 import copy
 import os
 from datetime import UTC, datetime, timedelta
+from decimal import Decimal
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 from uuid import uuid4
@@ -16,6 +18,7 @@ from empire.contracts.data import make_envelope
 from empire.contracts.listings import DATASET, JOB, digest, parse
 from empire.core.config import load_config
 from empire.plugins.datasets import listings
+from tests.prefetch_source import prefetch_http
 from tests.test_ths_listings import STOCKS, source
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(os.environ.get('EMPIRE_INTEGRATION') != '1', reason='Opt in to private database')]
@@ -35,7 +38,7 @@ async def listing():
             conn.execute(text('INSERT INTO stock(unified_code,name) VALUES(:unified_code,:name)'),
                 [dict(unified_code=s['code']+'.'+s['market'],name=s['name']) for s in STOCKS])
         c.session = SimpleNamespace(headers=lambda _: {'Referer':'https://basic.10jqka.com.cn/'})
-        c.http = SimpleNamespace(request=AsyncMock(side_effect=lambda *a, **kw: httpx.Response(200,json=source())), response_policy=lambda _: None)
+        c.http = prefetch_http(request=AsyncMock(side_effect=lambda *a, **kw: httpx.Response(200,json=source())), response_policy=lambda _: None)
         yield manager, c, q, store
     finally:
         await manager.shutdown()
@@ -51,6 +54,31 @@ async def listing():
 
 async def collect(c, fresh=False):
     return await asyncio.wait_for(c.execute(fresh=fresh,baseline_revision=await c.checkpoint_revision()),20)
+
+
+async def test_sql_zero_rate_formal_queries_and_cold_replay_do_not_write(listing):
+    manager, c, q, store = listing
+    body = source()
+    body['data']['winning_rate'] = '0'
+    c.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=body)
+    await collect(c)
+    assert (await q.detail('000001.SZ'))['winning_rate'] == '0'
+    assert all(Decimal(row['winning_rate']) == 0 for row in (await q.list_records())['rows'])
+    archive = manager.registry.get('archive.worker')
+    await archive.fingerprints.invalidate(listings.FINGERPRINT_NAMESPACE, 'ths')
+    writes = []
+
+    def capture(conn, cursor, sql, params, context, many):
+        if 'stock_listing' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
+            writes.append(sql)
+
+    event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    try:
+        await collect(c, True)
+        assert not writes and await store.client.xlen(store.stream) == 0
+        assert (await q.detail('000001.SZ'))['winning_rate'] == '0'
+    finally:
+        event.remove(q.mysql.engine, 'before_cursor_execute', capture)
 
 
 def unavailable_source(*args, **kwargs):

@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
@@ -43,24 +44,31 @@ class ThsIndustryCollector:
     async def checkpoint_revision(self):
         return (await self.ingest.checkpoint(self.job_key))['revision']
 
-    async def fetch(self, url, parser):
+    async def fetch(self, url, parser, *, reservation=None, defer=False):
         await wait_for_capacity(self.ingest, self.stats)
         if self.session is None:
             self.session = ThsSession()
         response = await self.http.request('GET', url, headers=self.session.headers(BASE),
             allowed_domains=('10jqka.com.cn',), project_id=self.project_id,
-            policy=self.http.response_policy('generic'), max_retries=self.request_retries)
-        try:
-            return parser(response.content.decode('gb18030'))
-        except (ValueError, TypeError, KeyError) as exc:
-            body = response.content
-            exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, self.project_id,
-                exc, stage='source_validation', unavailable_message='行业错误样本暂未写入 Redis',
-                fields={'request_url': url, 'status_code': response.status_code, 'raw_body': body[:65536],
-                        'observed_bytes': len(body), 'body_sha256': hashlib.sha256(body).hexdigest()})
-            raise
-        finally:
-            response.close()
+            policy=self.http.response_policy('generic'), max_retries=self.request_retries,
+            reservation=reservation)
+        async def consume():
+            try:
+                return parser(response.content.decode('gb18030'))
+            except (ValueError, TypeError, KeyError) as exc:
+                body = response.content
+                exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, self.project_id,
+                    exc, stage='source_validation', unavailable_message='行业错误样本暂未写入 Redis',
+                    fields={'request_url': url, 'status_code': response.status_code, 'raw_body': body[:65536],
+                            'observed_bytes': len(body), 'body_sha256': hashlib.sha256(body).hexdigest()})
+                raise
+            finally:
+                if not defer:
+                    response.close()
+
+        if defer:
+            return DeferredResponse(response, consume)
+        return await consume()
 
     async def execute(self, *, fresh=False, baseline_revision=0):
         stage = 'source_validation'
@@ -76,16 +84,21 @@ class ThsIndustryCollector:
                 industries = await self.fetch(BASE, parse_catalog)
                 self.stats['total_units'] = len(industries)
                 count, requests = 0, 1
-                for index, industry in enumerate(industries):
-                    self.stats.update(current_security=industry['name'], completed_units=index)
-                    members = await self.fetch(members_url(industry['code']),
-                        partial(parse_members, industry=industry['code']))
-                    count += len(members)
-                    if count > 15000:
-                        raise ValueError('行业全量成员超过声明边界')
-                    requests += 1
-                    self.stats.update(collected=count, pages=requests, completed_units=index + 1)
-                    industry['members'] = members
+                async def download(industry, *, reservation):
+                    return await self.fetch(members_url(industry['code']),
+                        partial(parse_members, industry=industry['code']), reservation=reservation, defer=True)
+                async with prefetch_units(self, industries, download, url=BASE,
+                        domains=('10jqka.com.cn',), item_name='行业') as reads:
+                    async for index, read in reads:
+                        industry = industries[index]
+                        self.stats.update(current_security=industry['name'], completed_units=index)
+                        members = await read.resolve()
+                        count += len(members)
+                        if count > 15000:
+                            raise ValueError('行业全量成员超过声明边界')
+                        requests += 1
+                        self.stats.update(collected=count, pages=requests, completed_units=index + 1)
+                        industry['members'] = members
                 validate(industries)
                 stage = 'queue_publish'
                 envelope = make_envelope(source=self.source, dataset='industry.snapshot', business_key='current',

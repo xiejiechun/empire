@@ -140,9 +140,9 @@ async def test_devices_sharing_exit_ip_share_one_concurrent_slot():
         assert not waiting.done() and pool.healthy_egress_count() == 1
         snapshot = await pool.snapshot()
         assert snapshot["online"] == 2 and snapshot["online_egresses"] == 1
-        await pool.release(entry)
+        await pool.release(entry, site="sina")
         other = await asyncio.wait_for(waiting, 1)
-        await pool.release(other)
+        await pool.release(other, site="sina")
     finally:
         await pool.close()
 

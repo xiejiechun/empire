@@ -29,7 +29,7 @@ class SuspensionDataPlugin:
     preparation = (PreparationContribution(
         "suspensions", "suspensions.query", "通达信", "tdx-suspensions",
         "tdx-suspensions-v1", "suspensions.period", "collector.tdx_suspensions",
-        ("tests/test_tdx_suspensions.py",), ("tests/integration/test_suspension_archive.py",)),)
+        ("tests/test_tdx_suspensions.py", "tests/test_all_collector_prefetch.py"), ("tests/integration/test_suspension_archive.py", "tests/integration/test_prefetch_pipeline.py")),)
 
     manifest = PluginManifest(
         "data.suspensions", "沪深 A 股历史停复牌查询",

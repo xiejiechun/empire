@@ -1,4 +1,5 @@
 """Listing-state source semantics, complete sets, lifecycle and ordered publication."""
+
 import copy
 import json
 from datetime import date
@@ -13,6 +14,7 @@ from empire.contracts.listing_status import DATASET, FIRST, JOB, SOURCE_TYPES, b
 from empire.plugins.collectors.tdx_listing_status import TdxListingStatusCollector
 from empire.plugins.collectors.tdx_listing_status_source import parse, request_body
 from empire.plugins.datasets import listing_status as mapping
+from tests.prefetch_source import prefetch_http
 
 
 def source(day, rows=None, count=None):
@@ -140,7 +142,7 @@ def collector(through=date(1991, 1, 2)):
     def response(*a, **kw):
         day = json.loads(kw['content'])['Params'][2]
         return httpx.Response(200, json=source(day, [row()] if day == '1991-01-01' else []))
-    c.http = SimpleNamespace(request=AsyncMock(side_effect=response), response_policy=lambda _: None)
+    c.http = prefetch_http(request=AsyncMock(side_effect=response), response_policy=lambda _: None)
     return c
 
 

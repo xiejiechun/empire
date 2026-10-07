@@ -9,6 +9,7 @@ from empire.plugins.collection.records import RecordsPlugin
 from empire.plugins.collectors.sina_news import API_URL, SinaNewsCollector, parse_feed
 from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.datasets.news import normalize_source
+from empire.plugins.infra.resources import ByteBudget
 
 
 def raw_row(ident, content="【市场快讯】黄金 &amp; 外汇<br>第二行", **extra):
@@ -62,6 +63,7 @@ class Source:
         return NEWS_RESPONSE
 
     def __init__(self, pages):
+        self.buffer_budget = ByteBudget(64 * 1024 * 1024)
         self.pages = pages
         self.calls = []
 

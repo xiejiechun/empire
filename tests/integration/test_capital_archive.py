@@ -2,7 +2,6 @@ import asyncio
 import copy
 import os
 from datetime import UTC, datetime, timedelta
-from types import SimpleNamespace
 from unittest.mock import AsyncMock
 from uuid import uuid4
 
@@ -16,6 +15,7 @@ from empire.core.config import load_config
 from empire.plugins.collectors.tdx_capital_source import parse
 from empire.plugins.datasets.capital_actions import KINDS, SCHEMA_VERSIONS
 from tests.capital_samples import STOCK, issue_detail, source, with_issue_detail
+from tests.prefetch_source import prefetch_http
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get('EMPIRE_INTEGRATION') != '1', reason='Set EMPIRE_INTEGRATION=1 explicitly')]
@@ -208,7 +208,7 @@ async def capital_db(request, monkeypatch):
         await manager.start('collector.tdx_' + kind)
         mysql, store = manager.registry.get('mysql.store'), manager.registry.get('redis.store')
         monkeypatch.setattr(query, '_securities', lambda conn: [STOCK])
-        collector.http = SimpleNamespace(request=AsyncMock(side_effect=lambda *a, **k:
+        collector.http = prefetch_http(request=AsyncMock(side_effect=lambda *a, **k:
             httpx.Response(200, json=issue_detail() if a[1].endswith('tdxsj_xgzx_zfmx') else source(kind))),
             response_policy=lambda profile: profile)
         async def publish(body=None, observed=None):

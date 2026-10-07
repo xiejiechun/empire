@@ -9,6 +9,7 @@ from empire.contracts.collector import CalendarRunResult
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
@@ -77,34 +78,31 @@ class CninfoCalendarCollector:
                 plan = await self.query.plan(self.today(), fresh=fresh)
                 cursor = {**plan, "batch_id": uuid4().hex, "phase": "fetch", "pages": 0,
                           "collected": 0, "started_at": datetime.now(UTC).isoformat()}
-            while cursor["phase"] == "fetch":
-                response = None
-                month = cursor["months"][cursor["pages"]]
-                self.stats.update(status="collecting", current_month=month, collected=cursor["collected"],
-                                  expected_count=cursor["expected_count"], pages=cursor["pages"],
-                                  total_months=len(cursor["months"]), error="")
-                await self._capacity()
-                stage = "http_request"
-                response = await self.http.request("GET", API_URL, params={"month": month},
-                    allowed_domains=("cninfo.com.cn",), project_id=self.project_id,
-                    policy=self.http.response_policy("calendar"),
-                    max_retries=self.request_retries)
-                stage = "calendar_validation"
-                rows = parse_month(response, month)
-                page = cursor["pages"] + 1
-                updated = {**cursor, "pages": page, "collected": cursor["collected"] + len(rows),
-                           "phase": "awaiting_archive" if page == len(cursor["months"]) else "fetch"}
-                event = make_envelope(source=self.source, dataset="calendar.month", job_key=self.job_key,
-                    business_key=f"{cursor['batch_id']}:{month}", run_id=cursor["batch_id"], batch_id=cursor["batch_id"],
-                    payload={"page": page, "month": month, "rows": rows}).model_copy(update={"source_url": API_URL})
-                response.close()
-                response = None
-                stage = "queue_publish"
-                state = await publish_with_capacity(
-                    self.ingest, self.stats, [event], job_key=self.job_key,
-                    expected_revision=state["revision"], cursor=updated,
-                )
-                cursor = state["cursor"]
+            if cursor["phase"] == "fetch":
+                async with prefetch_units(self, cursor["months"], self.download, url=API_URL,
+                        domains=("cninfo.com.cn",), profile="calendar", first=cursor["pages"], item_name='月') as reads:
+                    async for index, read in reads:
+                        response = None
+                        month = cursor["months"][index]
+                        self.stats.update(status="collecting", current_month=month, collected=cursor["collected"],
+                                          expected_count=cursor["expected_count"], pages=cursor["pages"],
+                                          total_months=len(cursor["months"]), error="")
+                        stage = "calendar_validation"
+                        rows = await read.resolve()
+                        page = cursor["pages"] + 1
+                        updated = {**cursor, "pages": page, "collected": cursor["collected"] + len(rows),
+                                   "phase": "awaiting_archive" if page == len(cursor["months"]) else "fetch"}
+                        event = make_envelope(source=self.source, dataset="calendar.month", job_key=self.job_key,
+                            business_key=f"{cursor['batch_id']}:{month}", run_id=cursor["batch_id"], batch_id=cursor["batch_id"],
+                            payload={"page": page, "month": month, "rows": rows}).model_copy(update={"source_url": API_URL})
+                        read.close()
+                        response = None
+                        stage = "queue_publish"
+                        state = await publish_with_capacity(
+                            self.ingest, self.stats, [event], job_key=self.job_key,
+                            expected_revision=state["revision"], cursor=updated,
+                        )
+                        cursor = state["cursor"]
             stage = "archive_confirmation"
             self.stats.update(status="awaiting_archive", collected=cursor["collected"],
                               pages=cursor["pages"], expected_count=cursor["expected_count"])
@@ -133,9 +131,25 @@ class CninfoCalendarCollector:
             )
             raise
 
-        finally:
-            if response is not None:
-                response.close()
+    async def download(self, month, *, reservation):
+        await self._capacity()
+        response = await self.http.request("GET", API_URL, params={"month": month},
+            allowed_domains=("cninfo.com.cn",), project_id=self.project_id,
+            policy=self.http.response_policy("calendar"),
+            max_retries=self.request_retries, reservation=reservation)
+
+        async def consume():
+            try:
+                return parse_month(response, month)
+            except (ValueError, TypeError, KeyError) as exc:
+                exc.diagnostic_recorded = await record_error_safely(
+                    self.records, self.stats, self.project_id, exc, stage='calendar_validation',
+                    unavailable_message='日历错误样本暂未写入 Redis；断点保留',
+                    fields={'raw_body': response.content, 'request_url': str(response.url),
+                            'status_code': response.status_code, 'metadata': {'month': month}})
+                raise
+
+        return DeferredResponse(response, consume)
 
     def _result(self, cursor: dict[str, Any]) -> CalendarRunResult:
         return {"collected": cursor["collected"], "pages": cursor["pages"], "batch_id": cursor["batch_id"],

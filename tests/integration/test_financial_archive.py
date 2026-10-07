@@ -3,7 +3,6 @@ import copy
 import json
 import os
 from datetime import UTC, datetime, timedelta
-from types import SimpleNamespace
 from unittest.mock import AsyncMock
 from uuid import uuid4
 
@@ -16,6 +15,7 @@ from empire.contracts.data import make_envelope
 from empire.core.config import load_config
 from empire.plugins.datasets.financial_statements import KINDS, parse
 from empire.plugins.datasets.financial_wire import SCHEMA_VERSION, pack_rows
+from tests.prefetch_source import prefetch_http
 from tests.test_ths_statements import STOCK, large_source, source
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
@@ -37,7 +37,7 @@ async def financial_db(request, monkeypatch):
         await manager.start('collector.ths_' + kind)
         mysql, store = manager.registry.get('mysql.store'), manager.registry.get('redis.store')
         monkeypatch.setattr(query, '_securities', lambda conn: [STOCK])
-        collector.http = SimpleNamespace(request=AsyncMock(side_effect=lambda *a, **k:
+        collector.http = prefetch_http(request=AsyncMock(side_effect=lambda *a, **k:
             httpx.Response(200, json=source(kind))), response_policy=lambda x: x)
         async def publish(body=None, observed=None):
             rows = parse(kind, body or source(kind), STOCK)
@@ -262,10 +262,10 @@ async def test_resume_starts_at_unpublished_security_and_scope_conflict(financia
     second = {**STOCK, 'code': '601140'}
     monkeypatch.setattr(query, '_securities', lambda conn: [STOCK, second])
     original = collector.fetch
-    async def interrupted(stock):
+    async def interrupted(stock, **options):
         if stock['code'] == second['code']:
             raise asyncio.CancelledError()
-        return await original(stock)
+        return await original(stock, **options)
     monkeypatch.setattr(collector, 'fetch', interrupted)
     with pytest.raises(asyncio.CancelledError):
         await collector.execute()

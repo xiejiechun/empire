@@ -11,6 +11,7 @@ from empire.plugins.collectors.cninfo_calendar import API_URL, CninfoCalendarCol
 from empire.plugins.data.trade_calendar import CalendarDataPlugin
 from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.datasets.trade_calendar import month_dates, months_between
+from tests.prefetch_source import prefetch_http
 
 
 def response(month):
@@ -99,7 +100,7 @@ def collector():
         assert url == API_URL and kwargs["project_id"] == "cninfo-calendar"
         assert kwargs["allowed_domains"] == ("cninfo.com.cn",)
         return response(kwargs["params"]["month"])
-    item.http = SimpleNamespace(request=AsyncMock(side_effect=get), response_policy=lambda _: CALENDAR_RESPONSE)
+    item.http = prefetch_http(request=AsyncMock(side_effect=get), response_policy=lambda _: CALENDAR_RESPONSE)
     return item
 
 

@@ -10,7 +10,7 @@ from empire.contracts.preparation import PreparationContribution
 class NewsDataPlugin:
     preparation = (PreparationContribution(
         "news", "news.query", "新浪财经", "sina-news", "sina-news-v1", "news.flash.page",
-        "collector.sina_news", ("tests/test_sina_news.py",), ("tests/integration/test_news_archive.py",)),)
+        "collector.sina_news", ("tests/test_sina_news.py", "tests/test_unit_prefetch.py"), ("tests/integration/test_news_archive.py",)),)
 
     manifest = PluginManifest("data.news", "财经新闻查询", requires=("mysql.store",),
                               provides=("news.query", "news.schema"),

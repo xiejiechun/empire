@@ -27,6 +27,9 @@ class ProxyPage(QWidget):
         self.devices = table(["设备", "代理入口", "出口 IP", "协议", "状态", "正在请求", "请求数"])
         layout.addWidget(self.devices, 3)
         layout.addWidget(QLabel("站点请求统计"))
+        layout.addWidget(hint("各站独立使用出口槽：7 个健康独立出口可为每站分别提供最多 7 个在途请求。"
+                              "本站任务共享本站槽位；所有站点仍受全局下载窗口和缓冲限制。"
+                              "设备正在请求数为跨站合计，可大于 1。"))
         self.routes = table(["网站", "使用中 / 可用并发", "最近10秒请求/秒", "代理请求", "回退直连"])
         layout.addWidget(self.routes, 1)
         layout.addWidget(hint("计数为本次 HTTP 插件运行期间的请求尝试数（含重试）。"

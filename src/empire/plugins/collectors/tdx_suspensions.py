@@ -10,6 +10,7 @@ from empire.contracts.collection_integrity import confirmed_distinct_records, re
 from empire.contracts.collector import SuspensionRunResult
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
@@ -99,7 +100,7 @@ class TdxSuspensionCollector:
     async def checkpoint_revision(self):
         return (await self.ingest.checkpoint(self.job_key))["revision"]
 
-    async def _request_page(self, day, page, *, page_size=PAGE_SIZE):
+    async def _request_page(self, day, page, *, page_size=PAGE_SIZE, reservation=None, defer=False):
         initial = page == 1
         body = json.dumps({"Params": ["mrtbts", "hstfp", day, "1" if initial else "0",
                                             str(page), str(page_size)]}, separators=(",", ":"))
@@ -109,18 +110,30 @@ class TdxSuspensionCollector:
                      "Origin": "http://page2.tdx.com.cn:7615", "Referer": PAGE_URL},
             allowed_domains=("tdx.com.cn",), project_id=self.project_id,
             policy=self.http.response_policy("generic"), max_retries=self.request_retries,
+            reservation=reservation,
         )
-        try:
-            return parse_page(response, day, page, initial=initial)
-        finally:
-            response.close()
+        async def consume():
+            try:
+                return parse_page(response, day, page, initial=initial)
+            finally:
+                if not defer:
+                    response.close()
+        if defer:
+            return DeferredResponse(response, consume)
+        return await consume()
 
-    async def _collect_day(self, day):
+    async def _collect_day(self, day, *, reservation=None, initial_read=None):
+        options = {"reservation": reservation} if reservation is not None else {}
         size, requests = PAGE_SIZE, 0
         while True:
             await wait_for_capacity(self.ingest, self.stats)
-            source_rows, reported = (await self._request_page(day, 1) if size == PAGE_SIZE
-                                     else await self._request_page(day, 1, page_size=size))
+            if initial_read is not None:
+                source_rows, reported = await initial_read.consume()
+                initial_read.close()
+                initial_read = None
+            else:
+                source_rows, reported = (await self._request_page(day, 1, **options) if size == PAGE_SIZE
+                                         else await self._request_page(day, 1, page_size=size, **options))
             requests += 1
             # TDX orders only by security; different events for the same code
             # swap across offset-page boundaries. Always replace the entire day.
@@ -144,7 +157,7 @@ class TdxSuspensionCollector:
         if len({identity(row) for row in source_a_shares}) != len(source_a_shares):
             await wait_for_capacity(self.ingest, self.stats)
             verify_size = min(MAX_DAY_ROWS, size * 2)
-            repeated, total = await self._request_page(day, 1, page_size=verify_size)
+            repeated, total = await self._request_page(day, 1, page_size=verify_size, **options)
             requests += 1
             if total != reported or len(repeated) >= verify_size:
                 raise ValueError('来源业务键重复且完整响应复核不一致')
@@ -155,6 +168,17 @@ class TdxSuspensionCollector:
         require_complete_set(source_a_shares, len(source_a_shares), identity)
         require_complete_set(normalized, len(normalized), event_identity)
         return normalized, requests
+
+    async def download_day(self, day, *, reservation):
+        await wait_for_capacity(self.ingest, self.stats)
+        read = await self._request_page(day, 1, reservation=reservation, defer=True)
+
+        async def consume():
+            return await self._collect_day(day, reservation=reservation, initial_read=read)
+
+        # Only the first response is speculative. Escalation/duplicate verification
+        # depends on its validated contents and runs in the ordered consumer.
+        return DeferredResponse(read, consume)
 
     async def execute(self, *, fresh=False, baseline_revision=0) -> SuspensionRunResult:
         stage, current_date, current_period = "checkpoint", None, None
@@ -180,16 +204,19 @@ class TdxSuspensionCollector:
                 end = datetime.fromisoformat(current_period["end_date"]).date()
                 days = []
                 day = start
-                while day <= end:
-                    current_date = day.isoformat()
-                    self.stats.update(status="collecting", current_date=current_date,
-                        current_month=current_period["period"], collected=cursor["collected"],
-                        pages=cursor["pages"], total_months=len(periods), error="")
-                    stage = "http_request"
-                    rows, pages = await self._collect_day(current_date)
-                    stage = "suspension_validation"
-                    days.append((current_date, rows, pages))
-                    day += timedelta(days=1)
+                dates = [(start + timedelta(days=i)).isoformat() for i in range((end-start).days+1)]
+                async with prefetch_units(self, dates, self.download_day, url=API_URL,
+                        domains=("tdx.com.cn",), item_name='日') as reads:
+                    async for index, read in reads:
+                        day = datetime.fromisoformat(dates[index]).date()
+                        current_date = day.isoformat()
+                        self.stats.update(status="collecting", current_date=current_date,
+                            current_month=current_period["period"], collected=cursor["collected"],
+                            pages=cursor["pages"], total_months=len(periods), error="")
+                        stage = "http_request"
+                        rows, pages = await read.resolve()
+                        stage = "suspension_validation"
+                        days.append((current_date, rows, pages))
                 batches = bounded_batches(
                     days, source=self.source, job_key=self.job_key, batch_id=cursor['batch_id'],
                     first_page=cursor['pages'] + 1, source_url=API_URL, merge=merge_event,

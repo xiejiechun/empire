@@ -21,6 +21,7 @@ from empire.plugins.datasets.suspensions import (
     event_identity,
     normalize_source_row,
 )
+from tests.prefetch_source import prefetch_http
 
 COLS = ["sc", "code", "name", "fprq", "sj", "sjcontent", "tprq"]
 
@@ -288,6 +289,10 @@ async def test_collector_reads_complete_day_counts_only_a_shares_and_waits_for_a
         return [dict(zip(COLS, source_row(), strict=True))], 1
 
     item._request_page = request
+    item.http = prefetch_http()
+    async def download(day, **kw):
+        return await item._collect_day(day)
+    item.download_day = download
     result = await item.execute()
     assert calls == [("2026-09-24", 1), ("2026-09-25", 1)]
     assert result["dates_checked"] == 2 and result["collected"] == 2
@@ -306,6 +311,10 @@ async def test_failed_date_does_not_publish_partial_month_or_advance_checkpoint(
         return ([dict(zip(COLS, source_row(), strict=True))], 1) if page == 1 else ([], None)
 
     item._request_page = request
+    item.http = prefetch_http()
+    async def download(day, **kw):
+        return await item._collect_day(day)
+    item.download_day = download
     with pytest.raises(ValueError, match="source failed"):
         await item.execute()
     assert not item.ingest.events
@@ -319,10 +328,11 @@ async def test_full_history_checkpoints_remain_small_and_cover_every_date():
     query.mysql = SimpleNamespace(control=AsyncMock(return_value={}))
     item.query = query
     seen = []
-    async def collect(day):
+    async def collect(day, **options):
         seen.append(day)
         return [], 1
-    item._collect_day = collect
+    item.http = prefetch_http()
+    item.download_day = collect
     result = await item.execute()
     assert seen[0] == '2004-12-27' and seen[-1] == '2026-09-25'
     assert len(seen) == (date(2026, 9, 25) - date(2004, 12, 27)).days + 1
@@ -374,6 +384,10 @@ async def test_oversized_full_day_is_not_published(monkeypatch):
     monkeypatch.setattr('empire.plugins.collectors.tdx_suspensions.PAGE_SIZE', 2)
     monkeypatch.setattr('empire.plugins.collectors.tdx_suspensions.MAX_DAY_ROWS', 2)
     item = collector()
+    item.http = prefetch_http()
+    async def download(day, **kw):
+        return await item._collect_day(day)
+    item.download_day = download
     item._request_page = AsyncMock(return_value=(
         [dict(zip(COLS, source_row(str(code).zfill(6)), strict=True)) for code in (1, 2)], 2))
     with pytest.raises(ValueError, match='安全上限'):
@@ -385,11 +399,12 @@ async def test_large_month_splits_and_restart_begins_at_first_unpublished_date()
     item = collector()
     item.ingest.settings = {'max_page_bytes': 2400}
     dates = ['2026-09-24', '2026-09-25']
-    async def collect(day):
+    async def collect(day, **options):
         rows = [normalize_source_row(dict(zip(COLS, source_row(f'00000{i}',
                 start=day+' 09:30', resumed=None), strict=True))) for i in range(4)]
         return rows, 1
-    item._collect_day = collect
+    item.http = prefetch_http()
+    item.download_day = collect
     publish = item.ingest.publish_page
     async def interrupt_after_first(*args, **kwargs):
         if item.ingest.events:
@@ -405,10 +420,11 @@ async def test_large_month_splits_and_restart_begins_at_first_unpublished_date()
     resumed.ingest = item.ingest
     resumed.ingest.publish_page = publish
     calls = []
-    async def remaining(day):
+    async def remaining(day, **options):
         calls.append(day)
         return await collect(day)
-    resumed._collect_day = remaining
+    resumed.http = prefetch_http()
+    resumed.download_day = remaining
     await resumed.execute(baseline_revision=item.ingest.state['revision'])
     assert calls == dates[1:]
     assert [d for e in item.ingest.events for d in e.raw_payload['checked_dates']] == dates
@@ -423,12 +439,13 @@ async def test_restart_reuses_published_month_and_retries_unpublished_month(inte
         'periods': periods_between(date(2004, 12, 27), date(2005, 1, 2)),
     }
     calls = []
-    async def collect(day):
+    async def collect(day, **options):
         calls.append(day)
         if interrupt_at == 'fetch' and day == '2005-01-02':
             raise asyncio.CancelledError
         return [], 1
-    item._collect_day = collect
+    item.http = prefetch_http()
+    item.download_day = collect
     if interrupt_at == 'archive':
         item.confirmation.page_status.side_effect = asyncio.CancelledError
     if interrupt_at == 'finalize':
@@ -445,10 +462,11 @@ async def test_restart_reuses_published_month_and_retries_unpublished_month(inte
     replacement.ingest.state = copy.deepcopy(item.ingest.state)
     replacement.ingest.events = list(item.ingest.events)
     resumed = []
-    async def resume(day):
+    async def resume(day, **options):
         resumed.append(day)
         return [], 1
-    replacement._collect_day = resume
+    replacement.http = prefetch_http()
+    replacement.download_day = resume
     await replacement.execute(baseline_revision=replacement.ingest.state['revision'])
     replacement.query.plan.assert_not_awaited()
     assert resumed == (['2005-01-01', '2005-01-02'] if interrupt_at == 'fetch' else [])
@@ -459,7 +477,8 @@ async def test_restart_reuses_published_month_and_retries_unpublished_month(inte
 async def test_history_publishes_all_months_before_waiting_for_archive():
     item = collector()
     item.query.plan.return_value = {'start_date': '2004-12-27', 'end_date': '2005-02-01'}
-    item._collect_day = AsyncMock(return_value=([], 1))
+    item.http = prefetch_http()
+    item.download_day = AsyncMock(return_value=([], 1))
     async def confirm(*args):
         assert len(item.ingest.events) == 3
         assert item.ingest.state['cursor']['phase'] == 'awaiting_archive'

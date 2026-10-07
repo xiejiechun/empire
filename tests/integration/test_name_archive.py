@@ -1,9 +1,9 @@
 """Name source → canonical Redis → unified SQL archive → formal queries, isolated DB."""
+
 import asyncio
 import copy
 import os
 from datetime import UTC, datetime, timedelta
-from types import SimpleNamespace
 from unittest.mock import AsyncMock
 from uuid import uuid4
 
@@ -14,6 +14,7 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.contracts.name_changes import SCHEMA_VERSION, pack_rows
 from empire.core.config import load_config
+from tests.prefetch_source import prefetch_http
 from tests.test_name_changes import source
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(os.environ.get('EMPIRE_INTEGRATION') != '1', reason='Opt in to isolated integration')]
@@ -30,7 +31,7 @@ async def names(request):
         await manager.start(c.manifest.id)
         q = manager.registry.get('names.' + request.param + '.query')
         store = manager.registry.get('redis.store')
-        c.http = SimpleNamespace(request=AsyncMock(side_effect=lambda *a, **kw: httpx.Response(200, json=source(c.kind))), response_policy=lambda _: None)
+        c.http = prefetch_http(request=AsyncMock(side_effect=lambda *a, **kw: httpx.Response(200, json=source(c.kind))), response_policy=lambda _: None)
         yield manager, c, q, store
     finally:
         await manager.shutdown()

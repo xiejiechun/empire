@@ -29,8 +29,8 @@ class ListingDataPlugin:
     manifest = PluginManifest('data.listings', '上市与发行资料查询', requires=('mysql.store',),
         provides=('listings.query',), description='当前首次上市资料；不声称全历史退市证券覆盖')
     preparation = (PreparationContribution('listings', 'listings.query', '同花顺', PROJECT, JOB,
-        DATASET, 'collector.ths_listings', ('tests/test_ths_listings.py',),
-        ('tests/integration/test_listing_archive.py',), scoped=True),)
+        DATASET, 'collector.ths_listings', ('tests/test_ths_listings.py', 'tests/test_all_collector_prefetch.py'),
+        ('tests/integration/test_listing_archive.py', 'tests/integration/test_prefetch_pipeline.py'), scoped=True),)
 
     def __init__(self, namespace='empire'):
         self.namespace, self.mysql = namespace, None

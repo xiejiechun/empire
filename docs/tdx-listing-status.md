@@ -55,4 +55,8 @@
 
 ## 技术参考
 
-接口为TQLEX?Entry=CWServ.tdxsj_tzrl_gsrl，Params=[mrtbts,zthfss,日期,1,1,1000]。项目tdx-listing-status，任务tdx-listing-status-v1，数据集listing_status.month，摘要命名空间tdx_listing_status_v1，网站组tdx，公共generic正文预算。正常一天一次响应，无并行预取，无成功响应长期副本。统一归档器负责确认及XDEL；每个项目采集/归档各100条记录，错误样本300条。
+接口为TQLEX?Entry=CWServ.tdxsj_tzrl_gsrl，Params=[mrtbts,zthfss,日期,1,1,1000]。项目tdx-listing-status，任务tdx-listing-status-v1，数据集listing_status.month，摘要命名空间tdx_listing_status_v1，网站组tdx，公共generic正文预算。正常一天一次响应，独立日期使用共享有界预取，无成功响应长期副本。统一归档器负责确认及XDEL；每个项目采集/归档各100条记录，错误样本300条。
+
+## 共享有界下载与恢复
+
+下载调度按 [全部采集共享预取](all-collector-prefetch.md) 的本项目行执行。可独立单元并行下载，来源校验、入队和断点按原业务顺序；协议依赖保留必要顺序，正常必要响应不重复读取。失败或取消回收全部请求及额度，未入队预取结果继续时重下；原生命周期、修订范围、正式查询及整轮末归档确认不变。已保存任务与站点配置优先，程序更新后正常重启使用新版，无需迁移业务数据或清理既有断点。

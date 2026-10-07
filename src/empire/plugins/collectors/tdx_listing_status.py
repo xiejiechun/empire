@@ -1,4 +1,4 @@
-"""Sequential day downloads; atomic month publication, independent archive advancement."""
+"""Bounded independent day downloads; atomic month publication, independent archive advancement."""
 import asyncio
 import hashlib
 from datetime import UTC, date, datetime, timedelta
@@ -9,6 +9,7 @@ from empire.contracts.data import make_envelope
 from empire.contracts.listing_status import DATASET, JOB, PROJECT, bounds, validate_rows
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
@@ -43,24 +44,31 @@ class TdxListingStatusCollector:
     async def checkpoint_revision(self):
         return (await self.ingest.checkpoint(JOB))['revision']
 
-    async def fetch(self, day):
+    async def fetch(self, day, *, reservation=None, defer=False):
         await wait_for_capacity(self.ingest, self.stats)
         response = await self.http.request('POST', API_URL, content=request_body(day),
             headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                      'Origin': 'http://page2.tdx.com.cn:7615', 'Referer': PAGE_URL},
             allowed_domains=('tdx.com.cn',), project_id=PROJECT,
-            policy=self.http.response_policy('generic'), max_retries=self.request_retries)
-        try:
-            return parse(response.json(), day)
-        except (ValueError, TypeError, KeyError) as exc:
-            body = response.content
-            exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, PROJECT, exc,
-                stage='source_validation', unavailable_message='上市状态错误样本暂不可用',
-                fields=dict(request_url=API_URL, raw_body=body[:65536], observed_bytes=len(body),
-                            status_code=response.status_code, body_sha256=hashlib.sha256(body).hexdigest()))
-            raise
-        finally:
-            response.close()
+            policy=self.http.response_policy('generic'), max_retries=self.request_retries,
+            reservation=reservation)
+        async def consume():
+            try:
+                return parse(response.json(), day)
+            except (ValueError, TypeError, KeyError) as exc:
+                body = response.content
+                exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, PROJECT, exc,
+                    stage='source_validation', unavailable_message='上市状态错误样本暂不可用',
+                    fields=dict(request_url=API_URL, raw_body=body[:65536], observed_bytes=len(body),
+                                status_code=response.status_code, body_sha256=hashlib.sha256(body).hexdigest()))
+                raise
+            finally:
+                if not defer:
+                    response.close()
+
+        if defer:
+            return DeferredResponse(response, consume)
+        return await consume()
 
     async def execute(self, *, fresh=False, baseline_revision=0):
         stage = 'planning'
@@ -83,16 +91,21 @@ class TdxListingStatusCollector:
                     start, end = bounds(month, through)
                     day, rows, counts = start, [], []
                     observed = datetime.now(UTC)
-                    while day <= end:
-                        stage = 'source_validation'
-                        self.stats.update(status='collecting', current_date=day.isoformat(), current_month=month,
-                                          collected=cursor['collected'], pages=cursor['pages'], error='')
-                        values, count = await self.fetch(day.isoformat())
-                        rows.extend(values)
-                        counts.append(count)
-                        if len(rows) > 5000:
-                            raise ValueError('上市状态月份事件超限，断点保留')
-                        day += timedelta(days=1)
+                    dates = [(start + timedelta(days=i)).isoformat() for i in range((end-start).days+1)]
+                    async def download(day, *, reservation):
+                        return await self.fetch(day, reservation=reservation, defer=True)
+                    async with prefetch_units(self, dates, download, url=API_URL,
+                            domains=('tdx.com.cn',), item_name='日') as reads:
+                        async for index, read in reads:
+                            day = date.fromisoformat(dates[index])
+                            stage = 'source_validation'
+                            self.stats.update(status='collecting', current_date=day.isoformat(), current_month=month,
+                                              collected=cursor['collected'], pages=cursor['pages'], error='')
+                            values, count = await read.resolve()
+                            rows.extend(values)
+                            counts.append(count)
+                            if len(rows) > 5000:
+                                raise ValueError('上市状态月份事件超限，断点保留')
                     rows = validate_rows(rows, start, end)
                     page = cursor['pages'] + 1
                     envelope = make_envelope(source='tdx', dataset=DATASET, job_key=JOB,
