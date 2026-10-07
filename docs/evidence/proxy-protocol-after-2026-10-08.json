@@ -1,0 +1,548 @@
+[
+  {
+    "checkedAt": "2026-10-08T02:48:48.142241+08:00",
+    "tests": [
+      {
+        "type": "HTTP",
+        "address": "10.77.0.1:21004",
+        "attempts": [
+          {
+            "url": "http://ip.3322.net",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "14.112.29.187"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "HTTP_NO_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTP_WRONG_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTPS_CONNECT",
+        "address": "10.77.0.1:21004",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 7,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "14.112.29.187"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS",
+        "address": "10.77.0.1:31004",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 97,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "14.112.29.187"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_NO_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_WRONG_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      }
+    ],
+    "node": "node004",
+    "nodeDirect": {
+      "curlExitCode": 0,
+      "httpStatus": "200",
+      "exitIP": "14.112.29.187"
+    },
+    "passed": true
+  },
+  {
+    "checkedAt": "2026-10-08T02:48:48.163590+08:00",
+    "tests": [
+      {
+        "type": "HTTP",
+        "address": "10.77.0.1:21005",
+        "attempts": [
+          {
+            "url": "http://ip.3322.net",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "163.179.217.80"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "HTTP_NO_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTP_WRONG_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTPS_CONNECT",
+        "address": "10.77.0.1:21005",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 35,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "163.179.217.80"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS",
+        "address": "10.77.0.1:31005",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 35,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "163.179.217.80"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_NO_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_WRONG_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      }
+    ],
+    "node": "node005",
+    "nodeDirect": {
+      "curlExitCode": 0,
+      "httpStatus": "200",
+      "exitIP": "163.179.217.80"
+    },
+    "passed": true
+  },
+  {
+    "checkedAt": "2026-10-08T02:48:48.163590+08:00",
+    "tests": [
+      {
+        "type": "HTTP",
+        "address": "10.77.0.1:21006",
+        "attempts": [
+          {
+            "url": "http://ip.3322.net",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "14.112.12.30"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "HTTP_NO_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTP_WRONG_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTPS_CONNECT",
+        "address": "10.77.0.1:21006",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 7,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "14.112.12.30"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS",
+        "address": "10.77.0.1:31006",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 97,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "14.112.12.30"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_NO_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_WRONG_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      }
+    ],
+    "node": "node006",
+    "nodeDirect": {
+      "curlExitCode": 0,
+      "httpStatus": "200",
+      "exitIP": "14.112.12.30"
+    },
+    "passed": true
+  },
+  {
+    "checkedAt": "2026-10-08T02:48:51.520328+08:00",
+    "tests": [
+      {
+        "type": "HTTP",
+        "address": "10.77.0.1:21007",
+        "attempts": [
+          {
+            "url": "http://ip.3322.net",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "183.236.123.202"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "HTTP_NO_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTP_WRONG_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTPS_CONNECT",
+        "address": "10.77.0.1:21007",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 7,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "183.236.123.202"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS",
+        "address": "10.77.0.1:31007",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 97,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "183.236.123.202"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_NO_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_WRONG_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      }
+    ],
+    "node": "node007",
+    "nodeDirect": {
+      "curlExitCode": 0,
+      "httpStatus": "200",
+      "exitIP": "183.236.123.202"
+    },
+    "passed": true
+  },
+  {
+    "checkedAt": "2026-10-08T02:48:51.600782+08:00",
+    "tests": [
+      {
+        "type": "HTTP",
+        "address": "10.77.0.1:21010",
+        "attempts": [
+          {
+            "url": "http://ip.3322.net",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "223.73.162.118"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "HTTP_NO_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTP_WRONG_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTPS_CONNECT",
+        "address": "10.77.0.1:21010",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 7,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "223.73.162.118"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS",
+        "address": "10.77.0.1:31010",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 97,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "223.73.162.118"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_NO_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_WRONG_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      }
+    ],
+    "node": "node010",
+    "nodeDirect": {
+      "curlExitCode": 0,
+      "httpStatus": "200",
+      "exitIP": "223.73.162.118"
+    },
+    "passed": true
+  },
+  {
+    "checkedAt": "2026-10-08T02:48:51.585539+08:00",
+    "tests": [
+      {
+        "type": "HTTP",
+        "address": "10.77.0.1:21011",
+        "attempts": [
+          {
+            "url": "http://ip.3322.net",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "120.235.112.234"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "HTTP_NO_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTP_WRONG_AUTH",
+        "curlExitCode": 0,
+        "httpStatus": "407",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "HTTPS_CONNECT",
+        "address": "10.77.0.1:21011",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 7,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "120.235.112.234"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS",
+        "address": "10.77.0.1:31011",
+        "attempts": [
+          {
+            "url": "https://api.ipify.org",
+            "curlExitCode": 97,
+            "httpStatus": "000",
+            "exitIP": null
+          },
+          {
+            "url": "https://ipv4.icanhazip.com",
+            "curlExitCode": 0,
+            "httpStatus": "200",
+            "exitIP": "120.235.112.234"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_NO_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      },
+      {
+        "type": "SOCKS5_HTTPS_WRONG_AUTH",
+        "curlExitCode": 97,
+        "httpStatus": "000",
+        "exitIP": null,
+        "passed": true
+      }
+    ],
+    "node": "node011",
+    "nodeDirect": {
+      "curlExitCode": 0,
+      "httpStatus": "200",
+      "exitIP": "120.235.112.234"
+    },
+    "passed": true
+  }
+]

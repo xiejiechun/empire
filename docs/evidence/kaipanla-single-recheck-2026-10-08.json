@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-10-07T18:57:32.216139+00:00",
+  "scope": "One finite recheck of previously failed kaipanla 601139/2026-09-25 quote; no production queue/SQL writes",
+  "peak_by_site": {
+    "kaipanla": 1
+  },
+  "units": [
+    {
+      "site": "kaipanla",
+      "unit": "2026-09-25",
+      "valid": false,
+      "error_type": "SourceError",
+      "error": "开盘啦接口未成功，不能证明空日",
+      "source_fields": {
+        "errcode": "1020",
+        "code": null,
+        "day": null
+      }
+    }
+  ],
+  "healthy_exits": 7,
+  "global_peak": 1,
+  "final_active": 0,
+  "socks_auth_replies": [
+    "0100"
+  ],
+  "final_buffer": 0,
+  "device_busy": 0,
+  "requests": {
+    "kaipanla": {
+      "requests": 1,
+      "proxy_requests": 1
+    }
+  }
+}
