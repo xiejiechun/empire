@@ -37,7 +37,10 @@ async def status():
         def response(*a, **kw):
             import json
             day = json.loads(kw['content'])['Params'][2]
-            return httpx.Response(200, json=source(day, [row(), row(label='恢复上市日', code='600625', market=1)] if day == '2001-06-15' else []))
+            values = [row(), row(label='恢复上市日', code='600625', market=1), row(code='832317', market=2)] if day == '2001-06-15' else []
+            if day == '2001-06-16':
+                values = [row(code='832317', market=2)]
+            return httpx.Response(200, json=source(day, values))
         c.http = SimpleNamespace(request=AsyncMock(side_effect=response), response_policy=lambda _: None)
         yield manager, c, q, store
     finally:

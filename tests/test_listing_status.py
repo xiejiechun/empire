@@ -53,8 +53,17 @@ def test_parallel_reasons_preserved_exact_duplicates_and_equal_count_wrong_set_r
 
 def test_market_count_excludes_b_and_bj_declared_outside_scope():
     values = [row(), row(code='200001'), row(code='900001', market=1), row(code='832317', market=2)]
-    rows, total = parse(source('2001-06-15', values, count=1), '2001-06-15')
+    rows, total = parse(source('2001-06-15', values), '2001-06-15')
     assert len(rows) == total == 1
+
+
+def test_bj_only_source_total_is_checked_before_scope_filter():
+    values = [row(code='832317', market=2)]
+    assert parse(source('2022-04-26', values), '2022-04-26') == ([], 0)
+    with pytest.raises(ValueError, match='完整来源集合'):
+        parse(source('2022-04-26', values, count=0), '2022-04-26')
+    with pytest.raises(ValueError, match='完整来源集合'):
+        parse(source('2022-04-26', [row(), *values], count=1), '2022-04-26')
 
 
 @pytest.mark.parametrize('case', ['date', 'page', 'kind', 'count', 'columns', 'truncated', 'unknown', 'name', 'description'])

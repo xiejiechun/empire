@@ -37,6 +37,8 @@ def parse(body, day):
     values, rows = sets[0]['Content'], []
     if len(values) >= MAX_DAY:
         raise ValueError('上市状态达到响应边界，拒绝不完整集合')
+    if len(values) != totals[0][0]:
+        raise ValueError('上市状态完整来源集合与来源总数不一致')
     for values_row in values:
         if not isinstance(values_row, list) or len(values_row) != 5:
             raise ValueError('上市状态来源行字段不符')
@@ -51,6 +53,4 @@ def parse(body, day):
         row = [day, unified_code(market, code), SOURCE_TYPES[label], '', name, description]
         row[3] = identity(row)
         rows.append(row)
-    if len(rows) != totals[0][0]:
-        raise ValueError('上市状态沪深A股集合与来源总数不一致')
     return validate_rows(rows, parsed_day, parsed_day), len(rows)

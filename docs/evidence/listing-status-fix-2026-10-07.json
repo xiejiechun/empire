@@ -1,0 +1,61 @@
+{
+  "project": "tdx-listing-status",
+  "error_ids": [
+    "c1a4774907bc476bab2fbfbfddb82406"
+  ],
+  "status": "fixed_verified_released",
+  "original_sha256": "a88d9aa9444768aa0d3149376d28c71db13d0bd573624cfdf8e5b4a684671b6b",
+  "root_cause": "All-market total was compared with filtered SH/SZ A-share count; 2022-04-26 BJ-only 832317",
+  "development": {
+    "tests_passed": 27,
+    "log": "build/listing-status-fix/tests.log"
+  },
+  "live": {
+    "month": "2022-04",
+    "requests": 30,
+    "events": 2,
+    "source_query_equal": true,
+    "set_comparison": "live.py compared full normalized rows and indexed SQL details before global queue assertion",
+    "target_project_pending": 0,
+    "unrelated_pending": 2110,
+    "coverage_through": "2022-04-30",
+    "checked_at": "2026-10-07T11:46:14.553108+08:00",
+    "note": "Initial validation global queue-zero assertion failed on unrelated deferred messages; targeted queue and month proof verified separately; no unrelated data cleared"
+  },
+  "exact_sample_replay": {
+    "date": "2022-04-26",
+    "raw_count": 1,
+    "source_total": 1,
+    "sc": 2,
+    "code": "832317",
+    "scoped_count": 0,
+    "result": "passed"
+  },
+  "release": {
+    "gate": "passed",
+    "log": "build/listing-status-fix/release.log",
+    "tests_passed": 1715,
+    "tests_skipped": 7,
+    "executable_sha256": "2f5acda5e7781678bfd169f9f2a9a92fe7ac4d06e0a8c41aaf467d001aa72273",
+    "config_preservation": "portable configuration smoke passed"
+  },
+  "cleanup": {
+    "removed_ids": [
+      "c1a4774907bc476bab2fbfbfddb82406"
+    ],
+    "removed_count": 1,
+    "remaining_project_error_count": 0,
+    "other_existing_ids_preserved": true,
+    "checked_at": "2026-10-07T12:03:13.625915+08:00"
+  },
+  "desktop": {
+    "method": "native visible packaged Empire EXE",
+    "action": "继续采集，原轮次续跑",
+    "verified_date": "2022-05-15",
+    "running": true,
+    "project_error": "暂无运行错误",
+    "application_left_open": true,
+    "schedule": "每天18:00保留",
+    "scope": "沪深A股，全历史尚未完成"
+  }
+}

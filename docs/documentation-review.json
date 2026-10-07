@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "reviewed_at": "2026-10-06T06:16:52.442660+00:00",
-  "note": "603107长历史沿革：解析和SQL上限256KiB，边界/归档回归、原内容及断点保持、日常继续与显式扩容说明已核实",
-  "unchanged_reason": "仅更新已审阅DDL摘要，与已同步的256KiB约束和显式迁移说明一致",
+  "reviewed_at": "2026-10-07T03:45:21.954804+00:00",
+  "note": "修复暂停恢复终止上市的来源总数口径：先核验全市场完整响应，再过滤沪深A股；程序内说明与来源说明同步，北交所单独/混合返回及错误总数回归覆盖",
+  "unchanged_reason": "",
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "14e87d36ab18628d39fb9d8f98cadac1c7daf523f652bb7ea816631d19b1f006",
@@ -126,7 +126,7 @@
     "src/empire/plugins/collectors/tdx_dividends.py": "1a1c2310090afa9ddc8cbf2ea71f5cbffbb08337341eafefb642ed458977eca9",
     "src/empire/plugins/collectors/tdx_issue_detail.py": "907b379c001fb1a5916978af3066c34da94289a1433afdf798ba11169174237b",
     "src/empire/plugins/collectors/tdx_listing_status.py": "8c1f083ee7a0b21376a19d3301a7dc8a846e4c93a019d32ae7b451cd733b3d92",
-    "src/empire/plugins/collectors/tdx_listing_status_source.py": "0f656ba0318d1398e2f2735b53a51be7a273650a07aad56009e04d37ccd3397e",
+    "src/empire/plugins/collectors/tdx_listing_status_source.py": "268faa4cd6b78a5577f26e3397e2340c03d41954b3991209179593523ec2ea96",
     "src/empire/plugins/collectors/tdx_name_changes.py": "1458de8ebe83990d6694c5684edb331d50567e77958750fadccedbd2c545d200",
     "src/empire/plugins/collectors/tdx_name_source.py": "40710647dc18d0a400e6f390c6c15b85eca8ccddfa4fcf4f39c38cdb3543313b",
     "src/empire/plugins/collectors/tdx_rights_issues.py": "3f191f0b5c6c3ec583d417574b0303cfc2d505abf0bfed5416c2b7ac61454add",
@@ -255,5 +255,5 @@
     "src/empire/plugins/ui/trade_calendar.py": "ebe74e2043d3e4da5e23ad0adce03dfbab9a080ff6266df84792a6f6eb4ec66f",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "355490b02c28cc91957d7697785b99bee2ace77b6165ae4abdbb563cb48cab55"
+  "content_sha256": "87e81fd5aebd7c4928a642ba05ff070a2eeb24cf8d13acfa1ada2d7caaa41a00"
 }
