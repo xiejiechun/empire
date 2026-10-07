@@ -1,0 +1,1084 @@
+{
+  "checked_at": "2026-10-07T18:05:04.384324+00:00",
+  "scope": "finite downloads and source validation; no production ingestion, SQL writes or task changes",
+  "phases": [
+    {
+      "name": "five-sites-concurrent",
+      "units": [
+        {
+          "site": "cninfo",
+          "unit": "2026-04",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.391
+        },
+        {
+          "site": "sina",
+          "unit": "7",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node011 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-06",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node006 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-09",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node011 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-08",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node010 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-07",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node007 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-23",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-22",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node002 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-24",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node005 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-25",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node006 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-28",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node007 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-29",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node010 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "eastmoney",
+          "unit": "1",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node002 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-30",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node011 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "eastmoney",
+          "unit": "2",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "eastmoney",
+          "unit": "3",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node005 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "eastmoney",
+          "unit": "4",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node006 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "bse",
+          "unit": "920000",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node002 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "eastmoney",
+          "unit": "6",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node010 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "eastmoney",
+          "unit": "5",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node007 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "bse",
+          "unit": "920001",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "bse",
+          "unit": "920003",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node006 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "eastmoney",
+          "unit": "7",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node011 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "bse",
+          "unit": "920002",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node005 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "bse",
+          "unit": "920006",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node010 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "bse",
+          "unit": "920007",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node011 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "bse",
+          "unit": "920005",
+          "valid": false,
+          "error_type": "ConnectError",
+          "error": "代理设备 node007 请求失败（ProxyError），已临时隔离",
+          "elapsed_seconds": 0.407
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-05",
+          "valid": true,
+          "status": 200,
+          "bytes": 1659,
+          "normalized_sha256": "c849e414e0d46da05681b72356dbd19c2ee5a7542acb8e8ac50cb1951d3c2fb9",
+          "elapsed_seconds": 0.766
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-03",
+          "valid": true,
+          "status": 200,
+          "bytes": 1659,
+          "normalized_sha256": "061059a8159c8fef047d5bf2eb478177883acaef0cbde98b94083e35c2292a74",
+          "elapsed_seconds": 0.782
+        },
+        {
+          "site": "sina",
+          "unit": "4",
+          "valid": true,
+          "status": 200,
+          "bytes": 30062,
+          "normalized_sha256": "db428208ee04236652b3dd779e8d083eb4762ea94185188388984cd35fdc823d",
+          "elapsed_seconds": 1.078
+        },
+        {
+          "site": "sina",
+          "unit": "6",
+          "valid": true,
+          "status": 200,
+          "bytes": 30003,
+          "normalized_sha256": "1e3aea28f11800b8ca1c331e1d42b8719ff0511b0e05333d413273e7a42b0a86",
+          "elapsed_seconds": 1.125
+        },
+        {
+          "site": "sina",
+          "unit": "1",
+          "valid": true,
+          "status": 200,
+          "bytes": 30095,
+          "normalized_sha256": "f2d2f1ade1342f468f880ce10a009c6e5c14428e2ff08aacdf46ec121eb3323d",
+          "elapsed_seconds": 1.25
+        },
+        {
+          "site": "sina",
+          "unit": "5",
+          "valid": true,
+          "status": 200,
+          "bytes": 30131,
+          "normalized_sha256": "bed8c2a10294607517f37b8009e83e22016533c247da420292c38079bf09b3f4",
+          "elapsed_seconds": 1.282
+        },
+        {
+          "site": "sina",
+          "unit": "3",
+          "valid": true,
+          "status": 200,
+          "bytes": 29985,
+          "normalized_sha256": "4f9264e02bf6bbd92fb83811373bbb387010d69b6c23d3e155b386deb5b41b20",
+          "elapsed_seconds": 1.282
+        },
+        {
+          "site": "sina",
+          "unit": "2",
+          "valid": true,
+          "status": 200,
+          "bytes": 30154,
+          "normalized_sha256": "9e5c6724fce431c786e06959a2490b335ff3f62eb688f57a88ec3aa000db5d91",
+          "elapsed_seconds": 1.313
+        }
+      ],
+      "peak_by_site": {
+        "sina": 7,
+        "cninfo": 7,
+        "tdx": 7,
+        "eastmoney": 7,
+        "bse": 7
+      },
+      "global_transfer_peak": 35,
+      "devices_by_site": {
+        "sina": [
+          "node002",
+          "node004",
+          "node005",
+          "node006",
+          "node007",
+          "node010",
+          "node011"
+        ],
+        "cninfo": [
+          "node002",
+          "node004",
+          "node005",
+          "node006",
+          "node007",
+          "node010",
+          "node011"
+        ],
+        "tdx": [
+          "node002",
+          "node004",
+          "node005",
+          "node006",
+          "node007",
+          "node010",
+          "node011"
+        ],
+        "eastmoney": [
+          "node002",
+          "node004",
+          "node005",
+          "node006",
+          "node007",
+          "node010",
+          "node011"
+        ],
+        "bse": [
+          "node002",
+          "node004",
+          "node005",
+          "node006",
+          "node007",
+          "node010",
+          "node011"
+        ]
+      },
+      "transport_errors": [
+        {
+          "site": "cninfo",
+          "device": "node004",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "sina",
+          "device": "node011",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "cninfo",
+          "device": "node006",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "cninfo",
+          "device": "node011",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "cninfo",
+          "device": "node010",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "cninfo",
+          "device": "node007",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "tdx",
+          "device": "node004",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "tdx",
+          "device": "node002",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "tdx",
+          "device": "node005",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "tdx",
+          "device": "node006",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "tdx",
+          "device": "node007",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "tdx",
+          "device": "node010",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "eastmoney",
+          "device": "node002",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "tdx",
+          "device": "node011",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "eastmoney",
+          "device": "node004",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "eastmoney",
+          "device": "node005",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "eastmoney",
+          "device": "node006",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "bse",
+          "device": "node002",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "eastmoney",
+          "device": "node010",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "eastmoney",
+          "device": "node007",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "bse",
+          "device": "node004",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "bse",
+          "device": "node006",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "eastmoney",
+          "device": "node011",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "bse",
+          "device": "node005",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "bse",
+          "device": "node010",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "bse",
+          "device": "node011",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        },
+        {
+          "site": "bse",
+          "device": "node007",
+          "type": "ProxyError",
+          "detail": "Invalid username/password"
+        }
+      ],
+      "elapsed_seconds": 1.313,
+      "summary": {
+        "sina": {
+          "valid": 6,
+          "attempted_units": 7
+        },
+        "cninfo": {
+          "valid": 2,
+          "attempted_units": 7
+        },
+        "tdx": {
+          "valid": 0,
+          "attempted_units": 7
+        },
+        "eastmoney": {
+          "valid": 0,
+          "attempted_units": 7
+        },
+        "bse": {
+          "valid": 0,
+          "attempted_units": 7
+        }
+      },
+      "final_active": 0,
+      "final_buffer": 0,
+      "device_busy": 0
+    },
+    {
+      "name": "single-site-sina",
+      "units": [
+        {
+          "site": "sina",
+          "unit": "1",
+          "valid": true,
+          "status": 200,
+          "bytes": 30095,
+          "normalized_sha256": "f2d2f1ade1342f468f880ce10a009c6e5c14428e2ff08aacdf46ec121eb3323d",
+          "elapsed_seconds": 39.812
+        },
+        {
+          "site": "sina",
+          "unit": "6",
+          "valid": true,
+          "status": 200,
+          "bytes": 30003,
+          "normalized_sha256": "1e3aea28f11800b8ca1c331e1d42b8719ff0511b0e05333d413273e7a42b0a86",
+          "elapsed_seconds": 39.891
+        },
+        {
+          "site": "sina",
+          "unit": "2",
+          "valid": true,
+          "status": 200,
+          "bytes": 30154,
+          "normalized_sha256": "9e5c6724fce431c786e06959a2490b335ff3f62eb688f57a88ec3aa000db5d91",
+          "elapsed_seconds": 40.297
+        },
+        {
+          "site": "sina",
+          "unit": "5",
+          "valid": true,
+          "status": 200,
+          "bytes": 30131,
+          "normalized_sha256": "bed8c2a10294607517f37b8009e83e22016533c247da420292c38079bf09b3f4",
+          "elapsed_seconds": 40.375
+        },
+        {
+          "site": "sina",
+          "unit": "7",
+          "valid": true,
+          "status": 200,
+          "bytes": 30062,
+          "normalized_sha256": "e5d0cc8b5733c923123e9c898076e14a4e801d59ea01c05ae1bf44e32abacbfa",
+          "elapsed_seconds": 40.813
+        },
+        {
+          "site": "sina",
+          "unit": "4",
+          "valid": true,
+          "status": 200,
+          "bytes": 30062,
+          "normalized_sha256": "db428208ee04236652b3dd779e8d083eb4762ea94185188388984cd35fdc823d",
+          "elapsed_seconds": 40.86
+        },
+        {
+          "site": "sina",
+          "unit": "3",
+          "valid": true,
+          "status": 200,
+          "bytes": 29985,
+          "normalized_sha256": "4f9264e02bf6bbd92fb83811373bbb387010d69b6c23d3e155b386deb5b41b20",
+          "elapsed_seconds": 41.235
+        }
+      ],
+      "peak_by_site": {
+        "sina": 2
+      },
+      "global_transfer_peak": 2,
+      "devices_by_site": {
+        "sina": [
+          "node002",
+          "node005"
+        ]
+      },
+      "elapsed_seconds": 41.25,
+      "summary": {
+        "sina": {
+          "valid": 7,
+          "attempted_units": 7
+        }
+      },
+      "final_active": 0,
+      "final_buffer": 0,
+      "device_busy": 0
+    },
+    {
+      "name": "single-site-cninfo",
+      "units": [
+        {
+          "site": "cninfo",
+          "unit": "2026-03",
+          "valid": true,
+          "status": 200,
+          "bytes": 1659,
+          "normalized_sha256": "061059a8159c8fef047d5bf2eb478177883acaef0cbde98b94083e35c2292a74",
+          "elapsed_seconds": 0.359
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-04",
+          "valid": true,
+          "status": 200,
+          "bytes": 1607,
+          "normalized_sha256": "4bffe7f199b4c2b97f5e362373f2dd44fb6f0a3f33f43472e3905b975a7a70be",
+          "elapsed_seconds": 0.359
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-05",
+          "valid": true,
+          "status": 200,
+          "bytes": 1659,
+          "normalized_sha256": "c849e414e0d46da05681b72356dbd19c2ee5a7542acb8e8ac50cb1951d3c2fb9",
+          "elapsed_seconds": 10.375
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-08",
+          "valid": true,
+          "status": 200,
+          "bytes": 1659,
+          "normalized_sha256": "d2240eb031113d3f36129a1b3903210d2c0b06808b530d3a24e5910478c601a4",
+          "elapsed_seconds": 10.375
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-07",
+          "valid": true,
+          "status": 200,
+          "bytes": 1659,
+          "normalized_sha256": "7501edab4198b44f147dae3d9e9ccb282782ce6146a8e1009ba5052c78b70aec",
+          "elapsed_seconds": 20.39
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-09",
+          "valid": true,
+          "status": 200,
+          "bytes": 1607,
+          "normalized_sha256": "20ddf8b5629f0fa586f1dcb77b4703dbcc6f7cccbdffcbb02f92013869a28a39",
+          "elapsed_seconds": 20.406
+        },
+        {
+          "site": "cninfo",
+          "unit": "2026-06",
+          "valid": true,
+          "status": 200,
+          "bytes": 1607,
+          "normalized_sha256": "d48b4d8fb8618e296a35339154ac94717a3e54db8f9fbbb43735c428801743f7",
+          "elapsed_seconds": 30.562
+        }
+      ],
+      "peak_by_site": {
+        "cninfo": 2
+      },
+      "global_transfer_peak": 2,
+      "devices_by_site": {
+        "cninfo": [
+          "node002",
+          "node005"
+        ]
+      },
+      "elapsed_seconds": 30.562,
+      "summary": {
+        "cninfo": {
+          "valid": 7,
+          "attempted_units": 7
+        }
+      },
+      "final_active": 0,
+      "final_buffer": 0,
+      "device_busy": 0
+    },
+    {
+      "name": "single-site-tdx",
+      "units": [
+        {
+          "site": "tdx",
+          "unit": "2026-09-22",
+          "valid": true,
+          "status": 200,
+          "bytes": 795,
+          "normalized_sha256": "653b1a2c8ba846ba98ee2ed9240a803da5e4724e9476cdb1aa146f5ab1bc80d8",
+          "elapsed_seconds": 0.282
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-23",
+          "valid": true,
+          "status": 200,
+          "bytes": 450,
+          "normalized_sha256": "f9a022e09607f4d14bd5a210a4b08a8c5b3cee4648a1166d91342890eeac5fdd",
+          "elapsed_seconds": 0.297
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-28",
+          "valid": true,
+          "status": 200,
+          "bytes": 591,
+          "normalized_sha256": "17816ed6963a861bd27ce4b7828413f33f3df28cd5b43fd09aeb5137002848d5",
+          "elapsed_seconds": 0.782
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-24",
+          "valid": true,
+          "status": 200,
+          "bytes": 553,
+          "normalized_sha256": "9d507a5abdce443b81d270e558c194ae9dede1892278791d4823f5775d456101",
+          "elapsed_seconds": 1.282
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-29",
+          "valid": true,
+          "status": 200,
+          "bytes": 1187,
+          "normalized_sha256": "22fd9632725b08f5c63bc9d5447505a8bf0907afbe2d038336dd3e916ecea3f0",
+          "elapsed_seconds": 1.282
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-25",
+          "valid": true,
+          "status": 200,
+          "bytes": 355,
+          "normalized_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "elapsed_seconds": 1.547
+        },
+        {
+          "site": "tdx",
+          "unit": "2026-09-30",
+          "valid": true,
+          "status": 200,
+          "bytes": 1200,
+          "normalized_sha256": "cf04dd5c722b1d56a4102e00c18c4634cd8e2857fe689900a1dfac7216a5ad02",
+          "elapsed_seconds": 1.782
+        }
+      ],
+      "peak_by_site": {
+        "tdx": 2
+      },
+      "global_transfer_peak": 2,
+      "devices_by_site": {
+        "tdx": [
+          "node002",
+          "node005"
+        ]
+      },
+      "elapsed_seconds": 1.782,
+      "summary": {
+        "tdx": {
+          "valid": 7,
+          "attempted_units": 7
+        }
+      },
+      "final_active": 0,
+      "final_buffer": 0,
+      "device_busy": 0
+    },
+    {
+      "name": "single-site-eastmoney",
+      "units": [
+        {
+          "site": "eastmoney",
+          "unit": "1",
+          "valid": true,
+          "status": 200,
+          "bytes": 53629,
+          "normalized_sha256": "bf819a8d1fe5c012751886e0565f8cc55e6feddaf28d7a87b70569ca8648fba1",
+          "elapsed_seconds": 0.468
+        },
+        {
+          "site": "eastmoney",
+          "unit": "2",
+          "valid": true,
+          "status": 200,
+          "bytes": 53629,
+          "normalized_sha256": "c79e46adc8c90887d8da82e8150448c904684e80633d799d21ec40923750e153",
+          "elapsed_seconds": 0.593
+        },
+        {
+          "site": "eastmoney",
+          "unit": "6",
+          "valid": true,
+          "status": 200,
+          "bytes": 53629,
+          "normalized_sha256": "a8276426120f5e34d5ea2e20eb9bea77bc6842b86cf409cef008e241d818a72d",
+          "elapsed_seconds": 2.265
+        },
+        {
+          "site": "eastmoney",
+          "unit": "3",
+          "valid": true,
+          "status": 200,
+          "bytes": 53629,
+          "normalized_sha256": "690419dd27217a81f38695a12628af883422cc4e31b8279e821abee527c3298e",
+          "elapsed_seconds": 2.39
+        },
+        {
+          "site": "eastmoney",
+          "unit": "4",
+          "valid": true,
+          "status": 200,
+          "bytes": 53629,
+          "normalized_sha256": "af65e8413fa8ea812240905687b783ee621b0933e5a2491b471c18a9bb305d2e",
+          "elapsed_seconds": 4.25
+        },
+        {
+          "site": "eastmoney",
+          "unit": "7",
+          "valid": true,
+          "status": 200,
+          "bytes": 53629,
+          "normalized_sha256": "60194009ee4d7b0d3a5aea1a9beded6f19246358fd9a06154db74903c9c53005",
+          "elapsed_seconds": 4.406
+        },
+        {
+          "site": "eastmoney",
+          "unit": "5",
+          "valid": true,
+          "status": 200,
+          "bytes": 53629,
+          "normalized_sha256": "175c46024da3feba81bf19c7a944363bc245f24f2a6692342b519c5edd640f61",
+          "elapsed_seconds": 6.062
+        }
+      ],
+      "peak_by_site": {
+        "eastmoney": 2
+      },
+      "global_transfer_peak": 2,
+      "devices_by_site": {
+        "eastmoney": [
+          "node002",
+          "node004",
+          "node005"
+        ]
+      },
+      "elapsed_seconds": 6.062,
+      "summary": {
+        "eastmoney": {
+          "valid": 7,
+          "attempted_units": 7
+        }
+      },
+      "final_active": 0,
+      "final_buffer": 0,
+      "device_busy": 0
+    },
+    {
+      "name": "single-site-bse",
+      "units": [
+        {
+          "site": "bse",
+          "unit": "920005",
+          "valid": false,
+          "error_type": "ValueError",
+          "error": "北交所历史代码缺少明确证券身份映射证明",
+          "elapsed_seconds": 0.484
+        },
+        {
+          "site": "bse",
+          "unit": "920003",
+          "valid": true,
+          "status": 200,
+          "bytes": 932,
+          "normalized_sha256": "053da51b2f904fc847959590a989d5ec2f782e762f81eaf586296127566ceea3",
+          "elapsed_seconds": 0.484
+        },
+        {
+          "site": "bse",
+          "unit": "920001",
+          "valid": true,
+          "status": 200,
+          "bytes": 958,
+          "normalized_sha256": "9cea39faeeb604204dac17eca0b0a1dc3eb43aa5741678bf2dd7b908a7454acd",
+          "elapsed_seconds": 0.516
+        },
+        {
+          "site": "bse",
+          "unit": "920000",
+          "valid": true,
+          "status": 200,
+          "bytes": 925,
+          "normalized_sha256": "5363466a0abe39ca634bb85f370c83b5bb0b2e171de3f6057661e9341549129a",
+          "elapsed_seconds": 0.531
+        },
+        {
+          "site": "bse",
+          "unit": "920006",
+          "valid": true,
+          "status": 200,
+          "bytes": 978,
+          "normalized_sha256": "6654f2691d125c4ade491a3e960cb2e2d2ee10f5554128953bbfcb623c4955c8",
+          "elapsed_seconds": 0.563
+        },
+        {
+          "site": "bse",
+          "unit": "920002",
+          "valid": true,
+          "status": 200,
+          "bytes": 939,
+          "normalized_sha256": "9dfd86e5c5bc04ad2f5820956a6b535f74d0a3bb62be369f770542e3bacd2df9",
+          "elapsed_seconds": 0.688
+        },
+        {
+          "site": "bse",
+          "unit": "920007",
+          "valid": true,
+          "status": 200,
+          "bytes": 932,
+          "normalized_sha256": "f1970dfb8f97fb4ff48f33e7e5e99f5e83b45f7b902a6bc20aeac7e67673e1c8",
+          "elapsed_seconds": 10.375
+        }
+      ],
+      "peak_by_site": {
+        "bse": 6
+      },
+      "global_transfer_peak": 6,
+      "devices_by_site": {
+        "bse": [
+          "node002",
+          "node004",
+          "node005",
+          "node006",
+          "node007",
+          "node010"
+        ]
+      },
+      "elapsed_seconds": 10.375,
+      "summary": {
+        "bse": {
+          "valid": 6,
+          "attempted_units": 7
+        }
+      },
+      "final_active": 0,
+      "final_buffer": 0,
+      "device_busy": 0
+    }
+  ],
+  "saved_policies": {
+    "sina": {
+      "min_interval_ms": 2000,
+      "max_concurrency": 0,
+      "max_rps": 0,
+      "scaling_mode": "auto",
+      "proxy_interval_ms": 500,
+      "total_interval_ms": 500
+    },
+    "cninfo": {
+      "min_interval_ms": 10000,
+      "max_concurrency": 0,
+      "max_rps": 0,
+      "scaling_mode": "auto",
+      "proxy_interval_ms": 10000,
+      "total_interval_ms": 500
+    },
+    "tdx": {
+      "min_interval_ms": 2000,
+      "max_concurrency": 0,
+      "max_rps": 0,
+      "scaling_mode": "auto",
+      "proxy_interval_ms": 500,
+      "total_interval_ms": 500
+    },
+    "eastmoney": {
+      "min_interval_ms": 2000,
+      "max_rps": 0,
+      "scaling_mode": "auto",
+      "max_concurrency": 0,
+      "proxy_interval_ms": 2000,
+      "total_interval_ms": 500
+    },
+    "bse": {
+      "min_interval_ms": 2000,
+      "max_rps": 0,
+      "scaling_mode": "auto",
+      "max_concurrency": 0,
+      "proxy_interval_ms": 10000,
+      "total_interval_ms": 500
+    }
+  },
+  "healthy_exits": 7,
+  "capacities": {
+    "sina": {
+      "effective_concurrency": 7,
+      "effective_interval_ms": 72,
+      "site_concurrency_limit": 128,
+      "global_concurrency_limit": 128,
+      "site_gate_interval_ms": 0,
+      "healthy_egresses": 7,
+      "healthy_proxies": 7,
+      "rate_ceiling_rps": 14.0
+    },
+    "cninfo": {
+      "effective_concurrency": 7,
+      "effective_interval_ms": 1429,
+      "site_concurrency_limit": 128,
+      "global_concurrency_limit": 128,
+      "site_gate_interval_ms": 0,
+      "healthy_egresses": 7,
+      "healthy_proxies": 7,
+      "rate_ceiling_rps": 0.7
+    },
+    "tdx": {
+      "effective_concurrency": 7,
+      "effective_interval_ms": 72,
+      "site_concurrency_limit": 128,
+      "global_concurrency_limit": 128,
+      "site_gate_interval_ms": 0,
+      "healthy_egresses": 7,
+      "healthy_proxies": 7,
+      "rate_ceiling_rps": 14.0
+    },
+    "eastmoney": {
+      "effective_concurrency": 7,
+      "effective_interval_ms": 286,
+      "site_concurrency_limit": 128,
+      "global_concurrency_limit": 128,
+      "site_gate_interval_ms": 0,
+      "healthy_egresses": 7,
+      "healthy_proxies": 7,
+      "rate_ceiling_rps": 3.5
+    },
+    "bse": {
+      "effective_concurrency": 7,
+      "effective_interval_ms": 1429,
+      "site_concurrency_limit": 128,
+      "global_concurrency_limit": 128,
+      "site_gate_interval_ms": 0,
+      "healthy_egresses": 7,
+      "healthy_proxies": 7,
+      "rate_ceiling_rps": 0.7
+    }
+  },
+  "global_peak": 35
+}
