@@ -1,0 +1,147 @@
+{
+  "schema": 1,
+  "date": "2026-10-19",
+  "commit": "eb2036e4ff0fa2358bb9aed1caa57d5a7f7e1e69",
+  "method": "Static AST; no imports, runtime startup, network or database calls; one-off observation, not an implemented architecture gate.",
+  "python_files": 317,
+  "physical_lines": 39322,
+  "reverse_collector_imports": [
+    {
+      "file": "src/empire/plugins/data/adjustment_inputs.py",
+      "line": 8,
+      "module": "empire.plugins.collectors.kaipanla_scope",
+      "names": [
+        "required_days"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/data/financial_preparation.py",
+      "line": 9,
+      "module": "empire.plugins.collectors.ths_statements",
+      "names": [
+        "chain"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/data/kaipanla_products.py",
+      "line": 16,
+      "module": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS",
+        "capability",
+        "project"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/data/kaipanla_products_preparation.py",
+      "line": 6,
+      "module": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/data/kaipanla_products_preparation.py",
+      "line": 7,
+      "module": "empire.plugins.collectors.kaipanla_scope",
+      "names": [
+        "required_days"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/data/preview_candidates.py",
+      "line": 21,
+      "module": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/datasets/astock.py",
+      "line": 22,
+      "module": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/datasets/intraday.py",
+      "line": 9,
+      "module": "empire.plugins.collectors.kaipanla_alias",
+      "names": [
+        "validate_proof"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/datasets/intraday.py",
+      "line": 10,
+      "module": "empire.plugins.collectors.kaipanla_source",
+      "names": [
+        "combine_day",
+        "parse_response"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/datasets/kaipanla_products.py",
+      "line": 7,
+      "module": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS",
+        "project"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/datasets/kaipanla_products.py",
+      "line": 8,
+      "module": "empire.plugins.collectors.kaipanla_products_source",
+      "names": [
+        "parse"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/datasets/market_mapping.py",
+      "line": 14,
+      "module": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/datasets/security_aliases.py",
+      "line": 9,
+      "module": "empire.plugins.collectors.bse_code_mapping_source",
+      "names": [
+        "URL",
+        "validate"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/ui/kaipanla_products.py",
+      "line": 23,
+      "module": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS",
+        "capability",
+        "project"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/ui/kaipanla_quote_page.py",
+      "line": 6,
+      "module": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "capability"
+      ]
+    },
+    {
+      "file": "src/empire/plugins/ui/product_dates.py",
+      "line": 6,
+      "module": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "capability"
+      ]
+    }
+  ],
+  "reverse_import_count": 16,
+  "reverse_import_files": 13
+}

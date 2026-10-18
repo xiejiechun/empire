@@ -1,11 +1,9 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-18T19:19:36.919336+00:00",
-  "note": "按用户预览选择，为数据准备的研究清单、MySQL库存、逐项检查和问题样例采用紧凑行距；保留原字号、筛选、详情及所有业务验收语义，并同步程序内数据准备说明及使用指南。；2026-10-19 提交基线检查：删除维护脚本及集成测试文件末尾多余空行，业务逻辑和说明正文不变。",
-  "unchanged_reason": "仅删除 scripts/create_security_alias_schema.py 与 tests/integration/test_st_archive.py 的末尾多余空行；不改变执行逻辑、业务字段、操作入口或说明正文。",
-  "exceptions": {
-    "mysql:security_code_alias": "仅清理建表维护脚本末尾空行，SQL、字段字典、迁移行为和用户操作保持不变。"
-  },
+  "reviewed_at": "2026-10-18T21:20:23.130147+00:00",
+  "note": "本次发布后仅新增模块化实施方案、静态架构基线和 main 发布证据，并在开发流程添加方案入口；区分现有保障与待建工具，明确分批验收、实采适用性及回退条件。程序源码、离线用户帮助和用户行为未变。",
+  "unchanged_reason": "",
+  "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "d2abcbcd9af91b4b8078ed45d54cf0c5f70cbedb1ec6a3d59e1168a11fb1f975",
@@ -423,7 +421,7 @@
     "src/empire/plugins/ui/unlocks.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "b8f140b8b2c7cb8fdf6a0b28d5af8b610da919af28167ec5aca20dd259442b88",
+  "content_sha256": "ec632bd3d0b0c9f62b23ee6cc9f3651f1fa872d5d2fe9584dfab25d3092bee29",
   "features": {
     "page:ths_capital": {
       "sources": {

@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "checked_at_beijing": "2026-10-19T05:11:29.476866+08:00",
+  "commit": "eb2036e4ff0fa2358bb9aed1caa57d5a7f7e1e69",
+  "remote_main_verified": "eb2036e4ff0fa2358bb9aed1caa57d5a7f7e1e69",
+  "release_gate_passed": true,
+  "build_manifest": {
+    "version": "0.1.0",
+    "commit": "eb2036e4ff0fa2358bb9aed1caa57d5a7f7e1e69",
+    "dirty": false,
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "5fd64b3f13d9601ca3cbf155513342d7c3d03ad8a83b5dbbad14c6af11ef61d2",
+    "built_at_utc": "2026-10-18T21:08:55Z",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3"
+  },
+  "executable_sha256": "f586d672b8b120e032d5699096ff51c7aa58dff404dd623c25913e6026ecd92c",
+  "tracked_input_count": 1416,
+  "tracked_input_snapshot_sha256": "ac49ffec1dcd3292379bfe5a900dbad3273befeecd25551816f94a3f568b75ba",
+  "tracked_inputs_unchanged": true,
+  "configuration_preserved": {
+    "config.toml": true,
+    "dist/Empire/config.toml": true
+  },
+  "tests": {
+    "total": 3176,
+    "passed": 3171,
+    "skipped": 5,
+    "failed": 0,
+    "errors": 0
+  },
+  "skipped": [
+    {
+      "module": "tests.integration.test_state_unit_isolated",
+      "name": "test_large_state_bounded_transfer_and_other_unit_preserved",
+      "reason": "Explicit isolated drill opt-in required"
+    },
+    {
+      "module": "tests.integration.test_state_unit_isolated",
+      "name": "test_concurrency_and_rollback",
+      "reason": "Explicit isolated drill opt-in required"
+    },
+    {
+      "module": "tests.integration.test_state_unit_isolated",
+      "name": "test_missing_units_manifest_and_noop",
+      "reason": "Explicit isolated drill opt-in required"
+    },
+    {
+      "module": "tests.integration.test_state_unit_isolated",
+      "name": "test_initial_unit_state_and_owner_validation",
+      "reason": "Explicit isolated drill opt-in required"
+    },
+    {
+      "module": "tests.integration.test_state_unit_isolated",
+      "name": "test_preflight_is_read_only_allowlisted_and_rejects_extra_source",
+      "reason": "Explicit isolated drill opt-in required"
+    }
+  ],
+  "test_report_sha256": "a15e3d0b13e13542e92aed27a9b7dcfa7d41cafdfe5c0b0e60e3eaa11da4b24a",
+  "packaged_preparation_source_sha256": "b9d4cb98f3177269d1eece4c7599608fbd13bc35f861a9d854f3794743e455cb",
+  "portable_distribution": {
+    "chinese_space_path": true,
+    "packaged_smoke": true,
+    "first_run_prepared_config": true,
+    "config_recheck": true
+  },
+  "capacity_passed": true,
+  "dependency_count": 42,
+  "production_before": {
+    "redis_ping": true,
+    "pending": 0,
+    "mysql_ping": true,
+    "stock_count": 5580
+  },
+  "production_after_before_reopen": {
+    "redis_ping": true,
+    "pending": 0,
+    "mysql_ping": true,
+    "stock_count": 5580
+  },
+  "packaged_doctor": {
+    "cwd": "C:/Windows",
+    "exit_code": 0,
+    "connectivity": "doctor exit 0 confirms both configured Redis and MySQL connections"
+  },
+  "test_mysql_runtime_adjustment": {
+    "time_utc": "2026-10-18T20:43:34.406604+00:00",
+    "port": 13347,
+    "owned_temporary_instance": true,
+    "setting": "innodb_flush_log_at_trx_commit",
+    "before": 1,
+    "after": 2,
+    "reason": "Reduce synchronous disk flushes for disposable integration schemas; SQL transaction and application-process replay tests continue against the same live private server. This run does not test machine power-loss durability; production instance and settings are unchanged."
+  },
+  "real_desktop": {
+    "verified": true,
+    "checked_at_beijing": "2026-10-19T05:20:03.615411+08:00",
+    "executable": "dist/Empire/Empire.exe",
+    "window_title": "Empire · 投资研究工作台",
+    "window_left_open": true,
+    "local_services_connected": true,
+    "actions": [
+      "工作台真实窗口",
+      "数据浏览→搜索股票列表→双击打开",
+      "采集管理→按失败状态筛选",
+      "数据准备→确认页面与开发证据"
+    ],
+    "stock_query": {
+      "count": 5580,
+      "page": 1,
+      "pages": 28,
+      "page_size": 200,
+      "visible_examples": [
+        "000001 平安银行",
+        "000002 万 科Ａ",
+        "000006 深振业Ａ"
+      ],
+      "publication_beijing": "2026-10-16 09:46:51"
+    },
+    "preparation": {
+      "release_evidence": "本版本发布测试已通过（不计入数据完成分母）",
+      "selected_use": "长期价值研究 / 经营、财务趋势",
+      "required_inputs": 5,
+      "unverified_inputs": 5,
+      "full_data_acceptance_performed": false
+    },
+    "saved_schedules_resumed": true,
+    "manual_collection_triggered": false,
+    "retained_business_status": [
+      {
+        "project_label": "开盘啦历史盘口与日行情摘要",
+        "status": "失败",
+        "latest_start_beijing": "2026-10-19 01:02:00",
+        "latest_end_beijing": "2026-10-19 01:02:04",
+        "displayed_reason": "上市日期证券身份或当前上市状态无效",
+        "predates_this_release": true,
+        "repaired_in_this_task": false
+      },
+      {
+        "project_label": "股东研究（同花顺）",
+        "status": "已结束（来源缺口）",
+        "repaired_in_this_task": false
+      }
+    ],
+    "limits": "Real UI and a stock formal-query check only; not all-source collection or data-readiness acceptance."
+  },
+  "test_mysql_cleanup": {
+    "port": 13347,
+    "port_and_owned_datadir_verified_before_shutdown": true,
+    "method": "SQL SHUTDOWN",
+    "port_closed_after_shutdown": true,
+    "shared_services_shutdown": false
+  }
+}
