@@ -1,0 +1,653 @@
+{
+  "checked_at": "2026-10-10T21:48:34.215857+08:00",
+  "policy": {
+    "name": "ths",
+    "min_interval_ms": 2000,
+    "proxy_interval_ms": 500,
+    "total_interval_ms": 500,
+    "max_concurrency": 0,
+    "scaling_mode": "auto",
+    "max_rps": 0
+  },
+  "routing": {
+    "use_proxy": true,
+    "proxy_fallback": true,
+    "network": {
+      "proxy_requests": 27
+    }
+  },
+  "method": "22 distinct v4/1B0009 annual URLs 2005..2026, up to 8 workers under saved limits; each failed year retried serially after 5s; no status retries within each request",
+  "peak_inflight": 7,
+  "other_ths_active_before": [],
+  "other_ths_active_after": [],
+  "summary": {
+    "parallel": {
+      "logical_requests": 22,
+      "successful": 18,
+      "attempts": 22,
+      "statuses": {
+        "504": 1,
+        "200": 18,
+        "502": 3
+      },
+      "dispatch_rps": 9.602,
+      "median_start_gap": 0.047
+    },
+    "failed_year_slow_retry": {
+      "logical_requests": 4,
+      "successful": 3,
+      "attempts": 5,
+      "statuses": {
+        "502": 1,
+        "200": 3,
+        "transport": 1
+      },
+      "dispatch_rps": 0.196,
+      "median_start_gap": 5.61
+    }
+  },
+  "calls": [
+    {
+      "phase": "parallel",
+      "year": "2006",
+      "status": 200,
+      "valid": true,
+      "rows": 241,
+      "content_hash": "7a5eb7f7f2abde61ef6bde8900acf74cf328b80f0cde12631415a439a1f77c6e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2012",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "7140113cbe2c45973b0fe66242d72446c36eecae96918cbfc242180a2056062a"
+    },
+    {
+      "phase": "parallel",
+      "year": "2008",
+      "valid": false,
+      "error": "Server error '502 Bad Gateway' for url 'https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2008.js'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+    },
+    {
+      "phase": "parallel",
+      "year": "2007",
+      "status": 200,
+      "valid": true,
+      "rows": 242,
+      "content_hash": "782a6f3c8fae58c28bcd51de45d83e3687cd55c2e36f48177c551fe43e4c44f3"
+    },
+    {
+      "phase": "parallel",
+      "year": "2014",
+      "status": 200,
+      "valid": true,
+      "rows": 245,
+      "content_hash": "9b989ba5d380e70cd3297817f2d9825ef0fcc8b59b3748aa0c1536df3d95ff6d"
+    },
+    {
+      "phase": "parallel",
+      "year": "2010",
+      "status": 200,
+      "valid": true,
+      "rows": 242,
+      "content_hash": "f50612c8893490df508157323089e52539f665909f662272cc5c3c18e3ac4554"
+    },
+    {
+      "phase": "parallel",
+      "year": "2016",
+      "status": 200,
+      "valid": true,
+      "rows": 244,
+      "content_hash": "e97795507d004764cc9418e6e00aa6fa99cd5cadd6cb9169fbba850dab82a482"
+    },
+    {
+      "phase": "parallel",
+      "year": "2013",
+      "status": 200,
+      "valid": true,
+      "rows": 238,
+      "content_hash": "27465091fd29798071d4e30e09bb85d39259b9771aa8c0acae15aa7aeffce109"
+    },
+    {
+      "phase": "parallel",
+      "year": "2019",
+      "status": 200,
+      "valid": true,
+      "rows": 244,
+      "content_hash": "ffab634931cf89480472625545db4934444890948447756b257ecaf5f54068c1"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2015",
+      "valid": false,
+      "error": "Server error '502 Bad Gateway' for url 'https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2015.js'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+    },
+    {
+      "phase": "parallel",
+      "year": "2018",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "bf3d851426544ea11d4151f2b1086292f302881a0ebd540929dbf3c1f13e056e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2017",
+      "status": 200,
+      "valid": true,
+      "rows": 244,
+      "content_hash": "fb96f9cec44f72c76b94b03ae129ad0b332d8d2f2cb36b5629ab607b321be0e5"
+    },
+    {
+      "phase": "parallel",
+      "year": "2023",
+      "status": 200,
+      "valid": true,
+      "rows": 242,
+      "content_hash": "b7ea994165447ee78e6230445886e61f24c66924c3aaf5e3a3d0d13e0e2eb5af"
+    },
+    {
+      "phase": "parallel",
+      "year": "2024",
+      "valid": false,
+      "error": "Server error '502 Bad Gateway' for url 'https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2024.js'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+    },
+    {
+      "phase": "parallel",
+      "year": "2022",
+      "status": 200,
+      "valid": true,
+      "rows": 242,
+      "content_hash": "27f790d06aeaa37806ca25bbc58e1b053d9d975a2d5140261a3a7d6060b5af9d"
+    },
+    {
+      "phase": "parallel",
+      "year": "2009",
+      "status": 200,
+      "valid": true,
+      "rows": 244,
+      "content_hash": "852cf086a3afd506387ae0351ba2361a88ffdcae95c41311bc16921b6ad27fc7"
+    },
+    {
+      "phase": "parallel",
+      "year": "2025",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "dfcb11051175e0e0944d73ac56ce6777fd4688cc90ae894f9d979944787ef4b4"
+    },
+    {
+      "phase": "parallel",
+      "year": "2026",
+      "status": 200,
+      "valid": true,
+      "rows": 183,
+      "content_hash": "a3d7d9db419a6bdbd21454ef08b6062e1728ee318d1e3ffd8c94c7ca375a9065"
+    },
+    {
+      "phase": "parallel",
+      "year": "2021",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "78ae7c81713d24268ab42b0d329279bbb51b694ea189f5bc49fa464614c2a36a"
+    },
+    {
+      "phase": "parallel",
+      "year": "2011",
+      "status": 200,
+      "valid": true,
+      "rows": 244,
+      "content_hash": "c3bef0764679bf8a0006452e2ad2e3036d1e266e524bfa89fc595829316d313c"
+    },
+    {
+      "phase": "parallel",
+      "year": "2005",
+      "valid": false,
+      "error": "Server error '504 Gateway Timeout' for url 'https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2005.js'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504"
+    },
+    {
+      "phase": "failed_year_slow_retry",
+      "year": "2008",
+      "valid": false,
+      "error": "Server error '502 Bad Gateway' for url 'https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2008.js'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+    },
+    {
+      "phase": "failed_year_slow_retry",
+      "year": "2015",
+      "status": 200,
+      "valid": true,
+      "rows": 244,
+      "content_hash": "e545156da4b83324aef72518339097d3c88ec01206f09afb7498c651b5f9acf9"
+    },
+    {
+      "phase": "failed_year_slow_retry",
+      "year": "2024",
+      "status": 200,
+      "valid": true,
+      "rows": 242,
+      "content_hash": "8a65e84216c45c3b5d0c10ef222796d93fc348380df98fae420342f4d5d41a3d"
+    },
+    {
+      "phase": "failed_year_slow_retry",
+      "year": "2005",
+      "status": 200,
+      "valid": true,
+      "rows": 242,
+      "content_hash": "63d1bbff1a0cfff14e40bafc2e192ebb89f06334b753042b4d9eb09ae5543823"
+    }
+  ],
+  "attempts": [
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2005.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 0.407,
+      "started_at": "2026-10-10T21:48:02.280847+08:00",
+      "status": 504,
+      "bytes": 582,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 5.578
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2007.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 0.438,
+      "started_at": "2026-10-10T21:48:02.307411+08:00",
+      "status": 200,
+      "bytes": 17468,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.625
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2006.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 0.438,
+      "started_at": "2026-10-10T21:48:02.307917+08:00",
+      "status": 200,
+      "bytes": 16825,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.453
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2008.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 0.438,
+      "started_at": "2026-10-10T21:48:02.309698+08:00",
+      "status": 502,
+      "bytes": 572,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.594
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2010.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 0.438,
+      "started_at": "2026-10-10T21:48:02.310755+08:00",
+      "status": 200,
+      "bytes": 17473,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.672
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2009.js",
+      "egress": "egress-6",
+      "proxy": true,
+      "start": 0.438,
+      "started_at": "2026-10-10T21:48:02.311278+08:00",
+      "status": 200,
+      "bytes": 17617,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 1.844
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2011.js",
+      "egress": "egress-7",
+      "proxy": true,
+      "start": 0.438,
+      "started_at": "2026-10-10T21:48:02.312810+08:00",
+      "status": 200,
+      "bytes": 17617,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 2.265
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2012.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 0.922,
+      "started_at": "2026-10-10T21:48:02.795479+08:00",
+      "status": 200,
+      "bytes": 17540,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.047
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2014.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 1.032,
+      "started_at": "2026-10-10T21:48:02.909829+08:00",
+      "status": 200,
+      "bytes": 17726,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.078
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2013.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 1.078,
+      "started_at": "2026-10-10T21:48:02.948423+08:00",
+      "status": 200,
+      "bytes": 17185,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.172
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2016.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 1.125,
+      "started_at": "2026-10-10T21:48:03.001417+08:00",
+      "status": 200,
+      "bytes": 17620,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.063
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2019.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 1.422,
+      "started_at": "2026-10-10T21:48:03.298483+08:00",
+      "status": 200,
+      "bytes": 17644,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.047
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 1.563,
+      "started_at": "2026-10-10T21:48:03.434833+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.062
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2015.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 1.594,
+      "started_at": "2026-10-10T21:48:03.466360+08:00",
+      "status": 502,
+      "bytes": 572,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.063
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2018.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 1.625,
+      "started_at": "2026-10-10T21:48:03.500716+08:00",
+      "status": 200,
+      "bytes": 17545,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.063
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2017.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 1.938,
+      "started_at": "2026-10-10T21:48:03.817827+08:00",
+      "status": 200,
+      "bytes": 17617,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.062
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2023.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 2.063,
+      "started_at": "2026-10-10T21:48:03.935716+08:00",
+      "status": 200,
+      "bytes": 17488,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.078
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2024.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 2.11,
+      "started_at": "2026-10-10T21:48:03.983549+08:00",
+      "status": 502,
+      "bytes": 572,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.062
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2022.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 2.141,
+      "started_at": "2026-10-10T21:48:04.015822+08:00",
+      "status": 200,
+      "bytes": 17515,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.062
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2025.js",
+      "egress": "egress-6",
+      "proxy": true,
+      "start": 2.297,
+      "started_at": "2026-10-10T21:48:04.165878+08:00",
+      "status": 200,
+      "bytes": 17806,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.188
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2026.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 2.469,
+      "started_at": "2026-10-10T21:48:04.337905+08:00",
+      "status": 200,
+      "bytes": 13602,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.047
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2021.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 2.594,
+      "started_at": "2026-10-10T21:48:04.467851+08:00",
+      "status": 200,
+      "bytes": 17681,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.078
+    },
+    {
+      "phase": "failed_year_slow_retry",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2008.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 11.0,
+      "started_at": "2026-10-10T21:48:12.871259+08:00",
+      "status": 502,
+      "bytes": 572,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.453
+    },
+    {
+      "phase": "failed_year_slow_retry",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2015.js",
+      "egress": "egress-7",
+      "proxy": true,
+      "start": 16.453,
+      "started_at": "2026-10-10T21:48:18.332086+08:00",
+      "status": 200,
+      "bytes": 17942,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.907
+    },
+    {
+      "phase": "failed_year_slow_retry",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2024.js",
+      "egress": "egress-6",
+      "proxy": true,
+      "start": 22.391,
+      "started_at": "2026-10-10T21:48:24.268264+08:00",
+      "status": 200,
+      "bytes": 17550,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.75
+    },
+    {
+      "phase": "failed_year_slow_retry",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2005.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 28.157,
+      "started_at": "2026-10-10T21:48:30.034444+08:00",
+      "error": "",
+      "duration": 3.265
+    },
+    {
+      "phase": "failed_year_slow_retry",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2005.js",
+      "egress": "egress-7",
+      "proxy": true,
+      "start": 31.438,
+      "started_at": "2026-10-10T21:48:33.308136+08:00",
+      "status": 200,
+      "bytes": 16032,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.89
+    }
+  ],
+  "limitations": "Finite current snapshot; rotated egresses shown separately; application configured rate limits preserved; repeated exact URLs may use source caches; cannot reconstruct past source state",
+  "conclusion": "Concurrent different annual URLs reproduced 502/504; serial retries recovered 3 of 4 failed years but 2008 still returned502; rate alone does not explain all failures, cache/time/egress confounded."
+}

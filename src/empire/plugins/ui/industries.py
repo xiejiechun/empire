@@ -1,10 +1,11 @@
 """Lazy current-industry browser; SQL belongs to the query plugin."""
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
     QPushButton,
+    QSplitter,
     QTableWidget,
     QVBoxLayout,
     QWidget,
@@ -20,7 +21,10 @@ from empire.plugins.ui.common import (
     rows,
     table_identity_state,
 )
+from empire.plugins.ui.directory_panel import DirectoryPanel
 from empire.plugins.ui.plugin import UiPlugin
+from empire.plugins.ui.preview_layout import compact_columns
+from empire.plugins.ui.preview_navigation import navigate_security, security_context
 from empire.plugins.ui.queries import QueryScope
 
 
@@ -29,7 +33,8 @@ class IndustryPage(QWidget):
         super().__init__()
         self.shell, self.scope = shell, QueryScope(self)
         self.offset, self.total = 0, 0
-        self.applied_search, self.future, self.requested, self.dirty = '', None, None, True
+        self.selected_industry = ''
+        self.applied_search, self.future, self.requested, self.dirty = '', None, None, False
         layout = QVBoxLayout(self)
         title = QLabel('同花顺当前行业')
         title.setObjectName('pageTitle')
@@ -49,7 +54,7 @@ class IndustryPage(QWidget):
         find.clicked.connect(self.find)
         bar.addWidget(find)
         refresh = QPushButton('刷新')
-        refresh.clicked.connect(lambda: setattr(self, 'dirty', True))
+        refresh.clicked.connect(lambda: self.directory.refresh())
         bar.addWidget(refresh)
         collect = QPushButton('前往采集任务')
         collect.clicked.connect(lambda: shell.navigate_management('industries'))
@@ -65,7 +70,18 @@ class IndustryPage(QWidget):
         self.table.setAlternatingRowColors(True)
         self.table.horizontalHeader().setStretchLastSection(True)
         accessible(self.table, '当前行业成分结果')
-        layout.addWidget(self.table, 1)
+        compact_columns(self.table, (85, 150, 55, 85, 120), 4)
+        self.table.hideColumn(0)
+        self.table.hideColumn(1)
+        self.directory = DirectoryPanel(shell, 'industries.query', 'directory', 'industry_code',
+            ('industry_code', 'name', 'member_count'), ['行业编号', '行业名称', '当前成员数'])
+        self.directory.selected.connect(self.select_industry)
+        self.splitter = QSplitter(Qt.Orientation.Horizontal)
+        self.splitter.addWidget(self.directory)
+        self.splitter.addWidget(self.table)
+        self.splitter.setSizes([350, 700])
+        self.table.itemDoubleClicked.connect(self.open_security)
+        layout.addWidget(self.splitter, 1)
         pagination = QHBoxLayout()
         self.previous, self.next = QPushButton('上一页'), QPushButton('下一页')
         self.previous.clicked.connect(lambda: self.move(-200))
@@ -81,14 +97,40 @@ class IndustryPage(QWidget):
         self.timer.start(500)
 
     def find(self):
-        self.applied_search, self.offset, self.dirty = self.search.text().strip(), 0, True
+        self.applied_search, self.offset, self.dirty = self.search.text().strip(), 0, False
+        self.directory.find(self.applied_search)
 
     def move(self, delta):
         self.offset = max(0, self.offset + delta)
         self.dirty = True
 
     def spec(self):
-        return self.applied_search, self.offset, 200
+        return self.applied_search, self.offset, 200, self.selected_industry
+
+    def select_industry(self, record):
+        selected = record['industry_code'] if record else ''
+        if selected != self.selected_industry:
+            self.offset = 0
+        self.selected_industry, self.dirty = selected, bool(record)
+        if not record:
+            rows(self.table, [])
+            self.previous.setEnabled(False)
+            self.next.setEnabled(False)
+            self.status.setText('目录暂无匹配行业；未显示其他行业成员。')
+
+    def open_security(self, *_):
+        i = self.table.currentRow()
+        if i >= 0:
+            navigate_security(self.shell, 'listings', self.table.item(i, 3).text() + '.' + self.table.item(i, 2).text())
+
+    def apply_navigation_context(self, context):
+        code, market = security_context(context)
+        self.search.setText(code + '.' + market)
+        self.find()
+
+    def resizeEvent(self, event):
+        self.splitter.setOrientation(Qt.Orientation.Vertical if self.width() < 800 else Qt.Orientation.Horizontal)
+        super().resizeEvent(event)
 
     def tick(self):
         if getattr(self.shell, 'shutting_down', False):
@@ -106,7 +148,7 @@ class IndustryPage(QWidget):
                                       for r in result['rows']],
                          keys=[(r['industry_code'], r['market'], r['code']) for r in result['rows']])
                     self.total = result['total']
-                    self.status.setText(f"{result['industry_count']} 个行业；匹配 {self.total} 个成员；"
+                    self.status.setText(f"所选行业 {self.selected_industry} · {result['industry_count']} 个行业；匹配 {self.total} 个成员；"
                                         f"第 {self.offset // 200 + 1} 页，每页 200 条。"
                                         + ('' if result['publication'] else '尚未完整采集，请前往采集任务。'))
                     self.previous.setEnabled(self.offset > 0)
@@ -114,19 +156,22 @@ class IndustryPage(QWidget):
                 except Exception as exc:
                     self.status.setText(self.scope.failure_message('members', '查询失败', redact(exc, self.shell.cfg),
                                                                    stale=self.table.rowCount() > 0))
-        if self.isVisible() and self.dirty and not self.future:
+        if self.isVisible() and self.selected_industry and self.dirty and not self.future:
             self.dirty, self.requested = False, self.spec()
             self.future = self.scope.invoke('members', self.shell.runtime, 'industries.query', 'list_members',
                                             *self.requested)
 
     def save_ui_state(self):
         return dict(search=self.search.text(), applied=self.applied_search, offset=self.offset,
-                    table=table_identity_state(self.table))
+                    table=table_identity_state(self.table), directory=self.directory.save(), industry=self.selected_industry)
 
     def restore_ui_state(self, state):
         self.search.setText(state['search'])
         self.applied_search, self.offset, self.dirty = state['applied'], state['offset'], True
         restore_table_identity(self.table, state['table'])
+        self.selected_industry = state.get('industry', '')
+        if 'directory' in state:
+            self.directory.restore(state['directory'])
 
 
 class IndustryUiPlugin(UiPlugin):

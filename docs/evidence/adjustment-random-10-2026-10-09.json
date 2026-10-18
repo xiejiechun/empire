@@ -1,0 +1,637 @@
+{
+  "checked_at": "2026-10-09T14:42:47.844500+08:00",
+  "selection": {
+    "selected_at": "2026-10-09T14:39:31.218926+08:00",
+    "seed": "47842470781309845095299101878727138185",
+    "method": "对至少两日已归档行情的证券按证券键排序后等概率无放回随机抽10只，选择先于计算，失败不换样",
+    "pool_count": 464,
+    "pool_sha256": "7ea98f242ebe0c5a2308bc46a25489dc6eefba7b24ee93f61d3dfdf8bff049c4",
+    "sample": [
+      {
+        "unified_code": "920786.BJ",
+        "name": "骑士乳业",
+        "days": 722,
+        "first": "2023-10-13",
+        "last": "2026-10-08"
+      },
+      {
+        "unified_code": "920950.BJ",
+        "name": "迅安科技",
+        "days": 874,
+        "first": "2023-02-01",
+        "last": "2026-10-08"
+      },
+      {
+        "unified_code": "600099.SH",
+        "name": "林海股份",
+        "days": 415,
+        "first": "2021-01-04",
+        "last": "2022-09-16"
+      },
+      {
+        "unified_code": "920100.BJ",
+        "name": "三协电机",
+        "days": 259,
+        "first": "2025-09-08",
+        "last": "2026-10-08"
+      },
+      {
+        "unified_code": "920685.BJ",
+        "name": "新芝生物",
+        "days": 911,
+        "first": "2022-10-10",
+        "last": "2026-10-08"
+      },
+      {
+        "unified_code": "600072.SH",
+        "name": "中船科技",
+        "days": 1384,
+        "first": "2021-01-04",
+        "last": "2026-10-08"
+      },
+      {
+        "unified_code": "000900.SZ",
+        "name": "现代投资",
+        "days": 3,
+        "first": "2026-09-28",
+        "last": "2026-09-30"
+      },
+      {
+        "unified_code": "920566.BJ",
+        "name": "梓橦宫",
+        "days": 1132,
+        "first": "2021-11-15",
+        "last": "2026-10-08"
+      },
+      {
+        "unified_code": "920300.BJ",
+        "name": "辰光医疗",
+        "days": 879,
+        "first": "2022-12-07",
+        "last": "2026-10-08"
+      },
+      {
+        "unified_code": "600035.SH",
+        "name": "楚天高速",
+        "days": 1394,
+        "first": "2021-01-04",
+        "last": "2026-10-08"
+      }
+    ]
+  },
+  "verification": "正式SQL查询结果与独立Fraction有理数公式对比，非厂商复权因子对照；公式复核不调用生产calculate/actions/ex_reference",
+  "tolerance": "每个数值相对误差<=1e-44",
+  "read_only_select_statements": 2159,
+  "results": [
+    {
+      "unified_code": "920786.BJ",
+      "name": "骑士乳业",
+      "days": 722,
+      "first": "2023-10-13",
+      "last": "2026-10-08",
+      "full_archived_range": {
+        "start": "2023-10-13",
+        "end": "2026-10-08",
+        "status": "input_blocked",
+        "reason": "行情不是有效收盘后快照，不能以最新价替代收盘价（日期 2025-02-21）"
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 1,
+        "bad_clock_examples": [
+          {
+            "date": "2025-02-21",
+            "time": 113059000
+          }
+        ],
+        "bad_price_count": 0,
+        "bad_price_examples": []
+      },
+      "supplemental_2026_range": {
+        "start": "2026-01-01",
+        "end": "2026-10-08",
+        "status": "verified",
+        "rows": 182,
+        "event_days": 1,
+        "numeric_comparisons": 2731,
+        "max_relative_error": 5.340576171875e-50,
+        "input_hash": "5cc84745f4dafa28c972d0a80cc2a1ef37bb3f064c5febcdd1a2f18e39261763",
+        "failures": [],
+        "event_checks": [
+          {
+            "date": "2026-06-26",
+            "previous_close": "6.5",
+            "source_keys": [
+              "c94849d1063f3bfec01511e6bfc18b63ce1540ed367c8b47c4cda3fdf3b35a58"
+            ],
+            "source_inputs": {
+              "dividend": {
+                "ex_date": "2026-06-26",
+                "tax_basis": "含税",
+                "cash_per_share": "0.1",
+                "total_bonus_per_share": "0"
+              }
+            },
+            "exact_reference_fraction": "32/5",
+            "reference": "6.4",
+            "previous_factor": "1",
+            "factor": "1.015625"
+          }
+        ]
+      }
+    },
+    {
+      "unified_code": "920950.BJ",
+      "name": "迅安科技",
+      "days": 874,
+      "first": "2023-02-01",
+      "last": "2026-10-08",
+      "full_archived_range": {
+        "start": "2023-02-01",
+        "end": "2026-10-08",
+        "status": "input_blocked",
+        "reason": "行情不是有效收盘后快照，不能以最新价替代收盘价（日期 2023-04-14）"
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 2,
+        "bad_clock_examples": [
+          {
+            "date": "2023-04-14",
+            "time": 134330000
+          },
+          {
+            "date": "2025-02-21",
+            "time": 113059000
+          }
+        ],
+        "bad_price_count": 0,
+        "bad_price_examples": []
+      },
+      "supplemental_2026_range": {
+        "start": "2026-01-01",
+        "end": "2026-10-08",
+        "status": "verified",
+        "rows": 182,
+        "event_days": 1,
+        "numeric_comparisons": 2731,
+        "max_relative_error": 5.016733446429868e-50,
+        "input_hash": "4a36432b1396cfe93956cc3acb0c2817ceb5f4525c34f7018697ae8b2bb03739",
+        "failures": [],
+        "event_checks": [
+          {
+            "date": "2026-05-25",
+            "previous_close": "15.38",
+            "source_keys": [
+              "ecef923c92b614d108187b543c17c5754b3c3897606da93473b58ac345c7a718"
+            ],
+            "source_inputs": {
+              "dividend": {
+                "ex_date": "2026-05-25",
+                "tax_basis": "含税",
+                "cash_per_share": "0.36",
+                "total_bonus_per_share": "0"
+              }
+            },
+            "exact_reference_fraction": "751/50",
+            "reference": "15.02",
+            "previous_factor": "1",
+            "factor": "1.0239680426098535286284953395472703062583222370173"
+          }
+        ]
+      }
+    },
+    {
+      "unified_code": "600099.SH",
+      "name": "林海股份",
+      "days": 415,
+      "first": "2021-01-04",
+      "last": "2022-09-16",
+      "full_archived_range": {
+        "start": "2021-01-04",
+        "end": "2022-09-16",
+        "status": "verified",
+        "rows": 415,
+        "event_days": 0,
+        "numeric_comparisons": 6225,
+        "max_relative_error": 0.0,
+        "input_hash": "b672628f55e4db5aea6ee91f0fbf23f6f0ffeda1250c30374cd8ab093ddb23ef",
+        "failures": [],
+        "event_checks": []
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 0,
+        "bad_clock_examples": [],
+        "bad_price_count": 0,
+        "bad_price_examples": []
+      }
+    },
+    {
+      "unified_code": "920100.BJ",
+      "name": "三协电机",
+      "days": 259,
+      "first": "2025-09-08",
+      "last": "2026-10-08",
+      "full_archived_range": {
+        "start": "2025-09-08",
+        "end": "2026-10-08",
+        "status": "verified",
+        "rows": 259,
+        "event_days": 2,
+        "numeric_comparisons": 3887,
+        "max_relative_error": 5.484918358688801e-50,
+        "input_hash": "8cd089c4c84ecedb4e70a35d2d46270b3fce6248a325059ebca7c6fa1c10418a",
+        "failures": [],
+        "event_checks": [
+          {
+            "date": "2025-11-10",
+            "previous_close": "69.82",
+            "source_keys": [
+              "7dd4c18757afcbec70fe4f5b349f7fb7239efb25353833c9b9c6d95f55b948ae"
+            ],
+            "source_inputs": {
+              "dividend": {
+                "ex_date": "2025-11-10",
+                "tax_basis": "含税",
+                "cash_per_share": "0.5",
+                "total_bonus_per_share": "0"
+              }
+            },
+            "exact_reference_fraction": "1733/25",
+            "reference": "69.32",
+            "previous_factor": "1",
+            "factor": "1.0072129255626081938834391229082515868436237738027"
+          },
+          {
+            "date": "2026-05-27",
+            "previous_close": "66.21",
+            "source_keys": [
+              "76f538b03719650d60c226ac9910af6fb2bc612d40c15ca3ded10392069c878d"
+            ],
+            "source_inputs": {
+              "dividend": {
+                "ex_date": "2026-05-27",
+                "tax_basis": "含税",
+                "cash_per_share": "0.28",
+                "total_bonus_per_share": "0.4"
+              }
+            },
+            "exact_reference_fraction": "6593/140",
+            "reference": "47.092857142857142857142857142857142857142857142857",
+            "previous_factor": "1.0072129255626081938834391229082515868436237738027",
+            "factor": "1.4160866816638920661888594882277790473363091474119"
+          }
+        ]
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 0,
+        "bad_clock_examples": [],
+        "bad_price_count": 0,
+        "bad_price_examples": []
+      },
+      "supplemental_2026_range": {
+        "start": "2026-01-01",
+        "end": "2026-10-08",
+        "status": "verified",
+        "rows": 182,
+        "event_days": 1,
+        "numeric_comparisons": 2731,
+        "max_relative_error": 1.6139506596434289e-50,
+        "input_hash": "b30772cfe74a42fb33ef64b4cdba6971710ee79c45c49138612f879b5a7a72cc",
+        "failures": [],
+        "event_checks": [
+          {
+            "date": "2026-05-27",
+            "previous_close": "66.21",
+            "source_keys": [
+              "76f538b03719650d60c226ac9910af6fb2bc612d40c15ca3ded10392069c878d"
+            ],
+            "source_inputs": {
+              "dividend": {
+                "ex_date": "2026-05-27",
+                "tax_basis": "含税",
+                "cash_per_share": "0.28",
+                "total_bonus_per_share": "0.4"
+              }
+            },
+            "exact_reference_fraction": "6593/140",
+            "reference": "47.092857142857142857142857142857142857142857142857",
+            "previous_factor": "1",
+            "factor": "1.4059456999848323979978765357197027150007583801001"
+          }
+        ]
+      }
+    },
+    {
+      "unified_code": "920685.BJ",
+      "name": "新芝生物",
+      "days": 911,
+      "first": "2022-10-10",
+      "last": "2026-10-08",
+      "full_archived_range": {
+        "start": "2022-10-10",
+        "end": "2026-10-08",
+        "status": "input_blocked",
+        "reason": "行情不是有效收盘后快照，不能以最新价替代收盘价（日期 2023-04-14）"
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 2,
+        "bad_clock_examples": [
+          {
+            "date": "2023-04-14",
+            "time": 134330000
+          },
+          {
+            "date": "2025-02-21",
+            "time": 113059000
+          }
+        ],
+        "bad_price_count": 0,
+        "bad_price_examples": []
+      },
+      "supplemental_2026_range": {
+        "start": "2026-01-01",
+        "end": "2026-10-08",
+        "status": "input_blocked",
+        "reason": "收盘行情交易日集合不完整或多出非交易日（日期 2026-07-16）"
+      }
+    },
+    {
+      "unified_code": "600072.SH",
+      "name": "中船科技",
+      "days": 1384,
+      "first": "2021-01-04",
+      "last": "2026-10-08",
+      "full_archived_range": {
+        "start": "2021-01-04",
+        "end": "2026-10-08",
+        "status": "input_blocked",
+        "reason": "计算必需数值必须有效、非负且不越界；价格和因子必须为正"
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 0,
+        "bad_clock_examples": [],
+        "bad_price_count": 1,
+        "bad_price_examples": [
+          {
+            "date": "2024-05-13",
+            "open_px": 0,
+            "high_px": 16.29,
+            "low_px": 15.56,
+            "last_px": 16.07
+          }
+        ]
+      },
+      "supplemental_2026_range": {
+        "start": "2026-01-01",
+        "end": "2026-10-08",
+        "status": "verified",
+        "rows": 182,
+        "event_days": 0,
+        "numeric_comparisons": 2730,
+        "max_relative_error": 0.0,
+        "input_hash": "e8f5271d239bd13687ad7e085588c4ff9d6557ebfc5ff7fc88be28ef8e054c2a",
+        "failures": [],
+        "event_checks": []
+      }
+    },
+    {
+      "unified_code": "000900.SZ",
+      "name": "现代投资",
+      "days": 3,
+      "first": "2026-09-28",
+      "last": "2026-09-30",
+      "full_archived_range": {
+        "start": "2026-09-28",
+        "end": "2026-09-30",
+        "status": "input_blocked",
+        "reason": "已实施公司行动缺少除权除息日期（方案 aae9d0f0a7f6029f54a8900cb21e5cb56c3506157d8ee35a6354917644adf5cc）"
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 0,
+        "bad_clock_examples": [],
+        "bad_price_count": 0,
+        "bad_price_examples": []
+      }
+    },
+    {
+      "unified_code": "920566.BJ",
+      "name": "梓橦宫",
+      "days": 1132,
+      "first": "2021-11-15",
+      "last": "2026-10-08",
+      "full_archived_range": {
+        "start": "2021-11-15",
+        "end": "2026-10-08",
+        "status": "input_blocked",
+        "reason": "行情不是有效收盘后快照，不能以最新价替代收盘价（日期 2021-12-24）"
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 5,
+        "bad_clock_examples": [
+          {
+            "date": "2021-12-24",
+            "time": 113010000
+          },
+          {
+            "date": "2022-03-14",
+            "time": 93211000
+          },
+          {
+            "date": "2022-09-05",
+            "time": 145957000
+          },
+          {
+            "date": "2023-04-14",
+            "time": 134330000
+          },
+          {
+            "date": "2025-02-21",
+            "time": 113059000
+          }
+        ],
+        "bad_price_count": 0,
+        "bad_price_examples": []
+      },
+      "supplemental_2026_range": {
+        "start": "2026-01-01",
+        "end": "2026-10-08",
+        "status": "verified",
+        "rows": 182,
+        "event_days": 1,
+        "numeric_comparisons": 2731,
+        "max_relative_error": 6.330118990904561e-50,
+        "input_hash": "ba838a43d14bc6f2bcfd2d29f28f86120c78f4a3399745e15ce33b630042be8e",
+        "failures": [],
+        "event_checks": [
+          {
+            "date": "2026-06-29",
+            "previous_close": "9.27",
+            "source_keys": [
+              "7675a7ecdbbce1449bb59364d07f8ad502af2ca43c7227b6c3dbb26d4a4e9134"
+            ],
+            "source_inputs": {
+              "dividend": {
+                "ex_date": "2026-06-29",
+                "tax_basis": "含税",
+                "cash_per_share": "0.2",
+                "total_bonus_per_share": "0"
+              }
+            },
+            "exact_reference_fraction": "907/100",
+            "reference": "9.07",
+            "previous_factor": "1",
+            "factor": "1.0220507166482910694597574421168687982359426681367"
+          }
+        ]
+      }
+    },
+    {
+      "unified_code": "920300.BJ",
+      "name": "辰光医疗",
+      "days": 879,
+      "first": "2022-12-07",
+      "last": "2026-10-08",
+      "full_archived_range": {
+        "start": "2022-12-07",
+        "end": "2026-10-08",
+        "status": "input_blocked",
+        "reason": "行情不是有效收盘后快照，不能以最新价替代收盘价（日期 2023-04-14）"
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 2,
+        "bad_clock_examples": [
+          {
+            "date": "2023-04-14",
+            "time": 134330000
+          },
+          {
+            "date": "2025-02-21",
+            "time": 113059000
+          }
+        ],
+        "bad_price_count": 0,
+        "bad_price_examples": []
+      },
+      "supplemental_2026_range": {
+        "start": "2026-01-01",
+        "end": "2026-10-08",
+        "status": "verified",
+        "rows": 182,
+        "event_days": 0,
+        "numeric_comparisons": 2730,
+        "max_relative_error": 0.0,
+        "input_hash": "5a1d6e8b4c3cc225251069a20e256abdebc25d76e8ebe4c6150e8ac9abaa87fe",
+        "failures": [],
+        "event_checks": []
+      }
+    },
+    {
+      "unified_code": "600035.SH",
+      "name": "楚天高速",
+      "days": 1394,
+      "first": "2021-01-04",
+      "last": "2026-10-08",
+      "full_archived_range": {
+        "start": "2021-01-04",
+        "end": "2026-10-08",
+        "status": "input_blocked",
+        "reason": "计算必需数值必须有效、非负且不越界；价格和因子必须为正"
+      },
+      "input_diagnostics": {
+        "bad_clock_count": 0,
+        "bad_clock_examples": [],
+        "bad_price_count": 1,
+        "bad_price_examples": [
+          {
+            "date": "2024-05-13",
+            "open_px": 0,
+            "high_px": 4.72,
+            "low_px": 4.6,
+            "last_px": 4.68
+          }
+        ]
+      },
+      "supplemental_2026_range": {
+        "start": "2026-01-01",
+        "end": "2026-10-08",
+        "status": "verified",
+        "rows": 182,
+        "event_days": 1,
+        "numeric_comparisons": 2731,
+        "max_relative_error": 3.4665800021666125e-50,
+        "input_hash": "8331d7afa0026bbbb75d236c184a33f8750554df038ae92a135d7df72f831e73",
+        "failures": [],
+        "event_checks": [
+          {
+            "date": "2026-06-26",
+            "previous_close": "3.62",
+            "source_keys": [
+              "0b4d6e0af89277a2e4ef8b4a0329846fd59143a347f897368f840f215c8c9ead"
+            ],
+            "source_inputs": {
+              "dividend": {
+                "ex_date": "2026-06-26",
+                "tax_basis": "含税",
+                "cash_per_share": "0.16",
+                "total_bonus_per_share": "0"
+              }
+            },
+            "exact_reference_fraction": "173/50",
+            "reference": "3.46",
+            "previous_factor": "1",
+            "factor": "1.0462427745664739884393063583815028901734104046243"
+          }
+        ]
+      }
+    }
+  ],
+  "scope": "每只股票全部已有归档起止范围为主验收；同一股票2026年子范围为单独补充，不用子范围通过掩盖完整范围失败",
+  "source_hashes": {
+    "src/empire/contracts/adjustment.py": "3d9cfdfebb19a99eab214cb8bf1459189bf3b727f72798070dd4cb0addf5fe19",
+    "src/empire/plugins/data/adjustment.py": "e9df486fdf96de080496a0bd54931a627e41f73f19fa3a0c36c976a6e71512a2",
+    "src/empire/plugins/data/adjustment_inputs.py": "83213e8eb69613fd8fd188b4d5a2e9e7870b0e57c83b3ab72be29096b9fbcef2"
+  },
+  "summary": {
+    "full_range_verified": 2,
+    "full_range_input_blocked": 8,
+    "supplemental_ranges_verified": 7,
+    "supplemental_ranges_blocked": 1,
+    "numeric_comparisons": 29227,
+    "unique_event_days": 6,
+    "max_relative_error": 6.330118990904561e-50,
+    "calculation_mismatches": 0
+  },
+  "additional_findings": {
+    "920685.BJ": {
+      "missing_2026_expected_quote_dates": [
+        "2026-07-16",
+        "2026-07-17",
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-22",
+        "2026-07-23",
+        "2026-07-24",
+        "2026-07-27",
+        "2026-07-28",
+        "2026-07-29"
+      ],
+      "extra_quote_dates": [],
+      "limitation": "现有停牌输入未排除这些日期；须核实是否真实停牌，不能直接认定源站遗漏或补造行情"
+    },
+    "000900.SZ": {
+      "record_key": "aae9d0f0a7f6029f54a8900cb21e5cb56c3506157d8ee35a6354917644adf5cc",
+      "report_date": "2006-06-03",
+      "record_date": "2006-06-26",
+      "ex_date": null,
+      "finding": "现行规则因这条旧实施方案缺除权日期，拒绝该证券近期复权"
+    }
+  },
+  "limitations": [
+    "仅独立核对归档输入与本地理论公式，不是通达信或Tushare厂商因子逐值核对",
+    "样本含现金分红与送转，没有抽中配股生效日，不能扩大为实际配股验收",
+    "全部已有日期范围通过不等同于上市以来或至今全部历史完整",
+    "各正式查询使用只读事务，独立重算用输入摘要核对版本；全10只不宣称同一SQL原子快照",
+    "无业务修改、无采集、无错误记录清理、无需重建或重启程序"
+  ],
+  "verification_script": "build/audit-adjustment-random-10.py",
+  "verification_script_sha256": "a6012ec42eb42d9eb22d46c831a9f5b5362bd7d1368cb30e478eddeb4477297a"
+}

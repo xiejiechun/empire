@@ -56,12 +56,19 @@ ITEMS = (
       '每日完整刷新；最近成功核验不超过 3 个自然日',
       '仅最新分类；不保存变化历史，不能还原历史行业归属或用于当时行业信号',
       boundary='仅行业名单及成员分类，不包含行情、指数历史或行业变更事件。'),
-    *(R(item.requirement, item.title, '高频行情', '扩展', '分析来源历史证券日数据',
-      '当前证券 × 交易日 × 来源序号', '证券日、上市关联及本接口完整业务字段',
+    *(R(item.requirement, item.title, '股票行情' if item.requirement == 'historical_quote' else '策略行情',
+      '核心' if item.requirement == 'historical_quote' else '扩展',
+      '日频回测价格与估值输入' if item.requirement == 'historical_quote' else '量价与资金流策略原料；日频因子按策略截止时点另行汇总',
+      '当前证券 × 交易日 × 来源序号',
+      ('证券日、上市关联、开高低收、量额及买卖档位；来源总股本、流通股本、总/流通/实际流通市值和估值字段保留原值，缺失显示未知'
+       if item.requirement == 'historical_quote' else '证券日、上市关联及本接口完整业务字段'),
       '数据类型 + unified_code + trade_date；数组内部保留来源顺序',
       '2021 年起当前上市证券的必要交易日；失败不作空日',
       '精确分钟集合或来源总数、完整数组及证券日关联校验',
       '逐日补缺，回看最近五个交易日',
-      '历史数据分析，不承诺当时可用版本或交易所完整事件流', boundary=item.note)
+      '历史数据分析，不承诺当时可用版本或交易所完整事件流',
+      boundary=(item.note + '；总股本、流通股本按交易日快照复用，不另采股本表；实际流通市值是金额，不能当作来源直接公布的自由流通股数。'
+                '行情检查通过不代表股本关系及任意估值公式已验收；快照日不是股本公告日或变更生效日。'
+                if item.requirement == 'historical_quote' else item.note))
       for item in PRODUCTS.values()),
 )

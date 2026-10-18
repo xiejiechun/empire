@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QPushButton,
+    QSplitter,
     QVBoxLayout,
     QWidget,
 )
@@ -25,6 +26,7 @@ from empire.plugins.ui.kaipanla_quote_format import (
     number,
     price_color,
 )
+from empire.plugins.ui.preview_layout import compact_columns
 
 
 class QuoteView(QWidget):
@@ -35,6 +37,7 @@ class QuoteView(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         self.identity = QLabel('选择证券及交易日')
         self.identity.setObjectName('sectionTitle')
+        self.identity.setWordWrap(True)
         layout.addWidget(self.identity)
         top = QFrame()
         top.setObjectName('card')
@@ -56,9 +59,9 @@ class QuoteView(QWidget):
             self.metrics[field] = (value, style)
         header.addLayout(summary, 4)
         layout.addWidget(top)
-        middle = QHBoxLayout()
+        middle = self.middle = QSplitter(Qt.Orientation.Horizontal)
         self.chart = QuoteChart()
-        middle.addWidget(self.chart, 3)
+        middle.addWidget(self.chart)
         book_area = QWidget()
         book_area.setMinimumWidth(280)
         book_layout = QVBoxLayout(book_area)
@@ -73,16 +76,19 @@ class QuoteView(QWidget):
         self.sell_total, self.buy_total = QLabel('总卖 —'), QLabel('总买 —')
         book_layout.addWidget(self.sell_total)
         self.book = table(['档位', '价格', '数量（来源单位）'])
+        compact_columns(self.book, (60, 80, 140), 2)
         self.book.setAccessibleName('历史盘口买卖档位')
         self.book.setMinimumHeight(410)
         book_layout.addWidget(self.book)
         book_layout.addWidget(self.buy_total)
-        middle.addWidget(book_area, 2)
-        layout.addLayout(middle)
-        self.chart_note = QLabel('黑线价格，橙线均价；走势来自本证券本日独立分时归档。')
+        middle.addWidget(book_area)
+        middle.setSizes([600, 320])
+        layout.addWidget(middle)
+        self.chart_note = QLabel('蓝实线价格，橙虚线均价；走势来自本证券本日独立分时归档。')
         self.chart_note.setWordWrap(True)
         self.chart_note.setObjectName('muted')
         layout.addWidget(self.chart_note)
+        layout.addWidget(QLabel('估值、股本及其他日统计（来源口径）'))
         details = QGridLayout()
         for index, (field, title, style) in enumerate(FIELDS[6:]):
             value = QLabel('—')
@@ -103,6 +109,10 @@ class QuoteView(QWidget):
         self.extra.setVisible(False)
         self.more.toggled.connect(self.extra.setVisible)
         layout.addWidget(self.extra)
+
+    def resizeEvent(self, event):
+        self.middle.setOrientation(Qt.Orientation.Vertical if self.width() < 800 else Qt.Orientation.Horizontal)
+        super().resizeEvent(event)
 
     def set_quote(self, record, identity):
         self.data = record['data'] if record else {}

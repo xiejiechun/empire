@@ -6,7 +6,7 @@ import pytest
 from empire.bootstrap import build_manager
 from empire.plugins.collectors.tdx_capital_source import parse
 from empire.plugins.datasets.capital_actions import KINDS
-from tests.capital_samples import STOCK, source, with_issue_detail
+from tests.capital_samples import source, with_issue_detail
 
 
 @pytest.mark.parametrize('kind', list(KINDS))
@@ -21,7 +21,7 @@ def test_independent_lazy_page_query_and_draft_preservation(kind):
     assert len(contributions) == 1 and contributions[0].catalogued
     assert contributions[0].category == '增发送配'
     page = contributions[0].factory(SimpleNamespace(cfg={}, shutting_down=False))
-    values = parse(kind, source(kind), 10000, STOCK if kind == 'dividends' else None)[0]
+    values = parse(kind, source(kind), 10000, '2025-12-31' if kind == 'dividends' else None)[0]
     page.render(values)
     if kind == 'additional_issues':
         assert '尚未补齐' in page.detail.toPlainText()

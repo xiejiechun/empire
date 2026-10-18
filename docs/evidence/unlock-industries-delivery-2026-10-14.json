@@ -1,0 +1,140 @@
+{
+  "checked_at": "2026-10-14T07:15:28.027796+00:00",
+  "status": "complete",
+  "project": "tdx-unlock-industries",
+  "development": {
+    "specialized_tests": 13,
+    "source_months": 24,
+    "source_rows": 700,
+    "source_range": [
+      "2026-09",
+      "2028-08"
+    ],
+    "capacity_rows": 12000,
+    "unit_test_log": "build/unlock-industry-unit-tests-final.log",
+    "unit_tests_passed": 2012,
+    "remaining_gate": null
+  },
+  "actual_data": {
+    "industry_table_created": true,
+    "industry_collection_run": true,
+    "scope_complete": true,
+    "months": 24,
+    "rows": 700,
+    "start": "2026-09",
+    "end": "2028-08",
+    "basis_date": "2026-10-13",
+    "pending": 0,
+    "network": {
+      "proxy_requests": 25
+    },
+    "scope_limit": "Current rolling source directory only; no outside history or strict historical available-time replay"
+  },
+  "checklist": {
+    "lifecycle": "implemented, frozen round directory and basis; Redis loss repeats current directory",
+    "set_validation": "month echo, count, unique industry, content digests, same-count changed-set tests",
+    "failure_checkpoint": "validated publication only; ordered prefetch",
+    "end_to_end": "isolated and current production source-set/content/query comparisons passed",
+    "separate_acceptance": "probe and development evidence separate from actual business archival",
+    "pagination": "not applicable: source returns one complete month without page/capacity",
+    "history": "current rolling directory only; archived older months retained",
+    "network": "shared downloader proxy-first with direct fallback; saved policies preserved",
+    "schema": "explicit additive maintenance, queue zero and normal process shutdown required",
+    "publish_boundary": "publish each month then final round archive wait; no per-month archive wait",
+    "documentation": "final scoped review and formal contracts passed",
+    "release": "formal verify-release.ps1 passed",
+    "desktop": "real packaged executable launched from C:/Windows; catalog search, default page, industry and month filters and values passed"
+  },
+  "blocker": null,
+  "bindings": {
+    "src/empire/contracts/unlock_industries.py": "b08f2eab755f32895ac1f4681c743b94b9e5706faa5b26c0b239d6e8ec6f06b7",
+    "src/empire/plugins/collectors/tdx_unlock_industry_source.py": "d17115e4bcc084670211b520d28b2f3c4faff00b4e43ca6cac4252565d1bee94",
+    "src/empire/plugins/collectors/tdx_unlock_industries.py": "e21ac4104d83dca31485b5c792bb8437ff512a7f6c6d59bef4e109c305e888ea",
+    "src/empire/plugins/datasets/unlock_industries.py": "c8c171ea32e3bae65c727bdedf85b839179f6c1df0a217dd031f20efcd8c2f6b",
+    "src/empire/plugins/data/unlock_industries.py": "c168ce72ad0d174af49af6991f4231aae92c3569713a386a911828231ea74c24",
+    "src/empire/plugins/ui/unlock_industries.py": "6e06c6b52a1536333e4879574960e253531c483c3b20eeb9d8e2fa66d393126c",
+    "scripts/create_unlock_industry_schema.py": "9661c9cd1b5cef1feab58a9f92bbf2ad1a965d115adb9bca2c9e66d736e25b42",
+    "scripts/verify_unlock_industries.py": "3c6e9db456718a8c518b370fc137149eaf5fd31823eff6fb3885074a2176ba5b"
+  },
+  "desktop_sql_sample": {
+    "unlock_month": "2028-08-01",
+    "industry": "造纸",
+    "basis_date": "2026-10-13",
+    "shares": "110000.00000000",
+    "unlock_value": "3131700.00000000",
+    "market_cap": "213862763458.31000000",
+    "negotiable_cap": "197803477405.56000000",
+    "market_percent": "0.00146435",
+    "float_percent": "0.00158324",
+    "content_hash": "33f0fb5116c58d780337f3161d668f31ca4cbe490d344919c896b101ae9b7ed7",
+    "version_observed_at": "2026-10-14 14:18:39.961882"
+  },
+  "release": {
+    "verified_at_utc": "2026-10-14T06:59:09Z",
+    "exe_sha256": "ad98a4d636fb569a48cb5c01150b0de845e0387850542ef64d59edf9e54a9a44",
+    "passed": 2549,
+    "skipped": [
+      {
+        "test": "test_large_state_bounded_transfer_and_other_unit_preserved",
+        "reason": "Explicit isolated drill opt-in required"
+      },
+      {
+        "test": "test_concurrency_and_rollback",
+        "reason": "Explicit isolated drill opt-in required"
+      },
+      {
+        "test": "test_missing_units_manifest_and_noop",
+        "reason": "Explicit isolated drill opt-in required"
+      },
+      {
+        "test": "test_initial_unit_state_and_owner_validation",
+        "reason": "Explicit isolated drill opt-in required"
+      },
+      {
+        "test": "test_preflight_is_read_only_allowlisted_and_rejects_extra_source",
+        "reason": "Explicit isolated drill opt-in required"
+      }
+    ],
+    "failures": 0,
+    "log": "build/unlock-industry-release.log",
+    "portable_distribution": {
+      "chinese_space_path": true,
+      "packaged_smoke": true,
+      "first_run_prepared_config": true,
+      "config_recheck": true
+    },
+    "config_preserved": true
+  },
+  "desktop": {
+    "real": true,
+    "working_directory": "C:/Windows",
+    "catalog": "大小非解禁行业",
+    "default_page_rows": 200,
+    "industry": "造纸",
+    "industry_rows": 8,
+    "start": "2028-08-01",
+    "filtered_rows": 1,
+    "screenshots": [
+      "build/unlock-industry-desktop.png",
+      "build/unlock-industry-desktop-month.png"
+    ],
+    "normal_exit": true,
+    "window_handoff": "Completed: holders chat reports packaged Empire visible after its acceptance; no additional window operation"
+  },
+  "test_service_cleanup": {
+    "port": 13338,
+    "verified_datadir": "build/shareholder-mysql/data",
+    "normal_shutdown": true,
+    "listener_absent": true,
+    "connection_close_note": "SHUTDOWN returned successfully; SQLAlchemy close attempted rollback after server exit and received expected 2013; listener independently confirmed absent",
+    "production_mysql_untouched": true
+  },
+  "shared_handoff": {
+    "reported_by": "01a13119-bca9-7d71-b05c-fa8dd8faa247",
+    "shared_operations_complete": true,
+    "visible_desktop_preserved": true,
+    "pending_stream_reported": 0,
+    "source_and_review_unchanged_reported": true,
+    "industry_evidence_only_update": true
+  }
+}

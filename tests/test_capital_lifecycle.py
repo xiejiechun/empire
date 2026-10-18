@@ -41,6 +41,8 @@ def configured(cls):
     c.ingest = Publisher()
     c.query = SimpleNamespace(securities=AsyncMock(return_value=[STOCK, dict(market='SH', code='688111', name='第二证券')]))
     c.query.issue_detail_candidates = AsyncMock(return_value=[])
+    c.query.dividend_history_proofs = AsyncMock(return_value={
+        'SH:688110': '2026-01-01T00:00:00+00:00', 'SH:688111': '2026-01-01T00:00:00+00:00'})
     c.query.verified_issue_candidates = AsyncMock(return_value=[])
     c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
     c.confirmation = SimpleNamespace(page_status=AsyncMock(return_value={'status': 'complete'}))
@@ -73,11 +75,13 @@ async def test_all_units_enqueued_before_archive_confirmation(cls):
     assert not task.done()
     gate.set()
     result = await task
-    assert result['collected'] == (2 if c.kind == 'dividends' else 1)
+    assert result['collected'] == 1
     if c.kind == 'dividends':
-        assert [p[4] for p in bodies] == ['688110', '688111']
+        assert bodies == [['0', '0', '2025-12-31', 'szzs desc', '', '0', '1', '10000']]
     else:
         assert [p[-1] for p in bodies] == (['10000', '1001'] if c.kind == 'additional_issues' else ['10000'])
+        assert bodies[0] == (['0', '', '1', '1', '10000'] if c.kind == 'additional_issues'
+                             else ['', '1', '1', '10000'])
 
 
 @pytest.mark.parametrize('cls', CLASSES)
@@ -97,7 +101,7 @@ async def test_duplicate_replacing_missing_row_fails_without_checkpoint(cls):
     assert diagnostic['status_code'] == 200 and diagnostic['raw_body']
     assert diagnostic['observed_bytes'] > 0
     if c.kind == 'dividends':
-        assert diagnostic['metadata']['security'] == STOCK
+        assert diagnostic['metadata']['report_date'] == '2025-12-31'
 
 
 async def test_old_dividend_checkpoint_requires_explicit_maintenance():
@@ -110,20 +114,19 @@ async def test_old_dividend_checkpoint_requires_explicit_maintenance():
 
 async def test_resume_skips_already_enqueued_units_without_waiting_for_archive():
     c, bodies = configured(TdxDividendsCollector)
-    original = c.http.request.side_effect
+    original = c.ingest.publish_page
     async def interrupted(*args, **kw):
-        if len(bodies) == 1:
-            raise asyncio.CancelledError
-        return await original(*args, **kw)
-    c.http.request.side_effect = interrupted
+        await original(*args, **kw)
+        raise asyncio.CancelledError
+    c.ingest.publish_page = interrupted
     with pytest.raises(asyncio.CancelledError):
         await c.execute()
     assert c.ingest.state['cursor']['index'] == 1
     c.confirmation.page_status.assert_not_awaited()
-    c.http.request.side_effect = original
+    c.ingest.publish_page = original
     await c.execute(baseline_revision=c.ingest.state['revision'])
-    assert [p[4] for p in bodies] == ['688110', '688111']
-    assert c.ingest.events[-1].raw_payload['manifest']['count'] == 2
+    assert len(bodies) == 2  # Restore the full source set, then skip the committed security.
+    assert c.ingest.events[-1].raw_payload['manifest']['count'] == 1
 
 
 @pytest.mark.parametrize('cls', CLASSES)
@@ -163,7 +166,7 @@ async def test_pool_change_automatically_starts_a_new_batch_without_skipping():
 async def test_valid_empty_response_requires_only_one_read_per_unit(cls):
     c, _ = configured(cls)
     c.query.securities.return_value = [STOCK]
-    body = source(c.kind, rows=[], total=1 if c.kind == 'dividends' else 0)
+    body = source(c.kind, rows=[], total=0)
     c.http.request.side_effect = [httpx.Response(200, json=body)]
     assert (await c.execute())['collected'] == 0
     assert c.http.request.await_count == 1

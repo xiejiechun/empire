@@ -5,6 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
+from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.plugin import PluginContext
 from empire.core.manager import Registry
 from empire.core.redaction import Redactor
@@ -22,6 +23,55 @@ from empire.plugins.infra.settings import SettingsStore
 
 POLICY = {"enabled": True, "mode": "manual", "interval_seconds": 300,
           "daily_time": "18:00", "request_retries": 2}
+
+
+async def test_batch_restarts_paused_deduplicates_and_continues_after_failure():
+    control, collector, _, _ = await setup()
+    try:
+        await control.pause('stocks')
+        result = await control.batch('start', ['missing', 'stocks', 'stocks'])
+        assert [row['status'] for row in result['results']] == ['failed', 'success']
+        await asyncio.sleep(0)
+        assert len(collector.calls) == 1
+        assert control.settings.mysql.data['task']['stocks']['enabled']
+        assert (await control.batch('start', ['stocks']))['results'][0]['status'] == 'skipped'
+        assert (await control.batch('stop', ['stocks']))['results'][0]['status'] == 'success'
+        assert not control.state['jobs']['stocks']['active']
+        assert not control.settings.mysql.data['task']['stocks']['enabled']
+        assert control.state['jobs']['stocks']['next_due'] is None
+        await control.set_archived('stocks')
+        assert (await control.batch('start', ['stocks']))['results'][0]['status'] == 'skipped'
+    finally:
+        await control.stop()
+
+
+async def test_archive_stops_active_task_hides_it_and_survives_redis_loss():
+    control, collector, redis, _ = await setup()
+    try:
+        await control.run('stocks')
+        await asyncio.sleep(0)
+        await control.set_archived('stocks')
+        assert not control.state['jobs']['stocks']['active']
+        assert (await control.workspace())['jobs'] == []
+        assert (await control.workspace(status='archived'))['jobs'][0]['id'] == 'stocks'
+        with pytest.raises(ValueError, match='归档'):
+            await control.run('stocks')
+        mysql = control.settings.mysql
+    finally:
+        await control.stop()
+    recovered, _, _, _ = await setup(mysql=mysql)
+    try:
+        assert recovered.state['jobs']['stocks']['policy']['archived']
+        await recovered.configure('stocks', POLICY)
+        assert recovered.state['jobs']['stocks']['policy']['archived']
+        await recovered.set_archived('stocks', False)
+        assert (await recovered.workspace())['jobs'][0]['policy']['enabled']
+        await recovered.pause('stocks')
+        await recovered.set_archived('stocks')
+        await recovered.set_archived('stocks', False)
+        assert not recovered.state['jobs']['stocks']['policy']['enabled']
+    finally:
+        await recovered.stop()
 
 
 def test_all_new_task_policies_default_to_proxy_first():
@@ -95,6 +145,22 @@ async def setup(redis=None, mysql=None):
     return control, collector, redis, http
 
 
+async def test_paused_history_keeps_only_display_progress():
+    control, collector, _, _ = await setup()
+    collector.health = lambda: dict(completed_units=120, total_units=573, pages=4754,
+                                    collected=90000, codes=['private business array'])
+    try:
+        await control.run('stocks')
+        await asyncio.sleep(0)
+        await control.pause('stocks')
+        record = control.state['history'][0]
+        assert record['status'] == 'paused'
+        assert record['result'] == dict(completed_units=120, total_units=573,
+                                        pages=4754, collected=90000)
+    finally:
+        await control.stop()
+
+
 async def test_control_remains_available_when_one_collector_is_disabled():
     control, collector, _, _ = await setup()
     assert "source" not in control.manifest.requires
@@ -137,7 +203,7 @@ async def test_new_run_clears_only_current_failure_and_failed_admission_rolls_ba
         await http.close()
 
 
-async def test_task_pagination_groups_by_source_before_slicing():
+async def test_tasks_return_all_matches_grouped_by_source():
     from copy import deepcopy
     from dataclasses import replace
     control, _, _, _ = await setup()
@@ -148,8 +214,9 @@ async def test_task_pagination_groups_by_source_before_slicing():
             control.state['jobs'][ident] = deepcopy(control.state['jobs']['stocks'])
         result = await control.workspace('tasks', limit=2)
         following = await control.workspace('tasks', offset=2, limit=2)
-        jobs = result['jobs'] + following['jobs']
-        assert [job['id'] for job in jobs] == ['a', 'b', 'z', 'stocks']
+        assert [job['id'] for job in result['jobs']] == ['a', 'b', 'z', 'stocks']
+        assert following['jobs'] == result['jobs']
+        assert result['offset'] == following['offset'] == 0
     finally:
         await control.stop()
 
@@ -228,11 +295,22 @@ async def test_proxy_policy_is_snapshotted_for_run_and_does_not_leak_context():
         await http.close()
 
 
-@pytest.mark.parametrize("field,value", [("request_retries", 8), ("daily_time", "25:00"),
+@pytest.mark.parametrize("field,value", [("request_retries", 101), ("daily_time", "25:00"),
                                          ("interval_seconds", 0), ("enabled", "yes")])
 def test_invalid_settings(field, value):
     with pytest.raises(ValueError):
         validate_policy({**POLICY, field: value})
+
+
+@pytest.mark.parametrize("retries", [0, 5, 6, 99, 100])
+def test_request_retry_range(retries):
+    assert validate_policy({**POLICY, "request_retries": retries})["request_retries"] == retries
+
+
+@pytest.mark.parametrize("retries", [-1, 101, True, 1.5, "100"])
+def test_invalid_request_retry_range(retries):
+    with pytest.raises(ValueError, match="0～100"):
+        validate_policy({**POLICY, "request_retries": retries})
 
 
 @pytest.mark.parametrize("seconds", [1, 7, 59, 90, 2592000])
@@ -411,6 +489,35 @@ async def test_failure_text_is_redacted_before_run_history_is_persisted():
         await http.close()
 
 
+async def test_source_gap_outcome_is_separate_and_next_complete_clears_notice():
+    control, source, redis, http = await setup()
+    async def limited(**kwargs):
+        raise CollectionSourceGap('有效数据已归档；source gap example-password')
+    source.execute = limited
+    source.health = lambda: dict(source_gap_units=2, source_identity_gaps=3, failed_units=0,
+                                  processed_units=30, total_units=30, collected=300)
+    try:
+        await control.run('stocks')
+        await control.tasks['stocks']
+        row = control.state['history'][0]
+        assert row['status'] == 'source_gap' and not row['error'] and row['notice']
+        assert 'example-password' not in redis.data[control.key]
+        assert row['result']['source_identity_gaps'] == 3
+        assert (await control.workspace(status='source_gap'))['counts']['source_gap'] == 1
+        assert (await control.workspace(section='history', status='error'))['history'] == []
+        async def complete(**kwargs):
+            return {'collected': 301}
+        source.execute = complete
+        await control.run('stocks')
+        await control.tasks['stocks']
+        assert control.state['jobs']['stocks']['last_status'] == 'complete'
+        assert not control.state['jobs']['stocks']['notice']
+        assert control.state['history'][1] == row
+    finally:
+        await control.stop()
+        await http.close()
+
+
 async def test_settings_rollback_during_running_task_does_not_leave_stale_active_state():
     control, source, redis, http = await setup()
     try:
@@ -430,10 +537,12 @@ async def test_settings_rollback_during_running_task_does_not_leave_stale_active
         await http.close()
 
 
-async def test_mysql_settings_survive_empty_redis_and_override_stale_cache():
+@pytest.mark.parametrize("retries", [2, 100])
+async def test_mysql_settings_survive_empty_redis_and_override_stale_cache(retries):
     mysql = MySQL()
     control, _, redis, http = await setup(mysql=mysql)
-    policy = validate_policy({**POLICY, "mode": "interval", "interval_seconds": 700})
+    policy = validate_policy({**POLICY, "mode": "interval", "interval_seconds": 700,
+                              "request_retries": retries})
     try:
         await control.configure("stocks", policy)
         await http.configure_site("sina", {"min_interval_ms": 4200})
@@ -482,3 +591,23 @@ async def test_mysql_policy_wins_over_stale_redis_and_reschedules():
     finally:
         await control.stop()
         await http.close()
+
+
+async def test_clear_run_history_preserves_active_checkpoint_and_other_project():
+    from copy import deepcopy
+    control, _, redis, _ = await setup()
+    try:
+        control.state['history'] = [dict(task_id=project, finished_at=i)
+            for i, project in enumerate(['stocks', 'retired', 'stocks'])]
+        jobs = deepcopy(control.state['jobs'])
+        assert await control.clear_history('stocks') == 2
+        assert [r['task_id'] for r in control.state['history']] == ['retired']
+        assert control.state['jobs'] == jobs
+        saved = json.loads(redis.data[control.key])
+        assert saved['history'] == control.state['history'] and saved['jobs'] == jobs
+        assert await control.clear_history('*') == 1
+        assert await control.clear_history('*') == 0
+        with pytest.raises(ValueError):
+            await control.clear_history('bad:*')
+    finally:
+        await control.stop()

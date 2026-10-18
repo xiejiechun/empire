@@ -1,0 +1,180 @@
+{
+  "project": "ths-index-prices",
+  "error_ids": [
+    "31bd2442c85d45e8ba61dba7abbd3e85",
+    "b1a7cc46420a497a87c3e32be6bd1c28",
+    "a07d42194c11469c9026c04b52d631ca"
+  ],
+  "registered_errors": [
+    {
+      "id": "31bd2442c85d45e8ba61dba7abbd3e85",
+      "stage": "http",
+      "error": "Client error '404 Not Found' for url 'https://d.10jqka.com.cn/v4/line/zs_1B0699/01/2022.js'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404",
+      "request_url": "https://d.10jqka.com.cn/v4/line/zs_1B0699/01/2022.js",
+      "status_code": 404,
+      "created_at": "2026-10-10T17:03:51.693897+00:00"
+    },
+    {
+      "id": "b1a7cc46420a497a87c3e32be6bd1c28",
+      "stage": "http",
+      "error": "Client error '404 Not Found' for url 'https://d.10jqka.com.cn/v4/line/zs_1B0689/01/2019.js'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404",
+      "request_url": "https://d.10jqka.com.cn/v4/line/zs_1B0689/01/2019.js",
+      "status_code": 404,
+      "created_at": "2026-10-10T17:03:13.150848+00:00"
+    },
+    {
+      "id": "a07d42194c11469c9026c04b52d631ca",
+      "stage": "http",
+      "error": "Client error '404 Not Found' for url 'https://d.10jqka.com.cn/v4/line/zs_1B0682/01/2019.js'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404",
+      "request_url": "https://d.10jqka.com.cn/v4/line/zs_1B0682/01/2019.js",
+      "status_code": 404,
+      "created_at": "2026-10-10T16:02:53.936673+00:00"
+    }
+  ],
+  "root_cause": "Annual files advertised by last.js temporarily returned 404, later returned valid 200 via shared proxy downloader; evidence does not determine whether origin or an intermediate route generated the transient 404.",
+  "implementation": "Only THS index YYYY requests declare retry_not_found=True. Shared downloader uses the same bounded retry budget/backoff/timeout/route allocation and permits. Exhaustion fails without advancing the annual checkpoint; last.js missing-interface semantics and default 404 behavior for other sources unchanged.",
+  "source_diagnosis": {
+    "results": [
+      {
+        "code": "1B0699",
+        "unit": "last",
+        "status": 200,
+        "bytes": 11075,
+        "start": "2022-12-30",
+        "end": "2026-10-09",
+        "years": {
+          "2022": 1,
+          "2023": 242,
+          "2024": 242,
+          "2025": 243,
+          "2026": 183
+        },
+        "total": 911,
+        "recent_first": "2026-03-13"
+      },
+      {
+        "code": "1B0699",
+        "unit": 2022,
+        "status": 200,
+        "bytes": 119,
+        "count": 1,
+        "first": "2022-12-30",
+        "last": "2022-12-30"
+      },
+      {
+        "code": "1B0689",
+        "unit": "last",
+        "status": 200,
+        "bytes": 10301,
+        "start": "2019-12-31",
+        "end": "2026-10-09",
+        "years": {
+          "2019": 1,
+          "2020": 243,
+          "2021": 243,
+          "2022": 242,
+          "2023": 242,
+          "2024": 242,
+          "2025": 243,
+          "2026": 183
+        },
+        "total": 1639,
+        "recent_first": "2026-03-13"
+      },
+      {
+        "code": "1B0689",
+        "unit": 2019,
+        "status": 200,
+        "bytes": 117,
+        "count": 1,
+        "first": "2019-12-31",
+        "last": "2019-12-31"
+      },
+      {
+        "code": "1B0682",
+        "unit": "last",
+        "status": 200,
+        "bytes": 10446,
+        "start": "2019-12-31",
+        "end": "2026-10-09",
+        "years": {
+          "2019": 1,
+          "2020": 243,
+          "2021": 243,
+          "2022": 242,
+          "2023": 242,
+          "2024": 242,
+          "2025": 243,
+          "2026": 183
+        },
+        "total": 1639,
+        "recent_first": "2026-03-13"
+      },
+      {
+        "code": "1B0682",
+        "unit": 2019,
+        "status": 200,
+        "bytes": 118,
+        "count": 1,
+        "first": "2019-12-31",
+        "last": "2019-12-31"
+      }
+    ],
+    "network": {
+      "proxy_requests": 6
+    }
+  },
+  "verification": {
+    "unit_tests": "36 passed",
+    "private_integration_tests": "10 passed, including recovery and persistent annual 404 through shared HTTP, collector, Redis, archive and formal query",
+    "live": "docs/evidence/index-annual-404-live-2026-10-11.json",
+    "release": {
+      "verified_at": "2026-10-10T17:29:48Z",
+      "executable_sha256": "9d5bda0b4195c7c74e558771c4092a4ba127314bd4a2dd9b8fe768ff683a99fa",
+      "tests": {
+        "passed": 2044,
+        "skipped": 5,
+        "warnings": 2
+      },
+      "gate_passed": true,
+      "log": "build/annual404-release.log"
+    }
+  },
+  "integrity": {
+    "lifecycle": "Same last directory, annual initialization, recent update, ordered publication and SQL recovery; only a declared temporary transport failure adds shared bounded attempts.",
+    "set_validation": "Annual source_count, strict dates, first-year boundary and overlap comparisons preserved; real three one-day years source/SQL content hashes match.",
+    "failed_checkpoint": "Persistent 404 exhausts budget with next_year=1990 and next_index=0 in isolated test; no absent-year proof generated.",
+    "end_to_end": "Recovery through shared downloader, Redis, unified archive and formal query tested; exact known real years verified.",
+    "development_vs_actual": "Three finite error years verified. All 573-index history initialization remains incomplete."
+  },
+  "not_applicable": {
+    "schema_migration": "No schema, canonical content, data key or coverage-validation rule change; existing SQL and fingerprints remain valid.",
+    "capacity_measurement": "No storage/query/normalization changes; current index capacity evidence still passes source/DDL bindings."
+  },
+  "workspace": "Preserved previous changes. Empire peer chat idle; RouterProxy chat idle at start. Desktop normally closed, no second archiver while app running.",
+  "error_cleanup": {
+    "ids": [
+      "31bd2442c85d45e8ba61dba7abbd3e85",
+      "b1a7cc46420a497a87c3e32be6bd1c28",
+      "a07d42194c11469c9026c04b52d631ca"
+    ],
+    "removed": 3,
+    "before": 300,
+    "remaining": 297,
+    "other_ids_preserved": true
+  },
+  "desktop": {
+    "executable": "D:\\project\\empire\\dist\\Empire\\Empire.exe",
+    "local_services_connected": true,
+    "action": "Continue collection from existing checkpoint; no restart-from-zero or saved policy change",
+    "observed_at": "2026-10-11T01:32:23.930375+08:00",
+    "status": "collecting",
+    "records": 746906,
+    "processed_pages": 3326,
+    "declared_index_scope": 573,
+    "current_index_name": "中证环保",
+    "current_execution_error": null,
+    "round_archive_completion_confirmed": false
+  },
+  "config_preserved": true
+}

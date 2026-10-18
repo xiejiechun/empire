@@ -257,7 +257,7 @@ async def test_invalid_response_preserves_cursor(financial_db):
     assert await collector.ingest.checkpoint(collector.job_key) == before
 
 
-async def test_resume_starts_at_unpublished_security_and_scope_conflict(financial_db, monkeypatch):
+async def test_resume_starts_at_unpublished_security(financial_db, monkeypatch):
     manager, query, collector, _ = financial_db
     second = {**STOCK, 'code': '601140'}
     monkeypatch.setattr(query, '_securities', lambda conn: [STOCK, second])
@@ -271,16 +271,103 @@ async def test_resume_starts_at_unpublished_security_and_scope_conflict(financia
         await collector.execute()
     checkpoint = await collector.ingest.checkpoint(collector.job_key)
     assert checkpoint['cursor']['index'] == 1
-    monkeypatch.setattr(query, '_securities', lambda conn: [STOCK])
-    with pytest.raises(ValueError, match='断点'):
-        await collector.execute(baseline_revision=checkpoint['revision'])
-    assert await collector.ingest.checkpoint(collector.job_key) == checkpoint
-    monkeypatch.setattr(query, '_securities', lambda conn: [STOCK, second])
+    # Presentation order and names do not change the stable ordered scope.
+    monkeypatch.setattr(query, '_securities', lambda conn: [second, {**STOCK, 'name': '新名称'}])
     monkeypatch.setattr(collector, 'fetch', original)
     collector.http.request.reset_mock()
     await asyncio.wait_for(collector.execute(baseline_revision=checkpoint['revision']), 10)
     assert collector.http.request.await_count == 1
     assert '601140' in collector.http.request.call_args.args[1]
+
+
+@pytest.mark.parametrize('change', ['add_before_cursor', 'remove_completed', 'same_count_new_key'])
+async def test_scope_change_rebuilds_complete_round_and_keeps_old_queue(financial_db, monkeypatch, change):
+    from empire.plugins.datasets.financial_statements import digest
+    manager, query, collector, _ = financial_db
+    second, third = {**STOCK, 'code': '601140'}, {**STOCK, 'code': '601138'}
+    monkeypatch.setattr(query, '_securities', lambda conn: [STOCK, second])
+    original = collector.fetch
+    async def interrupted(stock, **options):
+        if stock['code'] == second['code']:
+            raise asyncio.CancelledError()
+        return await original(stock, **options)
+    monkeypatch.setattr(collector, 'fetch', interrupted)
+    archive, store = manager.registry.get('archive.worker'), manager.registry.get('redis.store')
+    async with archive.lock:
+        with pytest.raises(asyncio.CancelledError):
+            await collector.execute()
+        before = await collector.ingest.checkpoint(collector.job_key)
+        assert before['cursor']['index'] == 1 and await store.client.xlen(store.stream) == 1
+        changed = {'add_before_cursor': [third, STOCK, second],
+                   'remove_completed': [second], 'same_count_new_key': [third, second]}[change]
+        monkeypatch.setattr(query, '_securities', lambda conn: changed)
+        # A failed first unit cannot overwrite even the superseded checkpoint.
+        monkeypatch.setattr(collector, 'fetch', AsyncMock(side_effect=ValueError('test first unit failure')))
+        with pytest.raises(ValueError, match='first unit failure'):
+            await collector.execute(baseline_revision=before['revision'])
+        assert await collector.ingest.checkpoint(collector.job_key) == before
+        assert await store.client.xlen(store.stream) == 1
+        monkeypatch.setattr(collector, 'fetch', original)
+        collector.http.request.reset_mock()
+        task = asyncio.create_task(collector.execute(baseline_revision=before['revision']))
+        try:
+            for _ in range(200):
+                if collector.stats['status'] == 'awaiting_archive':
+                    break
+                if task.done():
+                    await task
+                await asyncio.sleep(.02)
+            current = await collector.ingest.checkpoint(collector.job_key)
+            assert current['cursor']['phase'] == 'awaiting_archive'
+            assert current['cursor']['batch_id'] != before['cursor']['batch_id']
+            assert current['cursor']['scope_hash'] == digest([s['market'] + ':' + s['code'] for s in changed])
+            assert current['cursor']['collected'] == 2 * len(changed)
+            assert collector.http.request.await_count == len(changed)
+            assert await store.client.xlen(store.stream) == len(changed) + 2
+            assert not task.done()  # Old pending units do not serialize new downloads.
+            task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
+            # An already fully queued round finishes without reading a newer pool.
+            monkeypatch.setattr(query, 'securities', AsyncMock(side_effect=AssertionError('must finish queued round')))
+            task = asyncio.create_task(collector.execute(baseline_revision=current['revision']))
+            await asyncio.sleep(.05)
+            assert not task.done()
+        except BaseException:
+            task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
+            raise
+    result = await asyncio.wait_for(task, 15)
+    assert result['phase'] == 'complete'
+    assert await store.client.xlen(store.stream) == 0
+    for stock in [STOCK, *changed]:
+        assert len(await query.list_statements(stock['code'])) == 2
+
+
+async def test_scope_rebuild_interrupted_resumes_new_batch(financial_db, monkeypatch):
+    manager, query, collector, _ = financial_db
+    from empire.plugins.datasets.financial_statements import digest
+    first, second = {**STOCK, 'code': '601138'}, {**STOCK, 'code': '601140'}
+    old = dict(phase='fetch', batch_id='old', index=1, pages=1, collected=2,
+               units=2, scope_hash=digest(['SH:601139', 'SH:601140']), rolling=digest([]))
+    await collector.ingest.advance_checkpoint(job_key=collector.job_key, expected_revision=0, cursor=old)
+    monkeypatch.setattr(query, '_securities', lambda conn: [first, second])
+    original = collector.fetch
+    async def interrupted(stock, **options):
+        if stock['code'] == second['code']:
+            raise asyncio.CancelledError()
+        return await original(stock, **options)
+    monkeypatch.setattr(collector, 'fetch', interrupted)
+    with pytest.raises(asyncio.CancelledError):
+        await collector.execute(baseline_revision=1)
+    state = await collector.ingest.checkpoint(collector.job_key)
+    assert state['cursor']['batch_id'] != 'old' and state['cursor']['index'] == 1
+    assert state['cursor']['pages'] == 1 and state['cursor']['collected'] == 2
+    monkeypatch.setattr(collector, 'fetch', original)
+    collector.http.request.reset_mock()
+    result = await asyncio.wait_for(collector.execute(baseline_revision=state['revision']), 15)
+    assert result['batch_id'] == state['cursor']['batch_id'] and result['phase'] == 'complete'
+    assert collector.http.request.await_count == 1 and '601140' in collector.http.request.call_args.args[1]
+    assert len(await query.list_statements(first['code'])) == len(await query.list_statements(second['code'])) == 2
 
 
 async def test_sql_failure_retains_message(financial_db, monkeypatch):

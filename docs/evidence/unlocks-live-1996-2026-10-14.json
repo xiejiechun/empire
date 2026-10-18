@@ -1,0 +1,121 @@
+{
+  "checked_at": "2026-10-13T17:15:37.728378+00:00",
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "network": {
+    "proxy_requests": 2
+  },
+  "units": {
+    "1996-05-01|SH": {
+      "count": 1,
+      "details": 8,
+      "digest": "764522b2c382d58f2de366bdd4ac43d9939a1fe4bd24ea1d0628a43e48191364"
+    },
+    "1996-05-01|SZ": {
+      "count": 0,
+      "details": 0,
+      "digest": "643d5437104296e21d906ecb15b2c96ad278f20cfc4af53b12bb6069bd853726"
+    },
+    "1996-05-01|BJ": {
+      "count": 0,
+      "details": 0,
+      "digest": "643d5437104296e21d906ecb15b2c96ad278f20cfc4af53b12bb6069bd853726"
+    }
+  },
+  "passed": true,
+  "representative_parent": {
+    "unified_code": "600811.SH",
+    "unlock_date": "1996-05-10",
+    "reason_code": "100002",
+    "name": "*ST东方",
+    "industry": "农业综合",
+    "reason": "发行限售",
+    "shares": "556900",
+    "total_shares": "189000000",
+    "group_key": "80dfc025476c8adcc86b46a196b166b78073f88d97340f59dd20c1139a847d44",
+    "occurrence": 1,
+    "record_key": "73387f7ec259136e05298b71b9cdacf436d5ae6414ee33e76b886578a56c4c08",
+    "detail_status": "present",
+    "detail_count": 8
+  },
+  "representative_detail": {
+    "group_key": "80dfc025476c8adcc86b46a196b166b78073f88d97340f59dd20c1139a847d44",
+    "unified_code": "600811.SH",
+    "unlock_date": "1996-05-10",
+    "reason_code": "100002",
+    "holder": "关国亮",
+    "reason": "发行限售",
+    "shares": "86000",
+    "occurrence": 1,
+    "record_key": "135f877cf70af8401dc2a646e03e83ee3376360695b6ea980f418ccbed6a49ee"
+  },
+  "audit": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "核验1条列表；必需字段缺失0；来源空明细组0",
+      "blocking": true
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "列表事实与共享明细分别核对业务键集合及正文摘要",
+      "blocking": true
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "完整月份、三市场及最终范围集合证明核验",
+      "blocking": true
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "股数精确换算；并列列表保留；共享明细不重复计数，未知不填零",
+      "blocking": true
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "匹配完整范围的SQL或可信摘要确认须在3天内",
+      "blocking": true
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "来源没有公告可用日期；解禁日期不能证明历史信号已公开",
+      "blocking": false
+    }
+  ],
+  "cursor": {
+    "phase": "complete",
+    "start": "1996-05-01",
+    "end": "1996-05-01",
+    "index": 1,
+    "market_index": 0,
+    "response_hash": "",
+    "page": 4,
+    "collected": 1,
+    "details": 8,
+    "rolling": "036fb91130993e85a7a9605cd038f7eb855300ecc8f6d75b94679daf4f813ef3",
+    "contract": 1,
+    "batch_id": "5e791b25fb7d43d8b3686e5c7e14aa75",
+    "force": true,
+    "review_index": 0
+  },
+  "pending_stream": 0,
+  "errors": {
+    "revision": "0",
+    "total": 0,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": []
+  },
+  "query_sample": {
+    "list_count": 1,
+    "detail_count": 8
+  }
+}

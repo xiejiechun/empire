@@ -194,5 +194,5 @@ class DownloadSettingsUiPlugin(UiPlugin):
                               autostart=True, description="管理单响应、共享缓冲和文件下载资源预算")
 
     def create_pages(self):
-        return (PageContribution("downloads", "下载资源", DownloadSettingsPage, "采集管理", 4,
+        return (PageContribution("downloads", "下载资源", DownloadSettingsPage, "采集管理", 5,
                                  "管理下载大小、内存缓冲和磁盘配额"),)

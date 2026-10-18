@@ -1,0 +1,59 @@
+{
+  "scope": "仅当前沪深北已审核规则，不补更早历史；保留已有历史段",
+  "parameters": 77,
+  "source_sql_equal": true,
+  "pending_stream": 0,
+  "interval_seconds": 259200,
+  "live": "trading-rules-current-live-2026-10-12.json",
+  "repair": "trading-rules-current-repair-2026-10-12.md",
+  "capacity": "trading-rules-capacity-2026-10-12.json",
+  "verification": {
+    "specialist_and_isolated_integration": "54 passed in 115.12s; MySQL13334独立UUID库",
+    "ruff": "src tests scripts passed",
+    "mypy": "项目配置的2文件范围passed",
+    "capacity_bindings": "all match"
+  },
+  "incomplete": [
+    "沪深数值T+1正式依据",
+    "当前数量递增契约",
+    "北交所涨跌价格舍入依据",
+    "现行过户费表及最低收费"
+  ],
+  "release": {
+    "report": "trading-rules-current-release-2026-10-12.json",
+    "verified_at_utc": "2026-10-12T06:44:50Z",
+    "passed": 2231,
+    "skipped": 5,
+    "failures": 0,
+    "executable_sha256": "58638fdde3532802fa03d31e27bbdb153d71c50261158b939d35bd620eb13010"
+  },
+  "desktop": {
+    "visible_final_exe": true,
+    "beijing_limit": {
+      "filtered_rows": 2,
+      "ratio_percent": 30,
+      "effective_start": "2026-07-06",
+      "citation": "3.3.11",
+      "citation_visible": true,
+      "screenshot": "build/trading-rules-current-bse-desktop.png"
+    },
+    "linked_task": {
+      "project": "rules-limit-rules",
+      "status": "已完成",
+      "mode": "固定间隔",
+      "interval_seconds": 259200,
+      "network": "代理优先，可回退直连",
+      "no_unsaved_draft": true,
+      "screenshot": "build/trading-rules-current-schedule.png"
+    },
+    "preparation": "正式查询七项检查见current-live；真实准备页面范围601139正在73项总检查，未将其当作本轮完成证据"
+  },
+  "not_applicable": [
+    "无DDL：仅原两表新增已审核参数及引用",
+    "单轮一完整批：无逐页等待归档流程",
+    "更早历史不在用户要求范围"
+  ],
+  "shared_config_doctor_evidence": "repurchase-desktop-2026-10-12.json",
+  "config_preserved": true,
+  "different_cwd_doctor": "共享发布聊天核验返回0、Redis/MySQL3307连通，详情见repurchase-desktop证据"
+}

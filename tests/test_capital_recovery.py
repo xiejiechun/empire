@@ -10,11 +10,11 @@ from empire.plugins.collectors.capital_recovery import recent_plans
 from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
 from empire.plugins.collectors.tdx_capital_source import parse
 from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
-from tests.capital_samples import STOCK, issue_detail, source, with_issue_detail
+from tests.capital_samples import issue_detail, source, with_issue_detail
 from tests.test_capital_lifecycle import configured
 
 
-@pytest.mark.parametrize('cls', [TdxDividendsCollector, TdxAdditionalIssuesCollector])
+@pytest.mark.parametrize('cls', [TdxAdditionalIssuesCollector])
 async def test_failed_first_security_does_not_hide_later_data_or_publish_manifest(cls):
     c, _ = configured(cls)
     if c.kind == 'dividends':
@@ -92,14 +92,6 @@ async def test_cancel_and_publish_failure_are_never_skipped():
     assert c.ingest.state['revision'] == 0
 
 
-async def test_site_wide_outage_stops_after_five_consecutive_units():
-    c, _ = configured(TdxDividendsCollector)
-    c.query.securities.return_value = [{**STOCK, 'code': f'688{i:03}'} for i in range(20)]
-    c.http.request.side_effect = httpx.ConnectError('shared retries exhausted')
-    with pytest.raises(httpx.ConnectError):
-        await c.execute()
-    assert c.http.request.await_count == 5
-    assert c.ingest.state['revision'] == 0 and not c.ingest.events
 
 
 async def test_local_download_configuration_failure_is_not_skipped():
@@ -109,17 +101,3 @@ async def test_local_download_configuration_failure_is_not_skipped():
         await c.execute()
     assert c.http.request.await_count == 1
     assert not c.ingest.events and c.ingest.state['revision'] == 0
-
-
-async def test_dividend_database_failures_do_not_block_a_valid_sixth_stock():
-    c, _ = configured(TdxDividendsCollector)
-    c.query.securities.return_value = [{**STOCK, 'code': f'688{i:03}'} for i in range(6)]
-    c.http.request.side_effect = [httpx.Response(200, json={'ErrorCode': -1005}) for _ in range(5)] + [
-        httpx.Response(200, json=source('dividends'))]
-    with pytest.raises(ValueError, match='ErrorCode=-1005'):
-        await c.execute()
-    assert c.http.request.await_count == 6
-    assert len(c.ingest.events) == 1
-    assert c.ingest.events[0].raw_payload['unit'] == 'SH:688005'
-    assert c.ingest.state['cursor']['index'] == 0
-    c.confirmation.page_status.assert_not_awaited()

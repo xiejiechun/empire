@@ -1,0 +1,35 @@
+{
+  "project": "ths-indices",
+  "handled": [
+    {
+      "id": "903d532f17794bfe8c7f1fe82d25f3a8",
+      "stage": "queue_publish",
+      "error": "Checkpoint is too large",
+      "url": ""
+    },
+    {
+      "id": "fbe491615d21420199861e473ba16bf0",
+      "stage": "http",
+      "error": "响应正文超过插件声明的字节上限",
+      "url": "https://q.10jqka.com.cn/zs/detail/code/399106/field/code/order/asc/page/1/size/10000/ajax/1/"
+    },
+    {
+      "id": "c0bb10926ab9471485eae2fef1edd603",
+      "stage": "http",
+      "error": "响应正文超过插件声明的字节上限",
+      "url": "https://q.10jqka.com.cn/zs/detail/code/399107/field/code/order/asc/page/1/size/10000/ajax/1/"
+    }
+  ],
+  "fixes": [
+    "断点仅存最多1000个来源指数编号，不存完整目录文字，保持16384字节上限",
+    "通用响应正式保存8MiB，原共享512MiB及其他额度保留，插件声明最多8MiB"
+  ],
+  "verification": "完整目录573项574源单元与正式查询内容摘要一致、99588成员、待归档0；来源399106与399107正常归档；1000项断点边界专项和重放回归通过",
+  "cleared_ids": [
+    "903d532f17794bfe8c7f1fe82d25f3a8",
+    "fbe491615d21420199861e473ba16bf0",
+    "c0bb10926ab9471485eae2fef1edd603"
+  ],
+  "cleared_count": 3,
+  "remaining": 0
+}

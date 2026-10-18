@@ -1,6 +1,7 @@
 """Bounded formal queries and independently measured preparation for capital actions."""
 import asyncio
 import json
+import re
 from datetime import UTC, datetime, timedelta
 from itertools import groupby
 
@@ -67,7 +68,7 @@ class CapitalDataPlugin:
             exists = conn.execute(text('SELECT 1 FROM dividend_plan WHERE TRUE LIMIT 1'),
                                   {'source': self.source}).first()
             if (state.get('identity_migration_pending') or
-                    (exists and state.get('contract_version') != 2)):
+                    (exists and state.get('contract_version') != 3)):
                 raise ValueError('分红业务键需要显式维护：关闭 Empire 后运行 scripts/migrate_dividend_identity.py')
 
     def _securities(self, conn):
@@ -81,6 +82,33 @@ class CapitalDataPlugin:
         def read():
             with self.mysql.read_engine.connect() as conn:
                 return self._securities(conn)
+        return await self.mysql.read(read)
+
+    async def dividend_report_dates(self):
+        """One bounded projection to retain already-known non-quarter report periods."""
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                values = conn.execute(text("SELECT DISTINCT JSON_UNQUOTE(JSON_EXTRACT(payload,'$.report_date')) "
+                    "FROM dividend_plan LIMIT 501")).scalars().all()
+                if len(values) > 500 or any(not isinstance(value, str) for value in values):
+                    raise ValueError('已有分红报告期集合无效或超出500期')
+                return values
+        return await self.mysql.read(read)
+
+    async def dividend_history_proofs(self):
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                state = read_state(conn, self.namespace, self.project_id, self.source)
+                proofs = {}
+                for key, value in state.get('units', {}).items():
+                    try:
+                        stamp = datetime.fromisoformat(value['history_discovered_at'])
+                        observed = datetime.fromisoformat(value['observed_at'])
+                        if stamp.tzinfo is not None and observed.tzinfo is not None and stamp <= observed <= datetime.now(UTC):
+                            proofs[key] = value['history_discovered_at']
+                    except (KeyError, TypeError, ValueError):
+                        continue  # Invalid proof forces source history discovery; it never skips a stock.
+                return proofs
         return await self.mysql.read(read)
 
     async def issue_detail_candidates(self):
@@ -100,11 +128,18 @@ class CapitalDataPlugin:
         from empire.plugins.data.issue_candidates import verified_candidates
         return await verified_candidates(self, rows, cutoff)
 
-    async def list_events(self, code='', market='', limit=51, offset=0):
+    async def list_events(self, code='', market='', limit=51, offset=0, start='', end='', status='', record_key=''):
         if market not in ('', 'SH', 'SZ', 'BJ') or (code and (not code.isascii() or not code.isdigit() or len(code) > 6)):
             raise ValueError('证券查询条件无效')
         if type(limit) is not int or not 1 <= limit <= 500 or type(offset) is not int or not 0 <= offset <= 1000000:
             raise ValueError('查询分页范围无效')
+        for value in (start, end):
+            if value and datetime.fromisoformat(value).date().isoformat() != value:
+                raise ValueError('方案日期须为 YYYY-MM-DD')
+        if start and end and start > end:
+            raise ValueError('方案起止日期倒置')
+        if not isinstance(status, str) or len(status) > 40 or record_key and not re.fullmatch('[0-9a-f]{64}', record_key):
+            raise ValueError('方案状态或业务键无效')
         def read():
             with self.mysql.read_engine.connect() as conn:
                 filters, params = [], dict(limit=limit, offset=offset)
@@ -114,6 +149,12 @@ class CapitalDataPlugin:
                 if market:
                     filters.append('RIGHT(unified_code,2)=:market')
                     params['market'] = market
+                for value, expression, key in ((start, 'event_date>=:start', 'start'), (end, 'event_date<=:end', 'end'),
+                        (status, "JSON_UNQUOTE(JSON_EXTRACT(payload,'$.status'))=:status", 'status'),
+                        (record_key, 'record_key=:record_key', 'record_key')):
+                    if value:
+                        filters.append(expression)
+                        params[key] = value
                 where = ' WHERE ' + ' AND '.join(filters) if filters else ''
                 records = conn.execute(text(f'SELECT s.*,RIGHT(s.unified_code,2) AS market,'
                     f'LEFT(s.unified_code,6) AS code FROM {self.table} s JOIN ('

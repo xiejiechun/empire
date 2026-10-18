@@ -6,7 +6,7 @@
     "src/empire/plugins/datasets/market_mapping.py": "6188364064a52f55ce6086efeb7fc1c0452f16c7a56a33f4798bcb3037c485b7",
     "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
     "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
-    "src/empire/plugins/data/kaipanla_products.py": "d456d418004ca129e6e1365166ef6771645f8f216fd8c2ffb95b664c615102ad",
+    "src/empire/plugins/data/kaipanla_products.py": "783fec6783dca6ad982799c5a300dad7cb04ece0d9cc640341c925ee1b6756ca",
     "scripts/measure_market_storage.py": "804259b388483484f61a12c2d662f36e84397e7aa908616bd40d8de334097417",
     "src/empire/plugins/datasets/kaipanla_products.py": "31a90500dfe07bb7999227e2601320cab03040befcaa3ee49947f4d04c7be4d6",
     "src/empire/plugins/collectors/kaipanla_products_source.py": "eb93e3686e6b06e098ad9b1d2106b36da80a828e5546355c98c0db6fd6d3ef72",
@@ -255,5 +255,14 @@
     "stock_daily_quote": "70f00dec7e5d2f1222d2fa3dfebd03603f60b84d6ed1996a976ff277f87e4e28",
     "stock_daily_quote_level": "61594723ca11609c1cc2104787b3a16a8285205ff381d91bcc56d255cef8fff4"
   },
-  "scope_revalidation": "新增独立更名表；原测量DDL原样归档，七项业务表定义不变；门禁逐表绑定当前DDL，原容量数值未重写。"
+  "scope_revalidation": "新增独立更名表；原测量DDL原样归档，七项业务表定义不变；门禁逐表绑定当前DDL，原容量数值未重写。",
+  "binding_amendments": [
+    {
+      "date": "2026-10-10",
+      "path": "src/empire/plugins/data/kaipanla_products.py",
+      "prior_sha256": "d456d418004ca129e6e1365166ef6771645f8f216fd8c2ffb95b664c615102ad",
+      "current_sha256": "783fec6783dca6ad982799c5a300dad7cb04ece0d9cc640341c925ee1b6756ca",
+      "proof": "仅将新增停牌专项登记到PreparationContribution；还原这段测试路径声明后整份文件SHA256与原测量绑定精确一致。正式day/page/covered/quote查询及导入/存储实现逐字未变，原容量数值与条件保留，不宣称本次重测208200业务头。"
+    }
+  ]
 }

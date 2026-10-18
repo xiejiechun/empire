@@ -87,5 +87,5 @@ class ProxyUiPlugin(UiPlugin):
                               autostart=True, description="代理上下线、隔离与直连回退统计")
 
     def create_pages(self):
-        return (PageContribution("proxies", "采集出口", ProxyPage, "采集管理", 3,
+        return (PageContribution("proxies", "采集出口", ProxyPage, "采集管理", 4,
                                  "代理出口状态和代理/直连请求统计", cache_policy="lru"),)

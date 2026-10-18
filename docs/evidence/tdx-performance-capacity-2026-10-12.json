@@ -1,0 +1,841 @@
+{
+  "checked_at": "2026-10-13T14:08:28.595601+00:00",
+  "bindings": {
+    "src/empire/contracts/tdx_performance.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+    "src/empire/plugins/datasets/tdx_performance.py": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
+    "src/empire/plugins/data/tdx_performance.py": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+    "scripts/measure_tdx_performance.py": "e96cb2489098e6d7d56217f4ce91f2d9cadf02ef4cf704ef16b3d4b5f34e5bc8"
+  },
+  "ddl_scopes": {
+    "earnings_forecast": "9033426446f7513e0f215cb8ac95e366664813d63dc47a50e2119358925a7a32",
+    "earnings_quick": "da4209d6e798076d8c9c8d738906c03cbfaf3b517867fdbb88c81fe5da227bb5",
+    "earnings_disclosure": "1771839ddd0292b4329595983d6d9721796cfdf6a269d5bb763103b7f428bc08",
+    "earnings_report": "5bd130574ecbbbccce57329cb37608257096f4952c82f91af26012d4daa443a5",
+    "shareholder_count": "9dfed8ebc1bffb3dc204ad0524871babe181a2de2fe1e176ed33af9c36928f18"
+  },
+  "measurements": {
+    "earnings_forecast_page_ms": 9.78309998754412,
+    "earnings_forecast_security_ms": 1.6238000243902206,
+    "earnings_forecast_detail_ms": 0.4120999947190285,
+    "earnings_forecast_range_ms": 2.517900022212416,
+    "earnings_forecast_coverage_ms": 548.5186000005342,
+    "earnings_forecast_unit_ms": 204.93800000986084,
+    "earnings_quick_page_ms": 15.00579999992624,
+    "earnings_quick_security_ms": 3.1204999540932477,
+    "earnings_quick_detail_ms": 0.5774999735876918,
+    "earnings_quick_range_ms": 2.726100035943091,
+    "earnings_quick_coverage_ms": 561.5856000222266,
+    "earnings_quick_unit_ms": 319.5362000260502,
+    "earnings_disclosure_page_ms": 8.243500022217631,
+    "earnings_disclosure_security_ms": 1.8711000448092818,
+    "earnings_disclosure_detail_ms": 0.5229999660514295,
+    "earnings_disclosure_range_ms": 2.041500003542751,
+    "earnings_disclosure_coverage_ms": 553.9930000086315,
+    "earnings_disclosure_unit_ms": 168.93139999592677,
+    "earnings_report_page_ms": 11.104999983217567,
+    "earnings_report_security_ms": 2.415599999949336,
+    "earnings_report_detail_ms": 0.9984000353142619,
+    "earnings_report_range_ms": 2.342199964914471,
+    "earnings_report_coverage_ms": 547.1590000088327,
+    "earnings_report_unit_ms": 230.0662999623455,
+    "holder_count_page_ms": 7.369200000539422,
+    "holder_count_security_ms": 1.9685999723151326,
+    "holder_count_detail_ms": 0.38270000368356705,
+    "holder_count_range_ms": 2.693300019018352,
+    "holder_count_coverage_ms": 534.7154000191949,
+    "holder_count_unit_ms": 1.7241000314243138,
+    "earnings_forecast_allocated_bytes": 102367232,
+    "earnings_quick_allocated_bytes": 103464960,
+    "earnings_disclosure_allocated_bytes": 58654720,
+    "earnings_report_allocated_bytes": 76513280,
+    "holder_count_allocated_bytes": 61833216,
+    "earnings_forecast_import_seconds": 4.248893000010867,
+    "earnings_quick_import_seconds": 5.448360100039281,
+    "earnings_disclosure_import_seconds": 3.4981961000012234,
+    "earnings_report_import_seconds": 4.108484499971382,
+    "holder_count_import_seconds": 3.7505306999664754,
+    "earnings_forecast_query_peak_bytes": 320107,
+    "earnings_quick_query_peak_bytes": 816810,
+    "earnings_disclosure_query_peak_bytes": 228985,
+    "earnings_report_query_peak_bytes": 551429,
+    "holder_count_query_peak_bytes": 165672
+  },
+  "limits": {
+    "earnings_forecast_page_ms": 2000,
+    "earnings_forecast_security_ms": 2000,
+    "earnings_forecast_detail_ms": 2000,
+    "earnings_forecast_range_ms": 2000,
+    "earnings_forecast_coverage_ms": 2000,
+    "earnings_forecast_unit_ms": 2000,
+    "earnings_quick_page_ms": 2000,
+    "earnings_quick_security_ms": 2000,
+    "earnings_quick_detail_ms": 2000,
+    "earnings_quick_range_ms": 2000,
+    "earnings_quick_coverage_ms": 2000,
+    "earnings_quick_unit_ms": 2000,
+    "earnings_disclosure_page_ms": 2000,
+    "earnings_disclosure_security_ms": 2000,
+    "earnings_disclosure_detail_ms": 2000,
+    "earnings_disclosure_range_ms": 2000,
+    "earnings_disclosure_coverage_ms": 2000,
+    "earnings_disclosure_unit_ms": 2000,
+    "earnings_report_page_ms": 2000,
+    "earnings_report_security_ms": 2000,
+    "earnings_report_detail_ms": 2000,
+    "earnings_report_range_ms": 2000,
+    "earnings_report_coverage_ms": 2000,
+    "earnings_report_unit_ms": 2000,
+    "holder_count_page_ms": 2000,
+    "holder_count_security_ms": 2000,
+    "holder_count_detail_ms": 2000,
+    "holder_count_range_ms": 2000,
+    "holder_count_coverage_ms": 2000,
+    "holder_count_unit_ms": 2000,
+    "earnings_forecast_allocated_bytes": 536870912,
+    "earnings_quick_allocated_bytes": 536870912,
+    "earnings_disclosure_allocated_bytes": 536870912,
+    "earnings_report_allocated_bytes": 536870912,
+    "holder_count_allocated_bytes": 536870912,
+    "earnings_forecast_import_seconds": 120,
+    "earnings_quick_import_seconds": 120,
+    "earnings_disclosure_import_seconds": 120,
+    "earnings_report_import_seconds": 120,
+    "holder_count_import_seconds": 120,
+    "earnings_forecast_query_peak_bytes": 33554432,
+    "earnings_quick_query_peak_bytes": 33554432,
+    "earnings_disclosure_query_peak_bytes": 33554432,
+    "earnings_report_query_peak_bytes": 33554432,
+    "holder_count_query_peak_bytes": 33554432
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "independent_service": true,
+    "rows_per_table": 100000,
+    "cache": "first unforced, four warm; maximum conservatively bounds P95",
+    "source": "one normalized live 10000-request row per entity; 5000 securities and 20 synthetic periods"
+  },
+  "reviewed_tradeoffs": "结构化列与证券/日期索引；前十大为汇总而非名单。预告正文随200条页读取，最大文本32768字符。覆盖以200条流式读取，32MiB预算是单查询Python受测分配。重复/修订测一个完整市场5000行或一个证券20统计日，非全表重复吞吐。放大实验不代表生产全市场历史覆盖，不能推断冷磁盘延迟或完整进程内存上限。",
+  "details": {
+    "earnings_forecast": {
+      "rows": 100000,
+      "import_seconds": 4.248893000010867,
+      "allocated_bytes": 102367232,
+      "query_ms": {
+        "page": 9.78309998754412,
+        "security": 1.6238000243902206,
+        "detail": 0.4120999947190285,
+        "range": 2.517900022212416,
+        "coverage": 548.5186000005342,
+        "unit": 204.93800000986084
+      },
+      "query_peak_bytes": {
+        "page": 168766,
+        "security": 26306,
+        "detail": 11058,
+        "range": 48032,
+        "coverage": 131212,
+        "unit": 320107
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 5000
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 50711,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 100001,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": "const",
+            "rows": 9314,
+            "filtered": 11.11,
+            "Extra": "Using index condition; Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 5000,
+      "revised_rows": 1
+    },
+    "earnings_quick": {
+      "rows": 100000,
+      "import_seconds": 5.448360100039281,
+      "allocated_bytes": 103464960,
+      "query_ms": {
+        "page": 15.00579999992624,
+        "security": 3.1204999540932477,
+        "detail": 0.5774999735876918,
+        "range": 2.726100035943091,
+        "coverage": 561.5856000222266,
+        "unit": 319.5362000260502
+      },
+      "query_peak_bytes": {
+        "page": 423096,
+        "security": 60720,
+        "detail": 22470,
+        "range": 46720,
+        "coverage": 131188,
+        "unit": 816810
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 5000
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 45976,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 91952,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": "const",
+            "rows": 9314,
+            "filtered": 11.11,
+            "Extra": "Using index condition; Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 5000,
+      "revised_rows": 1
+    },
+    "earnings_disclosure": {
+      "rows": 100000,
+      "import_seconds": 3.4981961000012234,
+      "allocated_bytes": 58654720,
+      "query_ms": {
+        "page": 8.243500022217631,
+        "security": 1.8711000448092818,
+        "detail": 0.5229999660514295,
+        "range": 2.041500003542751,
+        "coverage": 553.9930000086315,
+        "unit": 168.93139999592677
+      },
+      "query_peak_bytes": {
+        "page": 122306,
+        "security": 23060,
+        "detail": 12392,
+        "range": 47376,
+        "coverage": 131228,
+        "unit": 228985
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 5000
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 52428,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 100001,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": "const",
+            "rows": 9314,
+            "filtered": 11.11,
+            "Extra": "Using index condition; Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 5000,
+      "revised_rows": 1
+    },
+    "earnings_report": {
+      "rows": 100000,
+      "import_seconds": 4.108484499971382,
+      "allocated_bytes": 76513280,
+      "query_ms": {
+        "page": 11.104999983217567,
+        "security": 2.415599999949336,
+        "detail": 0.9984000353142619,
+        "range": 2.342199964914471,
+        "coverage": 547.1590000088327,
+        "unit": 230.0662999623455
+      },
+      "query_peak_bytes": {
+        "page": 285138,
+        "security": 41721,
+        "detail": 15696,
+        "range": 47512,
+        "coverage": 131196,
+        "unit": 551429
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 5000
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 50264,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 100001,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": "const",
+            "rows": 9314,
+            "filtered": 11.11,
+            "Extra": "Using index condition; Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 5000,
+      "revised_rows": 1
+    },
+    "holder_count": {
+      "rows": 100000,
+      "import_seconds": 3.7505306999664754,
+      "allocated_bytes": 61833216,
+      "query_ms": {
+        "page": 7.369200000539422,
+        "security": 1.9685999723151326,
+        "detail": 0.38270000368356705,
+        "range": 2.693300019018352,
+        "coverage": 534.7154000191949,
+        "unit": 1.7241000314243138
+      },
+      "query_peak_bytes": {
+        "page": 165672,
+        "security": 26450,
+        "detail": 14450,
+        "range": 37968,
+        "coverage": 121748,
+        "unit": 26562
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 20
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 50636,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 100001,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 20,
+      "revised_rows": 1
+    }
+  },
+  "representative_rows": {
+    "earnings_forecast": {
+      "unified_code": "600187.SH",
+      "name": "*ST国中",
+      "report_date": "2026-06-30",
+      "announcement_date": "2026-08-19",
+      "forecast_type": "预计扭亏",
+      "forecast_text": "预计公司2026年01-06月归属于母公司所有者的净利润为265万元至315万元，与上年同期相比变动幅度为114.47%至117.19%。"
+    },
+    "earnings_quick": {
+      "unified_code": "300124.SZ",
+      "name": "汇川技术",
+      "source_id": "9900012527",
+      "report_date": "2026-06-30",
+      "announcement_date": "2026-08-24",
+      "source_date": "2026-08-24",
+      "profit_basis": "071001",
+      "profit_scope": "033003",
+      "roe_scope": "033003",
+      "net_profit": "2809924100",
+      "roe": "7.69",
+      "eps": "1.04",
+      "assets": "74154849200",
+      "equity": "36783734800",
+      "comparison_value": "2968388046.74",
+      "previous_profit": "2968388046.74",
+      "previous_roe": "10.06",
+      "profit_change": "-5.338384",
+      "roe_change": "-23.55864811"
+    },
+    "earnings_disclosure": {
+      "unified_code": "300866.SZ",
+      "name": "安克创新",
+      "report_date": "2026-06-30",
+      "first_scheduled": "2026-08-31",
+      "changed_1": null,
+      "changed_2": null,
+      "changed_3": null,
+      "actual_date": "2026-08-31"
+    },
+    "earnings_report": {
+      "unified_code": "000001.SZ",
+      "name": "平安银行",
+      "report_date": "2026-06-30",
+      "announcement_date": "2026-08-15",
+      "roe": "5.22",
+      "previous_roe": "5.25",
+      "net_profit": "25696000000",
+      "previous_profit": "24870000000",
+      "revenue": "70617000000",
+      "previous_revenue": "69385000000",
+      "operating_cashflow": "215012000000",
+      "eps": "1.24"
+    },
+    "holder_count": {
+      "unified_code": "301660.SZ",
+      "name": "粤芯半导体",
+      "statistics_date": "2026-10-12",
+      "holders": 365463,
+      "average_float": "0",
+      "holder_change_pct": null,
+      "top_float_shares": null,
+      "top_float_pct": null,
+      "top_shares": null,
+      "top_pct": null,
+      "holder_change": null
+    }
+  },
+  "cleanup": "only UUID-owned private schema dropped",
+  "passed": true
+}

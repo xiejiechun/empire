@@ -1,0 +1,92 @@
+{
+  "bindings": {
+    "src/empire/plugins/collectors/bse_code_mapping_source.py": "5afedd66faefb5935d3a232dcc2011a11e456fc313ee01ef9866e0c8a434b41c",
+    "src/empire/plugins/datasets/security_aliases.py": "e0ef62c2ccb028ff280329cc4622abf0a186b95ea8eea43aa15abada204e5869",
+    "scripts/import_bse_code_mapping.py": "40678af8984ad372fa03c7846492b0d2c2b4efab2265008794328bd868db0fa9",
+    "tests/test_bse_code_mapping.py": "beba99d5fc0c53962f71b777b16edbbdcfb807011b4cddc4c3fd3c05326c7ad2",
+    "tests/integration/test_security_alias_archive.py": "9c4fa9c8e22e68ba0d0fb22758f5daceb360c9424080215d062d4fc28e681811"
+  },
+  "ddl_scopes": {
+    "security_code_alias": "17be3dc6ac49a1f081a698c5b8c676115f3bb9c93c41d3816205b796419e2d0f"
+  },
+  "measurements": {
+    "import_ms": 38.953600014792755,
+    "read_ms": 4.210299986880273,
+    "allocated_bytes": 131072
+  },
+  "limits": {
+    "import_ms": 2000,
+    "read_ms": 100,
+    "allocated_bytes": 1048576
+  },
+  "conditions": "1000行合成映射，独立UUID测试库，MySQL8.4/本机Windows；共享Redis入队归档导入，读取全表最多1000行；EXPLAIN新代码命中唯一索引。",
+  "reviewed_tradeoffs": "只保存官方一对一历史代码关系；不推算生效日，不自动替换采集请求代码；保留历史关系，不级联当前股票。",
+  "details": {
+    "import_ms": 38.953600014792755,
+    "read_ms": 4.210299986880273,
+    "allocated_bytes": 131072,
+    "rows": 1000,
+    "explain": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_code_alias",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "ux_alias_security",
+        "key": "ux_alias_security",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "shape": {
+      "columns": {
+        "legacy_code": {
+          "type": "char(6) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "listing_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "legacy_code"
+      ],
+      "indexes": {
+        "ux_alias_security": {
+          "columns": [
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": true
+        }
+      },
+      "checks": {
+        "ck_alias_current": "regexp_like(unified_code,'^920[0-9]{3}[.]bj$')",
+        "ck_alias_name": "(char_length(trim(name))between1and100)",
+        "ck_alias_old": "regexp_like(legacy_code,'^[48][0-9]{5}$')"
+      }
+    }
+  }
+}

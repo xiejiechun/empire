@@ -1,5 +1,6 @@
 """Listing-directory pages use ordered shared prefetch and retain set proofs."""
 import asyncio
+from datetime import date, datetime, timedelta
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
@@ -8,6 +9,79 @@ import pytest
 
 from empire.plugins.collectors import kaipanla_scope as scope
 from tests.prefetch_source import prefetch_http
+
+
+@pytest.mark.parametrize('announced_date,offset', [(True, 1), (True, 0), (False, 1)])
+async def test_announced_listing_attaches_without_requesting_prelisting_days(monkeypatch, announced_date, offset):
+    today = datetime.now(scope.CHINA).date()
+    tomorrow = today + timedelta(days=offset)
+    seen = []
+
+    async def request(method, url, **options):
+        seen.append(options['params']['filter'])
+        if 'SECUCODE' not in options['params']['filter']:
+            return httpx.Response(200, json=dict(success=True, result=dict(count=1, pages=1, data=[
+                dict(SECUCODE='000001.SZ', SECURITY_CODE='000001',
+                     LISTING_DATE='1991-04-03 00:00:00', LISTING_STATE='0')])))
+        return httpx.Response(200, json=dict(success=True, result=dict(count=1, pages=1, data=[
+            dict(SECUCODE='920157.BJ', SECURITY_CODE='920157',
+                 LISTING_DATE=tomorrow.isoformat()+' 00:00:00' if announced_date else None, LISTING_STATE='9')])))
+
+    collector = SimpleNamespace(http=prefetch_http(request=request), stats={},
+        project_id='kaipanla-quote', request_retries=0,
+        ingest=SimpleNamespace(admission_wait=AsyncMock()))
+    monkeypatch.setattr(scope, 'wait_for_capacity', AsyncMock())
+    stocks = await scope.attach_listing_dates(collector, [dict(code='920157', market='BJ')])
+    assert seen == ['(LISTING_STATE="0")(SECURITY_TYPE_CODE="058001001")',
+                    '(SECUCODE="920157.BJ")']
+    if not announced_date:
+        assert stocks == [] and collector.stats['unlisted_without_date'] == 1
+        return
+    stock = stocks[0]
+    assert stock['listing_date'] == tomorrow.isoformat()
+    assert scope.required_days(stock, [date(2021, 1, 4), today - timedelta(days=1)], set()) == []
+    calendar = sorted({today, tomorrow})
+    assert scope.required_days(stock, calendar, set()) == [tomorrow]
+
+
+@pytest.mark.parametrize('state,delta,symbol', [('0', 1, '920157.BJ'), ('9', -1, '920157.BJ'),
+    ('9', 32, '920157.BJ'), ('3', 1, '920157.BJ'), ('9', 1, '920157.XX')])
+def test_announced_listing_does_not_relax_state_date_or_identity(state, delta, symbol):
+    listed = datetime.now(scope.CHINA).date() + timedelta(days=delta)
+    payload = dict(success=True, result=dict(count=1, pages=1, data=[
+        dict(SECUCODE=symbol, SECURITY_CODE='920157', LISTING_DATE=listed.isoformat()+' 00:00:00',
+             LISTING_STATE=state)]))
+    with pytest.raises(ValueError):
+        scope.parse_listing_page(payload, 1)
+
+
+@pytest.mark.parametrize('mode', ['cdr', 'different_identity', 'listed_missing_date', 'unknown', 'empty'])
+async def test_supplement_requires_exact_source_identity_and_trading_status(mode, monkeypatch):
+    async def request(method, url, **options):
+        row = dict(SECUCODE='689009.SH', SECURITY_CODE='689009',
+                   LISTING_DATE='2020-10-29 00:00:00', LISTING_STATE='0')
+        if mode == 'different_identity':
+            row.update(SECUCODE='688009.SH', SECURITY_CODE='688009')
+        if mode == 'listed_missing_date':
+            row['LISTING_DATE'] = None
+        if mode == 'unknown':
+            row['LISTING_STATE'] = '3'
+        payload = dict(success=True, result=dict(count=1, pages=1, data=[row]))
+        if mode == 'empty':
+            payload = dict(success=False, result=None, code=9201)
+        return httpx.Response(200, json=payload)
+    c = SimpleNamespace(http=prefetch_http(request=request), stats={},
+        project_id='kaipanla-quote', request_retries=0, ingest=SimpleNamespace())
+    monkeypatch.setattr(scope, 'wait_for_capacity', AsyncMock())
+    response = await scope.download_listing_page(c, 1, supplemental_symbol='689009.SH')
+    try:
+        if mode == 'cdr':
+            assert (await response.consume())[2] == [('689009.SH', date(2020, 10, 29))]
+        else:
+            with pytest.raises(ValueError):
+                await response.consume()
+    finally:
+        response.close()
 
 
 @pytest.mark.parametrize('mode', ['success', 'duplicate', 'cancel'])

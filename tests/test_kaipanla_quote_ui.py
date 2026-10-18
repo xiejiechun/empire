@@ -30,6 +30,7 @@ def test_quote_book_order_missing_related_trend_and_query_identity():
         page.resize(1100, 900)
         page.show()
         app.processEvents()
+        page.code.setText('000001')
         page.day.setDate(QDate(2021, 1, 4))
         page.find()
         page.tick()

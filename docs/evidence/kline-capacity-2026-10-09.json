@@ -1,0 +1,43 @@
+{
+  "checked_at": "2026-10-09T12:17:45.729096+08:00",
+  "source_hashes": {
+    "src/empire/contracts/adjustment.py": "3d9cfdfebb19a99eab214cb8bf1459189bf3b727f72798070dd4cb0addf5fe19",
+    "src/empire/plugins/data/adjustment.py": "ae4c01f6e4547e36c11e2d20589565c6bac41292d4796d4cdd54f733acb71ee1",
+    "src/empire/plugins/data/adjustment_inputs.py": "23021b3928d0270267bb15c7c7d4668eb6e9aded256bb102c29626b6b2022045",
+    "src/empire/plugins/ui/adjustment.py": "7ae7af60e7b5cf959400e7c79fcbd96970372b91f0e52f0e3cbafe04ff6d560b",
+    "src/empire/plugins/ui/adjustment_chart.py": "9f37590a993ce41b4811eae6d15d29fd314f57e07f31ef8a0f12fffa67f06519",
+    "src/empire/plugins/ui/candlestick_chart.py": "c971136c23b3e2be64135a29ebad45b3ce4a93f8c61fb2f533a5c1b0f61d6b42",
+    "tests/test_adjustment_chart.py": "7b070ce4feb4fb0de5b8c19b98d66e9e304b800e2897774653336ba380dc686e",
+    "tests/integration/test_adjustment_pipeline.py": "a1a5e74586232e0aeb518cea8100e9338bc84d59ac8ca551dd5493ba87cace5f"
+  },
+  "added_business_tables": 0,
+  "added_storage_bytes": 0,
+  "core": {
+    "rows": 3661,
+    "p95_ms": 38.838699998450466,
+    "peak_bytes": 4955983
+  },
+  "sql_full_history": {
+    "security": "600016.SH",
+    "rows": 1394,
+    "first": "2021-01-04",
+    "last": "2026-10-08",
+    "p95_ms": 752.2918000031495,
+    "all_select": true,
+    "statements": 552,
+    "adjustment_problem": "计算必需数值必须有效、非负且不越界；价格和因子必须为正；原始K线缺口：2024-05-13：计算必需数值必须有效、非负且不越界；价格和因子必须为正（共1日）"
+  },
+  "chart": {
+    "rows": 3661,
+    "p95_render_ms": 51.51839999598451,
+    "viewport_count": 3661
+  },
+  "budgets": {
+    "core_p95_ms": 250,
+    "core_peak_bytes": 33554432,
+    "full_history_sql_ms": 5000,
+    "chart_render_ms": 250
+  },
+  "passed": true,
+  "scope": "本机3661行合成计算/绘图与600016.SH五年真实只读查询，不代表全市场数据通过"
+}

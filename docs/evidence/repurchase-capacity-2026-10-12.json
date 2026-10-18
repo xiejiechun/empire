@@ -1,0 +1,161 @@
+{
+  "checked_at": "2026-10-12T05:09:35.697689+00:00",
+  "bindings": {
+    "src/empire/contracts/repurchases.py": "0121912be689c7757d8757684ac167dc35a2efbf11c1dee91bc4d53892f7a3a7",
+    "src/empire/plugins/datasets/repurchases.py": "060637632d4a0ceca7143221f928b0730e650a501b63b3284f9fbabe5188fd4c",
+    "src/empire/plugins/data/repurchases.py": "5d68132f6bac7027ed8ff485567bec4527ccfdc711e52572315ca698dc2dd356",
+    "scripts/measure_repurchases.py": "b53f8739376fc273d632f15a2eff3b6e7d52bfc6d6f8bf037c5ec0f92a879667"
+  },
+  "ddl_scopes": {
+    "stock_repurchase_plan": "90495c60933b3dd6cbcb694168acf783dd4c43d167cfd09bfc43d6cfe6435f8a"
+  },
+  "measurements": {
+    "page_p95_ms": 3.9813999901525676,
+    "security_p95_ms": 1.596099988091737,
+    "progress_p95_ms": 4.750800027977675,
+    "detail_p95_ms": 0.7754999678581953,
+    "coverage_p95_ms": 119.50949998572469,
+    "import_seconds": 34.362612800032366,
+    "allocated_bytes": 159678464,
+    "repeated_business_dml": 0
+  },
+  "limits": {
+    "page_p95_ms": 100,
+    "security_p95_ms": 100,
+    "progress_p95_ms": 100,
+    "detail_p95_ms": 100,
+    "coverage_p95_ms": 1000,
+    "import_seconds": 60,
+    "allocated_bytes": 268435456,
+    "repeated_business_dml": 0
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 50000,
+    "source_sample": "normalized live first plan; 2100-byte synthetic remark; 5000 securities/10 dates",
+    "cache": "first unforced, nine hot repetitions; max of ten conservatively bounds P95",
+    "synthetic": true,
+    "independent_test_service": true
+  },
+  "reviewed_tradeoffs": "一次方案一行typed存储；索引对应范围/状态/证券查询，TEXT不进入列表。完整审计有界200行逐批读取，轻量头覆盖扫描与正文审计不同；5万行放大实验不是生产覆盖声明。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_plan_date",
+        "key_len": "25",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_security_date,ix_plan_date",
+        "key": "ix_security_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 10,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ],
+    "progress": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_progress_date",
+        "key": "ix_progress_date",
+        "key_len": "18",
+        "ref": "const",
+        "rows": 22481,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": null,
+        "rows": 44962,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 200,
+      "first_ms": 3.9813999901525676
+    },
+    "security": {
+      "returned": 10,
+      "read_bytes": 3455,
+      "estimated_scan_rows": 10,
+      "first_ms": 1.596099988091737
+    },
+    "progress": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 22481,
+      "first_ms": 4.750800027977675
+    },
+    "detail": {
+      "returned": 1,
+      "read_bytes": 2233,
+      "estimated_scan_rows": 1,
+      "first_ms": 0.7754999678581953
+    },
+    "coverage": {
+      "returned": 50000,
+      "read_bytes": 3938894,
+      "estimated_scan_rows": 44962,
+      "first_ms": 119.50949998572469
+    }
+  },
+  "python_peak_bytes": 6593326,
+  "initial_rows_written": 50000,
+  "revised_rows_written": 1,
+  "cleanup": "only UUID-owned test database dropped",
+  "passed": true
+}

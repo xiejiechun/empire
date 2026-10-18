@@ -1,0 +1,261 @@
+{
+  "started_at": "2026-10-16T16:33:36.465291+00:00",
+  "project": "ths-capital",
+  "status": "released_verified",
+  "errors": [
+    {
+      "status_code": 200,
+      "error": "解除明细数量/公告日期缺失或超限",
+      "id": "36546fd6a2f1480b8ed90b96ea149d69",
+      "project_id": "ths-capital",
+      "created_at": "2026-10-16T16:25:11.976195+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/000061/capital.html",
+      "original_sha256": "3520d716954439f76e79178a42e367e523b80aaa68d2182b7f7bf3340bb40e47",
+      "original_bytes": 304164,
+      "body_truncated": true
+    },
+    {
+      "status_code": 200,
+      "error": "解除明细数量/公告日期缺失或超限",
+      "id": "228c4b9f962b4ce9be0df5c5e213d403",
+      "project_id": "ths-capital",
+      "created_at": "2026-10-16T10:30:01.372897+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/000061/capital.html",
+      "original_sha256": "6025b45ee1b8015b01aeb40b63118dc5cb841fb553e01dd808e4c0497d8ab67a",
+      "original_bytes": 304164,
+      "body_truncated": true
+    },
+    {
+      "status_code": 200,
+      "error": "解除明细数量/公告日期缺失或超限",
+      "id": "905fd9802755458bb8211c0c69054820",
+      "project_id": "ths-capital",
+      "created_at": "2026-10-16T06:29:27.706266+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/000061/capital.html",
+      "original_sha256": "3411d393e32d95a9347688f6dd4d031252d88609625acbacd53c9aef23119ed9",
+      "original_bytes": 304164,
+      "body_truncated": true
+    },
+    {
+      "status_code": 200,
+      "error": "解除明细数量/公告日期缺失或超限",
+      "id": "9bed7d284be0486aadcca1ec45524681",
+      "project_id": "ths-capital",
+      "created_at": "2026-10-16T05:21:39.108776+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/000061/capital.html",
+      "original_sha256": "7a30e52d082413db6a93e63a450912e79fa00955cbb9189438286cfc35fef823",
+      "original_bytes": 304164,
+      "body_truncated": true
+    }
+  ],
+  "cleanup": {
+    "performed": true,
+    "checked_at": "2026-10-16T17:15:28.213010+00:00",
+    "exact_ids": [
+      "36546fd6a2f1480b8ed90b96ea149d69",
+      "228c4b9f962b4ce9be0df5c5e213d403",
+      "905fd9802755458bb8211c0c69054820",
+      "9bed7d284be0486aadcca1ec45524681"
+    ],
+    "removed": 4,
+    "targets_absent": true,
+    "other_error_records_remaining": 0,
+    "scope": "Only verified exact IDs; new/unreviewed errors preserved"
+  },
+  "classification": "程序对来源明确未知的解除股数过度校验",
+  "root_cause": "000061的2021-03-11解押公告明确显示本次解押股数--，实际解押日期2021-03-09；整页因quantity必填而失败。",
+  "fix": "明确来源空值保存NULL，保留公告/实际日期/父关联；源码必须存在股数字段标签，缺公告日期、缺父关联及非法股数仍拒绝。",
+  "contract": "SQL quantity原已允许NULL，无DDL。既有成功内容/身份/版本/摘要未改变；此前NULL响应全部失败未入队，不重置生产断点或覆盖证明。不能按未知解除量计算风险余额。",
+  "tests": {
+    "focused_passed": 67,
+    "covers": [
+      "显式空解除股数与父事件/日期保留",
+      "缺字段标签和缺公告日期拒绝",
+      "30随机样本独立于固定回归、可复现、失败不能换样",
+      "源→Redis→SQL→正式查询、冷热摘要零DML、修订、旧响应和SQL提交后重放"
+    ]
+  },
+  "live": {
+    "evidence": "ths-capital-random30-live-2026-10-17.json",
+    "passed": true,
+    "sampling": {
+      "seed": 5690502968338604245,
+      "algorithm": "random.Random.sample without replacement on sorted codes",
+      "pool_count": 5580,
+      "pool_digest": "c97b2b2b1356b67c64bba885ad1b3760d278c56a10a8dc1e4b43857d1524be98",
+      "random_codes": [
+        "000593",
+        "000709",
+        "000738",
+        "000768",
+        "002389",
+        "002495",
+        "002835",
+        "002963",
+        "300317",
+        "300588",
+        "300667",
+        "300832",
+        "300945",
+        "301622",
+        "301669",
+        "600358",
+        "600398",
+        "600735",
+        "601766",
+        "603219",
+        "603557",
+        "603896",
+        "603901",
+        "603995",
+        "605128",
+        "688733",
+        "920056",
+        "920110",
+        "920300",
+        "920807"
+      ],
+      "required_codes": [
+        "000014",
+        "000039",
+        "000060",
+        "000061"
+      ]
+    },
+    "securities": [
+      "000014.SZ",
+      "000039.SZ",
+      "000060.SZ",
+      "000061.SZ",
+      "000593.SZ",
+      "000709.SZ",
+      "000738.SZ",
+      "000768.SZ",
+      "002389.SZ",
+      "002495.SZ",
+      "002835.SZ",
+      "002963.SZ",
+      "300317.SZ",
+      "300588.SZ",
+      "300667.SZ",
+      "300832.SZ",
+      "300945.SZ",
+      "301622.SZ",
+      "301669.SZ",
+      "600358.SH",
+      "600398.SH",
+      "600735.SH",
+      "601766.SH",
+      "603219.SH",
+      "603557.SH",
+      "603896.SH",
+      "603901.SH",
+      "603995.SH",
+      "605128.SH",
+      "688733.SH",
+      "920056.BJ",
+      "920110.BJ",
+      "920300.BJ",
+      "920807.BJ"
+    ],
+    "proxy_requests": 34,
+    "direct_requests": 0,
+    "fallback_requests": 0,
+    "pending": 0,
+    "source_to_sql_equal": true,
+    "isolation": {
+      "independent_mysql_port": 13346,
+      "private_schema": "empire_capital_random30_ccb154c909a4434981996d90f4e2f5e5_test",
+      "private_redis_namespace": "empire:test:capital-random30:60dcdc8d79c4476fa5eba868c97769a2",
+      "production_capital_counts_sql_state_and_redis_checkpoint_unchanged": true,
+      "before_sha256": "72afdc8f7705bf75be654b7a1e68a8800184e7eefd3451f856ca4b6e33ac7744",
+      "after_sha256": "72afdc8f7705bf75be654b7a1e68a8800184e7eefd3451f856ca4b6e33ac7744"
+    },
+    "unknown_release_sql": [
+      {
+        "event_date": "2021-03-11",
+        "actual_date": "2021-03-09",
+        "quantity": null,
+        "holder": "焦作市万方集团有限责任公司",
+        "original_quantity": "5500000.000000"
+      }
+    ],
+    "final_source_sha256": "8f9ea4d565a6427b214a1b91ed2995e2343735706663f6794babbfa3872f7e6a",
+    "facts": 3656
+  },
+  "capacity": {
+    "evidence": "ths-capital-random30-capacity-2026-10-17.json",
+    "measurements": {
+      "import_seconds": 14.09457129999646,
+      "repeated_seconds": 2.7901084999903105,
+      "repeated_business_dml": 0,
+      "facts": 10500,
+      "page_p95_ms": 2.2415000130422413,
+      "detail_p95_ms": 0.6162999925436452,
+      "window_p95_ms": 3.8520999951288104,
+      "audit_ms": 1411.8259999959264,
+      "allocated_bytes": 19021824,
+      "peak_python_bytes": 1503368,
+      "state_bytes": 812917,
+      "detail_bytes": 464,
+      "window_bytes": 11501
+    }
+  },
+  "acceptance_rule": {
+    "documents": [
+      "AGENTS.md",
+      "docs/collector-development-guide.md",
+      "docs/development-workflow.md"
+    ],
+    "capital_script": "scripts/verify_ths_capital.py",
+    "random_minimum": 30,
+    "required_regressions_extra": true,
+    "proxy_required": true,
+    "generic_automatic_gate": "Not implemented; mandatory delivery rule applies to all applicable plugins."
+  },
+  "program_config_before_sha256": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+  "release": {
+    "evidence": "ths-capital-random30-release-2026-10-17.json",
+    "verified_at_utc": "2026-10-16T17:15:10Z",
+    "executable_sha256": "64391b68367cf8381448c8d0aede6116f2e91f57258d310ecef44774c88c3363",
+    "source_sha256": "8f9ea4d565a6427b214a1b91ed2995e2343735706663f6794babbfa3872f7e6a",
+    "test_counts": {
+      "passed": 2640,
+      "skipped": 5
+    },
+    "program_config_preserved": true
+  },
+  "packaged_doctor": {
+    "working_directory": "D:\\",
+    "redis_connected": true,
+    "mysql_connected": true,
+    "required_tables_present": 55
+  },
+  "desktop": {
+    "native_visible_smoke_exit": 0,
+    "offscreen": false,
+    "screenshot": "build/capital-random30-visible.png",
+    "observed": "Window rendered; lower-left local services connected indicator shown",
+    "restarted_from": "D:\\",
+    "pid": 33032,
+    "interaction_validation": "Not performed in this repair; prior native-pipe failure recorded in the preceding repair. Native visible startup verified; no capital-page interaction claim",
+    "scope": "Visible native startup and local services connected; scheduled production work and its queue are separate from the isolated 34-security verification."
+  },
+  "test_services_cleanup": {
+    "port": 13346,
+    "gracefully_stopped": true,
+    "remaining_test_schemas": [],
+    "production_services_untouched": true
+  },
+  "completed_at": "2026-10-16T17:16:30.545982+00:00",
+  "post_restart_error_check": {
+    "checked_at": "2026-10-16T17:16:53.953319+00:00",
+    "project": "ths-capital",
+    "total": 0,
+    "rows": []
+  }
+}

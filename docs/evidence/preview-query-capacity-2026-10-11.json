@@ -1,0 +1,114 @@
+{
+  "date": "2026-10-11",
+  "scope": "7种已归档证券日抽样及100000点同秒合成分笔；不代表全市场完整性",
+  "bindings": {
+    "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+    "src/empire/plugins/datasets/market_mapping.py": "6188364064a52f55ce6086efeb7fc1c0452f16c7a56a33f4798bcb3037c485b7",
+    "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
+    "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
+    "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+    "scripts/measure_preview_queries.py": "a80b9fbce80751028d1c79213d50c8f0aace377fe41f681a8b3be809ef14eb58",
+    "docs/evidence/kaipanla-storage-capacity-2026-10-05.json": "86fa48bdb1bed7540abd8d03f7889b9582d1d91647156697cde9e022b3f6f73b"
+  },
+  "ddl_scopes": {
+    "stock_market_day": "ce4bd05421c94973b0d6a25bf4521284f189229acfcb91594d332ca9a7cf0b10",
+    "stock_intraday_trend": "9039bd793a695e15fcf3e7ebe5c11429c8a92d338b9130326ba09c165e6d320b",
+    "stock_opening_auction": "79e2add0fa185e79753b0e6ac8272e97dc4dc552e13a2a2790149432ddfb47bc",
+    "stock_minute_volume": "b6d8ddfc0f8a446e954e06ce95e9b0fda307be3b12fb013f81cbf8862f1898c4",
+    "stock_intraday_trade_block": "b759b2121d27ede2e174dae8df92ebcb2bdb2256876c0ceddb1b4c81ce2d6354",
+    "stock_minute_entrust": "a856adac3aa6e3306ff7b9ee26d9783b06b8a90196a6c5e5a6deebc013d69836",
+    "stock_large_order_trend": "1f84b310954f4a0824a2f6c9faa9bbfd90bbb614bb6ebaee96f2da4f3dae60c5",
+    "stock_daily_quote": "70f00dec7e5d2f1222d2fa3dfebd03603f60b84d6ed1996a976ff277f87e4e28",
+    "stock_daily_quote_level": "61594723ca11609c1cc2104787b3a16a8285205ff381d91bcc56d255cef8fff4"
+  },
+  "measurements": {
+    "max_page_p95_ms": 3.2,
+    "time_page_p95_ms": 3.027,
+    "next_page_p95_ms": 4.829,
+    "max_page_python_peak_bytes": 252095,
+    "sample_full_day_p95_ms": 8.205
+  },
+  "limits": {
+    "max_page_p95_ms": 10,
+    "time_page_p95_ms": 10,
+    "next_page_p95_ms": 10,
+    "max_page_python_peak_bytes": 350000,
+    "sample_full_day_p95_ms": 100
+  },
+  "samples": [
+    {
+      "kind": "trend",
+      "security": "000820.SZ",
+      "day": "2026-09-30",
+      "latency": {
+        "p50_ms": 4.454,
+        "p95_ms": 5.23,
+        "max_ms": 5.27
+      }
+    },
+    {
+      "kind": "auction",
+      "security": "000820.SZ",
+      "day": "2026-09-30",
+      "latency": {
+        "p50_ms": 1.493,
+        "p95_ms": 2.201,
+        "max_ms": 2.625
+      }
+    },
+    {
+      "kind": "volume",
+      "security": "000820.SZ",
+      "day": "2026-09-30",
+      "latency": {
+        "p50_ms": 4.095,
+        "p95_ms": 4.691,
+        "max_ms": 5.245
+      }
+    },
+    {
+      "kind": "trades",
+      "security": "000820.SZ",
+      "day": "2026-09-30",
+      "latency": {
+        "p50_ms": 7.404,
+        "p95_ms": 8.205,
+        "max_ms": 8.511
+      }
+    },
+    {
+      "kind": "entrust",
+      "security": "000820.SZ",
+      "day": "2026-09-30",
+      "latency": {
+        "p50_ms": 4.514,
+        "p95_ms": 5.926,
+        "max_ms": 27.357
+      }
+    },
+    {
+      "kind": "large_order",
+      "security": "000820.SZ",
+      "day": "2026-09-30",
+      "latency": {
+        "p50_ms": 3.537,
+        "p95_ms": 4.322,
+        "max_ms": 5.072
+      }
+    },
+    {
+      "kind": "quote",
+      "security": "600000.SH",
+      "day": "2026-10-09",
+      "latency": {
+        "p50_ms": 1.83,
+        "p95_ms": 2.543,
+        "max_ms": 2.774
+      }
+    }
+  ],
+  "conditions": "独立13331实例，30次热查询；一次有界正式查询，未启动采集；生产只读一致性快照",
+  "reviewed_tradeoffs": "本次只改查询，结构/归档写入未变；原存储写入、20万业务头和空间基线保留在绑定的2026-10-05证据。当前页、时间窗及完整证券日重新测量。10ms为页面查询预算，100ms为有限整日预算，不承诺冷盘或全部历史容量。",
+  "cleanup": "UUID私有库在finally删除，共享业务不写入",
+  "passed": true
+}

@@ -1,0 +1,121 @@
+{
+  "checked_at": "2026-10-13T10:46:48.344245+00:00",
+  "bindings": {
+    "src/empire/contracts/holders.py": "005dba18a9319c793edf964dead30ff3f51442ca88c44870e51817e42a32df12",
+    "src/empire/plugins/collectors/holder_html.py": "1d400ea58df9a81eebd70f4b2ff6d607114f9aed2c6b3d90054a26ef1180128f",
+    "src/empire/plugins/collectors/ths_holders_source.py": "5a8dbbaef44821146d1154d01524ba78df83b31ba471e6fc33ca79b7bc4a2599",
+    "src/empire/plugins/datasets/holders.py": "4641fa130b262de0a16ed94c0d7885a43f7a2afa02ec2a7bf7eb7c23a517d17b",
+    "src/empire/plugins/data/holders.py": "3207d8d9a8feeede126e4f53ab40c72bca283e45d2125c5b433b7f6704364b4c",
+    "scripts/measure_holders.py": "e9284dc05d7c6631321a2d0ed78878209a616baa40f919ac441df7a9a2564dc9"
+  },
+  "ddl_scopes": {
+    "holder_report": "bc97ec07b1a17a30b1c5d99cc891d3a67a3c3ecae152d46a22d8ea91b24c3049",
+    "holder_member": "edf1f6ce8a5cb74e7813608ce53bd77677fa386e90d07f20ab67a58e199ca503"
+  },
+  "measurements": {
+    "page_p95_ms": 1.7968000029213727,
+    "page_returned": 100,
+    "security_p95_ms": 0.49320003017783165,
+    "security_returned": 2,
+    "coverage_p95_ms": 83.73790001496673,
+    "coverage_returned": 5000,
+    "detail_p95_ms": 3.375299973413348,
+    "detail_bytes": 11932,
+    "import_seconds": 62.995078500011005,
+    "initial_written": 120000,
+    "peak_python_bytes": 1098947,
+    "allocated_bytes": 207142912,
+    "repeated_business_dml": 0,
+    "repeated_written": 0,
+    "revised_written": 48,
+    "formal_audit_ms": 14044.345500005875,
+    "formal_combined_audit_ms": 28151.90860000439,
+    "audit_peak_python_bytes": 10601681,
+    "state_bytes": 2818150
+  },
+  "limits": {
+    "page_p95_ms": 100,
+    "security_p95_ms": 100,
+    "coverage_p95_ms": 1000,
+    "detail_p95_ms": 100,
+    "detail_bytes": 1048576,
+    "import_seconds": 180,
+    "peak_python_bytes": 134217728,
+    "allocated_bytes": 536870912,
+    "repeated_business_dml": 0,
+    "repeated_written": 0,
+    "formal_audit_ms": 30000,
+    "formal_combined_audit_ms": 90000,
+    "audit_peak_python_bytes": 134217728,
+    "state_bytes": 8388608
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "reports": 10000,
+    "members": 110000,
+    "source": "minimal source-semantic fixture; 2500 issuers × 4 periods distributed across all three kinds; long 281-character holder names",
+    "real_sample": "docs/evidence/ths-holders-source-2026-10-13.json",
+    "cache": "first unforced SQL read + nine hot repetitions; maximum bounds P95",
+    "independent_test_service": true,
+    "synthetic": true,
+    "innodb_flush_log_at_trx_commit": 2,
+    "audit_timings_ms": {
+      "top_holders": 14044.345500005875,
+      "float_holders": 7365.7879999955185,
+      "bond_holders": 6741.697799996473
+    },
+    "audit_budget": "each independent formal query <=30s; three sequential queries <=90s"
+  },
+  "reviewed_tradeoffs": "按报告实体共两表，基础股/张数字及舍入精度可SQL查询。父头列表不读名字正文，单详情有界。来源窗口外保留历史，较旧修订不保证发现。容量放大不是生产覆盖，未模拟OS崩溃耐久性。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "holder_report",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_security_date,ix_date",
+        "key": "ix_date",
+        "key_len": "98",
+        "ref": null,
+        "rows": 5281,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "holder_report",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_security_date,ix_date",
+        "key": "ix_security_date",
+        "key_len": "107",
+        "ref": "const,const",
+        "rows": 2,
+        "filtered": 100.0,
+        "Extra": "Backward index scan; Using index"
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "holder_report",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_security_date,ix_date",
+        "key": "ix_security_date",
+        "key_len": "98",
+        "ref": "const",
+        "rows": 5281,
+        "filtered": 100.0,
+        "Extra": "Using filesort"
+      }
+    ]
+  }
+}

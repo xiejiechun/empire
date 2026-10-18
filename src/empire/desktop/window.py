@@ -39,6 +39,8 @@ class MainWindow(QMainWindow):
         self.group_pages = {}
         self.group_selection = {}
         self.pending_navigation_contexts = {}
+        self.navigation_history = []
+        self.returning = False
         self.setWindowTitle("Empire · 投资研究工作台")
         available = self.screen().availableGeometry()
         self.setMinimumSize(min(640, available.width()), min(360, available.height()))
@@ -81,7 +83,14 @@ class MainWindow(QMainWindow):
         content.setSpacing(12)
         self.breadcrumb = QLabel("工作台")
         self.breadcrumb.setObjectName("breadcrumb")
-        content.addWidget(self.breadcrumb)
+        location = QHBoxLayout()
+        self.back_button = QPushButton('返回')
+        self.back_button.setAccessibleName('返回上一个页面')
+        self.back_button.clicked.connect(self.go_back)
+        self.back_button.setEnabled(False)
+        location.addWidget(self.back_button)
+        location.addWidget(self.breadcrumb, 1)
+        content.addLayout(location)
         self.subnav = QListWidget()
         self.subnav.setObjectName("secondaryNav")
         self.subnav.setAccessibleName("当前分组页面")
@@ -173,7 +182,10 @@ class MainWindow(QMainWindow):
                 except Exception as exc:
                     return self._page_error(ident, exc)
             page = self.page_registry.show(ident, definition, create)
+            if self.current_page_id and self.current_page_id != ident and not self.returning:
+                self.navigation_history = (self.navigation_history + [self.current_page_id])[-50:]
             self.current_page_id = ident
+            self.back_button.setEnabled(bool(self.navigation_history))
             group = self.nav.currentItem().data(Qt.ItemDataRole.UserRole)
             self.group_selection[group] = ident
             self.breadcrumb.setText(item.data(Qt.ItemDataRole.UserRole + 1))
@@ -181,7 +193,10 @@ class MainWindow(QMainWindow):
             apply_context = getattr(page, "apply_navigation_context", None)
             if context is not None and callable(apply_context):
                 self.pending_navigation_contexts.pop(ident, None)
-                apply_context(context)
+                try:
+                    apply_context(context)
+                except (ValueError, TypeError) as exc:
+                    self.statusBar().showMessage(str(exc), 8000)
             elif context is not None and not getattr(page, "_empire_page_error", False):
                 self.pending_navigation_contexts.pop(ident, None)
                 self.statusBar().showMessage("目标页面不支持此导航上下文。", 6000)
@@ -235,6 +250,16 @@ class MainWindow(QMainWindow):
             self.statusBar().showMessage("此数据页面没有登记采集管理入口。", 6000)
             return False
         return self.navigate(target.page_id, target.context)
+
+    def go_back(self):
+        self.returning = True
+        try:
+            while self.navigation_history:
+                if self.navigate(self.navigation_history.pop()):
+                    break
+        finally:
+            self.returning = False
+            self.back_button.setEnabled(bool(self.navigation_history))
 
     def command(self, action, plugin_id=""):
         if self.shutting_down:

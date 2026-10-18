@@ -62,3 +62,23 @@ class PreparationContribution:
     archive_tests: tuple[str, ...]
     method: str = "preparation_check"
     scoped: bool = False
+    cache_revision: int = 1
+    response_group: str = ''
+    analysis_quality_limits: bool = False
+
+
+@dataclass(frozen=True)
+class ComputationContribution:
+    """A read-only derived query; it has no collector or archive dataset."""
+    requirement: str
+    capability: str
+    source: str
+    project_id: str
+    rule_tests: tuple[str, ...]
+    integration_tests: tuple[str, ...]
+    output_version: str
+    page_id: str = ''
+    execute_method: str = 'calculate'
+    method: str = 'preparation_check'
+    scoped: bool = True
+    cache_revision: int = 1

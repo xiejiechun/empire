@@ -1,0 +1,124 @@
+{
+  "ddl_scopes": {
+    "security_st_event": "64810a74718bb12b7fe80775f057d795cc33cfd01b1440bf0ea8f62b8b271838"
+  },
+  "bindings": {
+    "src/empire/contracts/st_events.py": "65cf21a94386a430369ddfd2e531d67ddd110040254e1933baa43f868d65b287",
+    "src/empire/plugins/datasets/st_events.py": "443da9268a6184e767f7a089a4cc6c85aef3668ed482e7baf420e3eb565e5e19",
+    "src/empire/plugins/data/st_events.py": "444c488c7d47d937cd824fa1e16a1e750ce96541cbdc6323d880e9d21033f56d",
+    "scripts/measure_st_events.py": "44115fd749794377e6c167ef65f8be01e33227ed40e37e047a4b8b388d5a99f5"
+  },
+  "measurements": {
+    "page_p95_ms": 2.0175999961793423,
+    "security_p95_ms": 0.26619998971000314,
+    "coverage_p95_ms": 125.45499997213483,
+    "import_seconds": 2.2453203999903053,
+    "allocated_bytes": 15368192
+  },
+  "limits": {
+    "page_p95_ms": 50,
+    "security_p95_ms": 50,
+    "coverage_p95_ms": 500,
+    "import_seconds": 10,
+    "allocated_bytes": 134217728
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 25000,
+    "cache": "first query unforced; subsequent hot repetitions",
+    "synthetic": true
+  },
+  "reviewed_tradeoffs": "紧凑事件字段有SQL索引；覆盖检查全读本类型至30000上限，普通页面200行。25000条是容量实验，不冒充可一次入队的真实响应；超单次消息预算明确失败。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_st_event",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_st_security,ix_st_date",
+        "key": "ix_st_date",
+        "key_len": "18",
+        "ref": "const",
+        "rows": 12032,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "implementation": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_st_event",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_st_security,ix_st_date",
+        "key": "ix_st_security",
+        "key_len": "32",
+        "ref": null,
+        "rows": 5,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_st_event",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_st_security,ix_st_date",
+        "key": "PRIMARY",
+        "key_len": "18",
+        "ref": "const",
+        "rows": 12032,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 20470
+    },
+    "implementation": {
+      "returned": 5,
+      "read_bytes": 485
+    },
+    "coverage": {
+      "returned": 25000,
+      "read_bytes": 2558756
+    }
+  },
+  "python_peak_bytes": 11390450,
+  "initial": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 25000,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "repeat": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 0,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "revision": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 2,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "cleanup": "UUID-owned test database dropped in finally",
+  "passed": true
+}

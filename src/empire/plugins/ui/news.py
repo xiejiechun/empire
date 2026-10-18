@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QPlainTextEdit,
     QPushButton,
+    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -29,6 +30,7 @@ from empire.plugins.ui.common import (
     table_identity_state,
 )
 from empire.plugins.ui.plugin import UiPlugin
+from empire.plugins.ui.preview_cards import CardReader, card, text
 
 
 class NewsPage(QWidget):
@@ -40,6 +42,9 @@ class NewsPage(QWidget):
         self.page = self.total = 0
         self.cursors, self.anchor, self.next_cursor = [None], None, None
         self.records = []
+        self.applied = ('', False, '', '')
+        self.expanded = set()
+        self.latest_future = None
         self.future = self.query_spec = None
         self.last_query = 0
         self.dirty = True
@@ -73,6 +78,17 @@ class NewsPage(QWidget):
         refresh.clicked.connect(self.refresh)
         filters.addWidget(refresh)
         layout.addLayout(filters)
+        dates = QHBoxLayout()
+        self.start, self.end = QLineEdit(), QLineEdit()
+        for field, label in ((self.start, '开始日期'), (self.end, '截止日期')):
+            field.setPlaceholderText(label + ' YYYY-MM-DD；留空不限')
+            accessible(field, '新闻' + label)
+            field.returnPressed.connect(self.search_changed)
+            dates.addWidget(field)
+        self.update_button = QPushButton('查看最新')
+        self.update_button.clicked.connect(self.show_latest)
+        dates.addWidget(self.update_button)
+        layout.addLayout(dates)
         self.status = hint("等待读取新闻……")
         self.status.setAccessibleName("财经快讯查询状态")
         layout.addWidget(self.status)
@@ -81,7 +97,15 @@ class NewsPage(QWidget):
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
         self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         self.table.itemSelectionChanged.connect(self.show_detail)
-        layout.addWidget(self.table, 1)
+        self.views = QTabWidget()
+        self.feed = CardReader('财经快讯阅读流')
+        self.feed.selected.connect(self.expand_news)
+        self.views.addTab(self.feed, '连续阅读')
+        detail_page = QWidget()
+        detail_layout = QVBoxLayout(detail_page)
+        detail_layout.addWidget(self.table, 1)
+        self.views.addTab(detail_page, '检索明细')
+        layout.addWidget(self.views, 1)
         navigation = QHBoxLayout()
         self.previous = QPushButton("上一页")
         self.next = QPushButton("下一页")
@@ -99,27 +123,30 @@ class NewsPage(QWidget):
         navigation.addWidget(self.copy)
         navigation.addWidget(self.open_source)
         layout.addLayout(navigation)
+        self.selected_note = hint('尚未选择新闻。')
+        layout.addWidget(self.selected_note)
         self.detail = QPlainTextEdit()
         accessible(self.detail, "财经快讯正文")
         self.detail.setReadOnly(True)
         self.detail.setPlaceholderText("选择一条新闻，查看完整正文、发布时间及来源链接。")
         self.detail.setMinimumHeight(180)
-        self.detail.setMaximumHeight(280)
-        layout.addWidget(self.detail)
+        detail_layout.addWidget(self.detail, 1)
         self.show_detail()
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
         self.timer.start(800)
 
     def spec(self):
-        return (self.search.text().strip(), 50, self.important.isChecked(),
-                self.cursors[self.page], self.anchor, self.page == 0)
+        search, important, start, end = self.applied
+        return (search, 50, important, self.cursors[self.page], self.anchor, self.page == 0, start, end)
 
     def save_ui_state(self):
         return {"search": self.search.text(), "important": self.important.isChecked(),
                 "page": self.page, "total": self.total, "cursors": list(self.cursors),
                 "anchor": self.anchor, "next_cursor": self.next_cursor,
-                "table": table_identity_state(self.table)}
+                "table": table_identity_state(self.table), 'start': self.start.text(), 'end': self.end.text(),
+                'applied': self.applied, 'view': self.views.currentIndex(), 'expanded': list(self.expanded),
+                'position': self.feed.save_position()}
 
     def restore_ui_state(self, state):
         self.search.setText(state["search"])
@@ -131,12 +158,20 @@ class NewsPage(QWidget):
         self.next_cursor = state["next_cursor"]
         restore_table_identity(self.table, state["table"])
         self.dirty = True
+        self.start.setText(state.get('start', ''))
+        self.end.setText(state.get('end', ''))
+        self.applied = tuple(state.get('applied', ('', False, '', '')))
+        self.views.setCurrentIndex(state.get('view', 0))
+        self.expanded = set(state.get('expanded', []))
+        self.feed_position = state.get('position', 0)
 
     def reset_paging(self):
         self.page, self.total = 0, 0
         self.cursors, self.anchor, self.next_cursor = [None], None, None
 
     def search_changed(self):
+        self.applied = (self.search.text().strip(), self.important.isChecked(),
+                        self.start.text().strip(), self.end.text().strip())
         self.reset_paging()
         self.reload()
 
@@ -159,6 +194,11 @@ class NewsPage(QWidget):
         if self.page == 0:
             self.anchor = None
         self.reload()
+        self.update_button.setText('查看最新')
+
+    def show_latest(self):
+        self.reset_paging()
+        self.refresh()
 
     def selected(self):
         index = self.table.currentRow()
@@ -167,12 +207,42 @@ class NewsPage(QWidget):
     def show_detail(self):
         record = self.selected()
         self.copy.setEnabled(bool(record))
-        self.open_source.setEnabled(bool(record))
+        self.open_source.setEnabled(bool(record and record.get('url')))
+        self.selected_note.setText('当前所选：' + local_date(record['published_at']) + ' · '
+            + (record['title'] or '来源未提供标题') if record else '尚未选择新闻。')
         content = (f"{record['title']}\n发布时间：{local_date(record['published_at'])}（北京时间）"
                    f"\n来源修订：{local_date(record['source_updated_at'])}\n\n{record['content']}"
                    f"\n\n来源：{record['url']}" if record else "")
         if self.detail.toPlainText() != content:
             self.detail.setPlainText(content)
+
+    def expand_news(self, index):
+        if not 0 <= index < len(self.records):
+            return
+        ident = self.records[index]['news_id']
+        if ident in self.expanded:
+            self.expanded.remove(ident)
+        else:
+            self.expanded.add(ident)
+        self.table.selectRow(index)
+        self.render_feed()
+
+    def render_feed(self):
+        previous, body = None, []
+        for i, record in enumerate(self.records):
+            day = record['published_at'][:10]
+            if day != previous:
+                body.append(f'<h2>{text(day)} · 北京时间</h2>')
+                previous = day
+            expanded = record['news_id'] in self.expanded
+            content = record['content'] if expanded else record['content'][:250]
+            body.append(card(record['title'] or '来源未提供标题', '<p>' + text(content) + '</p>'
+                + f'<a href="record:{i}">{"收起正文" if expanded else "展开正文 / 选择记录"}</a>',
+                record['published_at'][11:19] + (' · 重点' if record['is_important'] else '')))
+        self.feed.present(''.join(body) or '<p>暂无匹配的已归档新闻。</p>', identity=(self.applied, self.page))
+        if hasattr(self, 'feed_position'):
+            self.feed.verticalScrollBar().setValue(self.feed_position)
+            del self.feed_position
 
     def copy_content(self):
         if record := self.selected():
@@ -205,9 +275,10 @@ class NewsPage(QWidget):
         self.table.blockSignals(False)
         self.previous.setEnabled(self.page > 0)
         self.next.setEnabled(bool(self.next_cursor))
-        self.status.setText(f"共 {self.total:,} 条 · 第 {self.page + 1} 页 · 首页每 15 秒刷新已入库数据"
-                            if self.total else "暂无匹配新闻。首次使用请到采集任务执行新浪财经新闻采集。")
+        self.status.setText(f"共 {self.total:,} 条 · 第 {self.page + 1} 页 · 已应用关键词 {self.applied[0] or '不限'} · 自动检查新消息，点击查看最新"
+                            if self.total else "当前条件下没有已归档新闻；可调整关键词、日期或检查采集状态。")
         self.show_detail()
+        self.render_feed()
 
     def tick(self):
         if getattr(self.shell, "shutting_down", False):
@@ -228,10 +299,18 @@ class NewsPage(QWidget):
             else:
                 self.query_scope.discard("news", future)
                 self.dirty = True
-        home_refresh = self.page == 0 and time.monotonic() - self.last_query >= 15
-        if self.isVisible() and not self.future and (self.dirty or home_refresh):
-            if home_refresh:
-                self.anchor = None
+        if self.latest_future and self.latest_future.done():
+            future, self.latest_future = self.latest_future, None
+            try:
+                latest = self.query_scope.result('news-latest', future)
+                if latest and self.anchor and (latest['published_at'], latest['news_id']) > (self.anchor['published_at'], self.anchor['news_id']):
+                    self.update_button.setText('有新消息 · 点击查看')
+            except Exception:
+                self.update_button.setToolTip('新消息检查暂不可用；当前阅读内容保留')
+        if self.isVisible() and not self.latest_future and time.monotonic()-self.last_query >= 15 and not self.dirty:
+            self.last_query = time.monotonic()
+            self.latest_future = self.query_scope.invoke('news-latest', self.shell.runtime, 'news.query', 'latest')
+        if self.isVisible() and not self.future and self.dirty:
             self.query_spec = self.spec()
             self.dirty = False
             self.last_query = time.monotonic()

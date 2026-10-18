@@ -1,0 +1,107 @@
+{
+  "status": "deployed_and_real_data_verified",
+  "development": {
+    "specialized_tests": 41,
+    "capacity_evidence": "docs/evidence/st-events-capacity-2026-10-11.json",
+    "unit_tests": 33,
+    "specialized_integration_tests": 8,
+    "related_tests": 157,
+    "documentation_storage_ingest_contract_tests": 49,
+    "isolated_integration_regressions": 56
+  },
+  "source_review": {
+    "use_proxy": true,
+    "proxy_fallback": true,
+    "proxy_requests": 5,
+    "implementation_count": 2590,
+    "removal_count": 1359,
+    "independent_detail_endpoint": false,
+    "evidence": "docs/evidence/st-events-source-2026-10-11.json",
+    "missing_reason": {
+      "implementation": 10,
+      "removal": 1
+    },
+    "blank_reason_rule": "NULL/empty/whitespace normalize to unknown; nonempty original reason preserved"
+  },
+  "shared_environment": "Index release completed and released environment before ST production maintenance. Same final source and executable verified; no shared source modifications during release.",
+  "remaining": [],
+  "completed_at": "2026-10-11T14:14:25.470079+08:00",
+  "production": {
+    "schema_evidence": "docs/evidence/st-events-schema-2026-10-11.json",
+    "live_evidence": "docs/evidence/st-events-live-2026-10-11.json",
+    "implementation_events": 2590,
+    "removal_events": 1359,
+    "source_sql_equal_all_markets": true,
+    "pending_stream_after_collection": 0,
+    "proxy_requests": 2,
+    "direct_fallback_requests": 0,
+    "source_requests_per_task": 1,
+    "existing_business_unchanged_by_ddl": true
+  },
+  "release": {
+    "source_sha256": "a35afc834ab94f57de8543a270128afc71df1b3ab017ee50c16f05e575ad4b5e",
+    "executable_sha256": "d36531b24eb092e90141a5adf4487ca96b7035ae84d94907da4f9eeb1550c7f3",
+    "evidence": "build/release-report.json",
+    "log": "build/index-amount-release-resume.log",
+    "full_suite_passed": 2100,
+    "opt_in_drills_skipped": 5,
+    "original_full_suite": "build/index-amount-full-original.xml",
+    "retry": "build/index-amount-retry.xml",
+    "retry_reason": "UI plugin state temporary file replacement WinError5; same-source fresh-directory test passed twice; original failure retained.",
+    "st_unit_passed": 33,
+    "st_archive_passed": 8,
+    "config_preserved": true
+  },
+  "desktop": {
+    "executable": "D:/project/empire/dist/Empire/Empire.exe",
+    "window_id": 37356938,
+    "launched_working_directory": "D:/",
+    "real_database_connected": true,
+    "catalogue_search": "ST",
+    "pages": [
+      "st_implementation",
+      "st_removal"
+    ],
+    "security": "000004.SZ",
+    "implementation_query_rows": 8,
+    "removal_query_rows": 5,
+    "name_industry_reason_visible": true,
+    "management_links_match_projects": true,
+    "both_complete": true,
+    "response_units": 1,
+    "market_batches": 3,
+    "daily_time": "18:00",
+    "both_preparation": "usable_with_limitations",
+    "both_development": "passed",
+    "evidence_directory": "build/st-source",
+    "index_continue_clicked": true,
+    "index_resume_result": "failed: existing index number format error at 国证A指; already failed 14:06:58 before ST maintenance, continue attempted 14:13:54 with same result"
+  },
+  "acceptance": {
+    "lifecycle": "Full historical response; atomic three-market publish; awaiting_archive recovery; Redis loss full recheck.",
+    "set_validation": "Count, columns, market, security-date uniqueness and complete normalized source-to-SQL sets.",
+    "failure_checkpoint": "Source and ingest failure regressions; no checkpoint advance on rejection.",
+    "end_to_end": "Raw source normalization, Redis, unified archive and formal query in 8 specialized integration tests; same-response production SQL comparison.",
+    "development_and_actual_data": "41 specialized cases passed and production 3949 events verified separately.",
+    "not_applicable": [
+      "No paginated source: cross-page offset reordering is not applicable.",
+      "No former ST SQL layout: additive table maintenance requires no legacy row migration."
+    ],
+    "limitations": [
+      "Events do not independently reconstruct daily ST state.",
+      "No announcement availability date: historical signal use remains blocked; analysis usable with limitations.",
+      "Source missing names/reasons stay unknown."
+    ]
+  },
+  "test_database_13335_stopped": true,
+  "unrelated_issue": {
+    "project": "ths-index-prices",
+    "message": "指数行情数字格式无效",
+    "current_index": "国证A指",
+    "processed_indices": 291,
+    "total_indices": 573,
+    "rows_progress": 1211004,
+    "existing_checkpoint_and_errors_preserved": true,
+    "evidence": "build/st-source/desktop-index-after-continue.jpg"
+  }
+}

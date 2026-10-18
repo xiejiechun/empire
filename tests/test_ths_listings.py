@@ -77,6 +77,20 @@ def test_source_establishment_after_listing_is_preserved_with_warning():
     assert date_warning(row) and not date_warning(parse(source(), STOCKS[0], '2026-10-06'))
 
 
+def test_announced_first_trading_day_can_be_in_the_near_future():
+    from empire.contracts.listings import validate
+    body = source()
+    body['data'].update(listing_date='2026-10-09', establish_date='2006-05-24')
+    stock = dict(market='BJ', code='920157')
+    row = parse(body, stock, '2026-10-08')
+    assert row['listing_date'] == '2026-10-09'
+    assert validate(row, '2026-10-08') == row
+    assert validate(row, '2026-10-09') == row
+    body['data']['listing_date'] = '2026-11-09'
+    with pytest.raises(ValueError, match='日期无效'):
+        parse(body, stock, '2026-10-08')
+
+
 def test_only_exact_source_empty_is_unavailable():
     from empire.contracts.listings import is_unavailable
     empty = dict(status_code=10001, data={}, status_msg='result empty')
@@ -88,17 +102,57 @@ def test_only_exact_source_empty_is_unavailable():
             parse({**empty, **change}, STOCKS[0], '2026-10-06')
 
 
-@pytest.mark.parametrize('field,value', [('listing_date',None), ('listing_date','2099-01-01'),
+@pytest.mark.parametrize('field,value', [('listing_date','2099-01-01'),
     ('listing_date','1991-4-3'), ('establish_date','2099-01-01'), ('issuance_price','0.00001'),
     ('issuance_num','-1'), ('winning_rate','100.1'), ('winning_rate','0.00000000001'),
     ('issuance_price',True), ('history','x' * (HISTORY_MAX_BYTES+1)), ('sponsor','机'*2049), ('issuance_num','1e3')],
-    ids=['missing-date','future-date','bad-date','future-establish','precision','negative','percent-high',
+    ids=['future-date','bad-date','future-establish','precision','negative','percent-high',
          'percent-precision','bool','large-history','large-sponsor','exponent'])
 def test_invalid_source_fails(field, value):
     body = source()
     body['data'][field] = value
     with pytest.raises(ValueError):
         parse(body, STOCKS[0], '2026-10-06')
+
+
+@pytest.mark.parametrize('missing', [None, '', '--'])
+def test_explicit_missing_listing_date_is_incomplete_not_unavailable(missing):
+    from empire.contracts.listings import is_incomplete, is_unavailable, validate
+    body = source()
+    body['data']['listing_date'] = missing
+    row = parse(body, STOCKS[0], '2026-10-08')
+    assert row == dict(unified_code='000001.SZ', detail_status='incomplete',
+                       source_status_code=0, missing_fields=['listing_date'])
+    assert is_incomplete(row) and not is_unavailable(row)
+    assert validate(row, '2026-10-08') == row
+    # An ordinary complete business row still requires a real listing date.
+    with pytest.raises(ValueError, match='必需上市日期'):
+        validate(dict(unified_code='000001.SZ', **body['data']), '2026-10-08')
+
+
+@pytest.mark.parametrize('field,value', [('issuance_price', 'bad'), ('history', 'x'*(HISTORY_MAX_BYTES+1)),
+                                       ('establish_date', '2099-01-01'), ('sponsor', {}), ('winning_rate', True)],
+                         ids=['invalid-number', 'history-limit', 'future-establish', 'invalid-text', 'boolean'])
+def test_missing_listing_date_does_not_bypass_other_validation(field, value):
+    body = source()
+    body['data']['listing_date'] = None
+    body['data'][field] = value
+    with pytest.raises(ValueError):
+        parse(body, STOCKS[0], '2026-10-08')
+
+
+@pytest.mark.parametrize('change', [{'source_status_code':10001}, {'source_status_code':False},
+                                  {'missing_fields':[]}, {'missing_fields':['history']}, {'extra':1}])
+def test_incomplete_wire_and_proof_contract_reject_unknown_shapes(change):
+    from empire.contracts.listings import unusable_proof, validate
+    row = dict(unified_code='000001.SZ', detail_status='incomplete', source_status_code=0,
+               missing_fields=['listing_date'])
+    with pytest.raises(ValueError):
+        validate({**row, **change}, '2026-10-08')
+    proof = dict(availability='incomplete', source_status_code=0, availability_contract=1,
+                 missing_fields=['listing_date'])
+    assert unusable_proof(proof)
+    assert not unusable_proof({**proof, 'missing_fields':['history']})
 
 
 def test_history_utf8_boundary_preserved_and_invalid_types_rejected():
@@ -242,3 +296,41 @@ def test_ui_lazy_independent_draft_and_selection_detail(monkeypatch):
     assert page.code.text() == '600000'
     page.close()
     page.deleteLater()
+
+
+@pytest.mark.parametrize('has_old', [False, True])
+def test_ui_missing_listing_date_explains_source_and_marks_old_record(has_old, monkeypatch):
+    from concurrent.futures import Future
+
+    from PySide6.QtWidgets import QApplication
+
+    from empire.plugins.ui.listings import ListingPage
+    app = QApplication.instance() or QApplication([])
+    old = parse(source(), STOCKS[0], '2026-10-08')
+    def invoke(*args):
+        future = Future()
+        if args[1] == 'list_records':
+            row = {**old, 'name': '平安银行', 'detail_status': 'incomplete'}
+            future.set_result(dict(rows=[row] if has_old else [], next=None, incomplete_count=1))
+        else:
+            future.set_result(dict(detail_status='incomplete', last_valid=old))
+        return future
+    page = ListingPage(SimpleNamespace(runtime=SimpleNamespace(invoke=invoke), cfg={}, shutting_down=False))
+    try:
+        page.show()
+        app.processEvents()
+        page.tick()
+        page.tick()
+        assert '来源缺上市日期1只' in page.status.text()
+        if has_old:
+            assert page.table.item(0, 13).text() == '缺上市日期（旧资料）'
+            page.table.selectRow(0)
+            page.tick()
+            assert '来源缺必需上市日期' in page.body.toPlainText()
+            assert '历史参考' in page.body.toPlainText() and '历史沿革' in page.body.toPlainText()
+        else:
+            assert '未生成上市记录' in page.body.toPlainText() and '数据准备仍未通过' in page.body.toPlainText()
+    finally:
+        page.close()
+        page.deleteLater()
+        app.processEvents()

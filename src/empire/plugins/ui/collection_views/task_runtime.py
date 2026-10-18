@@ -35,13 +35,14 @@ class TaskRuntime(QWidget):
         self.groups = []
         owner.runtime_fields, owner.runtime_forms = {}, {}
         for title, fields in (
-            ('状态与进度', [('status', '运行状态'), ('count', '本轮 / 最近记录'), ('units', '核验单元'),
+            ('状态与进度', [('status', '运行状态'), ('count', '本轮 / 最近记录'), ('units', '业务进度'),
+                          ('pages', '处理页 / 批次'),
                           ('current', '当前位置'), ('frontier', '连续进度'), ('failed', '失败单元'),
-                          ('unavailable', '来源暂无详情'), ('archive', '归档确认')]),
+                          ('gaps', '来源身份缺口'), ('unavailable', '来源暂无详情'), ('archive', '归档确认')]),
             ('时间与计划', [('plan', '已保存计划'), ('next', '下次执行'), ('start', '最近开始'),
                           ('finish', '最近结束')]),
             ('网络', [('network', '网络情况')]),
-            ('异常', [('error', '失败原因')]),
+            ('异常与限制', [('error', '失败原因或来源限制')]),
         ):
             group = QGroupBox(title)
             form = QFormLayout(group)
@@ -99,7 +100,7 @@ def render_runtime(owner, job):
     latest = next((h for h in owner.data['history'] if h['task_id'] == job['id']), None)
     result = progress if job['active'] else (latest or {}).get('result', {})
     state = progress.get('status', 'running') if job['active'] else job['last_status']
-    owner.run_button.setText('继续采集' if state in ('paused', 'error') else '立即采集')
+    owner.run_button.setText('继续采集' if state in ('paused', 'error', 'source_gap') else '立即采集')
     owner.run_button.setToolTip('先启用任务并保存执行计划。' if not job['policy']['enabled']
                                else '有未完成批次时从断点继续，否则开始新的采集。')
     collected = result.get('queued_records', result.get('collected'))
@@ -109,21 +110,26 @@ def render_runtime(owner, job):
         f" / {expected:,} {record_name}" if expected else ' ' + record_name)
     if 'queued_records' in result:
         count = '已入队 ' + count
-    units = '—'
-    if result.get('unit_name') and 'completed_units' in result:
-        units = f"{result['completed_units']:,} / {result.get('total_units', 0):,} {result['unit_name']}"
-    elif 'processed_units' in result:
-        units = f"{result['processed_units']:,} / {result.get('total_units', 0):,} 个证券"
-    elif result.get('total_months'):
-        units = f"{result.get('pages', 0):,} / {result['total_months']:,} 个月"
-    elif 'pages' in result:
-        units = f"已处理 {result['pages']:,} 页" + (f" · 本轮范围 {result['total_units']:,} 个证券" if result.get('total_units') else '')
+    unit_name = job.get('unit_name', result.get('unit_name', '个单元'))
+    completed = result.get('completed_units', result.get('processed_units'))
+    total = result.get('total_units')
+    units = '暂无业务进度统计'
+    if completed is not None:
+        units = f"已处理 {completed:,}" + (f" / {total:,}" if total is not None else '') + f' {unit_name}'
+    elif total is not None:
+        units = f"本轮范围 {total:,} {unit_name}；完成数未提供"
+    elif 'total_months' in result:
+        units = f"本轮范围 {result['total_months']:,} 个月；完成数未提供"
+    if result.get('unlisted_without_date'):
+        units += f"；来源明确待上市且未定日期 {result['unlisted_without_date']:,} 只，本轮不要求行情"
     active = job.get('active')
     started = active.get('started_at') if isinstance(active, dict) else None
     error = redact(job.get('error') or (latest or {}).get('error') or '', owner.shell.cfg)
     if job['active']:
         error = redact(result.get('error') or job.get('error', ''), owner.shell.cfg)
-    failure_summary = (f"失败 {result['failed_units']:,} {result.get('unit_name', '个证券')}"
+    elif state == 'source_gap':
+        error = redact(job.get('notice') or (latest or {}).get('notice') or '', owner.shell.cfg)
+    failure_summary = (f"失败 {result['failed_units']:,} {unit_name}"
                        if 'failed_units' in result else '—')
     category_labels = {'source_request': '来源请求无有效数据', 'minute_gap': '来源缺分钟点',
                        'placeholder': '全零占位行情', 'invalid_fields': '字段/关联校验失败'}
@@ -133,25 +139,33 @@ def render_runtime(owner, job):
                                            for k, v in categories.items() if v)
     archive = ('等待本轮归档确认' if state == 'awaiting_archive' else
                '整轮已确认，可查询' if state == 'complete' else
+               '有效报告已确认归档；来源缺口仍待补齐' if state == 'source_gap' else
                '尚未确认本轮完成；已归档部分可查询')
     values = dict(status=STATUS.get(state, state), count=count, units=units,
+                  pages=(f"{result['pages']:,} 页 / 批次（不等于业务对象数）" if 'pages' in result else '—'),
                   current=result.get('current_security') or result.get('current_date') or result.get('current_month') or '—',
                   frontier=(f"连续已入队 {result['continuous_collected']:,} 条" if 'continuous_collected' in result else '—'),
                   failed=failure_summary,
-                  unavailable=(f"{result['details_unavailable']:,} 条" if 'details_unavailable' in result else '—'),
+                  gaps=f"{result.get('source_gap_units', 0):,} 只证券 / {result.get('source_identity_gaps', 0):,} 份报告",
+                  unavailable=(f"{result.get('details_unavailable', result.get('unavailable', 0)):,} 项"),
                   archive=archive, plan=schedule_text(job['policy']),
-                  next='本轮结束后安排' if job['active'] else stamp(job.get('next_due')),
+                  next=('未启用自动执行' if not job['policy']['enabled'] or job['policy']['mode'] == 'manual' else
+                        '本轮结束后安排' if job['active'] else stamp(job.get('next_due'))),
                   start=stamp(started or (latest or {}).get('started_at')),
                   finish='本轮运行中' if job['active'] else stamp((latest or {}).get('finished_at')),
                   network=network_summary(job), error=error or '暂无运行错误；来源质量请到数据准备查看。')
     for key, value in values.items():
         owner.runtime_fields[key].setText(str(value))
     for key, field in [('frontier', 'continuous_collected'), ('failed', 'failed_units'),
+                       ('gaps', 'source_gap_units'),
                        ('unavailable', 'details_unavailable')]:
-        owner.runtime_forms[key].setRowVisible(owner.runtime_fields[key], field in result)
+        owner.runtime_forms[key].setRowVisible(owner.runtime_fields[key], field in result or
+                                               (key == 'unavailable' and 'unavailable' in result))
     owner.progress.setRange(0, 100)
     if job['active'] and expected and collected is not None:
         owner.progress.setValue(min(100, int(collected * 100 / expected)))
+    elif job['active'] and total and completed is not None:
+        owner.progress.setValue(min(100, int(completed * 100 / total)))
     elif job['active']:
         owner.progress.setRange(0, 0)
     else:

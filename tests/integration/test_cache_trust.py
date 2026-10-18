@@ -21,7 +21,8 @@ async def check_recovery(manager, query, namespace, ident, publish, damage, monk
     archive = manager.registry.get("archive.worker")
     mysql = manager.registry.get("mysql.store")
     store = manager.registry.get("redis.store")
-    key, expiry = archive.fingerprints.keys(namespace, query.source)
+    proof_source = 'current' if namespace == 'stocks' else query.source
+    key, expiry = archive.fingerprints.keys(namespace, proof_source)
     proof = json.loads(await store.client.hget(key, ident))
     observed_index = 1 if namespace == "news" else 0
     if damage == "text":
@@ -48,7 +49,7 @@ async def check_recovery(manager, query, namespace, ident, publish, damage, monk
     elif damage in ("expired", "infinite"):
         await store.client.zadd(expiry, {ident: 1 if damage == "expired" else float("inf")})
     await store.client.hset(key, ident, json.dumps(proof))
-    assert not await archive.fingerprints.get(namespace, query.source, [ident])
+    assert not await archive.fingerprints.get(namespace, proof_source, [ident])
     # Isolate the proof path: changed business data must not be labelled stale.
     original, calls = mysql.archive, []
     async def offline(records):
@@ -61,7 +62,7 @@ async def check_recovery(manager, query, namespace, ident, publish, damage, monk
     monkeypatch.setattr(mysql, "archive", original)
     await archive.flush()
     assert await store.client.xlen(store.stream) == 0
-    assert await archive.fingerprints.get(namespace, query.source, [ident])
+    assert await archive.fingerprints.get(namespace, proof_source, [ident])
 
 
 @pytest.mark.parametrize("damage", [*DAMAGE, "source-future"])
@@ -136,7 +137,7 @@ async def test_stock_committed_progress_cannot_authorize_queue_removal(stock_dat
     elif marker == "wrong-type":
         value = []
     await store.client.set(key, "{" if marker == "bad-json" else json.dumps(value))
-    await archive.fingerprints.invalidate("stocks", query.source)
+    await archive.fingerprints.invalidate("stocks", "current")
     next_batch = snapshot()
     await publish("page", next_batch, page=1, rows=[{**ROWS[0], "name": "新数据"}, ROWS[1]])
     assert await store.client.xlen(store.stream) == 1

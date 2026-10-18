@@ -71,7 +71,7 @@ for width, height in [(1320, 860), (880, 560)]:
             assert page.table.rowCount() == 1
         elif page_id == "preparation":
             page.render(preparation_data)
-            assert page.table.rowCount() == sum(r['kind'] == '采集' for r in preparation_data['rows'])
+            assert page.table.rowCount() == len(preparation_data['rows'])
             assert page.detail.table.rowCount() == 12
         elif page_id != "proxies":
             page.data = snapshot()

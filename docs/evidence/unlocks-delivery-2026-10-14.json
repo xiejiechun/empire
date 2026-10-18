@@ -1,0 +1,141 @@
+{
+  "project": "tdx-unlocks",
+  "collector_plugins": 1,
+  "stages": [
+    "monthly_list",
+    "shared_holder_groups"
+  ],
+  "business_tables": [
+    "restricted_share_unlock",
+    "restricted_share_unlock_detail"
+  ],
+  "list_capacity": 10000000,
+  "actual_scope": [
+    "1990-01",
+    "1996-05",
+    "2020-01",
+    "2020-02",
+    "2025-10",
+    "2027-12"
+  ],
+  "source_counts": {
+    "parents": 574,
+    "details": 6154
+  },
+  "pending": 0,
+  "network": {
+    "proxy_requests": 572,
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "source_checks": "Exact list/detail business key sets, typed fields, association and SQL content hash audit in each declared unit",
+  "development_tests": 18,
+  "non_integration_tests": 1961,
+  "lifecycle_document": "docs/tdx-unlocks.md",
+  "schema_maintenance": "scripts/create_unlock_schema.py",
+  "limits": [
+    "Full1990-01 through nextyear12 history is supported but not collected; 6months only",
+    "No source announcement/available date; historical_signal temporal acceptance fails",
+    "Independent old detail corrections rotate bymonth; no full historic version replay",
+    "Same security/date/reason can have parallel listfacts; shared detail has no exclusive per-list-fact assignment",
+    "Source totals0 mean unknown; positive totals must equal response rows; HTTP/decoded/message bounds still apply"
+  ],
+  "migration": "Two additive typed tables; original business counts, shapes and collection_state retained; queue0 required",
+  "error_cleanup": {
+    "project": "tdx-unlocks",
+    "before": {
+      "revision": "1",
+      "total": 1,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": [
+        {
+          "status_code": 200,
+          "error": "大小非解禁完整月列表协议或容量错误",
+          "id": "3038acfe812e4884801b5713721833c8",
+          "project_id": "tdx-unlocks",
+          "created_at": "2026-10-13T17:17:28.731752+00:00",
+          "stage": "source_validation"
+        }
+      ]
+    },
+    "state": "verified",
+    "handled_ids": [
+      "3038acfe812e4884801b5713721833c8"
+    ],
+    "fix": "历史未知总数0保留；未来正总数必须与完整响应一致；未来安排允许正式日期过滤，普通来源的默认禁止未来行为保持。",
+    "validation": "18项来源/界面/隔离归档回归；2027-12真实102列表452明细，键/集合/正式查询/队列0通过。",
+    "removed_count": 1,
+    "remaining": {
+      "revision": "2",
+      "total": 0,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": []
+    },
+    "cleanup": "仅按已验证的精确ID清理，保留并发新增。"
+  },
+  "gate": {
+    "passed": true,
+    "report": "build/release-report.json",
+    "verified_at_utc": "2026-10-13T18:23:00Z",
+    "executable_sha256": "3220a17b07cdace84d0e71e31c3eb5aa7d7aeec49b3e91e4becd4695100b2537",
+    "tests": {
+      "tests": 2475,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 5
+    }
+  },
+  "actual_desktop": {
+    "passed": true,
+    "checked_at": "2026-10-13T18:25:44.378301+00:00",
+    "executable": "D:/project/empire/dist/Empire/Empire.exe",
+    "launch_working_directory": "C:/Windows",
+    "visible_window": "Empire · 投资研究工作台",
+    "local_services": "connected",
+    "catalog_search": "大小非解禁 => 大小非解禁个股与明细",
+    "list": {
+      "page_rows": 200,
+      "security": "688820.SH",
+      "name": "盛合晶微",
+      "unlock_date": "2027-12-31",
+      "shares": "144100000",
+      "detail_count": 9
+    },
+    "detail": {
+      "opened": true,
+      "holder": "上海新芯产业私募投资基金合伙企业(有限合伙)",
+      "shares": "23000000",
+      "reason": "首发、公开增发网下配售股份"
+    },
+    "task": {
+      "id": "tdx-unlocks",
+      "enabled": false,
+      "schedule": "daily 18:00 Asia/Shanghai",
+      "network": "代理优先，可回退直连"
+    },
+    "window_left_open": true,
+    "isolated_mysql_shutdown": "port13338 and owned datadir verified; SHUTDOWN executed; both owned PIDs absent; expected2013 during connection cleanup",
+    "scope": "Actual packaged desktop; finite SQL acceptance remains6months, not fullhistory"
+  },
+  "bindings": {
+    "src/empire/contracts/unlocks.py": "f7c082205645e04746d3bfb87a2bc168af3479126ca31725cdb4adec12d4a68f",
+    "src/empire/plugins/collectors/tdx_unlock_source.py": "f9c7882806f13881abad326c56993325001e8fbc09258c014c3bd03c8a4b6ee3",
+    "src/empire/plugins/collectors/tdx_unlocks.py": "0d3882075d121547dc860fa54f11128573bf125da530304a59ba01e6bc5cafbd",
+    "src/empire/plugins/datasets/unlocks.py": "0556c91e9169c6cd6689efe839caeb90b802bfb2f83857c4182f8a10acabda0c",
+    "src/empire/plugins/data/unlocks.py": "36f5760cc0380986c7c628fd5119ceea5860c8da2413c5499e22e6f4ec529693",
+    "src/empire/plugins/ui/unlocks.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
+    "sql/schema.sql": "c1e41974861e35514fcb3d572d2f79a0d305a78ca464be0d00508478f978ed5e",
+    "sql/schema-contract.json": "2a18a146de1e8ae3e51347aa0b819bd6826b61b41721f07b42226d0fae9a7b91"
+  },
+  "checked_at": "2026-10-13T18:25:44.474731+00:00",
+  "config_hashes": {
+    "config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "dist/Empire/config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f"
+  },
+  "capacity": "docs/evidence/unlocks-capacity-2026-10-14.json",
+  "query_audit": "docs/evidence/unlocks-query-audit-2026-10-14.json"
+}

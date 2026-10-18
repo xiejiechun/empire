@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-15T18:36:19.674267+00:00",
+  "port": 13346,
+  "datadir": "D:/project/empire/build/ths-capital-mysql/data",
+  "databases_removed": [
+    "empire_c248aa44715f4ec0bf9391d362916b19_test",
+    "empire_capital_schema_test",
+    "empire_e7265254f6204fa59cdf9387d25e9996_test"
+  ],
+  "remaining_test_databases_before_shutdown": [],
+  "redis_namespace": "empire:test:fbb3cf52fd0a421e9b449e06ec8d0839",
+  "redis_keys_remaining": 0,
+  "redis_deleted_count": null,
+  "graceful_sql_shutdown": true,
+  "listener_closed": true,
+  "note": "SQL清理逐表执行后查询确认无测试库，执行SHUTDOWN成功；退出SQLAlchemy连接上下文的rollback报告2013（服务已停止），随后独立核实端口关闭和确切测试前缀为0。未重启或清理共享生产Redis/MySQL；删除前键数未落盘，保持未知。"
+}

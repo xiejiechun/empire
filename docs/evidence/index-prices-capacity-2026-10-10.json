@@ -1,0 +1,74 @@
+{
+  "bindings": {
+    "src/empire/contracts/index_prices.py": "1d4dbf66cc95dd5231dbb3fbe1f65e31d75d2cd17f02b71892451d2f73074aaf",
+    "src/empire/plugins/datasets/index_prices.py": "a75a6192454492e9d301ad70c1b29a9ee34d19b530a52dee27d3a5e0d8954398",
+    "src/empire/plugins/data/index_prices.py": "18f86e564738cc5f85f5ba9e9def92371dae5fff371a1410f458a6d5d435c217",
+    "scripts/measure_index_prices.py": "15ca25d5049a6ca2c85e09e2b863507dc2394528824d1b6dfd2ad1a628a4b9c7"
+  },
+  "ddl_scopes": {
+    "index_daily_price": "83e2f5fd66f9b1004a3c26ee72a66f8c211364d15caf8ce752b7213ae85feb87",
+    "index_price_year": "adb3d00d819c95ce8f758988d2bd5001b02347412eab9abeed767365510eb177"
+  },
+  "measurements": {
+    "index_page_p95_ms": 2.252899983432144,
+    "date_page_p95_ms": 6.500500021502376,
+    "import_seconds": 5.206044199992903,
+    "allocated_bytes": 12763136,
+    "state_bytes": 51210
+  },
+  "limits": {
+    "index_page_p95_ms": 50,
+    "date_page_p95_ms": 50,
+    "import_seconds": 30,
+    "allocated_bytes": 67108864,
+    "state_bytes": 8388608
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 100000,
+    "indices": 1000,
+    "synthetic": true,
+    "repeat_business_dml": 0,
+    "revision_writes": 2,
+    "repeats": 20,
+    "cache": "unforced MySQL warm repeats; Redis not used"
+  },
+  "reviewed_tradeoffs": "年度聚合证明与结构化日行；双向日期索引，主键游标分页。100000合成日行不代表全目录实采或全部历史容量；总2GiB为规划预算。状态只保留观察版本，无日线正文。",
+  "explain": {
+    "index_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "index_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_index_price_date",
+        "key": "PRIMARY",
+        "key_len": "9",
+        "ref": null,
+        "rows": 69,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "all_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "index_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_index_price_date",
+        "key": "ix_index_price_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 49787,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ]
+  },
+  "cleanup": "UUID-owned schema dropped in finally",
+  "passed": true
+}

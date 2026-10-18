@@ -32,8 +32,10 @@ class KaipanlaProductDataPlugin(MarketDayScope):
             requires=('mysql.store',), provides=(capability(kind),), description=item.note)
         self.preparation = (PreparationContribution(item.requirement, capability(kind), '开盘啦',
             self.project_id, self.project_id + '-v1', 'kaipanla.' + kind + '.day',
-            'collector.kaipanla_' + kind, ('tests/test_kaipanla_products.py',),
-            ('tests/integration/test_kaipanla_products_archive.py',), scoped=True),)
+            'collector.kaipanla_' + kind,
+            ('tests/test_kaipanla_products.py', 'tests/test_market_suspension_days.py'),
+            ('tests/integration/test_kaipanla_products_archive.py',
+             'tests/integration/test_kaipanla_suspension_scope.py'), scoped=True),)
 
     async def start(self, context):
         self.mysql = context.get('mysql.store')
@@ -106,7 +108,7 @@ class KaipanlaProductDataPlugin(MarketDayScope):
                 return dict(data=read_day(conn, head), observed_at=head['version_observed_at']) if head else None
         return await self.mysql.read(read)
 
-    async def page(self, market, code, trade_date, cursor=None, limit=200, *, start_time=None, end_time=None):
+    async def page(self, market, code, trade_date, cursor=None, limit=200, start_time=None, end_time=None):
         if self.kind not in SERIES or type(limit) is not int or not 1 <= limit <= 200:
             raise ValueError('序列分页范围无效')
         security, day = unified_code(market, code), date.fromisoformat(trade_date)
@@ -168,7 +170,24 @@ class KaipanlaProductDataPlugin(MarketDayScope):
                 if token and time_range:
                     token['time_range'] = time_range
                 return dict(points=points, total=head['point_count'], start=after+1, next_cursor=token,
+                            seqs=[r['seq'] for r in page],
                             content_hash=head['content_hash'], observed_at=head['version_observed_at'])
+        return await self.mysql.read(read)
+
+    async def archived_date(self, market, code, at='', direction=0):
+        security = unified_code(market, code)
+        if direction not in (-1, 0, 1) or direction and not at:
+            raise ValueError('证券日导航方向或日期无效')
+        if at:
+            date.fromisoformat(at)
+        def read():
+            clause = ' AND trade_date' + ('<' if direction < 0 else '>') + ':at' if direction else ''
+            with self.mysql.read_engine.connect() as conn:
+                day = conn.execute(text('SELECT trade_date FROM stock_market_day WHERE kind=:kind '
+                    'AND unified_code=:security' + clause + ' ORDER BY trade_date '
+                    + ('ASC' if direction > 0 else 'DESC') + ' LIMIT 1'),
+                    dict(kind=self.kind, security=security, at=at)).scalar_one_or_none()
+                return day.isoformat() if day else None
         return await self.mysql.read(read)
 
     async def range(self, start, end, fields, securities=(), cursor=None, limit=200):

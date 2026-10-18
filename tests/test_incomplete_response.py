@@ -104,7 +104,8 @@ async def test_complete_large_gzip_is_not_misclassified_as_truncated(tmp_path, s
         await service.close()
 
 
-async def test_total_deadline_still_bounds_incomplete_backoff(tmp_path):
+@pytest.mark.parametrize("retries", [2, 100])
+async def test_total_deadline_still_bounds_incomplete_backoff(tmp_path, retries):
     streams = []
 
     def respond(request):
@@ -116,7 +117,7 @@ async def test_total_deadline_still_bounds_incomplete_backoff(tmp_path):
     try:
         with pytest.raises(TimeoutError):
             await service.request('GET', URL, allowed_domains=ALLOWED, project_id='ths-cashflow',
-                max_retries=2, total_timeout=.05, policy=ResponsePolicy(max_body_bytes=1000, max_wire_bytes=1000))
+                max_retries=retries, total_timeout=.05, policy=ResponsePolicy(max_body_bytes=1000, max_wire_bytes=1000))
         assert len(streams) == 1 and streams[0].closed
         assert not service.inflight and service.buffer_budget.used == 0
     finally:

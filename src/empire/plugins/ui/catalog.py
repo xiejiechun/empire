@@ -19,6 +19,16 @@ from empire.plugins.ui.common import (
     update_options,
 )
 
+PRESENTATIONS = {'calendar': '月历', 'news': '阅读流', 'listings': '公司资料',
+    'income': '报表矩阵', 'balance': '报表矩阵', 'cashflow': '报表矩阵',
+    'industries': '行业与成分', 'indices': '指数与成分', 'index_prices': 'K线与量额',
+    'adjustment': '复权K线', 'stocks': '证券目录', 'suspensions': '来源日历与事件',
+    'kaipanla_trades': '时间窗明细', 'kaipanla_quote': '盘口与摘要'}
+
+
+def presentation(ident):
+    return PRESENTATIONS.get(ident, '走势图' if ident.startswith('kaipanla_') else '事件与方案')
+
 
 class DataCatalogPage(QWidget):
     def __init__(self, shell):
@@ -30,7 +40,7 @@ class DataCatalogPage(QWidget):
         title = QLabel("数据目录")
         title.setObjectName("pageTitle")
         layout.addWidget(title)
-        layout.addWidget(hint("按业务分类或来源查找数据，打开后查看对应的数据列表。"))
+        layout.addWidget(hint("按用途、分类或来源找数据。月历、阅读、事件、报表和行情各有适合的预览方式。"))
         filters = QHBoxLayout()
         self.search = QLineEdit()
         self.search.setPlaceholderText("搜索数据名称、来源、数据库表或用途")
@@ -44,7 +54,7 @@ class DataCatalogPage(QWidget):
         filters.addWidget(self.category)
         filters.addWidget(self.source)
         layout.addLayout(filters)
-        self.table = table(["数据名称", "业务分类", "来源", "数据库表", "用途"])
+        self.table = table(["数据名称", "业务分类", "来源", "展示方式", "用途"])
         self.table.setAccessibleName("数据目录结果")
         self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Interactive)
         self.table.setColumnWidth(0, 220)
@@ -109,8 +119,10 @@ class DataCatalogPage(QWidget):
         matches.sort(key=lambda p: (p.category, p.order, p.id))
         self.offset = min(self.offset, max(0, (len(matches) - 1) // self.pager.limit * self.pager.limit))
         self.entries = matches[self.offset:self.offset + self.pager.limit]
-        rows(self.table, [[p.title, p.category, p.source, ", ".join(p.database_tables), p.description] for p in self.entries],
+        rows(self.table, [[p.title, p.category, p.source, presentation(p.id), p.description] for p in self.entries],
              keys=[p.id for p in self.entries])
+        for i, page in enumerate(self.entries):
+            self.table.item(i, 0).setToolTip(page.description + '\n数据库参考：' + ', '.join(page.database_tables))
         if self.entries and self.table.currentRow() < 0:
             self.table.selectRow(0)
         self.open_button.setEnabled(bool(self.entries))

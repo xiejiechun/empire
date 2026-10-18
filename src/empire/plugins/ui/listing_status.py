@@ -1,11 +1,13 @@
 """Lazy event browser: bounded cursor pages and separately fetched source text."""
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QComboBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
     QPushButton,
+    QScrollArea,
+    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -24,6 +26,10 @@ from empire.plugins.ui.common import (
     table_identity_state,
 )
 from empire.plugins.ui.plugin import UiPlugin
+from empire.plugins.ui.preview_cards import CardReader, card, text
+from empire.plugins.ui.preview_layout import QueryForm
+from empire.plugins.ui.preview_navigation import security_context
+from empire.plugins.ui.preview_search import CandidateSearch
 from empire.plugins.ui.queries import QueryScope
 
 
@@ -40,7 +46,6 @@ class ListingStatusPage(QWidget):
         title.setObjectName('pageTitle')
         layout.addWidget(title)
         layout.addWidget(hint('按来源日期保存暂停、恢复、终止上市；暂停不是退市。简称不代表历史当日名称；不提供最后交易日或完整重新上市历史。'))
-        bar = QHBoxLayout()
         self.code = accessible(QLineEdit(), '上市状态证券代码')
         self.code.setMaxLength(6)
         self.code.setPlaceholderText('证券代码或前缀')
@@ -56,23 +61,32 @@ class ListingStatusPage(QWidget):
             box.setMaxLength(10)
             box.returnPressed.connect(self.find)
         self.code.returnPressed.connect(self.find)
-        for box in (self.code, self.kind, self.start, self.end):
-            bar.addWidget(box)
+        self.candidates = CandidateSearch(self, self.code, shell, 'listing_status',
+            lambda r: self.code.setText(r['unified_code']))
         find = QPushButton('查询 / 刷新')
         find.clicked.connect(self.find)
-        bar.addWidget(find)
         manage = QPushButton('管理采集任务')
         manage.clicked.connect(lambda: shell.navigate('collection', NavigationContext(task_id=PROJECT)))
-        bar.addWidget(manage)
-        layout.addLayout(bar)
+        layout.addWidget(QueryForm([('证券名称 / 代码', self.code), ('事件类型', self.kind),
+            ('开始日期', self.start), ('截止日期', self.end)], [find, manage]))
         self.status = hint('正在读取已归档事件…')
         layout.addWidget(self.status)
         self.table = table(['来源日期', '证券', '事件', '来源简称'])
         self.table.itemSelectionChanged.connect(self.selected)
-        layout.addWidget(self.table, 1)
+        self.views = QTabWidget()
+        self.timeline = CardReader('上市状态来源事件时间线')
+        self.timeline.selected.connect(self.open_description)
+        self.views.addTab(self.timeline, '事件时间线')
+        self.views.addTab(self.table, '来源明细')
+        layout.addWidget(self.views, 1)
         self.description = hint('选择事件查看来源说明；空说明表示来源未提供。')
         self.description.setWordWrap(True)
-        layout.addWidget(self.description)
+        self.description.setTextFormat(Qt.TextFormat.PlainText)
+        self.description.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.description_view = QScrollArea()
+        self.description_view.setWidgetResizable(True)
+        self.description_view.setWidget(self.description)
+        self.views.addTab(self.description_view, '所选事件说明')
         bar = QHBoxLayout()
         self.previous, self.next = QPushButton('上一页'), QPushButton('下一页')
         self.previous.clicked.connect(lambda: self.move(False))
@@ -101,11 +115,30 @@ class ListingStatusPage(QWidget):
         self.dirty = True
 
     def spec(self):
-        return (*self.applied, self.after, 200)
+        return (*self.applied, self.after, 200, True)
+
+    def apply_navigation_context(self, context):
+        security_context(context)
+        self.code.setText(context.unified_code)
+        self.start.setText(context.start)
+        self.end.setText(context.end)
+        self.find()
+
+    def render_timeline(self):
+        self.timeline.present(''.join(card(TYPES[r['event_type']],
+            f'<p>{text(r["unified_code"])} · {text(r["name"])}（来源简称）</p>'
+            + f'<p><a href="record:{i}">查看来源说明</a></p>', r['event_date'] + ' · 来源日期')
+            for i, r in enumerate(self.records)) or '<p>暂无匹配的已归档事件。</p>',
+            identity=(self.applied, self.after))
 
     def selected(self):
         index = self.table.currentRow()
-        if not 0 <= index < len(self.records) or not self.isVisible():
+        if not 0 <= index < len(self.records):
+            self.scope.cancel('detail')
+            self.detail_future = None
+            self.description.setText('当前没有所选事件；先选择一条记录。')
+            return
+        if not self.isVisible():
             return
         key = [self.records[index][k] for k in COLUMNS[:4]]
         if self.detail_future:
@@ -113,6 +146,11 @@ class ListingStatusPage(QWidget):
         self.detail_key = key
         self.description.setText('正在读取来源说明…')
         self.detail_future = self.scope.invoke('detail', self.shell.runtime, 'listing_status.query', 'detail', key)
+
+    def open_description(self, index):
+        self.table.selectRow(index)
+        self.selected()
+        self.views.setCurrentWidget(self.description_view)
 
     def tick(self):
         if getattr(self.shell, 'shutting_down', False):
@@ -135,10 +173,13 @@ class ListingStatusPage(QWidget):
                 try:
                     result = self.scope.result('events', future)
                     self.records = result['rows']
+                    self.render_timeline()
                     self.table.blockSignals(True)
                     rows(self.table, [[r['event_date'], r['unified_code'], TYPES[r['event_type']], r['name']] for r in self.records],
                          keys=[r['record_key'] for r in self.records])
                     self.table.blockSignals(False)
+                    if self.records and self.table.currentRow() < 0:
+                        self.table.selectRow(0)
                     self.next_cursor = result['next']
                     self.previous.setEnabled(bool(self.history))
                     self.next.setEnabled(bool(self.next_cursor))
@@ -153,7 +194,8 @@ class ListingStatusPage(QWidget):
 
     def save_ui_state(self):
         return dict(code=self.code.text(), kind=self.kind.currentIndex(), start=self.start.text(), end=self.end.text(),
-                    applied=self.applied, after=self.after, history=list(self.history), table=table_identity_state(self.table))
+                    applied=self.applied, after=self.after, history=list(self.history), table=table_identity_state(self.table),
+                    view=self.views.currentIndex(), position=self.timeline.save_position())
 
     def restore_ui_state(self, state):
         self.code.setText(state['code'])
@@ -163,6 +205,8 @@ class ListingStatusPage(QWidget):
         self.applied, self.after, self.history = state['applied'], state['after'], list(state['history'])
         restore_table_identity(self.table, state['table'])
         self.dirty = True
+        self.views.setCurrentIndex(state.get('view', 0))
+        self.timeline.restore_position(state.get('position', 0))
 
 
 class ListingStatusUiPlugin(UiPlugin):

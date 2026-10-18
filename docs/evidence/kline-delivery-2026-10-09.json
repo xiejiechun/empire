@@ -1,0 +1,63 @@
+{
+  "checked_at": "2026-10-09T12:39:28.291750+08:00",
+  "request": "数据浏览、自算复权因子与行情展示完整K线",
+  "implementation": [
+    "完整查询范围原始/前复权/后复权日OHLC",
+    "MA5/10/20、按钮缩放、拖动平移、方向键逐日查看",
+    "图表独立于200行明细分页",
+    "无效价格保留灰色日期缺口，均线不跨缺口；因子和复权价均为空",
+    "历史快照15:00起可用；当日仍按15:30截止判断"
+  ],
+  "release": {
+    "tests_passed": 1939,
+    "skipped": 5,
+    "gate": "PASS",
+    "report_sha256": "1516b9e80351f8d11973de46d43300765ff1a9dd472766d30e9e786711b513d1",
+    "manifest": {
+      "version": "0.1.0",
+      "commit": "a79f789e15de70d22e55a5f850f7ce3ec83c6009",
+      "dirty": true,
+      "requirements_sha256": "324f4a8b9e382288beb7ec54de8ea4a51e99b012140d1ecf56cdc5c033d21c91",
+      "dependency_count": 41,
+      "dependency_report_sha256": "1c1625bc7783cc45e5c807f40491a4bbc99c0167ed45e81ecfbd07f57a6f77ed",
+      "built_at_utc": "2026-10-09T04:30:23Z",
+      "python": "3.12.9",
+      "pyinstaller": "6.22.3"
+    },
+    "config_preserved": true
+  },
+  "connections": {
+    "redis": {
+      "connected": true
+    },
+    "mysql": {
+      "connected": true
+    }
+  },
+  "actual_desktop": {
+    "executable": "dist/Empire/Empire.exe",
+    "window_size": "1320x890",
+    "checks": [
+      "数据目录打开页面",
+      "600016.SH 2021-01-01至2026-10-08：1394个日期完整视图",
+      "放大697/1394，拖动改变范围，显示全部恢复1394/1394",
+      "600016.SH 2025-01-01至2026-10-08：425日，前后复权实际绘制",
+      "明细第二页返回图表仍425/425",
+      "五年范围后复权明确留空；恢复原始1394/1394"
+    ],
+    "left_open": "600016.SH五年原始K线"
+  },
+  "limitations": [
+    "现存600016.SH和600000.SH 2024-05-13开盘价为0；页面标缺口，不填造价格，该范围复权不可用",
+    "当前日线价格及均线，不展示未核实单位的成交量",
+    "验收范围不证明全市场全历史数据已完整"
+  ],
+  "database": {
+    "ddl": false,
+    "business_writes": false,
+    "extra_collector": false
+  },
+  "capacity_evidence": "docs/evidence/kline-capacity-2026-10-09.json",
+  "inherited_worktree": "保留所有本次开始前已有变更；没有跨聊天写入或新增代理",
+  "error_cleanup": "本次是K线展示功能，不根据错误记录修复采集器，未清理任何业务错误记录"
+}

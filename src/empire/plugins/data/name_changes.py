@@ -49,14 +49,14 @@ class NameDataPlugin:
         await self.mysql.require_schema(TABLES, KEYS)
         return {self.manifest.provides[0]: self}
 
-    async def list_events(self, code='', start='', end='', after=None, limit=200):
-        if not isinstance(code, str) or not re.fullmatch('[0-9]{0,6}', code) or type(limit) is not int or not 1 <= limit <= 200:
+    async def list_events(self, code='', start='', end='', after=None, limit=200, descending=False):
+        if not isinstance(code, str) or not re.fullmatch(r'(?:[0-9]{0,6}|[0-9]{6}\.(?:SH|SZ|BJ))', code) or type(limit) is not int or not 1 <= limit <= 200 or type(descending) is not bool:
             raise ValueError('更名查询代码或每页上限无效')
         scope = PreparationScope.parse(dict(start=start, end=end))
         clauses, params = ['name_kind=:kind'], dict(kind=self.kind, limit=limit + 1)
         if code:
             clauses.append('unified_code LIKE :code')
-            params['code'] = code + '%'
+            params['code'] = code if '.' in code else code + '%'
         for bound, op in ((scope.start, '>='), (scope.end, '<=')):
             if bound:
                 key = 'start' if op == '>=' else 'end'
@@ -72,12 +72,14 @@ class NameDataPlugin:
             from empire.contracts.security import split_unified_code
             date.fromisoformat(after[0])
             split_unified_code(after[1])
-            clauses.append('(event_date,unified_code,record_key)>(:day,:security,:key)')
+            clauses.append('(event_date,unified_code,record_key)' + ('<' if descending else '>') + '(:day,:security,:key)')
             params.update(day=after[0], security=after[1], key=after[2])
         def read():
             with self.mysql.read_engine.connect() as conn:
                 values = conn.execute(text(f'SELECT record_key,{",".join(COLUMNS)} FROM {TABLE} '
-                    f'WHERE {" AND ".join(clauses)} ORDER BY event_date,unified_code,record_key LIMIT :limit'), params).mappings().all()
+                    f'WHERE {" AND ".join(clauses)} ORDER BY ' +
+                    ','.join(k + (' DESC' if descending else '') for k in ('event_date', 'unified_code', 'record_key'))
+                    + ' LIMIT :limit'), params).mappings().all()
                 rows = [{**dict(r), 'event_date': r['event_date'].isoformat()} for r in values[:limit]]
                 last = rows[-1] if rows else None
                 return dict(rows=rows, next=([last['event_date'], last['unified_code'], last['record_key']]

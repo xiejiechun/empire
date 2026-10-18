@@ -9,7 +9,7 @@ from PySide6.QtCore import QCoreApplication
 
 from empire.__main__ import acquire_instance_lock
 from empire.bootstrap import build_manager
-from empire.contracts.listings import JOB, PROJECT, digest, is_unavailable
+from empire.contracts.listings import JOB, PROJECT, digest
 from empire.core.config import load_config
 from empire.core.time import CHINA
 from empire.plugins.infra.settings import SettingsStore
@@ -47,21 +47,30 @@ async def run(args):
         hashes,details={},{}
         sequence=[]
         original=collector.fetch
-        async def fetch(stock):
-            row,observed,url=await original(stock)
-            hashes[row['unified_code']]=digest(row)
-            sequence.append(row['unified_code'])
-            details[row['unified_code']]=dict(detail_status='unavailable' if is_unavailable(row) else 'available',
-                listing_date=row.get('listing_date'),history_bytes=len((row.get('history') or '').encode()),
-                null_fields=[k for k,v in row.items() if v is None],content_hash=digest(row))
-            return row,observed,url
+        async def fetch(stock, **options):
+            value = await original(stock, **options)
+            def capture(value):
+                row, observed, url = value
+                hashes[row['unified_code']]=digest(row)
+                sequence.append(row['unified_code'])
+                details[row['unified_code']]=dict(detail_status=row.get('detail_status', 'available'),
+                    listing_date=row.get('listing_date'),history_bytes=len((row.get('history') or '').encode()),
+                    null_fields=[k for k,v in row.items() if v is None],content_hash=digest(row))
+                return value
+            if options.get('defer'):
+                consume = value.consume
+                async def recorded():
+                    return capture(await consume())
+                value.consume = recorded
+                return value
+            return capture(value)
         collector.fetch=fetch
         try:
             result=await asyncio.wait_for(collector.execute(fresh=True,baseline_revision=await collector.checkpoint_revision()),300)
             for code,checksum in hashes.items():
                 record=await query.detail(code)
-                if record.get('detail_status')=='unavailable':
-                    record={k:record[k] for k in ('unified_code','detail_status','source_status_code')}
+                if record.get('detail_status') in ('unavailable', 'incomplete'):
+                    record={k:v for k,v in record.items() if k != 'last_valid'}
                 assert digest(record)==checksum,'来源与正式查询不一致'
             assert len(hashes)==len(selected)
             pending=await store.client.xlen(store.stream)

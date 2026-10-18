@@ -1,0 +1,84 @@
+{
+  "checked_at": "2026-10-16T05:26:51.538371+00:00",
+  "network": {
+    "proxy_requests": 8
+  },
+  "checks": [
+    {
+      "project": "ths-income",
+      "id": "f76fcd0bf79d4f379a0c9b71fdb77fb3",
+      "url": "https://basic.10jqka.com.cn/api/stock/finance/600877_benefit.json",
+      "error": "规范财报字段不匹配"
+    },
+    {
+      "project": "ths-income",
+      "id": "30f7b30ed8114b588908ac980e2a6280",
+      "url": "https://basic.10jqka.com.cn/api/stock/finance/600876_benefit.json",
+      "error": "规范财报字段不匹配"
+    },
+    {
+      "project": "ths-cashflow",
+      "id": "737e1106f4454908beb6a8ea5723cf41",
+      "url": "https://basic.10jqka.com.cn/api/stock/finance/002178_cash.json",
+      "error": "规范财报字段不匹配"
+    },
+    {
+      "project": "ths-cashflow",
+      "id": "b949e8c5adbc4888b9cda59ea18f613a",
+      "url": "https://basic.10jqka.com.cn/api/stock/finance/600098_cash.json",
+      "error": "规范财报字段不匹配"
+    },
+    {
+      "project": "kaipanla-quote",
+      "id": "28f08b544b8349c9ac291f7f7d1291b9",
+      "url": "https://apphis.longhuvip.com/w1/api/index.php",
+      "request": {
+        "code": "920014",
+        "day": "2024-05-13",
+        "kind": "quote"
+      },
+      "source_day": 20230112,
+      "errcode": "0",
+      "error": "来源日期错配"
+    },
+    {
+      "project": "kaipanla-quote",
+      "id": "97ae724c15f2481b8c830904d75aaa25",
+      "url": "https://apphis.longhuvip.com/w1/api/index.php",
+      "request": {
+        "code": "920014",
+        "day": "2023-03-17",
+        "kind": "quote"
+      },
+      "source_day": null,
+      "errcode": "1017",
+      "error": "开盘啦接口未成功，不能证明空日"
+    },
+    {
+      "project": "kaipanla-quote",
+      "id": "cee17ba29a864de091fd7ec55bed0165",
+      "url": "https://apphis.longhuvip.com/w1/api/index.php",
+      "request": {
+        "code": "920000",
+        "day": "2021-12-28",
+        "kind": "quote"
+      },
+      "source_day": null,
+      "errcode": "1017",
+      "error": "开盘啦接口未成功，不能证明空日"
+    },
+    {
+      "project": "kaipanla-quote",
+      "id": "a68c86b297aa4c0f99434178002c3499",
+      "url": "https://apphis.longhuvip.com/w1/api/index.php",
+      "request": {
+        "code": "920000",
+        "day": "2021-12-27",
+        "kind": "quote"
+      },
+      "source_day": null,
+      "errcode": "1017",
+      "error": "开盘啦接口未成功，不能证明空日"
+    }
+  ]
+}

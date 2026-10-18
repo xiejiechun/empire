@@ -1,0 +1,4103 @@
+{
+  "schema": 1,
+  "tasks": {
+    "sina-stocks": {
+      "requests": [
+        {
+          "url": "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount",
+          "method": "GET",
+          "purpose": "来源总数",
+          "parameters": [
+            {
+              "name": "node",
+              "value": "hs_a",
+              "meaning": "沪深北A股目录"
+            }
+          ]
+        },
+        {
+          "url": "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "page",
+              "value": "从1递增",
+              "meaning": "页码"
+            },
+            {
+              "name": "num",
+              "value": "默认80，配置1～80",
+              "meaning": "每页条数，程序配置sina_universe.page_size，重启生效"
+            },
+            {
+              "name": "sort",
+              "value": "symbol",
+              "meaning": "证券代码排序"
+            },
+            {
+              "name": "asc",
+              "value": "0",
+              "meaning": "降序"
+            },
+            {
+              "name": "node",
+              "value": "hs_a",
+              "meaning": "A股目录"
+            },
+            {
+              "name": "symbol",
+              "value": "空字符串",
+              "meaning": "不限定单只证券"
+            },
+            {
+              "name": "_s_r_a",
+              "value": "sort",
+              "meaning": "来源排序协议标记"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock"
+      ],
+      "start": "无历史日期起点：当前A股列表",
+      "end": "本轮来源当前列表",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮完整遍历全部页；完整集合通过后替换当前列表，不保存每日股票快照。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "创建新批次；已归档数据按对应业务规则保留。",
+      "job_key": "sina-universe-v1",
+      "datasets": [
+        "stock.universe.complete",
+        "stock.universe.page",
+        "stock.universe.start"
+      ],
+      "fingerprint_namespaces": [
+        "stocks"
+      ],
+      "topics": [
+        "股票列表",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/sina_universe.py",
+      "source": "sina",
+      "fingerprint_source": "current",
+      "scope": "来源当前沪深北A股完整股票集合；同一stock表只保留一份当前列表。"
+    },
+    "ths-stocks": {
+      "requests": [
+        {
+          "url": "https://q.10jqka.com.cn/index/index/board/all/field/zdf/order/desc/page/1/size/10000/ajax/1/",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "board",
+              "value": "all",
+              "meaning": "全部股票板块"
+            },
+            {
+              "name": "field",
+              "value": "zdf",
+              "meaning": "按涨跌幅排序"
+            },
+            {
+              "name": "order",
+              "value": "desc",
+              "meaning": "降序"
+            },
+            {
+              "name": "page",
+              "value": "1",
+              "meaning": "只取完整第一页，不拼接偏移页"
+            },
+            {
+              "name": "size",
+              "value": "10000",
+              "meaning": "完整响应容量"
+            },
+            {
+              "name": "ajax",
+              "value": "1",
+              "meaning": "来源AJAX响应格式"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock"
+      ],
+      "start": "无历史日期起点：当前A股列表",
+      "end": "本轮来源当前列表",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮一个完整响应，集合校验后替换当前股票列表；不保留历史快照。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "创建新批次；已归档数据按对应业务规则保留。",
+      "job_key": "ths-universe-v1",
+      "datasets": [
+        "stock.universe.complete",
+        "stock.universe.page",
+        "stock.universe.start"
+      ],
+      "fingerprint_namespaces": [
+        "stocks"
+      ],
+      "topics": [
+        "股票列表",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_universe.py",
+      "source": "ths",
+      "fingerprint_source": "current",
+      "scope": "来源当前沪深北A股完整股票集合；同一stock表只保留一份当前列表。"
+    },
+    "sina-news": {
+      "requests": [
+        {
+          "url": "https://app.cj.sina.com.cn/api/news/pc",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "page",
+              "value": "1",
+              "meaning": "游标方式保持第一页"
+            },
+            {
+              "name": "size",
+              "value": "50",
+              "meaning": "每页最多50条"
+            },
+            {
+              "name": "tag",
+              "value": "0",
+              "meaning": "全部分类"
+            },
+            {
+              "name": "id",
+              "value": "后续页为上一页末条新闻ID",
+              "meaning": "向更早新闻翻页的边界，第一页不传"
+            },
+            {
+              "name": "type",
+              "value": "后续页为1",
+              "meaning": "配合id读取更早记录，第一页不传"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "finance_news"
+      ],
+      "start": "首次或重新采集仅当前第一页，无固定历史开始日期",
+      "end": "本轮第一页最新新闻ID；对应来源新闻时间",
+      "initial": "首次仅加载第一页50条以内，建立已归档上界。",
+      "incremental": "从第一页向前翻到上轮已归档ID上界，停止页仍做去重和修订；来源窗口已结束却未接上边界则失败。",
+      "limits": "不自动追溯更早新闻修订；Redis丢失后重新建立最新基线，已有SQL新闻保留。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新扫描最新窗口并建立增量基线，已有新闻保留；请先检查尚未处理的缺口。",
+      "job_key": "sina-news-v1",
+      "datasets": [
+        "news.flash.page"
+      ],
+      "fingerprint_namespaces": [
+        "news"
+      ],
+      "topics": [
+        "财经快讯",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/sina_news.py",
+      "source": "sina",
+      "fingerprint_source": "sina",
+      "scope": "新浪全球实时财经新闻全部分类tag=0，不按证券过滤。"
+    },
+    "cninfo-calendar": {
+      "requests": [
+        {
+          "url": "https://www.cninfo.com.cn/data/tradeday/getMonthTradeDay",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "month",
+              "value": "YYYY-MM",
+              "meaning": "计划中的自然月，逐月请求"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "trade_calendar"
+      ],
+      "start": "1990-12-19（首月从来源支持日起）",
+      "end": "执行年份的下一自然年12月末，含结束日",
+      "initial": "补齐来源起点至下一年12月，各月独立校验全部日期。",
+      "incremental": "维护本月至下一年12月，并用SQL月份完整性补历史缺月；未来安排允许修订。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从 1990-12 起重新核验全部月份至下一年 12 月；正常维护请用立即采集。",
+      "job_key": "cninfo-calendar-v1",
+      "datasets": [
+        "calendar.month"
+      ],
+      "fingerprint_namespaces": [
+        "calendar"
+      ],
+      "topics": [
+        "交易日历",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/cninfo_calendar.py",
+      "source": "cninfo",
+      "fingerprint_source": "cninfo",
+      "scope": "巨潮A股交易与休市日期；整月日期集合校验，不根据周末自行生成。"
+    },
+    "tdx-suspensions": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_tzrl_gsrl",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "mrtbts",
+              "meaning": "每日特别提示栏目"
+            },
+            {
+              "name": "Params[1]",
+              "value": "hstfp",
+              "meaning": "沪深停复牌子栏目"
+            },
+            {
+              "name": "Params[2]",
+              "value": "YYYY-MM-DD",
+              "meaning": "来源日历查询日期"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "请求首个完整响应的协议标志；非首页时为0（当前完整日路径使用首页）"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "第一页，不按不稳定偏移页拼接"
+            },
+            {
+              "name": "Params[5]",
+              "value": "初始1000，容量不足时倍增，最多10000",
+              "meaning": "响应条数上限，不能用截断响应证明完整"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "suspension_event",
+        "suspension_source_date"
+      ],
+      "start": "2004-12-27",
+      "end": "本轮北京时间当天，含结束日",
+      "initial": "从来源起点补齐日历范围，按完整日校验后分段入队。",
+      "incremental": "从SQL连续覆盖上界当天重新核验至北京时间当天；无可信上界或重新采集则从2004-12-27开始。不自动回看更早已覆盖日的修订，需重新采集。",
+      "limits": "仅支持声明市场；停复牌按来源实际出现日期查询，未知日期不能冒充当天无记录。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从 2004-12-27 起按自然月重新核验至今；保留已归档事件。",
+      "job_key": "tdx-suspensions-v1",
+      "datasets": [
+        "suspensions.period"
+      ],
+      "fingerprint_namespaces": [
+        "suspensions"
+      ],
+      "topics": [
+        "历史停复牌",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_suspensions.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "沪深A股；逐来源日历日校验，过滤其他市场不改变来源总数校验口径。"
+    },
+    "tdx-listing-status": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_tzrl_gsrl",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "mrtbts",
+              "meaning": "每日特别提示栏目"
+            },
+            {
+              "name": "Params[1]",
+              "value": "zthfss",
+              "meaning": "暂停恢复终止上市子栏目"
+            },
+            {
+              "name": "Params[2]",
+              "value": "YYYY-MM-DD",
+              "meaning": "来源日历查询日期"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "请求首个完整响应的协议标志；非首页时为0（当前完整日路径使用首页）"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "第一页，不按不稳定偏移页拼接"
+            },
+            {
+              "name": "Params[5]",
+              "value": "1000",
+              "meaning": "响应条数上限，不能用截断响应证明完整"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "security_listing_event"
+      ],
+      "start": "1990-12-19",
+      "end": "本轮北京时间当天，含结束日",
+      "initial": "从来源起点补齐日历范围，按完整日校验后分段入队。",
+      "incremental": "SQL月份证明无效或缺失则补采；每轮重查上月和本月，fresh重查全部历史。",
+      "limits": "仅支持声明市场；停复牌按来源实际出现日期查询，未知日期不能冒充当天无记录。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从1990-12-19逐日重新核验至本轮启动日；保留已归档事件，先继续活跃轮次。",
+      "job_key": "tdx-listing-status-v1",
+      "datasets": [
+        "listing_status.month"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_listing_status_v1"
+      ],
+      "topics": [
+        "暂停恢复终止上市",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_listing_status.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "沪深A股；逐来源日历日校验，过滤其他市场不改变来源总数校验口径。"
+    },
+    "tdx-company-renames": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_bfzl_bfzl",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "0",
+              "meaning": "本任务事件类别：公司更名（通达信）"
+            },
+            {
+              "name": "Params[1]",
+              "value": "19900101",
+              "meaning": "起始日期，包含"
+            },
+            {
+              "name": "Params[2]",
+              "value": "本轮北京时间当天YYYYMMDD",
+              "meaning": "结束日期，包含"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "来源固定协议标志，内部含义未公开，不可编辑"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[5]",
+              "value": "30000",
+              "meaning": "完整响应容量，达到边界拒绝确认完整"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "security_name_change"
+      ],
+      "start": "1990-01-01（请求边界，不代表此前有记录）",
+      "end": "本轮北京时间当天，含结束日",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "核验来源全部更名历史；已入队轮次先完成归档，缺失名称保持未知。",
+      "job_key": "tdx-company-renames-v1",
+      "datasets": [
+        "names.company.market"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_names_company_v2"
+      ],
+      "topics": [
+        "公司与股票更名",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_name_changes.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-security-renames": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_bfzl_bfzl",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "1",
+              "meaning": "本任务事件类别：股票更名（通达信）"
+            },
+            {
+              "name": "Params[1]",
+              "value": "19900101",
+              "meaning": "起始日期，包含"
+            },
+            {
+              "name": "Params[2]",
+              "value": "本轮北京时间当天YYYYMMDD",
+              "meaning": "结束日期，包含"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "来源固定协议标志，内部含义未公开，不可编辑"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[5]",
+              "value": "30000",
+              "meaning": "完整响应容量，达到边界拒绝确认完整"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "security_name_change"
+      ],
+      "start": "1990-01-01（请求边界，不代表此前有记录）",
+      "end": "本轮北京时间当天，含结束日",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "核验来源全部更名历史；已入队轮次先完成归档，缺失名称保持未知。",
+      "job_key": "tdx-security-renames-v1",
+      "datasets": [
+        "names.security.market"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_names_security_v2"
+      ],
+      "topics": [
+        "公司与股票更名",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_name_changes.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-st-implementation": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_bfzl_bfzl",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "2",
+              "meaning": "本任务事件类别：实施ST（通达信）"
+            },
+            {
+              "name": "Params[1]",
+              "value": "19900101",
+              "meaning": "起始日期，包含"
+            },
+            {
+              "name": "Params[2]",
+              "value": "本轮北京时间当天YYYYMMDD",
+              "meaning": "结束日期，包含"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "来源固定协议标志，内部含义未公开，不可编辑"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[5]",
+              "value": "30000",
+              "meaning": "完整响应容量，达到边界拒绝确认完整"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "security_st_event"
+      ],
+      "start": "1990-01-01（请求边界，不代表此前有记录）",
+      "end": "本轮北京时间当天，含结束日",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新核验来源全部历史；已入队轮次先完成归档，不裁定每日ST状态。",
+      "job_key": "tdx-st-implementation-v1",
+      "datasets": [
+        "st.implementation.market"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_st_implementation_v1"
+      ],
+      "topics": [
+        "实施ST与撤销ST"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_st_events.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-st-removal": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_bfzl_bfzl",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "3",
+              "meaning": "本任务事件类别：撤销ST（通达信）"
+            },
+            {
+              "name": "Params[1]",
+              "value": "19900101",
+              "meaning": "起始日期，包含"
+            },
+            {
+              "name": "Params[2]",
+              "value": "本轮北京时间当天YYYYMMDD",
+              "meaning": "结束日期，包含"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "来源固定协议标志，内部含义未公开，不可编辑"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[5]",
+              "value": "30000",
+              "meaning": "完整响应容量，达到边界拒绝确认完整"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "security_st_event"
+      ],
+      "start": "1990-01-01（请求边界，不代表此前有记录）",
+      "end": "本轮北京时间当天，含结束日",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新核验来源全部历史；已入队轮次先完成归档，不裁定每日ST状态。",
+      "job_key": "tdx-st-removal-v1",
+      "datasets": [
+        "st.removal.market"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_st_removal_v1"
+      ],
+      "topics": [
+        "实施ST与撤销ST"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_st_events.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-earnings-forecast": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_cache",
+          "method": "POST",
+          "purpose": "报告期目录",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "yjyg",
+              "meaning": "报告期目录类别"
+            },
+            {
+              "name": "Params[1..3]",
+              "value": "空字符串",
+              "meaning": "固定目录协议占位参数"
+            }
+          ]
+        },
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_yjyg",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "0",
+              "meaning": "来源固定业务模式"
+            },
+            {
+              "name": "Params[1]",
+              "value": "YYYY-MM-DD",
+              "meaning": "报告期，逐季生成"
+            },
+            {
+              "name": "Params[2]",
+              "value": "空字符串",
+              "meaning": "不限定证券"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "固定协议标志"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[5]",
+              "value": "10000",
+              "meaning": "完整响应容量，达到上限报错"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "earnings_forecast"
+      ],
+      "start": "1980年第一季度末（规划边界，空期仍校验）",
+      "end": "来源报告期目录返回的最新报告期，包含",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。普通轮次也遍历完整计划；并非只采最新一期。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "下载阶段重新建立完整来源范围；待归档阶段先确认原轮次；保留所有已归档历史。",
+      "job_key": "tdx-earnings-forecast-v1",
+      "datasets": [
+        "earnings_forecast.tdx_unit"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_earnings_forecast"
+      ],
+      "topics": [
+        "通达信业绩预告",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_performance.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-earnings-quick": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_cache",
+          "method": "POST",
+          "purpose": "报告期目录",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "yjkb",
+              "meaning": "报告期目录类别"
+            },
+            {
+              "name": "Params[1..3]",
+              "value": "空字符串",
+              "meaning": "固定目录协议占位参数"
+            }
+          ]
+        },
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_yjkb",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "YYYY-MM-DD",
+              "meaning": "报告期，逐季生成"
+            },
+            {
+              "name": "Params[1]",
+              "value": "空字符串",
+              "meaning": "不限定证券"
+            },
+            {
+              "name": "Params[2]",
+              "value": "1",
+              "meaning": "固定协议标志"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[4]",
+              "value": "10000",
+              "meaning": "完整响应容量，达到上限报错"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "earnings_quick"
+      ],
+      "start": "1980年第一季度末（规划边界，空期仍校验）",
+      "end": "来源报告期目录返回的最新报告期，包含",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。普通轮次也遍历完整计划；并非只采最新一期。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "下载阶段重新建立完整来源范围；待归档阶段先确认原轮次；保留所有已归档历史。",
+      "job_key": "tdx-earnings-quick-v1",
+      "datasets": [
+        "earnings_quick.tdx_unit"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_earnings_quick"
+      ],
+      "topics": [
+        "通达信业绩快报",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_performance.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-earnings-disclosure": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_cache",
+          "method": "POST",
+          "purpose": "报告期目录",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "yjplsj",
+              "meaning": "报告期目录类别"
+            },
+            {
+              "name": "Params[1..3]",
+              "value": "空字符串",
+              "meaning": "固定目录协议占位参数"
+            }
+          ]
+        },
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_yjpl",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "0",
+              "meaning": "来源固定业务模式"
+            },
+            {
+              "name": "Params[1]",
+              "value": "YYYY-MM-DD",
+              "meaning": "报告期，逐季生成"
+            },
+            {
+              "name": "Params[2]",
+              "value": "空字符串",
+              "meaning": "不限定证券"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "固定协议标志"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[5]",
+              "value": "10000",
+              "meaning": "完整响应容量，达到上限报错"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "earnings_disclosure"
+      ],
+      "start": "1980年第一季度末（规划边界，空期仍校验）",
+      "end": "来源报告期目录返回的最新报告期，包含",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。普通轮次也遍历完整计划；并非只采最新一期。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "下载阶段重新建立完整来源范围；待归档阶段先确认原轮次；保留所有已归档历史。",
+      "job_key": "tdx-earnings-disclosure-v1",
+      "datasets": [
+        "earnings_disclosure.tdx_unit"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_earnings_disclosure"
+      ],
+      "topics": [
+        "通达信业绩披露时间",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_performance.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-earnings-report": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_cache",
+          "method": "POST",
+          "purpose": "报告期目录",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "yjbg",
+              "meaning": "报告期目录类别"
+            },
+            {
+              "name": "Params[1..3]",
+              "value": "空字符串",
+              "meaning": "固定目录协议占位参数"
+            }
+          ]
+        },
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_yjbg",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "0",
+              "meaning": "来源固定业务模式"
+            },
+            {
+              "name": "Params[1]",
+              "value": "YYYY-MM-DD",
+              "meaning": "报告期，逐季生成"
+            },
+            {
+              "name": "Params[2]",
+              "value": "空字符串",
+              "meaning": "不限定证券"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "固定协议标志"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[5]",
+              "value": "10000",
+              "meaning": "完整响应容量，达到上限报错"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "earnings_report"
+      ],
+      "start": "1980年第一季度末（规划边界，空期仍校验）",
+      "end": "来源报告期目录返回的最新报告期，包含",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。普通轮次也遍历完整计划；并非只采最新一期。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "下载阶段重新建立完整来源范围；待归档阶段先确认原轮次；保留所有已归档历史。",
+      "job_key": "tdx-earnings-report-v1",
+      "datasets": [
+        "earnings_report.tdx_unit"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_earnings_report"
+      ],
+      "topics": [
+        "通达信业绩报告",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_performance.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-holder-count": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_gdhs",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "0",
+              "meaning": "来源固定业务模式"
+            },
+            {
+              "name": "Params[1]",
+              "value": "目录请求为空；历史请求为六位证券代码",
+              "meaning": "空值发现最新证券池，代码查询该证券历史"
+            },
+            {
+              "name": "Params[2]",
+              "value": "1",
+              "meaning": "固定协议标志"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[4]",
+              "value": "10000",
+              "meaning": "完整响应容量，达到上限报错"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "shareholder_count"
+      ],
+      "start": "各证券接口当前可得最早统计日，无固定日期参数",
+      "end": "各证券接口当前可得最新统计日",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。普通轮次也遍历完整计划；并非只采最新一期。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "下载阶段重新建立完整来源范围；待归档阶段先确认原轮次；保留所有已归档历史。",
+      "job_key": "tdx-holder-count-v1",
+      "datasets": [
+        "holder_count.tdx_unit"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_holder_count"
+      ],
+      "topics": [
+        "通达信股东户数",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_performance.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-shareholder-changes": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cgbd_zygdcgbd",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "0",
+              "meaning": "来源固定业务模式，内部含义未公开"
+            },
+            {
+              "name": "Params[1]",
+              "value": "asc",
+              "meaning": "来源升序方式"
+            },
+            {
+              "name": "Params[2]",
+              "value": "YYYYMM",
+              "meaning": "数据月份，来自YYYY-MM-01范围单元"
+            },
+            {
+              "name": "Params[3]",
+              "value": "空字符串",
+              "meaning": "不限定证券"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "固定协议标志"
+            },
+            {
+              "name": "Params[5]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[6]",
+              "value": "10000",
+              "meaning": "完整月份最大响应容量，达到上限报错"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "shareholder_change"
+      ],
+      "start": "1990-01（默认；维护入口可明确指定月份）",
+      "end": "北京时间当前月份，包含；不能指定未来月份",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重新核验同一完整来源范围，发现新增与修订；相同内容不写业务表，历史数据按数据集契约保留。普通轮次也遍历完整计划；并非只采最新一期。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "下载阶段重新建立完整来源范围；待归档阶段先确认原轮次；保留所有已归档历史。",
+      "job_key": "tdx-shareholder-changes-v1",
+      "datasets": [
+        "shareholder_changes.tdx_unit"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_shareholder_changes"
+      ],
+      "topics": [
+        "通达信重要股东持股变动",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_performance.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "kaipanla-trend": {
+      "requests": [
+        {
+          "url": "https://apphis.longhuvip.com/w1/api/index.php",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "c",
+              "value": "StockL2History",
+              "meaning": "历史L2栏目"
+            },
+            {
+              "name": "a",
+              "value": "GetStockTrend",
+              "meaning": "本任务产品接口"
+            },
+            {
+              "name": "StockID",
+              "value": "六位证券代码",
+              "meaning": "冻结股票池中的证券，使用已核实代码映射"
+            },
+            {
+              "name": "Day",
+              "value": "YYYY-MM-DD",
+              "meaning": "证券交易日期"
+            },
+            {
+              "name": "apiv",
+              "value": "w44",
+              "meaning": "来源API协议版本"
+            },
+            {
+              "name": "PhoneOSNew",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "PhoneOS",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "DeviceID",
+              "value": "每次请求随机UUID",
+              "meaning": "匿名请求设备标识，不是用户账户"
+            },
+            {
+              "name": "VerSion",
+              "value": "5.23.0.4",
+              "meaning": "客户端版本声明"
+            }
+          ]
+        },
+        {
+          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
+          "method": "GET",
+          "parameters": [
+            {
+              "name": "reportName",
+              "value": "RPT_F10_ORG_BASICINFO",
+              "meaning": "上市基本资料报表"
+            },
+            {
+              "name": "columns",
+              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
+              "meaning": "证券身份、上市日期与上市状态"
+            },
+            {
+              "name": "filter",
+              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
+              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
+            },
+            {
+              "name": "pageSize",
+              "value": "500",
+              "meaning": "每页容量"
+            },
+            {
+              "name": "pageNumber",
+              "value": "从1递增",
+              "meaning": "完整目录页码"
+            },
+            {
+              "name": "sortColumns",
+              "value": "SECUCODE",
+              "meaning": "统一证券代码排序"
+            },
+            {
+              "name": "sortTypes",
+              "value": "1",
+              "meaning": "升序"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
+          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
+          "method": "POST",
+          "parameters": [
+            {
+              "name": "callback",
+              "value": "securityMasterCallback",
+              "meaning": "JSONP回调名称，查询参数"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页"
+            },
+            {
+              "name": "typejb",
+              "value": "T",
+              "meaning": "来源公司类别固定标志"
+            },
+            {
+              "name": "xxfcbj[]",
+              "value": "2",
+              "meaning": "来源证券目录固定分类"
+            },
+            {
+              "name": "xxzqdm",
+              "value": "旧证券代码",
+              "meaning": "精确查询待核实代码"
+            },
+            {
+              "name": "sortfield",
+              "value": "xxzqdm",
+              "meaning": "按证券代码排序"
+            },
+            {
+              "name": "sorttype",
+              "value": "asc",
+              "meaning": "升序"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_market_day",
+        "stock_intraday_trend"
+      ],
+      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
+      "end": "本轮已结束交易日；当天须北京时间15:30之后",
+      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
+      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
+      "limits": "价格、均价、来源量与标记；不代表分钟 OHLC；计划范围不等于全历史已归档。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+      "job_key": "kaipanla-trend-v1",
+      "datasets": [
+        "kaipanla.trend.day"
+      ],
+      "fingerprint_namespaces": [
+        "kaipanla_trend_v1"
+      ],
+      "topics": [
+        "开盘啦分时及竞价",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/kaipanla_products.py",
+      "source": "kaipanla",
+      "fingerprint_source": "kaipanla",
+      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
+    },
+    "kaipanla-auction": {
+      "requests": [
+        {
+          "url": "https://apphis.longhuvip.com/w1/api/index.php",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "c",
+              "value": "StockL2History",
+              "meaning": "历史L2栏目"
+            },
+            {
+              "name": "a",
+              "value": "GetStockBid",
+              "meaning": "本任务产品接口"
+            },
+            {
+              "name": "StockID",
+              "value": "六位证券代码",
+              "meaning": "冻结股票池中的证券，使用已核实代码映射"
+            },
+            {
+              "name": "Day",
+              "value": "YYYY-MM-DD",
+              "meaning": "证券交易日期"
+            },
+            {
+              "name": "apiv",
+              "value": "w44",
+              "meaning": "来源API协议版本"
+            },
+            {
+              "name": "PhoneOSNew",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "PhoneOS",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "DeviceID",
+              "value": "每次请求随机UUID",
+              "meaning": "匿名请求设备标识，不是用户账户"
+            },
+            {
+              "name": "VerSion",
+              "value": "5.23.0.4",
+              "meaning": "客户端版本声明"
+            }
+          ]
+        },
+        {
+          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
+          "method": "GET",
+          "parameters": [
+            {
+              "name": "reportName",
+              "value": "RPT_F10_ORG_BASICINFO",
+              "meaning": "上市基本资料报表"
+            },
+            {
+              "name": "columns",
+              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
+              "meaning": "证券身份、上市日期与上市状态"
+            },
+            {
+              "name": "filter",
+              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
+              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
+            },
+            {
+              "name": "pageSize",
+              "value": "500",
+              "meaning": "每页容量"
+            },
+            {
+              "name": "pageNumber",
+              "value": "从1递增",
+              "meaning": "完整目录页码"
+            },
+            {
+              "name": "sortColumns",
+              "value": "SECUCODE",
+              "meaning": "统一证券代码排序"
+            },
+            {
+              "name": "sortTypes",
+              "value": "1",
+              "meaning": "升序"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
+          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
+          "method": "POST",
+          "parameters": [
+            {
+              "name": "callback",
+              "value": "securityMasterCallback",
+              "meaning": "JSONP回调名称，查询参数"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页"
+            },
+            {
+              "name": "typejb",
+              "value": "T",
+              "meaning": "来源公司类别固定标志"
+            },
+            {
+              "name": "xxfcbj[]",
+              "value": "2",
+              "meaning": "来源证券目录固定分类"
+            },
+            {
+              "name": "xxzqdm",
+              "value": "旧证券代码",
+              "meaning": "精确查询待核实代码"
+            },
+            {
+              "name": "sortfield",
+              "value": "xxzqdm",
+              "meaning": "按证券代码排序"
+            },
+            {
+              "name": "sorttype",
+              "value": "asc",
+              "meaning": "升序"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_market_day",
+        "stock_opening_auction"
+      ],
+      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
+      "end": "本轮已结束交易日；当天须北京时间15:30之后",
+      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
+      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
+      "limits": "完整来源点序列；同分钟多点保留，源端无总点数；计划范围不等于全历史已归档。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+      "job_key": "kaipanla-auction-v1",
+      "datasets": [
+        "kaipanla.auction.day"
+      ],
+      "fingerprint_namespaces": [
+        "kaipanla_auction_v1"
+      ],
+      "topics": [
+        "开盘啦分时及竞价",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/kaipanla_products.py",
+      "source": "kaipanla",
+      "fingerprint_source": "kaipanla",
+      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
+    },
+    "kaipanla-volume": {
+      "requests": [
+        {
+          "url": "https://apphis.longhuvip.com/w1/api/index.php",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "c",
+              "value": "StockL2History",
+              "meaning": "历史L2栏目"
+            },
+            {
+              "name": "a",
+              "value": "GetStockVolTur",
+              "meaning": "本任务产品接口"
+            },
+            {
+              "name": "StockID",
+              "value": "六位证券代码",
+              "meaning": "冻结股票池中的证券，使用已核实代码映射"
+            },
+            {
+              "name": "Day",
+              "value": "YYYY-MM-DD",
+              "meaning": "证券交易日期"
+            },
+            {
+              "name": "apiv",
+              "value": "w44",
+              "meaning": "来源API协议版本"
+            },
+            {
+              "name": "PhoneOSNew",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "PhoneOS",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "DeviceID",
+              "value": "每次请求随机UUID",
+              "meaning": "匿名请求设备标识，不是用户账户"
+            },
+            {
+              "name": "VerSion",
+              "value": "5.23.0.4",
+              "meaning": "客户端版本声明"
+            }
+          ]
+        },
+        {
+          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
+          "method": "GET",
+          "parameters": [
+            {
+              "name": "reportName",
+              "value": "RPT_F10_ORG_BASICINFO",
+              "meaning": "上市基本资料报表"
+            },
+            {
+              "name": "columns",
+              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
+              "meaning": "证券身份、上市日期与上市状态"
+            },
+            {
+              "name": "filter",
+              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
+              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
+            },
+            {
+              "name": "pageSize",
+              "value": "500",
+              "meaning": "每页容量"
+            },
+            {
+              "name": "pageNumber",
+              "value": "从1递增",
+              "meaning": "完整目录页码"
+            },
+            {
+              "name": "sortColumns",
+              "value": "SECUCODE",
+              "meaning": "统一证券代码排序"
+            },
+            {
+              "name": "sortTypes",
+              "value": "1",
+              "meaning": "升序"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
+          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
+          "method": "POST",
+          "parameters": [
+            {
+              "name": "callback",
+              "value": "securityMasterCallback",
+              "meaning": "JSONP回调名称，查询参数"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页"
+            },
+            {
+              "name": "typejb",
+              "value": "T",
+              "meaning": "来源公司类别固定标志"
+            },
+            {
+              "name": "xxfcbj[]",
+              "value": "2",
+              "meaning": "来源证券目录固定分类"
+            },
+            {
+              "name": "xxzqdm",
+              "value": "旧证券代码",
+              "meaning": "精确查询待核实代码"
+            },
+            {
+              "name": "sortfield",
+              "value": "xxzqdm",
+              "meaning": "按证券代码排序"
+            },
+            {
+              "name": "sorttype",
+              "value": "asc",
+              "meaning": "升序"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_market_day",
+        "stock_minute_volume"
+      ],
+      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
+      "end": "本轮已结束交易日；当天须北京时间15:30之后",
+      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
+      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
+      "limits": "来源分钟量额与标记；不提供每分钟 OHLC；计划范围不等于全历史已归档。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+      "job_key": "kaipanla-volume-v1",
+      "datasets": [
+        "kaipanla.volume.day"
+      ],
+      "fingerprint_namespaces": [
+        "kaipanla_volume_v1"
+      ],
+      "topics": [
+        "开盘啦分时及竞价",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/kaipanla_products.py",
+      "source": "kaipanla",
+      "fingerprint_source": "kaipanla",
+      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
+    },
+    "kaipanla-trades": {
+      "requests": [
+        {
+          "url": "https://apphis.longhuvip.com/w1/api/index.php",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "c",
+              "value": "StockL2History",
+              "meaning": "历史L2栏目"
+            },
+            {
+              "name": "a",
+              "value": "GetStockFenBi2",
+              "meaning": "本任务产品接口"
+            },
+            {
+              "name": "StockID",
+              "value": "六位证券代码",
+              "meaning": "冻结股票池中的证券，使用已核实代码映射"
+            },
+            {
+              "name": "Day",
+              "value": "YYYY-MM-DD",
+              "meaning": "证券交易日期"
+            },
+            {
+              "name": "apiv",
+              "value": "w44",
+              "meaning": "来源API协议版本"
+            },
+            {
+              "name": "PhoneOSNew",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "PhoneOS",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "DeviceID",
+              "value": "每次请求随机UUID",
+              "meaning": "匿名请求设备标识，不是用户账户"
+            },
+            {
+              "name": "VerSion",
+              "value": "5.23.0.4",
+              "meaning": "客户端版本声明"
+            }
+          ]
+        },
+        {
+          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
+          "method": "GET",
+          "parameters": [
+            {
+              "name": "reportName",
+              "value": "RPT_F10_ORG_BASICINFO",
+              "meaning": "上市基本资料报表"
+            },
+            {
+              "name": "columns",
+              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
+              "meaning": "证券身份、上市日期与上市状态"
+            },
+            {
+              "name": "filter",
+              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
+              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
+            },
+            {
+              "name": "pageSize",
+              "value": "500",
+              "meaning": "每页容量"
+            },
+            {
+              "name": "pageNumber",
+              "value": "从1递增",
+              "meaning": "完整目录页码"
+            },
+            {
+              "name": "sortColumns",
+              "value": "SECUCODE",
+              "meaning": "统一证券代码排序"
+            },
+            {
+              "name": "sortTypes",
+              "value": "1",
+              "meaning": "升序"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
+          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
+          "method": "POST",
+          "parameters": [
+            {
+              "name": "callback",
+              "value": "securityMasterCallback",
+              "meaning": "JSONP回调名称，查询参数"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页"
+            },
+            {
+              "name": "typejb",
+              "value": "T",
+              "meaning": "来源公司类别固定标志"
+            },
+            {
+              "name": "xxfcbj[]",
+              "value": "2",
+              "meaning": "来源证券目录固定分类"
+            },
+            {
+              "name": "xxzqdm",
+              "value": "旧证券代码",
+              "meaning": "精确查询待核实代码"
+            },
+            {
+              "name": "sortfield",
+              "value": "xxzqdm",
+              "meaning": "按证券代码排序"
+            },
+            {
+              "name": "sorttype",
+              "value": "asc",
+              "meaning": "升序"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_market_day",
+        "stock_intraday_trade_block"
+      ],
+      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
+      "end": "本轮已结束交易日；当天须北京时间15:30之后",
+      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
+      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
+      "limits": "完整分笔数组及来源总数；不冒充交易所逐笔事件流；计划范围不等于全历史已归档。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+      "job_key": "kaipanla-trades-v1",
+      "datasets": [
+        "kaipanla.trades.day"
+      ],
+      "fingerprint_namespaces": [
+        "kaipanla_trades_v1"
+      ],
+      "topics": [
+        "开盘啦分时及竞价",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/kaipanla_products.py",
+      "source": "kaipanla",
+      "fingerprint_source": "kaipanla",
+      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
+    },
+    "kaipanla-entrust": {
+      "requests": [
+        {
+          "url": "https://apphis.longhuvip.com/w1/api/index.php",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "c",
+              "value": "StockL2History",
+              "meaning": "历史L2栏目"
+            },
+            {
+              "name": "a",
+              "value": "GetStockBsvolume",
+              "meaning": "本任务产品接口"
+            },
+            {
+              "name": "StockID",
+              "value": "六位证券代码",
+              "meaning": "冻结股票池中的证券，使用已核实代码映射"
+            },
+            {
+              "name": "Day",
+              "value": "YYYY-MM-DD",
+              "meaning": "证券交易日期"
+            },
+            {
+              "name": "apiv",
+              "value": "w44",
+              "meaning": "来源API协议版本"
+            },
+            {
+              "name": "PhoneOSNew",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "PhoneOS",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "DeviceID",
+              "value": "每次请求随机UUID",
+              "meaning": "匿名请求设备标识，不是用户账户"
+            },
+            {
+              "name": "VerSion",
+              "value": "5.23.0.4",
+              "meaning": "客户端版本声明"
+            }
+          ]
+        },
+        {
+          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
+          "method": "GET",
+          "parameters": [
+            {
+              "name": "reportName",
+              "value": "RPT_F10_ORG_BASICINFO",
+              "meaning": "上市基本资料报表"
+            },
+            {
+              "name": "columns",
+              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
+              "meaning": "证券身份、上市日期与上市状态"
+            },
+            {
+              "name": "filter",
+              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
+              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
+            },
+            {
+              "name": "pageSize",
+              "value": "500",
+              "meaning": "每页容量"
+            },
+            {
+              "name": "pageNumber",
+              "value": "从1递增",
+              "meaning": "完整目录页码"
+            },
+            {
+              "name": "sortColumns",
+              "value": "SECUCODE",
+              "meaning": "统一证券代码排序"
+            },
+            {
+              "name": "sortTypes",
+              "value": "1",
+              "meaning": "升序"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
+          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
+          "method": "POST",
+          "parameters": [
+            {
+              "name": "callback",
+              "value": "securityMasterCallback",
+              "meaning": "JSONP回调名称，查询参数"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页"
+            },
+            {
+              "name": "typejb",
+              "value": "T",
+              "meaning": "来源公司类别固定标志"
+            },
+            {
+              "name": "xxfcbj[]",
+              "value": "2",
+              "meaning": "来源证券目录固定分类"
+            },
+            {
+              "name": "xxzqdm",
+              "value": "旧证券代码",
+              "meaning": "精确查询待核实代码"
+            },
+            {
+              "name": "sortfield",
+              "value": "xxzqdm",
+              "meaning": "按证券代码排序"
+            },
+            {
+              "name": "sorttype",
+              "value": "asc",
+              "meaning": "升序"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_market_day",
+        "stock_minute_entrust"
+      ],
+      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
+      "end": "本轮已结束交易日；当天须北京时间15:30之后",
+      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
+      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
+      "limits": "分钟买卖委托量额汇总；不含券商席位身份或逐笔委托撤单；计划范围不等于全历史已归档。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+      "job_key": "kaipanla-entrust-v1",
+      "datasets": [
+        "kaipanla.entrust.day"
+      ],
+      "fingerprint_namespaces": [
+        "kaipanla_entrust_v1"
+      ],
+      "topics": [
+        "开盘啦分时及竞价",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/kaipanla_products.py",
+      "source": "kaipanla",
+      "fingerprint_source": "kaipanla",
+      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
+    },
+    "kaipanla-large-order": {
+      "requests": [
+        {
+          "url": "https://apphis.longhuvip.com/w1/api/index.php",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "c",
+              "value": "StockL2History",
+              "meaning": "历史L2栏目"
+            },
+            {
+              "name": "a",
+              "value": "GetStockDaDanTrend",
+              "meaning": "本任务产品接口"
+            },
+            {
+              "name": "StockID",
+              "value": "六位证券代码",
+              "meaning": "冻结股票池中的证券，使用已核实代码映射"
+            },
+            {
+              "name": "Day",
+              "value": "YYYY-MM-DD",
+              "meaning": "证券交易日期"
+            },
+            {
+              "name": "apiv",
+              "value": "w44",
+              "meaning": "来源API协议版本"
+            },
+            {
+              "name": "PhoneOSNew",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "PhoneOS",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "DeviceID",
+              "value": "每次请求随机UUID",
+              "meaning": "匿名请求设备标识，不是用户账户"
+            },
+            {
+              "name": "VerSion",
+              "value": "5.23.0.4",
+              "meaning": "客户端版本声明"
+            }
+          ]
+        },
+        {
+          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
+          "method": "GET",
+          "parameters": [
+            {
+              "name": "reportName",
+              "value": "RPT_F10_ORG_BASICINFO",
+              "meaning": "上市基本资料报表"
+            },
+            {
+              "name": "columns",
+              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
+              "meaning": "证券身份、上市日期与上市状态"
+            },
+            {
+              "name": "filter",
+              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
+              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
+            },
+            {
+              "name": "pageSize",
+              "value": "500",
+              "meaning": "每页容量"
+            },
+            {
+              "name": "pageNumber",
+              "value": "从1递增",
+              "meaning": "完整目录页码"
+            },
+            {
+              "name": "sortColumns",
+              "value": "SECUCODE",
+              "meaning": "统一证券代码排序"
+            },
+            {
+              "name": "sortTypes",
+              "value": "1",
+              "meaning": "升序"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
+          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
+          "method": "POST",
+          "parameters": [
+            {
+              "name": "callback",
+              "value": "securityMasterCallback",
+              "meaning": "JSONP回调名称，查询参数"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页"
+            },
+            {
+              "name": "typejb",
+              "value": "T",
+              "meaning": "来源公司类别固定标志"
+            },
+            {
+              "name": "xxfcbj[]",
+              "value": "2",
+              "meaning": "来源证券目录固定分类"
+            },
+            {
+              "name": "xxzqdm",
+              "value": "旧证券代码",
+              "meaning": "精确查询待核实代码"
+            },
+            {
+              "name": "sortfield",
+              "value": "xxzqdm",
+              "meaning": "按证券代码排序"
+            },
+            {
+              "name": "sorttype",
+              "value": "asc",
+              "meaning": "升序"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_market_day",
+        "stock_large_order_trend"
+      ],
+      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
+      "end": "本轮已结束交易日；当天须北京时间15:30之后",
+      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
+      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
+      "limits": "来源大单净额可为负；不包含独立大单明细筛选；计划范围不等于全历史已归档。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+      "job_key": "kaipanla-large-order-v1",
+      "datasets": [
+        "kaipanla.large_order.day"
+      ],
+      "fingerprint_namespaces": [
+        "kaipanla_large_order_v1"
+      ],
+      "topics": [
+        "开盘啦分时及竞价",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/kaipanla_products.py",
+      "source": "kaipanla",
+      "fingerprint_source": "kaipanla",
+      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
+    },
+    "kaipanla-quote": {
+      "requests": [
+        {
+          "url": "https://apphis.longhuvip.com/w1/api/index.php",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "c",
+              "value": "StockL2History",
+              "meaning": "历史L2栏目"
+            },
+            {
+              "name": "a",
+              "value": "GetStockPanKou",
+              "meaning": "本任务产品接口"
+            },
+            {
+              "name": "StockID",
+              "value": "六位证券代码",
+              "meaning": "冻结股票池中的证券，使用已核实代码映射"
+            },
+            {
+              "name": "Day",
+              "value": "YYYY-MM-DD",
+              "meaning": "证券交易日期"
+            },
+            {
+              "name": "apiv",
+              "value": "w44",
+              "meaning": "来源API协议版本"
+            },
+            {
+              "name": "PhoneOSNew",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "PhoneOS",
+              "value": "1",
+              "meaning": "来源客户端系统标志"
+            },
+            {
+              "name": "DeviceID",
+              "value": "每次请求随机UUID",
+              "meaning": "匿名请求设备标识，不是用户账户"
+            },
+            {
+              "name": "VerSion",
+              "value": "5.23.0.4",
+              "meaning": "客户端版本声明"
+            }
+          ]
+        },
+        {
+          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
+          "method": "GET",
+          "parameters": [
+            {
+              "name": "reportName",
+              "value": "RPT_F10_ORG_BASICINFO",
+              "meaning": "上市基本资料报表"
+            },
+            {
+              "name": "columns",
+              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
+              "meaning": "证券身份、上市日期与上市状态"
+            },
+            {
+              "name": "filter",
+              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
+              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
+            },
+            {
+              "name": "pageSize",
+              "value": "500",
+              "meaning": "每页容量"
+            },
+            {
+              "name": "pageNumber",
+              "value": "从1递增",
+              "meaning": "完整目录页码"
+            },
+            {
+              "name": "sortColumns",
+              "value": "SECUCODE",
+              "meaning": "统一证券代码排序"
+            },
+            {
+              "name": "sortTypes",
+              "value": "1",
+              "meaning": "升序"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
+          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
+          "method": "POST",
+          "parameters": [
+            {
+              "name": "callback",
+              "value": "securityMasterCallback",
+              "meaning": "JSONP回调名称，查询参数"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页"
+            },
+            {
+              "name": "typejb",
+              "value": "T",
+              "meaning": "来源公司类别固定标志"
+            },
+            {
+              "name": "xxfcbj[]",
+              "value": "2",
+              "meaning": "来源证券目录固定分类"
+            },
+            {
+              "name": "xxzqdm",
+              "value": "旧证券代码",
+              "meaning": "精确查询待核实代码"
+            },
+            {
+              "name": "sortfield",
+              "value": "xxzqdm",
+              "meaning": "按证券代码排序"
+            },
+            {
+              "name": "sorttype",
+              "value": "asc",
+              "meaning": "升序"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_market_day",
+        "stock_daily_quote",
+        "stock_daily_quote_level"
+      ],
+      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
+      "end": "本轮已结束交易日；当天须北京时间15:30之后",
+      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
+      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
+      "limits": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放；计划范围不等于全历史已归档。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+      "job_key": "kaipanla-quote-v1",
+      "datasets": [
+        "kaipanla.quote.day"
+      ],
+      "fingerprint_namespaces": [
+        "kaipanla_quote_v1"
+      ],
+      "topics": [
+        "历史盘口与日行情摘要",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/kaipanla_products.py",
+      "source": "kaipanla",
+      "fingerprint_source": "kaipanla",
+      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
+    },
+    "ths-income": {
+      "requests": [
+        {
+          "url": "https://basic.10jqka.com.cn/api/stock/finance/{code}_benefit.json",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "code",
+              "value": "当前股票池六位代码",
+              "meaning": "逐证券请求"
+            },
+            {
+              "name": "报表路径后缀",
+              "value": "benefit",
+              "meaning": "本任务报表类型；完整历史JSON，无日期或分页参数"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "income_statement"
+      ],
+      "start": "各证券响应中最早报告期，无统一固定起始日期",
+      "end": "各证券响应中最新报告期，包含",
+      "initial": "逐证券下载一次完整历史并校验科目、报告期及金额。",
+      "incremental": "每轮逐证券重查完整响应，补新增及历史修订；旧SQL历史保留。",
+      "limits": "来源金额可能舍入；缺公告日期不能冒充严格历史信号可用时间。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从当前股票池首个证券重查全部历史；保留已归档报表。",
+      "job_key": "ths-income-v1",
+      "datasets": [
+        "income.statement"
+      ],
+      "fingerprint_namespaces": [
+        "ths_income"
+      ],
+      "topics": [
+        "同花顺三大报表",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_statements.py",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "scope": "当前A股股票池（沪、深、北）；逐证券类依赖已归档股票目录，保留已归档历史，不自动发现池外所有退市证券。"
+    },
+    "ths-balance": {
+      "requests": [
+        {
+          "url": "https://basic.10jqka.com.cn/api/stock/finance/{code}_debt.json",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "code",
+              "value": "当前股票池六位代码",
+              "meaning": "逐证券请求"
+            },
+            {
+              "name": "报表路径后缀",
+              "value": "debt",
+              "meaning": "本任务报表类型；完整历史JSON，无日期或分页参数"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "balance_statement"
+      ],
+      "start": "各证券响应中最早报告期，无统一固定起始日期",
+      "end": "各证券响应中最新报告期，包含",
+      "initial": "逐证券下载一次完整历史并校验科目、报告期及金额。",
+      "incremental": "每轮逐证券重查完整响应，补新增及历史修订；旧SQL历史保留。",
+      "limits": "来源金额可能舍入；缺公告日期不能冒充严格历史信号可用时间。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从当前股票池首个证券重查全部历史；保留已归档报表。",
+      "job_key": "ths-balance-v1",
+      "datasets": [
+        "balance.statement"
+      ],
+      "fingerprint_namespaces": [
+        "ths_balance"
+      ],
+      "topics": [
+        "同花顺三大报表",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_statements.py",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "scope": "当前A股股票池（沪、深、北）；逐证券类依赖已归档股票目录，保留已归档历史，不自动发现池外所有退市证券。"
+    },
+    "ths-cashflow": {
+      "requests": [
+        {
+          "url": "https://basic.10jqka.com.cn/api/stock/finance/{code}_cash.json",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "code",
+              "value": "当前股票池六位代码",
+              "meaning": "逐证券请求"
+            },
+            {
+              "name": "报表路径后缀",
+              "value": "cash",
+              "meaning": "本任务报表类型；完整历史JSON，无日期或分页参数"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "cashflow_statement"
+      ],
+      "start": "各证券响应中最早报告期，无统一固定起始日期",
+      "end": "各证券响应中最新报告期，包含",
+      "initial": "逐证券下载一次完整历史并校验科目、报告期及金额。",
+      "incremental": "每轮逐证券重查完整响应，补新增及历史修订；旧SQL历史保留。",
+      "limits": "来源金额可能舍入；缺公告日期不能冒充严格历史信号可用时间。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从当前股票池首个证券重查全部历史；保留已归档报表。",
+      "job_key": "ths-cashflow-v1",
+      "datasets": [
+        "cashflow.statement"
+      ],
+      "fingerprint_namespaces": [
+        "ths_cashflow"
+      ],
+      "topics": [
+        "同花顺三大报表",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_statements.py",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "scope": "当前A股股票池（沪、深、北）；逐证券类依赖已归档股票目录，保留已归档历史，不自动发现池外所有退市证券。"
+    },
+    "ths-holders": {
+      "requests": [
+        {
+          "url": "https://basic.10jqka.com.cn/{code}/holder.html",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "code",
+              "value": "当前股票池六位代码",
+              "meaning": "一次HTML同时包含三类持有人；无日期分页参数"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "holder_report",
+        "holder_member"
+      ],
+      "start": "各证券页面当前可见最早报告期；不保证全部历史",
+      "end": "各证券页面当前可见最新报告期",
+      "initial": "一次解析全部可见报告期和前十大股东、流通股东、债券持有人，全部校验后同事务归档。",
+      "incremental": "每轮重查当前页面窗口，更新修订，保留已存历史；没有出现在新窗口中的旧期不删除。",
+      "limits": "不提供公告日期；空名债券按报告隔离，确认有效报告归档后显示已结束（来源缺口），保留首缺口补采断点及债券准备限制。结构或归档失败仍报错；并列和空组按专项契约处理。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重建当前股票池和页面报告窗口；保留历史；待归档阶段先确认原轮次。",
+      "job_key": "ths-holders-v1",
+      "datasets": [
+        "holders.reports"
+      ],
+      "fingerprint_namespaces": [
+        "ths_holders"
+      ],
+      "topics": [
+        "同花顺前十大持有人"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_holders.py",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "scope": "当前A股股票池（沪、深、北）；逐证券类依赖已归档股票目录，保留已归档历史，不自动发现池外所有退市证券。"
+    },
+    "ths-listings": {
+      "requests": [
+        {
+          "url": "https://basic.10jqka.com.cn/fuyao/info/company/v1/issuance/detail",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "code",
+              "value": "六位股票代码",
+              "meaning": "当前股票池证券"
+            },
+            {
+              "name": "market",
+              "value": "SH=17、SZ=33、BJ=151",
+              "meaning": "来源市场编码"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_listing"
+      ],
+      "start": "无日期查询起点：逐证券首次上市及发行资料",
+      "end": "当前来源版本；上市日期最多允许向后31天",
+      "initial": "逐证券补齐当前股票池资料，校验来源身份和发行字段。",
+      "incremental": "补新增证券和缺失资料，每七天回查当前池；保留已归档退市证券资料。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "逐只重查当前股票池的上市及发行资料；保留已有记录及已入队消息。",
+      "job_key": "ths-listings-v1",
+      "datasets": [
+        "listing.detail"
+      ],
+      "fingerprint_namespaces": [
+        "ths_listings_v3"
+      ],
+      "topics": [
+        "上市与发行资料",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_listings.py",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "scope": "当前A股股票池（沪、深、北）；逐证券类依赖已归档股票目录，保留已归档历史，不自动发现池外所有退市证券。"
+    },
+    "ths-industries": {
+      "requests": [
+        {
+          "url": "https://q.10jqka.com.cn/thshy/",
+          "method": "GET",
+          "purpose": "目录",
+          "parameters": []
+        },
+        {
+          "url": "https://q.10jqka.com.cn/thshy/detail/code/{code}/field/code/order/asc/page/1/size/10000/ajax/1/",
+          "method": "GET",
+          "purpose": "目录成员",
+          "parameters": [
+            {
+              "name": "code",
+              "value": "来源目录代码",
+              "meaning": "行业或指数编号"
+            },
+            {
+              "name": "field",
+              "value": "code",
+              "meaning": "成员按代码排序"
+            },
+            {
+              "name": "order",
+              "value": "asc",
+              "meaning": "升序"
+            },
+            {
+              "name": "page",
+              "value": "1",
+              "meaning": "一个完整响应"
+            },
+            {
+              "name": "size",
+              "value": "10000",
+              "meaning": "成员容量"
+            },
+            {
+              "name": "ajax",
+              "value": "1",
+              "meaning": "来源AJAX格式"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "industry",
+        "industry_member"
+      ],
+      "start": "无历史开始日期：当前目录及当前成员",
+      "end": "本轮来源当前版本",
+      "initial": "先完整目录，再逐目录项下载全部成员，校验集合后归档。",
+      "incremental": "每轮完整刷新当前目录及成员；不保存历史调样。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "完整刷新当前行业和成分；已入队整轮先完成归档，不保留历史变化。",
+      "job_key": "ths-industries-v1",
+      "datasets": [
+        "industry.snapshot"
+      ],
+      "fingerprint_namespaces": [
+        "ths_industries_v2"
+      ],
+      "topics": [
+        "同花顺当前行业",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_industries.py",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "scope": "同花顺当前行业目录及其完整成分股票。"
+    },
+    "ths-indices": {
+      "requests": [
+        {
+          "url": "https://q.10jqka.com.cn/zs/",
+          "method": "GET",
+          "purpose": "目录",
+          "parameters": []
+        },
+        {
+          "url": "https://q.10jqka.com.cn/zs/detail/code/{code}/field/code/order/asc/page/1/size/10000/ajax/1/",
+          "method": "GET",
+          "purpose": "目录成员",
+          "parameters": [
+            {
+              "name": "code",
+              "value": "来源目录代码",
+              "meaning": "行业或指数编号"
+            },
+            {
+              "name": "field",
+              "value": "code",
+              "meaning": "成员按代码排序"
+            },
+            {
+              "name": "order",
+              "value": "asc",
+              "meaning": "升序"
+            },
+            {
+              "name": "page",
+              "value": "1",
+              "meaning": "一个完整响应"
+            },
+            {
+              "name": "size",
+              "value": "10000",
+              "meaning": "成员容量"
+            },
+            {
+              "name": "ajax",
+              "value": "1",
+              "meaning": "来源AJAX格式"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_index",
+        "stock_index_member"
+      ],
+      "start": "无历史开始日期：当前目录及当前成员",
+      "end": "本轮来源当前版本",
+      "initial": "先完整目录，再逐目录项下载全部成员，校验集合后归档。",
+      "incremental": "每轮完整刷新当前目录及成员；不保存历史调样。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "完整刷新当前目录和成分；未完成轮次先续跑并归档，不保存历史调样。",
+      "job_key": "ths-indices-v1",
+      "datasets": [
+        "index.catalog",
+        "index.members"
+      ],
+      "fingerprint_namespaces": [
+        "ths_indices_v1"
+      ],
+      "topics": [
+        "同花顺当前指数及成分",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_indices.py",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "scope": "同花顺当前指数目录；指数身份独立于股票代码。行情仅覆盖来源有日线文件的目录指数。"
+    },
+    "ths-index-prices": {
+      "requests": [
+        {
+          "url": "https://d.10jqka.com.cn/v4/line/zs_{code}/01/{unit}.js",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "code",
+              "value": "SQL当前指数目录代码",
+              "meaning": "指数身份"
+            },
+            {
+              "name": "01",
+              "value": "固定路径段",
+              "meaning": "来源日线周期编码"
+            },
+            {
+              "name": "unit",
+              "value": "last或YYYY",
+              "meaning": "last发现年度目录和近期行情；YYYY下载完整年度"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "index_daily_price",
+        "index_price_year"
+      ],
+      "start": "各指数last目录声明的最早年份与首个有效交易日",
+      "end": "来源返回的最新交易日（每轮以last目录为准）",
+      "initial": "先last声明年度集合，再按年度下载并核对数量、日期和近期集合。",
+      "incremental": "每轮读last；补缺失或未完整年度、来源年度数量变化，以及近期窗口中最新日期晚于已存年度末日的年度。fresh重查全部声明年度；不保证发现更早年度同数量的静默修订。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "回查来源全部年份，保留已有历史；未完成轮次先继续，不提供历史版本回放。",
+      "job_key": "ths-index-prices-v1",
+      "datasets": [
+        "index.price.status",
+        "index.price.year"
+      ],
+      "fingerprint_namespaces": [
+        "ths_index_prices_v1"
+      ],
+      "topics": [
+        "同花顺指数历史日行情",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_index_prices.py",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "scope": "同花顺当前指数目录；指数身份独立于股票代码。行情仅覆盖来源有日线文件的目录指数。"
+    },
+    "eastmoney-repurchases": {
+      "requests": [
+        {
+          "url": "https://datacenter-web.eastmoney.com/api/data/v1/get",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "sortColumns",
+              "value": "REPURCODE",
+              "meaning": "稳定方案编号排序"
+            },
+            {
+              "name": "sortTypes",
+              "value": "1",
+              "meaning": "升序"
+            },
+            {
+              "name": "pageSize",
+              "value": "500",
+              "meaning": "单次容量"
+            },
+            {
+              "name": "pageNumber",
+              "value": "1",
+              "meaning": "始终第一页，以filter推进"
+            },
+            {
+              "name": "reportName",
+              "value": "RPTA_WEB_GETHGLIST_NEW",
+              "meaning": "回购方案报表"
+            },
+            {
+              "name": "columns",
+              "value": "REPURCODE,SECUCODE,SECURITYSHORTNAME,SHARETYPE,DIM_DATE,UPD,REPURPROGRESS,UPDATEDATE,DIM_DATE3,NOTICEDATE,REPURSTARTDATE,REPURENDDATE,FINISHDATE,SHMRSLTNOTICEDATE,REPURADVANCEDATE,REPURPRICECAP,REPURPRICELOWER,REPURNUMCAP,REPURNUMLOWER,REPURAMOUNTLIMIT,REPURAMOUNTLOWER,REPURPRICECAP1,REPURPRICELOWER1,REPURNUM,REPURAMOUNT,REPUROBJECTIVE,REMARK,REMARK2",
+              "meaning": "方案、日期、进度、价格、数量、金额与说明，字段映射见下方专项说明"
+            },
+            {
+              "name": "source",
+              "value": "WEB",
+              "meaning": "来源客户端标志"
+            },
+            {
+              "name": "filter",
+              "value": "首请求不传；后续(REPURCODE>\"上个编号\")",
+              "meaning": "仅读取前一页最后编号之后的方案"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "stock_repurchase_plan"
+      ],
+      "start": "无固定日期过滤：接口全部可见方案",
+      "end": "本轮来源最新版本",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮从最小方案编号遍历到末尾，按方案编号游标翻页；发现新增及历史方案修订。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从首方案重新核验完整来源；不删除历史；待归档阶段先确认原轮次，下载阶段可重新建立范围。",
+      "job_key": "eastmoney-repurchases-v1",
+      "datasets": [
+        "repurchases.page"
+      ],
+      "fingerprint_namespaces": [
+        "eastmoney_repurchase_v1"
+      ],
+      "topics": [
+        "股票回购"
+      ],
+      "source_file": "src/empire/plugins/collectors/eastmoney_repurchase.py",
+      "source": "eastmoney",
+      "fingerprint_source": "eastmoney",
+      "scope": "来源回购方案报表全部可见证券与方案；以来源证券及方案ID识别。"
+    },
+    "tdx-dividends": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_zfsp_zfsp",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "0",
+              "meaning": "固定查询模式"
+            },
+            {
+              "name": "Params[1]",
+              "value": "0",
+              "meaning": "固定范围标志"
+            },
+            {
+              "name": "Params[2]",
+              "value": "YYYY-MM-DD",
+              "meaning": "完整报告期"
+            },
+            {
+              "name": "Params[3]",
+              "value": "szzs desc",
+              "meaning": "来源排序表达式"
+            },
+            {
+              "name": "Params[4]",
+              "value": "空字符串",
+              "meaning": "不限定证券"
+            },
+            {
+              "name": "Params[5]",
+              "value": "0",
+              "meaning": "报告期批量模式"
+            },
+            {
+              "name": "Params[6]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[7]",
+              "value": "10000",
+              "meaning": "完整响应容量"
+            }
+          ]
+        },
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_zfsp_cache",
+          "method": "POST",
+          "purpose": "报告期发现",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "fhszdate",
+              "meaning": "分红报告期目录"
+            },
+            {
+              "name": "Params[1..3]",
+              "value": "空字符串",
+              "meaning": "固定协议占位"
+            }
+          ]
+        },
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_zfsp_zfsp",
+          "method": "POST",
+          "purpose": "证券报告期补充发现",
+          "parameters": [
+            {
+              "name": "Params[0..2]",
+              "value": "1,1,1",
+              "meaning": "单证券报告期发现模式"
+            },
+            {
+              "name": "Params[3]",
+              "value": "空字符串",
+              "meaning": "固定排序占位"
+            },
+            {
+              "name": "Params[4]",
+              "value": "六位证券代码",
+              "meaning": "新证券或需重查证券"
+            },
+            {
+              "name": "Params[5..7]",
+              "value": "1,1,1",
+              "meaning": "目录发现固定模式、第一页与容量标志"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "dividend_plan"
+      ],
+      "start": "1980年第一季度末起的各季度报告期，并合并来源发现和SQL已知的非季末报告期",
+      "end": "来源最新报告期及其之后至北京时间当天的逐日补查，包含结束日",
+      "initial": "先当前股票池；无历史发现证明的证券各一次目录请求，合并来源报告期目录与SQL已知期，再逐完整报告期请求并按证券组装入队。",
+      "incremental": "每轮按报告期批量核验历史；新增或无发现证明证券补目录，fresh重新发现全部证券历史。相同内容不写业务表，SQL历史保留。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从当前来源完整范围重新核验，保留已归档历史；普通采集优先续跑已入队断点。",
+      "job_key": "tdx-dividends-v1",
+      "datasets": [
+        "dividends.unit"
+      ],
+      "fingerprint_namespaces": [
+        "dividends"
+      ],
+      "topics": [
+        "分红送转",
+        "增发送配存储与断点",
+        "代理与站点速度",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_dividends.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-additional-issues": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_xgzx_zf",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "0",
+              "meaning": "增发栏目固定模式"
+            },
+            {
+              "name": "Params[1]",
+              "value": "空字符串",
+              "meaning": "不限定证券"
+            },
+            {
+              "name": "Params[2]",
+              "value": "1",
+              "meaning": "固定协议标志"
+            },
+            {
+              "name": "Params[3]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[4]",
+              "value": "10000",
+              "meaning": "完整响应容量"
+            }
+          ]
+        },
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_xgzx_zfmx",
+          "method": "POST",
+          "purpose": "方案明细",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "来源方案ID",
+              "meaning": "每个增发方案的必需明细"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "additional_issue"
+      ],
+      "start": "来源当前可得最早报告期/方案，无统一日期下限",
+      "end": "来源当前可得最新报告期/方案",
+      "initial": "完整增发列表一次请求，再逐需要的方案ID取得必需明细；按证券完整单元校验及入队。",
+      "incremental": "每轮完整核验列表，复用已核实且未变化的明细；不可用明细重试，每个北京时间新日复核最近90天方案，fresh强制重查。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从当前来源完整范围重新核验，保留已归档历史；普通采集优先续跑已入队断点。",
+      "job_key": "tdx-additional-issues-v1",
+      "datasets": [
+        "additional_issues.unit"
+      ],
+      "fingerprint_namespaces": [
+        "additional_issues"
+      ],
+      "topics": [
+        "增发",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_additional_issues.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-rights-issues": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_xgzx_pg",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "空字符串",
+              "meaning": "不限定证券"
+            },
+            {
+              "name": "Params[1]",
+              "value": "1",
+              "meaning": "固定协议标志"
+            },
+            {
+              "name": "Params[2]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[3]",
+              "value": "10000",
+              "meaning": "完整响应容量"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "rights_issue"
+      ],
+      "start": "来源当前可得最早报告期/方案，无统一日期下限",
+      "end": "来源当前可得最新报告期/方案",
+      "initial": "一次完整配股列表，核对方案数与多证券代码关联；按证券完整单元校验入队。",
+      "incremental": "每轮重新请求完整列表核验新增和修订；中断从未确认单元恢复，集合变化时重建本轮范围。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "从当前来源完整范围重新核验，保留已归档历史；普通采集优先续跑已入队断点。",
+      "job_key": "tdx-rights-issues-v1",
+      "datasets": [
+        "rights_issues.unit"
+      ],
+      "fingerprint_namespaces": [
+        "rights_issues"
+      ],
+      "topics": [
+        "配股",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_rights_issues.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "rules-limit-rules": {
+      "requests": [
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/api/search/content",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "空字符串",
+              "meaning": "不限定标题关键词"
+            },
+            {
+              "name": "time",
+              "value": "0",
+              "meaning": "来源时间筛选标志"
+            },
+            {
+              "name": "range",
+              "value": "title",
+              "meaning": "标题检索"
+            },
+            {
+              "name": "currentPage",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "pageSize",
+              "value": "20",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "channelCode[]",
+              "value": "szserulestradeCurrency_news",
+              "meaning": "交易规则栏目"
+            }
+          ]
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/c_20260424_10816492.shtml",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/lawrules/rule/trade/current/t20260424_620190.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/58bd5ce4dfc94b57a5391f60eb2719ab.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713155663.pdf",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/7476908baade49b8b14881439d2f89b6.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/info/listseSub.do",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keywords",
+              "value": "空字符串",
+              "meaning": "不限定关键词"
+            },
+            {
+              "name": "startTime",
+              "value": "空字符串",
+              "meaning": "不限定起始时间"
+            },
+            {
+              "name": "endTime",
+              "value": "空字符串",
+              "meaning": "不限定结束时间"
+            },
+            {
+              "name": "nodeIds[]",
+              "value": "1304",
+              "meaning": "交易规则栏目"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页从0开始"
+            },
+            {
+              "name": "pageSize",
+              "value": "100",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "needFields[]",
+              "value": "infoId,title,htmlUrl,metaDescription,subTitle,fileUrl,fileName,linkUrl,mlinkUrl,picURL,nodeId,p1,potenctLevel,publishDate",
+              "meaning": "标题、文件地址、日期等目录字段"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200028217.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200029608.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/uploads/6/file/public/202604/20260424170528_52kqyhc7p9.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        }
+      ],
+      "tables": [
+        "trading_rule_citation",
+        "trading_rule_value"
+      ],
+      "start": "已登记交易所规则的实际生效日期，不声称覆盖此前全部历史",
+      "end": "已登记文件声明的终止日；未声明则为开放结束，不代表已验证所有未来政策",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重查已登记目录与文件，核实条款、生效日期和内容；变化无法匹配契约时报错，需要专项更新；共享解析缓存60秒。",
+      "limits": "规则是已核实条款范围；暂缓条款、市场差异及尚未核实的新收费表见专项说明。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新核验已审核官方文件；保留历史规则，已入队轮次先完成归档。",
+      "job_key": "rules-limit-rules-v1",
+      "datasets": [
+        "rules.limit_rules.complete"
+      ],
+      "fingerprint_namespaces": [
+        "trading_limit_rules_v1"
+      ],
+      "topics": [
+        "交易规则与税费"
+      ],
+      "source_file": "src/empire/plugins/collectors/trading_rules.py",
+      "source": "reviewed_rules",
+      "fingerprint_source": "reviewed_rules",
+      "scope": "已登记规则中的市场、板块与条款；未核实条款不推算。"
+    },
+    "rules-settlement-rules": {
+      "requests": [
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/api/search/content",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "空字符串",
+              "meaning": "不限定标题关键词"
+            },
+            {
+              "name": "time",
+              "value": "0",
+              "meaning": "来源时间筛选标志"
+            },
+            {
+              "name": "range",
+              "value": "title",
+              "meaning": "标题检索"
+            },
+            {
+              "name": "currentPage",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "pageSize",
+              "value": "20",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "channelCode[]",
+              "value": "szserulestradeCurrency_news",
+              "meaning": "交易规则栏目"
+            }
+          ]
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/c_20260424_10816492.shtml",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/lawrules/rule/trade/current/t20260424_620190.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/58bd5ce4dfc94b57a5391f60eb2719ab.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713155663.pdf",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/7476908baade49b8b14881439d2f89b6.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/info/listseSub.do",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keywords",
+              "value": "空字符串",
+              "meaning": "不限定关键词"
+            },
+            {
+              "name": "startTime",
+              "value": "空字符串",
+              "meaning": "不限定起始时间"
+            },
+            {
+              "name": "endTime",
+              "value": "空字符串",
+              "meaning": "不限定结束时间"
+            },
+            {
+              "name": "nodeIds[]",
+              "value": "1304",
+              "meaning": "交易规则栏目"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页从0开始"
+            },
+            {
+              "name": "pageSize",
+              "value": "100",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "needFields[]",
+              "value": "infoId,title,htmlUrl,metaDescription,subTitle,fileUrl,fileName,linkUrl,mlinkUrl,picURL,nodeId,p1,potenctLevel,publishDate",
+              "meaning": "标题、文件地址、日期等目录字段"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200028217.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200029608.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/uploads/6/file/public/202604/20260424170528_52kqyhc7p9.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        }
+      ],
+      "tables": [
+        "trading_rule_citation",
+        "trading_rule_value"
+      ],
+      "start": "已登记交易所规则的实际生效日期，不声称覆盖此前全部历史",
+      "end": "已登记文件声明的终止日；未声明则为开放结束，不代表已验证所有未来政策",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重查已登记目录与文件，核实条款、生效日期和内容；变化无法匹配契约时报错，需要专项更新；共享解析缓存60秒。",
+      "limits": "规则是已核实条款范围；暂缓条款、市场差异及尚未核实的新收费表见专项说明。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新核验已审核官方文件；保留历史规则，已入队轮次先完成归档。",
+      "job_key": "rules-settlement-rules-v1",
+      "datasets": [
+        "rules.settlement_rules.complete"
+      ],
+      "fingerprint_namespaces": [
+        "trading_settlement_rules_v1"
+      ],
+      "topics": [
+        "交易规则与税费"
+      ],
+      "source_file": "src/empire/plugins/collectors/trading_rules.py",
+      "source": "reviewed_rules",
+      "fingerprint_source": "reviewed_rules",
+      "scope": "已登记规则中的市场、板块与条款；未核实条款不推算。"
+    },
+    "rules-lot-rules": {
+      "requests": [
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/api/search/content",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "空字符串",
+              "meaning": "不限定标题关键词"
+            },
+            {
+              "name": "time",
+              "value": "0",
+              "meaning": "来源时间筛选标志"
+            },
+            {
+              "name": "range",
+              "value": "title",
+              "meaning": "标题检索"
+            },
+            {
+              "name": "currentPage",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "pageSize",
+              "value": "20",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "channelCode[]",
+              "value": "szserulestradeCurrency_news",
+              "meaning": "交易规则栏目"
+            }
+          ]
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/c_20260424_10816492.shtml",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/lawrules/rule/trade/current/t20260424_620190.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/58bd5ce4dfc94b57a5391f60eb2719ab.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713155663.pdf",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/7476908baade49b8b14881439d2f89b6.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/info/listseSub.do",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keywords",
+              "value": "空字符串",
+              "meaning": "不限定关键词"
+            },
+            {
+              "name": "startTime",
+              "value": "空字符串",
+              "meaning": "不限定起始时间"
+            },
+            {
+              "name": "endTime",
+              "value": "空字符串",
+              "meaning": "不限定结束时间"
+            },
+            {
+              "name": "nodeIds[]",
+              "value": "1304",
+              "meaning": "交易规则栏目"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页从0开始"
+            },
+            {
+              "name": "pageSize",
+              "value": "100",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "needFields[]",
+              "value": "infoId,title,htmlUrl,metaDescription,subTitle,fileUrl,fileName,linkUrl,mlinkUrl,picURL,nodeId,p1,potenctLevel,publishDate",
+              "meaning": "标题、文件地址、日期等目录字段"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200028217.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200029608.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/uploads/6/file/public/202604/20260424170528_52kqyhc7p9.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        }
+      ],
+      "tables": [
+        "trading_rule_citation",
+        "trading_rule_value"
+      ],
+      "start": "已登记交易所规则的实际生效日期，不声称覆盖此前全部历史",
+      "end": "已登记文件声明的终止日；未声明则为开放结束，不代表已验证所有未来政策",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重查已登记目录与文件，核实条款、生效日期和内容；变化无法匹配契约时报错，需要专项更新；共享解析缓存60秒。",
+      "limits": "规则是已核实条款范围；暂缓条款、市场差异及尚未核实的新收费表见专项说明。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新核验已审核官方文件；保留历史规则，已入队轮次先完成归档。",
+      "job_key": "rules-lot-rules-v1",
+      "datasets": [
+        "rules.lot_rules.complete"
+      ],
+      "fingerprint_namespaces": [
+        "trading_lot_rules_v1"
+      ],
+      "topics": [
+        "交易规则与税费"
+      ],
+      "source_file": "src/empire/plugins/collectors/trading_rules.py",
+      "source": "reviewed_rules",
+      "fingerprint_source": "reviewed_rules",
+      "scope": "已登记规则中的市场、板块与条款；未核实条款不推算。"
+    },
+    "rules-tick-rules": {
+      "requests": [
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/api/search/content",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "空字符串",
+              "meaning": "不限定标题关键词"
+            },
+            {
+              "name": "time",
+              "value": "0",
+              "meaning": "来源时间筛选标志"
+            },
+            {
+              "name": "range",
+              "value": "title",
+              "meaning": "标题检索"
+            },
+            {
+              "name": "currentPage",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "pageSize",
+              "value": "20",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "channelCode[]",
+              "value": "szserulestradeCurrency_news",
+              "meaning": "交易规则栏目"
+            }
+          ]
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/c_20260424_10816492.shtml",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/lawrules/rule/trade/current/t20260424_620190.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/58bd5ce4dfc94b57a5391f60eb2719ab.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713155663.pdf",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/7476908baade49b8b14881439d2f89b6.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/info/listseSub.do",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keywords",
+              "value": "空字符串",
+              "meaning": "不限定关键词"
+            },
+            {
+              "name": "startTime",
+              "value": "空字符串",
+              "meaning": "不限定起始时间"
+            },
+            {
+              "name": "endTime",
+              "value": "空字符串",
+              "meaning": "不限定结束时间"
+            },
+            {
+              "name": "nodeIds[]",
+              "value": "1304",
+              "meaning": "交易规则栏目"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页从0开始"
+            },
+            {
+              "name": "pageSize",
+              "value": "100",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "needFields[]",
+              "value": "infoId,title,htmlUrl,metaDescription,subTitle,fileUrl,fileName,linkUrl,mlinkUrl,picURL,nodeId,p1,potenctLevel,publishDate",
+              "meaning": "标题、文件地址、日期等目录字段"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200028217.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200029608.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/uploads/6/file/public/202604/20260424170528_52kqyhc7p9.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        }
+      ],
+      "tables": [
+        "trading_rule_citation",
+        "trading_rule_value"
+      ],
+      "start": "已登记交易所规则的实际生效日期，不声称覆盖此前全部历史",
+      "end": "已登记文件声明的终止日；未声明则为开放结束，不代表已验证所有未来政策",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重查已登记目录与文件，核实条款、生效日期和内容；变化无法匹配契约时报错，需要专项更新；共享解析缓存60秒。",
+      "limits": "规则是已核实条款范围；暂缓条款、市场差异及尚未核实的新收费表见专项说明。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新核验已审核官方文件；保留历史规则，已入队轮次先完成归档。",
+      "job_key": "rules-tick-rules-v1",
+      "datasets": [
+        "rules.tick_rules.complete"
+      ],
+      "fingerprint_namespaces": [
+        "trading_tick_rules_v1"
+      ],
+      "topics": [
+        "交易规则与税费"
+      ],
+      "source_file": "src/empire/plugins/collectors/trading_rules.py",
+      "source": "reviewed_rules",
+      "fingerprint_source": "reviewed_rules",
+      "scope": "已登记规则中的市场、板块与条款；未核实条款不推算。"
+    },
+    "rules-sessions": {
+      "requests": [
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/api/search/content",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "空字符串",
+              "meaning": "不限定标题关键词"
+            },
+            {
+              "name": "time",
+              "value": "0",
+              "meaning": "来源时间筛选标志"
+            },
+            {
+              "name": "range",
+              "value": "title",
+              "meaning": "标题检索"
+            },
+            {
+              "name": "currentPage",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "pageSize",
+              "value": "20",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "channelCode[]",
+              "value": "szserulestradeCurrency_news",
+              "meaning": "交易规则栏目"
+            }
+          ]
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/c_20260424_10816492.shtml",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.szse.cn/lawrules/rule/trade/current/t20260424_620190.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/58bd5ce4dfc94b57a5391f60eb2719ab.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713155663.pdf",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/7476908baade49b8b14881439d2f89b6.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/info/listseSub.do",
+          "method": "POST",
+          "purpose": "规则公告、目录或附件",
+          "parameters": [
+            {
+              "name": "keywords",
+              "value": "空字符串",
+              "meaning": "不限定关键词"
+            },
+            {
+              "name": "startTime",
+              "value": "空字符串",
+              "meaning": "不限定起始时间"
+            },
+            {
+              "name": "endTime",
+              "value": "空字符串",
+              "meaning": "不限定结束时间"
+            },
+            {
+              "name": "nodeIds[]",
+              "value": "1304",
+              "meaning": "交易规则栏目"
+            },
+            {
+              "name": "page",
+              "value": "0",
+              "meaning": "来源首页从0开始"
+            },
+            {
+              "name": "pageSize",
+              "value": "100",
+              "meaning": "目录容量"
+            },
+            {
+              "name": "needFields[]",
+              "value": "infoId,title,htmlUrl,metaDescription,subTitle,fileUrl,fileName,linkUrl,mlinkUrl,picURL,nodeId,p1,potenctLevel,publishDate",
+              "meaning": "标题、文件地址、日期等目录字段"
+            }
+          ]
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200028217.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/jygl_list/200029608.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.bse.cn/uploads/6/file/public/202604/20260424170528_52kqyhc7p9.docx",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        }
+      ],
+      "tables": [
+        "trading_rule_citation",
+        "trading_rule_value"
+      ],
+      "start": "已登记交易所规则的实际生效日期，不声称覆盖此前全部历史",
+      "end": "已登记文件声明的终止日；未声明则为开放结束，不代表已验证所有未来政策",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重查已登记目录与文件，核实条款、生效日期和内容；变化无法匹配契约时报错，需要专项更新；共享解析缓存60秒。",
+      "limits": "规则是已核实条款范围；暂缓条款、市场差异及尚未核实的新收费表见专项说明。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新核验已审核官方文件；保留历史规则，已入队轮次先完成归档。",
+      "job_key": "rules-sessions-v1",
+      "datasets": [
+        "rules.sessions.complete"
+      ],
+      "fingerprint_namespaces": [
+        "trading_sessions_v1"
+      ],
+      "topics": [
+        "交易规则与税费"
+      ],
+      "source_file": "src/empire/plugins/collectors/trading_rules.py",
+      "source": "reviewed_rules",
+      "fingerprint_source": "reviewed_rules",
+      "scope": "已登记规则中的市场、板块与条款；未核实条款不推算。"
+    },
+    "rules-stamp-duty": {
+      "requests": [
+        {
+          "url": "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5193058/content.html",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://tianjin.chinatax.gov.cn/11200000000/0300/030005/20220725150235434.shtml",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        },
+        {
+          "url": "https://www.gov.cn/zhengce/zhengceku/202308/content_6900443.htm",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        }
+      ],
+      "tables": [
+        "trading_rule_citation",
+        "trading_rule_value"
+      ],
+      "start": "印花税已登记生效段从2022-07-01",
+      "end": "已登记文件声明的终止日；未声明则为开放结束，不代表已验证所有未来政策",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重查已登记目录与文件，核实条款、生效日期和内容；变化无法匹配契约时报错，需要专项更新；共享解析缓存60秒。",
+      "limits": "规则是已核实条款范围；暂缓条款、市场差异及尚未核实的新收费表见专项说明。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新核验已审核官方文件；保留历史规则，已入队轮次先完成归档。",
+      "job_key": "rules-stamp-duty-v1",
+      "datasets": [
+        "rules.stamp_duty.complete"
+      ],
+      "fingerprint_namespaces": [
+        "trading_stamp_duty_v1"
+      ],
+      "topics": [
+        "交易规则与税费"
+      ],
+      "source_file": "src/empire/plugins/collectors/trading_rules.py",
+      "source": "reviewed_rules",
+      "fingerprint_source": "reviewed_rules",
+      "scope": "已登记规则中的市场、板块与条款；未核实条款不推算。"
+    },
+    "rules-transfer-fee": {
+      "requests": [
+        {
+          "url": "http://cn.chinagate.cn/news/2022-04/29/content_78193990.htm",
+          "method": "GET",
+          "purpose": "规则公告、目录或附件",
+          "parameters": []
+        }
+      ],
+      "tables": [
+        "trading_rule_citation",
+        "trading_rule_value"
+      ],
+      "start": "过户费已登记公告从2022-04-29",
+      "end": "已登记文件声明的终止日；未声明则为开放结束，不代表已验证所有未来政策",
+      "initial": "完整校验来源响应、业务键集合及关联字段后按正式数据集入队，整轮全部消息归档成功才完成。",
+      "incremental": "每轮重查已登记目录与文件，核实条款、生效日期和内容；变化无法匹配契约时报错，需要专项更新；共享解析缓存60秒。",
+      "limits": "规则是已核实条款范围；暂缓条款、市场差异及尚未核实的新收费表见专项说明。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重新核验已审核官方文件；保留历史规则，已入队轮次先完成归档。",
+      "job_key": "rules-transfer-fee-v1",
+      "datasets": [
+        "rules.transfer_fee.complete"
+      ],
+      "fingerprint_namespaces": [
+        "trading_transfer_fee_v1"
+      ],
+      "topics": [
+        "交易规则与税费"
+      ],
+      "source_file": "src/empire/plugins/collectors/trading_rules.py",
+      "source": "reviewed_rules",
+      "fingerprint_source": "reviewed_rules",
+      "scope": "已登记规则中的市场、板块与条款；未核实条款不推算。"
+    },
+    "tdx-unlocks": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cgbd_dxfgg",
+          "method": "POST",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "列表0；明细1",
+              "meaning": "请求模式"
+            },
+            {
+              "name": "Params[1]",
+              "value": "列表YYYYMM01；明细reason_code",
+              "meaning": "列表起始日或父记录解禁原因代码"
+            },
+            {
+              "name": "Params[2]",
+              "value": "列表YYYYMM月末日；明细YYYYMMDD",
+              "meaning": "列表结束日或父记录解禁日期"
+            },
+            {
+              "name": "Params[3]",
+              "value": "列表空字符串；明细六位股票代码",
+              "meaning": "不限制证券或指定父记录证券"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "固定协议标志"
+            },
+            {
+              "name": "Params[5]",
+              "value": "1",
+              "meaning": "第一页"
+            },
+            {
+              "name": "Params[6]",
+              "value": "10000000",
+              "meaning": "来源容量参数；本地仍限制响应字节和业务条数"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "restricted_share_unlock",
+        "restricted_share_unlock_detail"
+      ],
+      "start": "默认1990-01，包含；维护入口可指定月份",
+      "end": "默认下一自然年12月，包含；未来解禁为来源计划",
+      "initial": "逐月完整列表，再按证券、原因与日期共享明细请求组；列表和明细共同校验。",
+      "incremental": "每轮核验月列表；可靠证明命中且列表未变时复用已归档明细，每轮轮换复核一个历史月；空明细与变化组重查。",
+      "limits": "以来源当前可见数据为准，不承诺完整旧版本回放。",
+      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "fresh": "重建声明月份范围并完整回查所有股东明细；已入队轮次先完成归档。",
+      "job_key": "tdx-unlocks-v1",
+      "datasets": [
+        "unlocks.tdx_month"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_unlocks_v1"
+      ],
+      "topics": [
+        "大小非解禁个股与明细",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_unlocks.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
+    },
+    "tdx-unlock-industries": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cgbd_cache",
+          "method": "POST",
+          "purpose": "目录和估值基准日",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "dxfhy",
+              "meaning": "行业栏目"
+            },
+            {
+              "name": "Params[1]",
+              "value": "0",
+              "meaning": "固定协议标志"
+            }
+          ]
+        },
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cgbd_dxfhy",
+          "method": "POST",
+          "purpose": "完整月份行业汇总",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "目录月份YYYYMM",
+              "meaning": "解禁月份"
+            },
+            {
+              "name": "Params[1]",
+              "value": "目录mxt YYYYMMDD",
+              "meaning": "来源估值基准日；实测影响行业总市值和比例"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "restricted_share_unlock_industry"
+      ],
+      "start": "本轮目录最早可得月，包含；没有统一历史起点",
+      "end": "本轮目录最晚可得月，包含；包含未来解禁计划",
+      "initial": "目录一次请求，每个可得月份完整响应一次，按序校验与入队；整轮归档后完成。",
+      "incremental": "每天18:00重新目录，回查全部可得月接收修订，保留退出目录旧月份。",
+      "limits": "无分页容量参数、无股东明细入口、无行业代码及公布日期；目录外空不证明历史无解禁。",
+      "recovery": "Redis存活冻结目录与基准日继续未发布月；入队后独立归档；Redis丢失重新目录回查，旧不可得月保留，不承诺待归档恢复。",
+      "fresh": "重建本轮可得目录与基准日；待归档先确认原轮次。",
+      "job_key": "tdx-unlock-industries-v1",
+      "datasets": [
+        "unlocks.tdx_industry_month"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_unlock_industries_v1"
+      ],
+      "topics": [
+        "大小非解禁行业",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/tdx_unlock_industries.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "来源行业月汇总，不逐证券，也不关联同花顺行业代码。"
+    },
+    "ths-capital": {
+      "requests": [
+        {
+          "url": "https://basic.10jqka.com.cn/{code}/capital.html",
+          "method": "GET",
+          "purpose": "业务数据",
+          "parameters": [
+            {
+              "name": "code",
+              "value": "当前股票池六位代码",
+              "meaning": "一次完整HTML全部栏目和隐藏详情，无日期/分页参数；独立股票共享有界预取"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "capital_funding",
+        "capital_project",
+        "capital_transaction",
+        "capital_equity_summary",
+        "capital_equity_position",
+        "capital_ipo",
+        "capital_encumbrance",
+        "capital_release"
+      ],
+      "start": "各证券各栏目当前响应最早记录，股权投资全部可见报告期；无统一最早日期",
+      "end": "本轮来源完整响应，报告期上限请求当日北京时间；未来公告标注日保留原值并记录栏目日期提示，未来预计期限原样保存",
+      "initial": "每证券完整校验募集资金、项目、收购、股权投资、参股IPO、转让、关联交易、原质押/冻结及全部解除；原子入队后继续后续股票，同事务归档。整轮末全部清队后完成。",
+      "incremental": "每新轮从当前股票池首只完整回查全部窗口，补旧事件解除和修订；不按最大日期跳过旧数据。历史窗口外保留。",
+      "limits": "来源窗口无全量历史保证；预计期限不等于实际解除，缺解除不判未解除；原始及解除股数明确未知保留NULL，字段标签缺失仍拒绝，不猜当前余额；参股IPO对象明确未知且审核状态已披露时保留NULL及原状态；已登记外币保留完整名称，原币种不折算；股权投资无公告日，当前正文可能有后续进展，不支持严格历史版本回放。",
+      "recovery": "失败不推进该证券连续断点；已入队立即由统一归档消费，恢复下载不等前批。Redis仍在按索引恢复；Redis丢失从头重查当前股票池，已有SQL不丢，未入库消息不保证恢复。股票池集合变化重建范围。",
+      "fresh": "重建当前股票池和完整响应范围；保留历史；若已到等待归档阶段先确认原轮次。",
+      "job_key": "ths-capital-v1",
+      "datasets": [
+        "ths.capital.security"
+      ],
+      "fingerprint_namespaces": [
+        "ths_capital"
+      ],
+      "topics": [
+        "同花顺公司资本运作",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/plugins/collectors/ths_capital.py",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "scope": "当前stock沪深北股票池；范围以各栏目当前完整响应为准，不扩展全部退市证券。"
+    }
+  }
+}

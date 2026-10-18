@@ -10,6 +10,7 @@ a = Analysis(
     pathex=[str(source_root)],
     binaries=[],
     datas=[
+        (str(source_root / "empire" / "plugins" / "collection" / "rules.json"), "empire/plugins/collection"),
         (str(source_root / "empire" / "plugins" / "collectors" / "resources"), "empire/plugins/collectors/resources"),
         (str(source_root / "empire" / "plugins" / "ui" / "statement_layouts.json"), "empire/plugins/ui"),
         (str(project_root / "build" / "generated" / "preparation-release.json"), "empire"),

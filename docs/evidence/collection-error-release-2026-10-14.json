@@ -1,0 +1,51 @@
+{
+  "checked_at": "2026-10-14T14:05:16.158676+00:00",
+  "passed": true,
+  "tests": {
+    "passed": 2554,
+    "skipped": 5,
+    "warnings": 2,
+    "seconds": 2053.5
+  },
+  "exe_sha256": "42ee5c37193326c12772903ec0d968f93c48de84392feb5810c095713ee814ef",
+  "source_evidence": {
+    "sha256": "094f4313de0175d2e61f5a9fa3c4c42554b67289a8a3812bf42ab045fff4171b"
+  },
+  "config_preserved": true,
+  "isolated_mysql_shutdown": {
+    "port": 13332,
+    "pid": 55912,
+    "listener_closed": true,
+    "process_exited": true,
+    "note": "SQL SHUTDOWN后上下文回滚收到连接断开；随后确认端口关闭且进程退出，共享3307及Redis未重启"
+  },
+  "desktop": "真实正式EXE可见；本地服务已连接；十大债券持有人数据及采集管理运行记录页可读；已保存计划恢复执行",
+  "pending_after_scheduled_restart": 0,
+  "latest_failed_tasks": {
+    "tdx-dividends": {
+      "run_id": "8550a256b1da4466b14ec5c58c82d8eb",
+      "finished_at": 1791963520.2788236,
+      "error": "分红目录最新期或唯一集合不符"
+    },
+    "tdx-unlocks": {
+      "run_id": "9906601f8c744158a7b1d5a281e97783",
+      "finished_at": 1791963514.3990302,
+      "error": "大小非解禁完整月列表协议或容量错误"
+    },
+    "ths-bond-holders": {
+      "run_id": "5ad6f645d6e24260a3abecafcd4f9818",
+      "finished_at": 1791849859.3876734,
+      "error": "债券栏目缺失但来源结构不能证明未提供"
+    },
+    "ths-float-holders": {
+      "run_id": "e72ec023b26f4b3081e49fad54b5acb5",
+      "finished_at": 1791849832.2900581,
+      "error": "前十大名单数量无效"
+    },
+    "ths-top-holders": {
+      "run_id": "17ce4a603d4f49b698efbc8e4d1a5788",
+      "finished_at": 1791849830.6590917,
+      "error": "前十大名单数量无效"
+    }
+  }
+}

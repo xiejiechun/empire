@@ -1,0 +1,39 @@
+{
+  "checked_at": "2026-10-09T14:31:59.496698+08:00",
+  "issues": [
+    "600009错误选择SZ导致无行情",
+    "加载失败后切换复权覆盖旧结果提示"
+  ],
+  "changes": [
+    "默认当前目录自动识别市场，手动选错提示正确市场",
+    "缺日行情说明证券、范围、补采项目",
+    "修改条件和查询失败的旧图提示在复权切换后保留"
+  ],
+  "tests_passed": 1940,
+  "release_gate": "PASS",
+  "release_report_sha256": "9fa65181e9602f74202abf3c3b50b9be8823f171f44b02ef520f31996f1050fe",
+  "source_sha256": {
+    "src/empire/plugins/data/adjustment.py": "e9df486fdf96de080496a0bd54931a627e41f73f19fa3a0c36c976a6e71512a2",
+    "src/empire/plugins/data/adjustment_inputs.py": "83213e8eb69613fd8fd188b4d5a2e9e7870b0e57c83b3ab72be29096b9fbcef2",
+    "src/empire/plugins/ui/adjustment.py": "140a6105638b1c64f28ab39e0ef1d6b1e685c908199c553c7da43a344e045e0d",
+    "src/empire/plugins/ui/adjustment_chart.py": "8159a5054f920a23060bddde112375c3ebd4c11b8942ec6d1336f6f13a7d819e",
+    "tests/test_adjustment_query.py": "57ce2e73fa19cdbffb6a3b784b196fe8d4df252c31ae0e1aa9dae31adb739e67",
+    "tests/test_adjustment_chart.py": "d889b65e9f56fd619e2e4defdc54eb9b0b738f6de7e7575d3792ffd59f644de2"
+  },
+  "actual_desktop": [
+    "默认自动识别600009.SH",
+    "2025-01-01至2026-10-08共425日，原始前复权后复权均成功",
+    "600519缺行情显示补采指引"
+  ],
+  "left_open": "600009.SH前复权2025年至2026-10-08",
+  "data_status": {
+    "quote_stocks_at_diagnosis": 464,
+    "all_market_complete": false,
+    "600519.SH_and_000001.SZ_2025_quotes": "尚无归档",
+    "source_missing_dividend_fields": "需补充可信来源，重复采集不保证修复"
+  },
+  "no_ddl": true,
+  "no_business_deletion": true,
+  "error_record_cleanup": "页面问题，不基于采集错误ID修复，未清理任何错误记录",
+  "config_preserved": true
+}

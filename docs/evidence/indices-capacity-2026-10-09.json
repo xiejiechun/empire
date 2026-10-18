@@ -1,0 +1,81 @@
+{
+  "bindings": {
+    "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
+    "src/empire/plugins/datasets/indices.py": "0be5f8f69f02351660c1086e3b71a8b5ea940ec33fe428fb158158a4935efede",
+    "src/empire/plugins/data/indices.py": "fac4b7b0651b90d8bd481cfe66cccc71b4262cfc20633c0242ff73e27728e8a7",
+    "scripts/measure_indices.py": "ad6e2d17a52655a16eb6bc221f0f5e8a43ea26eb995a438cfd274e3b7e258e52"
+  },
+  "ddl_scopes": {
+    "stock_index": "74d19f2dceccb5594c7391b03a1295a8a8fa909154edb0de594daa9522fe4546",
+    "stock_index_member": "cca1510279761ba337dd4d9258e1a6708356afcdc49deb01071abe0cde79e350"
+  },
+  "measurements": {
+    "catalog_p95_ms": 0.7692000363022089,
+    "members_p95_ms": 1.6948999837040901,
+    "search_p95_ms": 4.547299991827458,
+    "cursor_p95_ms": 8.616299950517714,
+    "audit_seconds": 0.5134256999590434,
+    "import_seconds": 2.0500499000190757,
+    "allocated_bytes": 15269888,
+    "state_bytes": 15749
+  },
+  "limits": {
+    "catalog_p95_ms": 50,
+    "members_p95_ms": 50,
+    "search_p95_ms": 50,
+    "cursor_p95_ms": 50,
+    "audit_seconds": 3,
+    "import_seconds": 20,
+    "allocated_bytes": 536870912,
+    "state_bytes": 8388608
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "indices": 100,
+    "members": 100000,
+    "synthetic": true,
+    "first_query": "unforced cache",
+    "repeats": 20,
+    "audited_key_set": true,
+    "repeat_business_dml": 0,
+    "revision_writes": 2
+  },
+  "reviewed_tradeoffs": "当前关系不按日累积；成员批写、主键游标、证券反查索引。来源不确定市场保留来源身份；详细准备扫描全部关系，普通页面不扫描正文。十倍到100万的512MiB是设计预算，实测只证明100000关系样本；扩大范围前重新测量。",
+  "explain": {
+    "member_page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_index_member",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "20",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "security_reverse": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_index_member",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_index_source_security",
+        "key": "ix_index_source_security",
+        "key_len": "14",
+        "ref": "const",
+        "rows": 100,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "cleanup": "UUID-owned schema dropped in finally",
+  "passed": true
+}

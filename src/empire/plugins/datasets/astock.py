@@ -6,6 +6,8 @@ import json
 from empire.contracts.business_schema import require_dataset_source
 from empire.contracts.data import Envelope, UnsupportedSchema, make_envelope
 from empire.contracts.dataset import DatasetContribution
+from empire.contracts.indices import JOB as INDEX_JOB
+from empire.contracts.indices import PROJECT as INDEX_PROJECT
 from empire.contracts.listing_status import JOB as STATUS_JOB
 from empire.contracts.listing_status import PROJECT as STATUS_PROJECT
 from empire.contracts.listings import JOB as LISTING_JOB
@@ -13,12 +15,20 @@ from empire.contracts.listings import PROJECT as LISTING_PROJECT
 from empire.contracts.name_changes import KINDS as NAME_KINDS
 from empire.contracts.name_changes import SCHEMA_VERSION as NAME_SCHEMA_VERSION
 from empire.contracts.plugin import PluginContext, PluginManifest
+from empire.contracts.st_events import KINDS as ST_KINDS
+from empire.contracts.st_events import SCHEMA_VERSION as ST_SCHEMA_VERSION
+from empire.contracts.tdx_performance import UNIT_KINDS as PERFORMANCE_KINDS
+from empire.contracts.trading_rules import KINDS as RULE_KINDS
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
 from empire.plugins.datasets import (
+    index_prices,
+    indices,
     industries,
     listing_status,
     listings,
     news,
+    repurchases,
+    security_aliases,
     stocks,
     suspensions,
     trade_calendar,
@@ -28,8 +38,15 @@ from empire.plugins.datasets.capital_archive import CapitalDataset
 from empire.plugins.datasets.financial_archive import FinancialDataset
 from empire.plugins.datasets.financial_statements import KINDS as FINANCIAL_KINDS
 from empire.plugins.datasets.financial_wire import SCHEMA_VERSION as FINANCIAL_SCHEMA_VERSION
+from empire.plugins.datasets.holders import HolderDataset
 from empire.plugins.datasets.kaipanla_products import ProductDataset
 from empire.plugins.datasets.name_changes import NameDataset
+from empire.plugins.datasets.st_events import StDataset
+from empire.plugins.datasets.tdx_performance import PerformanceDataset
+from empire.plugins.datasets.ths_capital import CapitalPageDataset
+from empire.plugins.datasets.trading_rules import RuleDataset
+from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset
+from empire.plugins.datasets.unlocks import UnlockDataset
 
 
 class DatasetPlugin:
@@ -40,8 +57,23 @@ class DatasetPlugin:
 
     def __init__(self, contributions=None):
         self.contributions = tuple(contributions or (
+            DatasetContribution(CapitalPageDataset(), 'incremental',
+                {CapitalPageDataset.JOB: CapitalPageDataset.PROJECT}, schema_version=2),
+            DatasetContribution(UnlockIndustryDataset(), 'incremental', {UnlockIndustryDataset.JOB: UnlockIndustryDataset.PROJECT}),
+            DatasetContribution(UnlockDataset(), 'incremental', {UnlockDataset.JOB: UnlockDataset.PROJECT}),
+            DatasetContribution(HolderDataset(), 'incremental',
+                {HolderDataset().JOB: HolderDataset().PROJECT}, schema_version=5),
+            *(DatasetContribution(PerformanceDataset(kind), 'incremental',
+                {PerformanceDataset(kind).JOB: PerformanceDataset(kind).PROJECT}) for kind in PERFORMANCE_KINDS),
+            DatasetContribution(repurchases, 'incremental', {'eastmoney-repurchases-v1': 'eastmoney-repurchases'}),
+            *(DatasetContribution(RuleDataset(kind), 'incremental', {RuleDataset(kind).JOB: RuleDataset(kind).PROJECT}) for kind in RULE_KINDS),
+            DatasetContribution(index_prices, 'incremental', {index_prices.JOB: index_prices.PROJECT}),
+            DatasetContribution(security_aliases, 'incremental', {security_aliases.JOB: security_aliases.PROJECT}),
+            DatasetContribution(indices, 'incremental', {INDEX_JOB: INDEX_PROJECT}),
             DatasetContribution(listing_status, 'incremental', {STATUS_JOB: STATUS_PROJECT}),
             DatasetContribution(listings, 'incremental', {LISTING_JOB: LISTING_PROJECT}),
+            *(DatasetContribution(StDataset(kind), 'incremental',
+                {StDataset(kind).JOB: StDataset(kind).PROJECT}, schema_version=ST_SCHEMA_VERSION) for kind in ST_KINDS),
             *(DatasetContribution(NameDataset(kind), 'incremental',
                 {NameDataset(kind).JOB: NameDataset(kind).PROJECT}, schema_version=NAME_SCHEMA_VERSION) for kind in NAME_KINDS),
             *(DatasetContribution(ProductDataset(kind), 'incremental',
@@ -53,7 +85,7 @@ class DatasetPlugin:
             *(DatasetContribution(CapitalDataset(kind), "incremental", {item[2] + "-v1": item[2]},
                                   schema_version=SCHEMA_VERSIONS[kind])
               for kind, item in KINDS.items()),
-            DatasetContribution(stocks, "aggregate", {"sina-universe-v1": "sina-stocks"},
+            DatasetContribution(stocks, "aggregate", {"sina-universe-v1": "sina-stocks", 'ths-universe-v1': 'ths-stocks'},
                                 stale_outcome="superseded"),
             DatasetContribution(news, "incremental", {"sina-news-v1": "sina-news"}),
             DatasetContribution(trade_calendar, "incremental",
@@ -113,6 +145,10 @@ class DatasetPlugin:
         contribution = self.mapping(envelope)
         return contribution.mapping.aggregate_result_keys(prefix, envelope.source)
 
+    def aggregate_current(self, connection, envelope, namespace):
+        reader = getattr(self.mapping(envelope).mapping, 'current_directory', None)
+        return reader(connection, namespace) if reader else None
+
     def normalize(self, envelope: Envelope) -> dict:
         require_dataset_source(envelope.dataset, envelope.source)
         mapping = self.mapping(envelope)
@@ -154,6 +190,9 @@ class DatasetPlugin:
     def fingerprint_plan(self, envelope, data):
         # Every dataset must explicitly declare identity, content and version rules.
         return self.mapping(envelope).mapping.fingerprint_plan(envelope, data)
+
+    def fingerprint_source(self, envelope):
+        return getattr(self.mapping(envelope).mapping, 'FINGERPRINT_SOURCE', envelope.source)
 
     def fingerprint_version(self, namespace):
         contribution = self.namespaces.get(namespace)

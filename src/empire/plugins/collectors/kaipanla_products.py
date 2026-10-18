@@ -82,7 +82,8 @@ class KaipanlaProductCollector:
                               last_review=last_review, review_token=token, review_days=review)
             total = sum(count for _, count in plans)
             first_gap, failed = None, 0
-            cursor = {**cursor, 'first_gap': None, 'failed_units': 0}
+            cursor = {**cursor, 'first_gap': None, 'failed_units': 0,
+                      'unlisted_without_date': self.stats.get('unlisted_without_date', 0)}
             self.stats.update(status='collecting', total_units=total, completed_units=cursor['index'],
                               failed_units=0, error='', failure_categories={})
             # Independent valid days continue after a source gap, while the

@@ -27,6 +27,7 @@ def test_lazy_industry_page_query_does_not_overwrite_draft():
     try:
         page.show()
         app.processEvents()
+        page.select_industry(dict(industry_code='881155'))
         page.tick()
         assert len(pending) == 1
         page.search.setText('未提交草稿')

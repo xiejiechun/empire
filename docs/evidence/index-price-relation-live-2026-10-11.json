@@ -1,0 +1,55 @@
+{
+  "project": "ths-index-prices",
+  "verified_at": "2026-10-11T03:33:45.726277+00:00",
+  "source": {
+    "hash": "8063673a1aa76cb3b62b151ea056c97495efabcd85a698a55a0263e88ebbf5f0",
+    "count": 243,
+    "source_count": 243,
+    "anomalous_row": [
+      "2020-07-29",
+      "3228.96",
+      "3300",
+      "3265.46",
+      "3300",
+      "32470125000",
+      "452959530000"
+    ]
+  },
+  "sql": {
+    "count": 243,
+    "content_hash": "8063673a1aa76cb3b62b151ea056c97495efabcd85a698a55a0263e88ebbf5f0",
+    "complete": true
+  },
+  "formal_query": {
+    "index_code": "1C0003",
+    "trade_date": "2020-07-29",
+    "open": "3228.960000",
+    "high": "3300.000000",
+    "low": "3265.460000",
+    "close": "3300.000000",
+    "volume": "32470125000.0000",
+    "amount": "452959530000.0000",
+    "name": "上证指数(旧)",
+    "price_relation_valid": false
+  },
+  "quality": {
+    "status": "fail",
+    "measured": "1条价格关系异常，保留来源原值，受影响日期不用于依赖四价的策略；已核验精度及收盘量额；0条来源缺少开盘/最高/最低价，保存NULL。来源价格字段齐全。"
+  },
+  "network": {
+    "policy": {
+      "use_proxy": true,
+      "proxy_fallback": true
+    },
+    "counts": {
+      "proxy_requests": 2
+    }
+  },
+  "pending": 0,
+  "checkpoint": {
+    "next_index": 197,
+    "next_year": 2021,
+    "phase": "collecting"
+  },
+  "full_history_complete": false
+}

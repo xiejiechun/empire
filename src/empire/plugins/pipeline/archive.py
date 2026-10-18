@@ -414,7 +414,8 @@ class ArchivePlugin:
     async def _archive_data(self, envelope, data):
         namespace, plan = self.catalog.fingerprint_plan(envelope, data)
         version_contract = self.catalog.fingerprint_version(namespace)
-        cached = await self.fingerprints.get(namespace, envelope.source, list(plan))
+        fingerprint_source = self.catalog.fingerprint_source(envelope)
+        cached = await self.fingerprints.get(namespace, fingerprint_source, list(plan))
         pending, confirmed = set(), {}
         stale = 0
         for ident, (content, version) in plan.items():
@@ -436,13 +437,18 @@ class ArchivePlugin:
             }]))[0]
             # Rejected old SQL versions must never be cached as the current content.
             accepted = outcome["confirmed"]
+            if accepted and outcome.get('reset_fingerprints') is True:
+                # Cross-key SQL replacement invalidates the previous proofs.
+                # Run before publishing the new proof; failure retains the message
+                # and the dataset repeats its declaration even after SQL replay.
+                await self.fingerprints.invalidate(namespace, fingerprint_source)
             for ident in accepted:
                 content, version = plan[ident]
                 confirmed[ident] = {"hash": digest(content), "version": version}
             outcome["row_count"] = count
         # Commit/equality precedes cache; cache precedes queue ACK. Any failure keeps
         # the queue replayable. Never cache uncommitted collection output.
-        await self.fingerprints.put(namespace, envelope.source, confirmed)
+        await self.fingerprints.put(namespace, fingerprint_source, confirmed)
         return outcome
 
     async def _flush_aggregate(self, records, project, current):
@@ -471,13 +477,13 @@ class ArchivePlugin:
         # Only the validated, expiring fingerprint or SQL state can
         # prove a replay. stocks:committed is UI progress, not evidence.
         namespace = self.catalog.namespace(first["envelope"])
-        proof = await self.fingerprints.get(namespace, source, ["current"])
+        proof = await self.fingerprints.get(namespace, self.catalog.fingerprint_source(first['envelope']), ["current"])
         previous = proof["current"]["version"] if proof else None
         complete = any(self.catalog.is_complete(record["envelope"]) for record in records)
         has_pages = any("page" in record["normalized"] for record in records)
         if previous is None and (not complete or not has_pages):
             if source not in current:
-                state = await self.mysql.control(self.states.read, source, project)
+                state = await self.mysql.control(self.states.read_aggregate, self.catalog, first['envelope'], project)
                 current[source] = state.get("version")
             previous = current[source]
         incoming = [first["normalized"]["started_at"].isoformat(timespec="microseconds"), batch]

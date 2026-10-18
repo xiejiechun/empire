@@ -178,6 +178,8 @@ async def test_ui_filters_detail_selection_and_lifecycle():
     page = PreparationUiPlugin().create_pages()[0].factory(SimpleNamespace(cfg={}, shutting_down=False))
     activate_page(page)
     page.render(report)
+    assert page.table.rowCount() == len(REQUIREMENTS)
+    page.kind.setCurrentIndex(page.kind.findData('采集'))
     assert page.table.rowCount() == sum(r.kind == '采集' for r in REQUIREMENTS)
     page.kind.setCurrentIndex(0)
     assert page.table.rowCount() == len(REQUIREMENTS)
@@ -195,6 +197,13 @@ async def test_ui_filters_detail_selection_and_lifecycle():
     assert '不要求多个网站相互印证' in description
     assert '公告' not in BY_ID['suspensions'].fields
     assert '公告' in BY_ID['suspensions'].optional_fields
+    for removed in ('退市整理期', '每日涨停价和跌停价', '总股本和流通股本记录', '来源公布的自由流通股本',
+                    '财经新闻', 'ETF', '逐笔委托'):
+        page.search.setText(removed)
+        assert page.table.rowCount() == 0
+    for retained in ('股东户数', '个股融资交易和余额', '大单净额走势'):
+        page.search.setText(retained)
+        assert page.table.rowCount() == 1
     page.search.setText('NO-SUCH-DATA')
     assert page.table.rowCount() == 0 and not page.detail.entry
     page.search.clear()
@@ -230,7 +239,7 @@ async def test_dependencies_block_completion_even_when_own_checks_pass(monkeypat
     plugin = PreparationPlugin([contribution(requirement='adjusted_prices')])
     await plugin.start(SimpleNamespace(optional=lambda cap: None))
     async def synthetic(requirement, c, artifact, error):
-        checks = [{'id': 'x', 'phase': '开发', 'title': 'x', 'expected': 'x', 'action': 'x',
+        checks = [{'id': 'x', 'phase': '数据', 'title': 'x', 'expected': 'x', 'action': 'x',
                    'status': 'pass' if requirement.id == 'adjusted_prices' else 'unknown', 'measured': 'x'}]
         return {'source': 'x', 'checks': checks, 'running': False, 'project': ''}
     monkeypatch.setattr(plugin, 'provider_report', synthetic)
@@ -246,53 +255,73 @@ def test_stock_sql_wall_clock_is_beijing_without_double_conversion():
 
 def test_collection_projects_have_independent_boundaries():
     assert all(not r.dependencies and r.boundary for r in REQUIREMENTS if r.kind == '采集')
-    for ident in ('news', 'news_history', 'news_stocks', 'news_revisions',
-                  'index_members', 'index_weights', 'earnings_forecast', 'earnings_quick',
-                  'announcement_index', 'announcement_files', 'announcement_text',
+    for ident in ('index_members', 'index_weights', 'earnings_forecast', 'earnings_quick',
                   'pledge', 'freeze', 'financing', 'short_lending', 'margin_targets'):
         assert ident in BY_ID and BY_ID[ident].boundary
-    assert BY_ID['news'].kind == BY_ID['news_history'].kind == '采集'
-    assert BY_ID['news_stocks'].kind == BY_ID['news_revisions'].kind == '整理'
     assert BY_ID['market_value'].kind == '计算'
-    assert {'daily_prices', 'share_capital'} == set(BY_ID['market_value'].dependencies)
+    assert {'historical_quote'} == set(BY_ID['market_value'].dependencies)
     assert {'income', 'balance', 'cashflow'} == set(BY_ID['financial_reconciliation'].dependencies)
 
 
 def test_one_project_cannot_claim_two_independent_collection_outputs():
     with pytest.raises(ValueError, match='一个采集项目'):
-        PreparationPlugin([contribution(), contribution(requirement='daily_prices', capability='prices.query')])
+        PreparationPlugin([contribution(), contribution(requirement='historical_quote', capability='prices.query')])
 
 
-async def test_news_content_completion_does_not_complete_other_news_work(monkeypatch):
+def test_explicit_same_response_preserves_separate_quality_checks():
+    first = contribution(requirement='top_holders', project_id='ths-holders',
+                         collector='collector.ths_holders', dataset='holders.reports',
+                         response_group='holders.reports')
+    second = replace(first, requirement='float_holders', capability='float_holders.query')
+    assert len(PreparationPlugin([first, second]).contributions) == 2
+    for changed in (replace(second, dataset='other'), replace(second, collector='collector.other'),
+                    replace(second, job_key='other'), replace(second, source='other')):
+        with pytest.raises(ValueError):
+            PreparationPlugin([first, changed])
+
+
+async def test_scope_removes_unrelated_preparation_but_preserves_news_service():
     manager = build_manager(CFG)
     plugin = manager.entries['data.preparation'].plugin
     await plugin.start(SimpleNamespace(optional=lambda cap: None))
-    async def synthetic(requirement, c, artifact, error):
-        return dict(source='x', running=False, project='', checks=[{
-            'id': 'x', 'phase': '数据', 'title': 'x', 'expected': 'x', 'action': 'x',
-            'status': 'pass' if requirement.id == 'news' else 'unknown', 'measured': 'x'}])
-    monkeypatch.setattr(plugin, 'provider_report', synthetic)
     result = {r['id']: r for r in (await plugin.report())['rows']}
-    assert result['news']['complete']
-    assert all(not result[key]['complete'] for key in ('news_history', 'news_revisions', 'news_stocks'))
+    assert 'news' not in result
+    assert 'data.news' in manager.entries and 'collector.sina_news' in manager.entries
+    assert callable(manager.entries['data.news'].plugin.list_news)
+    assert all(c.requirement in result for c in plugin.contributions)
+    assert not any(c.requirement == 'news' for c in plugin.contributions)
+    assert {'pe', 'pb', 'ps', 'dividend_yield', 'financial_reconciliation'} <= result.keys()
+
+
+def test_backtest_valuation_scope_keeps_strategy_factors_and_dependencies():
+    removed = set('share_capital free_float daily_limits delisting_periods news news_history news_revisions news_stocks announcement_index '
+                  'announcement_files announcement_text gdp cpi ppi pmi money_supply credit credit_stock '
+                  'etf_catalog etf_nav etf_shares etf_pcf fx tick_trades tick_orders'.split())
+    assert removed.isdisjoint(BY_ID)
+    assert {'top_holders', 'float_holders', 'holder_count', 'large_order_trend', 'minute_entrust',
+            'financing', 'short_lending', 'market_financing', 'market_short_lending', 'margin_targets',
+            'connect_holdings', 'connect_trades', 'block_trades', 'hot_list', 'hot_list_summary',
+            'rates', 'historical_quote', 'index_prices', 'index_members', 'index_weights'} <= BY_ID.keys()
+    for item in REQUIREMENTS:
+        assert set((*item.dependencies, *item.related)) <= BY_ID.keys()
 
 
 async def test_independent_collection_does_not_wait_for_related_datasets(monkeypatch):
-    plugin = PreparationPlugin([contribution(requirement='daily_prices')])
+    plugin = PreparationPlugin([contribution(requirement='historical_quote')])
     await plugin.start(SimpleNamespace(optional=lambda cap: None))
     async def synthetic(requirement, c, artifact, error):
         return dict(source='x', running=False, project='', checks=[{
             'id': 'x', 'phase': '数据', 'title': 'x', 'expected': 'x', 'action': 'x',
-            'status': 'pass' if requirement.id == 'daily_prices' else 'unknown', 'measured': 'x'}])
+            'status': 'pass' if requirement.id == 'historical_quote' else 'unknown', 'measured': 'x'}])
     monkeypatch.setattr(plugin, 'provider_report', synthetic)
     result = {r['id']: r for r in (await plugin.report())['rows']}
-    assert result['daily_prices']['complete'] and not result['daily_prices']['blockers']
-    assert result['daily_prices']['related']
+    assert result['historical_quote']['complete'] and not result['historical_quote']['blockers']
+    assert not BY_ID['historical_quote'].dependencies
     assert not result['daily_reconciliation']['complete']
 
 
 def test_retired_combined_projects_are_not_registered():
-    retired = {'security_history', 'boards', 'adjustments', 'benchmark', 'risk_status',
+    retired = {'daily_prices', 'security_history', 'boards', 'adjustments', 'benchmark', 'risk_status',
                'price_limits', 'trading_rules', 'rights', 'valuation', 'earnings',
                'membership', 'announcements', 'holders', 'unlock', 'margin', 'connect',
                'large_trades', 'ticks', 'macro', 'etf'}
@@ -325,7 +354,7 @@ async def test_independent_company_actions_and_catalog_visible_in_ui(monkeypatch
     assert result['dividends']['complete']
     assert not result['additional_issues']['complete'] and not result['rights_issues']['complete']
     for ident in ('financing', 'market_financing', 'short_lending', 'market_short_lending',
-                  'hot_list', 'hot_list_summary', 'credit', 'credit_stock'):
+                  'hot_list', 'hot_list_summary', 'large_order_trend', 'holder_count'):
         assert ident in result and not result[ident]['blockers']
     os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
     from PySide6.QtWidgets import QApplication
@@ -378,3 +407,28 @@ async def test_checker_cannot_hide_integrity_failure_as_limitation():
     result = await plugin.report(dict(codes=['601139']))
     row = next(r for r in result['rows'] if r['id'] == 'income')
     assert not row['assessment']['usable'] and all(x['status'] == 'unknown' for x in row['checks'] if x['phase'] == '数据')
+
+@pytest.mark.parametrize('declared,purpose,criterion,status,allowed', [
+    (True, 'analysis', 'quality', 'fail', True),
+    (False, 'analysis', 'quality', 'fail', False),
+    (True, 'historical_signal', 'quality', 'fail', False),
+    (True, 'analysis', 'coverage', 'fail', False),
+    (True, 'analysis', 'fields', 'fail', False),
+    (True, 'analysis', 'quality', 'unknown', False),
+])
+async def test_only_declared_analysis_source_quality_can_be_a_limitation(declared, purpose, criterion, status, allowed):
+    from empire.plugins.data.holders import HolderDataPlugin
+    c = replace(HolderDataPlugin('top_holders').preparation[0], analysis_quality_limits=declared)
+    service = SimpleNamespace(preparation_check=AsyncMock(return_value=tuple(
+        CheckEvidence(k.id, status if k.id == criterion else 'pass', '来源限制或集合证据', blocking=k.id != criterion)
+        for k in BY_ID['top_holders'].criteria)))
+    plugin = PreparationPlugin([c])
+    await plugin.start(SimpleNamespace(optional=lambda cap: service if cap == c.capability else None))
+    report = await plugin.report(dict(codes=['601139'], purpose=purpose))
+    row = next(r for r in report['rows'] if r['id'] == 'top_holders')
+    assert row['assessment']['usable'] == allowed
+    if allowed:
+        assert row['assessment']['integrity'] == '通过'
+        assert row['assessment']['quality'] == '有限制'
+    else:
+        assert all(x['status'] == 'unknown' for x in row['checks'] if x['phase'] == '数据')

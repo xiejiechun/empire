@@ -1,0 +1,148 @@
+{
+  "checked_at": "2026-10-12T13:16:03.473013+08:00",
+  "source_count": 5537,
+  "source_digest": "1a32c1d2a345826d6d6410d932bb6db3bd39e98b957b5eff4a3ec988fbe2f8a6",
+  "requests": 12,
+  "max_response_bytes": 762581,
+  "status": "complete",
+  "audit": {
+    "count": 5537,
+    "digest": "1a32c1d2a345826d6d6410d932bb6db3bd39e98b957b5eff4a3ec988fbe2f8a6",
+    "valid": true,
+    "proof": {
+      "count": 5537,
+      "digest": "1a32c1d2a345826d6d6410d932bb6db3bd39e98b957b5eff4a3ec988fbe2f8a6",
+      "contract": 1,
+      "observed_at": "2026-10-12T05:16:26.817381+00:00"
+    },
+    "last": {
+      "plan_id": "9998",
+      "unified_code": "002108.SZ",
+      "name": "沧州明珠",
+      "share_type": "流通A股",
+      "plan_date": "2023-06-01",
+      "updated_date": "2025-07-19",
+      "progress_code": "006",
+      "plan_updated_date": "2025-07-19",
+      "actual_through": "2023-06-09",
+      "notice_date": "2023-06-13",
+      "start_date": "2023-05-31",
+      "end_date": "2023-11-30",
+      "finish_date": "2023-06-09",
+      "shareholder_notice_date": null,
+      "advance_date": "2023-06-09",
+      "plan_price_upper": "6.5",
+      "plan_price_lower": null,
+      "plan_quantity_upper": "16923000",
+      "plan_quantity_lower": "13846200",
+      "plan_amount_upper": "110000000",
+      "plan_amount_lower": "90000000",
+      "actual_price_upper": "4.66",
+      "actual_price_lower": "4.39",
+      "actual_quantity": "24099560",
+      "actual_amount": "109986450.42",
+      "objective": "基于对公司价值的认可和未来发展前景的坚定信心,为维护广大投资者利益,进一步健全公司长效激励机制,充分调动公司员工的主动性与创造力,共同促进公司的长期发展。公司计划以自有资金通过集中竞价的方式从二级市场回购股份,用于实施股权激励或员工持股计划。",
+      "remark": "2023.06.01公告\r\n自董事会审议通过回购股份方案之日起6个月内。\r\n\r\n2025.07.19公告\r\n因公司拟终止实施2023年股权激励计划,故公司对该部分股份变更用途,由原方案“用于实施股权激励计划或员工持股计划”变更为“用于注销并减少公司注册资本”,拟注销库存股740,500股,股份数量占公司目前总股本的0.0445%。",
+      "progress_remark": null
+    },
+    "invalid": 0
+  },
+  "checkpoint": {
+    "phase": "complete",
+    "batch_id": "40248cf374dd42abb67bd2e366f41b4a",
+    "pages": 23,
+    "collected": 5537,
+    "total": 5537,
+    "after": "9998",
+    "digest": "1a32c1d2a345826d6d6410d932bb6db3bd39e98b957b5eff4a3ec988fbe2f8a6",
+    "contract": 1,
+    "completed_at": "2026-10-12T05:16:27.829562+00:00"
+  },
+  "pending_stream": 0,
+  "saved_policy": {
+    "mode": "daily",
+    "enabled": true,
+    "archived": false,
+    "use_proxy": true,
+    "daily_time": "18:00",
+    "proxy_fallback": true,
+    "request_retries": 2,
+    "interval_seconds": 86400
+  },
+  "site": {
+    "max_rps": 0,
+    "scaling_mode": "fixed",
+    "max_concurrency": 1,
+    "min_interval_ms": 2000,
+    "proxy_interval_ms": 2000,
+    "total_interval_ms": 2000
+  },
+  "preparation": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "5537方案；身份、日期、数量金额及来源说明逐行校验；NULL保持未知"
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "唯一来源方案编号；完整SQL键与规范内容滚动摘要匹配"
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "完整来源集合与SQL逐行摘要核对；不是依据最大日期或条数推断完整"
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "计划与累计实际分开，未知状态保留；回购完成不推断注销完成"
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "SQL完整集合匹配后，以SQL或匹配完整已归档轮次的核验时间确认3天时效；Redis可选"
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "仅当前修订和公告自然日，无完整旧版本/日内时刻，不用于严格历史信号回放"
+    }
+  ],
+  "history": {
+    "run_id": "b210d69686a74af9b2f8e3689ddf6e0e",
+    "task_id": "eastmoney-repurchases",
+    "started_at": 1791782163.7739556,
+    "origin": "repurchase-live-verification",
+    "fresh": true,
+    "baseline_revision": 0,
+    "use_proxy": true,
+    "proxy_fallback": true,
+    "network": {
+      "proxy_requests": 12
+    },
+    "finished_at": 1791782187.8295622,
+    "status": "complete",
+    "error": "",
+    "result": {
+      "collected": 5537,
+      "record_name": "条回购方案",
+      "unit_name": "条回购方案",
+      "completed_units": 5537,
+      "total_units": 5537,
+      "pages": 23,
+      "phase": "complete",
+      "batch_id": "40248cf374dd42abb67bd2e366f41b4a",
+      "total": 5537,
+      "after": "9998",
+      "digest": "1a32c1d2a345826d6d6410d932bb6db3bd39e98b957b5eff4a3ec988fbe2f8a6",
+      "contract": 1,
+      "completed_at": "2026-10-12T05:16:27.829562+00:00"
+    }
+  },
+  "inventory": {
+    "MIN(plan_date)": "2005-06-17",
+    "MAX(plan_date)": "2026-10-10",
+    "COUNT(DISTINCT unified_code)": 2946
+  }
+}

@@ -1,0 +1,2520 @@
+{
+  "completed_at": "2026-10-19T02:52:39.112344+08:00",
+  "task": "Redesign data preparation for factor research, strategy backtests and long-term value research; inventory current MySQL; implement and verify release.",
+  "source_sha256": "1d6aa1b4baee602da13209b7203099ceac7dfa2b4cdee71aeda60680ac523531",
+  "tests": {
+    "failure": 0,
+    "error": 0,
+    "skipped": 5,
+    "total": 3176,
+    "passed": 3171
+  },
+  "release": {
+    "verified_at_utc": "2026-10-18T18:35:39Z",
+    "manifest": {
+      "version": "0.1.0",
+      "commit": "a79f789e15de70d22e55a5f850f7ce3ec83c6009",
+      "dirty": true,
+      "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+      "dependency_count": 42,
+      "dependency_report_sha256": "2eb64660903a06c96ba166f6f27a299007ff21253371a4734852f8a13c1c667f",
+      "built_at_utc": "2026-10-18T18:33:44Z",
+      "python": "3.12.9",
+      "pyinstaller": "6.22.3"
+    },
+    "executable_sha256": "5974ae27fe07fe72d09ff293f5645531c757978533614ba1a30c17b92009222f",
+    "smoke_image": "D:\\project\\empire\\build\\release-smoke.png",
+    "capacity_report": "D:\\project\\empire\\build\\capacity-report.json",
+    "capacity": {
+      "schema_version": 1,
+      "generated_at_utc": "2026-10-19T02:33:31+08:00",
+      "mode": "quick-release-gate",
+      "scope": "in-process virtual directory and MockTransport; no external services",
+      "model": {
+        "exit_matrix": [
+          10,
+          30,
+          50,
+          100
+        ],
+        "baseline_response_delay_ms": 4,
+        "parse_delay_ms": 1,
+        "archive_queue_delay_ms": 1,
+        "redis_confirm_delay_ms": 1,
+        "sql_confirm_delay_ms": 2,
+        "churn_cancel_iterations": 1000
+      },
+      "environment": {
+        "python": "3.12.9",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "processor": "AMD64 Family 26 Model 112 Stepping 0, AuthenticAMD"
+      },
+      "baseline": [
+        {
+          "name": "independent-10",
+          "devices": 10,
+          "distinct_exit_ips": 10,
+          "request_count": 10,
+          "completed": 10,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 10,
+          "elapsed_seconds": 0.0037,
+          "throughput_rps": 2675.73,
+          "error_rate": 0.0,
+          "peak_concurrency": 10,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.121,
+              "p95_ms": 0.618,
+              "max_ms": 0.965
+            },
+            "download": {
+              "p50_ms": 1.453,
+              "p95_ms": 2.031,
+              "max_ms": 2.079
+            },
+            "parse": {
+              "p50_ms": 0.155,
+              "p95_ms": 0.236,
+              "max_ms": 0.25
+            },
+            "archive_queue": {
+              "p50_ms": 0.062,
+              "p95_ms": 0.065,
+              "max_ms": 0.066
+            },
+            "redis_confirm": {
+              "p50_ms": 0.058,
+              "p95_ms": 0.062,
+              "max_ms": 0.063
+            },
+            "sql_confirm": {
+              "p50_ms": 0.056,
+              "p95_ms": 0.062,
+              "max_ms": 0.063
+            },
+            "end_to_end": {
+              "p50_ms": 1.915,
+              "p95_ms": 3.04,
+              "max_ms": 3.473
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 10,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 52449280,
+            "rss_peak": 54239232,
+            "rss_after": 54239232,
+            "rss_delta": 1789952,
+            "handles_before": 230,
+            "handles_peak": 240,
+            "handles_after": 230,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "independent-30",
+          "devices": 30,
+          "distinct_exit_ips": 30,
+          "request_count": 30,
+          "completed": 30,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 30,
+          "elapsed_seconds": 0.0075,
+          "throughput_rps": 3993.56,
+          "error_rate": 0.0,
+          "peak_concurrency": 30,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.116,
+              "p95_ms": 0.258,
+              "max_ms": 0.919
+            },
+            "download": {
+              "p50_ms": 3.576,
+              "p95_ms": 5.28,
+              "max_ms": 5.419
+            },
+            "parse": {
+              "p50_ms": 0.35,
+              "p95_ms": 0.573,
+              "max_ms": 0.575
+            },
+            "archive_queue": {
+              "p50_ms": 0.121,
+              "p95_ms": 0.161,
+              "max_ms": 0.164
+            },
+            "redis_confirm": {
+              "p50_ms": 0.116,
+              "p95_ms": 0.153,
+              "max_ms": 0.156
+            },
+            "sql_confirm": {
+              "p50_ms": 0.111,
+              "p95_ms": 0.146,
+              "max_ms": 0.148
+            },
+            "end_to_end": {
+              "p50_ms": 4.342,
+              "p95_ms": 6.29,
+              "max_ms": 7.261
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 30,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 54251520,
+            "rss_peak": 54833152,
+            "rss_after": 54833152,
+            "rss_delta": 581632,
+            "handles_before": 230,
+            "handles_peak": 260,
+            "handles_after": 230,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "independent-50",
+          "devices": 50,
+          "distinct_exit_ips": 50,
+          "request_count": 50,
+          "completed": 50,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 50,
+          "elapsed_seconds": 0.0108,
+          "throughput_rps": 4643.22,
+          "error_rate": 0.0,
+          "peak_concurrency": 50,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.113,
+              "p95_ms": 0.147,
+              "max_ms": 1.143
+            },
+            "download": {
+              "p50_ms": 5.165,
+              "p95_ms": 7.822,
+              "max_ms": 8.12
+            },
+            "parse": {
+              "p50_ms": 0.511,
+              "p95_ms": 0.837,
+              "max_ms": 0.867
+            },
+            "archive_queue": {
+              "p50_ms": 0.166,
+              "p95_ms": 0.214,
+              "max_ms": 0.221
+            },
+            "redis_confirm": {
+              "p50_ms": 0.16,
+              "p95_ms": 0.211,
+              "max_ms": 0.217
+            },
+            "sql_confirm": {
+              "p50_ms": 0.157,
+              "p95_ms": 0.201,
+              "max_ms": 0.207
+            },
+            "end_to_end": {
+              "p50_ms": 6.408,
+              "p95_ms": 9.127,
+              "max_ms": 10.495
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 50,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 54833152,
+            "rss_peak": 55201792,
+            "rss_after": 55201792,
+            "rss_delta": 368640,
+            "handles_before": 230,
+            "handles_peak": 280,
+            "handles_after": 230,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "independent-100",
+          "devices": 100,
+          "distinct_exit_ips": 100,
+          "request_count": 100,
+          "completed": 100,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 100,
+          "elapsed_seconds": 0.0238,
+          "throughput_rps": 4209.55,
+          "error_rate": 0.0,
+          "peak_concurrency": 100,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.134,
+              "p95_ms": 0.209,
+              "max_ms": 1.684
+            },
+            "download": {
+              "p50_ms": 11.281,
+              "p95_ms": 18.649,
+              "max_ms": 19.362
+            },
+            "parse": {
+              "p50_ms": 1.081,
+              "p95_ms": 1.576,
+              "max_ms": 1.618
+            },
+            "archive_queue": {
+              "p50_ms": 0.47,
+              "p95_ms": 0.561,
+              "max_ms": 0.586
+            },
+            "redis_confirm": {
+              "p50_ms": 0.278,
+              "p95_ms": 0.423,
+              "max_ms": 0.445
+            },
+            "sql_confirm": {
+              "p50_ms": 0.272,
+              "p95_ms": 0.452,
+              "max_ms": 0.473
+            },
+            "end_to_end": {
+              "p50_ms": 13.806,
+              "p95_ms": 20.843,
+              "max_ms": 23.222
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 100,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 55201792,
+            "rss_peak": 56086528,
+            "rss_after": 56086528,
+            "rss_delta": 884736,
+            "handles_before": 230,
+            "handles_peak": 330,
+            "handles_after": 230,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        }
+      ],
+      "shared_egress": {
+        "name": "shared-egress",
+        "devices": 50,
+        "distinct_exit_ips": 10,
+        "request_count": 50,
+        "completed": 50,
+        "failed": 0,
+        "cancelled": 0,
+        "attempts": 50,
+        "elapsed_seconds": 0.4587,
+        "throughput_rps": 109.02,
+        "error_rate": 0.0,
+        "peak_concurrency": 10,
+        "latency": {
+          "queue": {
+            "p50_ms": 210.881,
+            "p95_ms": 454.223,
+            "max_ms": 454.786
+          },
+          "download": {
+            "p50_ms": 2.192,
+            "p95_ms": 19.851,
+            "max_ms": 20.077
+          },
+          "parse": {
+            "p50_ms": 1.055,
+            "p95_ms": 2.373,
+            "max_ms": 2.422
+          },
+          "archive_queue": {
+            "p50_ms": 0.072,
+            "p95_ms": 1.15,
+            "max_ms": 1.163
+          },
+          "redis_confirm": {
+            "p50_ms": 0.062,
+            "p95_ms": 0.596,
+            "max_ms": 0.597
+          },
+          "sql_confirm": {
+            "p50_ms": 0.063,
+            "p95_ms": 0.592,
+            "max_ms": 0.593
+          },
+          "end_to_end": {
+            "p50_ms": 214.206,
+            "p95_ms": 455.652,
+            "max_ms": 455.768
+          }
+        },
+        "directory_reads": 1,
+        "candidate_checks": 90,
+        "site_cooldown_created": false,
+        "resources": {
+          "rss_before": 56086528,
+          "rss_peak": 56111104,
+          "rss_after": 56111104,
+          "rss_delta": 24576,
+          "handles_before": 230,
+          "handles_peak": 280,
+          "handles_after": 230,
+          "handles_delta": 0
+        },
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0,
+          "http_inflight": 0,
+          "open_responses": 0,
+          "buffer_used_bytes": 0,
+          "global_active": 0,
+          "site_active": 0,
+          "admission_waiting": 0
+        }
+      },
+      "fault_matrix": [
+        {
+          "name": "transport-failure",
+          "devices": 10,
+          "distinct_exit_ips": 10,
+          "request_count": 20,
+          "completed": 20,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 25,
+          "elapsed_seconds": 0.3363,
+          "throughput_rps": 59.47,
+          "error_rate": 0.0,
+          "peak_concurrency": 10,
+          "latency": {
+            "queue": {
+              "p50_ms": 56.835,
+              "p95_ms": 222.333,
+              "max_ms": 328.347
+            },
+            "download": {
+              "p50_ms": 16.275,
+              "p95_ms": 143.502,
+              "max_ms": 334.275
+            },
+            "parse": {
+              "p50_ms": 0.549,
+              "p95_ms": 1.37,
+              "max_ms": 1.389
+            },
+            "archive_queue": {
+              "p50_ms": 0.084,
+              "p95_ms": 0.151,
+              "max_ms": 0.155
+            },
+            "redis_confirm": {
+              "p50_ms": 0.052,
+              "p95_ms": 0.068,
+              "max_ms": 0.068
+            },
+            "sql_confirm": {
+              "p50_ms": 0.049,
+              "p95_ms": 0.061,
+              "max_ms": 0.065
+            },
+            "end_to_end": {
+              "p50_ms": 133.357,
+              "p95_ms": 334.176,
+              "max_ms": 334.646
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 43,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 56111104,
+            "rss_peak": 56111104,
+            "rss_after": 56111104,
+            "rss_delta": 0,
+            "handles_before": 230,
+            "handles_peak": 240,
+            "handles_after": 230,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "site-429",
+          "devices": 10,
+          "distinct_exit_ips": 10,
+          "request_count": 10,
+          "completed": 8,
+          "failed": 2,
+          "cancelled": 0,
+          "attempts": 10,
+          "elapsed_seconds": 0.0187,
+          "throughput_rps": 533.48,
+          "error_rate": 0.2,
+          "peak_concurrency": 10,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.113,
+              "p95_ms": 0.413,
+              "max_ms": 0.592
+            },
+            "download": {
+              "p50_ms": 17.058,
+              "p95_ms": 17.48,
+              "max_ms": 17.501
+            },
+            "parse": {
+              "p50_ms": 0.241,
+              "p95_ms": 0.312,
+              "max_ms": 0.322
+            },
+            "archive_queue": {
+              "p50_ms": 0.061,
+              "p95_ms": 0.063,
+              "max_ms": 0.064
+            },
+            "redis_confirm": {
+              "p50_ms": 0.051,
+              "p95_ms": 0.054,
+              "max_ms": 0.055
+            },
+            "sql_confirm": {
+              "p50_ms": 0.052,
+              "p95_ms": 0.055,
+              "max_ms": 0.056
+            },
+            "end_to_end": {
+              "p50_ms": 17.594,
+              "p95_ms": 18.376,
+              "max_ms": 18.584
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 10,
+          "site_cooldown_created": true,
+          "resources": {
+            "rss_before": 56111104,
+            "rss_peak": 56115200,
+            "rss_after": 56115200,
+            "rss_delta": 4096,
+            "handles_before": 230,
+            "handles_peak": 240,
+            "handles_after": 230,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "request-cancel",
+          "devices": 10,
+          "distinct_exit_ips": 10,
+          "request_count": 20,
+          "completed": 10,
+          "failed": 0,
+          "cancelled": 10,
+          "attempts": 15,
+          "elapsed_seconds": 0.1218,
+          "throughput_rps": 82.12,
+          "error_rate": 0.0,
+          "peak_concurrency": 10,
+          "latency": {
+            "queue": {
+              "p50_ms": 52.571,
+              "p95_ms": 104.889,
+              "max_ms": 104.929
+            },
+            "download": {
+              "p50_ms": 18.757,
+              "p95_ms": 21.415,
+              "max_ms": 21.588
+            },
+            "parse": {
+              "p50_ms": 0.381,
+              "p95_ms": 0.598,
+              "max_ms": 0.621
+            },
+            "archive_queue": {
+              "p50_ms": 0.075,
+              "p95_ms": 0.095,
+              "max_ms": 0.095
+            },
+            "redis_confirm": {
+              "p50_ms": 0.047,
+              "p95_ms": 0.049,
+              "max_ms": 0.049
+            },
+            "sql_confirm": {
+              "p50_ms": 0.048,
+              "p95_ms": 0.049,
+              "max_ms": 0.049
+            },
+            "end_to_end": {
+              "p50_ms": 72.337,
+              "p95_ms": 121.92,
+              "max_ms": 121.945
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 25,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 56115200,
+            "rss_peak": 56115200,
+            "rss_after": 56115200,
+            "rss_delta": 0,
+            "handles_before": 230,
+            "handles_peak": 240,
+            "handles_after": 235,
+            "handles_delta": 5
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        }
+      ],
+      "churn": {
+        "iterations": 1000,
+        "cancelled_acquires": 1000,
+        "elapsed_seconds": 0.1409,
+        "directory_reads": 2001,
+        "candidate_checks": 1000,
+        "resource_samples": [
+          {
+            "rss_bytes": 56115200,
+            "handles": 235
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          },
+          {
+            "rss_bytes": 56115200,
+            "handles": 228
+          }
+        ],
+        "rss_growth_bytes": 0,
+        "handle_growth": -7,
+        "stable_within_guardrail": true,
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0
+        }
+      },
+      "checks": {
+        "all_cleanup_zero": true,
+        "candidate_lease_checked_per_attempt": true,
+        "shared_ip_does_not_expand_concurrency": true,
+        "429_created_site_cooldown": true,
+        "cancellation_observed": true,
+        "transport_replay_recovered": true,
+        "churn_1000_completed": true,
+        "churn_resources_stable": true
+      },
+      "passed": true
+    },
+    "dependency_report": "D:\\project\\empire\\build\\dependency-report.json",
+    "dependencies": {
+      "schema_version": 1,
+      "generated_at_utc": "2026-10-19T01:58:14+08:00",
+      "scope": "Python packages locked for Empire; excludes OS, driver and dynamically loaded native components",
+      "target": {
+        "system": "Windows",
+        "machine": "AMD64",
+        "python": "3.12"
+      },
+      "generator": {
+        "python": "3.12.9",
+        "platform": "Windows-11-10.0.26200-SP0"
+      },
+      "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+      "component_count": 42,
+      "components": [
+        {
+          "name": "altgraph",
+          "version": "0.17.5",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": "MIT",
+          "locked_sha256": [
+            "f3a22400bce1b0c701683820ac4f3b159cd301acab067c51c653e06961600597"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "annotated-types",
+          "version": "0.8.0",
+          "scope": "transitive",
+          "compatibility_group": "validation",
+          "license": "MIT",
+          "locked_sha256": [
+            "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "anyio",
+          "version": "4.15.1",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "MIT",
+          "locked_sha256": [
+            "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "certifi",
+          "version": "2026.7.22",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "MPL-2.0",
+          "locked_sha256": [
+            "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "cffi",
+          "version": "2.1.1",
+          "scope": "transitive",
+          "compatibility_group": "database",
+          "license": "MIT-0",
+          "locked_sha256": [
+            "f53e442b08449d42821fa4a4fba000095af9f62742a500f978a9f557ec44339a"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "colorama",
+          "version": "0.4.6",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": null,
+          "locked_sha256": [
+            "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "cryptography",
+          "version": "50.0.1",
+          "scope": "transitive",
+          "compatibility_group": "database",
+          "license": "Apache-2.0 OR BSD-3-Clause",
+          "locked_sha256": [
+            "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "greenlet",
+          "version": "3.5.6",
+          "scope": "transitive",
+          "compatibility_group": "database",
+          "license": "MIT AND PSF-2.0",
+          "locked_sha256": [
+            "7ac4abb3877c43af320392c664774eef6fa2cc063c79a55fc02d844a3cbe7395"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "h11",
+          "version": "0.16.0",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "MIT",
+          "locked_sha256": [
+            "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "httpcore",
+          "version": "1.0.9",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "httpx",
+          "version": "0.28.1",
+          "scope": "direct-runtime",
+          "compatibility_group": "network",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "idna",
+          "version": "3.20",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "iniconfig",
+          "version": "2.3.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "librt",
+          "version": "0.15.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "73b30cfa976659b3917c8f6153bdb0591c6a9ec6583599fd24a689b690622022"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "mypy",
+          "version": "1.20.2",
+          "scope": "direct-development",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "d52ad8d78522da1d308789df651ee5379088e77c76cb1994858d40a426b343b9"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "mypy-extensions",
+          "version": "1.1.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "packaging",
+          "version": "26.3",
+          "scope": "transitive",
+          "compatibility_group": "runtime-support",
+          "license": "Apache-2.0 OR BSD-2-Clause",
+          "locked_sha256": [
+            "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pathspec",
+          "version": "1.1.1",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": null,
+          "locked_sha256": [
+            "a00ce642f577bf7f473932318056212bc4f8bfdf53128c78bbd5af0b9b20b189"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pefile",
+          "version": "2024.8.26",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": "MIT",
+          "locked_sha256": [
+            "76f8b485dcd3b1bb8166f1128d395fa3d87af26360c2358fb75b80019b957c6f"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pluggy",
+          "version": "1.6.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pycparser",
+          "version": "3.0",
+          "scope": "transitive",
+          "compatibility_group": "database",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pydantic",
+          "version": "2.13.5",
+          "scope": "direct-runtime",
+          "compatibility_group": "validation",
+          "license": "MIT",
+          "locked_sha256": [
+            "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pydantic-core",
+          "version": "2.46.5",
+          "scope": "transitive",
+          "compatibility_group": "validation",
+          "license": "MIT",
+          "locked_sha256": [
+            "5e81740c09e310f5aa5cbd3e434a01c154d4bef93241c7877b39f211d2b78ba8"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pypdf",
+          "version": "6.20.0",
+          "scope": "direct-runtime",
+          "compatibility_group": "runtime-support",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "f003fc2014814d264fe7dd3f9d435c158e23e1a85a2233f87a0a2d6d21c914ad"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pygments",
+          "version": "2.21.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "BSD-2-Clause",
+          "locked_sha256": [
+            "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pymysql",
+          "version": "1.2.3",
+          "scope": "direct-runtime",
+          "compatibility_group": "database",
+          "license": "MIT",
+          "locked_sha256": [
+            "14f1c68e2ed859243ae5ca41ffbe677027fc46bc136a9f0be8a4e928e5e7415a"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyinstaller",
+          "version": "6.22.3",
+          "scope": "direct-development",
+          "compatibility_group": "build",
+          "license": "GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones)",
+          "locked_sha256": [
+            "500bd58c7bf7e584a8435adccbd763a0b918d5c12b08d74ff50fd79b2915458b"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyinstaller-hooks-contrib",
+          "version": "2026.7",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": null,
+          "locked_sha256": [
+            "24257a04c7a5a7a034cf28e39dcee20fbeeb9f043076729480f2e1b69904408a"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyside6",
+          "version": "6.11.2",
+          "scope": "direct-runtime",
+          "compatibility_group": "qt",
+          "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+          "locked_sha256": [
+            "3201d67e3c10be2eaedd3910ff0f02351eca7e88c95a291cde5e7f2f55ef207f"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyside6-addons",
+          "version": "6.11.2",
+          "scope": "transitive",
+          "compatibility_group": "qt",
+          "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+          "locked_sha256": [
+            "f449ea4431da20e7b86752cca8d166f93434516fe417f981c27e5f8e1b554407"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyside6-essentials",
+          "version": "6.11.2",
+          "scope": "transitive",
+          "compatibility_group": "qt",
+          "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+          "locked_sha256": [
+            "c8a29def77032773a30879f7f24415b5395ad08592d147c170824ef4c735dfc1"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pytest",
+          "version": "9.1.1",
+          "scope": "direct-development",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pytest-asyncio",
+          "version": "1.4.0",
+          "scope": "direct-development",
+          "compatibility_group": "test-quality",
+          "license": "Apache-2.0",
+          "locked_sha256": [
+            "933ca923a23075a87fb7070c0ec272a6848489824d887c85c812670932835aa1"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "redis",
+          "version": "6.4.0",
+          "scope": "direct-runtime",
+          "compatibility_group": "redis",
+          "license": "MIT",
+          "locked_sha256": [
+            "f0544fa9604264e9464cdf4814e7d4830f74b165d52f2a330a760a88dd248b7f"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "ruff",
+          "version": "0.16.8",
+          "scope": "direct-development",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "a6b85621fd3c81e31fc5f5add09c9c078b430db3595ca632efafdec9e64ebfaa"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "setuptools",
+          "version": "84.0.0",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": "MIT",
+          "locked_sha256": [
+            "51a52592b3b99e102b609654876bd65f19f999935166d1352678931132b0c670"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "shiboken6",
+          "version": "6.11.2",
+          "scope": "transitive",
+          "compatibility_group": "qt",
+          "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+          "locked_sha256": [
+            "6ab0eba1c904455df621f9a6df3ca2bb896bab8670572d2bc4e37804ae91f19a"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "sqlalchemy",
+          "version": "2.0.54",
+          "scope": "direct-runtime",
+          "compatibility_group": "database",
+          "license": "MIT",
+          "locked_sha256": [
+            "d65f8ca742ef1e1e14bc417ef59dc2ddf207a7b66b30cfdc6152447314e030cf"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "socksio",
+          "version": "1.0.0",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "UNKNOWN",
+          "locked_sha256": [
+            "95dc1f15f9b34e8d7b16f06d74b8ccf48f609af32ab33c608d08761c5dcbb1f3"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "typing-inspection",
+          "version": "0.4.4",
+          "scope": "transitive",
+          "compatibility_group": "validation",
+          "license": "MIT",
+          "locked_sha256": [
+            "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "typing-extensions",
+          "version": "4.16.0",
+          "scope": "transitive",
+          "compatibility_group": "runtime-support",
+          "license": "PSF-2.0",
+          "locked_sha256": [
+            "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pywin32-ctypes",
+          "version": "0.2.3",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "8a1513379d709975552d202d942d9837758905c8d01eb82b8bcc30918929e7b8"
+          ],
+          "installed_matches": true
+        }
+      ]
+    },
+    "portable_distribution": {
+      "chinese_space_path": true,
+      "packaged_smoke": true,
+      "first_run_prepared_config": true,
+      "config_recheck": true
+    }
+  },
+  "configuration": {
+    "preserved": true,
+    "hashes": {
+      "config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+      "dist/Empire/config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f"
+    },
+    "changed_working_directory": "C:/Windows"
+  },
+  "desktop": {
+    "passed": true,
+    "recorded_at": "2026-10-19T02:52:38.921064+08:00",
+    "method": "Actual visible packaged Windows app operated with computer-use @oai/sky; not offscreen.",
+    "executable": "D:\\project\\empire\\dist\\Empire\\Empire.exe",
+    "pid": 37660,
+    "window_id": 8455878,
+    "launched_working_directory": "C:/Windows",
+    "connection_status": "本地服务已连接",
+    "initial_scope": {
+      "purpose": "长期价值研究",
+      "focus": "经营 / 财务趋势",
+      "securities": "",
+      "start": "",
+      "end": "",
+      "benchmark": "",
+      "required": 5,
+      "automatic_deep_scan": false
+    },
+    "compact_rows": {
+      "visible": true,
+      "row_height": 30,
+      "cell_padding": "3px 6px",
+      "font_size_unchanged": true
+    },
+    "draft_warning_observed": true,
+    "inventory": {
+      "started_at": "2026-10-19T02:38:01.068367+08:00",
+      "finished_at": "2026-10-19T02:38:15.677989+08:00",
+      "exact": true,
+      "checking": false,
+      "checked": 59,
+      "total": 59,
+      "error": "",
+      "note": "行数与日期边界只说明库存，不证明集合完整；各表分时读取，非全库原子快照。"
+    },
+    "actual_profile_checks": [
+      {
+        "purpose": "长期价值研究",
+        "focus": "经营 / 财务趋势",
+        "completed_local": "2026-10-19T02:40:18+08:00",
+        "required": 5,
+        "counts": {
+          "ready": 2,
+          "limited": 3,
+          "blocked": 0,
+          "unknown": 0,
+          "planned": 0
+        }
+      },
+      {
+        "purpose": "因子研究",
+        "focus": "盈利质量 / 成长",
+        "completed_local": "2026-10-19T02:44:30+08:00",
+        "required": 9,
+        "counts": {
+          "ready": 3,
+          "limited": 0,
+          "blocked": 4,
+          "unknown": 1,
+          "planned": 1
+        }
+      },
+      {
+        "purpose": "策略回测",
+        "focus": "量价策略",
+        "completed_local": "2026-10-19T02:46:05.506931+08:00",
+        "required": 20,
+        "counts": {
+          "ready": 5,
+          "limited": 0,
+          "blocked": 14,
+          "unknown": 1,
+          "planned": 0
+        }
+      }
+    ],
+    "explicit_sample": {
+      "securities": [
+        "601139"
+      ],
+      "start": "2021-01-01",
+      "end": "2026-10-16",
+      "benchmark": "1A0001"
+    },
+    "visible_limitations": [
+      "fixed sample selection bias",
+      "announcement availability",
+      "factor matrix and labels unimplemented",
+      "execution and cost engine unimplemented",
+      "price index is not total return index"
+    ],
+    "export": {
+      "path": "D:\\project\\empire\\docs\\evidence\\preparation-desktop-export-20261019.json",
+      "sha256": "0552739d02a428ad434a0ef35257f28d345068c6eb1566d2227193fec6c1c1cb",
+      "verified": true,
+      "required": 20,
+      "exact_table_counts": 59
+    },
+    "navigation": {
+      "action": "查看选中数据",
+      "selected": "现在有哪些 A 股股票",
+      "destination": "数据浏览 / 股票列表",
+      "rows": 5580,
+      "loaded": true,
+      "returned_to_preparation": true,
+      "purpose_and_scope_preserved": true
+    },
+    "final_state": {
+      "app_left_open": true,
+      "page": "数据准备",
+      "purpose": "策略回测",
+      "focus": "量价策略",
+      "report_matches_scope": true
+    },
+    "boundaries": [
+      "GUI checks cover one explicit security and range; not a repeated full 83-item audit.",
+      "No collector/source parser changed or extra live-source validation performed.",
+      "Normal restart retains existing saved collection schedules.",
+      "Native save dialog accessibility focus was inconsistent; path and save were verified visually."
+    ]
+  },
+  "compact_rows": {
+    "row_height": 30,
+    "cell_padding": "3px 6px",
+    "font_size_unchanged": true,
+    "target_tables": [
+      "research inputs",
+      "MySQL inventory",
+      "checks",
+      "finding samples"
+    ]
+  },
+  "test_database_tuning": {
+    "checked_at": "2026-10-19T00:54:12.156820+08:00",
+    "port": 13346,
+    "datadir": "D:\\project\\empire\\build\\ths-capital-mysql\\data\\",
+    "previous_redo_bytes": 104857600,
+    "current_redo_bytes": 1073741824,
+    "reason": "Private test server reported redo log writer waiting at 100 MiB capacity; expanded online without changing durability, production configuration or restarting tests."
+  },
+  "test_database_shutdown": {
+    "stopped_at": "2026-10-19T02:34:07.749332+08:00",
+    "port": 13346,
+    "datadir": "D:\\project\\empire\\build\\ths-capital-mysql\\data\\",
+    "other_clients": 0,
+    "normal_shutdown": true
+  },
+  "resumed_inventory": {
+    "rows": [
+      {
+        "table": "additional_issue",
+        "requirements": [
+          "additional_issues"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 5960,
+        "count": 6556,
+        "securities": 3031,
+        "bytes": 15859712,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "1998-06-26",
+        "last": "2026-10-14",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.337137+08:00"
+      },
+      {
+        "table": "app_setting",
+        "requirements": [],
+        "category": "配置 / 状态",
+        "estimated_rows": 48,
+        "count": 48,
+        "securities": null,
+        "bytes": 16384,
+        "date_column": "",
+        "security_column": "",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.339140+08:00"
+      },
+      {
+        "table": "balance_statement",
+        "requirements": [
+          "balance"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 145982,
+        "count": 319674,
+        "securities": 5581,
+        "bytes": 2410168320,
+        "date_column": "report_date",
+        "security_column": "unified_code",
+        "first": "1989-12-31",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.512875+08:00"
+      },
+      {
+        "table": "capital_encumbrance",
+        "requirements": [
+          "capital_acquisitions",
+          "capital_funding",
+          "capital_projects",
+          "equity_investments",
+          "equity_transfers",
+          "freeze",
+          "ipo_investments",
+          "pledge",
+          "related_transactions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 92269,
+        "count": 99012,
+        "securities": 3271,
+        "bytes": 126664704,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "2002-07-06",
+        "last": "2026-10-19",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.650317+08:00"
+      },
+      {
+        "table": "capital_equity_position",
+        "requirements": [
+          "capital_acquisitions",
+          "capital_funding",
+          "capital_projects",
+          "equity_investments",
+          "equity_transfers",
+          "freeze",
+          "ipo_investments",
+          "pledge",
+          "related_transactions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 19710,
+        "count": 21875,
+        "securities": 2154,
+        "bytes": 21135360,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "2004-12-31",
+        "last": "2026-06-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.683583+08:00"
+      },
+      {
+        "table": "capital_equity_summary",
+        "requirements": [
+          "capital_acquisitions",
+          "capital_funding",
+          "capital_projects",
+          "equity_investments",
+          "equity_transfers",
+          "freeze",
+          "ipo_investments",
+          "pledge",
+          "related_transactions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 19118,
+        "count": 19974,
+        "securities": 2154,
+        "bytes": 19005440,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "2004-12-31",
+        "last": "2026-06-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.714545+08:00"
+      },
+      {
+        "table": "capital_funding",
+        "requirements": [
+          "capital_acquisitions",
+          "capital_funding",
+          "capital_projects",
+          "equity_investments",
+          "equity_transfers",
+          "freeze",
+          "ipo_investments",
+          "pledge",
+          "related_transactions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 12978,
+        "count": 14208,
+        "securities": 5576,
+        "bytes": 12681216,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "1987-01-01",
+        "last": "2026-10-19",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.735098+08:00"
+      },
+      {
+        "table": "capital_ipo",
+        "requirements": [
+          "capital_acquisitions",
+          "capital_funding",
+          "capital_projects",
+          "equity_investments",
+          "equity_transfers",
+          "freeze",
+          "ipo_investments",
+          "pledge",
+          "related_transactions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 123,
+        "count": 123,
+        "securities": 123,
+        "bytes": 114688,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.736097+08:00"
+      },
+      {
+        "table": "capital_project",
+        "requirements": [
+          "capital_acquisitions",
+          "capital_funding",
+          "capital_projects",
+          "equity_investments",
+          "equity_transfers",
+          "freeze",
+          "ipo_investments",
+          "pledge",
+          "related_transactions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 72015,
+        "count": 63285,
+        "securities": 5573,
+        "bytes": 136052736,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "1988-07-01",
+        "last": "2026-10-17",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.830679+08:00"
+      },
+      {
+        "table": "capital_release",
+        "requirements": [
+          "capital_acquisitions",
+          "capital_funding",
+          "capital_projects",
+          "equity_investments",
+          "equity_transfers",
+          "freeze",
+          "ipo_investments",
+          "pledge",
+          "related_transactions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 75602,
+        "count": 80468,
+        "securities": 3081,
+        "bytes": 111394816,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "2002-07-06",
+        "last": "2026-10-17",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:58:59.947122+08:00"
+      },
+      {
+        "table": "capital_transaction",
+        "requirements": [
+          "capital_acquisitions",
+          "capital_funding",
+          "capital_projects",
+          "equity_investments",
+          "equity_transfers",
+          "freeze",
+          "ipo_investments",
+          "pledge",
+          "related_transactions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 218793,
+        "count": 252698,
+        "securities": 5494,
+        "bytes": 517111808,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "1994-04-30",
+        "last": "2026-10-19",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:00.346489+08:00"
+      },
+      {
+        "table": "cashflow_statement",
+        "requirements": [
+          "cashflow"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 123294,
+        "count": 320668,
+        "securities": 5581,
+        "bytes": 2901950464,
+        "date_column": "report_date",
+        "security_column": "unified_code",
+        "first": "1996-12-31",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:00.528103+08:00"
+      },
+      {
+        "table": "collection_state",
+        "requirements": [],
+        "category": "配置 / 状态",
+        "estimated_rows": 44,
+        "count": 46,
+        "securities": null,
+        "bytes": 47202304,
+        "date_column": "",
+        "security_column": "",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:00.529165+08:00"
+      },
+      {
+        "table": "dividend_plan",
+        "requirements": [
+          "dividends"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 50043,
+        "count": 56156,
+        "securities": 5439,
+        "bytes": 149159936,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "1991-06-08",
+        "last": "2026-10-26",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:00.595238+08:00"
+      },
+      {
+        "table": "earnings_disclosure",
+        "requirements": [
+          "earnings_disclosure"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 252466,
+        "count": 264810,
+        "securities": 5576,
+        "bytes": 165265408,
+        "date_column": "report_date",
+        "security_column": "unified_code",
+        "first": "2001-12-31",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:00.882801+08:00"
+      },
+      {
+        "table": "earnings_forecast",
+        "requirements": [
+          "earnings_forecast"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 94279,
+        "count": 109170,
+        "securities": 5526,
+        "bytes": 112984064,
+        "date_column": "report_date",
+        "security_column": "unified_code",
+        "first": "2001-06-30",
+        "last": "2026-12-31",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:01.008525+08:00"
+      },
+      {
+        "table": "earnings_quick",
+        "requirements": [
+          "earnings_quick"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 48170,
+        "count": 53816,
+        "securities": 4101,
+        "bytes": 54919168,
+        "date_column": "report_date",
+        "security_column": "unified_code",
+        "first": "2004-06-30",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:01.072759+08:00"
+      },
+      {
+        "table": "earnings_report",
+        "requirements": [
+          "earnings_report"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 305006,
+        "count": 303530,
+        "securities": 5582,
+        "bytes": 240762880,
+        "date_column": "report_date",
+        "security_column": "unified_code",
+        "first": "1989-12-31",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:01.417539+08:00"
+      },
+      {
+        "table": "finance_news",
+        "requirements": [],
+        "category": "目录外业务",
+        "estimated_rows": 39404,
+        "count": 35432,
+        "securities": null,
+        "bytes": 28934144,
+        "date_column": "published_at",
+        "security_column": "",
+        "first": "2026-09-22 23:21:16",
+        "last": "2026-10-19 01:55:34",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:01.436386+08:00"
+      },
+      {
+        "table": "holder_member",
+        "requirements": [
+          "bond_holders",
+          "float_holders",
+          "top_holders"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 636048,
+        "count": 659122,
+        "securities": null,
+        "bytes": 136314880,
+        "date_column": "",
+        "security_column": "",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:01.730146+08:00"
+      },
+      {
+        "table": "holder_report",
+        "requirements": [
+          "bond_holders",
+          "float_holders",
+          "top_holders"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 55550,
+        "count": 58135,
+        "securities": 5580,
+        "bytes": 39600128,
+        "date_column": "report_date",
+        "security_column": "unified_code",
+        "first": "2011-03-31",
+        "last": "2026-10-20",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:01.808893+08:00"
+      },
+      {
+        "table": "income_statement",
+        "requirements": [
+          "income"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 239169,
+        "count": 331306,
+        "securities": 5581,
+        "bytes": 1467498496,
+        "date_column": "report_date",
+        "security_column": "unified_code",
+        "first": "1988-12-31",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:01.998262+08:00"
+      },
+      {
+        "table": "index_daily_price",
+        "requirements": [
+          "index_prices"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 2117973,
+        "count": 2240398,
+        "securities": 573,
+        "bytes": 250970112,
+        "date_column": "trade_date",
+        "security_column": "index_code",
+        "first": "1990-12-19",
+        "last": "2026-10-16",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:02.733219+08:00"
+      },
+      {
+        "table": "index_price_year",
+        "requirements": [
+          "index_prices"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 9537,
+        "count": 9598,
+        "securities": 573,
+        "bytes": 1589248,
+        "date_column": "",
+        "security_column": "index_code",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:02.748219+08:00"
+      },
+      {
+        "table": "industry",
+        "requirements": [
+          "industries"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 90,
+        "count": 90,
+        "securities": null,
+        "bytes": 16384,
+        "date_column": "",
+        "security_column": "",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:02.750905+08:00"
+      },
+      {
+        "table": "industry_member",
+        "requirements": [
+          "industries"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 5573,
+        "count": 5575,
+        "securities": 5575,
+        "bytes": 1802240,
+        "date_column": "",
+        "security_column": "unified_code",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:02.752410+08:00"
+      },
+      {
+        "table": "restricted_share_unlock",
+        "requirements": [
+          "unlock_schedule"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 34108,
+        "count": 37318,
+        "securities": 5836,
+        "bytes": 42303488,
+        "date_column": "unlock_date",
+        "security_column": "unified_code",
+        "first": "1996-05-10",
+        "last": "2027-12-31",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:02.801539+08:00"
+      },
+      {
+        "table": "restricted_share_unlock_detail",
+        "requirements": [
+          "unlock_schedule"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 420111,
+        "count": 364656,
+        "securities": 5836,
+        "bytes": 327041024,
+        "date_column": "unlock_date",
+        "security_column": "unified_code",
+        "first": "1996-05-10",
+        "last": "2027-12-31",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.547269+08:00"
+      },
+      {
+        "table": "restricted_share_unlock_industry",
+        "requirements": [
+          "unlock_industry"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 703,
+        "count": 703,
+        "securities": null,
+        "bytes": 196608,
+        "date_column": "unlock_month",
+        "security_column": "",
+        "first": "2026-09-01",
+        "last": "2028-08-01",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.549774+08:00"
+      },
+      {
+        "table": "rights_issue",
+        "requirements": [
+          "rights_issues"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 1147,
+        "count": 1191,
+        "securities": 766,
+        "bytes": 2048000,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "1990-03-01",
+        "last": "2026-08-21",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.552629+08:00"
+      },
+      {
+        "table": "router_device",
+        "requirements": [],
+        "category": "其他表",
+        "estimated_rows": 20,
+        "count": 20,
+        "securities": null,
+        "bytes": 163840,
+        "date_column": "",
+        "security_column": "",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.553629+08:00"
+      },
+      {
+        "table": "router_proxy_auth",
+        "requirements": [],
+        "category": "其他表",
+        "estimated_rows": 40,
+        "count": 40,
+        "securities": null,
+        "bytes": 32768,
+        "date_column": "",
+        "security_column": "",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.554456+08:00"
+      },
+      {
+        "table": "router_runtime_config",
+        "requirements": [],
+        "category": "其他表",
+        "estimated_rows": 1,
+        "count": 1,
+        "securities": null,
+        "bytes": 49152,
+        "date_column": "",
+        "security_column": "",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.554456+08:00"
+      },
+      {
+        "table": "router_schema_version",
+        "requirements": [],
+        "category": "其他表",
+        "estimated_rows": 1,
+        "count": 1,
+        "securities": null,
+        "bytes": 16384,
+        "date_column": "",
+        "security_column": "",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.557953+08:00"
+      },
+      {
+        "table": "security_code_alias",
+        "requirements": [],
+        "category": "目录外业务",
+        "estimated_rows": 248,
+        "count": 248,
+        "securities": 248,
+        "bytes": 32768,
+        "date_column": "listing_date",
+        "security_column": "unified_code",
+        "first": "2020-07-27",
+        "last": "2024-04-08",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.557953+08:00"
+      },
+      {
+        "table": "security_listing_event",
+        "requirements": [
+          "delistings"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 527,
+        "count": 552,
+        "securities": 416,
+        "bytes": 393216,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "1998-09-14",
+        "last": "2026-07-17",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.561885+08:00"
+      },
+      {
+        "table": "security_name_change",
+        "requirements": [
+          "company_renames",
+          "renames"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 12092,
+        "count": 11913,
+        "securities": 2723,
+        "bytes": 10764288,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "1990-12-10",
+        "last": "2026-10-17",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.576771+08:00"
+      },
+      {
+        "table": "security_st_event",
+        "requirements": [
+          "st_implementation",
+          "st_removal"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 3696,
+        "count": 3949,
+        "securities": 1106,
+        "bytes": 5816320,
+        "date_column": "event_date",
+        "security_column": "unified_code",
+        "first": "1998-04-28",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:03.582125+08:00"
+      },
+      {
+        "table": "shareholder_change",
+        "requirements": [
+          "shareholder_changes"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 320481,
+        "count": 326168,
+        "securities": 5458,
+        "bytes": 308936704,
+        "date_column": "announcement_date",
+        "security_column": "unified_code",
+        "first": "2007-05-31",
+        "last": "2026-10-17",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:04.681845+08:00"
+      },
+      {
+        "table": "shareholder_count",
+        "requirements": [
+          "holder_count"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 211034,
+        "count": 226518,
+        "securities": 5577,
+        "bytes": 181862400,
+        "date_column": "statistics_date",
+        "security_column": "unified_code",
+        "first": "2021-10-12",
+        "last": "2026-10-15",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:04.942997+08:00"
+      },
+      {
+        "table": "stock",
+        "requirements": [
+          "universe"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 5580,
+        "count": 5580,
+        "securities": 5580,
+        "bytes": 278528,
+        "date_column": "",
+        "security_column": "unified_code",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:04.946000+08:00"
+      },
+      {
+        "table": "stock_daily_quote",
+        "requirements": [
+          "historical_quote"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 2768242,
+        "count": 2911771,
+        "securities": 2383,
+        "bytes": 1584070656,
+        "date_column": "trade_date",
+        "security_column": "unified_code",
+        "first": "2021-01-04",
+        "last": "2026-10-16",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:06.262839+08:00"
+      },
+      {
+        "table": "stock_daily_quote_level",
+        "requirements": [
+          "historical_quote"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 58425096,
+        "count": 58235420,
+        "securities": null,
+        "bytes": 4260364288,
+        "date_column": "trade_date",
+        "security_column": "unified_code",
+        "first": null,
+        "last": null,
+        "status": "有数据；大明细表仅核实行数",
+        "checked_at": "2026-10-19T01:59:12.156888+08:00"
+      },
+      {
+        "table": "stock_index",
+        "requirements": [
+          "board_history"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 573,
+        "count": 573,
+        "securities": 573,
+        "bytes": 114688,
+        "date_column": "",
+        "security_column": "index_code",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:12.161121+08:00"
+      },
+      {
+        "table": "stock_index_member",
+        "requirements": [
+          "board_history"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 90767,
+        "count": 99532,
+        "securities": 5582,
+        "bytes": 14204928,
+        "date_column": "",
+        "security_column": "unified_code",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:12.212126+08:00"
+      },
+      {
+        "table": "stock_intraday_trade_block",
+        "requirements": [
+          "intraday_trades"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 1588,
+        "count": 2001,
+        "securities": 49,
+        "bytes": 5865472,
+        "date_column": "trade_date",
+        "security_column": "unified_code",
+        "first": "2026-09-28",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:12.214128+08:00"
+      },
+      {
+        "table": "stock_intraday_trend",
+        "requirements": [
+          "intraday"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 35412,
+        "count": 35427,
+        "securities": 49,
+        "bytes": 6324224,
+        "date_column": "trade_date",
+        "security_column": "unified_code",
+        "first": "2026-09-28",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:12.219308+08:00"
+      },
+      {
+        "table": "stock_large_order_trend",
+        "requirements": [
+          "large_order_trend"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 33360,
+        "count": 33258,
+        "securities": 46,
+        "bytes": 4227072,
+        "date_column": "trade_date",
+        "security_column": "unified_code",
+        "first": "2026-09-28",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:12.243373+08:00"
+      },
+      {
+        "table": "stock_listing",
+        "requirements": [
+          "listings"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 4537,
+        "count": 5493,
+        "securities": 5493,
+        "bytes": 64700416,
+        "date_column": "listing_date",
+        "security_column": "unified_code",
+        "first": "1990-12-19",
+        "last": "2026-10-16",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:12.246372+08:00"
+      },
+      {
+        "table": "stock_market_day",
+        "requirements": [
+          "historical_quote",
+          "intraday",
+          "intraday_trades",
+          "large_order_trend",
+          "minute_entrust",
+          "minute_volume",
+          "opening_auction"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 2724855,
+        "count": 2912640,
+        "securities": 2383,
+        "bytes": 1605107712,
+        "date_column": "trade_date",
+        "security_column": "unified_code",
+        "first": "2021-01-04",
+        "last": "2026-10-16",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:13.898019+08:00"
+      },
+      {
+        "table": "stock_minute_entrust",
+        "requirements": [
+          "minute_entrust"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 35100,
+        "count": 35186,
+        "securities": 49,
+        "bytes": 6324224,
+        "date_column": "trade_date",
+        "security_column": "unified_code",
+        "first": "2026-09-28",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:13.912246+08:00"
+      },
+      {
+        "table": "stock_minute_volume",
+        "requirements": [
+          "minute_volume"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 32892,
+        "count": 35427,
+        "securities": 49,
+        "bytes": 5275648,
+        "date_column": "trade_date",
+        "security_column": "unified_code",
+        "first": "2026-09-28",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:13.922246+08:00"
+      },
+      {
+        "table": "stock_opening_auction",
+        "requirements": [
+          "opening_auction"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 5758,
+        "count": 5758,
+        "securities": 49,
+        "bytes": 540672,
+        "date_column": "trade_date",
+        "security_column": "unified_code",
+        "first": "2026-09-28",
+        "last": "2026-09-30",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:13.922246+08:00"
+      },
+      {
+        "table": "stock_repurchase_plan",
+        "requirements": [
+          "repurchases"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 5446,
+        "count": 5570,
+        "securities": 2958,
+        "bytes": 7389184,
+        "date_column": "plan_date",
+        "security_column": "unified_code",
+        "first": "2005-06-17",
+        "last": "2026-10-19",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:13.922246+08:00"
+      },
+      {
+        "table": "suspension_event",
+        "requirements": [
+          "suspensions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 103612,
+        "count": 104749,
+        "securities": 4405,
+        "bytes": 59785216,
+        "date_column": "suspended_at",
+        "security_column": "unified_code",
+        "first": "2004-12-27 09:30:00",
+        "last": "2026-10-15 09:31:00",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:14.074893+08:00"
+      },
+      {
+        "table": "suspension_source_date",
+        "requirements": [
+          "suspensions"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 168457,
+        "count": 145374,
+        "securities": 4405,
+        "bytes": 52854784,
+        "date_column": "source_date",
+        "security_column": "unified_code",
+        "first": "2004-12-27",
+        "last": "2026-10-16",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:14.324719+08:00"
+      },
+      {
+        "table": "trade_calendar",
+        "requirements": [
+          "calendar"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 13594,
+        "count": 13527,
+        "securities": null,
+        "bytes": 475136,
+        "date_column": "trade_date",
+        "security_column": "",
+        "first": "1990-12-19",
+        "last": "2027-12-31",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:14.326476+08:00"
+      },
+      {
+        "table": "trading_rule_citation",
+        "requirements": [
+          "limit_rules",
+          "lot_rules",
+          "sessions",
+          "settlement_rules",
+          "stamp_duty",
+          "tick_rules",
+          "transfer_fee"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 30,
+        "count": 30,
+        "securities": null,
+        "bytes": 49152,
+        "date_column": "",
+        "security_column": "",
+        "first": null,
+        "last": null,
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:14.326476+08:00"
+      },
+      {
+        "table": "trading_rule_value",
+        "requirements": [
+          "limit_rules",
+          "lot_rules",
+          "sessions",
+          "settlement_rules",
+          "stamp_duty",
+          "tick_rules",
+          "transfer_fee"
+        ],
+        "category": "研究业务",
+        "estimated_rows": 77,
+        "count": 77,
+        "securities": null,
+        "bytes": 98304,
+        "date_column": "effective_start",
+        "security_column": "",
+        "first": "2022-04-29",
+        "last": "2026-07-06",
+        "status": "有数据，完整性另查",
+        "checked_at": "2026-10-19T01:59:14.326476+08:00"
+      }
+    ],
+    "started_at": "2026-10-19T01:58:59.281912+08:00",
+    "finished_at": "2026-10-19T01:59:14.326476+08:00",
+    "exact": true,
+    "checking": false,
+    "checked": 59,
+    "total": 59,
+    "error": "",
+    "note": "行数与日期边界只说明库存，不证明集合完整；各表分时读取，非全库原子快照。",
+    "supplement": {
+      "checked_at": "2026-10-19T01:59:22.349707+08:00",
+      "current_pool_without_quote": 3197,
+      "current_pool_without_listing": 87,
+      "pending_archive": 0
+    }
+  },
+  "data_scan": {
+    "path": "preparation-scan-2026-10-19.json",
+    "tables": 59,
+    "finished_at": "2026-10-19T00:39:59.488499+08:00",
+    "classification": {
+      "source_collection_complete": 36,
+      "strict": 8,
+      "limited": 20,
+      "blocked": 25,
+      "unknown": 2,
+      "planned": 28
+    }
+  },
+  "boundaries": {
+    "production_ddl": false,
+    "business_data_repair": false,
+    "collector_changes": false,
+    "explicit_live_source_validation": false,
+    "error_record_cleanup": false,
+    "proxy_30_stock_acceptance": "Not applicable: no collector or source parser changed. Real validation uses existing MySQL and formal query services.",
+    "research_engines": "Factor matrix/labels, backtest engine and unregistered derived metrics remain explicitly unimplemented.",
+    "baseline": "Workspace contained extensive preexisting changes; preserved. Release covers the current workspace, not an isolated clean commit."
+  },
+  "release_attempts": [
+    {
+      "log": "build/research-release.log",
+      "outcome": "Stopped: private MySQL settings were missing; production account lacked CREATE DATABASE. No production migration performed."
+    },
+    {
+      "log": "build/research-release-private.log",
+      "outcome": "Interrupted before completion to correct navigation for pages sharing a collector; evidence not reused."
+    },
+    {
+      "log": "build/research-release-final.log",
+      "outcome": "3171 passed, 5 explicit drill skips; capacity and DPI passed. Packaging stopped because the old Empire window had been reopened."
+    },
+    {
+      "log": "build/research-release-compact.log",
+      "outcome": "Passed after compact row styling; full source-bound tests, capacity, DPI, portable configuration, build and smoke."
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "checked_at": "2026-10-16T05:24:38.047986+00:00",
+  "measurements": {
+    "import_seconds": 16.780531199998222,
+    "repeated_seconds": 2.9062655000016093,
+    "repeated_business_dml": 0,
+    "facts": 10500,
+    "page_p95_ms": 2.4794999990263022,
+    "detail_p95_ms": 0.9043000027304515,
+    "window_p95_ms": 3.484799999569077,
+    "audit_ms": 1421.9593000016175,
+    "allocated_bytes": 20070400,
+    "peak_python_bytes": 1505787,
+    "state_bytes": 812917,
+    "detail_bytes": 464,
+    "window_bytes": 11501
+  },
+  "limits": {
+    "import_seconds": 30,
+    "repeated_business_dml": 0,
+    "page_p95_ms": 100,
+    "detail_p95_ms": 100,
+    "window_p95_ms": 100,
+    "audit_ms": 10000,
+    "allocated_bytes": 134217728,
+    "peak_python_bytes": 134217728,
+    "state_bytes": 2097152,
+    "detail_bytes": 65536,
+    "window_bytes": 1048576
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "independent_test_service": true,
+    "synthetic": true,
+    "securities": 700,
+    "actual_sample": "docs/evidence/ths-capital-source-2026-10-16.json",
+    "cache": "first unforced read and nine hot repetitions; maximum bounds P95",
+    "flush_log_at_trx_commit": 2,
+    "transactions": "one complete security per transaction, matching formal archive",
+    "allocation": [
+      {
+        "TABLE_NAME": "capital_encumbrance",
+        "DATA_LENGTH": 245760,
+        "INDEX_LENGTH": 278528
+      },
+      {
+        "TABLE_NAME": "capital_equity_position",
+        "DATA_LENGTH": 475136,
+        "INDEX_LENGTH": 475136
+      },
+      {
+        "TABLE_NAME": "capital_equity_summary",
+        "DATA_LENGTH": 491520,
+        "INDEX_LENGTH": 475136
+      },
+      {
+        "TABLE_NAME": "capital_funding",
+        "DATA_LENGTH": 245760,
+        "INDEX_LENGTH": 278528
+      },
+      {
+        "TABLE_NAME": "capital_ipo",
+        "DATA_LENGTH": 278528,
+        "INDEX_LENGTH": 278528
+      },
+      {
+        "TABLE_NAME": "capital_project",
+        "DATA_LENGTH": 8994816,
+        "INDEX_LENGTH": 475136
+      },
+      {
+        "TABLE_NAME": "capital_release",
+        "DATA_LENGTH": 1589248,
+        "INDEX_LENGTH": 901120
+      },
+      {
+        "TABLE_NAME": "capital_transaction",
+        "DATA_LENGTH": 1589248,
+        "INDEX_LENGTH": 819200
+      },
+      {
+        "TABLE_NAME": "collection_state",
+        "DATA_LENGTH": 2113536,
+        "INDEX_LENGTH": 0
+      },
+      {
+        "TABLE_NAME": "stock",
+        "DATA_LENGTH": 65536,
+        "INDEX_LENGTH": 0
+      }
+    ],
+    "storage_mode": {
+      "file_per_table": 1,
+      "redo_capacity": 104857600
+    },
+    "growth": "6000 securities × 50 new facts/year × 5 years =1.5million facts; scaled allocated bytes separately reported"
+  },
+  "reviewed_tradeoffs": "八表按融资、项目、交易、报告期汇总、持仓、IPO、原事件与解除拆分；不存成功HTML或业务JSON。现行窗口标志仅成员变化写入，窗口外保留历史。测量不是生产历史覆盖或OS崩溃耐久性证明。",
+  "bindings": {
+    "src/empire/contracts/ths_capital.py": "c0a7b721dcf7b2bf13847302e8834aad2fbdc1a861c78524922cb1e980f0129a",
+    "src/empire/plugins/collectors/ths_capital_source.py": "6f99ba4d74237a3b3c709ba3c1da51900738f332f98d6e27e2ce3c03b548bddb",
+    "src/empire/plugins/collectors/holder_html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
+    "src/empire/plugins/datasets/ths_capital.py": "849d8c52f9bcc7ecaae7091df20c0b7a4acbdf166fe5a8ae3ac34f9b07a6f610",
+    "src/empire/plugins/data/ths_capital.py": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+    "scripts/measure_ths_capital.py": "0884adf909b23231f3daacbca3dc801426a06f8f19b819f40f4755e81eae68ed"
+  },
+  "ddl_scopes": {
+    "capital_funding": "af21b31fb72f2ccf43671b86af6a5b8367a8cc05c2f41b46f869acf1bc8deeb5",
+    "capital_project": "892dd3b32de0f79aaf55a7601719d774be5821c989565647ddde3ba96fdb5b1e",
+    "capital_transaction": "9e74ece5c40539f68d97bdc3590cca6618697c786360401795907515d8bf0ec2",
+    "capital_equity_summary": "d129dcc15808bae876ae0f4bd8b9527e18de4791b8a407f2b2235845429ac577",
+    "capital_equity_position": "0668cbeaa1e96742be67c7b54a7b95d759342dccf1defd9681a9533de66e8871",
+    "capital_ipo": "e00a7aa02cb1359289739567e685edd7cad6bb379aea4762927f2609e6c225a4",
+    "capital_encumbrance": "ec09fe3bdba0d39eca07208ac0d5a4a6c5fbd1238c7a686d2253aa31c1bbdcab",
+    "capital_release": "7fa824765226f41cab7cf54eeaf4b8360b2f1be7ce616d67a809014176831165"
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "capital_transaction",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "idx_transaction_date,idx_transaction_security",
+        "key": "idx_transaction_date",
+        "key_len": "82",
+        "ref": "const",
+        "rows": 1400,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "page_actual_rows": 100,
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "capital_transaction",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "idx_transaction_date,idx_transaction_security,idx_transaction_window",
+        "key": "idx_transaction_security",
+        "key_len": "93",
+        "ref": "const,const",
+        "rows": 2,
+        "filtered": 100.0,
+        "Extra": "Backward index scan; Using index"
+      }
+    ],
+    "security_actual_rows": 2,
+    "window": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "capital_transaction",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "idx_transaction_window",
+        "key": "idx_transaction_window",
+        "key_len": "12",
+        "ref": "const,const",
+        "rows": 4,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "window_actual_rows": 4
+  },
+  "projected_five_year_bytes": 2867200000
+}

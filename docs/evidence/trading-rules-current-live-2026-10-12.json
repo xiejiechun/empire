@@ -1,0 +1,637 @@
+{
+  "checked_at": "2026-10-12T14:16:03.191412+08:00",
+  "source_scope": "仅当前规则：沪深北普通竞价已审核条款；过户费仅2022政策公告；未补齐历史",
+  "tasks": {
+    "rules-limit-rules": {
+      "status": "complete",
+      "source_sql_equal": true,
+      "stored_parameters": 14,
+      "cited_clauses": 8,
+      "digest": "23a990434fc85513703450ee132fa4dac4081c138b33267b08c738b5ae5cec57",
+      "effective_start": "2026-07-06",
+      "state": {
+        "digest": "23a990434fc85513703450ee132fa4dac4081c138b33267b08c738b5ae5cec57",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "b9c9153dcc434d94a3b8d1ecfb959fa5",
+          "row_count": 14,
+          "error_text": "",
+          "observed_at": "2026-10-12T06:16:03.532982+00:00"
+        },
+        "row_count": 14,
+        "observed_at": "2026-10-12T06:16:03.532982+00:00"
+      },
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 259200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "北交所30%及首日豁免已保存；涨跌价格舍入规则尚需核实"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "北交所30%及首日豁免已保存；涨跌价格舍入规则尚需核实"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "history": {
+        "run_id": "35d4ef1af8cb427ea198b3d2bfdde129",
+        "task_id": "rules-limit-rules",
+        "started_at": 1791785763.5309753,
+        "origin": "explicit-rule-collection",
+        "fresh": false,
+        "baseline_revision": 2,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 11
+        },
+        "finished_at": 1791785770.3257227,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "collected": 14,
+          "record_name": "条规则参数",
+          "unit_name": "组官方规则",
+          "completed_units": 1,
+          "total_units": 1,
+          "phase": "complete",
+          "batch_id": "b9c9153dcc434d94a3b8d1ecfb959fa5",
+          "pages": 1,
+          "contract": 1
+        }
+      }
+    },
+    "rules-settlement-rules": {
+      "status": "complete",
+      "source_sql_equal": true,
+      "stored_parameters": 5,
+      "cited_clauses": 3,
+      "digest": "7d52eea65bd1af52deeeb38a21de486ef2b0f8c7b2b2b0bb2e29dfcd511eb8b8",
+      "effective_start": "2026-07-06",
+      "state": {
+        "digest": "7d52eea65bd1af52deeeb38a21de486ef2b0f8c7b2b2b0bb2e29dfcd511eb8b8",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "969707a290744a43b82359a834ed9d2e",
+          "row_count": 5,
+          "error_text": "",
+          "observed_at": "2026-10-12T06:16:10.355030+00:00"
+        },
+        "row_count": 5,
+        "observed_at": "2026-10-12T06:16:10.355030+00:00"
+      },
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 259200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "交收前禁卖原文已保存；数值T+1交收依据尚缺"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "交收前禁卖原文已保存；数值T+1交收依据尚缺"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "history": {
+        "run_id": "fa7e7a58994f455581e0d17b4c286a6f",
+        "task_id": "rules-settlement-rules",
+        "started_at": 1791785770.3540154,
+        "origin": "explicit-rule-collection",
+        "fresh": false,
+        "baseline_revision": 2,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {},
+        "finished_at": 1791785771.3795564,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "collected": 5,
+          "record_name": "条规则参数",
+          "unit_name": "组官方规则",
+          "completed_units": 1,
+          "total_units": 1,
+          "phase": "complete",
+          "batch_id": "969707a290744a43b82359a834ed9d2e",
+          "pages": 1,
+          "contract": 1
+        }
+      }
+    },
+    "rules-lot-rules": {
+      "status": "complete",
+      "source_sql_equal": true,
+      "stored_parameters": 14,
+      "cited_clauses": 6,
+      "digest": "b1ca24f539c6608138ac67a7d131fee406a94a3a55576f293d2d9e45791f8d3c",
+      "effective_start": "2026-07-06",
+      "state": {
+        "digest": "b1ca24f539c6608138ac67a7d131fee406a94a3a55576f293d2d9e45791f8d3c",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "819337fb33764119af5215b32514d9cc",
+          "row_count": 14,
+          "error_text": "",
+          "observed_at": "2026-10-12T06:16:11.392141+00:00"
+        },
+        "row_count": 14,
+        "observed_at": "2026-10-12T06:16:11.392141+00:00"
+      },
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 259200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "科创板200股及上限、北交所100股及上限已保存；当前递增股数仍需明确依据"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "科创板200股及上限、北交所100股及上限已保存；当前递增股数仍需明确依据"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "history": {
+        "run_id": "47b60fa04ded4f51964127be0dc32deb",
+        "task_id": "rules-lot-rules",
+        "started_at": 1791785771.3895895,
+        "origin": "explicit-rule-collection",
+        "fresh": false,
+        "baseline_revision": 2,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {},
+        "finished_at": 1791785772.397434,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "collected": 14,
+          "record_name": "条规则参数",
+          "unit_name": "组官方规则",
+          "completed_units": 1,
+          "total_units": 1,
+          "phase": "complete",
+          "batch_id": "819337fb33764119af5215b32514d9cc",
+          "pages": 1,
+          "contract": 1
+        }
+      }
+    },
+    "rules-tick-rules": {
+      "status": "complete",
+      "source_sql_equal": true,
+      "stored_parameters": 5,
+      "cited_clauses": 3,
+      "digest": "90f37d1b0c5b3e2df40582929165464e1b09c6434a979229a6c5f07db9b0e331",
+      "effective_start": "2026-07-06",
+      "state": {
+        "digest": "90f37d1b0c5b3e2df40582929165464e1b09c6434a979229a6c5f07db9b0e331",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "927663471781454b96f7d0f1a84e5101",
+          "row_count": 5,
+          "error_text": "",
+          "observed_at": "2026-10-12T06:16:12.408637+00:00"
+        },
+        "row_count": 5,
+        "observed_at": "2026-10-12T06:16:12.408637+00:00"
+      },
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 259200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "类型、单位、生效段及关联官方依据完整"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "history": {
+        "run_id": "f873bc043bad4944bd9f884093406064",
+        "task_id": "rules-tick-rules",
+        "started_at": 1791785772.4071348,
+        "origin": "explicit-rule-collection",
+        "fresh": false,
+        "baseline_revision": 2,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {},
+        "finished_at": 1791785773.4156666,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "collected": 5,
+          "record_name": "条规则参数",
+          "unit_name": "组官方规则",
+          "completed_units": 1,
+          "total_units": 1,
+          "phase": "complete",
+          "batch_id": "927663471781454b96f7d0f1a84e5101",
+          "pages": 1,
+          "contract": 1
+        }
+      }
+    },
+    "rules-sessions": {
+      "status": "complete",
+      "source_sql_equal": true,
+      "stored_parameters": 23,
+      "cited_clauses": 5,
+      "digest": "04237892245701246ec7551cafefd8b6b640aedfbc5f3afa5557d10fe3ddc217",
+      "effective_start": "2026-07-06",
+      "state": {
+        "digest": "04237892245701246ec7551cafefd8b6b640aedfbc5f3afa5557d10fe3ddc217",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "271bb87c4d9740cca7e32ff7776f424f",
+          "row_count": 23,
+          "error_text": "",
+          "observed_at": "2026-10-12T06:16:13.429998+00:00"
+        },
+        "row_count": 23,
+        "observed_at": "2026-10-12T06:16:13.429998+00:00"
+      },
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 259200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "类型、单位、生效段及关联官方依据完整"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "history": {
+        "run_id": "98f6ce0835014a2c94b31f3ed3193a35",
+        "task_id": "rules-sessions",
+        "started_at": 1791785773.428473,
+        "origin": "explicit-rule-collection",
+        "fresh": false,
+        "baseline_revision": 2,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {},
+        "finished_at": 1791785774.4400325,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "collected": 23,
+          "record_name": "条规则参数",
+          "unit_name": "组官方规则",
+          "completed_units": 1,
+          "total_units": 1,
+          "phase": "complete",
+          "batch_id": "271bb87c4d9740cca7e32ff7776f424f",
+          "pages": 1,
+          "contract": 1
+        }
+      }
+    },
+    "rules-stamp-duty": {
+      "status": "complete",
+      "source_sql_equal": true,
+      "stored_parameters": 4,
+      "cited_clauses": 4,
+      "digest": "6124b54785a4f603205f7fd6a2a24cf0d8ead4bec0fe6438d1b8bc574836f733",
+      "effective_start": "2022-07-01",
+      "state": {
+        "digest": "6124b54785a4f603205f7fd6a2a24cf0d8ead4bec0fe6438d1b8bc574836f733",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "2bceb7f3cbd8422cb5d89b6d7512e9c8",
+          "row_count": 4,
+          "error_text": "",
+          "observed_at": "2026-10-12T02:42:27.994748+00:00"
+        },
+        "row_count": 4,
+        "observed_at": "2026-10-12T02:42:27.994748+00:00"
+      },
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 259200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "类型、单位、生效段及关联官方依据完整"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "印花税从2022-07-01起；法定税率及2023减半政策，非政策目录全集"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "印花税从2022-07-01起；法定税率及2023减半政策，非政策目录全集"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "history": {
+        "run_id": "788c37dd6a86462f8225b09bd92854d1",
+        "task_id": "rules-stamp-duty",
+        "started_at": 1791785774.4511726,
+        "origin": "explicit-rule-collection",
+        "fresh": false,
+        "baseline_revision": 2,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 3
+        },
+        "finished_at": 1791785777.1304228,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "collected": 4,
+          "record_name": "条规则参数",
+          "unit_name": "组官方规则",
+          "completed_units": 1,
+          "total_units": 1,
+          "phase": "complete",
+          "batch_id": "6ed0854e2a5648729fd47e43e865059c",
+          "pages": 1,
+          "contract": 1
+        }
+      }
+    },
+    "rules-transfer-fee": {
+      "status": "complete",
+      "source_sql_equal": true,
+      "stored_parameters": 12,
+      "cited_clauses": 1,
+      "digest": "8075ed513b5d69fbd04cbeb43ce05386568b72789b3982fdc1f00544cf71f5f0",
+      "effective_start": "2022-04-29",
+      "state": {
+        "digest": "8075ed513b5d69fbd04cbeb43ce05386568b72789b3982fdc1f00544cf71f5f0",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "188d3871c2794315aab5d74262633b5d",
+          "row_count": 12,
+          "error_text": "",
+          "observed_at": "2026-10-12T02:42:30.715010+00:00"
+        },
+        "row_count": 12,
+        "observed_at": "2026-10-12T02:42:30.715010+00:00"
+      },
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 259200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "过户费仅保存2022-04-29新华社转述的调整公告；最低收费及2026现行附件尚未核实"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "fail",
+          "measured": "过户费仅保存2022-04-29新华社转述的调整公告；最低收费及2026现行附件尚未核实"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "过户费仅保存2022-04-29新华社转述的调整公告；最低收费及2026现行附件尚未核实"
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "history": {
+        "run_id": "71de1803d7654f698e02e7a75c08b14b",
+        "task_id": "rules-transfer-fee",
+        "started_at": 1791785777.1411228,
+        "origin": "explicit-rule-collection",
+        "fresh": false,
+        "baseline_revision": 2,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 1
+        },
+        "finished_at": 1791785778.4812193,
+        "status": "complete",
+        "error": "",
+        "result": {
+          "collected": 12,
+          "record_name": "条规则参数",
+          "unit_name": "组官方规则",
+          "completed_units": 1,
+          "total_units": 1,
+          "phase": "complete",
+          "batch_id": "b201d536516f4e89b7a7a58d0a1b35e9",
+          "pages": 1,
+          "contract": 1
+        }
+      }
+    }
+  },
+  "pending_stream": 0,
+  "saved_schedules_equal": true
+}

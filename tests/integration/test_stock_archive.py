@@ -109,7 +109,7 @@ async def test_stock_hash_hit_avoids_sql_and_removes_all_pages(stock_database, m
     monkeypatch.setattr(mysql, "read", forbidden)
     await complete()
     assert not calls and await store.client.xlen(store.stream) == 0
-    await archive.fingerprints.invalidate("stocks", query.source)
+    await archive.fingerprints.invalidate("stocks", "current")
     # committed is display progress only; a lost fingerprint must consult SQL.
     monkeypatch.setattr(mysql, "read", type(mysql).read.__get__(mysql))
     await complete()

@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-10-10T23:03:43.798668+08:00",
+  "scope": "all collector task request retry upper limit",
+  "max_request_retries": 100,
+  "existing_and_default_values_preserved": true,
+  "ordinary_attempt_limit": 101,
+  "backoff_seconds": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    30
+  ],
+  "default_total_timeout_at_100": 6000,
+  "explicit_timeout_and_cancellation_preserved": true,
+  "tests": {
+    "passed": 2036,
+    "skipped": 5,
+    "warnings": 2,
+    "source": "build/retry-limit-release.log"
+  },
+  "release_gate_passed": true,
+  "exe_sha256": "70155520bd5011e53c70e38f02043ac2d1021c3b1b7fb83954ca4b3fdd878a7d",
+  "program_and_source_config_preserved": true,
+  "visible_desktop_reopened": true,
+  "desktop_100_input": "offscreen UI save/refresh test passed; native input verification deferred because user was actively operating window",
+  "index_task_observed_running": true,
+  "prior_502_tuning": {
+    "ths_scaling_mode": "fixed",
+    "ths_max_concurrency": 1,
+    "ths_total_interval_ms": 2000,
+    "network_errors_retained": true
+  },
+  "limitations": [
+    "100 is an upper limit, not a guarantee of recovery from source outage",
+    "502 still reacquires proxy without guaranteeing distinct exit IP",
+    "No production data or error samples deleted"
+  ]
+}

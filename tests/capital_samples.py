@@ -1,5 +1,6 @@
 """Synthetic source fixtures, independent of live business records."""
-from empire.plugins.datasets.capital_actions import DIVIDEND_COLUMNS, ISSUE_COLUMNS, RIGHTS_COLUMNS
+from empire.plugins.collectors.tdx_dividend_periods import COLUMNS
+from empire.plugins.datasets.capital_actions import ISSUE_COLUMNS, RIGHTS_COLUMNS
 
 STOCK = dict(market='SH', code='688110', name='测试证券')
 
@@ -26,17 +27,17 @@ def with_issue_detail(rows, body=None):
 
 def source(kind, *, code='688110', amount=6, total=None, rows=None):
     if kind == 'dividends':
-        columns = DIVIDEND_COLUMNS
-        values = ['2025-12-31', None, 4.9, 4.9, amount, '2026-04-20', '2026-06-01',
-                  '2026-06-02', '实施方案', 1.5, 9.3, 7.8, 0.5]
-        metadata = (['page', 'nzt', 'nflag', 'strjzr'], [1, 1, 1, '1'])
+        columns = list(COLUMNS)
+        values = ['source-id', code, '测试证券', 1, 0, 4.9, 4.9, amount, 1.5, 9.3, 7.8, 0.5,
+                  '2026-04-20', '2026-06-01', '2026-06-02', '实施方案']
+        metadata = (['page', 'nzt', 'nflag', 'strjzr'], [1, 0, 0, '2025-12-31'])
     elif kind == 'additional_issues':
-        columns = ISSUE_COLUMNS
+        columns = list(ISSUE_COLUMNS)
         values = [1, code, '测试证券', 6, amount, 100, 106, None, None, 10, 20,
                   None, '2026-01-01', '2026-01-01', '2026-02-01', 1001, '定向增发']
         metadata = (['ntype', 'page', 'cur'], [0, 1, '2026-09-30'])
     else:
-        columns = RIGHTS_COLUMNS
+        columns = list(RIGHTS_COLUMNS)
         values = [1, 3, amount, '2026-01-01', '2026-01-09', '2026-01-02', '2026-01-08',
                   30, 100, 130, '700001', '2026-02-01', code, '测试证券', 20]
         metadata = (['page', 'cur'], [1, '2026-09-30'])
@@ -44,4 +45,4 @@ def source(kind, *, code='688110', amount=6, total=None, rows=None):
     def result(columns, content):
         return dict(Count=len(content), ColName=columns, Content=content)
     return dict(ErrorCode=0, ResultSets=[result(columns, rows), result(metadata[0], [metadata[1]]),
-                result(['count'], [[1 if total is None else total]])])
+                result(['count'], [[len(rows) if total is None else total]])])

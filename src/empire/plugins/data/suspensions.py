@@ -122,6 +122,27 @@ class SuspensionDataPlugin:
                 return state.get('coverage', {})
         return await self.mysql.read(read)
 
+    async def source_month(self, month, market='', code=''):
+        import calendar
+        year, number = map(int, month.split('-'))
+        lower, upper = date(year, number, 1), date(year, number, calendar.monthrange(year, number)[1])
+        if market not in ('', 'SH', 'SZ') or code and (not code.isascii() or not code.isdigit() or len(code) > 6):
+            raise ValueError('来源月历证券条件无效')
+        def read():
+            with self.mysql.read_engine.begin() as conn:
+                state = read_state(conn, self.namespace, self.project_id, self.source)
+                clauses = ['source_date BETWEEN :lower AND :upper']
+                if market:
+                    clauses.append('RIGHT(unified_code,2)=:market')
+                if code:
+                    clauses.append('unified_code LIKE :code')
+                counts = conn.execute(text('SELECT source_date,COUNT(*) AS count FROM suspension_source_date WHERE '
+                    + ' AND '.join(clauses) + ' GROUP BY source_date ORDER BY source_date LIMIT 31'),
+                    dict(lower=lower, upper=upper, market=market, code=code+'%')).mappings()
+                return dict(month=month, counts={r['source_date'].isoformat(): r['count'] for r in counts},
+                            coverage=state.get('coverage', {}))
+        return await self.mysql.read(read)
+
     async def preparation_check(self):
         from empire.plugins.data.preparation_checks import check_suspensions
         return await self.mysql.read(check_suspensions, self)

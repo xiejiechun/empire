@@ -19,11 +19,14 @@ pytestmark = [pytest.mark.integration, pytest.mark.skipif(
 
 
 @pytest.mark.parametrize('family', FAMILIES)
-async def test_out_of_order_source_to_real_archive_and_formal_query(family):
+async def test_out_of_order_source_to_real_archive_and_formal_query(family, monkeypatch):
     cfg = load_config()
     assert cfg['redis']['namespace'].startswith('empire:test:')
     manager = build_manager(cfg)
     c, reply = adapter(family)
+    if family == 'dividends':
+        monkeypatch.setattr('empire.plugins.collectors.tdx_dividend_periods.report_periods',
+            AsyncMock(return_value=['2025-06-30', '2025-09-30', '2025-12-31']))
     if family == 'suspensions':
         # Its actual archive contract starts a new coverage proof at FIRST_DATE.
         c.query.plan.return_value.update(start_date='2004-12-27', end_date='2004-12-29')

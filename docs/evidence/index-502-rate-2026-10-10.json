@@ -1,0 +1,1169 @@
+{
+  "checked_at": "2026-10-10T21:47:03.033327+08:00",
+  "policy": {
+    "name": "ths",
+    "min_interval_ms": 2000,
+    "proxy_interval_ms": 500,
+    "total_interval_ms": 500,
+    "max_concurrency": 0,
+    "scaling_mode": "auto",
+    "max_rps": 0
+  },
+  "routing": {
+    "use_proxy": true,
+    "proxy_fallback": true,
+    "network": {
+      "proxy_requests": 43
+    }
+  },
+  "method": "Same v4/1B0009/2020 URL and headers, 8 serial requests spaced 5s after completion, 24 requests with up to 8 workers under saved shared limits, 8 serial requests again; 2022 control once per phase; no status retries",
+  "peak_inflight": 6,
+  "other_ths_active_before": [],
+  "other_ths_active_after": [],
+  "summary": {
+    "slow_before": {
+      "attempts": 8,
+      "statuses": {
+        "200": 8
+      },
+      "median_start_gap": 5.64,
+      "min_start_gap": 5.344,
+      "dispatch_rps": 0.174,
+      "median_duration": 0.578,
+      "by_exit": {
+        "egress-1": {
+          "statuses": {
+            "200": 2
+          },
+          "min_start_gap": 40.14
+        },
+        "egress-2": {
+          "statuses": {
+            "200": 1
+          },
+          "min_start_gap": null
+        },
+        "egress-3": {
+          "statuses": {
+            "200": 1
+          },
+          "min_start_gap": null
+        },
+        "egress-4": {
+          "statuses": {
+            "200": 1
+          },
+          "min_start_gap": null
+        },
+        "egress-5": {
+          "statuses": {
+            "200": 1
+          },
+          "min_start_gap": null
+        },
+        "egress-6": {
+          "statuses": {
+            "200": 1
+          },
+          "min_start_gap": null
+        },
+        "egress-7": {
+          "statuses": {
+            "200": 1
+          },
+          "min_start_gap": null
+        }
+      }
+    },
+    "parallel": {
+      "attempts": 24,
+      "statuses": {
+        "200": 24
+      },
+      "median_start_gap": 0.032,
+      "min_start_gap": 0.0,
+      "dispatch_rps": 13.506,
+      "median_duration": 0.093,
+      "by_exit": {
+        "egress-1": {
+          "statuses": {
+            "200": 4
+          },
+          "min_start_gap": 0.5
+        },
+        "egress-2": {
+          "statuses": {
+            "200": 4
+          },
+          "min_start_gap": 0.5
+        },
+        "egress-3": {
+          "statuses": {
+            "200": 3
+          },
+          "min_start_gap": 0.516
+        },
+        "egress-4": {
+          "statuses": {
+            "200": 3
+          },
+          "min_start_gap": 0.516
+        },
+        "egress-5": {
+          "statuses": {
+            "200": 3
+          },
+          "min_start_gap": 0.515
+        },
+        "egress-6": {
+          "statuses": {
+            "200": 4
+          },
+          "min_start_gap": 0.515
+        },
+        "egress-7": {
+          "statuses": {
+            "200": 3
+          },
+          "min_start_gap": 0.515
+        }
+      }
+    },
+    "slow_after": {
+      "attempts": 8,
+      "statuses": {
+        "200": 8
+      },
+      "median_start_gap": 5.547,
+      "min_start_gap": 5.172,
+      "dispatch_rps": 0.174,
+      "median_duration": 0.649,
+      "by_exit": {
+        "egress-3": {
+          "statuses": {
+            "200": 2
+          },
+          "min_start_gap": 29.0
+        },
+        "egress-4": {
+          "statuses": {
+            "200": 2
+          },
+          "min_start_gap": 29.61
+        },
+        "egress-5": {
+          "statuses": {
+            "200": 2
+          },
+          "min_start_gap": 29.61
+        },
+        "egress-6": {
+          "statuses": {
+            "200": 1
+          },
+          "min_start_gap": null
+        },
+        "egress-7": {
+          "statuses": {
+            "200": 1
+          },
+          "min_start_gap": null
+        }
+      }
+    }
+  },
+  "calls": [
+    {
+      "phase": "slow_before",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_before",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_before",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_before",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_before",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_before",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_before",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_before",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_before",
+      "year": "2022",
+      "status": 200,
+      "valid": true,
+      "rows": 242,
+      "content_hash": "27f790d06aeaa37806ca25bbc58e1b053d9d975a2d5140261a3a7d6060b5af9d"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "parallel",
+      "year": "2022",
+      "status": 200,
+      "valid": true,
+      "rows": 242,
+      "content_hash": "27f790d06aeaa37806ca25bbc58e1b053d9d975a2d5140261a3a7d6060b5af9d"
+    },
+    {
+      "phase": "slow_after",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_after",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_after",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_after",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_after",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_after",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_after",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_after",
+      "year": "2020",
+      "status": 200,
+      "valid": true,
+      "rows": 243,
+      "content_hash": "50e78c54f23216e5e6f028ce5d93e8f45e39004f172896934bd0b32a5b10509e"
+    },
+    {
+      "phase": "slow_after",
+      "year": "2022",
+      "status": 200,
+      "valid": true,
+      "rows": 242,
+      "content_hash": "27f790d06aeaa37806ca25bbc58e1b053d9d975a2d5140261a3a7d6060b5af9d"
+    }
+  ],
+  "attempts": [
+    {
+      "phase": "slow_before",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 0.407,
+      "started_at": "2026-10-10T21:45:38.402230+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.453
+    },
+    {
+      "phase": "slow_before",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 5.875,
+      "started_at": "2026-10-10T21:45:43.873283+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.328
+    },
+    {
+      "phase": "slow_before",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 11.219,
+      "started_at": "2026-10-10T21:45:49.218325+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 1.094
+    },
+    {
+      "phase": "slow_before",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 17.344,
+      "started_at": "2026-10-10T21:45:55.347198+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.953
+    },
+    {
+      "phase": "slow_before",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 23.313,
+      "started_at": "2026-10-10T21:46:01.320101+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.609
+    },
+    {
+      "phase": "slow_before",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-6",
+      "proxy": true,
+      "start": 28.953,
+      "started_at": "2026-10-10T21:46:06.946544+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.547
+    },
+    {
+      "phase": "slow_before",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-7",
+      "proxy": true,
+      "start": 34.516,
+      "started_at": "2026-10-10T21:46:12.520396+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 1.016
+    },
+    {
+      "phase": "slow_before",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 40.547,
+      "started_at": "2026-10-10T21:46:18.550274+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.391
+    },
+    {
+      "phase": "slow_before",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2022.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 40.953,
+      "started_at": "2026-10-10T21:46:18.952318+08:00",
+      "status": 200,
+      "bytes": 17515,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.329
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 41.297,
+      "started_at": "2026-10-10T21:46:19.296757+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.985
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 41.297,
+      "started_at": "2026-10-10T21:46:19.299170+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 1.0
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 41.297,
+      "started_at": "2026-10-10T21:46:19.299170+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.844
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-6",
+      "proxy": true,
+      "start": 41.297,
+      "started_at": "2026-10-10T21:46:19.301160+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.641
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-7",
+      "proxy": true,
+      "start": 41.297,
+      "started_at": "2026-10-10T21:46:19.301160+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.735
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 41.297,
+      "started_at": "2026-10-10T21:46:19.302408+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.063
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 41.469,
+      "started_at": "2026-10-10T21:46:19.463489+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.047
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 41.813,
+      "started_at": "2026-10-10T21:46:19.806699+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.062
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-6",
+      "proxy": true,
+      "start": 41.938,
+      "started_at": "2026-10-10T21:46:19.943954+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.078
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 41.969,
+      "started_at": "2026-10-10T21:46:19.974207+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.063
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-7",
+      "proxy": true,
+      "start": 42.032,
+      "started_at": "2026-10-10T21:46:20.039675+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.109
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 42.141,
+      "started_at": "2026-10-10T21:46:20.143470+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.078
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 42.297,
+      "started_at": "2026-10-10T21:46:20.297179+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.25
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 42.313,
+      "started_at": "2026-10-10T21:46:20.312255+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.109
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 42.313,
+      "started_at": "2026-10-10T21:46:20.312255+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.062
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-6",
+      "proxy": true,
+      "start": 42.453,
+      "started_at": "2026-10-10T21:46:20.453921+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.063
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 42.485,
+      "started_at": "2026-10-10T21:46:20.484879+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.047
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-7",
+      "proxy": true,
+      "start": 42.547,
+      "started_at": "2026-10-10T21:46:20.541775+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.641
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 42.657,
+      "started_at": "2026-10-10T21:46:20.656552+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.234
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 42.813,
+      "started_at": "2026-10-10T21:46:20.812709+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.187
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 42.813,
+      "started_at": "2026-10-10T21:46:20.812709+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.062
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 42.828,
+      "started_at": "2026-10-10T21:46:20.827513+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.11
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-6",
+      "proxy": true,
+      "start": 42.969,
+      "started_at": "2026-10-10T21:46:20.963124+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.063
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-2",
+      "proxy": true,
+      "start": 43.0,
+      "started_at": "2026-10-10T21:46:20.998781+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.047
+    },
+    {
+      "phase": "parallel",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2022.js",
+      "egress": "egress-7",
+      "proxy": true,
+      "start": 43.188,
+      "started_at": "2026-10-10T21:46:21.192780+08:00",
+      "status": 200,
+      "bytes": 17515,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.14
+    },
+    {
+      "phase": "slow_after",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 43.328,
+      "started_at": "2026-10-10T21:46:21.333078+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.157
+    },
+    {
+      "phase": "slow_after",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 48.5,
+      "started_at": "2026-10-10T21:46:26.508840+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.532
+    },
+    {
+      "phase": "slow_after",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 54.047,
+      "started_at": "2026-10-10T21:46:32.049574+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 1.391
+    },
+    {
+      "phase": "slow_after",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-6",
+      "proxy": true,
+      "start": 60.453,
+      "started_at": "2026-10-10T21:46:38.449337+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.485
+    },
+    {
+      "phase": "slow_after",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-7",
+      "proxy": true,
+      "start": 65.953,
+      "started_at": "2026-10-10T21:46:43.948217+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 1.36
+    },
+    {
+      "phase": "slow_after",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-3",
+      "proxy": true,
+      "start": 72.328,
+      "started_at": "2026-10-10T21:46:50.333422+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.766
+    },
+    {
+      "phase": "slow_after",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-4",
+      "proxy": true,
+      "start": 78.11,
+      "started_at": "2026-10-10T21:46:56.113334+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.531
+    },
+    {
+      "phase": "slow_after",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2020.js",
+      "egress": "egress-5",
+      "proxy": true,
+      "start": 83.657,
+      "started_at": "2026-10-10T21:47:01.653228+08:00",
+      "status": 200,
+      "bytes": 17590,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.984
+    },
+    {
+      "phase": "slow_after",
+      "url": "https://d.10jqka.com.cn/v4/line/zs_1B0009/01/2022.js",
+      "egress": "egress-1",
+      "proxy": true,
+      "start": 84.657,
+      "started_at": "2026-10-10T21:47:02.652271+08:00",
+      "status": 200,
+      "bytes": 17515,
+      "server": "openresty",
+      "via": null,
+      "cache": null,
+      "retry_after": null,
+      "duration": 0.375
+    }
+  ],
+  "limitations": "Finite current snapshot; rotated egresses shown separately; application configured rate limits preserved; repeated exact URLs may use source caches; cannot reconstruct past source state"
+}

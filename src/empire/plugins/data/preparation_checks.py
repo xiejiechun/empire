@@ -1,4 +1,4 @@
-"""Read-only business audits for the three current data query plugins.
+"""Read-only business audits for stock, calendar, and suspension preparation.
 
 SQL remains in the data layer. These checks never change archive/fingerprint state.
 """
@@ -12,6 +12,7 @@ from empire.contracts.preparation import CheckEvidence
 from empire.contracts.stocks import normalize_sina_stock
 from empire.core.time import CHINA
 from empire.plugins.data.trading_day_cutoff import coverage_as_of, read_trade_day_cutoff
+from empire.plugins.datasets.stocks import current_directory
 from empire.plugins.datasets.suspensions import FIRST_DATE as SUSPENSION_FIRST_DATE
 from empire.plugins.datasets.trade_calendar import FIRST_DATE, month_dates, months_between
 from empire.plugins.infra.collection_state import read_state
@@ -72,7 +73,8 @@ def audit_stocks(rows, state, now):
 
 def check_stocks(plugin):
     with plugin.mysql.read_engine.connect() as conn:
-        state = read_state(conn, plugin.namespace, plugin.project_id, plugin.source)
+        state = (current_directory(conn, plugin.namespace) if plugin.project_id == 'current'
+                 else read_state(conn, plugin.namespace, plugin.project_id, plugin.source))
         rows = conn.execute(text('''SELECT LEFT(unified_code,6) AS code,name,unified_code,RIGHT(unified_code,2) AS market,
             CONCAT(LOWER(RIGHT(unified_code,2)),LEFT(unified_code,6)) AS source_symbol
             FROM stock LIMIT 100001'''), {'source': plugin.source}).mappings().all()
@@ -163,37 +165,4 @@ def check_suspensions(plugin):
         stamp,
         evidence('temporal', total > 0 and not bad,
                  '按停牌和复牌生效时间保存；用于日频成交约束，不将原因文字作为事前信号'),
-    )
-
-
-def check_news(plugin):
-    now = datetime.now(CHINA)
-    with plugin.mysql.read_engine.connect() as conn:
-        row = conn.execute(text('''SELECT COUNT(*) AS total, COUNT(DISTINCT news_id) AS ids,
-            MIN(published_at) AS earliest, MAX(published_at) AS latest,
-            SUM(news_id<=0 OR TRIM(title)='' OR TRIM(content)='' OR is_important NOT IN (0,1)
-                OR JSON_TYPE(tags)<>'ARRAY') AS bad,
-            SUM(published_at>source_updated_at OR first_seen_at>version_observed_at
-                OR source_updated_at>:latest_allowed OR version_observed_at>:latest_allowed) AS bad_time
-            FROM finance_news WHERE source=:source'''), {'source': plugin.source,
-                'latest_allowed': (now + timedelta(minutes=5)).replace(tzinfo=None)}).mappings().one()
-        state = read_state(conn, plugin.namespace, plugin.project_id, plugin.source)
-    total = row['total']
-    latest = row['latest'].replace(tzinfo=CHINA) if row['latest'] else None
-    now = datetime.now(CHINA)
-    timely = latest is not None and -timedelta(minutes=5) <= now - latest <= timedelta(minutes=30)
-    return (
-        evidence('fields', total > 0 and not row['bad'],
-                 f'已存 {total} 条新闻；标题、正文、编号和分类异常 {row["bad"] or 0} 条；只检查新闻本身'),
-        evidence('keys', total > 0 and total == row['ids'], f'{total} 行，唯一新闻 ID {row["ids"]}；仅最新版本键'),
-        evidence('coverage', total > 0 and state.get('progress', {}).get('status') == 'complete',
-                 f'已积累范围 {row["earliest"]} ～ {row["latest"]}；'
-                 f'最近保存确认：{state.get("progress", {}).get("status", "缺少")}；'
-                 '只证明本项目已有校验后保存的新闻页，不证明以前的新闻已全部补齐'),
-        evidence('quality', total > 0 and not row['bad'] and not row['bad_time'],
-                 f'空正文/标题/非法分类标记 {row["bad"] or 0}；时间顺序异常 {row["bad_time"] or 0}；全量 SQL 聚合核验'),
-        evidence('freshness', timely, f'最新消息 {latest}；超过 30 分钟或未来超前则不满足时效；需核实源端是否停更'),
-        evidence('temporal', total > 0 and not row['bad_time'],
-                 f'发布时间、当前来源修改时间和观察时间异常 {row["bad_time"] or 0} 条；'
-                 '保存当前版本。修改前的旧正文由独立项目负责，本项不宣称能还原历史内容'),
     )

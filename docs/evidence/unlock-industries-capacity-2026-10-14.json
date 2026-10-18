@@ -1,0 +1,60 @@
+{
+  "checked_at": "2026-10-14T05:56:58.197197+00:00",
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 12000,
+    "months": 120,
+    "cache": "six reads including first; maximum reported",
+    "isolation": "owned UUID database independent service"
+  },
+  "reviewed_tradeoffs": "Typed monthly current rows; old directory months retained; no daily snapshot history; bounded month transactions.",
+  "measurements": {
+    "page_ms": 5.132699967361987,
+    "industry_ms": 3.730099997483194,
+    "month_ms": 3.015700029209256,
+    "allocated_bytes": 2916352,
+    "import_seconds": 0.4778053000336513,
+    "repeat_seconds": 0.003841600031591952,
+    "revision_seconds": 0.00580789998639375,
+    "message_bytes": 25163
+  },
+  "limits": {
+    "page_ms": 100,
+    "industry_ms": 100,
+    "month_ms": 100,
+    "allocated_bytes": 67108864,
+    "import_seconds": 60,
+    "repeat_seconds": 5,
+    "revision_seconds": 5,
+    "message_bytes": 524288
+  },
+  "explains": [
+    {
+      "id": 1,
+      "select_type": "SIMPLE",
+      "table": "restricted_share_unlock_industry",
+      "partitions": null,
+      "type": "ref",
+      "possible_keys": "ix_industry_month",
+      "key": "ix_industry_month",
+      "key_len": "802",
+      "ref": "const",
+      "rows": 120,
+      "filtered": 100.0,
+      "Extra": "Backward index scan"
+    }
+  ],
+  "ddl_scopes": {
+    "restricted_share_unlock_industry": "2127a920ec9010371806f29f41080e0c3cf9afc5f90cbae9f0a24902cacd82ae"
+  },
+  "bindings": {
+    "src/empire/contracts/unlock_industries.py": "b08f2eab755f32895ac1f4681c743b94b9e5706faa5b26c0b239d6e8ec6f06b7",
+    "src/empire/plugins/collectors/tdx_unlock_industry_source.py": "d17115e4bcc084670211b520d28b2f3c4faff00b4e43ca6cac4252565d1bee94",
+    "src/empire/plugins/collectors/tdx_unlock_industries.py": "e21ac4104d83dca31485b5c792bb8437ff512a7f6c6d59bef4e109c305e888ea",
+    "src/empire/plugins/datasets/unlock_industries.py": "c8c171ea32e3bae65c727bdedf85b839179f6c1df0a217dd031f20efcd8c2f6b",
+    "src/empire/plugins/data/unlock_industries.py": "c168ce72ad0d174af49af6991f4231aae92c3569713a386a911828231ea74c24",
+    "scripts/measure_unlock_industries.py": "ce57baf5d60a77b993a28c8de6739a5d4f10a05a0dad30b5e857236a6f40d423"
+  },
+  "passed": true
+}

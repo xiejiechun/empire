@@ -27,11 +27,12 @@ def test_lazy_query_preserves_new_drafts_and_all_same_minute_points():
     try:
         page.show()
         app.processEvents()
+        page.code.setText('000001')
         page.find()
         page.tick()
         assert len(pending) == 1
         page.code.setText('600519')
-        pending[0][1].set_result(dict(points=business_row('auction')['data']['bid'], total=5, start=0, next_cursor=None))
+        pending[0][1].set_result(dict(data=business_row('auction'), observed_at=None))
         page.tick()
         assert page.code.text() == '600519'
         assert page.table.rowCount() == 5

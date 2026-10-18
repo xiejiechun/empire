@@ -47,10 +47,12 @@ class IndustryDataPlugin:
             return (read_snapshot(conn, self.source),
                     read_state(conn, self.namespace, PROJECT, self.source))
 
-    async def list_members(self, search='', offset=0, limit=200):
+    async def list_members(self, search='', offset=0, limit=200, industry=''):
         if (not isinstance(search, str) or len(search) > 100 or type(offset) is not int
                 or not 0 <= offset <= 15000 or type(limit) is not int or not 1 <= limit <= 500):
             raise ValueError('行业查询范围无效')
+        if industry and (not industry.isascii() or not industry.isdigit() or len(industry) != 6):
+            raise ValueError('行业身份无效')
         def read():
             with self.mysql.read_engine.begin() as conn:
                 state = read_state(conn, self.namespace, PROJECT, self.source)
@@ -58,12 +60,32 @@ class IndustryDataPlugin:
                 params = dict(source=self.source, search=pattern, offset=offset, limit=limit)
                 where = ('(i.name LIKE :search OR m.name LIKE :search '
                          'OR CONVERT(m.unified_code USING utf8mb4) LIKE :search OR i.industry_code LIKE :search)')
+                if industry:
+                    where += ' AND i.industry_code=:industry'
+                    params['industry'] = industry
                 join = 'industry_member m JOIN industry i ON i.industry_code=m.industry_code'
                 total = conn.execute(text(f'SELECT COUNT(*) FROM {join} WHERE {where}'), params).scalar_one()
                 rows = conn.execute(text(f'SELECT i.industry_code,i.name AS industry_name,RIGHT(m.unified_code,2) AS market,LEFT(m.unified_code,6) AS code,m.name '
                     f'FROM {join} WHERE {where} ORDER BY i.industry_code,m.unified_code LIMIT :limit OFFSET :offset'), params).mappings()
                 return dict(rows=[dict(r) for r in rows], total=total, offset=offset, limit=limit,
                             industry_count=state.get('industry_count', 0), publication=state.get('publication'))
+        return await self.mysql.read(read)
+
+    async def directory(self, search='', after='', limit=200):
+        if not isinstance(search, str) or len(search) > 100 or type(limit) is not int or not 1 <= limit <= 200:
+            raise ValueError('行业目录查询范围无效')
+        pattern = '%' + search.strip().replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_') + '%'
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                result = conn.execute(text('SELECT i.industry_code,i.name, '
+                    '(SELECT COUNT(*) FROM industry_member m WHERE m.industry_code=i.industry_code) AS member_count '
+                    'FROM industry i WHERE i.industry_code>:after AND '
+                    '(i.name LIKE :search OR i.industry_code LIKE :search OR EXISTS '
+                    '(SELECT 1 FROM industry_member m WHERE m.industry_code=i.industry_code AND '
+                    '(m.name LIKE :search OR CONVERT(m.unified_code USING utf8mb4) LIKE :search))) '
+                    'ORDER BY i.industry_code LIMIT :limit'), dict(after=after, search=pattern, limit=limit+1)).mappings().all()
+                records = [dict(r) for r in result[:limit]]
+                return dict(rows=records, next=records[-1]['industry_code'] if len(result) > limit else None)
         return await self.mysql.read(read)
 
     async def preparation_check(self, request=None):

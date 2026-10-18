@@ -52,7 +52,8 @@ async def test_replan_retains_old_queue_and_confirms_only_new_complete_scope(cap
     if query.kind == 'additional_issues':
         with_issue_detail(expected, revised)
     assert await query.list_events() == expected
-    assert all(check.status == 'pass' for check in await query.preparation_check())
+    checks = await query.preparation_check()
+    assert all(check.status == 'pass' for check in checks), checks
     assert await store.client.xlen(store.stream) == 0
 
 
@@ -154,8 +155,8 @@ async def test_forced_round_reuses_verified_unavailable_and_refreshes_next_round
 
 async def test_independent_security_archives_before_failed_frontier_is_repaired(capital_db, monkeypatch):
     manager, query, collector, _ = capital_db
-    if query.kind == 'rights_issues':
-        return  # There is no per-security source request in the rights collector.
+    if query.kind != 'additional_issues':
+        return  # Dividend period failures reject the full unassembled security scope.
     stocks = [STOCK, {**STOCK, 'code': '688111'}]
     monkeypatch.setattr(query, '_securities', lambda conn: stocks)
     body = source(query.kind)
@@ -208,11 +209,13 @@ async def capital_db(request, monkeypatch):
         await manager.start('collector.tdx_' + kind)
         mysql, store = manager.registry.get('mysql.store'), manager.registry.get('redis.store')
         monkeypatch.setattr(query, '_securities', lambda conn: [STOCK])
+        monkeypatch.setattr(query, 'dividend_history_proofs', AsyncMock(return_value={
+            'SH:688110': '2026-01-01T00:00:00+00:00'}))
         collector.http = prefetch_http(request=AsyncMock(side_effect=lambda *a, **k:
             httpx.Response(200, json=issue_detail() if a[1].endswith('tdxsj_xgzx_zfmx') else source(kind))),
             response_policy=lambda profile: profile)
         async def publish(body=None, observed=None):
-            rows, _ = parse(kind, body or source(kind), 10000, STOCK if kind == 'dividends' else None)
+            rows, _ = parse(kind, body or source(kind), 10000, '2025-12-31' if kind == 'dividends' else None)
             if kind == 'additional_issues':
                 with_issue_detail(rows, body)
             state = await collector.ingest.checkpoint(collector.job_key)
@@ -375,6 +378,7 @@ async def test_parallel_same_date_dividends_survive_full_pipeline(capital_db):
     body = source('dividends', amount=8)
     body['ResultSets'][0]['Content'].append(source('dividends', amount=5)['ResultSets'][0]['Content'][0])
     body['ResultSets'][0]['Count'] = 2
+    body['ResultSets'][2]['Content'] = [[2]]
     collector.http.request.side_effect = lambda *a, **k: httpx.Response(200, json=body)
     result = await collector.execute()
     assert result['collected'] == 2
@@ -407,10 +411,47 @@ async def test_dividend_identity_migration_retains_business_and_observations(cap
     assert (await query.list_events())[0] == original
     with mysql.engine.connect() as conn:
         after = read_state(conn, query.namespace, query.project_id, query.source)
-    assert after['contract_version'] == 2 and 'manifest' not in after and 'progress' not in after
+    assert after['contract_version'] == 3 and 'manifest' not in after and 'progress' not in after
     assert after['units']['SH:688110']['observed_at'] == before['units']['SH:688110']['observed_at']
     with pytest.raises(ValueError, match='显式维护'):
         await query.mysql.read(query._require_dividend_identity)
+
+
+async def test_dividend_discovery_proof_is_persisted_and_invalid_stamp_requires_discovery(capital_db):
+    manager, query, collector, _ = capital_db
+    if query.kind != 'dividends':
+        return
+    from empire.plugins.data.capital_actions import CapitalDataPlugin
+    from empire.plugins.infra.collection_state import read_state, save_state
+    await collector.execute()
+    mysql = manager.registry.get('mysql.store')
+    assert 'SH:688110' in await CapitalDataPlugin.dividend_history_proofs(query)
+    with mysql.engine.begin() as conn:
+        previous = read_state(conn, query.namespace, query.project_id, query.source, lock=True)
+        revised = copy.deepcopy(previous)
+        revised['units']['SH:688110']['history_discovered_at'] = '2099-01-01T00:00:00+00:00'
+        save_state(conn, query.namespace, query.project_id, query.source, query.kind + '.unit', revised, previous)
+    assert await CapitalDataPlugin.dividend_history_proofs(query) == {}
+
+
+async def test_dividend_identity_collision_rolls_back_without_merging(capital_db):
+    manager, query, collector, publish = capital_db
+    if query.kind != 'dividends':
+        return
+    from scripts.migrate_dividend_identity import migrate_rows
+    await publish()
+    mysql, archive = manager.registry.get('mysql.store'), manager.registry.get('archive.worker')
+    async with archive.lock:
+        with mysql.engine.begin() as conn:
+            conn.execute(text("INSERT INTO dividend_plan "
+                "(record_key,unified_code,name,event_date,payload,content_hash,version_observed_at) "
+                "SELECT :key,unified_code,name,event_date,"
+                "JSON_SET(payload,'$.bonus_per_share',NULL),content_hash,version_observed_at FROM dividend_plan"),
+                {'key': 'f' * 64})
+        before = await query.list_events()
+        with pytest.raises(ValueError, match='重复业务键'):
+            migrate_rows(mysql.engine, query.namespace, query.source)
+        assert await query.list_events() == before
 
 
 async def test_issue_detail_backfill_migration_and_detail_only_revision(capital_db):

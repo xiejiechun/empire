@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
 )
 
 from empire.core.redaction import redact
+from empire.plugins.ui.log_clear import LogClearBar
 from empire.plugins.ui.record_detail import record_detail
 from empire.plugins.ui.record_table import render_records
 
@@ -95,12 +96,16 @@ class RecordsPage(QWidget):
             actions.addWidget(self.clear_button)
             actions.addStretch()
             layout.addLayout(actions)
-            layout.addWidget(hint("清理前请筛选具体项目并选择已修复记录；全部项目视图仅供查看，不批量清空。"))
+            layout.addWidget(hint("精确清理请筛选具体项目并选择已修复记录；重新观察可使用下方清空日志。"))
         else:
             self.verified.hide()
             self.clear_button.hide()
         self.feedback = hint()
         layout.addWidget(self.feedback)
+        self.log_clear = LogClearBar(shell, self.project,
+            '错误记录' if kind == 'errors' else '归档记录', 'collection.records', 'clear_logs',
+            lambda project: (self.kind, project), self.project_changed, lambda: bool(self.clear_action))
+        layout.addWidget(self.log_clear)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
         self.timer.start(1500)
@@ -308,12 +313,13 @@ class RecordsPage(QWidget):
         self.clear_button.setEnabled(bool(self.kind == "errors" and self.selection
                                           and self.project.currentData() != "*"
                                           and self.verified.isChecked() and not self.clear_action
+                                          and not (getattr(self, 'log_clear', None) and self.log_clear.future)
                                           and not getattr(self.shell, "shutting_down", False)))
 
     def clear_selected(self):
         ids = sorted(self.selected_ids())
         if (self.project.currentData() == "*" or not ids or not self.verified.isChecked()
-                or self.clear_action or getattr(self.shell, "shutting_down", False)):
+                or self.clear_action or self.log_clear.future or getattr(self.shell, "shutting_down", False)):
             return
         ident = self.project.currentData()
         try:

@@ -1,0 +1,136 @@
+{
+  "checked_at": "2026-10-17T17:34:37.240390+00:00",
+  "packaged_doctor": {
+    "exit_code": 0,
+    "working_directory": "D:/",
+    "executable": "D:/project/empire/dist/Empire/Empire.exe",
+    "default_config": "program-directory/config.toml",
+    "stdout_note": "Windowed executable has no console output"
+  },
+  "details_from_frozen_source_same_program_config": {
+    "redis": {
+      "connected": true,
+      "version": "8.6.3",
+      "aof_enabled": 0,
+      "maxmemory_policy": "noeviction",
+      "used_memory": 29335466,
+      "maxmemory": 68719476736,
+      "required_commands": true,
+      "namespace": "empire:dev"
+    },
+    "mysql": {
+      "connected": true,
+      "version": "8.4.9",
+      "database": "empire",
+      "port": 3307,
+      "tables": [
+        "additional_issue",
+        "app_setting",
+        "balance_statement",
+        "capital_encumbrance",
+        "capital_equity_position",
+        "capital_equity_summary",
+        "capital_funding",
+        "capital_ipo",
+        "capital_project",
+        "capital_release",
+        "capital_transaction",
+        "cashflow_statement",
+        "collection_state",
+        "dividend_plan",
+        "earnings_disclosure",
+        "earnings_forecast",
+        "earnings_quick",
+        "earnings_report",
+        "finance_news",
+        "holder_member",
+        "holder_report",
+        "income_statement",
+        "index_daily_price",
+        "index_price_year",
+        "industry",
+        "industry_member",
+        "restricted_share_unlock",
+        "restricted_share_unlock_detail",
+        "restricted_share_unlock_industry",
+        "rights_issue",
+        "router_device",
+        "router_proxy_auth",
+        "router_runtime_config",
+        "router_schema_version",
+        "security_code_alias",
+        "security_listing_event",
+        "security_name_change",
+        "security_st_event",
+        "shareholder_change",
+        "shareholder_count",
+        "stock",
+        "stock_daily_quote",
+        "stock_daily_quote_level",
+        "stock_index",
+        "stock_index_member",
+        "stock_intraday_trade_block",
+        "stock_intraday_trend",
+        "stock_large_order_trend",
+        "stock_listing",
+        "stock_market_day",
+        "stock_minute_entrust",
+        "stock_minute_volume",
+        "stock_opening_auction",
+        "stock_repurchase_plan",
+        "suspension_event",
+        "suspension_source_date",
+        "trade_calendar",
+        "trading_rule_citation",
+        "trading_rule_value"
+      ]
+    }
+  },
+  "required_table_count": 55,
+  "actual_table_count": 59,
+  "missing_required_tables": [],
+  "desktop": {
+    "executable": "D:/project/empire/dist/Empire/Empire.exe",
+    "visible": true,
+    "connected_indicator": true,
+    "observed_bond_query": {
+      "code": "300398",
+      "reports": 3,
+      "instrument": "飞凯转债",
+      "report_dates": [
+        "2024-12-31",
+        "2024-06-30",
+        "2023-12-31"
+      ]
+    },
+    "preparation_ui": "verified completed on visible packaged desktop",
+    "preparation_601139": {
+      "purpose": "analysis",
+      "top_holders": "coverage pass; usable with limitations; development passed",
+      "float_holders": "coverage pass; usable with limitations; development passed",
+      "bond_holders": "coverage pass; usable with limitations; development passed"
+    },
+    "preparation_300398": {
+      "purpose": "analysis",
+      "all_scope_checks_finished": true,
+      "checked_at_local": "2026-10-18 01:40:35",
+      "top_holders": {
+        "coverage": "pass",
+        "usability": "usable with limitations",
+        "development": "pass"
+      },
+      "float_holders": {
+        "coverage": "pass",
+        "usability": "usable with limitations",
+        "development": "pass"
+      },
+      "bond_holders": {
+        "coverage": "source gap",
+        "usability": "unavailable",
+        "development": "pass",
+        "message": "债券名称为空，未识别报告保留来源缺口：2023-12-31（b0her_1）"
+      }
+    },
+    "left_open": true
+  }
+}

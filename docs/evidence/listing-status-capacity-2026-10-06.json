@@ -2,7 +2,7 @@
   "bindings": {
     "src/empire/contracts/listing_status.py": "e616ef13163210b3775dad72373df25446c9d1db0395ac4a5da90d6d2c929d21",
     "src/empire/plugins/datasets/listing_status.py": "8c589faf578c281f80388d315ac7faecb0347c0c7d2441638c682155ab037550",
-    "src/empire/plugins/data/listing_status.py": "4a98fecf8d4c3fec7ada372bf4e2e53998ba5a656e035a696eb00f8a8a1c2223",
+    "src/empire/plugins/data/listing_status.py": "07a1773d681152ecc95abe8bb67bde25f575cc0d239550dcea98afaeff58f056",
     "src/empire/plugins/data/listing_status_checks.py": "befe9a4265344379c98cc038938e3dda96baa2c147bffba764d0e554d348ea27",
     "scripts/measure_listing_status.py": "ea52fe24b39d0bab7a831657d551f89f5f8d24264b92584851add87f4deb976d",
     "sql/changes/2026-10-06-listing-status.sql": "0b33cdb0ab6733fd1610518963f984021af46b83bd8c601d500c801fdb0eb97d"
@@ -11,13 +11,13 @@
     "security_listing_event": "2c6132301c2a621f83f4dc445ffad262ab9852971194e11549f7b6fa0fed0b46"
   },
   "measurements": {
-    "page_p95_ms": 1.711399992927909,
-    "security_p95_ms": 0.7066999969538301,
-    "page_after_p95_ms": 1.7306000081589445,
-    "type_p95_ms": 2.039099999819882,
-    "detail_p95_ms": 0.6133999995654449,
-    "month_p95_ms": 3.071500002988614,
-    "import_seconds": 14.945438000009744,
+    "page_p95_ms": 2.3195999674499035,
+    "security_p95_ms": 0.755299988668412,
+    "page_after_p95_ms": 2.4561999598518014,
+    "type_p95_ms": 2.7660999912768602,
+    "detail_p95_ms": 0.6185999955050647,
+    "month_p95_ms": 3.355199994985014,
+    "import_seconds": 11.378683799994178,
     "allocated_bytes": 48070656
   },
   "limits": {
@@ -46,13 +46,13 @@
   },
   "reviewed_tradeoffs": "正式列表不投影正文；详情点查；单月覆盖最多5000行。5万事件为独立服务容量实验，不是生产实采范围。首读未强制冷缓存，磁盘冷启动和全设备吞吐不作承诺。",
   "first_query_ms": {
-    "page": 27.79200000804849,
-    "security": 0.7324000034714118,
-    "page_after": 1.8333000043639913,
-    "type": 2.1386000007623807,
-    "detail": 0.6133999995654449
+    "page": 35.22479999810457,
+    "security": 0.755299988668412,
+    "page_after": 2.4561999598518014,
+    "type": 2.7731999871321023,
+    "detail": 0.8776999893598258
   },
-  "python_peak_bytes": 1719667,
+  "python_peak_bytes": 1719217,
   "explain": {
     "page": [
       {
@@ -97,7 +97,7 @@
         "key": "PRIMARY",
         "key_len": "3",
         "ref": null,
-        "rows": 24675,
+        "rows": 23538,
         "filtered": 50.0,
         "Extra": "Using where"
       }
@@ -120,10 +120,10 @@
     ]
   },
   "explain_analyze": {
-    "page": "-> Limit: 201 row(s)  (cost=2.15 rows=201) (actual time=0.0194..0.0842 rows=201 loops=1)\n    -> Index scan on security_listing_event using PRIMARY  (cost=2.15 rows=201) (actual time=0.0182..0.0752 rows=201 loops=1)\n",
-    "security": "-> Limit: 201 row(s)  (cost=3.5 rows=10) (actual time=0.0495..0.0515 rows=10 loops=1)\n    -> Index lookup on security_listing_event using ix_security_date (unified_code='000001.SZ')  (cost=3.5 rows=10) (actual time=0.0489..0.0507 rows=10 loops=1)\n",
-    "type": "-> Limit: 201 row(s)  (cost=4953 rows=201) (actual time=0.0921..0.352 rows=201 loops=1)\n    -> Filter: ((security_listing_event.event_type = 'terminated') and (security_listing_event.event_date between '2000-01-01' and '2009-12-31'))  (cost=4953 rows=12338) (actual time=0.0914..0.343 rows=201 loops=1)\n        -> Index range scan on security_listing_event using PRIMARY over ('2000-01-01' <= event_date <= '2009-12-31')  (cost=4953 rows=24675) (actual time=0.0881..0.278 rows=603 loops=1)\n",
-    "month": "-> Limit: 5001 row(s)  (cost=156 rows=774) (actual time=0.0131..0.255 rows=420 loops=1)\n    -> Filter: (security_listing_event.event_date between '2000-01-01' and '2000-01-31')  (cost=156 rows=774) (actual time=0.0124..0.237 rows=420 loops=1)\n        -> Index range scan on security_listing_event using PRIMARY over ('2000-01-01' <= event_date <= '2000-01-31')  (cost=156 rows=774) (actual time=0.0107..0.155 rows=420 loops=1)\n"
+    "page": "-> Limit: 201 row(s)  (cost=2.25 rows=201) (actual time=0.0252..0.123 rows=201 loops=1)\n    -> Index scan on security_listing_event using PRIMARY  (cost=2.25 rows=201) (actual time=0.0199..0.109 rows=201 loops=1)\n",
+    "security": "-> Limit: 201 row(s)  (cost=3.5 rows=10) (actual time=0.0543..0.0563 rows=10 loops=1)\n    -> Index lookup on security_listing_event using ix_security_date (unified_code='000001.SZ')  (cost=3.5 rows=10) (actual time=0.0538..0.0554 rows=10 loops=1)\n",
+    "type": "-> Limit: 201 row(s)  (cost=4725 rows=201) (actual time=0.103..0.319 rows=201 loops=1)\n    -> Filter: ((security_listing_event.event_type = 'terminated') and (security_listing_event.event_date between '2000-01-01' and '2009-12-31'))  (cost=4725 rows=11769) (actual time=0.103..0.31 rows=201 loops=1)\n        -> Index range scan on security_listing_event using PRIMARY over ('2000-01-01' <= event_date <= '2009-12-31')  (cost=4725 rows=23538) (actual time=0.0991..0.258 rows=603 loops=1)\n",
+    "month": "-> Limit: 5001 row(s)  (cost=156 rows=774) (actual time=0.0053..0.216 rows=420 loops=1)\n    -> Filter: (security_listing_event.event_date between '2000-01-01' and '2000-01-31')  (cost=156 rows=774) (actual time=0.0047..0.2 rows=420 loops=1)\n        -> Index range scan on security_listing_event using PRIMARY over ('2000-01-01' <= event_date <= '2000-01-31')  (cost=156 rows=774) (actual time=0.0041..0.121 rows=420 loops=1)\n"
   },
   "queries": {
     "page": {

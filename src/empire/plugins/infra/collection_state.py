@@ -53,6 +53,12 @@ class CollectionState:
         with self.mysql.engine.connect() as connection:
             return read_state(connection, self.namespace, project_id, source)
 
+    def read_aggregate(self, catalog, envelope, project_id):
+        with self.mysql.engine.connect() as connection:
+            current = catalog.aggregate_current(connection, envelope, self.namespace)
+            return (current if current is not None else
+                    read_state(connection, self.namespace, project_id, envelope.source))
+
     def read_progress(self, source, project_id):
         with self.mysql.engine.connect() as connection:
             row = connection.execute(text('SELECT source,JSON_EXTRACT(payload,\'$.progress\') AS progress '
@@ -117,7 +123,8 @@ class CollectionState:
                 previous, exists = read_unit(connection, self.namespace, project, envelope.source, unit)
             else:
                 previous = read_state(connection, self.namespace, project, envelope.source, lock=True)
-            outcome = catalog.write(connection, envelope, {**data, "archive_state": previous})
+            outcome = catalog.write(connection, envelope, {**data, "archive_state": previous,
+                                                          'archive_namespace': self.namespace})
             # Rejected versions cannot advance either persisted progress or publication.
             if outcome["confirmed"] or not data.get("rows"):
                 payload = catalog.archive_state(envelope, full_data, outcome, previous)

@@ -1,0 +1,601 @@
+{
+  "applied": true,
+  "queue": 0,
+  "exists": {
+    "holder_report": true,
+    "holder_member": true
+  },
+  "ddl_scopes": {
+    "holder_report": "0d3b02baee139cac5b6756c96f58e528897aada382e17abb69a41358ebe552db",
+    "holder_member": "edf1f6ce8a5cb74e7813608ce53bd77677fa386e90d07f20ab67a58e199ca503"
+  },
+  "before": {
+    "additional_issue": {
+      "rows": 6540,
+      "ddl_hash": "986d7ee4fd18f31a0d9dacf5264de13d243fc00086ea60b5877b4cee9c61b990"
+    },
+    "app_setting": {
+      "rows": 40,
+      "ddl_hash": "2c7cb3d39d4c6d42fd77e348afe5d37ab8bf5a5f21093b1d36b38fd9cccff221"
+    },
+    "balance_statement": {
+      "rows": 319617,
+      "ddl_hash": "69760f99b6fff48acdc2764493eff28fadc7c2a657373d588695e475cd5dcd6e"
+    },
+    "cashflow_statement": {
+      "rows": 320606,
+      "ddl_hash": "a325f5c1589e94f25f40d252090d9e89078c7a3567b90d0007af8a2128bb27a5"
+    },
+    "collection_state": {
+      "rows": 44,
+      "ddl_hash": "86266a413b333eefb1e5caaf02ed51afcb3b4fdc5b17a44d3d32cc1dd57cd814"
+    },
+    "dividend_plan": {
+      "rows": 56146,
+      "ddl_hash": "00079ad50a5cb6958b6f2b327dbe0ea3e1895cff9e40f95cec17561e7b67ccee"
+    },
+    "earnings_disclosure": {
+      "rows": 264807,
+      "ddl_hash": "efa3b054828eca97c75e928e5b83c980de11ec45f5d0be798d68507a5eacb9f1"
+    },
+    "earnings_forecast": {
+      "rows": 109064,
+      "ddl_hash": "f51d8997e1dbff7db78ca25b15045b573001bfb1e10db8647232438e5f69b0cd"
+    },
+    "earnings_quick": {
+      "rows": 53813,
+      "ddl_hash": "d1e61fd9fd7bd36ae78c96da00610fe454aaff5203ab7e9c6e13ec5ba7bd013a"
+    },
+    "earnings_report": {
+      "rows": 303474,
+      "ddl_hash": "d3edb9e5d334ba41b1adfff98679e6036bea1bf928f889d23e6cc9b043961d10"
+    },
+    "finance_news": {
+      "rows": 25610,
+      "ddl_hash": "037b27a51f73652613eca805710488b6c1bb52f86ac66c9edc9719cbea61e7d9"
+    },
+    "income_statement": {
+      "rows": 331266,
+      "ddl_hash": "d38085a57748217608dc27f3d616cebbf7233150c085a9a8618b573b28114d01"
+    },
+    "index_daily_price": {
+      "rows": 2237788,
+      "ddl_hash": "6d4c54a9710f7cae1da19913f686894da0531b599cac5113d52cff4a09d1f8c4"
+    },
+    "index_price_year": {
+      "rows": 9598,
+      "ddl_hash": "04b508b43abe5db502abad59c20b4948343aaf0b8ff58e2c43872e8647d8111a"
+    },
+    "industry": {
+      "rows": 90,
+      "ddl_hash": "87c50d7135f2744a2be3277b2fec18822570fe44b537b9c666868a03a391c7e9"
+    },
+    "industry_member": {
+      "rows": 5574,
+      "ddl_hash": "a7a110b66f2ebf4ff7b6451bbdb70605623e76b6a6e88c56b5301bf5ea5c7f9e"
+    },
+    "rights_issue": {
+      "rows": 1191,
+      "ddl_hash": "43d579323bdf1557b3b371106bd4f0ddabfcf606a217f6d5c6d880400d8266e2"
+    },
+    "router_device": {
+      "rows": 17,
+      "ddl_hash": "7a819c9153f484bc859b8afea978d49ed4eb8e44c14da99c66f3baa67ec03b2c"
+    },
+    "router_proxy_auth": {
+      "rows": 34,
+      "ddl_hash": "1d3a3138b11c0b4b4c2b03e42e2e82168876027ac2ba79d9d6e794151c11b7ec"
+    },
+    "router_runtime_config": {
+      "rows": 1,
+      "ddl_hash": "c6544903ba85d6b1111a7febe1bade0f1570ef16339e81c545a7d1ff4dc59c44"
+    },
+    "router_schema_version": {
+      "rows": 1,
+      "ddl_hash": "96800fed9960856fa9b64ee615741c16d3e8d11ff53a351d3225b54f9b11ba55"
+    },
+    "security_code_alias": {
+      "rows": 248,
+      "ddl_hash": "fb2e19174ee98eb4bb372c8f4050f1a2d878ae95f7713ea96da4cbbba05600a6"
+    },
+    "security_listing_event": {
+      "rows": 552,
+      "ddl_hash": "02d37d257d2a6ff54de7787b70b19790cced6a96c95a96acc22618e5338e6e54"
+    },
+    "security_name_change": {
+      "rows": 11910,
+      "ddl_hash": "87b83a97e4f206dfe39f9b338060a69eb8868c65b71cca9a00298d7a625aa724"
+    },
+    "security_st_event": {
+      "rows": 3949,
+      "ddl_hash": "29f23bda92332babc479c8e611d71a333f525bc1ba59a7033fdfc057eb49820f"
+    },
+    "shareholder_count": {
+      "rows": 225850,
+      "ddl_hash": "84dec3873ce6337e8efa2fd5569df801d4cb890c97cf1a7cb7a06fed91a9135a"
+    },
+    "stock": {
+      "rows": 5579,
+      "ddl_hash": "1bec7704a918f050d6da549ff65787602fb0e93676ff4f93a69522d60feeefce"
+    },
+    "stock_daily_quote": {
+      "rows": 1204703,
+      "ddl_hash": "765add00a52c8ffcb5d53c671dc79c36e3f5772d4c0a1cbd22123955fde5336e"
+    },
+    "stock_daily_quote_level": {
+      "rows": 24094060,
+      "ddl_hash": "88a6a70c5a53ac30760a1098ed825a34c98252012e20c15c612c74f55c281785"
+    },
+    "stock_index": {
+      "rows": 573,
+      "ddl_hash": "88b26f912ccf209625aa77d9d70ce17b1e1b561735c264e4c7df319d57ec590a"
+    },
+    "stock_index_member": {
+      "rows": 99578,
+      "ddl_hash": "deb5c9d186bb6ba46ea4a3f4999fe75d325dbd2e7b81a1cb7149c653532bdc02"
+    },
+    "stock_intraday_trade_block": {
+      "rows": 2001,
+      "ddl_hash": "96af3efa7a94e763016800242bb274ef375fa6aa6d84a24e52f3be61926e201b"
+    },
+    "stock_intraday_trend": {
+      "rows": 35427,
+      "ddl_hash": "77e8b3c56e566f71c70635eb5478d30e74ddfc63cf853255fefb79c6ab839356"
+    },
+    "stock_large_order_trend": {
+      "rows": 33258,
+      "ddl_hash": "d7a32eb218982a66260a5444fd882edabdf2842083534c9e21b816fbfd581d6f"
+    },
+    "stock_listing": {
+      "rows": 5490,
+      "ddl_hash": "745f6303baf2c1fea157259b733153ab380b24de6120e4102beb89bc48d571f0"
+    },
+    "stock_market_day": {
+      "rows": 1205572,
+      "ddl_hash": "fbb9936ad12bb31f404c3f5f6ef54a103607e5470c95c1f2c1acfeb04dcef65d"
+    },
+    "stock_minute_entrust": {
+      "rows": 35186,
+      "ddl_hash": "c6e09a588231cacfef821d196542cd406dfdc56285914ddb0fead945a38b75e3"
+    },
+    "stock_minute_volume": {
+      "rows": 35427,
+      "ddl_hash": "26c94303eac87f82a2f1734d31ed46cd73bc9d450564bbd748e6d6cb2138a37a"
+    },
+    "stock_opening_auction": {
+      "rows": 5758,
+      "ddl_hash": "a7be9be04f51ced72651169028c7f8c481cfa5cf607e130c274898f930c5838b"
+    },
+    "stock_repurchase_plan": {
+      "rows": 5537,
+      "ddl_hash": "bca2e60d12d640299889c055472c700952d8e2941de96df4bc56802a322e845f"
+    },
+    "suspension_event": {
+      "rows": 104740,
+      "ddl_hash": "cd040d397cac18467e11bf98491fa6b84aad6fb520e9b70c1c2d7cf40ca92b37"
+    },
+    "suspension_source_date": {
+      "rows": 145365,
+      "ddl_hash": "ebfc531b6a67aab8c899c8b5140b4a652876cf15012ac76c3844366aabfdddae"
+    },
+    "trade_calendar": {
+      "rows": 13527,
+      "ddl_hash": "5fbd41886474cce60f5bd3f54d304a4e560658844eef5032a4df773867b82961"
+    },
+    "trading_rule_citation": {
+      "rows": 30,
+      "ddl_hash": "8e346c238cf2a04c03960ef351a14428bf3b61b9f6888b42de668a90521db2b5"
+    },
+    "trading_rule_value": {
+      "rows": 77,
+      "ddl_hash": "5ab3aa96092f90f2a529c27f2165c598338921eb8a1eb5acc03ebf504ae871ea"
+    },
+    "state_digest": "f408964cc91163a543061efe14cfc799490553295de54d340699995d78909f0b"
+  },
+  "after": {
+    "additional_issue": {
+      "rows": 6540,
+      "ddl_hash": "986d7ee4fd18f31a0d9dacf5264de13d243fc00086ea60b5877b4cee9c61b990"
+    },
+    "app_setting": {
+      "rows": 40,
+      "ddl_hash": "2c7cb3d39d4c6d42fd77e348afe5d37ab8bf5a5f21093b1d36b38fd9cccff221"
+    },
+    "balance_statement": {
+      "rows": 319617,
+      "ddl_hash": "69760f99b6fff48acdc2764493eff28fadc7c2a657373d588695e475cd5dcd6e"
+    },
+    "cashflow_statement": {
+      "rows": 320606,
+      "ddl_hash": "a325f5c1589e94f25f40d252090d9e89078c7a3567b90d0007af8a2128bb27a5"
+    },
+    "collection_state": {
+      "rows": 44,
+      "ddl_hash": "86266a413b333eefb1e5caaf02ed51afcb3b4fdc5b17a44d3d32cc1dd57cd814"
+    },
+    "dividend_plan": {
+      "rows": 56146,
+      "ddl_hash": "00079ad50a5cb6958b6f2b327dbe0ea3e1895cff9e40f95cec17561e7b67ccee"
+    },
+    "earnings_disclosure": {
+      "rows": 264807,
+      "ddl_hash": "efa3b054828eca97c75e928e5b83c980de11ec45f5d0be798d68507a5eacb9f1"
+    },
+    "earnings_forecast": {
+      "rows": 109064,
+      "ddl_hash": "f51d8997e1dbff7db78ca25b15045b573001bfb1e10db8647232438e5f69b0cd"
+    },
+    "earnings_quick": {
+      "rows": 53813,
+      "ddl_hash": "d1e61fd9fd7bd36ae78c96da00610fe454aaff5203ab7e9c6e13ec5ba7bd013a"
+    },
+    "earnings_report": {
+      "rows": 303474,
+      "ddl_hash": "d3edb9e5d334ba41b1adfff98679e6036bea1bf928f889d23e6cc9b043961d10"
+    },
+    "finance_news": {
+      "rows": 25610,
+      "ddl_hash": "037b27a51f73652613eca805710488b6c1bb52f86ac66c9edc9719cbea61e7d9"
+    },
+    "income_statement": {
+      "rows": 331266,
+      "ddl_hash": "d38085a57748217608dc27f3d616cebbf7233150c085a9a8618b573b28114d01"
+    },
+    "index_daily_price": {
+      "rows": 2237788,
+      "ddl_hash": "6d4c54a9710f7cae1da19913f686894da0531b599cac5113d52cff4a09d1f8c4"
+    },
+    "index_price_year": {
+      "rows": 9598,
+      "ddl_hash": "04b508b43abe5db502abad59c20b4948343aaf0b8ff58e2c43872e8647d8111a"
+    },
+    "industry": {
+      "rows": 90,
+      "ddl_hash": "87c50d7135f2744a2be3277b2fec18822570fe44b537b9c666868a03a391c7e9"
+    },
+    "industry_member": {
+      "rows": 5574,
+      "ddl_hash": "a7a110b66f2ebf4ff7b6451bbdb70605623e76b6a6e88c56b5301bf5ea5c7f9e"
+    },
+    "rights_issue": {
+      "rows": 1191,
+      "ddl_hash": "43d579323bdf1557b3b371106bd4f0ddabfcf606a217f6d5c6d880400d8266e2"
+    },
+    "router_device": {
+      "rows": 17,
+      "ddl_hash": "7a819c9153f484bc859b8afea978d49ed4eb8e44c14da99c66f3baa67ec03b2c"
+    },
+    "router_proxy_auth": {
+      "rows": 34,
+      "ddl_hash": "1d3a3138b11c0b4b4c2b03e42e2e82168876027ac2ba79d9d6e794151c11b7ec"
+    },
+    "router_runtime_config": {
+      "rows": 1,
+      "ddl_hash": "c6544903ba85d6b1111a7febe1bade0f1570ef16339e81c545a7d1ff4dc59c44"
+    },
+    "router_schema_version": {
+      "rows": 1,
+      "ddl_hash": "96800fed9960856fa9b64ee615741c16d3e8d11ff53a351d3225b54f9b11ba55"
+    },
+    "security_code_alias": {
+      "rows": 248,
+      "ddl_hash": "fb2e19174ee98eb4bb372c8f4050f1a2d878ae95f7713ea96da4cbbba05600a6"
+    },
+    "security_listing_event": {
+      "rows": 552,
+      "ddl_hash": "02d37d257d2a6ff54de7787b70b19790cced6a96c95a96acc22618e5338e6e54"
+    },
+    "security_name_change": {
+      "rows": 11910,
+      "ddl_hash": "87b83a97e4f206dfe39f9b338060a69eb8868c65b71cca9a00298d7a625aa724"
+    },
+    "security_st_event": {
+      "rows": 3949,
+      "ddl_hash": "29f23bda92332babc479c8e611d71a333f525bc1ba59a7033fdfc057eb49820f"
+    },
+    "shareholder_count": {
+      "rows": 225850,
+      "ddl_hash": "84dec3873ce6337e8efa2fd5569df801d4cb890c97cf1a7cb7a06fed91a9135a"
+    },
+    "stock": {
+      "rows": 5579,
+      "ddl_hash": "1bec7704a918f050d6da549ff65787602fb0e93676ff4f93a69522d60feeefce"
+    },
+    "stock_daily_quote": {
+      "rows": 1204703,
+      "ddl_hash": "765add00a52c8ffcb5d53c671dc79c36e3f5772d4c0a1cbd22123955fde5336e"
+    },
+    "stock_daily_quote_level": {
+      "rows": 24094060,
+      "ddl_hash": "88a6a70c5a53ac30760a1098ed825a34c98252012e20c15c612c74f55c281785"
+    },
+    "stock_index": {
+      "rows": 573,
+      "ddl_hash": "88b26f912ccf209625aa77d9d70ce17b1e1b561735c264e4c7df319d57ec590a"
+    },
+    "stock_index_member": {
+      "rows": 99578,
+      "ddl_hash": "deb5c9d186bb6ba46ea4a3f4999fe75d325dbd2e7b81a1cb7149c653532bdc02"
+    },
+    "stock_intraday_trade_block": {
+      "rows": 2001,
+      "ddl_hash": "96af3efa7a94e763016800242bb274ef375fa6aa6d84a24e52f3be61926e201b"
+    },
+    "stock_intraday_trend": {
+      "rows": 35427,
+      "ddl_hash": "77e8b3c56e566f71c70635eb5478d30e74ddfc63cf853255fefb79c6ab839356"
+    },
+    "stock_large_order_trend": {
+      "rows": 33258,
+      "ddl_hash": "d7a32eb218982a66260a5444fd882edabdf2842083534c9e21b816fbfd581d6f"
+    },
+    "stock_listing": {
+      "rows": 5490,
+      "ddl_hash": "745f6303baf2c1fea157259b733153ab380b24de6120e4102beb89bc48d571f0"
+    },
+    "stock_market_day": {
+      "rows": 1205572,
+      "ddl_hash": "fbb9936ad12bb31f404c3f5f6ef54a103607e5470c95c1f2c1acfeb04dcef65d"
+    },
+    "stock_minute_entrust": {
+      "rows": 35186,
+      "ddl_hash": "c6e09a588231cacfef821d196542cd406dfdc56285914ddb0fead945a38b75e3"
+    },
+    "stock_minute_volume": {
+      "rows": 35427,
+      "ddl_hash": "26c94303eac87f82a2f1734d31ed46cd73bc9d450564bbd748e6d6cb2138a37a"
+    },
+    "stock_opening_auction": {
+      "rows": 5758,
+      "ddl_hash": "a7be9be04f51ced72651169028c7f8c481cfa5cf607e130c274898f930c5838b"
+    },
+    "stock_repurchase_plan": {
+      "rows": 5537,
+      "ddl_hash": "bca2e60d12d640299889c055472c700952d8e2941de96df4bc56802a322e845f"
+    },
+    "suspension_event": {
+      "rows": 104740,
+      "ddl_hash": "cd040d397cac18467e11bf98491fa6b84aad6fb520e9b70c1c2d7cf40ca92b37"
+    },
+    "suspension_source_date": {
+      "rows": 145365,
+      "ddl_hash": "ebfc531b6a67aab8c899c8b5140b4a652876cf15012ac76c3844366aabfdddae"
+    },
+    "trade_calendar": {
+      "rows": 13527,
+      "ddl_hash": "5fbd41886474cce60f5bd3f54d304a4e560658844eef5032a4df773867b82961"
+    },
+    "trading_rule_citation": {
+      "rows": 30,
+      "ddl_hash": "8e346c238cf2a04c03960ef351a14428bf3b61b9f6888b42de668a90521db2b5"
+    },
+    "trading_rule_value": {
+      "rows": 77,
+      "ddl_hash": "5ab3aa96092f90f2a529c27f2165c598338921eb8a1eb5acc03ebf504ae871ea"
+    },
+    "state_digest": "f408964cc91163a543061efe14cfc799490553295de54d340699995d78909f0b"
+  },
+  "unchanged_existing_business": true,
+  "shapes": {
+    "holder_report": {
+      "columns": {
+        "report_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "kind": {
+          "type": "varchar(24) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "char(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "instrument_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "instrument_name": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "report_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "report_type": {
+          "type": "varchar(16) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "total_quantity": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "total_quantity_scale": {
+          "type": "bigint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "total_quantity_decimals": {
+          "type": "smallint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "total_ratio": {
+          "type": "decimal(9, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "ratio_basis": {
+          "type": "varchar(64) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "member_count": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "exit_count": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "report_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "kind",
+            "report_date",
+            "unified_code",
+            "report_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "kind",
+            "unified_code",
+            "report_date",
+            "report_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_holder_counts": "((member_countbetween1and10)and(exit_countbetween0and20))",
+        "ck_holder_precision": "((total_quantity_scalein(1,10000,100000000))and(total_quantity_decimalsbetween0and4))",
+        "ck_holder_report_kind": "(kindin('top_holders','float_holders','bond_holders'))",
+        "ck_holder_report_type": "(((report_type='periodic')and(total_quantityisnotnull)and(total_ratioisnotnull)and(total_quantity_scaleisnotnull)and(total_quantity_decimalsisnotnull))or((report_type='change_notice')and(total_quantityisnull)and(total_ratioisnull)and(total_quantity_scaleisnull)and(total_quantity_decimalsisnull)))",
+        "ck_holder_totals": "((total_quantity>=0)and(total_ratiobetween0and100))"
+      }
+    },
+    "holder_member": {
+      "columns": {
+        "report_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "member_group": {
+          "type": "varchar(8) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "seq": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "holder_name": {
+          "type": "varchar(512) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "holder_id": {
+          "type": "varchar(80) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "quantity": {
+          "type": "decimal(24, 4)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "quantity_scale": {
+          "type": "bigint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "quantity_decimals": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "ratio": {
+          "type": "decimal(9, 4)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "change_quantity": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "change_label": {
+          "type": "varchar(16) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_change": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "share_type": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "pledge_ratio": {
+          "type": "decimal(9, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "pledge_status": {
+          "type": "varchar(64) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "report_key",
+        "member_group",
+        "seq"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_holder_member_group": "((member_groupin('current','exited'))and(seqbetween1and20))",
+        "ck_holder_member_precision": "((quantity_scalein(1,10000,100000000))and(quantity_decimalsbetween0and4))",
+        "ck_holder_member_values": "((quantity>=0)and(ratiobetween0and100)and((pledge_ratioisnull)or(pledge_ratiobetween0and100)))"
+      }
+    }
+  },
+  "initial_preflight": {
+    "applied": false,
+    "queue": 0,
+    "exists": {
+      "holder_report": false,
+      "holder_member": false
+    },
+    "ddl_scopes": {
+      "holder_report": "0d3b02baee139cac5b6756c96f58e528897aada382e17abb69a41358ebe552db",
+      "holder_member": "edf1f6ce8a5cb74e7813608ce53bd77677fa386e90d07f20ab67a58e199ca503"
+    }
+  },
+  "reverified_after_sample_collection": true,
+  "maintenance_note": "首次检查两表不存在，显式新增后进行五证券实采；此报告保留实采后复核的全部既有表数量、结构与状态摘要，初始存在性附在initial_preflight。"
+}

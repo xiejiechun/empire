@@ -1,4 +1,7 @@
 """Quote-page query ownership; related trend is optional and never collects."""
+from PySide6.QtWidgets import QPushButton
+
+from empire.contracts.ui import NavigationContext
 from empire.core.redaction import redact
 from empire.plugins.collectors.kaipanla_kinds import capability
 from empire.plugins.ui.kaipanla_products import ProductPage
@@ -10,6 +13,14 @@ class QuotePage(ProductPage):
         self.view = QuoteView()
         self.related, self.related_identity = None, None
         layout.addWidget(self.view)
+        self.trend_link = QPushButton('查看该证券日独立分时走势')
+        self.trend_link.clicked.connect(self.open_trend)
+        layout.addWidget(self.trend_link)
+
+    def open_trend(self):
+        if self.loaded_scope:
+            market, code, day = self.loaded_scope
+            self.shell.navigate('kaipanla_trend', NavigationContext(unified_code=code+'.'+market, day=day))
 
     def render(self):
         self.scope.cancel('quote-trend')

@@ -127,3 +127,36 @@ async def test_full_large_error_set_transfers_summaries_then_one_detail(records)
     assert len(json.dumps(unchanged).encode()) < 200
     detail = await records.get_error("large", "large-20")
     assert len(detail["body"]) == 64 * 1024
+
+
+@pytest.mark.parametrize('kind', ['errors', 'archives'])
+async def test_clear_logs_scope_revision_and_future_records(records, kind):
+    client = records.redis.client
+    sentinel = records.redis.prefix + ':ingest'
+    await client.xadd(sentinel, {'test': 'pending'})
+    await client.set(records.redis.prefix + ':checkpoint:test', 'unchanged')
+    async def add(project, ident):
+        if kind == 'errors':
+            await records.add_error(project, stage='test', error='test', record_id=ident)
+        else:
+            await records.add_archive(project, {'id': ident, 'status': 'complete'})
+    for i in range(65):
+        await add('stocks', str(i))
+    await add('retired-project', 'other')
+    await add('stocks', 'last')
+    before = await records.list_all_records(kind)
+    assert await records.clear_logs(kind, 'stocks') == 66
+    after = await records.list_all_records(kind, known_revision=before['revision'])
+    assert after['changed'] and after['total'] == 1
+    assert await records.clear_logs(kind, 'stocks') == 0
+    await add('stocks', 'new')
+    assert (await records.list_all_records(kind))['total'] == 2
+    assert await records.clear_logs(kind, '*') == 2
+    await add('stocks', 'after-reset')
+    assert (await records.list_all_records(kind))['total'] == 1
+    assert await client.xlen(sentinel) == 1
+    assert await client.get(records.redis.prefix + ':checkpoint:test') == 'unchanged'
+    with pytest.raises(ValueError):
+        await records.clear_logs('ingest', '*')
+    with pytest.raises(ValueError):
+        await records.clear_logs(kind, 'bad:*')

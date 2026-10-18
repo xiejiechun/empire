@@ -71,15 +71,15 @@ class ListingStatusDataPlugin:
         recent = (through.replace(day=1) - timedelta(days=1)).strftime('%Y-%m')
         return [m for m in expected if fresh or m >= recent or not valid_proof(proofs.get(m, {}), m, through)]
 
-    async def list_events(self, code='', event_type='', start='', end='', after=None, limit=200):
-        if (not isinstance(code, str) or not re.fullmatch('[0-9]{0,6}', code)
-                or event_type not in ('', *TYPES) or type(limit) is not int or not 1 <= limit <= 200):
+    async def list_events(self, code='', event_type='', start='', end='', after=None, limit=200, descending=False):
+        if (not isinstance(code, str) or not re.fullmatch(r'(?:[0-9]{0,6}|[0-9]{6}\.(?:SH|SZ|BJ))', code)
+                or event_type not in ('', *TYPES) or type(limit) is not int or not 1 <= limit <= 200 or type(descending) is not bool):
             raise ValueError('上市状态查询条件或分页上限无效')
         scope = PreparationScope.parse(dict(start=start, end=end))
         clauses, params = ['1=1'], dict(limit=limit + 1)
         if code:
             clauses.append('unified_code LIKE :code')
-            params['code'] = code + '%'
+            params['code'] = code if '.' in code else code + '%'
         if event_type:
             clauses.append('event_type=:type')
             params['type'] = event_type
@@ -94,14 +94,16 @@ class ListingStatusDataPlugin:
                 raise ValueError('上市状态分页游标无效')
             date.fromisoformat(after[0])
             split_unified_code(after[1])
-            clauses.append('(event_date>:day OR (event_date=:day AND unified_code>:security) '
-                'OR (event_date=:day AND unified_code=:security AND event_type>:kind) '
-                'OR (event_date=:day AND unified_code=:security AND event_type=:kind AND record_key>:key))')
+            op = '<' if descending else '>'
+            clauses.append(f'(event_date{op}:day OR (event_date=:day AND unified_code{op}:security) '
+                f'OR (event_date=:day AND unified_code=:security AND event_type{op}:kind) '
+                f'OR (event_date=:day AND unified_code=:security AND event_type=:kind AND record_key{op}:key))')
             params.update(day=after[0], security=after[1], kind=after[2], key=after[3])
         def read():
             with self.mysql.read_engine.connect() as conn:
                 records = conn.execute(text(f'SELECT {",".join(COLUMNS[:-1])} FROM {mapping.TABLE} '
-                    f'WHERE {" AND ".join(clauses)} ORDER BY event_date,unified_code,event_type,record_key LIMIT :limit'), params).mappings().all()
+                    f'WHERE {" AND ".join(clauses)} ORDER BY ' + ','.join(k + (' DESC' if descending else '')
+                    for k in ('event_date', 'unified_code', 'event_type', 'record_key')) + ' LIMIT :limit'), params).mappings().all()
             rows = [{**dict(r), 'event_date': r['event_date'].isoformat()} for r in records[:limit]]
             return dict(rows=rows, next=[rows[-1][k] for k in COLUMNS[:4]] if len(records) > limit else None)
         return await self.mysql.read(read)

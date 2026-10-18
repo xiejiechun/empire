@@ -1,0 +1,59 @@
+{
+  "verified_at_utc": "2026-10-12T10:05:48Z",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "a79f789e15de70d22e55a5f850f7ce3ec83c6009",
+    "dirty": true,
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "bdc0445e076b1736303e3b6a7112e97193da5db967c0efdf2e6135d3f41d0edb",
+    "built_at_utc": "2026-10-12T10:04:28Z",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3"
+  },
+  "executable_sha256": "85896e0237a0d87052a38875c91ab228386344e57a3ecfc8fa68fd37706b8ec5",
+  "portable_distribution": {
+    "chinese_space_path": true,
+    "packaged_smoke": true,
+    "first_run_prepared_config": true,
+    "config_recheck": true
+  },
+  "tests": {
+    "passed": 2236,
+    "skipped": 5,
+    "failed": 0
+  },
+  "config_preserved": true,
+  "program_source_connections_equal": true,
+  "test_mysql_13331_stopped": true,
+  "desktop": {
+    "visible": true,
+    "window_id": 25038082,
+    "query": {
+      "code": "1A0001",
+      "start": "2026-01-05",
+      "end": "2026-10-12",
+      "rows": 184,
+      "close": "3797.2400"
+    },
+    "task": {
+      "project": "ths-index-prices",
+      "status": "collecting",
+      "saved_schedule": "daily 18:00",
+      "started_at_shanghai": "2026-10-12T18:07:05+08:00",
+      "processed_indices": 27,
+      "total_indices": 573,
+      "pages": 708,
+      "collected": 160849,
+      "current_index": "上证工业",
+      "full_history_complete": false,
+      "configuration_changed": false
+    }
+  },
+  "sources": {
+    "src\\empire\\plugins\\collectors\\ths_index_prices.py": "fd9d811cbf080df1bd669a721af8d5907718b5f3cdcc320aab00f0ba549b4e9f",
+    "src\\empire\\plugins\\collectors\\ths_index_prices_source.py": "322715f77526075165594e8a985bb925005f9810cd75021b7a61db7b093742bf",
+    "tests\\test_ths_index_prices.py": "8b8db4ef9f0cf05e94344ab1c9c4ed3675fc8da41732b9a47e91f3eaa3a6968a",
+    "tests\\integration\\test_index_price_archive.py": "60ad0df64630f931b4937351463e87cc95968adf87cc54a0b05faf772146178b"
+  }
+}

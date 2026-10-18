@@ -1,17 +1,12 @@
 import json
-from datetime import datetime
+from datetime import date, datetime, timedelta
 
 from sqlalchemy import text
 
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.preparation import PreparationContribution
 
 
 class NewsDataPlugin:
-    preparation = (PreparationContribution(
-        "news", "news.query", "新浪财经", "sina-news", "sina-news-v1", "news.flash.page",
-        "collector.sina_news", ("tests/test_sina_news.py", "tests/test_unit_prefetch.py"), ("tests/integration/test_news_archive.py",)),)
-
     manifest = PluginManifest("data.news", "财经新闻查询", requires=("mysql.store",),
                               provides=("news.query", "news.schema"),
                               description="检索已归档的财经直播，保留历史并去重更新")
@@ -30,12 +25,17 @@ class NewsDataPlugin:
         return {"news.query": self, "news.schema": self}
 
     async def list_news(self, search="", limit=50, important=False, before=None, anchor=None,
-                        include_total=True):
+                        include_total=True, start='', end=''):
         if (not isinstance(search, str) or len(search) > 100 or not 1 <= limit <= 200
                 or type(important) is not bool or type(include_total) is not bool):
             raise ValueError("新闻查询参数超出范围")
+        for value in (start, end):
+            if value and date.fromisoformat(value).isoformat() != value:
+                raise ValueError('新闻日期必须为 YYYY-MM-DD')
+        if start and end and start > end:
+            raise ValueError('新闻起始日期晚于截止日期')
         return await self.mysql.read(self._list, search.strip(), limit, important,
-                                     self._cursor(before), self._cursor(anchor), include_total)
+                                     self._cursor(before), self._cursor(anchor), include_total, start, end)
 
     @staticmethod
     def _cursor(value):
@@ -56,9 +56,15 @@ class NewsDataPlugin:
     def _encode_cursor(row):
         return {"published_at": row["published_at"].isoformat(), "news_id": row["news_id"]}
 
-    def _list(self, search, limit, important, before, anchor, include_total):
+    def _list(self, search, limit, important, before, anchor, include_total, start='', end=''):
         params = {"source": self.source, "fetch_limit": limit + 1}
         filters = ["source=:source"]
+        if start:
+            filters.append('published_at>=:start')
+            params['start'] = datetime.combine(date.fromisoformat(start), datetime.min.time())
+        if end:
+            filters.append('published_at<:end')
+            params['end'] = datetime.combine(date.fromisoformat(end)+timedelta(days=1), datetime.min.time())
         if search:
             params["search"] = ("%" + search.replace("\\", "\\\\").replace("%", "\\%")
                                 .replace("_", "\\_") + "%")
@@ -95,9 +101,13 @@ class NewsDataPlugin:
                            if anchor else None),
                 "next_cursor": self._encode_cursor(visible[-1]) if len(data) > limit else None}
 
-    async def preparation_check(self):
-        from empire.plugins.data.preparation_checks import check_news
-        return await self.mysql.read(check_news, self)
+    async def latest(self):
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                row = conn.execute(text('SELECT published_at,news_id FROM finance_news WHERE source=:source '
+                    'ORDER BY published_at DESC,news_id DESC LIMIT 1'), dict(source=self.source)).mappings().first()
+                return self._encode_cursor(row) if row else None
+        return await self.mysql.read(read)
 
     async def stop(self):
         self.mysql = None

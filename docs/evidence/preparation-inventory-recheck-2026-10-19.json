@@ -1,0 +1,1093 @@
+{
+  "rows": [
+    {
+      "table": "additional_issue",
+      "requirements": [
+        "additional_issues"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 5960,
+      "count": 6556,
+      "securities": 3031,
+      "bytes": 15859712,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "1998-06-26",
+      "last": "2026-10-14",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.337137+08:00"
+    },
+    {
+      "table": "app_setting",
+      "requirements": [],
+      "category": "配置 / 状态",
+      "estimated_rows": 48,
+      "count": 48,
+      "securities": null,
+      "bytes": 16384,
+      "date_column": "",
+      "security_column": "",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.339140+08:00"
+    },
+    {
+      "table": "balance_statement",
+      "requirements": [
+        "balance"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 145982,
+      "count": 319674,
+      "securities": 5581,
+      "bytes": 2410168320,
+      "date_column": "report_date",
+      "security_column": "unified_code",
+      "first": "1989-12-31",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.512875+08:00"
+    },
+    {
+      "table": "capital_encumbrance",
+      "requirements": [
+        "capital_acquisitions",
+        "capital_funding",
+        "capital_projects",
+        "equity_investments",
+        "equity_transfers",
+        "freeze",
+        "ipo_investments",
+        "pledge",
+        "related_transactions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 92269,
+      "count": 99012,
+      "securities": 3271,
+      "bytes": 126664704,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "2002-07-06",
+      "last": "2026-10-19",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.650317+08:00"
+    },
+    {
+      "table": "capital_equity_position",
+      "requirements": [
+        "capital_acquisitions",
+        "capital_funding",
+        "capital_projects",
+        "equity_investments",
+        "equity_transfers",
+        "freeze",
+        "ipo_investments",
+        "pledge",
+        "related_transactions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 19710,
+      "count": 21875,
+      "securities": 2154,
+      "bytes": 21135360,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "2004-12-31",
+      "last": "2026-06-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.683583+08:00"
+    },
+    {
+      "table": "capital_equity_summary",
+      "requirements": [
+        "capital_acquisitions",
+        "capital_funding",
+        "capital_projects",
+        "equity_investments",
+        "equity_transfers",
+        "freeze",
+        "ipo_investments",
+        "pledge",
+        "related_transactions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 19118,
+      "count": 19974,
+      "securities": 2154,
+      "bytes": 19005440,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "2004-12-31",
+      "last": "2026-06-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.714545+08:00"
+    },
+    {
+      "table": "capital_funding",
+      "requirements": [
+        "capital_acquisitions",
+        "capital_funding",
+        "capital_projects",
+        "equity_investments",
+        "equity_transfers",
+        "freeze",
+        "ipo_investments",
+        "pledge",
+        "related_transactions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 12978,
+      "count": 14208,
+      "securities": 5576,
+      "bytes": 12681216,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "1987-01-01",
+      "last": "2026-10-19",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.735098+08:00"
+    },
+    {
+      "table": "capital_ipo",
+      "requirements": [
+        "capital_acquisitions",
+        "capital_funding",
+        "capital_projects",
+        "equity_investments",
+        "equity_transfers",
+        "freeze",
+        "ipo_investments",
+        "pledge",
+        "related_transactions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 123,
+      "count": 123,
+      "securities": 123,
+      "bytes": 114688,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.736097+08:00"
+    },
+    {
+      "table": "capital_project",
+      "requirements": [
+        "capital_acquisitions",
+        "capital_funding",
+        "capital_projects",
+        "equity_investments",
+        "equity_transfers",
+        "freeze",
+        "ipo_investments",
+        "pledge",
+        "related_transactions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 72015,
+      "count": 63285,
+      "securities": 5573,
+      "bytes": 136052736,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "1988-07-01",
+      "last": "2026-10-17",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.830679+08:00"
+    },
+    {
+      "table": "capital_release",
+      "requirements": [
+        "capital_acquisitions",
+        "capital_funding",
+        "capital_projects",
+        "equity_investments",
+        "equity_transfers",
+        "freeze",
+        "ipo_investments",
+        "pledge",
+        "related_transactions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 75602,
+      "count": 80468,
+      "securities": 3081,
+      "bytes": 111394816,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "2002-07-06",
+      "last": "2026-10-17",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:58:59.947122+08:00"
+    },
+    {
+      "table": "capital_transaction",
+      "requirements": [
+        "capital_acquisitions",
+        "capital_funding",
+        "capital_projects",
+        "equity_investments",
+        "equity_transfers",
+        "freeze",
+        "ipo_investments",
+        "pledge",
+        "related_transactions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 218793,
+      "count": 252698,
+      "securities": 5494,
+      "bytes": 517111808,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "1994-04-30",
+      "last": "2026-10-19",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:00.346489+08:00"
+    },
+    {
+      "table": "cashflow_statement",
+      "requirements": [
+        "cashflow"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 123294,
+      "count": 320668,
+      "securities": 5581,
+      "bytes": 2901950464,
+      "date_column": "report_date",
+      "security_column": "unified_code",
+      "first": "1996-12-31",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:00.528103+08:00"
+    },
+    {
+      "table": "collection_state",
+      "requirements": [],
+      "category": "配置 / 状态",
+      "estimated_rows": 44,
+      "count": 46,
+      "securities": null,
+      "bytes": 47202304,
+      "date_column": "",
+      "security_column": "",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:00.529165+08:00"
+    },
+    {
+      "table": "dividend_plan",
+      "requirements": [
+        "dividends"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 50043,
+      "count": 56156,
+      "securities": 5439,
+      "bytes": 149159936,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "1991-06-08",
+      "last": "2026-10-26",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:00.595238+08:00"
+    },
+    {
+      "table": "earnings_disclosure",
+      "requirements": [
+        "earnings_disclosure"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 252466,
+      "count": 264810,
+      "securities": 5576,
+      "bytes": 165265408,
+      "date_column": "report_date",
+      "security_column": "unified_code",
+      "first": "2001-12-31",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:00.882801+08:00"
+    },
+    {
+      "table": "earnings_forecast",
+      "requirements": [
+        "earnings_forecast"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 94279,
+      "count": 109170,
+      "securities": 5526,
+      "bytes": 112984064,
+      "date_column": "report_date",
+      "security_column": "unified_code",
+      "first": "2001-06-30",
+      "last": "2026-12-31",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:01.008525+08:00"
+    },
+    {
+      "table": "earnings_quick",
+      "requirements": [
+        "earnings_quick"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 48170,
+      "count": 53816,
+      "securities": 4101,
+      "bytes": 54919168,
+      "date_column": "report_date",
+      "security_column": "unified_code",
+      "first": "2004-06-30",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:01.072759+08:00"
+    },
+    {
+      "table": "earnings_report",
+      "requirements": [
+        "earnings_report"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 305006,
+      "count": 303530,
+      "securities": 5582,
+      "bytes": 240762880,
+      "date_column": "report_date",
+      "security_column": "unified_code",
+      "first": "1989-12-31",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:01.417539+08:00"
+    },
+    {
+      "table": "finance_news",
+      "requirements": [],
+      "category": "目录外业务",
+      "estimated_rows": 39404,
+      "count": 35432,
+      "securities": null,
+      "bytes": 28934144,
+      "date_column": "published_at",
+      "security_column": "",
+      "first": "2026-09-22 23:21:16",
+      "last": "2026-10-19 01:55:34",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:01.436386+08:00"
+    },
+    {
+      "table": "holder_member",
+      "requirements": [
+        "bond_holders",
+        "float_holders",
+        "top_holders"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 636048,
+      "count": 659122,
+      "securities": null,
+      "bytes": 136314880,
+      "date_column": "",
+      "security_column": "",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:01.730146+08:00"
+    },
+    {
+      "table": "holder_report",
+      "requirements": [
+        "bond_holders",
+        "float_holders",
+        "top_holders"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 55550,
+      "count": 58135,
+      "securities": 5580,
+      "bytes": 39600128,
+      "date_column": "report_date",
+      "security_column": "unified_code",
+      "first": "2011-03-31",
+      "last": "2026-10-20",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:01.808893+08:00"
+    },
+    {
+      "table": "income_statement",
+      "requirements": [
+        "income"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 239169,
+      "count": 331306,
+      "securities": 5581,
+      "bytes": 1467498496,
+      "date_column": "report_date",
+      "security_column": "unified_code",
+      "first": "1988-12-31",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:01.998262+08:00"
+    },
+    {
+      "table": "index_daily_price",
+      "requirements": [
+        "index_prices"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 2117973,
+      "count": 2240398,
+      "securities": 573,
+      "bytes": 250970112,
+      "date_column": "trade_date",
+      "security_column": "index_code",
+      "first": "1990-12-19",
+      "last": "2026-10-16",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:02.733219+08:00"
+    },
+    {
+      "table": "index_price_year",
+      "requirements": [
+        "index_prices"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 9537,
+      "count": 9598,
+      "securities": 573,
+      "bytes": 1589248,
+      "date_column": "",
+      "security_column": "index_code",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:02.748219+08:00"
+    },
+    {
+      "table": "industry",
+      "requirements": [
+        "industries"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 90,
+      "count": 90,
+      "securities": null,
+      "bytes": 16384,
+      "date_column": "",
+      "security_column": "",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:02.750905+08:00"
+    },
+    {
+      "table": "industry_member",
+      "requirements": [
+        "industries"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 5573,
+      "count": 5575,
+      "securities": 5575,
+      "bytes": 1802240,
+      "date_column": "",
+      "security_column": "unified_code",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:02.752410+08:00"
+    },
+    {
+      "table": "restricted_share_unlock",
+      "requirements": [
+        "unlock_schedule"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 34108,
+      "count": 37318,
+      "securities": 5836,
+      "bytes": 42303488,
+      "date_column": "unlock_date",
+      "security_column": "unified_code",
+      "first": "1996-05-10",
+      "last": "2027-12-31",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:02.801539+08:00"
+    },
+    {
+      "table": "restricted_share_unlock_detail",
+      "requirements": [
+        "unlock_schedule"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 420111,
+      "count": 364656,
+      "securities": 5836,
+      "bytes": 327041024,
+      "date_column": "unlock_date",
+      "security_column": "unified_code",
+      "first": "1996-05-10",
+      "last": "2027-12-31",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.547269+08:00"
+    },
+    {
+      "table": "restricted_share_unlock_industry",
+      "requirements": [
+        "unlock_industry"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 703,
+      "count": 703,
+      "securities": null,
+      "bytes": 196608,
+      "date_column": "unlock_month",
+      "security_column": "",
+      "first": "2026-09-01",
+      "last": "2028-08-01",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.549774+08:00"
+    },
+    {
+      "table": "rights_issue",
+      "requirements": [
+        "rights_issues"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 1147,
+      "count": 1191,
+      "securities": 766,
+      "bytes": 2048000,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "1990-03-01",
+      "last": "2026-08-21",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.552629+08:00"
+    },
+    {
+      "table": "router_device",
+      "requirements": [],
+      "category": "其他表",
+      "estimated_rows": 20,
+      "count": 20,
+      "securities": null,
+      "bytes": 163840,
+      "date_column": "",
+      "security_column": "",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.553629+08:00"
+    },
+    {
+      "table": "router_proxy_auth",
+      "requirements": [],
+      "category": "其他表",
+      "estimated_rows": 40,
+      "count": 40,
+      "securities": null,
+      "bytes": 32768,
+      "date_column": "",
+      "security_column": "",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.554456+08:00"
+    },
+    {
+      "table": "router_runtime_config",
+      "requirements": [],
+      "category": "其他表",
+      "estimated_rows": 1,
+      "count": 1,
+      "securities": null,
+      "bytes": 49152,
+      "date_column": "",
+      "security_column": "",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.554456+08:00"
+    },
+    {
+      "table": "router_schema_version",
+      "requirements": [],
+      "category": "其他表",
+      "estimated_rows": 1,
+      "count": 1,
+      "securities": null,
+      "bytes": 16384,
+      "date_column": "",
+      "security_column": "",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.557953+08:00"
+    },
+    {
+      "table": "security_code_alias",
+      "requirements": [],
+      "category": "目录外业务",
+      "estimated_rows": 248,
+      "count": 248,
+      "securities": 248,
+      "bytes": 32768,
+      "date_column": "listing_date",
+      "security_column": "unified_code",
+      "first": "2020-07-27",
+      "last": "2024-04-08",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.557953+08:00"
+    },
+    {
+      "table": "security_listing_event",
+      "requirements": [
+        "delistings"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 527,
+      "count": 552,
+      "securities": 416,
+      "bytes": 393216,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "1998-09-14",
+      "last": "2026-07-17",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.561885+08:00"
+    },
+    {
+      "table": "security_name_change",
+      "requirements": [
+        "company_renames",
+        "renames"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 12092,
+      "count": 11913,
+      "securities": 2723,
+      "bytes": 10764288,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "1990-12-10",
+      "last": "2026-10-17",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.576771+08:00"
+    },
+    {
+      "table": "security_st_event",
+      "requirements": [
+        "st_implementation",
+        "st_removal"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 3696,
+      "count": 3949,
+      "securities": 1106,
+      "bytes": 5816320,
+      "date_column": "event_date",
+      "security_column": "unified_code",
+      "first": "1998-04-28",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:03.582125+08:00"
+    },
+    {
+      "table": "shareholder_change",
+      "requirements": [
+        "shareholder_changes"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 320481,
+      "count": 326168,
+      "securities": 5458,
+      "bytes": 308936704,
+      "date_column": "announcement_date",
+      "security_column": "unified_code",
+      "first": "2007-05-31",
+      "last": "2026-10-17",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:04.681845+08:00"
+    },
+    {
+      "table": "shareholder_count",
+      "requirements": [
+        "holder_count"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 211034,
+      "count": 226518,
+      "securities": 5577,
+      "bytes": 181862400,
+      "date_column": "statistics_date",
+      "security_column": "unified_code",
+      "first": "2021-10-12",
+      "last": "2026-10-15",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:04.942997+08:00"
+    },
+    {
+      "table": "stock",
+      "requirements": [
+        "universe"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 5580,
+      "count": 5580,
+      "securities": 5580,
+      "bytes": 278528,
+      "date_column": "",
+      "security_column": "unified_code",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:04.946000+08:00"
+    },
+    {
+      "table": "stock_daily_quote",
+      "requirements": [
+        "historical_quote"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 2768242,
+      "count": 2911771,
+      "securities": 2383,
+      "bytes": 1584070656,
+      "date_column": "trade_date",
+      "security_column": "unified_code",
+      "first": "2021-01-04",
+      "last": "2026-10-16",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:06.262839+08:00"
+    },
+    {
+      "table": "stock_daily_quote_level",
+      "requirements": [
+        "historical_quote"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 58425096,
+      "count": 58235420,
+      "securities": null,
+      "bytes": 4260364288,
+      "date_column": "trade_date",
+      "security_column": "unified_code",
+      "first": null,
+      "last": null,
+      "status": "有数据；大明细表仅核实行数",
+      "checked_at": "2026-10-19T01:59:12.156888+08:00"
+    },
+    {
+      "table": "stock_index",
+      "requirements": [
+        "board_history"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 573,
+      "count": 573,
+      "securities": 573,
+      "bytes": 114688,
+      "date_column": "",
+      "security_column": "index_code",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:12.161121+08:00"
+    },
+    {
+      "table": "stock_index_member",
+      "requirements": [
+        "board_history"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 90767,
+      "count": 99532,
+      "securities": 5582,
+      "bytes": 14204928,
+      "date_column": "",
+      "security_column": "unified_code",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:12.212126+08:00"
+    },
+    {
+      "table": "stock_intraday_trade_block",
+      "requirements": [
+        "intraday_trades"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 1588,
+      "count": 2001,
+      "securities": 49,
+      "bytes": 5865472,
+      "date_column": "trade_date",
+      "security_column": "unified_code",
+      "first": "2026-09-28",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:12.214128+08:00"
+    },
+    {
+      "table": "stock_intraday_trend",
+      "requirements": [
+        "intraday"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 35412,
+      "count": 35427,
+      "securities": 49,
+      "bytes": 6324224,
+      "date_column": "trade_date",
+      "security_column": "unified_code",
+      "first": "2026-09-28",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:12.219308+08:00"
+    },
+    {
+      "table": "stock_large_order_trend",
+      "requirements": [
+        "large_order_trend"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 33360,
+      "count": 33258,
+      "securities": 46,
+      "bytes": 4227072,
+      "date_column": "trade_date",
+      "security_column": "unified_code",
+      "first": "2026-09-28",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:12.243373+08:00"
+    },
+    {
+      "table": "stock_listing",
+      "requirements": [
+        "listings"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 4537,
+      "count": 5493,
+      "securities": 5493,
+      "bytes": 64700416,
+      "date_column": "listing_date",
+      "security_column": "unified_code",
+      "first": "1990-12-19",
+      "last": "2026-10-16",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:12.246372+08:00"
+    },
+    {
+      "table": "stock_market_day",
+      "requirements": [
+        "historical_quote",
+        "intraday",
+        "intraday_trades",
+        "large_order_trend",
+        "minute_entrust",
+        "minute_volume",
+        "opening_auction"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 2724855,
+      "count": 2912640,
+      "securities": 2383,
+      "bytes": 1605107712,
+      "date_column": "trade_date",
+      "security_column": "unified_code",
+      "first": "2021-01-04",
+      "last": "2026-10-16",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:13.898019+08:00"
+    },
+    {
+      "table": "stock_minute_entrust",
+      "requirements": [
+        "minute_entrust"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 35100,
+      "count": 35186,
+      "securities": 49,
+      "bytes": 6324224,
+      "date_column": "trade_date",
+      "security_column": "unified_code",
+      "first": "2026-09-28",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:13.912246+08:00"
+    },
+    {
+      "table": "stock_minute_volume",
+      "requirements": [
+        "minute_volume"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 32892,
+      "count": 35427,
+      "securities": 49,
+      "bytes": 5275648,
+      "date_column": "trade_date",
+      "security_column": "unified_code",
+      "first": "2026-09-28",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:13.922246+08:00"
+    },
+    {
+      "table": "stock_opening_auction",
+      "requirements": [
+        "opening_auction"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 5758,
+      "count": 5758,
+      "securities": 49,
+      "bytes": 540672,
+      "date_column": "trade_date",
+      "security_column": "unified_code",
+      "first": "2026-09-28",
+      "last": "2026-09-30",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:13.922246+08:00"
+    },
+    {
+      "table": "stock_repurchase_plan",
+      "requirements": [
+        "repurchases"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 5446,
+      "count": 5570,
+      "securities": 2958,
+      "bytes": 7389184,
+      "date_column": "plan_date",
+      "security_column": "unified_code",
+      "first": "2005-06-17",
+      "last": "2026-10-19",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:13.922246+08:00"
+    },
+    {
+      "table": "suspension_event",
+      "requirements": [
+        "suspensions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 103612,
+      "count": 104749,
+      "securities": 4405,
+      "bytes": 59785216,
+      "date_column": "suspended_at",
+      "security_column": "unified_code",
+      "first": "2004-12-27 09:30:00",
+      "last": "2026-10-15 09:31:00",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:14.074893+08:00"
+    },
+    {
+      "table": "suspension_source_date",
+      "requirements": [
+        "suspensions"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 168457,
+      "count": 145374,
+      "securities": 4405,
+      "bytes": 52854784,
+      "date_column": "source_date",
+      "security_column": "unified_code",
+      "first": "2004-12-27",
+      "last": "2026-10-16",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:14.324719+08:00"
+    },
+    {
+      "table": "trade_calendar",
+      "requirements": [
+        "calendar"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 13594,
+      "count": 13527,
+      "securities": null,
+      "bytes": 475136,
+      "date_column": "trade_date",
+      "security_column": "",
+      "first": "1990-12-19",
+      "last": "2027-12-31",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:14.326476+08:00"
+    },
+    {
+      "table": "trading_rule_citation",
+      "requirements": [
+        "limit_rules",
+        "lot_rules",
+        "sessions",
+        "settlement_rules",
+        "stamp_duty",
+        "tick_rules",
+        "transfer_fee"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 30,
+      "count": 30,
+      "securities": null,
+      "bytes": 49152,
+      "date_column": "",
+      "security_column": "",
+      "first": null,
+      "last": null,
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:14.326476+08:00"
+    },
+    {
+      "table": "trading_rule_value",
+      "requirements": [
+        "limit_rules",
+        "lot_rules",
+        "sessions",
+        "settlement_rules",
+        "stamp_duty",
+        "tick_rules",
+        "transfer_fee"
+      ],
+      "category": "研究业务",
+      "estimated_rows": 77,
+      "count": 77,
+      "securities": null,
+      "bytes": 98304,
+      "date_column": "effective_start",
+      "security_column": "",
+      "first": "2022-04-29",
+      "last": "2026-07-06",
+      "status": "有数据，完整性另查",
+      "checked_at": "2026-10-19T01:59:14.326476+08:00"
+    }
+  ],
+  "started_at": "2026-10-19T01:58:59.281912+08:00",
+  "finished_at": "2026-10-19T01:59:14.326476+08:00",
+  "exact": true,
+  "checking": false,
+  "checked": 59,
+  "total": 59,
+  "error": "",
+  "note": "行数与日期边界只说明库存，不证明集合完整；各表分时读取，非全库原子快照。",
+  "supplement": {
+    "checked_at": "2026-10-19T01:59:22.349707+08:00",
+    "current_pool_without_quote": 3197,
+    "current_pool_without_listing": 87,
+    "pending_archive": 0
+  }
+}

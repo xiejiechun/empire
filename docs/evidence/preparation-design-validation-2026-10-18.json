@@ -1,0 +1,50 @@
+{
+  "scope": "Design documents, read-only data scan and an interactive review mockup only; no application implementation or release",
+  "document_checks": {
+    "documentation_contract": "PASS offline documentation coverage and review",
+    "verify_documentation": "PASS: 193 documents, 1290 links, 55 schema tables",
+    "regression_command": ".venv/Scripts/python.exe -X utf8 -m pytest -q tests/test_documentation_contracts.py tests/test_documentation_review.py --basetemp build/pytest-preparation-design-final-20261018 --junitxml build/preparation-redesign-20261018/document-tests.xml",
+    "regression_result": "22 passed in 21.26s",
+    "review_scope": "New proposal and dated evidence only; no runtime behavior or documentation coverage mapping changed; existing product review remained valid"
+  },
+  "scan_checks": {
+    "catalogue_items": 83,
+    "registered_items": 55,
+    "all_six_checks_pass": 9,
+    "analysis_accepted_with_limits": 20,
+    "blocking_failures": 24,
+    "unverified_computation_scopes": 2,
+    "unregistered_items": 28,
+    "source_key_and_coverage_pass": 38,
+    "started_at": "2026-10-18T21:01:10.398607+08:00",
+    "finished_at": "2026-10-18T21:20:35.675885+08:00",
+    "pending_before": 9,
+    "pending_after": 0,
+    "atomic_whole_database_snapshot": false,
+    "notes": "Each provider is independently timed; existing collectors continued. Head/projection inventory does not prove detailed content completeness. No claim of complete historical factor-backtest readiness."
+  },
+  "mockup": {
+    "fragment": "preparation-design.html",
+    "rendered_with_bundled_renderer": true,
+    "fragment_and_javascript_checks": "PASS size, literal markup and node --check",
+    "purpose_switch": "verified in in-app browser",
+    "gap_filter_and_row_details": "verified in in-app browser",
+    "strategy_profile": "verified in in-app browser",
+    "console_errors": 0,
+    "narrow_layout": {
+      "viewport_width": 360,
+      "content_width": 313,
+      "scroll_width": 313,
+      "layout_columns": "283px",
+      "override_restored": true
+    }
+  },
+  "runtime": {
+    "application_code_modified": false,
+    "collector_or_archiver_started": false,
+    "http_source_requests": 0,
+    "business_or_configuration_mutations": false,
+    "visible_desktop_restarted": false,
+    "production_release": false
+  }
+}

@@ -254,13 +254,23 @@ async def test_workspace_direct_help_and_collection_grouping():
             pages.extend(next(iter(provided.values())))
     management = {page.id: page.management for page in pages if page.management is not None}
     assert {key: value.context.task_id for key, value in management.items()} == {
+        'ths_capital': 'ths-capital',
+        **{k: 'ths-holders' for k in ('top_holders', 'float_holders', 'bond_holders')},
+        **{k: 'tdx-' + k.replace('_', '-') for k in ('earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report', 'holder_count', 'shareholder_changes')},
+        'unlock_industries': 'tdx-unlock-industries',
+        'unlocks': 'tdx-unlocks',
+        'repurchases': 'eastmoney-repurchases',
+        **{'rules_' + k: 'rules-' + k.replace('_', '-') for k in ('limit_rules', 'settlement_rules', 'lot_rules', 'tick_rules', 'sessions', 'stamp_duty', 'transfer_fee')},
         'listing_status': 'tdx-listing-status',
         'listings': 'ths-listings',
         'industries': 'ths-industries',
+        'indices': 'ths-indices',
+        'index_prices': 'ths-index-prices',
+        'st_implementation': 'tdx-st-implementation', 'st_removal': 'tdx-st-removal',
         'names_company': 'tdx-company-renames', 'names_security': 'tdx-security-renames',
         **{'kaipanla_' + k: 'kaipanla-' + k.replace('_', '-') for k in
            ('trend','auction','volume','trades','entrust','large_order','quote')},
-        "stocks": "sina-stocks", "news": "sina-news", "calendar": "cninfo-calendar",
+        "stocks": "ths-stocks", "news": "sina-news", "calendar": "cninfo-calendar",
         "suspensions": "tdx-suspensions", "dividends": "tdx-dividends",
         "additional_issues": "tdx-additional-issues", "rights_issues": "tdx-rights-issues",
         "income": "ths-income", "balance": "ths-balance", "cashflow": "ths-cashflow",
@@ -282,7 +292,7 @@ async def test_workspace_direct_help_and_collection_grouping():
         assert window.nav.currentItem().text() == "采集管理"
         assert not window.subnav.isHidden()
         assert [window.subnav.item(i).text() for i in range(window.subnav.count())] == [
-            "采集任务", "运行记录", "站点访问规则", "采集出口", "下载资源"]
+            "采集任务", "归档任务", "运行记录", "站点访问规则", "采集出口", "下载资源"]
         window.nav.setCurrentRow(5)
         window.nav.setCurrentRow(3)
         assert window.current_page_id == "sites"

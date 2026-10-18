@@ -33,4 +33,6 @@ def summarize(checks):
     result['usable'] = bool(data) and all(accepted(c) for c in data)
     result['use_state'] = ('可用（有限制）' if any(not c.get('blocking', True) for c in data) else '可用') if result['usable'] else (
         '不可用' if any(c['status'] == 'fail' and c.get('blocking', True) for c in data) else '未确认')
+    if result['integrity'] != '通过' and result['quality'] == '通过':
+        result['quality'] = '已查部分通过'
     return result

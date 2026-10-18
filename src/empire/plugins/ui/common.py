@@ -17,8 +17,8 @@ from empire.core.time import CHINA
 from empire.desktop.theme import TABLE_ROW_HEIGHT
 
 STATUS = {"idle": "待执行", "running": "执行中", "collecting": "正在采集",
-          "paused": "已暂停", "complete": "已完成", "error": "失败",
-          "awaiting_archive": "等待归档", "stopped": "已停止"}
+          "paused": "已暂停", "complete": "已完成", "error": "失败", "source_gap": "已结束（来源缺口）",
+          "awaiting_archive": "等待归档", "stopped": "已停止", 'archived': '已归档'}
 def stamp(value):
     return datetime.fromtimestamp(value, CHINA).strftime("%m-%d %H:%M:%S") if value else "—"
 

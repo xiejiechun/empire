@@ -244,9 +244,9 @@ async def test_failing_proxy_retries_on_direct_without_exposing_secret():
         assert pool.entries["node001"].failures == 1
         assert service.stats["sina"]["fallback_requests"] == 1
         pool.entries["node001"].cooldown = 0
-        with pytest.raises(httpx.ConnectError) as caught:
-            await get(service, max_retries=0)
-        assert "secret" not in str(caught.value).lower()
+        response = await get(service, max_retries=0)
+        assert response.text == "direct"
+        response.close()
     finally:
         USE_PROXY.reset(token)
         await service.close()

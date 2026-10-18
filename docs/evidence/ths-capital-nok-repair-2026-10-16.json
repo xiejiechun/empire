@@ -1,0 +1,115 @@
+{
+  "started_at": "2026-10-16T03:00:56.798619+00:00",
+  "status": "released_verified",
+  "matched_error": {
+    "id": "ac7f93d5d94b4a7899f2e0aa8f4fbe5c",
+    "project_id": "ths-capital",
+    "error": "资本运作单位/数值未知：31.08亿挪威克朗",
+    "stage": "source_validation",
+    "request_url": "https://basic.10jqka.com.cn/000039/capital.html",
+    "created_at": "2026-10-16T02:58:45.041107+00:00",
+    "original_bytes": 262485,
+    "original_sha256": "2f06db24eeca55de55bc93a63f05cb9e6d285f8fe11d36818e071ffb8b0c623d"
+  },
+  "cleanup": {
+    "performed": true,
+    "checked_at": "2026-10-16T03:35:06.315398+00:00",
+    "exact_ids": [
+      "ac7f93d5d94b4a7899f2e0aa8f4fbe5c"
+    ],
+    "removed": 1,
+    "target_absent": true,
+    "other_error_records_remaining": 0,
+    "scope": "Only the verified exact ID; other records preserved"
+  },
+  "classification": "程序解析缺陷：金额币种白名单漏登记挪威克朗",
+  "root_cause": "000039的2009-03-31收购交易金额31.08亿挪威克朗不匹配既有数值币种表；数值解析和交易币种提取原有两份词表。",
+  "fix": "补齐挪威克朗；数值解析与交易币种识别共用CURRENCIES。金额3108000000，币种挪威克朗；不做汇率换算。未知或混合币种仍校验失败。",
+  "tests": {
+    "focused_passed": 60,
+    "coverage": "所有已登记币种来源整页、未知/混合币种拒绝、Redis与SQL往返、正式详情、冷热摘要零DML、有效修订、迟到旧响应、提交后重放及成功清队。"
+  },
+  "live": {
+    "evidence": "ths-capital-nok-live-2026-10-16.json",
+    "securities": [
+      "000039.SZ",
+      "000014.SZ",
+      "601139.SH",
+      "600064.SH",
+      "600643.SH",
+      "000001.SZ"
+    ],
+    "scope": "真实来源通过正式采集/归档/查询路径写隔离库，不是生产覆盖证明",
+    "source_to_sql_equal": true,
+    "proxy_requests": 6,
+    "direct_fallback_requests": 0,
+    "production_progress_unchanged": true,
+    "pending": 0
+  },
+  "source_reproduction": {
+    "proxy_requests": 1,
+    "direct_fallback_requests": 0,
+    "event_date": "2009-03-31",
+    "target": "Yantai Raffles Shipyard Limited 29.90%的股权",
+    "amount_display": "31.08亿挪威克朗"
+  },
+  "contract": "无DDL、字段类型/单位/业务键/版本变更；此前挪威克朗响应失败未入队、不推进连续断点；既有成功规范内容不变，保留有效摘要及覆盖证明，不重置生产任务配置或断点。",
+  "program_config_before_sha256": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+  "capacity": {
+    "evidence": "ths-capital-capacity-2026-10-16.json",
+    "measurements": {
+      "import_seconds": 16.56239429999914,
+      "repeated_seconds": 2.793422000002465,
+      "repeated_business_dml": 0,
+      "facts": 10500,
+      "page_p95_ms": 3.0044999984966125,
+      "detail_p95_ms": 0.9898999996948987,
+      "window_p95_ms": 3.4070000001520384,
+      "audit_ms": 1472.4954000012076,
+      "allocated_bytes": 20070400,
+      "peak_python_bytes": 1502985,
+      "state_bytes": 812917,
+      "detail_bytes": 464,
+      "window_bytes": 11501
+    }
+  },
+  "release_attempts": [
+    {
+      "result": "pre-test gate rejected stale capacity bindings",
+      "resolution": "Reran the independent 700-security/10500-fact measurement against current source, passed; restarted the complete release gate."
+    }
+  ],
+  "release": {
+    "evidence": "ths-capital-nok-release-2026-10-16.json",
+    "verified_at_utc": "2026-10-16T03:34:50Z",
+    "executable_sha256": "6085f2345d921cbeb2eb8582757990b60e26abf91b6c85307ba431197bb05b18",
+    "source_sha256": "721e2933349d01282d7bef28c9a12eb35f50622b58e68d63c49a50578c4b0bcb",
+    "test_counts": {
+      "passed": 2630,
+      "skipped": 5
+    },
+    "program_config_preserved": true
+  },
+  "packaged_doctor": {
+    "working_directory": "D:\\",
+    "redis_connected": true,
+    "mysql_connected": true,
+    "required_tables_present": 55
+  },
+  "desktop": {
+    "native_visible_smoke_exit": 0,
+    "offscreen": false,
+    "screenshot": "build/capital-nok-visible.png",
+    "observed": "Window rendered; lower-left local services connected indicator shown",
+    "restarted_from": "D:\\",
+    "pid": 17240,
+    "interaction_validation": "Not performed in this repair; prior native-pipe failure recorded in the preceding repair. Native visible startup verified; no capital-page interaction claim"
+  },
+  "test_services_cleanup": {
+    "port": 13346,
+    "gracefully_stopped": true,
+    "remaining_test_schemas": [],
+    "production_services_untouched": true
+  },
+  "completed_at": "2026-10-16T03:35:46.644049+00:00"
+}

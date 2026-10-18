@@ -1,0 +1,55 @@
+{
+  "project": "ths-index-prices",
+  "verified_at": "2026-10-11T05:08:32.733267+00:00",
+  "source": {
+    "hash": "af584e51126011fc5efa2f802e1e97227a49b34112082789f397684c9beebee7",
+    "count": 1,
+    "source_count": 1,
+    "anomalous_row": [
+      "2009-12-31",
+      "3326.44",
+      "3326.44",
+      "3326.44",
+      "3326.44",
+      "0",
+      null
+    ]
+  },
+  "sql": {
+    "count": 1,
+    "content_hash": "af584e51126011fc5efa2f802e1e97227a49b34112082789f397684c9beebee7",
+    "complete": true
+  },
+  "formal_query": {
+    "index_code": "399303",
+    "trade_date": "2009-12-31",
+    "open": "3326.440000",
+    "high": "3326.440000",
+    "low": "3326.440000",
+    "close": "3326.440000",
+    "volume": "0.0000",
+    "amount": null,
+    "name": "国证2000",
+    "price_relation_valid": true
+  },
+  "quality": {
+    "status": "pass",
+    "measured": "0条价格关系异常，保留来源原值，受影响日期不用于依赖四价的策略；已核验精度及收盘量额；0条来源缺少开盘/最高/最低价，保存NULL。来源价格字段齐全。1条来源缺少成交额，保存NULL；不影响收盘收益分析，依赖成交额的分析或策略不可用。"
+  },
+  "network": {
+    "policy": {
+      "use_proxy": true,
+      "proxy_fallback": true
+    },
+    "counts": {
+      "proxy_requests": 8
+    }
+  },
+  "pending": 0,
+  "checkpoint": {
+    "next_index": 281,
+    "next_year": 2010,
+    "phase": "collecting"
+  },
+  "full_history_complete": false
+}

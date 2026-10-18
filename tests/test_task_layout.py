@@ -95,10 +95,12 @@ def test_normal_window_keeps_menu_actions_and_save_in_view(task_window, width, h
         assert window.size().width() == width and window.size().height() == height
         assert area.horizontalScrollBar().maximum() == 0
         assert area.verticalScrollBar().maximum() == 0
-        assert in_view(page.task_pager, area)
-        for button in (page.run_button, page.pause_button, page.fresh_button):
+        assert in_view(page.task_menu, area)
+        for button in (page.run_button, page.pause_button, page.fresh_button, page.archive_button):
             assert in_view(button, area)
-        assert page.run_button.mapTo(page, QPoint()).y() == page.fresh_button.mapTo(page, QPoint()).y()
+        assert page.run_button.mapTo(page, QPoint()).y() == page.pause_button.mapTo(page, QPoint()).y()
+        assert page.fresh_button.mapTo(page, QPoint()).y() == page.archive_button.mapTo(page, QPoint()).y()
+        assert page.fresh_button.mapTo(page, QPoint()).y() > page.run_button.mapTo(page, QPoint()).y()
         if index == 1:
             assert in_view(page.save_panel, area)
             assert page.save_button.isEnabled()
@@ -120,7 +122,7 @@ def test_long_error_scrolls_inside_details_and_does_not_move_page(task_window):
     inner.verticalScrollBar().setValue(inner.verticalScrollBar().maximum())
     settle(app)
     assert in_view(page.run_button, area)
-    assert in_view(page.task_pager, area)
+    assert in_view(page.task_menu, area)
     assert page.runtime_fields['error'].text() == error
     page.data['jobs'][0]['error'] = ''
     page.render()

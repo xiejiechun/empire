@@ -1,0 +1,18 @@
+{
+  "project": "tdx-earnings-quick",
+  "handled_ids": [
+    "7a40b83cb8e04483bf2fa87efa3b03ed",
+    "fae52f4c71054ebba794ce8d144b2576"
+  ],
+  "initial_evidence": "tdx-performance-live-2026-10-12.json",
+  "repair": "快报规范矩阵使用有界zlib传输，保留全部同比行、集合及归档单元；8MiB展开上限，512KiB消息限额保持。",
+  "verification": "最终代码专项及真实10000复核通过；快报整轮集合、字段、质量、时效通过，来源提前声明公告日单列时间限制；待归档0。",
+  "cleanup": "仅精确删除两个已修复ID；代理连接瞬时错误及并发其他错误保留。",
+  "preserved_ids": [
+    "fc402f06e67e4647abcef781e358c559"
+  ],
+  "preserved_reason": "代理连接瞬时失败属共享有界重试诊断，不是本次代码修复对象。",
+  "date_issue": "来源最新快报包含明日公告日（两证券2026-10-13），按来源声明日期保存，历史信号质量须标明尚未可用，不应拒绝整期。",
+  "cleanup_count": 2,
+  "repeat_verification_cleanup_count": 0
+}

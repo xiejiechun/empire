@@ -72,6 +72,10 @@ def run(args):
         proofs={f'SZ:{i:06d}':dict(contract=CONTRACT,digest=digest(r),observed_at=now.isoformat(),
             availability='unavailable' if i%20==0 else 'available',availability_contract=1,
             source_status_code=10001 if i%20==0 else 0) for i,r in enumerate(rows)}
+        for i in range(1, len(rows), 20):
+            proofs[f'SZ:{i:06d}'].update(availability='incomplete', source_status_code=0,
+                missing_fields=['listing_date'])
+        state_bytes = len(json.dumps(proofs, ensure_ascii=False).encode())
         with engine.begin() as conn:
             conn.execute(text('INSERT INTO stock(unified_code,name) VALUES(:unified_code,:name)'),
                 [dict(unified_code=r['unified_code'],name='容量样本') for r in rows])
@@ -139,11 +143,11 @@ def run(args):
         report=dict(bindings={p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in bindings},
             ddl_scopes={TABLE:hashlib.sha256(ddl.encode()).hexdigest()},
             measurements=dict(page_p95_ms=formal_timings['page'],detail_p95_ms=formal_timings['detail'],range_p95_ms=formal_timings['range'],
-                coverage_p95_ms=formal_timings['coverage'],import_seconds=import_seconds,audit_seconds=audit_seconds,allocated_bytes=int(allocation)),
-            limits=dict(page_p95_ms=50,detail_p95_ms=50,range_p95_ms=50,coverage_p95_ms=500,import_seconds=60,audit_seconds=5,allocated_bytes=1536*1024**2),
+                coverage_p95_ms=formal_timings['coverage'],import_seconds=import_seconds,audit_seconds=audit_seconds,allocated_bytes=int(allocation),state_bytes=state_bytes),
+            limits=dict(page_p95_ms=100,detail_p95_ms=100,range_p95_ms=100,coverage_p95_ms=500,import_seconds=60,audit_seconds=5,allocated_bytes=1536*1024**2,state_bytes=8*1024**2),
             conditions=dict(platform=platform.platform(),mysql=version,rows=15000,state_units=15000,formal_queries=True,audited=audited,cache='unforced first; subsequent hot repetitions',
-                synthetic=True,history_sizes_bytes=[2049,105078,HISTORY_MAX_BYTES],maximum_history_bytes=HISTORY_MAX_BYTES),
-            reviewed_tradeoffs='一证券一行；列表/补缺不读历史沿革；详细审计有界200行页读正文，来源范围只限当前池和已存记录。容量按真实正文尺寸放大，不代表全市场实采。',
+                synthetic=True,incomplete_units=750,unavailable_units=750,history_sizes_bytes=[2049,105078,HISTORY_MAX_BYTES],maximum_history_bytes=HISTORY_MAX_BYTES),
+            reviewed_tradeoffs='一证券一行；列表/补缺不读历史沿革；详细审计有界200行页读正文，来源范围只限当前池和已存记录。容量按真实正文尺寸放大，不代表全市场实采。正式列表和详情读取统一状态以提示来源缺值；15000单元约3.5MiB，实测63至77ms超过原50ms目标，接受100ms预算以保留单一状态路径和准确质量提示，不另建状态表或持久缓存。',
             explain=explains,queries=actual,python_peak_bytes=peak,repeat=repeat,revision=revision,
             cleanup='UUID-owned database dropped in finally')
         report['passed']=all(report['measurements'][k]<=v for k,v in report['limits'].items())

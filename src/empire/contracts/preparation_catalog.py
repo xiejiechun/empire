@@ -1,11 +1,12 @@
 """The single catalogue of independently deliverable collection and processing jobs."""
+from empire.contracts.preparation_capital_page import ITEMS as CAPITAL_PAGE
 from empire.contracts.preparation_events import ITEMS as EVENTS
 from empire.contracts.preparation_existing import ITEMS as EXISTING
 from empire.contracts.preparation_foundation import ITEMS as FOUNDATION
 from empire.contracts.preparation_markets import ITEMS as MARKETS
 from empire.contracts.preparation_processing import ITEMS as PROCESSING
 
-REQUIREMENTS = (*EXISTING, *FOUNDATION, *EVENTS, *MARKETS, *PROCESSING)
+REQUIREMENTS = (*EXISTING, *FOUNDATION, *EVENTS, *CAPITAL_PAGE, *MARKETS, *PROCESSING)
 BY_ID = {item.id: item for item in REQUIREMENTS}
 if len(BY_ID) != len(REQUIREMENTS):
     raise ValueError('数据准备项目 ID 重复')

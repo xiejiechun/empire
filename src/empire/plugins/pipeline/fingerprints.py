@@ -127,7 +127,7 @@ class FingerprintCache:
                                          'forget', self.ttl, self.limit, *untrusted)
 
     async def invalidate(self, namespace, source):
-        """Call while archiving is stopped, before manual SQL maintenance."""
+        """Call under archive ownership, or stopped before manual SQL maintenance."""
         await self.store.client.delete(*self.keys(namespace, source))
 
     async def invalidate_entries(self, namespace, source, identities):

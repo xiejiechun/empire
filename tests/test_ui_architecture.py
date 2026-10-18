@@ -46,15 +46,44 @@ def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_pat
             time.sleep(.02)
         raise AssertionError(f"Expected {expected}, got {runtime.page_contributions()}")
 
-    all_ids = {"listing_status", "listings", "dividends", "additional_issues", "rights_issues", "home", "catalog", "stocks", "news", "calendar", "collection", "history",
-               "sites", "system", "plugins", "help", "proxies", "downloads", "preparation", "suspensions",
-               "income", "balance", "cashflow", "industries", "names_company", "names_security",
+    performance_ids = {'earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report', 'holder_count', 'shareholder_changes'}
+    all_ids = {*performance_ids, "ths_capital", "unlock_industries", "unlocks", "top_holders", "float_holders", "bond_holders", "repurchases", "listing_status", "listings", "dividends", "additional_issues", "rights_issues", "home", "catalog", "stocks", "news", "calendar", "collection", "history",
+               "archived_tasks", "sites", "system", "plugins", "help", "proxies", "downloads", "preparation", "suspensions",
+               "income", "balance", "cashflow", "industries", "indices", "index_prices", "names_company", "names_security", "st_implementation", "st_removal", "adjustment",
                *('kaipanla_' + k for k in ('trend','auction','volume','trades','entrust','large_order','quote'))}
+    all_ids.update('rules_' + k for k in ('limit_rules', 'settlement_rules', 'lot_rules', 'tick_rules', 'sessions', 'stamp_duty', 'transfer_fee'))
     runtime.start()
     try:
         wait_pages(all_ids)
+        runtime.command('stop', 'ui.ths_capital').result(timeout=5)
+        wait_pages(all_ids - {'ths_capital'})
+        assert runtime.manager.entries['ui.news'].state == 'RUNNING'
+        runtime.command('start', 'ui.ths_capital').result(timeout=5)
+        wait_pages(all_ids)
+        for kind in ('top_holders', 'float_holders', 'bond_holders'):
+            runtime.command('stop', 'ui.' + kind).result(timeout=5)
+            wait_pages(all_ids - {kind})
+            assert runtime.manager.entries['ui.news'].state == 'RUNNING'
+            runtime.command('start', 'ui.' + kind).result(timeout=5)
+            wait_pages(all_ids)
+        for kind in performance_ids:
+            runtime.command('stop', 'ui.tdx_' + kind).result(timeout=5)
+            wait_pages(all_ids - {kind})
+            assert runtime.manager.entries['ui.news'].state == 'RUNNING'
+            runtime.command('start', 'ui.tdx_' + kind).result(timeout=5)
+            wait_pages(all_ids)
+        runtime.command('stop', 'ui.repurchases').result(timeout=5)
+        wait_pages(all_ids - {'repurchases'})
+        assert runtime.manager.entries['ui.news'].state == 'RUNNING'
+        runtime.command('start', 'ui.repurchases').result(timeout=5)
+        wait_pages(all_ids)
+        runtime.command('stop', 'ui.rules_limit_rules').result(timeout=5)
+        wait_pages(all_ids - {'rules_limit_rules'})
+        assert runtime.manager.entries['ui.rules_lot_rules'].state == 'RUNNING'
+        runtime.command('start', 'ui.rules_limit_rules').result(timeout=5)
+        wait_pages(all_ids)
         runtime.command("stop", "ui.collection").result(timeout=5)
-        wait_pages(all_ids - {"collection", "history", "sites"})
+        wait_pages(all_ids - {"collection", "archived_tasks", "history", "sites"})
         assert runtime.manager.entries["ui.news"].state == "RUNNING"
         runtime.command("start", "ui.collection").result(timeout=5)
         wait_pages(all_ids)

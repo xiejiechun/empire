@@ -1,0 +1,117 @@
+{
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "results": {
+    "earnings_quick": {
+      "result": {
+        "phase": "complete",
+        "batch_id": "5124f4c89640470e92e1c2b271c4bd03",
+        "index": 187,
+        "market_index": 0,
+        "response_hash": "",
+        "page": 562,
+        "collected": 53813,
+        "rolling": "00de0e3c8c381dac6d816837542a43204c4ad620665ed6f9cfab93195c92243a",
+        "scope_hash": "c99c706363c6c74fc055b7ae235406ca79d704cec04392401b7998eb1816e4c0",
+        "units": 561,
+        "latest": "2026-09-30",
+        "started_at": "2026-10-12T13:15:47.039244+00:00",
+        "contract": 1
+      },
+      "source": {
+        "responses": 1,
+        "source_rows": 4,
+        "max_body_bytes": 1258,
+        "max_message_bytes": 1258,
+        "first_nonempty": {
+          "unified_code": "600882.SH",
+          "name": "妙可蓝多",
+          "source_id": "gssh0600882",
+          "report_date": "2026-09-30",
+          "announcement_date": "2026-10-09",
+          "source_date": "2026-10-09",
+          "profit_basis": "071001",
+          "profit_scope": "033003",
+          "roe_scope": "033003",
+          "net_profit": "211779500",
+          "roe": "4.53",
+          "eps": "0.422",
+          "assets": "9079636200",
+          "equity": "4798218600",
+          "comparison_value": "175938062.26",
+          "previous_profit": "175938062.26",
+          "previous_roe": "3.9",
+          "profit_change": "20.371622",
+          "roe_change": "16.15384615"
+        }
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 53813,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 187,
+        "requests": 2,
+        "error": "",
+        "total_units": 187,
+        "download_item_name": "完整响应",
+        "download_window_limit": 7,
+        "download_buffer_capacity": 21,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "pages": 562
+      },
+      "errors": [],
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验53813条，必需字段缺失0条；源端可选空值保留",
+          "blocking": true
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "业务身份、正文及完整单元来源集合摘要比较",
+          "blocking": true
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "完整单元及最终范围证明核验；历史撤回仍保留并暴露差异",
+          "blocking": true
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "金额元、比率百分数、户数整数；快报同比原口径并列保留",
+          "blocking": true
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL完整范围或与其内容匹配的可信缓存确认须在3天内",
+          "blocking": true
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "不可确认信号可用日期2条；预约日期和股东统计日不代表公告时刻",
+          "blocking": false
+        }
+      ],
+      "sql_rows": 53813
+    }
+  },
+  "checked_at": "2026-10-12T21:45:29.230434+08:00",
+  "network": {
+    "proxy_requests": 2
+  },
+  "pending": 0
+}

@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-10-10T21:18:15.198301+08:00",
+  "project": "ths-index-prices",
+  "release": {
+    "passed": true,
+    "tests_passed": 2019,
+    "tests_skipped": 5,
+    "skip_reason": "explicit isolated drill opt-in required",
+    "continuation": "Full tests/capacity/DPI passed; old desktop reopened before build; normal close then original build-and-smoke gate continued without source changes",
+    "executable_sha256": "249a0b85bbfe5ebf4911b5b77c1d3b89e61dc44433fc01259d9e7617996fe23c",
+    "portable": {
+      "chinese_space_path": true,
+      "packaged_smoke": true,
+      "first_run_prepared_config": true,
+      "config_recheck": true
+    }
+  },
+  "config": {
+    "source_preserved": true,
+    "program_preserved": true,
+    "packaged_doctor_other_cwd_passed": true
+  },
+  "desktop": {
+    "visible": true,
+    "daily_prices_query_passed": true,
+    "index_preparation_scope_visible": true,
+    "saved_daily_time": "18:00",
+    "full_directory_started_via_ui": true
+  },
+  "archived": {
+    "rows": 82543,
+    "indices": 12,
+    "first": "1990-12-19",
+    "last": "2026-10-09",
+    "complete_years": 349
+  },
+  "full_initialization": {
+    "directory": 573,
+    "active": false,
+    "last_status": "error",
+    "processed_indices": 8,
+    "planned_indices": 573,
+    "queued_units": 247,
+    "collected": 55655,
+    "error_records": 71,
+    "shared_pending": 0,
+    "failure": "HTTP 502: zs_1B0009/01/2020.js after one manual checkpoint resume",
+    "errors_preserved": true
+  },
+  "finite_acceptance": "index-prices-live-2026-10-10.json: four indices, 27028 rows, 113 years, source-to-query equality; distinct from incomplete full collection",
+  "limitations": [
+    "Source-supported dates and THS codes only",
+    "Daily recent window does not discover all older revisions; fresh checks all years",
+    "Volume remains source units; no historical known-version replay"
+  ],
+  "test_mysql_shutdown": true
+}

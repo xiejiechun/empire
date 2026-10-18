@@ -1,0 +1,152 @@
+{
+  "checked_at": "2026-10-13T14:07:47.000206+00:00",
+  "bindings": {
+    "src/empire/contracts/tdx_performance.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+    "src/empire/plugins/datasets/tdx_performance.py": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
+    "src/empire/plugins/data/tdx_performance.py": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+    "scripts/measure_shareholder_changes.py": "05e0e6f73d78a49d6d57182e95a89d6cbbdd292f585c265986a4c240471ab650"
+  },
+  "ddl_scopes": {
+    "shareholder_change": "45308303c97fcad0dfc62948095056f389abfbdcfdd7ab746aa6cfcc014cc7c8"
+  },
+  "measurements": {
+    "page_ms": 3.873899986501783,
+    "security_ms": 0.7293999660760164,
+    "detail_ms": 0.3981000045314431,
+    "month_ms": 48.1712999753654,
+    "range_ms": 3.6634000134654343,
+    "allocated_bytes": 81313792,
+    "projected_million_bytes": 813137920,
+    "import_seconds": 4.574093799979892,
+    "repeat_seconds": 0.17611229995964095,
+    "revision_seconds": 0.19752600003266707,
+    "message_bytes": 25200,
+    "matrix_bytes": 760001,
+    "query_peak_bytes": 5510132
+  },
+  "limits": {
+    "page_ms": 100,
+    "security_ms": 100,
+    "detail_ms": 100,
+    "month_ms": 5000,
+    "range_ms": 100,
+    "allocated_bytes": 268435456,
+    "projected_million_bytes": 2147483648,
+    "import_seconds": 120,
+    "repeat_seconds": 5,
+    "revision_seconds": 5,
+    "message_bytes": 524288,
+    "matrix_bytes": 8388608,
+    "query_peak_bytes": 33554432
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "independent_service": true,
+    "rows": 100000,
+    "cache": "first unforced plus four warm; maximum conservatively bounds P95",
+    "source": "real normalized early event expanded across 5000 securities and 20 months"
+  },
+  "reviewed_tradeoffs": "事实列与三个业务查询索引；开始日期严格保留月/日精度的VARCHAR(10)，不伪造日。测完整5000行市场重复零DML及单行修订；估计百万行是线性投影而非生产实采或冷盘承诺。",
+  "details": {
+    "query_ms": {
+      "page": 3.873899986501783,
+      "security": 0.7293999660760164,
+      "detail": 0.3981000045314431,
+      "month": 48.1712999753654,
+      "range": 3.6634000134654343
+    },
+    "returned": {
+      "page": 200,
+      "security": 20,
+      "detail": 1,
+      "month": 5000,
+      "range": 200
+    },
+    "explain": {
+      "page": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "index",
+          "possible_keys": null,
+          "key": "ix_date",
+          "key_len": "78",
+          "ref": null,
+          "rows": 200,
+          "filtered": 100.0,
+          "Extra": "Backward index scan"
+        }
+      ],
+      "security": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "ref",
+          "possible_keys": "ix_security_date",
+          "key": "ix_security_date",
+          "key_len": "11",
+          "ref": "const",
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": "Backward index scan"
+        }
+      ],
+      "detail": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "const",
+          "possible_keys": "PRIMARY",
+          "key": "PRIMARY",
+          "key_len": "64",
+          "ref": "const",
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": null
+        }
+      ],
+      "month": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "ref",
+          "possible_keys": "ix_month",
+          "key": "ix_month",
+          "key_len": "3",
+          "ref": "const",
+          "rows": 9314,
+          "filtered": 100.0,
+          "Extra": null
+        }
+      ],
+      "range": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "range",
+          "possible_keys": "ix_date",
+          "key": "ix_date",
+          "key_len": "3",
+          "ref": null,
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": "Using index condition; Backward index scan"
+        }
+      ]
+    },
+    "repeated_business_dml": 0,
+    "revised_rows": 1
+  },
+  "passed": true
+}

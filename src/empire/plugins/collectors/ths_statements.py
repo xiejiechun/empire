@@ -91,11 +91,14 @@ class ThsStatementCollector:
             if (fresh and not progressed) or cursor.get('phase') == 'complete':
                 cursor = {}
             if cursor.get('phase') != 'awaiting_archive':
-                stocks = await self.query.securities()
+                stocks = sorted(await self.query.securities(), key=lambda s: (s['market'], s['code']))
                 keys = [s['market'] + ':' + s['code'] for s in stocks]
                 scope = digest(keys)
                 if cursor and cursor.get('scope_hash') != scope:
-                    raise ValueError('财报股票池已改变，请重新初始化；不混用旧断点')
+                    # An index/rolling proof belongs to exactly one ordered pool.
+                    # Keep old queued units; a new complete round rebuilds coverage.
+                    self.stats.update(scope_changed=True, previous_units=cursor.get('units'))
+                    cursor = {}
                 if not cursor:
                     cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0, collected=0,
                                   units=len(keys), scope_hash=scope, rolling=digest([]))

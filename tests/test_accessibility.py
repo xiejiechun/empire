@@ -31,7 +31,7 @@ def test_search_filters_and_navigation_have_stable_accessible_names():
             tasks.task_search, tasks.task_category, tasks.task_source,
             tasks.task_status, tasks.task_menu, tasks.mode, tasks.interval,
             tasks.daily, tasks.retries, tasks.route_mode,
-            help_page.search, help_page.tabs, help_page.index, help_page.browser,
+            help_page.search, help_page.chapters, help_page.index, help_page.browser,
         )
         assert all(control.accessibleName().strip() for control in controls)
         assert all(QAccessible.queryAccessibleInterface(control).text(QAccessible.Text.Name).strip()

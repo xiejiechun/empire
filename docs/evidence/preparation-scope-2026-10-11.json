@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-11",
+  "scope": "A股日频回测、股票估值及股东资金流融资融券策略因子",
+  "before": 95,
+  "after": 73,
+  "removed": 22,
+  "counts": {
+    "采集": 63,
+    "计算": 8,
+    "核对": 2
+  },
+  "tests": {
+    "related": "140 passed; documentation-review staleness was the sole initial failure",
+    "documentation_after_review": "26 passed, including the previously failed contract",
+    "documentation": "PASS: 144 articles, 1029 links, 33 schema tables",
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "coverage": "catalogue scope, dependency closure, news service retained, UI search, stale catalogue cache rejection, preparation lifecycle, stock/calendar/capital regressions",
+    "news_real_archive": "20 passed in 26.16s, including archive/query/queue cleanup after retirement",
+    "full_release": {
+      "passed": 2111,
+      "skipped": 5,
+      "skip_reason": "Explicit isolated drill opt-in required (test_state_unit_isolated.py)",
+      "warnings": 2
+    },
+    "windows_file_replace_recheck": "UI architecture suite 2 passed; affected case 5 further consecutive passes; full clean gate passed without source changes"
+  },
+  "release": "PASS verify-release.ps1: dependencies, full tests, capacity, DPI, portable config, build, smoke",
+  "desktop": {
+    "verified": true,
+    "app": "D:/project/empire/dist/Empire/Empire.exe",
+    "observed": "2026-10-11 16:57 Asia/Shanghai",
+    "scope_counts": {
+      "collection": 63,
+      "processing": 10,
+      "total": 73
+    },
+    "removed_search": "退市整理期 -> 没有找到符合条件的数据",
+    "retained_searches": [
+      "股东户数",
+      "个股融资交易和余额",
+      "大单净额走势（策略行情）"
+    ],
+    "final_state": "search cleared; data preparation page open",
+    "limitation": "Catalogue/UI delivery verified; completed live checks retain actual pending/failed data states, not all projects are data-ready",
+    "live_check_snapshot": "2026-10-11 16:57:53: 63 collection items, 14 ready; 10 processing items, 0 ready; results saved to Redis for 7 days. This is a time/scope snapshot, not a permanent availability guarantee."
+  },
+  "business_data": "No SQL/Redis business mutation; news collection and query retained",
+  "source_sha256_before_shared_release": "de7d2bae8c9b76a5ceed7e923b5836380945a0d5d9df862acfa1449483094c65",
+  "release_attempts": [
+    {
+      "result": "stopped",
+      "reason": "application MySQL account cannot CREATE isolated test schemas; switched to existing test instance 13331"
+    },
+    {
+      "result": "stopped",
+      "reason": "retired news preparation integration test still called removed interface; replaced with real archive/query retention test and all 20 news integration tests passed"
+    },
+    {
+      "result": "failed near end",
+      "reason": "Transient Windows PermissionError replacing test-owned plugin state; focused suite and five repetitions passed; clean full gate then passed"
+    }
+  ],
+  "release_log": "build/preparation-scope-20261011/release-clean.log",
+  "source_sha256": "700b2ff017fe6d79bee2d02e5eb489af9da894caa50d39e2b55da43fbdd6cbc7",
+  "config_preserved": true,
+  "doctor": {
+    "cwd": "C:\\",
+    "executable": "dist/Empire/Empire.exe",
+    "exit": 0,
+    "mysql_connected": true,
+    "redis_connected": true
+  }
+}

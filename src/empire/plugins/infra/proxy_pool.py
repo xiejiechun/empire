@@ -287,7 +287,8 @@ class ProxyPool:
             if candidate.egress_identity == entry.egress_identity:
                 candidate.ready_at[site] = max(candidate.ready_at.get(site, 0), ready)
 
-    async def acquire(self, *, fallback=False, site=""):
+    async def acquire(self, *, fallback=False, site="", excluded=None):
+        excluded = excluded or set()
         self.waiting += 1
         try:
             while not self.closed:
@@ -296,10 +297,12 @@ class ProxyPool:
                 if self.closed:
                     break
                 now = monotonic()
+                eligible = [e for e in self.entries.values()
+                            if len(excluded) < 1000 and e.code not in excluded
+                            and e.expires > now and e.cooldown <= now]
                 busy_egresses = {e.egress_identity for e in [*self.entries.values(), *self.retired]
                                   if site in e.active_sites}
-                candidates = [e for e in self.entries.values()
-                              if e.expires > now and e.cooldown <= now and site not in e.active_sites
+                candidates = [e for e in eligible if site not in e.active_sites
                               and e.ready_at.get(site, 0) <= now
                               and e.egress_identity not in busy_egresses
                               and not any(old.code == e.code and old.busy for old in self.retired)]
@@ -325,9 +328,11 @@ class ProxyPool:
                         self.failed(entry)
                         raise RuntimeError("代理客户端初始化失败，请检查代理协议支持") from None
                     return entry
-                if fallback and not any(e.expires > now and e.cooldown <= now
-                                        for e in self.entries.values()):
-                    return None
+                if not eligible:
+                    if fallback:
+                        return None
+                    if excluded:
+                        raise httpx.ProxyError("本次请求的可用代理设备已全部失败，当前任务禁止本机直连")
                 deadlines = [self.refreshed_at + 1]
                 for candidate in self.entries.values():
                     deadlines.extend(t for t in (candidate.expires, candidate.cooldown,

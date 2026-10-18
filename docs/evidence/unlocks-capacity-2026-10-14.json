@@ -1,0 +1,160 @@
+{
+  "checked_at": "2026-10-13T17:51:22.861963+00:00",
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "isolation": "owned UUID database on independent13338 service",
+    "cache": "first read then five warm reads; maximum reported",
+    "rows": {
+      "parents": 100000,
+      "details": 200000
+    },
+    "projection": "linear 1100000-row planning estimate; not a measured million-detail import"
+  },
+  "reviewed_tradeoffs": "Two typed business tables; request-group shared details; bounded month snapshot and message limits. No stored raw success bodies or duplicated per-parent details.",
+  "measurements": {
+    "page_ms": 6.46419997792691,
+    "security_ms": 4.871100012678653,
+    "detail_ms": 0.35390001721680164,
+    "month_ms": 30.81730002304539,
+    "range_ms": 9.425199998077005,
+    "allocated_bytes": 292012032,
+    "projected_1100000_bytes": 1070710784,
+    "import_seconds": 15.63467749999836,
+    "repeat_seconds": 0.22411329997703433,
+    "revision_seconds": 0.11323650000849739,
+    "message_bytes": 327208,
+    "query_peak_bytes": 1651614
+  },
+  "limits": {
+    "page_ms": 100,
+    "security_ms": 100,
+    "detail_ms": 100,
+    "month_ms": 5000,
+    "range_ms": 100,
+    "allocated_bytes": 805306368,
+    "projected_1100000_bytes": 2147483648,
+    "import_seconds": 300,
+    "repeat_seconds": 5,
+    "revision_seconds": 5,
+    "message_bytes": 524288,
+    "query_peak_bytes": 33554432
+  },
+  "allocation": {
+    "restricted_share_unlock": {
+      "data": 58474496,
+      "indexes": 45006848
+    },
+    "restricted_share_unlock_detail": {
+      "data": 153092096,
+      "indexes": 35438592
+    }
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_date",
+        "key_len": "78",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_security_date",
+        "key": "ix_security_date",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock_detail",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "64",
+        "ref": "const",
+        "rows": 2,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "month": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock_detail",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_date",
+        "key": "ix_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 3708,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Using filesort"
+      }
+    ],
+    "range": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_date",
+        "key": "ix_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ]
+  },
+  "returned": {
+    "page": 200,
+    "security": 100,
+    "detail": 2,
+    "month": 2000,
+    "range": 200
+  },
+  "read_bytes": {
+    "page": 87600,
+    "security": 43800,
+    "detail": 804,
+    "month": 804000,
+    "range": 10000
+  },
+  "bindings": {
+    "src/empire/contracts/unlocks.py": "f7c082205645e04746d3bfb87a2bc168af3479126ca31725cdb4adec12d4a68f",
+    "src/empire/plugins/datasets/unlocks.py": "0556c91e9169c6cd6689efe839caeb90b802bfb2f83857c4182f8a10acabda0c",
+    "src/empire/plugins/data/unlocks.py": "36f5760cc0380986c7c628fd5119ceea5860c8da2413c5499e22e6f4ec529693",
+    "scripts/measure_unlocks.py": "d69592720642630591e8aa7c0b6610fa065ac78009ecf31615fb1d1e6ac83f58"
+  },
+  "ddl_scopes": {
+    "restricted_share_unlock": "9e93bda4b525128f0a1f9c83987e521b5b87fc18bc42099c31888b6955a8386d",
+    "restricted_share_unlock_detail": "956ee73532656f2271252a0e897a211f27a199eb29b790dd77f5890fa336be75"
+  },
+  "passed": true
+}

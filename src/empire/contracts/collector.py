@@ -8,6 +8,14 @@ from typing import Any, Literal, NotRequired, Protocol, TypedDict
 from empire.contracts.data import Envelope
 
 
+class CollectionSourceGap(Exception):
+    """Round ended and valid data confirmed; identified source gaps remain.
+
+    Collectors may raise this only after all queued messages are confirmed.
+    It does not certify complete coverage or authorize advancing past a gap.
+    """
+
+
 class Checkpoint(TypedDict):
     revision: int
     cursor: dict[str, Any]

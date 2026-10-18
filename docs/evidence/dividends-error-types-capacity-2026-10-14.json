@@ -1,0 +1,28 @@
+{
+  "bindings": {
+    "src/empire/plugins/collectors/tdx_dividend_periods.py": "c50896594b1cdc90bef5c53fc4e6e2575a4c50ecb98b2f7db71866a279922872",
+    "src/empire/plugins/collectors/tdx_dividend_discovery.py": "f2d09ae15913057a1de8ccbc7bf5197c83090189829e04efc8b46597699eb2f5",
+    "src/empire/plugins/datasets/capital_actions.py": "6259032715ba22412b02c70069cfa706f3cc2283506f21e139ad6856e17906d3",
+    "src/empire/plugins/datasets/capital_archive.py": "fc029f129c059110f129a63fb67a19244e9d49095c893e6eea5daa8649631b2f"
+  },
+  "ddl_scopes": {
+    "dividend_plan": "6cdb5cf668ebfb2e6030ca5a82762af4dc8224c8ac084659e2eac2d7eedd53d1"
+  },
+  "measurements": {
+    "sql_rows": 56150,
+    "payload_bytes": 23645559,
+    "maximum_payload_bytes": 452,
+    "query_p95_ms": 3.8784999633207917,
+    "source_rows": 56145,
+    "planned_periods": 629
+  },
+  "limits": {
+    "source_rows": 100000,
+    "planned_periods": 1000,
+    "payload_bytes": 134217728,
+    "maximum_payload_bytes": 65536,
+    "query_p95_ms": 1500
+  },
+  "conditions": "5580证券真实来源下载；SQL只读容量及10次正式查询，非全市场并发压测；来源不再返回的旧方案差异单列，不以容量通过代替完整性。",
+  "reviewed_tradeoffs": "沿用原业务身份、表结构与查询，目录默认期修复增加必要非季末计划，不截断历史。"
+}

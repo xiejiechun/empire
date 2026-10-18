@@ -12,7 +12,9 @@ from empire.contracts.listings import (
     PROJECT,
     REFERER,
     digest,
+    is_incomplete,
     is_unavailable,
+    is_unusable,
     parse,
     url,
 )
@@ -123,8 +125,9 @@ class ThsListingCollector:
                         stage = 'source_validation'
                         row, observed, request_url = await read.resolve()
                         following = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
-                                     'collected': cursor['collected'] + int(not is_unavailable(row)),
-                                     'unavailable': cursor.get('unavailable', 0) + int(is_unavailable(row))}
+                                     'collected': cursor['collected'] + int(not is_unusable(row)),
+                                     'unavailable': cursor.get('unavailable', 0) + int(is_unavailable(row)),
+                                     'incomplete': cursor.get('incomplete', 0) + int(is_incomplete(row))}
                         stage = 'queue_publish'
                         state = await self.publish(state, following, keys[index], row, None, observed, request_url)
                         cursor = state['cursor']
@@ -139,7 +142,7 @@ class ThsListingCollector:
             cursor = {**cursor, 'phase': 'complete'}
             await self.ingest.advance_checkpoint(job_key=JOB, expected_revision=state['revision'], cursor=cursor)
             self.stats.update(status='complete', completed_units=cursor['units'],
-                              unavailable=cursor.get('unavailable', 0), error='')
+                              unavailable=cursor.get('unavailable', 0), incomplete=cursor.get('incomplete', 0), error='')
             return cursor
         except asyncio.CancelledError:
             self.stats['status'] = 'paused'

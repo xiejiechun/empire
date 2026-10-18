@@ -85,7 +85,7 @@ async def test_ui_renders_partial_catalog_while_full_query_is_pending():
     page.timer.stop()
     page.show()
     app.processEvents()
-    page.tick()
+    page.reload()
     page.tick()
     page.tick()
     assert not full.done() and page.table.rowCount() > 0

@@ -2,7 +2,15 @@
 from functools import partial
 
 from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import (
+    QComboBox,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 from empire.contracts.name_changes import KINDS, project
 from empire.contracts.plugin import PluginManifest
@@ -17,7 +25,10 @@ from empire.plugins.ui.common import (
     table,
     table_identity_state,
 )
+from empire.plugins.ui.event_timeline import EventTimeline
 from empire.plugins.ui.plugin import UiPlugin
+from empire.plugins.ui.preview_navigation import security_context
+from empire.plugins.ui.preview_search import CandidateSearch
 from empire.plugins.ui.queries import QueryScope
 
 
@@ -39,6 +50,8 @@ class NamePage(QWidget):
         self.code.setPlaceholderText('六位证券代码或前缀')
         bind_find(self, self.code)
         self.code.returnPressed.connect(self.find)
+        self.candidates = CandidateSearch(self, self.code, shell, 'names_' + kind,
+            lambda r: self.code.setText(r['unified_code']))
         bar.addWidget(self.code)
         find = QPushButton('查询 / 刷新')
         find.clicked.connect(self.find)
@@ -47,10 +60,23 @@ class NamePage(QWidget):
         manage.clicked.connect(lambda: shell.navigate('collection', NavigationContext(task_id=project(kind))))
         bar.addWidget(manage)
         layout.addLayout(bar)
+        dates = QHBoxLayout()
+        self.start, self.end, self.order = QLineEdit(), QLineEdit(), QComboBox()
+        self.order.addItems(['最新在前', '最早在前'])
+        for field, label in ((self.start, '开始'), (self.end, '截止')):
+            accessible(field, '更名事件' + label + '日期')
+            field.setPlaceholderText(label + ' YYYY-MM-DD；留空不限')
+            field.returnPressed.connect(self.find)
+            dates.addWidget(field)
+        dates.addWidget(self.order)
+        layout.addLayout(dates)
+        self.applied_dates = ('', '', True)
         self.status = hint('正在读取已归档事件…')
         layout.addWidget(self.status)
         self.table = table(['证券', '更名日期', '原名称', '新名称', '来源出现次数', '证监会行业', '通达信行业'])
-        layout.addWidget(self.table, 1)
+        self.timeline = EventTimeline(self.table, KINDS[kind][0])
+        self.timeline.add_links(shell, [('公司资料', 'listings'), ('股票更名' if kind == 'company' else '公司更名', 'names_security' if kind == 'company' else 'names_company'), ('实施ST', 'st_implementation'), ('撤销ST', 'st_removal')])
+        layout.addWidget(self.timeline, 1)
         bar = QHBoxLayout()
         self.previous, self.next = QPushButton('上一页'), QPushButton('下一页')
         self.previous.clicked.connect(lambda: self.move(False))
@@ -64,6 +90,7 @@ class NamePage(QWidget):
         self.timer.start(500)
 
     def find(self):
+        self.applied_dates = (self.start.text().strip(), self.end.text().strip(), self.order.currentIndex() == 0)
         self.applied, self.after, self.history = self.code.text().strip(), None, []
         self.next_cursor = None
         self.previous.setEnabled(False)
@@ -79,7 +106,15 @@ class NamePage(QWidget):
         self.dirty = True
 
     def spec(self):
-        return self.applied, '', '', self.after, 200
+        start, end, descending = self.applied_dates
+        return self.applied, start, end, self.after, 200, descending
+
+    def apply_navigation_context(self, context):
+        security_context(context)
+        self.code.setText(context.unified_code)
+        self.start.setText(context.start)
+        self.end.setText(context.end)
+        self.find()
 
     def tick(self):
         if getattr(self.shell, 'shutting_down', False):
@@ -93,8 +128,10 @@ class NamePage(QWidget):
             else:
                 try:
                     result = self.scope.result('events', future)
+                    self.timeline.render(result['rows'], (self.applied, self.applied_dates, self.after))
                     rows(self.table, [[r[k] if r[k] is not None else '' for k in ('unified_code', 'event_date', 'old_name', 'new_name', 'source_occurrences', 'csrc_industry', 'tdx_industry')]
                                       for r in result['rows']], keys=[r['record_key'] for r in result['rows']])
+                    self.timeline.update_selection()
                     self.next_cursor = result['next']
                     self.previous.setEnabled(bool(self.history))
                     self.next.setEnabled(bool(self.next_cursor))
@@ -109,13 +146,22 @@ class NamePage(QWidget):
 
     def save_ui_state(self):
         return dict(code=self.code.text(), applied=self.applied, after=self.after, history=list(self.history),
-                    table=table_identity_state(self.table))
+                    table=table_identity_state(self.table), dates=(self.start.text(), self.end.text()),
+                    applied_dates=self.applied_dates, order=self.order.currentIndex(), view=self.timeline.views.currentIndex(),
+                    expanded=list(self.timeline.expanded), position=self.timeline.reader.save_position())
 
     def restore_ui_state(self, state):
         self.code.setText(state['code'])
         self.applied, self.after, self.history = state['applied'], state['after'], list(state['history'])
         restore_table_identity(self.table, state['table'])
         self.dirty = True
+        self.start.setText(state.get('dates', ('', ''))[0])
+        self.end.setText(state.get('dates', ('', ''))[1])
+        self.applied_dates = tuple(state.get('applied_dates', ('', '', True)))
+        self.order.setCurrentIndex(state.get('order', 0))
+        self.timeline.views.setCurrentIndex(state.get('view', 0))
+        self.timeline.expanded = set(state.get('expanded', []))
+        self.timeline.reader.restore_position(state.get('position', 0))
 
 
 class NameUiPlugin(UiPlugin):

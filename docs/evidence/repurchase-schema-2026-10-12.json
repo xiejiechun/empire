@@ -1,0 +1,523 @@
+{
+  "applied": true,
+  "queue": 0,
+  "table": "stock_repurchase_plan",
+  "exists": false,
+  "ddl_sha256": "69cb17e28e55f7698db1c9da70e84b64da555bc4bae103984d9b67999d3a6f38",
+  "before": {
+    "additional_issue": {
+      "rows": 6540,
+      "ddl_hash": "986d7ee4fd18f31a0d9dacf5264de13d243fc00086ea60b5877b4cee9c61b990"
+    },
+    "app_setting": {
+      "rows": 36,
+      "ddl_hash": "2c7cb3d39d4c6d42fd77e348afe5d37ab8bf5a5f21093b1d36b38fd9cccff221"
+    },
+    "balance_statement": {
+      "rows": 319614,
+      "ddl_hash": "69760f99b6fff48acdc2764493eff28fadc7c2a657373d588695e475cd5dcd6e"
+    },
+    "cashflow_statement": {
+      "rows": 320606,
+      "ddl_hash": "a325f5c1589e94f25f40d252090d9e89078c7a3567b90d0007af8a2128bb27a5"
+    },
+    "collection_state": {
+      "rows": 35,
+      "ddl_hash": "86266a413b333eefb1e5caaf02ed51afcb3b4fdc5b17a44d3d32cc1dd57cd814"
+    },
+    "dividend_plan": {
+      "rows": 56146,
+      "ddl_hash": "00079ad50a5cb6958b6f2b327dbe0ea3e1895cff9e40f95cec17561e7b67ccee"
+    },
+    "finance_news": {
+      "rows": 24226,
+      "ddl_hash": "037b27a51f73652613eca805710488b6c1bb52f86ac66c9edc9719cbea61e7d9"
+    },
+    "income_statement": {
+      "rows": 331266,
+      "ddl_hash": "d38085a57748217608dc27f3d616cebbf7233150c085a9a8618b573b28114d01"
+    },
+    "index_daily_price": {
+      "rows": 2237536,
+      "ddl_hash": "6d4c54a9710f7cae1da19913f686894da0531b599cac5113d52cff4a09d1f8c4"
+    },
+    "index_price_year": {
+      "rows": 9598,
+      "ddl_hash": "04b508b43abe5db502abad59c20b4948343aaf0b8ff58e2c43872e8647d8111a"
+    },
+    "industry": {
+      "rows": 90,
+      "ddl_hash": "87c50d7135f2744a2be3277b2fec18822570fe44b537b9c666868a03a391c7e9"
+    },
+    "industry_member": {
+      "rows": 5573,
+      "ddl_hash": "a7a110b66f2ebf4ff7b6451bbdb70605623e76b6a6e88c56b5301bf5ea5c7f9e"
+    },
+    "rights_issue": {
+      "rows": 1191,
+      "ddl_hash": "43d579323bdf1557b3b371106bd4f0ddabfcf606a217f6d5c6d880400d8266e2"
+    },
+    "router_device": {
+      "rows": 17,
+      "ddl_hash": "7a819c9153f484bc859b8afea978d49ed4eb8e44c14da99c66f3baa67ec03b2c"
+    },
+    "router_proxy_auth": {
+      "rows": 34,
+      "ddl_hash": "1d3a3138b11c0b4b4c2b03e42e2e82168876027ac2ba79d9d6e794151c11b7ec"
+    },
+    "router_runtime_config": {
+      "rows": 1,
+      "ddl_hash": "c6544903ba85d6b1111a7febe1bade0f1570ef16339e81c545a7d1ff4dc59c44"
+    },
+    "router_schema_version": {
+      "rows": 1,
+      "ddl_hash": "96800fed9960856fa9b64ee615741c16d3e8d11ff53a351d3225b54f9b11ba55"
+    },
+    "security_code_alias": {
+      "rows": 248,
+      "ddl_hash": "fb2e19174ee98eb4bb372c8f4050f1a2d878ae95f7713ea96da4cbbba05600a6"
+    },
+    "security_listing_event": {
+      "rows": 552,
+      "ddl_hash": "02d37d257d2a6ff54de7787b70b19790cced6a96c95a96acc22618e5338e6e54"
+    },
+    "security_name_change": {
+      "rows": 11909,
+      "ddl_hash": "87b83a97e4f206dfe39f9b338060a69eb8868c65b71cca9a00298d7a625aa724"
+    },
+    "security_st_event": {
+      "rows": 3949,
+      "ddl_hash": "29f23bda92332babc479c8e611d71a333f525bc1ba59a7033fdfc057eb49820f"
+    },
+    "stock": {
+      "rows": 5579,
+      "ddl_hash": "1bec7704a918f050d6da549ff65787602fb0e93676ff4f93a69522d60feeefce"
+    },
+    "stock_daily_quote": {
+      "rows": 1103726,
+      "ddl_hash": "765add00a52c8ffcb5d53c671dc79c36e3f5772d4c0a1cbd22123955fde5336e"
+    },
+    "stock_daily_quote_level": {
+      "rows": 22074520,
+      "ddl_hash": "88a6a70c5a53ac30760a1098ed825a34c98252012e20c15c612c74f55c281785"
+    },
+    "stock_index": {
+      "rows": 573,
+      "ddl_hash": "88b26f912ccf209625aa77d9d70ce17b1e1b561735c264e4c7df319d57ec590a"
+    },
+    "stock_index_member": {
+      "rows": 99573,
+      "ddl_hash": "deb5c9d186bb6ba46ea4a3f4999fe75d325dbd2e7b81a1cb7149c653532bdc02"
+    },
+    "stock_intraday_trade_block": {
+      "rows": 2001,
+      "ddl_hash": "96af3efa7a94e763016800242bb274ef375fa6aa6d84a24e52f3be61926e201b"
+    },
+    "stock_intraday_trend": {
+      "rows": 35427,
+      "ddl_hash": "77e8b3c56e566f71c70635eb5478d30e74ddfc63cf853255fefb79c6ab839356"
+    },
+    "stock_large_order_trend": {
+      "rows": 33258,
+      "ddl_hash": "d7a32eb218982a66260a5444fd882edabdf2842083534c9e21b816fbfd581d6f"
+    },
+    "stock_listing": {
+      "rows": 5489,
+      "ddl_hash": "745f6303baf2c1fea157259b733153ab380b24de6120e4102beb89bc48d571f0"
+    },
+    "stock_market_day": {
+      "rows": 1104595,
+      "ddl_hash": "fbb9936ad12bb31f404c3f5f6ef54a103607e5470c95c1f2c1acfeb04dcef65d"
+    },
+    "stock_minute_entrust": {
+      "rows": 35186,
+      "ddl_hash": "c6e09a588231cacfef821d196542cd406dfdc56285914ddb0fead945a38b75e3"
+    },
+    "stock_minute_volume": {
+      "rows": 35427,
+      "ddl_hash": "26c94303eac87f82a2f1734d31ed46cd73bc9d450564bbd748e6d6cb2138a37a"
+    },
+    "stock_opening_auction": {
+      "rows": 5758,
+      "ddl_hash": "a7be9be04f51ced72651169028c7f8c481cfa5cf607e130c274898f930c5838b"
+    },
+    "suspension_event": {
+      "rows": 104738,
+      "ddl_hash": "cd040d397cac18467e11bf98491fa6b84aad6fb520e9b70c1c2d7cf40ca92b37"
+    },
+    "suspension_source_date": {
+      "rows": 145363,
+      "ddl_hash": "ebfc531b6a67aab8c899c8b5140b4a652876cf15012ac76c3844366aabfdddae"
+    },
+    "trade_calendar": {
+      "rows": 13527,
+      "ddl_hash": "5fbd41886474cce60f5bd3f54d304a4e560658844eef5032a4df773867b82961"
+    },
+    "trading_rule_citation": {
+      "rows": 23,
+      "ddl_hash": "8e346c238cf2a04c03960ef351a14428bf3b61b9f6888b42de668a90521db2b5"
+    },
+    "trading_rule_value": {
+      "rows": 66,
+      "ddl_hash": "5ab3aa96092f90f2a529c27f2165c598338921eb8a1eb5acc03ebf504ae871ea"
+    },
+    "state_digest": "e03618889d01e8626b02ef8090974801d232319bdd5a605faf2348b33a1b5550"
+  },
+  "after": {
+    "additional_issue": {
+      "rows": 6540,
+      "ddl_hash": "986d7ee4fd18f31a0d9dacf5264de13d243fc00086ea60b5877b4cee9c61b990"
+    },
+    "app_setting": {
+      "rows": 36,
+      "ddl_hash": "2c7cb3d39d4c6d42fd77e348afe5d37ab8bf5a5f21093b1d36b38fd9cccff221"
+    },
+    "balance_statement": {
+      "rows": 319614,
+      "ddl_hash": "69760f99b6fff48acdc2764493eff28fadc7c2a657373d588695e475cd5dcd6e"
+    },
+    "cashflow_statement": {
+      "rows": 320606,
+      "ddl_hash": "a325f5c1589e94f25f40d252090d9e89078c7a3567b90d0007af8a2128bb27a5"
+    },
+    "collection_state": {
+      "rows": 35,
+      "ddl_hash": "86266a413b333eefb1e5caaf02ed51afcb3b4fdc5b17a44d3d32cc1dd57cd814"
+    },
+    "dividend_plan": {
+      "rows": 56146,
+      "ddl_hash": "00079ad50a5cb6958b6f2b327dbe0ea3e1895cff9e40f95cec17561e7b67ccee"
+    },
+    "finance_news": {
+      "rows": 24226,
+      "ddl_hash": "037b27a51f73652613eca805710488b6c1bb52f86ac66c9edc9719cbea61e7d9"
+    },
+    "income_statement": {
+      "rows": 331266,
+      "ddl_hash": "d38085a57748217608dc27f3d616cebbf7233150c085a9a8618b573b28114d01"
+    },
+    "index_daily_price": {
+      "rows": 2237536,
+      "ddl_hash": "6d4c54a9710f7cae1da19913f686894da0531b599cac5113d52cff4a09d1f8c4"
+    },
+    "index_price_year": {
+      "rows": 9598,
+      "ddl_hash": "04b508b43abe5db502abad59c20b4948343aaf0b8ff58e2c43872e8647d8111a"
+    },
+    "industry": {
+      "rows": 90,
+      "ddl_hash": "87c50d7135f2744a2be3277b2fec18822570fe44b537b9c666868a03a391c7e9"
+    },
+    "industry_member": {
+      "rows": 5573,
+      "ddl_hash": "a7a110b66f2ebf4ff7b6451bbdb70605623e76b6a6e88c56b5301bf5ea5c7f9e"
+    },
+    "rights_issue": {
+      "rows": 1191,
+      "ddl_hash": "43d579323bdf1557b3b371106bd4f0ddabfcf606a217f6d5c6d880400d8266e2"
+    },
+    "router_device": {
+      "rows": 17,
+      "ddl_hash": "7a819c9153f484bc859b8afea978d49ed4eb8e44c14da99c66f3baa67ec03b2c"
+    },
+    "router_proxy_auth": {
+      "rows": 34,
+      "ddl_hash": "1d3a3138b11c0b4b4c2b03e42e2e82168876027ac2ba79d9d6e794151c11b7ec"
+    },
+    "router_runtime_config": {
+      "rows": 1,
+      "ddl_hash": "c6544903ba85d6b1111a7febe1bade0f1570ef16339e81c545a7d1ff4dc59c44"
+    },
+    "router_schema_version": {
+      "rows": 1,
+      "ddl_hash": "96800fed9960856fa9b64ee615741c16d3e8d11ff53a351d3225b54f9b11ba55"
+    },
+    "security_code_alias": {
+      "rows": 248,
+      "ddl_hash": "fb2e19174ee98eb4bb372c8f4050f1a2d878ae95f7713ea96da4cbbba05600a6"
+    },
+    "security_listing_event": {
+      "rows": 552,
+      "ddl_hash": "02d37d257d2a6ff54de7787b70b19790cced6a96c95a96acc22618e5338e6e54"
+    },
+    "security_name_change": {
+      "rows": 11909,
+      "ddl_hash": "87b83a97e4f206dfe39f9b338060a69eb8868c65b71cca9a00298d7a625aa724"
+    },
+    "security_st_event": {
+      "rows": 3949,
+      "ddl_hash": "29f23bda92332babc479c8e611d71a333f525bc1ba59a7033fdfc057eb49820f"
+    },
+    "stock": {
+      "rows": 5579,
+      "ddl_hash": "1bec7704a918f050d6da549ff65787602fb0e93676ff4f93a69522d60feeefce"
+    },
+    "stock_daily_quote": {
+      "rows": 1103726,
+      "ddl_hash": "765add00a52c8ffcb5d53c671dc79c36e3f5772d4c0a1cbd22123955fde5336e"
+    },
+    "stock_daily_quote_level": {
+      "rows": 22074520,
+      "ddl_hash": "88a6a70c5a53ac30760a1098ed825a34c98252012e20c15c612c74f55c281785"
+    },
+    "stock_index": {
+      "rows": 573,
+      "ddl_hash": "88b26f912ccf209625aa77d9d70ce17b1e1b561735c264e4c7df319d57ec590a"
+    },
+    "stock_index_member": {
+      "rows": 99573,
+      "ddl_hash": "deb5c9d186bb6ba46ea4a3f4999fe75d325dbd2e7b81a1cb7149c653532bdc02"
+    },
+    "stock_intraday_trade_block": {
+      "rows": 2001,
+      "ddl_hash": "96af3efa7a94e763016800242bb274ef375fa6aa6d84a24e52f3be61926e201b"
+    },
+    "stock_intraday_trend": {
+      "rows": 35427,
+      "ddl_hash": "77e8b3c56e566f71c70635eb5478d30e74ddfc63cf853255fefb79c6ab839356"
+    },
+    "stock_large_order_trend": {
+      "rows": 33258,
+      "ddl_hash": "d7a32eb218982a66260a5444fd882edabdf2842083534c9e21b816fbfd581d6f"
+    },
+    "stock_listing": {
+      "rows": 5489,
+      "ddl_hash": "745f6303baf2c1fea157259b733153ab380b24de6120e4102beb89bc48d571f0"
+    },
+    "stock_market_day": {
+      "rows": 1104595,
+      "ddl_hash": "fbb9936ad12bb31f404c3f5f6ef54a103607e5470c95c1f2c1acfeb04dcef65d"
+    },
+    "stock_minute_entrust": {
+      "rows": 35186,
+      "ddl_hash": "c6e09a588231cacfef821d196542cd406dfdc56285914ddb0fead945a38b75e3"
+    },
+    "stock_minute_volume": {
+      "rows": 35427,
+      "ddl_hash": "26c94303eac87f82a2f1734d31ed46cd73bc9d450564bbd748e6d6cb2138a37a"
+    },
+    "stock_opening_auction": {
+      "rows": 5758,
+      "ddl_hash": "a7be9be04f51ced72651169028c7f8c481cfa5cf607e130c274898f930c5838b"
+    },
+    "suspension_event": {
+      "rows": 104738,
+      "ddl_hash": "cd040d397cac18467e11bf98491fa6b84aad6fb520e9b70c1c2d7cf40ca92b37"
+    },
+    "suspension_source_date": {
+      "rows": 145363,
+      "ddl_hash": "ebfc531b6a67aab8c899c8b5140b4a652876cf15012ac76c3844366aabfdddae"
+    },
+    "trade_calendar": {
+      "rows": 13527,
+      "ddl_hash": "5fbd41886474cce60f5bd3f54d304a4e560658844eef5032a4df773867b82961"
+    },
+    "trading_rule_citation": {
+      "rows": 23,
+      "ddl_hash": "8e346c238cf2a04c03960ef351a14428bf3b61b9f6888b42de668a90521db2b5"
+    },
+    "trading_rule_value": {
+      "rows": 66,
+      "ddl_hash": "5ab3aa96092f90f2a529c27f2165c598338921eb8a1eb5acc03ebf504ae871ea"
+    },
+    "state_digest": "e03618889d01e8626b02ef8090974801d232319bdd5a605faf2348b33a1b5550"
+  },
+  "shape": {
+    "columns": {
+      "plan_id": {
+        "type": "varchar(20) collate \"ascii_bin\"",
+        "nullable": false,
+        "unsigned": false
+      },
+      "unified_code": {
+        "type": "varchar(9) collate \"ascii_bin\"",
+        "nullable": false,
+        "unsigned": false
+      },
+      "name": {
+        "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+        "nullable": false,
+        "unsigned": false
+      },
+      "share_type": {
+        "type": "varchar(80) collate \"utf8mb4_unicode_ci\"",
+        "nullable": false,
+        "unsigned": false
+      },
+      "plan_date": {
+        "type": "date",
+        "nullable": false,
+        "unsigned": false
+      },
+      "updated_date": {
+        "type": "date",
+        "nullable": false,
+        "unsigned": false
+      },
+      "progress_code": {
+        "type": "varchar(16) collate \"ascii_bin\"",
+        "nullable": false,
+        "unsigned": false
+      },
+      "plan_updated_date": {
+        "type": "date",
+        "nullable": true,
+        "unsigned": false
+      },
+      "actual_through": {
+        "type": "date",
+        "nullable": true,
+        "unsigned": false
+      },
+      "notice_date": {
+        "type": "date",
+        "nullable": true,
+        "unsigned": false
+      },
+      "start_date": {
+        "type": "date",
+        "nullable": true,
+        "unsigned": false
+      },
+      "end_date": {
+        "type": "date",
+        "nullable": true,
+        "unsigned": false
+      },
+      "finish_date": {
+        "type": "date",
+        "nullable": true,
+        "unsigned": false
+      },
+      "shareholder_notice_date": {
+        "type": "date",
+        "nullable": true,
+        "unsigned": false
+      },
+      "advance_date": {
+        "type": "date",
+        "nullable": true,
+        "unsigned": false
+      },
+      "plan_price_upper": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "plan_price_lower": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "plan_quantity_upper": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "plan_quantity_lower": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "plan_amount_upper": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "plan_amount_lower": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "actual_price_upper": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "actual_price_lower": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "actual_quantity": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "actual_amount": {
+        "type": "decimal(28, 8)",
+        "nullable": true,
+        "unsigned": false
+      },
+      "objective": {
+        "type": "mediumtext",
+        "nullable": true,
+        "unsigned": false
+      },
+      "remark": {
+        "type": "mediumtext",
+        "nullable": true,
+        "unsigned": false
+      },
+      "progress_remark": {
+        "type": "mediumtext",
+        "nullable": true,
+        "unsigned": false
+      },
+      "content_hash": {
+        "type": "char(64) collate \"ascii_bin\"",
+        "nullable": false,
+        "unsigned": false
+      },
+      "version_observed_at": {
+        "type": "datetime",
+        "nullable": false,
+        "unsigned": false
+      }
+    },
+    "primary": [
+      "plan_id"
+    ],
+    "indexes": {
+      "ix_plan_date": {
+        "columns": [
+          "plan_date",
+          "plan_id"
+        ],
+        "expressions": null,
+        "unique": false
+      },
+      "ix_progress_date": {
+        "columns": [
+          "progress_code",
+          "plan_date",
+          "plan_id"
+        ],
+        "expressions": null,
+        "unique": false
+      },
+      "ix_security_date": {
+        "columns": [
+          "unified_code",
+          "plan_date",
+          "plan_id"
+        ],
+        "expressions": null,
+        "unique": false
+      }
+    },
+    "checks": {
+      "ck_repurchase_actual_amount": "((actual_amountisnull)or(actual_amount>=0))",
+      "ck_repurchase_actual_price_lower": "((actual_price_lowerisnull)or(actual_price_lower>=0))",
+      "ck_repurchase_actual_price_upper": "((actual_price_upperisnull)or(actual_price_upper>=0))",
+      "ck_repurchase_actual_quantity": "((actual_quantityisnull)or(actual_quantity>=0))",
+      "ck_repurchase_plan_amount_lower": "((plan_amount_lowerisnull)or(plan_amount_lower>=0))",
+      "ck_repurchase_plan_amount_upper": "((plan_amount_upperisnull)or(plan_amount_upper>=0))",
+      "ck_repurchase_plan_price_lower": "((plan_price_lowerisnull)or(plan_price_lower>=0))",
+      "ck_repurchase_plan_price_upper": "((plan_price_upperisnull)or(plan_price_upper>=0))",
+      "ck_repurchase_plan_quantity_lower": "((plan_quantity_lowerisnull)or(plan_quantity_lower>=0))",
+      "ck_repurchase_plan_quantity_upper": "((plan_quantity_upperisnull)or(plan_quantity_upper>=0))"
+    }
+  },
+  "unchanged_existing_business": true
+}

@@ -1,5 +1,7 @@
 # 新浪 A 股股票列表采集
 
+当前默认目录采集改用同花顺完整单页；新浪插件保留，可从任务管理归档及还原。两来源共用唯一当前stock目录、共同版本比较与stocks/current摘要，不长期保留两套股票名单。最新说明见[当前股票目录](stock-directory.md)，下文记录新浪来源自身的分页协议。
+
 首个真实来源插件为 `collector.sina_universe`，使用用户指定的 `Market_Center.getHQNodeData` 接口采集新浪 `hs_a` 当前股票集合，包含沪、深、北市场。
 
 ## 字段与统一代码

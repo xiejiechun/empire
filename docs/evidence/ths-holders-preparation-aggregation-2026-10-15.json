@@ -1,0 +1,1934 @@
+{
+  "checked_at": "2026-10-15T05:33:37.783154+00:00",
+  "business_read_only": true,
+  "report_cache_disabled": true,
+  "scopes": {
+    "000912": {
+      "top_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "通过",
+          "quality": "有限制",
+          "usage": "有限制",
+          "usable": true,
+          "use_state": "可用（有限制）"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、数量及精度、比例口径、股份类型、当期与退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；3份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；3份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存窗口外历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；3份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "比例及精度合法，重复身份拒绝，汇总和名单集合核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；3份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值；前十大数量合计与来源汇总不符2份；前十大比例合计与来源汇总不符2份",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不能用报告期提前作为信号",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "float_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "通过",
+          "quality": "有限制",
+          "usage": "有限制",
+          "usable": true,
+          "use_state": "可用（有限制）"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、流通持股数量及精度、比例口径、股份类型、退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "流通/总股本及A/H口径分清，重复身份拒绝，汇总核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值；前十大数量合计与来源汇总不符5份；前十大比例合计与来源汇总不符5份",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不提前用报告期",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "bond_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "通过",
+          "quality": "通过",
+          "usage": "有限制",
+          "usable": true,
+          "use_state": "可用（有限制）"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "发行人统一代码、债券名称、报告期、当期或退出、来源序号、持有人名称、张数及精度、持有比例",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验0份窗口报告；1只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "发行人 + 债券名称来源身份 + 报告期 + 分组 + 序号；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验0份窗口报告；1只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺股东页面可见债券报告；栏目未提供单独标识，不能推断无债券",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验0份窗口报告；1只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "万张转张，序号及集合完整；多债券不混合",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验0份窗口报告；1只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验当前窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "无公告日期，不用报告期提前使用",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      }
+    },
+    "601139": {
+      "top_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "通过",
+          "quality": "通过",
+          "usage": "有限制",
+          "usable": true,
+          "use_state": "可用（有限制）"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、数量及精度、比例口径、股份类型、当期与退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存窗口外历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "比例及精度合法，重复身份拒绝，汇总和名单集合核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不能用报告期提前作为信号",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "float_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "通过",
+          "quality": "通过",
+          "usage": "有限制",
+          "usable": true,
+          "use_state": "可用（有限制）"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、流通持股数量及精度、比例口径、股份类型、退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "流通/总股本及A/H口径分清，重复身份拒绝，汇总核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不提前用报告期",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "bond_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "通过",
+          "quality": "有限制",
+          "usage": "有限制",
+          "usable": true,
+          "use_state": "可用（有限制）"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "发行人统一代码、债券名称、报告期、当期或退出、来源序号、持有人名称、张数及精度、持有比例",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验3份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；1份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "发行人 + 债券名称来源身份 + 报告期 + 分组 + 序号；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验3份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；1份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺股东页面可见债券报告；栏目未提供单独标识，不能推断无债券",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验3份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；1份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "万张转张，序号及集合完整；多债券不混合",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验3份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；1份来源序号有缺口；来源原值保留，不补造缺失持有人或数值",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验当前窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "无公告日期，不用报告期提前使用",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      }
+    },
+    "605090": {
+      "top_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "通过",
+          "quality": "通过",
+          "usage": "有限制",
+          "usable": true,
+          "use_state": "可用（有限制）"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、数量及精度、比例口径、股份类型、当期与退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；3份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；3份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存窗口外历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；3份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "比例及精度合法，重复身份拒绝，汇总和名单集合核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；3份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不能用报告期提前作为信号",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "float_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "通过",
+          "quality": "通过",
+          "usage": "有限制",
+          "usable": true,
+          "use_state": "可用（有限制）"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、流通持股数量及精度、比例口径、股份类型、退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "流通/总股本及A/H口径分清，重复身份拒绝，汇总核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验5份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不提前用报告期",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "bond_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "通过",
+          "quality": "有限制",
+          "usage": "有限制",
+          "usable": true,
+          "use_state": "可用（有限制）"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "发行人统一代码、债券名称、报告期、当期或退出、来源序号、持有人名称、张数及精度、持有比例",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验6份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；1份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "发行人 + 债券名称来源身份 + 报告期 + 分组 + 序号；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验6份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；1份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺股东页面可见债券报告；栏目未提供单独标识，不能推断无债券",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "pass",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验6份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；1份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "万张转张，序号及集合完整；多债券不混合",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选1只证券，0只缺少有效证明；本范围核验6份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；1份来源序号有缺口；来源原值保留，不补造缺失持有人或数值；当期持有比例未知1份",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验当前窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "pass",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "无公告日期，不用报告期提前使用",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      }
+    },
+    "missing": {
+      "top_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "有缺口",
+          "quality": "有异常",
+          "usage": "不满足",
+          "usable": false,
+          "use_state": "不可用"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、数量及精度、比例口径、股份类型、当期与退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存窗口外历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "比例及精度合法，重复身份拒绝，汇总和名单集合核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "fail",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不能用报告期提前作为信号",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "float_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "有缺口",
+          "quality": "有异常",
+          "usage": "不满足",
+          "usable": false,
+          "use_state": "不可用"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、流通持股数量及精度、比例口径、股份类型、退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "流通/总股本及A/H口径分清，重复身份拒绝，汇总核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "fail",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不提前用报告期",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "bond_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "有缺口",
+          "quality": "有异常",
+          "usage": "不满足",
+          "usable": false,
+          "use_state": "不可用"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "发行人统一代码、债券名称、报告期、当期或退出、来源序号、持有人名称、张数及精度、持有比例",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "发行人 + 债券名称来源身份 + 报告期 + 分组 + 序号；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺股东页面可见债券报告；栏目未提供单独标识，不能推断无债券",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "万张转张，序号及集合完整；多债券不混合",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选7只证券，7只缺少有效证明；本范围核验0份窗口报告；0只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验当前窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "fail",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "无公告日期，不用报告期提前使用",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      }
+    },
+    "all": {
+      "top_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "有缺口",
+          "quality": "有异常",
+          "usage": "不满足",
+          "usable": false,
+          "use_state": "不可用"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、数量及精度、比例口径、股份类型、当期与退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验27832份窗口报告；0只股票栏目未提供；7239份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验27832份窗口报告；0只股票栏目未提供；7239份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存窗口外历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验27832份窗口报告；0只股票栏目未提供；7239份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "比例及精度合法，重复身份拒绝，汇总和名单集合核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验27832份窗口报告；0只股票栏目未提供；7239份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值；前十大数量合计与来源汇总不符2份；前十大比例合计与来源汇总不符2份",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "fail",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不能用报告期提前作为信号",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "float_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "有缺口",
+          "quality": "有异常",
+          "usage": "不满足",
+          "usable": false,
+          "use_state": "不可用"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "股票编号、报告期、持有人身份、来源顺序、流通持股数量及精度、比例口径、股份类型、退出分组",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验27437份窗口报告；35只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验27437份窗口报告；35只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺页面当前可见窗口全部报告，保留已存历史",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验27437份窗口报告；35只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "流通/总股本及A/H口径分清，重复身份拒绝，汇总核对",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验27437份窗口报告；35只股票栏目未提供；0份变动公告非完整前十；0份来源序号有缺口；来源原值保留，不补造缺失持有人或数值；前十大数量合计与来源汇总不符5份；前十大比例合计与来源汇总不符8份；当期持有比例未知5份；来源比例汇总未知5份",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "fail",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "来源无公告日期，不提前用报告期",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      },
+      "bond_holders": {
+        "assessment": {
+          "development": "未通过",
+          "integrity": "有缺口",
+          "quality": "有异常",
+          "usage": "不满足",
+          "usable": false,
+          "use_state": "不可用"
+        },
+        "checks": [
+          {
+            "id": "fields",
+            "phase": "数据",
+            "title": "字段与单位",
+            "expected": "发行人统一代码、债券名称、报告期、当期或退出、来源序号、持有人名称、张数及精度、持有比例",
+            "action": "检查必需字段和单位；可选字段未提供不影响本项通过",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验2612份窗口报告；4707只股票栏目未提供；0份变动公告非完整前十；52份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "keys",
+            "phase": "数据",
+            "title": "唯一键与重复",
+            "expected": "发行人 + 债券名称来源身份 + 报告期 + 分组 + 序号；重复键为 0",
+            "action": "明确业务键，清查重复与版本冲突",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验2612份窗口报告；4707只股票栏目未提供；0份变动公告非完整前十；52份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "coverage",
+            "phase": "数据",
+            "title": "历史与对象覆盖",
+            "expected": "同花顺股东页面可见债券报告；栏目未提供单独标识，不能推断无债券",
+            "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验2612份窗口报告；4707只股票栏目未提供；0份变动公告非完整前十；52份来源序号有缺口；报告身份、字段和来源窗口摘要",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [
+              {
+                "security": "300232.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "300398.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "301699.SZ",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "601515.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688315.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "688386.SH",
+                "message": "缺少现行证券栏目归档证明"
+              },
+              {
+                "security": "920196.BJ",
+                "message": "缺少现行证券栏目归档证明"
+              }
+            ],
+            "dimension": "采集完整性"
+          },
+          {
+            "id": "quality",
+            "phase": "数据",
+            "title": "业务质量",
+            "expected": "万张转张，序号及集合完整；多债券不混合",
+            "action": "修复数据或解析规则，并补充业务语义回归",
+            "status": "fail",
+            "measured": "所选5580只证券，7只缺少有效证明；本范围核验2612份窗口报告；4707只股票栏目未提供；0份变动公告非完整前十；52份来源序号有缺口；来源原值保留，不补造缺失持有人或数值；前十大数量合计与来源汇总不符15份；前十大比例合计与来源汇总不符15份；当期持有比例未知2份",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "recommended_action": "保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。",
+            "dimension": "来源质量"
+          },
+          {
+            "id": "freshness",
+            "phase": "数据",
+            "title": "更新与时效",
+            "expected": "每日18:00核验当前窗口；3天内完整确认",
+            "action": "验证最新成功核验时间与数据水位，恢复更新计划",
+            "status": "fail",
+            "measured": "所选每只证券的完整栏目确认须在3天内；缺口不冒充未提供栏目",
+            "kind": "采集",
+            "blocking": true,
+            "findings": [],
+            "dimension": "用途条件"
+          },
+          {
+            "id": "temporal",
+            "phase": "数据",
+            "title": "日期与使用范围",
+            "expected": "无公告日期，不用报告期提前使用",
+            "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史",
+            "status": "fail",
+            "measured": "无公告日期；报告期不能用作信号可用日期；较早历史不在页面窗口",
+            "kind": "采集",
+            "blocking": false,
+            "findings": [],
+            "recommended_action": "按本项列出的限制用于普通分析；历史选股回测需满足本项日期、内容和使用条件后再验收。",
+            "dimension": "用途条件"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -2,28 +2,22 @@
   "bindings": {
     "src/empire/contracts/name_changes.py": "c8b9ed32c06bd0bf19f3cf1dac5d4fc9a4a79a87889075eb08590416051581e8",
     "src/empire/plugins/datasets/name_changes.py": "a7ddb5f4b0f4f5184d9ea320c9971ebe01ffd8b3e20f84a6622605fa599a5c1a",
-    "src/empire/plugins/data/name_changes.py": "63bff37ffb074af79e7814e55089bd5ec6f0d59bde776e053f286a7bef74c8ef",
-    "scripts/measure_name_changes.py": "1122a33df0b22c937d1382938def9da98c8ebd47f729ec2809ffca17afb22a07",
-    "docs/evidence/schema-before-listings-2026-10-06.sql": "a0dafe542ac91896dde3b68f4a0d4cfb37c54382aa554ed396ef59576b50d468",
-    "docs/evidence/schema-contract-before-listings-2026-10-06.json": "2b5fd72a84c3495f4b0d5890402a2e488a42d9471ab715804d9020e1db3472b5"
+    "src/empire/plugins/data/name_changes.py": "decea749788cd116b5d3d275e22ac7cd3048276613bb0d72201a737aeffb08ce",
+    "scripts/measure_name_changes.py": "1122a33df0b22c937d1382938def9da98c8ebd47f729ec2809ffca17afb22a07"
   },
   "measurements": {
-    "page_p95_ms": 1.8262999947182834,
-    "security_p95_ms": 0.3105999930994585,
-    "coverage_p95_ms": 207.71409998997115,
-    "import_seconds": 2.2421136000048136,
-    "allocated_bytes": 14303232,
-    "real_page_p95_ms": 1.6666000010445714,
-    "real_coverage_p95_ms": 61.81849999120459
+    "page_p95_ms": 2.0269000087864697,
+    "security_p95_ms": 0.414599955547601,
+    "coverage_p95_ms": 132.40469997981563,
+    "import_seconds": 2.203232500003651,
+    "allocated_bytes": 14303232
   },
   "limits": {
     "page_p95_ms": 50,
     "security_p95_ms": 50,
     "coverage_p95_ms": 500,
     "import_seconds": 10,
-    "allocated_bytes": 134217728,
-    "real_page_p95_ms": 50,
-    "real_coverage_p95_ms": 500
+    "allocated_bytes": 134217728
   },
   "conditions": {
     "platform": "Windows-11-10.0.26200-SP0",
@@ -45,7 +39,7 @@
         "key": "ix_name_date",
         "key_len": "10",
         "ref": "const",
-        "rows": 12415,
+        "rows": 11962,
         "filtered": 100.0,
         "Extra": null
       }
@@ -77,7 +71,7 @@
         "key": "PRIMARY",
         "key_len": "10",
         "ref": "const",
-        "rows": 12415,
+        "rows": 11962,
         "filtered": 100.0,
         "Extra": null
       }
@@ -97,7 +91,7 @@
       "read_bytes": 2558756
     }
   },
-  "python_peak_bytes": 11314326,
+  "python_peak_bytes": 11314298,
   "initial": {
     "status": "complete",
     "row_count": 25000,
@@ -124,27 +118,18 @@
   },
   "cleanup": "UUID-owned test database dropped in finally",
   "passed": true,
-  "production_sample": {
-    "page": {
-      "p95_ms": 1.6666000010445714,
-      "returned": 200,
-      "read_bytes": 33484,
-      "explain_analyze": [
-        "-> Limit: 200 row(s)  (cost=625 rows=200) (actual time=0.0842..0.317 rows=200 loops=1)\n    -> Index lookup on security_name_change using ix_name_date (name_kind='security')  (cost=625 rows=6175) (actual time=0.083..0.307 rows=200 loops=1)\n"
-      ]
-    },
-    "coverage": {
-      "p95_ms": 61.81849999120459,
-      "returned": 8368,
-      "read_bytes": 1432032,
-      "explain_analyze": [
-        "-> Limit: 30001 row(s)  (cost=625 rows=6175) (actual time=0.0565..3.05 rows=8368 loops=1)\n    -> Index lookup on security_name_change using PRIMARY (name_kind='security')  (cost=625 rows=6175) (actual time=0.0554..2.64 rows=8368 loops=1)\n"
-      ]
-    },
-    "allocated_bytes": 10764288
-  },
   "ddl_scopes": {
     "security_name_change": "9b6dde1312b4526d8a74970a977f79430567424afabb2c63d8e20028dcf8fb9d"
   },
-  "scope_note": "新增stock_listing；原测量DDL及manifest原样归档，按未改动的security_name_change表DDL核验。"
+  "unchanged_schema_evidence": {
+    "previous_full_schema_sha256": "be0c4f5ad345e1e04447e1aaf5b841085011a34701d9a73eb54f60ef46fb29f7",
+    "verified_prefix_sha256": "be0c4f5ad345e1e04447e1aaf5b841085011a34701d9a73eb54f60ef46fb29f7",
+    "additive_tables": [
+      "trading_rule_citation",
+      "trading_rule_value"
+    ],
+    "reviewed": "旧DDL前缀逐字节匹配原测量绑定；改为本业务表范围绑定，原测量与取舍不变。",
+    "previous_manifest_sha256": "1c7a2b01493edce58f8aabb7ca4073cbf50ae29ec586cf64d05c36c771e8f398",
+    "manifest_review": "旧正式包清单SHA匹配原容量证据，全部既有表shape逐项等同；仅新增两张规则表，本业务DDL及测量保持原值。"
+  }
 }

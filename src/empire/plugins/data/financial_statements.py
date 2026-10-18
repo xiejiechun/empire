@@ -87,6 +87,19 @@ class FinancialDataPlugin:
                     dict(code=code + ('.%' if len(code) == 6 else '%'), limit=limit, offset=offset)).mappings()]
         return await self.mysql.read(read)
 
+    async def statement_history(self, security):
+        from empire.contracts.security import split_unified_code
+        split_unified_code(security)
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                rows = [decode(r) for r in conn.execute(text(f'SELECT payload FROM {self.table} '
+                    'WHERE unified_code=:security ORDER BY report_date DESC LIMIT 501'),
+                    dict(security=security)).mappings()]
+                if len(rows) > 500:
+                    raise ValueError('来源报告期超过500，拒绝静默截断；请缩小查询设计范围')
+                return rows
+        return await self.mysql.read(read)
+
     def _audit(self, request=None):
         return audit_financial(self, request)
 

@@ -1,0 +1,1052 @@
+{
+  "kaipanla-quote": [
+    {
+      "run_id": "d2e42ba6f96a49a3ab291dc0e23e70d3",
+      "task_id": "kaipanla-quote",
+      "started_at": 1791956280.6475828,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 1409389,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 4309
+      },
+      "finished_at": 1791957582.180416,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 1959,
+        "record_name": "点位",
+        "unit_name": "证券日",
+        "completed_units": 94644,
+        "total_units": 6978941,
+        "pages": 1959,
+        "current_security": "BJ:920300 / 2026-10-12",
+        "current_date": "2026-10-12",
+        "failed_units": 3386,
+        "unlisted_without_date": 5,
+        "failure_categories": {
+          "source_request": 2144,
+          "invalid_fields": 1242
+        }
+      }
+    },
+    {
+      "run_id": "f1d326e288a64594951f654f1f45b516",
+      "task_id": "kaipanla-quote",
+      "started_at": 1791941181.8533254,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 1403774,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 5642
+      },
+      "finished_at": 1791942103.9551787,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 1058,
+        "record_name": "点位",
+        "unit_name": "证券日",
+        "completed_units": 124334,
+        "total_units": 6978941,
+        "pages": 1058,
+        "current_security": "BJ:920436 / 2022-12-15",
+        "current_date": "2022-12-15",
+        "failed_units": 4557,
+        "unlisted_without_date": 5,
+        "failure_categories": {
+          "source_request": 2865,
+          "invalid_fields": 1692
+        }
+      }
+    },
+    {
+      "run_id": "d45457040fa440b7b8145d75f9c978e4",
+      "task_id": "kaipanla-quote",
+      "started_at": 1791894293.1835415,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 1372219,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 31578
+      },
+      "finished_at": 1791898090.5805323,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 30711,
+        "record_name": "点位",
+        "unit_name": "证券日",
+        "completed_units": 1227863,
+        "total_units": 6978941,
+        "pages": 30711,
+        "current_security": "SH:600933 / 2026-09-29",
+        "current_date": "2026-09-29",
+        "failed_units": 11184,
+        "unlisted_without_date": 6,
+        "failure_categories": {
+          "source_request": 7789,
+          "invalid_fields": 3395
+        }
+      }
+    }
+  ],
+  "official-rule-probe": [],
+  "sina-news": [
+    {
+      "run_id": "4740d772b0734dd09a73266c2b3e6654",
+      "task_id": "sina-news",
+      "started_at": 1791963963.7597322,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 37443,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1791963964.8022351,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 50,
+        "pages": 1
+      }
+    },
+    {
+      "run_id": "ee0a35e492a744d98f0e330a5f0dfc18",
+      "task_id": "sina-news",
+      "started_at": 1791963918.058781,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 37441,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1791963943.3605032,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 50,
+        "pages": 1,
+        "high_watermark": 5144014,
+        "batch_id": "4c9c54a243e74fdeb8e9396c1869de31"
+      }
+    },
+    {
+      "run_id": "cc7fd6953591451a8b9d174a71dcf775",
+      "task_id": "sina-news",
+      "started_at": 1791963872.1293035,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 37439,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1791963897.4147391,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 50,
+        "pages": 1,
+        "high_watermark": 5144011,
+        "batch_id": "1513a2664d4742e7999138930f684dde"
+      }
+    }
+  ],
+  "tdx-dividends": [
+    {
+      "run_id": "8550a256b1da4466b14ec5c58c82d8eb",
+      "task_id": "tdx-dividends",
+      "started_at": 1791963518.7498162,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 28079,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 2
+      },
+      "finished_at": 1791963520.2788236,
+      "status": "error",
+      "error": "分红目录最新期或唯一集合不符",
+      "result": {
+        "collected": 0
+      }
+    },
+    {
+      "run_id": "2e488be768164855a07fc77c9149c694",
+      "task_id": "tdx-dividends",
+      "started_at": 1791956282.7521935,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 28079,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 2
+      },
+      "finished_at": 1791956283.6051927,
+      "status": "error",
+      "error": "分红目录最新期或唯一集合不符",
+      "result": {
+        "collected": 0
+      }
+    },
+    {
+      "run_id": "27e2a9d1f2cc4af28299120a0d38a58c",
+      "task_id": "tdx-dividends",
+      "started_at": 1791926929.033805,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 28079,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 2
+      },
+      "finished_at": 1791926929.6111863,
+      "status": "error",
+      "error": "分红目录最新期或唯一集合不符",
+      "result": {
+        "collected": 0
+      }
+    }
+  ],
+  "tdx-earnings-quick": [
+    {
+      "run_id": "abaf4a3496bc4d84827a60848253e24d",
+      "task_id": "tdx-earnings-quick",
+      "started_at": 1791885601.0680904,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 1126,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 188
+      },
+      "finished_at": 1791885804.356745,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 53813,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 187,
+        "total_units": 187,
+        "pages": 562,
+        "phase": "complete",
+        "batch_id": "07e6d94595874c21bdf21edaf8a33423",
+        "index": 187,
+        "market_index": 0,
+        "response_hash": "",
+        "page": 562,
+        "rolling": "00de0e3c8c381dac6d816837542a43204c4ad620665ed6f9cfab93195c92243a",
+        "scope_hash": "c99c706363c6c74fc055b7ae235406ca79d704cec04392401b7998eb1816e4c0",
+        "units": 561,
+        "latest": "2026-09-30",
+        "started_at": "2026-10-13T10:00:02.014305+00:00",
+        "contract": 1
+      }
+    },
+    {
+      "run_id": "22fedb787cb2453b8b367028af883610",
+      "task_id": "tdx-earnings-quick",
+      "started_at": 1791820511.15296,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 563,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 188
+      },
+      "finished_at": 1791820598.6575146,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 53813,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 187,
+        "total_units": 187,
+        "pages": 562,
+        "phase": "complete",
+        "batch_id": "692d639bcdc94f17b069b76b1c28c20d",
+        "index": 187,
+        "market_index": 0,
+        "response_hash": "",
+        "page": 562,
+        "rolling": "00de0e3c8c381dac6d816837542a43204c4ad620665ed6f9cfab93195c92243a",
+        "scope_hash": "c99c706363c6c74fc055b7ae235406ca79d704cec04392401b7998eb1816e4c0",
+        "units": 561,
+        "latest": "2026-09-30",
+        "started_at": "2026-10-12T15:55:11.434040+00:00",
+        "contract": 1
+      }
+    }
+  ],
+  "tdx-holder-count": [
+    {
+      "run_id": "8cdec133ffb646d781be976e2419e5a2",
+      "task_id": "tdx-holder-count",
+      "started_at": 1791885601.1560533,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 11152,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 5575
+      },
+      "finished_at": 1791886518.1225042,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 226063,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 5574,
+        "total_units": 5574,
+        "pages": 5575,
+        "phase": "complete",
+        "batch_id": "0f33a735eb174146821d10ae0fd3f8fd",
+        "index": 5574,
+        "market_index": 0,
+        "response_hash": "",
+        "page": 5575,
+        "rolling": "5fbe3bfb2a0c0a52a2eab78f3c65b951ffd534787f22c926ada0f0b0b3cdbd55",
+        "scope_hash": "6328efb7fc77518be8b1cff415440a8113fa60afbfa087badb198914e58abf62",
+        "units": 5574,
+        "latest": "2026-10-12",
+        "started_at": "2026-10-13T10:00:03.222716+00:00",
+        "contract": 1
+      }
+    },
+    {
+      "run_id": "44dc3c61c1ad4764981c7971829a90f8",
+      "task_id": "tdx-holder-count",
+      "started_at": 1791867423.161212,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 8638,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 2513
+      },
+      "finished_at": 1791867657.0644968,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 225850,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 5574,
+        "total_units": 5574,
+        "pages": 5575,
+        "phase": "complete",
+        "batch_id": "d218d57809d549f2bd63c3389fc932f3",
+        "index": 5574,
+        "market_index": 0,
+        "response_hash": "",
+        "page": 5575,
+        "rolling": "c64e79baf4e177b3f6949f1466451dbc10986109ac6b6a9b3192b34f3a209f57",
+        "scope_hash": "6328efb7fc77518be8b1cff415440a8113fa60afbfa087badb198914e58abf62",
+        "units": 5574,
+        "latest": "2026-10-12",
+        "started_at": "2026-10-12T16:05:01.620686+00:00",
+        "contract": 1
+      }
+    },
+    {
+      "run_id": "0849de5141404c5ba5f1e55e074ab483",
+      "task_id": "tdx-holder-count",
+      "started_at": 1791821100.8610146,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 5576,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 3071
+      },
+      "finished_at": 1791821442.5750582,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 161829,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 3062,
+        "total_units": 5574,
+        "pages": 3062
+      }
+    }
+  ],
+  "tdx-shareholder-changes": [
+    {
+      "run_id": "e938991e149e4dbba25fc042afc22c6d",
+      "task_id": "tdx-shareholder-changes",
+      "started_at": 1791905564.2728138,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 3218,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 442
+      },
+      "finished_at": 1791905639.8878994,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 325758,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 442,
+        "total_units": 442,
+        "pages": 1327,
+        "phase": "complete",
+        "batch_id": "8d2a88ab48bf4eeb82a5656ba2e2bf05",
+        "index": 442,
+        "market_index": 0,
+        "response_hash": "",
+        "page": 1327,
+        "rolling": "0e390cb6e563fca6ca2691f695bfc5d3f35bd3193925ebdcd33fb514a4e3868d",
+        "scope_hash": "1346597fc68e5b9b1dab1e77a8c2cfc1b16f21103353f58670a67c685a80f8b0",
+        "units": 1326,
+        "latest": "2026-10-01",
+        "started_at": "2026-10-13T15:32:44.275901+00:00",
+        "contract": 1
+      }
+    }
+  ],
+  "tdx-unlocks": [
+    {
+      "run_id": "9906601f8c744158a7b1d5a281e97783",
+      "task_id": "tdx-unlocks",
+      "started_at": 1791963513.6544816,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 387,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1791963514.3990302,
+      "status": "error",
+      "error": "大小非解禁完整月列表协议或容量错误",
+      "result": {
+        "collected": 122,
+        "record_name": "条解禁列表事实",
+        "unit_name": "个月",
+        "completed_units": 118,
+        "total_units": 456
+      }
+    },
+    {
+      "run_id": "15fe8e2c1cf5447c812e25cd26f957aa",
+      "task_id": "tdx-unlocks",
+      "started_at": 1791956298.102869,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 33,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 240
+      },
+      "finished_at": 1791956431.0270283,
+      "status": "error",
+      "error": "大小非解禁完整月列表协议或容量错误",
+      "result": {
+        "collected": 122,
+        "record_name": "条解禁列表事实",
+        "unit_name": "个月",
+        "completed_units": 118,
+        "total_units": 456,
+        "pages": 348
+      }
+    }
+  ],
+  "ths-balance": [
+    {
+      "run_id": "c333fba338794da2a3c8b8bda50c9053",
+      "task_id": "ths-balance",
+      "started_at": 1791939975.7988155,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 59550,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 5580
+      },
+      "finished_at": 1791941147.9457984,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 319596,
+        "total_units": 5580,
+        "pages": 5581,
+        "current_security": "SZ:302132",
+        "phase": "complete",
+        "batch_id": "80f5c71c44f346e2ace2aa063a486b3e",
+        "index": 5580,
+        "units": 5580,
+        "scope_hash": "50ff0019c9e06f2028166251d906afe158c617f7d4664b52bf959391f4c8fbd8",
+        "rolling": "d797104c3d0050d16e00d64a96fccffb2e4d430d33cb404ef768ec42303f0547"
+      }
+    },
+    {
+      "run_id": "9906bf56432d41e1a43ea0718a46a955",
+      "task_id": "ths-balance",
+      "started_at": 1791894289.4471762,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 56798,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 2750
+      },
+      "finished_at": 1791895383.926306,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 319596,
+        "total_units": 5580,
+        "pages": 5581,
+        "current_security": "SZ:302132",
+        "phase": "complete",
+        "batch_id": "02fe9664051446139a9291857ba5931e",
+        "index": 5580,
+        "units": 5580,
+        "scope_hash": "50ff0019c9e06f2028166251d906afe158c617f7d4664b52bf959391f4c8fbd8",
+        "rolling": "ea48515e06ec92578a92cec41e7ad631d9c4f196e7e20f22d8c10c3b0039c06d"
+      }
+    },
+    {
+      "run_id": "d7ab2d67c26f454f93d90932dca3fcb0",
+      "task_id": "ths-balance",
+      "started_at": 1791887404.3936212,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 53968,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 2842
+      },
+      "finished_at": 1791888202.4770808,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 166250,
+        "total_units": 5580,
+        "pages": 2829,
+        "current_security": "SZ:000595"
+      }
+    }
+  ],
+  "ths-bond-holders": [
+    {
+      "run_id": "5ad6f645d6e24260a3abecafcd4f9818",
+      "task_id": "ths-bond-holders",
+      "started_at": 1791849822.7400439,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 28,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 443
+      },
+      "finished_at": 1791849859.3876734,
+      "status": "error",
+      "error": "债券栏目缺失但来源结构不能证明未提供",
+      "result": {
+        "collected": 127,
+        "completed_units": 440,
+        "total_units": 5579,
+        "pages": 440,
+        "current_security": "001232.SZ"
+      }
+    }
+  ],
+  "ths-cashflow": [
+    {
+      "run_id": "add32d329f1d4a82b056aeb2bfa2f256",
+      "task_id": "ths-cashflow",
+      "started_at": 1791928367.946228,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 55800,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 5581
+      },
+      "finished_at": 1791929737.2421324,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 320587,
+        "total_units": 5580,
+        "pages": 5581,
+        "current_security": "SZ:302132",
+        "phase": "complete",
+        "batch_id": "c9a752fce86641ac84eabb529cdd61e4",
+        "index": 5580,
+        "units": 5580,
+        "scope_hash": "50ff0019c9e06f2028166251d906afe158c617f7d4664b52bf959391f4c8fbd8",
+        "rolling": "056bac0096b9ac650ee78b671bb37e1884ecc38b252cd58edbe2a7e7c026e679"
+      }
+    },
+    {
+      "run_id": "e26a58779651452f9e32da5247ea474a",
+      "task_id": "ths-cashflow",
+      "started_at": 1791883582.530415,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 50219,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 5579
+      },
+      "finished_at": 1791885167.5327578,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 320575,
+        "total_units": 5579,
+        "pages": 5580,
+        "current_security": "SZ:302132",
+        "phase": "complete",
+        "batch_id": "5730b8b520b948a198acf2151a1c5490",
+        "index": 5579,
+        "units": 5579,
+        "scope_hash": "477846e81a681547fb5f2017ea35e93a7b376907119a60a5dc4660c36c52a957",
+        "rolling": "ae682383e76aedbbee2e968afe8f9c9c17163bf4112ed79d09980523aaa2e1ef"
+      }
+    },
+    {
+      "run_id": "a273e5346ab64916b21811483d27723a",
+      "task_id": "ths-cashflow",
+      "started_at": 1791834159.7050858,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 44638,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 5580
+      },
+      "finished_at": 1791834978.0907762,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 320574,
+        "total_units": 5579,
+        "pages": 5580,
+        "current_security": "SZ:302132",
+        "phase": "complete",
+        "batch_id": "31c005c917a34be8a99e0e257aa7fb70",
+        "index": 5579,
+        "units": 5579,
+        "scope_hash": "477846e81a681547fb5f2017ea35e93a7b376907119a60a5dc4660c36c52a957",
+        "rolling": "cf6a4241bc3d51f498c1fcfffedf2a8e0782c5606ebfeb1cb620aceeb68f06dc"
+      }
+    }
+  ],
+  "ths-float-holders": [
+    {
+      "run_id": "e72ec023b26f4b3081e49fad54b5acb5",
+      "task_id": "ths-float-holders",
+      "started_at": 1791849820.1193209,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 28,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 91
+      },
+      "finished_at": 1791849832.2900581,
+      "status": "error",
+      "error": "前十大名单数量无效",
+      "result": {
+        "collected": 425,
+        "completed_units": 85,
+        "total_units": 5579,
+        "pages": 85,
+        "current_security": "000430.SZ"
+      }
+    }
+  ],
+  "ths-holders": [
+    {
+      "run_id": "dc870e242b394367904836c40acd3d76",
+      "task_id": "ths-holders",
+      "started_at": 1791963429.764846,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 25,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 2518
+      },
+      "finished_at": 1791963964.8077385,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 25874,
+        "processed_units": 2513,
+        "total_units": 5580,
+        "pages": 2459,
+        "current_security": "301088.SZ",
+        "continuous_collected": 12,
+        "failed_units": 54
+      }
+    },
+    {
+      "run_id": "52d5bfff3b664a0fab6529e397c2c18f",
+      "task_id": "ths-holders",
+      "started_at": 1791956274.1123788,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 129,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 3914
+      },
+      "finished_at": 1791957582.181929,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 40522,
+        "processed_units": 3909,
+        "total_units": 5580,
+        "pages": 3891,
+        "current_security": "603030.SH",
+        "continuous_collected": 3641,
+        "failed_units": 18
+      }
+    },
+    {
+      "run_id": "6a71bc40c8444e2bb5bfcf2f1ea0342d",
+      "task_id": "ths-holders",
+      "started_at": 1791936673.5729766,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 5929,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 5227
+      },
+      "finished_at": 1791937697.1230311,
+      "status": "error",
+      "error": "本轮已检查至末尾，164只证券来源校验失败；已入队有效报告已确认归档，连续断点保留在000912.SZ，下次继续补采。失败证券：000912.SZ、001232.SZ、001237.SZ、001246.SZ、001248.SZ等",
+      "result": {
+        "collected": 56594,
+        "processed_units": 5580,
+        "total_units": 5580,
+        "pages": 5063,
+        "current_security": "920992.BJ",
+        "continuous_collected": 3641,
+        "failed_units": 164
+      }
+    }
+  ],
+  "ths-income": [
+    {
+      "run_id": "f56017c9c7764ec0a47c551d9ee3d0cb",
+      "task_id": "ths-income",
+      "started_at": 1791956275.6578412,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 68810,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1930
+      },
+      "finished_at": 1791957324.2062025,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 331248,
+        "total_units": 5580,
+        "pages": 5581,
+        "current_security": "SZ:302132",
+        "phase": "complete",
+        "batch_id": "796bef59c9de453aad59988af0091671",
+        "index": 5580,
+        "units": 5580,
+        "scope_hash": "50ff0019c9e06f2028166251d906afe158c617f7d4664b52bf959391f4c8fbd8",
+        "rolling": "1e7388f64807e055e0214298e0ddfd627b76ad084403e6c05442c88e6b21bbbc"
+      }
+    },
+    {
+      "run_id": "4937aff4213c4016b533c39f8d447a18",
+      "task_id": "ths-income",
+      "started_at": 1791941117.8016722,
+      "origin": "manual",
+      "fresh": true,
+      "baseline_revision": 65160,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 3666
+      },
+      "finished_at": 1791942103.9463305,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 238951,
+        "total_units": 5580,
+        "pages": 3649,
+        "current_security": "SZ:002471"
+      }
+    },
+    {
+      "run_id": "f1025b4cb3384f638072cbc79a760d52",
+      "task_id": "ths-income",
+      "started_at": 1791928334.9670851,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 59578,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 5580
+      },
+      "finished_at": 1791929708.709323,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 331248,
+        "total_units": 5580,
+        "pages": 5581,
+        "current_security": "SZ:302132",
+        "phase": "complete",
+        "batch_id": "5744ab4ee98d45f790cd346d6571fcd8",
+        "index": 5580,
+        "units": 5580,
+        "scope_hash": "50ff0019c9e06f2028166251d906afe158c617f7d4664b52bf959391f4c8fbd8",
+        "rolling": "1e7388f64807e055e0214298e0ddfd627b76ad084403e6c05442c88e6b21bbbc"
+      }
+    }
+  ],
+  "ths-index-prices": [
+    {
+      "run_id": "60ff3f18ba3247758cff8fb0fe519325",
+      "task_id": "ths-index-prices",
+      "started_at": 1791885601.054789,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 16742,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 5160
+      },
+      "finished_at": 1791887506.80525,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 2250278,
+        "completed_units": 573,
+        "total_units": 573,
+        "pages": 10229,
+        "current_security": "湾创100R",
+        "current_date": "2026",
+        "unavailable": 0,
+        "phase": "complete",
+        "next_index": 573,
+        "next_year": 1990,
+        "snapshot_hash": "",
+        "batch_id": "5c64cf7c40cd4beea26323094f36f71a",
+        "fresh": true
+      }
+    },
+    {
+      "run_id": "7deab96ba28742419e35c3d3c4e4f856",
+      "task_id": "ths-index-prices",
+      "started_at": 1791867384.740863,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 16277,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 617
+      },
+      "finished_at": 1791867817.5060785,
+      "status": "paused",
+      "error": "",
+      "result": {
+        "collected": 1259139,
+        "completed_units": 294,
+        "total_units": 573,
+        "pages": 5664,
+        "current_security": "国证服务",
+        "current_date": "2009",
+        "unavailable": 0
+      }
+    },
+    {
+      "run_id": "03d7d5a622a64161970ccb88ee9480bc",
+      "task_id": "ths-index-prices",
+      "started_at": 1791821111.6539967,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 16268,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 9
+      },
+      "finished_at": 1791821113.870719,
+      "status": "error",
+      "error": "年度行情与近期快照集合或内容不一致",
+      "result": {
+        "collected": 1163951,
+        "completed_units": 269,
+        "total_units": 573,
+        "pages": 5223,
+        "current_security": "创精选88",
+        "current_date": "2025",
+        "unavailable": 0
+      }
+    }
+  ],
+  "ths-indices": [
+    {
+      "run_id": "b61ec526c29349e0b1e3a16d3bddfb09",
+      "task_id": "ths-indices",
+      "started_at": 1791885601.0523295,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 4600,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 574
+      },
+      "finished_at": 1791885812.0354872,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 99529,
+        "completed_units": 573,
+        "total_units": 573,
+        "pages": 574,
+        "current_security": "湾创100R",
+        "unavailable": 38,
+        "phase": "complete",
+        "batch_id": "675b6ecd562f417d8a5e83c982d8d7d0",
+        "observed_at": "2026-10-13T10:00:01.674432+00:00",
+        "next_index": 573
+      }
+    },
+    {
+      "run_id": "e2555e3246e14c3c9555c494852c0841",
+      "task_id": "ths-indices",
+      "started_at": 1791799625.2377448,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 4025,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 574
+      },
+      "finished_at": 1791799766.6319878,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 99578,
+        "completed_units": 573,
+        "total_units": 573,
+        "pages": 574,
+        "current_security": "湾创100R",
+        "unavailable": 38,
+        "phase": "complete",
+        "batch_id": "1dfe46f7b1bc4b5c97881276695b0202",
+        "observed_at": "2026-10-12T10:07:05.882993+00:00",
+        "next_index": 573
+      }
+    },
+    {
+      "run_id": "5f2c5eec6d4f4fe194e36b7229f56714",
+      "task_id": "ths-indices",
+      "started_at": 1791764851.10161,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 3450,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 574
+      },
+      "finished_at": 1791764900.1321247,
+      "status": "complete",
+      "error": "",
+      "result": {
+        "collected": 99573,
+        "completed_units": 573,
+        "total_units": 573,
+        "pages": 574,
+        "current_security": "湾创100R",
+        "unavailable": 38,
+        "phase": "complete",
+        "batch_id": "c5ea98ec714a43a094424de0cfcf9787",
+        "observed_at": "2026-10-12T00:27:31.723647+00:00",
+        "next_index": 573
+      }
+    }
+  ],
+  "ths-top-holders": [
+    {
+      "run_id": "17ce4a603d4f49b698efbc8e4d1a5788",
+      "task_id": "ths-top-holders",
+      "started_at": 1791849821.350957,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 28,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 49
+      },
+      "finished_at": 1791849830.6590917,
+      "status": "error",
+      "error": "前十大名单数量无效",
+      "result": {
+        "collected": 205,
+        "completed_units": 41,
+        "total_units": 5579,
+        "pages": 41,
+        "current_security": "000065.SZ"
+      }
+    }
+  ]
+}

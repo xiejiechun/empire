@@ -1,0 +1,28 @@
+{
+  "bindings": {
+    "src/empire/plugins/collectors/tdx_dividend_periods.py": "c4d987ecaf687588001dcf2118ffc7a54fe0b311432815156857889bb5ce7e49",
+    "src/empire/plugins/collectors/tdx_dividend_discovery.py": "f2d09ae15913057a1de8ccbc7bf5197c83090189829e04efc8b46597699eb2f5",
+    "src/empire/plugins/datasets/capital_actions.py": "6259032715ba22412b02c70069cfa706f3cc2283506f21e139ad6856e17906d3",
+    "src/empire/plugins/datasets/capital_archive.py": "fc029f129c059110f129a63fb67a19244e9d49095c893e6eea5daa8649631b2f"
+  },
+  "ddl_scopes": {
+    "dividend_plan": "6cdb5cf668ebfb2e6030ca5a82762af4dc8224c8ac084659e2eac2d7eedd53d1"
+  },
+  "measurements": {
+    "sql_rows": 56146,
+    "payload_bytes": 23643272,
+    "maximum_payload_bytes": 452,
+    "query_p95_ms": 1.940599991939962,
+    "source_rows": 56142,
+    "planned_periods": 626
+  },
+  "limits": {
+    "source_rows": 100000,
+    "planned_periods": 1000,
+    "payload_bytes": 134217728,
+    "maximum_payload_bytes": 65536,
+    "query_p95_ms": 1500
+  },
+  "conditions": "本机真实当前5579证券历史，正式MySQL查询10次；单期10000、单证券2000，非全市场并发吞吐试验。",
+  "reviewed_tradeoffs": "复用现行SQL与索引；一次报告期JSON投影保留非季度历史，组装有界集合才发布，不增加业务表或重复写入。"
+}

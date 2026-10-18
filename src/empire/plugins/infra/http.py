@@ -15,6 +15,7 @@ from empire.contracts.download_settings import (
     local_download_options,
 )
 from empire.contracts.plugin import PluginContext, PluginManifest
+from empire.contracts.request_retry import MAX_REQUEST_RETRIES, request_timeout, retry_delay
 from empire.core.config import user_data_dir
 from empire.plugins.infra.capacity import capacity
 from empire.plugins.infra.download_storage import DownloadStorage
@@ -30,7 +31,7 @@ from empire.plugins.infra.response_reader import (
     DownloadReadError,
     read_response,
 )
-from empire.plugins.infra.routing import USE_PROXY, routed_request, site_policy
+from empire.plugins.infra.routing import USE_PROXY, ProxyRouteError, routed_request, site_policy
 from empire.plugins.infra.settings import SettingsStore
 
 COOLDOWN_LUA = """
@@ -201,17 +202,27 @@ class HttpService:
 
     async def _request(
         self, method: str, url: str, *, allowed_domains: tuple[str, ...],
-        max_retries: int = 2, max_redirects: int = 5, total_timeout: float = 120,
-        project_id: str | None = None, attempt_options=None,
+        max_retries: int = 2, max_redirects: int = 5, total_timeout: float | None = None,
+        project_id: str | None = None, attempt_options=None, allow_not_found: bool = False,
+        retry_not_found: bool = False,
         **kwargs,
     ) -> httpx.Response:
         if self.closed:
             raise RuntimeError("HTTP plugin has stopped")
+        if type(max_retries) is not int or not 0 <= max_retries <= MAX_REQUEST_RETRIES:
+            raise ValueError(f"单次请求重试次数须为 0～{MAX_REQUEST_RETRIES}")
+        if total_timeout is None:
+            total_timeout = request_timeout(max_retries)
+        if type(allow_not_found) is not bool:
+            raise ValueError('allow_not_found must be boolean')
+        if type(retry_not_found) is not bool or (retry_not_found and allow_not_found):
+            raise ValueError('retry_not_found must be boolean and cannot allow missing responses')
         if method.upper() not in ("GET", "HEAD", "POST"):
             raise ValueError("Unsupported collection request method")
         if self.records is not None and not project_id:
             raise ValueError("采集 HTTP 请求必须声明 project_id，用于按项目保存错误记录")
         retries = redirects = 0
+        excluded_proxies: set[str] = set()
         if attempt_options is not None and (not callable(attempt_options) or max_redirects != 0):
             raise ValueError('动态请求字段必须使用无重定向的显式请求契约')
         response = None
@@ -226,13 +237,20 @@ class HttpService:
                             if not isinstance(generated, dict) or set(generated) - {'data', 'headers'}:
                                 raise ValueError('动态请求字段只允许正文 data 与请求头 headers')
                             options.update(generated)
-                        response = await self._one(method, url, allowed_domains, **options)
+                        response = await self._one(method, url, allowed_domains,
+                                                   excluded_proxies=excluded_proxies, **options)
+                    except ProxyRouteError as exc:
+                        await self._record_failure(project_id, method, url, exc, attempt=retries + 1)
+                        excluded_proxies.add(exc.code)
+                        # Device switching is bounded by unique device IDs and the
+                        # same total timeout; source/direct retries keep their budget.
+                        continue
                     except (httpx.TransportError, DownloadIncompleteError) as exc:
                         await self._record_failure(project_id, method, url, exc, attempt=retries + 1)
                         if retries >= max_retries:
                             raise
                         retries += 1
-                        await asyncio.sleep(2 ** (retries - 1))
+                        await asyncio.sleep(retry_delay(retries))
                         continue
                     if response.status_code in (301, 302, 303, 307, 308) and "location" in response.headers:
                         if redirects >= max_redirects:
@@ -252,13 +270,17 @@ class HttpService:
                         response.close()
                         continue
                     try:
-                        response.raise_for_status()
+                        if response.status_code != 404 or not allow_not_found:
+                            response.raise_for_status()
                     except httpx.HTTPStatusError as exc:
                         await self._record_failure(project_id, method, url, exc, response, retries + 1)
-                        if response.status_code in (429, 502, 503, 504) and retries < max_retries:
+                        retryable = response.status_code in (429, 502, 503, 504) or (
+                            response.status_code == 404 and retry_not_found
+                        )
+                        if retryable and retries < max_retries:
                             retries += 1
                             response.close()
-                            await asyncio.sleep(2 ** (retries - 1))
+                            await asyncio.sleep(retry_delay(retries))
                             continue
                         raise
                     return response

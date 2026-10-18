@@ -1,0 +1,28 @@
+{
+  "checked_at": "2026-10-09T10:27:59.545185+08:00",
+  "source_sha256": "1441b55f18a326d63772efbe2cd16db3c92c8b18857b28ea58cbddeaa1285547",
+  "machine": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.9",
+  "core": {
+    "rows": 3661,
+    "input_bytes": 289219,
+    "output_bytes": 1317960,
+    "p95_ms": 53.04199999955017,
+    "peak_bytes": 4961367
+  },
+  "sql": {
+    "p95_ms": 122.79720000515226,
+    "samples": 10,
+    "all_select": true,
+    "statements": 100
+  },
+  "added_business_tables": 0,
+  "added_storage_bytes": 0,
+  "budget": {
+    "core_p95_ms": 250,
+    "peak_bytes": 33554432,
+    "sql_p95_ms": 1500
+  },
+  "scope": "本机热查询；3661日合成上限与生产600016.SH两日只读查询；非全市场吞吐测量",
+  "passed": true
+}

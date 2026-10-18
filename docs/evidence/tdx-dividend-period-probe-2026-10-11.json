@@ -1,0 +1,352 @@
+{
+  "checked_at": "2026-10-11T20:09:18.065599+08:00",
+  "results": [
+    {
+      "label": "single_june",
+      "params": [
+        "0",
+        "0",
+        "2026-06-30",
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": 0,
+      "rows": 879,
+      "bytes": 113087,
+      "columns": [
+        "T001",
+        "code",
+        "name",
+        "sc",
+        "aT013",
+        "aT014",
+        "szzs",
+        "aT015",
+        "dT006",
+        "dT010",
+        "dT012",
+        "dT009",
+        "ygrq",
+        "gqdjr",
+        "cqcxr",
+        "fajd"
+      ],
+      "metadata": [
+        [
+          [
+            1,
+            0,
+            0,
+            "2026-06-30"
+          ]
+        ]
+      ],
+      "set_sha256": "7ff5e6cd1490af3263eceec74a988d8b3395876ea7a643dce2b214464380c716"
+    },
+    {
+      "label": "single_december",
+      "params": [
+        "0",
+        "0",
+        "2025-12-31",
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": 0,
+      "rows": 3654,
+      "bytes": 479851,
+      "columns": [
+        "T001",
+        "code",
+        "name",
+        "sc",
+        "aT013",
+        "aT014",
+        "szzs",
+        "aT015",
+        "dT006",
+        "dT010",
+        "dT012",
+        "dT009",
+        "ygrq",
+        "gqdjr",
+        "cqcxr",
+        "fajd"
+      ],
+      "metadata": [
+        [
+          [
+            1,
+            0,
+            0,
+            "2025-12-31"
+          ]
+        ]
+      ],
+      "set_sha256": "8f935d4300ee67e33cf4271ee51a34b98315e9dde5c36054714d2f69fe2627b4"
+    },
+    {
+      "label": "comma",
+      "params": [
+        "0",
+        "0",
+        "2025-12-31,2026-06-30",
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": -1005,
+      "rows": 0,
+      "bytes": 72,
+      "columns": null,
+      "metadata": [],
+      "set_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "covers_both_baselines": false,
+      "equals_baseline_union": false
+    },
+    {
+      "label": "semicolon",
+      "params": [
+        "0",
+        "0",
+        "2025-12-31;2026-06-30",
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": -1005,
+      "rows": 0,
+      "bytes": 72,
+      "columns": null,
+      "metadata": [],
+      "set_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "covers_both_baselines": false,
+      "equals_baseline_union": false
+    },
+    {
+      "label": "pipe",
+      "params": [
+        "0",
+        "0",
+        "2025-12-31|2026-06-30",
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": -1005,
+      "rows": 0,
+      "bytes": 72,
+      "columns": null,
+      "metadata": [],
+      "set_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "covers_both_baselines": false,
+      "equals_baseline_union": false
+    },
+    {
+      "label": "array",
+      "params": [
+        "0",
+        "0",
+        [
+          "2025-12-31",
+          "2026-06-30"
+        ],
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": -1002,
+      "rows": 0,
+      "bytes": 69,
+      "columns": null,
+      "metadata": [],
+      "set_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "covers_both_baselines": false,
+      "equals_baseline_union": false
+    },
+    {
+      "label": "range",
+      "params": [
+        "0",
+        "0",
+        "2025-12-31~2026-06-30",
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": -1005,
+      "rows": 0,
+      "bytes": 72,
+      "columns": null,
+      "metadata": [],
+      "set_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "covers_both_baselines": false,
+      "equals_baseline_union": false
+    },
+    {
+      "label": "year",
+      "params": [
+        "0",
+        "0",
+        "2026",
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": 0,
+      "rows": 0,
+      "bytes": 332,
+      "columns": [
+        "T001",
+        "code",
+        "name",
+        "sc",
+        "aT013",
+        "aT014",
+        "szzs",
+        "aT015",
+        "dT006",
+        "dT010",
+        "dT012",
+        "dT009",
+        "ygrq",
+        "gqdjr",
+        "cqcxr",
+        "fajd"
+      ],
+      "metadata": [
+        [
+          [
+            1,
+            0,
+            0,
+            "2026"
+          ]
+        ]
+      ],
+      "set_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "covers_both_baselines": false,
+      "equals_baseline_union": false
+    },
+    {
+      "label": "all",
+      "params": [
+        "0",
+        "0",
+        "all",
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": 0,
+      "rows": 0,
+      "bytes": 331,
+      "columns": [
+        "T001",
+        "code",
+        "name",
+        "sc",
+        "aT013",
+        "aT014",
+        "szzs",
+        "aT015",
+        "dT006",
+        "dT010",
+        "dT012",
+        "dT009",
+        "ygrq",
+        "gqdjr",
+        "cqcxr",
+        "fajd"
+      ],
+      "metadata": [
+        [
+          [
+            1,
+            0,
+            0,
+            "all"
+          ]
+        ]
+      ],
+      "set_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "covers_both_baselines": false,
+      "equals_baseline_union": false
+    },
+    {
+      "label": "one",
+      "params": [
+        "0",
+        "0",
+        "1",
+        "szzs desc",
+        "",
+        "0",
+        "1",
+        "10000"
+      ],
+      "error_code": 0,
+      "rows": 0,
+      "bytes": 329,
+      "columns": [
+        "T001",
+        "code",
+        "name",
+        "sc",
+        "aT013",
+        "aT014",
+        "szzs",
+        "aT015",
+        "dT006",
+        "dT010",
+        "dT012",
+        "dT009",
+        "ygrq",
+        "gqdjr",
+        "cqcxr",
+        "fajd"
+      ],
+      "metadata": [
+        [
+          [
+            1,
+            0,
+            0,
+            "1"
+          ]
+        ]
+      ],
+      "set_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "covers_both_baselines": false,
+      "equals_baseline_union": false
+    }
+  ],
+  "network": {
+    "proxy_requests": 10
+  },
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "scope": "source parameter experiment only; no business writes; no raw success bodies retained"
+}

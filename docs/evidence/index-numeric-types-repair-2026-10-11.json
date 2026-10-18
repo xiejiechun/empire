@@ -1,0 +1,178 @@
+{
+  "project": "ths-index-prices",
+  "error_ids": [
+    "20cbd4f8c1cd4a879d43119f87c93941",
+    "0a9afc8f986e449e852ba2f2bcfaa26d",
+    "8d0b4e3d358f44d6bc446f2daafc3180",
+    "f606755ee9fe44e0a065cd6dc37c9e32",
+    "9d9e96a6e78c41f5bda5a0fac5940612"
+  ],
+  "status": "released_desktop_verified_resumed",
+  "registered_error": {
+    "id": "20cbd4f8c1cd4a879d43119f87c93941",
+    "project_id": "ths-index-prices",
+    "created_at": "2026-10-11T07:39:22.900674+00:00",
+    "version": "0.1.0 (a79f789e15de+dirty)",
+    "stage": "source_validation",
+    "error": "指数行情数字格式无效",
+    "request_url": "https://d.10jqka.com.cn/v4/line/zs_399317/01/2014.js",
+    "status_code": 200,
+    "metadata": {},
+    "body_truncated": false,
+    "body_complete": true,
+    "observed_bytes": 18182,
+    "original_bytes": 18182,
+    "original_sha256": "5d81525afc80d53e763797e45a4d3206de3c70fc159eab651c4d7b26c9dc33dd",
+    "sample_sha256": "5d81525afc80d53e763797e45a4d3206de3c70fc159eab651c4d7b26c9dc33dd"
+  },
+  "bad_values": [
+    {
+      "date": "20141205",
+      "field": "amount",
+      "value": "-798120910000.00",
+      "error": "指数行情数字格式无效"
+    }
+  ],
+  "source_row_count": 245,
+  "related_errors": [
+    {
+      "id": "20cbd4f8c1cd4a879d43119f87c93941",
+      "error": "指数行情数字格式无效",
+      "request_url": "https://d.10jqka.com.cn/v4/line/zs_399317/01/2014.js"
+    },
+    {
+      "id": "0a9afc8f986e449e852ba2f2bcfaa26d",
+      "error": "指数行情数字格式无效",
+      "request_url": "https://d.10jqka.com.cn/v4/line/zs_399317/01/2014.js"
+    },
+    {
+      "id": "8d0b4e3d358f44d6bc446f2daafc3180",
+      "error": "指数行情数字格式无效",
+      "request_url": "https://d.10jqka.com.cn/v4/line/zs_399317/01/2014.js"
+    },
+    {
+      "id": "f606755ee9fe44e0a065cd6dc37c9e32",
+      "error": "指数行情数字格式无效",
+      "request_url": "https://d.10jqka.com.cn/v4/line/zs_399317/01/2014.js"
+    },
+    {
+      "id": "9d9e96a6e78c41f5bda5a0fac5940612",
+      "error": "指数行情数字格式无效",
+      "request_url": "https://d.10jqka.com.cn/v4/line/zs_399317/01/2014.js"
+    },
+    {
+      "id": "1917d5118c4e49fc98c2e958866c00c9",
+      "error": "指数行情数字格式无效",
+      "request_url": "https://d.10jqka.com.cn/v4/line/zs_399303/01/2009.js"
+    }
+  ],
+  "root_cause": "2014-12-05 amount=-798120910000.00 is syntactically valid signed decimal; nonnegative-only parser misclassified business quality as numeric syntax.",
+  "source_probe": {
+    "status": 200,
+    "proxy_requests": 1,
+    "use_proxy": true,
+    "proxy_fallback": true,
+    "row_count": 245,
+    "target_row": [
+      "2014-12-05",
+      "3813.84",
+      "3823.18",
+      "3641.33",
+      "3756.47",
+      "94777491000",
+      "-798120910000"
+    ]
+  },
+  "verification": {
+    "unit": "30 passed",
+    "integration": "18 passed",
+    "documentation": "143 documents / 1021 links / 33 table contracts",
+    "capacity": "docs/evidence/index-prices-capacity-2026-10-10.json"
+  },
+  "config_before": {
+    "config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "dist\\Empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f"
+  },
+  "original_error_replays": [
+    {
+      "id": "20cbd4f8c1cd4a879d43119f87c93941",
+      "source_sha256": "5d81525afc80d53e763797e45a4d3206de3c70fc159eab651c4d7b26c9dc33dd",
+      "rows": 245
+    },
+    {
+      "id": "0a9afc8f986e449e852ba2f2bcfaa26d",
+      "source_sha256": "5d81525afc80d53e763797e45a4d3206de3c70fc159eab651c4d7b26c9dc33dd",
+      "rows": 245
+    },
+    {
+      "id": "8d0b4e3d358f44d6bc446f2daafc3180",
+      "source_sha256": "5d81525afc80d53e763797e45a4d3206de3c70fc159eab651c4d7b26c9dc33dd",
+      "rows": 245
+    },
+    {
+      "id": "f606755ee9fe44e0a065cd6dc37c9e32",
+      "source_sha256": "5d81525afc80d53e763797e45a4d3206de3c70fc159eab651c4d7b26c9dc33dd",
+      "rows": 245
+    },
+    {
+      "id": "9d9e96a6e78c41f5bda5a0fac5940612",
+      "source_sha256": "5d81525afc80d53e763797e45a4d3206de3c70fc159eab651c4d7b26c9dc33dd",
+      "rows": 245
+    }
+  ],
+  "live": "docs/evidence/index-numeric-types-live-2026-10-11.json",
+  "migration": "docs/evidence/index-numeric-types-schema-2026-10-11.json",
+  "error_cleanup": {
+    "ids": [
+      "20cbd4f8c1cd4a879d43119f87c93941",
+      "0a9afc8f986e449e852ba2f2bcfaa26d",
+      "8d0b4e3d358f44d6bc446f2daafc3180",
+      "f606755ee9fe44e0a065cd6dc37c9e32",
+      "9d9e96a6e78c41f5bda5a0fac5940612"
+    ],
+    "removed": 0,
+    "before": 300,
+    "remaining": 300,
+    "other_ids_preserved": true,
+    "verified_at": "2026-10-11T10:30:25.886148+00:00",
+    "result": "Exact-ID cleanup executed; all five registered IDs were already absent from bounded latest300 list; removed0, retained all other entries."
+  },
+  "integrity": {
+    "lifecycle": "Unchanged annual/last ordered checkpoints, real failed year2014 advanced to2015; all573-index history still incomplete.",
+    "source_set": "245 original annual rows, date set and complete canonical hash equal formal SQL plus yearly proof.",
+    "archive": "18 integration tests cover source→Redis→archive→query, cold/hot repeat no business DML, source correction, late negative old response, SQL commit replay and successful cleanup.",
+    "schema": "Only signed quantity nonnegative CHECK removed; existing business rows/state unchanged before-after; no key/index/grain changes.",
+    "usage": "Negative quantity count scoped to dates; close-return purpose usable, amount/volume-based analysis unavailable; cache_revision4 invalidates old preparation report.",
+    "not_applicable": "No new dataset/association/version/key contract, no pagination protocol change; existing nonnegative content and fingerprints unchanged."
+  },
+  "release": {
+    "report": "build/release-report.json",
+    "log": "build/preparation-scope-20261011/release-clean.log",
+    "source_sha256": "700b2ff017fe6d79bee2d02e5eb489af9da894caa50d39e2b55da43fbdd6cbc7",
+    "executable_sha256": "75944e6e0652f730024675c5931b966f1ba530f8178b6dade434ceff7aa17e60",
+    "verified_at_utc": "2026-10-11T08:54:59Z",
+    "passed": 2111,
+    "skipped": 5
+  },
+  "config_preserved": true,
+  "desktop": {
+    "verified": true,
+    "app": "D:/project/empire/dist/Empire/Empire.exe",
+    "index_code": "399317",
+    "trade_date": "2014-12-05",
+    "amount": "-798120910000.0000",
+    "quality": "关系正常；量额异常",
+    "resume": "Existing daily18:00 schedule already running; no restart/fresh action needed",
+    "observed_index_progress": "538/573",
+    "observed_rows": 2126144,
+    "observed_batches": 9684,
+    "current_error": null,
+    "full_history_complete": false,
+    "observed_at": "2026-10-11T10:30:25.886148+00:00"
+  },
+  "remaining_error_snapshot": {
+    "504:http": 55,
+    "502:http": 245
+  },
+  "test_mysql_13331": "Normal mysqladmin shutdown completed; production MySQL/Redis untouched"
+}

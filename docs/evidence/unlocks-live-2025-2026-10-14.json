@@ -1,0 +1,121 @@
+{
+  "checked_at": "2026-10-13T17:15:51.655425+00:00",
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "network": {
+    "proxy_requests": 142
+  },
+  "units": {
+    "2025-10-01|SH": {
+      "count": 59,
+      "details": 307,
+      "digest": "4d1fd9beacd078d2aa1468ea20e86220c6da8cf02eb0078dc91b0590ac851583"
+    },
+    "2025-10-01|SZ": {
+      "count": 76,
+      "details": 424,
+      "digest": "516f7aa3228ef8232ca22a54d40190a6d8ba76037d8640d12634ec2d657b4341"
+    },
+    "2025-10-01|BJ": {
+      "count": 7,
+      "details": 30,
+      "digest": "ec5b0e9a5139b82ae71e25364f01234c28cdc91d180420d3577864e0acc2cb4f"
+    }
+  },
+  "passed": true,
+  "representative_parent": {
+    "unified_code": "603210.SH",
+    "unlock_date": "2025-10-09",
+    "reason_code": "10000201",
+    "name": "泰鸿万立",
+    "industry": "汽车配件",
+    "reason": "首发、公开增发网下配售股份",
+    "shares": "1803100",
+    "total_shares": "340400000",
+    "group_key": "f4cba34fc758c284bb0256021d46b967dcd90c34d1d835a4022d00485567174f",
+    "occurrence": 1,
+    "record_key": "06e0af278a6e96dcbb2c2b655e2a0c69c04b2297f574591f97c3c0640619b3fb",
+    "detail_status": "present",
+    "detail_count": 1
+  },
+  "representative_detail": {
+    "group_key": "94986cedb4c82f30ae9fbffcc4b5793f7979d5d61f772e7f82afa12d4846979c",
+    "unified_code": "688138.SH",
+    "unlock_date": "2025-10-30",
+    "reason_code": "10000203",
+    "holder": "湖北省铁路发展基金有限责任公司",
+    "reason": "非公开发行限售",
+    "shares": "8000000",
+    "occurrence": 1,
+    "record_key": "0003ab6ee111f5177d19265f6e6d470ec64ba2c4778281256bfba26ce1fb06bb"
+  },
+  "audit": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "核验142条列表；必需字段缺失0；来源空明细组0",
+      "blocking": true
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "列表事实与共享明细分别核对业务键集合及正文摘要",
+      "blocking": true
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "完整月份、三市场及最终范围集合证明核验",
+      "blocking": true
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "股数精确换算；并列列表保留；共享明细不重复计数，未知不填零",
+      "blocking": true
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "匹配完整范围的SQL或可信摘要确认须在3天内",
+      "blocking": true
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "来源没有公告可用日期；解禁日期不能证明历史信号已公开",
+      "blocking": false
+    }
+  ],
+  "cursor": {
+    "phase": "complete",
+    "start": "2025-10-01",
+    "end": "2025-10-01",
+    "index": 1,
+    "market_index": 0,
+    "response_hash": "",
+    "page": 4,
+    "collected": 142,
+    "details": 761,
+    "rolling": "99210c7978fc3c72605641cdb6f78b2fbd84b8e840fa6a9da4e3eed141136e61",
+    "contract": 1,
+    "batch_id": "cec4b4d89c944263a105be5b79371209",
+    "force": true,
+    "review_index": 0
+  },
+  "pending_stream": 0,
+  "errors": {
+    "revision": "0",
+    "total": 0,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": []
+  },
+  "query_sample": {
+    "list_count": 1,
+    "detail_count": 1
+  }
+}

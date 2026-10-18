@@ -8,12 +8,21 @@ from pathlib import Path
 from urllib.parse import unquote
 
 EXPECTED_TABLES = {
+    'capital_funding', 'capital_project', 'capital_transaction', 'capital_equity_summary',
+    'capital_equity_position', 'capital_ipo', 'capital_encumbrance', 'capital_release',
+    'restricted_share_unlock', 'restricted_share_unlock_detail', 'restricted_share_unlock_industry',
+    'holder_report', 'holder_member',
+    'earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report', 'shareholder_count', 'shareholder_change',
+    'stock_repurchase_plan',
+    'trading_rule_value', 'trading_rule_citation',
+    'security_code_alias',
     'security_listing_event',
     'stock_listing',
-    'security_name_change',
+    'security_name_change', 'security_st_event',
     "stock_intraday_trend", "stock_opening_auction", "stock_minute_volume", "stock_intraday_trade_block",
     "stock_minute_entrust", "stock_large_order_trend", "stock_daily_quote", "stock_daily_quote_level",
-    'industry', 'industry_member',
+    'industry', 'industry_member', 'stock_index', 'stock_index_member',
+    'index_daily_price', 'index_price_year',
     "stock", "finance_news", "trade_calendar", "suspension_event", "suspension_source_date", "stock_market_day",
     "income_statement", "balance_statement", "cashflow_statement",
     "collection_state", "app_setting", "dividend_plan", "additional_issue", "rights_issue",
@@ -41,8 +50,20 @@ def broken_links(root: Path) -> list[str]:
     errors: list[str] = []
     for document in documentation_files(root):
         text = document.read_text(encoding="utf-8")
+        fence = None
         for number, line in enumerate(text.splitlines(), 1):
-            for matched in LINK_RE.finditer(line):
+            marker = re.match(r'^\s{0,3}(`{3,}|~{3,})', line)
+            if marker:
+                if fence is None:
+                    fence = marker[1]
+                elif marker[1][0] == fence[0] and len(marker[1]) >= len(fence):
+                    fence = None
+                continue
+            if fence is not None:
+                continue
+            # Literal SQL CHECK regexes and key examples are not Markdown links.
+            link_text = re.sub(r'(`+).*?\1', 'CODE', line)
+            for matched in LINK_RE.finditer(link_text):
                 target = unquote(_link_target(matched.group(1)))
                 if target.startswith(("http://", "https://", "mailto:", "codex://", "help:", "#")):
                     continue

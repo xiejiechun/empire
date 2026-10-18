@@ -1,0 +1,398 @@
+{
+  "started_at": "2026-10-17T03:19:53.814867+00:00",
+  "project": "ths-capital",
+  "status": "completed",
+  "errors": [
+    {
+      "status_code": 200,
+      "error": "资本运作业务主体缺失",
+      "id": "0dc8b4bfa5124150800182b68e40dcf0",
+      "project_id": "ths-capital",
+      "created_at": "2026-10-17T03:19:07.744987+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/000156/capital.html",
+      "original_sha256": "80523eb69cb8bb8f01583c4dd4cf68b4bcd4846d5557caf23effaaf77c11e68f",
+      "original_bytes": 229386,
+      "body_truncated": true
+    },
+    {
+      "status_code": 200,
+      "error": "资本运作业务主体缺失",
+      "id": "efa5929a071b44eeb85507cc852dcbdf",
+      "project_id": "ths-capital",
+      "created_at": "2026-10-17T03:14:19.088505+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/000156/capital.html",
+      "original_sha256": "810ed1148ebc62fbf76372e67456657322510d635d9e7fd8eb54dccbbeddbb9f",
+      "original_bytes": 229386,
+      "body_truncated": true
+    },
+    {
+      "status_code": 200,
+      "error": "资本运作业务主体缺失",
+      "id": "866f9d7828cd4f1c8066e85a884fb6e9",
+      "project_id": "ths-capital",
+      "created_at": "2026-10-16T17:40:52.936695+00:00",
+      "stage": "source_validation",
+      "request_url": "https://basic.10jqka.com.cn/000156/capital.html",
+      "original_sha256": "32929fa49d0fedc226ea12b68a89a7b8d9d6a30be7f4563f9c31a3dfe3665a60",
+      "original_bytes": 229386,
+      "body_truncated": true
+    }
+  ],
+  "cleanup": {
+    "performed": true,
+    "checked_at": "2026-10-17T04:38:56.676185+00:00",
+    "exact_ids": [
+      "0dc8b4bfa5124150800182b68e40dcf0",
+      "efa5929a071b44eeb85507cc852dcbdf",
+      "866f9d7828cd4f1c8066e85a884fb6e9"
+    ],
+    "removed": 3,
+    "targets_absent": true,
+    "other_error_records_remaining": 0,
+    "scope": "Only verified exact IDs; new/unreviewed errors preserved"
+  },
+  "root_cause": "capital_equity_position.target 来源明确未公布被错误当必需主体；保留NULL及完整行，不跨期猜填",
+  "program_config_before_sha256": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+  "source_evidence": {
+    "code": "000156",
+    "period": "2025-06-30",
+    "row": [
+      "其他",
+      "未公布",
+      "交易性金融资产",
+      "0.00",
+      "未公布%",
+      "-790.80万"
+    ],
+    "proxy_requests": 4,
+    "direct_requests": 0
+  },
+  "design": {
+    "schema_change": false,
+    "migration": "Not required: target already nullable; existing valid rows/keys unchanged and previously rejected securities never received completion proof",
+    "identity": "Existing period/category/type/nullable target and deterministic multiplicity; unknown is not inferred from another period",
+    "lifecycle": "Existing whole-security atomic publication and complete-pool retry unchanged"
+  },
+  "additional_type": {
+    "error": "资本运作单位/数值未知：18.94亿瑞典克朗",
+    "found_by": "frozen random30 sample",
+    "failed_attempt": "ths-capital-error-types-attempt1-2026-10-17.json",
+    "fix": "Extend shared numeric/currency vocabulary; parametrized tests cover every registered currency, no security special case",
+    "securities": [
+      "601969.SH"
+    ]
+  },
+  "focused_tests": {
+    "passed": 84,
+    "command": "pytest tests/integration/test_ths_capital_archive.py tests/test_ths_capital.py tests/test_ths_capital_lifecycle.py tests/test_ths_capital_ui.py tests/test_ths_capital_verification.py",
+    "basetemp": "build/pytest-capital-subject-schema-final",
+    "seconds": 14.98
+  },
+  "live": {
+    "evidence": "ths-capital-error-types-live-2026-10-17.json",
+    "final_source_sha256": "030c3c2faaa7b8e3ff22f180d5228bf8ec3d9c336dd0d2a6886ef1e0cf217194",
+    "random_count": 30,
+    "fixed_count": 5,
+    "facts": 3781,
+    "network": {
+      "proxy_requests": 35
+    },
+    "pending": 0,
+    "passed": true,
+    "scope": "Private SQL and Redis; full source keys/content compared through formal query; production progress unchanged"
+  },
+  "capacity_evidence": "ths-capital-error-types-capacity-2026-10-17.json",
+  "run_records_reviewed": [
+    {
+      "run_id": "675ff22ae2404fbb94b91963bb8c9a7d",
+      "task_id": "ths-capital",
+      "started_at": 1792207147.2972438,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 56,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 7
+      },
+      "finished_at": 1792207147.7591765,
+      "status": "error",
+      "error": "资本运作业务主体缺失",
+      "result": {
+        "collected": 9629,
+        "processed_units": 56,
+        "total_units": 5580,
+        "pages": 56,
+        "current_security": "000156.SZ"
+      }
+    },
+    {
+      "run_id": "ce6a4b5042bd49789cf37990760b1f49",
+      "task_id": "ths-capital",
+      "started_at": 1792206858.4668643,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 56,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1792206859.1044772,
+      "status": "error",
+      "error": "资本运作业务主体缺失",
+      "result": {
+        "collected": 9629,
+        "processed_units": 56,
+        "total_units": 5580,
+        "pages": 56,
+        "current_security": "000156.SZ"
+      }
+    },
+    {
+      "run_id": "956edc3ead68489085a4d95e3861ae86",
+      "task_id": "ths-capital",
+      "started_at": 1792172448.024564,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 38,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 24
+      },
+      "finished_at": 1792172452.952537,
+      "status": "error",
+      "error": "资本运作业务主体缺失",
+      "result": {
+        "collected": 9629,
+        "processed_units": 56,
+        "total_units": 5580,
+        "pages": 56,
+        "current_security": "000156.SZ"
+      }
+    },
+    {
+      "run_id": "a37b03dfa282473e8f6f809ee501bf38",
+      "task_id": "ths-capital",
+      "started_at": 1792167911.1712267,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 38,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 9
+      },
+      "finished_at": 1792167911.9961886,
+      "status": "error",
+      "error": "解除明细数量/公告日期缺失或超限",
+      "result": {
+        "collected": 6382,
+        "processed_units": 38,
+        "total_units": 5580,
+        "pages": 38,
+        "current_security": "000061.SZ"
+      }
+    },
+    {
+      "run_id": "d44af38260894a5b927da534d3ad3ef5",
+      "task_id": "ths-capital",
+      "started_at": 1792146600.6136498,
+      "origin": "schedule",
+      "fresh": false,
+      "baseline_revision": 38,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 8
+      },
+      "finished_at": 1792146601.3881478,
+      "status": "error",
+      "error": "解除明细数量/公告日期缺失或超限",
+      "result": {
+        "collected": 6382,
+        "processed_units": 38,
+        "total_units": 5580,
+        "pages": 38,
+        "current_security": "000061.SZ"
+      }
+    },
+    {
+      "run_id": "61a349cb605a4fb4bcd9fa831ce511f5",
+      "task_id": "ths-capital",
+      "started_at": 1792132166.682265,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 38,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 9
+      },
+      "finished_at": 1792132167.7497702,
+      "status": "error",
+      "error": "解除明细数量/公告日期缺失或超限",
+      "result": {
+        "collected": 6382,
+        "processed_units": 38,
+        "total_units": 5580,
+        "pages": 38,
+        "current_security": "000061.SZ"
+      }
+    },
+    {
+      "run_id": "7ed4527cae7a4df1b76e1c4c1ddff717",
+      "task_id": "ths-capital",
+      "started_at": 1792124480.3558924,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 37,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 1
+      },
+      "finished_at": 1792124482.4703243,
+      "status": "error",
+      "error": "资本运作单位/数值未知：1.84亿加拿大元",
+      "result": {
+        "collected": 6184,
+        "processed_units": 37,
+        "total_units": 5580,
+        "pages": 37,
+        "current_security": "000060.SZ"
+      }
+    },
+    {
+      "run_id": "6e8823685e9244b6b14c4aef63d4b41a",
+      "task_id": "ths-capital",
+      "started_at": 1792123169.7644517,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 27,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 11
+      },
+      "finished_at": 1792123181.8898082,
+      "status": "error",
+      "error": "资本运作单位/数值未知：1.84亿加拿大元",
+      "result": {
+        "collected": 6184,
+        "processed_units": 37,
+        "total_units": 5580,
+        "pages": 37,
+        "current_security": "000060.SZ"
+      }
+    },
+    {
+      "run_id": "1e4ca49edd2641aca8eb490500d7d8ac",
+      "task_id": "ths-capital",
+      "started_at": 1792119523.4521656,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 9,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 26
+      },
+      "finished_at": 1792119525.0568824,
+      "status": "error",
+      "error": "资本运作单位/数值未知：31.08亿挪威克朗",
+      "result": {
+        "collected": 4545,
+        "processed_units": 27,
+        "total_units": 5580,
+        "pages": 27,
+        "current_security": "000039.SZ"
+      }
+    },
+    {
+      "run_id": "4b53d33274694d93b91ca3ad16ce5282",
+      "task_id": "ths-capital",
+      "started_at": 1792115216.3395658,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 0,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 10
+      },
+      "finished_at": 1792115227.7303517,
+      "status": "error",
+      "error": "资本运作单位/数值未知：--%",
+      "result": {
+        "collected": 1689,
+        "processed_units": 9,
+        "total_units": 5580,
+        "pages": 9,
+        "current_security": "000014.SZ"
+      }
+    }
+  ],
+  "run_record_policy": "Historical run failures are retained as facts; only verified exact error sample IDs will be cleared",
+  "extra_frontier_regression": {
+    "passed": 7,
+    "new_cases": 2,
+    "covers": [
+      "unknown holding category does not advance checkpoint",
+      "unknown currency does not advance checkpoint"
+    ]
+  },
+  "release_coordination": {
+    "other_chat": "同花顺股东研究",
+    "thread_id": "01a13119-bca9-7d71-b05c-fa8dd8faa247",
+    "user_authorized_message": true,
+    "state": "unified release passed; new desktop reopened; own test MySQL stopped"
+  },
+  "capital_source_files_sha256": {
+    "src/empire/contracts/ths_capital.py": "e557ee8de9afa6aeb2e3e952fd8c3adeae988eb92fabc8d6486972350169f237",
+    "tests/test_ths_capital.py": "e5503d3eebbb940855ee7c2798ebc572b1e49d211932b942c35a942191b9e736",
+    "tests/test_ths_capital_lifecycle.py": "2cf1ad6f84e03aa7301ea85c2bc95610399a438d9258c0fc514669b296d18e9e",
+    "tests/integration/test_ths_capital_archive.py": "2d0fa1bbabf589fc658b49ba77ad242a2383c6b06a4180bffd898173e8499133"
+  },
+  "release": {
+    "evidence": "ths-capital-error-types-release-2026-10-17.json",
+    "verified_at_utc": "2026-10-17T04:38:21Z",
+    "executable_sha256": "e9dd0beee489ad14857f4dc68b0e82f5c21540d1dee69985b39dac16cd3f1d75",
+    "source_sha256": "030c3c2faaa7b8e3ff22f180d5228bf8ec3d9c336dd0d2a6886ef1e0cf217194",
+    "test_counts": {
+      "passed": 2689,
+      "skipped": 5
+    },
+    "program_config_preserved": true
+  },
+  "packaged_doctor": {
+    "working_directory": "D:\\",
+    "redis_connected": true,
+    "mysql_connected": true,
+    "required_tables_present": 55
+  },
+  "desktop": {
+    "native_visible_smoke_exit": 0,
+    "offscreen": false,
+    "screenshot": "build/capital-subject-visible.png",
+    "observed": "Window rendered; lower-left local services connected indicator shown",
+    "restarted_from": "D:\\",
+    "pid": 41832,
+    "interaction_validation": "Not performed in this repair; prior native-pipe failure recorded in the preceding repair. Native visible startup verified; no capital-page interaction claim"
+  },
+  "test_services_cleanup": {
+    "port": 13346,
+    "gracefully_stopped": true,
+    "remaining_test_schemas": [],
+    "production_services_untouched": true
+  },
+  "completed_at": "2026-10-17T04:39:22.623382+00:00",
+  "post_restart_errors": {
+    "checked_at": "2026-10-17T04:39:37.085721+00:00",
+    "total": 0,
+    "rows": []
+  }
+}

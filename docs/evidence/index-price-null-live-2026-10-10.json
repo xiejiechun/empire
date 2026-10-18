@@ -1,0 +1,83 @@
+{
+  "project": "ths-index-prices",
+  "error_ids": [
+    "a7aa29ae65d34c2ba89baa1a61f1a8c1"
+  ],
+  "verified_at": "2026-10-10T15:27:40.643281+00:00",
+  "source": {
+    "hash": "e77fda98d7599e5b49b36eb5a9806501c45c0cc098b852a9c425eadd41786195",
+    "rows": 243,
+    "missing": 243
+  },
+  "sql": {
+    "count": 243,
+    "first": [
+      "2004-01-02",
+      null,
+      null,
+      null,
+      "1053.27",
+      "176978490",
+      "976973690"
+    ],
+    "last": [
+      "2004-12-31",
+      null,
+      null,
+      null,
+      "902.5",
+      "29610466",
+      "178385990"
+    ],
+    "hash": "e77fda98d7599e5b49b36eb5a9806501c45c0cc098b852a9c425eadd41786195",
+    "complete": true
+  },
+  "network": {
+    "policy": {
+      "use_proxy": true,
+      "proxy_fallback": true
+    },
+    "counts": {
+      "proxy_requests": 8
+    }
+  },
+  "pending": 0,
+  "checkpoint": {
+    "next_index": 63,
+    "next_year": 2005,
+    "phase": "collecting"
+  },
+  "checks": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "范围内243条指数日线；接口不可用0项。"
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "按指数及日期唯一，年度键与内容摘要核验"
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "范围内243条指数日线；接口不可用0项。"
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "已核验已知价格关系、精度及收盘量额；243条来源缺少开盘/最高/最低价，保存NULL。可用于收盘收益分析；依赖缺失价格的策略不可用。"
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "接口最近成功核验不超过3天；完整性另由年度正文核验"
+    },
+    {
+      "criterion": "temporal",
+      "status": "pass",
+      "measured": "仅收盘后日线；不提供历史版本回放或量额统一口径"
+    }
+  ],
+  "full_history_complete": false
+}

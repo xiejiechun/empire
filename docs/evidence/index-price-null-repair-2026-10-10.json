@@ -1,0 +1,70 @@
+{
+  "project": "ths-index-prices",
+  "error_ids": [
+    "a7aa29ae65d34c2ba89baa1a61f1a8c1"
+  ],
+  "original_body_sha256": "80778a34ae61973d0d560c39a036f24177c3f92d3c34173b866de92f124760ac",
+  "root_cause": "Valid source close/volume/amount with all 243 open/high/low values empty; previous parser incorrectly required all prices.",
+  "user_decision": "Preserve real values; missing open/high/low SQL NULL. Never fill from close or zero.",
+  "implementation": [
+    "Source empty first three price fields normalize to None; malformed nonempty numbers and missing required close/volume/amount still fail.",
+    "Canonical SQL read/write and digest preserve NULL; known-price comparisons only.",
+    "UI displays source not provided; preparation reports scoped missing count and strategy limitation.",
+    "Explicit single ALTER under normal singleton and SQL maintenance locks; no startup migration."
+  ],
+  "verification": {
+    "unit_tests": "23 targeted passed; complete release 2040 passed, 5 isolated opt-in skipped, 2 pre-existing Qt warnings.",
+    "integration_tests": "Expanded source-to-archive/query NULL, hot/cold zero DML, valid later fill, late old rejection, commit replay, explicit migration idempotence included in full passing suite.",
+    "live": "docs/evidence/index-price-null-live-2026-10-10.json",
+    "schema": "docs/evidence/index-price-null-schema-2026-10-10.json",
+    "capacity": "docs/evidence/index-prices-capacity-2026-10-10.json"
+  },
+  "integrity": {
+    "lifecycle": "Unchanged year initialization, recent-window revisions, preserved ordered checkpoint and SQL recovery.",
+    "key_set": "Strict ordered source dates and annual count, overlap identity and exact canonical source-to-SQL digest.",
+    "failure_checkpoint": "Malformed required fields rejected; original checkpoint continued to next_year=2005 only after target publication.",
+    "end_to_end": "243 real 1B0070:2004 rows through shared proxy downloader, Redis publication, unified archive and formal SQL query; queue empty.",
+    "development_vs_actual": "Finite target-year proof only; all 573-index history initialization remains incomplete."
+  },
+  "release": {
+    "report": "build/release-report.json",
+    "verified_at": "2026-10-10T15:45:55Z",
+    "executable_sha256": "b8ef2f9decf73ba059b7ecf8f31d6df4a6db5a8f2eb35db808365e7f54a353ad",
+    "tests": {
+      "passed": 2040,
+      "skipped": 5,
+      "warnings": 2
+    },
+    "gate_passed": true
+  },
+  "error_cleanup": {
+    "ids": [
+      "a7aa29ae65d34c2ba89baa1a61f1a8c1"
+    ],
+    "removed": 1,
+    "before": 300,
+    "remaining": 299,
+    "other_ids_preserved": true
+  },
+  "desktop": {
+    "executable": "dist/Empire/Empire.exe",
+    "native": true,
+    "local_services_connected": true,
+    "actions": [
+      "Data catalog searched index history; opened index daily-price page.",
+      "Queried 1B0070 from 2004-01-01 to 2004-12-31; first row 2004-01-02 displays source not provided for open/high/low, close=1053.270000, volume=176978490.0000, amount=976973690.0000.",
+      "Navigated to associated task, clicked Continue collection, observed native runtime collecting with no current execution error."
+    ],
+    "observed_progress": {
+      "collected": 321846,
+      "pages": 1429,
+      "current_security": "材料等权",
+      "status": "collecting",
+      "full_round_confirmed": false
+    }
+  },
+  "unrelated_changes": "Preserved pre-existing dirty/untracked workspace; RouterProxy chat operating separate repository, Empire chat idle at start.",
+  "temporary_error_body": "Deleted owned build/index-number-error-body.txt after extracting minimal regression and diagnosis; original remains in Redis until exact cleanup.",
+  "config_preserved": true,
+  "remaining": "All-index history initialization continues; other network errors retained. Missing source prices remain NULL and unsuitable for strategies requiring those prices."
+}

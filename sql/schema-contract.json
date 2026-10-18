@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "d58613efbe8cd6a7f5613383b5ef922fa68eb0bf87a2e31add6c47e9ac87edc1",
+  "schema_sha256": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -1720,6 +1720,2750 @@
         "ck_listing_event_date": "(event_date>='1990-12-19')",
         "ck_listing_event_description": "((descriptionisnull)or(char_length(description)<=2000))",
         "ck_listing_event_type": "(event_typein('suspended','resumed','terminated'))"
+      }
+    },
+    "stock_index": {
+      "columns": {
+        "index_code": {
+          "type": "char(6) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_group": {
+          "type": "varchar(40) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "members_available": {
+          "type": "tinyint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "member_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "member_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "index_code"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_index_code": "regexp_like(index_code,'^[0-9a-z]{6}$')",
+        "ck_index_members": "(member_count<10000)"
+      }
+    },
+    "stock_index_member": {
+      "columns": {
+        "index_code": {
+          "type": "char(6) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_code": {
+          "type": "varchar(12) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "index_code",
+        "source_code"
+      ],
+      "indexes": {
+        "ix_index_security": {
+          "columns": [
+            "unified_code",
+            "index_code"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_index_source_security": {
+          "columns": [
+            "source_code",
+            "index_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_index_member_code": "regexp_like(source_code,'^[0-9]{5,6}$')",
+        "ck_index_member_unified": "((unified_codeisnull)orregexp_like(unified_code,'^[0-9]{6}[.](sh|sz|bj)$'))"
+      }
+    },
+    "security_code_alias": {
+      "columns": {
+        "legacy_code": {
+          "type": "char(6) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "listing_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "legacy_code"
+      ],
+      "indexes": {
+        "ux_alias_security": {
+          "columns": [
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": true
+        }
+      },
+      "checks": {
+        "ck_alias_current": "regexp_like(unified_code,'^920[0-9]{3}[.]bj$')",
+        "ck_alias_name": "(char_length(trim(name))between1and100)",
+        "ck_alias_old": "regexp_like(legacy_code,'^[48][0-9]{5}$')"
+      }
+    },
+    "index_daily_price": {
+      "columns": {
+        "index_code": {
+          "type": "char(6) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "trade_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "open": {
+          "type": "decimal(18, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "high": {
+          "type": "decimal(18, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "low": {
+          "type": "decimal(18, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "close": {
+          "type": "decimal(18, 6)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "volume": {
+          "type": "decimal(24, 4)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "amount": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "index_code",
+        "trade_date"
+      ],
+      "indexes": {
+        "ix_index_price_date": {
+          "columns": [
+            "trade_date",
+            "index_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_index_price_code": "regexp_like(index_code,'^[0-9a-z]{6}$')",
+        "ck_index_price_date": "(trade_date>='1990-01-01')",
+        "ck_index_price_ohlc": "((close>0)and((openisnull)or(open>0))and((highisnull)or(high>0))and((lowisnull)or(low>0)))"
+      }
+    },
+    "index_price_year": {
+      "columns": {
+        "index_code": {
+          "type": "char(6) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "quote_year": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "source_count": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "row_count": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "first_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "last_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "complete": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "index_code",
+        "quote_year"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_index_year_code": "regexp_like(index_code,'^[0-9a-z]{6}$')",
+        "ck_index_year_complete": "((completein(0,1))and((complete=0)or(source_count=row_count)))",
+        "ck_index_year_count": "((source_countbetween1and366)and(row_countbetween1and366))",
+        "ck_index_year_dates": "((year(first_date)=quote_year)and(year(last_date)=quote_year)and(first_date<=last_date))",
+        "ck_index_year_hash": "regexp_like(content_hash,'^[0-9a-f]{64}$')"
+      }
+    },
+    "security_st_event": {
+      "columns": {
+        "event_kind": {
+          "type": "varchar(16) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "old_name": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "new_name": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "source_occurrences": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "csrc_industry": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "tdx_industry": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "reason": {
+          "type": "varchar(2000) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "event_kind",
+        "record_key"
+      ],
+      "indexes": {
+        "ix_st_date": {
+          "columns": [
+            "event_kind",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_st_security": {
+          "columns": [
+            "event_kind",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_event_kind": "(event_kindin('implementation','removal'))",
+        "ck_st_new": "((new_nameisnull)or(char_length(trim(new_name))>0))",
+        "ck_st_occurrences": "(source_occurrences=1)",
+        "ck_st_old": "((old_nameisnull)or(char_length(trim(old_name))>0))"
+      }
+    },
+    "trading_rule_citation": {
+      "columns": {
+        "citation_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "issuer": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "title": {
+          "type": "varchar(200) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_url": {
+          "type": "varchar(1000) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "published_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "document_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "clause_key": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "excerpt": {
+          "type": "varchar(4000) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "citation_key"
+      ],
+      "indexes": {},
+      "checks": {}
+    },
+    "trading_rule_value": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "kind": {
+          "type": "varchar(30) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "market": {
+          "type": "varchar(2) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "board": {
+          "type": "varchar(10) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "condition_key": {
+          "type": "varchar(50) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "parameter_key": {
+          "type": "varchar(50) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "effective_start": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "effective_end": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "number_value": {
+          "type": "decimal(16, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "text_value": {
+          "type": "varchar(200) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "start_time": {
+          "type": "time",
+          "nullable": true,
+          "unsigned": false
+        },
+        "end_time": {
+          "type": "time",
+          "nullable": true,
+          "unsigned": false
+        },
+        "unit": {
+          "type": "varchar(20) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "citation_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "ix_rule_citation": {
+          "columns": [
+            "citation_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_rule_effective": {
+          "columns": [
+            "kind",
+            "effective_start",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_rule_kind_market": {
+          "columns": [
+            "kind",
+            "market",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_rule_dates": "((effective_endisnull)or(effective_end>=effective_start))",
+        "ck_rule_number": "((number_valueisnull)or(number_value>=0))",
+        "ck_rule_session": "(((start_timeisnull)and(end_timeisnull))or((start_timeisnotnull)and(end_timeisnotnull)and(start_time<end_time)))"
+      }
+    },
+    "stock_repurchase_plan": {
+      "columns": {
+        "plan_id": {
+          "type": "varchar(20) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "share_type": {
+          "type": "varchar(80) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "plan_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "updated_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "progress_code": {
+          "type": "varchar(16) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "plan_updated_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_through": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "notice_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "start_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "end_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "finish_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "shareholder_notice_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "advance_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "plan_price_upper": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "plan_price_lower": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "plan_quantity_upper": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "plan_quantity_lower": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "plan_amount_upper": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "plan_amount_lower": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_price_upper": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_price_lower": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_quantity": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_amount": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "objective": {
+          "type": "mediumtext",
+          "nullable": true,
+          "unsigned": false
+        },
+        "remark": {
+          "type": "mediumtext",
+          "nullable": true,
+          "unsigned": false
+        },
+        "progress_remark": {
+          "type": "mediumtext",
+          "nullable": true,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "plan_id"
+      ],
+      "indexes": {
+        "ix_plan_date": {
+          "columns": [
+            "plan_date",
+            "plan_id"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_progress_date": {
+          "columns": [
+            "progress_code",
+            "plan_date",
+            "plan_id"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "unified_code",
+            "plan_date",
+            "plan_id"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_repurchase_actual_amount": "((actual_amountisnull)or(actual_amount>=0))",
+        "ck_repurchase_actual_price_lower": "((actual_price_lowerisnull)or(actual_price_lower>=0))",
+        "ck_repurchase_actual_price_upper": "((actual_price_upperisnull)or(actual_price_upper>=0))",
+        "ck_repurchase_actual_quantity": "((actual_quantityisnull)or(actual_quantity>=0))",
+        "ck_repurchase_plan_amount_lower": "((plan_amount_lowerisnull)or(plan_amount_lower>=0))",
+        "ck_repurchase_plan_amount_upper": "((plan_amount_upperisnull)or(plan_amount_upper>=0))",
+        "ck_repurchase_plan_price_lower": "((plan_price_lowerisnull)or(plan_price_lower>=0))",
+        "ck_repurchase_plan_price_upper": "((plan_price_upperisnull)or(plan_price_upper>=0))",
+        "ck_repurchase_plan_quantity_lower": "((plan_quantity_lowerisnull)or(plan_quantity_lower>=0))",
+        "ck_repurchase_plan_quantity_upper": "((plan_quantity_upperisnull)or(plan_quantity_upper>=0))"
+      }
+    },
+    "earnings_forecast": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "report_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "announcement_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "forecast_type": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "forecast_text": {
+          "type": "mediumtext",
+          "nullable": true,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "report_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "unified_code",
+            "report_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_type_date": {
+          "columns": [
+            "forecast_type",
+            "report_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {}
+    },
+    "earnings_quick": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "source_id": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "report_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "announcement_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "source_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "profit_basis": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "profit_scope": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "roe_scope": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "net_profit": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "roe": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "eps": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "assets": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "equity": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "comparison_value": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "previous_profit": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "previous_roe": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "profit_change": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "roe_change": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "report_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "unified_code",
+            "report_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_source_report": {
+          "columns": [
+            "source_id",
+            "report_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {}
+    },
+    "earnings_disclosure": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "report_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "first_scheduled": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "changed_1": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "changed_2": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "changed_3": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "report_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "unified_code",
+            "report_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {}
+    },
+    "earnings_report": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "report_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "announcement_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "roe": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "previous_roe": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "net_profit": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "previous_profit": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "revenue": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "previous_revenue": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "operating_cashflow": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "eps": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "report_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "unified_code",
+            "report_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {}
+    },
+    "shareholder_count": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "statistics_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "holders": {
+          "type": "bigint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "average_float": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "holder_change_pct": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "top_float_shares": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "top_float_pct": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "top_shares": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "top_pct": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "holder_change": {
+          "type": "bigint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "statistics_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "unified_code",
+            "statistics_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_holders": "((holdersisnull)or(holders>=0))"
+      }
+    },
+    "holder_report": {
+      "columns": {
+        "report_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "kind": {
+          "type": "varchar(24) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "char(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "instrument_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "instrument_name": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "report_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "report_type": {
+          "type": "varchar(16) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "total_quantity": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "total_quantity_scale": {
+          "type": "bigint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "total_quantity_decimals": {
+          "type": "smallint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "total_ratio": {
+          "type": "decimal(9, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "ratio_basis": {
+          "type": "varchar(64) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "quality_flags": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "member_count": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "exit_count": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "report_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "kind",
+            "report_date",
+            "unified_code",
+            "report_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "kind",
+            "unified_code",
+            "report_date",
+            "report_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_holder_counts": "((member_countbetween1and200)and((kindin('top_holders','float_holders'))or(member_count<=10))and(exit_countbetween0and200))",
+        "ck_holder_precision": "((total_quantity_scalein(1,10000,100000000))and(total_quantity_decimalsbetween0and4))",
+        "ck_holder_report_kind": "(kindin('top_holders','float_holders','bond_holders'))",
+        "ck_holder_report_type": "(((report_type='periodic')and(((total_quantityisnull)and(total_quantity_scaleisnull)and(total_quantity_decimalsisnull))or((total_quantityisnotnull)and(total_quantity_scaleisnotnull)and(total_quantity_decimalsisnotnull))))or((report_type='change_notice')and(total_quantityisnull)and(total_ratioisnull)and(total_quantity_scaleisnull)and(total_quantity_decimalsisnull)))",
+        "ck_holder_totals": "((quality_flagsbetween0and255)and((total_quantityisnull)or(total_quantity>=0))and((total_ratioisnull)or(total_ratiobetween0and100.15)))"
+      }
+    },
+    "holder_member": {
+      "columns": {
+        "report_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "member_group": {
+          "type": "varchar(8) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "seq": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_rank": {
+          "type": "smallint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "holder_name": {
+          "type": "varchar(512) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "holder_id": {
+          "type": "varchar(80) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "quantity": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "quantity_scale": {
+          "type": "bigint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "quantity_decimals": {
+          "type": "smallint",
+          "nullable": true,
+          "unsigned": false
+        },
+        "ratio": {
+          "type": "decimal(9, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "change_quantity": {
+          "type": "decimal(24, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "change_label": {
+          "type": "varchar(16) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_change": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "share_type": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "pledge_ratio": {
+          "type": "decimal(9, 4)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "pledge_status": {
+          "type": "varchar(64) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "report_key",
+        "member_group",
+        "seq"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_holder_member_group": "((member_groupin('current','exited'))and(seqbetween1and200)and((source_rankisnull)or(source_rankbetween1and9999)))",
+        "ck_holder_member_precision": "(((quantityisnull)and(quantity_scaleisnull)and(quantity_decimalsisnull))or((quantityisnotnull)and(quantity_scaleisnotnull)and(quantity_decimalsisnotnull)and(quantity_scalein(1,10000,100000000))and(quantity_decimalsbetween0and4)))",
+        "ck_holder_member_values": "((quantity>=0)and((ratioisnull)or(ratiobetween0and100))and((pledge_ratioisnull)or(pledge_ratiobetween0and100)))"
+      }
+    },
+    "shareholder_change": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "data_month": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "change_end": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "change_start": {
+          "type": "varchar(10) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "announcement_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actor": {
+          "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "price": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "shares_changed": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "shares_after": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "reason": {
+          "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "leader": {
+          "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "position": {
+          "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "relationship": {
+          "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "occurrence": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "change_end",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_month": {
+          "columns": [
+            "data_month",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "unified_code",
+            "change_end",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_change_dates": "((change_startisnull)or(regexp_like(change_start,'^[0-9]{4}-[0-9]{2}(-[0-9]{2})?$')and(change_start<=(cast(change_endascharcharsetutf8mb4)collateutf8mb4_unicode_ci))))",
+        "ck_change_month": "((dayofmonth(data_month)=1)and(year(data_month)=year(change_end))and(month(data_month)=month(change_end)))",
+        "ck_change_occurrence": "(occurrencebetween1and9999)",
+        "ck_change_shares": "((shares_afterisnull)or(shares_after>=0))"
+      }
+    },
+    "restricted_share_unlock": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "group_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unlock_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "reason_code": {
+          "type": "varchar(128) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "industry": {
+          "type": "varchar(200) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "reason": {
+          "type": "varchar(1024) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "shares": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "total_shares": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "occurrence": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "detail_status": {
+          "type": "varchar(16) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "detail_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "unlock_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_group": {
+          "columns": [
+            "group_key",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_security_date": {
+          "columns": [
+            "unified_code",
+            "unlock_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_unlock_detail": "(((detail_status='present')and(detail_countbetween1and10000))or((detail_status='source_empty')and(detail_count=0)))",
+        "ck_unlock_occurrence": "(occurrencebetween1and65535)",
+        "ck_unlock_security": "regexp_like(unified_code,'^[0-9]{6}\\\\.(sh|sz|bj)$')",
+        "ck_unlock_shares": "((shares>=0)and(total_shares>=0))"
+      }
+    },
+    "restricted_share_unlock_detail": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "group_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unlock_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "reason_code": {
+          "type": "varchar(128) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "holder": {
+          "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "reason": {
+          "type": "varchar(1024) collate \"utf8mb4_unicode_ci\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "shares": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "occurrence": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "group_key",
+        "record_key"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "unlock_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_unlock_holder": "(char_length(trim(holder))>0)",
+        "ck_unlock_member_occurrence": "(occurrencebetween1and65535)",
+        "ck_unlock_member_security": "regexp_like(unified_code,'^[0-9]{6}\\\\.(sh|sz|bj)$')",
+        "ck_unlock_member_shares": "(shares>=0)"
+      }
+    },
+    "restricted_share_unlock_industry": {
+      "columns": {
+        "unlock_month": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "industry": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "basis_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "shares": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "unlock_value": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "market_cap": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "negotiable_cap": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "market_percent": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "float_percent": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unlock_month",
+        "industry"
+      ],
+      "indexes": {
+        "ix_industry_month": {
+          "columns": [
+            "industry",
+            "unlock_month"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_unlock_industry_month": "(dayofmonth(unlock_month)=1)",
+        "ck_unlock_industry_name": "(char_length(trim(industry))>0)",
+        "ck_unlock_industry_values": "((shares>=0)and(unlock_value>=0)and(market_cap>=0)and(negotiable_cap>=0)and(market_percent>=0)and(float_percent>=0))"
+      }
+    },
+    "capital_funding": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "section": {
+          "type": "varchar(20) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "issue_type": {
+          "type": "varchar(100) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "issue_start": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "net_amount": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "balance_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "balance_amount": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "usage_ratio": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "in_window": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "idx_funding_date": {
+          "columns": [
+            "section",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_funding_security": {
+          "columns": [
+            "section",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_funding_window": {
+          "columns": [
+            "unified_code",
+            "in_window",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_funding_section": "(section='raise_')",
+        "ck_funding_window": "(in_windowin(0,1))"
+      }
+    },
+    "capital_project": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "section": {
+          "type": "varchar(20) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "project_name": {
+          "type": "varchar(1000) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "committed_amount": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "invested_amount": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "duration_years": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "return_ratio": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "predicted_profit": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "description": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "in_window": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "idx_project_date": {
+          "columns": [
+            "section",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_project_security": {
+          "columns": [
+            "section",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_project_window": {
+          "columns": [
+            "unified_code",
+            "in_window",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_project_section": "(section='progress')",
+        "ck_project_window": "(in_windowin(0,1))"
+      }
+    },
+    "capital_transaction": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "section": {
+          "type": "varchar(20) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "target": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "buyer": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "seller": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "counterparty": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "amount": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "currency": {
+          "type": "varchar(40) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "status": {
+          "type": "varchar(100) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "transfer_ratio": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "payment": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "method": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "relationship": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "description": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "impact": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "in_window": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "idx_transaction_date": {
+          "columns": [
+            "section",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_transaction_security": {
+          "columns": [
+            "section",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_transaction_window": {
+          "columns": [
+            "unified_code",
+            "in_window",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_transaction_section": "(sectionin('asset','transfer','connect'))",
+        "ck_transaction_window": "(in_windowin(0,1))"
+      }
+    },
+    "capital_equity_summary": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "section": {
+          "type": "varchar(20) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "investment_type": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "holding_count": {
+          "type": "integer",
+          "nullable": true,
+          "unsigned": false
+        },
+        "initial_amount": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "final_amount": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "profit": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "profit_estimated": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "impact": {
+          "type": "varchar(1000) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "in_window": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "idx_equity_summary_date": {
+          "columns": [
+            "section",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_equity_summary_security": {
+          "columns": [
+            "section",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_equity_summary_window": {
+          "columns": [
+            "unified_code",
+            "in_window",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_equity_summary_section": "(section='invest')",
+        "ck_equity_summary_window": "(in_windowin(0,1))"
+      }
+    },
+    "capital_equity_position": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "section": {
+          "type": "varchar(20) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "category": {
+          "type": "varchar(100) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "target": {
+          "type": "varchar(1000) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "investment_type": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "quantity": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "quantity_estimated": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "ratio": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "profit": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "in_window": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "idx_equity_position_date": {
+          "columns": [
+            "section",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_equity_position_security": {
+          "columns": [
+            "section",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_equity_position_window": {
+          "columns": [
+            "unified_code",
+            "in_window",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_equity_position_section": "(section='invest')",
+        "ck_equity_position_window": "(in_windowin(0,1))"
+      }
+    },
+    "capital_ipo": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "section": {
+          "type": "varchar(20) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "target": {
+          "type": "varchar(1000) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "ratio": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "initial_amount": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "status": {
+          "type": "varchar(200) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "industry": {
+          "type": "varchar(500) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "eps": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "in_window": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "idx_ipo_date": {
+          "columns": [
+            "section",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_ipo_security": {
+          "columns": [
+            "section",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_ipo_window": {
+          "columns": [
+            "unified_code",
+            "in_window",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_ipo_section": "(section='ipo')",
+        "ck_ipo_window": "(in_windowin(0,1))"
+      }
+    },
+    "capital_encumbrance": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "section": {
+          "type": "varchar(20) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "holder": {
+          "type": "varchar(1000) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "institution": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "quantity": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "start_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "end_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "description": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "in_window": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "idx_encumbrance_date": {
+          "columns": [
+            "section",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_encumbrance_security": {
+          "columns": [
+            "section",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_encumbrance_window": {
+          "columns": [
+            "unified_code",
+            "in_window",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_encumbrance_section": "(sectionin('pledge','freeze'))",
+        "ck_encumbrance_window": "(in_windowin(0,1))"
+      }
+    },
+    "capital_release": {
+      "columns": {
+        "record_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "section": {
+          "type": "varchar(20) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "parent_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "quantity": {
+          "type": "decimal(28, 6)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "actual_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "description": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "in_window": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "record_key"
+      ],
+      "indexes": {
+        "idx_capital_release_parent": {
+          "columns": [
+            "parent_key",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_release_date": {
+          "columns": [
+            "section",
+            "event_date",
+            "unified_code",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_release_security": {
+          "columns": [
+            "section",
+            "unified_code",
+            "event_date",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_release_window": {
+          "columns": [
+            "unified_code",
+            "in_window",
+            "record_key"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_release_section": "(sectionin('pledge','freeze'))",
+        "ck_release_window": "(in_windowin(0,1))"
       }
     }
   }

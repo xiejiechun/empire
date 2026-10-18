@@ -14,6 +14,7 @@ from empire.plugins.ui.common import hint
 from empire.plugins.ui.queries import QueryScope
 
 SECTIONS = {
+    "archived": ("归档任务", "选择暂时停用的归档任务并还原；配置、断点和业务数据保留，还原后在采集任务中管理。"),
     "tasks": ("采集任务", "展开数据来源，选择具体任务；运行详情与执行计划分别查看。"),
     "sites": ("站点访问规则", "按出口 IP 控制对同一站点的访问节奏，同站点的采集任务共享规则。"),
     "history": ("运行记录", "采集、归档与错误分别查看；仅存 Redis，按项目独立限量保留。"),
@@ -126,7 +127,7 @@ class CollectionView(QWidget):
         text = self.summary_text()
         error = self.data.get("error")
         self.summary.setText(text + (" · " + redact(error, self.shell.cfg) if error else ""))
-        if "total" in self.data:
+        if "total" in self.data and self.section != "tasks":
             self.offset = self.data["offset"]
             pager = self.pager
             pager.update_result(self.data["total"], self.offset)

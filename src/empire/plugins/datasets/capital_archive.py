@@ -1,7 +1,7 @@
 """Three independent dataset mappings using the same event-storage mechanics."""
 import json
 import re
-from datetime import UTC
+from datetime import UTC, datetime
 
 from sqlalchemy import text
 
@@ -27,7 +27,13 @@ class CapitalDataset:
 
     def normalize(self, envelope):
         p = envelope.raw_payload
-        if set(p) != {'page', 'unit', 'rows', 'manifest'}:
+        fields = {'page', 'unit', 'rows', 'manifest'}
+        if self.kind == 'dividends' and 'history_discovered_at' in p:
+            fields.add('history_discovered_at')
+            stamp = datetime.fromisoformat(p['history_discovered_at'])
+            if stamp.tzinfo is None or stamp > envelope.observed_at or p['unit'] == 'manifest':
+                raise ValueError('分红历史日期发现证明无效')
+        if set(p) != fields:
             raise ValueError('增发送配批次结构无效')
         if type(p['page']) is not int or not 1 <= p['page'] <= 20000:
             raise ValueError('增发送配批次序号无效')
@@ -46,7 +52,7 @@ class CapitalDataset:
         return {**p, 'row_count': len(p['rows'])}
 
     def canonical_payload(self, envelope, data):
-        return {k: data[k] for k in ('page', 'unit', 'rows', 'manifest')}
+        return {k: data[k] for k in ('page', 'unit', 'rows', 'manifest', 'history_discovered_at') if k in data}
 
     def fingerprint_plan(self, envelope, data):
         return self.kind, {data['unit']: (
@@ -105,4 +111,8 @@ class CapitalDataset:
         else:
             result['units'] = {**previous.get('units', {}), data['unit']: {
                 'observed_at': observed, 'count': len(data['rows']), 'digest': digest(data['rows'])}}
+            if self.kind == 'dividends':
+                stamp = data.get('history_discovered_at') or previous.get('units', {}).get(data['unit'], {}).get('history_discovered_at')
+                if stamp:
+                    result['units'][data['unit']]['history_discovered_at'] = stamp
         return result

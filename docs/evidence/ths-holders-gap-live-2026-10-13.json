@@ -1,0 +1,231 @@
+{
+  "checked_at": "2026-10-13T15:40:46.150913+00:00",
+  "original_error_id": "a701ef2c73c24e308941c6d1df9caef7",
+  "original_error_resolution": "unresolved; retained",
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "network": {
+    "proxy_requests": 2
+  },
+  "expected_run_failure": "本轮已检查至末尾，1只证券来源校验失败；已入队有效报告已确认归档，连续断点保留在000912.SZ，下次继续补采。失败证券：000912.SZ",
+  "checkpoint": {
+    "phase": "fetch",
+    "batch_id": "3712c6fb125b45b3ae3514f6e1fe65a3",
+    "index": 0,
+    "pages": 1,
+    "collected": 0,
+    "units": 2,
+    "scope_hash": "27ed8dabbf1f51ba3f5d929a06d808eee7e49e8ab4811b4bb1b5e28a2226bc33",
+    "rolling": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "unavailable": 0,
+    "kinds": {
+      "top_holders": {
+        "count": 0,
+        "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "float_holders": {
+        "count": 0,
+        "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "bond_holders": {
+        "count": 0,
+        "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    "source_gap": "000912.SZ"
+  },
+  "stats": {
+    "status": "error",
+    "collected": 10,
+    "failed_units": 1,
+    "processed_units": 2,
+    "continuous_collected": 0,
+    "download_item_name": "股票",
+    "download_window_limit": 6,
+    "download_buffer_capacity": 21,
+    "download_concurrency": 0,
+    "download_pending_pages": 0,
+    "download_ready_pages": 0,
+    "download_failed_pages": 0,
+    "download_buffer_limited": false,
+    "download_wait_reason": "idle",
+    "error": "本轮已检查至末尾，1只证券来源校验失败；已入队有效报告已确认归档，连续断点保留在000912.SZ，下次继续补采。失败证券：000912.SZ",
+    "current_security": "000913.SZ",
+    "total_units": 2,
+    "pages": 1
+  },
+  "queries": {
+    "top_holders": {
+      "matched_reports": 5,
+      "audit": {
+        "complete": false,
+        "reports": 0,
+        "not_published": 0,
+        "notices": 0,
+        "rank_gaps": 0,
+        "manifest": {
+          "count": 35,
+          "units": 7,
+          "digest": "fdfb807ae35589a49253cb55e05d2ce521433aead1e13898cc17acfc21c16f19",
+          "scope_hash": "2530cad6b3260d90492959e51e31404255d2fd0cff3d2231f4d918a1847216aa",
+          "securities": [
+            "000001.SZ",
+            "000065.SZ",
+            "000430.SZ",
+            "300750.SZ",
+            "600519.SH",
+            "601139.SH",
+            "601318.SH"
+          ],
+          "observed_at": "2026-10-13T10:43:53.740236+00:00"
+        },
+        "shared_manifest": {
+          "count": 78,
+          "kinds": {
+            "top_holders": {
+              "count": 35,
+              "digest": "fdfb807ae35589a49253cb55e05d2ce521433aead1e13898cc17acfc21c16f19"
+            },
+            "bond_holders": {
+              "count": 8,
+              "digest": "0be416f973d902715519840857996715c9021a998f6102507ca8a2bcdcc12ab1"
+            },
+            "float_holders": {
+              "count": 35,
+              "digest": "46d05e261e22558a05984e426a5a9a34e3f37b34ef60d50236cc68dbd271e1a5"
+            }
+          },
+          "units": 7,
+          "digest": "71b523f01feb855765c258e24bbe1b5479a86ad694098566bb389b99e2fdb4f0",
+          "scope_hash": "2530cad6b3260d90492959e51e31404255d2fd0cff3d2231f4d918a1847216aa",
+          "securities": [
+            "000001.SZ",
+            "000065.SZ",
+            "000430.SZ",
+            "300750.SZ",
+            "600519.SH",
+            "601139.SH",
+            "601318.SH"
+          ],
+          "observed_at": "2026-10-13T10:43:53.740236+00:00"
+        }
+      }
+    },
+    "float_holders": {
+      "matched_reports": 5,
+      "audit": {
+        "complete": false,
+        "reports": 0,
+        "not_published": 0,
+        "notices": 0,
+        "rank_gaps": 0,
+        "manifest": {
+          "count": 35,
+          "units": 7,
+          "digest": "46d05e261e22558a05984e426a5a9a34e3f37b34ef60d50236cc68dbd271e1a5",
+          "scope_hash": "2530cad6b3260d90492959e51e31404255d2fd0cff3d2231f4d918a1847216aa",
+          "securities": [
+            "000001.SZ",
+            "000065.SZ",
+            "000430.SZ",
+            "300750.SZ",
+            "600519.SH",
+            "601139.SH",
+            "601318.SH"
+          ],
+          "observed_at": "2026-10-13T10:43:53.740236+00:00"
+        },
+        "shared_manifest": {
+          "count": 78,
+          "kinds": {
+            "top_holders": {
+              "count": 35,
+              "digest": "fdfb807ae35589a49253cb55e05d2ce521433aead1e13898cc17acfc21c16f19"
+            },
+            "bond_holders": {
+              "count": 8,
+              "digest": "0be416f973d902715519840857996715c9021a998f6102507ca8a2bcdcc12ab1"
+            },
+            "float_holders": {
+              "count": 35,
+              "digest": "46d05e261e22558a05984e426a5a9a34e3f37b34ef60d50236cc68dbd271e1a5"
+            }
+          },
+          "units": 7,
+          "digest": "71b523f01feb855765c258e24bbe1b5479a86ad694098566bb389b99e2fdb4f0",
+          "scope_hash": "2530cad6b3260d90492959e51e31404255d2fd0cff3d2231f4d918a1847216aa",
+          "securities": [
+            "000001.SZ",
+            "000065.SZ",
+            "000430.SZ",
+            "300750.SZ",
+            "600519.SH",
+            "601139.SH",
+            "601318.SH"
+          ],
+          "observed_at": "2026-10-13T10:43:53.740236+00:00"
+        }
+      }
+    },
+    "bond_holders": {
+      "matched_reports": 0,
+      "audit": {
+        "complete": false,
+        "reports": 0,
+        "not_published": 0,
+        "notices": 0,
+        "rank_gaps": 0,
+        "manifest": {
+          "count": 8,
+          "units": 7,
+          "digest": "0be416f973d902715519840857996715c9021a998f6102507ca8a2bcdcc12ab1",
+          "scope_hash": "2530cad6b3260d90492959e51e31404255d2fd0cff3d2231f4d918a1847216aa",
+          "securities": [
+            "000001.SZ",
+            "000065.SZ",
+            "000430.SZ",
+            "300750.SZ",
+            "600519.SH",
+            "601139.SH",
+            "601318.SH"
+          ],
+          "observed_at": "2026-10-13T10:43:53.740236+00:00"
+        },
+        "shared_manifest": {
+          "count": 78,
+          "kinds": {
+            "top_holders": {
+              "count": 35,
+              "digest": "fdfb807ae35589a49253cb55e05d2ce521433aead1e13898cc17acfc21c16f19"
+            },
+            "bond_holders": {
+              "count": 8,
+              "digest": "0be416f973d902715519840857996715c9021a998f6102507ca8a2bcdcc12ab1"
+            },
+            "float_holders": {
+              "count": 35,
+              "digest": "46d05e261e22558a05984e426a5a9a34e3f37b34ef60d50236cc68dbd271e1a5"
+            }
+          },
+          "units": 7,
+          "digest": "71b523f01feb855765c258e24bbe1b5479a86ad694098566bb389b99e2fdb4f0",
+          "scope_hash": "2530cad6b3260d90492959e51e31404255d2fd0cff3d2231f4d918a1847216aa",
+          "securities": [
+            "000001.SZ",
+            "000065.SZ",
+            "000430.SZ",
+            "300750.SZ",
+            "600519.SH",
+            "601139.SH",
+            "601318.SH"
+          ],
+          "observed_at": "2026-10-13T10:43:53.740236+00:00"
+        }
+      }
+    }
+  },
+  "pending_stream": 0,
+  "passed": true
+}

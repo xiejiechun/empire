@@ -1,0 +1,70 @@
+{
+  "checked_at": "2026-10-11T21:33:22.864645+08:00",
+  "source_sql_equal": false,
+  "fresh": true,
+  "sql_actual": {
+    "units": 5579,
+    "count": 56143,
+    "scope_hash": "477846e81a681547fb5f2017ea35e93a7b376907119a60a5dc4660c36c52a957",
+    "digest": "750c27cf5b1d5e50029ed8dd2db09c59cdbe955d8bdf7269b5c9bd9baa15e8d9"
+  },
+  "source_sha256": "ad77fd655873bee7748a8cf80529a2c5112513ba26f02783f869e2aa32625bcd",
+  "source_rows": 56142,
+  "securities": 5579,
+  "phase": "complete",
+  "pending_stream": 0,
+  "history_proven_securities": 5580,
+  "normal_round_source_calls": 628,
+  "call_breakdown": {
+    "report_periods": 626,
+    "period_directory": 1,
+    "history_discovery": 1
+  },
+  "request_count_scope": "necessary successful source calls; retries not measured by retained evidence",
+  "development_network": "shared downloader; proxy priority and direct fallback enabled; saved policy unchanged",
+  "checks": [
+    {
+      "criterion": "fields",
+      "status": "fail",
+      "measured": "正式查询 56143 条 / 5579 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "keys",
+      "status": "fail",
+      "measured": "正式查询 56143 条 / 5579 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "coverage",
+      "status": "fail",
+      "measured": "正式查询 56143 条 / 5579 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "quality",
+      "status": "fail",
+      "measured": "正式查询 56143 条 / 5579 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "SQL / 匹配的只读可信摘要证明最近三日内核验"
+    },
+    {
+      "criterion": "temporal",
+      "status": "unknown",
+      "measured": "按来源日期保存；缺失日期保持未知，不作为公告前信号；详见增发送配说明"
+    }
+  ],
+  "detail": "正式查询 56143 条 / 5579 个证券；完整来源集合未证实或不匹配",
+  "capacity": {
+    "sql_rows": 56146,
+    "payload_bytes": 23643272,
+    "maximum_payload_bytes": 452,
+    "query_p95_ms": 1.940599991939962,
+    "source_rows": 56142,
+    "planned_periods": 626
+  },
+  "parallel_payouts_600007": [
+    "0.8",
+    "0.5"
+  ]
+}

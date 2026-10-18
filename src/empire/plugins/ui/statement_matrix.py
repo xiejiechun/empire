@@ -72,6 +72,49 @@ class StatementMatrix(QWidget):
         layout.addWidget(self.subjects)
         layout.addWidget(self.values, 1)
         self.entries, self.reports = [], []
+        self.collapsed, self.search = set(), ''
+        self.subjects.itemDoubleClicked.connect(self.toggle_group)
+
+    def toggle_group(self, item):
+        entry = self.entries[item.row()]
+        if not entry[3]:
+            self.collapsed.symmetric_difference_update({entry[0]})
+            self.search_subjects(self.search)
+
+    def search_subjects(self, query):
+        self.search = query
+        parents, hidden_level = [], None
+        visible = set()
+        for i, (name, level, _, numeric) in enumerate(self.entries):
+            if not numeric:
+                parents = [(index, depth) for index, depth in parents if depth < level] + [(i, level)]
+                if hidden_level is not None and level <= hidden_level:
+                    hidden_level = None
+                if name in self.collapsed and not query:
+                    hidden_level = level
+                visible.add(i)
+            elif (query.casefold() in name.casefold() if query else hidden_level is None):
+                visible.add(i)
+                visible.update(index for index, _ in parents)
+        if query:
+            visible = {i for i in visible if self.entries[i][3]} | {index for i in visible if self.entries[i][3]
+                for index in self._ancestors(i)}
+        for i in range(len(self.entries)):
+            self.subjects.setRowHidden(i, i not in visible)
+            self.values.setRowHidden(i, i not in visible)
+
+    def _ancestors(self, index):
+        level = self.entries[index][1]
+        result = []
+        for i in range(index-1, -1, -1):
+            if not self.entries[i][3] and self.entries[i][1] < level:
+                result.append(i)
+                level = self.entries[i][1]
+        return result
+
+    def resizeEvent(self, event):
+        self.subjects.setFixedWidth(max(180, min(330, self.width()*38//100)))
+        super().resizeEvent(event)
 
     def render(self, kind, records, annual=False, divisor=10000):
         blocker = QSignalBlocker(self.values)

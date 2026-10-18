@@ -9,7 +9,7 @@ $dependencyReport = Join-Path $projectRoot 'build\dependency-report.json'
 if (-not (Test-Path -LiteralPath $python)) {
     throw 'Create .venv and install requirements.lock before release verification.'
 }
-if (Get-Process Empire -ErrorAction SilentlyContinue) {
+if (Get-Process Empire -ErrorAction SilentlyContinue | Where-Object { $_.Threads.Count -gt 0 }) {
     throw 'Close Empire normally before running the release gate.'
 }
 

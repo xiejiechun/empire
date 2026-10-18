@@ -11,7 +11,7 @@ $requiredPyInstaller = '6.22.3'
 if (-not (Test-Path -LiteralPath $python)) {
     throw 'Create .venv and install the project dependencies first. See README.md.'
 }
-if (Get-Process Empire -ErrorAction SilentlyContinue) {
+if (Get-Process Empire -ErrorAction SilentlyContinue | Where-Object { $_.Threads.Count -gt 0 }) {
     throw 'Close Empire before rebuilding.'
 }
 

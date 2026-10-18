@@ -4,13 +4,14 @@ from empire.contracts.business_schema import require_fixed_source, schema_contra
 from empire.contracts.plugin import PluginContext, PluginManifest
 from empire.contracts.preparation import PreparationContribution
 from empire.contracts.stocks import MARKET_NAMES
+from empire.plugins.datasets.stocks import current_directory
 from empire.plugins.infra.collection_state import read_state
 
 
 class StockDataPlugin:
     preparation = (PreparationContribution(
-        "universe", "stocks.query", "新浪财经", "sina-stocks", "sina-universe-v1", "stock.universe.page",
-        "collector.sina_universe", ("tests/test_sina_universe.py",), ("tests/integration/test_stock_archive.py",)),)
+        "universe", "stocks.query", "同花顺", "ths-stocks", "ths-universe-v1", "stock.universe.page",
+        "collector.ths_universe", ("tests/test_ths_universe.py",), ("tests/integration/test_ths_stock_archive.py",)),)
 
     manifest = PluginManifest(
         "data.stocks", "股票列表查询", requires=("mysql.store",),
@@ -19,7 +20,7 @@ class StockDataPlugin:
     )
 
     def __init__(self, namespace: str = "empire", source: str = "sina",
-                 job_key: str = "sina-universe-v1", project_id: str = "sina-stocks"):
+                 job_key: str = "ths-universe-v1", project_id: str = "current"):
         self.mysql = None
         self.namespace = namespace
         self.source = source
@@ -42,12 +43,13 @@ class StockDataPlugin:
 
     def _list(self, search, offset, limit, market=None):
         with self.mysql.read_engine.connect() as connection:
-            state = read_state(connection, self.namespace, self.project_id, self.source)
+            state = (current_directory(connection, self.namespace) if self.project_id == 'current'
+                     else read_state(connection, self.namespace, self.project_id, self.source))
             snapshot = state.get("publication")
             if not snapshot:
                 return {"snapshot": None, "total": 0, "rows": [], "offset": 0, "limit": limit}
             pattern = "%" + search.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
-            params = {"source": self.source, "search": pattern, "offset": offset, "limit": limit}
+            params = {"source": state.get('source', self.source), "search": pattern, "offset": offset, "limit": limit}
             where = ("(CONVERT(unified_code USING utf8mb4) LIKE :search "
                      "OR name LIKE :search OR CONVERT(CONCAT(LOWER(RIGHT(unified_code,2)),LEFT(unified_code,6)) USING utf8mb4) LIKE :search)")
             if market is not None:
@@ -64,6 +66,10 @@ class StockDataPlugin:
     async def preparation_check(self):
         from empire.plugins.data.preparation_checks import check_stocks
         return await self.mysql.read(check_stocks, self)
+
+    async def candidates(self, search='', dataset='stock', limit=20):
+        from empire.plugins.data.preview_candidates import candidates
+        return await candidates(self.mysql, search, dataset, limit)
 
     async def stop(self):
         self.mysql = None

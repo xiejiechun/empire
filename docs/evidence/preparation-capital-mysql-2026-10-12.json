@@ -1,0 +1,623 @@
+{
+  "checked_at": "2026-10-12T15:52:33.082631+08:00",
+  "read_only": true,
+  "scope": "repeatable-read consistent SQL snapshot; no source requests, collectors, archiver or Redis writes",
+  "queries": {
+    "summary": {
+      "sql": "SELECT COUNT(*) n,COUNT(DISTINCT unified_code) securities,MIN(trade_date) first_day,MAX(trade_date) last_day,SUM(total_shares IS NULL) total_null,SUM(total_shares<=0) total_nonpositive,SUM(circulation_amount IS NULL) float_null,SUM(circulation_amount<=0) float_nonpositive,SUM(circulation_amount>total_shares) float_exceeds_total,SUM(actualcirculation_value IS NULL) actual_null,SUM(actualcirculation_value<=0) actual_nonpositive FROM stock_daily_quote",
+      "rows": [
+        {
+          "n": 1103726,
+          "securities": 1006,
+          "first_day": "2021-01-04",
+          "last_day": "2026-10-09",
+          "total_null": "0",
+          "total_nonpositive": "64",
+          "float_null": "0",
+          "float_nonpositive": "66",
+          "float_exceeds_total": "15030",
+          "actual_null": "0",
+          "actual_nonpositive": "225"
+        }
+      ]
+    },
+    "current_pool": {
+      "sql": "SELECT COUNT(*) n FROM stock",
+      "rows": [
+        {
+          "n": 5579
+        }
+      ]
+    },
+    "latest_dates": {
+      "sql": "SELECT trade_date,COUNT(*) n FROM stock_daily_quote GROUP BY trade_date ORDER BY trade_date DESC LIMIT 6",
+      "rows": [
+        {
+          "trade_date": "2026-10-09",
+          "n": 962
+        },
+        {
+          "trade_date": "2026-10-08",
+          "n": 961
+        },
+        {
+          "trade_date": "2026-09-30",
+          "n": 1003
+        },
+        {
+          "trade_date": "2026-09-29",
+          "n": 1002
+        },
+        {
+          "trade_date": "2026-09-28",
+          "n": 1003
+        },
+        {
+          "trade_date": "2026-09-24",
+          "n": 961
+        }
+      ]
+    },
+    "products": {
+      "sql": "SELECT kind,COUNT(*) n,COUNT(DISTINCT unified_code) securities,MIN(trade_date) first_day,MAX(trade_date) last_day FROM stock_market_day GROUP BY kind",
+      "rows": [
+        {
+          "kind": "auction",
+          "n": 144,
+          "securities": 49,
+          "first_day": "2026-09-28",
+          "last_day": "2026-09-30"
+        },
+        {
+          "kind": "entrust",
+          "n": 146,
+          "securities": 49,
+          "first_day": "2026-09-28",
+          "last_day": "2026-09-30"
+        },
+        {
+          "kind": "large_order",
+          "n": 138,
+          "securities": 46,
+          "first_day": "2026-09-28",
+          "last_day": "2026-09-30"
+        },
+        {
+          "kind": "quote",
+          "n": 1103726,
+          "securities": 1006,
+          "first_day": "2021-01-04",
+          "last_day": "2026-10-09"
+        },
+        {
+          "kind": "trades",
+          "n": 147,
+          "securities": 49,
+          "first_day": "2026-09-28",
+          "last_day": "2026-09-30"
+        },
+        {
+          "kind": "trend",
+          "n": 147,
+          "securities": 49,
+          "first_day": "2026-09-28",
+          "last_day": "2026-09-30"
+        },
+        {
+          "kind": "volume",
+          "n": 147,
+          "securities": 49,
+          "first_day": "2026-09-28",
+          "last_day": "2026-09-30"
+        }
+      ]
+    },
+    "anomaly_top": {
+      "sql": "SELECT unified_code,COUNT(*) n,MIN(trade_date) first_day,MAX(trade_date) last_day FROM stock_daily_quote WHERE circulation_amount>total_shares GROUP BY unified_code ORDER BY n DESC LIMIT 10",
+      "rows": [
+        {
+          "unified_code": "600716.SH",
+          "n": 92,
+          "first_day": "2021-01-04",
+          "last_day": "2024-09-19"
+        },
+        {
+          "unified_code": "600797.SH",
+          "n": 90,
+          "first_day": "2021-01-04",
+          "last_day": "2021-05-24"
+        },
+        {
+          "unified_code": "600018.SH",
+          "n": 90,
+          "first_day": "2021-01-04",
+          "last_day": "2021-05-24"
+        },
+        {
+          "unified_code": "600022.SH",
+          "n": 90,
+          "first_day": "2021-01-04",
+          "last_day": "2021-05-24"
+        },
+        {
+          "unified_code": "600023.SH",
+          "n": 90,
+          "first_day": "2021-01-04",
+          "last_day": "2021-05-24"
+        },
+        {
+          "unified_code": "600072.SH",
+          "n": 90,
+          "first_day": "2021-01-04",
+          "last_day": "2021-05-24"
+        },
+        {
+          "unified_code": "600038.SH",
+          "n": 90,
+          "first_day": "2021-01-04",
+          "last_day": "2021-05-24"
+        },
+        {
+          "unified_code": "600048.SH",
+          "n": 90,
+          "first_day": "2021-01-04",
+          "last_day": "2021-05-24"
+        },
+        {
+          "unified_code": "600052.SH",
+          "n": 90,
+          "first_day": "2021-01-04",
+          "last_day": "2021-05-24"
+        },
+        {
+          "unified_code": "600058.SH",
+          "n": 90,
+          "first_day": "2021-01-04",
+          "last_day": "2021-05-24"
+        }
+      ]
+    },
+    "anomaly_examples": {
+      "sql": "SELECT unified_code,trade_date,last_px,total_shares,circulation_amount,market_value,circulation_value,actualcirculation_value FROM stock_daily_quote WHERE circulation_amount>total_shares ORDER BY unified_code,trade_date LIMIT 5",
+      "rows": [
+        {
+          "unified_code": "600000.SH",
+          "trade_date": "2021-01-04",
+          "last_px": "9.690000000000",
+          "total_shares": "29352134127.000000000000",
+          "circulation_amount": "29352134656.000000000000",
+          "market_value": "284422179691.000000000000",
+          "circulation_value": "284422184817.000000000000",
+          "actualcirculation_value": "127365960894.000000000000"
+        },
+        {
+          "unified_code": "600000.SH",
+          "trade_date": "2021-04-06",
+          "last_px": "10.700000000000",
+          "total_shares": "29352144412.000000000000",
+          "circulation_amount": "29352144896.000000000000",
+          "market_value": "314067945208.000000000000",
+          "circulation_value": "314067950387.000000000000",
+          "actualcirculation_value": "140641512591.000000000000"
+        },
+        {
+          "unified_code": "600000.SH",
+          "trade_date": "2021-04-07",
+          "last_px": "10.650000000000",
+          "total_shares": "29352144412.000000000000",
+          "circulation_amount": "29352144896.000000000000",
+          "market_value": "312600337988.000000000000",
+          "circulation_value": "312600343142.000000000000",
+          "actualcirculation_value": "139984309261.000000000000"
+        },
+        {
+          "unified_code": "600000.SH",
+          "trade_date": "2021-04-08",
+          "last_px": "10.660000000000",
+          "total_shares": "29352144412.000000000000",
+          "circulation_amount": "29352144896.000000000000",
+          "market_value": "312893859432.000000000000",
+          "circulation_value": "312893864591.000000000000",
+          "actualcirculation_value": "140115749927.000000000000"
+        },
+        {
+          "unified_code": "600000.SH",
+          "trade_date": "2021-04-09",
+          "last_px": "10.590000000000",
+          "total_shares": "29352144412.000000000000",
+          "circulation_amount": "29352144896.000000000000",
+          "market_value": "310839209323.000000000000",
+          "circulation_value": "310839214449.000000000000",
+          "actualcirculation_value": "139195665266.000000000000"
+        }
+      ]
+    },
+    "nonpositive_examples": {
+      "sql": "SELECT unified_code,trade_date,last_px,total_shares,circulation_amount,actualcirculation_value FROM stock_daily_quote WHERE total_shares<=0 OR circulation_amount<=0 OR actualcirculation_value<=0 ORDER BY unified_code,trade_date LIMIT 5",
+      "rows": [
+        {
+          "unified_code": "920002.BJ",
+          "trade_date": "2024-05-30",
+          "last_px": "67.980000000000",
+          "total_shares": "0E-12",
+          "circulation_amount": "0E-12",
+          "actualcirculation_value": "0E-12"
+        },
+        {
+          "unified_code": "920002.BJ",
+          "trade_date": "2024-09-26",
+          "last_px": "40.640000000000",
+          "total_shares": "32502120.000000000000",
+          "circulation_amount": "4750000.000000000000",
+          "actualcirculation_value": "0E-12"
+        },
+        {
+          "unified_code": "920002.BJ",
+          "trade_date": "2024-09-27",
+          "last_px": "43.250000000000",
+          "total_shares": "32502120.000000000000",
+          "circulation_amount": "4750000.000000000000",
+          "actualcirculation_value": "0E-12"
+        },
+        {
+          "unified_code": "920002.BJ",
+          "trade_date": "2024-09-30",
+          "last_px": "51.010000000000",
+          "total_shares": "32502120.000000000000",
+          "circulation_amount": "4750000.000000000000",
+          "actualcirculation_value": "0E-12"
+        },
+        {
+          "unified_code": "920002.BJ",
+          "trade_date": "2024-10-08",
+          "last_px": "62.710000000000",
+          "total_shares": "32502120.000000000000",
+          "circulation_amount": "4750000.000000000000",
+          "actualcirculation_value": "0E-12"
+        }
+      ]
+    },
+    "field_relations": {
+      "sql": "SELECT SUM(ABS(market_value-last_px*total_shares)>GREATEST(1,ABS(market_value)*0.000001)) total_value_mismatch,SUM(ABS(circulation_value-last_px*circulation_amount)>GREATEST(1,ABS(circulation_value)*0.000001)) float_value_mismatch,SUM(actualcirculation_value>circulation_value) actual_exceeds_float FROM stock_daily_quote",
+      "rows": [
+        {
+          "total_value_mismatch": "7981",
+          "float_value_mismatch": "7986",
+          "actual_exceeds_float": "221"
+        }
+      ]
+    },
+    "share_columns": {
+      "sql": "SELECT TABLE_NAME,COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND (COLUMN_NAME LIKE '%share%' OR COLUMN_NAME LIKE '%float%' OR COLUMN_NAME LIKE '%circulation%') ORDER BY TABLE_NAME,ORDINAL_POSITION",
+      "rows": [
+        {
+          "TABLE_NAME": "stock_daily_quote",
+          "COLUMN_NAME": "float_mask"
+        },
+        {
+          "TABLE_NAME": "stock_daily_quote",
+          "COLUMN_NAME": "total_shares"
+        },
+        {
+          "TABLE_NAME": "stock_daily_quote",
+          "COLUMN_NAME": "circulation_value"
+        },
+        {
+          "TABLE_NAME": "stock_daily_quote",
+          "COLUMN_NAME": "circulation_amount"
+        },
+        {
+          "TABLE_NAME": "stock_daily_quote",
+          "COLUMN_NAME": "actualcirculation_value"
+        },
+        {
+          "TABLE_NAME": "stock_daily_quote_level",
+          "COLUMN_NAME": "float_mask"
+        },
+        {
+          "TABLE_NAME": "stock_intraday_trend",
+          "COLUMN_NAME": "float_mask"
+        },
+        {
+          "TABLE_NAME": "stock_large_order_trend",
+          "COLUMN_NAME": "float_mask"
+        },
+        {
+          "TABLE_NAME": "stock_minute_entrust",
+          "COLUMN_NAME": "float_mask"
+        },
+        {
+          "TABLE_NAME": "stock_minute_volume",
+          "COLUMN_NAME": "float_mask"
+        },
+        {
+          "TABLE_NAME": "stock_opening_auction",
+          "COLUMN_NAME": "float_mask"
+        },
+        {
+          "TABLE_NAME": "stock_repurchase_plan",
+          "COLUMN_NAME": "share_type"
+        },
+        {
+          "TABLE_NAME": "stock_repurchase_plan",
+          "COLUMN_NAME": "shareholder_notice_date"
+        }
+      ]
+    },
+    "601139.SH": {
+      "sql": "SELECT unified_code,trade_date,last_px,total_shares,circulation_amount,market_value,circulation_value,actualcirculation_value FROM stock_daily_quote WHERE unified_code=:security ORDER BY trade_date DESC LIMIT 2",
+      "parameters": {
+        "security": "601139.SH"
+      },
+      "rows": []
+    },
+    "600000.SH": {
+      "sql": "SELECT unified_code,trade_date,last_px,total_shares,circulation_amount,market_value,circulation_value,actualcirculation_value FROM stock_daily_quote WHERE unified_code=:security ORDER BY trade_date DESC LIMIT 2",
+      "parameters": {
+        "security": "600000.SH"
+      },
+      "rows": [
+        {
+          "unified_code": "600000.SH",
+          "trade_date": "2026-10-09",
+          "last_px": "9.540000000000",
+          "total_shares": "33305838300.000000000000",
+          "circulation_amount": "33305838300.000000000000",
+          "market_value": "317737697382.000000000000",
+          "circulation_value": "317737697382.000000000000",
+          "actualcirculation_value": "169692124548.000000000000"
+        },
+        {
+          "unified_code": "600000.SH",
+          "trade_date": "2026-10-08",
+          "last_px": "9.700000000000",
+          "total_shares": "33305838300.000000000000",
+          "circulation_amount": "33305838300.000000000000",
+          "market_value": "323066631510.000000000000",
+          "circulation_value": "323066631510.000000000000",
+          "actualcirculation_value": "172538114058.000000000000"
+        }
+      ]
+    },
+    "000001.SZ": {
+      "sql": "SELECT unified_code,trade_date,last_px,total_shares,circulation_amount,market_value,circulation_value,actualcirculation_value FROM stock_daily_quote WHERE unified_code=:security ORDER BY trade_date DESC LIMIT 2",
+      "parameters": {
+        "security": "000001.SZ"
+      },
+      "rows": []
+    }
+  },
+  "followup": {
+    "checked_at": "2026-10-12T15:53:12.848792+08:00",
+    "note": "separate read-only snapshot; tolerance is diagnostic only, not accepted business rule",
+    "queries": {
+      "precision_distribution": {
+        "sql": "SELECT SUM(circulation_amount>total_shares AND circulation_amount-total_shares<=GREATEST(1,ABS(total_shares)*0.000001)) within_diagnostic_tolerance,SUM(circulation_amount>total_shares AND circulation_amount-total_shares>GREATEST(1,ABS(total_shares)*0.000001)) beyond_diagnostic_tolerance,MAX(circulation_amount-total_shares) max_excess FROM stock_daily_quote",
+        "rows": [
+          {
+            "within_diagnostic_tolerance": "14985",
+            "beyond_diagnostic_tolerance": "45",
+            "max_excess": "500829919.000000000000"
+          }
+        ]
+      },
+      "large_excess_examples": {
+        "sql": "SELECT unified_code,trade_date,total_shares,circulation_amount FROM stock_daily_quote WHERE circulation_amount-total_shares>GREATEST(1,ABS(total_shares)*0.000001) ORDER BY circulation_amount-total_shares DESC LIMIT 5",
+        "rows": [
+          {
+            "unified_code": "600176.SH",
+            "trade_date": "2021-05-21",
+            "total_shares": "3502306849.000000000000",
+            "circulation_amount": "4003136768.000000000000"
+          },
+          {
+            "unified_code": "600426.SH",
+            "trade_date": "2021-05-21",
+            "total_shares": "1626659750.000000000000",
+            "circulation_amount": "2109171584.000000000000"
+          },
+          {
+            "unified_code": "600337.SH",
+            "trade_date": "2021-01-13",
+            "total_shares": "1628327220.000000000000",
+            "circulation_amount": "1766772864.000000000000"
+          },
+          {
+            "unified_code": "600681.SH",
+            "trade_date": "2021-05-17",
+            "total_shares": "1363010801.000000000000",
+            "circulation_amount": "1440691072.000000000000"
+          },
+          {
+            "unified_code": "600681.SH",
+            "trade_date": "2021-05-14",
+            "total_shares": "1363010801.000000000000",
+            "circulation_amount": "1440691072.000000000000"
+          }
+        ]
+      },
+      "sql_stock_membership": {
+        "sql": "SELECT unified_code,name FROM stock WHERE unified_code IN ('601139.SH','000001.SZ','600000.SH')",
+        "rows": [
+          {
+            "unified_code": "000001.SZ",
+            "name": "平安银行"
+          },
+          {
+            "unified_code": "600000.SH",
+            "name": "浦发银行"
+          },
+          {
+            "unified_code": "601139.SH",
+            "name": "深圳燃气"
+          }
+        ]
+      },
+      "database_table_inventory": {
+        "sql": "SELECT TABLE_NAME,TABLE_ROWS FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() ORDER BY TABLE_NAME",
+        "rows": [
+          {
+            "TABLE_NAME": "additional_issue",
+            "TABLE_ROWS": 5959
+          },
+          {
+            "TABLE_NAME": "app_setting",
+            "TABLE_ROWS": 37
+          },
+          {
+            "TABLE_NAME": "balance_statement",
+            "TABLE_ROWS": 146066
+          },
+          {
+            "TABLE_NAME": "cashflow_statement",
+            "TABLE_ROWS": 123395
+          },
+          {
+            "TABLE_NAME": "collection_state",
+            "TABLE_ROWS": 36
+          },
+          {
+            "TABLE_NAME": "dividend_plan",
+            "TABLE_ROWS": 50042
+          },
+          {
+            "TABLE_NAME": "finance_news",
+            "TABLE_ROWS": 23545
+          },
+          {
+            "TABLE_NAME": "income_statement",
+            "TABLE_ROWS": 239299
+          },
+          {
+            "TABLE_NAME": "index_daily_price",
+            "TABLE_ROWS": 2224629
+          },
+          {
+            "TABLE_NAME": "index_price_year",
+            "TABLE_ROWS": 9357
+          },
+          {
+            "TABLE_NAME": "industry",
+            "TABLE_ROWS": 90
+          },
+          {
+            "TABLE_NAME": "industry_member",
+            "TABLE_ROWS": 5574
+          },
+          {
+            "TABLE_NAME": "rights_issue",
+            "TABLE_ROWS": 1147
+          },
+          {
+            "TABLE_NAME": "router_device",
+            "TABLE_ROWS": 17
+          },
+          {
+            "TABLE_NAME": "router_proxy_auth",
+            "TABLE_ROWS": 34
+          },
+          {
+            "TABLE_NAME": "router_runtime_config",
+            "TABLE_ROWS": 1
+          },
+          {
+            "TABLE_NAME": "router_schema_version",
+            "TABLE_ROWS": 1
+          },
+          {
+            "TABLE_NAME": "security_code_alias",
+            "TABLE_ROWS": 248
+          },
+          {
+            "TABLE_NAME": "security_listing_event",
+            "TABLE_ROWS": 527
+          },
+          {
+            "TABLE_NAME": "security_name_change",
+            "TABLE_ROWS": 12085
+          },
+          {
+            "TABLE_NAME": "security_st_event",
+            "TABLE_ROWS": 3696
+          },
+          {
+            "TABLE_NAME": "stock",
+            "TABLE_ROWS": 5579
+          },
+          {
+            "TABLE_NAME": "stock_daily_quote",
+            "TABLE_ROWS": 1079561
+          },
+          {
+            "TABLE_NAME": "stock_daily_quote_level",
+            "TABLE_ROWS": 22128417
+          },
+          {
+            "TABLE_NAME": "stock_index",
+            "TABLE_ROWS": 573
+          },
+          {
+            "TABLE_NAME": "stock_index_member",
+            "TABLE_ROWS": 99545
+          },
+          {
+            "TABLE_NAME": "stock_intraday_trade_block",
+            "TABLE_ROWS": 1588
+          },
+          {
+            "TABLE_NAME": "stock_intraday_trend",
+            "TABLE_ROWS": 35412
+          },
+          {
+            "TABLE_NAME": "stock_large_order_trend",
+            "TABLE_ROWS": 33360
+          },
+          {
+            "TABLE_NAME": "stock_listing",
+            "TABLE_ROWS": 4539
+          },
+          {
+            "TABLE_NAME": "stock_market_day",
+            "TABLE_ROWS": 1089911
+          },
+          {
+            "TABLE_NAME": "stock_minute_entrust",
+            "TABLE_ROWS": 35100
+          },
+          {
+            "TABLE_NAME": "stock_minute_volume",
+            "TABLE_ROWS": 32892
+          },
+          {
+            "TABLE_NAME": "stock_opening_auction",
+            "TABLE_ROWS": 5758
+          },
+          {
+            "TABLE_NAME": "stock_repurchase_plan",
+            "TABLE_ROWS": 5420
+          },
+          {
+            "TABLE_NAME": "suspension_event",
+            "TABLE_ROWS": 103618
+          },
+          {
+            "TABLE_NAME": "suspension_source_date",
+            "TABLE_ROWS": 168463
+          },
+          {
+            "TABLE_NAME": "trade_calendar",
+            "TABLE_ROWS": 13594
+          },
+          {
+            "TABLE_NAME": "trading_rule_citation",
+            "TABLE_ROWS": 30
+          },
+          {
+            "TABLE_NAME": "trading_rule_value",
+            "TABLE_ROWS": 77
+          }
+        ]
+      }
+    }
+  }
+}

@@ -39,10 +39,47 @@ def snapshot():
                    "max_concurrency": 1}], "history": [], "error": ""}
 
 
+def test_retry_editor_saves_one_hundred_without_refresh_clamping(page_factory):
+    page = page_factory()
+    assert page.retries.minimum() == 0 and page.retries.maximum() == 100
+    page.retries.setValue(100)
+    page.render()
+    assert page.retries.value() == 100
+    page.save_job()
+    assert page.shell.runtime.calls[-1][3]["request_retries"] == 100
+
+
+def test_archived_page_restores_selected_task_and_clears_removed_selection():
+    from empire.plugins.ui.collection_views.archived import ArchivedTasksPage
+    app = QApplication.instance() or QApplication([])
+    runtime = Runtime()
+    page = ArchivedTasksPage(SimpleNamespace(runtime=runtime, cfg={}))
+    page.timer.stop()
+    try:
+        page.data = snapshot()
+        page.data['jobs'][0].update(source_name='新浪', category='证券基础')
+        page.data['jobs'][0]['policy'].update(archived=True, enabled=False)
+        page.data.update(total=1, offset=0)
+        page.render()
+        assert page._query_args()[4] == 'archived'
+        assert not page.restore.isEnabled()
+        page.tasks.selectRow(0)
+        assert page.restore.isEnabled()
+        page.restore.click()
+        assert runtime.calls[-1] == ('collection.control', 'set_archived', 'stocks', False)
+        page._finish_action()
+        page.data.update(jobs=[], total=0)
+        page.render()
+        assert not page.restore.isEnabled() and page.tasks.rowCount() == 0
+    finally:
+        page.deleteLater()
+        app.processEvents()
+
+
 def test_capital_progress_shows_admitted_data_beyond_failed_frontier(page_factory):
     page = page_factory()
     page.data = snapshot()
-    page.data['jobs'][0].update(active='run', progress={
+    page.data['jobs'][0].update(active='run', unit_name='只股票', progress={
         'status': 'collecting', 'collected': 12, 'queued_records': 12, 'expected_count': 20,
         'continuous_collected': 0, 'processed_units': 6, 'total_units': 10,
         'failed_units': 1, 'current_security': 'SH:600962'})
@@ -51,7 +88,7 @@ def test_capital_progress_shows_admitted_data_beyond_failed_frontier(page_factor
     text = ' · '.join(field.text() for field in page.runtime_fields.values())
     assert '已入队 12 / 20 条' in text
     assert '连续已入队 0 条' in text
-    assert '失败 1 个证券' in text and page.runtime_fields['current'].text() == 'SH:600962'
+    assert '失败 1 只股票' in text and page.runtime_fields['current'].text() == 'SH:600962'
     assert page.progress.value() == 60
 
 
@@ -68,6 +105,42 @@ def test_proxy_default_and_full_schedule_column(page_factory):
     assert '2,592,000 秒' in page.runtime_fields['plan'].text()
     assert page.runtime_fields['network'].text()
     assert page.task_menu.task_items['stocks'].parent() is not None
+
+
+@pytest.mark.parametrize('unit', ['个指数', '只股票', '个行业', '股票日'])
+def test_business_progress_is_independent_of_pages(page_factory, unit):
+    page = page_factory()
+    job = page.data['jobs'][0]
+    job.update(unit_name=unit, active='run', progress=dict(
+        completed_units=120, total_units=573, pages=4754, collected=90000))
+    page._render_job_detail(job)
+    assert page.runtime_fields['units'].text() == f'已处理 120 / 573 {unit}'
+    assert '4,754' in page.runtime_fields['pages'].text()
+    assert page.progress.value() == 20
+    assert page.runtime_fields['next'].text() == '未启用自动执行'
+
+
+def test_month_scope_is_not_divided_by_archive_pages(page_factory):
+    page = page_factory()
+    job = page.data['jobs'][0]
+    job.update(active='run', progress=dict(total_months=12, pages=40))
+    page._render_job_detail(job)
+    assert page.runtime_fields['units'].text() == '本轮范围 12 个月；完成数未提供'
+    assert page.progress.maximum() == 0
+    job['progress'] = dict(completed_units=2)
+    page._render_job_detail(job)
+    assert '/ 0' not in page.runtime_fields['units'].text()
+
+
+def test_action_buttons_have_balanced_rows(page_factory):
+    page = page_factory()
+    page.resize(680, 560)
+    page.show()
+    QApplication.processEvents()
+    assert page.run_button.y() == page.pause_button.y()
+    assert page.fresh_button.y() == page.archive_button.y()
+    assert page.fresh_button.y() > page.run_button.y()
+    assert abs(page.fresh_button.width() - page.archive_button.width()) <= 1
 
 
 def test_primary_actions_are_outside_editor_scroll_areas(page_factory):
@@ -208,6 +281,31 @@ def test_save_controls_only_show_on_configuration_tab(page_factory):
     assert not page.save_panel.isHidden()
     page.task_inspector.setCurrentIndex(0)
     assert page.save_panel.isHidden()
+    page.task_inspector.setCurrentIndex(2)
+    assert page.save_panel.isHidden()
+
+
+def test_rules_switch_and_refresh_preserve_configuration_draft(page_factory):
+    page = page_factory()
+    page.data['jobs'][0].update(id='sina-news', name='财经新闻')
+    page.render()
+    page.retries.setValue(4)
+    page.task_inspector.setCurrentIndex(2)
+    page.show()
+    QApplication.processEvents()
+    browser = page.task_rules.browser
+    assert 'finance_news' in browser.toPlainText()
+    browser.verticalScrollBar().setValue(150)
+    position = browser.verticalScrollBar().value()
+    page.render()
+    assert browser.verticalScrollBar().value() == position
+    assert page.retries.value() == 4
+    assert page.job_drafts['sina-news']['request_retries'] == 4
+    assert not page.shell.runtime.calls
+    page.data['jobs'][0].update(id='tdx-unlocks', name='大小非解禁')
+    page.render()
+    assert 'restricted_share_unlock' in browser.toPlainText()
+    assert page.job_drafts['sina-news']['request_retries'] == 4
 
 
 @pytest.mark.parametrize('width,height', [(880, 720), (1320, 900)])
@@ -296,7 +394,7 @@ def test_sections_are_independent_pages_without_duplicate_tabs(page_factory, sec
     assert page.section == section
     assert len(page.findChildren(QTabWidget)) == (1 if section in ("history", "tasks") else 0)
     if section == "tasks":
-        assert [page.task_inspector.tabText(i) for i in range(page.task_inspector.count())] == ["运行详情", "任务配置"]
+        assert [page.task_inspector.tabText(i) for i in range(page.task_inspector.count())] == ["运行详情", "任务配置", "采集规则"]
     if section != "history":
         assert not hasattr(page, "history_tabs")
     else:
@@ -413,6 +511,30 @@ def test_history_filters_preserve_full_error_and_reading_selection(page_factory)
     assert not page.history_empty.isHidden()
 
 
+def test_source_gap_history_and_runtime_never_claim_complete(page_factory):
+    notice = '有效报告已归档；2份债券名称为空；下次补采。'
+    history = dict(run_id='gap', task_id='stocks', started_at=1, finished_at=9,
+                   status='source_gap', error='', notice=notice,
+                   result=dict(collected=12, source_gap_units=2, source_identity_gaps=2, failed_units=0))
+    page = page_factory('history')
+    page.data['history'] = [history]
+    page.render()
+    page.history_filter.setCurrentIndex(page.history_filter.findData('source_gap'))
+    assert page.history.rowCount() == 1
+    assert '来源限制与补采' in page.history_detail.toPlainText()
+    assert notice in page.history_detail.toPlainText()
+    assert '数据已通过校验' not in page.history_detail.toPlainText()
+    task = page_factory()
+    task.data['history'] = [history]
+    task.data['jobs'][0].update(last_status='source_gap', notice=notice)
+    task.render()
+    assert '来源缺口' in task.runtime_fields['status'].text()
+    assert task.runtime_fields['gaps'].text() == '2 只证券 / 2 份报告'
+    assert notice == task.runtime_fields['error'].text()
+    assert task.run_button.text() == '继续采集'
+    assert '有效报告已确认归档' in task.runtime_fields['archive'].text()
+
+
 def test_shutdown_stops_collection_polling(page_factory):
     page = page_factory()
     page.shell.shutting_down = True
@@ -434,16 +556,15 @@ def test_proxy_choices_survive_refresh_and_save_with_task_policy(page_factory):
     assert not page.save_button.isEnabled()
 
 
-def test_context_focus_preserves_filters_page_and_other_task_drafts(page_factory):
+def test_context_focus_preserves_filters_and_other_task_drafts(page_factory):
     page = page_factory()
     page.task_search.setText("原筛选")
-    page.offset = 50
     page.mode.setCurrentIndex(page.mode.findData("interval"))
     page.interval.setValue(37)
     assert "stocks" in page.job_drafts
     page.apply_navigation_context(NavigationContext(task_id="sina-news"))
     assert page.task_search.text() == "原筛选"
-    assert page.offset == 50
+    assert page._query_args()[5] == 0
     assert page.focus_task_id == "sina-news"
     assert page._query_args()[-2:] == ("", "sina-news")
     focused = snapshot()
@@ -456,7 +577,7 @@ def test_context_focus_preserves_filters_page_and_other_task_drafts(page_factory
     assert not page.clear_focus_button.isHidden()
     page.clear_navigation_focus()
     assert page.focus_task_id is None
-    assert page.offset == 50
+    assert page._query_args()[5] == 0
     assert page.task_search.text() == "原筛选"
     assert "stocks" in page.job_drafts
 

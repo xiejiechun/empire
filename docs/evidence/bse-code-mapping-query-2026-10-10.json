@@ -1,0 +1,45 @@
+{
+  "checked_at": "2026-10-10T09:21:24.473936+08:00",
+  "rows": 248,
+  "example": {
+    "legacy_code": "836149",
+    "unified_code": "920149.BJ",
+    "name": "旭杰科技",
+    "listing_date": "2020-07-27",
+    "version_observed_at": "2026-10-10 09:18:41"
+  },
+  "plans": {
+    "legacy": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_code_alias",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "6",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "current": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_code_alias",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "ux_alias_security",
+        "key": "ux_alias_security",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  }
+}

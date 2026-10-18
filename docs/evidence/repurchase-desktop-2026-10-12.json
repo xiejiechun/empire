@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-12",
+  "timezone": "Asia/Shanghai",
+  "project": "eastmoney-repurchases",
+  "executable": "dist/Empire/Empire.exe",
+  "executable_sha256": "58638fdde3532802fa03d31e27bbdb153d71c50261158b939d35bd620eb13010",
+  "program_config_preserved": true,
+  "doctor": {
+    "working_directory": "D:/project/empire/build",
+    "exit_code": 0,
+    "redis_connected": true,
+    "mysql_connected": true,
+    "mysql_port": 3307
+  },
+  "desktop": {
+    "method": "computer-use @oai/sky, visible packaged Windows desktop",
+    "catalogue_registered": true,
+    "catalogue_double_click_opened": true,
+    "first_page_plans": 200,
+    "detail_plan": "16607",
+    "detail_security": "600673.SH",
+    "detail_date": "2026-10-10",
+    "plan_amount_yuan": [600000000, 1200000000],
+    "plan_quantity_shares": [12568100, 25136200],
+    "plan_price_upper_yuan": "47.74",
+    "objective_and_remarks_readable": true,
+    "cancellation_limitation_visible": true,
+    "management_link_located_project": true,
+    "task_complete": true,
+    "task_records": 5537,
+    "task_batches": 23,
+    "whole_round_archive_confirmed": true,
+    "saved_daily_beijing_time": "18:00",
+    "network_policy": "proxy first with direct fallback",
+    "request_retries": 2,
+    "desktop_left_open": true,
+    "ui_handed_to_rules_chat_serially": true,
+    "site_rate_evidence": "repurchase-live-2026-10-12.json"
+  },
+  "release": {"passed": 2231, "skipped": 5, "failed": 0},
+  "test_service": {
+    "isolated_port": 13334,
+    "normal_shutdown_after_joint_acceptance": true,
+    "shutdown_verified_exact_port_and_datadir": true,
+    "innodb_flush_log_at_trx_commit": 2,
+    "scope": "SQL transaction and replay semantics; no OS-crash durability claim; production unchanged"
+  }
+}

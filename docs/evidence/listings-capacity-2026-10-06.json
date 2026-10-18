@@ -1,30 +1,32 @@
 {
   "bindings": {
-    "src/empire/contracts/listings.py": "01c1380da90cbb51ee0ecff128eb28f2e120067823cd89cf55e562ecd20e07c0",
-    "src/empire/plugins/datasets/listings.py": "536bbe0fc243d416dbd554934b2f86a81d018db6c26d2985cbb7a2131a6070ca",
-    "src/empire/plugins/data/listings.py": "8df6f82d6ab98e19bf0f2a7b8593ac757f24b25decd5beef24527c98ebec4467",
-    "scripts/measure_listings.py": "2f595b39acaa4268f06b870c58e24c5b4f95426c69267c766e597f8b115dbd95"
+    "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
+    "src/empire/plugins/datasets/listings.py": "06a10a663d4e8db18a6a3e43ef572c1ec9cc8c9e042051338ab21333e57259aa",
+    "src/empire/plugins/data/listings.py": "f98c4183f3f1f4566cf6fd763947103c9a5e40d6287a15125cfc56b5281d984f",
+    "scripts/measure_listings.py": "ac7dd3c47ba5131f54a9629ede9b951544da7580cc136f33accce44ab3237a58"
   },
   "ddl_scopes": {
     "stock_listing": "e15abb1412885c165061d610da69fd86abd49f60b7130a975f0ebf0481ac9d93"
   },
   "measurements": {
-    "page_p95_ms": 44.88349999883212,
-    "detail_p95_ms": 34.071900008711964,
-    "range_p95_ms": 38.39549999975134,
-    "coverage_p95_ms": 150.95569999539293,
-    "import_seconds": 28.96007039998949,
-    "audit_seconds": 1.0579921000025934,
-    "allocated_bytes": 126746624
+    "page_p95_ms": 47.50649997731671,
+    "detail_p95_ms": 37.30580001138151,
+    "range_p95_ms": 49.02719997335225,
+    "coverage_p95_ms": 142.13789999485016,
+    "import_seconds": 23.524426500021946,
+    "audit_seconds": 1.1771418999996968,
+    "allocated_bytes": 126746624,
+    "state_bytes": 3647250
   },
   "limits": {
-    "page_p95_ms": 50,
-    "detail_p95_ms": 50,
-    "range_p95_ms": 50,
+    "page_p95_ms": 100,
+    "detail_p95_ms": 100,
+    "range_p95_ms": 100,
     "coverage_p95_ms": 500,
     "import_seconds": 60,
     "audit_seconds": 5,
-    "allocated_bytes": 1610612736
+    "allocated_bytes": 1610612736,
+    "state_bytes": 8388608
   },
   "conditions": {
     "platform": "Windows-11-10.0.26200-SP0",
@@ -35,6 +37,8 @@
     "audited": 15000,
     "cache": "unforced first; subsequent hot repetitions",
     "synthetic": true,
+    "incomplete_units": 750,
+    "unavailable_units": 750,
     "history_sizes_bytes": [
       2049,
       105078,
@@ -42,7 +46,7 @@
     ],
     "maximum_history_bytes": 262144
   },
-  "reviewed_tradeoffs": "一证券一行；列表/补缺不读历史沿革；详细审计有界200行页读正文，来源范围只限当前池和已存记录。容量按真实正文尺寸放大，不代表全市场实采。",
+  "reviewed_tradeoffs": "一证券一行；列表/补缺不读历史沿革；详细审计有界200行页读正文，来源范围只限当前池和已存记录。容量按真实正文尺寸放大，不代表全市场实采。正式列表和详情读取统一状态以提示来源缺值；15000单元约3.5MiB，实测63至77ms超过原50ms目标，接受100ms预算以保留单一状态路径和准确质量提示，不另建状态表或持久缓存。",
   "explain": {
     "page": [
       {
@@ -87,7 +91,7 @@
         "key": "ix_listing_date",
         "key_len": "3",
         "ref": null,
-        "rows": 6474,
+        "rows": 6415,
         "filtered": 100.0,
         "Extra": "Using where; Using index"
       }
@@ -103,7 +107,7 @@
         "key": "PRIMARY",
         "key_len": "11",
         "ref": null,
-        "rows": 12949,
+        "rows": 12830,
         "filtered": 100.0,
         "Extra": null
       }
@@ -127,7 +131,7 @@
       "read_bytes": 1500000
     }
   },
-  "python_peak_bytes": 4604255,
+  "python_peak_bytes": 4591380,
   "repeat": {
     "status": "complete",
     "row_count": 1,

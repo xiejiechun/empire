@@ -30,11 +30,12 @@ from empire.plugins.ui.common import (
     table_identity_state,
 )
 from empire.plugins.ui.plugin import UiPlugin
+from empire.plugins.ui.stock_preview import StockPreview
 
 PAGE_SIZE = 200
 
 
-class StockListPage(QWidget):
+class StockListPage(StockPreview, QWidget):
     def __init__(self, shell):
         super().__init__()
         self.shell = shell
@@ -98,7 +99,7 @@ class StockListPage(QWidget):
         layout.addLayout(filters)
 
         result_bar = QHBoxLayout()
-        self.result_summary = QLabel("来源：新浪 · 上海 / 深圳 / 北京 A 股")
+        self.result_summary = QLabel("当前股票目录 · 上海 / 深圳 / 北京 A 股")
         self.result_summary.setObjectName("muted")
         self.result_summary.setWordWrap(True)
         result_bar.addWidget(self.result_summary, 1)
@@ -139,6 +140,7 @@ class StockListPage(QWidget):
         self.content.addWidget(self.empty)
         self.content.setCurrentWidget(self.empty)
         layout.addWidget(self.content, 1)
+        self.install_preview(layout)
 
         pagination = QHBoxLayout()
         self.page_label = QLabel("每页 200 条")
@@ -214,7 +216,7 @@ class StockListPage(QWidget):
         if not self.isVisible() or getattr(self.shell, "shutting_down", False):
             return
         plugins = {p["id"]: p for p in self.shell.runtime.snapshot().get("plugins", [])}
-        health = plugins.get("collector.sina_universe", {}).get("health", {})
+        health = plugins.get("collector.ths_universe", {}).get("health", {})
         state = health.get("status", "stopped")
         if self.future and self.future.done():
             future = self.future
@@ -271,7 +273,7 @@ class StockListPage(QWidget):
                 finished = finished.replace(tzinfo=CHINA)
             local_time = finished.astimezone(CHINA).strftime("%Y-%m-%d %H:%M:%S")
             self.status.setText(
-                f"新浪 A 股 · 当前列表 {snapshot['row_count']:,} 条 · 更新于 {local_time}（北京时间）"
+                f"A 股目录 · 当前列表 {snapshot['row_count']:,} 条 · 更新于 {local_time}（北京时间）"
             )
         else:
             self.status.setText("尚无完整股票列表；采集和归档完成后会自动显示。")
@@ -281,6 +283,7 @@ class StockListPage(QWidget):
                          for stock in stocks],
              keys=[(stock["source"], stock["unified_code"]) for stock in stocks])
         self.content.setCurrentWidget(self.table if stocks else self.empty)
+        self.select_preview()
         if not stocks:
             self.empty.setText(
                 "没有匹配的股票\n试试其他代码、名称或市场，或清空搜索。" if snapshot else
@@ -309,7 +312,7 @@ class StockUiPlugin(UiPlugin):
         return (
             PageContribution("stocks", "股票列表", StockListPage, "数据浏览", 0,
                              "查找股票、筛选市场、复制数据 · Alt+2", catalogued=True, database_tables=("stock",),
-                             category="基础数据", source="新浪财经", cache_policy="lru",
+                             category="基础数据", source="同花顺 / 新浪财经", cache_policy="lru",
                              management=NavigationTarget(
-                                 "collection", NavigationContext(task_id="sina-stocks"))),
+                                 "collection", NavigationContext(task_id="ths-stocks"))),
         )

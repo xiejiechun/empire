@@ -1,0 +1,130 @@
+{
+  "checked_at": "2026-10-13T17:20:13.093109+00:00",
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "network": {
+    "proxy_requests": 102
+  },
+  "units": {
+    "2027-12-01|SH": {
+      "count": 53,
+      "details": 210,
+      "digest": "a04428989b9677509508592d1d479f2b57f40de2a953d363a8abf010b3c249fe"
+    },
+    "2027-12-01|SZ": {
+      "count": 48,
+      "details": 229,
+      "digest": "a322020afe3a57e47f532b61bac7ea22a7a50511258e34bc3f58e63c90f79f43"
+    },
+    "2027-12-01|BJ": {
+      "count": 1,
+      "details": 13,
+      "digest": "98d609c5b68fb15e08e293d63680672bc91ee1e92645f6d8d93b8fd5006a30e8"
+    }
+  },
+  "passed": true,
+  "representative_parent": {
+    "unified_code": "600889.SH",
+    "unlock_date": "2027-12-17",
+    "reason_code": "10000203",
+    "name": "*ST京化",
+    "industry": "机械基件",
+    "reason": "非公开发行限售",
+    "shares": "6493500",
+    "total_shares": "586589347",
+    "group_key": "412359bd479f0819474f20ad1b7e22c0205fab2fa383432ee4dc6cea1ed9e0db",
+    "occurrence": 1,
+    "record_key": "006eb6d011e966ce8eb99e86013786bc4747683f54ded68534c8051d1a3d84b7",
+    "detail_status": "present",
+    "detail_count": 1
+  },
+  "representative_detail": {
+    "group_key": "9425a8a23429813dbb419a9101d36d10d28f1bf86dc25113a1e7bb3728f72741",
+    "unified_code": "601091.SH",
+    "unlock_date": "2027-12-20",
+    "reason_code": "10000201",
+    "holder": "侯文素",
+    "reason": "首发、公开增发网下配售股份",
+    "shares": "249800",
+    "occurrence": 1,
+    "record_key": "00f99a7b129cdc80cc39f821990bf9cdb4ed2e1025747cdde993ef8a783d021b"
+  },
+  "audit": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "核验102条列表；必需字段缺失0；来源空明细组0",
+      "blocking": true
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "列表事实与共享明细分别核对业务键集合及正文摘要",
+      "blocking": true
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "完整月份、三市场及最终范围集合证明核验",
+      "blocking": true
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "股数精确换算；并列列表保留；共享明细不重复计数，未知不填零",
+      "blocking": true
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "匹配完整范围的SQL或可信摘要确认须在3天内",
+      "blocking": true
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "来源没有公告可用日期；解禁日期不能证明历史信号已公开",
+      "blocking": false
+    }
+  ],
+  "cursor": {
+    "phase": "complete",
+    "start": "2027-12-01",
+    "end": "2027-12-01",
+    "index": 1,
+    "market_index": 0,
+    "response_hash": "",
+    "page": 4,
+    "collected": 102,
+    "details": 452,
+    "rolling": "3abb21f2a9198297e29bf440a6e35429897208c1468fad887b6a6497fa21bab2",
+    "contract": 1,
+    "batch_id": "28d4f4f2efc24348b77a40e94e473ba7",
+    "force": true,
+    "review_index": 0
+  },
+  "pending_stream": 0,
+  "errors": {
+    "revision": "1",
+    "total": 1,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": [
+      {
+        "status_code": 200,
+        "error": "大小非解禁完整月列表协议或容量错误",
+        "id": "3038acfe812e4884801b5713721833c8",
+        "project_id": "tdx-unlocks",
+        "created_at": "2026-10-13T17:17:28.731752+00:00",
+        "stage": "source_validation"
+      }
+    ]
+  },
+  "query_sample": {
+    "list_count": 1,
+    "detail_count": 1
+  }
+}

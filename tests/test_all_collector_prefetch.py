@@ -83,6 +83,8 @@ def adapter(family):
         from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
         c, _ = configured(TdxDividendsCollector if family == 'dividends' else TdxAdditionalIssuesCollector)
         c.query.securities.return_value = stocks
+        c.query.dividend_history_proofs.return_value = {
+            'SH:' + s['code']: '2026-01-01T00:00:00+00:00' for s in stocks}
         bodies = [capital_source('additional_issues', code=s['code']) for s in stocks]
         for i, body in enumerate(bodies):
             body['ResultSets'][0]['Content'][0][15] = 1001 + i
@@ -91,8 +93,10 @@ def adapter(family):
         def reply(method, url, kw):
             params = json.loads(kw['content'])['Params']
             if family == 'dividends':
-                index = next(i for i, s in enumerate(stocks) if s['code'] == params[4])
-                return index, httpx.Response(200, json=capital_source('dividends'))
+                index = ['2025-06-30', '2025-09-30', '2025-12-31'].index(params[2])
+                body = capital_source('dividends')
+                body['ResultSets'][1]['Content'][0][-1] = params[2]
+                return index, httpx.Response(200, json=body)
             if not url.endswith('_zfmx'):
                 return None, httpx.Response(200, json=full)
             index = int(params[0]) - 1001
@@ -110,6 +114,9 @@ async def until(predicate):
 @pytest.mark.parametrize('mode', ['success', 'bad_first', 'cancel'])
 async def test_real_adapters_prefetch_without_crossing_unvalidated_frontier(family, mode, monkeypatch):
     c, reply = adapter(family)
+    if family == 'dividends':
+        monkeypatch.setattr('empire.plugins.collectors.tdx_dividend_periods.report_periods',
+            AsyncMock(return_value=['2025-06-30', '2025-09-30', '2025-12-31']))
     validation = {
         'balance': ('ths_statements', 'parse'), 'income': ('ths_statements', 'parse'),
         'cashflow': ('ths_statements', 'parse'), 'listings': ('ths_listings', 'parse'),
@@ -193,6 +200,9 @@ async def test_real_adapters_prefetch_without_crossing_unvalidated_frontier(fami
 def test_every_registered_task_declares_its_actual_independent_download_capability():
     manager = build_manager(dict(redis={}, mysql={}, archive={}, ingest={}, rate_groups={}))
     tasks = manager.entries['collection.control'].plugin.definitions
-    serial = {'sina-news', 'tdx-company-renames', 'tdx-security-renames', 'tdx-rights-issues'}
-    assert len(tasks) == 22
+    serial = {'eastmoney-repurchases', 'sina-news', 'ths-stocks', 'tdx-company-renames', 'tdx-security-renames', 'tdx-rights-issues', 'tdx-st-implementation', 'tdx-st-removal'}
+    assert len(tasks) == 45
+    assert tasks['ths-capital'].parallel_downloads
+    assert tasks['tdx-shareholder-changes'].parallel_downloads
+    assert 'ths-holders' in tasks
     assert {t.id for t in tasks.values() if not t.parallel_downloads} == serial

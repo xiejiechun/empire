@@ -471,13 +471,12 @@ async def test_identical_news_and_stale_replays_issue_no_business_dml(news_db):
         event.remove(mysql.engine, "before_cursor_execute", capture)
 
 
-async def test_news_preparation_checks_current_content_without_claiming_history(news_db):
+async def test_news_archive_and_query_survive_preparation_retirement(news_db):
     manager, publish, query = news_db
     await publish()
-    checks = {c.criterion: c for c in await query.preparation_check()}
-    assert checks['keys'].status == 'pass'
-    assert checks['fields'].status == 'pass' and checks['temporal'].status == 'pass'
-    assert checks['coverage'].status == 'pass'
-    assert '不证明以前的新闻已全部补齐' in checks['coverage'].measured
-    assert '独立项目' in checks['temporal'].measured
+    preparation = manager.entries['data.preparation'].plugin
+    assert all(c.requirement != 'news' for c in preparation.contributions)
+    assert not hasattr(query, 'preparation_check')
     assert (await query.list_news())['total'] == 1
+    assert await manager.registry.get('redis.store').client.xlen(
+        manager.registry.get('redis.store').stream) == 0

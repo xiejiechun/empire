@@ -13,6 +13,54 @@ from empire.plugins.infra.http_safety import parse_retry_after
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_PERMIT, USE_PROXY
 
 
+@pytest.mark.parametrize("failure", ["status", "transport", "not_found"])
+@pytest.mark.parametrize("recover", [False, True])
+async def test_one_hundred_retries_are_bounded_and_can_recover(monkeypatch, failure, recover):
+    attempts, delays, deadlines = [], [], []
+    original_sleep, original_timeout = asyncio.sleep, asyncio.timeout
+
+    async def fast_sleep(delay):
+        delays.append(delay)
+        await original_sleep(0)
+
+    def timed(delay):
+        deadlines.append(delay)
+        return original_timeout(delay)
+
+    monkeypatch.setattr(asyncio, "sleep", fast_sleep)
+    monkeypatch.setattr(asyncio, "timeout", timed)
+    records = ErrorRecorder()
+    service = HttpService(MemoryPermits(), "test", groups(1), records=records)
+
+    async def one(method, url, allowed, **kwargs):
+        attempts.append(len(attempts) + 1)
+        if recover and len(attempts) == 101:
+            return httpx.Response(200, request=httpx.Request(method, url))
+        if failure == "transport":
+            raise httpx.ConnectError("temporary network failure")
+        return httpx.Response(404 if failure == "not_found" else 502, request=httpx.Request(method, url))
+
+    monkeypatch.setattr(service, "_one", one)
+    try:
+        options = dict(allowed_domains=("sina.com.cn",), max_retries=100, project_id="sina-news")
+        if failure == "not_found":
+            options["retry_not_found"] = True
+        if recover:
+            response = await service._request("GET", "https://finance.sina.com.cn/", **options)
+            assert response.status_code == 200
+            response.close()
+        else:
+            with pytest.raises(httpx.ConnectError if failure == "transport" else httpx.HTTPStatusError):
+                await service._request("GET", "https://finance.sina.com.cn/", **options)
+        assert len(attempts) == 101
+        assert delays == [1, 2, 4, 8, 16] + [30] * 95
+        assert deadlines[0] == 6000
+        assert len(records.errors) == (100 if recover else 101)
+        assert service.buffer_budget.used == 0
+    finally:
+        await service.close()
+
+
 class MemoryPermits:
     """A scheduling test double; does not validate production Redis scripts."""
     def __init__(self):

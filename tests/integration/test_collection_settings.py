@@ -22,7 +22,7 @@ async def test_mysql_settings_survive_loss_of_redis_runtime_without_collection()
     try:
         await manager.start("collection.control")
         control = manager.registry.get("collection.control")
-        data = await control.workspace("tasks")
+        data = await control.workspace("tasks", query='sina-stocks')
         stock = next(job for job in data['jobs'] if job['id'] == 'sina-stocks')
         policy = {**stock["policy"], "mode": "daily", "daily_time": "18:30",
                   "use_proxy": True, "proxy_fallback": True}
@@ -54,7 +54,7 @@ async def test_mysql_settings_survive_loss_of_redis_runtime_without_collection()
         await store.client.delete(f"{store.prefix}:collection:control:v1")
         await manager.start("collection.control")
         control = manager.registry.get("collection.control")
-        tasks = await control.workspace("tasks")
+        tasks = await control.workspace("tasks", query='sina-stocks')
         sites = await control.workspace("sites")
         history = await control.workspace("history")
         stock = next(job for job in tasks['jobs'] if job['id'] == 'sina-stocks')

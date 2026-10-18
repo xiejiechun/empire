@@ -1,0 +1,1355 @@
+{
+  "verified_at": "2026-10-13T15:09:56.736968+00:00",
+  "project": "tdx-shareholder-changes",
+  "source_page": "http://page2.tdx.com.cn:7615/site/tdxsj/html/tdxsj_cgbd_cgbd.html",
+  "page_size": 10000,
+  "history": {
+    "checked_start": "1990-01",
+    "checked_end": "2026-10",
+    "months": 442,
+    "first_nonempty_month": "2002-07-01",
+    "rows": 325754,
+    "queue_remaining": 0,
+    "proxy_requests": 442
+  },
+  "contract": [
+    "指定月份完整响应校验后发布",
+    "按月市场核对业务集合与正式SQL",
+    "合法重复来源事实保留出现次数",
+    "历史缺月补齐与完成月份修订重核",
+    "共享下载、代理、频控、预取、入队、归档、摘要和成功清队",
+    "失败不推进断点；整轮入队后等待归档",
+    "有类型业务表与显式维护入口"
+  ],
+  "default_policy": {
+    "enabled": true,
+    "mode": "daily",
+    "interval_seconds": 86400,
+    "daily_time": "18:00",
+    "request_retries": 2
+  },
+  "tests": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "5",
+    "tests": "2449",
+    "time": "1611.343",
+    "timestamp": "2026-10-13T22:38:10.825135+08:00",
+    "hostname": "xiejiechun"
+  },
+  "release": {
+    "verified_at_utc": "2026-10-13T15:06:39Z",
+    "manifest": {
+      "version": "0.1.0",
+      "commit": "a79f789e15de70d22e55a5f850f7ce3ec83c6009",
+      "dirty": true,
+      "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+      "dependency_count": 42,
+      "dependency_report_sha256": "2282ef6ac100ef455743b66dec8af1928d33ee99076bcef086458c0aeff1f0b9",
+      "built_at_utc": "2026-10-13T15:05:16Z",
+      "python": "3.12.9",
+      "pyinstaller": "6.22.3"
+    },
+    "executable_sha256": "7c6702e6621837ea85c1a68883744a59c7605d17ca11e27d468d1b42818e70bc",
+    "smoke_image": "D:\\project\\empire\\build\\release-smoke.png",
+    "capacity_report": "D:\\project\\empire\\build\\capacity-report.json",
+    "capacity": {
+      "schema_version": 1,
+      "generated_at_utc": "2026-10-13T23:05:06+08:00",
+      "mode": "quick-release-gate",
+      "scope": "in-process virtual directory and MockTransport; no external services",
+      "model": {
+        "exit_matrix": [
+          10,
+          30,
+          50,
+          100
+        ],
+        "baseline_response_delay_ms": 4,
+        "parse_delay_ms": 1,
+        "archive_queue_delay_ms": 1,
+        "redis_confirm_delay_ms": 1,
+        "sql_confirm_delay_ms": 2,
+        "churn_cancel_iterations": 1000
+      },
+      "environment": {
+        "python": "3.12.9",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "processor": "AMD64 Family 26 Model 112 Stepping 0, AuthenticAMD"
+      },
+      "baseline": [
+        {
+          "name": "independent-10",
+          "devices": 10,
+          "distinct_exit_ips": 10,
+          "request_count": 10,
+          "completed": 10,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 10,
+          "elapsed_seconds": 0.0084,
+          "throughput_rps": 1183.57,
+          "error_rate": 0.0,
+          "peak_concurrency": 10,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.116,
+              "p95_ms": 0.585,
+              "max_ms": 0.924
+            },
+            "download": {
+              "p50_ms": 6.238,
+              "p95_ms": 6.778,
+              "max_ms": 6.812
+            },
+            "parse": {
+              "p50_ms": 0.148,
+              "p95_ms": 0.23,
+              "max_ms": 0.244
+            },
+            "archive_queue": {
+              "p50_ms": 0.06,
+              "p95_ms": 0.063,
+              "max_ms": 0.064
+            },
+            "redis_confirm": {
+              "p50_ms": 0.058,
+              "p95_ms": 0.061,
+              "max_ms": 0.062
+            },
+            "sql_confirm": {
+              "p50_ms": 0.072,
+              "p95_ms": 0.08,
+              "max_ms": 0.08
+            },
+            "end_to_end": {
+              "p50_ms": 6.704,
+              "p95_ms": 7.759,
+              "max_ms": 8.171
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 10,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 52285440,
+            "rss_peak": 54452224,
+            "rss_after": 54452224,
+            "rss_delta": 2166784,
+            "handles_before": 229,
+            "handles_peak": 239,
+            "handles_after": 229,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "independent-30",
+          "devices": 30,
+          "distinct_exit_ips": 30,
+          "request_count": 30,
+          "completed": 30,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 30,
+          "elapsed_seconds": 0.0179,
+          "throughput_rps": 1671.77,
+          "error_rate": 0.0,
+          "peak_concurrency": 30,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.107,
+              "p95_ms": 0.194,
+              "max_ms": 0.884
+            },
+            "download": {
+              "p50_ms": 14.329,
+              "p95_ms": 15.856,
+              "max_ms": 16.025
+            },
+            "parse": {
+              "p50_ms": 0.363,
+              "p95_ms": 0.612,
+              "max_ms": 0.616
+            },
+            "archive_queue": {
+              "p50_ms": 0.113,
+              "p95_ms": 0.15,
+              "max_ms": 0.152
+            },
+            "redis_confirm": {
+              "p50_ms": 0.11,
+              "p95_ms": 0.146,
+              "max_ms": 0.149
+            },
+            "sql_confirm": {
+              "p50_ms": 0.107,
+              "p95_ms": 0.141,
+              "max_ms": 0.144
+            },
+            "end_to_end": {
+              "p50_ms": 15.09,
+              "p95_ms": 16.788,
+              "max_ms": 17.722
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 30,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 54464512,
+            "rss_peak": 54915072,
+            "rss_after": 54915072,
+            "rss_delta": 450560,
+            "handles_before": 229,
+            "handles_peak": 259,
+            "handles_after": 229,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "independent-50",
+          "devices": 50,
+          "distinct_exit_ips": 50,
+          "request_count": 50,
+          "completed": 50,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 50,
+          "elapsed_seconds": 0.0308,
+          "throughput_rps": 1624.12,
+          "error_rate": 0.0,
+          "peak_concurrency": 50,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.113,
+              "p95_ms": 0.146,
+              "max_ms": 1.076
+            },
+            "download": {
+              "p50_ms": 25.247,
+              "p95_ms": 27.952,
+              "max_ms": 28.237
+            },
+            "parse": {
+              "p50_ms": 0.542,
+              "p95_ms": 0.901,
+              "max_ms": 0.949
+            },
+            "archive_queue": {
+              "p50_ms": 0.161,
+              "p95_ms": 0.209,
+              "max_ms": 0.214
+            },
+            "redis_confirm": {
+              "p50_ms": 0.154,
+              "p95_ms": 0.204,
+              "max_ms": 0.21
+            },
+            "sql_confirm": {
+              "p50_ms": 0.152,
+              "p95_ms": 0.196,
+              "max_ms": 0.201
+            },
+            "end_to_end": {
+              "p50_ms": 26.543,
+              "p95_ms": 29.25,
+              "max_ms": 30.516
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 50,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 54915072,
+            "rss_peak": 55328768,
+            "rss_after": 55328768,
+            "rss_delta": 413696,
+            "handles_before": 229,
+            "handles_peak": 279,
+            "handles_after": 229,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "independent-100",
+          "devices": 100,
+          "distinct_exit_ips": 100,
+          "request_count": 100,
+          "completed": 100,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 100,
+          "elapsed_seconds": 0.0235,
+          "throughput_rps": 4247.06,
+          "error_rate": 0.0,
+          "peak_concurrency": 100,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.138,
+              "p95_ms": 0.183,
+              "max_ms": 1.721
+            },
+            "download": {
+              "p50_ms": 11.853,
+              "p95_ms": 17.968,
+              "max_ms": 18.797
+            },
+            "parse": {
+              "p50_ms": 1.051,
+              "p95_ms": 1.645,
+              "max_ms": 1.721
+            },
+            "archive_queue": {
+              "p50_ms": 0.3,
+              "p95_ms": 0.446,
+              "max_ms": 0.465
+            },
+            "redis_confirm": {
+              "p50_ms": 0.279,
+              "p95_ms": 0.42,
+              "max_ms": 0.439
+            },
+            "sql_confirm": {
+              "p50_ms": 0.26,
+              "p95_ms": 0.393,
+              "max_ms": 0.411
+            },
+            "end_to_end": {
+              "p50_ms": 14.01,
+              "p95_ms": 20.718,
+              "max_ms": 23.103
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 100,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 55328768,
+            "rss_peak": 56266752,
+            "rss_after": 56266752,
+            "rss_delta": 937984,
+            "handles_before": 229,
+            "handles_peak": 329,
+            "handles_after": 229,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        }
+      ],
+      "shared_egress": {
+        "name": "shared-egress",
+        "devices": 50,
+        "distinct_exit_ips": 10,
+        "request_count": 50,
+        "completed": 50,
+        "failed": 0,
+        "cancelled": 0,
+        "attempts": 50,
+        "elapsed_seconds": 0.4441,
+        "throughput_rps": 112.6,
+        "error_rate": 0.0,
+        "peak_concurrency": 10,
+        "latency": {
+          "queue": {
+            "p50_ms": 205.546,
+            "p95_ms": 434.452,
+            "max_ms": 435.036
+          },
+          "download": {
+            "p50_ms": 15.793,
+            "p95_ms": 21.193,
+            "max_ms": 21.417
+          },
+          "parse": {
+            "p50_ms": 1.314,
+            "p95_ms": 2.767,
+            "max_ms": 2.787
+          },
+          "archive_queue": {
+            "p50_ms": 0.076,
+            "p95_ms": 0.248,
+            "max_ms": 0.274
+          },
+          "redis_confirm": {
+            "p50_ms": 0.061,
+            "p95_ms": 0.137,
+            "max_ms": 0.144
+          },
+          "sql_confirm": {
+            "p50_ms": 0.061,
+            "p95_ms": 0.135,
+            "max_ms": 0.146
+          },
+          "end_to_end": {
+            "p50_ms": 208.979,
+            "p95_ms": 441.137,
+            "max_ms": 441.288
+          }
+        },
+        "directory_reads": 1,
+        "candidate_checks": 90,
+        "site_cooldown_created": false,
+        "resources": {
+          "rss_before": 56266752,
+          "rss_peak": 56291328,
+          "rss_after": 56291328,
+          "rss_delta": 24576,
+          "handles_before": 229,
+          "handles_peak": 279,
+          "handles_after": 229,
+          "handles_delta": 0
+        },
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0,
+          "http_inflight": 0,
+          "open_responses": 0,
+          "buffer_used_bytes": 0,
+          "global_active": 0,
+          "site_active": 0,
+          "admission_waiting": 0
+        }
+      },
+      "fault_matrix": [
+        {
+          "name": "transport-failure",
+          "devices": 10,
+          "distinct_exit_ips": 10,
+          "request_count": 20,
+          "completed": 20,
+          "failed": 0,
+          "cancelled": 0,
+          "attempts": 25,
+          "elapsed_seconds": 0.3602,
+          "throughput_rps": 55.52,
+          "error_rate": 0.0,
+          "peak_concurrency": 10,
+          "latency": {
+            "queue": {
+              "p50_ms": 55.825,
+              "p95_ms": 343.326,
+              "max_ms": 343.476
+            },
+            "download": {
+              "p50_ms": 15.062,
+              "p95_ms": 138.811,
+              "max_ms": 244.688
+            },
+            "parse": {
+              "p50_ms": 0.662,
+              "p95_ms": 0.926,
+              "max_ms": 0.951
+            },
+            "archive_queue": {
+              "p50_ms": 0.085,
+              "p95_ms": 0.227,
+              "max_ms": 0.228
+            },
+            "redis_confirm": {
+              "p50_ms": 0.068,
+              "p95_ms": 0.145,
+              "max_ms": 0.145
+            },
+            "sql_confirm": {
+              "p50_ms": 0.052,
+              "p95_ms": 0.153,
+              "max_ms": 0.154
+            },
+            "end_to_end": {
+              "p50_ms": 128.439,
+              "p95_ms": 358.199,
+              "max_ms": 358.257
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 43,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 56291328,
+            "rss_peak": 56291328,
+            "rss_after": 56291328,
+            "rss_delta": 0,
+            "handles_before": 229,
+            "handles_peak": 239,
+            "handles_after": 229,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "site-429",
+          "devices": 10,
+          "distinct_exit_ips": 10,
+          "request_count": 10,
+          "completed": 8,
+          "failed": 2,
+          "cancelled": 0,
+          "attempts": 10,
+          "elapsed_seconds": 0.0183,
+          "throughput_rps": 547.17,
+          "error_rate": 0.2,
+          "peak_concurrency": 10,
+          "latency": {
+            "queue": {
+              "p50_ms": 0.112,
+              "p95_ms": 0.401,
+              "max_ms": 0.573
+            },
+            "download": {
+              "p50_ms": 16.327,
+              "p95_ms": 16.653,
+              "max_ms": 16.66
+            },
+            "parse": {
+              "p50_ms": 0.62,
+              "p95_ms": 0.693,
+              "max_ms": 0.705
+            },
+            "archive_queue": {
+              "p50_ms": 0.058,
+              "p95_ms": 0.068,
+              "max_ms": 0.069
+            },
+            "redis_confirm": {
+              "p50_ms": 0.05,
+              "p95_ms": 0.053,
+              "max_ms": 0.054
+            },
+            "sql_confirm": {
+              "p50_ms": 0.049,
+              "p95_ms": 0.053,
+              "max_ms": 0.054
+            },
+            "end_to_end": {
+              "p50_ms": 17.137,
+              "p95_ms": 17.895,
+              "max_ms": 18.096
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 10,
+          "site_cooldown_created": true,
+          "resources": {
+            "rss_before": 56291328,
+            "rss_peak": 56295424,
+            "rss_after": 56295424,
+            "rss_delta": 4096,
+            "handles_before": 229,
+            "handles_peak": 239,
+            "handles_after": 229,
+            "handles_delta": 0
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        },
+        {
+          "name": "request-cancel",
+          "devices": 10,
+          "distinct_exit_ips": 10,
+          "request_count": 20,
+          "completed": 10,
+          "failed": 0,
+          "cancelled": 10,
+          "attempts": 15,
+          "elapsed_seconds": 0.1323,
+          "throughput_rps": 75.56,
+          "error_rate": 0.0,
+          "peak_concurrency": 10,
+          "latency": {
+            "queue": {
+              "p50_ms": 58.1,
+              "p95_ms": 115.897,
+              "max_ms": 115.943
+            },
+            "download": {
+              "p50_ms": 15.852,
+              "p95_ms": 16.581,
+              "max_ms": 16.611
+            },
+            "parse": {
+              "p50_ms": 0.326,
+              "p95_ms": 0.598,
+              "max_ms": 0.62
+            },
+            "archive_queue": {
+              "p50_ms": 0.076,
+              "p95_ms": 0.105,
+              "max_ms": 0.107
+            },
+            "redis_confirm": {
+              "p50_ms": 0.049,
+              "p95_ms": 0.052,
+              "max_ms": 0.052
+            },
+            "sql_confirm": {
+              "p50_ms": 0.047,
+              "p95_ms": 0.049,
+              "max_ms": 0.049
+            },
+            "end_to_end": {
+              "p50_ms": 74.616,
+              "p95_ms": 132.508,
+              "max_ms": 132.534
+            }
+          },
+          "directory_reads": 1,
+          "candidate_checks": 25,
+          "site_cooldown_created": false,
+          "resources": {
+            "rss_before": 56295424,
+            "rss_peak": 56295424,
+            "rss_after": 56295424,
+            "rss_delta": 0,
+            "handles_before": 229,
+            "handles_peak": 239,
+            "handles_after": 234,
+            "handles_delta": 5
+          },
+          "cleanup": {
+            "pool_waiting": 0,
+            "pool_busy": 0,
+            "pool_retired": 0,
+            "pool_close_tasks": 0,
+            "http_inflight": 0,
+            "open_responses": 0,
+            "buffer_used_bytes": 0,
+            "global_active": 0,
+            "site_active": 0,
+            "admission_waiting": 0
+          }
+        }
+      ],
+      "churn": {
+        "iterations": 1000,
+        "cancelled_acquires": 1000,
+        "elapsed_seconds": 0.1743,
+        "directory_reads": 2001,
+        "candidate_checks": 1000,
+        "resource_samples": [
+          {
+            "rss_bytes": 56295424,
+            "handles": 234
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          },
+          {
+            "rss_bytes": 56295424,
+            "handles": 227
+          }
+        ],
+        "rss_growth_bytes": 0,
+        "handle_growth": -7,
+        "stable_within_guardrail": true,
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0
+        }
+      },
+      "checks": {
+        "all_cleanup_zero": true,
+        "candidate_lease_checked_per_attempt": true,
+        "shared_ip_does_not_expand_concurrency": true,
+        "429_created_site_cooldown": true,
+        "cancellation_observed": true,
+        "transport_replay_recovered": true,
+        "churn_1000_completed": true,
+        "churn_resources_stable": true
+      },
+      "passed": true
+    },
+    "dependency_report": "D:\\project\\empire\\build\\dependency-report.json",
+    "dependencies": {
+      "schema_version": 1,
+      "generated_at_utc": "2026-10-13T22:38:05+08:00",
+      "scope": "Python packages locked for Empire; excludes OS, driver and dynamically loaded native components",
+      "target": {
+        "system": "Windows",
+        "machine": "AMD64",
+        "python": "3.12"
+      },
+      "generator": {
+        "python": "3.12.9",
+        "platform": "Windows-11-10.0.26200-SP0"
+      },
+      "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+      "component_count": 42,
+      "components": [
+        {
+          "name": "altgraph",
+          "version": "0.17.5",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": "MIT",
+          "locked_sha256": [
+            "f3a22400bce1b0c701683820ac4f3b159cd301acab067c51c653e06961600597"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "annotated-types",
+          "version": "0.8.0",
+          "scope": "transitive",
+          "compatibility_group": "validation",
+          "license": "MIT",
+          "locked_sha256": [
+            "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "anyio",
+          "version": "4.15.1",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "MIT",
+          "locked_sha256": [
+            "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "certifi",
+          "version": "2026.7.22",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "MPL-2.0",
+          "locked_sha256": [
+            "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "cffi",
+          "version": "2.1.1",
+          "scope": "transitive",
+          "compatibility_group": "database",
+          "license": "MIT-0",
+          "locked_sha256": [
+            "f53e442b08449d42821fa4a4fba000095af9f62742a500f978a9f557ec44339a"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "colorama",
+          "version": "0.4.6",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": null,
+          "locked_sha256": [
+            "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "cryptography",
+          "version": "50.0.1",
+          "scope": "transitive",
+          "compatibility_group": "database",
+          "license": "Apache-2.0 OR BSD-3-Clause",
+          "locked_sha256": [
+            "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "greenlet",
+          "version": "3.5.6",
+          "scope": "transitive",
+          "compatibility_group": "database",
+          "license": "MIT AND PSF-2.0",
+          "locked_sha256": [
+            "7ac4abb3877c43af320392c664774eef6fa2cc063c79a55fc02d844a3cbe7395"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "h11",
+          "version": "0.16.0",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "MIT",
+          "locked_sha256": [
+            "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "httpcore",
+          "version": "1.0.9",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "httpx",
+          "version": "0.28.1",
+          "scope": "direct-runtime",
+          "compatibility_group": "network",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "idna",
+          "version": "3.20",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "iniconfig",
+          "version": "2.3.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "librt",
+          "version": "0.15.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "73b30cfa976659b3917c8f6153bdb0591c6a9ec6583599fd24a689b690622022"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "mypy",
+          "version": "1.20.2",
+          "scope": "direct-development",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "d52ad8d78522da1d308789df651ee5379088e77c76cb1994858d40a426b343b9"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "mypy-extensions",
+          "version": "1.1.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "packaging",
+          "version": "26.3",
+          "scope": "transitive",
+          "compatibility_group": "runtime-support",
+          "license": "Apache-2.0 OR BSD-2-Clause",
+          "locked_sha256": [
+            "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pathspec",
+          "version": "1.1.1",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": null,
+          "locked_sha256": [
+            "a00ce642f577bf7f473932318056212bc4f8bfdf53128c78bbd5af0b9b20b189"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pefile",
+          "version": "2024.8.26",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": "MIT",
+          "locked_sha256": [
+            "76f8b485dcd3b1bb8166f1128d395fa3d87af26360c2358fb75b80019b957c6f"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pluggy",
+          "version": "1.6.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pycparser",
+          "version": "3.0",
+          "scope": "transitive",
+          "compatibility_group": "database",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pydantic",
+          "version": "2.13.5",
+          "scope": "direct-runtime",
+          "compatibility_group": "validation",
+          "license": "MIT",
+          "locked_sha256": [
+            "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pydantic-core",
+          "version": "2.46.5",
+          "scope": "transitive",
+          "compatibility_group": "validation",
+          "license": "MIT",
+          "locked_sha256": [
+            "5e81740c09e310f5aa5cbd3e434a01c154d4bef93241c7877b39f211d2b78ba8"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pypdf",
+          "version": "6.20.0",
+          "scope": "direct-runtime",
+          "compatibility_group": "runtime-support",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "f003fc2014814d264fe7dd3f9d435c158e23e1a85a2233f87a0a2d6d21c914ad"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pygments",
+          "version": "2.21.0",
+          "scope": "transitive",
+          "compatibility_group": "test-quality",
+          "license": "BSD-2-Clause",
+          "locked_sha256": [
+            "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pymysql",
+          "version": "1.2.3",
+          "scope": "direct-runtime",
+          "compatibility_group": "database",
+          "license": "MIT",
+          "locked_sha256": [
+            "14f1c68e2ed859243ae5ca41ffbe677027fc46bc136a9f0be8a4e928e5e7415a"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyinstaller",
+          "version": "6.22.3",
+          "scope": "direct-development",
+          "compatibility_group": "build",
+          "license": "GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones)",
+          "locked_sha256": [
+            "500bd58c7bf7e584a8435adccbd763a0b918d5c12b08d74ff50fd79b2915458b"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyinstaller-hooks-contrib",
+          "version": "2026.7",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": null,
+          "locked_sha256": [
+            "24257a04c7a5a7a034cf28e39dcee20fbeeb9f043076729480f2e1b69904408a"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyside6",
+          "version": "6.11.2",
+          "scope": "direct-runtime",
+          "compatibility_group": "qt",
+          "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+          "locked_sha256": [
+            "3201d67e3c10be2eaedd3910ff0f02351eca7e88c95a291cde5e7f2f55ef207f"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyside6-addons",
+          "version": "6.11.2",
+          "scope": "transitive",
+          "compatibility_group": "qt",
+          "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+          "locked_sha256": [
+            "f449ea4431da20e7b86752cca8d166f93434516fe417f981c27e5f8e1b554407"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pyside6-essentials",
+          "version": "6.11.2",
+          "scope": "transitive",
+          "compatibility_group": "qt",
+          "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+          "locked_sha256": [
+            "c8a29def77032773a30879f7f24415b5395ad08592d147c170824ef4c735dfc1"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pytest",
+          "version": "9.1.1",
+          "scope": "direct-development",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pytest-asyncio",
+          "version": "1.4.0",
+          "scope": "direct-development",
+          "compatibility_group": "test-quality",
+          "license": "Apache-2.0",
+          "locked_sha256": [
+            "933ca923a23075a87fb7070c0ec272a6848489824d887c85c812670932835aa1"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "redis",
+          "version": "6.4.0",
+          "scope": "direct-runtime",
+          "compatibility_group": "redis",
+          "license": "MIT",
+          "locked_sha256": [
+            "f0544fa9604264e9464cdf4814e7d4830f74b165d52f2a330a760a88dd248b7f"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "ruff",
+          "version": "0.16.8",
+          "scope": "direct-development",
+          "compatibility_group": "test-quality",
+          "license": "MIT",
+          "locked_sha256": [
+            "a6b85621fd3c81e31fc5f5add09c9c078b430db3595ca632efafdec9e64ebfaa"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "setuptools",
+          "version": "84.0.0",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": "MIT",
+          "locked_sha256": [
+            "51a52592b3b99e102b609654876bd65f19f999935166d1352678931132b0c670"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "shiboken6",
+          "version": "6.11.2",
+          "scope": "transitive",
+          "compatibility_group": "qt",
+          "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+          "locked_sha256": [
+            "6ab0eba1c904455df621f9a6df3ca2bb896bab8670572d2bc4e37804ae91f19a"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "sqlalchemy",
+          "version": "2.0.54",
+          "scope": "direct-runtime",
+          "compatibility_group": "database",
+          "license": "MIT",
+          "locked_sha256": [
+            "d65f8ca742ef1e1e14bc417ef59dc2ddf207a7b66b30cfdc6152447314e030cf"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "socksio",
+          "version": "1.0.0",
+          "scope": "transitive",
+          "compatibility_group": "network",
+          "license": "UNKNOWN",
+          "locked_sha256": [
+            "95dc1f15f9b34e8d7b16f06d74b8ccf48f609af32ab33c608d08761c5dcbb1f3"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "typing-inspection",
+          "version": "0.4.4",
+          "scope": "transitive",
+          "compatibility_group": "validation",
+          "license": "MIT",
+          "locked_sha256": [
+            "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "typing-extensions",
+          "version": "4.16.0",
+          "scope": "transitive",
+          "compatibility_group": "runtime-support",
+          "license": "PSF-2.0",
+          "locked_sha256": [
+            "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+          ],
+          "installed_matches": true
+        },
+        {
+          "name": "pywin32-ctypes",
+          "version": "0.2.3",
+          "scope": "transitive",
+          "compatibility_group": "build",
+          "license": "BSD-3-Clause",
+          "locked_sha256": [
+            "8a1513379d709975552d202d942d9837758905c8d01eb82b8bcc30918929e7b8"
+          ],
+          "installed_matches": true
+        }
+      ]
+    },
+    "portable_distribution": {
+      "chinese_space_path": true,
+      "packaged_smoke": true,
+      "first_run_prepared_config": true,
+      "config_recheck": true
+    }
+  },
+  "actual_desktop": {
+    "application": "D:/project/empire/dist/Empire/Empire.exe",
+    "verification": "computer-use sky 可见真实桌面与真实数据库",
+    "actions": [
+      "启动新版独立程序，侧栏显示本地服务已连接",
+      "数据目录搜索重要股东持股变动，返回唯一项目",
+      "打开正式数据页，本页200条，日期、公告日期、变动数量、出现序号正常展示",
+      "管理采集任务定位tdx-shareholder-changes",
+      "核实每页10000及已保存每天18:00，下次10-14 18:00"
+    ],
+    "runtime_note": "脚本实采完成由SQL和来源集合审计证明；桌面本次启动未执行新轮次，运行详情为待执行且无本轮统计。",
+    "final_visible_window": true,
+    "final_build_reopened": "正式门禁最终产物已重新打开，真实服务连接正常，窗口定位重要股东持股变动",
+    "owned_test_mysql": "13338已按SHUTDOWN正常关闭，进程和监听端口均不存在"
+  },
+  "limitations": [
+    "2条来源变动股数未知，保存NULL且对应范围质量检查不通过",
+    "部分开始日期只有月份精度，未补造具体日",
+    "106202条公告日期缺失或晚于观察时间，不证明严格历史信号可用",
+    "来源未提供完整旧版本，不承诺严格版本回放或跨来源核对"
+  ],
+  "error_cleanup": {
+    "project": "tdx-shareholder-changes",
+    "before": {
+      "revision": "3",
+      "total": 3,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": [
+        {
+          "status_code": null,
+          "error": "重要股东持股变动必需字段缺失",
+          "id": "5cc3a3845d2d4ba1bb54d1db6ac2f7e7",
+          "project_id": "tdx-shareholder-changes",
+          "created_at": "2026-10-13T13:38:40.278711+00:00",
+          "stage": "source_validation"
+        },
+        {
+          "status_code": null,
+          "error": "持股变动日期协议无效",
+          "id": "32606e5b14794310a4286873312f5724",
+          "project_id": "tdx-shareholder-changes",
+          "created_at": "2026-10-13T13:31:11.025635+00:00",
+          "stage": "source_validation"
+        },
+        {
+          "status_code": null,
+          "error": "代理设备 node005 请求失败（ProxyError），已临时隔离",
+          "id": "d36798ba663e4bc49cf637e3e490a621",
+          "project_id": "tdx-shareholder-changes",
+          "created_at": "2026-10-13T13:30:15.292174+00:00",
+          "stage": "http"
+        }
+      ]
+    },
+    "state": "verified",
+    "handled_ids": [
+      "32606e5b14794310a4286873312f5724",
+      "5cc3a3845d2d4ba1bb54d1db6ac2f7e7"
+    ],
+    "fix": "保留来源开始月份精度；来源未知变动股数保存NULL并独立标记质量，完整月份不丢失",
+    "validation": "专项16项与隔离归档5项通过；正式442个月325754条来源集合和SQL完整性审计通过",
+    "migration_first": {
+      "rows_before": 22273,
+      "rows_after": 22273,
+      "content_sha256": "033103488e485f643992784e59ca3bf16284338f01d06626518609222dd674f3"
+    },
+    "removed_count": 2,
+    "remaining": {
+      "revision": "4",
+      "total": 1,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": [
+        {
+          "status_code": null,
+          "error": "代理设备 node005 请求失败（ProxyError），已临时隔离",
+          "id": "d36798ba663e4bc49cf637e3e490a621",
+          "project_id": "tdx-shareholder-changes",
+          "created_at": "2026-10-13T13:30:15.292174+00:00",
+          "stage": "http"
+        }
+      ]
+    },
+    "cleanup": "仅清理上述已验证的两个开发缺陷ID；保留早期代理连接故障及所有并发新增记录"
+  },
+  "bindings": {
+    "src/empire/contracts/tdx_performance.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+    "src/empire/plugins/collectors/tdx_performance.py": "c61de9a2862a0c68fd7e861addccfb0b7de40bf1f5b5e5d4253ad4a068b63481",
+    "src/empire/plugins/collectors/tdx_performance_source.py": "8a8270541521cd08465b948abde252b331ccf704768bbb8ed13ec906b95f0ae2",
+    "src/empire/plugins/datasets/tdx_performance.py": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
+    "src/empire/plugins/data/tdx_performance.py": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+    "sql/schema.sql": "61207ebb60d5a6de8b888582b8d5a8e8cb384cb3aab0da7a00a895223847d62d"
+  }
+}

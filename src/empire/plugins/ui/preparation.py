@@ -1,7 +1,4 @@
-"""Work progress dashboard with separately measured development and data acceptance."""
-import time
-from concurrent.futures import CancelledError
-
+"""Research readiness, explicit SQL inventory, scoped gaps and capability planning."""
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QApplication,
@@ -11,16 +8,20 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QPushButton,
     QSplitter,
+    QTabWidget,
+    QTextBrowser,
     QVBoxLayout,
     QWidget,
 )
 
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, PageContribution
-from empire.core.redaction import redact
 from empire.plugins.ui.common import accessible, bind_find, hint, rows, table, update_options
 from empire.plugins.ui.plugin import UiPlugin
+from empire.plugins.ui.preparation_actions import PreparationActions
 from empire.plugins.ui.preparation_detail import PreparationDetail
+from empire.plugins.ui.preparation_directory import PreparationDirectoryBar, matches_view
+from empire.plugins.ui.preparation_inventory import PreparationInventory
 from empire.plugins.ui.preparation_scope import PreparationScopeBar
 from empire.plugins.ui.preparation_words import (
     PRIORITY,
@@ -30,10 +31,11 @@ from empire.plugins.ui.preparation_words import (
     finding,
     plain,
 )
+from empire.plugins.ui.preview_layout import QueryForm
 from empire.plugins.ui.queries import QueryScope
 
 
-class PreparationPage(QWidget):
+class PreparationPage(PreparationActions, QWidget):
     def __init__(self, shell):
         super().__init__()
         self.shell = shell
@@ -47,33 +49,73 @@ class PreparationPage(QWidget):
         self.report = None
         self.preferred = None
         self.needs_check = True
+        self.operation = 'overview'
+        self.scan_all = False
         layout = QVBoxLayout(self)
         heading = QHBoxLayout()
-        title = QLabel('数据准备 · 进度一览')
+        title = QLabel('数据准备')
         title.setObjectName('pageTitle')
         heading.addWidget(title)
         heading.addStretch()
-        self.refresh_button = QPushButton('重新检查')
-        self.refresh_button.clicked.connect(self.reload)
+        self.refresh_button = QPushButton('检查本次用途')
+        self.refresh_button.clicked.connect(lambda: self.reload(False))
         heading.addWidget(self.refresh_button)
         self.copy_button = QPushButton('复制检查记录')
         self.copy_button.setEnabled(False)
         self.copy_button.clicked.connect(self.copy_report)
         heading.addWidget(self.copy_button)
+        self.export_button = QPushButton('导出报告')
+        self.export_button.clicked.connect(self.export_report)
+        heading.addWidget(self.export_button)
         self.manage = QPushButton('打开采集任务')
         self.manage.clicked.connect(self.open_task)
         self.manage.setEnabled(False)
         heading.addWidget(self.manage)
         layout.addLayout(heading)
-        layout.addWidget(hint('每类独立数据由独立采集插件负责，不按网站栏目合并；一个来源即可满足，按声明范围检查。'))
-        layout.addWidget(hint('下方用途、证券与日期范围用于三表和分时检查：三表按报告期，分时按交易日。其他数据按来源声明范围核验。改动后点击重新检查。'))
+        layout.addWidget(hint('先选研究用途，再检查所需输入。完成范围、内容质量、用途限制分别判断；原料齐全不代表因子或策略已计算完成。'))
+        actions = QHBoxLayout()
+        self.inventory_button = QPushButton('精确盘点 MySQL')
+        self.inventory_button.clicked.connect(self.scan_inventory)
+        self.full_button = QPushButton('详细扫描全部项目')
+        self.full_button.clicked.connect(lambda: self.reload(True))
+        self.cancel_button = QPushButton('取消检查')
+        self.cancel_button.setEnabled(False)
+        self.cancel_button.clicked.connect(self.cancel_scan)
+        self.browse_button = QPushButton('查看选中数据')
+        self.browse_button.clicked.connect(self.open_data)
+        self.browse_button.setEnabled(False)
+        for button in (self.inventory_button, self.full_button, self.cancel_button, self.browse_button):
+            actions.addWidget(button)
+        actions.addStretch()
+        layout.addLayout(actions)
+        self.scope_toggle = QPushButton('展开证券与日期范围（空=当前全池 / 来源完整范围）')
+        self.scope_toggle.setCheckable(True)
+        layout.addWidget(self.scope_toggle)
         self.scope_bar = PreparationScopeBar()
+        self.scope_bar.changed.connect(self.mark_draft)
+        self.scope_toggle.toggled.connect(self.scope_bar.details.setVisible)
         layout.addWidget(self.scope_bar)
-        self.summary = hint('正在检查功能和数据……')
+        self.scope_bar.details.setVisible(False)
+        self.summary = hint('正在读取库存概览；详细检查需手动开始。')
         layout.addWidget(self.summary)
-        self.test_summary = hint('软件改过后要重新检查，不能拿上次的结果算完成。')
+        self.research_summary = hint('选择因子研究、策略回测或长期价值研究。')
+        layout.addWidget(self.research_summary)
+        self.test_summary = hint('开发测试记录与实际数据完成情况分别呈现。')
         layout.addWidget(self.test_summary)
-        filters = QHBoxLayout()
+        self.tabs = QTabWidget()
+        research_page = QWidget()
+        research_layout = QVBoxLayout(research_page)
+        research_layout.setContentsMargins(0, 0, 0, 0)
+        self.tabs.addTab(research_page, '研究就绪 / 缺口')
+        self.inventory_view = PreparationInventory()
+        self.tabs.addTab(self.inventory_view, 'MySQL 已有数据')
+        self.research_conditions = QTextBrowser()
+        self.research_conditions.setAccessibleName('研究条件和未完成计算')
+        self.tabs.addTab(self.research_conditions, '研究条件')
+        layout.addWidget(self.tabs, 1)
+        self.directory = PreparationDirectoryBar()
+        self.directory.view.currentIndexChanged.connect(self.filter_rows)
+        research_layout.addWidget(self.directory)
         self.search = QLineEdit()
         self.search.setPlaceholderText('搜索数据名称、内容或用途（Ctrl+F）')
         self.search.setClearButtonEnabled(True)
@@ -83,23 +125,27 @@ class PreparationPage(QWidget):
         self.category, self.priority, self.state = QComboBox(), QComboBox(), QComboBox()
         for combo, name in ((self.kind, '工作类型'), (self.category, '数据分类'), (self.priority, '准备顺序'), (self.state, '准备情况')):
             accessible(combo, name)
-            filters.addWidget(combo)
             combo.currentIndexChanged.connect(self.filter_rows)
-        layout.addWidget(self.search)
+        research_layout.addWidget(self.search)
         self.search.textChanged.connect(self.filter_rows)
-        layout.addLayout(filters)
+        research_layout.addWidget(QueryForm([('工作类型', self.kind), ('数据分类', self.category),
+                                    ('准备顺序', self.priority), ('准备情况', self.state)]))
         splitter = QSplitter(Qt.Orientation.Vertical)
-        self.table = table(['要准备什么', '分类', '开发验收', '采集完整性', '来源质量', '用途条件', '用途可用性'])
+        splitter.setChildrenCollapsible(False)
+        self.table = table(['数据名称', '本次角色 / 类型', '来源', '来源集合', '内容质量', '用途可用性'])
         self.table.setAccessibleName('数据准备工作进展')
-        for index in (2, 3, 4, 5, 6):
-            self.table.setColumnWidth(index, 105)
-        self.table.setColumnWidth(6, 150)
+        for index, width in enumerate((240, 150, 190, 110, 140)):
+            self.table.setColumnWidth(index, width)
         self.table.itemSelectionChanged.connect(self.show_detail)
         splitter.addWidget(self.table)
         self.detail = PreparationDetail()
         splitter.addWidget(self.detail)
-        splitter.setSizes([300, 420])
-        layout.addWidget(splitter, 1)
+        for grid in (self.table, self.inventory_view.table, self.detail.table, self.detail.findings):
+            grid.verticalHeader().setDefaultSectionSize(30)
+            grid.setStyleSheet('QTableWidget::item { padding: 3px 6px; }')
+        splitter.setSizes([360, 320])
+        self.splitter = splitter
+        research_layout.addWidget(splitter, 1)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
         self.timer.start(500)
@@ -107,15 +153,12 @@ class PreparationPage(QWidget):
     def page_activated(self):
         self.tick()
 
-    def reload(self):
-        self.needs_check = True
-        self.tick()
-
     def save_ui_state(self):
         index = self.table.currentRow()
         return dict(search=self.search.text(), kind=self.kind.currentData(), category=self.category.currentData(),
                     priority=self.priority.currentData(), state=self.state.currentData(),
-                    scope=self.scope_bar.save(),
+                    scope=self.scope_bar.save(), view=self.directory.view.currentData(),
+                    scope_open=self.scope_toggle.isChecked(), sizes=self.splitter.sizes(),
                     selected=self.visible_entries[index]['id'] if 0 <= index < len(self.visible_entries) else None)
 
     def restore_ui_state(self, state):
@@ -123,26 +166,54 @@ class PreparationPage(QWidget):
         self.preferred = state
         if 'scope' in state:
             self.scope_bar.restore(state['scope'])
+        self.directory.view.setCurrentIndex(max(0, self.directory.view.findData(state.get('view', ''))))
+        self.scope_toggle.setChecked(state.get('scope_open', False))
+        if state.get('sizes'):
+            self.splitter.setSizes(state['sizes'])
 
     def show_detail(self):
         index = self.table.currentRow()
         if 0 <= index < len(self.visible_entries):
             entry = self.visible_entries[index]
             self.detail.render(entry)
-            self.manage.setEnabled(bool(entry['project']))
+            self.manage.setText('打开计算页面' if entry.get('page') else '打开采集任务')
+            self.manage.setEnabled(bool(entry.get('page') or entry['project']))
+            self.browse_button.setEnabled(bool(self.data_page(entry)))
         else:
             self.detail.clear()
             self.manage.setEnabled(False)
+            self.browse_button.setEnabled(False)
+
+    def data_page(self, entry):
+        if entry.get('page'):
+            return entry['page']
+        runtime = getattr(self.shell, 'runtime', None)
+        pages = getattr(runtime, 'page_contributions', lambda: ())()
+        matches = [p.id for p in pages if p.catalogued and p.management
+                   and p.management.context.task_id == entry['project']]
+        if entry['id'] in matches:
+            return entry['id']
+        return matches[0] if len(matches) == 1 else ''
+
+    def open_data(self):
+        index = self.table.currentRow()
+        if 0 <= index < len(self.visible_entries):
+            page = self.data_page(self.visible_entries[index])
+            if page:
+                self.shell.navigate(page)
 
     def open_task(self):
         index = self.table.currentRow()
         if 0 <= index < len(self.visible_entries):
-            project = self.visible_entries[index]['project']
+            entry = self.visible_entries[index]
+            if entry.get('page'):
+                self.shell.navigate(entry['page'])
+                return
+            project = entry['project']
             if project:
                 self.shell.navigate('collection', NavigationContext(task_id=project))
 
     def render(self, report):
-        first_report = not self.entries
         self.report = report
         self.entries = report['rows']
         for combo, field, label in ((self.kind, 'kind', '全部工作'), (self.category, 'category', '全部分类'),
@@ -156,22 +227,35 @@ class PreparationPage(QWidget):
                 combo.blockSignals(True)
                 combo.setCurrentIndex(max(0, combo.findData(self.preferred[field if field != 'status' else 'state'])))
                 combo.blockSignals(False)
-        if first_report and not self.preferred:
-            self.kind.setCurrentIndex(max(0, self.kind.findData('采集')))
-        collecting = [r for r in self.entries if r['kind'] == '采集']
-        processing = [r for r in self.entries if r['kind'] != '采集']
+        research = report['research']
+        counts = research['counts']
         self.summary.setText(
-            f"采集 {len(collecting)} 项，已做好 {sum(r['complete'] for r in collecting)} 项；"
-            f"整理、计算和核对 {len(processing)} 项，已做好 {sum(r['complete'] for r in processing)} 项。"
-            f"上次检查：{report['checked_at'][:19].replace('T', ' ')}；范围：{report.get('scope', '来源声明范围')}")
+            f"{research['title']} · {research['focus']}：必需 {research['required']} 项；通过 {counts['ready']}，"
+            f"有限制 {counts['limited']}，阻断 {counts['blocked']}，未核验 {counts['unknown']}，待建设 {counts['planned']}。"
+            f"检查时间：{report['checked_at'][:19].replace('T', ' ') or '尚未检查'}。")
+        self.summary.setToolTip(report['scope'])
+        guards = research['guards']
+        self.research_summary.setText('研究条件：' + '；'.join(f"{g['title']}：{g['state']}" for g in guards)
+                                     if guards else '按来源声明范围逐项盘点，不计算全库完成百分比。')
+        self.research_summary.setToolTip('\n\n'.join(g['title'] + '：' + g['detail'] for g in guards))
+        self.research_conditions.setPlainText(f"{research['title']} / {research['focus']}\n\n报告范围：{report['scope']}\n\n"
+            + '\n\n'.join(f"{g['title']} · {g['state']}\n{g['detail']}" for g in guards)
+            + '\n\n输入原料、已实现计算、因子研究结果与回测引擎分别验收。未登记产物不会显示已计算。'
+              '\n扫描不补采或修改业务值；数据改变后须重新检查。未核验的子集不能自动视为可用。')
+        if report.get('inventory'):
+            self.inventory_view.render(report['inventory'])
+        if report.get('cache_note'):
+            self.test_summary.setToolTip(report['cache_note'])
+            if '已读取 Redis' in report['cache_note']:
+                self.summary.setText(self.summary.text() + ' 显示历史缓存；最新状态请重新检查。')
         if report.get('checking'):
             self.summary.setText(self.summary.text() +
                 f" · 已检查 {report['checked_requirements']} / {report['total_requirements']} 项"
                 + (f" · 当前：{plain(report['current_requirement'])}" if report['current_requirement'] else ''))
         verified = report['test_evidence'].startswith('本版本测试证据：')
-        self.test_summary.setText('当前版本的功能测试已有通过记录，数据是否齐全还要逐项看。' if verified
-                                  else '当前版本的功能测试结果还不能确认，需要重新运行完整检查。')
-        self.test_summary.setToolTip(report['test_evidence'])
+        self.test_summary.setText('开发证据：本版本发布测试已通过（不计入数据完成分母）。' if verified
+                                  else '开发证据：本版本发布测试待核验；与下方业务数据状态分别呈现。')
+        self.test_summary.setToolTip(report['test_evidence'] + '\n' + report.get('cache_note', ''))
         self.copy_button.setEnabled(True)
         self.filter_rows()
         if self.preferred:
@@ -184,14 +268,17 @@ class PreparationPage(QWidget):
     def filter_rows(self):
         query = self.search.text().strip().casefold()
         self.visible_entries = [r for r in self.entries
-            if (not self.kind.currentData() or r['kind'] == self.kind.currentData())
+            if matches_view(r, self.directory.view.currentData())
+            and (not self.kind.currentData() or r['kind'] == self.kind.currentData())
             and (not self.category.currentData() or r['category'] == self.category.currentData())
             and (not self.priority.currentData() or r['priority'] == self.priority.currentData())
             and (not self.state.currentData() or r['status'] == self.state.currentData())
-            and query in plain(f"{r['title']} {r['specification'].fields} {r['specification'].purpose}").casefold()]
-        rows(self.table, [[plain(r['title']), f"{r['category']} · {r['kind']}",
-                          *[r['assessment'][k] for k in ('development', 'integrity', 'quality', 'usage', 'use_state')]]
+            and query in plain(f"{r['title']} {r['source']} {r['specification'].fields} {r['specification'].purpose}").casefold()]
+        rows(self.table, [[plain(r['title']), f"{'必需' if r.get('required', True) else '本次不需要'} · {r['kind']}",
+                          r['source'], r.get('collection_state', r['assessment']['integrity']),
+                          r['assessment']['quality'], r['assessment']['use_state']]
                           for r in self.visible_entries], keys=[r['id'] for r in self.visible_entries])
+        self.directory.render(self.entries, len(self.visible_entries))
         if self.visible_entries and self.table.currentRow() < 0:
             self.table.selectRow(0)
         self.show_detail()
@@ -199,7 +286,7 @@ class PreparationPage(QWidget):
     def copy_report(self):
         if not self.report:
             return
-        lines = ['数据准备进度', self.summary.text()]
+        lines = ['数据准备检查报告', self.summary.text(), self.research_summary.toolTip()]
         for entry in self.entries:
             lines.append(f"\n【{entry['kind']}】{plain(entry['title'])}：{STATUS.get(entry['status'], entry['status'])}\n"
                          f"开发验收：{entry['assessment']['development']}；采集完整性：{entry['assessment']['integrity']}；"
@@ -214,48 +301,6 @@ class PreparationPage(QWidget):
                     lines.append(f"- {label} / {check_title(item)}：{finding(item)} 接下来：{action(item)}")
         QApplication.clipboard().setText('\n'.join(lines))
 
-    def tick(self):
-        if getattr(self.shell, 'shutting_down', False):
-            self.query_scope.close()
-            self.timer.stop()
-            return
-        if self.future is not None and self.future.done():
-            future, self.future = self.future, None
-            self.refresh_button.setEnabled(True)
-            if self.snapshot_future is not None:
-                self.query_scope.cancel('preparation_snapshot')
-                self.snapshot_future = None
-            try:
-                self.render(self.query_scope.result('preparation', future))
-            except Exception as exc:
-                if isinstance(exc, CancelledError):
-                    self.needs_check = True
-                self.summary.setText(self.query_scope.failure_message(
-                    'preparation', '这次没能检查完', redact(exc, self.shell.cfg), stale=bool(self.entries)))
-        if self.snapshot_future is not None and self.snapshot_future.done():
-            future, self.snapshot_future = self.snapshot_future, None
-            try:
-                report = self.query_scope.result('preparation_snapshot', future)
-                if report is not None and self.future is not None:
-                    self.render(report)
-            except Exception:
-                pass  # The full owned query reports errors; keep the existing list.
-        if self.isVisible() and self.future is not None and self.snapshot_future is None and time.monotonic() - self.last_snapshot >= 1:
-            self.last_snapshot = time.monotonic()
-            self.snapshot_future = self.query_scope.invoke('preparation_snapshot', self.shell.runtime,
-                                                           'preparation.query', 'snapshot', self.active_request)
-        if self.isVisible() and self.future is None and self.needs_check:
-            try:
-                request = self.scope_bar.request()
-            except ValueError as exc:
-                self.summary.setText(str(exc))
-                self.needs_check = False
-                return
-            self.needs_check = False
-            self.active_request = request
-            self.refresh_button.setEnabled(False)
-            self.summary.setText('正在检查；全股票池全历史可能耗时数分钟。当前显示上次结果，不代表本轮通过。')
-            self.future = self.query_scope.invoke('preparation', self.shell.runtime, 'preparation.query', 'report', request)
 
 
 class PreparationUiPlugin(UiPlugin):

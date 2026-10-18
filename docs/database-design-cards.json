@@ -22,7 +22,7 @@
         "regression": "详情P95/吞吐需同机对照",
         "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
         "status": "measured",
-        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+        "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json"
       },
       "integrity": [
         "现行来源集合验证",
@@ -34,7 +34,9 @@
       "tests": [
         "tests/test_kaipanla_products.py",
         "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py"
+        "tests/integration/test_market_storage.py",
+        "tests/test_market_suspension_days.py",
+        "tests/integration/test_kaipanla_suspension_scope.py"
       ],
       "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
       "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
@@ -61,7 +63,7 @@
         "regression": "详情P95/吞吐需同机对照",
         "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
         "status": "measured",
-        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+        "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json"
       },
       "integrity": [
         "现行来源集合验证",
@@ -73,7 +75,9 @@
       "tests": [
         "tests/test_kaipanla_products.py",
         "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py"
+        "tests/integration/test_market_storage.py",
+        "tests/test_market_suspension_days.py",
+        "tests/integration/test_kaipanla_suspension_scope.py"
       ],
       "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
       "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
@@ -100,7 +104,7 @@
         "regression": "详情P95/吞吐需同机对照",
         "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
         "status": "measured",
-        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+        "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json"
       },
       "integrity": [
         "现行来源集合验证",
@@ -112,7 +116,9 @@
       "tests": [
         "tests/test_kaipanla_products.py",
         "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py"
+        "tests/integration/test_market_storage.py",
+        "tests/test_market_suspension_days.py",
+        "tests/integration/test_kaipanla_suspension_scope.py"
       ],
       "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
       "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
@@ -139,7 +145,7 @@
         "regression": "详情P95/吞吐需同机对照",
         "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
         "status": "measured",
-        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+        "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json"
       },
       "integrity": [
         "现行来源集合验证",
@@ -151,7 +157,9 @@
       "tests": [
         "tests/test_kaipanla_products.py",
         "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py"
+        "tests/integration/test_market_storage.py",
+        "tests/test_market_suspension_days.py",
+        "tests/integration/test_kaipanla_suspension_scope.py"
       ],
       "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
       "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
@@ -178,7 +186,7 @@
         "regression": "详情P95/吞吐需同机对照",
         "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
         "status": "measured",
-        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+        "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json"
       },
       "integrity": [
         "现行来源集合验证",
@@ -190,7 +198,9 @@
       "tests": [
         "tests/test_kaipanla_products.py",
         "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py"
+        "tests/integration/test_market_storage.py",
+        "tests/test_market_suspension_days.py",
+        "tests/integration/test_kaipanla_suspension_scope.py"
       ],
       "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
       "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
@@ -217,7 +227,7 @@
         "regression": "详情P95/吞吐需同机对照",
         "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
         "status": "measured",
-        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+        "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json"
       },
       "integrity": [
         "现行来源集合验证",
@@ -229,7 +239,9 @@
       "tests": [
         "tests/test_kaipanla_products.py",
         "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py"
+        "tests/integration/test_market_storage.py",
+        "tests/test_market_suspension_days.py",
+        "tests/integration/test_kaipanla_suspension_scope.py"
       ],
       "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
       "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
@@ -257,7 +269,7 @@
         "regression": "详情P95/吞吐需同机对照",
         "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
         "status": "measured",
-        "evidence": "docs/evidence/kaipanla-storage-capacity-2026-10-05.json"
+        "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json"
       },
       "integrity": [
         "现行来源集合验证",
@@ -269,7 +281,9 @@
       "tests": [
         "tests/test_kaipanla_products.py",
         "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py"
+        "tests/integration/test_market_storage.py",
+        "tests/test_market_suspension_days.py",
+        "tests/integration/test_kaipanla_suspension_scope.py"
       ],
       "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
       "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
@@ -278,11 +292,11 @@
       "tables": [
         "stock"
       ],
-      "grain": "现行业务完整单位，见已登记来源契约",
-      "identity": "现行SQL主键与固定/多来源声明",
-      "dictionary": "docs/mysql-business-schema.md",
+      "grain": "唯一当前沪深北证券目录；两批准来源共用同一业务写入器",
+      "identity": "stock主键unified_code；sina/ths来源只在每项目统一状态保存",
+      "dictionary": "docs/stock-directory.md",
       "queries": [
-        "现行正式查询与数据准备；新增访问模式须补充预算"
+        "主键/市场/名称分页<=500；当前目录状态仅查询已登记项目；无历史正文扫描"
       ],
       "capacity": {
         "status": "legacy_baseline",
@@ -292,20 +306,22 @@
         "现行专项完整性、摘要及版本防覆盖"
       ],
       "tests": [
-        "tests/test_business_schema_contract.py"
+        "tests/test_ths_universe.py",
+        "tests/integration/test_ths_stock_archive.py",
+        "tests/integration/test_stock_archive.py"
       ],
-      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
-      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+      "lifecycle": "docs/stock-directory.md：THS正常每轮一次完整单页，先核验集合再以80条块入队，整轮清队才完成；相同集合续块，变化新轮；Redis丢失重读当前名单。新浪保留来源分页契约。",
+      "delivery": "无DDL或表布局变化；scripts/configure_stock_directory.py显式设置归档、推荐计划与下载上限；既有股票和来源状态保留。新来源网络/实采证据单列，不将原表容量基线冒充新来源验收。"
     },
     "stock.universe.page": {
       "tables": [
         "stock"
       ],
-      "grain": "现行业务完整单位，见已登记来源契约",
-      "identity": "现行SQL主键与固定/多来源声明",
-      "dictionary": "docs/mysql-business-schema.md",
+      "grain": "唯一当前沪深北证券目录；两批准来源共用同一业务写入器",
+      "identity": "stock主键unified_code；sina/ths来源只在每项目统一状态保存",
+      "dictionary": "docs/stock-directory.md",
       "queries": [
-        "现行正式查询与数据准备；新增访问模式须补充预算"
+        "主键/市场/名称分页<=500；当前目录状态仅查询已登记项目；无历史正文扫描"
       ],
       "capacity": {
         "status": "legacy_baseline",
@@ -315,20 +331,22 @@
         "现行专项完整性、摘要及版本防覆盖"
       ],
       "tests": [
-        "tests/test_business_schema_contract.py"
+        "tests/test_ths_universe.py",
+        "tests/integration/test_ths_stock_archive.py",
+        "tests/integration/test_stock_archive.py"
       ],
-      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
-      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+      "lifecycle": "docs/stock-directory.md：THS正常每轮一次完整单页，先核验集合再以80条块入队，整轮清队才完成；相同集合续块，变化新轮；Redis丢失重读当前名单。新浪保留来源分页契约。",
+      "delivery": "无DDL或表布局变化；scripts/configure_stock_directory.py显式设置归档、推荐计划与下载上限；既有股票和来源状态保留。新来源网络/实采证据单列，不将原表容量基线冒充新来源验收。"
     },
     "stock.universe.complete": {
       "tables": [
         "stock"
       ],
-      "grain": "现行业务完整单位，见已登记来源契约",
-      "identity": "现行SQL主键与固定/多来源声明",
-      "dictionary": "docs/mysql-business-schema.md",
+      "grain": "唯一当前沪深北证券目录；两批准来源共用同一业务写入器",
+      "identity": "stock主键unified_code；sina/ths来源只在每项目统一状态保存",
+      "dictionary": "docs/stock-directory.md",
       "queries": [
-        "现行正式查询与数据准备；新增访问模式须补充预算"
+        "主键/市场/名称分页<=500；当前目录状态仅查询已登记项目；无历史正文扫描"
       ],
       "capacity": {
         "status": "legacy_baseline",
@@ -338,10 +356,12 @@
         "现行专项完整性、摘要及版本防覆盖"
       ],
       "tests": [
-        "tests/test_business_schema_contract.py"
+        "tests/test_ths_universe.py",
+        "tests/integration/test_ths_stock_archive.py",
+        "tests/integration/test_stock_archive.py"
       ],
-      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
-      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+      "lifecycle": "docs/stock-directory.md：THS正常每轮一次完整单页，先核验集合再以80条块入队，整轮清队才完成；相同集合续块，变化新轮；Redis丢失重读当前名单。新浪保留来源分页契约。",
+      "delivery": "无DDL或表布局变化；scripts/configure_stock_directory.py显式设置归档、推荐计划与下载上限；既有股票和来源状态保留。新来源网络/实采证据单列，不将原表容量基线冒充新来源验收。"
     },
     "industry.snapshot": {
       "tables": [
@@ -440,24 +460,29 @@
       "tables": [
         "dividend_plan"
       ],
-      "grain": "现行业务完整单位，见已登记来源契约",
-      "identity": "现行SQL主键与固定/多来源声明",
-      "dictionary": "docs/mysql-business-schema.md",
+      "grain": "一证券一来源方案；报告期列表组装完整证券归档单元",
+      "identity": "证券、报告期、公告日及每股派息/送股/转增；身份NULL/零归一，字段保留实际值",
+      "dictionary": "docs/evidence/tdx-dividend-bulk-design-2026-10-11.md",
       "queries": [
-        "现行正式查询与数据准备；新增访问模式须补充预算"
+        "按证券及事件日期索引分页；最大500条查询",
+        "每轮一次报告期有界投影；500日期上限"
       ],
       "capacity": {
-        "status": "legacy_baseline",
-        "bound": "现行来源契约的单元及查询上限"
+        "status": "measured",
+        "evidence": "docs/evidence/dividends-error-types-capacity-2026-10-14.json"
       },
       "integrity": [
-        "现行专项完整性、摘要及版本防覆盖"
+        "完整报告期唯一键/元数据/容量校验",
+        "新证券历史发现键集合包含校验",
+        "旧版防覆盖、冷热摘要和提交重放"
       ],
       "tests": [
-        "tests/test_business_schema_contract.py"
+        "tests/test_tdx_dividends.py",
+        "tests/test_capital_lifecycle.py",
+        "tests/integration/test_capital_archive.py"
       ],
-      "lifecycle": "现行已部署基线；沿该来源说明和对应collector的初始化/续采/补缺/修订契约；Redis纯内存恢复回SQL。后续实质改造须提供该来源专项生命周期及容量证据，不能以此基线登记验收新功能。",
-      "delivery": "现行sql/schema.sql与显式维护入口；本次只登记已有设计，不迁移该业务。后续实质改造按docs/database-design-standard.md提交来源反例、容量、显式迁移及正式发布证据。"
+      "lifecycle": "docs/tdx-capital-actions.md：全历史报告期计划；未证实证券发现非季度日期；重新采集全池发现；中断重新组装后接入队位置，Redis丢失复用SQL历史证明。",
+      "delivery": "scripts/migrate_dividend_identity.py显式无损升级@3；原内容、观测时间及行数保持；碰撞拒绝、不合并、不删除；正式发布门禁和实际查询分别验证。"
     },
     "additional_issues.unit": {
       "tables": [
@@ -656,10 +681,10 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/listings-capacity-2026-10-07.json",
+        "evidence": "docs/evidence/listings-preview-capacity-2026-10-11.json",
         "sample": "四证券实证及15000行放大",
         "growth": "一年/五年每证券一行；最大正文256KiB；15000行5%实测长正文及单条上限容量实验，全部满额理论约3.75GiB",
-        "budget": "列表/详情P95<=50ms、覆盖<=500ms、审计<=5秒、表索引<=1.5GiB"
+        "budget": "列表/详情/范围P95<=100ms（统一状态质量提示，原50ms取舍见容量证据）、覆盖<=500ms、审计<=5秒、表索引<=1.5GiB、15000状态单元<=8MiB"
       },
       "integrity": [
         "十二字段",
@@ -673,7 +698,7 @@
         "tests/integration/test_listing_archive.py"
       ],
       "lifecycle": "docs/ths-listings.md：当前池逐证券补缺，每七天复核；整轮末等归档；Redis丢失回SQL。",
-      "delivery": "单一类型化路径；scripts/create_listing_schema.py显式增表；有限实采及发布分别报告。"
+      "delivery": "单一类型化路径；上市日期仍必需，成功响应缺日仅存有界incomplete来源状态，日常补查且数据准备不通过；无空业务行、无本次DDL。scripts/create_listing_schema.py显式增表；有限实采及发布分别报告。"
     },
     "listing_status.month": {
       "tables": [
@@ -711,6 +736,950 @@
       ],
       "lifecycle": "docs/tdx-listing-status.md：初始化1990-12-19至固定启动日；按月补缺、回查最近一个月；整轮统一等归档；Redis丢失回SQL月份证明",
       "delivery": "scripts/create_listing_event_schema.py显式新增空表；启动不DDL；正式查询/入队/归档各一条路径，动态进度见验收记录"
+    },
+    "index.catalog": {
+      "tables": [
+        "stock_index",
+        "stock_index_member"
+      ],
+      "grain": "当前指数目录及每指数完整成员关系；来源暂无单独保留",
+      "identity": "index_code；index_code+source_code；可确定市场时关联unified_code",
+      "dictionary": "docs/ths-indices.md",
+      "queries": [
+        "有界目录主键游标",
+        "有界成员主键游标",
+        "来源证券或统一代码反查",
+        "详细完整集合审计"
+      ],
+      "capacity": {
+        "sample": "独立MySQL，100指数100000关系",
+        "growth": "当前关系不按日累积；最多1000指数、1000000关系",
+        "page_limit": 200,
+        "response": "公共generic下载及max_page_bytes入队预算",
+        "regression": "页面P95<=50ms，100000导入<=20秒",
+        "budget": "512MiB含索引，单指数<10000成员；100000实测不冒充1000000实测",
+        "status": "measured",
+        "evidence": "docs/evidence/indices-capacity-2026-10-09.json"
+      },
+      "integrity": [
+        "完整目录",
+        "请求身份及连续序号和严格排序",
+        "单页完整及截断拒绝",
+        "同数异集",
+        "修订与旧响应",
+        "来源暂无不冒充空集合",
+        "同事务摘要关联",
+        "成功清队"
+      ],
+      "tests": [
+        "tests/test_ths_indices.py",
+        "tests/integration/test_index_archive.py"
+      ],
+      "lifecycle": "docs/ths-indices.md；每日完整目录及每指数一个size10000响应；按入队断点继续，不逐批等归档，整轮处理成功后完成；Redis丢失完整刷新",
+      "delivery": "两张结构化表、单一正式路径；create_index_schema.py显式新增且核对已有业务，不自动迁移；独立容量及真实完整目录另验"
+    },
+    "index.members": {
+      "tables": [
+        "stock_index",
+        "stock_index_member"
+      ],
+      "grain": "当前指数目录及每指数完整成员关系；来源暂无单独保留",
+      "identity": "index_code；index_code+source_code；可确定市场时关联unified_code",
+      "dictionary": "docs/ths-indices.md",
+      "queries": [
+        "有界目录主键游标",
+        "有界成员主键游标",
+        "来源证券或统一代码反查",
+        "详细完整集合审计"
+      ],
+      "capacity": {
+        "sample": "独立MySQL，100指数100000关系",
+        "growth": "当前关系不按日累积；最多1000指数、1000000关系",
+        "page_limit": 200,
+        "response": "公共generic下载及max_page_bytes入队预算",
+        "regression": "页面P95<=50ms，100000导入<=20秒",
+        "budget": "512MiB含索引，单指数<10000成员；100000实测不冒充1000000实测",
+        "status": "measured",
+        "evidence": "docs/evidence/indices-capacity-2026-10-09.json"
+      },
+      "integrity": [
+        "完整目录",
+        "请求身份及连续序号和严格排序",
+        "单页完整及截断拒绝",
+        "同数异集",
+        "修订与旧响应",
+        "来源暂无不冒充空集合",
+        "同事务摘要关联",
+        "成功清队"
+      ],
+      "tests": [
+        "tests/test_ths_indices.py",
+        "tests/integration/test_index_archive.py"
+      ],
+      "lifecycle": "docs/ths-indices.md；每日完整目录及每指数一个size10000响应；按入队断点继续，不逐批等归档，整轮处理成功后完成；Redis丢失完整刷新",
+      "delivery": "两张结构化表、单一正式路径；create_index_schema.py显式新增且核对已有业务，不自动迁移；独立容量及真实完整目录另验"
+    },
+    "bse.code_mapping.complete": {
+      "tables": [
+        "security_code_alias"
+      ],
+      "grain": "官方旧代码到当前统一证券键关系，一关系一行",
+      "identity": "固定bse来源；legacy_code主键、unified_code唯一；无当前股票外键",
+      "dictionary": "docs/bse-code-mapping.md",
+      "queries": [
+        "旧代码精确查一行",
+        "新统一代码精确查一行",
+        "按legacy_code完整有界查询至1000行"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/bse-code-mapping-capacity-2026-10-10.json",
+        "sample": "官方248项，隔离1000行放大",
+        "budget": "导入<=2秒，1000行读取<=100ms，数据和索引<=1MiB"
+      },
+      "integrity": [
+        "来源序号连续、两端业务键集合唯一、表尾口径证明",
+        "来源完整表到SQL逐字段集合比较",
+        "重复零DML、修订、旧响应及提交后重放",
+        "冲突关系拒绝、历史不删除"
+      ],
+      "lifecycle": "显式整表导入；失败不推进断点，统一归档成功清队；重跑补齐，Redis丢失重新下载；没有计划任务",
+      "delivery": "scripts/create_security_alias_schema.py显式加表；scripts/import_bse_code_mapping.py共享下载及统一入队归档；SQL两端索引查询",
+      "tests": [
+        "tests/test_bse_code_mapping.py",
+        "tests/integration/test_security_alias_archive.py"
+      ]
+    },
+    "index.price.status": {
+      "tables": [
+        "index_daily_price",
+        "index_price_year"
+      ],
+      "grain": "一个同花顺指数一个交易日；按指数年度聚合完整证明",
+      "identity": "固定ths；指数代码保持同花顺身份；日键(index_code,trade_date)，年键(index_code,quote_year)，不级联当前目录",
+      "dictionary": "docs/ths-index-prices.md",
+      "queries": [
+        "单指数日期范围游标200/最多500行",
+        "按日期跨指数200行；(trade_date,index_code)索引",
+        "最多40年度证明，逐年最多366行正文核验"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/index-prices-capacity-2026-10-10.json",
+        "sample": "独立MySQL100000合成日行、1000指数",
+        "budget": "导入<=30秒，200行查询P95<=50ms，分配<=64MiB；规划历史2GiB"
+      },
+      "integrity": [
+        "JSONP指数及年份身份、排序无重复、源年计数及近期重叠集合",
+        "年度规范内容与覆盖摘要同事务绑定",
+        "重复零业务DML、有效修订、迟到旧响应、提交后重放与成功清队",
+        "部分窗口不能冒充完整历史，同数异集正文损坏须失败",
+        "源端价格矛盾保留原值，集合完整与用途质量分别核验；范围内异常不通过质量项",
+        "空成交额保留NULL，真实0不改；补额修订及迟到空值防覆盖，默认收盘分析与依赖量额用途分别说明",
+        "负量额来源原值保留、派生质量、日期范围统计；非法数字详细定位；量额纠正及迟到负值防覆盖"
+      ],
+      "tests": [
+        "tests/test_ths_index_prices.py",
+        "tests/integration/test_index_price_archive.py"
+      ],
+      "lifecycle": "docs/ths-index-prices.md；YYYY初始化补年、last近期回看；失败断点不推进、整轮归档完成；Redis丢失从SQL年度证明补缺",
+      "delivery": "单一正式结构化读写路径；create_index_price_schema.py显式加两表；migrate_index_price_nulls.py显式允许open/high/low为NULL且核对原内容与证明；容量与有限实采分别验收；migrate_index_price_quality.py显式将关系校验转为派生质量标注、保留原值及正价格约束，核对前后内容；migrate_index_price_amount.py显式允许来源成交额NULL，核对已有内容与证明，不填零；migrate_index_price_numeric_quality.py显式移除旧非负量额CHECK，正价格及精度约束不变，核对原内容"
+    },
+    "index.price.year": {
+      "tables": [
+        "index_daily_price",
+        "index_price_year"
+      ],
+      "grain": "一个同花顺指数一个交易日；按指数年度聚合完整证明",
+      "identity": "固定ths；指数代码保持同花顺身份；日键(index_code,trade_date)，年键(index_code,quote_year)，不级联当前目录",
+      "dictionary": "docs/ths-index-prices.md",
+      "queries": [
+        "单指数日期范围游标200/最多500行",
+        "按日期跨指数200行；(trade_date,index_code)索引",
+        "最多40年度证明，逐年最多366行正文核验"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/index-prices-capacity-2026-10-10.json",
+        "sample": "独立MySQL100000合成日行、1000指数",
+        "budget": "导入<=30秒，200行查询P95<=50ms，分配<=64MiB；规划历史2GiB"
+      },
+      "integrity": [
+        "JSONP指数及年份身份、排序无重复、源年计数及近期重叠集合",
+        "年度规范内容与覆盖摘要同事务绑定",
+        "重复零业务DML、有效修订、迟到旧响应、提交后重放与成功清队",
+        "部分窗口不能冒充完整历史，同数异集正文损坏须失败",
+        "源端价格矛盾保留原值，集合完整与用途质量分别核验；范围内异常不通过质量项",
+        "空成交额保留NULL，真实0不改；补额修订及迟到空值防覆盖，默认收盘分析与依赖量额用途分别说明",
+        "负量额来源原值保留、派生质量、日期范围统计；非法数字详细定位；量额纠正及迟到负值防覆盖"
+      ],
+      "tests": [
+        "tests/test_ths_index_prices.py",
+        "tests/integration/test_index_price_archive.py"
+      ],
+      "lifecycle": "docs/ths-index-prices.md；YYYY初始化补年、last近期回看；失败断点不推进、整轮归档完成；Redis丢失从SQL年度证明补缺",
+      "delivery": "单一正式结构化读写路径；create_index_price_schema.py显式加两表；migrate_index_price_nulls.py显式允许open/high/low为NULL且核对原内容与证明；容量与有限实采分别验收；migrate_index_price_quality.py显式将关系校验转为派生质量标注、保留原值及正价格约束，核对前后内容；migrate_index_price_amount.py显式允许来源成交额NULL，核对已有内容与证明，不填零；migrate_index_price_numeric_quality.py显式移除旧非负量额CHECK，正价格及精度约束不变，核对原内容"
+    },
+    "st.implementation.market": {
+      "tables": [
+        "security_st_event"
+      ],
+      "grain": "一次来源ST事件；栏目市场为完整归档单位",
+      "identity": "event_kind+record_key（统一代码/日期/前后简称/原因）；栏目内证券日期唯一；固定tdx",
+      "dictionary": "docs/tdx-st-events.md",
+      "queries": [
+        "200行日期游标列表",
+        "证券日期范围",
+        "类型市场有界覆盖扫描"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/st-events-capacity-2026-10-11.json",
+        "sample": "25000合成事件；真实源实施2590/撤销1359",
+        "growth": "一年5000、五年10000；含原因字段，表含索引预算128MiB",
+        "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
+      },
+      "integrity": [
+        "证券日期唯一与来源总数",
+        "来源原因不推断状态",
+        "SQL规范集合证明",
+        "同事务状态",
+        "迟到旧响应拒绝及成功清队"
+      ],
+      "lifecycle": "docs/tdx-st-events.md：单完整响应，三市场原子发布，每天18:00全历史核验；Redis丢失重查",
+      "delivery": "scripts/create_st_event_schema.py显式加表；现行schema1，无旧布局；来源到正式查询及独立项目验收",
+      "tests": [
+        "tests/test_st_events.py",
+        "tests/integration/test_st_archive.py"
+      ]
+    },
+    "st.removal.market": {
+      "tables": [
+        "security_st_event"
+      ],
+      "grain": "一次来源ST事件；栏目市场为完整归档单位",
+      "identity": "event_kind+record_key（统一代码/日期/前后简称/原因）；栏目内证券日期唯一；固定tdx",
+      "dictionary": "docs/tdx-st-events.md",
+      "queries": [
+        "200行日期游标列表",
+        "证券日期范围",
+        "类型市场有界覆盖扫描"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/st-events-capacity-2026-10-11.json",
+        "sample": "25000合成事件；真实源实施2590/撤销1359",
+        "growth": "一年5000、五年10000；含原因字段，表含索引预算128MiB",
+        "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
+      },
+      "integrity": [
+        "证券日期唯一与来源总数",
+        "来源原因不推断状态",
+        "SQL规范集合证明",
+        "同事务状态",
+        "迟到旧响应拒绝及成功清队"
+      ],
+      "lifecycle": "docs/tdx-st-events.md：单完整响应，三市场原子发布，每天18:00全历史核验；Redis丢失重查",
+      "delivery": "scripts/create_st_event_schema.py显式加表；现行schema1，无旧布局；来源到正式查询及独立项目验收",
+      "tests": [
+        "tests/test_st_events.py",
+        "tests/integration/test_st_archive.py"
+      ]
+    },
+    "rules.limit_rules.complete": {
+      "tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "grain": "一种规则项目、市场、板块、条件及生效日期的单个参数；引用条款复用",
+      "identity": "kind/market/board/condition_key/parameter_key/effective_start规范SHA256；引用URL/文档摘要/条款身份",
+      "dictionary": "docs/trading-rules.md",
+      "queries": [
+        "按类型和市场200行稳定游标",
+        "单条官方依据",
+        "1001行完整准备检查及同事务摘要比较"
+      ],
+      "capacity": {
+        "sample": "77已审核参数；10000行隔离未来历史索引压力实验",
+        "growth": "当前契约单项1000参数、256引用；新历史及来源版本须显式升级审核",
+        "page_limit": 200,
+        "response": "共享generic预算；规范消息256KiB；解码文本512KiB",
+        "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
+        "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
+        "status": "measured",
+        "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json"
+      },
+      "integrity": [
+        "已审核参数及引用精确集合",
+        "官方目录/附件/暂缓条款校验",
+        "同事务引用及进度证明",
+        "观察顺序防止迟到旧响应",
+        "热冷重复及提交后重放",
+        "范围外不能冒充已准备"
+      ],
+      "tests": [
+        "tests/test_rule_documents.py",
+        "tests/test_trading_rules.py",
+        "tests/integration/test_rule_archive.py"
+      ],
+      "lifecycle": "docs/trading-rules.md：首次核验已登记文件；3天完整复查；入队原子断点；SQL确认后完成；Redis丢失从官方文件重查；不自动接纳未审核新规则。",
+      "delivery": "scripts/create_rule_schema.py显式增量建表；每项独立任务和准备输出，共享规范存储与官方来源；实际采集与用途验收分别报告。"
+    },
+    "rules.settlement_rules.complete": {
+      "tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "grain": "一种规则项目、市场、板块、条件及生效日期的单个参数；引用条款复用",
+      "identity": "kind/market/board/condition_key/parameter_key/effective_start规范SHA256；引用URL/文档摘要/条款身份",
+      "dictionary": "docs/trading-rules.md",
+      "queries": [
+        "按类型和市场200行稳定游标",
+        "单条官方依据",
+        "1001行完整准备检查及同事务摘要比较"
+      ],
+      "capacity": {
+        "sample": "77已审核参数；10000行隔离未来历史索引压力实验",
+        "growth": "当前契约单项1000参数、256引用；新历史及来源版本须显式升级审核",
+        "page_limit": 200,
+        "response": "共享generic预算；规范消息256KiB；解码文本512KiB",
+        "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
+        "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
+        "status": "measured",
+        "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json"
+      },
+      "integrity": [
+        "已审核参数及引用精确集合",
+        "官方目录/附件/暂缓条款校验",
+        "同事务引用及进度证明",
+        "观察顺序防止迟到旧响应",
+        "热冷重复及提交后重放",
+        "范围外不能冒充已准备"
+      ],
+      "tests": [
+        "tests/test_rule_documents.py",
+        "tests/test_trading_rules.py",
+        "tests/integration/test_rule_archive.py"
+      ],
+      "lifecycle": "docs/trading-rules.md：首次核验已登记文件；3天完整复查；入队原子断点；SQL确认后完成；Redis丢失从官方文件重查；不自动接纳未审核新规则。",
+      "delivery": "scripts/create_rule_schema.py显式增量建表；每项独立任务和准备输出，共享规范存储与官方来源；实际采集与用途验收分别报告。"
+    },
+    "rules.lot_rules.complete": {
+      "tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "grain": "一种规则项目、市场、板块、条件及生效日期的单个参数；引用条款复用",
+      "identity": "kind/market/board/condition_key/parameter_key/effective_start规范SHA256；引用URL/文档摘要/条款身份",
+      "dictionary": "docs/trading-rules.md",
+      "queries": [
+        "按类型和市场200行稳定游标",
+        "单条官方依据",
+        "1001行完整准备检查及同事务摘要比较"
+      ],
+      "capacity": {
+        "sample": "77已审核参数；10000行隔离未来历史索引压力实验",
+        "growth": "当前契约单项1000参数、256引用；新历史及来源版本须显式升级审核",
+        "page_limit": 200,
+        "response": "共享generic预算；规范消息256KiB；解码文本512KiB",
+        "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
+        "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
+        "status": "measured",
+        "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json"
+      },
+      "integrity": [
+        "已审核参数及引用精确集合",
+        "官方目录/附件/暂缓条款校验",
+        "同事务引用及进度证明",
+        "观察顺序防止迟到旧响应",
+        "热冷重复及提交后重放",
+        "范围外不能冒充已准备"
+      ],
+      "tests": [
+        "tests/test_rule_documents.py",
+        "tests/test_trading_rules.py",
+        "tests/integration/test_rule_archive.py"
+      ],
+      "lifecycle": "docs/trading-rules.md：首次核验已登记文件；3天完整复查；入队原子断点；SQL确认后完成；Redis丢失从官方文件重查；不自动接纳未审核新规则。",
+      "delivery": "scripts/create_rule_schema.py显式增量建表；每项独立任务和准备输出，共享规范存储与官方来源；实际采集与用途验收分别报告。"
+    },
+    "rules.tick_rules.complete": {
+      "tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "grain": "一种规则项目、市场、板块、条件及生效日期的单个参数；引用条款复用",
+      "identity": "kind/market/board/condition_key/parameter_key/effective_start规范SHA256；引用URL/文档摘要/条款身份",
+      "dictionary": "docs/trading-rules.md",
+      "queries": [
+        "按类型和市场200行稳定游标",
+        "单条官方依据",
+        "1001行完整准备检查及同事务摘要比较"
+      ],
+      "capacity": {
+        "sample": "77已审核参数；10000行隔离未来历史索引压力实验",
+        "growth": "当前契约单项1000参数、256引用；新历史及来源版本须显式升级审核",
+        "page_limit": 200,
+        "response": "共享generic预算；规范消息256KiB；解码文本512KiB",
+        "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
+        "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
+        "status": "measured",
+        "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json"
+      },
+      "integrity": [
+        "已审核参数及引用精确集合",
+        "官方目录/附件/暂缓条款校验",
+        "同事务引用及进度证明",
+        "观察顺序防止迟到旧响应",
+        "热冷重复及提交后重放",
+        "范围外不能冒充已准备"
+      ],
+      "tests": [
+        "tests/test_rule_documents.py",
+        "tests/test_trading_rules.py",
+        "tests/integration/test_rule_archive.py"
+      ],
+      "lifecycle": "docs/trading-rules.md：首次核验已登记文件；3天完整复查；入队原子断点；SQL确认后完成；Redis丢失从官方文件重查；不自动接纳未审核新规则。",
+      "delivery": "scripts/create_rule_schema.py显式增量建表；每项独立任务和准备输出，共享规范存储与官方来源；实际采集与用途验收分别报告。"
+    },
+    "rules.sessions.complete": {
+      "tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "grain": "一种规则项目、市场、板块、条件及生效日期的单个参数；引用条款复用",
+      "identity": "kind/market/board/condition_key/parameter_key/effective_start规范SHA256；引用URL/文档摘要/条款身份",
+      "dictionary": "docs/trading-rules.md",
+      "queries": [
+        "按类型和市场200行稳定游标",
+        "单条官方依据",
+        "1001行完整准备检查及同事务摘要比较"
+      ],
+      "capacity": {
+        "sample": "77已审核参数；10000行隔离未来历史索引压力实验",
+        "growth": "当前契约单项1000参数、256引用；新历史及来源版本须显式升级审核",
+        "page_limit": 200,
+        "response": "共享generic预算；规范消息256KiB；解码文本512KiB",
+        "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
+        "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
+        "status": "measured",
+        "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json"
+      },
+      "integrity": [
+        "已审核参数及引用精确集合",
+        "官方目录/附件/暂缓条款校验",
+        "同事务引用及进度证明",
+        "观察顺序防止迟到旧响应",
+        "热冷重复及提交后重放",
+        "范围外不能冒充已准备"
+      ],
+      "tests": [
+        "tests/test_rule_documents.py",
+        "tests/test_trading_rules.py",
+        "tests/integration/test_rule_archive.py"
+      ],
+      "lifecycle": "docs/trading-rules.md：首次核验已登记文件；3天完整复查；入队原子断点；SQL确认后完成；Redis丢失从官方文件重查；不自动接纳未审核新规则。",
+      "delivery": "scripts/create_rule_schema.py显式增量建表；每项独立任务和准备输出，共享规范存储与官方来源；实际采集与用途验收分别报告。"
+    },
+    "rules.stamp_duty.complete": {
+      "tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "grain": "一种规则项目、市场、板块、条件及生效日期的单个参数；引用条款复用",
+      "identity": "kind/market/board/condition_key/parameter_key/effective_start规范SHA256；引用URL/文档摘要/条款身份",
+      "dictionary": "docs/trading-rules.md",
+      "queries": [
+        "按类型和市场200行稳定游标",
+        "单条官方依据",
+        "1001行完整准备检查及同事务摘要比较"
+      ],
+      "capacity": {
+        "sample": "77已审核参数；10000行隔离未来历史索引压力实验",
+        "growth": "当前契约单项1000参数、256引用；新历史及来源版本须显式升级审核",
+        "page_limit": 200,
+        "response": "共享generic预算；规范消息256KiB；解码文本512KiB",
+        "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
+        "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
+        "status": "measured",
+        "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json"
+      },
+      "integrity": [
+        "已审核参数及引用精确集合",
+        "官方目录/附件/暂缓条款校验",
+        "同事务引用及进度证明",
+        "观察顺序防止迟到旧响应",
+        "热冷重复及提交后重放",
+        "范围外不能冒充已准备"
+      ],
+      "tests": [
+        "tests/test_rule_documents.py",
+        "tests/test_trading_rules.py",
+        "tests/integration/test_rule_archive.py"
+      ],
+      "lifecycle": "docs/trading-rules.md：首次核验已登记文件；3天完整复查；入队原子断点；SQL确认后完成；Redis丢失从官方文件重查；不自动接纳未审核新规则。",
+      "delivery": "scripts/create_rule_schema.py显式增量建表；每项独立任务和准备输出，共享规范存储与官方来源；实际采集与用途验收分别报告。"
+    },
+    "rules.transfer_fee.complete": {
+      "tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "grain": "一种规则项目、市场、板块、条件及生效日期的单个参数；引用条款复用",
+      "identity": "kind/market/board/condition_key/parameter_key/effective_start规范SHA256；引用URL/文档摘要/条款身份",
+      "dictionary": "docs/trading-rules.md",
+      "queries": [
+        "按类型和市场200行稳定游标",
+        "单条官方依据",
+        "1001行完整准备检查及同事务摘要比较"
+      ],
+      "capacity": {
+        "sample": "77已审核参数；10000行隔离未来历史索引压力实验",
+        "growth": "当前契约单项1000参数、256引用；新历史及来源版本须显式升级审核",
+        "page_limit": 200,
+        "response": "共享generic预算；规范消息256KiB；解码文本512KiB",
+        "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
+        "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
+        "status": "measured",
+        "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json"
+      },
+      "integrity": [
+        "已审核参数及引用精确集合",
+        "官方目录/附件/暂缓条款校验",
+        "同事务引用及进度证明",
+        "观察顺序防止迟到旧响应",
+        "热冷重复及提交后重放",
+        "范围外不能冒充已准备"
+      ],
+      "tests": [
+        "tests/test_rule_documents.py",
+        "tests/test_trading_rules.py",
+        "tests/integration/test_rule_archive.py"
+      ],
+      "lifecycle": "docs/trading-rules.md：首次核验已登记文件；3天完整复查；入队原子断点；SQL确认后完成；Redis丢失从官方文件重查；不自动接纳未审核新规则。",
+      "delivery": "scripts/create_rule_schema.py显式增量建表；每项独立任务和准备输出，共享规范存储与官方来源；实际采集与用途验收分别报告。"
+    },
+    "repurchases.page": {
+      "tables": [
+        "stock_repurchase_plan"
+      ],
+      "grain": "一个来源回购方案的当前版本",
+      "identity": "固定eastmoney；REPURCODE字符串为plan_id主键",
+      "dictionary": "docs/eastmoney-repurchases.md",
+      "queries": [
+        "证券/日期/状态有界列表",
+        "plan_id详情",
+        "逐行规范集合审计"
+      ],
+      "capacity": {
+        "sample": "50000行、平均说明2100字节",
+        "growth": "每年约2000方案，五年约15537行",
+        "page_limit": 200,
+        "response": "500行投影共享通用响应预算；入队按512KiB拆批",
+        "regression": "分页P95和容量实测",
+        "budget": "表和索引<=256MiB，首次导入<=60秒，列表/详情<=100ms；重复业务DML=0",
+        "status": "measured",
+        "evidence": "docs/evidence/repurchase-capacity-2026-10-12.json"
+      },
+      "integrity": [
+        "唯一编号keyset和剩余统计",
+        "全量键/规范内容摘要",
+        "失败不推进",
+        "旧版本防覆盖",
+        "统一成功清队"
+      ],
+      "tests": [
+        "tests/test_repurchases.py",
+        "tests/integration/test_repurchase_archive.py"
+      ],
+      "lifecycle": "docs/eastmoney-repurchases.md：初次和每天全量核验；已入队游标续采，尾批后仅等待整轮归档；Redis丢失重新全量；明确重新采集可重置下载阶段，历史不删除。",
+      "delivery": "显式scripts/create_repurchase_schema.py新增typed表，单一读写路径；容量及实采/发布分别记载。"
+    },
+    "earnings_forecast.tdx_unit": {
+      "tables": [
+        "earnings_forecast"
+      ],
+      "grain": "一个来源业务身份的当前已知版本",
+      "identity": "unified_code,report_date,announcement_date",
+      "dictionary": "docs/tdx-performance.md",
+      "queries": [
+        "200条日期证券游标列表",
+        "证券历史及record_key详情",
+        "单元集合及内容有界审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+        "sample": "100000行，5000证券×20合成期",
+        "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
+        "page_limit": 200,
+        "response": "10000来源方案、快报最多80000同比行，市场消息512KiB",
+        "budget": "查询2秒、查询分配32MiB、每表512MiB、导入120秒"
+      },
+      "integrity": [
+        "来源总数与完整业务键",
+        "规范内容摘要",
+        "失败不推进",
+        "旧响应不覆盖",
+        "统一成功清队"
+      ],
+      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
+      "tests": [
+        "tests/test_tdx_performance.py",
+        "tests/test_tdx_performance_lifecycle.py",
+        "tests/integration/test_tdx_performance_archive.py"
+      ]
+    },
+    "earnings_quick.tdx_unit": {
+      "tables": [
+        "earnings_quick"
+      ],
+      "grain": "一个来源业务身份的当前已知版本",
+      "identity": "unified_code,source_id,report_date,announcement_date,profit_basis,profit_scope,roe_scope",
+      "dictionary": "docs/tdx-performance.md",
+      "queries": [
+        "200条日期证券游标列表",
+        "证券历史及record_key详情",
+        "单元集合及内容有界审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+        "sample": "100000行，5000证券×20合成期",
+        "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
+        "page_limit": 200,
+        "response": "10000来源方案、快报最多80000同比行，市场消息512KiB",
+        "budget": "查询2秒、查询分配32MiB、每表512MiB、导入120秒"
+      },
+      "integrity": [
+        "来源总数与完整业务键",
+        "规范内容摘要",
+        "失败不推进",
+        "旧响应不覆盖",
+        "统一成功清队"
+      ],
+      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
+      "tests": [
+        "tests/test_tdx_performance.py",
+        "tests/test_tdx_performance_lifecycle.py",
+        "tests/integration/test_tdx_performance_archive.py"
+      ]
+    },
+    "earnings_disclosure.tdx_unit": {
+      "tables": [
+        "earnings_disclosure"
+      ],
+      "grain": "一个来源业务身份的当前已知版本",
+      "identity": "unified_code,report_date",
+      "dictionary": "docs/tdx-performance.md",
+      "queries": [
+        "200条日期证券游标列表",
+        "证券历史及record_key详情",
+        "单元集合及内容有界审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+        "sample": "100000行，5000证券×20合成期",
+        "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
+        "page_limit": 200,
+        "response": "10000来源方案、快报最多80000同比行，市场消息512KiB",
+        "budget": "查询2秒、查询分配32MiB、每表512MiB、导入120秒"
+      },
+      "integrity": [
+        "来源总数与完整业务键",
+        "规范内容摘要",
+        "失败不推进",
+        "旧响应不覆盖",
+        "统一成功清队"
+      ],
+      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
+      "tests": [
+        "tests/test_tdx_performance.py",
+        "tests/test_tdx_performance_lifecycle.py",
+        "tests/integration/test_tdx_performance_archive.py"
+      ]
+    },
+    "earnings_report.tdx_unit": {
+      "tables": [
+        "earnings_report"
+      ],
+      "grain": "一个来源业务身份的当前已知版本",
+      "identity": "unified_code,report_date",
+      "dictionary": "docs/tdx-performance.md",
+      "queries": [
+        "200条日期证券游标列表",
+        "证券历史及record_key详情",
+        "单元集合及内容有界审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+        "sample": "100000行，5000证券×20合成期",
+        "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
+        "page_limit": 200,
+        "response": "10000来源方案、快报最多80000同比行，市场消息512KiB",
+        "budget": "查询2秒、查询分配32MiB、每表512MiB、导入120秒"
+      },
+      "integrity": [
+        "来源总数与完整业务键",
+        "规范内容摘要",
+        "失败不推进",
+        "旧响应不覆盖",
+        "统一成功清队"
+      ],
+      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
+      "tests": [
+        "tests/test_tdx_performance.py",
+        "tests/test_tdx_performance_lifecycle.py",
+        "tests/integration/test_tdx_performance_archive.py"
+      ]
+    },
+    "holder_count.tdx_unit": {
+      "tables": [
+        "shareholder_count"
+      ],
+      "grain": "一个来源业务身份的当前已知版本",
+      "identity": "unified_code,statistics_date",
+      "dictionary": "docs/tdx-performance.md",
+      "queries": [
+        "200条日期证券游标列表",
+        "证券历史及record_key详情",
+        "单元集合及内容有界审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+        "sample": "100000行，5000证券×20合成期",
+        "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
+        "page_limit": 200,
+        "response": "10000来源方案、快报最多80000同比行，市场消息512KiB",
+        "budget": "查询2秒、查询分配32MiB、每表512MiB、导入120秒"
+      },
+      "integrity": [
+        "来源总数与完整业务键",
+        "规范内容摘要",
+        "失败不推进",
+        "旧响应不覆盖",
+        "统一成功清队"
+      ],
+      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
+      "tests": [
+        "tests/test_tdx_performance.py",
+        "tests/test_tdx_performance_lifecycle.py",
+        "tests/integration/test_tdx_performance_archive.py"
+      ]
+    },
+    "holders.reports": {
+      "tables": [
+        "holder_report",
+        "holder_member"
+      ],
+      "grain": "一类别、发行人、股票/债券身份、报告期、报告类型及当前/退出成员",
+      "identity": "报告五项业务组合SHA256；成员(report_key,member_group,seq)按组内规范行位置，债券source_rank保留并列来源排名；姓名/ID/股份类型重复拒绝",
+      "dictionary": "docs/ths-holders.md",
+      "queries": [
+        "证券范围游标",
+        "日期截面游标",
+        "有界报告详情",
+        "批量窗口正文及集合证明"
+      ],
+      "capacity": {
+        "sample": "10000常规报告110000成员，另最大公告400成员边界",
+        "growth": "定期基准6000股票×4期×3类×10成员；五年360万成员预算8GiB，变动公告按实际新增量另加，不是硬上限",
+        "page_limit": 100,
+        "response": "详情1MiB；最多400成员；正文审计批读10报告/4000成员",
+        "regression": "查询P95≤100ms，覆盖≤1000ms，导入≤180秒，Python峰值≤128MiB",
+        "status": "measured",
+        "evidence": "docs/evidence/ths-holders-run-outcome-capacity-2026-10-18.json"
+      },
+      "integrity": [
+        "标签与正文集合匹配",
+        "源总量和舍入独立比较，未知/矛盾保留原值并核对结构化质量标记",
+        "同数异集",
+        "旧版拒绝",
+        "事务后重放及成功清队",
+        "三栏结构校验后原子入队同事务归档；空名债券报告隔离为有摘要来源缺口，可识别报告保存，失败不推进连续断点"
+      ],
+      "lifecycle": "docs/ths-holders.md：初始化当前股票池可见窗口，每日复核；整轮末等归档；池变化重建，Redis丢失重读，历史保留。",
+      "delivery": "显式scripts/migrate_holder_source_rows.py升级contract/schema4，数量及精度三列同时可空、未来报告期按观察日标记、quality_flags普通列与可空来源比例/汇总；保留原事实和观测版本，失效证明/指纹/断点后重采；启动不迁移；schema5新增有界gaps状态，无DDL，现有完整证明保留，空名报告缺口独立，准备缓存revision4",
+      "tests": [
+        "tests/test_ths_holders.py",
+        "tests/integration/test_holder_archive.py",
+        "tests/test_holder_ui.py",
+        "tests/test_holder_error_shapes.py",
+        "tests/integration/test_holder_source_migration.py",
+        "tests/test_holder_quality.py",
+        "tests/test_holder_identity_gaps.py"
+      ]
+    },
+    "shareholder_changes.tdx_unit": {
+      "tables": [
+        "shareholder_change"
+      ],
+      "grain": "完整月市场的来源事件多重集合",
+      "identity": "规范事实和相同事实出现序号SHA-256；固定tdx；按完整月份版本修订",
+      "dictionary": "docs/tdx-shareholder-changes.md",
+      "queries": [
+        "证券截止日期范围200条",
+        "全市场截止日期范围200条",
+        "详情1条",
+        "完整月市场最多9999条",
+        "字段/键/摘要覆盖"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/shareholder-changes-capacity-2026-10-13.json",
+        "sample": "真实完整10000参数月份及隔离100000事件",
+        "growth": "一年20万、五年100万；来源实际容量另记",
+        "page_limit": 200,
+        "response": "共享通用正文及512KiB消息，有上限无损压缩",
+        "budget": "100000行<=256MiB、200条查询<=100ms、单元修订<=5s"
+      },
+      "integrity": [
+        "完整响应独立count及多重集合",
+        "同事务字段及证明",
+        "重复零DML",
+        "撤回修订",
+        "旧版保护",
+        "SQL后重放",
+        "成功清队"
+      ],
+      "lifecycle": "docs/tdx-shareholder-changes.md：1990-01核查下限至当前月，完整回查补缺；可显式指定月份，Redis丢失重查；整轮最终等待。",
+      "delivery": "显式新增shareholder_change，不动原业务；共享正式路径；隔离实测与有限/历史实采分开；不承诺全旧版本。",
+      "tests": [
+        "tests/test_tdx_shareholder_changes.py",
+        "tests/integration/test_tdx_shareholder_changes_archive.py"
+      ]
+    },
+    "unlocks.tdx_month": {
+      "tables": [
+        "restricted_share_unlock",
+        "restricted_share_unlock_detail"
+      ],
+      "grain": "完整月市场的列表来源事实及共享请求组明细",
+      "identity": "record_key规范事实+出现序号；group_key证券/日期/原因代码；固定tdx",
+      "dictionary": "docs/tdx-unlocks.md",
+      "queries": [
+        "证券日期200条",
+        "全市场日期200条",
+        "共享组明细10000条",
+        "完整月市场10000列表/100000明细",
+        "键集合与摘要覆盖"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/unlocks-error-types-capacity-2026-10-14.json",
+        "sample": "真实样本语义和隔离10万列表/20万明细放大",
+        "growth": "一年2万列表与20万明细；五年10万/100万预测",
+        "page_limit": 200,
+        "response": "共享正文；512KiB消息；8MiB解压矩阵",
+        "budget": "预测110万行<=2GiB；列表/组详情<=100ms；月市场事务<=5秒"
+      },
+      "integrity": [
+        "来源响应条数与元数据，不用伪总数0",
+        "完整业务键多重集合",
+        "请求组绑定",
+        "两表同事务",
+        "重复零DML",
+        "旧版保护",
+        "SQL后重放及成功清队"
+      ],
+      "lifecycle": "1990-01到下一年12月；每日列表补缺及轮换一个历史月明细；fresh全明细；Redis丢失SQL重建。",
+      "delivery": "显式新增两表，不改原业务；共享下载/代理/入队/归档；实际进度另记。",
+      "tests": [
+        "tests/test_tdx_unlocks.py",
+        "tests/integration/test_tdx_unlocks_archive.py"
+      ]
+    },
+    "unlocks.tdx_industry_month": {
+      "tables": [
+        "restricted_share_unlock_industry"
+      ],
+      "grain": "来源行业解禁月份完整集合",
+      "identity": "解禁月份+来源行业名称；固定tdx，不冒充行业代码",
+      "dictionary": "docs/tdx-unlock-industries.md",
+      "queries": [
+        "月范围稳定200条游标",
+        "行业月份200条",
+        "单月500条",
+        "目录最多120月完整集合审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/unlock-industries-capacity-2026-10-14.json",
+        "sample": "当前24月700条真实来源，隔离12000行",
+        "growth": "五年6000行，来源窗口变化以目录为准",
+        "page_limit": 200,
+        "response": "完整月500行业，共享正文及512KiB消息",
+        "budget": "12000行<=64MiB；列表/行业/月<=100ms；重复/修订<=5秒"
+      },
+      "integrity": [
+        "月份回显",
+        "来源Count及行业唯一集合",
+        "同数异集",
+        "旧基准保护",
+        "无变化零DML",
+        "可信摘要免SQL",
+        "提交后重放成功清队"
+      ],
+      "lifecycle": "初始化当前目录全部月份；每日18:00完整重查；Redis丢失重新目录；保留旧不可得月；无严格历史版本",
+      "delivery": "显式追加结构不改原业务，共享下载/代理/入队归档，正式查询和实际桌面独立验收",
+      "tests": [
+        "tests/test_tdx_unlock_industries.py",
+        "tests/integration/test_tdx_unlock_industries_archive.py"
+      ]
+    },
+    "ths.capital.security": {
+      "tables": [
+        "capital_funding",
+        "capital_project",
+        "capital_transaction",
+        "capital_equity_summary",
+        "capital_equity_position",
+        "capital_ipo",
+        "capital_encumbrance",
+        "capital_release"
+      ],
+      "grain": "完整证券响应内独立融资、项目、交易、期间汇总/持仓、参股IPO、原质押冻结及解除事实",
+      "identity": "固定ths；unified_code+栏目+公告日/报告期+业务锚点+重复序号；解除parent_key；不推断来源未给出的统一经济事件",
+      "dictionary": "docs/ths-capital.md",
+      "queries": [
+        "按栏目日期全市场游标最多100",
+        "单证券日期范围",
+        "主键详情与最多1000解除",
+        "证券当前窗口完整多重集合审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/ths-capital-followup-capacity-2026-10-18.json",
+        "sample": "本轮213只不同证券真实来源到Redis/SQL核验，独立SQL放大700证券10500事实",
+        "growth": "6000股票每年50新增事实，五年150万事实；按本次分配空间外推，不代表已采覆盖",
+        "page_limit": 100,
+        "response": "共享generic实际传输/解压上限，正文≤60000字节，证券事实≤10000，单父解除≤1000；schema2无损矩阵压缩，解码≤8MiB、编码正文≤512KiB；完整消息继续受公共上限",
+        "budget": "独立实例初始导入≤30s，列表/详情/当前窗口P95≤100ms，700证券覆盖≤10s，重复0业务DML；详情≤64KiB，窗口≤1MiB"
+      },
+      "integrity": [
+        "完整响应/期间/分类跨度/嵌套详情",
+        "同数异集/合法重复保留",
+        "冷/热摘要/旧响应",
+        "事务失败留队/提交后重放",
+        "来源窗口外历史保留",
+        "每栏目独立证明与查询"
+      ],
+      "lifecycle": "docs/ths-capital.md生命周期表：每日18:30全池完整回查，失败不推进该证券；按序发布不逐证券等归档，整轮末确认；Redis丢失从头回查，SQL业务保留",
+      "delivery": "单一typed读写；显式scripts/create_ths_capital_schema.py新增八表，实例/维护锁、空队列和既有业务前后核查；统一发布门禁及真实桌面",
+      "tests": [
+        "tests/test_ths_capital.py",
+        "tests/test_ths_capital_lifecycle.py",
+        "tests/integration/test_ths_capital_archive.py",
+        "tests/test_ths_capital_ui.py"
+      ]
     }
   },
   "json_roles": {

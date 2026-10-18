@@ -8,9 +8,12 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from uuid import uuid4
 
+from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_retry import MAX_REQUEST_RETRIES
 from empire.core.identity import safe_project_id
 from empire.core.time import CHINA
+from empire.plugins.collection.progress import display_snapshot
 from empire.plugins.collection.task_defaults import TaskDefaults
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
 from empire.plugins.infra.settings import SettingsStore
@@ -44,6 +47,7 @@ class TaskContribution:
     default_enabled: bool = True
     fresh_description: str = "创建新批次；已归档数据按对应业务规则保留。"
     default_schedule: TaskDefaults | None = None
+    unit_name: str = "个单元"
 
 
 def validate_policy(value):
@@ -58,20 +62,23 @@ def validate_policy(value):
         datetime.strptime(result["daily_time"], "%H:%M")
     except (KeyError, ValueError, TypeError):
         raise ValueError("每日时间须为 HH:MM") from None
-    if type(result.get("request_retries")) is not int or not 0 <= result["request_retries"] <= 5:
-        raise ValueError("单次请求重试次数须为 0～5")
+    if type(result.get("request_retries")) is not int or not 0 <= result["request_retries"] <= MAX_REQUEST_RETRIES:
+        raise ValueError(f"单次请求重试次数须为 0～{MAX_REQUEST_RETRIES}")
     if type(result.get("enabled")) is not bool:
         raise ValueError("任务开关无效")
+    result.setdefault('archived', False)
+    if type(result['archived']) is not bool:
+        raise ValueError('任务归档状态无效')
     for field, default in (("use_proxy", True), ("proxy_fallback", True)):
         result.setdefault(field, default)
         if type(result[field]) is not bool:
             raise ValueError("代理采集开关无效")
     return {k: result[k] for k in ("mode", "interval_seconds", "daily_time", "request_retries", "enabled",
-                                 "use_proxy", "proxy_fallback")}
+                                 "use_proxy", "proxy_fallback", "archived")}
 
 
 def next_due(policy, now):
-    if not policy["enabled"] or policy["mode"] == "manual":
+    if policy.get('archived') or not policy["enabled"] or policy["mode"] == "manual":
         return None
     if policy["mode"] == "interval":
         return now + validate_policy(policy)["interval_seconds"]
@@ -141,10 +148,27 @@ class CollectionControl:
         self.state["history"] = retain_task_history(self.state["history"])
         await self.redis.set(self.key, json.dumps(self.state, ensure_ascii=False))
 
+    async def clear_history(self, project_id):
+        import re
+        if not isinstance(project_id, str) or (project_id != '*' and
+                not re.fullmatch(r'[A-Za-z0-9_.-]{1,100}', project_id)):
+            raise ValueError('Invalid collection project ID')
+        async with self.lock:
+            previous = self.state['history']
+            self.state['history'] = [r for r in previous
+                if project_id != '*' and r['task_id'] != project_id]
+            try:
+                await self._persist()
+            except Exception:
+                self.state['history'] = previous
+                raise
+            return len(previous) - len(self.state['history'])
+
     async def configure(self, ident, policy):
         policy = validate_policy(policy)
         async with self.lock:
             job = self.state["jobs"][ident]
+            policy['archived'] = job['policy'].get('archived', False)
             await self.settings.save("task", ident, policy)
             job["policy"] = policy
             job["next_due"] = next_due(policy, time.time())
@@ -157,6 +181,8 @@ class CollectionControl:
     async def run(self, ident, fresh=False, origin="manual"):
         async with self.lock:
             job = self.state["jobs"][ident]
+            if job['policy'].get('archived'):
+                raise ValueError('任务已归档，请先从已归档任务中还原')
             if not job["policy"]["enabled"]:
                 raise ValueError("任务已禁用，请先启用并保存")
             if ident in self.tasks and not self.tasks[ident].done():
@@ -174,7 +200,7 @@ class CollectionControl:
                     "baseline_revision": baseline}
             if job["active"] and fresh:
                 raise ValueError("存在待恢复任务，请先停止后再重新采集")
-            job.update(active=active, last_status="running", error="")
+            job.update(active=active, last_status="running", error="", notice="")
             try:
                 await self._persist()
             except Exception:
@@ -182,6 +208,10 @@ class CollectionControl:
                 raise
             self.tasks[ident] = self.context.spawn(self._execute(ident), name=ident)
         return active["run_id"]
+
+    async def batch(self, operation, identifiers):
+        from empire.plugins.collection.batch import execute_batch
+        return await execute_batch(self, operation, identifiers)
 
     async def _execute(self, ident):
         job = self.state["jobs"][ident]
@@ -196,7 +226,7 @@ class CollectionControl:
                     "status": status, "error": error, "result": {}})
                 await self._persist()
             return
-        status, error, result = "complete", "", {}
+        status, error, notice, result = "complete", "", "", {}
         proxy_token = USE_PROXY.set(job["policy"]["use_proxy"])
         fallback_token = PROXY_FALLBACK.set(job["policy"].get("proxy_fallback", True))
         network_counts = {}
@@ -209,6 +239,8 @@ class CollectionControl:
                                              baseline_revision=active["baseline_revision"])
         except asyncio.CancelledError:
             status = "paused"
+        except CollectionSourceGap as exc:
+            status, notice = "source_gap", self.records.sanitize_text(exc)
         except Exception as exc:
             status, error = "error", self.records.sanitize_text(exc)
         finally:
@@ -216,12 +248,13 @@ class CollectionControl:
             PROXY_FALLBACK.reset(fallback_token)
             ROUTE_COUNTS.reset(counts_token)
         active["network"] = network_counts
+        result = {**display_snapshot(collector.health()), **result}
         async with self.lock:
             job = self.state["jobs"][ident]
-            job.update(active=None, last_status=status, error=error,
+            job.update(active=None, last_status=status, error=error, notice=notice,
                        next_due=next_due(job["policy"], time.time()))
             self.state["history"].insert(0, {**active, "finished_at": time.time(),
-                "status": status, "error": error, "result": result})
+                "status": status, "error": error, "notice": notice, "result": result})
             await self._persist()
 
     async def pause(self, ident):
@@ -241,11 +274,38 @@ class CollectionControl:
                 await self._persist()
         return "任务与执行计划已暂停，采集断点保留"
 
+    async def set_archived(self, ident, archived=True):
+        if type(archived) is not bool:
+            raise ValueError('任务归档状态无效')
+        async with self.lock:
+            job = self.state['jobs'][ident]
+            policy = validate_policy({**job['policy'], 'archived': archived})
+            await self.settings.save('task', ident, policy)
+            job.update(policy=policy, next_due=next_due(policy, time.time()))
+            try:
+                await self._persist()
+            except Exception:
+                self.error = '归档状态已保存到 MySQL；Redis 同步失败，重启后恢复'
+        task = self.tasks.get(ident)
+        if archived and task and not task.done():
+            task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
+        if archived:
+            async with self.lock:
+                job = self.state['jobs'][ident]
+                if job['active']:
+                    self.state['history'].insert(0, {**job['active'], 'finished_at': time.time(),
+                        'status': 'paused', 'error': '', 'result': {}})
+                    job.update(active=None, last_status='paused')
+                    await self._persist()
+        return ('任务已归档，配置、断点和业务数据保留' if archived else
+                '任务已还原，继续使用原执行计划；原先停用的任务仍保持停用')
+
     async def _schedule(self):
         while True:
             try:
                 for ident, job in self.state["jobs"].items():
-                    if (ident not in self.definitions or not job["policy"]["enabled"]
+                    if (ident not in self.definitions or job['policy'].get('archived') or not job["policy"]["enabled"]
                             or self.context.optional(self.definitions[ident].capability) is None):
                         continue
                     if ident in self.tasks and not self.tasks[ident].done():
@@ -259,7 +319,7 @@ class CollectionControl:
 
     async def workspace(self, section="tasks", query="", category="", source="",
                         status="", offset=0, limit=25, project="", focus_task_id=""):
-        """Bounded desktop projection; do not copy all run history on every refresh."""
+        """All matching tasks; other views page their records independently."""
         if section not in ("tasks", "sites", "history", "overview"):
             raise ValueError("未知工作区")
         if type(limit) is not int or not 1 <= limit <= 100 or type(offset) is not int or offset < 0:
@@ -271,14 +331,16 @@ class CollectionControl:
             raise ValueError("定位任务 ID 无效")
         specs = list(self.definitions.values())
         projects = [{"id": d.id, "name": d.name} for d in specs]
-        counts = {"total": len(specs), "running": 0, "error": 0, "disabled": 0}
+        counts = {"total": len(specs), "running": 0, "error": 0, "source_gap": 0, "disabled": 0, 'archived': 0}
         candidates = []
         for spec in specs:
             job = self.state["jobs"][spec.id]
-            state = "running" if job["active"] else (
+            state = 'archived' if job['policy'].get('archived') else "running" if job["active"] else (
                 "disabled" if not job["policy"]["enabled"] else job["last_status"])
             if state in counts:
                 counts[state] += 1
+            if state == 'archived' and status != 'archived':
+                continue
             if (query and query not in " ".join((spec.id, spec.name, spec.description,
                                                  spec.source_name, spec.rate_group)).casefold()):
                 continue
@@ -325,12 +387,17 @@ class CollectionControl:
             base["focus_missing"] = focused is None
         total = len(candidates)
         candidates.sort(key=lambda spec: (spec.source_name or spec.rate_group, spec.rate_group, spec.name, spec.id))
-        offset = min(offset, max(0, (total - 1) // limit * limit))
-        page = candidates[offset:offset + limit]
+        if status == 'archived':
+            offset = min(offset, max(0, (total - 1) // limit * limit))
+            page = candidates[offset:offset + limit]
+        else:
+            offset = 0
+            page = candidates
         site_limits = {site["name"]: site for site in await self.http.settings()}
         for spec in page:
             base["jobs"].append({**copy.deepcopy(self.state["jobs"][spec.id]),
                 "id": spec.id, "name": spec.name, "description": spec.description,
+                "unit_name": spec.unit_name,
                 "rate_group": spec.rate_group, "category": spec.category,
                 "source_name": spec.source_name or spec.rate_group,
                 "parallel_downloads": spec.parallel_downloads,
@@ -346,7 +413,7 @@ class CollectionControl:
                 pending.remove(record["task_id"])
             if not pending:
                 break
-        base.update(total=total, offset=offset, limit=limit)
+        base.update(total=total, offset=offset, limit=limit if status == 'archived' else total)
         return base
 
     async def configure_site(self, name, values):

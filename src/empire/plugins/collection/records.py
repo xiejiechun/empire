@@ -45,6 +45,15 @@ if removed > 0 then redis.call('INCR', KEYS[2]) end
 return removed
 """
 
+CLEAR_LOG = """
+local count = redis.call('LLEN', KEYS[1])
+if count > 0 then
+    redis.call('DEL', KEYS[1])
+    redis.call('INCR', KEYS[2])
+end
+return count
+"""
+
 # Decode only the requested page inside Redis; full bodies never cross the connection for a list view.
 LIST_ERROR_SUMMARIES = """
 local revision = redis.call('GET', KEYS[2]) or '0'
@@ -214,6 +223,23 @@ class RecordsPlugin:
 
     async def stop(self):
         self.stats["status"] = "stopped"
+
+    async def clear_logs(self, kind, project_id):
+        """Explicit user log reset; not evidence that errors have been repaired."""
+        if kind not in ('errors', 'archives'):
+            raise ValueError('Invalid log kind')
+        if project_id == '*':
+            prefix = f'{self.redis.prefix}:collection:{kind}:'
+            projects = sorted({key[len(prefix):] async for key in
+                self.redis.client.scan_iter(match=prefix + '*')})
+        else:
+            self._key(kind, project_id)
+            projects = [project_id]
+        count = 0
+        for project in projects:
+            count += int(await self.redis.client.eval(CLEAR_LOG, 2,
+                self._key(kind, project), self._revision_key(kind, project)))
+        return count
 
     def health(self):
         return dict(self.stats)

@@ -1,0 +1,104 @@
+{
+  "started_at": "2026-10-16T01:49:18.806972+00:00",
+  "project": "ths-capital",
+  "requested_ids": [
+    "59ca531b1f48400f8c76c57e4aa63ffe"
+  ],
+  "matched_errors": [
+    {
+      "id": "59ca531b1f48400f8c76c57e4aa63ffe",
+      "stage": "source_validation",
+      "error": "资本运作单位/数值未知：--%",
+      "request_url": "https://basic.10jqka.com.cn/000014/capital.html",
+      "created_at": "2026-10-16T01:47:07.714491+00:00",
+      "original_bytes": 168096,
+      "original_sha256": "304bd2a4887b1089b98186644ef869ecad8188fac47add62ffd4bae0ced3d9cc"
+    }
+  ],
+  "classification": "程序解析缺陷：数值栏带百分号的缺值占位符漏识别",
+  "status": "released_verified",
+  "cleanup": {
+    "performed": true,
+    "checked_at": "2026-10-16T02:28:53.687309+00:00",
+    "exact_ids": [
+      "59ca531b1f48400f8c76c57e4aa63ffe"
+    ],
+    "removed": 1,
+    "target_absent": true,
+    "other_error_records_remaining": 0,
+    "scope": "Only the verified exact ID; other records preserved"
+  },
+  "root_cause": "000014股权投资基金持股比例为--%；numeric只识别裸--，导致完整响应校验失败。",
+  "fix": "仅数值解析接受-%/--%/—%为NULL，保留整条来源持仓；未知文本、重复百分号及未知单位仍失败。",
+  "tests": {
+    "focused_passed": 41,
+    "command": "pytest tests/integration/test_ths_capital_archive.py tests/test_ths_capital.py tests/test_ths_capital_lifecycle.py tests/test_ths_capital_ui.py",
+    "includes": "完整页面键集合与其他字段保持一致；真实Redis/SQL往返、冷热摘要、重复零DML、修订、迟到响应和提交后重放。"
+  },
+  "live": {
+    "evidence": "ths-capital-missing-percent-live-2026-10-16.json",
+    "securities": [
+      "000006.SZ",
+      "000011.SZ",
+      "000012.SZ",
+      "000014.SZ",
+      "000016.SZ",
+      "000017.SZ",
+      "600064.SH",
+      "600643.SH"
+    ],
+    "source_to_sql_equal": true,
+    "proxy_requests": 8,
+    "direct_fallback_requests": 0,
+    "private_pending": 0,
+    "000014_preserved_positions": 10,
+    "000014_unknown_ratio_with_known_quantity": 10,
+    "production_progress_unchanged": true
+  },
+  "capacity": {
+    "evidence": "ths-capital-capacity-2026-10-16.json",
+    "facts": 10500,
+    "import_seconds": 14.761836,
+    "duplicate_business_dml": 0
+  },
+  "contract": "不改表、字段单位、业务键或已成功记录规范内容；此前--%响应失败未入队，保留原失败连续断点等待重试，不重建已有有效摘要，不重置生产任务配置/进度。",
+  "desktop_automation": {
+    "available": false,
+    "error": "Computer Use native pipe is unavailable: 系统找不到指定的文件。 (os error 2)",
+    "recovery": "两次轻量调用失败，重置Node内核后重新初始化仍失败；未把离屏验证当真实窗口内容验收。"
+  },
+  "program_config_before_sha256": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+  "release": {
+    "evidence": "ths-capital-missing-percent-release-2026-10-16.json",
+    "verified_at_utc": "2026-10-16T02:28:36Z",
+    "executable_sha256": "186e7f266be74c043fd850bfcf736fa48c3edc0647279c03526b218f8f21a71c",
+    "source_sha256": "2661f1dca2b7f18a72eb8af356d6b91970ed2478bcc30da8d130e3a1863b613a",
+    "test_counts": {
+      "passed": 2611,
+      "skipped": 5
+    },
+    "program_config_preserved": true
+  },
+  "packaged_doctor": {
+    "working_directory": "D:\\",
+    "redis_connected": true,
+    "mysql_connected": true,
+    "required_tables_present": 55
+  },
+  "desktop": {
+    "native_visible_smoke_exit": 0,
+    "offscreen": false,
+    "screenshot": "build/capital-percent-visible.png",
+    "observed": "Window rendered; lower-left local services connected indicator shown",
+    "restarted_from": "D:\\",
+    "pid": 3232,
+    "interaction_validation": "Unavailable: computer-use native pipe failed; no capital-page interaction claim"
+  },
+  "test_services_cleanup": {
+    "port": 13346,
+    "gracefully_stopped": true,
+    "remaining_test_schemas": [],
+    "production_services_untouched": true
+  },
+  "completed_at": "2026-10-16T02:31:57.500705+00:00"
+}

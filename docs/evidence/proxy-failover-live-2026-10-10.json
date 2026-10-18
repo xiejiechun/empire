@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-10-10T09:01:06.036188+08:00",
+  "project": "tdx-dividends",
+  "scope": "SH600000 finite source/normalization probe; no business writes",
+  "normal": {
+    "normalized_rows": 25,
+    "network": {
+      "proxy_requests": 1
+    }
+  },
+  "controlled_failover": {
+    "normalized_rows": 25,
+    "network": {
+      "proxy_requests": 7,
+      "direct_requests": 1,
+      "fallback_requests": 1
+    }
+  },
+  "injected_devices": [
+    "node003",
+    "node004",
+    "node005",
+    "node006",
+    "node007",
+    "node010",
+    "node002"
+  ],
+  "pending": 0,
+  "released": true,
+  "limitations": "Controlled device failure; final source response is real. No full-market or archive-completion claim.",
+  "isolated_diagnostic_ids": [
+    "44070e6060394af99b790a2133f3ea4f",
+    "3e889e743cd1436097f0011b8ae09bdb",
+    "bb88576fe76c48fba95c99bd92a1b6c9",
+    "ae60e82829d740c1a98992b3f6b06090",
+    "36977c69e4f84c23a22a41fdf631ce1f",
+    "96953c9602fb41a99d9d6c3fbf3f031d",
+    "d293d82740104afb9414e3ec37ad35cb"
+  ],
+  "isolated_diagnostics_cleaned": 7
+}

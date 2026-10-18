@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QPushButton,
     QSpinBox,
+    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -18,6 +19,7 @@ from empire.core.redaction import redact
 from empire.core.time import CHINA
 from empire.plugins.datasets.trade_calendar import FIRST_DATE, month_dates
 from empire.plugins.ui.common import accessible, hint, local_date, rows, table
+from empire.plugins.ui.month_grid import MonthGrid
 from empire.plugins.ui.plugin import UiPlugin
 
 WEEKDAYS = ("星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日")
@@ -80,7 +82,11 @@ class TradeCalendarPage(QWidget):
         layout.addWidget(self.summary)
         self.table = table(["日期", "星期", "交易安排", "最近内容更新 · 北京时间"])
         self.table.setAccessibleName("交易日历结果")
-        layout.addWidget(self.table, 1)
+        self.views = QTabWidget()
+        self.month_grid = MonthGrid()
+        self.views.addTab(self.month_grid, '月历')
+        self.views.addTab(self.table, '日期清单')
+        layout.addWidget(self.views, 1)
         layout.addWidget(hint("首次采集按月补齐历史；相同安排跳过数据库写入，因此内容更新时间不会随着重复采集变化。"))
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
@@ -90,7 +96,8 @@ class TradeCalendarPage(QWidget):
         return f"{self.year.value():04d}-{self.month_selector.currentData():02d}"
 
     def save_ui_state(self):
-        return {"year": self.year.value(), "month": self.month_selector.currentData()}
+        return {"year": self.year.value(), "month": self.month_selector.currentData(),
+                'view': self.views.currentIndex(), 'day': self.month_grid.active}
 
     def restore_ui_state(self, state):
         self.loading = True
@@ -98,6 +105,17 @@ class TradeCalendarPage(QWidget):
         self.month_selector.setCurrentIndex(state["month"] - 1)
         self.loading = False
         self.dirty = True
+        self.views.setCurrentIndex(state.get('view', 0))
+        self.month_grid.active = state.get('day', '')
+
+    def apply_navigation_context(self, context):
+        if not context.day or context.unified_code or context.index_code:
+            raise ValueError('交易日历需要日期上下文')
+        year, month = map(int, context.day[:7].split('-'))
+        if not 1990 <= year <= self.year.maximum() or context.day < FIRST_DATE.isoformat():
+            raise ValueError('日期超出日历支持范围')
+        self.set_month(year, month)
+        self.month_grid.active = context.day
 
     def set_month(self, year, month):
         self.loading = True
@@ -140,6 +158,22 @@ class TradeCalendarPage(QWidget):
             values.append([day.isoformat(), WEEKDAYS[day.weekday()], state,
                            local_date(record["updated_at"]) if record else "—"])
         rows(self.table, values)
+        import calendar
+        from datetime import date
+        year, month = map(int, result['month'].split('-'))
+        states = {}
+        for number in range(1, calendar.monthrange(year, month)[1]+1):
+            day = date(year, month, number).isoformat()
+            record = records.get(day)
+            if day < FIRST_DATE.isoformat():
+                states[day] = ('范围外', '来源历史起点为1990-12-19', 'outside')
+            elif record:
+                label = '交易' if record['is_trade'] else '休市'
+                states[day] = (label, label + ' · 内容变更时间：' + local_date(record['updated_at'])
+                               + '；未来日期为来源当前安排', 'trade' if record['is_trade'] else 'closed')
+            else:
+                states[day] = ('未知', '该日尚无已归档安排，不能推断休市', 'unknown')
+        self.month_grid.render(result['month'], states)
         trading = sum(r["is_trade"] for r in records.values())
         self.summary.setText(f"{result['month']} · 已采集 {len(records)} / {len(dates)} 天 · "
                              f"交易 {trading} 天 · 休市 {len(records) - trading} 天 · "

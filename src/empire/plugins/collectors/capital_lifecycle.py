@@ -46,10 +46,8 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
             cursor = {}
         if cursor.get('phase') != 'awaiting_archive':
             if c.kind == 'dividends':
-                stocks = await c.query.securities()
-                units = {unit_key(stock): stock for stock in stocks}
-                source_hash = digest(sorted(units))
-                observed = None
+                from empire.plugins.collectors.tdx_dividend_periods import collect_history
+                units, observed, source_hash = await collect_history(c, force_history=bool(fresh and not progressed))
             else:
                 async def download_list(_, *, reservation):
                     return await complete_response(c, c.kind, reservation=reservation, defer=True)
@@ -122,8 +120,6 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
             if c.kind != 'dividends':
                 c.stats['expected_count'] = sum(len(group) for group in units.values())
             async def download_unit(unit, *, reservation):
-                if c.kind == 'dividends':
-                    return await complete_response(c, c.kind, units[unit], reservation=reservation, defer=True)
                 return units[unit], observed
             if c.kind == 'additional_issues':
                 from empire.plugins.collectors.issue_prefetch import issue_units
@@ -199,10 +195,13 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
 
 
 async def publish(c, state, cursor, unit, rows, manifest, observed, checkpoint_cursor=None):
+    payload = {'page': cursor['pages'], 'unit': unit, 'rows': rows, 'manifest': manifest}
+    if c.kind == 'dividends' and unit != 'manifest':
+        payload['history_discovered_at'] = c.history_discoveries[unit]
     envelope = make_envelope(source=c.source, dataset=c.kind + '.unit', business_key=unit,
         schema_version=SCHEMA_VERSIONS[c.kind],
         job_key=c.job_key, batch_id=cursor['batch_id'], run_id=cursor['batch_id'],
-        payload={'page': cursor['pages'], 'unit': unit, 'rows': rows, 'manifest': manifest})
+        payload=payload)
     envelope = envelope.model_copy(update={'observed_at': observed, 'source_url': PAGE_URL})
     return await publish_with_capacity(c.ingest, c.stats, [envelope], job_key=c.job_key,
                                       expected_revision=state['revision'],

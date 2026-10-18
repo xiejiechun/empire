@@ -1,5 +1,5 @@
 """Plain-language presentation of the existing checks; does not decide readiness."""
-STATUS = {'已验收': '已准备好', '未开发': '还没开发', '有失败项': '还有问题', '待验收': '还需检查'}
+STATUS = {'已验收': '所查范围可用', '未开发': '待建设', '有失败项': '有阻断项', '待验收': '未核验'}
 PRIORITY = {'核心': '先准备这些', '研究': '深入分析用', '扩展': '按需要添加'}
 CHECKS = {
     'task': ('采集功能做好了吗', '软件里有对应的采集任务，能找到负责采集的功能。', '把这类数据的采集功能做好，并加入采集任务。'),
@@ -63,12 +63,18 @@ def plain(text):
 
 
 def check_title(item):
+    if item.get('execution') == 'read_only_computation':
+        return {'task': '计算功能做好了吗', 'dataset': '输入和结果定义清楚了吗', 'query': '能查看和检查计算结果吗',
+                'source_tests': '计算规则测试过了吗', 'archive_tests': '归档数据能正确参与计算吗',
+                'shared_tests': '计算是否遵守只读边界'}.get(item['id'], plain(item['title']))
     if item.get('kind', '采集') != '采集' and item['id'] in {'task', 'source_tests'}:
         return '这项处理功能做好了吗' if item['id'] == 'task' else '这项处理功能测试过了吗'
     return CHECKS.get(item['id'], (plain(item['title']), '', ''))[0]
 
 
 def expected(item):
+    if item.get('execution') == 'read_only_computation':
+        return plain(item['expected'])
     if item.get('kind', '采集') != '采集' and item['id'] in {'task', 'source_tests'}:
         return plain(item['expected'])
     return CHECKS.get(item['id'], ('', '', ''))[1] or plain(item['expected'])
@@ -77,6 +83,8 @@ def expected(item):
 def action(item):
     if item.get('recommended_action'):
         return item['recommended_action']
+    if item.get('execution') == 'read_only_computation':
+        return plain(item['action'])
     if item.get('kind', '采集') != '采集' and item['id'] in {'task', 'source_tests'}:
         return plain(item['action'])
     return CHECKS.get(item['id'], ('', '', plain(item['action'])))[2]

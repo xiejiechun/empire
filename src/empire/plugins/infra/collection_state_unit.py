@@ -1,5 +1,6 @@
 """Locked, bounded project-state access for datasets declaring security units."""
 import json
+import re
 from datetime import UTC, datetime
 
 from sqlalchemy import text
@@ -11,7 +12,14 @@ FIELDS = ('contract_version', 'progress', 'manifest')
 
 
 def unit_path(unit):
-    unit_identity(unit)
+    if isinstance(unit, str) and re.fullmatch(r'[0-9]{4}-[0-9]{2}-[0-9]{2}\|(SH|SZ|BJ)', unit):
+        from datetime import date
+        date.fromisoformat(unit[:10])
+    elif isinstance(unit, str) and re.fullmatch(r'[0-9]{6}\.(SH|SZ|BJ)', unit):
+        market = unit[-2:]
+        unit_identity(market + ':' + unit[:6])
+    else:
+        unit_identity(unit)
     return '$.units.' + json.dumps(unit)
 
 

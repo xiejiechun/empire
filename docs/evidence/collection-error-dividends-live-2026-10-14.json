@@ -1,0 +1,84 @@
+{
+  "checked_at": "2026-10-14T15:57:21.918175+08:00",
+  "source": {
+    "securities": 5580,
+    "rows": 56145,
+    "source_sha256": "5b579748d4bdd1ee3494fd332856ab482356b6150df4246cc04d4a6abc9e8cf2"
+  },
+  "result": {
+    "batch_id": "68aa766ec83846568f4fdda96b5a87c2",
+    "pages": 5581,
+    "collected": 56145,
+    "units": 5580
+  },
+  "network": {
+    "proxy_requests": 631
+  },
+  "stats": {
+    "status": "complete",
+    "collected": 56145,
+    "download_item_name": "证券",
+    "download_window_limit": 7,
+    "download_buffer_capacity": 21,
+    "download_concurrency": 0,
+    "download_pending_pages": 0,
+    "download_ready_pages": 0,
+    "download_failed_pages": 0,
+    "download_buffer_limited": false,
+    "download_wait_reason": "idle",
+    "history_discovery_securities": 1,
+    "total_report_periods": 629,
+    "downloaded_report_periods": 629,
+    "error": "",
+    "current_report_period": "2026-10-14",
+    "failed_units": 0,
+    "queued_records": 56145,
+    "continuous_collected": 56145,
+    "processed_units": 5580,
+    "current_security": "SZ:302132",
+    "pages": 5581,
+    "total_units": 5580
+  },
+  "sql_actual": {
+    "units": 5580,
+    "count": 56147,
+    "scope_hash": "50ff0019c9e06f2028166251d906afe158c617f7d4664b52bf959391f4c8fbd8",
+    "digest": "1bebc800c3786c52cc52f6a1a4efa4db53950ecf6ce060a7bf9de7ce36999e2a"
+  },
+  "source_sql_equal": false,
+  "fresh": true,
+  "detail": "正式查询 56147 条 / 5580 个证券；完整来源集合未证实或不匹配",
+  "pending_stream": 0,
+  "checks": [
+    {
+      "criterion": "fields",
+      "status": "fail",
+      "detail": "正式查询 56147 条 / 5580 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "keys",
+      "status": "fail",
+      "detail": "正式查询 56147 条 / 5580 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "coverage",
+      "status": "fail",
+      "detail": "正式查询 56147 条 / 5580 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "quality",
+      "status": "fail",
+      "detail": "正式查询 56147 条 / 5580 个证券；完整来源集合未证实或不匹配"
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "detail": "SQL / 匹配的只读可信摘要证明最近三日内核验"
+    },
+    {
+      "criterion": "temporal",
+      "status": "unknown",
+      "detail": "按来源日期保存；缺失日期保持未知，不作为公告前信号；详见增发送配说明"
+    }
+  ]
+}

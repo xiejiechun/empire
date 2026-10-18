@@ -1,19 +1,82 @@
 """Seven actual registered contracts: source → Redis → shared archiver → query."""
 import copy
 import os
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
+from unittest.mock import AsyncMock
 from uuid import uuid4
 
+import httpx
 import pytest
 from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
+from empire.core.time import CHINA
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
 from empire.plugins.datasets.intraday import identity
 from empire.plugins.datasets.kaipanla_products import ProductDataset
+from tests.prefetch_source import prefetch_http
 from tests.test_kaipanla_products import business_row
+
+
+async def test_listing_supplement_source_to_query_pending_and_later_listed(monkeypatch):
+    from tests.test_kaipanla_products import source
+    cfg = copy.deepcopy(load_config())
+    cfg['redis']['namespace'] = 'empire:test:' + uuid4().hex
+    manager = build_manager(cfg)
+    store = None
+    newly_listed = False
+    calls = []
+    tomorrow = (datetime.now(CHINA).date() + timedelta(days=1)).isoformat()
+    stocks = [dict(code=code, market=market, name='样本') for code, market in
+              [('001381', 'SZ'), ('000001', 'SZ'), ('689009', 'SH'), ('920157', 'BJ')]]
+    try:
+        await manager.start('collector.kaipanla_quote')
+        c = manager.registry.get('collector.kaipanla_quote')
+        q = c.query
+        store = manager.registry.get('redis.store')
+        q.plan = AsyncMock(return_value=(stocks, [date(2021, 1, 4)]))
+        q.suspension_plan = AsyncMock(return_value={s['code']+'.'+s['market']:set() for s in stocks})
+        async def request(method, url, **options):
+            if 'eastmoney.com' in url:
+                selected = options['params']['filter']
+                code, market, listed, state = '000001', 'SZ', '1991-04-03', '0'
+                if '001381' in selected:
+                    code, listed, state = '001381', '2021-01-04' if newly_listed else None, '0' if newly_listed else '9'
+                elif '689009' in selected:
+                    code, market, listed = '689009', 'SH', '2020-10-29'
+                elif '920157' in selected:
+                    code, market, listed, state = '920157', 'BJ', tomorrow, '9'
+                return httpx.Response(200, json=dict(success=True, result=dict(count=1,pages=1,data=[
+                    dict(SECUCODE=code+'.'+market,SECURITY_CODE=code,LISTING_DATE=listed+' 00:00:00' if listed else None,LISTING_STATE=state)])))
+            code = options['attempt_options']()['data']['StockID']
+            calls.append(code)
+            return httpx.Response(200, json={**source('quote'), 'code': code})
+        c.http = prefetch_http(request=request)
+        result = await c.execute(baseline_revision=await c.checkpoint_revision())
+        assert result['phase'] == 'complete' and result['unlisted_without_date'] == 1
+        assert set(calls) == {'000001', '689009'}
+        for code, market in [('000001','SZ'),('689009','SH')]:
+            assert (await q.day(market,code,'2021-01-04'))['data']['data'] == business_row('quote')['data']
+        assert await q.day('SZ','001381','2021-01-04') is None
+        assert await q.day('BJ','920157','2021-01-04') is None
+        assert await store.client.xlen(store.stream) == 0
+        newly_listed = True
+        result = await c.execute(baseline_revision=await c.checkpoint_revision())
+        assert result['phase'] == 'complete' and result['unlisted_without_date'] == 0
+        assert await q.day('SZ','001381','2021-01-04') is not None
+        assert await store.client.xlen(store.stream) == 0
+    finally:
+        await manager.shutdown()
+        if store:
+            from empire.plugins.infra.redis_store import create_client
+            client = create_client(cfg['redis'])
+            keys = [k async for k in client.scan_iter(match=cfg['redis']['namespace']+':*')]
+            if keys:
+                assert all(k.startswith(cfg['redis']['namespace']+':') for k in keys)
+                await client.delete(*keys)
+            await client.aclose()
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get('EMPIRE_INTEGRATION') != '1', reason='Set EMPIRE_INTEGRATION=1 explicitly')]

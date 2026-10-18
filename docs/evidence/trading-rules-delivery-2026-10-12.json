@@ -1,0 +1,93 @@
+{
+  "checked_at": "2026-10-12T11:34:08.373159+08:00",
+  "scope": "Registered reviewed documents only; not all historical A-share rules",
+  "live_evidence": "docs/evidence/trading-rules-live-2026-10-12.json",
+  "source_sql_full_sets_equal": true,
+  "actual_parameters": 66,
+  "saved_interval_seconds": 259200,
+  "saved_schedule_checked": true,
+  "pending_stream_after_live": 0,
+  "lifecycle": {
+    "initialization": "Validate registered source sets then queue a complete batch and await archive",
+    "maintenance": "Recheck registered documents and exchange directories; new semantics require contract review",
+    "interruption": "Unqueued round re-read; queued round acknowledged before completion",
+    "redis_loss": "Re-read current registered sources and SQL; no durable Redis recovery promise"
+  },
+  "integrity": {
+    "full_sets": "All seven source parameter and citation collections match formal SQL snapshots",
+    "failure_checkpoint": "Validation and SQL failures do not advance successful checkpoints, verified in isolated integration",
+    "source_to_query": "Minimal source bytes, decoder, Redis, unified SQL archive and formal query tested",
+    "development_vs_actual": "Test passes and actual supported coverage reported separately",
+    "per_batch_wait": "Not applicable: one bounded complete batch per rule project; only then awaits archive"
+  },
+  "tests": {
+    "specialized_passed": 25,
+    "isolated_archive_passed": 28,
+    "registrations_passed": 59,
+    "full_release_passed": 2219,
+    "skipped": 5
+  },
+  "release_evidence": "docs/evidence/trading-rules-release-2026-10-12.json",
+  "executable_sha256": "73a5e8d65f52f8c53a1de77c5b838b7e7f2160d182fafd258cf5e23ebbc2431c",
+  "config_preserved": true,
+  "config_sha256": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+  "doctor_working_directory": "D:/project/empire/build",
+  "production_mysql_and_redis_connected": true,
+  "real_desktop": {
+    "visible_exe": true,
+    "pages": [
+      {
+        "name": "涨跌幅规则记录",
+        "count": 12,
+        "citation_visually_verified": true
+      },
+      {
+        "name": "最小买卖数量规则",
+        "count": 11,
+        "query_visible": true
+      },
+      {
+        "name": "交易时段规则",
+        "count": 19,
+        "query_visible": true
+      },
+      {
+        "name": "买入后何时能卖的规则",
+        "count": 4,
+        "query_visible": true
+      },
+      {
+        "name": "最小价格变动规则",
+        "count": 4,
+        "query_visible": true
+      },
+      {
+        "name": "印花税税率记录",
+        "count": 4,
+        "query_visible": true
+      },
+      {
+        "name": "过户费收费记录",
+        "count": 12,
+        "query_visible": true
+      }
+    ],
+    "saved_schedule": "259200 seconds after completion; fee next run 2026-10-15 10:42:32",
+    "screenshots": [
+      "build/trading-rules-desktop-limit.jpg",
+      "build/trading-rules-desktop-fee.jpg",
+      "build/trading-rules-desktop-schedule.jpg",
+      "build/trading-rules-desktop-preparation.jpg"
+    ],
+    "preparation_visibly_reports_fee_unavailable": true
+  },
+  "missing": [
+    "Numeric T+1 settlement basis",
+    "STAR order increment basis",
+    "Current complete ChinaClear fee table (2022 Xinhua policy report archived)",
+    "Earlier exchange history and Beijing exchange trading rules",
+    "Complete new-tax-policy directory discovery"
+  ],
+  "error_cleanup": "No Redis rule error record used to repair code; no existing error list cleared",
+  "isolated_mysql_shutdown": true
+}

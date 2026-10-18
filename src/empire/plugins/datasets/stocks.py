@@ -14,6 +14,7 @@ from empire.core.time import mysql_time
 
 DATASETS = {"stock.universe.start", "stock.universe.page", "stock.universe.complete"}
 FINGERPRINT_NAMESPACE = "stocks"
+FINGERPRINT_SOURCE = 'current'
 FINGERPRINT_VERSION = ArchiveVersion(("china", "snapshot"), observed_index=0)
 
 
@@ -133,6 +134,9 @@ def assemble(records: list[dict], *, include_rows: bool = True) -> dict | None:
 def write(connection, envelope, data: dict) -> dict:
     require_fixed_source("stock", envelope.source)
     latest = data["archive_state"].get("version")
+    current = current_directory(connection, data['archive_namespace'], lock=True) if 'archive_namespace' in data else {}
+    if current.get('version') and (not latest or current['version'] > latest):
+        latest = current['version']
     incoming = [data["started_at"].isoformat(timespec="microseconds"), data["snapshot_id"]]
     if latest and incoming <= latest:
         return {"status": "replayed" if data["snapshot_id"] == latest[1] else "superseded",
@@ -143,7 +147,7 @@ def write(connection, envelope, data: dict) -> dict:
     incoming = {row["unified_code"]: {k: row[k] for k in ("unified_code", "name")} for row in data["rows"]}
     if {row["unified_code"]: dict(row) for row in previous} == incoming:
         return {"status": "complete", "row_count": len(data["rows"]), "written_count": 0,
-                "confirmed": ["current"]}
+                "confirmed": ["current"], 'publication': current.get('publication')}
     # Both removal and insertion are inside MySQLPlugin's single InnoDB transaction.
     connection.execute(text("DELETE FROM stock"), data)
     insert_rows(connection, data)
@@ -176,5 +180,18 @@ def archive_state(envelope, data, outcome, previous):
     return {"version": [data["started_at"].isoformat(timespec="microseconds"), data["snapshot_id"]],
             "progress": {**snapshot, "status": "complete", "expected_count": data["expected_count"],
                          "error_text": ""},
-            "publication": snapshot if outcome["written_count"] or not previous.get("publication")
-            else previous["publication"]}
+            "publication": (snapshot if outcome["written_count"] else
+                            outcome.get('publication') or previous.get('publication') or snapshot)}
+
+
+def current_directory(connection, namespace, *, lock=False):
+    records = connection.execute(text('SELECT source,payload FROM collection_state '
+        'WHERE namespace=:namespace AND dataset=\'stocks\' '
+        'AND source IN (\'sina\',\'ths\')' + (' FOR UPDATE' if lock else '')),
+        {'namespace': namespace}).mappings().all()
+    values = []
+    for row in records:
+        value = json.loads(row['payload']) if isinstance(row['payload'], str) else row['payload']
+        if value.get('version'):
+            values.append({**value, 'source': row['source']})
+    return max(values, key=lambda item: item['version'], default={})

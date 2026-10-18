@@ -19,7 +19,7 @@ KINDS = {
     'additional_issues': ('增发', 'additional_issue', 'tdx-additional-issues'),
     'rights_issues': ('配股', 'rights_issue', 'tdx-rights-issues'),
 }
-SCHEMA_VERSIONS = {'dividends': 2, 'additional_issues': 3, 'rights_issues': 1}
+SCHEMA_VERSIONS = {'dividends': 3, 'additional_issues': 3, 'rights_issues': 1}
 DIVIDEND_COLUMNS = ['fhbgq', 'T013', 'T014', 'szzs', 'T015', 'ygrq', 'gqdjr', 'cqcxr',
                     'fajd', 'T006', 'T010', 'T012', 'T009']
 ISSUE_COLUMNS = ['sc', 'code', 'name', 'T097', 'T005', 'T039', 'T040', 'T048', 'T037',
@@ -88,7 +88,8 @@ def source_row(kind, row, stock=None):
         # TDX can return parallel payouts on the same report/announcement dates.
         # Amounts distinguish source plans; never arbitrarily select or add them.
         identity = [base['market'], base['code'], data['report_date'], data['announcement_date'],
-                    data['cash_per_share'], data['bonus_per_share'], data['transfer_per_share']]
+                    data['cash_per_share'] or '0', data['bonus_per_share'] or '0',
+                    data['transfer_per_share'] or '0']
         event_date = data['ex_date'] or data['report_date']
     else:
         base = security({0: 'SZ', 1: 'SH', 2: 'BJ'}.get(row['sc']), row['code'], row['name'])

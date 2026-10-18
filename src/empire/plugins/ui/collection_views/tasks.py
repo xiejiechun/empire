@@ -7,11 +7,12 @@ from empire.contracts.ui import NavigationContext
 from empire.plugins.ui.common import hint, update_options
 
 from .base import CollectionView
+from .task_batch import TaskBatch
 from .task_layout import TaskLayout
 from .task_runtime import render_runtime
 
 
-class TasksPage(TaskLayout, CollectionView):
+class TasksPage(TaskBatch, TaskLayout, CollectionView):
     section = "tasks"
     build_view = TaskLayout._tasks_page
 
@@ -33,10 +34,8 @@ class TasksPage(TaskLayout, CollectionView):
     def apply_navigation_context(self, context: NavigationContext):
         if not context.task_id:
             return
-        if self.focus_task_id is None:
-            self.focus_return_offset = self.offset
         self.focus_task_id = context.task_id
-        self.focus_notice.setText(f"已从数据页面定位采集任务：{context.task_id}。原筛选和分页保持不变。")
+        self.focus_notice.setText(f"已从数据页面定位采集任务：{context.task_id}。原筛选保持不变。")
         self.focus_notice.show()
         self.clear_focus_button.show()
         self.focus_panel.show()
@@ -51,7 +50,6 @@ class TasksPage(TaskLayout, CollectionView):
         if self.focus_task_id is None:
             return
         self.focus_task_id = None
-        self.offset = self.focus_return_offset
         self.focus_notice.hide()
         self.clear_focus_button.hide()
         self.focus_panel.hide()
@@ -88,12 +86,16 @@ class TasksPage(TaskLayout, CollectionView):
 
     def _policy(self):
         route_mode = self.route_mode.currentData()
-        return {"enabled": self.enabled.isChecked(), "mode": self.mode.currentData(),
+        policy = {"enabled": self.enabled.isChecked(), "mode": self.mode.currentData(),
                 "interval_seconds": self.interval.value(),
                 "daily_time": self.daily.time().toString("HH:mm"),
                 "request_retries": self.retries.value(),
                 "use_proxy": route_mode != "direct",
                 "proxy_fallback": route_mode == "proxy_fallback"}
+        job = self.selected()
+        if job and 'archived' in job['policy']:
+            policy['archived'] = job['policy']['archived']
+        return policy
 
     def select_job(self):
         job = self.selected()
@@ -179,7 +181,13 @@ class TasksPage(TaskLayout, CollectionView):
         if job:
             self.submit("configure", job["id"], self._policy())
 
+    def toggle_archive(self):
+        job = self.selected()
+        if job:
+            self.submit('set_archived', job['id'], not job['policy'].get('archived', False))
+
     def _render_job_detail(self, job):
+        self.task_rules.show_job(job, self.shell.cfg)
         self.task_name.setText(job["name"])
         self.task_name.setToolTip(job['id'])
         self.fresh_button.setToolTip(job.get("fresh_description", "创建新批次；已归档数据保留。"))
@@ -191,11 +199,14 @@ class TasksPage(TaskLayout, CollectionView):
         message = self.operation_feedback.text()
         self.operation_feedback.setVisible(bool(message) and message != "采集操作使用已保存的设置；暂停后保留断点。")
         ready = self.data is not None and self.action is None
+        self.update_batch_buttons(ready)
         for button in self.buttons:
             button.setEnabled(ready)
         job = self.selected()
         for button in self.run_buttons:
-            button.setEnabled(bool(ready and job and job["policy"]["enabled"] and not job["active"]))
+            button.setEnabled(bool(ready and job and not job['policy'].get('archived') and job["policy"]["enabled"] and not job["active"]))
+        self.archive_button.setEnabled(bool(ready and job))
+        self.archive_button.setText('还原任务' if job and job['policy'].get('archived') else '归档任务')
         self.pause_button.setEnabled(bool(ready and job and (job["policy"]["enabled"] or job["active"])))
         self.save_button.setEnabled(bool(ready and job and self.loaded_id in self.job_drafts))
         self.reset_button.setEnabled(bool(ready and job and self.loaded_id in self.job_drafts))
@@ -215,21 +226,16 @@ class TasksPage(TaskLayout, CollectionView):
         self.task_menu.render_jobs(jobs, self.focus_task_id or self.loaded_id, bool(self.focus_task_id))
         self.select_job()
 
-    @property
-    def pager(self):
-        return self.task_pager
-
     def initialize_state(self):
         self._task_layout_ready = False
         self.loaded_id = None
         self.job_drafts, self.job_baselines = {}, {}
         self.focus_task_id = None
-        self.focus_return_offset = 0
 
     def _query_args(self):
         return ("tasks", self.task_search.text(), self.task_category.currentData(),
                 self.task_source.currentData(), self.task_status.currentData(),
-                0 if self.focus_task_id else self.offset, 25, "", self.focus_task_id or "")
+                0, 25, "", self.focus_task_id or "")
 
     def summary_text(self):
         jobs = self.data["jobs"]
@@ -237,12 +243,17 @@ class TasksPage(TaskLayout, CollectionView):
         prefix = "已定位关联任务 · " if self.data.get("focused_task_id") else ""
         return (prefix + f"{counts.get('total', len(jobs))} 个采集任务 · "
                 f"{counts.get('running', sum(bool(j['active']) for j in jobs))} 个执行中 · "
-                f"{counts.get('error', 0)} 个失败 · {counts.get('disabled', 0)} 个停用")
+                f"{counts.get('error', 0)} 个失败 · {counts.get('source_gap', 0)} 个来源缺口 · "
+                f"{counts.get('disabled', 0)} 个停用 · {counts.get('archived', 0)} 个归档")
 
     def action_feedback(self, method):
+        if method == 'batch':
+            return self.batch_feedback
         return self.task_feedback if method == "configure" else self.operation_feedback
 
     def apply_action_result(self, method, args, text):
+        if method == 'batch':
+            return self.batch_result(self.action.result())
         if method == "configure":
             ident, policy = args
             self.job_baselines[ident] = deepcopy(policy)

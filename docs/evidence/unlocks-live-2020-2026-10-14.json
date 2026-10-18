@@ -1,0 +1,143 @@
+{
+  "checked_at": "2026-10-13T17:13:44.380639+00:00",
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "network": {
+    "proxy_requests": 325
+  },
+  "units": {
+    "2020-01-01|SH": {
+      "count": 95,
+      "details": 3001,
+      "digest": "c1590c5d3a7df160b5c730c160414d4af275fb4606e6741844f14a7f556712b5"
+    },
+    "2020-01-01|SZ": {
+      "count": 115,
+      "details": 734,
+      "digest": "330be3f50a8346049c44f4d7796356ce416262934b97bfb12b0ff246c49ebc3e"
+    },
+    "2020-01-01|BJ": {
+      "count": 0,
+      "details": 0,
+      "digest": "643d5437104296e21d906ecb15b2c96ad278f20cfc4af53b12bb6069bd853726"
+    },
+    "2020-02-01|SH": {
+      "count": 42,
+      "details": 621,
+      "digest": "03ad60756458f12c1d16f62c778a0f61954b43304a3cbde73e5eaf434485c556"
+    },
+    "2020-02-01|SZ": {
+      "count": 77,
+      "details": 577,
+      "digest": "be770a5fbcf4108d334816024f1c21fc1e2bd25d6d574a89ed8cea0678a10520"
+    },
+    "2020-02-01|BJ": {
+      "count": 0,
+      "details": 0,
+      "digest": "643d5437104296e21d906ecb15b2c96ad278f20cfc4af53b12bb6069bd853726"
+    }
+  },
+  "passed": true,
+  "representative_parent": {
+    "unified_code": "600740.SH",
+    "unlock_date": "2020-01-31",
+    "reason_code": "10000203",
+    "name": "山西焦化",
+    "industry": "焦炭加工",
+    "reason": "非公开发行限售",
+    "shares": "83879400",
+    "total_shares": "1516048020",
+    "group_key": "d852bf7ac518b9990ff1793fab1f33abe2144c0c8a7fb32072f1e799a4a516d2",
+    "occurrence": 1,
+    "record_key": "0274ce24260a3366b7b6afb8c8e5ef4955b0da6d1971c775a517875c36c5af2e",
+    "detail_status": "present",
+    "detail_count": 4
+  },
+  "representative_detail": {
+    "group_key": "19d25a455d76f30fc912df824eea6e0d83187e04880d857f075295715b1973f0",
+    "unified_code": "603739.SH",
+    "unlock_date": "2020-01-16",
+    "reason_code": "10000201",
+    "holder": "杨碧涛",
+    "reason": "首发、公开增发网下配售股份",
+    "shares": "145000",
+    "occurrence": 1,
+    "record_key": "0005023649a41a5a982760766bbbef16779d91311715567061002c9c129cb775"
+  },
+  "audit": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "核验210条列表；必需字段缺失0；来源空明细组0",
+      "blocking": true
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "列表事实与共享明细分别核对业务键集合及正文摘要",
+      "blocking": true
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "完整月份、三市场及最终范围集合证明核验",
+      "blocking": true
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "股数精确换算；并列列表保留；共享明细不重复计数，未知不填零",
+      "blocking": true
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "匹配完整范围的SQL或可信摘要确认须在3天内",
+      "blocking": true
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "来源没有公告可用日期；解禁日期不能证明历史信号已公开",
+      "blocking": false
+    }
+  ],
+  "cursor": {
+    "phase": "complete",
+    "start": "2020-01-01",
+    "end": "2020-02-01",
+    "index": 2,
+    "market_index": 0,
+    "response_hash": "",
+    "page": 7,
+    "collected": 329,
+    "details": 4933,
+    "rolling": "038752d28ad5b17cb024d29f485500776675eeff4d2097bc9bc6091dec0f39fe",
+    "contract": 1,
+    "batch_id": "c7fe63f5969f45e18bd78df59e096497",
+    "force": true,
+    "review_index": 1
+  },
+  "pending_stream": 0,
+  "errors": {
+    "revision": "0",
+    "total": 0,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": []
+  },
+  "query_sample": {
+    "list_count": 1,
+    "detail_count": 4
+  },
+  "saved_default": {
+    "enabled": false,
+    "mode": "daily",
+    "interval_seconds": 86400,
+    "daily_time": "18:00",
+    "request_retries": 2
+  }
+}

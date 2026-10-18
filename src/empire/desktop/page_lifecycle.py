@@ -5,15 +5,15 @@ from collections import OrderedDict
 from concurrent.futures import Future
 from typing import Any
 
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QObject, QTimer
 from PySide6.QtWidgets import QScrollArea, QStackedWidget, QWidget
 
 
-def _owners(page: QWidget) -> list[QWidget]:
-    return [page, *page.findChildren(QWidget)]
+def _owners(page: QWidget) -> list[QObject]:
+    return [page, *page.findChildren(QObject)]
 
 
-def _clear_cancelled_references(owner: QWidget, cancelled: set[Future[Any]]) -> None:
+def _clear_cancelled_references(owner: QObject, cancelled: set[Future[Any]]) -> None:
     """Detach cancelled read futures; mutation futures are never passed here."""
     for name, value in vars(owner).items():
         if isinstance(value, Future) and value in cancelled:
@@ -35,7 +35,7 @@ def deactivate_page(page: QWidget) -> None:
             timer.stop()
     page._empire_page_timers = timers
     for owner in _owners(page):
-        scope = getattr(owner, "query_scope", None)
+        scope = getattr(owner, "query_scope", None) or getattr(owner, 'scope', None)
         if scope is not None:
             _clear_cancelled_references(owner, set(scope.cancel_all()))
     hook = getattr(page, "page_deactivated", None)

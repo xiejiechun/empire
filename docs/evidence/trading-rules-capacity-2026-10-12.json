@@ -1,0 +1,105 @@
+{
+  "ddl_scopes": {
+    "trading_rule_value": "bb7aac826b4644da861359d444478562b898e937f17bb759678ce277076bc6a2",
+    "trading_rule_citation": "6de4e97567f936aff1d6b3fe4929d5b9b2a03b5822c8cd76a037aa4dde1237d2"
+  },
+  "bindings": {
+    "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
+    "src/empire/contracts/rule_review.py": "e6fd514727b443cfbab1fdee6aa557e653d695e16b4f35917ec497f27c954e89",
+    "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
+    "src/empire/plugins/datasets/trading_rules.py": "2ef592e1f8bf20d0cf7813eb9cfb272d31216b7d1f0408d6ae4a007320331448",
+    "src/empire/plugins/data/trading_rules.py": "afbce0932e5cb93cc50f8fd35eebb85d4c46504eab482a4de1439871689d50b8",
+    "scripts/measure_trading_rules.py": "7a63faed60c09c1aca544782bf09ca1a2beedf57741f35eb4f553884f784505d"
+  },
+  "measurements": {
+    "import_seconds": 0.09901270002592355,
+    "page_p95_ms": 1.952200022060424,
+    "detail_p95_ms": 0.38350000977516174,
+    "coverage_p95_ms": 21.758300019428134,
+    "allocated_bytes": 12763136
+  },
+  "limits": {
+    "page_p95_ms": 200,
+    "detail_p95_ms": 200,
+    "coverage_p95_ms": 500,
+    "import_seconds": 5,
+    "allocated_bytes": 67108864
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "actual_contract_rows": 77,
+    "stress_rows": 10000,
+    "cache": "first query unforced; following repetitions hot",
+    "synthetic": true
+  },
+  "reviewed_tradeoffs": "当前已审核参数走正式映射且重复零DML；10000行仅做隔离未来历史索引压力实验，不宣称当前来源有这些记录。单项准备扫描1001行，超过1000拒绝完整；规则新版本需显式审核契约。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "trading_rule_value",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": "ix_rule_kind_market,ix_rule_effective",
+        "key": "PRIMARY",
+        "key_len": "64",
+        "ref": null,
+        "rows": 400,
+        "filtered": 50.0,
+        "Extra": "Using where"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "trading_rule_citation",
+        "partitions": null,
+        "type": "ALL",
+        "possible_keys": null,
+        "key": null,
+        "key_len": null,
+        "ref": null,
+        "rows": 30,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "v",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_rule_kind_market,ix_rule_effective",
+        "key": "ix_rule_kind_market",
+        "key_len": "32",
+        "ref": "const",
+        "rows": 5067,
+        "filtered": 100.0,
+        "Extra": "Using filesort"
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 68200
+    },
+    "detail": {
+      "returned": 1,
+      "read_bytes": 1119
+    },
+    "coverage": {
+      "returned": 1001,
+      "read_bytes": 341341
+    }
+  },
+  "initial_dml": 107,
+  "duplicate_dml": 0,
+  "cleanup": "UUID-owned isolated test database dropped in finally",
+  "passed": true
+}

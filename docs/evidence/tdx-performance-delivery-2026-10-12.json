@@ -1,0 +1,395 @@
+{
+  "checked_at": "2026-10-12T15:25:16.976061+00:00",
+  "release": {
+    "executable_sha256": "7f8997dc3debf400d48b47840b90d20630dd402911cd10817197864063372f49",
+    "manifest": {
+      "version": "0.1.0",
+      "commit": "a79f789e15de70d22e55a5f850f7ce3ec83c6009",
+      "dirty": true,
+      "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+      "dependency_count": 42,
+      "dependency_report_sha256": "a53183a493a68313f0c32dd6299c55bbfe5261abc1e107517726db34c8c4a980",
+      "built_at_utc": "2026-10-12T15:07:53Z",
+      "python": "3.12.9",
+      "pyinstaller": "6.22.3"
+    },
+    "passed_tests": 2355,
+    "skipped_tests": 5,
+    "portable_distribution": {
+      "chinese_space_path": true,
+      "packaged_smoke": true,
+      "first_run_prepared_config": true,
+      "config_recheck": true
+    }
+  },
+  "source_and_actual": {
+    "policy": {
+      "use_proxy": true,
+      "proxy_fallback": true
+    },
+    "results": {
+      "earnings_forecast": {
+        "rows": 85,
+        "source_total": 85,
+        "message_bytes": [
+          4617,
+          9563,
+          5828
+        ],
+        "source_unit": "2026-09-30",
+        "sql_rows": 109063,
+        "checks": [
+          {
+            "criterion": "fields",
+            "status": "fail",
+            "blocking": true,
+            "measured": "核验109063条，必需字段缺失1条；源端可选空值保留"
+          },
+          {
+            "criterion": "keys",
+            "status": "pass",
+            "blocking": true,
+            "measured": "业务身份、正文及完整单元来源集合摘要比较"
+          },
+          {
+            "criterion": "coverage",
+            "status": "pass",
+            "blocking": true,
+            "measured": "完整单元及最终范围证明核验；历史撤回仍保留并暴露差异"
+          },
+          {
+            "criterion": "quality",
+            "status": "fail",
+            "blocking": true,
+            "measured": "金额元、比率百分数、户数整数；快报同比原口径并列保留"
+          },
+          {
+            "criterion": "freshness",
+            "status": "pass",
+            "blocking": true,
+            "measured": "SQL完整范围或与其内容匹配的可信缓存确认须在3天内"
+          },
+          {
+            "criterion": "temporal",
+            "status": "fail",
+            "blocking": false,
+            "measured": "不可确认信号可用日期15条；预约日期和股东统计日不代表公告时刻"
+          }
+        ],
+        "dates_after_version_observation": {
+          "announcement_date": 15
+        }
+      },
+      "earnings_quick": {
+        "rows": 4,
+        "source_total": 4,
+        "message_bytes": [
+          1216,
+          714,
+          714
+        ],
+        "source_unit": "2026-09-30",
+        "sql_rows": 53813,
+        "checks": [
+          {
+            "criterion": "fields",
+            "status": "pass",
+            "blocking": true,
+            "measured": "核验53813条，必需字段缺失0条；源端可选空值保留"
+          },
+          {
+            "criterion": "keys",
+            "status": "pass",
+            "blocking": true,
+            "measured": "业务身份、正文及完整单元来源集合摘要比较"
+          },
+          {
+            "criterion": "coverage",
+            "status": "pass",
+            "blocking": true,
+            "measured": "完整单元及最终范围证明核验；历史撤回仍保留并暴露差异"
+          },
+          {
+            "criterion": "quality",
+            "status": "pass",
+            "blocking": true,
+            "measured": "金额元、比率百分数、户数整数；快报同比原口径并列保留"
+          },
+          {
+            "criterion": "freshness",
+            "status": "pass",
+            "blocking": true,
+            "measured": "SQL完整范围或与其内容匹配的可信缓存确认须在3天内"
+          },
+          {
+            "criterion": "temporal",
+            "status": "fail",
+            "blocking": false,
+            "measured": "不可确认信号可用日期2条；预约日期和股东统计日不代表公告时刻"
+          }
+        ],
+        "dates_after_version_observation": {
+          "announcement_date": 2
+        }
+      },
+      "earnings_disclosure": {
+        "rows": 5572,
+        "source_total": 5572,
+        "message_bytes": [
+          173758,
+          217264,
+          26683
+        ],
+        "source_unit": "2026-09-30",
+        "sql_rows": 264807,
+        "checks": [
+          {
+            "criterion": "fields",
+            "status": "pass",
+            "blocking": true,
+            "measured": "核验264807条，必需字段缺失0条；源端可选空值保留"
+          },
+          {
+            "criterion": "keys",
+            "status": "pass",
+            "blocking": true,
+            "measured": "业务身份、正文及完整单元来源集合摘要比较"
+          },
+          {
+            "criterion": "coverage",
+            "status": "pass",
+            "blocking": true,
+            "measured": "完整单元及最终范围证明核验；历史撤回仍保留并暴露差异"
+          },
+          {
+            "criterion": "quality",
+            "status": "pass",
+            "blocking": true,
+            "measured": "金额元、比率百分数、户数整数；快报同比原口径并列保留"
+          },
+          {
+            "criterion": "freshness",
+            "status": "pass",
+            "blocking": true,
+            "measured": "SQL完整范围或与其内容匹配的可信缓存确认须在3天内"
+          },
+          {
+            "criterion": "temporal",
+            "status": "fail",
+            "blocking": false,
+            "measured": "不可确认信号可用日期0条；预约日期和股东统计日不代表公告时刻"
+          }
+        ],
+        "dates_after_version_observation": {
+          "actual_date": 0
+        }
+      },
+      "earnings_report": {
+        "rows": 5,
+        "source_total": 5,
+        "message_bytes": [
+          802,
+          1250,
+          648
+        ],
+        "source_unit": "2026-09-30",
+        "sql_rows": 303473,
+        "checks": [
+          {
+            "criterion": "fields",
+            "status": "pass",
+            "blocking": true,
+            "measured": "核验303473条，必需字段缺失0条；源端可选空值保留"
+          },
+          {
+            "criterion": "keys",
+            "status": "pass",
+            "blocking": true,
+            "measured": "业务身份、正文及完整单元来源集合摘要比较"
+          },
+          {
+            "criterion": "coverage",
+            "status": "pass",
+            "blocking": true,
+            "measured": "完整单元及最终范围证明核验；历史撤回仍保留并暴露差异"
+          },
+          {
+            "criterion": "quality",
+            "status": "pass",
+            "blocking": true,
+            "measured": "金额元、比率百分数、户数整数；快报同比原口径并列保留"
+          },
+          {
+            "criterion": "freshness",
+            "status": "pass",
+            "blocking": true,
+            "measured": "SQL完整范围或与其内容匹配的可信缓存确认须在3天内"
+          },
+          {
+            "criterion": "temporal",
+            "status": "fail",
+            "blocking": false,
+            "measured": "不可确认信号可用日期14952条；预约日期和股东统计日不代表公告时刻"
+          }
+        ],
+        "dates_after_version_observation": {
+          "announcement_date": 4
+        }
+      },
+      "holder_count": {
+        "rows": 24,
+        "source_total": 24,
+        "message_bytes": [
+          3542
+        ],
+        "source_unit": "000001.SZ",
+        "sql_rows": 225850,
+        "checks": [
+          {
+            "criterion": "fields",
+            "status": "pass",
+            "blocking": true,
+            "measured": "核验225850条，必需字段缺失0条；源端可选空值保留"
+          },
+          {
+            "criterion": "keys",
+            "status": "pass",
+            "blocking": true,
+            "measured": "业务身份、正文及完整单元来源集合摘要比较"
+          },
+          {
+            "criterion": "coverage",
+            "status": "pass",
+            "blocking": true,
+            "measured": "完整单元及最终范围证明核验；历史撤回仍保留并暴露差异"
+          },
+          {
+            "criterion": "quality",
+            "status": "pass",
+            "blocking": true,
+            "measured": "金额元、比率百分数、户数整数；快报同比原口径并列保留"
+          },
+          {
+            "criterion": "freshness",
+            "status": "pass",
+            "blocking": true,
+            "measured": "SQL完整范围或与其内容匹配的可信缓存确认须在3天内"
+          },
+          {
+            "criterion": "temporal",
+            "status": "fail",
+            "blocking": false,
+            "measured": "不可确认信号可用日期0条；预约日期和股东统计日不代表公告时刻"
+          }
+        ],
+        "dates_after_version_observation": {
+          "statistics_date": 0
+        }
+      }
+    },
+    "pending": 0,
+    "checked_at": "2026-10-12T22:34:23.146948+08:00",
+    "network": {
+      "proxy_requests": 5
+    },
+    "bindings": {
+      "src/empire/contracts/tdx_performance.py": "17bfc762a82e962b4af142b2b215003199ca53f97b78d150e11b0ae374980558",
+      "src/empire/plugins/collectors/tdx_performance.py": "0dc5cbfce4fea9d16810a738c817dee90dd2893d75280b23ddb40a37a0c5f576",
+      "src/empire/plugins/collectors/tdx_performance_source.py": "71ebae529223775143f686864ff20a16e91454b03e54722f3947a562e45407d9",
+      "src/empire/plugins/datasets/tdx_performance.py": "c2825ed9606d23728c7043fba66bce6c02bd02cd62c89edb904e56b2fc5ae4cc",
+      "src/empire/plugins/data/tdx_performance.py": "00e58a96346b9f5029803991e39a3be1b7a93b914d79b22a166d2249f00c4913"
+    },
+    "rule_revalidation": "最终契约重新核对全部SQL规范内容、身份和来源集合证明；真实最新报告期10000响应按最终契约验证。预告15/快报2/报告4条提前声明公告日，实际披露/统计日均无超过存储版本观测日的记录。"
+  },
+  "total_archived": 957006,
+  "capacity": "tdx-performance-capacity-2026-10-12.json",
+  "migration": "tdx-performance-schema-migration-2026-10-12.json",
+  "repairs": "tdx-performance-error-repair-2026-10-12.json",
+  "config_preserved": true,
+  "desktop": {
+    "status": "passed real visible packaged desktop inspection",
+    "working_directory": "C:/Windows",
+    "doctor_exit_code": 0,
+    "verified_pages": [
+      "earnings_disclosure",
+      "earnings_forecast",
+      "earnings_quick",
+      "earnings_report",
+      "holder_count"
+    ],
+    "rows_visible_each_page": 200,
+    "window_left_open": true,
+    "effective_default_schedules": {
+      "tdx-earnings-forecast": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "tdx-earnings-quick": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "tdx-earnings-disclosure": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "tdx-earnings-report": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "tdx-holder-count": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      }
+    }
+  },
+  "limitations": [
+    "预告601919.SH的2013年末预计正文源端为空，字段检查保留限制。",
+    "快报提前声明公告日、披露预约、户数无公布日、早期报告公告日期均限制历史信号用途。",
+    "报告声明季度范围，股东历史只保证来源可得范围，当前版本不回放历次修订。"
+  ],
+  "final_checks": {
+    "checked_at": "2026-10-12T15:24:25.585076+00:00",
+    "counts": {
+      "earnings_forecast": 109063,
+      "earnings_quick": 53813,
+      "earnings_disclosure": 264807,
+      "earnings_report": 303473,
+      "shareholder_count": 225850
+    },
+    "pending": 0,
+    "saved_task_overrides": [],
+    "owned_test_mysql": "normal shutdown after checking port and datadir"
+  },
+  "holder_history_capacity": "tdx-holder-history-capacity-2026-10-12.json",
+  "limited_numeric_precision_check": "tdx-performance-numeric-precision-2026-10-12.json"
+}

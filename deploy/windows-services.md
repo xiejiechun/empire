@@ -23,6 +23,8 @@
 
 ## 首次建表
 
+重要股东持股变动使用 `shareholder_change`；现有库通过 `scripts/create_shareholder_change_schema.py` 显式新增，正常关闭程序、待归档队列为0并核对原业务数量，启动不迁移。完整月份和市场的来源事实结构见[重要股东持股变动](../docs/tdx-shareholder-changes.md)。
+
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 -m empire init-db
 ```
@@ -73,3 +75,27 @@
 暂停恢复终止上市使用 `security_listing_event` 结构化事件表，纳入正式备份与恢复；每项目一条 `collection_state` 保存月份集合证明，不能只恢复事件表后冒充完整。既有库通过 `scripts/create_listing_event_schema.py` 正常停机、待归档清零后显式新增空表，核对已有业务不变；应用启动不维护。Redis丢失后依据SQL月份证明补缺，来源范围及日期限制见[暂停恢复终止上市](../docs/tdx-listing-status.md)。
 
 上市与发行资料使用 `stock_listing`，每证券保存一行类型化资料及有上限的历史沿革，纳入正式备份与恢复。既有库通过 `scripts/create_listing_schema.py` 显式新增表，维护前关闭 Empire 并排空待归档队列，核对已有业务不变；启动不建表。采集范围为当前沪深北股票池及已留存记录，不保证从未采集的退市证券完整覆盖，见 [上市与发行资料](../docs/ths-listings.md)。
+
+## 当前指数表
+
+`stock_index` 保存同花顺当前指数目录、网站分组和成员可用状态；`stock_index_member` 保存当前成员关系和可确定的统一证券身份。只通过 scripts/create_index_schema.py 在Empire正常关闭且待归档清零后显式新增，启动不建表；已有业务保持。通用单响应保存8MiB以容纳完整名单，公共缓冲及其他资源不变。
+
+`index_daily_price` 保存指数每日开高低收、成交量及成交额；`index_price_year` 保存年度日期集合与内容完整性证明。通过 scripts/create_index_price_schema.py 显式新增，启动不建表；采集使用同花顺 last.js 维护近期行情、YYYY.js 补齐历史年度，来源不支持的指数明确显示限制。
+
+`security_code_alias` 保存北交所官方新旧代码关系，按旧代码和统一证券键分别索引，不依赖当前股票名单。正常关闭Empire、待归档清零后通过scripts/create_security_alias_schema.py显式新增，再由scripts/import_bse_code_mapping.py统一入队归档完整官方表；启动不迁移，不改变已有采集配置或行情请求代码。
+
+实施ST/撤销ST使用`security_st_event`结构化共表，独立任务与归档状态；scripts/create_st_event_schema.py显式维护，启动不建表，详见docs/tdx-st-events.md。
+
+交易规则七项共用`trading_rule_value`及`trading_rule_citation`，通过scripts/create_rule_schema.py显式增量创建；采集默认3天，范围及未核实项见docs/trading-rules.md。
+
+股票回购保存在`stock_repurchase_plan`，通过scripts/create_repurchase_schema.py显式增量创建；程序启动不建表，现有业务与连接配置保持。每日18:00全量核验，网站间隔2000ms；回购完成不推断注销。
+
+通达信财报解读的 `earnings_forecast`、`earnings_quick`、`earnings_disclosure`、`earnings_report`、`shareholder_count` 由 scripts/init_tdx_performance.py 显式新增，启动不迁移。
+
+同花顺三项持有人采集使用 `holder_report` 与 `holder_member` 两表；已有库通过 scripts/create_holder_schema.py 显式新增，关闭桌面、队列零并核对已有业务，启动不迁移。参见[持有人设计](../docs/ths-holders.md)。
+
+大小非解禁列表与共享明细分别使用 `restricted_share_unlock`、`restricted_share_unlock_detail`、`restricted_share_unlock_industry`；显式维护入口 `scripts/create_unlock_schema.py`，正常关闭Empire及待归档队列归零后新增空表并核对原业务，启动不迁移。
+
+## 公司资本运作增量建表
+
+新增同花顺公司资本运作须正常关闭Empire，使用 `scripts/create_ths_capital_schema.py` 先核实、再显式 `--apply`；要求待归档为零，维护前后核对既有业务不变。新表为 `capital_funding`、`capital_project`、`capital_transaction`、`capital_equity_summary`、`capital_equity_position`、`capital_ipo`、`capital_encumbrance`、`capital_release`。启动不自动建表；任务默认每天18:30且停用，启用后全池逐证券核验。字段与限制见[专项说明](../docs/ths-capital.md)。

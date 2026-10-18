@@ -17,7 +17,7 @@ from empire.plugins.ui.catalog import DataCatalogPage  # noqa: E402
 from empire.plugins.ui.collection_views.tasks import TasksPage  # noqa: E402
 
 
-async def test_workspace_bounds_health_and_history_for_500_projects():
+async def test_workspace_returns_all_matching_tasks_and_bounds_history_for_500_projects():
     specs = [TaskContribution(f"job-{i:03}", f"任务 {i}", "collector", f"site-{i % 5}", "内容",
                             category=f"category-{i % 2}") for i in range(500)]
     control = CollectionControl(specs)
@@ -31,15 +31,18 @@ async def test_workspace_bounds_health_and_history_for_500_projects():
     control.http = SimpleNamespace(settings=AsyncMock(return_value=[]))
     result = await control.workspace("tasks", source="site-1", offset=25)
     assert result["total"] == 100 and result["counts"]["total"] == 500
-    assert len(result["jobs"]) == len(result["history"]) == len(calls) == 25
+    assert len(result["jobs"]) == len(result["history"]) == len(calls) == 100
+    assert result['offset'] == 0
     assert all(j["rate_group"] == "site-1" for j in result["jobs"])
-    assert len({j["id"] for j in result["jobs"]}) == 25
+    assert len({j["id"] for j in result["jobs"]}) == 100
     history = await control.workspace("history", project="job-001", offset=75)
     assert history["total"] == 100 and len(history["history"]) == 25
     assert all(h["task_id"] == "job-001" for h in history["history"])
     overview = await control.workspace("overview")
     assert len(overview["history"]) == 5 and not overview["jobs"]
-    assert len(calls) == 25  # No hidden collector health probes for overview or history.
+    assert len(calls) == 100  # No hidden collector health probes for overview or history.
+    unfiltered = await control.workspace('tasks')
+    assert len(unfiltered['jobs']) == len(unfiltered['history']) == 500
     empty = await control.workspace("tasks", query="not found", offset=9999)
     assert empty["jobs"] == [] and empty["offset"] == 0
     focused = await control.workspace(
@@ -127,7 +130,7 @@ def test_catalog_can_switch_between_already_visited_data_pages():
         app.processEvents()
 
 
-def test_task_draft_survives_page_change_and_empty_results_disable_actions():
+def test_task_draft_survives_filter_change_and_empty_results_disable_actions():
     app = QApplication.instance() or QApplication([])
     page = TasksPage(SimpleNamespace(runtime=CollectionRuntime(), cfg={}))
     page.timer.stop()
@@ -138,15 +141,15 @@ def test_task_draft_survives_page_change_and_empty_results_disable_actions():
         page.render()
         page.mode.setCurrentIndex(page.mode.findData("interval"))
         page.interval.setValue(37)
-        page.change_page(25)
+        page.task_search.setText('另一任务')
         assert not page.save_button.isEnabled()
         other = deepcopy(data)
         other["jobs"][0].update(id="other", name="另一任务")
-        other["offset"] = 25
         page.data = other
         page.render()
         page.data = deepcopy(data)
         page.render()
+        assert not hasattr(page, 'task_pager')
         assert page.interval.value() == 37 and page.save_button.isEnabled()
         empty = deepcopy(data)
         empty.update(jobs=[], total=0)

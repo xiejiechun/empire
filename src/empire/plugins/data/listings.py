@@ -14,7 +14,7 @@ from empire.contracts.listings import (
     date_warning,
     decode,
     digest,
-    unavailable_proof,
+    unusable_proof,
     validate,
 )
 from empire.contracts.plugin import PluginManifest
@@ -54,7 +54,7 @@ class ListingDataPlugin:
             stocks.append(dict(market=market, code=code, name=r['name']))
             unit = market + ':' + code
             proof = state.get('units', {}).get(unit, {})
-            if (not unavailable_proof(proof) and r['listing_date'] and re.fullmatch('[0-9a-f]{64}', r['content_hash'] or '')
+            if (not unusable_proof(proof) and r['listing_date'] and re.fullmatch('[0-9a-f]{64}', r['content_hash'] or '')
                     and r['contract_version'] == CONTRACT and proof.get('contract') == CONTRACT
                     and proof.get('digest') == r['content_hash']):
                 existing.add(market + ':' + code)
@@ -69,13 +69,13 @@ class ListingDataPlugin:
 
     async def list_records(self, code='', start='', end='', after=None, limit=200):
         import re
-        if not isinstance(code, str) or not re.fullmatch('[0-9]{0,6}', code) or type(limit) is not int or not 1 <= limit <= 200:
+        if not isinstance(code, str) or not re.fullmatch(r'(?:[0-9]{0,6}|[0-9]{6}\.(?:SH|SZ|BJ))', code) or type(limit) is not int or not 1 <= limit <= 200:
             raise ValueError('上市查询代码或上限无效')
         scope = PreparationScope.parse(dict(start=start, end=end))
         clauses, params = [], dict(limit=limit + 1)
         if code:
-            clauses.append('l.unified_code LIKE :code')
-            params['code'] = code + '%'
+            clauses.append('l.unified_code=:code' if '.' in code else 'l.unified_code LIKE :code')
+            params['code'] = code if '.' in code else code + '%'
         for day, op, key in ((scope.start, '>=', 'start'), (scope.end, '<=', 'end')):
             if day:
                 clauses.append('l.listing_date' + op + ':' + key)
@@ -92,17 +92,18 @@ class ListingDataPlugin:
         def read():
             with self.mysql.read_engine.begin() as conn:
                 state = read_state(conn, self.namespace, PROJECT, 'ths')
-                unavailable = {unit.split(':')[1] + '.' + unit.split(':')[0]
-                    for unit, proof in state.get('units', {}).items() if unavailable_proof(proof)}
+                unusable = {unit.split(':')[1] + '.' + unit.split(':')[0]: proof['availability']
+                    for unit, proof in state.get('units', {}).items() if unusable_proof(proof)}
                 values = conn.execute(text(f'SELECT {projection},s.name FROM {TABLE} l LEFT JOIN stock s USING(unified_code) '
                     + ('WHERE ' + ' AND '.join(clauses) if clauses else '')
                     + ' ORDER BY l.listing_date,l.unified_code LIMIT :limit'), params).mappings().all()
                 rows = [{k: str(v) if v is not None else None for k, v in r.items()} for r in values[:limit]]
                 for row in rows:
-                    row['detail_status'] = 'unavailable' if row['unified_code'] in unavailable else 'available'
+                    row['detail_status'] = unusable.get(row['unified_code'], 'available')
                 last = rows[-1] if rows else None
                 return dict(rows=rows, next=[last['listing_date'], last['unified_code']] if len(values) > limit else None,
-                    unavailable_count=sum(k.startswith(code) for k in unavailable))
+                    unavailable_count=sum(k.startswith(code) and v == 'unavailable' for k, v in unusable.items()),
+                    incomplete_count=sum(k.startswith(code) and v == 'incomplete' for k, v in unusable.items()))
         return await self.mysql.read(read)
 
     async def detail(self, security):
@@ -112,8 +113,10 @@ class ListingDataPlugin:
                 row = conn.execute(text(f'SELECT * FROM {TABLE} WHERE unified_code=:code'), {'code': security}).mappings().first()
                 market, code = split_unified_code(security)
                 proof = read_state(conn, self.namespace, PROJECT, 'ths').get('units', {}).get(market + ':' + code, {})
-                if unavailable_proof(proof):
-                    return dict(unified_code=security, detail_status='unavailable', source_status_code=10001,
+                if unusable_proof(proof):
+                    return dict(unified_code=security, detail_status=proof['availability'],
+                                source_status_code=proof['source_status_code'],
+                                **({'missing_fields': proof['missing_fields']} if proof['availability'] == 'incomplete' else {}),
                                 last_valid=decode(row) if row else None)
                 return decode(row) if row else None
         return await self.mysql.read(read)
@@ -125,7 +128,11 @@ class ListingDataPlugin:
                 stocks, _, proof = self._plan(conn)
                 state = read_state(conn, self.namespace, PROJECT, 'ths')
                 unavailable = {unit.split(':')[1] + '.' + unit.split(':')[0]
-                    for unit, unit_proof in state.get('units', {}).items() if unavailable_proof(unit_proof)}
+                    for unit, unit_proof in state.get('units', {}).items() if unusable_proof(unit_proof)
+                    and unit_proof['availability'] == 'unavailable'}
+                incomplete = {unit.split(':')[1] + '.' + unit.split(':')[0]
+                    for unit, unit_proof in state.get('units', {}).items() if unusable_proof(unit_proof)
+                    and unit_proof['availability'] == 'incomplete'}
                 expected = {s['code'] + '.' + s['market'] for s in stocks if not scope.codes or s['code'] in scope.codes}
                 if scope.codes:
                     # Stored retired identities remain queryable and selectable.
@@ -149,15 +156,15 @@ class ListingDataPlugin:
                     after = rows[-1]['unified_code']
                 missing = expected - actual
                 unknown = set(scope.codes) - {k[:6] for k in expected}
-                return expected, missing, unknown, invalid, proof, conflicts, unavailable & expected
-        expected, missing, unknown, invalid, proof, conflicts, unavailable = await self.mysql.read(read)
-        complete = bool(expected) and not missing and not unknown and not invalid and not unavailable
+                return expected, missing, unknown, invalid, proof, conflicts, unavailable & expected, incomplete & expected
+        expected, missing, unknown, invalid, proof, conflicts, unavailable, incomplete = await self.mysql.read(read)
+        complete = bool(expected) and not missing and not unknown and not invalid and not unavailable and not incomplete
         try:
             age = datetime.now(UTC) - datetime.fromisoformat(proof['refresh_started_at'])
             fresh = timedelta(0) <= age <= timedelta(days=8)
         except (ValueError, TypeError, KeyError):
             fresh = False
-        info = f'检查{len(expected)}证券；缺记录{len(missing)}，来源暂无资料{len(unavailable)}，未知证券{len(unknown)}，内容错误{len(invalid)}；来源成立日晚于上市日{conflicts}条（附加字段警告，保留原值）；当前池及已存记录，不包含从未采集的退市证券'
+        info = f'检查{len(expected)}证券；缺记录{len(missing)}，来源暂无资料{len(unavailable)}，来源缺上市日期{len(incomplete)}，未知证券{len(unknown)}，内容错误{len(invalid)}；来源成立日晚于上市日{conflicts}条（附加字段警告，保留原值）；当前池及已存记录，不包含从未采集的退市证券'
         return tuple(CheckEvidence(k, 'unknown' if k == 'coverage' and complete and not scope.codes
             else 'pass' if ok else 'fail', info + '；' + note, blocking=blocking)
             for k, ok, note, blocking in (

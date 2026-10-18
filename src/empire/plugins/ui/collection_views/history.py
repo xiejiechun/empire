@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
 
 from empire.core.redaction import redact
 from empire.plugins.ui.common import STATUS, Pager, accessible, elapsed, hint, rows, stamp, table
+from empire.plugins.ui.log_clear import LogClearBar
 
 from .base import CollectionView
 
@@ -48,7 +49,7 @@ class HistoryPage(CollectionView):
         self.history_filter = QComboBox()
         accessible(self.history_filter, "按运行结果筛选采集记录")
         for label, status in [("全部结果", ""), ("已完成", "complete"), ("失败", "error"),
-                              ("已暂停", "paused")]:
+                              ("已结束（来源缺口）", "source_gap"), ("已暂停", "paused")]:
             self.history_filter.addItem(label, status)
         self.history_filter.currentIndexChanged.connect(self.history_filters_changed)
         filters.addWidget(self.history_filter)
@@ -73,6 +74,9 @@ class HistoryPage(CollectionView):
         self.history_detail.setMaximumHeight(210)
         self.history_detail.setPlaceholderText("选择一条记录，查看结束时间、批次信息及完整错误原因。")
         layout.addWidget(self.history_detail)
+        self.log_clear = LogClearBar(self.shell, self.history_task, '采集记录',
+            'collection.control', 'clear_history', lambda project: (project,), self.filters_changed)
+        layout.addWidget(self.log_clear)
         return page
 
     def history_filters_changed(self):
@@ -153,6 +157,8 @@ class HistoryPage(CollectionView):
                          f"其中自动回退 {network.get('fallback_requests', 0)} 次")
         if error:
             lines.extend(["", "完整错误原因：", error])
+        elif record['status'] == 'source_gap':
+            lines.extend(['', '来源限制与补采：', redact(record.get('notice', ''), self.shell.cfg)])
         elif record["status"] == "paused":
             lines.extend(["", "已暂停并保留断点；启用任务并保存后，可以继续采集。"])
         elif record["status"] == "complete":

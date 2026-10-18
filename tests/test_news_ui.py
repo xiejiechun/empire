@@ -45,7 +45,7 @@ def test_news_page_discards_stale_results_and_keeps_plain_content():
         page.tick()
         assert page.total == 0
         assert runtime.requests[-1][0] == (
-            "news.query", "list_news", "黄金", 50, False, None, None, True)
+            "news.query", "list_news", "黄金", 50, False, None, None, True, "", "")
         runtime.requests[-1][1].set_result(result("黄金新闻"))
         page.tick()
         assert page.total == 1
@@ -55,7 +55,7 @@ def test_news_page_discards_stale_results_and_keeps_plain_content():
         page.copy_content()
         assert QApplication.clipboard().text() == "正文含 <b>纯文本</b>"
         page.important.setChecked(True)
-        assert runtime.requests[-1][0][-1] is True
+        assert runtime.requests[-1][0][4] is True
         pending = len(runtime.requests)
         shell.shutting_down = True
         page.reload()
@@ -84,13 +84,13 @@ def test_news_page_uses_stable_cursors_for_next_and_previous():
         assert page.next.isEnabled() and not page.previous.isEnabled()
         page.move(50)
         assert runtime.requests[-1][0] == (
-            "news.query", "list_news", "", 50, False, cursor, anchor, False)
+            "news.query", "list_news", "", 50, False, cursor, anchor, False, "", "")
         runtime.requests[-1][1].set_result(result(ident=49, total=None, anchor=anchor))
         page.tick()
         assert page.total == 120 and page.page == 1 and page.previous.isEnabled()
         page.move(-50)
         assert runtime.requests[-1][0] == (
-            "news.query", "list_news", "", 50, False, None, anchor, True)
+            "news.query", "list_news", "", 50, False, None, anchor, True, "", "")
     finally:
         page.close()
         page.deleteLater()

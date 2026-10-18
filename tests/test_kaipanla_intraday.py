@@ -121,6 +121,24 @@ async def test_two_days_queued_before_archive_confirmation():
     assert 'DeviceID' not in str(c.ingest.state)
 
 
+async def test_explicit_unlisted_without_date_does_not_block_listed_units_or_create_empty_rows():
+    c = collector()
+    pending = dict(market='SZ', code='001381', name='待上市')
+    c.query.plan.return_value = ([pending, STOCK], [date(2021, 1, 4), date(2021, 1, 5)])
+    original = c.http.request.side_effect
+    async def request(method, url, **options):
+        if 'SECUCODE="001381.SZ"' in options.get('params', {}).get('filter', ''):
+            return httpx.Response(200, json=dict(success=True, result=dict(count=1, pages=1, data=[
+                dict(SECUCODE='001381.SZ', SECURITY_CODE='001381', LISTING_DATE=None, LISTING_STATE='9')])))
+        return await original(method, url, **options)
+    c.http.request.side_effect = request
+    result = await c.execute()
+    assert result['phase'] == 'complete' and result['index'] == 2
+    assert c.stats['unlisted_without_date'] == 1
+    assert len(c.ingest.published) == 2
+    assert all(e.raw_payload['rows'][0]['code'] == '000001' for e in c.ingest.published)
+
+
 async def test_failure_does_not_advance_failed_unit_and_resume_does_not_wait_old_archive():
     c = collector()
     original = c.http.request.side_effect

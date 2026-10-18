@@ -22,10 +22,12 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from empire.contracts.request_retry import MAX_REQUEST_RETRIES
 from empire.desktop.theme import PAGE_SPACING
-from empire.plugins.ui.common import Pager, accessible, bind_find, hint
+from empire.plugins.ui.common import accessible, bind_find, hint
 
 from .task_menu import TaskMenu
+from .task_rules import TaskRules
 from .task_runtime import build_runtime
 
 
@@ -55,6 +57,7 @@ class TaskLayout:
         accessible(self.task_source, "按任务来源筛选")
         accessible(self.task_status, "按任务状态筛选")
         for label, value in (("全部状态", ""), ("执行中", "running"), ("失败", "error"),
+                             ("已结束（来源缺口）", "source_gap"),
                              ("已停用", "disabled"), ("已完成", "complete"), ("待执行", "idle"), ("已暂停", "paused")):
             self.task_status.addItem(label, value)
         self.task_filter_widgets = (self.task_search, self.task_source, self.task_category, self.task_status)
@@ -84,9 +87,7 @@ class TaskLayout:
         self.task_menu = TaskMenu()
         self.task_menu.itemSelectionChanged.connect(self.select_job)
         list_layout.addWidget(self.task_menu, 1)
-        self.task_pager = Pager(compact=True)
-        self.task_pager.changed.connect(self.change_page)
-        list_layout.addWidget(self.task_pager)
+        self.build_batch_actions(list_layout)
         self.task_empty = hint("没有匹配的任务，请调整搜索或筛选条件。")
         self.task_empty.hide()
         list_layout.addWidget(self.task_empty)
@@ -116,8 +117,14 @@ class TaskLayout:
         self.buttons.extend([*self.run_buttons, self.pause_button])
         actions.addWidget(self.run_button, 0, 0)
         actions.addWidget(self.pause_button, 0, 1)
-        actions.addWidget(self.fresh_button, 0, 2)
-        actions.setColumnStretch(3, 1)
+        actions.addWidget(self.fresh_button, 1, 0)
+        self.archive_button = QPushButton('归档任务')
+        self.archive_button.setToolTip('将任务移入已归档任务，停止执行；保留配置、断点和业务数据。不是将采集数据写入数据库。')
+        self.archive_button.clicked.connect(self.toggle_archive)
+        self.buttons.append(self.archive_button)
+        actions.addWidget(self.archive_button, 1, 1)
+        actions.setColumnStretch(0, 1)
+        actions.setColumnStretch(1, 1)
         self.operation_feedback = hint("采集操作使用已保存的设置；暂停后保留断点。")
         group = QGroupBox("执行计划")
         self.job_form = QFormLayout(group)
@@ -138,7 +145,7 @@ class TaskLayout:
         self.daily.setDisplayFormat("HH:mm")
         self.retries = QSpinBox()
         accessible(self.retries, "单次请求失败重试次数")
-        self.retries.setRange(0, 5)
+        self.retries.setRange(0, MAX_REQUEST_RETRIES)
         self.retries.setSuffix(" 次")
         self.job_form.addRow(self.enabled)
         self.job_form.addRow("执行方式", self.mode)
@@ -191,6 +198,8 @@ class TaskLayout:
             scroll.setFrameShape(QScrollArea.Shape.NoFrame)
             scroll.setWidget(content)
             self.task_inspector.addTab(scroll, title)
+        self.task_rules = TaskRules()
+        self.task_inspector.addTab(self.task_rules, '采集规则')
         self.task_inspector.setMinimumSize(0, 140)
         inspector_panel = QWidget()
         inspector_layout = QVBoxLayout(inspector_panel)

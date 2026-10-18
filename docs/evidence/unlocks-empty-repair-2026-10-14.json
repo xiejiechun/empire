@@ -1,0 +1,36 @@
+{
+  "project": "tdx-unlocks",
+  "before": {
+    "revision": "1",
+    "total": 1,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": [
+      {
+        "status_code": 200,
+        "error": "大小非解禁完整月列表协议或容量错误",
+        "id": "3038acfe812e4884801b5713721833c8",
+        "project_id": "tdx-unlocks",
+        "created_at": "2026-10-13T17:17:28.731752+00:00",
+        "stage": "source_validation"
+      }
+    ]
+  },
+  "state": "verified",
+  "handled_ids": [
+    "3038acfe812e4884801b5713721833c8"
+  ],
+  "fix": "历史未知总数0保留；未来正总数必须与完整响应一致；未来安排允许正式日期过滤，普通来源的默认禁止未来行为保持。",
+  "validation": "18项来源/界面/隔离归档回归；2027-12真实102列表452明细，键/集合/正式查询/队列0通过。",
+  "removed_count": 1,
+  "remaining": {
+    "revision": "2",
+    "total": 0,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": []
+  },
+  "cleanup": "仅按已验证的精确ID清理，保留并发新增。"
+}

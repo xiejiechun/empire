@@ -1,7 +1,9 @@
 """Current-security request scope: listing metadata, not a second quotation source."""
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
+from empire.contracts.listings import LISTING_LOOKAHEAD_DAYS
+from empire.contracts.security import split_unified_code
 from empire.core.time import CHINA
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import wait_for_capacity
@@ -29,26 +31,44 @@ def parse_listing_page(payload, page):
             raise ValueError('上市日期目录字段变更')
         symbol, code = row['SECUCODE'], row['SECURITY_CODE']
         if (not isinstance(symbol, str) or not isinstance(code, str) or not code.isdigit()
-                or len(code) != 6 or symbol[:6] != code or row['LISTING_STATE'] != '0'):
+                or len(code) != 6 or symbol[:6] != code or row['LISTING_STATE'] not in ('0', '9')):
             raise ValueError('上市日期证券身份或当前上市状态无效')
+        split_unified_code(symbol)
+        if row['LISTING_STATE'] == '9' and row['LISTING_DATE'] is None:
+            # State 9 explicitly proves that trading has not begun. Preserve the
+            # unknown announcement date; do not manufacture a historical start.
+            clean.append((symbol, None))
+            continue
+        if not isinstance(row['LISTING_DATE'], str):
+            raise ValueError('上市日期缺失或格式无效')
         listed = datetime.strptime(row['LISTING_DATE'], '%Y-%m-%d %H:%M:%S').date()
-        if not date(1990, 1, 1) <= listed <= datetime.now(CHINA).date():
+        today = datetime.now(CHINA).date()
+        if (row['LISTING_STATE'] == '0' and not date(1990, 1, 1) <= listed <= today
+                or row['LISTING_STATE'] == '9' and not today <= listed <= today + timedelta(days=LISTING_LOOKAHEAD_DAYS)):
             raise ValueError('上市日期不可信')
         clean.append((symbol, listed))
     return result['count'], result['pages'], clean
 
 
-async def download_listing_page(collector, page, *, reservation=None):
+async def download_listing_page(collector, page, *, reservation=None, supplemental_symbol=None):
     await wait_for_capacity(collector.ingest, collector.stats)
     response = await collector.http.request('GET', LISTING_URL, allowed_domains=('eastmoney.com',),
         project_id=collector.project_id, policy=collector.http.response_policy('generic'),
         reservation=reservation, max_retries=collector.request_retries,
         params=dict(reportName='RPT_F10_ORG_BASICINFO', columns=LISTING_COLUMNS,
-            filter='(LISTING_STATE="0")(SECURITY_TYPE_CODE="058001001")',
+            filter=(f'(SECUCODE="{supplemental_symbol}")' if supplemental_symbol
+                    else '(LISTING_STATE="0")(SECURITY_TYPE_CODE="058001001")'),
             pageSize='500', pageNumber=str(page), sortColumns='SECUCODE', sortTypes='1'))
 
     async def consume():
-        return parse_listing_page(json.loads(response.content), page)
+        payload = json.loads(response.content)
+        parsed = parse_listing_page(payload, page)
+        if not supplemental_symbol and any(row['LISTING_STATE'] != '0' for row in payload['result']['data']):
+            raise ValueError('已上市目录返回了其他状态')
+        if supplemental_symbol and (parsed[:2] != (1, 1) or len(parsed[2]) != 1
+                or parsed[2][0][0] != supplemental_symbol):
+            raise ValueError('补充上市资料缺少精确身份及来源状态证明')
+        return parsed
 
     return DeferredResponse(response, consume)
 
@@ -81,11 +101,27 @@ async def attach_listing_dates(collector, stocks):
             append(rows)
     if len(listings) != total:
         raise ValueError('上市日期目录集合不完整')
+    missing = [s['code'] + '.' + s['market'] for s in stocks
+               if s['code'] + '.' + s['market'] not in listings]
+    # Only a current-pool mismatch needs one extra identity-specific source response.
+    # Never infer a listing date or treat an absent security as an empty history.
+    for symbol in missing:
+        split_unified_code(symbol)
+    async def supplement(symbol, *, reservation):
+        return await download_listing_page(collector, 1, reservation=reservation, supplemental_symbol=symbol)
+    async with prefetch_units(collector, missing, supplement,
+            url=LISTING_URL, domains=('eastmoney.com',), item_name='补充证券') as reads:
+        async for _, read in reads:
+            _, _, rows = await read.resolve()
+            listings.update(rows)
     result = []
+    collector.stats['unlisted_without_date'] = sum(value is None for value in listings.values())
     for stock in stocks:
         symbol = stock['code'] + '.' + stock['market']
         if symbol not in listings:
             raise ValueError(f'当前证券 {symbol} 缺少明确上市日期；不推断上市前空白')
+        if listings[symbol] is None:
+            continue
         result.append({**stock, 'listing_date': listings[symbol].isoformat()})
     return result
 

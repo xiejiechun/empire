@@ -12,6 +12,14 @@ USE_PROXY = ContextVar("empire_use_proxy", default=False)
 PROXY_FALLBACK = ContextVar("empire_proxy_fallback", default=True)
 ROUTE_COUNTS = ContextVar("empire_route_counts", default=None)
 
+
+class ProxyRouteError(httpx.ConnectError):
+    """Sanitized device failure; the downloader owns bounded route failover."""
+
+    def __init__(self, code, message):
+        super().__init__(message)
+        self.code = code
+
 # KEYS: site (including 429 cooldown), total site gate, egress gate.
 # ARGV: total interval, egress interval, direct flag. Existing direct next_due is retained.
 ROUTE_PERMIT = """
@@ -50,7 +58,7 @@ def site_policy(value, existing=None):
         "scaling_mode", "max_rps")}
 
 
-async def routed_request(service, method, url, allowed, **kwargs):
+async def routed_request(service, method, url, allowed, *, excluded_proxies=None, **kwargs):
     """Every attempt/redirect obtains fresh total and egress permits."""
     while True:
         group = service.rules.resolve(url, allowed)
@@ -73,7 +81,8 @@ async def routed_request(service, method, url, allowed, **kwargs):
                 waits = stats.setdefault("waiting_reasons", {})
                 waits["egress"] = waits.get("egress", 0) + 1
                 try:
-                    entry = await service.pool.acquire(fallback=PROXY_FALLBACK.get(), site=group.name)
+                    entry = await service.pool.acquire(fallback=PROXY_FALLBACK.get(), site=group.name,
+                                                       excluded=excluded_proxies)
                 finally:
                     waits["egress"] -= 1
         group = service.rules.resolve(url, allowed)
@@ -124,7 +133,7 @@ async def routed_request(service, method, url, allowed, **kwargs):
                 except httpx.TransportError as exc:
                     if entry:
                         service.pool.failed(entry)
-                        raise httpx.ConnectError(
+                        raise ProxyRouteError(entry.code,
                             f"代理设备 {entry.code} 请求失败（{type(exc).__name__}），已临时隔离"
                         ) from None
                     raise
@@ -133,7 +142,7 @@ async def routed_request(service, method, url, allowed, **kwargs):
                     if response.status_code == 407:
                         service.pool.failed(entry)
                         response.close()
-                        raise httpx.ProxyError(f"代理设备 {entry.code} 认证失败，已临时隔离")
+                        raise ProxyRouteError(entry.code, f"代理设备 {entry.code} 认证失败，已临时隔离")
                     entry.failures = 0
                 return response
         finally:

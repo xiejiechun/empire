@@ -1,0 +1,488 @@
+{
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "results": {
+    "earnings_forecast": {
+      "result": {
+        "phase": "complete",
+        "batch_id": "15d0953dc51248098b39f9e1d6387fd3",
+        "index": 188,
+        "market_index": 0,
+        "response_hash": "",
+        "page": 565,
+        "collected": 109063,
+        "rolling": "9b21a0125e4489dee65ef2021212449d88e803f7943aa6c910895b7ccb0e5357",
+        "scope_hash": "099cf569a4c48cf31f3954109f740d281407c41a78e15513f3d25c4ec7073dfa",
+        "units": 564,
+        "latest": "2026-12-31",
+        "started_at": "2026-10-12T13:14:41.716612+00:00",
+        "contract": 1
+      },
+      "source": {
+        "responses": 188,
+        "source_rows": 109063,
+        "max_body_bytes": 672639,
+        "max_message_bytes": 402631,
+        "first_nonempty": {
+          "unified_code": "600876.SH",
+          "name": "凯盛新能",
+          "report_date": "2001-06-30",
+          "announcement_date": "2001-07-31",
+          "forecast_type": "业绩大幅下降",
+          "forecast_text": "洛阳玻璃(600876)上半年，由于主营产品的市场竞争加剧，销售价格持续下滑，而原材料价格上升，预计公司2001年中期业绩与上年同期相比有较大幅度下降"
+        }
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 109063,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 188,
+        "requests": 189,
+        "error": "",
+        "total_units": 188,
+        "download_item_name": "完整响应",
+        "download_window_limit": 8,
+        "download_buffer_capacity": 21,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "pages": 565
+      },
+      "errors": [],
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验109063条，必需字段缺失1条；源端可选空值保留",
+          "blocking": true
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "业务身份、正文及完整单元来源集合摘要比较",
+          "blocking": true
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "完整单元及最终范围证明核验；历史撤回仍保留并暴露差异",
+          "blocking": true
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "金额元、比率百分数、户数整数；快报同比原口径并列保留",
+          "blocking": true
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL完整范围或与其内容匹配的可信缓存确认须在3天内",
+          "blocking": true
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "不可确认信号可用日期0条；预约日期和股东统计日不代表公告时刻",
+          "blocking": false
+        }
+      ],
+      "sql_rows": 109063
+    },
+    "earnings_quick": {
+      "error": "完整报告市场超过单消息容量；未入队本期，禁止截断",
+      "source": {
+        "responses": 144,
+        "source_rows": 20696,
+        "max_body_bytes": 561095,
+        "max_message_bytes": 560877,
+        "first_nonempty": {
+          "unified_code": "600031.SH",
+          "name": "三一重工",
+          "source_id": "gssh0600031",
+          "report_date": "2004-06-30",
+          "announcement_date": "2004-07-28",
+          "source_date": "2004-07-28",
+          "profit_basis": "071002",
+          "profit_scope": "033003",
+          "roe_scope": "033003",
+          "net_profit": "204335958.84",
+          "roe": "11.45",
+          "eps": "0.85",
+          "assets": "3787279019.28",
+          "equity": "1785073219.86",
+          "comparison_value": "150243511.01",
+          "previous_profit": "150243511.01",
+          "previous_roe": "9.87",
+          "profit_change": "36.003184",
+          "roe_change": "16.00810537"
+        }
+      },
+      "stats": {
+        "status": "error",
+        "collected": 18003,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 143,
+        "requests": 148,
+        "error": "完整报告市场超过单消息容量；未入队本期，禁止截断",
+        "total_units": 187,
+        "download_item_name": "完整响应",
+        "download_window_limit": 6,
+        "download_buffer_capacity": 21,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "pages": 429
+      },
+      "errors": [
+        {
+          "id": "fc402f06e67e4647abcef781e358c559",
+          "project_id": "tdx-earnings-quick",
+          "created_at": "2026-10-12T13:16:20.678012+00:00",
+          "version": "0.1.0 (development+dirty)",
+          "stage": "http",
+          "error": "代理设备 node017 请求失败（ProxyError），已临时隔离",
+          "request_url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_yjkb",
+          "status_code": null,
+          "metadata": {
+            "method": "POST",
+            "attempt": 1
+          },
+          "body": "",
+          "body_truncated": false,
+          "body_complete": true,
+          "observed_bytes": 0,
+          "original_bytes": 0,
+          "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "id": "7a40b83cb8e04483bf2fa87efa3b03ed",
+          "project_id": "tdx-earnings-quick",
+          "created_at": "2026-10-12T13:16:36.091718+00:00",
+          "version": "0.1.0 (development+dirty)",
+          "stage": "source_validation",
+          "error": "完整报告市场超过单消息容量；未入队本期，禁止截断",
+          "request_url": "",
+          "status_code": null,
+          "metadata": {},
+          "body": "",
+          "body_truncated": false,
+          "body_complete": true,
+          "observed_bytes": 0,
+          "original_bytes": 0,
+          "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "checkpoint": {
+        "revision": 429,
+        "cursor": {
+          "phase": "fetch",
+          "batch_id": "5124f4c89640470e92e1c2b271c4bd03",
+          "index": 143,
+          "market_index": 0,
+          "response_hash": "",
+          "page": 429,
+          "collected": 18003,
+          "rolling": "ee8fa3384b102fa197604c4107acbb068b9210ec968d51dfa63456847bbf23e4",
+          "scope_hash": "c99c706363c6c74fc055b7ae235406ca79d704cec04392401b7998eb1816e4c0",
+          "units": 561,
+          "latest": "2026-09-30",
+          "started_at": "2026-10-12T13:15:47.039244+00:00",
+          "contract": 1
+        }
+      },
+      "sql_rows": 17626
+    },
+    "earnings_disclosure": {
+      "result": {
+        "phase": "complete",
+        "batch_id": "546a47bd0bac4e14bfc670fd0b404d8e",
+        "index": 187,
+        "market_index": 0,
+        "response_hash": "",
+        "page": 562,
+        "collected": 264807,
+        "rolling": "d27675ab0ef7b2dac4ba58a3b817cfd2ba0d931f0cf898d7d6a57a3dd61f67b6",
+        "scope_hash": "c99c706363c6c74fc055b7ae235406ca79d704cec04392401b7998eb1816e4c0",
+        "units": 561,
+        "latest": "2026-09-30",
+        "started_at": "2026-10-12T13:16:36.689308+00:00",
+        "contract": 1
+      },
+      "source": {
+        "responses": 187,
+        "source_rows": 264807,
+        "max_body_bytes": 555072,
+        "max_message_bytes": 241983,
+        "first_nonempty": {
+          "unified_code": "600308.SH",
+          "name": "华泰股份",
+          "report_date": "2001-12-31",
+          "first_scheduled": "2002-04-06",
+          "changed_1": null,
+          "changed_2": null,
+          "changed_3": null,
+          "actual_date": "2001-12-31"
+        }
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 264807,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 187,
+        "requests": 188,
+        "error": "",
+        "total_units": 187,
+        "download_item_name": "完整响应",
+        "download_window_limit": 7,
+        "download_buffer_capacity": 21,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "pages": 562
+      },
+      "errors": [],
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验264807条，必需字段缺失0条；源端可选空值保留",
+          "blocking": true
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "业务身份、正文及完整单元来源集合摘要比较",
+          "blocking": true
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "完整单元及最终范围证明核验；历史撤回仍保留并暴露差异",
+          "blocking": true
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "金额元、比率百分数、户数整数；快报同比原口径并列保留",
+          "blocking": true
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL完整范围或与其内容匹配的可信缓存确认须在3天内",
+          "blocking": true
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "不可确认信号可用日期0条；预约日期和股东统计日不代表公告时刻",
+          "blocking": false
+        }
+      ],
+      "sql_rows": 264807
+    },
+    "earnings_report": {
+      "error": "(pymysql.err.OperationalError) (3024, 'Query execution was interrupted, maximum statement execution time exceeded')\n(Background on this error at: https://sqlalche.me/e/20/e3q8)",
+      "source": {
+        "responses": 187,
+        "source_rows": 303473,
+        "max_body_bytes": 758849,
+        "max_message_bytes": 445667,
+        "first_nonempty": {
+          "unified_code": "600626.SH",
+          "name": "申达股份",
+          "report_date": "1989-12-31",
+          "announcement_date": "1989-12-31",
+          "roe": null,
+          "previous_roe": null,
+          "net_profit": "11540000",
+          "previous_profit": null,
+          "revenue": "250920000",
+          "previous_revenue": null,
+          "operating_cashflow": null,
+          "eps": null
+        }
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 303473,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 187,
+        "requests": 188,
+        "error": "",
+        "total_units": 187,
+        "download_item_name": "完整响应",
+        "download_window_limit": 8,
+        "download_buffer_capacity": 21,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "pages": 562
+      },
+      "errors": [],
+      "checkpoint": {
+        "revision": 563,
+        "cursor": {
+          "phase": "complete",
+          "batch_id": "fd748019cbd64492a2abfe87bc9059a5",
+          "index": 187,
+          "market_index": 0,
+          "response_hash": "",
+          "page": 562,
+          "collected": 303473,
+          "rolling": "67841f3c5d881f59db8c3ffba862c0e4e533b1b56743701b771c557ccdc46da0",
+          "scope_hash": "c99c706363c6c74fc055b7ae235406ca79d704cec04392401b7998eb1816e4c0",
+          "units": 561,
+          "latest": "2026-09-30",
+          "started_at": "2026-10-12T13:17:55.676286+00:00",
+          "contract": 1
+        }
+      },
+      "sql_rows": 303473
+    },
+    "holder_count": {
+      "result": {
+        "phase": "complete",
+        "batch_id": "d7dba58ef50f40bb9d9368a74f515701",
+        "index": 5574,
+        "market_index": 0,
+        "response_hash": "",
+        "page": 5575,
+        "collected": 225850,
+        "rolling": "5a2dee6e996fdb1b95c1862e2367ac572bf261c3870ffaa6366d6a14f5f572cb",
+        "scope_hash": "6328efb7fc77518be8b1cff415440a8113fa60afbfa087badb198914e58abf62",
+        "units": 5574,
+        "latest": "2026-10-12",
+        "started_at": "2026-10-12T13:20:26.582678+00:00",
+        "contract": 1
+      },
+      "source": {
+        "responses": 5574,
+        "source_rows": 225850,
+        "max_body_bytes": 19468,
+        "max_message_bytes": 21766,
+        "first_nonempty": {
+          "unified_code": "000001.SZ",
+          "name": "平安银行",
+          "statistics_date": "2023-03-31",
+          "holders": 506867,
+          "average_float": "38285.2838",
+          "holder_change_pct": "6.1937",
+          "top_float_shares": "13419537903",
+          "top_float_pct": "69.15",
+          "top_shares": "13419537903",
+          "top_pct": "69.15",
+          "holder_change": 29563
+        }
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 225850,
+        "record_name": "条来源记录",
+        "unit_name": "个完整响应",
+        "completed_units": 5574,
+        "requests": 5575,
+        "error": "",
+        "total_units": 5574,
+        "download_item_name": "完整响应",
+        "download_window_limit": 7,
+        "download_buffer_capacity": 21,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "pages": 5575
+      },
+      "errors": [
+        {
+          "id": "3d70a38ec81041a0b4990f85c40f9dde",
+          "project_id": "tdx-holder-count",
+          "created_at": "2026-10-12T13:34:15.209884+00:00",
+          "version": "0.1.0 (development+dirty)",
+          "stage": "http",
+          "error": "代理设备 node004 请求失败（RemoteProtocolError），已临时隔离",
+          "request_url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cbjd_gdhs",
+          "status_code": null,
+          "metadata": {
+            "method": "POST",
+            "attempt": 1
+          },
+          "body": "",
+          "body_truncated": false,
+          "body_complete": true,
+          "observed_bytes": 0,
+          "original_bytes": 0,
+          "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验225850条，必需字段缺失0条；源端可选空值保留",
+          "blocking": true
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "业务身份、正文及完整单元来源集合摘要比较",
+          "blocking": true
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "完整单元及最终范围证明核验；历史撤回仍保留并暴露差异",
+          "blocking": true
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "金额元、比率百分数、户数整数；快报同比原口径并列保留",
+          "blocking": true
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL完整范围或与其内容匹配的可信缓存确认须在3天内",
+          "blocking": true
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "不可确认信号可用日期0条；预约日期和股东统计日不代表公告时刻",
+          "blocking": false
+        }
+      ],
+      "sql_rows": 225850
+    }
+  },
+  "checked_at": "2026-10-12T21:34:32.966342+08:00",
+  "network": {
+    "proxy_requests": 6291
+  },
+  "pending": 0
+}

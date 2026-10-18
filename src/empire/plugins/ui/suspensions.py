@@ -30,11 +30,12 @@ from empire.plugins.ui.common import (
 )
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.queries import QueryScope
+from empire.plugins.ui.suspension_preview import SuspensionPreview
 
 SORT_FIELDS = ("code", "name", "suspended_at", "resumed_at", "source_note", "reason")
 
 
-class SuspensionsPage(QWidget):
+class SuspensionsPage(SuspensionPreview, QWidget):
     def __init__(self, shell):
         super().__init__()
         self.shell = shell
@@ -74,9 +75,8 @@ class SuspensionsPage(QWidget):
         query = QPushButton("查询 / 刷新")
         query.clicked.connect(self.search)
         filters.addWidget(query)
-        body = QHBoxLayout()
-        sidebar = QVBoxLayout()
-        sidebar.addWidget(QLabel("选择来源日历日期"))
+        body = self.body_layout = QHBoxLayout()
+        sidebar = self.install_calendar_sidebar(layout)
         month_bar = QHBoxLayout()
         self.year = accessible(QSpinBox(), "来源日历年份")
         self.year.setRange(2004, 9999)
@@ -90,7 +90,7 @@ class SuspensionsPage(QWidget):
         sidebar.addLayout(month_bar)
         self.calendar = accessible(QCalendarWidget(), "来源日期日历")
         self.calendar.setMinimumDate(QDate(2004, 12, 27))
-        self.calendar.setFirstDayOfWeek(Qt.DayOfWeek.Sunday)
+        self.calendar.setFirstDayOfWeek(Qt.DayOfWeek.Monday)
         self.calendar.setVerticalHeaderFormat(QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader)
         self.calendar.setGridVisible(True)
         self.calendar.setFixedWidth(252)
@@ -113,7 +113,7 @@ class SuspensionsPage(QWidget):
         explanation.setFixedWidth(252)
         sidebar.addWidget(explanation)
         sidebar.addStretch()
-        body.addLayout(sidebar)
+        body.addWidget(self.calendar_sidebar)
         results = QVBoxLayout()
         body.addLayout(results, 1)
         layout.addLayout(body, 1)
@@ -133,7 +133,7 @@ class SuspensionsPage(QWidget):
         header.setSortIndicator(0, Qt.SortOrder.AscendingOrder)
         header.sectionClicked.connect(self.sort_column)
         self.table.itemSelectionChanged.connect(self.show_detail)
-        results.addWidget(self.table, 1)
+        self.install_preview(results)
         navigation = QHBoxLayout()
         self.previous = QPushButton("上一页")
         self.next = QPushButton("下一页")
@@ -147,19 +147,22 @@ class SuspensionsPage(QWidget):
         results.addLayout(navigation)
         self.detail = accessible(QPlainTextEdit(), "停复牌完整来源记录")
         self.detail.setReadOnly(True)
-        self.detail.setMaximumHeight(150)
         self.detail.setPlaceholderText("选择记录查看完整说明和原因。")
         results.addWidget(self.detail)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
         self.timer.start(800)
+        self.applied = self.draft_spec()
 
-    def spec(self):
+    def draft_spec(self):
         day = self.calendar.selectedDate().toString("yyyy-MM-dd")
         return (self.market.currentData(), self.code.text().strip(),
                 None if self.all_dates.isChecked() else day,
                 None if self.all_dates.isChecked() else day,
                 51, self.page * 50, self.sort_by, self.direction)
+
+    def spec(self):
+        return (*self.applied[:4], 51, self.page * 50, self.sort_by, self.direction)
 
     def show_month(self, *_):
         self.calendar.setCurrentPage(self.year.value(), self.month.currentIndex() + 1)
@@ -189,6 +192,8 @@ class SuspensionsPage(QWidget):
 
     def search(self):
         self.page = 0
+        self.applied = self.draft_spec()
+        self.month_dirty = True
         self.reload()
 
     def move(self, step):
@@ -202,9 +207,9 @@ class SuspensionsPage(QWidget):
         self.tick()
 
     def save_ui_state(self):
-        return {"spec": self.spec(), "day": self.calendar.selectedDate().toString("yyyy-MM-dd"),
+        return {"spec": self.draft_spec(), "applied": self.spec(), "view": self.views.currentIndex(), "day": self.calendar.selectedDate().toString("yyyy-MM-dd"),
                 "month": (self.calendar.yearShown(), self.calendar.monthShown()),
-                "table": table_identity_state(self.table)}
+                "table": table_identity_state(self.table), "cards_position": self.cards.save_position()}
 
     def restore_ui_state(self, state):
         market, code, start, _, _, offset, sort_by, direction = state["spec"]
@@ -219,6 +224,9 @@ class SuspensionsPage(QWidget):
         self.table.horizontalHeader().setSortIndicator(SORT_FIELDS.index(sort_by),
             Qt.SortOrder.AscendingOrder if direction == 'asc' else Qt.SortOrder.DescendingOrder)
         self.page = offset // 50
+        self.applied = tuple(state.get('applied', state['spec']))
+        self.views.setCurrentIndex(state.get('view', 0))
+        self.cards.restore_position(state.get('cards_position', 0))
         restore_table_identity(self.table, state["table"])
         self.dirty = True
 
@@ -237,6 +245,7 @@ class SuspensionsPage(QWidget):
 
     def render(self, result):
         self.records = result[:50]
+        self.render_cards()
         rows(self.table, [[r['code'], r['name'], local_date(r['suspended_at']),
                           local_date(r['resumed_at']) if r['resumed_at'] else "来源未提供",
                           r['source_note'], r['reason']] for r in self.records],
@@ -246,18 +255,18 @@ class SuspensionsPage(QWidget):
             self.table.selectRow(0)
         self.previous.setEnabled(self.page > 0)
         self.next.setEnabled(len(result) > 50)
-        scope = "全部历史" if self.all_dates.isChecked() else self.calendar.selectedDate().toString('yyyy-MM-dd')
+        scope = self.applied[2] or "全部历史"
         self.status.setText(f"{scope} · 第 {self.page + 1} 页 · 本页 {len(self.records)} 条来源记录"
                             if result else "暂无匹配的已归档记录；可调整条件或查看采集进度。")
         self.show_detail()
 
     def render_coverage(self):
-        day = self.calendar.selectedDate().toString('yyyy-MM-dd')
+        day = self.applied[2]
         coverage = self.coverage or {}
         through = coverage.get('through', '')
         if self.coverage is None:
             message = '来源日历完整性尚未核实，当前结果可能不完整。'
-        elif self.all_dates.isChecked():
+        elif day is None:
             message = f"来源日期连续补查至 {through or '尚未开始'}；其后结果可能不完整。"
         elif coverage.get('from', '9999-12-31') <= day <= through:
             message = '该来源日期已完整核验并归档。'
@@ -270,6 +279,7 @@ class SuspensionsPage(QWidget):
             self.query_scope.close()
             self.timer.stop()
             return
+        self.tick_month()
         if self.coverage_future and self.coverage_future.done():
             future, self.coverage_future = self.coverage_future, None
             try:

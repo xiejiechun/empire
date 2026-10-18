@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-12",
+  "request": "每日涨停价和跌停价使用日行情已有字段，从数据准备独立清单移除",
+  "changes": [
+    "删除daily_limits正式准备契约，同步用途清单及程序内说明",
+    "现行目录72项：62项采集、8项计算、2项核对",
+    "复用现有目录身份使旧准备缓存失效，不改日行情采集或业务结构"
+  ],
+  "workspace": "保留已有修改；发布前未发现其他Empire开发、维护或构建进程",
+  "verification": {
+    "preparation_and_cache": "45 passed",
+    "documentation_regressions": "21 passed",
+    "documentation_contract": "PASS",
+    "release_gate": "PASS dependencies, tests, capacity, DPI, portable config, build, smoke",
+    "full_suite": "2159 passed, 5 skipped, 2 warnings；5项为需显式启用的状态演练",
+    "release_log": "build/release-daily-limits.log",
+    "test_database": "首次应用账号无建隔离库权限，停止后改用已有13331专用测试实例；未扩大生产权限。完成后核实datadir、端口及其他连接，执行SQL SHUTDOWN正常关闭",
+    "desktop": "正式EXE可见窗口显示本地服务已连接；数据准备显示62项采集、72项总数；搜索每日涨停价和跌停价无结果，随后清空搜索，桌面保持打开",
+    "config_preserved": "程序目录config.toml前后SHA256一致：5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f"
+  },
+  "limits": "只核验独立准备项移除，不代表全市场日行情字段完整或全部准备项目验收通过；不涉及采集错误修复或错误ID清理"
+}

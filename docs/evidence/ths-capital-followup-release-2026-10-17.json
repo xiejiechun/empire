@@ -1,0 +1,1223 @@
+{
+  "verified_at_utc": "2026-10-17T07:16:26Z",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "a79f789e15de70d22e55a5f850f7ce3ec83c6009",
+    "dirty": true,
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "71c3b78997e1be0f97e2bab5d2610a55843f7e968ba34e6a26625dbb2d7bb2c3",
+    "built_at_utc": "2026-10-17T07:15:17Z",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3"
+  },
+  "executable_sha256": "011b99de0ab6a6de3fcec78146f27852a27aa5b0228865d73d227579460491c3",
+  "smoke_image": "D:\\project\\empire\\build\\release-smoke.png",
+  "capacity_report": "D:\\project\\empire\\build\\capacity-report.json",
+  "capacity": {
+    "schema_version": 1,
+    "generated_at_utc": "2026-10-17T15:15:06+08:00",
+    "mode": "quick-release-gate",
+    "scope": "in-process virtual directory and MockTransport; no external services",
+    "model": {
+      "exit_matrix": [
+        10,
+        30,
+        50,
+        100
+      ],
+      "baseline_response_delay_ms": 4,
+      "parse_delay_ms": 1,
+      "archive_queue_delay_ms": 1,
+      "redis_confirm_delay_ms": 1,
+      "sql_confirm_delay_ms": 2,
+      "churn_cancel_iterations": 1000
+    },
+    "environment": {
+      "python": "3.12.9",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "processor": "AMD64 Family 26 Model 112 Stepping 0, AuthenticAMD"
+    },
+    "baseline": [
+      {
+        "name": "independent-10",
+        "devices": 10,
+        "distinct_exit_ips": 10,
+        "request_count": 10,
+        "completed": 10,
+        "failed": 0,
+        "cancelled": 0,
+        "attempts": 10,
+        "elapsed_seconds": 0.0152,
+        "throughput_rps": 657.23,
+        "error_rate": 0.0,
+        "peak_concurrency": 10,
+        "latency": {
+          "queue": {
+            "p50_ms": 0.118,
+            "p95_ms": 0.602,
+            "max_ms": 0.949
+          },
+          "download": {
+            "p50_ms": 12.932,
+            "p95_ms": 13.428,
+            "max_ms": 13.445
+          },
+          "parse": {
+            "p50_ms": 0.192,
+            "p95_ms": 0.383,
+            "max_ms": 0.419
+          },
+          "archive_queue": {
+            "p50_ms": 0.063,
+            "p95_ms": 0.067,
+            "max_ms": 0.068
+          },
+          "redis_confirm": {
+            "p50_ms": 0.064,
+            "p95_ms": 0.067,
+            "max_ms": 0.069
+          },
+          "sql_confirm": {
+            "p50_ms": 0.057,
+            "p95_ms": 0.063,
+            "max_ms": 0.063
+          },
+          "end_to_end": {
+            "p50_ms": 13.448,
+            "p95_ms": 14.541,
+            "max_ms": 14.966
+          }
+        },
+        "directory_reads": 1,
+        "candidate_checks": 10,
+        "site_cooldown_created": false,
+        "resources": {
+          "rss_before": 51331072,
+          "rss_peak": 53047296,
+          "rss_after": 53047296,
+          "rss_delta": 1716224,
+          "handles_before": 223,
+          "handles_peak": 233,
+          "handles_after": 223,
+          "handles_delta": 0
+        },
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0,
+          "http_inflight": 0,
+          "open_responses": 0,
+          "buffer_used_bytes": 0,
+          "global_active": 0,
+          "site_active": 0,
+          "admission_waiting": 0
+        }
+      },
+      {
+        "name": "independent-30",
+        "devices": 30,
+        "distinct_exit_ips": 30,
+        "request_count": 30,
+        "completed": 30,
+        "failed": 0,
+        "cancelled": 0,
+        "attempts": 30,
+        "elapsed_seconds": 0.0254,
+        "throughput_rps": 1182.73,
+        "error_rate": 0.0,
+        "peak_concurrency": 30,
+        "latency": {
+          "queue": {
+            "p50_ms": 0.112,
+            "p95_ms": 0.212,
+            "max_ms": 0.874
+          },
+          "download": {
+            "p50_ms": 21.744,
+            "p95_ms": 23.266,
+            "max_ms": 23.44
+          },
+          "parse": {
+            "p50_ms": 0.351,
+            "p95_ms": 0.601,
+            "max_ms": 0.611
+          },
+          "archive_queue": {
+            "p50_ms": 0.122,
+            "p95_ms": 0.16,
+            "max_ms": 0.163
+          },
+          "redis_confirm": {
+            "p50_ms": 0.113,
+            "p95_ms": 0.154,
+            "max_ms": 0.158
+          },
+          "sql_confirm": {
+            "p50_ms": 0.139,
+            "p95_ms": 0.173,
+            "max_ms": 0.176
+          },
+          "end_to_end": {
+            "p50_ms": 22.538,
+            "p95_ms": 24.234,
+            "max_ms": 25.154
+          }
+        },
+        "directory_reads": 1,
+        "candidate_checks": 30,
+        "site_cooldown_created": false,
+        "resources": {
+          "rss_before": 52891648,
+          "rss_peak": 53346304,
+          "rss_after": 53346304,
+          "rss_delta": 454656,
+          "handles_before": 223,
+          "handles_peak": 253,
+          "handles_after": 223,
+          "handles_delta": 0
+        },
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0,
+          "http_inflight": 0,
+          "open_responses": 0,
+          "buffer_used_bytes": 0,
+          "global_active": 0,
+          "site_active": 0,
+          "admission_waiting": 0
+        }
+      },
+      {
+        "name": "independent-50",
+        "devices": 50,
+        "distinct_exit_ips": 50,
+        "request_count": 50,
+        "completed": 50,
+        "failed": 0,
+        "cancelled": 0,
+        "attempts": 50,
+        "elapsed_seconds": 0.0105,
+        "throughput_rps": 4781.67,
+        "error_rate": 0.0,
+        "peak_concurrency": 50,
+        "latency": {
+          "queue": {
+            "p50_ms": 0.113,
+            "p95_ms": 0.144,
+            "max_ms": 1.036
+          },
+          "download": {
+            "p50_ms": 5.267,
+            "p95_ms": 7.64,
+            "max_ms": 7.833
+          },
+          "parse": {
+            "p50_ms": 0.511,
+            "p95_ms": 0.83,
+            "max_ms": 0.861
+          },
+          "archive_queue": {
+            "p50_ms": 0.162,
+            "p95_ms": 0.21,
+            "max_ms": 0.216
+          },
+          "redis_confirm": {
+            "p50_ms": 0.158,
+            "p95_ms": 0.21,
+            "max_ms": 0.216
+          },
+          "sql_confirm": {
+            "p50_ms": 0.152,
+            "p95_ms": 0.194,
+            "max_ms": 0.199
+          },
+          "end_to_end": {
+            "p50_ms": 6.312,
+            "p95_ms": 8.964,
+            "max_ms": 10.207
+          }
+        },
+        "directory_reads": 1,
+        "candidate_checks": 50,
+        "site_cooldown_created": false,
+        "resources": {
+          "rss_before": 53383168,
+          "rss_peak": 53768192,
+          "rss_after": 53768192,
+          "rss_delta": 385024,
+          "handles_before": 223,
+          "handles_peak": 273,
+          "handles_after": 223,
+          "handles_delta": 0
+        },
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0,
+          "http_inflight": 0,
+          "open_responses": 0,
+          "buffer_used_bytes": 0,
+          "global_active": 0,
+          "site_active": 0,
+          "admission_waiting": 0
+        }
+      },
+      {
+        "name": "independent-100",
+        "devices": 100,
+        "distinct_exit_ips": 100,
+        "request_count": 100,
+        "completed": 100,
+        "failed": 0,
+        "cancelled": 0,
+        "attempts": 100,
+        "elapsed_seconds": 0.0229,
+        "throughput_rps": 4365.57,
+        "error_rate": 0.0,
+        "peak_concurrency": 100,
+        "latency": {
+          "queue": {
+            "p50_ms": 0.134,
+            "p95_ms": 0.174,
+            "max_ms": 1.693
+          },
+          "download": {
+            "p50_ms": 11.389,
+            "p95_ms": 17.975,
+            "max_ms": 18.679
+          },
+          "parse": {
+            "p50_ms": 0.962,
+            "p95_ms": 1.591,
+            "max_ms": 1.642
+          },
+          "archive_queue": {
+            "p50_ms": 0.28,
+            "p95_ms": 0.426,
+            "max_ms": 0.446
+          },
+          "redis_confirm": {
+            "p50_ms": 0.272,
+            "p95_ms": 0.417,
+            "max_ms": 0.436
+          },
+          "sql_confirm": {
+            "p50_ms": 0.261,
+            "p95_ms": 0.395,
+            "max_ms": 0.413
+          },
+          "end_to_end": {
+            "p50_ms": 13.68,
+            "p95_ms": 20.021,
+            "max_ms": 22.493
+          }
+        },
+        "directory_reads": 1,
+        "candidate_checks": 100,
+        "site_cooldown_created": false,
+        "resources": {
+          "rss_before": 53837824,
+          "rss_peak": 54763520,
+          "rss_after": 54763520,
+          "rss_delta": 925696,
+          "handles_before": 223,
+          "handles_peak": 323,
+          "handles_after": 223,
+          "handles_delta": 0
+        },
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0,
+          "http_inflight": 0,
+          "open_responses": 0,
+          "buffer_used_bytes": 0,
+          "global_active": 0,
+          "site_active": 0,
+          "admission_waiting": 0
+        }
+      }
+    ],
+    "shared_egress": {
+      "name": "shared-egress",
+      "devices": 50,
+      "distinct_exit_ips": 10,
+      "request_count": 50,
+      "completed": 50,
+      "failed": 0,
+      "cancelled": 0,
+      "attempts": 50,
+      "elapsed_seconds": 0.4612,
+      "throughput_rps": 108.41,
+      "error_rate": 0.0,
+      "peak_concurrency": 10,
+      "latency": {
+        "queue": {
+          "p50_ms": 225.674,
+          "p95_ms": 442.27,
+          "max_ms": 443.392
+        },
+        "download": {
+          "p50_ms": 15.025,
+          "p95_ms": 18.956,
+          "max_ms": 19.316
+        },
+        "parse": {
+          "p50_ms": 1.308,
+          "p95_ms": 2.43,
+          "max_ms": 2.482
+        },
+        "archive_queue": {
+          "p50_ms": 0.071,
+          "p95_ms": 0.132,
+          "max_ms": 0.146
+        },
+        "redis_confirm": {
+          "p50_ms": 0.06,
+          "p95_ms": 0.118,
+          "max_ms": 0.132
+        },
+        "sql_confirm": {
+          "p50_ms": 0.06,
+          "p95_ms": 0.117,
+          "max_ms": 0.132
+        },
+        "end_to_end": {
+          "p50_ms": 241.967,
+          "p95_ms": 458.116,
+          "max_ms": 458.562
+        }
+      },
+      "directory_reads": 1,
+      "candidate_checks": 90,
+      "site_cooldown_created": false,
+      "resources": {
+        "rss_before": 54759424,
+        "rss_peak": 54779904,
+        "rss_after": 54779904,
+        "rss_delta": 20480,
+        "handles_before": 223,
+        "handles_peak": 273,
+        "handles_after": 223,
+        "handles_delta": 0
+      },
+      "cleanup": {
+        "pool_waiting": 0,
+        "pool_busy": 0,
+        "pool_retired": 0,
+        "pool_close_tasks": 0,
+        "http_inflight": 0,
+        "open_responses": 0,
+        "buffer_used_bytes": 0,
+        "global_active": 0,
+        "site_active": 0,
+        "admission_waiting": 0
+      }
+    },
+    "fault_matrix": [
+      {
+        "name": "transport-failure",
+        "devices": 10,
+        "distinct_exit_ips": 10,
+        "request_count": 20,
+        "completed": 20,
+        "failed": 0,
+        "cancelled": 0,
+        "attempts": 25,
+        "elapsed_seconds": 0.3376,
+        "throughput_rps": 59.24,
+        "error_rate": 0.0,
+        "peak_concurrency": 10,
+        "latency": {
+          "queue": {
+            "p50_ms": 48.761,
+            "p95_ms": 221.996,
+            "max_ms": 315.484
+          },
+          "download": {
+            "p50_ms": 16.136,
+            "p95_ms": 120.902,
+            "max_ms": 218.355
+          },
+          "parse": {
+            "p50_ms": 0.453,
+            "p95_ms": 0.815,
+            "max_ms": 0.832
+          },
+          "archive_queue": {
+            "p50_ms": 0.058,
+            "p95_ms": 0.258,
+            "max_ms": 0.258
+          },
+          "redis_confirm": {
+            "p50_ms": 0.053,
+            "p95_ms": 0.059,
+            "max_ms": 0.061
+          },
+          "sql_confirm": {
+            "p50_ms": 0.051,
+            "p95_ms": 0.061,
+            "max_ms": 0.061
+          },
+          "end_to_end": {
+            "p50_ms": 116.332,
+            "p95_ms": 224.84,
+            "max_ms": 335.333
+          }
+        },
+        "directory_reads": 1,
+        "candidate_checks": 43,
+        "site_cooldown_created": false,
+        "resources": {
+          "rss_before": 54784000,
+          "rss_peak": 54784000,
+          "rss_after": 54784000,
+          "rss_delta": 0,
+          "handles_before": 223,
+          "handles_peak": 233,
+          "handles_after": 223,
+          "handles_delta": 0
+        },
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0,
+          "http_inflight": 0,
+          "open_responses": 0,
+          "buffer_used_bytes": 0,
+          "global_active": 0,
+          "site_active": 0,
+          "admission_waiting": 0
+        }
+      },
+      {
+        "name": "site-429",
+        "devices": 10,
+        "distinct_exit_ips": 10,
+        "request_count": 10,
+        "completed": 8,
+        "failed": 2,
+        "cancelled": 0,
+        "attempts": 10,
+        "elapsed_seconds": 0.0147,
+        "throughput_rps": 681.84,
+        "error_rate": 0.2,
+        "peak_concurrency": 10,
+        "latency": {
+          "queue": {
+            "p50_ms": 0.112,
+            "p95_ms": 0.378,
+            "max_ms": 0.544
+          },
+          "download": {
+            "p50_ms": 13.112,
+            "p95_ms": 13.508,
+            "max_ms": 13.528
+          },
+          "parse": {
+            "p50_ms": 0.22,
+            "p95_ms": 0.284,
+            "max_ms": 0.293
+          },
+          "archive_queue": {
+            "p50_ms": 0.05,
+            "p95_ms": 0.053,
+            "max_ms": 0.054
+          },
+          "redis_confirm": {
+            "p50_ms": 0.048,
+            "p95_ms": 0.05,
+            "max_ms": 0.051
+          },
+          "sql_confirm": {
+            "p50_ms": 0.046,
+            "p95_ms": 0.048,
+            "max_ms": 0.049
+          },
+          "end_to_end": {
+            "p50_ms": 13.594,
+            "p95_ms": 14.324,
+            "max_ms": 14.515
+          }
+        },
+        "directory_reads": 1,
+        "candidate_checks": 10,
+        "site_cooldown_created": true,
+        "resources": {
+          "rss_before": 54784000,
+          "rss_peak": 54788096,
+          "rss_after": 54788096,
+          "rss_delta": 4096,
+          "handles_before": 223,
+          "handles_peak": 233,
+          "handles_after": 223,
+          "handles_delta": 0
+        },
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0,
+          "http_inflight": 0,
+          "open_responses": 0,
+          "buffer_used_bytes": 0,
+          "global_active": 0,
+          "site_active": 0,
+          "admission_waiting": 0
+        }
+      },
+      {
+        "name": "request-cancel",
+        "devices": 10,
+        "distinct_exit_ips": 10,
+        "request_count": 20,
+        "completed": 10,
+        "failed": 0,
+        "cancelled": 10,
+        "attempts": 15,
+        "elapsed_seconds": 0.1318,
+        "throughput_rps": 75.88,
+        "error_rate": 0.0,
+        "peak_concurrency": 10,
+        "latency": {
+          "queue": {
+            "p50_ms": 57.858,
+            "p95_ms": 115.671,
+            "max_ms": 115.713
+          },
+          "download": {
+            "p50_ms": 15.999,
+            "p95_ms": 16.495,
+            "max_ms": 16.63
+          },
+          "parse": {
+            "p50_ms": 0.38,
+            "p95_ms": 0.681,
+            "max_ms": 0.705
+          },
+          "archive_queue": {
+            "p50_ms": 0.058,
+            "p95_ms": 0.065,
+            "max_ms": 0.065
+          },
+          "redis_confirm": {
+            "p50_ms": 0.054,
+            "p95_ms": 0.065,
+            "max_ms": 0.065
+          },
+          "sql_confirm": {
+            "p50_ms": 0.057,
+            "p95_ms": 0.065,
+            "max_ms": 0.065
+          },
+          "end_to_end": {
+            "p50_ms": 74.889,
+            "p95_ms": 131.926,
+            "max_ms": 131.951
+          }
+        },
+        "directory_reads": 1,
+        "candidate_checks": 25,
+        "site_cooldown_created": false,
+        "resources": {
+          "rss_before": 54788096,
+          "rss_peak": 54788096,
+          "rss_after": 54788096,
+          "rss_delta": 0,
+          "handles_before": 223,
+          "handles_peak": 233,
+          "handles_after": 228,
+          "handles_delta": 5
+        },
+        "cleanup": {
+          "pool_waiting": 0,
+          "pool_busy": 0,
+          "pool_retired": 0,
+          "pool_close_tasks": 0,
+          "http_inflight": 0,
+          "open_responses": 0,
+          "buffer_used_bytes": 0,
+          "global_active": 0,
+          "site_active": 0,
+          "admission_waiting": 0
+        }
+      }
+    ],
+    "churn": {
+      "iterations": 1000,
+      "cancelled_acquires": 1000,
+      "elapsed_seconds": 0.116,
+      "directory_reads": 2001,
+      "candidate_checks": 1000,
+      "resource_samples": [
+        {
+          "rss_bytes": 54788096,
+          "handles": 228
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        },
+        {
+          "rss_bytes": 54788096,
+          "handles": 221
+        }
+      ],
+      "rss_growth_bytes": 0,
+      "handle_growth": -7,
+      "stable_within_guardrail": true,
+      "cleanup": {
+        "pool_waiting": 0,
+        "pool_busy": 0,
+        "pool_retired": 0,
+        "pool_close_tasks": 0
+      }
+    },
+    "checks": {
+      "all_cleanup_zero": true,
+      "candidate_lease_checked_per_attempt": true,
+      "shared_ip_does_not_expand_concurrency": true,
+      "429_created_site_cooldown": true,
+      "cancellation_observed": true,
+      "transport_replay_recovered": true,
+      "churn_1000_completed": true,
+      "churn_resources_stable": true
+    },
+    "passed": true
+  },
+  "dependency_report": "D:\\project\\empire\\build\\dependency-report.json",
+  "dependencies": {
+    "schema_version": 1,
+    "generated_at_utc": "2026-10-17T14:48:18+08:00",
+    "scope": "Python packages locked for Empire; excludes OS, driver and dynamically loaded native components",
+    "target": {
+      "system": "Windows",
+      "machine": "AMD64",
+      "python": "3.12"
+    },
+    "generator": {
+      "python": "3.12.9",
+      "platform": "Windows-11-10.0.26200-SP0"
+    },
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "component_count": 42,
+    "components": [
+      {
+        "name": "altgraph",
+        "version": "0.17.5",
+        "scope": "transitive",
+        "compatibility_group": "build",
+        "license": "MIT",
+        "locked_sha256": [
+          "f3a22400bce1b0c701683820ac4f3b159cd301acab067c51c653e06961600597"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "annotated-types",
+        "version": "0.8.0",
+        "scope": "transitive",
+        "compatibility_group": "validation",
+        "license": "MIT",
+        "locked_sha256": [
+          "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "anyio",
+        "version": "4.15.1",
+        "scope": "transitive",
+        "compatibility_group": "network",
+        "license": "MIT",
+        "locked_sha256": [
+          "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "certifi",
+        "version": "2026.7.22",
+        "scope": "transitive",
+        "compatibility_group": "network",
+        "license": "MPL-2.0",
+        "locked_sha256": [
+          "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "cffi",
+        "version": "2.1.1",
+        "scope": "transitive",
+        "compatibility_group": "database",
+        "license": "MIT-0",
+        "locked_sha256": [
+          "f53e442b08449d42821fa4a4fba000095af9f62742a500f978a9f557ec44339a"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "colorama",
+        "version": "0.4.6",
+        "scope": "transitive",
+        "compatibility_group": "test-quality",
+        "license": null,
+        "locked_sha256": [
+          "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "cryptography",
+        "version": "50.0.1",
+        "scope": "transitive",
+        "compatibility_group": "database",
+        "license": "Apache-2.0 OR BSD-3-Clause",
+        "locked_sha256": [
+          "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "greenlet",
+        "version": "3.5.6",
+        "scope": "transitive",
+        "compatibility_group": "database",
+        "license": "MIT AND PSF-2.0",
+        "locked_sha256": [
+          "7ac4abb3877c43af320392c664774eef6fa2cc063c79a55fc02d844a3cbe7395"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "h11",
+        "version": "0.16.0",
+        "scope": "transitive",
+        "compatibility_group": "network",
+        "license": "MIT",
+        "locked_sha256": [
+          "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "httpcore",
+        "version": "1.0.9",
+        "scope": "transitive",
+        "compatibility_group": "network",
+        "license": "BSD-3-Clause",
+        "locked_sha256": [
+          "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "httpx",
+        "version": "0.28.1",
+        "scope": "direct-runtime",
+        "compatibility_group": "network",
+        "license": "BSD-3-Clause",
+        "locked_sha256": [
+          "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "idna",
+        "version": "3.20",
+        "scope": "transitive",
+        "compatibility_group": "network",
+        "license": "BSD-3-Clause",
+        "locked_sha256": [
+          "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "iniconfig",
+        "version": "2.3.0",
+        "scope": "transitive",
+        "compatibility_group": "test-quality",
+        "license": "MIT",
+        "locked_sha256": [
+          "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "librt",
+        "version": "0.15.0",
+        "scope": "transitive",
+        "compatibility_group": "test-quality",
+        "license": "MIT",
+        "locked_sha256": [
+          "73b30cfa976659b3917c8f6153bdb0591c6a9ec6583599fd24a689b690622022"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "mypy",
+        "version": "1.20.2",
+        "scope": "direct-development",
+        "compatibility_group": "test-quality",
+        "license": "MIT",
+        "locked_sha256": [
+          "d52ad8d78522da1d308789df651ee5379088e77c76cb1994858d40a426b343b9"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "mypy-extensions",
+        "version": "1.1.0",
+        "scope": "transitive",
+        "compatibility_group": "test-quality",
+        "license": "MIT",
+        "locked_sha256": [
+          "1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "packaging",
+        "version": "26.3",
+        "scope": "transitive",
+        "compatibility_group": "runtime-support",
+        "license": "Apache-2.0 OR BSD-2-Clause",
+        "locked_sha256": [
+          "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pathspec",
+        "version": "1.1.1",
+        "scope": "transitive",
+        "compatibility_group": "test-quality",
+        "license": null,
+        "locked_sha256": [
+          "a00ce642f577bf7f473932318056212bc4f8bfdf53128c78bbd5af0b9b20b189"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pefile",
+        "version": "2024.8.26",
+        "scope": "transitive",
+        "compatibility_group": "build",
+        "license": "MIT",
+        "locked_sha256": [
+          "76f8b485dcd3b1bb8166f1128d395fa3d87af26360c2358fb75b80019b957c6f"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pluggy",
+        "version": "1.6.0",
+        "scope": "transitive",
+        "compatibility_group": "test-quality",
+        "license": "MIT",
+        "locked_sha256": [
+          "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pycparser",
+        "version": "3.0",
+        "scope": "transitive",
+        "compatibility_group": "database",
+        "license": "BSD-3-Clause",
+        "locked_sha256": [
+          "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pydantic",
+        "version": "2.13.5",
+        "scope": "direct-runtime",
+        "compatibility_group": "validation",
+        "license": "MIT",
+        "locked_sha256": [
+          "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pydantic-core",
+        "version": "2.46.5",
+        "scope": "transitive",
+        "compatibility_group": "validation",
+        "license": "MIT",
+        "locked_sha256": [
+          "5e81740c09e310f5aa5cbd3e434a01c154d4bef93241c7877b39f211d2b78ba8"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pypdf",
+        "version": "6.20.0",
+        "scope": "direct-runtime",
+        "compatibility_group": "runtime-support",
+        "license": "BSD-3-Clause",
+        "locked_sha256": [
+          "f003fc2014814d264fe7dd3f9d435c158e23e1a85a2233f87a0a2d6d21c914ad"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pygments",
+        "version": "2.21.0",
+        "scope": "transitive",
+        "compatibility_group": "test-quality",
+        "license": "BSD-2-Clause",
+        "locked_sha256": [
+          "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pymysql",
+        "version": "1.2.3",
+        "scope": "direct-runtime",
+        "compatibility_group": "database",
+        "license": "MIT",
+        "locked_sha256": [
+          "14f1c68e2ed859243ae5ca41ffbe677027fc46bc136a9f0be8a4e928e5e7415a"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pyinstaller",
+        "version": "6.22.3",
+        "scope": "direct-development",
+        "compatibility_group": "build",
+        "license": "GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones)",
+        "locked_sha256": [
+          "500bd58c7bf7e584a8435adccbd763a0b918d5c12b08d74ff50fd79b2915458b"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pyinstaller-hooks-contrib",
+        "version": "2026.7",
+        "scope": "transitive",
+        "compatibility_group": "build",
+        "license": null,
+        "locked_sha256": [
+          "24257a04c7a5a7a034cf28e39dcee20fbeeb9f043076729480f2e1b69904408a"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pyside6",
+        "version": "6.11.2",
+        "scope": "direct-runtime",
+        "compatibility_group": "qt",
+        "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "locked_sha256": [
+          "3201d67e3c10be2eaedd3910ff0f02351eca7e88c95a291cde5e7f2f55ef207f"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pyside6-addons",
+        "version": "6.11.2",
+        "scope": "transitive",
+        "compatibility_group": "qt",
+        "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "locked_sha256": [
+          "f449ea4431da20e7b86752cca8d166f93434516fe417f981c27e5f8e1b554407"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pyside6-essentials",
+        "version": "6.11.2",
+        "scope": "transitive",
+        "compatibility_group": "qt",
+        "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "locked_sha256": [
+          "c8a29def77032773a30879f7f24415b5395ad08592d147c170824ef4c735dfc1"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pytest",
+        "version": "9.1.1",
+        "scope": "direct-development",
+        "compatibility_group": "test-quality",
+        "license": "MIT",
+        "locked_sha256": [
+          "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pytest-asyncio",
+        "version": "1.4.0",
+        "scope": "direct-development",
+        "compatibility_group": "test-quality",
+        "license": "Apache-2.0",
+        "locked_sha256": [
+          "933ca923a23075a87fb7070c0ec272a6848489824d887c85c812670932835aa1"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "redis",
+        "version": "6.4.0",
+        "scope": "direct-runtime",
+        "compatibility_group": "redis",
+        "license": "MIT",
+        "locked_sha256": [
+          "f0544fa9604264e9464cdf4814e7d4830f74b165d52f2a330a760a88dd248b7f"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "ruff",
+        "version": "0.16.8",
+        "scope": "direct-development",
+        "compatibility_group": "test-quality",
+        "license": "MIT",
+        "locked_sha256": [
+          "a6b85621fd3c81e31fc5f5add09c9c078b430db3595ca632efafdec9e64ebfaa"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "setuptools",
+        "version": "84.0.0",
+        "scope": "transitive",
+        "compatibility_group": "build",
+        "license": "MIT",
+        "locked_sha256": [
+          "51a52592b3b99e102b609654876bd65f19f999935166d1352678931132b0c670"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "shiboken6",
+        "version": "6.11.2",
+        "scope": "transitive",
+        "compatibility_group": "qt",
+        "license": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "locked_sha256": [
+          "6ab0eba1c904455df621f9a6df3ca2bb896bab8670572d2bc4e37804ae91f19a"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "sqlalchemy",
+        "version": "2.0.54",
+        "scope": "direct-runtime",
+        "compatibility_group": "database",
+        "license": "MIT",
+        "locked_sha256": [
+          "d65f8ca742ef1e1e14bc417ef59dc2ddf207a7b66b30cfdc6152447314e030cf"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "socksio",
+        "version": "1.0.0",
+        "scope": "transitive",
+        "compatibility_group": "network",
+        "license": "UNKNOWN",
+        "locked_sha256": [
+          "95dc1f15f9b34e8d7b16f06d74b8ccf48f609af32ab33c608d08761c5dcbb1f3"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "typing-inspection",
+        "version": "0.4.4",
+        "scope": "transitive",
+        "compatibility_group": "validation",
+        "license": "MIT",
+        "locked_sha256": [
+          "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "typing-extensions",
+        "version": "4.16.0",
+        "scope": "transitive",
+        "compatibility_group": "runtime-support",
+        "license": "PSF-2.0",
+        "locked_sha256": [
+          "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+        ],
+        "installed_matches": true
+      },
+      {
+        "name": "pywin32-ctypes",
+        "version": "0.2.3",
+        "scope": "transitive",
+        "compatibility_group": "build",
+        "license": "BSD-3-Clause",
+        "locked_sha256": [
+          "8a1513379d709975552d202d942d9837758905c8d01eb82b8bcc30918929e7b8"
+        ],
+        "installed_matches": true
+      }
+    ]
+  },
+  "portable_distribution": {
+    "chinese_space_path": true,
+    "packaged_smoke": true,
+    "first_run_prepared_config": true,
+    "config_recheck": true
+  },
+  "source_sha256": "3fd0ce7dd96622f776e347fdbc23559459521685f1463cab492911b815ed7643",
+  "test_counts": {
+    "passed": 2702,
+    "skipped": 5
+  }
+}

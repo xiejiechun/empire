@@ -61,12 +61,23 @@ def migrate_rows(engine, namespace, source='tdx'):
         if before != after:
             raise RuntimeError('分红业务内容发生变化；事务回滚')
         old = read_state(conn, namespace, 'tdx-dividends', source, lock=True)
-        reset = bool(changed or old.get('contract_version') != 2 or old.get('identity_migration_pending'))
+        reset = bool(changed or old.get('contract_version') != 3 or old.get('identity_migration_pending'))
         if reset:
             # Retain SQL observation watermarks to reject late old responses.
             units = {k: {'observed_at': v['observed_at']} for k, v in old.get('units', {}).items()}
+            from empire.plugins.datasets.capital_actions import ordered, unit_key
+            groups = {}
+            for record in records:
+                value = decode(record)
+                groups.setdefault(unit_key(value), []).append(value)
+            for key, proof in old.get('units', {}).items():
+                actual = ordered(groups.get(key, []))
+                if proof.get('count') == len(actual) and proof.get('digest') == digest(actual):
+                    units[key]['history_discovered_at'] = proof.get('history_discovered_at', proof['observed_at'])
+                elif proof.get('history_discovered_at'):
+                    units[key]['history_discovered_at'] = proof['history_discovered_at']
             save_state(conn, namespace, 'tdx-dividends', source, 'dividends',
-                       dict(contract_version=2, units=units, identity_migration_pending=True), old)
+                       dict(contract_version=3, units=units, identity_migration_pending=True), old)
         return dict(before=before, after=after, changed_keys=changed, reset_required=reset)
 
 

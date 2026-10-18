@@ -1,0 +1,70 @@
+{
+  "checked_at": "2026-10-09T02:18:25.327700+08:00",
+  "project": "ths-indices",
+  "release_gate": "passed",
+  "tests": {
+    "passed": 1884,
+    "skipped": 5,
+    "failed": 0,
+    "skip_reason": "五项独立隔离演练需额外显式启用，不属于本次指数专项"
+  },
+  "executable_sha256": "e4a1a50a355b1cf6242f741544e7257225de2c5fb5981c95c699a202002fe881",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "a79f789e15de70d22e55a5f850f7ce3ec83c6009",
+    "dirty": true,
+    "requirements_sha256": "324f4a8b9e382288beb7ec54de8ea4a51e99b012140d1ecf56cdc5c033d21c91",
+    "dependency_count": 41,
+    "dependency_report_sha256": "6caf448064b5338f21501bcf31fc60b08478256eccad702ec96fdbe58d9e82c7",
+    "built_at_utc": "2026-10-08T18:07:02Z",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3"
+  },
+  "portable_distribution": {
+    "chinese_space_path": true,
+    "packaged_smoke": true,
+    "first_run_prepared_config": true,
+    "config_recheck": true
+  },
+  "program_config_preserved": true,
+  "packaged_doctor": {
+    "working_directory": "D:/",
+    "redis_connected": true,
+    "mysql_connected": true
+  },
+  "actual_source": {
+    "indices": 573,
+    "available": 535,
+    "unavailable": 38,
+    "members": 99588,
+    "source_units": 574,
+    "source_query_equal": true,
+    "unknown_security_identity": 0,
+    "pending_after_archive": 0
+  },
+  "visible_desktop": {
+    "executable": "D:/project/empire/dist/Empire/Empire.exe",
+    "opened": true,
+    "directory_actual_rows": true,
+    "unavailable_label": true,
+    "member_reverse_search": "200012 南玻B → 399003/399106/399108/399318，全部当前可用",
+    "task_saved_schedule": "每天18:00",
+    "task_enabled": true
+  },
+  "saved_resource_change": {
+    "generic_response_bytes": 8388608,
+    "buffer_bytes": 536870912,
+    "other_limits_preserved": true
+  },
+  "references": [
+    "indices-schema-2026-10-09.json",
+    "indices-live-2026-10-09.json",
+    "indices-capacity-2026-10-09.json",
+    "indices-development-repair-2026-10-09.json"
+  ],
+  "limitations": [
+    "同花顺目录范围，来源分组不是官方类型",
+    "38项来源明确暂无成员，不冒充真实空集合",
+    "只保存当前归属，不提供历史调样、生效日或权重"
+  ]
+}

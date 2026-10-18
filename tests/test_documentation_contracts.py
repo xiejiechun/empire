@@ -9,7 +9,7 @@ def test_current_documentation_contracts() -> None:
     result = verify(root)
     assert result["documents"] > 20
     assert result["links"] > 50
-    assert result["schema_tables"] == 27
+    assert result["schema_tables"] == 55
 
 
 def test_link_checker_rejects_missing_absolute_and_out_of_range_targets(tmp_path: Path) -> None:
@@ -32,6 +32,17 @@ def test_schema_table_parser_tracks_formal_tables(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     assert schema_tables(tmp_path) == {"one", "two"}
+
+
+def test_link_checker_ignores_literal_sql_but_checks_real_code_labels(tmp_path):
+    (tmp_path / 'README.md').write_text(
+        "`CHECK (code REGEXP '^[0-9]{6}[.](SH|SZ|BJ)$')`\n"
+        '```sql\nSELECT "[literal](no-such-file)";\n```\n'
+        '[`actual link`](missing.md)\n', encoding='utf-8')
+    (tmp_path / 'AGENTS.md').write_text('', encoding='utf-8')
+    errors = broken_links(tmp_path)
+    assert len(errors) == 1
+    assert 'missing link missing.md' in errors[0]
 
 
 def test_stable_evidence_contains_no_secret_material() -> None:

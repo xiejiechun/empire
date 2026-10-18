@@ -1,0 +1,56 @@
+{
+  "project": "ths-index-prices",
+  "verified_at": "2026-10-11T07:52:54.015531+00:00",
+  "source": {
+    "hash": "21f1f31c9e70ddc61935948d1df02f6c53d36be2c832d9cf3506a9e7ba92116e",
+    "count": 245,
+    "source_count": 245,
+    "anomalous_row": [
+      "2014-12-05",
+      "3813.84",
+      "3823.18",
+      "3641.33",
+      "3756.47",
+      "94777491000",
+      "-798120910000"
+    ]
+  },
+  "sql": {
+    "count": 245,
+    "content_hash": "21f1f31c9e70ddc61935948d1df02f6c53d36be2c832d9cf3506a9e7ba92116e",
+    "complete": true
+  },
+  "formal_query": {
+    "index_code": "399317",
+    "trade_date": "2014-12-05",
+    "open": "3813.840000",
+    "high": "3823.180000",
+    "low": "3641.330000",
+    "close": "3756.470000",
+    "volume": "94777491000.0000",
+    "amount": "-798120910000.0000",
+    "name": "国证Ａ指",
+    "price_relation_valid": true,
+    "volume_amount_valid": false
+  },
+  "quality": {
+    "status": "pass",
+    "measured": "0条价格关系异常，保留来源原值，受影响日期不用于依赖四价的策略；已核验精度及收盘量额；0条来源缺少开盘/最高/最低价，保存NULL。来源价格字段齐全。0条来源缺少成交额，保存NULL；不影响收盘收益分析，依赖成交额的分析或策略不可用。1条量额异常（负成交量或负成交额），保留原值；不影响收盘收益分析，依赖量额的分析或策略不可用。"
+  },
+  "network": {
+    "policy": {
+      "use_proxy": true,
+      "proxy_fallback": true
+    },
+    "counts": {
+      "proxy_requests": 8
+    }
+  },
+  "pending": 0,
+  "checkpoint": {
+    "next_index": 291,
+    "next_year": 2015,
+    "phase": "collecting"
+  },
+  "full_history_complete": false
+}
