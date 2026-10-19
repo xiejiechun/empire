@@ -1,12 +1,21 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-18T21:20:23.130147+00:00",
-  "note": "本次发布后仅新增模块化实施方案、静态架构基线和 main 发布证据，并在开发流程添加方案入口；区分现有保障与待建工具，明确分批验收、实采适用性及回退条件。程序源码、离线用户帮助和用户行为未变。",
+  "reviewed_at": "2026-10-19T02:57:14.535159+00:00",
+  "note": "A/B实施审阅：发布统一所有权、暂存切换与恢复已补README及发布指南；项目只读诊断的预算、unknown/partial、日期筛选与错误ID读取已补程序正文及表键归属；现行任务、页面、SQL和Redis业务契约不变，静态债务和装配基线用于后续迁移。",
   "unchanged_reason": "",
-  "exceptions": {},
+  "exceptions": {
+    "redis:fingerprints": "归档器仅在health输出已有blocked事实，摘要写入清理与版本规则未改动。",
+    "redis:stocks-result": "归档器仅在health输出已有blocked事实，股票发布结果的存储与读取规则未改动。",
+    "redis:stocks-committed": "归档器仅在health输出已有blocked事实，股票核验标记的写入及恢复规则未改动。",
+    "redis:archives": "归档器仅在health输出已有blocked事实，归档记录数量期限和清理方式未改动。"
+  },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "d2abcbcd9af91b4b8078ed45d54cf0c5f70cbedb1ec6a3d59e1168a11fb1f975",
+    "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
+    "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
+    "scripts/architecture_contract.py": "29f82b73f1532a1aa17c1552971a0be389d78d4b5a6c3d1ef80355f0b68f7404",
+    "scripts/assembly_contract.py": "c6d34a9148b067e2be7d56cdb53e2b9c7f47f484d7814679c028a1fa6e5f9823",
     "scripts/audit_dependencies.py": "c9804426ecd17b020a44252722d6cb5a627a9bc274eddb5a1dbe35b8214bcc2f",
     "scripts/build_icon.py": "1f9fab6a7f0dbe95dad2bcfb56a28d58b3446c772be6a557849bc7dda4355ae3",
     "scripts/business_migration_engine.py": "c9a9704e856b9429557f01a98e399e19e35de3c02a5b18f90f34bdf20cdebda8",
@@ -75,7 +84,12 @@
     "scripts/migrate_shareholder_start_precision.py": "a2ecd9e4e4c127065712b840130cd0b22c931e8da0f76f19f0c98669aa187028",
     "scripts/migrate_suspension_identity.py": "593b7e6f0414069ad6cd8b449a0afd1fa76ff33baa5cd0ec067066a1cb20894a",
     "scripts/mysql_recovery_inventory.py": "5232ea7b8738949174e30a8a6ac5d59f2e5e3f2122a52d109503e80ef2042e77",
-    "scripts/preparation_evidence.py": "831645bd3e6e0f13c6a0f520ddae7ea6ef38046db0b12845f9d9efa441e0098d",
+    "scripts/preparation_evidence.py": "93d6a253ced4fef14d6ecec073c4f26015a8e127dd576f4beb6f347224af37d3",
+    "scripts/release.py": "d74e3349213b4014ace0d0042c05d6c77cf96241ed100a5dcac59a56654fdfa3",
+    "scripts/release_identity.py": "0f58e95eafbcddec51f52bafc2b62c9bd6d35ae52aa9aff4be3a7c0568f554ce",
+    "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
+    "scripts/release_publish.py": "23932c7bdc3d05b3ba3ac449ac30afa9d21e9183d3fd64aaa94e87e23988520a",
+    "scripts/release_steps.py": "5f7a06562080df3af3a87104d26e097ed217f1e2425e75c19347211639b00416",
     "scripts/scan_preparation.py": "9f36428b983023db6fc5a20454fddf5866179745e8941a1f3eee96edabe6f4bb",
     "scripts/verify_database_design.py": "17c14cee5a427aa3cea3422610603a0e10c84f2045ac4dc6069b838746fdcafc",
     "scripts/verify_documentation.py": "71dbfdd1365391be2dd5dacd76f6e86fcbac0fe34233cf1be84b4537b4d73d92",
@@ -101,7 +115,7 @@
     "sql/legacy/market-day-v1.sql": "8c33fd5cdb741c850c0cf6d6ba5b1abae4341019ac98a80759938baf8112cd78",
     "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
     "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
-    "src/empire/__main__.py": "6fab43f3f2c61e9582b8190cb011ff14257274ac2a8f945882379606974619bb",
+    "src/empire/__main__.py": "c739c9f7bda32f4e253ac595a48d4849406313cab3d0c207c5545698ed6be437",
     "src/empire/bootstrap.py": "761f4cd6192f43962d90e8192c7ee2d84b68aa6cfece39d79a30ea8d436bf82a",
     "src/empire/build_info.py": "beac8f6c25236dce13e1ecb6e18c067324edcad095cece72ae8e3d46bb145ff7",
     "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -152,7 +166,7 @@
     "src/empire/core/config.py": "d62cb8bdf3f80e9e2e3ba8d91fe77907d1f8275d27312424d9ab5870da42192b",
     "src/empire/core/identity.py": "4c1a9d69c2718000afc0102a6a484762dbde0171e4c09a7b7a1bc922032345a8",
     "src/empire/core/manager.py": "92e0c556caa68d4a6816f880dfc1577aa6c48848fe90cf88886b61951354567d",
-    "src/empire/core/preparation_release.py": "ca897e3d2501878420f141fe28e679bf6cdae5d61512124f2933da37a2378531",
+    "src/empire/core/preparation_release.py": "5fd17fe796328db926131362370243bcc4bd1a53e6af3de9777ce5ee44b64bcb",
     "src/empire/core/redaction.py": "6e68ccc06e9867e136cda7011572bc351813a5e84c6830197b8d1ba5f998c477",
     "src/empire/core/runtime.py": "72c3ec313a126f5d42e1431f12dc279dd8a32a0c91693819d7ad69d77a69eef4",
     "src/empire/core/time.py": "2a90f5091a7f4b0361a5533354e6f166453869651940f7e00993752698729e9a",
@@ -162,6 +176,11 @@
     "src/empire/desktop/page_lifecycle.py": "60d96c05ee024c3938932adf48cfde83f0ffcb9ab024b7038a4a3ff05e485079",
     "src/empire/desktop/theme.py": "614eed37a4ef872574c381128f29d07eef378a48150ed215fcfd1e0230467162",
     "src/empire/desktop/window.py": "65d5199d0eb64ecf34740c343dba3a022df94850ca1bc21988a75e0229310cb7",
+    "src/empire/diagnostics/__init__.py": "8edec7a32d121934e527bc0d416cef14344fe0c32ad7a990b78e3a71829a14bc",
+    "src/empire/diagnostics/declarations.py": "3a8185052fbd3e3db9cbe5dbecea6b343c34d1ec788134deddd4770caf0e1968",
+    "src/empire/diagnostics/project.py": "b8c6b9f6778989836fd2a70d9a6ca47277d5b6c3b3a54369a6ecea7f17f31f7c",
+    "src/empire/diagnostics/readonly.py": "1320793e8a748703080e73950cae4a71a72e0f86b64971c9f4bb7a965615fd36",
+    "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
     "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
     "src/empire/plugins/collection/__init__.py": "d243b838e06bbf6e511af8a86fde0da0eaa2494f81cb08001151a1a4a721b5e2",
     "src/empire/plugins/collection/batch.py": "00d17444dc05a8c837be3b1fc385b1de54a8554b1220456b30c63479f3599c7f",
@@ -331,7 +350,7 @@
     "src/empire/plugins/infra/settings.py": "eddc4547166fd35904118b6a1ada727c910dacfd045fb3ea279274a29c81321d",
     "src/empire/plugins/infra/sql_lane.py": "15da4fae66b21c2739c87bbd36c2a139c3e56326c9621020bbc5272f61b1ef7a",
     "src/empire/plugins/pipeline/__init__.py": "5bc21e78444728cd50b6ddaf95ef5a50416f7ca8f0e1caf8bf84c939b96bb22b",
-    "src/empire/plugins/pipeline/archive.py": "3b4bf54dc866a8c1e3b3e527ed718f63c9ff74935b73a8e68cb27639f4617ec5",
+    "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
     "src/empire/plugins/pipeline/archive_queue.py": "0353214a6259ebaca511014b2808b8d6c336263728a06e2be8de7401f2440d86",
     "src/empire/plugins/pipeline/fingerprints.py": "80a671107f6588059708c9f742d42ecd368efdda6a641cf99c68d9520f7b8c82",
     "src/empire/plugins/pipeline/ingest.py": "747f612a67f543f42ed8c9925b2838b6cf1dbece9d16a50a06842a50bbf8057d",
@@ -421,7 +440,7 @@
     "src/empire/plugins/ui/unlocks.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "ec632bd3d0b0c9f62b23ee6cc9f3651f1fa872d5d2fe9584dfab25d3092bee29",
+  "content_sha256": "acb344e5bd15d243fe7a9a4a9da71d94e08944aa943fc850c96160a2b9ef519c",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -1300,7 +1319,7 @@
         "src/empire/plugins/ui/record_table.py": "cb73ca7833685b16955159457034517a5025069a180497d7a0a4b7ca521877f5",
         "src/empire/plugins/ui/records.py": "eeb1b99e0076c722a9e17a0d82a3890f94e8bdf1d1a2e82b8c228d4bcb928a35"
       },
-      "content_sha256": "c9dd8e80aaf3b72c1c1d41ed64d48385290f74ca7c85fdc313c8d3f4058e433e"
+      "content_sha256": "48dabed4df459f7a9a92f25edf80dd7a615751dda8e02f20105fbb6c6b4b5074"
     },
     "page:sites": {
       "sources": {
@@ -1399,7 +1418,7 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/system.py": "1d985986e30d1bfa74e44bbce396b78153c9d659e72c344561c8cdda505e99b7"
       },
-      "content_sha256": "6af13a1887ac196142545e073cf190ede931555ccdb002a15d55b0828014cbcc"
+      "content_sha256": "b7a4d022d136eddd1c64b87c6711d9003161ff473dfd4ecf9e0b703102342936"
     },
     "page:plugins": {
       "sources": {
@@ -3122,19 +3141,21 @@
       "sources": {
         "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
         "src/empire/plugins/infra/collection_state_unit.py": "fd0c9d461c40f26c6387247dce3678566c6c22ca9e2f11008a4cb1fe33bc79fd",
-        "src/empire/plugins/pipeline/archive.py": "3b4bf54dc866a8c1e3b3e527ed718f63c9ff74935b73a8e68cb27639f4617ec5",
+        "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
+        "src/empire/diagnostics/project.py": "b8c6b9f6778989836fd2a70d9a6ca47277d5b6c3b3a54369a6ecea7f17f31f7c",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
         "sql/schema.sql#collection_state": "e20b950eaaf7454b95cc6d30f7c796b759965182d215c84d5ce9678d90aeb552"
       },
-      "content_sha256": "579df169176d5bbc6913a8dae6751213e5210ed01aa691e0d49ff83e2d4a088b"
+      "content_sha256": "567be9166c72e8a770f4124a4d27cba8ad16e7616a28e10c8b0ab48499c677f8"
     },
     "mysql:app_setting": {
       "sources": {
         "src/empire/plugins/infra/settings.py": "eddc4547166fd35904118b6a1ada727c910dacfd045fb3ea279274a29c81321d",
         "src/empire/plugins/collection/control.py": "fb771b85a54c9b975c6147e39aae326ad7702d88f6cdb98328fe9a2c16951500",
         "src/empire/plugins/infra/http.py": "f060eaee1f5007df92510f1f0308a437b936f5a457dff4936c1ece3260adcb85",
+        "src/empire/diagnostics/project.py": "b8c6b9f6778989836fd2a70d9a6ca47277d5b6c3b3a54369a6ecea7f17f31f7c",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/download.py": "e5d037c6e900e8cb67765f4bf8d6f6313bf84896cfaff715f83b031d9776af04",
@@ -3143,7 +3164,7 @@
         "src/empire/contracts/request_retry.py": "72e47b364e9a7b7ed7ffeb8530fb195850977dc0eadfa223afb5ef114f57f732",
         "sql/schema.sql#app_setting": "670be6684a663cebea1a5c5f9c86ed209479d97518abdf8e1f4b55e205187e65"
       },
-      "content_sha256": "4127ae2e87bf647812156d33b90725700affba6437ae0e96a9e5841375837aed"
+      "content_sha256": "9fefb1c073636801612f6ea2bd410bb46db5ab76b29ff12dfc5105a28691ca7c"
     },
     "mysql:security_code_alias": {
       "sources": {
@@ -3875,18 +3896,20 @@
       "sources": {
         "src/empire/plugins/infra/redis_store.py": "403d15efdff316ab8808b3badb3609051ae3d4790b874ce3dabbd6183ad942b8",
         "src/empire/plugins/pipeline/ingest.py": "747f612a67f543f42ed8c9925b2838b6cf1dbece9d16a50a06842a50bbf8057d",
-        "src/empire/plugins/pipeline/archive.py": "3b4bf54dc866a8c1e3b3e527ed718f63c9ff74935b73a8e68cb27639f4617ec5",
+        "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/plugins/pipeline/archive_queue.py": "0353214a6259ebaca511014b2808b8d6c336263728a06e2be8de7401f2440d86",
+        "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c"
       },
-      "content_sha256": "4dcb373458fb5956bab8695510d03fa2ade585589e079ffdd6dc9c33345e2d69"
+      "content_sha256": "5aff51ece03367ef34fcff1f20bd69b946d6c276e81c800db8793830df3117ff"
     },
     "redis:checkpoint": {
       "sources": {
         "src/empire/plugins/pipeline/ingest.py": "747f612a67f543f42ed8c9925b2838b6cf1dbece9d16a50a06842a50bbf8057d",
-        "src/empire/plugins/pipeline/archive.py": "3b4bf54dc866a8c1e3b3e527ed718f63c9ff74935b73a8e68cb27639f4617ec5",
+        "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/plugins/data/capital_actions.py": "8321ee748f41a07883d68511ca7b5f3cb7c68fa0563b8e2e4af2e27c16d4a1ef",
+        "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
@@ -3901,12 +3924,12 @@
         "src/empire/plugins/datasets/capital_validation.py": "6f676be5196fbf96a9a0214f231dbab9a489b155d71a3e9f66dbba62b63993d1",
         "src/empire/plugins/datasets/issue_detail.py": "7b42067f60349c18d3c78812ba8397898c428eb9eef6a9ae5628a518580b818c"
       },
-      "content_sha256": "1441ef945f19be76953e19ec2461e8c18034505766ffab49c9d532be3e138ccb"
+      "content_sha256": "08e4b690270d2ab66a6e3a310bcbcca6b6b217eb1537445d4644f823416d07f1"
     },
     "redis:fingerprints": {
       "sources": {
         "src/empire/plugins/pipeline/fingerprints.py": "80a671107f6588059708c9f742d42ecd368efdda6a641cf99c68d9520f7b8c82",
-        "src/empire/plugins/pipeline/archive.py": "3b4bf54dc866a8c1e3b3e527ed718f63c9ff74935b73a8e68cb27639f4617ec5",
+        "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c"
       },
@@ -3921,7 +3944,7 @@
     "redis:stocks-result": {
       "sources": {
         "src/empire/plugins/datasets/stocks.py": "ada0222a4df15b9d3b46a1ab4b199f999a5e53a3febba028fbeac6e0d7bbaec5",
-        "src/empire/plugins/pipeline/archive.py": "3b4bf54dc866a8c1e3b3e527ed718f63c9ff74935b73a8e68cb27639f4617ec5",
+        "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/plugins/infra/archive_confirmation.py": "e7e15d52499f98b7c3ea66e52eed79dee85b7238c951798e5d89743515c35e21",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
@@ -3937,7 +3960,7 @@
     "redis:stocks-committed": {
       "sources": {
         "src/empire/plugins/datasets/stocks.py": "ada0222a4df15b9d3b46a1ab4b199f999a5e53a3febba028fbeac6e0d7bbaec5",
-        "src/empire/plugins/pipeline/archive.py": "3b4bf54dc866a8c1e3b3e527ed718f63c9ff74935b73a8e68cb27639f4617ec5",
+        "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/plugins/infra/archive_confirmation.py": "e7e15d52499f98b7c3ea66e52eed79dee85b7238c951798e5d89743515c35e21",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
@@ -3952,17 +3975,19 @@
     },
     "redis:archive-progress": {
       "sources": {
-        "src/empire/plugins/pipeline/archive.py": "3b4bf54dc866a8c1e3b3e527ed718f63c9ff74935b73a8e68cb27639f4617ec5",
+        "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
+        "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c"
       },
-      "content_sha256": "7c7b627ee1f3e4039161ff59ac5d56eda82977b0a7dceb6376e9ea6a7f9416aa"
+      "content_sha256": "e3c72bde8b89f0f22e0ee273c0ff88890793a52dcdeefb9a7ccdd7c2b17d1065"
     },
     "redis:collection-control": {
       "sources": {
         "src/empire/plugins/collection/control.py": "fb771b85a54c9b975c6147e39aae326ad7702d88f6cdb98328fe9a2c16951500",
         "src/empire/plugins/data/financial_statements.py": "1ab41e45eeb008feaafd239b2588b47df8f76a203a346bba1dc0c874f73e9995",
+        "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
@@ -3992,13 +4017,13 @@
         "src/empire/plugins/datasets/financial_statements.py": "e787328643f4eb6532d6f9e977a0bb3367a3a9ff7698724f9728f777ea871d94",
         "src/empire/plugins/datasets/financial_wire.py": "285ee179af2fd37c68e1bc2de2aedf9a26eea84ac1814f04e0fa4dcca31d8710"
       },
-      "content_sha256": "c4729dc451ed9a823d5d503e91737376e4bfea01e895ac88f9df45377811fa13"
+      "content_sha256": "f874f43281423b16f623906928b1d4d2df88e0a6297a99003495f85985924b38"
     },
     "redis:archives": {
       "sources": {
         "src/empire/plugins/collection/records.py": "cc33a16e2bed3aee7e28ffbbf90656cd344ce6af6c8e146def26c9884b27f877",
         "src/empire/plugins/collection/record_query.py": "7c1f1409c686f54968f8d78a5e3eb7c69fe73ce93a2277343c3a3dfd3f5fe85f",
-        "src/empire/plugins/pipeline/archive.py": "3b4bf54dc866a8c1e3b3e527ed718f63c9ff74935b73a8e68cb27639f4617ec5",
+        "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c"
       },
@@ -4016,17 +4041,19 @@
       "sources": {
         "src/empire/plugins/collection/records.py": "cc33a16e2bed3aee7e28ffbbf90656cd344ce6af6c8e146def26c9884b27f877",
         "src/empire/plugins/collection/record_query.py": "7c1f1409c686f54968f8d78a5e3eb7c69fe73ce93a2277343c3a3dfd3f5fe85f",
+        "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c"
       },
-      "content_sha256": "f5a0bf62d9c8feeeb3d71a8af6d5ca0506eee717d23cfc286639a8ec869574c0"
+      "content_sha256": "f29ce863b991edb48c36e0de0b02e2b0fed870be752ce316b431b6ea496fe2e4"
     },
     "redis:errors-revision": {
       "sources": {
         "src/empire/plugins/collection/records.py": "cc33a16e2bed3aee7e28ffbbf90656cd344ce6af6c8e146def26c9884b27f877",
         "src/empire/plugins/collection/record_query.py": "7c1f1409c686f54968f8d78a5e3eb7c69fe73ce93a2277343c3a3dfd3f5fe85f",
+        "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c"
       },
-      "content_sha256": "75bdb931b18123cabadd32f8b5fb3d39a6dfd74265e4d168112ffc55dacb6b8a"
+      "content_sha256": "b9b28ee3ceebc7cebc43ef3b11733e0c5f64cd7949663d1dbc570f82d72e712f"
     },
     "redis:rate-site": {
       "sources": {

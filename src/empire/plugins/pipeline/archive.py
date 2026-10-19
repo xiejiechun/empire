@@ -613,5 +613,5 @@ class ArchivePlugin:
         self.isolated.clear()
 
     def health(self) -> dict:
-        return {**self.stats, "blocked_projects": sorted(self.blocked_projects),
+        return {**self.stats, "blocked": self.blocked, "blocked_projects": sorted(self.blocked_projects),
                 "isolated_messages": len(self.isolated)}

@@ -23,7 +23,8 @@
     "history": [
       "采集进度与运行记录",
       "日志清空与修复记录",
-      "查找与浏览数据"
+      "查找与浏览数据",
+      "任务失败与数据未更新"
     ],
     "sites": [
       "代理与站点速度",
@@ -39,7 +40,8 @@
     ],
     "system": [
       "运行状态与插件管理",
-      "查找与浏览数据"
+      "查找与浏览数据",
+      "任务失败与数据未更新"
     ],
     "plugins": [
       "运行状态与插件管理",
@@ -660,7 +662,8 @@
         "sources": [
           "src/empire/plugins/infra/collection_state.py",
           "src/empire/plugins/infra/collection_state_unit.py",
-          "src/empire/plugins/pipeline/archive.py"
+          "src/empire/plugins/pipeline/archive.py",
+          "src/empire/diagnostics/project.py"
         ]
       },
       "app_setting": {
@@ -668,7 +671,8 @@
         "sources": [
           "src/empire/plugins/infra/settings.py",
           "src/empire/plugins/collection/control.py",
-          "src/empire/plugins/infra/http.py"
+          "src/empire/plugins/infra/http.py",
+          "src/empire/diagnostics/project.py"
         ]
       },
       "security_code_alias": {
@@ -899,7 +903,8 @@
           "src/empire/plugins/infra/redis_store.py",
           "src/empire/plugins/pipeline/ingest.py",
           "src/empire/plugins/pipeline/archive.py",
-          "src/empire/plugins/pipeline/archive_queue.py"
+          "src/empire/plugins/pipeline/archive_queue.py",
+          "src/empire/diagnostics/redis_evidence.py"
         ]
       },
       "checkpoint": {
@@ -910,7 +915,8 @@
         "sources": [
           "src/empire/plugins/pipeline/ingest.py",
           "src/empire/plugins/pipeline/archive.py",
-          "src/empire/plugins/data/capital_actions.py"
+          "src/empire/plugins/data/capital_actions.py",
+          "src/empire/diagnostics/redis_evidence.py"
         ]
       },
       "fingerprints": {
@@ -961,7 +967,8 @@
         ],
         "sources": [
           "src/empire/plugins/pipeline/archive.py",
-          "src/empire/plugins/infra/collection_state.py"
+          "src/empire/plugins/infra/collection_state.py",
+          "src/empire/diagnostics/redis_evidence.py"
         ]
       },
       "collection-control": {
@@ -971,7 +978,8 @@
         ],
         "sources": [
           "src/empire/plugins/collection/control.py",
-          "src/empire/plugins/data/financial_statements.py"
+          "src/empire/plugins/data/financial_statements.py",
+          "src/empire/diagnostics/redis_evidence.py"
         ]
       },
       "archives": {
@@ -1002,7 +1010,8 @@
         ],
         "sources": [
           "src/empire/plugins/collection/records.py",
-          "src/empire/plugins/collection/record_query.py"
+          "src/empire/plugins/collection/record_query.py",
+          "src/empire/diagnostics/redis_evidence.py"
         ]
       },
       "errors-revision": {
@@ -1012,7 +1021,8 @@
         ],
         "sources": [
           "src/empire/plugins/collection/records.py",
-          "src/empire/plugins/collection/record_query.py"
+          "src/empire/plugins/collection/record_query.py",
+          "src/empire/diagnostics/redis_evidence.py"
         ]
       },
       "rate-site": {
@@ -1179,6 +1189,20 @@
       "src/empire/plugins/pipeline/ingest.py": {
         "f'{self.redis.prefix}:checkpoint:{job_key}'": [
           "checkpoint"
+        ]
+      },
+      "src/empire/diagnostics/redis_evidence.py": {
+        "f'{self.prefix}:collection:control:v1'": [
+          "collection-control"
+        ],
+        "f'{self.prefix}:checkpoint:{job}'": [
+          "checkpoint"
+        ],
+        "f'{self.prefix}:archive:progress:{job}'": [
+          "archive-progress"
+        ],
+        "f'{self.prefix}:ingest'": [
+          "ingest"
         ]
       }
     }

@@ -204,7 +204,12 @@ def main() -> int:
     parser.add_argument("--config", help="本地 TOML 配置路径")
     commands = parser.add_subparsers(dest="command")
     commands.add_parser("run", help="启动桌面（默认）")
-    commands.add_parser("doctor", help="只读检查数据库连接与必要能力")
+    diagnostic = commands.add_parser("doctor", help="只读检查连接，或按项目读取有界诊断")
+    diagnostic.add_argument('--project', help='采集任务 ID；不启动采集、归档或桌面')
+    diagnostic.add_argument('--error-id', help='仅按确切错误 ID 读取正文，最多 64 KiB')
+    diagnostic.add_argument('--security', default='', help='正式查询证券范围，例如 000001.SZ')
+    diagnostic.add_argument('--date', default='', help='正式预览日期 YYYY-MM-DD，默认北京时间今天')
+    diagnostic.add_argument('--output', help='将脱敏诊断 JSON 写入指定的新文件')
     commands.add_parser("check-config", help="只校验本机配置，不连接 Redis/MySQL")
     commands.add_parser("init-db", help="在已配置的数据库中显式创建首次使用的表")
     collect = commands.add_parser("collect-stocks", help="采集完整股票列表、归档并退出")
@@ -226,9 +231,27 @@ def main() -> int:
     package = commands.add_parser("package-smoke", help="隔离验证打包界面，不连接业务服务")
     package.add_argument("--screenshot")
     args = parser.parse_args()
+    if args.command == 'doctor' and not args.project and (
+            args.error_id or args.security or args.date or args.output):
+        parser.error('--error-id / --security / --date / --output 必须与 --project 一起使用')
     try:
         if args.command == "package-smoke":
             return package_smoke(args.screenshot)
+        if args.command == 'doctor' and args.project:
+            from empire.core.config import default_config_path
+            from empire.diagnostics.project import diagnose_project, render_report
+            # Explicit path avoids creating a config template or log file during
+            # a read-only diagnostic. Only --output intentionally writes a file.
+            cfg = load_config(args.config or default_config_path())
+            result = asyncio.run(diagnose_project(cfg, args.project, error_id=args.error_id,
+                security=args.security, day=args.date))
+            content = render_report(result)
+            if args.output:
+                with Path(args.output).open('x', encoding='utf-8', newline='\n') as output:
+                    output.write(content)
+            else:
+                print(content, end='')
+            return 0 if result['status'] == 'ok' else 2
         cfg = load_config(args.config)
         configure_logging(cfg)
         if args.command == "check-config":
