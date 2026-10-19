@@ -4,6 +4,28 @@ import json
 import re
 from datetime import date
 from decimal import Decimal
+from typing import Any, TypedDict
+
+
+class QualityIssue(TypedDict):
+    flag: int
+    reason: str
+
+
+class DetailedQualityIssue(QualityIssue, total=False):
+    unknown_members: int
+    detail: str
+    source: str | None
+    known_sum: str
+    difference: str
+    tolerance: str
+
+
+# Untrusted JSON dictionaries are checked by validate/validate_gaps below.
+# The explicit Any boundary is limited to their heterogeneous raw fields;
+# numeric/string inputs and structured quality outputs remain typed.
+RawReport = dict[str, Any]
+RawGap = dict[str, Any]
 
 KINDS = {'top_holders': ('前十大股东', 'tenholder', 'tdates'),
          'float_holders': ('前十大流通股东', 'flowholder', 'fdates'),
@@ -19,10 +41,10 @@ QUALITY = {1: '当期持有比例未知', 2: '前十大数量合计与来源汇�
            32: '当期持有数量未知', 64: '退出持有数量未知', 128: '来源报告期晚于采集观察日'}
 
 
-def quality_details(report, *, today=None):
+def quality_details(report: RawReport, *, today: date | None = None) -> list[DetailedQualityIssue]:
     """Compare source values without replacing them or certifying a missing row."""
     current = [m for m in report['members'] if m['member_group'] == 'current']
-    issues = []
+    issues: list[DetailedQualityIssue] = []
     for group, flag in (('current', 32), ('exited', 64)):
         unknown_quantity = sum(m['quantity'] is None for m in report['members'] if m['member_group'] == group)
         if unknown_quantity:
@@ -45,7 +67,7 @@ def quality_details(report, *, today=None):
             issues.append(dict(flag=missing, reason=QUALITY[missing], source=None, known_sum=str(known)))
             continue
         unknown_field = any(m[field] is None for m in current)
-        tolerance = Decimal('.15')
+        tolerance: Decimal | int = Decimal('.15')
         if field == 'quantity':
             tolerance = sum(Decimal(m['quantity_scale']) * Decimal(10)**(-m['quantity_decimals']) / 2
                             for m in current if m['quantity'] is not None)
@@ -59,22 +81,22 @@ def quality_details(report, *, today=None):
     return issues
 
 
-def quality_flags(report, *, today=None):
+def quality_flags(report: RawReport, *, today: date | None = None) -> int:
     return sum(issue['flag'] for issue in quality_details(report, today=today))
 
 
-def project(kind):
+def project(kind: str) -> str:
     if kind not in KINDS:
         raise ValueError('未知持有人栏目')
     return 'ths-holders'
 
 
-def digest(value):
+def digest(value: object) -> str:
     return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
         separators=(',', ':'), allow_nan=False).encode()).hexdigest()
 
 
-def number(value, *, ratio=False, signed=False, total=False):
+def number(value: str, *, ratio: bool = False, signed: bool = False, total: bool = False) -> str:
     if not isinstance(value, str) or not re.fullmatch(r'-?\d+(?:\.\d{1,4})?', value):
         raise ValueError('持有人数值格式或精度无效')
     parsed = Decimal(value)
@@ -83,7 +105,7 @@ def number(value, *, ratio=False, signed=False, total=False):
     return format(parsed.normalize(), 'f')
 
 
-def quantity(text, *, scale=1, unit=None):
+def quantity(text: str, *, scale: int = 1, unit: str | None = None) -> tuple[str, int, int]:
     match = re.fullmatch(r'(-?\d+(?:\.\d{1,4})?)(万|亿)?(股|张)?', text.replace(',', ''))
     if not match:
         raise ValueError('持有数量或单位无效：' + text[:80])
@@ -94,11 +116,11 @@ def quantity(text, *, scale=1, unit=None):
     return value, factor, len(match[1].partition('.')[2])
 
 
-def report_key(report):
+def report_key(report: RawReport) -> str:
     return digest([report[k] for k in ('kind', 'unified_code', 'instrument_key', 'report_date', 'report_type')])
 
 
-def validate_gaps(gaps):
+def validate_gaps(gaps: list[RawGap]) -> list[RawGap]:
     if not isinstance(gaps, list) or len(gaps) > 100:
         raise ValueError('持有人来源缺口数量无效')
     identities = set()
@@ -116,7 +138,8 @@ def validate_gaps(gaps):
     return gaps
 
 
-def validate(kind, security, reports, *, today=None, allow_unidentified=False):
+def validate(kind: str, security: str, reports: list[RawReport], *,
+             today: date | None = None, allow_unidentified: bool = False) -> list[RawReport]:
     if kind not in KINDS or not re.fullmatch(r'\d{6}\.(SH|SZ|BJ)', security):
         raise ValueError('持有人项目或证券身份无效')
     if not isinstance(reports, list) or len(reports) > 100:
@@ -158,7 +181,7 @@ def validate(kind, security, reports, *, today=None, allow_unidentified=False):
             raise ValueError('变动公告不得伪造前十大比例')
         if not isinstance(r['ratio_basis'], str) or not 1 <= len(r['ratio_basis']) <= 64:
             raise ValueError('持有人比例口径无效')
-        groups = {'current': [], 'exited': []}
+        groups: dict[str, list[int]] = {'current': [], 'exited': []}
         identities, names = set(), set()
         if not isinstance(r['members'], list) or len(r['members']) > 400:
             raise ValueError('持有人明细超限')

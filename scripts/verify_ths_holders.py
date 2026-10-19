@@ -1,231 +1,258 @@
-"""Scoped proxy-first real verification; apply uses the single-instance archive."""
-import argparse
+"""Strict holder-source verification in owned test storage, with honest gap evidence."""
+from __future__ import annotations
+
 import asyncio
-import hashlib
-import json
-import random
-from datetime import UTC, datetime
-from pathlib import Path
+import sys
+from dataclasses import asdict
 
+import source_verification as verification
 from PySide6.QtCore import QCoreApplication
-from sqlalchemy import text
+from source_verification import require, strict_proxy
 
-from empire.__main__ import acquire_instance_lock
-from empire.bootstrap import build_manager
 from empire.contracts.collector import CollectionSourceGap
-from empire.contracts.holders import KINDS, digest, report_key
-from empire.contracts.holders import project as holder_project
 from empire.contracts.preparation_scope import PreparationScope
-from empire.core.config import load_config
-from empire.core.preparation_release import source_digest
-from empire.core.redaction import redact
-from empire.plugins.collectors.ths_holders_source import parse
-from empire.plugins.collectors.ths_session import ThsSession
+from empire.core.time import CHINA
+from empire.features.holders.contract import KINDS, digest, report_key, validate, validate_gaps
+from empire.plugins.collection.unit_prefetch import DeferredResponse
 from empire.plugins.infra.collection_state import read_state
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
-from empire.plugins.infra.settings import SettingsStore
+
+FIXED_CODES = ('300398.SZ', '601515.SH', '000912.SZ', '000430.SZ', '000065.SZ',
+               '300232.SZ', '301699.SZ', '688315.SH', '002902.SZ', '301569.SZ',
+               '605007.SH', '688386.SH', '920162.BJ', '601139.SH', '000001.SZ',
+               '601318.SH', '600519.SH', '300750.SZ')
 
 
-def summary(rows):
-    return dict(reports=len(rows), members=sum(len(r['members']) for r in rows), digest=digest(rows),
-                report_keys=[report_key(r) for r in rows],
-                max_report_bytes=max((len(json.dumps(r, ensure_ascii=False).encode()) for r in rows), default=0))
+def row_summary(kind, security, rows, *, today=None):
+    validate(kind, security, rows, today=today)
+    return dict(count=len(rows), digest=digest(rows), report_keys=[report_key(row) for row in rows],
+                reports=[dict(key=report_key(row), digest=digest(row), date=row['report_date'],
+                    members=len(row['members']), quality_flags=row['quality_flags']) for row in rows])
 
 
-async def run(args):
-    if args.rebuild_proofs and not args.apply:
-        raise ValueError('重建证明必须使用正式入队归档验证')
-    if not 0 <= args.random_count <= 15000:
-        raise ValueError('随机数量或来源缺口验证范围无效')
-    cfg = load_config(args.config)
-    lock = acquire_instance_lock() if args.apply else None
-    manager, counts = build_manager(cfg), {}
-    USE_PROXY.set(True)
-    PROXY_FALLBACK.set(not args.proxy_only)
-    ROUTE_COUNTS.set(counts)
-    report = dict(checked_at=datetime.now(UTC).isoformat(), applied=args.apply, projects={},
-                  policy=dict(use_proxy=True, proxy_fallback=not args.proxy_only), network=counts,
-                  source_sha256=source_digest(Path.cwd()))
+def observe_fetch(collector, selected, summaries):
+    """Observe consumption without replacing response/reservation/close ownership."""
+    original = collector.fetch
+    wanted = {row['unified_code'] for row in selected}
+
+    def remember(stock, result):
+        reports, observed, url, gaps = result
+        security = stock['unified_code']
+        require(security in wanted, '来源返回样本外证券')
+        require(security not in summaries, '来源证券重复消费')
+        require(set(reports) == set(KINDS), '来源响应缺少持有人栏目')
+        validate_gaps(gaps)
+        summaries[security] = dict(digest=digest(reports), gaps=[dict(row) for row in gaps],
+            gaps_digest=digest(gaps), observed_at=observed.isoformat(timespec='microseconds'), url=url,
+            kinds={kind: row_summary(kind, security, reports[kind], today=observed.astimezone(CHINA).date())
+                   for kind in KINDS})
+        return result
+
+    async def fetch(stock, *, reservation=None, defer=False):
+        result = await original(stock, reservation=reservation, defer=defer)
+        if not defer:
+            return remember(stock, result)
+        require(isinstance(result, DeferredResponse), '正式 fetch 未返回 DeferredResponse')
+        consume = result.consume
+
+        async def observed_consume():
+            return remember(stock, await consume())
+
+        result.consume = observed_consume
+        return result
+
+    return fetch
+
+
+def observe_publish(collector, summaries, published):
+    original = collector.publish
+
+    async def publish(state, cursor, unit, reports, manifest, observed, url, gaps=None):
+        require(unit not in published, '正式 Redis 入队单元重复')
+        if unit != 'manifest':
+            require(unit in summaries and digest(reports) == summaries[unit]['digest']
+                    and digest(gaps or []) == summaries[unit]['gaps_digest'],
+                    '正式入队内容与本轮来源规范内容不同')
+        result = await original(state, cursor, unit, reports, manifest, observed, url, gaps)
+        published[unit] = dict(revision=result['revision'], cursor=dict(result['cursor']),
+            reports_digest=digest(reports), gaps_digest=digest(gaps or []), manifest=manifest)
+        return result
+
+    return publish
+
+
+def expected_manifest(summaries):
+    # The formal stock query orders full unified_code, not market/code tuples.
+    securities = sorted(summaries)
+    count, rolling = 0, digest([])
+    kinds = {kind: dict(count=0, digest=digest([])) for kind in KINDS}
+    for security in securities:
+        row = summaries[security]
+        unit_count = sum(part['count'] for part in row['kinds'].values())
+        count += unit_count
+        rolling = digest([rolling, security, row['digest'], unit_count])
+        for kind, part in row['kinds'].items():
+            kinds[kind]['count'] += part['count']
+            kinds[kind]['digest'] = digest([kinds[kind]['digest'], security, part['digest'], part['count']])
+    return dict(units=len(securities), count=count, scope_hash=digest(securities), digest=rolling,
+                securities=securities, kinds=kinds)
+
+
+def check_state(state, summaries, cursor, gap_outcome, published):
+    require(state.get('contract_version') == 4 and set(state.get('units', {})) == set(summaries),
+            'SQL 归档证明版本或证券集合不符')
+    gaps = {key: row['gaps'] for key, row in summaries.items() if row['gaps']}
+    for security, summary in summaries.items():
+        proof = state['units'][security]
+        require(proof.get('contract') == 4 and proof.get('digest') == summary['digest']
+                and proof.get('source_gaps') == summary['gaps']
+                and proof.get('source_gaps_digest') == summary['gaps_digest']
+                and proof.get('observed_at') == summary['observed_at']
+                and proof.get('count') == sum(part['count'] for part in summary['kinds'].values()),
+                'SQL 证券内容/来源缺口证明不符：' + security)
+        require(set(proof.get('kinds', {})) == set(KINDS), 'SQL 证券栏目集合不符')
+        for kind, expected in summary['kinds'].items():
+            part = proof['kinds'][kind]
+            relevant = any(gap['kind'] == kind for gap in summary['gaps'])
+            availability = 'source_gap' if relevant else 'available' if expected['count'] else 'not_published'
+            require(part.get('contract') == 4 and part.get('availability') == availability
+                    and part.get('observed_at') == summary['observed_at']
+                    and all(part.get(key) == expected[key] for key in ('count', 'digest', 'report_keys')),
+                    'SQL 栏目证明不符：' + security + '/' + kind)
+    expected = expected_manifest(summaries)
+    require(set(published) == set(summaries) | (set() if gaps else {'manifest'}), 'Redis 入队单元集合不符')
+    if gaps:
+        first = next(index for index, key in enumerate(sorted(summaries)) if key in gaps)
+        require(gap_outcome and cursor.get('phase') != 'complete' and not state.get('manifest')
+                and cursor.get('index') == first and cursor.get('source_gap') == sorted(summaries)[first],
+                '来源缺口被隐藏或连续断点错误')
+    else:
+        require(not gap_outcome and cursor.get('phase') == 'complete', '无缺口范围未完成')
+        require(all(state.get('manifest', {}).get(key) == value for key, value in expected.items()),
+                'SQL 整轮 manifest 与来源集合/内容不符')
+        require(published['manifest']['manifest'] == expected, 'Redis 整轮 manifest 与来源不符')
+    return gaps, expected
+
+
+async def query_summary(query, security):
+    heads, after = [], None
+    for _ in range(2):  # Source contract is at most 100 reports per issuer/kind.
+        page = await query.browse(code=security, after=after, limit=100)
+        heads.extend(page['rows'])
+        require(len(heads) <= 100, '正式查询报告窗口超过来源上限')
+        if page['next'] is None:
+            break
+        require(page['next'] != after, '正式查询分页游标不前进')
+        after = page['next']
+    else:
+        raise ValueError('正式查询分页未有界结束')
+    keys = [row['report_key'] for row in heads]
+    require(len(keys) == len(set(keys)), '正式查询报告键重复')
+    require(all(row['unified_code'] == security and row['kind'] == query.kind for row in heads),
+            '正式查询证券/栏目归属错误')
+    order = [(row['report_date'], row['unified_code'], row['report_key']) for row in heads]
+    require(order == sorted(order, reverse=True), '正式查询分页排序错误')
+    rows = []
+    for head in heads:
+        detail = await query.detail(head['report_key'])
+        require(detail is not None and report_key(detail) == head['report_key'], '正式查询缺少报告正文')
+        require(all(detail.get(key) == value for key, value in head.items()
+                    if key not in {'report_key', 'member_count', 'exit_count'})
+                and head['member_count'] == sum(m['member_group'] == 'current' for m in detail['members'])
+                and head['exit_count'] == sum(m['member_group'] == 'exited' for m in detail['members']),
+                '正式查询列表与正文内容不一致')
+        rows.append(detail)
+    rows.sort(key=lambda row: (row['report_date'], row['instrument_key'], row['report_type']))
+    return row_summary(query.kind, security, rows)
+
+
+async def verify_scope(manager, selection, args, report):
+    result = report['results']['holders'] = dict(pipeline_verified=False, acceptance_complete=False)
+    await manager.start('collector.ths_holders')
+    collector = manager.entries['collector.ths_holders'].plugin
+    queries = {kind: manager.entries['data.' + kind].plugin for kind in KINDS}
+    require(collector.source == 'ths' and collector.project_id == 'ths-holders'
+            and collector.job_key == 'ths-holders-v1', '正式持有人项目身份变化')
+    checkpoint = await collector.ingest.checkpoint(collector.job_key)
+    require(not checkpoint['cursor'] and checkpoint['revision'] == 0, '私有 namespace 已有断点')
+    require(await collector.ingest.redis.client.xlen(collector.ingest.redis.stream) == 0, '私有队列非空')
+    summaries, published, counts = {}, {}, {}
+    result.update(source='ths', project_id='ths-holders', dataset='holders.reports', schema_version=5,
+                  source_units=summaries, redis_publications=published, routes=counts)
+    original_fetch, original_publish = collector.fetch, collector.publish
+    collector.fetch = observe_fetch(collector, selection['selected'], summaries)
+    collector.publish = observe_publish(collector, summaries, published)
+    tokens = (USE_PROXY.set(True), PROXY_FALLBACK.set(not args.proxy_only), ROUTE_COUNTS.set(counts))
+    gap_outcome = False
     try:
-        await manager.start('infra.http')
-        mysql = manager.registry.get('mysql.store')
-        def securities():
-            with mysql.read_engine.connect() as conn:
-                pool = [dict(r) for r in conn.execute(text('SELECT unified_code,LEFT(unified_code,6) AS code,'
-                    'RIGHT(unified_code,2) AS market,name FROM stock ORDER BY unified_code')).mappings()]
-                sampled = random.Random(args.seed).sample(pool, args.random_count)
-                report['sampling'] = dict(seed=args.seed, pool_count=len(pool),
-                    pool_digest=digest([s['unified_code'] for s in pool]),
-                    random_securities=[s['unified_code'] for s in sampled], fixed_codes=args.codes.split(','))
-                if args.all_stocks:
-                    return pool
-                result = []
-                for code in filter(None, args.codes.split(',')):
-                    if len(code) != 6 or not code.isascii() or not code.isdigit():
-                        raise ValueError('证券参数无效')
-                    values = list(conn.execute(text('SELECT unified_code,LEFT(unified_code,6) AS code,'
-                        'RIGHT(unified_code,2) AS market,name FROM stock WHERE unified_code LIKE :code'), {'code': code + '.%'}).mappings())
-                    if len(values) != 1:
-                        raise ValueError('当前股票池没有唯一证券：' + code)
-                    result.append(dict(values[0]))
-                return sorted({s['unified_code']: s for s in result + sampled}.values(), key=lambda s: s['unified_code'])
-        stocks = await mysql.read(securities)
-        report['selected_securities'] = [s['unified_code'] for s in stocks]
-        # Freeze the exact sample before any source request; failures cannot be replaced.
-        Path(args.report).write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', 'utf8')
-        http, session = manager.registry.get('http.fetch'), ThsSession()
-        if not args.apply:
-            for stock in stocks:
-                url = f"https://basic.10jqka.com.cn/{stock['code']}/holder.html"
-                response = await http.request('GET', url, headers=session.headers(url), allowed_domains=('10jqka.com.cn',),
-                    project_id='ths-holders-discovery', max_retries=2, policy=http.response_policy('generic'))
-                try:
-                    for kind in KINDS:
-                        try:
-                            rows = parse(response.content, kind, stock)
-                        except ValueError as exc:
-                            raise ValueError(stock['unified_code'] + ' / ' + kind + ': ' + str(exc)) from exc
-                        p = report['projects'].setdefault(kind, {})
-                        p[stock['unified_code']] = dict(reports=len(rows), members=sum(len(r['members']) for r in rows),
-                            periods=[r['report_date'] for r in rows], digest=digest(rows),
-                            notices=sum(r['report_type'] == 'change_notice' for r in rows),
-                            rank_gaps=[r['report_date'] for r in rows if [m['source_rank'] or m['seq'] for m in r['members'] if m['member_group'] == 'current'] != list(range(1,1+sum(m['member_group'] == 'current' for m in r['members'])))],
-                            report_keys=[report_key(r) for r in rows],
-                            response_sha256=hashlib.sha256(response.content).hexdigest(),
-                            response_bytes=len(response.content), max_report_bytes=max((len(json.dumps(r, ensure_ascii=False).encode()) for r in rows), default=0))
-                finally:
-                    response.close()
-        else:
-            await manager.start('collector.ths_holders')
-            c = manager.registry.get('collector.ths_holders')
-            q = manager.registry.get('top_holders.query')
-            if args.rebuild_proofs:
-                archive = manager.registry.get('archive.worker')
-                async with archive.lock:
-                    await archive.fingerprints.invalidate(q.mapping.FINGERPRINT_NAMESPACE, 'ths')
-            c.session = session
-            async def selected():
-                return stocks
-            c.query.securities = selected
-            source_sets, source_gaps = {}, {}
-            fetch = c.fetch
-            async def checked_fetch(stock, *, reservation=None, defer=False):
-                response = await fetch(stock, reservation=reservation, defer=defer)
-                if defer:
-                    consume = response.consume
-                    async def checked_consume():
-                        value = await consume()
-                        source_sets[stock['unified_code']] = ({k: summary(rows) for k, rows in value[0].items()}
-                                                               if args.all_stocks else value[0])
-                        if value[3]:
-                            source_gaps[stock['unified_code']] = value[3]
-                        return value
-                    response.consume = checked_consume
-                return response
-            c.fetch = checked_fetch
-            expected_gaps = set(filter(None, args.expected_gap_codes.split(',')))
-            try:
-                cursor = await asyncio.wait_for(c.execute(fresh=True, baseline_revision=await c.checkpoint_revision()), args.timeout)
-            except CollectionSourceGap as exc:
-                actual_gaps = {s['code'] for s in stocks if s['unified_code'] not in source_sets or
-                               s['unified_code'] in source_gaps}
-                if not expected_gaps or actual_gaps != expected_gaps:
-                    raise
-                report['source_gap'] = dict(codes=sorted(actual_gaps), notice=str(exc), stats=c.health())
-                cursor = (await c.ingest.checkpoint(c.job_key))['cursor']
-            if len(source_sets) != len(stocks) or {k[:6] for k in source_gaps} != expected_gaps:
-                raise ValueError('本轮没有取得完整来源证券集合')
-            report['source_gaps'] = source_gaps
-            def proof_gaps():
-                with mysql.read_engine.connect() as conn:
-                    state = read_state(conn, cfg['redis']['namespace'], 'ths-holders', 'ths')
-                    return {k: state['units'][k].get('source_gaps', []) for k in source_gaps}
-            if await mysql.read(proof_gaps) != source_gaps:
-                raise ValueError('来源缺口与正式SQL证明不一致')
-            report['cursor'] = cursor
-            for kind in KINDS:
-                q = manager.registry.get(kind + '.query')
-                if not args.all_stocks:
-                    for security, sections in source_sets.items():
-                        for row in sections[kind]:
-                            if await q.detail(report_key(row)) != row:
-                                raise ValueError('来源→归档→正式查询正文不一致')
-                audit = await mysql.read(q.audit, PreparationScope(codes=tuple(s['code'] for s in stocks
-                    if kind != 'bond_holders' or s['code'] not in expected_gaps)))
-                if not audit['complete']:
-                    raise ValueError('正式窗口集合审计失败')
-                sources = {k: v[kind] if args.all_stocks else summary(v[kind]) for k, v in source_sets.items()}
-                if any(audit['digests'].get(k) != v['digest'] for k, v in sources.items()
-                       if kind != 'bond_holders' or k[:6] not in expected_gaps):
-                    raise ValueError('来源→正式SQL审计集合及正文摘要不一致')
-                if expected_gaps and kind == 'bond_holders':
-                    partial = await mysql.read(q.audit, PreparationScope(codes=tuple(sorted(expected_gaps))))
-                    if partial['complete'] or partial['missing'] != len(expected_gaps) or any(
-                            partial['digests'].get(k) != v['digest'] for k, v in sources.items() if k[:6] in expected_gaps):
-                        raise ValueError('未识别债券未保留缺口或有效报告证明不一致')
-                    report['partial_bond_audit'] = partial
-                report['projects'][kind] = dict(audit=audit, rebuilt_proofs=args.rebuild_proofs,
-                    source=sources)
-            store = manager.registry.get('redis.store')
-            async def drained():
-                # The selected batch has already confirmed. An older valid
-                # backlog can still be draining through the same worker.
-                while await store.client.xlen(store.stream):
-                    worker = manager.registry.get('archive.worker')
-                    if worker.blocked or worker.blocked_projects:
-                        raise ValueError('归档项目隔离，保留待处理消息')
-                    worker.request_flush()
-                    await asyncio.sleep(1)
-            await asyncio.wait_for(drained(), args.timeout)
-            report['pending_stream'] = await store.client.xlen(store.stream)
-            if report['pending_stream']:
-                raise ValueError('归档队列仍有残留')
-            if args.proxy_only and (counts.get('direct_requests', 0) or counts.get('fallback_requests', 0) or not counts.get('proxy_requests', 0)):
-                raise ValueError('代理验收未全部通过代理')
-            # Persist only absent task defaults; never start the shared scheduler
-            # or overwrite an existing user's network/schedule choice.
-            settings = SettingsStore(mysql, store.prefix)
-            saved = await settings.load('task')
-            definitions = manager.entries['collection.control'].plugin.definitions
-            report['task_defaults'] = {}
-            for ident in (holder_project('top_holders'),):
-                definition = definitions[ident]
-                if ident not in saved:
-                    default = dict(enabled=definition.default_enabled, mode='manual',
-                        interval_seconds=definition.interval_seconds, daily_time='18:00', request_retries=2)
-                    policy = definition.default_schedule.policy(default)
-                    await settings.save('task', ident, policy)
-                else:
-                    policy = saved[ident]
-                report['task_defaults'][ident] = dict(policy=policy, preserved=ident in saved)
-        report['bindings'] = {str(p).replace('\\', '/'): hashlib.sha256(p.read_bytes()).hexdigest() for p in
-            [Path('src/empire/contracts/holders.py'), *Path('src/empire/plugins').glob('**/*holders*.py')]}
-        if report['source_sha256'] != source_digest(Path.cwd()):
-            raise ValueError('实采期间源码发生变化，不能绑定当前发布验证')
-        Path(args.report).write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str) + '\n', 'utf8')
-        print('PASS holder source/SQL verification', len(stocks), 'securities;', counts)
+        try:
+            cursor = await collector.execute(fresh=False, baseline_revision=0)
+        except CollectionSourceGap as exc:
+            gap_outcome = True
+            result['source_gap_outcome'] = dict(type=type(exc).__name__, message=str(exc))
+            cursor = (await collector.ingest.checkpoint(collector.job_key))['cursor']
     finally:
-        await manager.shutdown()
-        if lock:
-            lock.unlock()
+        collector.fetch, collector.publish = original_fetch, original_publish
+        ROUTE_COUNTS.reset(tokens[2])
+        PROXY_FALLBACK.reset(tokens[1])
+        USE_PROXY.reset(tokens[0])
+    require(set(summaries) == {row['unified_code'] for row in selection['selected']},
+            '来源证券集合与冻结样本不一致，禁止换样或剔除失败股票')
+    query = queries['top_holders']
+
+    def sql_state():
+        with query.mysql.read_engine.connect() as conn:
+            return read_state(conn, query.namespace, 'ths-holders', 'ths')
+
+    state = await query.mysql.read(sql_state)
+    gaps, manifest = check_state(state, summaries, cursor, gap_outcome, published)
+    comparisons, audits, preparation = {}, {}, {}
+    for kind, query in queries.items():
+        comparisons[kind] = {}
+        for security, summary in summaries.items():
+            actual = await query_summary(query, security)
+            require(actual == summary['kinds'][kind], '正式查询集合或内容与来源不同：' + security + '/' + kind)
+            comparisons[kind][security] = dict(query_equal=True, **actual)
+        # Full private pool preserves market identity; the UI six-digit filter
+        # is deliberately not used as a substitute for the frozen issuer set.
+        audit = await query.mysql.read(query.audit, PreparationScope())
+        expected_missing = sum(any(gap['kind'] == kind for gap in rows) for rows in gaps.values())
+        require(audit['securities'] == len(summaries) and audit['missing'] == expected_missing
+                and audit['complete'] == (expected_missing == 0)
+                and set(audit['stamps']) == set(summaries)
+                and audit['digests'] == {key: value['kinds'][kind]['digest'] for key, value in summaries.items()}
+                and audit['reports'] == sum(row['kinds'][kind]['count'] for row in summaries.values()),
+                '正式 audit 的范围、缺口或内容证明不同：' + kind)
+        audits[kind] = {**audit, 'stamps': {key: stamp.isoformat() for key, stamp in audit['stamps'].items()}}
+        preparation[kind] = [asdict(check) for check in await query.preparation_check()]
+    pending = await collector.ingest.redis.client.xlen(collector.ingest.redis.stream)
+    archive = manager.registry.get('archive.worker')
+    require(pending == 0 and not archive.blocked and not archive.blocked_projects and not archive.isolated,
+            '待归档非零或统一归档器处于隔离')
+    require(collector.source == 'ths' and collector.project_id == 'ths-holders', '运行期间身份变化')
+    require(collector.stats.get('status') == ('source_gap' if gaps else 'complete'), '采集完成状态与缺口不一致')
+    result.update(pipeline_verified=True, strict_proxy_verified=strict_proxy(counts, len(summaries)),
+        acceptance_complete=not gaps, random_samples_complete=not (set(selection['random']) & set(gaps)),
+        source_gaps=gaps, cursor=cursor, pending=pending, query_units=comparisons, audits=audits,
+        expected_manifest=manifest, sql_manifest=state.get('manifest'), preparation=preparation,
+        data_usability={kind: dict(analysis_usable=all(check['status'] == 'pass' for check in checks
+                                                    if check['blocking'])) for kind, checks in preparation.items()})
+
+
+def parser():
+    return verification.parser(__doc__)
+
+
+def main(argv=None):
+    options = parser().parse_args(argv)
+    # ThsSession evaluates the existing token script in QJSEngine. Retain the
+    # non-GUI application for the full async run, as the formal collect CLI does.
+    _qt_app = QCoreApplication.instance() or QCoreApplication(sys.argv[:1])
+    passed = asyncio.run(verification.recover(options) if options.cleanup_only else verification.verify(
+        options, verify_scope, subject='holders', fixed_codes=FIXED_CODES, minimum_random=30, require_proxy=True))
+    print(('CLEANUP COMPLETE' if options.cleanup_only else 'PASS') if passed else 'FAIL', flush=True)
+    return 0 if passed else 1
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config')
-    parser.add_argument('--codes', default='601139,000001,601318,600519,300750')
-    parser.add_argument('--apply', action='store_true')
-    parser.add_argument('--proxy-only', action='store_true', help='禁用直连回退，用于随机30股代理验收')
-    parser.add_argument('--random-count', type=int, default=0)
-    parser.add_argument('--seed', type=int, default=20261017)
-    parser.add_argument('--all-stocks', action='store_true')
-    parser.add_argument('--expected-gap-codes', default='', help='明确登记的来源身份缺口；不计成功实采')
-    parser.add_argument('--rebuild-proofs', action='store_true', help='持有归档锁失效三项来源摘要，重新请求并冷归档确认本范围')
-    parser.add_argument('--timeout', type=int, default=300)
-    parser.add_argument('--report', default='docs/evidence/ths-holders-source-2026-10-13.json')
-    args = parser.parse_args()
-    app = QCoreApplication([])
-    try:
-        asyncio.run(run(args))
-    except Exception as exc:
-        raise SystemExit(redact(exc, load_config(args.config))) from None
+    raise SystemExit(main())

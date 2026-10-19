@@ -5,17 +5,17 @@ from datetime import UTC, date, datetime, timedelta
 from sqlalchemy import text
 
 from empire.contracts.business_schema import schema_contract
-from empire.contracts.holders import (
+from empire.contracts.plugin import PluginManifest
+from empire.contracts.preparation import CheckEvidence, PreparationContribution
+from empire.contracts.preparation_scope import PreparationScope
+from empire.features.holders.audit import audit_units, cache_hashes
+from empire.features.holders.contract import (
     KINDS,
     MEMBER_FIELDS,
     REPORT_FIELDS,
     project,
 )
-from empire.contracts.plugin import PluginManifest
-from empire.contracts.preparation import CheckEvidence, PreparationContribution
-from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.data.holders_audit import audit_units, cache_hashes
-from empire.plugins.datasets.holders import HolderDataset, decode, read_reports
+from empire.features.holders.dataset import HolderDataset, decode, read_reports
 from empire.plugins.infra.collection_state import read_state
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 

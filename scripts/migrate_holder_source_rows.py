@@ -14,10 +14,16 @@ try:
 except ImportError:
     from create_name_change_schema import ddl
 from empire.__main__ import acquire_instance_lock
-from empire.contracts.holders import MEMBER_FIELDS, REPORT_FIELDS, digest, report_key, validate
 from empire.core.config import load_config
 from empire.core.redaction import redact
-from empire.plugins.datasets.holders import HolderDataset, decode
+from empire.features.holders.contract import (
+    MEMBER_FIELDS,
+    REPORT_FIELDS,
+    digest,
+    report_key,
+    validate,
+)
+from empire.features.holders.dataset import HolderDataset, decode
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import validate_shapes

@@ -5,9 +5,9 @@ import httpx
 import pytest
 
 from empire.contracts.data import make_envelope
-from empire.contracts.holders import KINDS
-from empire.plugins.collectors.ths_holders_source import parse
-from empire.plugins.datasets.holders import HolderDataset
+from empire.features.holders.contract import KINDS
+from empire.features.holders.dataset import HolderDataset
+from empire.features.holders.source import parse
 from scripts.migrate_holder_task import NEW, OLD, choose_policy
 from tests.test_ths_holders import STOCK, configured, source
 

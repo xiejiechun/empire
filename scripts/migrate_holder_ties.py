@@ -13,7 +13,7 @@ from empire.__main__ import acquire_instance_lock
 from empire.contracts.data import Envelope
 from empire.core.config import load_config
 from empire.core.redaction import redact
-from empire.plugins.datasets.holders import HolderDataset
+from empire.features.holders.dataset import HolderDataset
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import validate_shapes

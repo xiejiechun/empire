@@ -13,7 +13,7 @@ from empire.contracts.ths_capital import (
     numeric,
     validate,
 )
-from empire.plugins.collectors.holder_html import Document, Node
+from empire.sources.html import Document, Node
 
 HEADERS = {
     'capital_funding': ['公告日期', '发行类别', '发行起始日期', '实际募集资金净额(元)', '剩余募集资金截止时间', '剩余募集资金(元)', '募集资金使用率'],

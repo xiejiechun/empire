@@ -8,10 +8,10 @@ import pytest
 from sqlalchemy import event, text
 
 from empire.contracts.data import make_envelope
-from empire.contracts.holders import KINDS, report_key
 from empire.core.config import load_config
-from empire.plugins.collectors.ths_holders_source import parse
-from empire.plugins.datasets.holders import HolderDataset, read_reports
+from empire.features.holders.contract import KINDS, report_key
+from empire.features.holders.dataset import HolderDataset, read_reports
+from empire.features.holders.source import parse
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from scripts import migrate_holder_source_rows as migration

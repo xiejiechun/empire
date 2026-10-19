@@ -417,7 +417,7 @@ async def test_checker_cannot_hide_integrity_failure_as_limitation():
     (True, 'analysis', 'quality', 'unknown', False),
 ])
 async def test_only_declared_analysis_source_quality_can_be_a_limitation(declared, purpose, criterion, status, allowed):
-    from empire.plugins.data.holders import HolderDataPlugin
+    from empire.features.holders.query import HolderDataPlugin
     c = replace(HolderDataPlugin('top_holders').preparation[0], analysis_quality_limits=declared)
     service = SimpleNamespace(preparation_check=AsyncMock(return_value=tuple(
         CheckEvidence(k.id, status if k.id == criterion else 'pass', '来源限制或集合证据', blocking=k.id != criterion)

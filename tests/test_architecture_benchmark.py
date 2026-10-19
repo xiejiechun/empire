@@ -94,8 +94,8 @@ def test_percentile_and_result_repeatability_are_not_best_sample_selection():
 
 
 def test_fixture_is_deterministic_valid_and_uses_tied_news_sort_keys(protocol):
-    from empire.contracts.holders import digest as holder_digest
-    from empire.contracts.holders import report_key, validate
+    from empire.features.holders.contract import digest as holder_digest
+    from empire.features.holders.contract import report_key, validate
 
     protocol['fixture'].update(news_rows=60, holder_securities=2, holder_periods=2)
     rows = fixtures(protocol)

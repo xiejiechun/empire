@@ -149,21 +149,11 @@
   },
   "module_groups": [
     {
-      "legacy_collector_location": true,
-      "owner": "holders",
-      "reason": "股东研究：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.ths_holders_source"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
       "owner": "html_parser",
       "reason": "通用HTML节点解析：来源解析或纯范围规划，无请求执行",
       "role": "parser",
       "modules": [
-        "empire.plugins.collectors.holder_html"
+        "empire.sources.html"
       ]
     },
     {
@@ -722,47 +712,6 @@
       "role": "ui",
       "modules": [
         "empire.plugins.ui.help"
-      ]
-    },
-    {
-      "owner": "holders",
-      "reason": "股东研究：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.holders"
-      ]
-    },
-    {
-      "owner": "holders",
-      "reason": "股东研究：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.holders"
-      ]
-    },
-    {
-      "owner": "holders",
-      "reason": "股东研究：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.holders"
-      ]
-    },
-    {
-      "owner": "holders",
-      "reason": "股东研究：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.holders",
-        "empire.plugins.data.holders_audit"
-      ]
-    },
-    {
-      "owner": "holders",
-      "reason": "股东研究：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.ths_holders"
       ]
     },
     {
@@ -1638,60 +1587,125 @@
     {
       "owner": "kernel",
       "role": "contract",
+      "reason": "纯任务、业务包与有序贡献声明",
       "modules": [
-        "empire.contracts.task",
-        "empire.contracts.bundle"
-      ],
-      "reason": "纯任务、业务包与有序贡献声明"
+        "empire.contracts.bundle",
+        "empire.contracts.task"
+      ]
     },
     {
       "owner": "application",
       "role": "package",
+      "reason": "显式内部业务包目录",
       "modules": [
         "empire.features"
-      ],
-      "reason": "显式内部业务包目录"
+      ]
     },
     {
       "owner": "application",
       "role": "composition",
+      "reason": "唯一白名单聚合与尚未迁移业务的唯一声明出处",
       "modules": [
         "empire.features.builtin",
         "empire.features.remaining"
-      ],
-      "reason": "唯一白名单聚合与尚未迁移业务的唯一声明出处"
+      ]
     },
     {
       "owner": "news",
       "role": "package",
+      "reason": "财经新闻业务包入口",
       "modules": [
         "empire.features.news"
-      ],
-      "reason": "财经新闻业务包入口"
+      ]
     },
     {
       "owner": "news",
       "role": "composition",
+      "reason": "新闻现有声明、归属与稳定装配顺序",
       "modules": [
         "empire.features.news.bundle"
-      ],
-      "reason": "新闻现有声明、归属与稳定装配顺序"
+      ]
     },
     {
       "owner": "news",
       "role": "contract",
+      "reason": "新闻身份、ID与版本规范",
       "modules": [
         "empire.features.news.contract"
-      ],
-      "reason": "新闻身份、ID与版本规范"
+      ]
     },
     {
       "owner": "news",
       "role": "parser",
+      "reason": "无I/O的新浪新闻来源响应解析",
       "modules": [
         "empire.features.news.source"
-      ],
-      "reason": "无I/O的新浪新闻来源响应解析"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.features.holders.audit",
+        "empire.features.holders.query"
+      ]
+    },
+    {
+      "owner": "holders",
+      "role": "composition",
+      "reason": "三查询、单采集、三页面、单任务与统一数据贡献的唯一装配出处",
+      "modules": [
+        "empire.features.holders.bundle"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.features.holders.collector"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.features.holders.contract"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.features.holders.dataset"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.features.holders.source"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.features.holders.ui"
+      ]
+    },
+    {
+      "owner": "html_parser",
+      "role": "package",
+      "reason": "独立于单个业务的纯来源解析辅助目录，不创建运行时插件",
+      "modules": [
+        "empire.sources"
+      ]
     }
   ],
   "feature_layouts": [

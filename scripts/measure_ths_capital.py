@@ -26,17 +26,26 @@ from empire.plugins.collectors.ths_capital_source import parse
 from empire.plugins.data.ths_capital import CapitalPageDataPlugin
 from empire.plugins.datasets.ths_capital import CapitalPageDataset, read_window
 from empire.plugins.infra.collection_state_unit import read_unit, save_unit
-from empire.plugins.infra.mysql_store import make_engine
+from scripts.capacity_session import CapacitySession
 from tests.test_ths_capital import STOCK, source
+
+INPUT_PATHS = (
+    'src/empire/contracts/capital_transport.py',
+    'src/empire/contracts/ths_capital.py',
+    'src/empire/plugins/collectors/ths_capital_source.py',
+    'src/empire/sources/html.py',
+    'src/empire/plugins/datasets/ths_capital.py',
+    'src/empire/plugins/data/ths_capital.py',
+    'scripts/measure_ths_capital.py',
+    'scripts/capacity_session.py',
+    'tests/test_ths_capital.py',
+)
 
 
 async def run(args):
     root, settings = Path(__file__).resolve().parents[1], json.loads(Path(args.test_settings).read_text('utf-8-sig'))
     prod = load_config()['mysql']
-    if (settings['host'], settings['port']) == (prod['host'], prod['port']):
-        raise ValueError('容量测量必须使用独立MySQL服务')
-    database = 'empire_capital_' + uuid4().hex + '_test'
-    admin, engine, created = make_engine(settings), None, False
+    capacity = CapacitySession(prod, settings, root=root, subject='ths-capital', output=args.report, input_paths=INPUT_PATHS)
     schema = (root / 'sql/schema.sql').read_text('utf8')
     targets = (*TABLES, 'collection_state', 'stock')
     statements = {t: re.search(r'CREATE TABLE IF NOT EXISTS ' + t + r'\s*\([\s\S]*?;', schema)[0] for t in targets}
@@ -53,11 +62,8 @@ async def run(args):
     def capture(conn, cursor, sql, parameters, context, many):
         if sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')) and any(t in sql for t in TABLES):
             dml.append(sql)
-    try:
-        with admin.connect() as conn:
-            conn.exec_driver_sql(f'CREATE DATABASE `{database}` CHARACTER SET utf8mb4 COLLATE utf8mb4_bin')
-            created = True
-        engine = make_engine({**settings, 'database': database})
+    with capacity:
+        database, engine = capacity.database, capacity.engine
         with engine.begin() as conn:
             for statement in statements.values():
                 conn.exec_driver_sql(statement)
@@ -125,39 +131,31 @@ async def run(args):
             window_p95_ms=max(window_ms), audit_ms=audit_ms, allocated_bytes=int(allocated), peak_python_bytes=peak,
             state_bytes=int(state_bytes), detail_bytes=len(json.dumps(detail, ensure_ascii=False).encode()),
             window_bytes=len(json.dumps(window, ensure_ascii=False).encode()))
-        paths = ['src/empire/contracts/capital_transport.py', 'src/empire/contracts/ths_capital.py', 'src/empire/plugins/collectors/ths_capital_source.py',
-            'src/empire/plugins/collectors/holder_html.py', 'src/empire/plugins/datasets/ths_capital.py',
-            'src/empire/plugins/data/ths_capital.py', 'scripts/measure_ths_capital.py']
         report = dict(checked_at=datetime.now(UTC).isoformat(), measurements=measured,
             limits=dict(import_seconds=30, repeated_business_dml=0, page_p95_ms=100, detail_p95_ms=100,
                 window_p95_ms=100, audit_ms=10000, allocated_bytes=134217728, peak_python_bytes=134217728,
                 state_bytes=2097152, detail_bytes=65536, window_bytes=1048576),
             conditions=dict(platform=platform.platform(), mysql=version, independent_test_service=True,
                 synthetic=True, securities=700, actual_sample='docs/evidence/ths-capital-source-2026-10-16.json',
-                cache='first unforced read and nine hot repetitions; maximum bounds P95', flush_log_at_trx_commit=2,
+                cache='first unforced read and nine hot repetitions; maximum bounds P95', flush_log_at_trx_commit=capacity.identity['innodb_flush_log_at_trx_commit'],
                 transactions='one complete security per transaction, matching formal archive', allocation=allocation,
                 storage_mode=storage_mode,
                 growth='6000 securities × 50 new facts/year × 5 years =1.5million facts; scaled allocated bytes separately reported'),
             reviewed_tradeoffs='八表按融资、项目、交易、报告期汇总、持仓、IPO、原事件与解除拆分；不存成功HTML或业务JSON。现行窗口标志仅成员变化写入，窗口外保留历史。测量不是生产历史覆盖或OS崩溃耐久性证明。',
-            bindings={p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in paths},
+            bindings={p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in INPUT_PATHS},
             ddl_scopes={t: hashlib.sha256(statements[t].encode()).hexdigest() for t in TABLES}, explain=plans,
             projected_five_year_bytes=int(allocated) * 1500000 // measured['facts'])
-        Path(args.report).write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str) + '\n', 'utf8')
+        capacity.report.update(report)
         if any(measured[k] > v for k, v in report['limits'].items()):
             raise ValueError('容量预算未通过：' + str(measured))
-        print('PASS capital capacity', measured)
-    finally:
-        if engine:
-            engine.dispose()
-        if created:
-            assert database.startswith('empire_capital_') and database.endswith('_test')
-            with admin.connect() as conn:
-                conn.exec_driver_sql(f'DROP DATABASE `{database}`')
-        admin.dispose()
+        capacity.measurements_complete = True
+    print('PASS capital capacity', measured, str(capacity.output))
+    return capacity.report
+
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--test-settings', required=True)
-    parser.add_argument('--report', default='docs/evidence/ths-capital-capacity-2026-10-16.json')
+    parser.add_argument('--report', help='New report path; default is a unique build/capacity-reruns file')
     asyncio.run(run(parser.parse_args()))

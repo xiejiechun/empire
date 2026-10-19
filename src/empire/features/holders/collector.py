@@ -7,9 +7,10 @@ from uuid import uuid4
 
 from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.data import make_envelope
-from empire.contracts.holders import KINDS, digest, project
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
+from empire.features.holders.contract import KINDS, digest, project
+from empire.features.holders.source import parse
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -17,7 +18,6 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
-from empire.plugins.collectors.ths_holders_source import parse
 from empire.plugins.collectors.ths_session import ThsSession
 
 

@@ -7,7 +7,7 @@ from pathlib import Path
 from empire.__main__ import acquire_instance_lock
 from empire.contracts.data import Envelope, make_envelope
 from empire.core.config import load_config
-from empire.plugins.datasets.holders import HolderDataset
+from empire.features.holders.dataset import HolderDataset
 from empire.plugins.infra.redis_store import create_client
 
 REPLACE = """

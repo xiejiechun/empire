@@ -13,9 +13,9 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.data import make_envelope
-from empire.contracts.holders import KINDS, report_key
 from empire.core.config import load_config
-from empire.plugins.collectors.ths_holders_source import parse
+from empire.features.holders.contract import KINDS, report_key
+from empire.features.holders.source import parse
 from tests.prefetch_source import prefetch_http
 from tests.test_ths_holders import STOCK, source
 

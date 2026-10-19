@@ -17,25 +17,34 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sqlalchemy import event, text
 
 from empire.contracts.data import make_envelope
-from empire.contracts.holders import KINDS, digest, report_key
 from empire.contracts.preparation_scope import PreparationScope
 from empire.core.config import load_config, project_root
-from empire.plugins.collectors.ths_holders_source import parse
-from empire.plugins.data.holders import HolderDataPlugin
-from empire.plugins.datasets.holders import HolderDataset, read_reports
+from empire.features.holders.contract import KINDS, digest, report_key
+from empire.features.holders.dataset import HolderDataset, read_reports
+from empire.features.holders.query import HolderDataPlugin
+from empire.features.holders.source import parse
 from empire.plugins.infra.collection_state import save_state
-from empire.plugins.infra.mysql_store import make_engine
+from scripts.capacity_session import CapacitySession
 from tests.test_ths_holders import STOCK, source
+
+INPUT_PATHS = (
+    'src/empire/features/holders/audit.py',
+    'src/empire/features/holders/contract.py',
+    'src/empire/features/holders/dataset.py',
+    'src/empire/features/holders/query.py',
+    'src/empire/features/holders/source.py',
+    'src/empire/sources/html.py',
+    'scripts/measure_holders.py',
+    'scripts/capacity_session.py',
+    'tests/test_ths_holders.py',
+)
 
 
 def run(args):
     root = project_root()
     settings = json.loads(Path(args.test_settings).read_text('utf-8-sig'))
     prod = load_config()['mysql']
-    if (settings['host'], settings['port']) == (prod['host'], prod['port']):
-        raise ValueError('容量验证须使用独立MySQL服务')
-    db = 'empire_holder_' + uuid4().hex + '_test'
-    admin, engine, created = make_engine(settings), None, False
+    capacity = CapacitySession(prod, settings, root=root, subject='holders', output=args.report, input_paths=INPUT_PATHS)
     sql = (root / 'sql/schema.sql').read_text('utf8')
     mapping = HolderDataset()
     seeds = {kind: parse(source(), kind, STOCK)[0] for kind in KINDS}
@@ -62,11 +71,8 @@ def run(args):
             data = mapping.normalize(e)
             written += mapping.write(conn, e, {**data, 'archive_state': {}})['written_count']
         return written
-    try:
-        with admin.connect() as conn:
-            conn.exec_driver_sql(f'CREATE DATABASE `{db}` CHARACTER SET utf8mb4 COLLATE utf8mb4_bin')
-            created = True
-        engine = make_engine({**settings, 'database': db})
+    with capacity:
+        db, engine = capacity.database, capacity.engine
         statements = {}
         with engine.begin() as conn:
             for table in ('holder_report', 'holder_member'):
@@ -185,11 +191,8 @@ def run(args):
             repeated_business_dml=repeated_dml, repeated_written=repeated, revised_written=revised,
             formal_audit_ms=audit_ms, formal_combined_audit_ms=combined_audit_ms,
             audit_peak_python_bytes=audit_peak, state_bytes=state_bytes)
-        paths = ['src/empire/contracts/holders.py', 'src/empire/plugins/collectors/holder_html.py',
-                 'src/empire/plugins/collectors/ths_holders_source.py', 'src/empire/plugins/datasets/holders.py',
-                 'src/empire/plugins/data/holders.py', 'src/empire/plugins/data/holders_audit.py', 'scripts/measure_holders.py']
         report = dict(checked_at=datetime.now(UTC).isoformat(),
-            bindings={p: hashlib.sha256((root/p).read_bytes()).hexdigest() for p in paths},
+            bindings={p: hashlib.sha256((root/p).read_bytes()).hexdigest() for p in INPUT_PATHS},
             ddl_scopes={t: hashlib.sha256(s.encode()).hexdigest() for t, s in statements.items()}, measurements=measured,
             limits=dict(page_p95_ms=100, security_p95_ms=100, coverage_p95_ms=1000, detail_p95_ms=100,
                 detail_bytes=1048576, maximum_detail_p95_ms=100, maximum_detail_bytes=1048576, import_seconds=180, peak_python_bytes=134217728,
@@ -200,26 +203,22 @@ def run(args):
                 source='minimal source-semantic fixture; 2500 issuers × 4 periods distributed across all three kinds; long 281-character holder names',
                 real_sample='docs/evidence/ths-holders-source-2026-10-13.json',
                 cache='first unforced SQL read + nine hot repetitions; maximum bounds P95',
-                independent_test_service=True, synthetic=True, innodb_flush_log_at_trx_commit=2,
+                independent_test_service=True, synthetic=True, innodb_flush_log_at_trx_commit=capacity.identity['innodb_flush_log_at_trx_commit'],
                 audit_timings_ms=audit_timings,
                 audit_budget='each independent formal query <=30s; three sequential queries <=90s'),
             reviewed_tradeoffs='按报告实体共两表，基础股/张数字及舍入精度可SQL查询。父头列表不读名字正文，单详情有界。来源窗口外保留历史，较旧修订不保证发现。容量放大不是生产覆盖，未模拟OS崩溃耐久性。', explain=plans)
+        capacity.report.update(report)
         if any(measured[k] > v for k, v in report['limits'].items()):
             raise ValueError('持有人容量或性能预算不通过：' + str(measured))
-        Path(args.report).write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str) + '\n', 'utf8')
-        print('PASS holder capacity', heads, 'reports', members, 'members', imported, 'seconds', allocated, 'bytes')
-    finally:
-        if engine:
-            engine.dispose()
-        if created:
-            with admin.connect() as conn:
-                conn.exec_driver_sql(f'DROP DATABASE `{db}`')
-        admin.dispose()
+        capacity.measurements_complete = True
+    print('PASS holder capacity', heads, 'reports', members, 'members', imported, 'seconds', allocated, 'bytes', str(capacity.output))
+    return capacity.report
+
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--test-settings', required=True)
-    parser.add_argument('--report', default='docs/evidence/ths-holders-capacity-2026-10-13.json')
+    parser.add_argument('--report', help='New report path; default is a unique build/capacity-reruns file')
     options = parser.parse_args()
     run(options)

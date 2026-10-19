@@ -15,10 +15,10 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from empire.contracts.holders import KINDS, project, quality_details
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.holders.contract import KINDS, project, quality_details
 from empire.plugins.ui.common import accessible, bind_find, hint
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_cards import CardReader, card, fields

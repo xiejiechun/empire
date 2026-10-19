@@ -6,9 +6,9 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.contracts.holders import report_key  # noqa: E402
-from empire.plugins.collectors.ths_holders_source import parse  # noqa: E402
-from empire.plugins.ui.holders import HolderPage, HolderUiPlugin  # noqa: E402
+from empire.features.holders.contract import report_key  # noqa: E402
+from empire.features.holders.source import parse  # noqa: E402
+from empire.features.holders.ui import HolderPage, HolderUiPlugin  # noqa: E402
 from tests.test_ths_holders import STOCK, source  # noqa: E402
 
 

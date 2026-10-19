@@ -1,0 +1,63 @@
+{
+  "scope": "Eight implementation modules; imports/annotations, RawReport/RawGap aliases and reviewed annotation-only TypedDict declarations excluded",
+  "results": [
+    {
+      "old": "src/empire/contracts/holders.py",
+      "new": "src/empire/features/holders/contract.py",
+      "before_sha256": "a841850ac3f2b24b8ae34dce14414d899e17e45fb9fafc491962b1a168cef2ca",
+      "after_sha256": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+      "runtime_ast_equal": true
+    },
+    {
+      "old": "src/empire/plugins/collectors/ths_holders.py",
+      "new": "src/empire/features/holders/collector.py",
+      "before_sha256": "4b4888c357c6efaf82f65d62f7ae48ed197028e21033107b7fea2d889f34c964",
+      "after_sha256": "9f46d88b9757de2c424b682129588d86fc8855ac2b8eaef3cc160ccc3a933d85",
+      "runtime_ast_equal": true
+    },
+    {
+      "old": "src/empire/plugins/collectors/ths_holders_source.py",
+      "new": "src/empire/features/holders/source.py",
+      "before_sha256": "1f761ae9576dc4a981f5f088bc425f623f84ab97729d0fdc85218d12039e3bb1",
+      "after_sha256": "e68daa7c2efb048691e3c09e66d6d2b0e44a78aa88ee730575b422361476271a",
+      "runtime_ast_equal": true
+    },
+    {
+      "old": "src/empire/plugins/datasets/holders.py",
+      "new": "src/empire/features/holders/dataset.py",
+      "before_sha256": "d1c3a68d2adb59a8ea62631e949d1f0ca79baf22fcb5a2dbf98b9212a16dd86d",
+      "after_sha256": "f77f68e4fdfc13e0e9310af9b84d27c793d7765e1aab6646d897aced4fe5e7b5",
+      "runtime_ast_equal": true
+    },
+    {
+      "old": "src/empire/plugins/data/holders.py",
+      "new": "src/empire/features/holders/query.py",
+      "before_sha256": "a93ba30a8f3222c5f00d5bea26e9a786d174ab2107f67f200e6c8445daf05b29",
+      "after_sha256": "d5ba76980635ad4adc1f21ddde83c97689c40e7186e935245477257ddcab0993",
+      "runtime_ast_equal": true
+    },
+    {
+      "old": "src/empire/plugins/data/holders_audit.py",
+      "new": "src/empire/features/holders/audit.py",
+      "before_sha256": "ea249b0b6948cf802619d778265308de769e57f41f2a3f7389be55d438ef396e",
+      "after_sha256": "5f8a2294a3398f0a61a71a6218fc7823e4fbf341bf42d406476fa8ebb0e908c5",
+      "runtime_ast_equal": true
+    },
+    {
+      "old": "src/empire/plugins/ui/holders.py",
+      "new": "src/empire/features/holders/ui.py",
+      "before_sha256": "db5946116dc29e016c8837bb415ee6c12bcd0b321b75defac4ca3dd03c667032",
+      "after_sha256": "7d997ed111ddc4f495e44787e8e9407f788ae0b8becb5aabe1cca2815ebd7dcf",
+      "runtime_ast_equal": true
+    },
+    {
+      "old": "src/empire/plugins/collectors/holder_html.py",
+      "new": "src/empire/sources/html.py",
+      "before_sha256": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
+      "after_sha256": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
+      "runtime_ast_equal": true
+    }
+  ],
+  "passed": true,
+  "limitations": "Does not substitute for assembly/runtime/lifecycle/source verification"
+}

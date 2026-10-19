@@ -5,8 +5,8 @@ from datetime import date
 import pytest
 
 from empire.contracts.ths_capital import CURRENCIES, SECTIONS, TABLES, numeric, validate
-from empire.plugins.collectors.holder_html import Document
 from empire.plugins.collectors.ths_capital_source import HEADERS, parse
+from empire.sources.html import Document
 
 STOCK = dict(code='601139', unified_code='601139.SH', name='样本公司')
 

@@ -1496,7 +1496,7 @@
         "response": "详情1MiB；最多400成员；正文审计批读10报告/4000成员",
         "regression": "查询P95≤100ms，覆盖≤1000ms，导入≤180秒，Python峰值≤128MiB",
         "status": "measured",
-        "evidence": "docs/evidence/ths-holders-run-outcome-capacity-2026-10-18.json"
+        "evidence": "docs/evidence/architecture-d-holders-capacity-2026-10-19-1.json"
       },
       "integrity": [
         "标签与正文集合匹配",
@@ -1657,8 +1657,8 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/ths-capital-followup-capacity-2026-10-18.json",
-        "sample": "本轮213只不同证券真实来源到Redis/SQL核验，独立SQL放大700证券10500事实",
+        "evidence": "docs/evidence/architecture-d-capital-capacity-2026-10-19-1.json",
+        "sample": "历史213只不同证券实采另见原来源证据；本轮独立SQL合成容量700证券10500事实，不是本轮213只实采",
         "growth": "6000股票每年50新增事实，五年150万事实；按本次分配空间外推，不代表已采覆盖",
         "page_limit": 100,
         "response": "共享generic实际传输/解压上限，正文≤60000字节，证券事实≤10000，单父解除≤1000；schema2无损矩阵压缩，解码≤8MiB、编码正文≤512KiB；完整消息继续受公共上限",

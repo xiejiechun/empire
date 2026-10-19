@@ -8,9 +8,9 @@ import httpx
 import pytest
 
 from empire.bootstrap import build_manager
-from empire.contracts.holders import KINDS, digest, validate
-from empire.plugins.collectors.ths_holders import HolderCollector
-from empire.plugins.collectors.ths_holders_source import parse
+from empire.features.holders.collector import HolderCollector
+from empire.features.holders.contract import KINDS, digest, validate
+from empire.features.holders.source import parse
 from tests.prefetch_source import prefetch_http
 from tests.test_capital_lifecycle import Publisher
 
@@ -176,7 +176,7 @@ def test_change_notice_is_partial_with_unknown_total_and_bond_rank_gap_preserved
 
 
 def test_multiple_bonds_and_same_date_notice_have_distinct_identity():
-    from empire.contracts.holders import report_key
+    from empire.features.holders.contract import report_key
     body = source()
     start = body.index('<div id="bondholder">')
     block = body[start + len('<div id="bondholder">'):-len('</div></html>')]
@@ -392,7 +392,7 @@ def test_one_collector_task_and_three_independent_pages():
     m = build_manager(dict(redis={}, mysql={}, archive={}, ingest={}, rate_groups={}))
     control = m.entries['collection.control'].plugin
     for kind in KINDS:
-        from empire.contracts.holders import project
+        from empire.features.holders.contract import project
         task = control.definitions[project(kind)]
         assert task.default_schedule.mode == 'daily' and task.parallel_downloads
         assert 'collector.ths_holders' in m.entries and 'ui.' + kind in m.entries

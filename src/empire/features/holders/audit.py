@@ -3,7 +3,7 @@ from datetime import UTC, datetime
 
 from sqlalchemy import text
 
-from empire.contracts.holders import (
+from empire.features.holders.contract import (
     KINDS,
     digest,
     quality_details,
@@ -11,7 +11,7 @@ from empire.contracts.holders import (
     validate,
     validate_gaps,
 )
-from empire.plugins.datasets.holders import read_reports
+from empire.features.holders.dataset import read_reports
 
 
 def rows_for(conn, keys):

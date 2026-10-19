@@ -12,8 +12,8 @@ from empire.__main__ import acquire_instance_lock
 from empire.bootstrap import build_manager
 from empire.core.config import load_config
 from empire.core.redaction import redact
+from empire.features.holders.dataset import HolderDataset
 from empire.plugins.collection.control import validate_policy
-from empire.plugins.datasets.holders import HolderDataset
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.settings import SettingsStore

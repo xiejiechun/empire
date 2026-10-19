@@ -6,7 +6,8 @@ from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.holders import (
+from empire.core.time import CHINA, mysql_time
+from empire.features.holders.contract import (
     KINDS,
     MEMBER_FIELDS,
     REPORT_FIELDS,
@@ -17,7 +18,6 @@ from empire.contracts.holders import (
     validate,
     validate_gaps,
 )
-from empire.core.time import CHINA, mysql_time
 from empire.plugins.infra.collection_state import confirmed_page
 
 NUMBERS = {'total_quantity', 'total_ratio', 'quantity', 'ratio', 'change_quantity', 'pledge_ratio'}

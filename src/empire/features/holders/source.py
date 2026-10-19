@@ -3,7 +3,7 @@ import re
 from datetime import date
 from decimal import Decimal
 
-from empire.contracts.holders import (
+from empire.features.holders.contract import (
     KINDS,
     digest,
     number,
@@ -12,7 +12,7 @@ from empire.contracts.holders import (
     validate,
     validate_gaps,
 )
-from empire.plugins.collectors.holder_html import Document, Node
+from empire.sources.html import Document, Node
 
 
 def one(nodes, label):

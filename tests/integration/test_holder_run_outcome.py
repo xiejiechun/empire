@@ -4,8 +4,8 @@ import json
 
 import httpx
 
-from empire.contracts.holders import report_key
-from empire.plugins.collectors.ths_holders_source import parse
+from empire.features.holders.contract import report_key
+from empire.features.holders.source import parse
 from tests.integration import test_holder_archive as archive_tests
 from tests.test_holder_identity_gaps import mixed_bonds
 from tests.test_ths_holders import STOCK, source

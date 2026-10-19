@@ -63,6 +63,10 @@ flowchart TB
 
 业务按 `features/<业务>` 收拢；新闻是首个样板，入口见 [新闻包](../src/empire/features/news/README.md)。`contracts/task.py` 拥有任务与默认策略类型，`contracts/bundle.py` 拥有纯贡献结构和顺序声明。`features/builtin.py` 明确列出包工厂，`bootstrap.py` 只合并公共服务与包声明、校验归属及现有插件依赖；构造声明不启动服务、不创建页面、不读取外部配置。
 
+股东复杂样板集中在 [features/holders](../src/empire/features/holders/README.md)：`contract.py` 是纯业务契约，`query.py`/`audit.py` 是正式查询与证明核查入口，`ui.py` 贡献三个独立页面，`source.py`/`collector.py`/`dataset.py` 分别拥有来源语义、采集生命周期和统一归档映射。一个包仍可贡献多个独立插件；中央白名单只收集包声明，不把它合并为一个运行时开关。持有人插件与资本运作的原交错顺序按稳定槽保留。
+
+共享 HTML 节点树位于 `sources/html.py`，由股东和资本运作来源解析器共同使用；它只处理节点/文本及标签、嵌套表格边界，不拥有业务字段、请求或生命周期。纯函数不注册插件，共享辅助变更须覆盖两侧消费者。目录迁移保持单任务、一次必要HTML三栏、三查询/页面、消息schema5、SQL证明contract4及数据归属；不触发DDL、清队、摘要重建或用户配置迁移。
+
 同一包可贡献分别启停的采集、查询和 UI 插件，插件/任务/数据集按各自稳定顺序槽合并，不能依赖白名单排列隐式改变启动顺序。任务 provider、项目/job、数据贡献和 preparation 逐项核对归属；无定时任务的北交所维护发布者通过唯一脚本精确声明，源码门禁核查其真实路径。尚未迁移业务仅在 `features/remaining.py` 维护一次声明，后续批次逐步退役它，不新增第二份业务注册表。
 
 内核只处理插件清单、依赖顺序、能力注册、状态和任务资源回收，不解释股票字段或网站规则。插件声明 `requires` / `provides`，由内部白名单注册；不存在动态扫描第三方目录。

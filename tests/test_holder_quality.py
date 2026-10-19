@@ -4,8 +4,8 @@ from datetime import date
 
 import pytest
 
-from empire.contracts.holders import KINDS, quality_details, quality_flags, validate
-from empire.plugins.collectors.ths_holders_source import parse
+from empire.features.holders.contract import KINDS, quality_details, quality_flags, validate
+from empire.features.holders.source import parse
 from tests.test_ths_holders import STOCK, source
 
 
@@ -109,7 +109,7 @@ def test_future_flag_is_observation_bound_and_rechecked_at_ingest():
     from datetime import UTC, datetime
 
     from empire.contracts.data import make_envelope
-    from empire.plugins.datasets.holders import HolderDataset
+    from empire.features.holders.dataset import HolderDataset
     body = source().replace('2026-06-30', '2026-10-20')
     before = {k: parse(body, k, STOCK, today=date(2026, 10, 17)) for k in KINDS}
     assert all(rows[0]['quality_flags'] == 128 for rows in before.values())

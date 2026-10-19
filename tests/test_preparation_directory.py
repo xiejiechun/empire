@@ -95,7 +95,7 @@ async def test_opening_only_reads_overview_and_scope_edits_do_not_scan(pages):
 
 
 def test_shared_collector_opens_the_selected_business_page(pages):
-    from empire.plugins.ui.holders import HolderUiPlugin
+    from empire.features.holders.ui import HolderUiPlugin
     contributions = [p for kind in ('top_holders', 'float_holders', 'bond_holders')
                      for p in HolderUiPlugin(kind).create_pages()]
     page = PreparationPage(SimpleNamespace(cfg={}, runtime=SimpleNamespace(page_contributions=lambda: contributions)))

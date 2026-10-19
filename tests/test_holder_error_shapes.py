@@ -3,8 +3,8 @@ import copy
 
 import pytest
 
-from empire.contracts.holders import validate
-from empire.plugins.collectors.ths_holders_source import parse
+from empire.features.holders.contract import validate
+from empire.features.holders.source import parse
 from tests.test_ths_holders import STOCK, source
 
 

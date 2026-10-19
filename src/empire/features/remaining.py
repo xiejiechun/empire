@@ -6,8 +6,6 @@ from empire.contracts.bundle import (
     positioned,
 )
 from empire.contracts.dataset import DatasetContribution
-from empire.contracts.holders import KINDS as HOLDER_KINDS
-from empire.contracts.holders import project as holder_project
 from empire.contracts.indices import JOB as INDEX_JOB
 from empire.contracts.indices import PROJECT as INDEX_PROJECT
 from empire.contracts.listing_status import JOB as STATUS_JOB
@@ -42,7 +40,6 @@ from empire.plugins.collectors.tdx_suspensions import TdxSuspensionCollector
 from empire.plugins.collectors.tdx_unlock_industries import UnlockIndustryCollector
 from empire.plugins.collectors.tdx_unlocks import UnlockCollector
 from empire.plugins.collectors.ths_capital import CapitalPageCollector
-from empire.plugins.collectors.ths_holders import HolderCollector
 from empire.plugins.collectors.ths_index_prices import ThsIndexPriceCollector
 from empire.plugins.collectors.ths_indices import ThsIndexCollector
 from empire.plugins.collectors.ths_industries import ThsIndustryCollector
@@ -53,7 +50,6 @@ from empire.plugins.collectors.trading_rules import RuleCollector
 from empire.plugins.data.adjustment import AdjustmentDataPlugin
 from empire.plugins.data.capital_actions import CapitalDataPlugin
 from empire.plugins.data.financial_statements import FinancialDataPlugin
-from empire.plugins.data.holders import HolderDataPlugin
 from empire.plugins.data.index_prices import IndexPriceDataPlugin
 from empire.plugins.data.indices import IndexDataPlugin
 from empire.plugins.data.industries import IndustryDataPlugin
@@ -88,7 +84,6 @@ from empire.plugins.datasets.capital_archive import CapitalDataset
 from empire.plugins.datasets.financial_archive import FinancialDataset
 from empire.plugins.datasets.financial_statements import KINDS as FINANCIAL_KINDS
 from empire.plugins.datasets.financial_wire import SCHEMA_VERSION as FINANCIAL_SCHEMA_VERSION
-from empire.plugins.datasets.holders import HolderDataset
 from empire.plugins.datasets.kaipanla_products import ProductDataset
 from empire.plugins.datasets.name_changes import NameDataset
 from empire.plugins.datasets.st_events import StDataset
@@ -100,7 +95,6 @@ from empire.plugins.datasets.unlocks import UnlockDataset
 from empire.plugins.ui.adjustment import AdjustmentUiPlugin
 from empire.plugins.ui.capital_actions import CapitalUiPlugin
 from empire.plugins.ui.financial_statements import FinancialUiPlugin
-from empire.plugins.ui.holders import HolderUiPlugin
 from empire.plugins.ui.index_prices import IndexPriceUiPlugin
 from empire.plugins.ui.indices import IndexUiPlugin
 from empire.plugins.ui.industries import IndustryUiPlugin
@@ -123,12 +117,9 @@ from empire.plugins.ui.unlocks import UnlockUiPlugin
 def bundle(cfg):
     """Unmigrated business declarations, removed here as each package takes ownership."""
     return FeatureBundle('remaining', plugins=(
-        *positioned((100, 200, 300), (HolderDataPlugin(k, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for k in HOLDER_KINDS)),
-        OrderedContribution(400, HolderCollector()),
         OrderedContribution(500, CapitalPageDataPlugin(cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {}))),
         OrderedContribution(600, CapitalPageCollector()),
         OrderedContribution(700, CapitalPageUiPlugin()),
-        *positioned((800, 900, 1000), (HolderUiPlugin(k) for k in HOLDER_KINDS)),
         *positioned((1100, 1200, 1300, 1400, 1500, 1600), (PerformanceDataPlugin(kind, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for kind in PERFORMANCE_KINDS)),
         *positioned((1700, 1800, 1900, 2000, 2100, 2200), (PerformanceCollector(kind) for kind in PERFORMANCE_KINDS)),
         *positioned((2300, 2400, 2500, 2600, 2700, 2800), (PerformanceUiPlugin(kind) for kind in PERFORMANCE_KINDS)),
@@ -204,11 +195,6 @@ def bundle(cfg):
                     category='股东数据', source_name='通达信', parallel_downloads=True, unit_name='个月', default_enabled=False,
                     default_schedule=TaskDefaults('daily', description='每天北京时间18:00核验月份列表并补明细；每轮轮换回查一个历史月；可编辑。'),
                     fresh_description='重建声明月份范围并完整回查所有股东明细；已入队轮次先完成归档。')),
-        OrderedContribution(300, TaskContribution(holder_project('top_holders'), '股东研究（同花顺）',
-                    'collector.ths_holders', 'ths', '一次HTML采集前十大股东、流通股东和债券持有人；历史保留，无公告日期',
-                    category='股东数据', source_name='同花顺', parallel_downloads=True, unit_name='只股票', default_enabled=False,
-                    default_schedule=TaskDefaults('daily', description='每天北京时间18:00核验当前报告窗口及修订；可编辑计划。'),
-                    fresh_description='重建当前股票池和页面报告窗口；保留历史；待归档阶段先确认原轮次。')),
         OrderedContribution(400, TaskContribution('ths-capital', '公司资本运作（同花顺）', 'collector.ths_capital', 'ths',
                     '一次HTML完整采集融资、投资、交易、参股IPO及质押解冻，原币种与历史保留',
                     category='公司行动', source_name='同花顺', parallel_downloads=True, unit_name='只股票', default_enabled=False,
@@ -304,8 +290,6 @@ def bundle(cfg):
                         {CapitalPageDataset.JOB: CapitalPageDataset.PROJECT}, schema_version=2)),
         OrderedContribution(200, DatasetContribution(UnlockIndustryDataset(), 'incremental', {UnlockIndustryDataset.JOB: UnlockIndustryDataset.PROJECT})),
         OrderedContribution(300, DatasetContribution(UnlockDataset(), 'incremental', {UnlockDataset.JOB: UnlockDataset.PROJECT})),
-        OrderedContribution(400, DatasetContribution(HolderDataset(), 'incremental',
-                        {HolderDataset().JOB: HolderDataset().PROJECT}, schema_version=5)),
         *positioned((500, 600, 700, 800, 900, 1000), (DatasetContribution(PerformanceDataset(kind), 'incremental',
                         {PerformanceDataset(kind).JOB: PerformanceDataset(kind).PROJECT}) for kind in PERFORMANCE_KINDS)),
         OrderedContribution(1100, DatasetContribution(repurchases, 'incremental', {'eastmoney-repurchases-v1': 'eastmoney-repurchases'})),

@@ -7,9 +7,9 @@ import pytest
 
 from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.data import make_envelope
-from empire.contracts.holders import KINDS, validate_gaps
-from empire.plugins.collectors.ths_holders_source import parse
-from empire.plugins.data.holders_audit import unit_gaps
+from empire.features.holders.audit import unit_gaps
+from empire.features.holders.contract import KINDS, validate_gaps
+from empire.features.holders.source import parse
 from scripts.holder_pending_schema import convert
 from tests.test_ths_holders import STOCK, configured, source
 
