@@ -1,0 +1,654 @@
+{
+  "checked_at": "2026-10-20T04:34:26.281359+08:00",
+  "passed_read_only": true,
+  "actual_desktop": "pending",
+  "release_id": "08dd70b018394bc2bdf673bc3d8b7b99",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "d062234545eb364df93e8fc402fec62491058dbb",
+    "dirty": false,
+    "source_sha256": "60c347ca9f0bf05f82347ace44c04d1f707f77c93d30fa36b4d821f970f88a06",
+    "release_id": "08dd70b018394bc2bdf673bc3d8b7b99",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "dba6cdf94d5460330bc3fa94e998601b8ef696d78dfb819b8b88a85193a26c74",
+    "built_at_utc": "2026-10-19T20:03:54.200543+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3",
+    "packaged": true
+  },
+  "packaged_financial_layout_sha256": "9d0b81c2186a6a267a9d559ae75f3e2d62399ed2320cbf27d7023a789d1d4762",
+  "exe_sha256": "e1a0f0d053c4f69353486fcb546b14b0423037878f7e4c2d7cf18004b2f509c9",
+  "installed_tree_sha256": "8c961f788160a454985ce5208d543b7efa4d02846bc8d9958e2b69211d3e44a1",
+  "configuration_preserved": {
+    "D:\\project\\empire\\config.toml": true,
+    "D:\\project\\empire\\dist\\Empire\\config.toml": true
+  },
+  "plugin_preferences_preserved": true,
+  "different_cwd": "C:/Windows",
+  "packaged_doctor_exit": 0,
+  "packaged_doctor_evidence": "exit code: both Redis and MySQL connected",
+  "packaged_doctor_log_side_effect": "ordinary local diagnostic log may be created",
+  "packaged_doctor_stdout_available": true,
+  "connections": {
+    "redis": true,
+    "mysql": true
+  },
+  "formal_queries": {
+    "observed_at": "2026-10-20T04:34:53.585806+08:00",
+    "read_only_business": true,
+    "execution": "source formal query APIs using installed configuration; actual EXE queries checked separately",
+    "stocks": {
+      "first": {
+        "snapshot": {
+          "row_count": 5579,
+          "started_at": "2026-10-19T18:00:05.881475",
+          "finished_at": "2026-10-19T18:00:06.479181",
+          "snapshot_id": "0bae2c60e769410ca589a1274af592be"
+        },
+        "total": 5579,
+        "rows": [
+          {
+            "source": "ths",
+            "code": "000001",
+            "name": "平安银行",
+            "unified_code": "000001.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000001"
+          },
+          {
+            "source": "ths",
+            "code": "000002",
+            "name": "万  科Ａ",
+            "unified_code": "000002.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000002"
+          },
+          {
+            "source": "ths",
+            "code": "000006",
+            "name": "深振业Ａ",
+            "unified_code": "000006.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000006"
+          },
+          {
+            "source": "ths",
+            "code": "000007",
+            "name": "全新好",
+            "unified_code": "000007.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000007"
+          },
+          {
+            "source": "ths",
+            "code": "000008",
+            "name": "神州高铁",
+            "unified_code": "000008.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000008"
+          }
+        ],
+        "offset": 0,
+        "limit": 5
+      },
+      "second": {
+        "snapshot": {
+          "row_count": 5579,
+          "started_at": "2026-10-19T18:00:05.881475",
+          "finished_at": "2026-10-19T18:00:06.479181",
+          "snapshot_id": "0bae2c60e769410ca589a1274af592be"
+        },
+        "total": 5579,
+        "rows": [
+          {
+            "source": "ths",
+            "code": "000009",
+            "name": "中国宝安",
+            "unified_code": "000009.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000009"
+          },
+          {
+            "source": "ths",
+            "code": "000010",
+            "name": "*ST美丽",
+            "unified_code": "000010.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000010"
+          },
+          {
+            "source": "ths",
+            "code": "000011",
+            "name": "深物业A",
+            "unified_code": "000011.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000011"
+          },
+          {
+            "source": "ths",
+            "code": "000012",
+            "name": "南  玻Ａ",
+            "unified_code": "000012.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000012"
+          },
+          {
+            "source": "ths",
+            "code": "000014",
+            "name": "沙河股份",
+            "unified_code": "000014.SZ",
+            "market": "SZ",
+            "source_symbol": "sz000014"
+          }
+        ],
+        "offset": 5,
+        "limit": 5
+      },
+      "selected": {
+        "snapshot": {
+          "row_count": 5579,
+          "started_at": "2026-10-19T18:00:05.881475",
+          "finished_at": "2026-10-19T18:00:06.479181",
+          "snapshot_id": "0bae2c60e769410ca589a1274af592be"
+        },
+        "total": 1,
+        "rows": [
+          {
+            "source": "ths",
+            "code": "600000",
+            "name": "浦发银行",
+            "unified_code": "600000.SH",
+            "market": "SH",
+            "source_symbol": "sh600000"
+          }
+        ],
+        "offset": 0,
+        "limit": 5
+      }
+    },
+    "calendar": {
+      "1990-12": {
+        "month": "1990-12",
+        "rows": [
+          {
+            "trade_date": "1990-12-19",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-20",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-21",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-22",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-23",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-24",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-25",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-26",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-27",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-28",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-29",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-30",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          },
+          {
+            "trade_date": "1990-12-31",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:06:59.843083"
+          }
+        ],
+        "expected_count": 13,
+        "complete": true
+      },
+      "2026-10": {
+        "month": "2026-10",
+        "rows": [
+          {
+            "trade_date": "2026-10-01",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-02",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-03",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-04",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-05",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-06",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-07",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-08",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-09",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-10",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-11",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-12",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-13",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-14",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-15",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-16",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-17",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-18",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-19",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-20",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-21",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-22",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-23",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-24",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-25",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-26",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-27",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-28",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-29",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-30",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          },
+          {
+            "trade_date": "2026-10-31",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:24.399218"
+          }
+        ],
+        "expected_count": 31,
+        "complete": true
+      },
+      "2027-12": {
+        "month": "2027-12",
+        "rows": [
+          {
+            "trade_date": "2027-12-01",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-02",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-03",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-04",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-05",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-06",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-07",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-08",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-09",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-10",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-11",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-12",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-13",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-14",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-15",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-16",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-17",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-18",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-19",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-20",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-21",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-22",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-23",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-24",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-25",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-26",
+            "is_trade": false,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-27",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-28",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-29",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-30",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          },
+          {
+            "trade_date": "2027-12-31",
+            "is_trade": true,
+            "updated_at": "2026-09-23T08:21:52.543699"
+          }
+        ],
+        "expected_count": 31,
+        "complete": true
+      }
+    },
+    "suspensions": {
+      "first_source_day": [
+        {
+          "market": "SZ",
+          "code": "000046",
+          "name": "*ST泛海",
+          "suspended_at": "2004-12-27T09:30:00",
+          "resumed_at": "2004-12-28T09:30:00",
+          "suspension_type": "full_day",
+          "source_note": "停牌1天",
+          "reason": "召开股东大会"
+        },
+        {
+          "market": "SZ",
+          "code": "000430",
+          "name": "张家界",
+          "suspended_at": "2004-12-27T09:30:00",
+          "resumed_at": "2004-12-28T09:30:00",
+          "suspension_type": "full_day",
+          "source_note": "停牌1天",
+          "reason": "召开股东大会"
+        },
+        {
+          "market": "SZ",
+          "code": "000535",
+          "name": "*ST 猴王",
+          "suspended_at": "2004-12-27T09:30:00",
+          "resumed_at": "2004-12-27T10:30:00",
+          "suspension_type": "intraday",
+          "source_note": "停牌1小时",
+          "reason": "规则明确标准的异常波动;"
+        },
+        {
+          "market": "SZ",
+          "code": "000537",
+          "name": "绿发电力",
+          "suspended_at": "2004-12-27T09:30:00",
+          "resumed_at": "2004-12-28T09:30:00",
+          "suspension_type": "full_day",
+          "source_note": "停牌1天",
+          "reason": "召开股东大会"
+        },
+        {
+          "market": "SZ",
+          "code": "000550",
+          "name": "江铃汽车",
+          "suspended_at": "2004-12-27T09:30:00",
+          "resumed_at": "2004-12-28T09:30:00",
+          "suspension_type": "full_day",
+          "source_note": "停牌1天",
+          "reason": "召开股东大会"
+        }
+      ],
+      "initial_month": {
+        "month": "2004-12",
+        "counts": {
+          "2004-12-27": 15,
+          "2004-12-28": 57,
+          "2004-12-29": 37,
+          "2004-12-30": 36,
+          "2004-12-31": 39
+        },
+        "coverage": {
+          "from": "2004-12-27",
+          "through": "2026-10-19",
+          "confirmed_at": "2026-10-19T04:41:08.696401+00:00"
+        }
+      },
+      "fixed_security_recent": [
+        {
+          "market": "SH",
+          "code": "603517",
+          "name": "ST绝味",
+          "suspended_at": "2026-10-19T09:30:00",
+          "resumed_at": "2026-10-20T09:30:00",
+          "suspension_type": "full_day",
+          "source_note": "停牌1天",
+          "reason": "重要公告"
+        }
+      ],
+      "limitation": "Recent retained business records do not prove old source conflict resolved; exact error remains"
+    },
+    "services_shutdown": true,
+    "pending_total": 0,
+    "pending_observed_at": "2026-10-20T04:34:53.773257+08:00"
+  }
+}

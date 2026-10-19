@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-19T19:25:19.898242+00:00",
-  "note": "E3最终逐功能审阅：48模块及拆分定义、原槽位和公共契约保持；股票确认回调及workspace惰性factory注入已有实际失败/取消、marker和SQL恢复回归；五包README、股票/日历/停复牌/数据准备/结构文档及覆盖关联同步。用户入口、任务保存、来源身份与查询字段不变；旧来源错误保留，有限样本不冒充全历史。",
+  "reviewed_at": "2026-10-19T20:39:17.177303+00:00",
+  "note": "E3结案最终审阅：逐项复核同包股票分页、完整日历月、停复牌并列记录、用途检查取消、启停保护、草稿及窄窗；状态账本和动态证据已完成更新，原来源限制、精确错误及后续容量待办保留，用户正文和业务契约无新增变化。",
   "unchanged_reason": "",
   "exceptions": {},
   "sources": {
@@ -488,7 +488,7 @@
     "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "bcf0da02c8acbca80223165b16a9820ccadb8d3621637b0381da1ac157b8d3f0",
+  "content_sha256": "e31c13bf9e1752b00f896b02a61ae7553b95c4cadc9696ce1d842824982c0c5f",
   "features": {
     "page:ths_capital": {
       "sources": {
