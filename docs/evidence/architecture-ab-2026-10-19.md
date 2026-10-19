@@ -40,4 +40,12 @@
 
 补修定向验证：运行时/真实声明 55 passed，发布输出/管线/入口/步骤 78 passed，原发布门禁契约 4 passed，合计 137 passed。输出验证实际运行 Windows Python、PowerShell 及继承锁的子进程；tty 分支使用模拟输出对象，未冒充真实控制台或桌面验收。`release_lock.py` 与冻结性能工具/阈值未修改。独立审阅发现的 GBK/UTF-8 编码边界已补明确编码和普通中文 print 回归。
 
-新一轮正式门禁、配置保留及真实桌面复验仍待执行；不得用上述已失败桌面的制品作为本批完成证据。正式证据由 `build/releases/<run_id>/publication.json` 绑定提交、输入、测试和产物。
+第三轮正式门禁 `7feb3f35333d4404aae8684dd2f6ddf6` 已提交发布，绑定干净提交 `e4dafe72b676075ccdeb2add54f0731f9cb1691f`：3403 passed、5 skipped、18 warnings，pytest 2230.85 秒。五项跳过仍为显式未启用的隔离 state-unit 演练，不计为通过。静态、文档、设计、架构、装配、Ruff、mypy、依赖、容量、四档 DPI、打包与搬移 smoke 通过。
+
+完整源摘要 `54b0f71a2e5885487ceefea09428533e552dde0de68bc47c6a18551f8d32d2a9`，EXE SHA-256 `b27339970325c4711914ea76719618b8cb37d96122df3f3fab435522ab4dd71a`，安装目录摘要 `17acaba69319b45df9f54a53b101582a1f36db4b502f5bd731e117b43000d1f2`。journal `build/releases/7feb3f35333d4404aae8684dd2f6ddf6/publication.json` 为 committed/passed，包内清单与完整文件树匹配。
+
+12:40 与 12:46（北京时间）只读复验根目录和程序目录 config.toml、插件偏好逐字节保留；从 `C:/Windows` 启动正式 doctor，退出 0，Redis/MySQL connected 均为 true。使用安装配置的正式查询返回股票总数 5580、股票与新闻各 5 条。各项单独记录时间，非原子快照。
+
+真实可见 EXE 已进入工作台：数据目录打开股票列表显示 5580 条、28 页、每页 200 条；财经快讯显示 36071 条并成功渲染 2026-10-19 12:44:58 的新闻正文；运行状态显示 `Empire 0.1.0 · e4dafe72b676 · 干净提交`，服务连接正常。用户原有计划自动恢复，未手动改任务或偏好。随后 Alt+F4 正常退出，观察到保存进度/结束归档/关闭连接提示，窗口正常消失。A/B 的正式发布与实际桌面验收通过。
+
+启动前 12:40:55 Stream 为 0；正常计划运行并关闭后 12:46:23 Stream 为 1，保留该消息由正式归档路径重放，不手工删除。这不代表本轮重新完成全部来源实采。发布日志的冻结 EXE check-config 中文仍有编码失配，CLI 退出及 GUI 功能正常；该输出缺陷纳入 C 修复与真实包输出验证，不能称所有编码边界已解决。C～F 尚未验收。
