@@ -12,7 +12,7 @@
 | B 诊断/依赖基线 | 已验收 | 有界按项目只读诊断、部分失败保留、AST债务及精确装配/顺序基线 | 同上；不能解释为所有来源均完整或全部依赖债务已消除 |
 | C 新闻样板与装配 | 已验收 | features/news、Task/Bundle纯契约、显式收集、归属和六类顺序检查、旧入口退役；真实新闻、T3、完整发布、实际桌面 | [C记录](../evidence/architecture-c-2026-10-19.md)、[发布后实际证据](../evidence/architecture-c-post-release-2026-10-19.json) |
 | D 持有人样板 | 已验收（组织迁移范围）；严格H3失败保留 | 八模块/旧入口退役、安全SQL及恢复、116隔离集成、两份当前容量、strict类型、最终T3 18/18；两项真实UI缺陷修复。最终发布3626 passed/5 skipped，配置/偏好/异cwd连接/三栏查询/真实启停和正常关开完成。48全代理链路一致/私有pending0；固定来源缺口不计严格实采通过 | [D记录](../evidence/architecture-d-2026-10-19.md)、[同包只读报告](../evidence/architecture-d-post-release-2026-10-19.json)、[最终证据审阅](../evidence/architecture-d-final-evidence-audit-2026-10-19.json) |
-| E0 SQL归属 | 开发验证通过，待正式发布 | 资源、严格类型通用读者、打包及设计/文档追踪已合入；最终266公共/5隔离/35文档通过，mypy7文件通过，最终T3 18/18通过；旧输入两轮和最终输入一轮失败保留 | [E0记录](../evidence/architecture-e0-2026-10-19.md) |
+| E0 SQL归属 | 开发验证通过；首轮发布文档门禁失败，修正后待重跑 | 实现提交9041792；最终266公共/5隔离/35文档、mypy7文件、T3 18/18通过。首轮d62f83b5在文档步骤拒绝审阅后状态文字更新，未进入测试/构建，D包保持 | [E0记录](../evidence/architecture-e0-2026-10-19.md) |
 | E1～E6g 逐业务推广 | 草稿已准备，未合入 | 仅职责/路径、共享边界、业务README和容量影响规划 | [E实施](e-implementation.md)、[计划映射](planned-migrations.json) |
 | F 共享治理收束 | 草稿已准备，未合入 | 仅单源文档、影响报告、类型、共享门禁、定位演练和测试成本候选 | [F实施](cdf-implementation.md)；尚无测试成本收益结论 |
 
