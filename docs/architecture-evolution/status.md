@@ -19,7 +19,7 @@
 
 ## 2. 源码、远程和已安装包身份
 
-当前D实现提交为`ab1d47339eace79a3c9d216c23bfe6beb1b1170a`，首轮发布HEAD为`b8fd9120805667c11196d4762dd17a37a456f4cf`；后续两项桌面修复形成检查点提交，尚未重新发布。2026-10-19最后现场核远程main仍为`120ddfc70376f40e6a798a71305b5713ecb8bb27`：直连GitHub443多次超时，单次进程环境代理（实际node004、只读核目录租约、不保存Git/日常网络配置）读取成功；推送另核，不把本地ahead当远程交付。
+当前D实现提交为`ab1d47339eace79a3c9d216c23bfe6beb1b1170a`，首轮发布HEAD为`b8fd9120805667c11196d4762dd17a37a456f4cf`；两项桌面修复和全部T3失败证据检查点为`7b0c69baf9ddc69e9870db177859601668c89d97`，已推送main，尚未重新发布。2026-10-19远程初核为`120ddfc70376f40e6a798a71305b5713ecb8bb27`；直连GitHub443多次超时，单次进程环境代理（实际node004、只读核目录租约、不保存Git/日常网络配置）读取/推送exit0，推送后再次ls-remote精确匹配7b0c69b。后续资源交接为纯证据文档提交，不改变包身份。
 
 当前安装是D首轮release `78cee05f837a4afa91c6075282bc41fb`，manifest绑定b8fd912干净提交；完整源输入`1aa70a28a59536763d0185bc210e1afd8aba5da3ff6048e8c642acf5bd948204`，EXE SHA-256 `1312b940f03c0c960f682087febaa2e327c473ae77c6fd5c5ae5e8eb598ca3c0`，安装树`1e76b821cfc9b7d852417133b621c6e692c9751aed39d58a54aba3452ac372e7`。检查点只读复核exit0：manifest/安装树/config/偏好保持，C:/Windows运行该EXE doctor连接正常，正式查询可读。`build/architecture-d-20261019/checkpoint-readonly2.json`不是修复包验收。
 

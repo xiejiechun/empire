@@ -136,3 +136,9 @@ common1.xml 的明确文件集合（命令为 `python -m pytest -q --tb=short -r
 首轮包额外真实U1核查：停一项持有人UI时另两页及三查询/采集保持；停collector后任务和历史仍可读，从页面继续采集被正式禁用保护拒绝，未发请求；全部恢复。普通停用Redis基础插件被现有依赖保护拒绝，未级联停服务。原10项插件偏好在正常关闭后按environment.json的原hash逐字节恢复，测试后全偏好副本只保留build。源/程序config均未写入。上述生命周期、窄窗及草稿观察属于b8fd912旧包，修复后同包复验仍未完成。
 
 **当前退出结论：D最终验证失败，未验收；E0未开始。** 安全/业务/容量及首轮发布事实保留，H3严格来源FAIL保留；两UI修复未重新正式发布。不得把本检查点提交当作成功发布或整个任务完成。后续先查明T3超限、在最终输入上完整复验，再更新文档审阅、提交冻结、唯一正式门禁及新包真实桌面。远程网络和资源最终状态见状态账本。
+
+检查点实现及失败证据提交`7b0c69baf9ddc69e9870db177859601668c89d97`已推送main，Git push exit0，随后ls-remote精确匹配。GitHub直连多次443超时后，Git进程仅本次使用已核租约的node004代理环境，不保存配置、不输出凭据、不更改用户日常策略。
+
+检查点[正式包只读原报告](architecture-d-checkpoint-runtime-2026-10-19.json)为exit0，明确绑定首轮release `78cee05f837a4afa91c6075282bc41fb`，actual_desktop=pending字段原样保留；它核同包manifest/tree/EXE、两份config和插件偏好、异cwd doctor及正式query。当前源码新增UI修复未进入该包，不能由此报告推导修复桌面通过。[自有实例关闭原记录](architecture-d-checkpoint-resources-2026-10-19.json)在17:56:03北京时间前后核实际UUID/datadir、仅四系统库、other_client_sessions=0，正常SQL SHUTDOWN后13348端口关闭，数据目录保留。没有停止生产3307、清共享Redis或删除生产业务。
+
+随后通过computer-use重新启动同一正式EXE，fresh窗口71765144可见，工作台显示本地服务连接、45任务、当时活动0/待归档0；新闻日常任务17:56:35完成。实际截图和树保存本地`desktop-checkpoint-restored.png/json`，这是一时快照，后续日常采集会继续。最终再次核五项冻结文件及根/程序config、原插件偏好hash均保持；无遗留测试进程。下次需验证时先正常关闭该桌面，并重新核实或启动自有实例，不能凭旧PID清理。
