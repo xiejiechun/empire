@@ -135,7 +135,12 @@ def test_unregistered_actual_dataset_cannot_bypass_design_gate(monkeypatch):
     from types import SimpleNamespace
 
     import scripts.verify_database_design as gate
-    actual = gate.builtin_catalog().datasets
-    monkeypatch.setattr(gate, 'DatasetPlugin', lambda: SimpleNamespace(datasets={**actual, 'new.unregistered': object()}))
+    from empire.contracts.dataset import DatasetContribution
+    actual = gate.dataset_contributions({
+        'redis': {}, 'mysql': {}, 'archive': {}, 'ingest': {}, 'rate_groups': {}})
+    extra = DatasetContribution(SimpleNamespace(
+        DATASETS={'new.unregistered'}, FINGERPRINT_NAMESPACE='new-unregistered',
+        FINGERPRINT_VERSION=actual[0].version), 'incremental', {'new-v1': 'new'})
+    monkeypatch.setattr(gate, 'dataset_contributions', lambda cfg: (*actual, extra))
     with pytest.raises(ValueError, match='正式数据贡献'):
         gate.verify(Path(__file__).resolve().parents[1])
