@@ -1,0 +1,313 @@
+{
+  "checked_at": "2026-10-20T02:33:54.271965+08:00",
+  "passed_read_only": true,
+  "actual_desktop": "pending",
+  "release_id": "2fa960ba05f047fdbbbc6ca214b0000c",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "ccc04f399fcaa5d8815da6a1e1b17df72a541620",
+    "dirty": false,
+    "source_sha256": "c3f1a25884bbab7a61fb9fbbbdaafac9ff1205d170dce55eb6afbfc037cc6a32",
+    "release_id": "2fa960ba05f047fdbbbc6ca214b0000c",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "6de90f2c339d1f72f1961868cd2d96bd1ad83617876126d7e43ac7eb5ace8355",
+    "built_at_utc": "2026-10-19T17:56:15.650611+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3",
+    "packaged": true
+  },
+  "packaged_financial_layout_sha256": "9d0b81c2186a6a267a9d559ae75f3e2d62399ed2320cbf27d7023a789d1d4762",
+  "exe_sha256": "18f05709ca2c7855f6395c1c8c2c09f6eb58c176c699b00da38a460070a24652",
+  "installed_tree_sha256": "b1eff9327f678d57a57d88c5eb322f82a23e4da69a7e370be3502329d3eff005",
+  "configuration_preserved": {
+    "D:\\project\\empire\\config.toml": true,
+    "D:\\project\\empire\\dist\\Empire\\config.toml": true
+  },
+  "plugin_preferences_preserved": true,
+  "different_cwd": "C:/Windows",
+  "packaged_doctor_exit": 0,
+  "packaged_doctor_evidence": "exit code: both Redis and MySQL connected",
+  "packaged_doctor_log_side_effect": "ordinary local diagnostic log may be created",
+  "packaged_doctor_stdout_available": true,
+  "connections": {
+    "redis": true,
+    "mysql": true
+  },
+  "formal_queries": {
+    "observed_at": "2026-10-20T02:33:56.750469+08:00",
+    "read_only_business": true,
+    "execution": "source formal query APIs using installed configuration; visible EXE queries checked separately",
+    "indices": {
+      "first_page": {
+        "rows": [
+          {
+            "index_code": "1A0001",
+            "index_name": "上证指数",
+            "source_group": "重要",
+            "members_available": 1,
+            "member_count": 2253
+          },
+          {
+            "index_code": "1B0001",
+            "index_name": "工业指数",
+            "source_group": "F~J",
+            "members_available": 1,
+            "member_count": 2089
+          },
+          {
+            "index_code": "1B0002",
+            "index_name": "商业指数",
+            "source_group": "P~T",
+            "members_available": 1,
+            "member_count": 474
+          },
+          {
+            "index_code": "1B0004",
+            "index_name": "地产指数",
+            "source_group": "A~E",
+            "members_available": 1,
+            "member_count": 511
+          },
+          {
+            "index_code": "1B0005",
+            "index_name": "公用指数",
+            "source_group": "F~J",
+            "members_available": 1,
+            "member_count": 261
+          }
+        ],
+        "next": [
+          "1B0005"
+        ]
+      },
+      "second_page": {
+        "rows": [
+          {
+            "index_code": "1B0006",
+            "index_name": "综合指数",
+            "source_group": "U~Z",
+            "members_available": 1,
+            "member_count": 1109
+          },
+          {
+            "index_code": "1B0007",
+            "index_name": "上证180",
+            "source_group": "P~T",
+            "members_available": 1,
+            "member_count": 291
+          },
+          {
+            "index_code": "1B0008",
+            "index_name": "基金指数",
+            "source_group": "F~J",
+            "members_available": 1,
+            "member_count": 116
+          },
+          {
+            "index_code": "1B0009",
+            "index_name": "上证380",
+            "source_group": "P~T",
+            "members_available": 1,
+            "member_count": 625
+          },
+          {
+            "index_code": "1B0012",
+            "index_name": "国债指数",
+            "source_group": "F~J",
+            "members_available": 0,
+            "member_count": 0
+          }
+        ],
+        "next": [
+          "1B0012"
+        ]
+      },
+      "selected_members": {
+        "rows": [
+          {
+            "index_code": "1A0001",
+            "index_name": "上证指数",
+            "source_code": "000059",
+            "unified_code": "000059.SZ",
+            "name": "华锦股份",
+            "members_available": 1
+          },
+          {
+            "index_code": "1A0001",
+            "index_name": "上证指数",
+            "source_code": "000096",
+            "unified_code": "000096.SZ",
+            "name": "广聚能源",
+            "members_available": 1
+          },
+          {
+            "index_code": "1A0001",
+            "index_name": "上证指数",
+            "source_code": "000159",
+            "unified_code": "000159.SZ",
+            "name": "国际实业",
+            "members_available": 1
+          },
+          {
+            "index_code": "1A0001",
+            "index_name": "上证指数",
+            "source_code": "000301",
+            "unified_code": "000301.SZ",
+            "name": "东方盛虹",
+            "members_available": 1
+          },
+          {
+            "index_code": "1A0001",
+            "index_name": "上证指数",
+            "source_code": "000552",
+            "unified_code": "000552.SZ",
+            "name": "甘肃能化",
+            "members_available": 1
+          }
+        ],
+        "next": [
+          "1A0001",
+          "000552"
+        ]
+      }
+    },
+    "industries": {
+      "directory": {
+        "rows": [
+          {
+            "industry_code": "881101",
+            "name": "种植业与林业",
+            "member_count": 29
+          },
+          {
+            "industry_code": "881102",
+            "name": "养殖业",
+            "member_count": 36
+          },
+          {
+            "industry_code": "881103",
+            "name": "农产品加工",
+            "member_count": 43
+          }
+        ],
+        "next": "881103"
+      },
+      "selected_members": {
+        "rows": [
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "000592",
+            "name": "平潭发展"
+          },
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "000663",
+            "name": "永安林业"
+          },
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "000713",
+            "name": "国投丰乐"
+          },
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "000998",
+            "name": "隆平高科"
+          },
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "002041",
+            "name": "登海种业"
+          }
+        ],
+        "total": 29,
+        "offset": 0,
+        "limit": 5,
+        "industry_count": 90,
+        "publication": {
+          "batch_id": "1b8bfd88e81a423283c7cb8d2138f0b3",
+          "changed_at": "2026-10-20T00:42:42.288011"
+        }
+      },
+      "next_members": {
+        "rows": [
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "002215",
+            "name": "诺普信"
+          },
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "002556",
+            "name": "辉隆股份"
+          },
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "002679",
+            "name": "福建金森"
+          },
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "002772",
+            "name": "众兴菌业"
+          },
+          {
+            "industry_code": "881101",
+            "industry_name": "种植业与林业",
+            "market": "SZ",
+            "code": "300021",
+            "name": "大禹节水"
+          }
+        ],
+        "total": 29,
+        "offset": 5,
+        "limit": 5,
+        "industry_count": 90,
+        "publication": {
+          "batch_id": "1b8bfd88e81a423283c7cb8d2138f0b3",
+          "changed_at": "2026-10-20T00:42:42.288011"
+        }
+      }
+    },
+    "index_prices": {
+      "code": "399317",
+      "row_count": 8,
+      "keys": [
+        "2014-12-01",
+        "2014-12-02",
+        "2014-12-03",
+        "2014-12-04",
+        "2014-12-05",
+        "2014-12-08",
+        "2014-12-09",
+        "2014-12-10"
+      ],
+      "content_sha256": "6bf3b10b487a6827d1ed63d94d1fe19a3d8555ee845b812d7e6cd79d957476f8",
+      "chart_equal": true,
+      "fixed_negative_preserved": true,
+      "negative_amount": "-798120910000.0000"
+    },
+    "services_shutdown": true,
+    "pending_total": 0,
+    "pending_observed_at": "2026-10-20T02:33:56.912924+08:00"
+  }
+}

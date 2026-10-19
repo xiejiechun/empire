@@ -1,6 +1,6 @@
-# E2 指数、行业与指数行情实施记录（进行中）
+# E2 指数、行业与指数行情实施记录（已验收）
 
-状态：已实现，已完成业务/安全/隔离/公共/来源/容量/T3验证，开发验证通过，待完整发布；未提交实现、未发布、未桌面验收。E3～F未开始。前批E1结案提交 `4b30fcca4e48a2fbe99e3a2729fefea38e640e2a` 已推送；本次恢复会话重新连接GitHub失败，不能把连接失败视为最新远程核实。
+状态：E2全部适用出口已验收，结案文档待提交推送。实现提交 `ccc04f399fcaa5d8815da6a1e1b17df72a541620`；唯一正式发布 `2fa960ba05f047fdbbbc6ca214b0000c` committed/passed，门禁exit0、3679 passed/5显式opt-in skipped/20 warnings。配置、异cwd真实连接、正式查询和同包可见桌面、U1/U2、正常关开均完成，详见[真实桌面记录](architecture-e2-desktop-2026-10-20.md)与[同包机器报告](architecture-e2-post-release-2026-10-20.json)。前批E1结案4b30fcc已推送核实；本批推送核实后第一项为E3，E3～F仍未实施。
 
 ## 输入与范围
 
@@ -22,11 +22,11 @@
 | 容量 | 四份真实新测exit0，六张设计卡同步，见下文 | 其余13份绑定保持；行业legacy_baseline，分红完整容量待办保持 |
 | T3 | [本轮报告](architecture-performance-e2-2026-10-20-1.json)，18/18通过、无不可比项、清理成功 | 原冻结协议/工具/基线/阈值保持；非网站吞吐或可见桌面 |
 | M/文档 | 最终语义review/check/verify及35项文档回归exit0 | 三包README、业务/程序内说明和覆盖关联已同步，逐功能具体不变理由保持 |
-| U1～U3 | 未开始 | 干净实现提交、唯一完整发布、同包配置/真实连接/查询/可见桌面/正常关开 |
+| U1～U3 | 已验收；[桌面操作](architecture-e2-desktop-2026-10-20.md)、[机器核验](architecture-e2-post-release-2026-10-20.json)，CLI exit0 | 单停页面/采集器及依赖保护、草稿撤销/滚轮、选择/滚动、窄窗口、原配置偏好、真实连接与查询、正常关开完成；设置全表前像限制如实保留 |
 
 已实际运行：`ruff check src scripts tests --fix` exit0；`python -m mypy` exit0；`python -m pytest tests/test_ths_indices.py tests/test_ths_industries.py tests/test_ths_index_prices.py tests/test_industry_ui.py tests/test_index_price_ui.py tests/test_all_collector_prefetch.py --basetemp build/pytest-e2-domain-final --junitxml build/architecture-e2-20261020/domain-final.xml -q` exit0。完整日志在本地build，必要脱敏事实随结案提交。
 
-## 资源与恢复
+## 资源与恢复（以下保留开发时序检查点）
 
 恢复新增事实：67项隔离集成exit0（212.93秒，integration.xml），147项工具安全反例exit0（3.08秒，safety-final.xml），19模块/5符号定义AST等价及旧文件退役检查exit0（equivalence.json）。静态等价不替代真实链路。恢复preflight-resumed.json核实实际实例、原配置偏好和冻结文件保持。正式E1窗口已Alt+F4正常退出，fresh枚举无Empire；关闭前工作台活动2/pending0/失败5，显示停复牌603517的2026-10-19与2026-10-20来源内容冲突。关闭后共享pending1，保留原消息和未解决错误，不能手工清队。E3再按实际错误ID调查，本轮私有队列与生产队列分别验收。
 
@@ -53,7 +53,7 @@
 
 自有13348前置UUID为 `a3e8a5eb-cb64-11f1-8ddf-380525361d4e`，datadir `build/architecture-evolution-20261019/mysql-data`，秘密配置只在本地build、不提交。恢复会话仍须现场核实。正式E1窗口16058676在隔离实采/T3前已正常关闭，fresh枚举无Empire，发布验收结束须重开。未操作生产业务数据、共享Redis服务或RouterProxy目录。当前没有本轮来源/容量私有业务资源。
 
-## 最终审阅与恢复检查点
+## 发布前最终审阅与恢复检查点（历史）
 
 本地最终定向命令：`python -m pytest`运行public-final.xml对应业务/装配/UI/共享用例，408 passed/exit0（26.65秒）；ruff exit0，mypy exit0（7严格文件），装配/架构最终检查均exit0。冻结T3按acceptance第9节原命令、原协议/基线运行一次，18/18通过，原始样本、环境与清理见正式报告；没有改工具或阈值。
 
@@ -62,3 +62,22 @@
 最后生产只读命令`python -m empire doctor --project tdx-suspensions`实际exit2，status=partial；错误/队列已读取，隔离内存快照不可知，不冒称完整通过。精确未解决错误ID `38622b7215a44fe4a5224031bdf4d963`：603517、2026-10-19与2026-10-20来源内容冲突；保留该错误及生产pending1，E3调查。未清理旧或并发新增错误。此生产遗留不属于E2私有pending0证据。
 
 发布前独立一轮只读证据审核exit0：[机器审阅](architecture-e2-pre-release-audit-2026-10-20.json)。从JUnit重算778项全部通过/0跳过，复算T3全部统计及18项阈值，并核实来源/容量/等价证据与当前源输入；17份active报告绑定全部有效，未写已发布或桌面通过。原配置/偏好和冻结文件保持；test仅四系统库、无其他客户连接；生产pending1仍保留。远程有界直连ls-remote已恢复exit0，main为4b30fcc，与当前前批HEAD一致。接下来形成实现提交后冻结输入运行唯一完整门禁。
+
+
+## 正式发布与同包核验检查点
+
+完整发布约01:17～01:58完成，24步骤全部exit0；1443输入及54份retained输出经独立审阅保持，JUnit重算3679通过、5显式opt-in跳过、0失败，耗时2258.97秒。跳过不计通过，本批未修改state-unit语义。容量quick、四档DPI、打包、中文空格搬移/配置smoke与正式切换通过。完整输入 `c3f1a25884bbab7a61fb9fbbbdaafac9ff1205d170dce55eb6afbfc037cc6a32`，冻结干净提交ccc04f3。
+
+本地audit_release.py及check_published_runtime.py均exit0，分别保留release-evidence-audit.json及post-release-read-only.json；安装manifest/EXE/tree与journal一致，两config及原偏好字节保持，正式EXE从C:/Windows运行doctor的Redis/MySQL连接通过。正式源码API读取指数/行业目录、成员、分页及399317列表/图表和负成交额质量标记通过，明确不代替EXE页面。该只读报告actual_desktop=pending保留，真实桌面另记。
+
+可见正式窗口658542已观察ccc04f399fca干净版本、本地连接；指数上证1A0001目录及成员第一页、第二页200条实际呈现。归档页面观察pending0，由正式流程处理原pending1，未手工清队。U1/U2、行业与行情、偏好恢复及正常关开仍待继续。
+
+## E2最终结案
+
+上列“未执行/仍在运行/未称发布/待桌面”均为对应时间的历史检查点，当前结论以本节及开头矩阵为准。正式发布、1443输入/54输出/24步骤退出码及JUnit重算详见[发布机器审阅](architecture-e2-release-audit-2026-10-20.json)。最终EXE `18f05709ca2c7855f6395c1c8c2c09f6eb58c176c699b00da38a460070a24652`，树 `b1eff9327f678d57a57d88c5eb322f82a23e4da69a7e370be3502329d3eff005`，与committed journal及02:33同包复核一致。
+
+适用ID：C1/C2身份及顺序、C3/C4依赖及旧入口、R1～R4业务/集合/恢复/唯一归档、E2目录及行情/容量、T3、文档审阅与U1～U3均已有实际命令、exit0及引用证据。A1～A3和诊断D1～D3本批无行为修改，完整门禁覆盖原专项；现场doctor partial与未解决错误如实保留，不称D1现场全通过。M1/M2/M3与其余F收束仍待F执行，不将本批文档同步计作F完成。H1/H2仅因容量helper绑定追加持有人/资本实际容量；H3严格来源失败保持，本批目录/行情非股票粒度不声称30股通过。19旧模块、5符号的迁移及调用方退役清单见equivalence与assembly证据。
+
+结案仅新增事实文档及机器报告，不改源码、测试、SQL、配置或已发布EXE，不需要再打包。最终文档review/check/verify及35项相关回归后形成结案提交，实际推送main并核远程，再开始E3。限制：行业legacy_baseline、D固定空名债券严格H3失败、分红完整容量待办、停复牌错误38622b7215a44fe4a5224031bdf4d963均保留，不影响本批已证明的组织迁移范围，也不代表整个项目已完成。
+
+结案文档实际验证：`documentation_contract.py review --note <E2同包桌面与设置限制具体审阅>`、`documentation_contract.py check`、`verify_documentation.py`、`verify_database_design.py`均exit0，216篇/1515链接/55表/49数据集。验收10.1四个指定文档测试文件35 passed，exit0、29.42秒，JUnit本地`build/architecture-e2-20261020/docs-close.xml`。`git diff --check`通过；相对ccc04f3的src/scripts/tests/sql无差异。结案远程首次有界直连核实退出1（GitHub443连接超时），保留失败，推送前使用现有网络配置重试，不修改用户保存配置。
