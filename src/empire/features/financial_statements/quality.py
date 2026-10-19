@@ -1,7 +1,7 @@
 """Read-only source quality findings, independent of lossless collection validity."""
 from decimal import Decimal
 
-from empire.plugins.datasets.financial_statements import REQUIRED
+from empire.features.financial_statements.contract import REQUIRED
 
 
 def quality_issues(kind, row):

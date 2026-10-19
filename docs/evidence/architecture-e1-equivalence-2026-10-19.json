@@ -1,0 +1,523 @@
+{
+  "checked_at": "2026-10-19T15:08:03.243254+00:00",
+  "modules": [
+    {
+      "old": "src/empire/plugins/collectors/ths_statements.py",
+      "new": "src/empire/features/financial_statements/collector.py",
+      "definitions_equal": true,
+      "old_sha256": "e48f09b88a0b74aa2e602476b639cec7c12c109f4131b299fc5186e5896dcdfb",
+      "new_sha256": "d485b25a0582ae23697d5c12e0aaddd01c96419d4541b85d969bd02078fdc70b"
+    },
+    {
+      "old": "src/empire/plugins/datasets/financial_statements.py",
+      "new": "src/empire/features/financial_statements/contract.py",
+      "definitions_equal": true,
+      "old_sha256": "e787328643f4eb6532d6f9e977a0bb3367a3a9ff7698724f9728f777ea871d94",
+      "new_sha256": "9c6b80032b1a8d8ce11f3f77de9931a695be836513ed1aa54e715136876b1e29"
+    },
+    {
+      "old": "src/empire/plugins/datasets/financial_archive.py",
+      "new": "src/empire/features/financial_statements/dataset.py",
+      "definitions_equal": true,
+      "old_sha256": "960c7bc22d89d8a0ed2d94832d359b8f59f254cc6d63c1b3886a8d8f6230f951",
+      "new_sha256": "c0909c5e32ba2d4917f17abc2f9539c49747e2036263556d0c93ff8ae2c7ae03"
+    },
+    {
+      "old": "src/empire/plugins/datasets/financial_quality.py",
+      "new": "src/empire/features/financial_statements/quality.py",
+      "definitions_equal": true,
+      "old_sha256": "faa6f3847935f22f0d07881584bfcea82b68762b063d576936a42d649622b66f",
+      "new_sha256": "879acccf0332b62e011e01f19d144355d880011463061fac1b936c03036cd122"
+    },
+    {
+      "old": "src/empire/plugins/datasets/financial_wire.py",
+      "new": "src/empire/features/financial_statements/wire.py",
+      "definitions_equal": true,
+      "old_sha256": "285ee179af2fd37c68e1bc2de2aedf9a26eea84ac1814f04e0fa4dcca31d8710",
+      "new_sha256": "285ee179af2fd37c68e1bc2de2aedf9a26eea84ac1814f04e0fa4dcca31d8710"
+    },
+    {
+      "old": "src/empire/plugins/data/financial_statements.py",
+      "new": "src/empire/features/financial_statements/query.py",
+      "definitions_equal": true,
+      "old_sha256": "1ab41e45eeb008feaafd239b2588b47df8f76a203a346bba1dc0c874f73e9995",
+      "new_sha256": "2ff6887b79759256c299c27dc7a6d76b1fe01ff8836d862170da492a18615c7f"
+    },
+    {
+      "old": "src/empire/plugins/data/financial_preparation.py",
+      "new": "src/empire/features/financial_statements/audit.py",
+      "definitions_equal": true,
+      "old_sha256": "c6383e08985241d39ed664b94509b1ea9c4ae5515a456021485c88b16425ed91",
+      "new_sha256": "2e258d76567d1bde306d9eabb7c5b58afe7da59a83ba811a85e86b6e4fc52ad8"
+    },
+    {
+      "old": "src/empire/plugins/ui/financial_statements.py",
+      "new": "src/empire/features/financial_statements/ui.py",
+      "definitions_equal": true,
+      "old_sha256": "f62f651500995141c1f67392e0a6ed6d199d9a1deff002052423eadfa5c2a673",
+      "new_sha256": "d54930132b0f2baff3df5360a6de66b789ecd0aa847b65975754076a0c7ae60f"
+    },
+    {
+      "old": "src/empire/plugins/ui/statement_matrix.py",
+      "new": "src/empire/features/financial_statements/statement_matrix.py",
+      "definitions_equal": true,
+      "old_sha256": "f3cfa70aa5c85314a5cb334664e8485eb56e23e487c3cc076dd5df240b86cd6f",
+      "new_sha256": "15b708c6a9e36c3a203d1b55af3cb363511a4c2e086be317854d707b3cc00990"
+    },
+    {
+      "old": "src/empire/plugins/ui/statement_preview.py",
+      "new": "src/empire/features/financial_statements/statement_preview.py",
+      "definitions_equal": true,
+      "old_sha256": "1bb3e5c1a4170b1380d859269da24dee0cdca0cd4ca61293044381311d390caa",
+      "new_sha256": "9f65972098995edad2484344e81c7d4eaa38a750d22fb9c3fcc3becda0b29bfb"
+    }
+  ],
+  "capacity": [
+    {
+      "dataset": "kaipanla.trend.day",
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/market_storage.py": true,
+        "src/empire/plugins/datasets/market_mapping.py": true,
+        "src/empire/plugins/datasets/market_repository.py": true,
+        "src/empire/plugins/datasets/trade_blocks.py": true,
+        "src/empire/plugins/data/kaipanla_products.py": true,
+        "scripts/measure_preview_queries.py": true,
+        "docs/evidence/kaipanla-storage-capacity-2026-10-05.json": true
+      }
+    },
+    {
+      "dataset": "kaipanla.auction.day",
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/market_storage.py": true,
+        "src/empire/plugins/datasets/market_mapping.py": true,
+        "src/empire/plugins/datasets/market_repository.py": true,
+        "src/empire/plugins/datasets/trade_blocks.py": true,
+        "src/empire/plugins/data/kaipanla_products.py": true,
+        "scripts/measure_preview_queries.py": true,
+        "docs/evidence/kaipanla-storage-capacity-2026-10-05.json": true
+      }
+    },
+    {
+      "dataset": "kaipanla.volume.day",
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/market_storage.py": true,
+        "src/empire/plugins/datasets/market_mapping.py": true,
+        "src/empire/plugins/datasets/market_repository.py": true,
+        "src/empire/plugins/datasets/trade_blocks.py": true,
+        "src/empire/plugins/data/kaipanla_products.py": true,
+        "scripts/measure_preview_queries.py": true,
+        "docs/evidence/kaipanla-storage-capacity-2026-10-05.json": true
+      }
+    },
+    {
+      "dataset": "kaipanla.trades.day",
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/market_storage.py": true,
+        "src/empire/plugins/datasets/market_mapping.py": true,
+        "src/empire/plugins/datasets/market_repository.py": true,
+        "src/empire/plugins/datasets/trade_blocks.py": true,
+        "src/empire/plugins/data/kaipanla_products.py": true,
+        "scripts/measure_preview_queries.py": true,
+        "docs/evidence/kaipanla-storage-capacity-2026-10-05.json": true
+      }
+    },
+    {
+      "dataset": "kaipanla.entrust.day",
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/market_storage.py": true,
+        "src/empire/plugins/datasets/market_mapping.py": true,
+        "src/empire/plugins/datasets/market_repository.py": true,
+        "src/empire/plugins/datasets/trade_blocks.py": true,
+        "src/empire/plugins/data/kaipanla_products.py": true,
+        "scripts/measure_preview_queries.py": true,
+        "docs/evidence/kaipanla-storage-capacity-2026-10-05.json": true
+      }
+    },
+    {
+      "dataset": "kaipanla.large_order.day",
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/market_storage.py": true,
+        "src/empire/plugins/datasets/market_mapping.py": true,
+        "src/empire/plugins/datasets/market_repository.py": true,
+        "src/empire/plugins/datasets/trade_blocks.py": true,
+        "src/empire/plugins/data/kaipanla_products.py": true,
+        "scripts/measure_preview_queries.py": true,
+        "docs/evidence/kaipanla-storage-capacity-2026-10-05.json": true
+      }
+    },
+    {
+      "dataset": "kaipanla.quote.day",
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/market_storage.py": true,
+        "src/empire/plugins/datasets/market_mapping.py": true,
+        "src/empire/plugins/datasets/market_repository.py": true,
+        "src/empire/plugins/datasets/trade_blocks.py": true,
+        "src/empire/plugins/data/kaipanla_products.py": true,
+        "scripts/measure_preview_queries.py": true,
+        "docs/evidence/kaipanla-storage-capacity-2026-10-05.json": true
+      }
+    },
+    {
+      "dataset": "dividends.unit",
+      "evidence": "docs/evidence/dividends-error-types-capacity-2026-10-14.json",
+      "bindings_unchanged": {
+        "src/empire/plugins/collectors/tdx_dividend_periods.py": true,
+        "src/empire/plugins/collectors/tdx_dividend_discovery.py": true,
+        "src/empire/plugins/datasets/capital_actions.py": true,
+        "src/empire/plugins/datasets/capital_archive.py": true
+      }
+    },
+    {
+      "dataset": "names.company.market",
+      "evidence": "docs/evidence/name-changes-capacity-2026-10-06.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/name_changes.py": true,
+        "src/empire/plugins/datasets/name_changes.py": true,
+        "src/empire/plugins/data/name_changes.py": true,
+        "scripts/measure_name_changes.py": true
+      }
+    },
+    {
+      "dataset": "names.security.market",
+      "evidence": "docs/evidence/name-changes-capacity-2026-10-06.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/name_changes.py": true,
+        "src/empire/plugins/datasets/name_changes.py": true,
+        "src/empire/plugins/data/name_changes.py": true,
+        "scripts/measure_name_changes.py": true
+      }
+    },
+    {
+      "dataset": "listing.detail",
+      "evidence": "docs/evidence/listings-preview-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/listings.py": true,
+        "src/empire/plugins/datasets/listings.py": true,
+        "src/empire/plugins/data/listings.py": true,
+        "scripts/measure_listings.py": true
+      }
+    },
+    {
+      "dataset": "listing_status.month",
+      "evidence": "docs/evidence/listing-status-capacity-2026-10-06.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/listing_status.py": true,
+        "src/empire/plugins/datasets/listing_status.py": true,
+        "src/empire/plugins/data/listing_status.py": true,
+        "src/empire/plugins/data/listing_status_checks.py": true,
+        "scripts/measure_listing_status.py": true,
+        "sql/changes/2026-10-06-listing-status.sql": true
+      }
+    },
+    {
+      "dataset": "index.catalog",
+      "evidence": "docs/evidence/indices-capacity-2026-10-09.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/indices.py": true,
+        "src/empire/plugins/datasets/indices.py": true,
+        "src/empire/plugins/data/indices.py": true,
+        "scripts/measure_indices.py": true
+      }
+    },
+    {
+      "dataset": "index.members",
+      "evidence": "docs/evidence/indices-capacity-2026-10-09.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/indices.py": true,
+        "src/empire/plugins/datasets/indices.py": true,
+        "src/empire/plugins/data/indices.py": true,
+        "scripts/measure_indices.py": true
+      }
+    },
+    {
+      "dataset": "bse.code_mapping.complete",
+      "evidence": "docs/evidence/bse-code-mapping-capacity-2026-10-10.json",
+      "bindings_unchanged": {
+        "src/empire/plugins/collectors/bse_code_mapping_source.py": true,
+        "src/empire/plugins/datasets/security_aliases.py": true,
+        "scripts/import_bse_code_mapping.py": true,
+        "tests/test_bse_code_mapping.py": true,
+        "tests/integration/test_security_alias_archive.py": true
+      }
+    },
+    {
+      "dataset": "index.price.status",
+      "evidence": "docs/evidence/index-prices-capacity-2026-10-10.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/index_prices.py": true,
+        "src/empire/plugins/datasets/index_prices.py": true,
+        "src/empire/plugins/data/index_prices.py": true,
+        "scripts/measure_index_prices.py": true
+      }
+    },
+    {
+      "dataset": "index.price.year",
+      "evidence": "docs/evidence/index-prices-capacity-2026-10-10.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/index_prices.py": true,
+        "src/empire/plugins/datasets/index_prices.py": true,
+        "src/empire/plugins/data/index_prices.py": true,
+        "scripts/measure_index_prices.py": true
+      }
+    },
+    {
+      "dataset": "st.implementation.market",
+      "evidence": "docs/evidence/st-events-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/st_events.py": true,
+        "src/empire/plugins/datasets/st_events.py": true,
+        "src/empire/plugins/data/st_events.py": true,
+        "scripts/measure_st_events.py": true
+      }
+    },
+    {
+      "dataset": "st.removal.market",
+      "evidence": "docs/evidence/st-events-capacity-2026-10-11.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/st_events.py": true,
+        "src/empire/plugins/datasets/st_events.py": true,
+        "src/empire/plugins/data/st_events.py": true,
+        "scripts/measure_st_events.py": true
+      }
+    },
+    {
+      "dataset": "rules.limit_rules.complete",
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/trading_rules.py": true,
+        "src/empire/contracts/rule_review.py": true,
+        "src/empire/contracts/rule_bse_review.py": true,
+        "src/empire/plugins/datasets/trading_rules.py": true,
+        "src/empire/plugins/data/trading_rules.py": true,
+        "scripts/measure_trading_rules.py": true
+      }
+    },
+    {
+      "dataset": "rules.settlement_rules.complete",
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/trading_rules.py": true,
+        "src/empire/contracts/rule_review.py": true,
+        "src/empire/contracts/rule_bse_review.py": true,
+        "src/empire/plugins/datasets/trading_rules.py": true,
+        "src/empire/plugins/data/trading_rules.py": true,
+        "scripts/measure_trading_rules.py": true
+      }
+    },
+    {
+      "dataset": "rules.lot_rules.complete",
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/trading_rules.py": true,
+        "src/empire/contracts/rule_review.py": true,
+        "src/empire/contracts/rule_bse_review.py": true,
+        "src/empire/plugins/datasets/trading_rules.py": true,
+        "src/empire/plugins/data/trading_rules.py": true,
+        "scripts/measure_trading_rules.py": true
+      }
+    },
+    {
+      "dataset": "rules.tick_rules.complete",
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/trading_rules.py": true,
+        "src/empire/contracts/rule_review.py": true,
+        "src/empire/contracts/rule_bse_review.py": true,
+        "src/empire/plugins/datasets/trading_rules.py": true,
+        "src/empire/plugins/data/trading_rules.py": true,
+        "scripts/measure_trading_rules.py": true
+      }
+    },
+    {
+      "dataset": "rules.sessions.complete",
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/trading_rules.py": true,
+        "src/empire/contracts/rule_review.py": true,
+        "src/empire/contracts/rule_bse_review.py": true,
+        "src/empire/plugins/datasets/trading_rules.py": true,
+        "src/empire/plugins/data/trading_rules.py": true,
+        "scripts/measure_trading_rules.py": true
+      }
+    },
+    {
+      "dataset": "rules.stamp_duty.complete",
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/trading_rules.py": true,
+        "src/empire/contracts/rule_review.py": true,
+        "src/empire/contracts/rule_bse_review.py": true,
+        "src/empire/plugins/datasets/trading_rules.py": true,
+        "src/empire/plugins/data/trading_rules.py": true,
+        "scripts/measure_trading_rules.py": true
+      }
+    },
+    {
+      "dataset": "rules.transfer_fee.complete",
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/trading_rules.py": true,
+        "src/empire/contracts/rule_review.py": true,
+        "src/empire/contracts/rule_bse_review.py": true,
+        "src/empire/plugins/datasets/trading_rules.py": true,
+        "src/empire/plugins/data/trading_rules.py": true,
+        "scripts/measure_trading_rules.py": true
+      }
+    },
+    {
+      "dataset": "repurchases.page",
+      "evidence": "docs/evidence/repurchase-capacity-2026-10-12.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/repurchases.py": true,
+        "src/empire/plugins/datasets/repurchases.py": true,
+        "src/empire/plugins/data/repurchases.py": true,
+        "scripts/measure_repurchases.py": true
+      }
+    },
+    {
+      "dataset": "earnings_forecast.tdx_unit",
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/tdx_performance.py": true,
+        "src/empire/plugins/datasets/tdx_performance.py": true,
+        "src/empire/plugins/data/tdx_performance.py": true,
+        "scripts/measure_tdx_performance.py": true
+      }
+    },
+    {
+      "dataset": "earnings_quick.tdx_unit",
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/tdx_performance.py": true,
+        "src/empire/plugins/datasets/tdx_performance.py": true,
+        "src/empire/plugins/data/tdx_performance.py": true,
+        "scripts/measure_tdx_performance.py": true
+      }
+    },
+    {
+      "dataset": "earnings_disclosure.tdx_unit",
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/tdx_performance.py": true,
+        "src/empire/plugins/datasets/tdx_performance.py": true,
+        "src/empire/plugins/data/tdx_performance.py": true,
+        "scripts/measure_tdx_performance.py": true
+      }
+    },
+    {
+      "dataset": "earnings_report.tdx_unit",
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/tdx_performance.py": true,
+        "src/empire/plugins/datasets/tdx_performance.py": true,
+        "src/empire/plugins/data/tdx_performance.py": true,
+        "scripts/measure_tdx_performance.py": true
+      }
+    },
+    {
+      "dataset": "holder_count.tdx_unit",
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/tdx_performance.py": true,
+        "src/empire/plugins/datasets/tdx_performance.py": true,
+        "src/empire/plugins/data/tdx_performance.py": true,
+        "scripts/measure_tdx_performance.py": true
+      }
+    },
+    {
+      "dataset": "holders.reports",
+      "evidence": "docs/evidence/architecture-d-holders-capacity-2026-10-19-1.json",
+      "bindings_unchanged": {
+        "src/empire/features/holders/audit.py": true,
+        "src/empire/features/holders/contract.py": true,
+        "src/empire/features/holders/dataset.py": true,
+        "src/empire/features/holders/query.py": true,
+        "src/empire/features/holders/source.py": true,
+        "src/empire/sources/html.py": true,
+        "scripts/measure_holders.py": true,
+        "scripts/capacity_session.py": true,
+        "tests/test_ths_holders.py": true
+      }
+    },
+    {
+      "dataset": "shareholder_changes.tdx_unit",
+      "evidence": "docs/evidence/shareholder-changes-capacity-2026-10-13.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/tdx_performance.py": true,
+        "src/empire/plugins/datasets/tdx_performance.py": true,
+        "src/empire/plugins/data/tdx_performance.py": true,
+        "scripts/measure_shareholder_changes.py": true
+      }
+    },
+    {
+      "dataset": "unlocks.tdx_month",
+      "evidence": "docs/evidence/unlocks-error-types-capacity-2026-10-14.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/unlocks.py": true,
+        "src/empire/plugins/datasets/unlocks.py": true,
+        "src/empire/plugins/data/unlocks.py": true,
+        "scripts/measure_unlocks.py": true
+      }
+    },
+    {
+      "dataset": "unlocks.tdx_industry_month",
+      "evidence": "docs/evidence/unlock-industries-capacity-2026-10-14.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/unlock_industries.py": true,
+        "src/empire/plugins/collectors/tdx_unlock_industry_source.py": true,
+        "src/empire/plugins/collectors/tdx_unlock_industries.py": true,
+        "src/empire/plugins/datasets/unlock_industries.py": true,
+        "src/empire/plugins/data/unlock_industries.py": true,
+        "scripts/measure_unlock_industries.py": true
+      }
+    },
+    {
+      "dataset": "ths.capital.security",
+      "evidence": "docs/evidence/architecture-d-capital-capacity-2026-10-19-1.json",
+      "bindings_unchanged": {
+        "src/empire/contracts/capital_transport.py": true,
+        "src/empire/contracts/ths_capital.py": true,
+        "src/empire/plugins/collectors/ths_capital_source.py": true,
+        "src/empire/sources/html.py": true,
+        "src/empire/plugins/datasets/ths_capital.py": true,
+        "src/empire/plugins/data/ths_capital.py": true,
+        "scripts/measure_ths_capital.py": true,
+        "scripts/capacity_session.py": true,
+        "tests/test_ths_capital.py": true
+      }
+    }
+  ],
+  "frozen": {
+    "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
+    "sql/schema-contract.json": "5a434101b373eb0dd9de99dd1ad0872229c3bf0f33d21658fe71d84cd0fdce1f",
+    "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
+    "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
+    "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
+    "docs/evidence/architecture-performance-protocol-2026-10-19.json": "38679725dbf2ad41e8ff1d9a33c8a28630d4a808d33880ec3c4d39f26c3ac24b",
+    "docs/evidence/architecture-performance-baseline-2026-10-19.json": "1202baacde0866a7246a4cc032b1f4580e11b5474d599ee81a13503debfd6493"
+  },
+  "passed": true,
+  "chain_definition_equal": true,
+  "layout_bytes_equal": "9d0b81c2186a6a267a9d559ae75f3e2d62399ed2320cbf27d7023a789d1d4762",
+  "financial_capacity": {
+    "income.statement": {
+      "status": "legacy_baseline",
+      "bound": "现行来源契约的单元及查询上限"
+    },
+    "balance.statement": {
+      "status": "legacy_baseline",
+      "bound": "现行来源契约的单元及查询上限"
+    },
+    "cashflow.statement": {
+      "status": "legacy_baseline",
+      "bound": "现行来源契约的单元及查询上限"
+    }
+  }
+}

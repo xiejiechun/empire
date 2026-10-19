@@ -399,7 +399,7 @@ def test_readiness_separates_source_quality_and_use_limitations():
 
 
 async def test_checker_cannot_hide_integrity_failure_as_limitation():
-    from empire.plugins.data.financial_statements import FinancialDataPlugin
+    from empire.features.financial_statements.query import FinancialDataPlugin
     c = FinancialDataPlugin('income').preparation[0]
     service = SimpleNamespace(preparation_check=AsyncMock(return_value=(CheckEvidence('coverage','fail','missing',blocking=False),)))
     plugin = PreparationPlugin([c])

@@ -554,22 +554,22 @@
       "income_statement": {
         "topic": "MySQL income_statement",
         "sources": [
-          "src/empire/plugins/datasets/financial_archive.py",
-          "src/empire/plugins/data/financial_statements.py"
+          "src/empire/features/financial_statements/dataset.py",
+          "src/empire/features/financial_statements/query.py"
         ]
       },
       "balance_statement": {
         "topic": "MySQL balance_statement",
         "sources": [
-          "src/empire/plugins/datasets/financial_archive.py",
-          "src/empire/plugins/data/financial_statements.py"
+          "src/empire/features/financial_statements/dataset.py",
+          "src/empire/features/financial_statements/query.py"
         ]
       },
       "cashflow_statement": {
         "topic": "MySQL cashflow_statement",
         "sources": [
-          "src/empire/plugins/datasets/financial_archive.py",
-          "src/empire/plugins/data/financial_statements.py"
+          "src/empire/features/financial_statements/dataset.py",
+          "src/empire/features/financial_statements/query.py"
         ]
       },
       "industry": {
@@ -985,7 +985,7 @@
         ],
         "sources": [
           "src/empire/plugins/collection/control.py",
-          "src/empire/plugins/data/financial_statements.py",
+          "src/empire/features/financial_statements/query.py",
           "src/empire/diagnostics/redis_evidence.py"
         ]
       },
@@ -1122,7 +1122,7 @@
           "checkpoint"
         ]
       },
-      "src/empire/plugins/data/financial_statements.py": {
+      "src/empire/features/financial_statements/query.py": {
         "f'{store.prefix}:collection:control:v1'": [
           "collection-control"
         ]

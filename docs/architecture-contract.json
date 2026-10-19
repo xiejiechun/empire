@@ -646,10 +646,10 @@
     },
     {
       "owner": "financial_statements",
-      "reason": "chain 是纯摘要函数，但同模块定义财报采集器、下载和入队生命周期",
+      "reason": "财报三表执行生命周期；纯摘要chain已归公开契约",
       "role": "collector",
       "modules": [
-        "empire.plugins.collectors.ths_statements"
+        "empire.features.financial_statements.collector"
       ]
     },
     {
@@ -657,9 +657,9 @@
       "reason": "财务三表：业务页面和展示状态",
       "role": "ui",
       "modules": [
-        "empire.plugins.ui.financial_statements",
-        "empire.plugins.ui.statement_matrix",
-        "empire.plugins.ui.statement_preview"
+        "empire.features.financial_statements.ui",
+        "empire.features.financial_statements.statement_matrix",
+        "empire.features.financial_statements.statement_preview"
       ]
     },
     {
@@ -667,10 +667,9 @@
       "reason": "财务三表：归档映射、内容比较及校验",
       "role": "dataset",
       "modules": [
-        "empire.plugins.datasets.financial_archive",
-        "empire.plugins.datasets.financial_quality",
-        "empire.plugins.datasets.financial_statements",
-        "empire.plugins.datasets.financial_wire"
+        "empire.features.financial_statements.dataset",
+        "empire.features.financial_statements.quality",
+        "empire.features.financial_statements.wire"
       ]
     },
     {
@@ -678,8 +677,8 @@
       "reason": "财务三表：正式查询或准备读取实现",
       "role": "query",
       "modules": [
-        "empire.plugins.data.financial_preparation",
-        "empire.plugins.data.financial_statements"
+        "empire.features.financial_statements.audit",
+        "empire.features.financial_statements.query"
       ]
     },
     {
@@ -1706,6 +1705,30 @@
       "modules": [
         "empire.sources"
       ]
+    },
+    {
+      "owner": "financial_statements",
+      "role": "contract",
+      "reason": "E1财报业务包职责",
+      "modules": [
+        "empire.features.financial_statements.contract"
+      ]
+    },
+    {
+      "owner": "financial_statements",
+      "role": "composition",
+      "reason": "E1财报业务包职责",
+      "modules": [
+        "empire.features.financial_statements.bundle"
+      ]
+    },
+    {
+      "owner": "financial_statements",
+      "role": "package",
+      "reason": "E1财报业务包职责",
+      "modules": [
+        "empire.features.financial_statements"
+      ]
     }
   ],
   "feature_layouts": [
@@ -1733,6 +1756,26 @@
       "prefix": "empire.features.holders",
       "owner": "holders",
       "reason": "股东研究业务包；新增其他职责须登记",
+      "roles": {
+        "contracts": "contract",
+        "contract": "contract",
+        "api": "api",
+        "query": "query",
+        "queries": "query",
+        "dataset": "dataset",
+        "datasets": "dataset",
+        "collector": "collector",
+        "collectors": "collector",
+        "source": "source_adapter",
+        "parsers": "parser",
+        "ui": "ui",
+        "registration": "composition"
+      }
+    },
+    {
+      "prefix": "empire.features.financial_statements",
+      "owner": "financial_statements",
+      "reason": "财报三表业务包；职责显式登记",
       "roles": {
         "contracts": "contract",
         "contract": "contract",
@@ -2245,16 +2288,6 @@
       ],
       "line": 8,
       "reason": "query imports source_adapter: required_days 是纯范围计算，但同模块还实现上市目录下载和预取；既有读取层只复用所列纯函数，却导入含下载/采集执行的整个模块；后续提取无I/O业务契约，当前不改行为。"
-    },
-    {
-      "rule": "reader_to_execution",
-      "source": "empire.plugins.data.financial_preparation",
-      "target": "empire.plugins.collectors.ths_statements",
-      "names": [
-        "chain"
-      ],
-      "line": 9,
-      "reason": "query imports collector: chain 是纯摘要函数，但同模块定义财报采集器、下载和入队生命周期；既有读取层只复用所列纯函数，却导入含下载/采集执行的整个模块；后续提取无I/O业务契约，当前不改行为。"
     },
     {
       "rule": "reader_to_execution",

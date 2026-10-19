@@ -6,9 +6,8 @@ from itertools import groupby
 from sqlalchemy import text
 
 from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.collectors.ths_statements import chain
-from empire.plugins.datasets.financial_quality import quality_issues
-from empire.plugins.datasets.financial_statements import digest, validate_rows
+from empire.features.financial_statements.contract import chain, digest, validate_rows
+from empire.features.financial_statements.quality import quality_issues
 from empire.plugins.infra.collection_state import read_state
 
 

@@ -230,7 +230,7 @@ E财报命令形态如下；必须核实当前 `KINDS` 枚举和已知失败固�
 .venv/Scripts/python scripts/verify_ths_statements.py --test-mysql-settings $testMysqlPath --random-count 30 --seed 20261019 --proxy-only --output "build/$acceptanceRun-statements-source.json"
 ```
 
-当前财报草案复用共享helpers，CLI并不自动强制最低30或代理必选；因此执行记录和审核必须明确核对这些参数与实际计数，不能单看exit0。在后续增强该约束前，不把它描述为已实现的自动门禁。
+E1已将财报CLI接入共享helpers，并在创建资源前强制最低30随机样本、proxy-only和额外固定反例；相关拒绝反例已执行。仍须审核实际代理次数、来源/入队/SQL查询集合与内容、质量及清理结果，不能只看exit0。具体发布与验收状态以E1证据和状态账本为准。
 
 ## 7. 私有资源、取消和恢复验收
 

@@ -123,3 +123,7 @@ def validate_rows(kind, unit, rows):
     if dates != sorted(set(dates), reverse=True):
         raise ValueError('规范报告期重复或乱序')
     return rows
+
+
+def chain(previous, unit, rows):
+    return digest([previous, unit, digest(rows), len(rows)])

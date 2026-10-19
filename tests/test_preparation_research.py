@@ -10,7 +10,7 @@ from empire.contracts.preparation import CheckEvidence
 from empire.contracts.preparation_catalog import BY_ID
 from empire.contracts.preparation_research import required_ids, research_guards, research_summary
 from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.data.financial_statements import FinancialDataPlugin
+from empire.features.financial_statements.query import FinancialDataPlugin
 from empire.plugins.data.preparation import PreparationPlugin
 from empire.plugins.data.preparation_inventory import count_table, inventory
 from empire.plugins.data.preparation_results import summarize

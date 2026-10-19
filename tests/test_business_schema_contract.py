@@ -5,10 +5,10 @@ from unittest.mock import MagicMock
 import pytest
 
 from empire.contracts.business_schema import DATASET_TABLES, FIXED_SOURCES, require_dataset_source
+from empire.features.financial_statements.dataset import FinancialDataset
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
 from empire.plugins.datasets import industries, stocks, suspensions, trade_calendar
 from empire.plugins.datasets.capital_archive import CapitalDataset
-from empire.plugins.datasets.financial_archive import FinancialDataset
 from empire.plugins.datasets.kaipanla_products import ProductDataset
 
 

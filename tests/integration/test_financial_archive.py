@@ -13,8 +13,8 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
-from empire.plugins.datasets.financial_statements import KINDS, parse
-from empire.plugins.datasets.financial_wire import SCHEMA_VERSION, pack_rows
+from empire.features.financial_statements.contract import KINDS, parse
+from empire.features.financial_statements.wire import SCHEMA_VERSION, pack_rows
 from tests.prefetch_source import prefetch_http
 from tests.test_ths_statements import STOCK, large_source, source
 
@@ -121,7 +121,7 @@ async def test_nonquarter_period_source_to_formal_query(financial_db):
 
 async def test_missing_source_values_archive_but_do_not_pass_preparation(financial_db):
     manager, query, collector, _ = financial_db
-    from empire.plugins.datasets.financial_statements import REQUIRED
+    from empire.features.financial_statements.contract import REQUIRED
     body = source(query.kind)
     matrix = json.loads(body['flashData'])
     matrix['report'][1][0] = False
@@ -282,7 +282,7 @@ async def test_resume_starts_at_unpublished_security(financial_db, monkeypatch):
 
 @pytest.mark.parametrize('change', ['add_before_cursor', 'remove_completed', 'same_count_new_key'])
 async def test_scope_change_rebuilds_complete_round_and_keeps_old_queue(financial_db, monkeypatch, change):
-    from empire.plugins.datasets.financial_statements import digest
+    from empire.features.financial_statements.contract import digest
     manager, query, collector, _ = financial_db
     second, third = {**STOCK, 'code': '601140'}, {**STOCK, 'code': '601138'}
     monkeypatch.setattr(query, '_securities', lambda conn: [STOCK, second])
@@ -345,7 +345,7 @@ async def test_scope_change_rebuilds_complete_round_and_keeps_old_queue(financia
 
 async def test_scope_rebuild_interrupted_resumes_new_batch(financial_db, monkeypatch):
     manager, query, collector, _ = financial_db
-    from empire.plugins.datasets.financial_statements import digest
+    from empire.features.financial_statements.contract import digest
     first, second = {**STOCK, 'code': '601138'}, {**STOCK, 'code': '601140'}
     old = dict(phase='fetch', batch_id='old', index=1, pages=1, collected=2,
                units=2, scope_hash=digest(['SH:601139', 'SH:601140']), rolling=digest([]))

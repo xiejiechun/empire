@@ -3,8 +3,8 @@ import pytest
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QTabWidget, QWidget
 
+from empire.features.financial_statements.ui import StatementPage
 from empire.plugins.ui.directory_panel import DirectoryPanel
-from empire.plugins.ui.financial_statements import StatementPage
 from empire.plugins.ui.listing_status import ListingStatusPage
 from empire.plugins.ui.month_grid import MonthGrid
 from empire.plugins.ui.preview_layout import DetailSplit

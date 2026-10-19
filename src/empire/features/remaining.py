@@ -44,12 +44,10 @@ from empire.plugins.collectors.ths_index_prices import ThsIndexPriceCollector
 from empire.plugins.collectors.ths_indices import ThsIndexCollector
 from empire.plugins.collectors.ths_industries import ThsIndustryCollector
 from empire.plugins.collectors.ths_listings import ThsListingCollector
-from empire.plugins.collectors.ths_statements import ThsStatementCollector
 from empire.plugins.collectors.ths_universe import ThsUniverseCollector
 from empire.plugins.collectors.trading_rules import RuleCollector
 from empire.plugins.data.adjustment import AdjustmentDataPlugin
 from empire.plugins.data.capital_actions import CapitalDataPlugin
-from empire.plugins.data.financial_statements import FinancialDataPlugin
 from empire.plugins.data.index_prices import IndexPriceDataPlugin
 from empire.plugins.data.indices import IndexDataPlugin
 from empire.plugins.data.industries import IndustryDataPlugin
@@ -81,9 +79,6 @@ from empire.plugins.datasets import (
 )
 from empire.plugins.datasets.capital_actions import KINDS, SCHEMA_VERSIONS
 from empire.plugins.datasets.capital_archive import CapitalDataset
-from empire.plugins.datasets.financial_archive import FinancialDataset
-from empire.plugins.datasets.financial_statements import KINDS as FINANCIAL_KINDS
-from empire.plugins.datasets.financial_wire import SCHEMA_VERSION as FINANCIAL_SCHEMA_VERSION
 from empire.plugins.datasets.kaipanla_products import ProductDataset
 from empire.plugins.datasets.name_changes import NameDataset
 from empire.plugins.datasets.st_events import StDataset
@@ -94,7 +89,6 @@ from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset
 from empire.plugins.datasets.unlocks import UnlockDataset
 from empire.plugins.ui.adjustment import AdjustmentUiPlugin
 from empire.plugins.ui.capital_actions import CapitalUiPlugin
-from empire.plugins.ui.financial_statements import FinancialUiPlugin
 from empire.plugins.ui.index_prices import IndexPriceUiPlugin
 from empire.plugins.ui.indices import IndexUiPlugin
 from empire.plugins.ui.industries import IndustryUiPlugin
@@ -177,10 +171,6 @@ def bundle(cfg):
         OrderedContribution(13300, TdxAdditionalIssuesCollector()),
         OrderedContribution(13400, TdxRightsIssuesCollector()),
         *positioned((13500, 13600, 13700), (CapitalUiPlugin(kind) for kind in KINDS)),
-        *positioned((13800, 13900, 14000), (FinancialDataPlugin(kind, namespace=cfg['redis'].get('namespace', 'empire'),
-                                     archive_settings=cfg.get('archive', {})) for kind in FINANCIAL_KINDS)),
-        *positioned((14100, 14200, 14300), (ThsStatementCollector(kind) for kind in FINANCIAL_KINDS)),
-        *positioned((14400, 14500, 14600), (FinancialUiPlugin(kind) for kind in FINANCIAL_KINDS)),
         OrderedContribution(15000, StockUiPlugin()),
         OrderedContribution(15200, CalendarUiPlugin()),
         OrderedContribution(15300, SuspensionsUiPlugin()),
@@ -260,11 +250,6 @@ def bundle(cfg):
                     category='指数数据', source_name='同花顺', parallel_downloads=True, unit_name='个指数',
                     default_schedule=TaskDefaults('daily', description='每天北京时间18:00完整刷新目录和当前成员；计划可编辑。'),
                     fresh_description='完整刷新当前目录和成分；未完成轮次先续跑并归档，不保存历史调样。')),
-        *positioned((3500, 3600, 3700), (TaskContribution('ths-' + kind, item[0] + '（同花顺）',
-                    'collector.ths_' + kind, 'ths', '逐证券完整历史 · 来源舍入金额 · 无公告日期',
-                    category='基本面', source_name='同花顺', interval_seconds=86400, parallel_downloads=True, unit_name='只股票',
-                    fresh_description='从当前股票池首个证券重查全部历史；保留已归档报表。')
-                    for kind, item in FINANCIAL_KINDS.items())),
         *positioned((3800, 3900, 4000), (TaskContribution(item[2], item[0] + '（通达信）',
                     'collector.tdx_' + kind, 'tdx', '全部可得历史核验 · 单证券完整归档',
                     category='增发送配', source_name='通达信', parallel_downloads=kind != 'rights_issues', unit_name='只股票',
@@ -306,9 +291,6 @@ def bundle(cfg):
         *positioned((2800, 2900, 3000, 3100, 3200, 3300, 3400), (DatasetContribution(ProductDataset(kind), 'incremental',
                         {ProductDataset(kind).JOB: ProductDataset(kind).PROJECT}) for kind in PRODUCTS)),
         OrderedContribution(3500, DatasetContribution(industries, 'incremental', {industries.JOB: industries.PROJECT})),
-        *positioned((3600, 3700, 3800), (DatasetContribution(FinancialDataset(kind), 'incremental',
-                                          {'ths-' + kind + '-v1': 'ths-' + kind},
-                                          schema_version=FINANCIAL_SCHEMA_VERSION) for kind in FINANCIAL_KINDS)),
         *positioned((3900, 4000, 4100), (DatasetContribution(CapitalDataset(kind), "incremental", {item[2] + "-v1": item[2]},
                                           schema_version=SCHEMA_VERSIONS[kind])
                       for kind, item in KINDS.items())),

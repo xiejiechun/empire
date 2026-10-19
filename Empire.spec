@@ -12,7 +12,7 @@ a = Analysis(
     datas=[
         (str(source_root / "empire" / "plugins" / "collection" / "rules.json"), "empire/plugins/collection"),
         (str(source_root / "empire" / "plugins" / "collectors" / "resources"), "empire/plugins/collectors/resources"),
-        (str(source_root / "empire" / "plugins" / "ui" / "statement_layouts.json"), "empire/plugins/ui"),
+        (str(source_root / "empire" / "features" / "financial_statements" / "statement_layouts.json"), "empire/features/financial_statements"),
         (str(project_root / "build" / "generated" / "preparation-release.json"), "empire"),
         (str(source_root / "empire" / "desktop" / "assets"), "empire/desktop/assets"),
         (str(project_root / "config" / "app.example.toml"), "config"),

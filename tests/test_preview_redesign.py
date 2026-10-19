@@ -11,10 +11,10 @@ from PySide6.QtWidgets import QApplication  # noqa: E402
 
 from empire.contracts.ui import NavigationContext  # noqa: E402
 from empire.desktop.page_lifecycle import activate_page, deactivate_page  # noqa: E402
+from empire.features.financial_statements.ui import StatementPage  # noqa: E402
 from empire.features.news.ui import NewsPage  # noqa: E402
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS  # noqa: E402
 from empire.plugins.ui.capital_preview import per_ten, plan_profile  # noqa: E402
-from empire.plugins.ui.financial_statements import StatementPage  # noqa: E402
 from empire.plugins.ui.index_price_chart import IndexPriceChart  # noqa: E402
 from empire.plugins.ui.kaipanla_products import ProductPage  # noqa: E402
 from empire.plugins.ui.month_grid import MonthGrid  # noqa: E402

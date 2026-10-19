@@ -1451,6 +1451,10 @@ MySQL 保存值优先；没有保存值的新任务采用插件声明的推荐�
 
 三表独立字段和读写归属见 [MySQL income_statement](help:MySQL%20income_statement)、[MySQL balance_statement](help:MySQL%20balance_statement)、[MySQL cashflow_statement](help:MySQL%20cashflow_statement)。本节只说明传输、恢复和升级流程；已升级库无需每次运行迁移。
 
+三表实现统一位于 features/financial_statements；入口、保存策略和数据浏览操作不变。维护实采须先正常关闭 Empire，显式提供独立13348连接文件、随机种子、至少30只随机股票、仅代理及新的build报告路径；固定历史反例额外核验。正式库只读股票池和共享设置，写入仅在核实不同server_uuid的私有UUID库及带owner的Redis前缀。三表分别核对来源到正式查询的集合、内容、质量、manifest及待归档0，不能把该范围验收当作全市场采完。
+
+验证使用共享单实例保护、SQL会话守卫和owner清理；结束前先停止所有生产者，再分别清理本轮SQL/Redis，失败保留证据。异常退出只通过验证器的cleanup-only与原ownership记录恢复，不能手工删除生产业务、共享Redis或他人锁。连接文件与ownership含秘密，不提交或公开；不会覆盖程序目录config.toml或日常网络策略。金额质量与无公告日期仍分别限制用途。
+
 财报来源缺值以 JSON null 原样规范保存，金额矛盾不自动更正；来源质量由规范内容即时计算，在三表页面和数据准备分别显示，不进入错误重试队列、不额外建质量副本表。结构无效仍拒绝入队。
 
 同花顺三表 schema 2 仅改变 Redis 传输为共享科目名称的金额矩阵，SQL payload 与业务摘要仍为完整规范行；升级前清空的含义仅为旧统一归档成功清队，不允许手工丢弃旧消息。
@@ -2246,7 +2250,7 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 
 同花顺利润表，一证券/报告期一行。
 
-统一归档器调用 `datasets/financial_archive.py` 写入；`data/financial_statements.py` 提供正式查询。业务页面不直接写表。
+统一归档器调用 `features/financial_statements/dataset.py` 写入；`features/financial_statements/query.py` 提供正式查询。业务页面不直接写表。
 
 ## 结构与身份
 
@@ -2292,7 +2296,7 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 
 同花顺资产负债表，一证券/报告期一行。
 
-统一归档器调用 `datasets/financial_archive.py` 写入；`data/financial_statements.py` 提供正式查询。业务页面不直接写表。
+统一归档器调用 `features/financial_statements/dataset.py` 写入；`features/financial_statements/query.py` 提供正式查询。业务页面不直接写表。
 
 ## 结构与身份
 
@@ -2338,7 +2342,7 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 
 同花顺现金流量表，一证券/报告期一行。
 
-统一归档器调用 `datasets/financial_archive.py` 写入；`data/financial_statements.py` 提供正式查询。业务页面不直接写表。
+统一归档器调用 `features/financial_statements/dataset.py` 写入；`features/financial_statements/query.py` 提供正式查询。业务页面不直接写表。
 
 ## 结构与身份
 
@@ -3452,7 +3456,7 @@ Empire Redis 采用纯内存模式。Redis 服务或电脑重启丢失本库内�
 
 ## 维护与相关说明
 
-实现归属：`collection/control.py`、`data/financial_statements.py`。查询诊断有界且脱敏；维护按确切项目/来源/ID执行，不清空共享 Redis。
+实现归属：`collection/control.py`、`features/financial_statements/query.py`。查询诊断有界且脱敏；维护按确切项目/来源/ID执行，不清空共享 Redis。
 
 [任务状态字段](help:任务状态字段)、[数据库职责与查阅](help:数据库职责与查阅)
 

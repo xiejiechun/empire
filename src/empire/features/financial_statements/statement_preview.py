@@ -4,9 +4,9 @@ from decimal import Decimal
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QComboBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from empire.plugins.datasets.financial_statements import REQUIRED
+from empire.features.financial_statements.contract import REQUIRED
+from empire.features.financial_statements.statement_matrix import format_amount
 from empire.plugins.ui.series_chart import SeriesChart
-from empire.plugins.ui.statement_matrix import format_amount
 
 
 class StatementPreview(QWidget):

@@ -1,0 +1,53 @@
+{
+  "record_kind": "audited_development_results",
+  "checked_at": "2026-10-19T15:14:19.231293+00:00",
+  "tests": {
+    "domain": {
+      "tests": 239,
+      "path": "build/architecture-e1-20261019/domain.xml",
+      "sha256": "62e4a430dd0bffbfa777ca0cd5774b3285631b3df3faff05baef0b09a4ebd730"
+    },
+    "common": {
+      "tests": 187,
+      "path": "build/architecture-e1-20261019/common.xml",
+      "sha256": "5a4af6696d14bbd5a4cb7c33e4ae4e226bb6b54b1e603772889ae74234017fed"
+    },
+    "sql-final": {
+      "tests": 54,
+      "path": "build/architecture-e1-20261019/sql-final.xml",
+      "sha256": "f91247784069b284126fcd0ceab3be11064eb253e9a0c6a2fbdbe0819d25c1ac"
+    },
+    "verifier-final": {
+      "tests": 103,
+      "path": "build/architecture-e1-20261019/verifier-final.xml",
+      "sha256": "8bd38ef04df9d5e50011634359bdadf2f9627ff3e067d68cd6cc0082a0e6f4f0"
+    }
+  },
+  "synthetic_guarded_sql": {
+    "path": "build/architecture-e1-20261019/guarded-sql-smoke.json",
+    "sha256": "4faca246c817f83d5aa8758723dd9b93bad5274a91e6b933a325f0cc4e73c1b9",
+    "passed": true,
+    "synthetic_source": true,
+    "source_requests": 0,
+    "cleanup": {
+      "shutdown": true,
+      "sql": true,
+      "redis": true,
+      "sql_lock": true,
+      "connections": true,
+      "instance_lock": true
+    },
+    "storage": {
+      "database": "empire_verify_ths_7de12337578442598862ea61c86140c2_test",
+      "namespace": "empire:test:verify_ths:7de12337578442598862ea61c86140c2",
+      "run_id": "7de12337578442598862ea61c86140c2",
+      "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+      "owner_sha256": "46bdbee77ed134b0f9c6c70902c0df1339cecdb2d36f619ec1cdd3a5f6a46e38"
+    }
+  },
+  "limitations": [
+    "JUnit lists overlap and are not additive unique-case counts",
+    "Initial missing test path failed with exit4 before running; corrected sql-final executed 54 tests",
+    "Initial migration newline guard rejected before any write; initial assembly full module mapping rejected unused bindings; fixed to four declaration modules"
+  ]
+}

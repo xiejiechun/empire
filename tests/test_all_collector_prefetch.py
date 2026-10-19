@@ -10,8 +10,8 @@ import httpx
 import pytest
 
 from empire.bootstrap import build_manager
+from empire.features.financial_statements.collector import ThsStatementCollector
 from empire.plugins.collectors.ths_listings import ThsListingCollector
-from empire.plugins.collectors.ths_statements import ThsStatementCollector
 from tests.capital_samples import STOCK, issue_detail
 from tests.capital_samples import source as capital_source
 from tests.prefetch_source import prefetch_http
@@ -126,7 +126,8 @@ async def test_real_adapters_prefetch_without_crossing_unvalidated_frontier(fami
     }
     import importlib
     module, attribute = validation[family]
-    module = importlib.import_module('empire.plugins.collectors.' + module)
+    module = importlib.import_module('empire.features.financial_statements.collector'
+        if module == 'ths_statements' else 'empire.plugins.collectors.' + module)
     original_parse = getattr(module, attribute)
     validations = []
     def parse(*args, **kwargs):

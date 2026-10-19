@@ -8,8 +8,8 @@ import pytest
 
 from empire.bootstrap import build_manager
 from empire.core.config import load_config
-from empire.plugins.collectors.ths_statements import ThsStatementCollector
-from empire.plugins.datasets.financial_statements import (
+from empire.features.financial_statements.collector import ThsStatementCollector
+from empire.features.financial_statements.contract import (
     KINDS,
     REQUIRED,
     amount,
@@ -70,7 +70,7 @@ def large_source(kind):
 
 @pytest.mark.parametrize('kind', KINDS)
 def test_large_statement_matrix_roundtrip_and_size(kind):
-    from empire.plugins.datasets.financial_wire import pack_rows, unpack_rows
+    from empire.features.financial_statements.wire import pack_rows, unpack_rows
     rows = parse(kind, large_source(kind), STOCK)
     packed = pack_rows(rows)
     assert unpack_rows(packed) == rows
@@ -80,7 +80,7 @@ def test_large_statement_matrix_roundtrip_and_size(kind):
 
 @pytest.mark.parametrize('problem', ['duplicate_column', 'missing_value', 'bad_precision', 'extra_meta'])
 def test_matrix_wire_never_silently_drops_fields(problem):
-    from empire.plugins.datasets.financial_wire import pack_rows, unpack_rows
+    from empire.features.financial_statements.wire import pack_rows, unpack_rows
     matrix = pack_rows(parse('income', source('income'), STOCK))
     if problem == 'duplicate_column':
         matrix['columns'][1] = matrix['columns'][0]
@@ -108,7 +108,7 @@ def test_complete_matrix_and_precision(kind):
 @pytest.mark.parametrize('kind', KINDS)
 @pytest.mark.parametrize('missing', [False, '--', ''])
 def test_source_missing_amount_is_unknown_and_quality_fails(kind, missing):
-    from empire.plugins.datasets.financial_quality import quality_issues
+    from empire.features.financial_statements.quality import quality_issues
     body = source(kind)
     matrix = json.loads(body['flashData'])
     matrix['report'][1][0] = missing
@@ -120,7 +120,7 @@ def test_source_missing_amount_is_unknown_and_quality_fails(kind, missing):
 
 
 def test_real_balance_contradiction_is_preserved_and_explained():
-    from empire.plugins.datasets.financial_quality import quality_issues
+    from empire.features.financial_statements.quality import quality_issues
     body = source('balance')
     matrix = json.loads(body['flashData'])
     matrix['report'] = [['2024-03-31']] + [[v] for v in ['4.61亿', '1.73亿', '5.73亿']]
@@ -135,7 +135,7 @@ def test_statement_page_explains_missing_source_amount(monkeypatch):
     monkeypatch.setenv('QT_QPA_PLATFORM', 'offscreen')
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.financial_statements import StatementPage
+    from empire.features.financial_statements.ui import StatementPage
     app = QApplication.instance() or QApplication([])
     page = StatementPage(SimpleNamespace(shutting_down=False), 'income')
     try:
@@ -189,7 +189,7 @@ async def test_one_request_response_closed_shared_transport(kind):
     c.records = SimpleNamespace(sanitize_text=str)
     # Only transport capacity is stubbed; normal source fetch remains the implementation.
     from unittest.mock import patch
-    with patch('empire.plugins.collectors.ths_statements.wait_for_capacity', AsyncMock()):
+    with patch('empire.features.financial_statements.collector.wait_for_capacity', AsyncMock()):
         rows, _, url = await c.fetch(STOCK)
     assert len(rows) == 2 and c.http.request.await_count == 1 and response.is_closed
     assert url.endswith(KINDS[kind][1] + '.json')
@@ -227,7 +227,7 @@ def test_statement_arithmetic_retained_but_flagged(kind, field):
     f['title'].append([field, '元', 2, False, True])
     f['report'].append(['1.00亿', '1.00亿'])
     body['flashData'] = json.dumps(f)
-    from empire.plugins.datasets.financial_quality import quality_issues
+    from empire.features.financial_statements.quality import quality_issues
     rows = parse(kind, body, STOCK)
     assert any(i['criterion'] == 'quality' for i in quality_issues(kind, rows[0]))
 
@@ -236,7 +236,10 @@ def test_statement_matrix_preserves_union_and_source_sections(monkeypatch):
     monkeypatch.setenv('QT_QPA_PLATFORM', 'offscreen')
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.statement_matrix import StatementMatrix, subject_layout
+    from empire.features.financial_statements.statement_matrix import (
+        StatementMatrix,
+        subject_layout,
+    )
     app = QApplication.instance() or QApplication([])
     records = parse('income', source('income'), STOCK)
     records[0]['fields']['未知新增科目'] = {'value': '-1234567.89', 'resolution': '0.01'}

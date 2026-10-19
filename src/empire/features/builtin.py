@@ -2,11 +2,12 @@
 from empire.contracts.bundle import FeatureBundle, ordered
 from empire.contracts.preparation import ComputationContribution
 from empire.core.identity import safe_project_id
+from empire.features.financial_statements.bundle import bundle as financial_statements_bundle
 from empire.features.holders.bundle import bundle as holders_bundle
 from empire.features.news.bundle import bundle as news_bundle
 from empire.features.remaining import bundle as remaining_bundle
 
-FACTORIES = (remaining_bundle, news_bundle, holders_bundle)
+FACTORIES = (remaining_bundle, news_bundle, holders_bundle, financial_statements_bundle)
 
 
 def builtin_bundles(cfg) -> tuple[FeatureBundle, ...]:

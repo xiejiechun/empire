@@ -9,9 +9,9 @@ from empire.contracts.business_schema import require_fixed_source, schema_contra
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.data.financial_preparation import audit_financial
-from empire.plugins.datasets.financial_archive import FinancialDataset
-from empire.plugins.datasets.financial_statements import KINDS, REQUIRED, digest
+from empire.features.financial_statements.audit import audit_financial
+from empire.features.financial_statements.contract import KINDS, REQUIRED, digest
+from empire.features.financial_statements.dataset import FinancialDataset
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 

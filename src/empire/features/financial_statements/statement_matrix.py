@@ -8,7 +8,7 @@ from PySide6.QtCore import QSignalBlocker, Qt
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QHBoxLayout, QHeaderView, QTableWidgetItem, QWidget
 
-from empire.plugins.datasets.financial_quality import quality_issues
+from empire.features.financial_statements.quality import quality_issues
 from empire.plugins.ui.common import table
 
 
