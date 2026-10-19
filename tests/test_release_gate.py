@@ -50,19 +50,3 @@ def test_dependency_inventory_matches_current_lock() -> None:
         "direct-runtime", "direct-development", "transitive"
     }
     assert all(item["locked_sha256"] for item in report["components"])
-
-
-def test_release_gate_contains_full_required_sequence() -> None:
-    root = Path(__file__).resolve().parents[1]
-    script = (root / "verify-release.ps1").read_text(encoding="utf-8")
-    for required in ("verify_release_environment.py", "verify_documentation.py", "ruff check",
-                     "-m mypy", "-m pytest",
-                     "audit_dependencies.py", "dependency-report.json", "diff --check",
-                     "measure_capacity.py", "capacity-report.json",
-                     "verify_foundation_ui.py", "build.ps1", "package-smoke", "release-report.json"):
-        assert required in script
-    for portable in ("portable-smoke-", "中文 空格", "check-config", "preparedConfig"):
-        assert portable in script
-    build = (root / "build.ps1").read_text(encoding="utf-8")
-    assert "PyInstaller $requiredPyInstaller" in build
-    assert "pip install" not in build

@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from datetime import UTC, datetime
 from pathlib import Path
 
-from empire.core.preparation_release import source_digest
+from empire.core.preparation_release import load_evidence, source_digest
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
@@ -34,9 +34,7 @@ elif args.action == 'finish':
     target.write_text(json.dumps({'schema': 1, 'passed': True, 'source_sha256': digest,
         'checked_at': datetime.now(UTC).isoformat(), 'cases': cases}, ensure_ascii=False), encoding='utf-8')
 else:
-    try:
-        value = json.loads(target.read_text(encoding='utf-8'))
-    except (OSError, ValueError):
-        value = {}
-    if value.get('source_sha256') != digest:
+    value, error = load_evidence(root)
+    if error or any(c['status'] in {'failure', 'error'} for c in value.get('cases', [])):
         target.write_text(json.dumps({'schema': 1, 'passed': False}), encoding='utf-8')
+        raise RuntimeError('Preparation evidence is missing, failed or stale; rerun the release gate')

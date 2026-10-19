@@ -9,7 +9,8 @@ def source_digest(root):
     paths = []
     for folder in ('src', 'tests', 'scripts', 'sql', 'config'):
         paths.extend(p for p in (root / folder).rglob('*') if p.is_file()
-                     and p.suffix in {'.py', '.sql', '.toml', '.js'} and '__pycache__' not in p.parts)
+                     and p.suffix in {'.py', '.sql', '.toml', '.js', '.json', '.md', '.png', '.ico', '.svg'}
+                     and '__pycache__' not in p.parts and p.name != 'local.toml')
     paths.extend(root / name for name in ('requirements.lock', 'pyproject.toml', 'Empire.spec',
                                          'build.ps1', 'verify-release.ps1'))
     digest = hashlib.sha256()

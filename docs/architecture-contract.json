@@ -1,0 +1,2245 @@
+{
+  "schema": 1,
+  "scope": "静态导入职责与历史债务递减门禁；不执行运行时，不判定业务行为等价",
+  "owners": {
+    "application": {
+      "kind": "platform",
+      "description": "应用入口和静态装配"
+    },
+    "kernel": {
+      "kind": "platform",
+      "description": "插件内核与通用契约"
+    },
+    "desktop": {
+      "kind": "platform",
+      "description": "桌面外壳与交互"
+    },
+    "infrastructure": {
+      "kind": "platform",
+      "description": "连接、下载资源、状态与SQL执行"
+    },
+    "pipeline": {
+      "kind": "platform",
+      "description": "统一入队、摘要与归档"
+    },
+    "collection": {
+      "kind": "platform",
+      "description": "采集管理、共享预取及运行记录"
+    },
+    "ui_components": {
+      "kind": "platform",
+      "description": "公共展示和查询生命周期控件"
+    },
+    "source_support": {
+      "kind": "platform",
+      "description": "共享采集准入、重试与会话"
+    },
+    "html_parser": {
+      "kind": "platform",
+      "description": "通用HTML节点解析"
+    },
+    "diagnostics": {
+      "kind": "platform",
+      "description": "有界只读项目诊断"
+    },
+    "stocks": {
+      "kind": "business",
+      "description": "当前股票目录"
+    },
+    "news": {
+      "kind": "business",
+      "description": "财经新闻"
+    },
+    "calendar": {
+      "kind": "business",
+      "description": "交易日历"
+    },
+    "suspensions": {
+      "kind": "business",
+      "description": "停复牌事件"
+    },
+    "capital_actions": {
+      "kind": "business",
+      "description": "分红、增发与配股"
+    },
+    "financial_statements": {
+      "kind": "business",
+      "description": "财务三表"
+    },
+    "industries": {
+      "kind": "business",
+      "description": "行业及成员"
+    },
+    "kaipanla": {
+      "kind": "business",
+      "description": "开盘啦七类历史产品"
+    },
+    "listing_status": {
+      "kind": "business",
+      "description": "暂停恢复终止上市"
+    },
+    "listings": {
+      "kind": "business",
+      "description": "上市发行资料"
+    },
+    "name_changes": {
+      "kind": "business",
+      "description": "公司及证券更名"
+    },
+    "indices": {
+      "kind": "business",
+      "description": "指数及成分"
+    },
+    "index_prices": {
+      "kind": "business",
+      "description": "指数日行情"
+    },
+    "security_aliases": {
+      "kind": "business",
+      "description": "北交所证券代码映射"
+    },
+    "holders": {
+      "kind": "business",
+      "description": "股东研究"
+    },
+    "ths_capital": {
+      "kind": "business",
+      "description": "公司资本运作"
+    },
+    "performance": {
+      "kind": "business",
+      "description": "业绩、股东人数及增减持"
+    },
+    "st_events": {
+      "kind": "business",
+      "description": "风险警示事件"
+    },
+    "trading_rules": {
+      "kind": "business",
+      "description": "交易制度及费用规则"
+    },
+    "unlocks": {
+      "kind": "business",
+      "description": "解禁明细"
+    },
+    "unlock_industries": {
+      "kind": "business",
+      "description": "解禁行业"
+    },
+    "adjustment": {
+      "kind": "business",
+      "description": "复权因子"
+    },
+    "preparation": {
+      "kind": "business",
+      "description": "数据准备及库存"
+    },
+    "data_browser": {
+      "kind": "business",
+      "description": "数据目录与证券候选"
+    },
+    "help": {
+      "kind": "business",
+      "description": "程序说明文档"
+    },
+    "repurchases": {
+      "kind": "business",
+      "description": "股票回购"
+    }
+  },
+  "module_groups": [
+    {
+      "legacy_collector_location": true,
+      "owner": "holders",
+      "reason": "股东研究：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.ths_holders_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "html_parser",
+      "reason": "通用HTML节点解析：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.holder_html"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "index_prices",
+      "reason": "指数日行情：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.ths_index_prices_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "indices",
+      "reason": "指数及成分：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.ths_index_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "industries",
+      "reason": "行业及成员：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.ths_industry_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "kaipanla",
+      "reason": "七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集",
+      "role": "contract",
+      "modules": [
+        "empire.plugins.collectors.kaipanla_kinds"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "kaipanla",
+      "reason": "开盘啦七类历史产品：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.kaipanla_refresh"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "listing_status",
+      "reason": "暂停恢复终止上市：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.tdx_listing_status_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "name_changes",
+      "reason": "公司及证券更名：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.tdx_name_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "performance",
+      "reason": "业绩、股东人数及增减持：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.tdx_performance_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "security_aliases",
+      "reason": "北交所映射HTML解析与校验；没有HTTP请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.bse_code_mapping_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "source_support",
+      "reason": "共享采集准入、重试与会话：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.ths_session"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "st_events",
+      "reason": "风险警示事件：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.tdx_st_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "stocks",
+      "reason": "当前股票目录：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.ths_universe_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "suspensions",
+      "reason": "停复牌事件：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.suspension_batches"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "ths_capital",
+      "reason": "公司资本运作：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.ths_capital_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "trading_rules",
+      "reason": "交易制度及费用规则：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.rule_bse",
+        "empire.plugins.collectors.rule_documents",
+        "empire.plugins.collectors.rule_parameters"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "unlock_industries",
+      "reason": "解禁行业：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.tdx_unlock_industry_source"
+      ]
+    },
+    {
+      "legacy_collector_location": true,
+      "owner": "unlocks",
+      "reason": "解禁明细：来源解析或纯范围规划，无请求执行",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.collectors.tdx_unlock_source"
+      ]
+    },
+    {
+      "owner": "adjustment",
+      "reason": "复权因子：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.adjustment"
+      ]
+    },
+    {
+      "owner": "adjustment",
+      "reason": "复权因子：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.adjustment",
+        "empire.plugins.ui.adjustment_chart"
+      ]
+    },
+    {
+      "owner": "adjustment",
+      "reason": "复权因子：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.adjustment",
+        "empire.plugins.data.adjustment_inputs"
+      ]
+    },
+    {
+      "owner": "application",
+      "reason": "应用入口和静态装配：包入口",
+      "role": "package",
+      "modules": [
+        "empire",
+        "empire.contracts",
+        "empire.core",
+        "empire.desktop",
+        "empire.diagnostics",
+        "empire.plugins",
+        "empire.plugins.collection",
+        "empire.plugins.collectors",
+        "empire.plugins.data",
+        "empire.plugins.datasets",
+        "empire.plugins.infra",
+        "empire.plugins.pipeline",
+        "empire.plugins.ui",
+        "empire.plugins.ui.collection_views"
+      ]
+    },
+    {
+      "owner": "application",
+      "reason": "应用入口和静态装配：声明或入口装配",
+      "role": "composition",
+      "modules": [
+        "empire.__main__",
+        "empire.bootstrap",
+        "empire.build_info"
+      ]
+    },
+    {
+      "owner": "application",
+      "reason": "应用入口和静态装配：集中构造数据集贡献，不执行采集",
+      "role": "dataset_registry",
+      "modules": [
+        "empire.plugins.datasets.astock"
+      ]
+    },
+    {
+      "owner": "calendar",
+      "reason": "交易日历：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.trade_calendar"
+      ]
+    },
+    {
+      "owner": "calendar",
+      "reason": "交易日历：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.trade_calendar"
+      ]
+    },
+    {
+      "owner": "calendar",
+      "reason": "交易日历：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.calendar_preparation",
+        "empire.plugins.data.trade_calendar",
+        "empire.plugins.data.trading_day_cutoff"
+      ]
+    },
+    {
+      "owner": "calendar",
+      "reason": "交易日历：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.cninfo_calendar"
+      ]
+    },
+    {
+      "owner": "capital_actions",
+      "reason": "分红、增发与配股：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.capital_transport"
+      ]
+    },
+    {
+      "owner": "capital_actions",
+      "reason": "分红、增发与配股：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.capital_actions",
+        "empire.plugins.ui.capital_preview",
+        "empire.plugins.ui.capital_words"
+      ]
+    },
+    {
+      "owner": "capital_actions",
+      "reason": "分红、增发与配股：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.capital_actions",
+        "empire.plugins.datasets.capital_archive",
+        "empire.plugins.datasets.capital_validation",
+        "empire.plugins.datasets.issue_detail"
+      ]
+    },
+    {
+      "owner": "capital_actions",
+      "reason": "分红、增发与配股：来源模块包含下载/会话/生命周期执行",
+      "role": "source_adapter",
+      "modules": [
+        "empire.plugins.collectors.capital_lifecycle",
+        "empire.plugins.collectors.capital_recovery",
+        "empire.plugins.collectors.issue_prefetch",
+        "empire.plugins.collectors.tdx_capital_source",
+        "empire.plugins.collectors.tdx_dividend_discovery",
+        "empire.plugins.collectors.tdx_dividend_periods",
+        "empire.plugins.collectors.tdx_issue_detail"
+      ]
+    },
+    {
+      "owner": "capital_actions",
+      "reason": "分红、增发与配股：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.capital_actions",
+        "empire.plugins.data.issue_candidates"
+      ]
+    },
+    {
+      "owner": "capital_actions",
+      "reason": "分红、增发与配股：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.tdx_additional_issues",
+        "empire.plugins.collectors.tdx_dividends",
+        "empire.plugins.collectors.tdx_rights_issues"
+      ]
+    },
+    {
+      "owner": "collection",
+      "reason": "采集管理、共享预取及运行记录：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.collection",
+        "empire.plugins.ui.collection_views.archived",
+        "empire.plugins.ui.collection_views.base",
+        "empire.plugins.ui.collection_views.history",
+        "empire.plugins.ui.collection_views.network_summary",
+        "empire.plugins.ui.collection_views.site_fields",
+        "empire.plugins.ui.collection_views.sites",
+        "empire.plugins.ui.collection_views.task_batch",
+        "empire.plugins.ui.collection_views.task_layout",
+        "empire.plugins.ui.collection_views.task_menu",
+        "empire.plugins.ui.collection_views.task_rules",
+        "empire.plugins.ui.collection_views.task_runtime",
+        "empire.plugins.ui.collection_views.tasks",
+        "empire.plugins.ui.download_fields",
+        "empire.plugins.ui.download_recommendation",
+        "empire.plugins.ui.downloads",
+        "empire.plugins.ui.log_clear",
+        "empire.plugins.ui.proxies",
+        "empire.plugins.ui.record_detail",
+        "empire.plugins.ui.record_table",
+        "empire.plugins.ui.records"
+      ]
+    },
+    {
+      "owner": "collection",
+      "reason": "采集管理、共享预取及运行记录：任务、记录或预取管理",
+      "role": "management",
+      "modules": [
+        "empire.plugins.collection.batch",
+        "empire.plugins.collection.control",
+        "empire.plugins.collection.prefetch",
+        "empire.plugins.collection.progress",
+        "empire.plugins.collection.record_query",
+        "empire.plugins.collection.records",
+        "empire.plugins.collection.rules",
+        "empire.plugins.collection.task_defaults",
+        "empire.plugins.collection.unit_prefetch"
+      ]
+    },
+    {
+      "owner": "data_browser",
+      "public_symbols": [
+        "CandidateSearch"
+      ],
+      "reason": "数据目录与证券候选：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.preview_search"
+      ]
+    },
+    {
+      "owner": "data_browser",
+      "public_symbols": [
+        "DataCatalogPage"
+      ],
+      "reason": "数据目录与证券候选：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.catalog"
+      ]
+    },
+    {
+      "owner": "data_browser",
+      "public_symbols": [
+        "DirectoryPanel"
+      ],
+      "reason": "数据目录与证券候选：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.directory_panel"
+      ]
+    },
+    {
+      "owner": "data_browser",
+      "public_symbols": [
+        "QueryForm",
+        "compact_columns",
+        "fit_directory",
+        "DataNote",
+        "DetailSplit"
+      ],
+      "reason": "数据目录与证券候选：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.preview_layout"
+      ]
+    },
+    {
+      "owner": "data_browser",
+      "public_symbols": [
+        "security_context",
+        "navigate_security",
+        "result_identity",
+        "data_note"
+      ],
+      "reason": "数据目录与证券候选：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.preview_navigation"
+      ]
+    },
+    {
+      "owner": "data_browser",
+      "public_symbols": [
+        "text",
+        "fields",
+        "card",
+        "CardReader",
+        "event_cards"
+      ],
+      "reason": "数据目录与证券候选：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.preview_cards"
+      ]
+    },
+    {
+      "owner": "data_browser",
+      "reason": "数据目录与证券候选：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.preview_candidates"
+      ]
+    },
+    {
+      "owner": "desktop",
+      "reason": "桌面外壳与交互：通用展示或页面生命周期",
+      "role": "shared_ui",
+      "modules": [
+        "empire.desktop.icon",
+        "empire.desktop.interaction",
+        "empire.desktop.page_lifecycle",
+        "empire.desktop.theme",
+        "empire.desktop.window",
+        "empire.plugins.ui.home",
+        "empire.plugins.ui.system",
+        "empire.plugins.ui.workspace"
+      ]
+    },
+    {
+      "owner": "diagnostics",
+      "public_symbols": [
+        "diagnose_project",
+        "render_report"
+      ],
+      "reason": "有界只读项目诊断：只读诊断入口",
+      "role": "diagnostic",
+      "modules": [
+        "empire.diagnostics.project"
+      ]
+    },
+    {
+      "owner": "diagnostics",
+      "reason": "有界只读项目诊断：同包有界读取实现",
+      "role": "diagnostic_internal",
+      "modules": [
+        "empire.diagnostics.readonly",
+        "empire.diagnostics.redis_evidence"
+      ]
+    },
+    {
+      "owner": "diagnostics",
+      "reason": "有界只读项目诊断：声明或入口装配",
+      "role": "composition",
+      "modules": [
+        "empire.diagnostics.declarations"
+      ]
+    },
+    {
+      "owner": "financial_statements",
+      "reason": "chain 是纯摘要函数，但同模块定义财报采集器、下载和入队生命周期",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.ths_statements"
+      ]
+    },
+    {
+      "owner": "financial_statements",
+      "reason": "财务三表：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.financial_statements",
+        "empire.plugins.ui.statement_matrix",
+        "empire.plugins.ui.statement_preview"
+      ]
+    },
+    {
+      "owner": "financial_statements",
+      "reason": "财务三表：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.financial_archive",
+        "empire.plugins.datasets.financial_quality",
+        "empire.plugins.datasets.financial_statements",
+        "empire.plugins.datasets.financial_wire"
+      ]
+    },
+    {
+      "owner": "financial_statements",
+      "reason": "财务三表：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.financial_preparation",
+        "empire.plugins.data.financial_statements"
+      ]
+    },
+    {
+      "owner": "help",
+      "public_symbols": [
+        "Article",
+        "read_articles",
+        "topics"
+      ],
+      "reason": "程序说明文档：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.help_content"
+      ]
+    },
+    {
+      "owner": "help",
+      "public_symbols": [
+        "render_article"
+      ],
+      "reason": "程序说明文档：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.help_reader"
+      ]
+    },
+    {
+      "owner": "help",
+      "reason": "程序说明文档：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.help"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.holders"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.holders"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.holders"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.holders",
+        "empire.plugins.data.holders_audit"
+      ]
+    },
+    {
+      "owner": "holders",
+      "reason": "股东研究：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.ths_holders"
+      ]
+    },
+    {
+      "owner": "index_prices",
+      "reason": "指数日行情：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.index_prices"
+      ]
+    },
+    {
+      "owner": "index_prices",
+      "reason": "指数日行情：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.index_price_chart",
+        "empire.plugins.ui.index_prices"
+      ]
+    },
+    {
+      "owner": "index_prices",
+      "reason": "指数日行情：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.index_prices"
+      ]
+    },
+    {
+      "owner": "index_prices",
+      "reason": "指数日行情：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.index_prices"
+      ]
+    },
+    {
+      "owner": "index_prices",
+      "reason": "指数日行情：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.ths_index_prices"
+      ]
+    },
+    {
+      "owner": "indices",
+      "reason": "指数及成分：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.indices"
+      ]
+    },
+    {
+      "owner": "indices",
+      "reason": "指数及成分：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.indices"
+      ]
+    },
+    {
+      "owner": "indices",
+      "reason": "指数及成分：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.indices"
+      ]
+    },
+    {
+      "owner": "indices",
+      "reason": "指数及成分：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.indices"
+      ]
+    },
+    {
+      "owner": "indices",
+      "reason": "指数及成分：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.ths_indices"
+      ]
+    },
+    {
+      "owner": "industries",
+      "reason": "行业及成员：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.industries"
+      ]
+    },
+    {
+      "owner": "industries",
+      "reason": "行业及成员：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.industries"
+      ]
+    },
+    {
+      "owner": "industries",
+      "reason": "行业及成员：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.industries"
+      ]
+    },
+    {
+      "owner": "industries",
+      "reason": "行业及成员：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.industries"
+      ]
+    },
+    {
+      "owner": "industries",
+      "reason": "行业及成员：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.ths_industries"
+      ]
+    },
+    {
+      "owner": "infrastructure",
+      "reason": "连接、下载资源、状态与SQL执行：连接、资源或SQL基础设施",
+      "role": "infrastructure",
+      "modules": [
+        "empire.plugins.infra.archive_confirmation",
+        "empire.plugins.infra.capacity",
+        "empire.plugins.infra.collection_state",
+        "empire.plugins.infra.collection_state_unit",
+        "empire.plugins.infra.download_settings",
+        "empire.plugins.infra.download_storage",
+        "empire.plugins.infra.http",
+        "empire.plugins.infra.http_safety",
+        "empire.plugins.infra.mysql_store",
+        "empire.plugins.infra.proxy_pool",
+        "empire.plugins.infra.redis_store",
+        "empire.plugins.infra.request_activity",
+        "empire.plugins.infra.resources",
+        "empire.plugins.infra.response_reader",
+        "empire.plugins.infra.routing",
+        "empire.plugins.infra.schema_manifest",
+        "empire.plugins.infra.settings",
+        "empire.plugins.infra.sql_lane"
+      ]
+    },
+    {
+      "owner": "kaipanla",
+      "reason": "required_days 是纯范围计算，但同模块还实现上市目录下载和预取",
+      "role": "source_adapter",
+      "modules": [
+        "empire.plugins.collectors.kaipanla_scope"
+      ]
+    },
+    {
+      "owner": "kaipanla",
+      "reason": "开盘啦七类历史产品：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.market_storage"
+      ]
+    },
+    {
+      "owner": "kaipanla",
+      "reason": "开盘啦七类历史产品：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.kaipanla_products",
+        "empire.plugins.ui.kaipanla_quote_chart",
+        "empire.plugins.ui.kaipanla_quote_format",
+        "empire.plugins.ui.kaipanla_quote_page",
+        "empire.plugins.ui.kaipanla_quote_view",
+        "empire.plugins.ui.product_chart",
+        "empire.plugins.ui.product_dates"
+      ]
+    },
+    {
+      "owner": "kaipanla",
+      "reason": "开盘啦七类历史产品：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.intraday",
+        "empire.plugins.datasets.kaipanla_products",
+        "empire.plugins.datasets.market_mapping",
+        "empire.plugins.datasets.market_repository",
+        "empire.plugins.datasets.trade_blocks"
+      ]
+    },
+    {
+      "owner": "kaipanla",
+      "reason": "开盘啦七类历史产品：来源模块包含下载/会话/生命周期执行",
+      "role": "source_adapter",
+      "modules": [
+        "empire.plugins.collectors.kaipanla_alias",
+        "empire.plugins.collectors.kaipanla_product_download",
+        "empire.plugins.collectors.kaipanla_products_source",
+        "empire.plugins.collectors.kaipanla_source"
+      ]
+    },
+    {
+      "owner": "kaipanla",
+      "reason": "开盘啦七类历史产品：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.kaipanla_products",
+        "empire.plugins.data.kaipanla_products_preparation",
+        "empire.plugins.data.kaipanla_scope"
+      ]
+    },
+    {
+      "owner": "kaipanla",
+      "reason": "开盘啦七类历史产品：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.kaipanla_products"
+      ]
+    },
+    {
+      "owner": "kernel",
+      "reason": "插件内核与通用契约：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.archive_version",
+        "empire.contracts.business_schema",
+        "empire.contracts.collection_integrity",
+        "empire.contracts.collector",
+        "empire.contracts.data",
+        "empire.contracts.dataset",
+        "empire.contracts.download",
+        "empire.contracts.download_settings",
+        "empire.contracts.request_retry",
+        "empire.contracts.security",
+        "empire.contracts.ui"
+      ]
+    },
+    {
+      "owner": "kernel",
+      "reason": "插件内核与通用契约：通用运行基础",
+      "role": "kernel",
+      "modules": [
+        "empire.core.config",
+        "empire.core.identity",
+        "empire.core.manager",
+        "empire.core.preparation_release",
+        "empire.core.redaction",
+        "empire.core.runtime",
+        "empire.core.time"
+      ]
+    },
+    {
+      "owner": "listing_status",
+      "reason": "暂停恢复终止上市：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.listing_status"
+      ]
+    },
+    {
+      "owner": "listing_status",
+      "reason": "暂停恢复终止上市：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.listing_status"
+      ]
+    },
+    {
+      "owner": "listing_status",
+      "reason": "暂停恢复终止上市：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.listing_status"
+      ]
+    },
+    {
+      "owner": "listing_status",
+      "reason": "暂停恢复终止上市：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.listing_status",
+        "empire.plugins.data.listing_status_checks"
+      ]
+    },
+    {
+      "owner": "listing_status",
+      "reason": "暂停恢复终止上市：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.tdx_listing_status"
+      ]
+    },
+    {
+      "owner": "listings",
+      "reason": "上市发行资料：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.listings"
+      ]
+    },
+    {
+      "owner": "listings",
+      "reason": "上市发行资料：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.listings"
+      ]
+    },
+    {
+      "owner": "listings",
+      "reason": "上市发行资料：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.listings"
+      ]
+    },
+    {
+      "owner": "listings",
+      "reason": "上市发行资料：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.listings"
+      ]
+    },
+    {
+      "owner": "listings",
+      "reason": "上市发行资料：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.ths_listings"
+      ]
+    },
+    {
+      "owner": "name_changes",
+      "reason": "公司及证券更名：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.name_changes"
+      ]
+    },
+    {
+      "owner": "name_changes",
+      "reason": "公司及证券更名：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.name_changes"
+      ]
+    },
+    {
+      "owner": "name_changes",
+      "reason": "公司及证券更名：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.name_changes"
+      ]
+    },
+    {
+      "owner": "name_changes",
+      "reason": "公司及证券更名：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.name_changes"
+      ]
+    },
+    {
+      "owner": "name_changes",
+      "reason": "公司及证券更名：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.tdx_name_changes"
+      ]
+    },
+    {
+      "owner": "news",
+      "reason": "财经新闻：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.news"
+      ]
+    },
+    {
+      "owner": "news",
+      "reason": "财经新闻：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.news"
+      ]
+    },
+    {
+      "owner": "news",
+      "reason": "财经新闻：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.news"
+      ]
+    },
+    {
+      "owner": "news",
+      "reason": "财经新闻：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.sina_news"
+      ]
+    },
+    {
+      "owner": "performance",
+      "reason": "业绩、股东人数及增减持：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.tdx_performance"
+      ]
+    },
+    {
+      "owner": "performance",
+      "reason": "业绩、股东人数及增减持：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.tdx_performance"
+      ]
+    },
+    {
+      "owner": "performance",
+      "reason": "业绩、股东人数及增减持：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.tdx_performance"
+      ]
+    },
+    {
+      "owner": "performance",
+      "reason": "业绩、股东人数及增减持：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.tdx_performance"
+      ]
+    },
+    {
+      "owner": "performance",
+      "reason": "业绩、股东人数及增减持：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.tdx_performance"
+      ]
+    },
+    {
+      "owner": "pipeline",
+      "reason": "统一入队、摘要与归档：共享队列及归档流程",
+      "role": "pipeline",
+      "modules": [
+        "empire.plugins.pipeline.archive",
+        "empire.plugins.pipeline.archive_queue",
+        "empire.plugins.pipeline.fingerprints",
+        "empire.plugins.pipeline.ingest"
+      ]
+    },
+    {
+      "owner": "preparation",
+      "reason": "数据准备及库存：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.preparation",
+        "empire.contracts.preparation_capital_page",
+        "empire.contracts.preparation_catalog",
+        "empire.contracts.preparation_definition",
+        "empire.contracts.preparation_events",
+        "empire.contracts.preparation_existing",
+        "empire.contracts.preparation_foundation",
+        "empire.contracts.preparation_markets",
+        "empire.contracts.preparation_processing",
+        "empire.contracts.preparation_research",
+        "empire.contracts.preparation_scope"
+      ]
+    },
+    {
+      "owner": "preparation",
+      "reason": "数据准备及库存：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.preparation",
+        "empire.plugins.ui.preparation_actions",
+        "empire.plugins.ui.preparation_detail",
+        "empire.plugins.ui.preparation_directory",
+        "empire.plugins.ui.preparation_inventory",
+        "empire.plugins.ui.preparation_scope",
+        "empire.plugins.ui.preparation_words"
+      ]
+    },
+    {
+      "owner": "preparation",
+      "reason": "数据准备及库存：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.preparation",
+        "empire.plugins.data.preparation_cache",
+        "empire.plugins.data.preparation_checks",
+        "empire.plugins.data.preparation_computation",
+        "empire.plugins.data.preparation_inventory",
+        "empire.plugins.data.preparation_results"
+      ]
+    },
+    {
+      "owner": "repurchases",
+      "reason": "股票回购：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.repurchases"
+      ]
+    },
+    {
+      "owner": "repurchases",
+      "reason": "股票回购：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.repurchases"
+      ]
+    },
+    {
+      "owner": "repurchases",
+      "reason": "股票回购：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.repurchases"
+      ]
+    },
+    {
+      "owner": "repurchases",
+      "reason": "股票回购：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.repurchases"
+      ]
+    },
+    {
+      "owner": "repurchases",
+      "reason": "股票回购：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.eastmoney_repurchase"
+      ]
+    },
+    {
+      "owner": "security_aliases",
+      "reason": "北交所证券代码映射：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.security_aliases"
+      ]
+    },
+    {
+      "owner": "source_support",
+      "reason": "共享采集准入、重试与会话：共享采集执行支持",
+      "role": "collector_support",
+      "modules": [
+        "empire.plugins.collectors.support"
+      ]
+    },
+    {
+      "owner": "st_events",
+      "reason": "风险警示事件：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.st_events"
+      ]
+    },
+    {
+      "owner": "st_events",
+      "reason": "风险警示事件：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.st_events"
+      ]
+    },
+    {
+      "owner": "st_events",
+      "reason": "风险警示事件：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.st_events"
+      ]
+    },
+    {
+      "owner": "st_events",
+      "reason": "风险警示事件：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.st_events"
+      ]
+    },
+    {
+      "owner": "st_events",
+      "reason": "风险警示事件：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.tdx_st_events"
+      ]
+    },
+    {
+      "owner": "stocks",
+      "reason": "当前股票目录：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.stocks"
+      ]
+    },
+    {
+      "owner": "stocks",
+      "reason": "当前股票目录：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.stock_preview",
+        "empire.plugins.ui.stocks"
+      ]
+    },
+    {
+      "owner": "stocks",
+      "reason": "当前股票目录：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.stocks"
+      ]
+    },
+    {
+      "owner": "stocks",
+      "reason": "当前股票目录：来源模块包含下载/会话/生命周期执行",
+      "role": "source_adapter",
+      "modules": [
+        "empire.plugins.collectors.stock_pages"
+      ]
+    },
+    {
+      "owner": "stocks",
+      "reason": "当前股票目录：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.stocks"
+      ]
+    },
+    {
+      "owner": "stocks",
+      "reason": "当前股票目录：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.sina_universe",
+        "empire.plugins.collectors.ths_universe"
+      ]
+    },
+    {
+      "owner": "suspensions",
+      "reason": "停复牌事件：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.suspension_preview",
+        "empire.plugins.ui.suspensions"
+      ]
+    },
+    {
+      "owner": "suspensions",
+      "reason": "停复牌事件：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.suspensions"
+      ]
+    },
+    {
+      "owner": "suspensions",
+      "reason": "停复牌事件：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.market_suspension_days",
+        "empire.plugins.data.suspensions"
+      ]
+    },
+    {
+      "owner": "suspensions",
+      "reason": "停复牌事件：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.tdx_suspensions"
+      ]
+    },
+    {
+      "owner": "ths_capital",
+      "reason": "公司资本运作：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.ths_capital"
+      ]
+    },
+    {
+      "owner": "ths_capital",
+      "reason": "公司资本运作：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.ths_capital"
+      ]
+    },
+    {
+      "owner": "ths_capital",
+      "reason": "公司资本运作：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.ths_capital"
+      ]
+    },
+    {
+      "owner": "ths_capital",
+      "reason": "公司资本运作：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.ths_capital"
+      ]
+    },
+    {
+      "owner": "ths_capital",
+      "reason": "公司资本运作：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.ths_capital"
+      ]
+    },
+    {
+      "owner": "trading_rules",
+      "reason": "交易制度及费用规则：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.rule_bse_review",
+        "empire.contracts.rule_review",
+        "empire.contracts.trading_rules"
+      ]
+    },
+    {
+      "owner": "trading_rules",
+      "reason": "交易制度及费用规则：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.trading_rules"
+      ]
+    },
+    {
+      "owner": "trading_rules",
+      "reason": "交易制度及费用规则：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.trading_rules"
+      ]
+    },
+    {
+      "owner": "trading_rules",
+      "reason": "交易制度及费用规则：来源模块包含下载/会话/生命周期执行",
+      "role": "source_adapter",
+      "modules": [
+        "empire.plugins.collectors.rule_sources"
+      ]
+    },
+    {
+      "owner": "trading_rules",
+      "reason": "交易制度及费用规则：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.trading_rules"
+      ]
+    },
+    {
+      "owner": "trading_rules",
+      "reason": "交易制度及费用规则：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.trading_rules"
+      ]
+    },
+    {
+      "owner": "ui_components",
+      "reason": "公共展示和查询生命周期控件：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.plugin"
+      ]
+    },
+    {
+      "owner": "ui_components",
+      "reason": "公共展示和查询生命周期控件：通用展示或页面生命周期",
+      "role": "shared_ui",
+      "modules": [
+        "empire.plugins.ui.candlestick_chart",
+        "empire.plugins.ui.common",
+        "empire.plugins.ui.event_timeline",
+        "empire.plugins.ui.month_grid",
+        "empire.plugins.ui.plugin",
+        "empire.plugins.ui.queries",
+        "empire.plugins.ui.series_chart"
+      ]
+    },
+    {
+      "owner": "unlock_industries",
+      "reason": "解禁行业：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.unlock_industries"
+      ]
+    },
+    {
+      "owner": "unlock_industries",
+      "reason": "解禁行业：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.unlock_industries"
+      ]
+    },
+    {
+      "owner": "unlock_industries",
+      "reason": "解禁行业：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.unlock_industries"
+      ]
+    },
+    {
+      "owner": "unlock_industries",
+      "reason": "解禁行业：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.unlock_industries"
+      ]
+    },
+    {
+      "owner": "unlock_industries",
+      "reason": "解禁行业：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.tdx_unlock_industries"
+      ]
+    },
+    {
+      "owner": "unlocks",
+      "reason": "解禁明细：业务标识、字段和纯规范声明",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.unlocks"
+      ]
+    },
+    {
+      "owner": "unlocks",
+      "reason": "解禁明细：业务页面和展示状态",
+      "role": "ui",
+      "modules": [
+        "empire.plugins.ui.unlocks"
+      ]
+    },
+    {
+      "owner": "unlocks",
+      "reason": "解禁明细：归档映射、内容比较及校验",
+      "role": "dataset",
+      "modules": [
+        "empire.plugins.datasets.unlocks"
+      ]
+    },
+    {
+      "owner": "unlocks",
+      "reason": "解禁明细：正式查询或准备读取实现",
+      "role": "query",
+      "modules": [
+        "empire.plugins.data.unlocks"
+      ]
+    },
+    {
+      "owner": "unlocks",
+      "reason": "解禁明细：采集生命周期、入队和归档确认",
+      "role": "collector",
+      "modules": [
+        "empire.plugins.collectors.tdx_unlocks"
+      ]
+    }
+  ],
+  "feature_layouts": [
+    {
+      "prefix": "empire.features.news",
+      "owner": "news",
+      "reason": "财经新闻业务包；新增其他职责须登记",
+      "roles": {
+        "contracts": "contract",
+        "contract": "contract",
+        "api": "api",
+        "query": "query",
+        "queries": "query",
+        "dataset": "dataset",
+        "datasets": "dataset",
+        "collector": "collector",
+        "collectors": "collector",
+        "source": "source_adapter",
+        "parsers": "parser",
+        "ui": "ui",
+        "registration": "composition"
+      }
+    },
+    {
+      "prefix": "empire.features.holders",
+      "owner": "holders",
+      "reason": "股东研究业务包；新增其他职责须登记",
+      "roles": {
+        "contracts": "contract",
+        "contract": "contract",
+        "api": "api",
+        "query": "query",
+        "queries": "query",
+        "dataset": "dataset",
+        "datasets": "dataset",
+        "collector": "collector",
+        "collectors": "collector",
+        "source": "source_adapter",
+        "parsers": "parser",
+        "ui": "ui",
+        "registration": "composition"
+      }
+    }
+  ],
+  "debt": [
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.collectors.tdx_unlock_industry_source",
+      "target": "empire.plugins.collectors.tdx_unlock_source",
+      "names": [
+        "PAGE",
+        "body",
+        "results"
+      ],
+      "line": 6,
+      "reason": "unlock_industries imports private unlocks parser；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.collectors.ths_index_prices",
+      "target": "empire.plugins.datasets.indices",
+      "names": [
+        "digest"
+      ],
+      "line": 21,
+      "reason": "index_prices imports private indices dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.collectors.ths_index_source",
+      "target": "empire.plugins.collectors.ths_industry_source",
+      "names": [
+        "Document",
+        "one"
+      ],
+      "line": 6,
+      "reason": "indices imports private industries parser；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.adjustment",
+      "target": "empire.plugins.data.trading_day_cutoff",
+      "names": [
+        "read_trade_day_cutoff"
+      ],
+      "line": 11,
+      "reason": "adjustment imports private calendar query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.adjustment",
+      "target": "empire.plugins.datasets.capital_actions",
+      "names": [
+        "digest"
+      ],
+      "line": 12,
+      "reason": "adjustment imports private capital_actions dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.adjustment_inputs",
+      "target": "empire.plugins.collectors.kaipanla_scope",
+      "names": [
+        "required_days"
+      ],
+      "line": 8,
+      "reason": "adjustment imports private kaipanla source_adapter；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.adjustment_inputs",
+      "target": "empire.plugins.data.capital_actions",
+      "names": [
+        "decode"
+      ],
+      "line": 9,
+      "reason": "adjustment imports private capital_actions query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.adjustment_inputs",
+      "target": "empire.plugins.datasets.capital_actions",
+      "names": [
+        "SCHEMA_VERSIONS",
+        "digest",
+        "ordered",
+        "unit_key",
+        "validate_rows"
+      ],
+      "line": 10,
+      "reason": "adjustment imports private capital_actions dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.adjustment_inputs",
+      "target": "empire.plugins.datasets.capital_archive",
+      "names": [
+        "chain"
+      ],
+      "line": 17,
+      "reason": "adjustment imports private capital_actions dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.calendar_preparation",
+      "target": "empire.plugins.data.preparation_checks",
+      "names": [
+        "audit_calendar",
+        "calendar_snapshot",
+        "freshness"
+      ],
+      "line": 6,
+      "reason": "calendar imports private preparation query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.index_prices",
+      "target": "empire.plugins.datasets.indices",
+      "names": [
+        "digest"
+      ],
+      "line": 27,
+      "reason": "index_prices imports private indices dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.kaipanla_scope",
+      "target": "empire.plugins.data.market_suspension_days",
+      "names": [
+        "excluded_days"
+      ],
+      "line": 7,
+      "reason": "kaipanla imports private suspensions query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.kaipanla_scope",
+      "target": "empire.plugins.data.preparation_checks",
+      "names": [
+        "audit_stocks"
+      ],
+      "line": 8,
+      "reason": "kaipanla imports private preparation query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.kaipanla_scope",
+      "target": "empire.plugins.data.trading_day_cutoff",
+      "names": [
+        "read_trade_day_cutoff"
+      ],
+      "line": 9,
+      "reason": "kaipanla imports private calendar query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.kaipanla_scope",
+      "target": "empire.plugins.datasets.stocks",
+      "names": [
+        "current_directory"
+      ],
+      "line": 10,
+      "reason": "kaipanla imports private stocks dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.preparation_checks",
+      "target": "empire.plugins.data.trading_day_cutoff",
+      "names": [
+        "coverage_as_of",
+        "read_trade_day_cutoff"
+      ],
+      "line": 14,
+      "reason": "preparation imports private calendar query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.preparation_checks",
+      "target": "empire.plugins.datasets.stocks",
+      "names": [
+        "current_directory"
+      ],
+      "line": 15,
+      "reason": "preparation imports private stocks dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.preparation_checks",
+      "target": "empire.plugins.datasets.suspensions",
+      "names": [
+        "FIRST_DATE"
+      ],
+      "line": 16,
+      "reason": "preparation imports private suspensions dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.preparation_checks",
+      "target": "empire.plugins.datasets.trade_calendar",
+      "names": [
+        "FIRST_DATE",
+        "month_dates",
+        "months_between"
+      ],
+      "line": 17,
+      "reason": "preparation imports private calendar dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.stocks",
+      "target": "empire.plugins.data.preparation_checks",
+      "names": [
+        "check_stocks"
+      ],
+      "line": 67,
+      "reason": "stocks imports private preparation query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.stocks",
+      "target": "empire.plugins.data.preview_candidates",
+      "names": [
+        "candidates"
+      ],
+      "line": 71,
+      "reason": "stocks imports private data_browser query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.data.suspensions",
+      "target": "empire.plugins.data.preparation_checks",
+      "names": [
+        "check_suspensions"
+      ],
+      "line": 147,
+      "reason": "suspensions imports private preparation query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.datasets.index_prices",
+      "target": "empire.plugins.datasets.indices",
+      "names": [
+        "digest"
+      ],
+      "line": 15,
+      "reason": "index_prices imports private indices dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "cross_business_private",
+      "source": "empire.plugins.infra.archive_confirmation",
+      "target": "empire.plugins.datasets.stocks",
+      "names": [
+        "FINGERPRINT_VERSION"
+      ],
+      "line": 8,
+      "reason": "infrastructure imports private stocks dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.data.kaipanla_products",
+      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS",
+        "capability",
+        "project"
+      ],
+      "line": 16,
+      "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.data.kaipanla_products_preparation",
+      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS"
+      ],
+      "line": 6,
+      "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.data.preview_candidates",
+      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS"
+      ],
+      "line": 21,
+      "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.datasets.astock",
+      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS"
+      ],
+      "line": 22,
+      "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.datasets.kaipanla_products",
+      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS",
+        "project"
+      ],
+      "line": 7,
+      "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.datasets.market_mapping",
+      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS"
+      ],
+      "line": 14,
+      "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.datasets.security_aliases",
+      "target": "empire.plugins.collectors.bse_code_mapping_source",
+      "names": [
+        "URL",
+        "validate"
+      ],
+      "line": 9,
+      "reason": "parser is source-local, not execution: 北交所映射HTML解析与校验；没有HTTP请求执行；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.ui.kaipanla_products",
+      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "PRODUCTS",
+        "capability",
+        "project"
+      ],
+      "line": 23,
+      "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.ui.kaipanla_quote_page",
+      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "capability"
+      ],
+      "line": 6,
+      "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "misplaced_source_contract",
+      "source": "empire.plugins.ui.product_dates",
+      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "names": [
+        "capability"
+      ],
+      "line": 6,
+      "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.collectors.tdx_capital_source",
+      "target": "empire.plugins.collectors.tdx_dividend_periods",
+      "names": [
+        "parse_period"
+      ],
+      "line": 45,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.collectors.tdx_dividend_discovery",
+      "target": "empire.plugins.collectors.tdx_capital_source",
+      "names": [
+        "PAGE_URL",
+        "result_set"
+      ],
+      "line": 11,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.collectors.tdx_dividend_periods",
+      "target": "empire.plugins.collectors.tdx_capital_source",
+      "names": [
+        "PAGE_URL",
+        "complete_response"
+      ],
+      "line": 97,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.collectors.tdx_dividend_periods",
+      "target": "empire.plugins.collectors.tdx_dividend_discovery",
+      "names": [
+        "discover"
+      ],
+      "line": 133,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.data.listing_status",
+      "target": "empire.plugins.data.listing_status_checks",
+      "names": [
+        "check"
+      ],
+      "line": 127,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.data.listing_status_checks",
+      "target": "empire.plugins.data.listing_status",
+      "names": [
+        "valid_proof"
+      ],
+      "line": 18,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.datasets.capital_actions",
+      "target": "empire.plugins.datasets.issue_detail",
+      "names": [
+        "validate"
+      ],
+      "line": 152,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.datasets.issue_detail",
+      "target": "empire.plugins.datasets.capital_actions",
+      "names": [
+        "TdxSourceError",
+        "day",
+        "number"
+      ],
+      "line": 4,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.datasets.kaipanla_products",
+      "target": "empire.plugins.datasets.market_repository",
+      "names": [
+        "write_day"
+      ],
+      "line": 11,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.datasets.market_repository",
+      "target": "empire.plugins.datasets.kaipanla_products",
+      "names": [
+        "business_content",
+        "digest",
+        "point_count",
+        "validate"
+      ],
+      "line": 28,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.ui.kaipanla_products",
+      "target": "empire.plugins.ui.kaipanla_quote_page",
+      "names": [
+        "QuotePage"
+      ],
+      "line": 242,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "module_cycle",
+      "source": "empire.plugins.ui.kaipanla_quote_page",
+      "target": "empire.plugins.ui.kaipanla_products",
+      "names": [
+        "ProductPage"
+      ],
+      "line": 7,
+      "reason": "Static import cycle; includes deferred/type-only imports；既有静态模块循环（含函数内延迟导入），登记确切边及符号；后续按业务拆职责，当前不声称运行时已出故障。"
+    },
+    {
+      "rule": "reader_to_execution",
+      "source": "empire.plugins.data.adjustment_inputs",
+      "target": "empire.plugins.collectors.kaipanla_scope",
+      "names": [
+        "required_days"
+      ],
+      "line": 8,
+      "reason": "query imports source_adapter: required_days 是纯范围计算，但同模块还实现上市目录下载和预取；既有读取层只复用所列纯函数，却导入含下载/采集执行的整个模块；后续提取无I/O业务契约，当前不改行为。"
+    },
+    {
+      "rule": "reader_to_execution",
+      "source": "empire.plugins.data.financial_preparation",
+      "target": "empire.plugins.collectors.ths_statements",
+      "names": [
+        "chain"
+      ],
+      "line": 9,
+      "reason": "query imports collector: chain 是纯摘要函数，但同模块定义财报采集器、下载和入队生命周期；既有读取层只复用所列纯函数，却导入含下载/采集执行的整个模块；后续提取无I/O业务契约，当前不改行为。"
+    },
+    {
+      "rule": "reader_to_execution",
+      "source": "empire.plugins.data.kaipanla_products_preparation",
+      "target": "empire.plugins.collectors.kaipanla_scope",
+      "names": [
+        "required_days"
+      ],
+      "line": 7,
+      "reason": "query imports source_adapter: required_days 是纯范围计算，但同模块还实现上市目录下载和预取；既有读取层只复用所列纯函数，却导入含下载/采集执行的整个模块；后续提取无I/O业务契约，当前不改行为。"
+    },
+    {
+      "rule": "reader_to_execution",
+      "source": "empire.plugins.datasets.intraday",
+      "target": "empire.plugins.collectors.kaipanla_alias",
+      "names": [
+        "validate_proof"
+      ],
+      "line": 9,
+      "reason": "dataset imports source_adapter: 开盘啦七类历史产品：来源模块包含下载/会话/生命周期执行；既有读取层只复用所列纯函数，却导入含下载/采集执行的整个模块；后续提取无I/O业务契约，当前不改行为。"
+    },
+    {
+      "rule": "reader_to_execution",
+      "source": "empire.plugins.datasets.intraday",
+      "target": "empire.plugins.collectors.kaipanla_source",
+      "names": [
+        "combine_day",
+        "parse_response"
+      ],
+      "line": 10,
+      "reason": "dataset imports source_adapter: 开盘啦七类历史产品：来源模块包含下载/会话/生命周期执行；既有读取层只复用所列纯函数，却导入含下载/采集执行的整个模块；后续提取无I/O业务契约，当前不改行为。"
+    },
+    {
+      "rule": "reader_to_execution",
+      "source": "empire.plugins.datasets.kaipanla_products",
+      "target": "empire.plugins.collectors.kaipanla_products_source",
+      "names": [
+        "parse"
+      ],
+      "line": 8,
+      "reason": "dataset imports source_adapter: 开盘啦七类历史产品：来源模块包含下载/会话/生命周期执行；既有读取层只复用所列纯函数，却导入含下载/采集执行的整个模块；后续提取无I/O业务契约，当前不改行为。"
+    }
+  ],
+  "limitations": [
+    "只分析 src/empire 的静态 import/from（含函数内及 TYPE_CHECKING）；不执行代码，不构建调用图。",
+    "识别 importlib.import_module/__import__ 及其直接导入别名：字面量内部模块纳入同一图，非字面量和相对动态导入拒绝；反射、间接函数转发及能力字符串不属于本检查的证明。",
+    "职责、业务归属及公开接口来自人工审阅的静态清单；改清单仍须审阅，目录名不能证明采集执行。",
+    "循环是保守静态模块环，可能含延迟导入，不等于运行时故障；按环内确切边登记，新增边不能靠旧环豁免。",
+    "债务可减少；检查命令不自动刷新豁免。基线不证明运行行为、数据或插件ID等价。",
+    "跨业务私有依赖按目标业务归属及 contract/api 或明确 public_symbols 判断；共享基础设施内部接口完整封装不属于本轮。"
+  ],
+  "baseline": {
+    "date": "2026-10-19",
+    "module_count": 322,
+    "import_count": 1295,
+    "collector_boundary_count": 16,
+    "note": "仅记录实施前既有源码债务；诊断新增路径不能据此获得历史豁免。检查不刷新此基线。"
+  }
+}
