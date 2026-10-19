@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-19T03:04:29.157850+00:00",
-  "note": "首批真实发布入口复核：修正Windows PowerShell无同名进程时的退出码，增加真实空闲/活动副本拒绝/正常退出回归；既有发布恢复和用户操作说明保持有效。",
-  "unchanged_reason": "仅修复发布前空闲进程检查的误拒绝，未改变程序任务、页面、数据库或诊断的用户契约。",
+  "reviewed_at": "2026-10-19T03:58:21.199232+00:00",
+  "note": "最终补修审阅：十一字段清单真实writer/reader、包内真实声明和打包前拒绝非法身份回归已完整；用户说明同步版本提示和故障恢复，发布指南同步输出日志及验收边界，保留上一轮真实桌面失败事实。",
+  "unchanged_reason": "来源解析、业务查询内容、任务生命周期、数据库结构和保存策略不变；共享修改仅涉及发布身份及输出处理。",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -80,11 +80,11 @@
     "scripts/migrate_suspension_identity.py": "593b7e6f0414069ad6cd8b449a0afd1fa76ff33baa5cd0ec067066a1cb20894a",
     "scripts/mysql_recovery_inventory.py": "5232ea7b8738949174e30a8a6ac5d59f2e5e3f2122a52d109503e80ef2042e77",
     "scripts/preparation_evidence.py": "93d6a253ced4fef14d6ecec073c4f26015a8e127dd576f4beb6f347224af37d3",
-    "scripts/release.py": "d19c297ff8c721ab29b1ae2cff6b0538177230c06788154e14ad4b76b4eb9973",
+    "scripts/release.py": "bf87d4938fb85622f7328f9ca9c2007212f352303d81fece473a1f727cb10e58",
     "scripts/release_identity.py": "0f58e95eafbcddec51f52bafc2b62c9bd6d35ae52aa9aff4be3a7c0568f554ce",
     "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
     "scripts/release_publish.py": "23932c7bdc3d05b3ba3ac449ac30afa9d21e9183d3fd64aaa94e87e23988520a",
-    "scripts/release_steps.py": "5f7a06562080df3af3a87104d26e097ed217f1e2425e75c19347211639b00416",
+    "scripts/release_steps.py": "a486c5a464dfd1f05101b2babfa1dc89c352a531f1161a77742c2860d86a34b2",
     "scripts/scan_preparation.py": "9f36428b983023db6fc5a20454fddf5866179745e8941a1f3eee96edabe6f4bb",
     "scripts/verify_database_design.py": "17c14cee5a427aa3cea3422610603a0e10c84f2045ac4dc6069b838746fdcafc",
     "scripts/verify_documentation.py": "71dbfdd1365391be2dd5dacd76f6e86fcbac0fe34233cf1be84b4537b4d73d92",
@@ -110,9 +110,9 @@
     "sql/legacy/market-day-v1.sql": "8c33fd5cdb741c850c0cf6d6ba5b1abae4341019ac98a80759938baf8112cd78",
     "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
     "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
-    "src/empire/__main__.py": "c739c9f7bda32f4e253ac595a48d4849406313cab3d0c207c5545698ed6be437",
+    "src/empire/__main__.py": "69d8c232e84dfe247802896bedd952f4d5531cd2786ae3603f48e1c8dbc12cec",
     "src/empire/bootstrap.py": "761f4cd6192f43962d90e8192c7ee2d84b68aa6cfece39d79a30ea8d436bf82a",
-    "src/empire/build_info.py": "beac8f6c25236dce13e1ecb6e18c067324edcad095cece72ae8e3d46bb145ff7",
+    "src/empire/build_info.py": "9ab97cede2b535273ee95e86f25dda536da348a114cbb681d2dca93fbfc75c42",
     "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
     "src/empire/contracts/adjustment.py": "3d9cfdfebb19a99eab214cb8bf1459189bf3b727f72798070dd4cb0addf5fe19",
     "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -435,7 +435,7 @@
     "src/empire/plugins/ui/unlocks.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
     "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
   },
-  "content_sha256": "acb344e5bd15d243fe7a9a4a9da71d94e08944aa943fc850c96160a2b9ef519c",
+  "content_sha256": "1a46cae0ca054f1c178f9f64ec6fa8cc9de976ee1af66fca9d0969c38b0cc41a",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -1413,7 +1413,7 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/system.py": "1d985986e30d1bfa74e44bbce396b78153c9d659e72c344561c8cdda505e99b7"
       },
-      "content_sha256": "b7a4d022d136eddd1c64b87c6711d9003161ff473dfd4ecf9e0b703102342936"
+      "content_sha256": "fa5b933ed833bb7bd52505413b41b263485ead66b581a0283ee6e74b1c486cdd"
     },
     "page:plugins": {
       "sources": {
@@ -1425,7 +1425,7 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/system.py": "1d985986e30d1bfa74e44bbce396b78153c9d659e72c344561c8cdda505e99b7"
       },
-      "content_sha256": "6af13a1887ac196142545e073cf190ede931555ccdb002a15d55b0828014cbcc"
+      "content_sha256": "1ab792a685e6b207ad53d4fe07bfb0ff22e3c46debc33f5930447059852f5087"
     },
     "page:help": {
       "sources": {

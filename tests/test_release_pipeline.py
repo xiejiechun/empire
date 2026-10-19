@@ -76,35 +76,70 @@ def test_second_owner_rejected_and_cancel_releases_only_own_handle(tmp_path):
         pass
 
 
-def test_child_retains_ownership_when_parent_lock_scope_exits(tmp_path):
+@pytest.mark.parametrize('explicit_stdio', [False, True])
+def test_child_retains_ownership_when_parent_lock_scope_exits(tmp_path, explicit_stdio):
     stop = tmp_path / 'stop'
-    code = ('import sys,time; from pathlib import Path; p=Path(sys.argv[1]); '
-            'deadline=time.monotonic()+15\nwhile not p.exists() and time.monotonic()<deadline: time.sleep(.02)')
+    code = (
+        "import os,sys,time; from pathlib import Path\n"
+        "p=Path(sys.argv[1]); deadline=time.monotonic()+15\n"
+        "if sys.argv[2]=='1': os.write(1,b'child stdout|'); os.write(2,b'child stderr|')\n"
+        "while not p.exists() and time.monotonic()<deadline: time.sleep(.02)\n"
+    )
+    stdio = dict(stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                 stderr=subprocess.STDOUT, bufsize=0) if explicit_stdio else {}
     with ReleaseLock(tmp_path) as lock:
-        child = subprocess.Popen([sys.executable, '-c', code, str(stop)], **lock.child_options())
+        child = subprocess.Popen([sys.executable, '-c', code, str(stop), str(int(explicit_stdio))],
+                                 **stdio, **lock.child_options())
     try:
         with pytest.raises(RuntimeError, match='owns the workspace'):
             with ReleaseLock(tmp_path):
                 pass
     finally:
         stop.touch()
-        child.wait(timeout=20)
+        output, _ = child.communicate(timeout=20)
+    if explicit_stdio:
+        assert output == b'child stdout|child stderr|'
+    assert child.returncode == 0
     with ReleaseLock(tmp_path):
         pass
 
 
-def test_abrupt_parent_exit_cannot_release_live_child_ownership(tmp_path):
-    code = '''
+@pytest.mark.parametrize('explicit_stdio', [False, True])
+def test_abrupt_parent_exit_cannot_release_live_child_ownership(tmp_path, explicit_stdio):
+    code = r'''
 import os,subprocess,sys
 from pathlib import Path
 from scripts.release_lock import ReleaseLock
-child="import sys,time; from pathlib import Path; p=Path(sys.argv[1]); end=time.monotonic()+15\\nwhile not p.exists() and time.monotonic()<end: time.sleep(.02)"
+explicit = sys.argv[2] == '1'
+child = (
+    "import os,sys,time; from pathlib import Path\n"
+    "p=Path(sys.argv[1]); end=time.monotonic()+15\n"
+    "if sys.argv[2]=='1': os.write(1,b'child stdout|'); os.write(2,b'child stderr|')\n"
+    "while not p.exists() and time.monotonic()<end: time.sleep(.02)\n"
+)
+stdio = dict(stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+             stderr=subprocess.STDOUT, bufsize=0) if explicit else {}
 with ReleaseLock(Path(sys.argv[1])) as lock:
-    subprocess.Popen([sys.executable,'-c',child,str(Path(sys.argv[1])/'stop')], **lock.child_options())
+    process = subprocess.Popen(
+        [sys.executable,'-c',child,str(Path(sys.argv[1])/'stop'),sys.argv[2]],
+        **stdio, **lock.child_options())
+    if explicit:
+        expected = b'child stdout|child stderr|'
+        received = b''
+        while len(received) < len(expected):
+            chunk = process.stdout.read(len(expected) - len(received))
+            if not chunk:
+                raise RuntimeError('Child output ended before both stream markers')
+            received += chunk
+        if received != expected:
+            raise RuntimeError('Child output markers differ')
+        (Path(sys.argv[1]) / 'child-output.bin').write_bytes(received)
     os._exit(0)
 '''
-    subprocess.run([sys.executable, '-c', code, str(tmp_path)], check=True,
-                   cwd=Path(__file__).resolve().parents[1])
+    subprocess.run([sys.executable, '-c', code, str(tmp_path), str(int(explicit_stdio))],
+                   check=True, timeout=20, cwd=Path(__file__).resolve().parents[1])
+    if explicit_stdio:
+        assert (tmp_path / 'child-output.bin').read_bytes() == b'child stdout|child stderr|'
     try:
         with pytest.raises(RuntimeError, match='owns the workspace'):
             with ReleaseLock(tmp_path):

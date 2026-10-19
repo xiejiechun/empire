@@ -5,6 +5,7 @@ param(
     [Parameter(Mandatory=$true)][string]$WorkingDirectory
 )
 $ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 if (Test-Path -LiteralPath $Candidate) { throw 'Shortcut candidate already exists.' }
 $shell = New-Object -ComObject WScript.Shell
 if (Test-Path -LiteralPath $Existing) {

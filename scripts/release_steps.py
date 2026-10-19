@@ -49,6 +49,7 @@ def verify(runner):
 def package(runner, publication, dependency):
     root, run = runner.root, runner.run_directory
     from empire import __version__
+    from empire.build_info import load_build_info
     dependencies = json.loads(dependency.read_text(encoding='utf-8'))
     requirements = sha256(root / 'requirements.lock')
     if dependencies['requirements_sha256'] != requirements:
@@ -64,6 +65,10 @@ def package(runner, publication, dependency):
         raise RuntimeError('Release requires Python 3.12.x and PyInstaller 6.22.3')
     manifest_path = root / 'build/generated/build_manifest.json'
     write_json(manifest_path, manifest)
+    # Exercise the runtime reader before building: matching embedded bytes alone
+    # does not prove that the running application's manifest contract accepts them.
+    if load_build_info(manifest_path) != {**manifest, 'packaged': True}:
+        raise RuntimeError('Runtime build identity differs from the release manifest')
     runner.evidence[manifest_path.relative_to(root).as_posix()] = sha256(manifest_path)
     system = os.environ.get('SystemRoot', r'C:\Windows')
     clean_path = os.pathsep.join((str(root / '.venv/Scripts'), sys.base_prefix,

@@ -142,8 +142,26 @@ def run_gui(cfg: dict, screenshot: str | None = None, smoke_seconds: int = 0) ->
         lock.unlock()
 
 
+def package_declarations():
+    """Exercise real packaged constructors without starting services or pages."""
+    import tomllib
+
+    from empire.bootstrap import build_manager
+    from empire.build_info import build_summary
+    from empire.core.config import resource_root
+
+    build_summary()
+    cfg = tomllib.loads((resource_root() / 'config/app.example.toml').read_text(encoding='utf-8'))
+    manager = build_manager(cfg)
+    if manager.registry.values or any(entry.context or entry.state != 'STOPPED'
+                                      for entry in manager.entries.values()):
+        raise RuntimeError('Packaged declaration check unexpectedly started services')
+    return manager
+
+
 def package_smoke(screenshot: str | None = None) -> int:
     """Exercise the packaged Qt shell without connecting to Redis or MySQL."""
+    package_declarations()
     import threading
     from concurrent.futures import Future
 
