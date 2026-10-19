@@ -2,7 +2,9 @@
 import json
 from datetime import date, timedelta
 
-from empire.contracts.market_storage import (
+from empire.features.kaipanla.canonical import digest
+from empire.features.kaipanla.contract import PRODUCTS
+from empire.features.kaipanla.storage_contract import (
     BOOK_EXTRAS,
     EXTRAS,
     LAYOUT_VERSION,
@@ -11,8 +13,6 @@ from empire.contracts.market_storage import (
     numeric_values,
     restore_values,
 )
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
-from empire.plugins.datasets.intraday import digest
 
 
 def wire(value):
@@ -59,7 +59,7 @@ def encode(row, checksum, observed):
             raise ValueError('来源附加字段未经存储契约登记')
         head['product_extra'] = wire({k: v for k, v in data.items() if k != field})
         if kind == 'trades':
-            from empire.plugins.datasets.trade_blocks import pack
+            from empire.features.kaipanla.trade_blocks import pack
             records = pack(data[field], params)
         else:
             records = []
@@ -98,7 +98,7 @@ def decode(head, facts):
         table, columns = SERIES[kind]
         records = facts[table]
         if kind == 'trades':
-            from empire.plugins.datasets.trade_blocks import unpack
+            from empire.features.kaipanla.trade_blocks import unpack
             if [b['block_seq'] for b in records] != list(range((head['point_count']+199)//200)):
                 raise ValueError('分笔块序号集合不完整')
             if any(b['point_count'] != min(200, head['point_count']-b['first_seq']) for b in records):

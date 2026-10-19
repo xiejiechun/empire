@@ -1,0 +1,973 @@
+{
+  "checked_at": "2026-10-19T21:27:10.961007+00:00",
+  "report_path": "build\\architecture-e4-20261020\\source-verified.json",
+  "report_sha256": "f56d29af12d2605d7ed497be748ba5f68827e28f381cc27cec101de87dd8c754",
+  "run_id": "4174e6be6c374359aa30d7ddfac55e17",
+  "source_sha256": "af600a2c6d11d3c2236197d1b60b8a749cc0b7546a17c8259505488bc9d84c5f",
+  "seed": 20261020,
+  "pool_count": 5579,
+  "pool_digest": "e0baacb3eb87cfb3794cde1264d18246d10000fa95c4e105f88bbfd98b7e8c4f",
+  "random": [
+    "601515.SH",
+    "920174.BJ",
+    "301159.SZ",
+    "300266.SZ",
+    "603073.SH",
+    "001369.SZ",
+    "920161.BJ",
+    "603210.SH",
+    "002146.SZ",
+    "002729.SZ",
+    "000766.SZ",
+    "301238.SZ",
+    "603351.SH",
+    "300188.SZ",
+    "002003.SZ",
+    "300564.SZ",
+    "600782.SH",
+    "002216.SZ",
+    "605255.SH",
+    "300358.SZ",
+    "688712.SH",
+    "920665.BJ",
+    "603683.SH",
+    "300276.SZ",
+    "002786.SZ",
+    "001202.SZ",
+    "000862.SZ",
+    "002827.SZ",
+    "002422.SZ",
+    "300766.SZ"
+  ],
+  "fixed": [
+    "002731.SZ",
+    "920112.BJ",
+    "920175.BJ",
+    "920304.BJ",
+    "605333.SH"
+  ],
+  "selected": [
+    "920112.BJ",
+    "920161.BJ",
+    "920174.BJ",
+    "920175.BJ",
+    "920304.BJ",
+    "920665.BJ",
+    "600782.SH",
+    "601515.SH",
+    "603073.SH",
+    "603210.SH",
+    "603351.SH",
+    "603683.SH",
+    "605255.SH",
+    "605333.SH",
+    "688712.SH",
+    "000766.SZ",
+    "000862.SZ",
+    "001202.SZ",
+    "001369.SZ",
+    "002003.SZ",
+    "002146.SZ",
+    "002216.SZ",
+    "002422.SZ",
+    "002729.SZ",
+    "002731.SZ",
+    "002786.SZ",
+    "002827.SZ",
+    "300188.SZ",
+    "300266.SZ",
+    "300276.SZ",
+    "300358.SZ",
+    "300564.SZ",
+    "300766.SZ",
+    "301159.SZ",
+    "301238.SZ"
+  ],
+  "selection_exactly_matches_source2": true,
+  "pipeline_verified": true,
+  "acceptance_complete": false,
+  "strict_proxy_verified": true,
+  "sample_30_met": false,
+  "strict_passed": false,
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  },
+  "routes": {
+    "proxy_requests": 519
+  },
+  "unit_observations": 350,
+  "distinct_expected_units": 315,
+  "distinct_valid_units": 269,
+  "distinct_failed_units": 46,
+  "per_scope": {
+    "trend/random_and_fixed": {
+      "expected": 35,
+      "valid": 34,
+      "failures": {
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": true,
+      "random_failed_codes": [],
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 47
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "3863552de42be286aadc3adcf4f2e547a7b7e59bfe6a79a75208800bf5b80e62",
+        "batch_id": "75807e52f1b747d3a2de6ae1d047f71c",
+        "index": 24,
+        "pages": 34,
+        "collected": 8194,
+        "started_at": "2026-10-19T21:18:43.717889+00:00",
+        "start_date": "2026-09-30",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 24,
+          "market": "SZ",
+          "code": "002731",
+          "trade_date": "2026-09-30",
+          "error": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "failed_units": 1,
+        "unlisted_without_date": 0
+      }
+    },
+    "trend/historical_fixed": {
+      "expected": 15,
+      "valid": 12,
+      "failures": {
+        "002731.SZ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "002731.SZ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": true,
+      "random_failed_codes": null,
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 27
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "0a8799b94363801731c56afaea921bd67fc427cc854a06e0929ae514e70d5d6e",
+        "batch_id": "6ff43117333241bfa6c69cc5240c46e2",
+        "index": 12,
+        "pages": 12,
+        "collected": 2892,
+        "started_at": "2026-10-19T21:19:25.539126+00:00",
+        "start_date": "2026-09-28",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 12,
+          "market": "SZ",
+          "code": "002731",
+          "trade_date": "2026-09-28",
+          "error": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "failed_units": 3,
+        "unlisted_without_date": 0
+      }
+    },
+    "auction/random_and_fixed": {
+      "expected": 35,
+      "valid": 31,
+      "failures": {
+        "920161.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "920304.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "920665.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": false,
+      "random_failed_codes": [
+        "920161.BJ",
+        "920665.BJ"
+      ],
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 47
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "3863552de42be286aadc3adcf4f2e547a7b7e59bfe6a79a75208800bf5b80e62",
+        "batch_id": "ace212e000f6449d83fdf79b7566def7",
+        "index": 1,
+        "pages": 31,
+        "collected": 941,
+        "started_at": "2026-10-19T21:19:56.190875+00:00",
+        "start_date": "2026-09-30",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 1,
+          "market": "BJ",
+          "code": "920161",
+          "trade_date": "2026-09-30",
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "failed_units": 4,
+        "unlisted_without_date": 0
+      }
+    },
+    "auction/historical_fixed": {
+      "expected": 15,
+      "valid": 9,
+      "failures": {
+        "920112.BJ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "920175.BJ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "920304.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "002731.SZ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "002731.SZ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": false,
+      "random_failed_codes": null,
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 27
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "0a8799b94363801731c56afaea921bd67fc427cc854a06e0929ae514e70d5d6e",
+        "batch_id": "a3cf4a65b3264d17bf822f5ccfa75431",
+        "index": 1,
+        "pages": 9,
+        "collected": 116,
+        "started_at": "2026-10-19T21:20:37.621741+00:00",
+        "start_date": "2026-09-28",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 1,
+          "market": "BJ",
+          "code": "920112",
+          "trade_date": "2026-09-29",
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+        },
+        "failed_units": 6,
+        "unlisted_without_date": 0
+      }
+    },
+    "volume/random_and_fixed": {
+      "expected": 35,
+      "valid": 34,
+      "failures": {
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": true,
+      "random_failed_codes": [],
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 47
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "3863552de42be286aadc3adcf4f2e547a7b7e59bfe6a79a75208800bf5b80e62",
+        "batch_id": "6852ed2ee02c4ad985a56d7a814717ac",
+        "index": 24,
+        "pages": 34,
+        "collected": 8194,
+        "started_at": "2026-10-19T21:21:07.418813+00:00",
+        "start_date": "2026-09-30",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 24,
+          "market": "SZ",
+          "code": "002731",
+          "trade_date": "2026-09-30",
+          "error": "开盘啦接口未成功，不能证明空日"
+        },
+        "failed_units": 1,
+        "unlisted_without_date": 0
+      }
+    },
+    "volume/historical_fixed": {
+      "expected": 15,
+      "valid": 12,
+      "failures": {
+        "002731.SZ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": true,
+      "random_failed_codes": null,
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 27
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "0a8799b94363801731c56afaea921bd67fc427cc854a06e0929ae514e70d5d6e",
+        "batch_id": "b4216d7730b4402a9059a7ca685a7478",
+        "index": 12,
+        "pages": 12,
+        "collected": 2892,
+        "started_at": "2026-10-19T21:21:49.816361+00:00",
+        "start_date": "2026-09-28",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 12,
+          "market": "SZ",
+          "code": "002731",
+          "trade_date": "2026-09-28",
+          "error": "开盘啦接口未成功，不能证明空日"
+        },
+        "failed_units": 3,
+        "unlisted_without_date": 0
+      }
+    },
+    "trades/random_and_fixed": {
+      "expected": 35,
+      "valid": 34,
+      "failures": {
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": true,
+      "random_failed_codes": [],
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 47
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "3863552de42be286aadc3adcf4f2e547a7b7e59bfe6a79a75208800bf5b80e62",
+        "batch_id": "aeb4e4f3b8fa4b54928d2e72196efef8",
+        "index": 24,
+        "pages": 34,
+        "collected": 67223,
+        "started_at": "2026-10-19T21:22:20.306071+00:00",
+        "start_date": "2026-09-30",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 24,
+          "market": "SZ",
+          "code": "002731",
+          "trade_date": "2026-09-30",
+          "error": "开盘啦接口未成功，不能证明空日"
+        },
+        "failed_units": 1,
+        "unlisted_without_date": 0
+      }
+    },
+    "trades/historical_fixed": {
+      "expected": 15,
+      "valid": 12,
+      "failures": {
+        "002731.SZ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": true,
+      "random_failed_codes": null,
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 27
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "0a8799b94363801731c56afaea921bd67fc427cc854a06e0929ae514e70d5d6e",
+        "batch_id": "c590884ef25040f9bb865897941b7fc5",
+        "index": 12,
+        "pages": 12,
+        "collected": 7992,
+        "started_at": "2026-10-19T21:23:04.317359+00:00",
+        "start_date": "2026-09-28",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 12,
+          "market": "SZ",
+          "code": "002731",
+          "trade_date": "2026-09-28",
+          "error": "开盘啦接口未成功，不能证明空日"
+        },
+        "failed_units": 3,
+        "unlisted_without_date": 0
+      }
+    },
+    "entrust/random_and_fixed": {
+      "expected": 35,
+      "valid": 27,
+      "failures": {
+        "603073.SH/2026-09-30": {
+          "type": "SourceError",
+          "category": "minute_gap",
+          "message": "分钟键集合缺失、重复或跨时段"
+        },
+        "603210.SH/2026-09-30": {
+          "type": "SourceError",
+          "category": "minute_gap",
+          "message": "分钟键集合缺失、重复或跨时段"
+        },
+        "605255.SH/2026-09-30": {
+          "type": "SourceError",
+          "category": "minute_gap",
+          "message": "分钟键集合缺失、重复或跨时段"
+        },
+        "688712.SH/2026-09-30": {
+          "type": "SourceError",
+          "category": "minute_gap",
+          "message": "分钟键集合缺失、重复或跨时段"
+        },
+        "001202.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "minute_gap",
+          "message": "分钟键集合缺失、重复或跨时段"
+        },
+        "002216.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "minute_gap",
+          "message": "分钟键集合缺失、重复或跨时段"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "300564.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "minute_gap",
+          "message": "分钟键集合缺失、重复或跨时段"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": false,
+      "random_failed_codes": [
+        "603073.SH",
+        "603210.SH",
+        "300564.SZ",
+        "002216.SZ",
+        "605255.SH",
+        "688712.SH",
+        "001202.SZ"
+      ],
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 48
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "3863552de42be286aadc3adcf4f2e547a7b7e59bfe6a79a75208800bf5b80e62",
+        "batch_id": "3a090ae174434a0b818c6ea933ae9613",
+        "index": 8,
+        "pages": 27,
+        "collected": 6507,
+        "started_at": "2026-10-19T21:23:54.071468+00:00",
+        "start_date": "2026-09-30",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 8,
+          "market": "SH",
+          "code": "603073",
+          "trade_date": "2026-09-30",
+          "error": "分钟键集合缺失、重复或跨时段"
+        },
+        "failed_units": 8,
+        "unlisted_without_date": 0
+      }
+    },
+    "entrust/historical_fixed": {
+      "expected": 15,
+      "valid": 11,
+      "failures": {
+        "605333.SH/2026-09-28": {
+          "type": "SourceError",
+          "category": "minute_gap",
+          "message": "分钟键集合缺失、重复或跨时段"
+        },
+        "002731.SZ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": false,
+      "random_failed_codes": null,
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 27
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "0a8799b94363801731c56afaea921bd67fc427cc854a06e0929ae514e70d5d6e",
+        "batch_id": "928641e453d7467399f28c0fdad58f6e",
+        "index": 9,
+        "pages": 11,
+        "collected": 2651,
+        "started_at": "2026-10-19T21:24:35.485073+00:00",
+        "start_date": "2026-09-28",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 9,
+          "market": "SH",
+          "code": "605333",
+          "trade_date": "2026-09-28",
+          "error": "分钟键集合缺失、重复或跨时段"
+        },
+        "failed_units": 4,
+        "unlisted_without_date": 0
+      }
+    },
+    "large_order/random_and_fixed": {
+      "expected": 35,
+      "valid": 28,
+      "failures": {
+        "920112.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920161.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920174.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920175.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920304.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920665.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": false,
+      "random_failed_codes": [
+        "920174.BJ",
+        "920161.BJ",
+        "920665.BJ"
+      ],
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 47
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "3863552de42be286aadc3adcf4f2e547a7b7e59bfe6a79a75208800bf5b80e62",
+        "batch_id": "c4598570196443edb1f95b0db5433681",
+        "index": 0,
+        "pages": 28,
+        "collected": 6748,
+        "started_at": "2026-10-19T21:25:05.081626+00:00",
+        "start_date": "2026-09-30",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 0,
+          "market": "BJ",
+          "code": "920112",
+          "trade_date": "2026-09-30",
+          "error": "开盘啦接口未成功，不能证明空日"
+        },
+        "failed_units": 7,
+        "unlisted_without_date": 0
+      }
+    },
+    "large_order/historical_fixed": {
+      "expected": 15,
+      "valid": 3,
+      "failures": {
+        "920112.BJ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920112.BJ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920112.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920175.BJ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920175.BJ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920175.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920304.BJ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920304.BJ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "920304.BJ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": false,
+      "random_failed_codes": null,
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 27
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "0a8799b94363801731c56afaea921bd67fc427cc854a06e0929ae514e70d5d6e",
+        "batch_id": "fc537a2dd76545fcbd3098faee50df42",
+        "index": 0,
+        "pages": 3,
+        "collected": 723,
+        "started_at": "2026-10-19T21:25:46.809113+00:00",
+        "start_date": "2026-09-28",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 0,
+          "market": "BJ",
+          "code": "920112",
+          "trade_date": "2026-09-28",
+          "error": "开盘啦接口未成功，不能证明空日"
+        },
+        "failed_units": 12,
+        "unlisted_without_date": 0
+      }
+    },
+    "quote/random_and_fixed": {
+      "expected": 35,
+      "valid": 34,
+      "failures": {
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": true,
+      "random_failed_codes": [],
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 47
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "3863552de42be286aadc3adcf4f2e547a7b7e59bfe6a79a75208800bf5b80e62",
+        "batch_id": "5fc30a78fd774cfda10ea8aae93efc5e",
+        "index": 24,
+        "pages": 34,
+        "collected": 34,
+        "started_at": "2026-10-19T21:26:17.004697+00:00",
+        "start_date": "2026-09-30",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 24,
+          "market": "SZ",
+          "code": "002731",
+          "trade_date": "2026-09-30",
+          "error": "开盘啦接口未成功，不能证明空日"
+        },
+        "failed_units": 1,
+        "unlisted_without_date": 0
+      }
+    },
+    "quote/historical_fixed": {
+      "expected": 15,
+      "valid": 12,
+      "failures": {
+        "002731.SZ/2026-09-28": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-29": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        },
+        "002731.SZ/2026-09-30": {
+          "type": "SourceError",
+          "category": "source_request",
+          "message": "开盘啦接口未成功，不能证明空日"
+        }
+      },
+      "pipeline_verified": true,
+      "acceptance_complete": false,
+      "random_samples_complete": true,
+      "random_failed_codes": null,
+      "pending": 0,
+      "routes": {
+        "proxy_requests": 27
+      },
+      "cursor": {
+        "phase": "collecting",
+        "scope": "0a8799b94363801731c56afaea921bd67fc427cc854a06e0929ae514e70d5d6e",
+        "batch_id": "1a9c7f04d0424c60a63ffe3b6a5d4e0b",
+        "index": 12,
+        "pages": 12,
+        "collected": 12,
+        "started_at": "2026-10-19T21:26:58.520626+00:00",
+        "start_date": "2026-09-28",
+        "end_date": "2026-09-30",
+        "last_review": null,
+        "review_token": "[REDACTED]",
+        "review_days": [
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30"
+        ],
+        "first_gap": {
+          "index": 12,
+          "market": "SZ",
+          "code": "002731",
+          "trade_date": "2026-09-28",
+          "error": "开盘啦接口未成功，不能证明空日"
+        },
+        "failed_units": 3,
+        "unlisted_without_date": 0
+      }
+    }
+  }
+}

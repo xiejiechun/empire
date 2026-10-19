@@ -22,7 +22,7 @@ from empire.bootstrap import build_manager
 from empire.core.config import load_config
 from empire.core.redaction import redact
 from empire.core.time import CHINA
-from empire.plugins.collectors.kaipanla_source import URL, request_options
+from empire.features.kaipanla.source_protocol import URL, request_options
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
 
 ROOT = Path(__file__).resolve().parents[1]

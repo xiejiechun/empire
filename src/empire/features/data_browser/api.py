@@ -18,7 +18,7 @@ TABLES = {
 async def candidates(mysql, search='', dataset='stock', limit=20):
     if not isinstance(search, str) or len(search) > 100 or type(limit) is not int or not 1 <= limit <= 30:
         raise ValueError('证券候选范围无效')
-    from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
+    from empire.features.kaipanla.contract import PRODUCTS
     product = dataset.removeprefix('kaipanla_') if dataset.startswith('kaipanla_') else None
     if product not in PRODUCTS and dataset not in TABLES:
         raise ValueError('未登记的证券候选数据集')

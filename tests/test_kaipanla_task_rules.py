@@ -6,8 +6,8 @@ import pytest
 from empire.bootstrap import build_manager
 from empire.core.config import load_config
 from empire.core.time import CHINA
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
-from empire.plugins.collectors.kaipanla_refresh import review_days, review_token
+from empire.features.kaipanla.contract import PRODUCTS, project
+from empire.features.kaipanla.refresh import review_days, review_token
 from scripts.configure_kaipanla_task_defaults import task_plan
 from tests.test_kaipanla_products import product_collector
 

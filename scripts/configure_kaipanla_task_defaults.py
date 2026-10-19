@@ -8,8 +8,8 @@ from empire.__main__ import acquire_instance_lock
 from empire.contracts.task import HISTORICAL_DAY_DEFAULTS
 from empire.core.config import load_config
 from empire.core.redaction import redact
+from empire.features.kaipanla.contract import PRODUCTS, project
 from empire.plugins.collection.control import validate_policy
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.settings import SettingsStore
 

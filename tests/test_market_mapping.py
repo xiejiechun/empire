@@ -6,10 +6,10 @@ from pathlib import Path
 
 import pytest
 
-from empire.contracts.market_storage import number
-from empire.plugins.datasets.kaipanla_products import digest
-from empire.plugins.datasets.market_mapping import decode, encode
-from empire.plugins.datasets.trade_blocks import unpack
+from empire.features.kaipanla.codec import decode, encode
+from empire.features.kaipanla.normalization import digest
+from empire.features.kaipanla.storage_contract import number
+from empire.features.kaipanla.trade_blocks import unpack
 from scripts.verify_database_design import verify
 from tests.test_kaipanla_products import business_row
 
@@ -42,7 +42,7 @@ def test_binary_same_second_float_masks_and_corrupt_block():
 def test_equal_total_with_wrong_internal_block_boundary_is_rejected():
     from datetime import datetime
 
-    from empire.plugins.datasets.trade_blocks import pack
+    from empire.features.kaipanla.trade_blocks import pack
     row = business_row('trades')
     point = row['data']['fb'][0]
     row['data']['fb'] = [list(point) for _ in range(300)]
@@ -87,7 +87,7 @@ def test_quote_optional_presence_zero_and_book_extras_roundtrip():
 def test_optional_null_zero_and_absence_are_distinct():
     from datetime import datetime
 
-    from empire.plugins.datasets.kaipanla_products import validate
+    from empire.features.kaipanla.normalization import validate
     for value in (None, 0, 0.0):
         row = business_row('quote')
         row['data']['real']['pe_rate'] = value
@@ -120,7 +120,7 @@ def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
         target.write_bytes((root/path).read_bytes())
     assert verify(tmp_path)['tables'] == 55
     if failure == 'stale':
-        (tmp_path/'src/empire/plugins/datasets/trade_blocks.py').write_text('changed', encoding='utf-8')
+        (tmp_path/'src/empire/features/kaipanla/trade_blocks.py').write_text('changed', encoding='utf-8')
         pattern = '证据已过期'
     else:
         metric = next(key for key in evidence['limits'] if 'page_p95_ms' in key)

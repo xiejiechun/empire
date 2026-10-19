@@ -324,6 +324,31 @@ async def test_full_success_is_written_only_after_shutdown_cleanup_and_unlock(ve
 
 
 @pytest.mark.asyncio
+async def test_reference_preparation_is_before_private_guard_and_after_sample_freeze(verifier, full_run):
+    args, events, factory = full_run
+    def prepare(selection, options, report):
+        assert selection['random_count'] == 30 and len(selection['selected']) == 30
+        assert report['source_server_uuid'] == 'production'
+        assert options is args and not factory.called
+        events.append('prepare_reference')
+    assert await verifier.verify(args, args.pipeline, prepare_scope=prepare)
+    assert (events.index('failed_or_frozen_report') < events.index('prepare_reference') <
+            events.index('create_sql') < events.index('collect'))
+
+
+@pytest.mark.asyncio
+async def test_reference_failure_never_creates_private_resources_or_collects(verifier, full_run):
+    args, events, factory = full_run
+    def prepare(*_):
+        raise ValueError('reference mismatch')
+    assert not await verifier.verify(args, args.pipeline, prepare_scope=prepare)
+    factory.assert_not_called()
+    assert 'collect' not in events and 'unlock' in events
+    report = json.loads(Path(args.output).read_text('utf-8'))
+    assert not report['passed'] and report['errors'][0]['message'] == 'reference mismatch'
+
+
+@pytest.mark.asyncio
 async def test_non_stock_scope_keeps_cleanup_without_claiming_stock_sampling(verifier, full_run):
     args, events, _ = full_run
     args.random_count, args.seed = 0, None

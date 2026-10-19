@@ -3,7 +3,7 @@ from PySide6.QtCore import QDate
 from PySide6.QtWidgets import QHBoxLayout, QPushButton
 
 from empire.core.redaction import redact
-from empire.plugins.collectors.kaipanla_kinds import capability
+from empire.features.kaipanla.contract import capability
 from empire.plugins.ui.preview_navigation import security_context
 
 

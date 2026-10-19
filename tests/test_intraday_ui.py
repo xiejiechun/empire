@@ -6,7 +6,8 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.plugins.ui.kaipanla_products import KaipanlaProductUiPlugin, ProductPage  # noqa: E402
+from empire.features.kaipanla.product_page import ProductPage
+from empire.features.kaipanla.ui import KaipanlaProductUiPlugin
 from tests.test_kaipanla_products import business_row  # noqa: E402
 
 

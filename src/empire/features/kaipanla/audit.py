@@ -3,9 +3,9 @@ from datetime import date
 
 from empire.contracts.preparation import CheckEvidence
 from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
-from empire.plugins.collectors.kaipanla_scope import required_days
-from empire.plugins.datasets.kaipanla_products import point_count
+from empire.features.kaipanla.contract import PRODUCTS
+from empire.features.kaipanla.dates import required_days
+from empire.features.kaipanla.normalization import point_count
 
 
 async def audit(query, request=None):

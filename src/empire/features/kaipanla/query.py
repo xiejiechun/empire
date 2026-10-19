@@ -1,23 +1,27 @@
 """Typed browsing and bounded pages; coverage never downloads historical fact bodies."""
+from collections.abc import Iterator
 from datetime import date
 
 from sqlalchemy import bindparam, text
+from sqlalchemy.engine import Connection
 
-from empire.contracts.market_storage import (
+from empire.contracts.plugin import PluginManifest
+from empire.contracts.preparation import PreparationContribution
+from empire.contracts.security import unified_code
+from empire.features.kaipanla.api import SecurityDay
+from empire.features.kaipanla.codec import clock, decode, key_set
+from empire.features.kaipanla.contract import PRODUCTS, capability, project
+from empire.features.kaipanla.normalization import digest, validate
+from empire.features.kaipanla.repository import head_record, read_day
+from empire.features.kaipanla.schema import KEYS, TABLES
+from empire.features.kaipanla.scope import MarketDayScope
+from empire.features.kaipanla.storage_contract import (
     LAYOUT_VERSION,
     QUOTE_FIELDS,
     SERIES,
     dataset_tables,
     restore_values,
 )
-from empire.contracts.plugin import PluginManifest
-from empire.contracts.preparation import PreparationContribution
-from empire.contracts.security import unified_code
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, capability, project
-from empire.plugins.data.kaipanla_scope import MarketDayScope
-from empire.plugins.datasets.kaipanla_products import KEYS, TABLES, digest, validate
-from empire.plugins.datasets.market_mapping import clock, decode, key_set
-from empire.plugins.datasets.market_repository import head_record, read_day
 
 HEAD_PROJECTION = ('kind,unified_code,trade_date,listing_date,listing_source,market_start,'
                    'contract_version,point_count,key_set_hash,content_hash,version_observed_at')
@@ -82,6 +86,17 @@ class KaipanlaProductDataPlugin(MarketDayScope):
             raise ValueError('证券日关联、摘要或校验契约错误')
         return row
 
+    def iter_validated_days(self, conn: Connection, market: str, code: str,
+                            start: date, end: date) -> Iterator[SecurityDay]:
+        """Yield validated days within the caller's existing SQL snapshot.
+
+        Does not open/close a connection, start a transaction, or schedule mysql.read.
+        The caller must finish iteration before leaving its connection context.
+        Uses the same 10000-head bound and 16-day fact batches as preparation.
+        """
+        for stored in self._records(conn, market, code, start, end):
+            yield self._decode(stored, market, code)
+
     def _covered(self, market, code, start, end, lifecycle=None):
         with self.mysql.read_engine.begin() as conn:
             records = self._heads(conn, market, code, start, end)
@@ -145,7 +160,7 @@ class KaipanlaProductDataPlugin(MarketDayScope):
                         dict(security=security, day=day, lower=start_time)).scalar_one_or_none()
                     after = prior-1 if prior is not None else -1
                 if self.kind == 'trades':
-                    from empire.plugins.datasets.trade_blocks import unpack
+                    from empire.features.kaipanla.trade_blocks import unpack
                     blocks = list(conn.execute(text(f'SELECT * FROM {table} WHERE unified_code=:security '
                         'AND trade_date=:day AND block_seq>=:first '
                         + ('AND first_time<=:upper ' if time_range else '') + 'ORDER BY block_seq LIMIT 3'),
@@ -221,5 +236,5 @@ class KaipanlaProductDataPlugin(MarketDayScope):
         return await self.mysql.read(read)
 
     async def preparation_check(self, request=None):
-        from empire.plugins.data.kaipanla_products_preparation import audit
+        from empire.features.kaipanla.audit import audit
         return await audit(self, request)

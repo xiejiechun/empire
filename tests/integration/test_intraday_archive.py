@@ -15,8 +15,8 @@ from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.contracts.download import ResponsePolicy
 from empire.core.config import load_config
-from empire.plugins.datasets.intraday import identity
-from empire.plugins.datasets.kaipanla_products import ProductDataset
+from empire.features.kaipanla.canonical import identity
+from empire.features.kaipanla.dataset import ProductDataset
 from empire.plugins.infra.resources import ByteBudget
 from tests.test_kaipanla_intraday import STOCK, listing
 from tests.test_kaipanla_products import business_row

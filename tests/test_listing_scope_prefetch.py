@@ -7,7 +7,8 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.plugins.collectors import kaipanla_scope as scope
+from empire.features.kaipanla import listings_source as scope
+from empire.features.kaipanla.dates import required_days
 from tests.prefetch_source import prefetch_http
 
 
@@ -39,9 +40,9 @@ async def test_announced_listing_attaches_without_requesting_prelisting_days(mon
         return
     stock = stocks[0]
     assert stock['listing_date'] == tomorrow.isoformat()
-    assert scope.required_days(stock, [date(2021, 1, 4), today - timedelta(days=1)], set()) == []
+    assert required_days(stock, [date(2021, 1, 4), today - timedelta(days=1)], set()) == []
     calendar = sorted({today, tomorrow})
-    assert scope.required_days(stock, calendar, set()) == [tomorrow]
+    assert required_days(stock, calendar, set()) == [tomorrow]
 
 
 @pytest.mark.parametrize('state,delta,symbol', [('0', 1, '920157.BJ'), ('9', -1, '920157.BJ'),

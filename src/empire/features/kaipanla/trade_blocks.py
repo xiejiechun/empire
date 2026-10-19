@@ -4,7 +4,7 @@ import struct
 import zlib
 from datetime import timedelta
 
-from empire.contracts.market_storage import numeric_values
+from empire.features.kaipanla.storage_contract import numeric_values
 
 BLOCK_POINTS = 200
 POINT_BYTES = 62  # uint32 seconds + uint16 type mask + seven int64/IEEE754 binary64 unions

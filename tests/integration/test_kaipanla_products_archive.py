@@ -13,9 +13,9 @@ from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
 from empire.core.time import CHINA
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
-from empire.plugins.datasets.intraday import identity
-from empire.plugins.datasets.kaipanla_products import ProductDataset
+from empire.features.kaipanla.canonical import identity
+from empire.features.kaipanla.contract import PRODUCTS
+from empire.features.kaipanla.dataset import ProductDataset
 from tests.prefetch_source import prefetch_http
 from tests.test_kaipanla_products import business_row
 
@@ -163,7 +163,7 @@ async def test_each_source_no_dml_revision_old_response_and_ack_replay(kind, mon
 
 
 async def test_explicit_split_preserves_both_arrays_and_disables_new_tasks():
-    from empire.plugins.datasets.intraday import digest
+    from empire.features.kaipanla.canonical import digest
     from empire.plugins.infra.mysql_store import make_engine
     from scripts.migrate_kaipanla_products import migrate
     from tests.test_kaipanla_intraday import row

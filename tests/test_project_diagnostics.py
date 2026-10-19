@@ -456,7 +456,7 @@ def test_formal_preview_preserves_security_identity_and_explicit_split_contract(
 
 @pytest.mark.parametrize('kind', ('trend', 'auction', 'volume', 'trades', 'entrust', 'large_order', 'quote'))
 def test_market_preview_uses_bounded_reader_for_requested_day(kind):
-    from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
+    from empire.features.kaipanla.query import KaipanlaProductDataPlugin
     method, kwargs = query_preview(KaipanlaProductDataPlugin(kind), '000001.SZ', '2020-01-01')
     assert method == ('day' if kind == 'quote' else 'page')
     assert kwargs == {'market': 'SZ', 'code': '000001', 'trade_date': '2020-01-01',
@@ -466,7 +466,7 @@ def test_market_preview_uses_bounded_reader_for_requested_day(kind):
 
 
 async def test_market_preview_reads_requested_old_day_when_a_newer_day_exists(database):
-    from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
+    from empire.features.kaipanla.query import KaipanlaProductDataPlugin
     engine, _ = database
     with engine.begin() as conn:
         conn.exec_driver_sql('CREATE TABLE stock_market_day(kind TEXT,unified_code TEXT,trade_date TEXT,'

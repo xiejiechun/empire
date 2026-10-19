@@ -15,9 +15,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from empire.plugins.ui.common import accessible, rows, table
-from empire.plugins.ui.kaipanla_quote_chart import QuoteChart
-from empire.plugins.ui.kaipanla_quote_format import (
+from empire.features.kaipanla.quote_chart import QuoteChart
+from empire.features.kaipanla.quote_format import (
     FIELDS,
     GREEN,
     NEUTRAL,
@@ -26,6 +25,7 @@ from empire.plugins.ui.kaipanla_quote_format import (
     number,
     price_color,
 )
+from empire.plugins.ui.common import accessible, rows, table
 from empire.plugins.ui.preview_layout import compact_columns
 
 

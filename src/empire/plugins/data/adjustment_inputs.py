@@ -5,7 +5,7 @@ from itertools import groupby
 from sqlalchemy import text
 
 from empire.contracts.adjustment import AdjustmentError, decimal
-from empire.plugins.collectors.kaipanla_scope import required_days
+from empire.features.kaipanla.dates import required_days
 from empire.plugins.data.capital_actions import decode
 from empire.plugins.datasets.capital_actions import (
     SCHEMA_VERSIONS,
@@ -101,10 +101,9 @@ def suspended(conn, security, lower, upper):
 
 
 def close_prices(conn, query, market, code, lower, upper):
-    securities = query._records(conn, market, code, lower, upper)
+    securities = query.iter_validated_days(conn, market, code, lower, upper)
     result, life = [], None
-    for stored in securities:
-        row = query._decode(stored, market, code)
+    for row in securities:
         if life is not None and row['lifecycle'] != life:
             raise AdjustmentError('行情上市生命周期不一致，请补采核实')
         life = row['lifecycle']

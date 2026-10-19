@@ -65,7 +65,7 @@ def test_future_or_unzoned_proof_rejected(value):
 def test_intraday_latest_quote_is_not_accepted_as_close():
     row = dict(trade_date='2026-09-01', lifecycle={'listing_date': '1991-01-01'},
                data=dict(real=dict(time=145900000, open_px=10, high_px=10, low_px=10, last_px=10)))
-    query = SimpleNamespace(_records=lambda *args: [row], _decode=lambda *args: row)
+    query = SimpleNamespace(iter_validated_days=lambda *args: iter([row]))
     with pytest.raises(AdjustmentError, match='收盘后'):
         close_prices(None, query, 'SZ', '000001', date(2026, 9, 1), date(2026, 9, 1))
 
@@ -75,7 +75,7 @@ def test_historical_close_clock_is_distinct_from_today_query_cutoff(clock, monke
     day = date(2021, 1, 4)
     row = dict(trade_date=day.isoformat(), lifecycle={'listing_date': '1991-01-01'},
                data=dict(real=dict(time=clock, open_px=5.21, high_px=5.22, low_px=5.16, last_px=5.2)))
-    query = SimpleNamespace(_records=lambda *args: [row], _decode=lambda *args: row)
+    query = SimpleNamespace(iter_validated_days=lambda *args: iter([row]))
     result = SimpleNamespace(mappings=lambda: SimpleNamespace(all=lambda: [dict(trade_date=day, is_trade=1)]))
     conn = SimpleNamespace(execute=lambda *args: result)
     monkeypatch.setattr('empire.plugins.data.adjustment_inputs.suspended', lambda *args: set())

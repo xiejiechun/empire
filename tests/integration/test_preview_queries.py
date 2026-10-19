@@ -12,11 +12,11 @@ from empire.features.data_browser.api import candidates
 from empire.features.index_prices.query import IndexPriceDataPlugin
 from empire.features.indices.query import IndexDataPlugin
 from empire.features.industries.query import IndustryDataPlugin
+from empire.features.kaipanla.normalization import digest
+from empire.features.kaipanla.query import KaipanlaProductDataPlugin
+from empire.features.kaipanla.repository import write_day
 from empire.plugins.data.capital_actions import CapitalDataPlugin
-from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
 from empire.plugins.data.name_changes import NameDataPlugin
-from empire.plugins.datasets.kaipanla_products import digest
-from empire.plugins.datasets.market_repository import write_day
 from empire.plugins.infra.mysql_store import make_engine
 from tests.test_kaipanla_products import business_row
 

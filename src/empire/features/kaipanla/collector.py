@@ -8,18 +8,19 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, capability, project
-from empire.plugins.collectors.kaipanla_product_download import download_days
-from empire.plugins.collectors.kaipanla_refresh import review_days
-from empire.plugins.collectors.kaipanla_scope import attach_listing_dates, lifecycle, required_days
-from empire.plugins.collectors.kaipanla_source import URL, SourceError
+from empire.features.kaipanla.canonical import digest, identity
+from empire.features.kaipanla.contract import PRODUCTS, capability, project
+from empire.features.kaipanla.dates import lifecycle, required_days
+from empire.features.kaipanla.download import download_days
+from empire.features.kaipanla.listings_source import attach_listing_dates
+from empire.features.kaipanla.normalization import point_count
+from empire.features.kaipanla.refresh import review_days
+from empire.features.kaipanla.source_protocol import URL, SourceError
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
     wait_for_archive,
 )
-from empire.plugins.datasets.intraday import digest, identity
-from empire.plugins.datasets.kaipanla_products import point_count
 
 
 class KaipanlaProductCollector:

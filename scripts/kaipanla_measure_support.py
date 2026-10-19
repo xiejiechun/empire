@@ -12,7 +12,7 @@ from pathlib import Path
 from urllib.parse import unquote_to_bytes
 from uuid import uuid4
 
-from empire.plugins.collectors.kaipanla_source import TREND_TIMES
+from empire.features.kaipanla.source_protocol import TREND_TIMES
 
 INTERFACES = {
     'GetStockTrend': ('trend', 5),

@@ -5,14 +5,9 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from empire.plugins.collectors.kaipanla_source import (
-    TREND_TIMES,
-    SourceError,
-    combine_day,
-    fetch_day,
-    parse_response,
-    request_options,
-)
+from empire.features.kaipanla.pair_parser import combine_day, parse_response
+from empire.features.kaipanla.source import fetch_day
+from empire.features.kaipanla.source_protocol import TREND_TIMES, SourceError, request_options
 
 DAY = date(2021, 1, 4)
 

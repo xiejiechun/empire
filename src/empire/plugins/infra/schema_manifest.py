@@ -4,7 +4,6 @@ import re
 
 from sqlalchemy import inspect
 
-from empire.contracts.market_storage import MARKET_TABLES
 from empire.core.config import resource_root
 
 
@@ -12,10 +11,10 @@ def manifest():
     return json.loads((resource_root() / 'sql/schema-contract.json').read_text('utf-8'))
 
 
-def market_contract():
+def schema_contract(tables):
     shapes = manifest()['tables']
-    return ({t: set(shapes[t]['columns']) for t in MARKET_TABLES},
-            {t: shapes[t]['primary'] for t in MARKET_TABLES})
+    return ({t: set(shapes[t]['columns']) for t in tables},
+            {t: shapes[t]['primary'] for t in tables})
 
 
 def normalize_check(value):

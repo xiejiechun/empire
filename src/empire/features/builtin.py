@@ -9,12 +9,13 @@ from empire.features.holders.bundle import bundle as holders_bundle
 from empire.features.index_prices.bundle import bundle as index_prices_bundle
 from empire.features.indices.bundle import bundle as indices_bundle
 from empire.features.industries.bundle import bundle as industries_bundle
+from empire.features.kaipanla.bundle import bundle as kaipanla_bundle
 from empire.features.news.bundle import bundle as news_bundle
 from empire.features.remaining import bundle as remaining_bundle
 from empire.features.stocks.bundle import bundle as stocks_bundle
 from empire.features.suspensions.bundle import bundle as suspensions_bundle
 
-FACTORIES = (remaining_bundle, news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle)
+FACTORIES = (remaining_bundle, news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, kaipanla_bundle)
 
 
 def builtin_bundles(cfg) -> tuple[FeatureBundle, ...]:

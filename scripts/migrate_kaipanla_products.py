@@ -13,10 +13,10 @@ from sqlalchemy import inspect, text
 from empire.contracts.task import HISTORICAL_DAY_DEFAULTS
 from empire.core.config import load_config
 from empire.core.redaction import Redactor
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
-from empire.plugins.datasets.intraday import digest as old_digest
-from empire.plugins.datasets.intraday import validate as validate_old
-from empire.plugins.datasets.kaipanla_products import digest, validate
+from empire.features.kaipanla.canonical import digest as old_digest
+from empire.features.kaipanla.contract import PRODUCTS, project
+from empire.features.kaipanla.legacy_pair import validate as validate_old
+from empire.features.kaipanla.normalization import digest, validate
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 
@@ -51,8 +51,8 @@ def migrate(engine, namespace, *, apply=False):
                 list(split(row))
                 report['old_rows'] += 1
         return report
-    from empire.plugins.datasets.kaipanla_products import KEYS, TABLES
-    from empire.plugins.datasets.market_repository import head_record, read_day, write_day
+    from empire.features.kaipanla.repository import head_record, read_day, write_day
+    from empire.features.kaipanla.schema import KEYS, TABLES
     from empire.plugins.infra.mysql_store import validate_tables
     with engine.connect() as conn:
         validate_tables(conn, TABLES, KEYS)

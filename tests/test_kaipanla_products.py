@@ -8,12 +8,13 @@ import pytest
 
 from empire.bootstrap import build_manager
 from empire.core.config import load_config
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
-from empire.plugins.collectors.kaipanla_products import KaipanlaProductCollector
-from empire.plugins.collectors.kaipanla_products_source import options, parse
-from empire.plugins.collectors.kaipanla_scope import lifecycle
-from empire.plugins.collectors.kaipanla_source import TREND_TIMES, SourceError
-from empire.plugins.datasets.kaipanla_products import validate
+from empire.features.kaipanla.collector import KaipanlaProductCollector
+from empire.features.kaipanla.contract import PRODUCTS, project
+from empire.features.kaipanla.dates import lifecycle
+from empire.features.kaipanla.normalization import validate
+from empire.features.kaipanla.parser import parse
+from empire.features.kaipanla.product_source import options
+from empire.features.kaipanla.source_protocol import TREND_TIMES, SourceError
 from tests.test_kaipanla_intraday import STOCK, collector, listing
 from tests.test_kaipanla_source import sample
 
@@ -178,7 +179,7 @@ async def test_product_legacy_alias_releases_response_and_validates_official_pro
     import asyncio
     import json
 
-    from empire.plugins.collectors.kaipanla_products_source import consume
+    from empire.features.kaipanla.product_source import consume
     from empire.plugins.infra.http import HttpService
     from empire.plugins.infra.resources import ByteBudget
     from tests.test_http import MemoryPermits

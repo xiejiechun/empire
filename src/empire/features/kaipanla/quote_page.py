@@ -3,9 +3,9 @@ from PySide6.QtWidgets import QPushButton
 
 from empire.contracts.ui import NavigationContext
 from empire.core.redaction import redact
-from empire.plugins.collectors.kaipanla_kinds import capability
-from empire.plugins.ui.kaipanla_products import ProductPage
-from empire.plugins.ui.kaipanla_quote_view import QuoteView
+from empire.features.kaipanla.contract import capability
+from empire.features.kaipanla.product_page import ProductPage
+from empire.features.kaipanla.quote_view import QuoteView
 
 
 class QuotePage(ProductPage):

@@ -1,6 +1,6 @@
 """Independent existing and unchanged source deliverables."""
+from empire.features.kaipanla.contract import PRODUCTS
 from empire.features.preparation.definition import R
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
 
 ITEMS = (
     R('universe', '当前 A 股证券列表', '证券基础', '核心', '当前证券发现与后续采集股票池',

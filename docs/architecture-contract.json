@@ -182,24 +182,6 @@
     },
     {
       "legacy_collector_location": true,
-      "owner": "kaipanla",
-      "reason": "七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集",
-      "role": "contract",
-      "modules": [
-        "empire.plugins.collectors.kaipanla_kinds"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
-      "owner": "kaipanla",
-      "reason": "开盘啦七类历史产品：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.kaipanla_refresh"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
       "owner": "listing_status",
       "reason": "暂停恢复终止上市：来源解析或纯范围规划，无请求执行",
       "role": "parser",
@@ -765,73 +747,10 @@
     },
     {
       "owner": "kaipanla",
-      "reason": "required_days 是纯范围计算，但同模块还实现上市目录下载和预取",
-      "role": "source_adapter",
-      "modules": [
-        "empire.plugins.collectors.kaipanla_scope"
-      ]
-    },
-    {
-      "owner": "kaipanla",
-      "reason": "开盘啦七类历史产品：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.market_storage"
-      ]
-    },
-    {
-      "owner": "kaipanla",
-      "reason": "开盘啦七类历史产品：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.kaipanla_products",
-        "empire.plugins.ui.kaipanla_quote_chart",
-        "empire.plugins.ui.kaipanla_quote_format",
-        "empire.plugins.ui.kaipanla_quote_page",
-        "empire.plugins.ui.kaipanla_quote_view",
-        "empire.plugins.ui.product_chart",
-        "empire.plugins.ui.product_dates"
-      ]
-    },
-    {
-      "owner": "kaipanla",
-      "reason": "开盘啦七类历史产品：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.intraday",
-        "empire.plugins.datasets.kaipanla_products",
-        "empire.plugins.datasets.market_mapping",
-        "empire.plugins.datasets.market_repository",
-        "empire.plugins.datasets.trade_blocks"
-      ]
-    },
-    {
-      "owner": "kaipanla",
-      "reason": "开盘啦七类历史产品：来源模块包含下载/会话/生命周期执行",
-      "role": "source_adapter",
-      "modules": [
-        "empire.plugins.collectors.kaipanla_alias",
-        "empire.plugins.collectors.kaipanla_product_download",
-        "empire.plugins.collectors.kaipanla_products_source",
-        "empire.plugins.collectors.kaipanla_source"
-      ]
-    },
-    {
-      "owner": "kaipanla",
       "reason": "开盘啦七类历史产品：正式查询或准备读取实现",
       "role": "query",
       "modules": [
-        "empire.plugins.data.kaipanla_products",
-        "empire.plugins.data.kaipanla_products_preparation",
-        "empire.plugins.data.kaipanla_scope"
-      ]
-    },
-    {
-      "owner": "kaipanla",
-      "reason": "开盘啦七类历史产品：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.kaipanla_products"
+        "empire.features.kaipanla.query_preparation"
       ]
     },
     {
@@ -1844,6 +1763,48 @@
         "evidence": "contract",
         "composition": "composition"
       }
+    },
+    {
+      "prefix": "empire.features.kaipanla",
+      "owner": "kaipanla",
+      "reason": "七产品业务归属；纯契约/解析、存储与页面注册分离",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "api": "contract",
+        "dates": "contract",
+        "alias_contract": "contract",
+        "source_protocol": "contract",
+        "pair_parser": "contract",
+        "parser": "contract",
+        "canonical": "contract",
+        "normalization": "contract",
+        "storage_contract": "contract",
+        "legacy_pair": "contract",
+        "schema": "dataset",
+        "collector": "collector",
+        "source": "collector",
+        "product_source": "collector",
+        "listings_source": "collector",
+        "alias_source": "collector",
+        "download": "collector",
+        "refresh": "contract",
+        "dataset": "dataset",
+        "repository": "dataset",
+        "codec": "contract",
+        "trade_blocks": "contract",
+        "query": "query",
+        "scope": "query",
+        "audit": "query",
+        "ui": "ui",
+        "product_page": "ui",
+        "quote_page": "ui",
+        "quote_view": "ui",
+        "quote_format": "ui",
+        "quote_chart": "ui",
+        "product_chart": "ui",
+        "product_dates": "ui"
+      }
     }
   ],
   "debt": [
@@ -1882,7 +1843,7 @@
     {
       "rule": "cross_business_private",
       "source": "empire.plugins.data.adjustment_inputs",
-      "target": "empire.plugins.collectors.kaipanla_scope",
+      "target": "empire.features.kaipanla.listings_source",
       "names": [
         "required_days"
       ],
@@ -1937,7 +1898,7 @@
     },
     {
       "rule": "cross_business_private",
-      "source": "empire.plugins.data.kaipanla_scope",
+      "source": "empire.features.kaipanla.scope",
       "target": "empire.features.suspensions.exclusions",
       "names": [
         "excluded_days"
@@ -1947,7 +1908,7 @@
     },
     {
       "rule": "cross_business_private",
-      "source": "empire.plugins.data.kaipanla_scope",
+      "source": "empire.features.kaipanla.scope",
       "target": "empire.features.preparation.query_checks",
       "names": [
         "audit_stocks"
@@ -1957,7 +1918,7 @@
     },
     {
       "rule": "cross_business_private",
-      "source": "empire.plugins.data.kaipanla_scope",
+      "source": "empire.features.kaipanla.scope",
       "target": "empire.features.calendar.api",
       "names": [
         "read_trade_day_cutoff"
@@ -1967,7 +1928,7 @@
     },
     {
       "rule": "cross_business_private",
-      "source": "empire.plugins.data.kaipanla_scope",
+      "source": "empire.features.kaipanla.scope",
       "target": "empire.features.stocks.dataset",
       "names": [
         "current_directory"
@@ -2060,8 +2021,8 @@
     },
     {
       "rule": "misplaced_source_contract",
-      "source": "empire.plugins.data.kaipanla_products",
-      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "source": "empire.features.kaipanla.query",
+      "target": "empire.features.kaipanla.contract",
       "names": [
         "PRODUCTS",
         "capability",
@@ -2072,8 +2033,8 @@
     },
     {
       "rule": "misplaced_source_contract",
-      "source": "empire.plugins.data.kaipanla_products_preparation",
-      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "source": "empire.features.kaipanla.query_preparation",
+      "target": "empire.features.kaipanla.contract",
       "names": [
         "PRODUCTS"
       ],
@@ -2083,7 +2044,7 @@
     {
       "rule": "misplaced_source_contract",
       "source": "empire.features.data_browser.api",
-      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "target": "empire.features.kaipanla.contract",
       "names": [
         "PRODUCTS"
       ],
@@ -2093,7 +2054,7 @@
     {
       "rule": "misplaced_source_contract",
       "source": "empire.plugins.datasets.astock",
-      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "target": "empire.features.kaipanla.contract",
       "names": [
         "PRODUCTS"
       ],
@@ -2102,8 +2063,8 @@
     },
     {
       "rule": "misplaced_source_contract",
-      "source": "empire.plugins.datasets.kaipanla_products",
-      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "source": "empire.features.kaipanla.dataset",
+      "target": "empire.features.kaipanla.contract",
       "names": [
         "PRODUCTS",
         "project"
@@ -2113,8 +2074,8 @@
     },
     {
       "rule": "misplaced_source_contract",
-      "source": "empire.plugins.datasets.market_mapping",
-      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "source": "empire.features.kaipanla.codec",
+      "target": "empire.features.kaipanla.contract",
       "names": [
         "PRODUCTS"
       ],
@@ -2134,8 +2095,8 @@
     },
     {
       "rule": "misplaced_source_contract",
-      "source": "empire.plugins.ui.kaipanla_products",
-      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "source": "empire.features.kaipanla.ui",
+      "target": "empire.features.kaipanla.contract",
       "names": [
         "PRODUCTS",
         "capability",
@@ -2146,8 +2107,8 @@
     },
     {
       "rule": "misplaced_source_contract",
-      "source": "empire.plugins.ui.kaipanla_quote_page",
-      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "source": "empire.features.kaipanla.quote_page",
+      "target": "empire.features.kaipanla.contract",
       "names": [
         "capability"
       ],
@@ -2156,8 +2117,8 @@
     },
     {
       "rule": "misplaced_source_contract",
-      "source": "empire.plugins.ui.product_dates",
-      "target": "empire.plugins.collectors.kaipanla_kinds",
+      "source": "empire.features.kaipanla.product_dates",
+      "target": "empire.features.kaipanla.contract",
       "names": [
         "capability"
       ],
@@ -2250,8 +2211,8 @@
     },
     {
       "rule": "module_cycle",
-      "source": "empire.plugins.datasets.kaipanla_products",
-      "target": "empire.plugins.datasets.market_repository",
+      "source": "empire.features.kaipanla.dataset",
+      "target": "empire.features.kaipanla.repository",
       "names": [
         "write_day"
       ],
@@ -2260,8 +2221,8 @@
     },
     {
       "rule": "module_cycle",
-      "source": "empire.plugins.datasets.market_repository",
-      "target": "empire.plugins.datasets.kaipanla_products",
+      "source": "empire.features.kaipanla.repository",
+      "target": "empire.features.kaipanla.dataset",
       "names": [
         "business_content",
         "digest",
@@ -2273,8 +2234,8 @@
     },
     {
       "rule": "module_cycle",
-      "source": "empire.plugins.ui.kaipanla_products",
-      "target": "empire.plugins.ui.kaipanla_quote_page",
+      "source": "empire.features.kaipanla.ui",
+      "target": "empire.features.kaipanla.quote_page",
       "names": [
         "QuotePage"
       ],
@@ -2283,8 +2244,8 @@
     },
     {
       "rule": "module_cycle",
-      "source": "empire.plugins.ui.kaipanla_quote_page",
-      "target": "empire.plugins.ui.kaipanla_products",
+      "source": "empire.features.kaipanla.quote_page",
+      "target": "empire.features.kaipanla.ui",
       "names": [
         "ProductPage"
       ],
@@ -2294,7 +2255,7 @@
     {
       "rule": "reader_to_execution",
       "source": "empire.plugins.data.adjustment_inputs",
-      "target": "empire.plugins.collectors.kaipanla_scope",
+      "target": "empire.features.kaipanla.listings_source",
       "names": [
         "required_days"
       ],
@@ -2303,8 +2264,8 @@
     },
     {
       "rule": "reader_to_execution",
-      "source": "empire.plugins.data.kaipanla_products_preparation",
-      "target": "empire.plugins.collectors.kaipanla_scope",
+      "source": "empire.features.kaipanla.query_preparation",
+      "target": "empire.features.kaipanla.listings_source",
       "names": [
         "required_days"
       ],
@@ -2313,8 +2274,8 @@
     },
     {
       "rule": "reader_to_execution",
-      "source": "empire.plugins.datasets.intraday",
-      "target": "empire.plugins.collectors.kaipanla_alias",
+      "source": "empire.features.kaipanla.legacy_pair",
+      "target": "empire.features.kaipanla.alias_source",
       "names": [
         "validate_proof"
       ],
@@ -2323,8 +2284,8 @@
     },
     {
       "rule": "reader_to_execution",
-      "source": "empire.plugins.datasets.intraday",
-      "target": "empire.plugins.collectors.kaipanla_source",
+      "source": "empire.features.kaipanla.legacy_pair",
+      "target": "empire.features.kaipanla.source",
       "names": [
         "combine_day",
         "parse_response"
@@ -2334,8 +2295,8 @@
     },
     {
       "rule": "reader_to_execution",
-      "source": "empire.plugins.datasets.kaipanla_products",
-      "target": "empire.plugins.collectors.kaipanla_products_source",
+      "source": "empire.features.kaipanla.dataset",
+      "target": "empire.features.kaipanla.product_source",
       "names": [
         "parse"
       ],

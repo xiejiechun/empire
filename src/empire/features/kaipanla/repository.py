@@ -1,8 +1,8 @@
 """Atomic typed market storage used by archive, browsing and explicit maintenance."""
 from sqlalchemy import text
 
-from empire.contracts.market_storage import LAYOUT_VERSION, SERIES, dataset_tables
-from empire.plugins.datasets.market_mapping import decode, encode, key_set
+from empire.features.kaipanla.codec import decode, encode, key_set
+from empire.features.kaipanla.storage_contract import LAYOUT_VERSION, SERIES, dataset_tables
 
 
 def params(kind, security, day):
@@ -25,7 +25,7 @@ def fact_records(conn, head, *, prefix=''):
 
 
 def read_day(conn, head, *, prefix='', facts=None):
-    from empire.plugins.datasets.kaipanla_products import digest, point_count, validate
+    from empire.features.kaipanla.normalization import digest, point_count, validate
     row = decode(head, facts if facts is not None else fact_records(conn, head, prefix=prefix))
     validate(row, head['kind'], storage_check=False)
     if (point_count(row) != head['point_count'] or head['contract_version'] != LAYOUT_VERSION or digest(row) != head['content_hash']
@@ -48,7 +48,7 @@ def row_key(table, row):
     if table.endswith('_level'):
         return row['side'], row['level']
     if any(table.endswith(SERIES[k][0]) for k in ('trend', 'volume', 'entrust', 'large_order')):
-        from empire.plugins.datasets.market_mapping import clock
+        from empire.features.kaipanla.codec import clock
         return clock(row['source_time'])
     return row.get('seq', 0)
 
@@ -61,10 +61,10 @@ def synchronize(conn, table, old, new):
         prior = previous.get(key)
         # SQL TIME values decode as timedelta; normalize before comparing.
         if prior and 'source_time' in prior:
-            from empire.plugins.datasets.market_mapping import clock
+            from empire.features.kaipanla.codec import clock
             prior = {**prior, 'source_time': clock(prior['source_time'], len(row['source_time']) == 8)}
         if prior and table.endswith('_block'):
-            from empire.plugins.datasets.market_mapping import clock
+            from empire.features.kaipanla.codec import clock
             prior = {**prior, **{k: clock(prior[k], True) for k in ('first_time', 'last_time')}}
         if prior is None:
             inserts.append(row)
@@ -104,7 +104,7 @@ def write_day(conn, row, checksum, observed, *, prefix='', compare=True):
             # A new validated observation repairs invalid formal content. Version
             # ordering above still prevents an older response from doing so.
             prior = None
-        from empire.plugins.datasets.kaipanla_products import business_content
+        from empire.features.kaipanla.normalization import business_content
         if prior is not None and business_content(prior) == business_content(row):
             return True, 0
     else:
@@ -123,7 +123,7 @@ def write_day(conn, row, checksum, observed, *, prefix='', compare=True):
     if old:
         import json
 
-        from empire.plugins.datasets.market_mapping import obj
+        from empire.features.kaipanla.codec import obj
         def value(column, raw):
             return json.dumps(obj(raw), sort_keys=True, ensure_ascii=False) if column in (
                 'identity_extra', 'product_extra', 'source_metadata') else raw

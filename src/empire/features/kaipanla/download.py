@@ -3,9 +3,9 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from datetime import UTC, datetime
 
+from empire.features.kaipanla.product_source import consume, fetch
+from empire.features.kaipanla.source_protocol import DOMAIN, URL, SourceError
 from empire.plugins.collection.prefetch import ordered_prefetch
-from empire.plugins.collectors.kaipanla_products_source import consume, fetch
-from empire.plugins.collectors.kaipanla_source import DOMAIN, URL, SourceError
 
 
 @dataclass

@@ -9,11 +9,11 @@ from types import SimpleNamespace
 import pytest
 from sqlalchemy import event, text
 
-from empire.contracts.market_storage import MARKET_TABLES, SERIES
 from empire.core.config import load_config
-from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
-from empire.plugins.datasets.kaipanla_products import digest
-from empire.plugins.datasets.market_repository import head_record, read_day, write_day
+from empire.features.kaipanla.normalization import digest
+from empire.features.kaipanla.query import KaipanlaProductDataPlugin
+from empire.features.kaipanla.repository import head_record, read_day, write_day
+from empire.features.kaipanla.storage_contract import MARKET_TABLES, SERIES
 from empire.plugins.infra.mysql_store import make_engine
 from scripts.market_migration import maintain
 from tests.test_kaipanla_products import business_row
@@ -53,7 +53,7 @@ async def test_typed_roundtrip_no_dml_diff_and_coverage_projection(kind):
                 second = await query.page('SZ', '000001', '2021-01-04', first['next_cursor'], limit=1)
                 assert second['start'] == 1
             changed = copy.deepcopy(row)
-            from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
+            from empire.features.kaipanla.contract import PRODUCTS
             changed['data'][PRODUCTS[kind].field][0][1] += 1
             with engine.begin() as c:
                 statements.clear()

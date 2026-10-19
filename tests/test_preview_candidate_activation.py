@@ -8,7 +8,7 @@ from PySide6.QtCore import Qt  # noqa: E402
 from PySide6.QtTest import QTest  # noqa: E402
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.plugins.ui.kaipanla_products import ProductPage  # noqa: E402
+from empire.features.kaipanla.product_page import ProductPage
 
 
 def test_completion_keeps_bare_code_and_applies_recent_archived_day():

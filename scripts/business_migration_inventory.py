@@ -7,7 +7,7 @@ from pathlib import Path
 from sqlalchemy import inspect, text
 
 from empire.contracts.business_schema import FIXED_SOURCES
-from empire.contracts.market_storage import MARKET_TABLES
+from empire.features.kaipanla.storage_contract import MARKET_TABLES
 
 ROOT = Path(__file__).resolve().parents[1]
 LEGACY_TABLES = set(re.findall(r'CREATE TABLE IF NOT EXISTS (\w+)',

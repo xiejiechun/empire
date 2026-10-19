@@ -63,6 +63,8 @@ flowchart TB
 
 业务按 `features/<业务>` 收拢；新闻是首个样板，入口见 [新闻包](../src/empire/features/news/README.md)。`contracts/task.py` 拥有任务与默认策略类型，`contracts/bundle.py` 拥有纯贡献结构和顺序声明。`features/builtin.py` 明确列出包工厂，`bootstrap.py` 只合并公共服务与包声明、校验归属及现有插件依赖；构造声明不启动服务、不创建页面、不读取外部配置。
 
+开盘啦七项归入[开盘啦业务包](../src/empire/features/kaipanla/README.md)，保留独立产品任务与页面、同一公共下载/入队/归档。其纯协议、解析、规范、SQL映射、查询与页面按职责组织；跨业务行情输入通过`ValidatedDayReader.iter_validated_days`公开契约，并在复权已有SQL连接内惰性读取。公共schema读取器只接受业务显式给出的表集合，不导入开盘啦表组。普通产品页仍按需创建，quote分支才加载盘口控件。
+
 股东复杂样板集中在 [features/holders](../src/empire/features/holders/README.md)：`contract.py` 是纯业务契约，`query.py`/`audit.py` 是正式查询与证明核查入口，`ui.py` 贡献三个独立页面，`source.py`/`collector.py`/`dataset.py` 分别拥有来源语义、采集生命周期和统一归档映射。一个包仍可贡献多个独立插件；中央白名单只收集包声明，不把它合并为一个运行时开关。持有人插件与资本运作的原交错顺序按稳定槽保留。
 
 共享 HTML 节点树位于 `sources/html.py`，由股东和资本运作来源解析器共同使用；它只处理节点/文本及标签、嵌套表格边界，不拥有业务字段、请求或生命周期。纯函数不注册插件，共享辅助变更须覆盖两侧消费者。目录迁移保持单任务、一次必要HTML三栏、三查询/页面、消息schema5、SQL证明contract4及数据归属；不触发DDL、清队、摘要重建或用户配置迁移。

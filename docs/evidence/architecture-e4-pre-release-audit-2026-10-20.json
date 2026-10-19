@@ -1,0 +1,209 @@
+{
+  "checked_at": "2026-10-19T21:32:31.339201+00:00",
+  "phase": "E4 pre-release development checks",
+  "head": "63eb8e2e3df6af84d4853e22ade3f19770dc5706",
+  "source_sha256": "54f7b5a8d838f567c10b00dda4a37b936fe497641918d8f097cf7deb620c6429",
+  "junit": {
+    "domain-1.xml": {
+      "sha256": "583a1108af05e4e088eb8a0a769f9b9229b084f166cda0d6b30b04566cf1aae4",
+      "total": 188,
+      "failed": 2,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 186
+    },
+    "domain-final.xml": {
+      "sha256": "563ef6810591892a73777f53ec074a432cc670164e1011de871caa223d0a05b2",
+      "total": 279,
+      "failed": 2,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 277
+    },
+    "domain-final2.xml": {
+      "sha256": "07cdc78290b389e68b2cdef18e2a76c4acd32702276aab23b141780646e17d3c",
+      "total": 279,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 279
+    },
+    "integration-1.xml": {
+      "sha256": "236f3577cf6723abcbb568187e4cac8b0e5f1bf153800cea5649442730917e42",
+      "total": 58,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 58
+    },
+    "verifier-verified.xml": {
+      "sha256": "06b28efe2ba4e2064ace82fba68454808ee5ed875f2612cca63cf5200e4c4383",
+      "total": 144,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 144
+    },
+    "public-final.xml": {
+      "sha256": "f822a4a1670d3e42a91ada389eabfbb5eac81d5f9951992eb8a3dff9de69a95f",
+      "total": 274,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 274
+    },
+    "docs-final.xml": {
+      "sha256": "61baa049d748ddcedd4422e478f60cec0a2b85985710ad8a035e1415c98f0714",
+      "total": 35,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 35
+    }
+  },
+  "performance_raw_statistics_recomputed": 18,
+  "performance_sha256": "25df1550acadb9a65314cfa5dfcf3e32d410f8376d9c4ba8c18b12d84c54e406",
+  "capacity_scan": {
+    "active_reports": 17,
+    "invalid": {}
+  },
+  "retired_modules": [
+    {
+      "old": "src/empire/plugins/collectors/kaipanla_kinds.py",
+      "new": "src/empire/features/kaipanla/contract.py",
+      "sha256": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2"
+    },
+    {
+      "old": "src/empire/plugins/collectors/kaipanla_scope.py",
+      "new": "src/empire/features/kaipanla/listings_source.py",
+      "sha256": "0701b6eb0d090e0717b26650c40cfab88925b92f193839c3882d0420a7ef59d4"
+    },
+    {
+      "old": "src/empire/plugins/collectors/kaipanla_alias.py",
+      "new": "src/empire/features/kaipanla/alias_source.py",
+      "sha256": "4e1fcce1f48bc3c956cf849e7ea27f3d2940e3c5d3c3524d97b8c4c9b426c2e1"
+    },
+    {
+      "old": "src/empire/plugins/collectors/kaipanla_source.py",
+      "new": "src/empire/features/kaipanla/source.py",
+      "sha256": "b2854a1b74b91c3af875de0390f6d824dcca90b236b21411a4ace6d9f214774f"
+    },
+    {
+      "old": "src/empire/plugins/collectors/kaipanla_products_source.py",
+      "new": "src/empire/features/kaipanla/product_source.py",
+      "sha256": "99a22f9b95fe6666c32ad981a0ac23c05cae0c8ed9f3a0e50d68b29d04b88640"
+    },
+    {
+      "old": "src/empire/plugins/collectors/kaipanla_products.py",
+      "new": "src/empire/features/kaipanla/collector.py",
+      "sha256": "8b5791a215a3be10530dddf7c369451ac99b965cbf06494528880ea1eb65136b"
+    },
+    {
+      "old": "src/empire/plugins/collectors/kaipanla_product_download.py",
+      "new": "src/empire/features/kaipanla/download.py",
+      "sha256": "eb20e53af41f03e8e79b5906e0da7134c5da0ae902735c8a4fb5f217951db5c0"
+    },
+    {
+      "old": "src/empire/plugins/collectors/kaipanla_refresh.py",
+      "new": "src/empire/features/kaipanla/refresh.py",
+      "sha256": "5a0d13f713b87580b6d7c6e870aa35e1881ac1d6dc286df32b5ecd0ce9b4aa3c"
+    },
+    {
+      "old": "src/empire/plugins/datasets/intraday.py",
+      "new": "src/empire/features/kaipanla/legacy_pair.py",
+      "sha256": "92c5794548b7d3e991954dec27f800ce104c832d058d539351faed3507e68e70"
+    },
+    {
+      "old": "src/empire/plugins/datasets/kaipanla_products.py",
+      "new": "src/empire/features/kaipanla/dataset.py",
+      "sha256": "395dfa8df12ce3fe6a82285dc9eed66bf6d8274f1c8ce04a5a4b5cd5c16ac656"
+    },
+    {
+      "old": "src/empire/plugins/datasets/market_mapping.py",
+      "new": "src/empire/features/kaipanla/codec.py",
+      "sha256": "df8de1bb83bbfbbb38d8b3aff0fcf4f5a200475fb5360fb3dd43337689a2241b"
+    },
+    {
+      "old": "src/empire/plugins/datasets/market_repository.py",
+      "new": "src/empire/features/kaipanla/repository.py",
+      "sha256": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b"
+    },
+    {
+      "old": "src/empire/plugins/datasets/trade_blocks.py",
+      "new": "src/empire/features/kaipanla/trade_blocks.py",
+      "sha256": "859b05e240d091f76337b2ba4cf366a4335e8f45f46b9d4bb6f8b49102029d3a"
+    },
+    {
+      "old": "src/empire/contracts/market_storage.py",
+      "new": "src/empire/features/kaipanla/storage_contract.py",
+      "sha256": "b578a7042aa6d586a2117550495ddb231cbb23f5a14e008c2819736981d197b1"
+    },
+    {
+      "old": "src/empire/plugins/data/kaipanla_products.py",
+      "new": "src/empire/features/kaipanla/query.py",
+      "sha256": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894"
+    },
+    {
+      "old": "src/empire/plugins/data/kaipanla_scope.py",
+      "new": "src/empire/features/kaipanla/scope.py",
+      "sha256": "7e615aa17235f5628f8e7c7317a45715850a2f4fc35bd8c4739595abc3210ab0"
+    },
+    {
+      "old": "src/empire/plugins/data/kaipanla_products_preparation.py",
+      "new": "src/empire/features/kaipanla/audit.py",
+      "sha256": "8207e4b77f574beb0a588ff570f148f79e60209328de066b3899f3d22b581097"
+    },
+    {
+      "old": "src/empire/plugins/ui/kaipanla_products.py",
+      "new": "src/empire/features/kaipanla/ui.py",
+      "sha256": "a9dfa48aedf2a763d1c04c5e879053139d4746f5252b99fd5757ef17ec83d233"
+    },
+    {
+      "old": "src/empire/plugins/ui/kaipanla_quote_page.py",
+      "new": "src/empire/features/kaipanla/quote_page.py",
+      "sha256": "167945839af0e0093eddd6989e1000250428850740eb2c2469f2ae40e79190e1"
+    },
+    {
+      "old": "src/empire/plugins/ui/kaipanla_quote_view.py",
+      "new": "src/empire/features/kaipanla/quote_view.py",
+      "sha256": "7727849888c5079a4fb05db094668885bcd321b0dd84ebe1176d22899cfbee23"
+    },
+    {
+      "old": "src/empire/plugins/ui/kaipanla_quote_format.py",
+      "new": "src/empire/features/kaipanla/quote_format.py",
+      "sha256": "ae5070a2c53db2c20b65082279005cbd12c82f350c475c031e941e59fabbc1ce"
+    },
+    {
+      "old": "src/empire/plugins/ui/kaipanla_quote_chart.py",
+      "new": "src/empire/features/kaipanla/quote_chart.py",
+      "sha256": "d09514b5a4da99209258622ed378819645e1a764787a18aaec4ebbc2e4c9364e"
+    },
+    {
+      "old": "src/empire/plugins/ui/product_chart.py",
+      "new": "src/empire/features/kaipanla/product_chart.py",
+      "sha256": "98ba612eb6732e4b984515374750b993b351752ff89f98d4f35e293e05dda743"
+    },
+    {
+      "old": "src/empire/plugins/ui/product_dates.py",
+      "new": "src/empire/features/kaipanla/product_dates.py",
+      "sha256": "097c7ac1db79778d45117dc8252f94d7ff2ce67212e30b5cb917de949dd665fe"
+    }
+  ],
+  "remaining_python_references": [],
+  "frozen_files_unchanged_from_accepted_head": {
+    "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
+    "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
+    "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
+    "docs/evidence/architecture-performance-protocol-2026-10-19.json": "38679725dbf2ad41e8ff1d9a33c8a28630d4a808d33880ec3c4d39f26c3ac24b",
+    "docs/evidence/architecture-performance-baseline-2026-10-19.json": "1202baacde0866a7246a4cc032b1f4580e11b5474d599ee81a13503debfd6493"
+  },
+  "config_hashes": {
+    "config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "dist\\Empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f"
+  },
+  "plugin_preferences_sha256": "8cbc58900b35bf4c8b2f9fff47ed95f67f6e20782734f38a0819ff3c7cadd63e",
+  "source_result": "pipeline consistent; strict source FAIL preserved",
+  "source_audit_sha256": "ae1970775274049193ca3dfaeefde4ec3fbe8706ef2425380e1e2b77ef3cf784",
+  "actual_release": "not_run",
+  "actual_desktop": "not_run"
+}

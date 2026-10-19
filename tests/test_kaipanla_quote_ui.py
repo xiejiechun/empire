@@ -8,9 +8,9 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 from PySide6.QtCore import QDate  # noqa: E402
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.plugins.ui.kaipanla_products import KaipanlaProductUiPlugin  # noqa: E402
-from empire.plugins.ui.kaipanla_quote_format import GREEN  # noqa: E402
-from empire.plugins.ui.kaipanla_quote_page import QuotePage  # noqa: E402
+from empire.features.kaipanla.quote_format import GREEN
+from empire.features.kaipanla.quote_page import QuotePage
+from empire.features.kaipanla.ui import KaipanlaProductUiPlugin
 from tests.test_kaipanla_products import business_row  # noqa: E402
 
 

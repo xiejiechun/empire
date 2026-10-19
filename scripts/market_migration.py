@@ -7,10 +7,10 @@ from pathlib import Path
 
 from sqlalchemy import inspect, text
 
-from empire.contracts.market_storage import MARKET_TABLES
-from empire.plugins.datasets.kaipanla_products import digest, validate
-from empire.plugins.datasets.market_mapping import encode
-from empire.plugins.datasets.market_repository import head_record, read_day, write_day
+from empire.features.kaipanla.codec import encode
+from empire.features.kaipanla.normalization import digest, validate
+from empire.features.kaipanla.repository import head_record, read_day, write_day
+from empire.features.kaipanla.storage_contract import MARKET_TABLES
 from scripts.business_migration_engine import identity, save
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,11 +25,11 @@ def definitions():
 
 def implementation_hash():
     paths = ['sql/schema.sql', 'sql/schema-contract.json', 'scripts/market_migration.py',
-             'src/empire/contracts/market_storage.py', 'src/empire/plugins/datasets/market_mapping.py',
-             'src/empire/plugins/datasets/market_repository.py', 'src/empire/plugins/datasets/trade_blocks.py',
-             'src/empire/plugins/datasets/kaipanla_products.py',
-             'src/empire/plugins/collectors/kaipanla_products_source.py',
-             'src/empire/plugins/collectors/kaipanla_kinds.py', 'docs/kaipanla-field-dictionary.md']
+             'src/empire/features/kaipanla/storage_contract.py', 'src/empire/features/kaipanla/codec.py',
+             'src/empire/features/kaipanla/repository.py', 'src/empire/features/kaipanla/trade_blocks.py',
+             'src/empire/features/kaipanla/dataset.py',
+             'src/empire/features/kaipanla/product_source.py',
+             'src/empire/features/kaipanla/contract.py', 'docs/kaipanla-field-dictionary.md']
     return hashlib.sha256(b''.join((ROOT/p).read_bytes() for p in paths)).hexdigest()
 
 

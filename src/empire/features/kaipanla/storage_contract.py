@@ -2,14 +2,16 @@
 import math
 from decimal import Decimal, localcontext
 
+from empire.contracts.business_schema import dataset_tables as owned_tables
+
 SERIES = {
-    'trend': ('stock_intraday_trend', ('price', 'average_price', 'source_volume', 'source_flag')),
-    'auction': ('stock_opening_auction', ('price', 'source_flag', 'source_volume')),
-    'volume': ('stock_minute_volume', ('source_volume', 'source_turnover', 'source_flag')),
-    'trades': ('stock_intraday_trade_block', ('price', 'source_flag', 'source_volume',
+    'trend': (owned_tables('kaipanla.trend.day')[1], ('price', 'average_price', 'source_volume', 'source_flag')),
+    'auction': (owned_tables('kaipanla.auction.day')[1], ('price', 'source_flag', 'source_volume')),
+    'volume': (owned_tables('kaipanla.volume.day')[1], ('source_volume', 'source_turnover', 'source_flag')),
+    'trades': (owned_tables('kaipanla.trades.day')[1], ('price', 'source_flag', 'source_volume',
                                       'source_field_4', 'source_field_5', 'source_field_6', 'source_field_7')),
-    'entrust': ('stock_minute_entrust', ('buy_volume', 'sell_volume', 'buy_turnover', 'sell_turnover')),
-    'large_order': ('stock_large_order_trend', ('net_amount',)),
+    'entrust': (owned_tables('kaipanla.entrust.day')[1], ('buy_volume', 'sell_volume', 'buy_turnover', 'sell_turnover')),
+    'large_order': (owned_tables('kaipanla.large_order.day')[1], ('net_amount',)),
 }
 QUOTE_FIELDS = tuple(('time up_px avg_px low_px down_px high_px last_px open_px pe_rate '
     'jtPeRate TTMPeRate amount_in amplitude px_change vol_ratio amount_out dyn_pb_rate '
@@ -26,8 +28,8 @@ EXTRAS = {
 BOOK_EXTRAS = {'totalb', 'totals', 'avg_askpx', 'avg_bidpx'}
 LAYOUT_VERSION = 2
 NUMERIC_SQL = 'DECIMAL(30,12)'
-MARKET_TABLES = ('stock_market_day', *(v[0] for v in SERIES.values()),
-                 'stock_daily_quote', 'stock_daily_quote_level')
+MARKET_TABLES = tuple(dict.fromkeys(table for kind in (*SERIES, 'quote')
+                                   for table in owned_tables('kaipanla.' + kind + '.day')))
 
 
 def number(value):
@@ -62,5 +64,5 @@ def restore_values(values, mask):
 
 
 def dataset_tables(kind):
-    facts = (SERIES[kind][0],) if kind in SERIES else ('stock_daily_quote', 'stock_daily_quote_level')
-    return ('stock_market_day', *facts)
+    # Preserve the former non-series fallback to quote tables.
+    return owned_tables('kaipanla.' + (kind if kind in SERIES else 'quote') + '.day')

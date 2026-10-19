@@ -16,14 +16,12 @@ from empire.contracts.name_changes import project as name_project
 from empire.contracts.st_events import KINDS as ST_KINDS
 from empire.contracts.st_events import SCHEMA_VERSION as ST_SCHEMA_VERSION
 from empire.contracts.st_events import project as st_project
-from empire.contracts.task import HISTORICAL_DAY_DEFAULTS, TaskContribution, TaskDefaults
+from empire.contracts.task import TaskContribution, TaskDefaults
 from empire.contracts.tdx_performance import UNIT_KINDS as PERFORMANCE_KINDS
 from empire.contracts.tdx_performance import project as performance_project
 from empire.contracts.trading_rules import KINDS as RULE_KINDS
 from empire.contracts.trading_rules import project as rule_project
 from empire.plugins.collectors.eastmoney_repurchase import RepurchaseCollector
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
-from empire.plugins.collectors.kaipanla_products import KaipanlaProductCollector
 from empire.plugins.collectors.rule_sources import RuleSources
 from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
 from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
@@ -39,7 +37,6 @@ from empire.plugins.collectors.ths_listings import ThsListingCollector
 from empire.plugins.collectors.trading_rules import RuleCollector
 from empire.plugins.data.adjustment import AdjustmentDataPlugin
 from empire.plugins.data.capital_actions import CapitalDataPlugin
-from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
 from empire.plugins.data.listing_status import ListingStatusDataPlugin
 from empire.plugins.data.listings import ListingDataPlugin
 from empire.plugins.data.name_changes import NameDataPlugin
@@ -53,7 +50,6 @@ from empire.plugins.data.unlocks import UnlockDataPlugin
 from empire.plugins.datasets import listing_status, listings, repurchases, security_aliases
 from empire.plugins.datasets.capital_actions import KINDS, SCHEMA_VERSIONS
 from empire.plugins.datasets.capital_archive import CapitalDataset
-from empire.plugins.datasets.kaipanla_products import ProductDataset
 from empire.plugins.datasets.name_changes import NameDataset
 from empire.plugins.datasets.st_events import StDataset
 from empire.plugins.datasets.tdx_performance import PerformanceDataset
@@ -63,7 +59,6 @@ from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset
 from empire.plugins.datasets.unlocks import UnlockDataset
 from empire.plugins.ui.adjustment import AdjustmentUiPlugin
 from empire.plugins.ui.capital_actions import CapitalUiPlugin
-from empire.plugins.ui.kaipanla_products import KaipanlaProductUiPlugin
 from empire.plugins.ui.listing_status import ListingStatusUiPlugin
 from empire.plugins.ui.listings import ListingUiPlugin
 from empire.plugins.ui.name_changes import NameUiPlugin
@@ -110,9 +105,6 @@ def bundle(cfg):
         *positioned((9200, 9300), (StDataPlugin(kind, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for kind in ST_KINDS)),
         *positioned((9400, 9500), (StEventCollector(kind) for kind in ST_KINDS)),
         *positioned((9600, 9700), (StUiPlugin(kind) for kind in ST_KINDS)),
-        *positioned((9800, 9900, 10000, 10100, 10200, 10300, 10400), (KaipanlaProductDataPlugin(kind, namespace=cfg['redis'].get('namespace', 'empire')) for kind in PRODUCTS)),
-        *positioned((10500, 10600, 10700, 10800, 10900, 11000, 11100), (KaipanlaProductCollector(kind) for kind in PRODUCTS)),
-        *positioned((11200, 11300, 11400, 11500, 11600, 11700, 11800), (KaipanlaProductUiPlugin(kind) for kind in PRODUCTS)),
         OrderedContribution(11900, AdjustmentDataPlugin(cfg['redis'].get('namespace', 'empire'))),
         OrderedContribution(12000, AdjustmentUiPlugin()),
         *positioned((12900, 13000, 13100), (CapitalDataPlugin(kind, namespace=cfg['redis'].get('namespace', 'empire'),
@@ -171,13 +163,6 @@ def bundle(cfg):
                         description='每天北京时间18:00核验全部历史，一次请求发现新增与历史修订；可编辑计划。'),
                     fresh_description='核验来源全部更名历史；已入队轮次先完成归档，缺失名称保持未知。')
                     for kind, item in NAME_KINDS.items())),
-        *positioned((2500, 2600, 2700, 2800, 2900, 3000, 3100), (TaskContribution(project(kind), '开盘啦' + item.title,
-                    'collector.kaipanla_' + kind, 'kaipanla', item.note,
-                    category='高频行情', source_name='开盘啦', interval_seconds=86400, unit_name='股票日',
-                    parallel_downloads=True, default_enabled=False,
-                    default_schedule=HISTORICAL_DAY_DEFAULTS,
-                    fresh_description='从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。')
-                    for kind, item in PRODUCTS.items())),
         OrderedContribution(3200, TaskContribution('ths-listings', '股票上市与发行资料（同花顺）',
                     'collector.ths_listings', 'ths', '逐证券补缺，每七天回查当前股票池；保留已存退市证券资料',
                     category='证券基础', source_name='同花顺', parallel_downloads=True, unit_name='只股票', default_schedule=TaskDefaults('daily',
@@ -204,8 +189,6 @@ def bundle(cfg):
                         {StDataset(kind).JOB: StDataset(kind).PROJECT}, schema_version=ST_SCHEMA_VERSION) for kind in ST_KINDS)),
         *positioned((2600, 2700), (DatasetContribution(NameDataset(kind), 'incremental',
                         {NameDataset(kind).JOB: NameDataset(kind).PROJECT}, schema_version=NAME_SCHEMA_VERSION) for kind in NAME_KINDS)),
-        *positioned((2800, 2900, 3000, 3100, 3200, 3300, 3400), (DatasetContribution(ProductDataset(kind), 'incremental',
-                        {ProductDataset(kind).JOB: ProductDataset(kind).PROJECT}) for kind in PRODUCTS)),
         *positioned((3900, 4000, 4100), (DatasetContribution(CapitalDataset(kind), "incremental", {item[2] + "-v1": item[2]},
                                           schema_version=SCHEMA_VERSIONS[kind])
                       for kind, item in KINDS.items())),

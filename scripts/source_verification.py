@@ -250,7 +250,7 @@ async def recover(args) -> bool:
 
 
 async def verify(args, verify_scope, *, subject='source', fixed_codes=(), minimum_random=0,
-                 require_proxy=False, non_stock_scope=None) -> bool:
+                 require_proxy=False, non_stock_scope=None, prepare_scope=None) -> bool:
     output, report = initial_report(args)
     redactor, manager, storage, lock = Redactor(), None, None, None
     try:
@@ -286,11 +286,16 @@ async def verify(args, verify_scope, *, subject='source', fixed_codes=(), minimu
                      if non_stock_scope is None else dict(selected=[], random=[], fixed=[], random_count=0,
                                                           non_stock_scope=copy.deepcopy(non_stock_scope)))
         report.update(subject=subject, selection=selection, source_sha256=source_digest(project_root()),
+                      source_server_uuid=snapshot['server_uuid'],
                       verification_scope='proxy_pipeline' if args.proxy_only else 'development_pipeline',
                       routing_policy=dict(use_proxy=True, proxy_fallback=not args.proxy_only),
                       sample_30_applicable=non_stock_scope is None and len(snapshot['stocks']) >= 30,
                       policy_snapshot_digest=digest(snapshot['settings']), acceptance_complete=False)
         write_report(output, report, redactor)
+        # Reviewed source dependencies must be read before the global private-SQL
+        # guard is installed. This hook cannot relax or remove that guard.
+        if prepare_scope is not None:
+            prepare_scope(selection, args, report)
         storage = PrivateStorage(test, cfg['redis'], report['run_id'], token_hex(32), snapshot['server_uuid'])
         redactor = Redactor([*redactor.secrets, storage.owner])
         ownership = output.with_name(output.name + '.ownership.json')

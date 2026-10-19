@@ -1,30 +1,29 @@
 """Legacy pair validation used only by explicit migration; no runtime dataset."""
-import hashlib
-import json
 import re
 from datetime import date, datetime
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.core.time import CHINA
-from empire.plugins.collectors.kaipanla_alias import validate_proof
-from empire.plugins.collectors.kaipanla_source import combine_day, parse_response
+from empire.features.kaipanla.alias_contract import validate_proof
+from empire.features.kaipanla.pair_parser import combine_day, parse_response
 
 PROJECT = 'kaipanla-intraday'
+
+
 JOB = PROJECT + '-v1'
+
+
 DATASETS = {'intraday.day'}
+
+
 FINGERPRINT_NAMESPACE = 'kaipanla_intraday_v1'
+
+
 FINGERPRINT_VERSION = ArchiveVersion(('utc',), observed_index=0)
+
+
 FIELDS = {'code', 'trade_date', 'preclose_px', 'trend', 'auction', 'source_times', 'market', 'lifecycle',
           'source_codes', 'aliases'}
-
-
-def identity(row):
-    return row['market'] + ':' + row['code'] + ':' + row['trade_date']
-
-
-def digest(value):
-    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
-                                    separators=(',', ':'), allow_nan=False).encode()).hexdigest()
 
 
 def validate(row):

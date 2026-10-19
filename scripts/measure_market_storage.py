@@ -12,11 +12,11 @@ from uuid import uuid4
 
 from sqlalchemy import inspect, text
 
-from empire.contracts.market_storage import MARKET_TABLES, SERIES
 from empire.core.config import load_config
-from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
-from empire.plugins.datasets.kaipanla_products import digest, validate
-from empire.plugins.datasets.market_repository import head_record, read_day, write_day
+from empire.features.kaipanla.normalization import digest, validate
+from empire.features.kaipanla.query import KaipanlaProductDataPlugin
+from empire.features.kaipanla.repository import head_record, read_day, write_day
+from empire.features.kaipanla.storage_contract import MARKET_TABLES, SERIES
 from empire.plugins.infra.mysql_store import initialize_database, make_engine
 from scripts.measure_capacity import latency, process_resources
 

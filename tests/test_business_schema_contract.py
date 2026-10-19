@@ -8,11 +8,11 @@ from empire.contracts.business_schema import DATASET_TABLES, FIXED_SOURCES, requ
 from empire.features.calendar import dataset as trade_calendar
 from empire.features.financial_statements.dataset import FinancialDataset
 from empire.features.industries import dataset as industries
+from empire.features.kaipanla.contract import PRODUCTS
+from empire.features.kaipanla.dataset import ProductDataset
 from empire.features.stocks import dataset as stocks
 from empire.features.suspensions import dataset as suspensions
-from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
 from empire.plugins.datasets.capital_archive import CapitalDataset
-from empire.plugins.datasets.kaipanla_products import ProductDataset
 
 
 @pytest.mark.parametrize('dataset,table', [(d,t) for d,t in DATASET_TABLES.items() if t in FIXED_SOURCES])

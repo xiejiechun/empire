@@ -8,9 +8,10 @@ import httpx
 import pytest
 
 from empire.contracts.download import ResponsePolicy
-from empire.plugins.collectors.kaipanla_products import KaipanlaProductCollector
-from empire.plugins.collectors.kaipanla_scope import lifecycle, parse_listing_page, required_days
-from empire.plugins.datasets.intraday import validate
+from empire.features.kaipanla.collector import KaipanlaProductCollector
+from empire.features.kaipanla.dates import lifecycle, required_days
+from empire.features.kaipanla.legacy_pair import validate
+from empire.features.kaipanla.listings_source import parse_listing_page
 from empire.plugins.infra.http import HttpService
 from empire.plugins.infra.resources import ByteBudget
 from tests.test_http import MemoryPermits
@@ -261,7 +262,7 @@ async def test_minimum_single_response_budget_makes_progress_without_self_wait()
 
 
 async def test_transport_retry_gets_new_device_and_keeps_shared_permits():
-    from empire.plugins.collectors.kaipanla_source import request_options
+    from empire.features.kaipanla.source_protocol import request_options
     seen = []
     async def respond(request):
         from urllib.parse import parse_qs
@@ -286,7 +287,7 @@ async def test_transport_retry_gets_new_device_and_keeps_shared_permits():
 async def test_legacy_code_needs_exchange_proof_and_releases_budget_before_lookup():
     import json
 
-    from empire.plugins.collectors.kaipanla_source import fetch_day
+    from empire.features.kaipanla.source import fetch_day
     calls = []
     async def respond(request):
         calls.append(request.url.host)
@@ -322,7 +323,7 @@ async def test_legacy_code_needs_exchange_proof_and_releases_budget_before_looku
 def test_wrong_exchange_mapping_never_authorizes_a_foreign_security():
     import json
 
-    from empire.plugins.collectors.kaipanla_alias import parse_alias
+    from empire.features.kaipanla.alias_contract import parse_alias
     page = dict(totalElements=1, content=[dict(xxzqdm='920001', xxfcbj='2',
         xxisin='CNE1000048X1', fxssrq='20201223')])
     with pytest.raises(ValueError):
