@@ -6,14 +6,14 @@ from unittest.mock import AsyncMock
 import pytest
 
 from empire.contracts.preparation import CheckEvidence
-from empire.contracts.preparation_catalog import REQUIREMENTS
-from empire.plugins.data.preparation import PreparationPlugin
+from empire.features.preparation.catalog import REQUIREMENTS
+from empire.features.preparation.query import PreparationPlugin
 from tests.test_preparation import contribution
 
 
 @pytest.fixture(autouse=True)
 def artifact(monkeypatch):
-    monkeypatch.setattr('empire.plugins.data.preparation.load_evidence', lambda: ({}, '本版本测试尚未执行'))
+    monkeypatch.setattr('empire.features.preparation.query.load_evidence', lambda: ({}, '本版本测试尚未执行'))
 
 
 async def test_catalog_and_progress_are_available_before_slow_source_finishes():
@@ -65,7 +65,7 @@ async def test_cancelled_report_releases_owner_and_never_marks_pending_data_read
 async def test_ui_renders_partial_catalog_while_full_query_is_pending():
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.preparation import PreparationPage
+    from empire.features.preparation.ui import PreparationPage
     app = QApplication.instance() or QApplication([])
     plugin = PreparationPlugin([])
     await plugin.start(SimpleNamespace(optional=lambda cap: None))

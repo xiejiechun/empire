@@ -16,6 +16,7 @@ from empire.contracts.listing_status import COLUMNS, PROJECT, TYPES
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.data_browser.search import CandidateSearch
 from empire.plugins.ui.common import (
     accessible,
     bind_find,
@@ -29,7 +30,6 @@ from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_cards import CardReader, card, text
 from empire.plugins.ui.preview_layout import QueryForm
 from empire.plugins.ui.preview_navigation import security_context
-from empire.plugins.ui.preview_search import CandidateSearch
 from empire.plugins.ui.queries import QueryScope
 
 

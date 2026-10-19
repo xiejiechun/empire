@@ -5,7 +5,8 @@ from types import SimpleNamespace
 import pytest
 
 from empire.core.time import CHINA
-from empire.plugins.data.trading_day_cutoff import coverage_as_of, last_closed_trade_day
+from empire.features.calendar.contract import last_closed_trade_day
+from empire.features.suspensions.coverage import coverage_as_of
 
 
 def calendar(start='2026-09-30', end='2026-10-08', trade_days=('2026-09-30', '2026-10-08')):
@@ -68,7 +69,7 @@ def test_untrusted_confirmation_does_not_pass(stamp):
 @pytest.mark.parametrize('through,calendar_known,expected', [
     ('2026-10-01', True, 'pass'), ('2026-09-29', True, 'fail'), ('2026-10-01', False, 'unknown')])
 def test_suspension_checker_preserves_real_gaps_and_missing_calendar(monkeypatch, through, calendar_known, expected):
-    from empire.plugins.data import preparation_checks as module
+    from empire.features.suspensions import audit as module
     now = datetime(2026, 10, 2, 16, tzinfo=CHINA)
     target, note = last_closed_trade_day(calendar(), now)
     state = dict(collection_integrity_version=2, coverage=dict(

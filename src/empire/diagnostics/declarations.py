@@ -5,9 +5,9 @@ from dataclasses import asdict
 from datetime import datetime
 
 from empire.contracts.market_storage import SERIES
-from empire.contracts.preparation_catalog import BY_ID
 from empire.core.time import CHINA
 from empire.diagnostics.readonly import DiagnosticLimit
+from empire.features.preparation.catalog import BY_ID
 
 
 def project_declaration(cfg, project, manager=None):

@@ -7,13 +7,13 @@ import pytest
 from sqlalchemy import create_engine, text
 
 from empire.contracts.preparation import CheckEvidence
-from empire.contracts.preparation_catalog import BY_ID
-from empire.contracts.preparation_research import required_ids, research_guards, research_summary
 from empire.contracts.preparation_scope import PreparationScope
 from empire.features.financial_statements.query import FinancialDataPlugin
-from empire.plugins.data.preparation import PreparationPlugin
-from empire.plugins.data.preparation_inventory import count_table, inventory
-from empire.plugins.data.preparation_results import summarize
+from empire.features.preparation.catalog import BY_ID
+from empire.features.preparation.inventory import count_table, inventory
+from empire.features.preparation.query import PreparationPlugin
+from empire.features.preparation.research import required_ids, research_guards, research_summary
+from empire.features.preparation.results import summarize
 from tests.test_preparation import contribution
 
 
@@ -53,7 +53,7 @@ def test_scope_rejects_incompatible_time_semantics(value):
 
 
 async def test_selected_research_does_not_scan_unrelated_sources(monkeypatch):
-    monkeypatch.setattr('empire.plugins.data.preparation.load_evidence', lambda: ({}, '未发布'))
+    monkeypatch.setattr('empire.features.preparation.query.load_evidence', lambda: ({}, '未发布'))
     stocks = SimpleNamespace(preparation_check=AsyncMock(return_value=tuple(
         CheckEvidence(c.id, 'pass', '来源集合和字段已核验') for c in BY_ID['universe'].criteria)))
     financial = SimpleNamespace(preparation_check=AsyncMock())
@@ -69,7 +69,7 @@ async def test_selected_research_does_not_scan_unrelated_sources(monkeypatch):
 
 
 async def test_financial_announcement_limit_is_blocking_only_for_historical_study(monkeypatch):
-    monkeypatch.setattr('empire.plugins.data.preparation.load_evidence', lambda: ({}, '未发布'))
+    monkeypatch.setattr('empire.features.preparation.query.load_evidence', lambda: ({}, '未发布'))
     c = FinancialDataPlugin('income').preparation[0]
     async def check(request):
         historical = PreparationScope.parse(request).purpose == 'historical_signal'
@@ -85,7 +85,7 @@ async def test_financial_announcement_limit_is_blocking_only_for_historical_stud
 
 
 async def test_overview_does_not_start_any_deep_check(monkeypatch):
-    monkeypatch.setattr('empire.plugins.data.preparation.load_evidence', lambda: ({}, '未发布'))
+    monkeypatch.setattr('empire.features.preparation.query.load_evidence', lambda: ({}, '未发布'))
     service = SimpleNamespace(preparation_check=AsyncMock())
     plugin = PreparationPlugin([contribution()])
     await plugin.start(SimpleNamespace(optional={'stocks.query': service}.get))
@@ -119,7 +119,7 @@ def test_exact_inventory_reads_counts_and_edges_without_business_payload():
 
 
 async def test_inventory_failure_never_returns_zero_rows(monkeypatch):
-    from empire.plugins.data import preparation_inventory
+    from empire.features.preparation import inventory as preparation_inventory
     row = dict(table='example', count=None, status='未查')
     monkeypatch.setattr(preparation_inventory, 'metadata', lambda *args: [row])
     async def read(operation, *args):
@@ -133,7 +133,7 @@ async def test_inventory_failure_never_returns_zero_rows(monkeypatch):
 
 
 def test_research_identity_cannot_reuse_different_focus_or_scan_cache():
-    from empire.plugins.data.preparation_cache import PreparationCache
+    from empire.features.preparation.cache import PreparationCache
     store = SimpleNamespace(prefix='test')
     original = scope()
     keys = {PreparationCache(store, 'v', s).key for s in (

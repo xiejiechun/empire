@@ -14,7 +14,7 @@ def documented_project(tmp_path):
     for name in ("src/empire/plugins/ui/storage_reference.md", "config/app.example.toml",
                  "src/empire/plugins/collection/rules.json",
                  "Empire.spec", "docs/documentation-coverage.json",
-                 "src/empire/plugins/ui/stocks.py"):
+                 "src/empire/features/stocks/ui.py"):
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(root / name, target)
@@ -97,7 +97,7 @@ def test_content_change_and_broken_offline_links_fail(documented_project):
 def test_unrelated_article_update_cannot_hide_changed_feature(documented_project):
     root = documented_project
     record_review(root, "核对当前功能")
-    code = root / "src/empire/plugins/ui/stocks.py"
+    code = root / "src/empire/features/stocks/ui.py"
     code.write_text(code.read_text(encoding="utf-8") + "\n# revised stock behavior\n", encoding="utf-8")
     article = root / "src/empire/plugins/ui/storage_reference.md"
     article.write_text(article.read_text(encoding="utf-8") + "\n无关技术参考的补充。\n", encoding="utf-8")

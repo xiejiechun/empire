@@ -248,7 +248,7 @@ async def test_page_and_completion_replay_do_not_duplicate_members(stock_databas
 
 
 async def test_replacement_cleanup_failure_rolls_back_publication(stock_database, monkeypatch):
-    from empire.plugins.datasets import stocks
+    from empire.features.stocks import dataset as stocks
     snapshot, publish, query, manager = stock_database
     first = snapshot()
     await publish("page", first, page=1, rows=ROWS)

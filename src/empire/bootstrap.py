@@ -3,10 +3,15 @@ from dataclasses import replace
 from empire.contracts.bundle import OrderedContribution, ordered
 from empire.core.manager import PluginManager
 from empire.core.redaction import Redactor
-from empire.features.builtin import builtin_bundles, ordered_contributions, validate_ownership
+from empire.features.builtin import (
+    builtin_bundles,
+    confirmation_handlers,
+    ordered_contributions,
+    validate_ownership,
+)
+from empire.features.preparation.composition import plugins_for
 from empire.plugins.collection.control import CollectionControl
 from empire.plugins.collection.records import RecordsPlugin
-from empire.plugins.data.preparation import PreparationPlugin
 from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.infra.archive_confirmation import ArchiveConfirmationPlugin
 from empire.plugins.infra.download_settings import DownloadSettingsPlugin
@@ -19,15 +24,14 @@ from empire.plugins.pipeline.ingest import IngestPlugin
 from empire.plugins.ui.collection import CollectionUiPlugin
 from empire.plugins.ui.downloads import DownloadSettingsUiPlugin
 from empire.plugins.ui.help import HelpUiPlugin
-from empire.plugins.ui.preparation import PreparationUiPlugin
 from empire.plugins.ui.proxies import ProxyUiPlugin
 from empire.plugins.ui.system import SystemUiPlugin
-from empire.plugins.ui.workspace import WorkspaceUiPlugin
 
 
 def build_manager(cfg: dict) -> PluginManager:
     # Explicit internal declarations only: no discovery, service starts or page creation.
     bundles = builtin_bundles(cfg)
+    handlers = confirmation_handlers(bundles)
     rate_groups = dict(cfg["rate_groups"])
     rate_groups.setdefault("ths", {"domains": ["10jqka.com.cn"], "min_interval_ms": 2000})
     rate_groups.setdefault('kaipanla', {'domains': ['longhuvip.com'], 'min_interval_ms': 2000})
@@ -48,9 +52,8 @@ def build_manager(cfg: dict) -> PluginManager:
         OrderedContribution(6900, HttpPlugin(rate_groups, cfg.get("http", {}))),
         OrderedContribution(7000, ArchivePlugin(cfg["archive"])),
         OrderedContribution(7100, IngestPlugin(cfg["ingest"])),
-        OrderedContribution(7200, ArchiveConfirmationPlugin()),
+        OrderedContribution(7200, ArchiveConfirmationPlugin(handlers)),
         OrderedContribution(14700, CollectionControl(ordered_contributions(bundles, 'tasks'))),
-        OrderedContribution(14800, WorkspaceUiPlugin()),
         OrderedContribution(14900, CollectionUiPlugin()),
         OrderedContribution(15400, SystemUiPlugin()),
         OrderedContribution(15500, HelpUiPlugin()),
@@ -60,10 +63,7 @@ def build_manager(cfg: dict) -> PluginManager:
     positioned_plugins = [('platform', contribution) for contribution in platform]
     positioned_plugins.extend((bundle.id, contribution) for bundle in bundles for contribution in bundle.plugins)
     plugins = list(ordered(positioned_plugins, 'plugins'))
-    plugins.extend([PreparationPlugin(
-        (contribution for plugin in plugins
-         for contribution in getattr(plugin, 'preparation', ())), plugins
-    ), PreparationUiPlugin()])
+    plugins.extend(plugins_for(plugins))
     for plugin in plugins:
         plugin.manifest = replace(plugin.manifest, autostart=True)
     manager = PluginManager(plugins, redactor=Redactor.from_config(cfg))

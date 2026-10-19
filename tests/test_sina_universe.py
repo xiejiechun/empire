@@ -8,9 +8,9 @@ import httpx
 import pytest
 
 from empire.contracts.data import make_envelope
-from empire.contracts.stocks import normalize_sina_stock
+from empire.features.stocks.contract import normalize_sina_stock
+from empire.features.stocks.sina_collector import SinaUniverseCollector, decode_json, parse_count
 from empire.plugins.collection.records import RecordsPlugin
-from empire.plugins.collectors.sina_universe import SinaUniverseCollector, decode_json, parse_count
 from tests.catalog_factory import builtin_catalog
 
 

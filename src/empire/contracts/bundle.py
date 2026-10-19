@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import PurePosixPath
 from typing import Generic, TypeVar
 
+from empire.contracts.confirmation import ConfirmationContribution
 from empire.contracts.dataset import DatasetContribution
 from empire.contracts.plugin import Plugin
 from empire.contracts.task import TaskContribution
@@ -51,6 +52,7 @@ class FeatureBundle:
     plugins: tuple[OrderedContribution[Plugin], ...] = ()
     tasks: tuple[OrderedContribution[TaskContribution], ...] = ()
     datasets: tuple[OrderedContribution[DatasetContribution], ...] = ()
+    confirmations: tuple[ConfirmationContribution, ...] = ()
     maintenance_publishers: tuple[MaintenancePublisher, ...] = ()
 
     def __post_init__(self) -> None:

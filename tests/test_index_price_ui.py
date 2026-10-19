@@ -8,7 +8,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
 from empire.features.index_prices.ui import IndexPricePage, IndexPriceUiPlugin  # noqa: E402
-from empire.plugins.ui.preparation_scope import PreparationScopeBar  # noqa: E402
+from empire.features.preparation.ui_scope import PreparationScopeBar
 
 
 def test_lazy_page_pagination_drafts_and_index_scope():

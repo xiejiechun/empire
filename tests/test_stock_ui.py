@@ -9,7 +9,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 from PySide6.QtCore import QItemSelectionModel  # noqa: E402
 from PySide6.QtWidgets import QApplication, QStatusBar  # noqa: E402
 
-from empire.plugins.ui.stocks import StockListPage  # noqa: E402
+from empire.features.stocks.ui import StockListPage
 
 
 class Runtime:

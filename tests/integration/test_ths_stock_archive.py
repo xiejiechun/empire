@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy import event
 from test_stock_archive import ROWS, stock_database  # noqa: F401
 
-from empire.plugins.collectors.ths_universe import ThsUniverseCollector
+from empire.features.stocks.ths_collector import ThsUniverseCollector
 from tests.test_ths_universe import Source, document
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(

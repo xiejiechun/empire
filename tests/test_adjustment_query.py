@@ -10,7 +10,7 @@ from PySide6.QtWidgets import QApplication
 from empire.bootstrap import build_manager
 from empire.contracts.adjustment import AdjustmentError
 from empire.contracts.preparation import ComputationContribution
-from empire.contracts.preparation_catalog import BY_ID
+from empire.features.preparation.catalog import BY_ID
 from empire.plugins.data.adjustment import AdjustmentDataPlugin, resolve_security
 from empire.plugins.data.adjustment_inputs import close_prices, proof_time, verify_unit
 from empire.plugins.datasets.capital_actions import digest

@@ -169,8 +169,8 @@ async def test_preparation_content_proof_scope_and_historical_limit():
 
 
 async def test_dashboard_accepts_formal_industry_evidence_contract():
-    from empire.contracts.preparation_catalog import BY_ID
-    from empire.plugins.data.preparation import PreparationPlugin
+    from empire.features.preparation.catalog import BY_ID
+    from empire.features.preparation.query import PreparationPlugin
 
     query = IndustryDataPlugin()
     state = dict(contract_version=CONTRACT_VERSION, digest=digest(SNAPSHOT), industry_count=1, member_count=2,

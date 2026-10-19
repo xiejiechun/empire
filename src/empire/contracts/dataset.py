@@ -13,10 +13,13 @@ class DatasetContribution:
     projects: dict[str, str] = field(default_factory=dict)
     stale_outcome: str = "complete"
     schema_version: int = 1
+    confirmation: str = ""
 
     def __post_init__(self):
         if type(self.schema_version) is not int or self.schema_version < 1:
             raise ValueError('数据贡献 schema_version 须为正整数')
+        if self.confirmation and (not isinstance(self.confirmation, str) or safe_project_id(self.confirmation) != self.confirmation):
+            raise ValueError("数据贡献的归档确认身份无效")
         datasets = getattr(self.mapping, "DATASETS", None)
         namespace = getattr(self.mapping, "FINGERPRINT_NAMESPACE", None)
         if (not isinstance(datasets, set) or not datasets

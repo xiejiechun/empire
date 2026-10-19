@@ -7,6 +7,7 @@ from unittest.mock import AsyncMock
 import pytest
 
 from empire.core.time import mysql_time
+from empire.features.stocks.confirmation import stock_status
 from empire.plugins.infra.archive_confirmation import ArchiveConfirmationPlugin
 
 
@@ -52,7 +53,7 @@ DAMAGE = ["json", "deep-json", "array", "status", "snapshot", "time", "timezone"
 
 @pytest.mark.parametrize("kind", DAMAGE)
 async def test_invalid_committed_marker_falls_back_to_sql_confirmation(kind):
-    plugin = ArchiveConfirmationPlugin()
+    plugin = ArchiveConfirmationPlugin({"stocks.snapshot": stock_status})
     value = marker()
     raw = damage(value, kind)
     plugin.redis = SimpleNamespace(prefix="test", client=SimpleNamespace(get=AsyncMock(return_value=raw)))
@@ -63,7 +64,7 @@ async def test_invalid_committed_marker_falls_back_to_sql_confirmation(kind):
 
 
 async def test_valid_markers_keep_fast_status_and_invalid_result_is_safe():
-    plugin = ArchiveConfirmationPlugin()
+    plugin = ArchiveConfirmationPlugin({"stocks.snapshot": stock_status})
     value = marker()
     plugin.redis = SimpleNamespace(prefix="test", client=SimpleNamespace(get=AsyncMock(return_value=json.dumps(value))))
     plugin.mysql = SimpleNamespace(read=AsyncMock(side_effect=AssertionError("valid cache status must not read SQL")))
@@ -76,7 +77,7 @@ async def test_valid_markers_keep_fast_status_and_invalid_result_is_safe():
 
 
 async def test_missing_marker_uses_sql_progress_then_valid_invalid_result():
-    plugin = ArchiveConfirmationPlugin()
+    plugin = ArchiveConfirmationPlugin({"stocks.snapshot": stock_status})
     value = {**marker(), "status": "invalid", "row_count": 0, "expected_count": 0,
              "started_at": None, "error_text": "已确认分页缺失"}
     plugin.redis = SimpleNamespace(prefix="test", client=SimpleNamespace(get=AsyncMock(
@@ -87,7 +88,7 @@ async def test_missing_marker_uses_sql_progress_then_valid_invalid_result():
 
 
 async def test_whole_second_marker_uses_the_current_auto_precision_contract():
-    plugin = ArchiveConfirmationPlugin()
+    plugin = ArchiveConfirmationPlugin({"stocks.snapshot": stock_status})
     value = marker()
     value["started_at"] = datetime.fromisoformat(value["started_at"]).replace(microsecond=0).isoformat()
     plugin.redis = SimpleNamespace(prefix="test", client=SimpleNamespace(get=AsyncMock(return_value=json.dumps(value))))

@@ -444,7 +444,7 @@ def test_isolation_uses_current_snapshot_not_old_errors_and_archive_health_expos
 def test_formal_preview_preserves_security_identity_and_explicit_split_contract():
     from empire.features.financial_statements.query import FinancialDataPlugin
     from empire.features.holders.query import HolderDataPlugin
-    from empire.plugins.data.suspensions import SuspensionDataPlugin
+    from empire.features.suspensions.query import SuspensionDataPlugin
     method, kwargs = query_preview(HolderDataPlugin('top_holders'), '000001.SZ', '2026-09-30')
     assert method == 'browse' and kwargs['code'] == '000001.SZ'
     assert kwargs['start'] == kwargs['end'] == '2026-09-30'

@@ -19,12 +19,12 @@ from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
 from empire.core.time import CHINA
+from empire.features.data_browser.search import CandidateSearch
 from empire.features.index_prices.chart import IndexPriceChart
 from empire.features.index_prices.contract import volume_amount_valid
 from empire.plugins.ui.common import accessible, rows
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_layout import DataNote, QueryForm
-from empire.plugins.ui.preview_search import CandidateSearch
 from empire.plugins.ui.queries import QueryScope
 
 

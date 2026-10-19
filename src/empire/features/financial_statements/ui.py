@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
 
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
+from empire.features.data_browser.search import CandidateSearch
 from empire.features.financial_statements.contract import KINDS
 from empire.features.financial_statements.quality import quality_issues
 from empire.features.financial_statements.statement_matrix import StatementMatrix
@@ -25,7 +26,6 @@ from empire.plugins.ui.common import accessible, hint, rows, table
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_layout import fit_directory
 from empire.plugins.ui.preview_navigation import security_context
-from empire.plugins.ui.preview_search import CandidateSearch
 from empire.plugins.ui.queries import QueryScope
 
 

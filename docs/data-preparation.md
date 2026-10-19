@@ -100,7 +100,7 @@
 
 ## 开发接入与验证
 
-唯一目录入口是 [preparation_catalog.py](../src/empire/contracts/preparation_catalog.py)，按证券基础、事件、其他市场数据、处理工作等职责组织声明。Requirement 的 kind 区分工作类型，boundary 说明本项边界，related 仅表示配合使用，dependencies 只用于确实需要输入的处理项目。目录启动校验身份、引用、依赖环以及采集项目不依赖其他项目完成。
+唯一目录入口是 [preparation_catalog.py](../src/empire/features/preparation/catalog.py)，按证券基础、事件、其他市场数据、处理工作等职责组织声明。Requirement 的 kind 区分工作类型，boundary 说明本项边界，related 仅表示配合使用，dependencies 只用于确实需要输入的处理项目。目录启动校验身份、引用、依赖环以及采集项目不依赖其他项目完成。
 
 PreparationContribution 精确登记 requirement、query capability、来源、project_id/job_key/dataset、任务能力及专项测试。相同项目跨多个计划项会被拒绝。检查器返回本项 CheckEvidence；重复、未知或无效检查结果、查询超时和失败都不能通过。代码绑定的 JUnit 执行证据由正式发布门禁产生，随软件打包，不保存第二套人工完成状态。
 
@@ -182,3 +182,9 @@ PreparationContribution 精确登记 requirement、query capability、来源、p
 维护时可执行 `.venv/Scripts/python.exe scripts/scan_preparation.py --detailed --output <报告.json>`；默认项目根目录config.toml，`--config`显式覆盖。不带`--detailed`只精确盘点MySQL。入口只启动查询插件及可选Redis读取证据，不启动采集、调度、入队或归档，不写业务/配置/摘要或报告缓存。报告记录扫描起止时间、未运行查询插件、逐表库存与各项检查；检查期间的临时输出可能为部分结果，以finished_at及checking为准。
 
 来源检查器复用当前正式数据路径；财报核心金额、来源集合、时效与历史信号条件不放宽。动态实存数量属于扫描时点，不能作为永久规则或全市场完整率。
+
+## E3业务与公共协议边界
+
+检查聚合、研究需求目录、缓存及页面位于 `features/preparation`；股票、日历和停复牌的SQL审计属于各自业务。`contracts/preparation.py` 和 `contracts/preparation_scope.py` 继续是唯一公共证据/贡献及范围契约，研究选项的值和标签不变。发布根与资源证据读取保留 `core/preparation_release.py`。
+
+工作台和可搜索数据目录由 `features/data_browser` 贡献惰性页面工厂；公共外壳只管理页面生命周期。公共预览布局、卡片和导航留在 `plugins/ui`，其他页面不反向借用业务页面实现。上述归属调整不改变日常入口、范围草稿、任务保存、只读查询取消或命令保存行为。

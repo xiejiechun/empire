@@ -90,7 +90,7 @@
 
 ### P1-03　并发窗口限制页数，但没有限制下载/解压字节
 
-**问题/证据（源码确认、异常输入风险）**：[routing.py:103](../src/empire/plugins/infra/routing.py#L103) 全量读取响应；[stock_pages.py:56](../src/empire/plugins/collectors/stock_pages.py#L56) 预取持有后页响应；[ingest.py:122](../src/empire/plugins/pipeline/ingest.py#L122) 的页字节限制发生在下载、解压、解析之后。64 个窗口不代表内存有界。
+**问题/证据（源码确认、异常输入风险）**：[routing.py:103](../src/empire/plugins/infra/routing.py#L103) 全量读取响应；[stock_pages.py:56](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/collectors/stock_pages.py#L56) 预取持有后页响应；[ingest.py:122](../src/empire/plugins/pipeline/ingest.py#L122) 的页字节限制发生在下载、解压、解析之后。64 个窗口不代表内存有界。
 
 **优化价值**：在扩展几十代理前阻止超大错误页、无 Content-Length 响应、压缩膨胀耗尽内存。
 
@@ -100,7 +100,7 @@
 
 ### P1-04　股票列表刷新后可能悄然改变已选股票
 
-**问题/证据（离屏已复现）**：[stocks.py:246](../src/empire/plugins/ui/stocks.py#L246) 按行重建单元格，没有按统一代码恢复选择。列表 `[000001,000002]` 选中 `000002`，刷新为 `[000002,000003]` 后，选中仍留在第二行，实际变成 `000003`。
+**问题/证据（离屏已复现）**：[stocks.py:246](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/stocks.py#L246) 按行重建单元格，没有按统一代码恢复选择。列表 `[000001,000002]` 选中 `000002`，刷新为 `[000002,000003]` 后，选中仍留在第二行，实际变成 `000003`。
 
 **优化价值**：避免复制到研究表格的是另一只股票；这比纯视觉调整更重要。
 
@@ -202,7 +202,7 @@
 
 ### P2-14　已归档数据浏览不必要地依赖 Redis
 
-**问题/证据（依赖图确认）**：[news.py:10](../src/empire/features/news/query.py#L10)、[stocks.py:14](../src/empire/plugins/data/stocks.py#L14)、[trade_calendar.py:13](../src/empire/plugins/data/trade_calendar.py#L13) 将业务浏览与归档确认绑在同一插件，均要求Redis；MySQL正常、Redis未启动时，已归档查询能力也会被阻塞。
+**问题/证据（依赖图确认）**：[news.py:10](../src/empire/features/news/query.py#L10)、[stocks.py:14](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/data/stocks.py#L14)、[trade_calendar.py:13](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/data/trade_calendar.py#L13) 将业务浏览与归档确认绑在同一插件，均要求Redis；MySQL正常、Redis未启动时，已归档查询能力也会被阻塞。
 
 **优化价值**：提高只读可用性，不改变Redis纯内存策略。
 
@@ -232,7 +232,7 @@
 
 ### P2-17　采集模板重复、核心payload依赖隐式字典契约
 
-**问题/证据（源码/规模统计）**：新闻与日历重复容量等待、入队重试、归档确认和诊断流程，见[news.py:56](../src/empire/features/news/collector.py#L56)、[cninfo_calendar.py:51](../src/empire/plugins/collectors/cninfo_calendar.py#L51)。运行时服务使用Any/getattr；465个函数中111个标注返回类型。archive为422行、flush为106行；任务布局函数148行。行数和注解率不是单独的质量判决，当前UI文件均在350行约束以内。
+**问题/证据（源码/规模统计）**：新闻与日历重复容量等待、入队重试、归档确认和诊断流程，见[news.py:56](../src/empire/features/news/collector.py#L56)、[cninfo_calendar.py:51](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/collectors/cninfo_calendar.py#L51)。运行时服务使用Any/getattr；465个函数中111个标注返回类型。archive为422行、flush为106行；任务布局函数148行。行数和注解率不是单独的质量判决，当前UI文件均在350行约束以内。
 
 **优化价值**：减少修一处却漏另一采集器的风险，明确插件调用边界。
 
@@ -242,7 +242,7 @@
 
 ### P2-18　异步读状态处理仍不一致
 
-**问题/证据（离屏已复现及源码确认）**：[stocks.py:215](../src/empire/plugins/ui/stocks.py#L215) 未捕获invoke同步异常，模拟服务在快照后消失，tick直接抛RuntimeError；其他页面已有try/except。[records.py:125](../src/empire/plugins/ui/records.py#L125) 切项目丢弃旧查询引用却不立即取消；[window.py:149](../src/empire/desktop/window.py#L149) 页面工厂缺少局部异常边界。UI普遍分别处理loading/error/旧数据，尚无一致的过期显示契约。
+**问题/证据（离屏已复现及源码确认）**：[stocks.py:215](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/stocks.py#L215) 未捕获invoke同步异常，模拟服务在快照后消失，tick直接抛RuntimeError；其他页面已有try/except。[records.py:125](../src/empire/plugins/ui/records.py#L125) 切项目丢弃旧查询引用却不立即取消；[window.py:149](../src/empire/desktop/window.py#L149) 页面工厂缺少局部异常边界。UI普遍分别处理loading/error/旧数据，尚无一致的过期显示契约。
 
 **优化价值**：服务启停、后台关闭和切页竞争时，界面能恢复而非停留在“读取中”。
 
@@ -380,7 +380,7 @@
 
 ### P3-30　跨页面导航未保留完整业务上下文
 
-**问题/证据（源码确认）**：[stocks.py:54](../src/empire/plugins/ui/stocks.py#L54)、[news.py:43](../src/empire/features/news/ui.py#L43)、[trade_calendar.py:44](../src/empire/plugins/ui/trade_calendar.py#L44) 的管理入口跳到通用任务页而不定位对应任务；[catalog.py:87](../src/empire/plugins/ui/catalog.py#L87) 目录重绘默认选择首项。页面还各自维护部分分页/筛选交互。
+**问题/证据（源码确认）**：[stocks.py:54](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/stocks.py#L54)、[news.py:43](../src/empire/features/news/ui.py#L43)、[trade_calendar.py:44](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/trade_calendar.py#L44) 的管理入口跳到通用任务页而不定位对应任务；[catalog.py:87](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/catalog.py#L87) 目录重绘默认选择首项。页面还各自维护部分分页/筛选交互。
 
 **优化价值**：项目增多后无需在跳转后再次找任务，减少重复操作和学习成本。
 

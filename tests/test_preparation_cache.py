@@ -7,16 +7,16 @@ from unittest.mock import AsyncMock
 import pytest
 
 from empire.contracts.preparation import CheckEvidence
-from empire.contracts.preparation_catalog import REQUIREMENTS
 from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.data.preparation import PreparationPlugin
-from empire.plugins.data.preparation_cache import TTL_SECONDS, PreparationCache
+from empire.features.preparation.cache import TTL_SECONDS, PreparationCache
+from empire.features.preparation.catalog import REQUIREMENTS
+from empire.features.preparation.query import PreparationPlugin
 from tests.test_preparation import contribution
 
 
 @pytest.fixture
 def setup(monkeypatch):
-    monkeypatch.setattr('empire.plugins.data.preparation.load_evidence', lambda: ({}, '未执行本版本测试'))
+    monkeypatch.setattr('empire.features.preparation.query.load_evidence', lambda: ({}, '未执行本版本测试'))
     values = {}
     async def save(key, value, ex):
         assert ex == 604800
@@ -65,7 +65,7 @@ async def test_different_scopes_are_isolated_and_release_evidence_does_not_reche
     plugin = await plugin_for(registry)
     for request in (None, {'codes': ['601139']}, {'purpose': 'historical_signal'}, {'start': '2020-01-01'}):
         await plugin.report(request)
-    monkeypatch.setattr('empire.plugins.data.preparation.load_evidence', lambda: ({}, '新发布的开发证据'))
+    monkeypatch.setattr('empire.features.preparation.query.load_evidence', lambda: ({}, '新发布的开发证据'))
     report = await plugin.report()
     assert report['test_evidence'] == '新发布的开发证据'
     assert service.preparation_check.await_count == 4 and len(values) == 4
@@ -82,7 +82,7 @@ async def test_all_four_business_dimensions_survive_unrelated_plugin_and_test_ch
     plugin = PreparationPlugin([replace(contribution(), source_tests=('tests/new_release_test.py',))], [unrelated])
     registry['ui.other'] = object()
     await plugin.start(SimpleNamespace(optional=registry.get))
-    monkeypatch.setattr('empire.plugins.data.preparation.load_evidence', lambda: ({}, '本次版本开发证据失效'))
+    monkeypatch.setattr('empire.features.preparation.query.load_evidence', lambda: ({}, '本次版本开发证据失效'))
     cached = await plugin.report()
     for old, current in zip(first['rows'], cached['rows'], strict=True):
         for dimension in ('integrity', 'quality', 'usage', 'use_state', 'usable'):

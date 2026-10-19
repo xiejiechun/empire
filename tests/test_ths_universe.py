@@ -5,9 +5,9 @@ from types import SimpleNamespace
 import httpx
 import pytest
 
+from empire.features.stocks.ths_collector import ThsUniverseCollector
+from empire.features.stocks.ths_source import REQUEST, parse_directory
 from empire.plugins.collection.records import RecordsPlugin
-from empire.plugins.collectors.ths_universe import ThsUniverseCollector
-from empire.plugins.collectors.ths_universe_source import REQUEST, parse_directory
 from tests.test_sina_universe import MemoryIngest
 
 

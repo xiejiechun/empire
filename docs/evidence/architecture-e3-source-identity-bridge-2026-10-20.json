@@ -1,0 +1,16 @@
+{
+  "record_kind": "source_verification_exact_test_only_identity_bridge",
+  "source_report": "docs/evidence/architecture-e3-foundation-source-2026-10-20.json",
+  "verified_source_sha256": "59bea7e1b334f6d8dfe8bd87c1239181ed71051efdf64d230b6378cd5cfb5f99",
+  "current_source_sha256": "893e6d5884a2ad15104ef4648dbe19d0de65f58197c9360004955479fb97bb7e",
+  "reconstructed_verified_source_sha256": "59bea7e1b334f6d8dfe8bd87c1239181ed71051efdf64d230b6378cd5cfb5f99",
+  "only_changed_file": "tests/test_all_collector_prefetch.py",
+  "old_sha256": "53efc3842309e406315e055d266cdc93157c5f5fe346389aaac93bf35f916dcd",
+  "new_sha256": "73ccb08c179b6c33d0a12d0b4b493c457c16383d0b2ab7d23e3534e02863e4cc",
+  "exact_delta": "        'cninfo_calendar': 'empire.features.calendar.collector',\n        'tdx_suspensions': 'empire.features.suspensions.collector',\n",
+  "reason": "Only dynamic import targets in a public prefetch test were updated; every other source_digest input byte is identical to the verified input",
+  "production_source_changed": false,
+  "verification_tool_changed": false,
+  "test_validation": "lifecycle-final-2.xml:226 passed",
+  "old_evidence_not_rewritten": true
+}

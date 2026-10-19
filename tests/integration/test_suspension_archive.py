@@ -252,7 +252,7 @@ async def test_legacy_missing_source_day_is_repaired_and_query_verified_after_re
     assert await query.list_events(code='600423', start='2004-12-27', end='2004-12-27') == []
     checks = {c.criterion: c for c in await query.preparation_check()}
     assert checks['fields'].status == 'fail' and checks['quality'].status == 'fail'
-    from empire.plugins.collectors.tdx_suspensions import API_URL, TdxSuspensionCollector
+    from empire.features.suspensions.collector import API_URL, TdxSuspensionCollector
     collector = TdxSuspensionCollector()
     collector.ingest = manager.registry.get('ingest.publish')
     response = httpx.Response(200, request=httpx.Request('POST', API_URL), json={
@@ -329,7 +329,7 @@ async def test_completion_waits_for_successful_queue_cleanup(suspension_db, monk
 
 
 async def test_full_initialization_real_ingest_checkpoint_and_redis_loss(suspension_db):
-    from empire.plugins.collectors.tdx_suspensions import TdxSuspensionCollector
+    from empire.features.suspensions.collector import TdxSuspensionCollector
 
     manager, query, _ = suspension_db
     collector = TdxSuspensionCollector(today=lambda: datetime(2026, 9, 29).date())

@@ -2,9 +2,10 @@ import pytest
 
 from empire.contracts.plugin import PluginManifest
 from empire.core.manager import DependencyError, PluginManager
+from empire.features.calendar.query import CalendarDataPlugin
 from empire.features.news.query import NewsDataPlugin
-from empire.plugins.data.stocks import StockDataPlugin
-from empire.plugins.data.trade_calendar import CalendarDataPlugin
+from empire.features.stocks.confirmation import stock_status
+from empire.features.stocks.query import StockDataPlugin
 from empire.plugins.infra.archive_confirmation import ArchiveConfirmationPlugin
 
 
@@ -66,7 +67,7 @@ class FailingRedisProvider:
 async def test_archived_mysql_data_remains_browsable_when_redis_is_unavailable():
     redis = FailingRedisProvider()
     manager = PluginManager([
-        MysqlProvider(), redis, ArchiveConfirmationPlugin(),
+        MysqlProvider(), redis, ArchiveConfirmationPlugin({"stocks.snapshot": stock_status}),
         StockDataPlugin("empire:test"), NewsDataPlugin(), CalendarDataPlugin(),
     ])
     await manager.start("data.stocks")

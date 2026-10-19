@@ -1,0 +1,902 @@
+{
+  "record_kind": "e3_pre_release_evidence_audit",
+  "checked_at": "2026-10-19T19:24:31.747804+00:00",
+  "scope": "Development evidence only; release and visible desktop still pending",
+  "junit": {
+    "domain-3": {
+      "path": "build/architecture-e3-20261020/domain-3.xml",
+      "sha256": "7a82234cb1d61aba9bfbbe4c9fa5c916f0ad7880559c49793929bc19b125f954",
+      "counts": {
+        "tests": 229,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "integration": {
+      "path": "build/architecture-e3-20261020/integration.xml",
+      "sha256": "3a6fe4fb8af532a45b5d63791ec878539f1506c265df69d11de06847e9392088",
+      "counts": {
+        "tests": 31,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "boundary-4": {
+      "path": "build/architecture-e3-20261020/boundary-4.xml",
+      "sha256": "8e45acc55e07678ed7577807e72f6c01216b367c3eafe5b9eec8e8cbab56a3eb",
+      "counts": {
+        "tests": 71,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "source-safety-final": {
+      "path": "build/architecture-e3-20261020/source-safety-final.xml",
+      "sha256": "43013c0609fb0b4ac9ff56021bed16463a0ebfb4b1ff4522361415dfa963ba83",
+      "counts": {
+        "tests": 135,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "final-2": {
+      "path": "build/architecture-e3-20261020/final-2.xml",
+      "sha256": "88ea9f8470d8c4dc93d6e3b440d785546e9f3d7653da45e513c401a11cf3f475",
+      "counts": {
+        "tests": 486,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "common-final-2": {
+      "path": "build/architecture-e3-20261020/common-final-2.xml",
+      "sha256": "9310f6544d878b0594b6d7c5ff9aa0ca8adf70f035498476f59f65d1475cb5a8",
+      "counts": {
+        "tests": 70,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "lifecycle-final-2": {
+      "path": "build/architecture-e3-20261020/lifecycle-final-2.xml",
+      "sha256": "2bcbcf3b2e355d6d30a3557701a7421e8fa5b3770164d64c5bfcf557eb49b51b",
+      "counts": {
+        "tests": 226,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "source_identity_bridge": {
+    "record_kind": "source_verification_exact_test_only_identity_bridge",
+    "source_report": "docs/evidence/architecture-e3-foundation-source-2026-10-20.json",
+    "verified_source_sha256": "59bea7e1b334f6d8dfe8bd87c1239181ed71051efdf64d230b6378cd5cfb5f99",
+    "current_source_sha256": "893e6d5884a2ad15104ef4648dbe19d0de65f58197c9360004955479fb97bb7e",
+    "reconstructed_verified_source_sha256": "59bea7e1b334f6d8dfe8bd87c1239181ed71051efdf64d230b6378cd5cfb5f99",
+    "only_changed_file": "tests/test_all_collector_prefetch.py",
+    "old_sha256": "53efc3842309e406315e055d266cdc93157c5f5fe346389aaac93bf35f916dcd",
+    "new_sha256": "73ccb08c179b6c33d0a12d0b4b493c457c16383d0b2ab7d23e3534e02863e4cc",
+    "exact_delta": "        'cninfo_calendar': 'empire.features.calendar.collector',\n        'tdx_suspensions': 'empire.features.suspensions.collector',\n",
+    "reason": "Only dynamic import targets in a public prefetch test were updated; every other source_digest input byte is identical to the verified input",
+    "production_source_changed": false,
+    "verification_tool_changed": false,
+    "test_validation": "lifecycle-final-2.xml:226 passed",
+    "old_evidence_not_rewritten": true
+  },
+  "source": {
+    "path": "docs/evidence/architecture-e3-foundation-source-2026-10-20.json",
+    "sha256": "0e5f0e72593941913ffca7a40ccb1dd74ae19481dc0f4144530c411a6779bb40",
+    "source_sha256": "59bea7e1b334f6d8dfe8bd87c1239181ed71051efdf64d230b6378cd5cfb5f99",
+    "all_proxy_requests": 84,
+    "non_stock": true,
+    "scope": "Complete current stock directories; three calendar months; five initial suspension dates, two recent dates read-only; no full-history claim"
+  },
+  "t3": {
+    "path": "docs/evidence/architecture-performance-e3-2026-10-20-5.json",
+    "sha256": "734cff954b4bfc888a162ce854b543cfbcfdff4a2018b546b58ce8132fa20b78",
+    "source_sha256": "ada3abdb0c169f2025aed09fd5c3b552ce016baa104d398ae0ee670f4fa256df",
+    "recomputed_comparison": {
+      "passed": true,
+      "incomparable": [],
+      "checks": {
+        "cold_declarations.median_ms": {
+          "baseline_ms": 1014.3281,
+          "current_ms": 1026.9518,
+          "limit_ms": 1267.9101249999999,
+          "passed": true
+        },
+        "cold_declarations.p95_ms": {
+          "baseline_ms": 1044.79302,
+          "current_ms": 1053.3634,
+          "limit_ms": 1305.991275,
+          "passed": true
+        },
+        "assembly.median_ms": {
+          "baseline_ms": 1.0358,
+          "current_ms": 1.3198,
+          "limit_ms": 3.0358,
+          "passed": true
+        },
+        "assembly.p95_ms": {
+          "baseline_ms": 1.30144,
+          "current_ms": 1.76816,
+          "limit_ms": 3.30144,
+          "passed": true
+        },
+        "news_first.median_ms": {
+          "baseline_ms": 6.184,
+          "current_ms": 4.8626,
+          "limit_ms": 7.73,
+          "passed": true
+        },
+        "news_first.p95_ms": {
+          "baseline_ms": 7.86021,
+          "current_ms": 6.329519999999999,
+          "limit_ms": 9.825262500000001,
+          "passed": true
+        },
+        "news_next.median_ms": {
+          "baseline_ms": 1.6601,
+          "current_ms": 1.4275,
+          "limit_ms": 2.6601,
+          "passed": true
+        },
+        "news_next.p95_ms": {
+          "baseline_ms": 2.723479999999999,
+          "current_ms": 2.1686599999999996,
+          "limit_ms": 3.723479999999999,
+          "passed": true
+        },
+        "news_search.median_ms": {
+          "baseline_ms": 12.0391,
+          "current_ms": 9.0003,
+          "limit_ms": 15.048874999999999,
+          "passed": true
+        },
+        "news_search.p95_ms": {
+          "baseline_ms": 14.255209999999998,
+          "current_ms": 10.08149,
+          "limit_ms": 17.8190125,
+          "passed": true
+        },
+        "holders_browse.median_ms": {
+          "baseline_ms": 3.3869,
+          "current_ms": 2.6554,
+          "limit_ms": 4.3869,
+          "passed": true
+        },
+        "holders_browse.p95_ms": {
+          "baseline_ms": 4.24259,
+          "current_ms": 3.67515,
+          "limit_ms": 5.3032375,
+          "passed": true
+        },
+        "holders_detail.median_ms": {
+          "baseline_ms": 4.4895,
+          "current_ms": 3.0564,
+          "limit_ms": 5.6118749999999995,
+          "passed": true
+        },
+        "holders_detail.p95_ms": {
+          "baseline_ms": 4.95585,
+          "current_ms": 4.47413,
+          "limit_ms": 6.194812499999999,
+          "passed": true
+        },
+        "news_ui.median_ms": {
+          "baseline_ms": 21.6904,
+          "current_ms": 16.116,
+          "limit_ms": 27.113,
+          "passed": true
+        },
+        "news_ui.p95_ms": {
+          "baseline_ms": 25.00188,
+          "current_ms": 20.89389,
+          "limit_ms": 31.25235,
+          "passed": true
+        },
+        "holders_ui.median_ms": {
+          "baseline_ms": 52.2273,
+          "current_ms": 41.4873,
+          "limit_ms": 65.284125,
+          "passed": true
+        },
+        "holders_ui.p95_ms": {
+          "baseline_ms": 58.6575,
+          "current_ms": 48.432829999999996,
+          "limit_ms": 73.321875,
+          "passed": true
+        }
+      }
+    },
+    "all_failed_rounds_retained": true
+  },
+  "capacity": {
+    "active_reports": 17,
+    "invalid": {},
+    "reports": {
+      "docs/evidence/preview-query-capacity-2026-10-11.json": {
+        "datasets": [
+          "kaipanla.trend.day",
+          "kaipanla.auction.day",
+          "kaipanla.volume.day",
+          "kaipanla.trades.day",
+          "kaipanla.entrust.day",
+          "kaipanla.large_order.day",
+          "kaipanla.quote.day"
+        ],
+        "changed": []
+      },
+      "docs/evidence/dividends-error-types-capacity-2026-10-14.json": {
+        "datasets": [
+          "dividends.unit"
+        ],
+        "changed": []
+      },
+      "docs/evidence/name-changes-capacity-2026-10-06.json": {
+        "datasets": [
+          "names.company.market",
+          "names.security.market"
+        ],
+        "changed": []
+      },
+      "docs/evidence/listings-preview-capacity-2026-10-11.json": {
+        "datasets": [
+          "listing.detail"
+        ],
+        "changed": []
+      },
+      "docs/evidence/listing-status-capacity-2026-10-06.json": {
+        "datasets": [
+          "listing_status.month"
+        ],
+        "changed": []
+      },
+      "docs/evidence/architecture-e2-indices-capacity-2026-10-20-1.json": {
+        "datasets": [
+          "index.catalog",
+          "index.members"
+        ],
+        "changed": []
+      },
+      "docs/evidence/bse-code-mapping-capacity-2026-10-10.json": {
+        "datasets": [
+          "bse.code_mapping.complete"
+        ],
+        "changed": []
+      },
+      "docs/evidence/architecture-e2-index-prices-capacity-2026-10-20-1.json": {
+        "datasets": [
+          "index.price.status",
+          "index.price.year"
+        ],
+        "changed": []
+      },
+      "docs/evidence/st-events-capacity-2026-10-11.json": {
+        "datasets": [
+          "st.implementation.market",
+          "st.removal.market"
+        ],
+        "changed": []
+      },
+      "docs/evidence/rules-bse-capacity-2026-10-17.json": {
+        "datasets": [
+          "rules.limit_rules.complete",
+          "rules.settlement_rules.complete",
+          "rules.lot_rules.complete",
+          "rules.tick_rules.complete",
+          "rules.sessions.complete",
+          "rules.stamp_duty.complete",
+          "rules.transfer_fee.complete"
+        ],
+        "changed": []
+      },
+      "docs/evidence/repurchase-capacity-2026-10-12.json": {
+        "datasets": [
+          "repurchases.page"
+        ],
+        "changed": []
+      },
+      "docs/evidence/tdx-performance-capacity-2026-10-12.json": {
+        "datasets": [
+          "earnings_forecast.tdx_unit",
+          "earnings_quick.tdx_unit",
+          "earnings_disclosure.tdx_unit",
+          "earnings_report.tdx_unit",
+          "holder_count.tdx_unit"
+        ],
+        "changed": []
+      },
+      "docs/evidence/architecture-e2-holders-capacity-2026-10-20-1.json": {
+        "datasets": [
+          "holders.reports"
+        ],
+        "changed": []
+      },
+      "docs/evidence/shareholder-changes-capacity-2026-10-13.json": {
+        "datasets": [
+          "shareholder_changes.tdx_unit"
+        ],
+        "changed": []
+      },
+      "docs/evidence/unlocks-error-types-capacity-2026-10-14.json": {
+        "datasets": [
+          "unlocks.tdx_month"
+        ],
+        "changed": []
+      },
+      "docs/evidence/unlock-industries-capacity-2026-10-14.json": {
+        "datasets": [
+          "unlocks.tdx_industry_month"
+        ],
+        "changed": []
+      },
+      "docs/evidence/architecture-e2-capital-capacity-2026-10-20-1.json": {
+        "datasets": [
+          "ths.capital.security"
+        ],
+        "changed": []
+      }
+    }
+  },
+  "retired_modules": [
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.stocks",
+      "new_module": "empire.features.stocks.contract",
+      "old_path": "src/empire/contracts/stocks.py",
+      "new_path": "src/empire/features/stocks/contract.py",
+      "frozen_old_sha256": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
+      "review_candidate_sha256": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.collectors.ths_universe_source",
+      "new_module": "empire.features.stocks.ths_source",
+      "old_path": "src/empire/plugins/collectors/ths_universe_source.py",
+      "new_path": "src/empire/features/stocks/ths_source.py",
+      "frozen_old_sha256": "67f2fcabfc0c0cefb83bd5fd538239b88bc182968f6a9d5f528b88df2d375e25",
+      "review_candidate_sha256": "11620911331fc994f3f0a1f0636ca36797eab74e6f3bf2415d9ae1961c089eae"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.collectors.stock_pages",
+      "new_module": "empire.features.stocks.download",
+      "old_path": "src/empire/plugins/collectors/stock_pages.py",
+      "new_path": "src/empire/features/stocks/download.py",
+      "frozen_old_sha256": "b0f3b4a202495ef10c4a0c7f2896781c92faed6006b9326fd2925fec1df161e1",
+      "review_candidate_sha256": "07cb4820453c5b6630b0f31f3d8316fd923ce52f2cce40058d38e57e305f22c6"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.collectors.sina_universe",
+      "new_module": "empire.features.stocks.sina_collector",
+      "old_path": "src/empire/plugins/collectors/sina_universe.py",
+      "new_path": "src/empire/features/stocks/sina_collector.py",
+      "frozen_old_sha256": "ead69ea9fe409283a953dba501effe2ff44c99f09d8584e87f48b3493704ad6a",
+      "review_candidate_sha256": "440933b71349bb45e3ca928ee46eae5b269d485e18f38c1f196756fc2079f09c"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.collectors.ths_universe",
+      "new_module": "empire.features.stocks.ths_collector",
+      "old_path": "src/empire/plugins/collectors/ths_universe.py",
+      "new_path": "src/empire/features/stocks/ths_collector.py",
+      "frozen_old_sha256": "5965480d0cbbc2f492c9aa456586ea864ff07d016eb3a271c9a7a2c321b77c1a",
+      "review_candidate_sha256": "a9c50f9ddadfc6ca69b7f2d3f04206217d8cf1f80c54362641345ab44a31a69c"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.datasets.stocks",
+      "new_module": "empire.features.stocks.dataset",
+      "old_path": "src/empire/plugins/datasets/stocks.py",
+      "new_path": "src/empire/features/stocks/dataset.py",
+      "frozen_old_sha256": "ada0222a4df15b9d3b46a1ab4b199f999a5e53a3febba028fbeac6e0d7bbaec5",
+      "review_candidate_sha256": "6c8ab1d3992b308057898188d8ac68a95440cb101144a91848512f051cfdbace"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.stocks",
+      "new_module": "empire.features.stocks.query",
+      "old_path": "src/empire/plugins/data/stocks.py",
+      "new_path": "src/empire/features/stocks/query.py",
+      "frozen_old_sha256": "4df37269b49ae295e7ce37d8d671ed3772c37df55bd2cc81d1c3f6ec1d61039f",
+      "review_candidate_sha256": "9cc7ecd8928a215dd95e08ff926d6c20458762cd403935896c7a16df7322862f"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.stocks",
+      "new_module": "empire.features.stocks.ui",
+      "old_path": "src/empire/plugins/ui/stocks.py",
+      "new_path": "src/empire/features/stocks/ui.py",
+      "frozen_old_sha256": "7ccc0a95410c9c9ad0eb1a2afb9bf43f3ce50864242467827761ec664d6ad7ef",
+      "review_candidate_sha256": "a2c7de22216a56e0cec268bad2a6cd60db998e0b4ae567163cfeb9f72033bd17"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.stock_preview",
+      "new_module": "empire.features.stocks.preview",
+      "old_path": "src/empire/plugins/ui/stock_preview.py",
+      "new_path": "src/empire/features/stocks/preview.py",
+      "frozen_old_sha256": "78f406ca82bfc3f93d82cac296ddd72b80c6664593d14bdb81017888d344768e",
+      "review_candidate_sha256": "78f406ca82bfc3f93d82cac296ddd72b80c6664593d14bdb81017888d344768e"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.datasets.trade_calendar",
+      "new_module": "empire.features.calendar.dataset",
+      "old_path": "src/empire/plugins/datasets/trade_calendar.py",
+      "new_path": "src/empire/features/calendar/dataset.py",
+      "frozen_old_sha256": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
+      "review_candidate_sha256": "8c066fcfc5cf50fe01c14a618fc2175b0e9107d79cd1ef66ca62605a90e58a6a"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.trade_calendar",
+      "new_module": "empire.features.calendar.query",
+      "old_path": "src/empire/plugins/data/trade_calendar.py",
+      "new_path": "src/empire/features/calendar/query.py",
+      "frozen_old_sha256": "40629416decc06eaa3e0ed99a225a0dddab051dd6fa8c3a36a3a033e1a042a84",
+      "review_candidate_sha256": "f0361bf0479c8fc55a8d99642bf2277fdc23cca1a3cd97c21ef716a65ea6484c"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.calendar_preparation",
+      "new_module": "empire.features.calendar.audit",
+      "old_path": "src/empire/plugins/data/calendar_preparation.py",
+      "new_path": "src/empire/features/calendar/audit.py",
+      "frozen_old_sha256": "61df6cbb8838452ec7158ef0defbfa13086f504d5b45cf22562a3977f5ab097e",
+      "review_candidate_sha256": "9ab9196bf1ff3d7ee04b3b6af60995dde08308d7ef904d43d4bf724d6daa8270"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.trading_day_cutoff",
+      "new_module": "empire.features.calendar.api",
+      "old_path": "src/empire/plugins/data/trading_day_cutoff.py",
+      "new_path": "src/empire/features/calendar/api.py",
+      "frozen_old_sha256": "3e7b8edece526c3994275b4a59684db813e7ae5ef8dd0b5244919c63d1bd0378",
+      "review_candidate_sha256": "b8abeb43a524d3988e18abc8bc352b05d203fad302cf092c495c105b095d10a4"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.collectors.cninfo_calendar",
+      "new_module": "empire.features.calendar.collector",
+      "old_path": "src/empire/plugins/collectors/cninfo_calendar.py",
+      "new_path": "src/empire/features/calendar/collector.py",
+      "frozen_old_sha256": "90f2e6bc7ab9085e8a506ab5c91f19d74f14095d5ea79bb67bc1d0f74d3681f4",
+      "review_candidate_sha256": "44a5abb1ffb19930f8a17acec57f59d85d9a45d382b227acb2da0af1592d4985"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.trade_calendar",
+      "new_module": "empire.features.calendar.ui",
+      "old_path": "src/empire/plugins/ui/trade_calendar.py",
+      "new_path": "src/empire/features/calendar/ui.py",
+      "frozen_old_sha256": "1864b71f871fc45b69b59dcdb1a517122eb730dc8c5fd5eb26f9e2616abbf844",
+      "review_candidate_sha256": "340f6c8048c94feba761622598b9bb1c1782508eab534bf51de8840c0db2af1b"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.datasets.suspensions",
+      "new_module": "empire.features.suspensions.dataset",
+      "old_path": "src/empire/plugins/datasets/suspensions.py",
+      "new_path": "src/empire/features/suspensions/dataset.py",
+      "frozen_old_sha256": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
+      "review_candidate_sha256": "3630f546da5e812bd7159ffe2ed6ae21cca3e2aa573fcc75f2052d042cae91b7"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.suspensions",
+      "new_module": "empire.features.suspensions.query",
+      "old_path": "src/empire/plugins/data/suspensions.py",
+      "new_path": "src/empire/features/suspensions/query.py",
+      "frozen_old_sha256": "3b3b422562d2e970311e58ddaf1ba5d4a2aa3a21c541666ad4491985ff888847",
+      "review_candidate_sha256": "3719a6cd99feef75fd625989e2443868da118216005985aea288311b711de1ad"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.market_suspension_days",
+      "new_module": "empire.features.suspensions.exclusions",
+      "old_path": "src/empire/plugins/data/market_suspension_days.py",
+      "new_path": "src/empire/features/suspensions/exclusions.py",
+      "frozen_old_sha256": "bca029fc7aaedec694c49c4b6e9d564d62297cae6a0e658c778d8ed16104d414",
+      "review_candidate_sha256": "bca029fc7aaedec694c49c4b6e9d564d62297cae6a0e658c778d8ed16104d414"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.collectors.tdx_suspensions",
+      "new_module": "empire.features.suspensions.collector",
+      "old_path": "src/empire/plugins/collectors/tdx_suspensions.py",
+      "new_path": "src/empire/features/suspensions/collector.py",
+      "frozen_old_sha256": "564d3028d44a7be49932d22536d1b2d57b03d8e891e959781ff5892c5c9df5f8",
+      "review_candidate_sha256": "1109e2583fb475691756506bf5dda07821749125724914dad1ee3250b9ea6207"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.collectors.suspension_batches",
+      "new_module": "empire.features.suspensions.batches",
+      "old_path": "src/empire/plugins/collectors/suspension_batches.py",
+      "new_path": "src/empire/features/suspensions/batches.py",
+      "frozen_old_sha256": "0467bdd27041d36227ad58ca31a0f342b180d37272dc4b6dba48380a05479955",
+      "review_candidate_sha256": "e5e51eaa04686e4be913cb1717cadffe0cfd60bfdb1ac4fa062fb3dd29783209"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.suspensions",
+      "new_module": "empire.features.suspensions.ui",
+      "old_path": "src/empire/plugins/ui/suspensions.py",
+      "new_path": "src/empire/features/suspensions/ui.py",
+      "frozen_old_sha256": "2c64179f1dbab3ed4a6103bc7f478259cc61c163b2891a0ceaa7f2b329418bc1",
+      "review_candidate_sha256": "57b5c62123482efce16e2a22457dbd79ac4711121378fd42d74778bef811c0ac"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.suspension_preview",
+      "new_module": "empire.features.suspensions.preview",
+      "old_path": "src/empire/plugins/ui/suspension_preview.py",
+      "new_path": "src/empire/features/suspensions/preview.py",
+      "frozen_old_sha256": "fc93da8e910e2ea3e0129c0be96ab4e0b25b4bf2337cead6be04d116bc4e4da3",
+      "review_candidate_sha256": "518487e83dacd9713ae4c47753fb9a790f96aa04528ddc01b86f4a1922680f2a"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.preparation_capital_page",
+      "new_module": "empire.features.preparation.capital_page",
+      "old_path": "src/empire/contracts/preparation_capital_page.py",
+      "new_path": "src/empire/features/preparation/capital_page.py",
+      "frozen_old_sha256": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
+      "review_candidate_sha256": "890a81bc5191152439306b858bc605adf0446f46ef249b615f6247e15c0839ff"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.preparation_catalog",
+      "new_module": "empire.features.preparation.catalog",
+      "old_path": "src/empire/contracts/preparation_catalog.py",
+      "new_path": "src/empire/features/preparation/catalog.py",
+      "frozen_old_sha256": "ce682e968b75750529235c8237f0abc217ddba39e7d205ad6151ec16840427a9",
+      "review_candidate_sha256": "c15aa6c1c3086e72efae67620be107fd476a1695957beb761d6fdb7c037802d7"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.preparation_definition",
+      "new_module": "empire.features.preparation.definition",
+      "old_path": "src/empire/contracts/preparation_definition.py",
+      "new_path": "src/empire/features/preparation/definition.py",
+      "frozen_old_sha256": "477165d7cebf12de9a54928a35e908ec6f58c9ae972effdc90403481c4d825d8",
+      "review_candidate_sha256": "afc240589f112c3520186b3d06341c6cdeed320f11d2d3bb664ae3631850dad1"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.preparation_events",
+      "new_module": "empire.features.preparation.events",
+      "old_path": "src/empire/contracts/preparation_events.py",
+      "new_path": "src/empire/features/preparation/events.py",
+      "frozen_old_sha256": "ef9622f447339b6599744f4bfc6b4b833801a06e113b676832d81f21df535a6a",
+      "review_candidate_sha256": "e82d0b892795f4ee743c78f4ce4c4231d937aa6dd3442ab8c4e8846a9dc87f66"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.preparation_existing",
+      "new_module": "empire.features.preparation.existing",
+      "old_path": "src/empire/contracts/preparation_existing.py",
+      "new_path": "src/empire/features/preparation/existing.py",
+      "frozen_old_sha256": "34a4b518c2df3e2d9a75c67cce615f6d32dba8c7fd8210012af7c6bd0b540c0d",
+      "review_candidate_sha256": "9b9c14a999bdd4d1e605202dedae802f85246081579174828d86d427beb8b8d2"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.preparation_foundation",
+      "new_module": "empire.features.preparation.foundation",
+      "old_path": "src/empire/contracts/preparation_foundation.py",
+      "new_path": "src/empire/features/preparation/foundation.py",
+      "frozen_old_sha256": "529bbad085dc83a54366878d0643ec3496fbb155c0f94609c84b2e85c4aa9a71",
+      "review_candidate_sha256": "ecab3510bc37ebcca989c653feb571992479e33c31fa55e47ee224eebbcfea17"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.preparation_markets",
+      "new_module": "empire.features.preparation.markets",
+      "old_path": "src/empire/contracts/preparation_markets.py",
+      "new_path": "src/empire/features/preparation/markets.py",
+      "frozen_old_sha256": "54c6c768d84bdecd114c5833fd620ac402e69748aff25ee2a4b6dc935e3c269d",
+      "review_candidate_sha256": "505cdd688b54ff23ebe62c6ae4d22cc0c6f43f8fd4ff108f33aa1a398a0180da"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.preparation_processing",
+      "new_module": "empire.features.preparation.processing",
+      "old_path": "src/empire/contracts/preparation_processing.py",
+      "new_path": "src/empire/features/preparation/processing.py",
+      "frozen_old_sha256": "901613725d061f652185698e85055e5a9e14edaef36fabd8d4beda137fa765a3",
+      "review_candidate_sha256": "2e60862964cc15f192c60032002f60c50e25cf56561960a7f47b5e2889d083cf"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.contracts.preparation_research",
+      "new_module": "empire.features.preparation.research",
+      "old_path": "src/empire/contracts/preparation_research.py",
+      "new_path": "src/empire/features/preparation/research.py",
+      "frozen_old_sha256": "52eb8c5163b77dc1b03f2211dc75beef476bcd314a19bd5c3e0398613f5e7aba",
+      "review_candidate_sha256": "a349700a44b00d6007b250c3bf9e90b30cf206f5e7252e310a0f246bf457c285"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.preparation",
+      "new_module": "empire.features.preparation.query",
+      "old_path": "src/empire/plugins/data/preparation.py",
+      "new_path": "src/empire/features/preparation/query.py",
+      "frozen_old_sha256": "349ff2c514394738754327a9caeb3db9c86e32a8d57c3794c9f4bd08eeedf9ca",
+      "review_candidate_sha256": "32b4c676ec2d5b169dbafdc3769b4991a3be18651926720556ce4528c1e05763"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.preparation_cache",
+      "new_module": "empire.features.preparation.cache",
+      "old_path": "src/empire/plugins/data/preparation_cache.py",
+      "new_path": "src/empire/features/preparation/cache.py",
+      "frozen_old_sha256": "8200a342c92670bc93c9e7ff60911bf5cfa011a154d28ac2f71a3377cc5b6fc9",
+      "review_candidate_sha256": "9f3032bb978eb577a07674091e4c52766a05c8709aeac46b06239c70bdc8bbb8"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.preparation_computation",
+      "new_module": "empire.features.preparation.computation",
+      "old_path": "src/empire/plugins/data/preparation_computation.py",
+      "new_path": "src/empire/features/preparation/computation.py",
+      "frozen_old_sha256": "b1eb464cad52c237996626581868d61ebe63bdd735af1fad5fe708a754145d19",
+      "review_candidate_sha256": "b1eb464cad52c237996626581868d61ebe63bdd735af1fad5fe708a754145d19"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.preparation_inventory",
+      "new_module": "empire.features.preparation.inventory",
+      "old_path": "src/empire/plugins/data/preparation_inventory.py",
+      "new_path": "src/empire/features/preparation/inventory.py",
+      "frozen_old_sha256": "cdeee76b6a111707458c4d8de46f1ccdc5c4634f7f8692eaca9aeaf7afe4435e",
+      "review_candidate_sha256": "cdeee76b6a111707458c4d8de46f1ccdc5c4634f7f8692eaca9aeaf7afe4435e"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.preparation_results",
+      "new_module": "empire.features.preparation.results",
+      "old_path": "src/empire/plugins/data/preparation_results.py",
+      "new_path": "src/empire/features/preparation/results.py",
+      "frozen_old_sha256": "b25dacec93b00b8dc97abc2346cd28d44d9a23d7e6a02e4969ac870f35c7354a",
+      "review_candidate_sha256": "b25dacec93b00b8dc97abc2346cd28d44d9a23d7e6a02e4969ac870f35c7354a"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.preparation",
+      "new_module": "empire.features.preparation.ui",
+      "old_path": "src/empire/plugins/ui/preparation.py",
+      "new_path": "src/empire/features/preparation/ui.py",
+      "frozen_old_sha256": "01c50133e303aacf690b953870dc74446e47f1a07aa4b99932266eb7de8c0811",
+      "review_candidate_sha256": "d90bad903630aaf69393d02ec3f288fc4b965befe211b768c5a262064f6bc303"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.preparation_actions",
+      "new_module": "empire.features.preparation.ui_actions",
+      "old_path": "src/empire/plugins/ui/preparation_actions.py",
+      "new_path": "src/empire/features/preparation/ui_actions.py",
+      "frozen_old_sha256": "33998ec4679780db8b51fb5fca5ac62054352890ddf6609238c9e65d3712a43c",
+      "review_candidate_sha256": "33998ec4679780db8b51fb5fca5ac62054352890ddf6609238c9e65d3712a43c"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.preparation_detail",
+      "new_module": "empire.features.preparation.ui_detail",
+      "old_path": "src/empire/plugins/ui/preparation_detail.py",
+      "new_path": "src/empire/features/preparation/ui_detail.py",
+      "frozen_old_sha256": "ee35af45a1db2e38d920672f52f79324c633f03a53037df811ef6ee328974aae",
+      "review_candidate_sha256": "a32f8cc97cf175a2537d50051678b4c2007d40dd4e0b8c1b7910764f7e6cec44"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.preparation_directory",
+      "new_module": "empire.features.preparation.ui_directory",
+      "old_path": "src/empire/plugins/ui/preparation_directory.py",
+      "new_path": "src/empire/features/preparation/ui_directory.py",
+      "frozen_old_sha256": "f7d0137bcf4799b6ce1b93f1fec4d02950e0121452df643ce840b0d432dea91c",
+      "review_candidate_sha256": "f7d0137bcf4799b6ce1b93f1fec4d02950e0121452df643ce840b0d432dea91c"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.preparation_inventory",
+      "new_module": "empire.features.preparation.ui_inventory",
+      "old_path": "src/empire/plugins/ui/preparation_inventory.py",
+      "new_path": "src/empire/features/preparation/ui_inventory.py",
+      "frozen_old_sha256": "faf0185c5c8d51114ef04b748fe0ebb0af42b824c17964ffd63ed215731fe76c",
+      "review_candidate_sha256": "faf0185c5c8d51114ef04b748fe0ebb0af42b824c17964ffd63ed215731fe76c"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.preparation_scope",
+      "new_module": "empire.features.preparation.ui_scope",
+      "old_path": "src/empire/plugins/ui/preparation_scope.py",
+      "new_path": "src/empire/features/preparation/ui_scope.py",
+      "frozen_old_sha256": "7208babc02ca57d8e07788fe2820c52804df848d6ae73ff8bd35af48293de3c0",
+      "review_candidate_sha256": "2e0e2b46b713a40cca31ef80d73fc04666c67d300e8e34c9af258bb8158c5ee5"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.preparation_words",
+      "new_module": "empire.features.preparation.ui_words",
+      "old_path": "src/empire/plugins/ui/preparation_words.py",
+      "new_path": "src/empire/features/preparation/ui_words.py",
+      "frozen_old_sha256": "58568ba151b624df512508bc041f16871039cb1ea403b651a74b50079b7b48d3",
+      "review_candidate_sha256": "e7ea010a64dd3a4fb8af6a2f6fbdcc33ed702e7ad61458e07133a32784444b16"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.preparation_checks",
+      "new_module": "empire.features.preparation.evidence",
+      "old_path": "src/empire/plugins/data/preparation_checks.py",
+      "new_path": "src/empire/features/preparation/evidence.py",
+      "frozen_old_sha256": "ea8143722c903aabd9f0e00470cd606641a649cae4e39260c6731d747812fb9a",
+      "review_candidate_sha256": "2063cfe9929dd791283c5c242f0875ba3a5d0a549c69aaddea806bd067ba7f06"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.data.preview_candidates",
+      "new_module": "empire.features.data_browser.api",
+      "old_path": "src/empire/plugins/data/preview_candidates.py",
+      "new_path": "src/empire/features/data_browser/api.py",
+      "frozen_old_sha256": "bc030255c7f582e1fa798a94e4afae71faa4a58ad668a8e72e25385af6f7d6f7",
+      "review_candidate_sha256": "d8c0893b3749acf8f67bd2a0c30f37ef8b144889fa4e623870d1000cae1ea663"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.preview_search",
+      "new_module": "empire.features.data_browser.search",
+      "old_path": "src/empire/plugins/ui/preview_search.py",
+      "new_path": "src/empire/features/data_browser/search.py",
+      "frozen_old_sha256": "32ff889c2a334f53fbe384eafb25a19667dd41aacfda2c7896df82470cc92399",
+      "review_candidate_sha256": "32ff889c2a334f53fbe384eafb25a19667dd41aacfda2c7896df82470cc92399"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.catalog",
+      "new_module": "empire.features.data_browser.catalog",
+      "old_path": "src/empire/plugins/ui/catalog.py",
+      "new_path": "src/empire/features/data_browser/catalog.py",
+      "frozen_old_sha256": "3342456dd22a2ab5b236278a82c5d247b23e5ae128fad6e8b432b92bcb07fc65",
+      "review_candidate_sha256": "5f9aaf3104d6cdf03b8278acd9cce9ebd5aa165556a8765eb87365c8386ce563"
+    },
+    {
+      "phase": "E3",
+      "old_module": "empire.plugins.ui.directory_panel",
+      "new_module": "empire.features.data_browser.directory",
+      "old_path": "src/empire/plugins/ui/directory_panel.py",
+      "new_path": "src/empire/features/data_browser/directory.py",
+      "frozen_old_sha256": "b8b7b0e21436d08f09c884b28713fb7ee810d1df3334deac42fe5aa8830484a8",
+      "review_candidate_sha256": "b8b7b0e21436d08f09c884b28713fb7ee810d1df3334deac42fe5aa8830484a8"
+    }
+  ],
+  "confirmation": {
+    "stock_confirmation_body_equal": true,
+    "change": "self.mysql/self.redis to explicit mysql/redis; marker renamed; signature split documented",
+    "runtime_tests": "shared-boundary injection and marker tests; SQL archive recovery separate",
+    "unchanged_provider_methods": [
+      "start",
+      "page_status",
+      "stop",
+      "health"
+    ]
+  },
+  "preserved_inputs": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\dist\\Empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "C:\\Users\\52948\\AppData\\Local\\Empire\\plugin-state.json": "8cbc58900b35bf4c8b2f9fff47ed95f67f6e20782734f38a0819ff3c7cadd63e"
+  },
+  "frozen": {
+    "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
+    "sql/schema-contract.json": "5a434101b373eb0dd9de99dd1ad0872229c3bf0f33d21658fe71d84cd0fdce1f",
+    "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
+    "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
+    "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
+    "docs/evidence/architecture-performance-protocol-2026-10-19.json": "38679725dbf2ad41e8ff1d9a33c8a28630d4a808d33880ec3c4d39f26c3ac24b",
+    "docs/evidence/architecture-performance-baseline-2026-10-19.json": "1202baacde0866a7246a4cc032b1f4580e11b5474d599ee81a13503debfd6493"
+  },
+  "test_instance": {
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-data\\",
+    "connection_id": 9354
+  },
+  "global_pending": 0,
+  "final_checks": [
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "src",
+        "scripts",
+        "tests"
+      ],
+      "exit_code": 0,
+      "log": "build/architecture-e3-20261020/final-check-1.log"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-m",
+        "mypy"
+      ],
+      "exit_code": 0,
+      "log": "build/architecture-e3-20261020/final-check-2.log"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/assembly_contract.py",
+        "check",
+        "--baseline",
+        "docs/evidence/assembly-baseline-2026-10-19.json",
+        "--mapping",
+        "docs/assembly-migrations.json",
+        "--order-baseline",
+        "docs/evidence/assembly-order-baseline-2026-10-19.json"
+      ],
+      "exit_code": 0,
+      "log": "build/architecture-e3-20261020/final-check-3.log"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/architecture_contract.py",
+        "check",
+        "--output",
+        "build\\architecture-e3-20261020\\architecture-final-2.json"
+      ],
+      "exit_code": 0,
+      "log": "build/architecture-e3-20261020/final-check-4.log"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "build\\architecture-e3-20261020\\review_documentation.py"
+      ],
+      "exit_code": 0,
+      "log": "build/architecture-e3-20261020/final-check-5.log"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/documentation_contract.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "log": "build/architecture-e3-20261020/final-check-6.log"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/verify_documentation.py"
+      ],
+      "exit_code": 0,
+      "log": "build/architecture-e3-20261020/final-check-7.log"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/verify_database_design.py"
+      ],
+      "exit_code": 0,
+      "log": "build/architecture-e3-20261020/final-check-8.log"
+    }
+  ],
+  "release_status": "not_run",
+  "desktop_status": "not_run",
+  "next_stage_allowed": false,
+  "passed": true
+}

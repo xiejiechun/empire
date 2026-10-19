@@ -5,9 +5,9 @@ from types import SimpleNamespace
 import pytest
 from PySide6.QtWidgets import QApplication
 
-from empire.plugins.data.preparation import PreparationPlugin
-from empire.plugins.data.stocks import StockDataPlugin
-from empire.plugins.ui.preparation import PreparationPage
+from empire.features.preparation.query import PreparationPlugin
+from empire.features.preparation.ui import PreparationPage
+from empire.features.stocks.query import StockDataPlugin
 
 
 @pytest.fixture

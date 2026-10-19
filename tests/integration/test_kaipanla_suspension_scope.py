@@ -10,10 +10,10 @@ import pytest
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
+from empire.features.suspensions import dataset as suspensions
+from empire.features.suspensions.contract import normalize_source_row
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS
 from empire.plugins.collectors.kaipanla_source import SourceError
-from empire.plugins.datasets import suspensions
-from empire.plugins.datasets.suspensions import normalize_source_row
 from tests.test_kaipanla_intraday import STOCK, listing
 from tests.test_kaipanla_products import product_collector, source
 

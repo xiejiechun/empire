@@ -81,7 +81,7 @@
         "股票列表",
         "采集进度与运行记录"
       ],
-      "source_file": "src/empire/plugins/collectors/sina_universe.py",
+      "source_file": "src/empire/features/stocks/sina_collector.py",
       "source": "sina",
       "fingerprint_source": "current",
       "scope": "来源当前沪深北A股完整股票集合；同一stock表只保留一份当前列表。"
@@ -149,7 +149,7 @@
         "股票列表",
         "采集进度与运行记录"
       ],
-      "source_file": "src/empire/plugins/collectors/ths_universe.py",
+      "source_file": "src/empire/features/stocks/ths_collector.py",
       "source": "ths",
       "fingerprint_source": "current",
       "scope": "来源当前沪深北A股完整股票集合；同一stock表只保留一份当前列表。"
@@ -251,7 +251,7 @@
         "交易日历",
         "采集进度与运行记录"
       ],
-      "source_file": "src/empire/plugins/collectors/cninfo_calendar.py",
+      "source_file": "src/empire/features/calendar/collector.py",
       "source": "cninfo",
       "fingerprint_source": "cninfo",
       "scope": "巨潮A股交易与休市日期；整月日期集合校验，不根据周末自行生成。"
@@ -318,7 +318,7 @@
         "历史停复牌",
         "采集进度与运行记录"
       ],
-      "source_file": "src/empire/plugins/collectors/tdx_suspensions.py",
+      "source_file": "src/empire/features/suspensions/collector.py",
       "source": "tdx",
       "fingerprint_source": "tdx",
       "scope": "沪深A股；逐来源日历日校验，过滤其他市场不改变来源总数校验口径。"

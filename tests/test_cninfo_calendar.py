@@ -7,9 +7,9 @@ import httpx
 import pytest
 
 from empire.contracts.download import CALENDAR_RESPONSE
-from empire.plugins.collectors.cninfo_calendar import API_URL, CninfoCalendarCollector, parse_month
-from empire.plugins.data.trade_calendar import CalendarDataPlugin
-from empire.plugins.datasets.trade_calendar import month_dates, months_between
+from empire.features.calendar.collector import API_URL, CninfoCalendarCollector, parse_month
+from empire.features.calendar.contract import month_dates, months_between
+from empire.features.calendar.query import CalendarDataPlugin
 from tests.catalog_factory import builtin_catalog
 from tests.prefetch_source import prefetch_http
 

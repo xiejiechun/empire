@@ -2,7 +2,7 @@ from datetime import date, datetime
 
 import pytest
 
-from empire.plugins.data.market_suspension_days import excluded_days
+from empire.features.suspensions.exclusions import excluded_days
 
 
 def event(start='2023-11-06 09:30', resume=None, note='连续停牌', kind='full_day'):

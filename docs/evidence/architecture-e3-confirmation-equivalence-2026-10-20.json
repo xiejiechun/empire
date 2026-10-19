@@ -1,0 +1,11 @@
+{
+  "stock_confirmation_body_equal": true,
+  "change": "self.mysql/self.redis to explicit mysql/redis; marker renamed; signature split documented",
+  "runtime_tests": "shared-boundary injection and marker tests; SQL archive recovery separate",
+  "unchanged_provider_methods": [
+    "start",
+    "page_status",
+    "stop",
+    "health"
+  ]
+}

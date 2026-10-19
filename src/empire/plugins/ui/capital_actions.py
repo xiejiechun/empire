@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.data_browser.search import CandidateSearch
 from empire.plugins.datasets.capital_actions import KINDS
 from empire.plugins.ui.capital_preview import plan_cards, plan_profile
 from empire.plugins.ui.capital_words import LABELS
@@ -33,7 +34,6 @@ from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_cards import CardReader
 from empire.plugins.ui.preview_layout import DataNote, DetailSplit, QueryForm
 from empire.plugins.ui.preview_navigation import security_context
-from empire.plugins.ui.preview_search import CandidateSearch
 from empire.plugins.ui.queries import QueryScope
 
 

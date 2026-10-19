@@ -16,6 +16,7 @@ from empire.contracts.listings import PROJECT, date_warning
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.data_browser.search import CandidateSearch
 from empire.plugins.ui.common import (
     accessible,
     bind_find,
@@ -29,7 +30,6 @@ from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_cards import CardReader, card, fields
 from empire.plugins.ui.preview_layout import compact_columns, fit_directory
 from empire.plugins.ui.preview_navigation import security_context
-from empire.plugins.ui.preview_search import CandidateSearch
 from empire.plugins.ui.queries import QueryScope
 
 FIELDS = ('unified_code', 'name', 'listing_date', 'establish_date', 'issuance_num', 'issuance_price',

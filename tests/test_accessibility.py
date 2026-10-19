@@ -11,7 +11,7 @@ from test_navigation import Runtime  # noqa: E402
 
 from empire.desktop import theme  # noqa: E402
 from empire.desktop.theme import STYLE  # noqa: E402
-from empire.plugins.ui.catalog import DataCatalogPage  # noqa: E402
+from empire.features.data_browser.catalog import DataCatalogPage
 from empire.plugins.ui.collection_views.tasks import TasksPage  # noqa: E402
 from empire.plugins.ui.help import StorageHelpPage  # noqa: E402
 

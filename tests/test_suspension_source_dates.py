@@ -2,9 +2,9 @@ from datetime import date, timedelta
 
 import pytest
 
-from empire.plugins.collectors.suspension_batches import bounded_batches
-from empire.plugins.collectors.tdx_suspensions import API_URL, merge_event
-from empire.plugins.datasets.suspensions import normalize_source_row, validate_period
+from empire.features.suspensions.batches import bounded_batches
+from empire.features.suspensions.collector import API_URL, merge_event
+from empire.features.suspensions.contract import normalize_source_row, validate_period
 
 
 def source_record(resumed=None):

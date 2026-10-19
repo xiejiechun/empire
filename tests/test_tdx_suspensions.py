@@ -8,18 +8,19 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.plugins.collectors.tdx_suspensions import (
+from empire.features.suspensions.collector import (
     API_URL,
     TdxSuspensionCollector,
     merge_event,
     parse_page,
 )
-from empire.plugins.data.suspensions import SuspensionDataPlugin, periods_between
-from empire.plugins.datasets.suspensions import (
+from empire.features.suspensions.contract import (
     classify_suspension,
     event_identity,
     normalize_source_row,
+    periods_between,
 )
+from empire.features.suspensions.query import SuspensionDataPlugin
 from tests.catalog_factory import builtin_catalog
 from tests.prefetch_source import prefetch_http
 
@@ -139,7 +140,7 @@ def test_historical_same_day_resume_takes_precedence_over_day_label():
     assert row["suspension_type"] == "intraday"
     assert row["source_note"] == "停牌1天"
     assert row["resumed_at"] == "2005-06-17T10:30+08:00"
-    from empire.plugins.datasets.suspensions import validate_period
+    from empire.features.suspensions.contract import validate_period
     row = {**row, 'source_dates': ['2005-06-17']}
     assert validate_period("2005-06-17", "2005-06-17", ["2005-06-17"], [row]) == [row]
     with pytest.raises(ValueError, match="复牌时间早于停牌时间"):
@@ -148,7 +149,7 @@ def test_historical_same_day_resume_takes_precedence_over_day_label():
 
 @pytest.mark.parametrize('note', [None, '', '  '])
 def test_missing_historical_note_is_optional_without_inventing_resume(note):
-    from empire.plugins.datasets.suspensions import validate_period
+    from empire.features.suspensions.contract import validate_period
     raw = {'sc': 0, 'code': '000950', 'name': '重药控股', 'fprq': None,
            'sj': note, 'sjcontent': '临时停牌', 'tprq': '2005-10-10 09:30'}
     row = normalize_source_row(raw)
@@ -184,7 +185,7 @@ def test_invalid_reason_type_is_rejected(reason):
 
 
 def test_month_keeps_distinct_source_rows_and_rejects_exact_identity_conflicts():
-    from empire.plugins.collectors.suspension_batches import bounded_batches
+    from empire.features.suspensions.batches import bounded_batches
     raw = {'sc': 0, 'code': '000659', 'name': '珠海中富', 'fprq': None,
            'sj': '今起停牌', 'sjcontent': '相关股东会议特别提示', 'tprq': '2005-10-10 09:30'}
     suspended = normalize_source_row(raw)
@@ -204,7 +205,7 @@ def test_month_keeps_distinct_source_rows_and_rejects_exact_identity_conflicts()
 
 
 def test_same_time_tdx_rows_with_different_descriptions_are_both_kept():
-    from empire.plugins.collectors.suspension_batches import bounded_batches
+    from empire.features.suspensions.batches import bounded_batches
     first = normalize_source_row({'sc': 1, 'code': '600113', 'name': '浙江东日',
         'fprq': '2012-05-02 10:30', 'sj': '今起复牌', 'sjcontent': '重要事项',
         'tprq': '2012-05-02 09:30'})
@@ -368,7 +369,7 @@ async def test_identical_source_repetitions_require_complete_repeat_confirmation
 
 
 async def test_full_day_expansion_replaces_partial_set_and_never_offsets(monkeypatch):
-    monkeypatch.setattr('empire.plugins.collectors.tdx_suspensions.PAGE_SIZE', 2)
+    monkeypatch.setattr('empire.features.suspensions.collector.PAGE_SIZE', 2)
     item = collector()
     first = dict(zip(COLS, source_row(), strict=True))
     other = {**first, 'sjcontent': '第二条来源说明'}
@@ -381,8 +382,8 @@ async def test_full_day_expansion_replaces_partial_set_and_never_offsets(monkeyp
 
 
 async def test_oversized_full_day_is_not_published(monkeypatch):
-    monkeypatch.setattr('empire.plugins.collectors.tdx_suspensions.PAGE_SIZE', 2)
-    monkeypatch.setattr('empire.plugins.collectors.tdx_suspensions.MAX_DAY_ROWS', 2)
+    monkeypatch.setattr('empire.features.suspensions.collector.PAGE_SIZE', 2)
+    monkeypatch.setattr('empire.features.suspensions.collector.MAX_DAY_ROWS', 2)
     item = collector()
     item.http = prefetch_http()
     async def download(day, **kw):

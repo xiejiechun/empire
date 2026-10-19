@@ -7,7 +7,7 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 from PySide6.QtCore import QDate  # noqa: E402
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.plugins.ui.suspensions import SuspensionsPage, SuspensionsUiPlugin  # noqa: E402
+from empire.features.suspensions.ui import SuspensionsPage, SuspensionsUiPlugin
 
 
 def record(resumed=None, reason='进行股权分置改革的提示性公告'):

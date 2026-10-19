@@ -102,8 +102,8 @@ async def test_cold_hot_revision_late_old_unavailable_and_recovery(indices, monk
         missing = envelope(available=False, members=[]).model_copy(update={'observed_at': now + timedelta(seconds=4)})
         await publish(missing)
         assert (await q.browse('members', '900901'))['rows'][0]['members_available'] == 0
-        from empire.contracts.preparation_catalog import BY_ID
-        from empire.plugins.data.preparation import PreparationPlugin
+        from empire.features.preparation.catalog import BY_ID
+        from empire.features.preparation.query import PreparationPlugin
 
         preparation = PreparationPlugin(q.preparation)
         await preparation.start(q.context)

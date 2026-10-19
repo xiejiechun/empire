@@ -3,7 +3,15 @@ import re
 from dataclasses import dataclass
 from datetime import date
 
-from empire.contracts.preparation_research import FOCUSES, STUDIES
+STUDIES = {'factor': '因子研究', 'backtest': '策略回测', 'value': '长期价值研究'}
+FOCUSES = {
+    'factor': {'price': '量价 / 动量 / 波动', 'valuation': '价值 / 规模 / 股息',
+               'quality': '盈利质量 / 成长', 'holders': '股东 / 风险事件', 'flows': '资金流'},
+    'backtest': {'price': '量价策略', 'valuation': '价值策略', 'quality': '质量 / 成长策略',
+                 'holders': '股东 / 事件策略', 'flows': '资金流策略'},
+    'value': {'operating': '经营 / 财务趋势', 'valuation': '估值与股息',
+              'returns': '股东回报 / 稀释', 'risk': '治理 / 资本使用风险'},
+}
 
 
 @dataclass(frozen=True)

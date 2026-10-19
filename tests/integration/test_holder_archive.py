@@ -60,7 +60,7 @@ async def collect(c):
 async def dashboard(q, request):
     from types import SimpleNamespace
 
-    from empire.plugins.data.preparation import PreparationPlugin
+    from empire.features.preparation.query import PreparationPlugin
     preparation = PreparationPlugin(q.preparation)
     await preparation.start(SimpleNamespace(optional=lambda cap: q if cap == q.kind + '.query' else None))
     return next(r for r in (await preparation.report(request))['rows'] if r['id'] == q.kind)

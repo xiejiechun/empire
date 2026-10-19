@@ -5,7 +5,7 @@ import pytest
 from sqlalchemy import text
 
 from empire.core.config import load_config, project_root
-from empire.plugins.datasets.suspensions import record_key
+from empire.features.suspensions.contract import record_key
 from empire.plugins.infra.mysql_store import make_engine
 from scripts.migrate_suspension_identity import migrate_schema
 

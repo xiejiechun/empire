@@ -240,6 +240,8 @@ def analyze(root: Path, policy: dict) -> dict:
                     f"{target['role']} is source-local, not execution: {target['reason']}")
         different = source['owner'] != target['owner']
         business_target = policy['owners'][target['owner']]['kind'] == 'business'
+        if different and business_target and source['role'] == 'shared_ui':
+            add('shared_ui_to_business', edge, 'Shared UI imports a concrete business')
         public_module = target['role'] in {'contract', 'api', 'package'}
         public_symbols = set(target.get('public_symbols', []))
         private_symbol = any(name.startswith('_') for name in edge.names)

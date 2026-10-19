@@ -71,14 +71,14 @@ def test_shared_controls_cannot_depend_on_feature_business_page(ui_project):
     assert any('shared UI' in error for error in check_ui_architecture(root, policy))
 
 
-def test_reviewed_shared_symbol_exception_does_not_expose_whole_business_module(ui_project):
+def test_public_symbol_does_not_allow_shared_ui_to_import_business(ui_project):
     root, policy, write = ui_project
     write('empire.plugins.ui.preview_cards', 'class CardReader: pass\nprivate=1\n')
     policy['module_groups'][-1]['public_symbols'] = ['CardReader']
     caller = write('empire.components.cards',
                    'from empire.plugins.ui.preview_cards import CardReader\n',
                    role='shared_ui', owner='ui_components')
-    assert not check_ui_architecture(root, policy)
+    assert any('shared UI' in error for error in check_ui_architecture(root, policy))
     caller.write_text('import empire.plugins.ui.preview_cards as cards\n', encoding='utf-8')
     assert any('shared UI' in error for error in check_ui_architecture(root, policy))
 
@@ -93,14 +93,14 @@ def test_common_retains_its_existing_no_plugin_import_rule(ui_project, statement
 
 
 @pytest.mark.parametrize('statement,allowed', [
-    ('from .catalog import DataCatalogPage', True),
-    ('from .catalog import hidden', False),
-    ('import empire.plugins.ui.catalog as catalog', False),
+    ('from empire.features.data_browser.catalog import DataCatalogPage', True),
+    ('from empire.features.data_browser.catalog import hidden', False),
+    ('import empire.features.data_browser.catalog as catalog', False),
     ('from . import catalog', False),
 ])
 def test_catalog_public_symbol_exception_is_exact(ui_project, statement, allowed):
     root, policy, write = ui_project
-    write('empire.plugins.ui.catalog', 'class DataCatalogPage: pass\nhidden=1\n')
+    write('empire.features.data_browser.catalog', 'class DataCatalogPage: pass\nhidden=1\n')
     write('empire.plugins.ui.news', statement)
     errors = check_ui_architecture(root, policy)
     assert bool(errors) is not allowed

@@ -13,8 +13,8 @@ from test_stock_archive import stock_database as stock_database
 
 from empire.contracts.data import UnsupportedSchema, make_envelope
 from empire.core.config import load_config
+from empire.features.calendar.contract import month_dates
 from empire.features.news.source import normalize_source
-from empire.plugins.datasets.trade_calendar import month_dates
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.pipeline.archive import ArchivePlugin
 from empire.plugins.pipeline.archive_queue import SCAN_WINDOW

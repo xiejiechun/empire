@@ -16,6 +16,7 @@ from empire.contracts.name_changes import KINDS, project
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.data_browser.search import CandidateSearch
 from empire.plugins.ui.common import (
     accessible,
     bind_find,
@@ -28,7 +29,6 @@ from empire.plugins.ui.common import (
 from empire.plugins.ui.event_timeline import EventTimeline
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_navigation import security_context
-from empire.plugins.ui.preview_search import CandidateSearch
 from empire.plugins.ui.queries import QueryScope
 
 

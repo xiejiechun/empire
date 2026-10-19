@@ -6,9 +6,9 @@ from unittest.mock import AsyncMock
 import pytest
 
 from empire.core.time import CHINA
-from empire.plugins.data.calendar_preparation import check_calendar, merge_confirmations
-from empire.plugins.data.preparation_checks import audit_calendar
-from empire.plugins.datasets.trade_calendar import month_dates, months_between
+from empire.features.calendar.audit import check_calendar, merge_confirmations
+from empire.features.calendar.audit_rules import audit_calendar
+from empire.features.calendar.contract import month_dates, months_between
 from empire.plugins.pipeline.fingerprints import digest
 
 

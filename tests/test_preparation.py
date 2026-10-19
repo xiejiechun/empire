@@ -8,13 +8,15 @@ import pytest
 
 from empire.bootstrap import build_manager
 from empire.contracts.preparation import CheckEvidence
-from empire.contracts.preparation_catalog import BY_ID, REQUIREMENTS
 from empire.core.preparation_release import test_evidence as evidence_for_tests
 from empire.core.time import CHINA
-from empire.plugins.data.preparation import PreparationPlugin
-from empire.plugins.data.preparation_checks import audit_calendar, audit_stocks, freshness
-from empire.plugins.data.stocks import StockDataPlugin
-from empire.plugins.datasets.trade_calendar import month_dates
+from empire.features.calendar.audit_rules import audit_calendar
+from empire.features.calendar.contract import month_dates
+from empire.features.preparation.catalog import BY_ID, REQUIREMENTS
+from empire.features.preparation.evidence import freshness
+from empire.features.preparation.query import PreparationPlugin
+from empire.features.stocks.audit_rules import audit_stocks
+from empire.features.stocks.query import StockDataPlugin
 
 CFG = {'redis': {}, 'mysql': {}, 'archive': {}, 'ingest': {}, 'rate_groups': {}}
 
@@ -25,7 +27,7 @@ def contribution(**changes):
 
 @pytest.fixture(autouse=True)
 def no_external_test_artifact(monkeypatch):
-    monkeypatch.setattr('empire.plugins.data.preparation.load_evidence', lambda: ({}, '未执行本版本测试'))
+    monkeypatch.setattr('empire.features.preparation.query.load_evidence', lambda: ({}, '未执行本版本测试'))
 
 
 async def test_partial_and_invalid_evidence_never_finishes():
@@ -145,7 +147,7 @@ def test_stock_counts_alone_do_not_pass_identifiers_or_market_coverage():
 
 
 def test_calendar_same_count_with_missing_date_fails(monkeypatch):
-    monkeypatch.setattr('empire.plugins.data.preparation_checks.months_between', lambda a, b: ['2026-09'])
+    monkeypatch.setattr('empire.features.calendar.audit_rules.months_between', lambda a, b: ['2026-09'])
     records = [{'trade_date': d, 'is_trade': 1} for d in month_dates('2026-09')]
     now = datetime(2026, 9, 28, tzinfo=CHINA)
     state = {'observed': {'2026-09': now.isoformat()}}
@@ -170,7 +172,7 @@ async def test_ui_filters_detail_selection_and_lifecycle():
     from PySide6.QtWidgets import QApplication
 
     from empire.desktop.page_lifecycle import activate_page, deactivate_page
-    from empire.plugins.ui.preparation import PreparationUiPlugin
+    from empire.features.preparation.ui import PreparationUiPlugin
     app = QApplication.instance() or QApplication([])
     plugin = PreparationPlugin([])
     await plugin.start(SimpleNamespace(optional=lambda cap: None))
@@ -359,7 +361,7 @@ async def test_independent_company_actions_and_catalog_visible_in_ui(monkeypatch
     os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.preparation import PreparationPage
+    from empire.features.preparation.ui import PreparationPage
     app = QApplication.instance() or QApplication([])
     page = PreparationPage(SimpleNamespace(cfg={}, shutting_down=False))
     page.render(report)
@@ -384,7 +386,7 @@ def test_preparation_scope_rejects_invalid_requests(value):
 
 
 def test_readiness_separates_source_quality_and_use_limitations():
-    from empire.plugins.data.preparation_results import summarize
+    from empire.features.preparation.results import summarize
     checks = [dict(id=k, phase='数据', status='pass', blocking=True) for k in ('keys','coverage','fields','quality','freshness')]
     checks.append(dict(id='temporal', phase='数据', status='fail', blocking=False))
     result = summarize(checks)

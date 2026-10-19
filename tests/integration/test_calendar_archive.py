@@ -11,7 +11,7 @@ from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
 from empire.core.time import CHINA
-from empire.plugins.datasets.trade_calendar import month_dates, months_between
+from empire.features.calendar.contract import month_dates, months_between
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get("EMPIRE_INTEGRATION") != "1", reason="Set EMPIRE_INTEGRATION=1 explicitly")]

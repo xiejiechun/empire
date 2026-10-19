@@ -2,6 +2,8 @@
 from empire.contracts.bundle import FeatureBundle, ordered
 from empire.contracts.preparation import ComputationContribution
 from empire.core.identity import safe_project_id
+from empire.features.calendar.bundle import bundle as calendar_bundle
+from empire.features.data_browser.bundle import bundle as data_browser_bundle
 from empire.features.financial_statements.bundle import bundle as financial_statements_bundle
 from empire.features.holders.bundle import bundle as holders_bundle
 from empire.features.index_prices.bundle import bundle as index_prices_bundle
@@ -9,8 +11,10 @@ from empire.features.indices.bundle import bundle as indices_bundle
 from empire.features.industries.bundle import bundle as industries_bundle
 from empire.features.news.bundle import bundle as news_bundle
 from empire.features.remaining import bundle as remaining_bundle
+from empire.features.stocks.bundle import bundle as stocks_bundle
+from empire.features.suspensions.bundle import bundle as suspensions_bundle
 
-FACTORIES = (remaining_bundle, news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle)
+FACTORIES = (remaining_bundle, news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle)
 
 
 def builtin_bundles(cfg) -> tuple[FeatureBundle, ...]:
@@ -93,3 +97,26 @@ def validate_ownership(bundles, manager):
     unused = set(jobs) - used
     if unused:
         raise ValueError(f'发布者没有对应数据贡献: {sorted(unused)}')
+
+
+def confirmation_handlers(bundles):
+    """Resolve exact dataset-owned callbacks without starting a provider."""
+    declarations, required = {}, {}
+    for bundle in bundles:
+        for item in bundle.confirmations:
+            if item.id in declarations:
+                raise ValueError('归档确认贡献重复: ' + item.id)
+            declarations[item.id] = (bundle.id, item.handler)
+        for item in bundle.datasets:
+            identity = item.value.confirmation
+            if identity:
+                if identity in required and required[identity] != bundle.id:
+                    raise ValueError('归档确认需求跨业务冲突: ' + identity)
+                required[identity] = bundle.id
+    if declarations.keys() != required.keys():
+        raise ValueError('归档确认贡献缺失或没有对应数据集: ' +
+                         ', '.join(sorted(declarations.keys() ^ required.keys())))
+    for identity, owner in required.items():
+        if declarations[identity][0] != owner:
+            raise ValueError('归档确认贡献不属于数据集业务: ' + identity)
+    return {identity: value[1] for identity, value in declarations.items()}

@@ -6,7 +6,7 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.plugins.ui.trade_calendar import TradeCalendarPage  # noqa: E402
+from empire.features.calendar.ui import TradeCalendarPage
 
 
 class Runtime:

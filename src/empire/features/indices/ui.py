@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.data_browser.directory import DirectoryPanel
 from empire.plugins.ui.common import (
     accessible,
     bind_find,
@@ -22,7 +23,6 @@ from empire.plugins.ui.common import (
     rows,
     table_identity_state,
 )
-from empire.plugins.ui.directory_panel import DirectoryPanel
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_layout import compact_columns
 from empire.plugins.ui.preview_navigation import navigate_security

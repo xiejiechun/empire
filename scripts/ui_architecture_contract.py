@@ -37,13 +37,10 @@ def check_ui_architecture(root: Path, policy=None) -> list[str]:
             errors.append(f'{location}: desktop shell imports plugin/business implementation {edge.target}')
         if common and (plugin or business):
             errors.append(f'{location}: common controls import plugin/business implementation {edge.target}')
-        approved_symbols = set(target.get('public_symbols', ()))
-        explicit_api = bool(edge.names) and set(edge.names) <= approved_symbols
-        if (source.get('role') == 'shared_ui' and business and not explicit_api
-                and target.get('role') not in {'contract', 'api'}):
+        if source.get('role') == 'shared_ui' and business:
             errors.append(f'{location}: shared UI imports business implementation {edge.target}')
         if edge.target == 'empire.plugins.ui.collection':
             errors.append(f'{location}: shared controls must not be imported from the collection page')
-        if edge.target == 'empire.plugins.ui.catalog' and set(edge.names) - {'DataCatalogPage'}:
+        if edge.target == 'empire.features.data_browser.catalog' and set(edge.names) - {'DataCatalogPage'}:
             errors.append(f'{location}: catalog only exposes DataCatalogPage to other UI modules')
     return sorted(set(errors))

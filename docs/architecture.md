@@ -342,3 +342,9 @@ collector.ths_index_prices / data.index_prices / ui.index_prices独立贡献；i
 ths-capital任务使用collector.ths_capital→ths.capital.security→八个类型化业务表→ths_capital.query；来源一次完整HTML，独立证券共享预取，按序原子入队后继续，整轮末归档确认。每个栏目独立数据准备，统一response_group，不用运行成功替代字段/集合审计。数据库字段见程序内数据库参考，生命周期见[公司资本运作](ths-capital.md)。
 
 研究模板在preparation_research引用唯一目录；scope扩展study/focus/scan，分析和历史信号时点规则沿用各来源正式检查器。库存聚合在独立preparation_inventory数据模块，复用SQLLane；页面动作、范围草稿、库存展示分模块，外壳无新增业务逻辑。库存只有有界元数据和统计，不新增事实表或配置种类。
+
+## E3基础业务归属
+
+股票、日历、停复牌、数据准备与目录分别由 `features/stocks`、`calendar`、`suspensions`、`preparation`、`data_browser` 的README定位。原48模块及调用方退役，不保留转发兼容层。股票确认由纯ConfirmationContribution连接业务无状态回调和公共提供者；需求与提供须精确相等且同owner，在构造基础服务前检查。workspace由原14800槽注入惰性页面工厂，后置preparation继续在业务声明收齐后构造。原身份、顺序、持久化契约和公共下载/归档路径保持。
+
+公共preparation/scope、预览cards/navigation/layout和发布资源读取均留原公共位置。共享UI不得导入具体业务，即使目标符号公开。全局运行时通用边界仍按E4/F剩余计划收束，不能将当前门禁通过解释为全部历史债务消除。当前验证、失败和发布状态见[阶段记录](evidence/architecture-e3-2026-10-20.md)。

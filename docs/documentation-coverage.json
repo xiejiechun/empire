@@ -477,8 +477,8 @@
       "stock": {
         "topic": "MySQL stock",
         "sources": [
-          "src/empire/plugins/datasets/stocks.py",
-          "src/empire/plugins/data/stocks.py"
+          "src/empire/features/stocks/dataset.py",
+          "src/empire/features/stocks/query.py"
         ]
       },
       "stock_listing": {
@@ -505,22 +505,22 @@
       "trade_calendar": {
         "topic": "MySQL trade_calendar",
         "sources": [
-          "src/empire/plugins/datasets/trade_calendar.py",
-          "src/empire/plugins/data/trade_calendar.py"
+          "src/empire/features/calendar/dataset.py",
+          "src/empire/features/calendar/query.py"
         ]
       },
       "suspension_event": {
         "topic": "MySQL suspension_event",
         "sources": [
-          "src/empire/plugins/datasets/suspensions.py",
-          "src/empire/plugins/data/suspensions.py"
+          "src/empire/features/suspensions/dataset.py",
+          "src/empire/features/suspensions/query.py"
         ]
       },
       "suspension_source_date": {
         "topic": "MySQL suspension_source_date",
         "sources": [
-          "src/empire/plugins/datasets/suspensions.py",
-          "src/empire/plugins/data/suspensions.py"
+          "src/empire/features/suspensions/dataset.py",
+          "src/empire/features/suspensions/query.py"
         ]
       },
       "dividend_plan": {
@@ -951,9 +951,9 @@
           "<namespace>:stocks:result:<source>"
         ],
         "sources": [
-          "src/empire/plugins/datasets/stocks.py",
+          "src/empire/features/stocks/dataset.py",
           "src/empire/plugins/pipeline/archive.py",
-          "src/empire/plugins/infra/archive_confirmation.py"
+          "src/empire/features/stocks/confirmation.py"
         ]
       },
       "stocks-committed": {
@@ -962,9 +962,9 @@
           "<namespace>:stocks:committed:<source>"
         ],
         "sources": [
-          "src/empire/plugins/datasets/stocks.py",
+          "src/empire/features/stocks/dataset.py",
           "src/empire/plugins/pipeline/archive.py",
-          "src/empire/plugins/infra/archive_confirmation.py"
+          "src/empire/features/stocks/confirmation.py"
         ]
       },
       "archive-progress": {
@@ -1066,8 +1066,8 @@
           "<namespace>:preparation:report:<scope_digest>"
         ],
         "sources": [
-          "src/empire/plugins/data/preparation_cache.py",
-          "src/empire/plugins/data/preparation.py"
+          "src/empire/features/preparation/cache.py",
+          "src/empire/features/preparation/query.py"
         ]
       },
       "router-mapping": {
@@ -1127,24 +1127,16 @@
           "collection-control"
         ]
       },
-      "src/empire/plugins/data/preparation_cache.py": {
+      "src/empire/features/preparation/cache.py": {
         "f'{store.prefix}:preparation:report:{digest}'": [
           "preparation-report"
         ]
       },
-      "src/empire/plugins/datasets/stocks.py": {
+      "src/empire/features/stocks/dataset.py": {
         "f'{prefix}:stocks:committed:{source}'": [
           "stocks-committed"
         ],
         "f'{prefix}:stocks:result:{source}'": [
-          "stocks-result"
-        ]
-      },
-      "src/empire/plugins/infra/archive_confirmation.py": {
-        "f'{self.redis.prefix}:stocks:committed:{source}'": [
-          "stocks-committed"
-        ],
-        "f'{self.redis.prefix}:stocks:result:{source}'": [
           "stocks-result"
         ]
       },
@@ -1210,6 +1202,14 @@
         ],
         "f'{self.prefix}:ingest'": [
           "ingest"
+        ]
+      },
+      "src/empire/features/stocks/confirmation.py": {
+        "f'{redis.prefix}:stocks:committed:{source}'": [
+          "stocks-committed"
+        ],
+        "f'{redis.prefix}:stocks:result:{source}'": [
+          "stocks-result"
         ]
       }
     }

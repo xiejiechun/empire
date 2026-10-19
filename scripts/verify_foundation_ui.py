@@ -16,12 +16,12 @@ from test_collection_ui import snapshot  # noqa: E402
 
 from empire.contracts.ui import PageContribution  # noqa: E402
 from empire.desktop.window import MainWindow  # noqa: E402
-from empire.plugins.data.preparation import PreparationPlugin  # noqa: E402
+from empire.features.preparation.query import PreparationPlugin
+from empire.features.preparation.ui import PreparationPage
+from empire.features.suspensions.ui import SuspensionsPage
 from empire.plugins.ui.collection_views.sites import SitesPage  # noqa: E402
 from empire.plugins.ui.collection_views.tasks import TasksPage  # noqa: E402
-from empire.plugins.ui.preparation import PreparationPage  # noqa: E402
 from empire.plugins.ui.proxies import ProxyPage  # noqa: E402
-from empire.plugins.ui.suspensions import SuspensionsPage  # noqa: E402
 
 
 class Runtime:

@@ -10,7 +10,7 @@ from sqlalchemy import inspect, text
 from empire.__main__ import acquire_instance_lock
 from empire.core.config import load_config
 from empire.core.redaction import redact
-from empire.plugins.datasets.suspensions import FINGERPRINT_VERSION
+from empire.features.suspensions.contract import FINGERPRINT_VERSION
 from empire.plugins.infra.collection_state import read_state, save_state
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client

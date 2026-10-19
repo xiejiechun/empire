@@ -1,6 +1,6 @@
 # 模块化优化状态与下一步
 
-事实快照：2026-10-20，E2已验收，结案提交推送后第一项为E3。本文是接手入口；重新执行时先核实 HEAD、工作区、远程、安装包与共享环境。具体步骤见 [执行入口](README.md)、[C/D/F手册](cdf-implementation.md)、[E手册](e-implementation.md)，通过条件见 [验收手册](acceptance.md)。
+事实快照：2026-10-20，E2已验收并推送b8d732d；E3开发验证通过，尚未发布。本文是接手入口；重新执行时先核实 HEAD、工作区、远程、安装包与共享环境。具体步骤见 [执行入口](README.md)、[C/D/F手册](cdf-implementation.md)、[E手册](e-implementation.md)，通过条件见 [验收手册](acceptance.md)。
 
 交接提交120ddfc完成C发布收尾。用户已授权D→E→F实施；D八模块、安全工具、容量及两项公共UI修复已完成最终正式发布和同包真实桌面。**D纯组织迁移范围已验收，H3严格来源完整性仍FAIL**：两固定空名债券原样保留，按请求前登记、D-07及验收6.1独立判断组织等价，不称30股严格整轮通过。整个优化未完成；E0已完成正式发布和同包真实桌面验收，结案953a34e已推送并在该轮核实远程；E1结案4b30fcc已推送；E2现已完成正式发布与同包真实桌面，结案提交推送后第一项为E3。见[完整D记录](../evidence/architecture-d-2026-10-19.md)。
 
@@ -14,15 +14,16 @@
 | D 持有人样板 | 已验收（组织迁移范围）；严格H3失败保留 | 八模块/旧入口退役、安全SQL及恢复、116隔离集成、两份当前容量、strict类型、最终T3 18/18；两项真实UI缺陷修复。最终发布3626 passed/5 skipped，配置/偏好/异cwd连接/三栏查询/真实启停和正常关开完成。48全代理链路一致/私有pending0；固定来源缺口不计严格实采通过 | [D记录](../evidence/architecture-d-2026-10-19.md)、[同包只读报告](../evidence/architecture-d-post-release-2026-10-19.json)、[最终证据审阅](../evidence/architecture-d-final-evidence-audit-2026-10-19.json) |
 | E0 SQL归属 | 已验收；953a34e已推送核实 | 单一显式JSON及严格通用读者；最终266公共/5隔离/35文档、mypy7、T3 18/18。第二轮完整发布3660 passed/5 opt-in skipped，同包配置/真实连接/正式查询/可见桌面、启停保护/草稿/滚轮/正常关开完成；首轮文档失败保留 | [E0记录](../evidence/architecture-e0-2026-10-19.md)、[最终机器审阅](../evidence/architecture-e0-final-evidence-audit-2026-10-19.json) |
 | E1 财报 | 已验收；4b30fcc已推送核实 | 十模块/资源、chain公开契约、原槽位bundle、旧入口退役；54隔离/103安全、三表40股全代理/T3通过；完整发布3669 passed/5 opt-in skipped；同包三页/帮助、依赖保护、草稿撤销、偏好恢复、异cwd连接与正式查询、正常关开完成 | [E1记录](../evidence/architecture-e1-2026-10-19.md)、[最终审阅](../evidence/architecture-e1-final-evidence-audit-2026-10-19.json) |
-| E2 指数/行业/指数行情 | 已验收；结案待推送 | 三业务包/19旧模块及调用方退役；121领域/147安全/67隔离/408公共、两轮非股票全代理链路、四份真实容量及T3 18/18；完整发布ccc04f3/release 2fa960ba、3679 passed/5 opt-in skipped；同包配置/偏好、真实连接/查询、三页/帮助、U1/U2、窄窗口及正常关开完成 | [E2记录](../evidence/architecture-e2-2026-10-20.md)、[真实桌面](../evidence/architecture-e2-desktop-2026-10-20.md)、[同包机器核验](../evidence/architecture-e2-post-release-2026-10-20.json) |
-| E3～E6g 逐业务推广 | 草稿已准备，未合入 | E2全部适用出口满足后继续，不应用完整E树 | [E实施](e-implementation.md) |
+| E2 指数/行业/指数行情 | 已验收；b8d732d已推送核实 | 三业务包/19旧模块及调用方退役；121领域/147安全/67隔离/408公共、两轮非股票全代理链路、四份真实容量及T3 18/18；完整发布ccc04f3/release 2fa960ba、3679 passed/5 opt-in skipped；同包配置/偏好、真实连接/查询、三页/帮助、U1/U2、窄窗口及正常关开完成 | [E2记录](../evidence/architecture-e2-2026-10-20.md)、[真实桌面](../evidence/architecture-e2-desktop-2026-10-20.md)、[同包机器核验](../evidence/architecture-e2-post-release-2026-10-20.json) |
+| E3 股票/日历/停复牌/准备/目录 | 开发验证通过 | 48旧模块退役，确认注入与惰性workspace；第三轮有限全代理来源链路通过、私有资源已清；最终486公共/226生命周期及文档通过、T3 18/18；发布及桌面待完成 | [E3记录](../evidence/architecture-e3-2026-10-20.md) |
+| E4～E6g 逐业务推广 | 草稿已准备，未合入 | E3全部适用出口满足后继续，不应用完整E树 | [E实施](e-implementation.md) |
 | F 共享治理收束 | 草稿已准备，未合入 | 仅单源文档、影响报告、类型、共享门禁、定位演练和测试成本候选 | [F实施](cdf-implementation.md)；尚无测试成本收益结论 |
 
 不计算“完成百分比”：A/B/C与后续业务批次的工作量不同。草稿的文件数、AST相同或测试工具存在均不能折算成已完成实现。
 
 ## 2. 源码、远程和已安装包身份
 
-当前安装E2正式包release `2fa960ba05f047fdbbbc6ca214b0000c`，journal committed/passed，冻结干净提交 `ccc04f399fcaa5d8815da6a1e1b17df72a541620`；完整输入 `c3f1a25884bbab7a61fb9fbbbdaafac9ff1205d170dce55eb6afbfc037cc6a32`，EXE `18f05709ca2c7855f6395c1c8c2c09f6eb58c176c699b00da38a460070a24652`，安装树 `b1eff9327f678d57a57d88c5eb322f82a23e4da69a7e370be3502329d3eff005`。完整门禁exit0，3679 passed/5 opt-in skipped/20 warnings；24步骤及打包/搬移/配置smoke通过。02:33关后同包复核exit0，配置和偏好精确保留、异cwd真实连接与正式查询通过。重开正式窗口7475560可见：45任务、活动0/pending0、既有失败5。桌面与SQL设置快照的适用限制见[E2真实桌面](../evidence/architecture-e2-desktop-2026-10-20.md)。本批结案文档不改变发布EXE身份；当前远程最后核为4b30fcc，推送后再核精确HEAD。
+当前安装E2正式包release `2fa960ba05f047fdbbbc6ca214b0000c`，journal committed/passed，冻结干净提交 `ccc04f399fcaa5d8815da6a1e1b17df72a541620`；完整输入 `c3f1a25884bbab7a61fb9fbbbdaafac9ff1205d170dce55eb6afbfc037cc6a32`，EXE `18f05709ca2c7855f6395c1c8c2c09f6eb58c176c699b00da38a460070a24652`，安装树 `b1eff9327f678d57a57d88c5eb322f82a23e4da69a7e370be3502329d3eff005`。完整门禁exit0，3679 passed/5 opt-in skipped/20 warnings；24步骤及打包/搬移/配置smoke通过。02:33关后同包复核exit0，配置和偏好精确保留、异cwd真实连接与正式查询通过。重开正式窗口7475560可见：45任务、活动0/pending0、既有失败5。桌面与SQL设置快照的适用限制见[E2真实桌面](../evidence/architecture-e2-desktop-2026-10-20.md)。本批结案文档不改变发布EXE身份；E2结案b8d732d已通过既有共享代理推送，ls-remote精确匹配，exit0。
 
 以下E1身份是历史：此前安装E1正式包release `7ad607fa635c4f36b662b324dc501e52`，journal committed/passed，冻结干净提交 `a228421fa7bb312ed9fa0d7aaa0960eb2732c487`；完整输入 `f988c9bfd8e9770c455d1e6f12adfa2251a24389ffa0bd9024ecb0a12d9796e6`，EXE `40860a815a7553ad05e7a8a0551ca52b168bfcd4c129756571cfbe2808ec629b`，安装树 `0bc87e56b53c1d13de6650ec3f706f7aa5985433eefea046dac320a26df9bdcd`。完整门禁exit0，3669 passed/5 opt-in skipped/20 warnings，24步骤、容量quick/四档DPI/包和搬移配置smoke/切换通过。00:33同包关后复核及重开真实桌面通过，原config和偏好精确保留、pending0；最后窗口16058676保持工作台可见。三表实际查询及质量/公告日期限制、单停/依赖保护/草稿与正常关开见[E1记录](../evidence/architecture-e1-2026-10-19.md)。结案文档提交不改变EXE身份。远程在本次结案前核为953a34e，实际推送后再核精确HEAD。
 
@@ -75,7 +76,7 @@ D实现提交为`ab1d47339eace79a3c9d216c23bfe6beb1b1170a`，公共帮助/滚轮
 | D | 已完成，严格来源H3失败保留 | 不重复组织迁移 | 见D记录 |
 | E0 | 已完成并推送953a34e | 不重复发布 | 见E0记录 |
 | E1 | 已完成同包验收，4b30fcc已推送核实 | 发布a228421、原配置偏好保持 | 不重复发布 |
-| E2 | 已完成同包验收，结案待推送 | ccc04f3/release 2fa960ba | 不重复发布 |
+| E2 | 已完成同包验收，b8d732d已推送核实 | ccc04f3/release 2fa960ba | 不重复发布 |
 | E3 | 股票、日历、停复牌、准备、数据目录 | 公共preparation原路径保持 | 股票确认注入与workspace工厂的真实行为回归；公共UI无业务反向依赖 |
 | E4 | 开盘啦七项 | 唯一SQL归属与对应前像 | 七种kind完整样本、日期/查询/恢复、当前容量 |
 | E5 | 资本行为、分红、复权 | 先补完整分红容量方案与安全工具 | 完整来源观测/计划期数、业务查询及原容量边界 |
@@ -109,7 +110,7 @@ D实现提交为`ab1d47339eace79a3c9d216c23bfe6beb1b1170a`，公共帮助/滚轮
 
 ## 7. 接手第一步及最终完成定义
 
-D、E0、E1均已结案并推送；E2已完成唯一正式发布、同包真实桌面及配置/偏好恢复，结案文档待提交推送，禁止重复发布。当前main/ccc04f3，证据见[E2记录](../evidence/architecture-e2-2026-10-20.md)。结案推送核实后从E3股票/日历/停复牌/准备与目录开始，先核前像及精确错误ID；公共preparation契约保持原路径。严格持有人H3失败与分红完整容量待办保留，E3～F未实施。
+D、E0、E1均已结案并推送；E2已完成唯一正式发布、同包真实桌面及配置/偏好恢复，结案b8d732d已提交推送核实，禁止重复发布。E2结案已推送b8d732d，证据见[E2记录](../evidence/architecture-e2-2026-10-20.md)。结案推送核实后从E3股票/日历/停复牌/准备与目录开始，先核前像及精确错误ID；公共preparation契约保持原路径。严格持有人H3失败与分红完整容量待办保留，E3～F未实施。
 
 执行每批时，将该批从“草稿”推进到“正式实现→开发验证→完整发布→实际桌面→已验收”，把真实证据写入本账本对应行。任何必要项失败、缺证、运行中或被跳过，不能标完成。最终要有 [验收手册](acceptance.md) 中A/D/C/R/U/H/M/T全部适用ID的逐项结论，以及远程提交、同包发布、配置保留、真实桌面、来源限制与剩余资源说明；只有全部适用项满足才能宣布整个优化完成。
 
@@ -121,3 +122,6 @@ E2最新资源核查：自有13348仍运行，来源/容量私有资源全部清
 E2恢复检查点：main/ccc04f399fcaa5d8815da6a1e1b17df72a541620实现已提交；release 2fa960ba05f047fdbbbc6ca214b0000c已committed/passed，替代上列历史E1安装身份。完整门禁exit0、3679 passed/5 opt-in skipped/20 warnings；配置/同包机器身份/异cwd真实连接与正式查询通过。当前窗口658542实际桌面验收进行中，未结案未推送，禁止进入E3。详情见E2记录。
 
 E2最终资源快照02:33～02:35：正式包已正常关开、窗口7475560工作台可见/pending0；原生产pending1由正式归档处理，未手清。两config及原偏好SHA精确保留，48设置行本轮无更新（完整前像仅两行，限制见证据）。自有13348现场UUID/datadir保持，仅四系统库、无其他客户会话，无本轮私有业务资源；实例继续运行供下一批，不把历史关闭记录当当前状态。停复牌精确错误仍保留，E3调查。本段取代前述E2发布前和桌面中检查点。
+
+
+E3当前检查点：main/b8d732d的干净前像已核实，48旧模块及逐符号拆分已实际应用，两个公共preparation契约和三公共预览模块留原路径；股票确认和workspace惰性工厂已显式注入。第三轮84次全代理有限来源链路、私有pending0与清理通过；17现行容量绑定失效0；性能干扰已定位到本轮自有无限循环脚本并结束，稳定环境第五轮T3完整18/18通过，全部失败轮次保留。最终回归、文档审阅及只读证据审核通过，尚未正式发布/同包桌面，禁止进入E4。Empire已正常关闭，自有13348仍运行、UUID/datadir已核，配置保留。精确停复牌错误未清。当前详情及失败记录见[E3实施记录](../evidence/architecture-e3-2026-10-20.md)。

@@ -20,11 +20,11 @@ from empire.contracts.market_storage import dataset_tables
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.data_browser.search import CandidateSearch
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, capability, project
 from empire.plugins.ui.common import accessible, rows, table
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_layout import DataNote, QueryForm
-from empire.plugins.ui.preview_search import CandidateSearch
 from empire.plugins.ui.product_chart import product_chart
 from empire.plugins.ui.product_dates import ProductDates
 from empire.plugins.ui.queries import QueryScope
