@@ -1,8 +1,10 @@
 # Empire 模块化优化实施方案与验收标准
 
-状态：2026-10-19 已获用户授权实施，A/B 批次已完成发布与真实桌面验收，C 批次开始实施，后续批次按退出条件推进。制定日期：2026-10-19。研究源码基线：`eb2036e4ff0fa2358bb9aed1caa57d5a7f7e1e69`，实施起点：`5523fe0`。
+状态：2026-10-19 已获用户授权实施，A/B/C 批次已完成发布与真实桌面验收，D–F 尚待实施。本轮按用户要求交付逐项实施与验收文档，后续从真实状态继续。制定日期：2026-10-19。研究源码基线：`eb2036e4ff0fa2358bb9aed1caa57d5a7f7e1e69`，实施起点：`5523fe0`。
 
 前一阶段已交付现有版本的推送、重新发布及本方案，事实见 [基线发布记录](evidence/main-release-2026-10-19.md)。当前进入实施阶段，未完成批次仍以以下验收项为退出条件，不能据开发中状态宣称已发布。现有规则继续以 [开发流程](development-workflow.md)、[采集开发指南](collector-development-guide.md)、[业务数据库设计规范](database-design-standard.md) 和 [说明文档维护](documentation-maintenance.md) 为准。
+
+详细执行入口为 [交接总览](architecture-evolution/README.md)、[状态账本](architecture-evolution/status.md)、[C/D/F实施](architecture-evolution/cdf-implementation.md)、[E分批实施](architecture-evolution/e-implementation.md) 与 [逐项验收](architecture-evolution/acceptance.md)。原方案的验收ID保持；详细手册规定每批输入、修改、反例、证据和失败恢复。
 
 ## 1. 目标与决策
 

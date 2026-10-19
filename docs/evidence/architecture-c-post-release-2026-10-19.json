@@ -1,0 +1,137 @@
+{
+  "checked_at": "2026-10-19T14:36:54.328117+08:00",
+  "passed_read_only": true,
+  "actual_desktop": "passed",
+  "release_id": "8fbd5bd7a9cf460a9b82022b7e643f1d",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "81e147f35ba6af89b8b08219fe533130c875313c",
+    "dirty": false,
+    "source_sha256": "325b3eb337f2907790f7fb9d37cc83300c10d9f53fd815dc24bea2c3054e01e7",
+    "release_id": "8fbd5bd7a9cf460a9b82022b7e643f1d",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "1ff3f10635168bb28f8ae54184eb60fb637f7c5f1b3b53e9bb790b18242ea1ff",
+    "built_at_utc": "2026-10-19T06:24:26.082399+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3",
+    "packaged": true
+  },
+  "exe_sha256": "4196271f04b21eb8f987e8a000c6036dac7685dce04daab3e01bf92091926556",
+  "installed_tree_sha256": "3f010fad3279f85a5d5626a43d85b4a406afab35a643895c10ac6705b8d6e24d",
+  "configuration_preserved": {
+    "config.toml": true,
+    "dist/Empire/config.toml": true
+  },
+  "plugin_preferences_preserved": true,
+  "different_cwd": "C:/Windows",
+  "packaged_doctor_exit": 0,
+  "packaged_doctor_evidence": "exit code: both Redis and MySQL connected",
+  "packaged_doctor_log_side_effect": "ordinary local diagnostic log may be created",
+  "packaged_doctor_stdout_available": true,
+  "connections": {
+    "redis": true,
+    "mysql": true
+  },
+  "formal_queries": {
+    "observed_at": "2026-10-19T14:36:56.461270+08:00",
+    "read_only_business": true,
+    "execution": "source formal query APIs using installed configuration",
+    "stocks": {
+      "total": 5580,
+      "returned": 5,
+      "content_sha256": "8e4820d0e276b900576464275d0576a2aa0eaa8b9402fe5a0ffa2793b3b7a751"
+    },
+    "news": {
+      "total": null,
+      "returned": 5,
+      "content_sha256": "2ee717bbed6827ba502041d7320c9f6f2165023797248910515d87aaa9dcc82f"
+    },
+    "services_shutdown": true,
+    "pending_total": 0,
+    "pending_observed_at": "2026-10-19T14:36:56.611605+08:00",
+    "pending_key_contract": "RedisPlugin.stream (:ingest)"
+  },
+  "desktop_observation": {
+    "method": "Computer Use actual visible installed EXE; observed by root agent",
+    "observed_date": "2026-10-19",
+    "window_id": 200838,
+    "stock_rows": 5580,
+    "stock_pages": 28,
+    "stock_page_size": 200,
+    "stock_examples": [
+      "000001 平安银行",
+      "000002 万科A"
+    ],
+    "news_total_at_observation": 36194,
+    "news_first_at": "2026-10-19 14:33:26 +08:00",
+    "news_content_visible": true,
+    "build_label": "Empire 0.1.0 · 81e147f35ba6 · 干净提交",
+    "connections_visible": true,
+    "system_pending_at_observation": 0,
+    "original_navigation_restored": "十大债券持有人页面；之后经目录分别打开新闻与股票",
+    "normal_close": "Alt+F4; subsequent fresh list_windows returned no Empire window",
+    "scope": "Actual installed UI/build/query usability; not all-source coverage or all interaction cases"
+  },
+  "cli_encoding": {
+    "report": "build/cli-encoding-c-20261019/probes/81574f89f9b34e90b5a5619bf0d5ef85/report.json",
+    "sha256": "704e69363d50182d2e6c00ed40b43652f9f5070a3c77afe71ad142b35ad09838",
+    "passed": true,
+    "cases": [
+      {
+        "id": "gbk-help",
+        "returncode": 0,
+        "passed": true
+      },
+      {
+        "id": "gbk-config",
+        "returncode": 0,
+        "passed": true
+      },
+      {
+        "id": "gbk-missing",
+        "returncode": 1,
+        "passed": true
+      },
+      {
+        "id": "ascii-help",
+        "returncode": 0,
+        "passed": true
+      },
+      {
+        "id": "ascii-config",
+        "returncode": 0,
+        "passed": true
+      },
+      {
+        "id": "ascii-missing",
+        "returncode": 1,
+        "passed": true
+      }
+    ],
+    "scope": "Real frozen help/check-config/missing-config; GBK and ASCII environments; Chinese/emoji paths; strict UTF-8 output"
+  },
+  "recorded_at": "2026-10-19T14:37:56.192547+08:00",
+  "owned_test_instance_cleanup": {
+    "observed_at": "2026-10-19T14:40:33.862338+08:00",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-data\\",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "other_user_sessions": 0,
+    "business_databases": 0,
+    "normal_sql_shutdown": true,
+    "port_closed": true,
+    "production_mysql_or_redis_changed": false,
+    "datadir_preserved": true
+  },
+  "release_gate": {
+    "passed": true,
+    "state": "committed",
+    "pytest_passed": 3494,
+    "pytest_skipped": 5,
+    "pytest_warnings": 20,
+    "pytest_seconds": 2254.92,
+    "skip_note": "Five opt-in state-unit tests not run; not counted as passed",
+    "publication": "build/releases/8fbd5bd7a9cf460a9b82022b7e643f1d/publication.json"
+  }
+}
