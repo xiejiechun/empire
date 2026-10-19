@@ -1,14 +1,9 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-19T02:57:14.535159+00:00",
-  "note": "A/B实施审阅：发布统一所有权、暂存切换与恢复已补README及发布指南；项目只读诊断的预算、unknown/partial、日期筛选与错误ID读取已补程序正文及表键归属；现行任务、页面、SQL和Redis业务契约不变，静态债务和装配基线用于后续迁移。",
-  "unchanged_reason": "",
-  "exceptions": {
-    "redis:fingerprints": "归档器仅在health输出已有blocked事实，摘要写入清理与版本规则未改动。",
-    "redis:stocks-result": "归档器仅在health输出已有blocked事实，股票发布结果的存储与读取规则未改动。",
-    "redis:stocks-committed": "归档器仅在health输出已有blocked事实，股票核验标记的写入及恢复规则未改动。",
-    "redis:archives": "归档器仅在health输出已有blocked事实，归档记录数量期限和清理方式未改动。"
-  },
+  "reviewed_at": "2026-10-19T03:04:29.157850+00:00",
+  "note": "首批真实发布入口复核：修正Windows PowerShell无同名进程时的退出码，增加真实空闲/活动副本拒绝/正常退出回归；既有发布恢复和用户操作说明保持有效。",
+  "unchanged_reason": "仅修复发布前空闲进程检查的误拒绝，未改变程序任务、页面、数据库或诊断的用户契约。",
+  "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "d2abcbcd9af91b4b8078ed45d54cf0c5f70cbedb1ec6a3d59e1168a11fb1f975",
@@ -85,7 +80,7 @@
     "scripts/migrate_suspension_identity.py": "593b7e6f0414069ad6cd8b449a0afd1fa76ff33baa5cd0ec067066a1cb20894a",
     "scripts/mysql_recovery_inventory.py": "5232ea7b8738949174e30a8a6ac5d59f2e5e3f2122a52d109503e80ef2042e77",
     "scripts/preparation_evidence.py": "93d6a253ced4fef14d6ecec073c4f26015a8e127dd576f4beb6f347224af37d3",
-    "scripts/release.py": "d74e3349213b4014ace0d0042c05d6c77cf96241ed100a5dcac59a56654fdfa3",
+    "scripts/release.py": "d19c297ff8c721ab29b1ae2cff6b0538177230c06788154e14ad4b76b4eb9973",
     "scripts/release_identity.py": "0f58e95eafbcddec51f52bafc2b62c9bd6d35ae52aa9aff4be3a7c0568f554ce",
     "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
     "scripts/release_publish.py": "23932c7bdc3d05b3ba3ac449ac30afa9d21e9183d3fd64aaa94e87e23988520a",

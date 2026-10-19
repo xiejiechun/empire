@@ -68,8 +68,10 @@ class Runner:
 def require_stopped(lock, root):
     if os.name != 'nt':
         raise RuntimeError('The desktop release gate requires Windows')
+    # An absent named process still makes Get-Process set PowerShell's error
+    # status; explicitly return success after the active-process rejection.
     script = ("$p = Get-Process Empire -ErrorAction SilentlyContinue | "
-              "Where-Object { $_.Threads.Count -gt 0 }; if ($p) { exit 3 }")
+              "Where-Object { $_.Threads.Count -gt 0 }; if ($p) { exit 3 }; exit 0")
     result = subprocess.run(['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', script],
                             cwd=root, **lock.child_options())
     if result.returncode != 0:

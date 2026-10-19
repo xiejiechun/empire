@@ -9,6 +9,42 @@ from pathlib import Path
 import pytest
 
 from empire.core.preparation_release import source_digest
+from scripts.release import require_stopped
+from scripts.release_lock import ReleaseLock
+
+
+@pytest.mark.skipif(os.name != 'nt', reason='The real Windows process check requires PowerShell')
+def test_require_stopped_accepts_no_running_empire_process(tmp_path):
+    # Get-Process -ErrorAction SilentlyContinue still leaves a failing exit
+    # status when its named process is absent. Exercise Windows PowerShell,
+    # rather than mocking subprocess.run or relying on a successful pipeline.
+    with ReleaseLock(tmp_path) as lock:
+        require_stopped(lock, tmp_path)
+
+
+@pytest.mark.skipif(os.name != 'nt', reason='The real Windows process check requires PowerShell')
+def test_require_stopped_refuses_owned_active_process_and_accepts_after_exit(tmp_path):
+    executable = tmp_path / 'Empire.exe'
+    shutil.copyfile(Path(os.environ['SystemRoot']) / 'System32/cmd.exe', executable)
+    with ReleaseLock(tmp_path) as lock:
+        require_stopped(lock, tmp_path)
+        process = subprocess.Popen([str(executable), '/d', '/q', '/k'], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW)
+        try:
+            assert process.poll() is None
+            with pytest.raises(RuntimeError, match='Close Empire normally'):
+                require_stopped(lock, tmp_path)
+            assert process.poll() is None  # The release guard must not kill it.
+        finally:
+            try:
+                process.communicate(b'exit\r\n', timeout=10)
+            except subprocess.TimeoutExpired:
+                process.terminate()  # Only this test-owned executable and PID.
+                process.wait(timeout=10)
+                raise
+        assert process.returncode == 0
+        require_stopped(lock, tmp_path)
 
 
 @pytest.mark.skipif(os.name != 'nt', reason='PowerShell release entry points are Windows-only')
