@@ -9,38 +9,28 @@ import re
 import time
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
-from uuid import uuid4
 
+from capacity_session import CapacitySession
 from sqlalchemy import text
 
 from empire.contracts.data import make_envelope
-from empire.contracts.index_prices import JOB
 from empire.core.config import load_config, project_root
-from empire.plugins.data.index_prices import IndexPriceDataPlugin
-from empire.plugins.datasets import index_prices
-from empire.plugins.infra.mysql_store import initialize_database, make_engine
+from empire.features.index_prices import dataset as index_prices
+from empire.features.index_prices.contract import JOB
+from empire.features.index_prices.query import IndexPriceDataPlugin
+from empire.features.indices.contract import digest
+from empire.plugins.infra.mysql_store import initialize_database
 
 
 def run(args):
     root = project_root()
     settings = json.loads(Path(args.test_settings).read_text("utf8"))
-    production = load_config()["mysql"]
-    if (settings.get("host"), settings.get("port")) == (
-        production.get("host"),
-        production.get("port"),
-    ):
-        raise ValueError("容量实验必须使用独立MySQL服务")
-    admin = make_engine(settings)
-    database = "empire_" + uuid4().hex + "_test"
-    engine = None
-    created = False
-    try:
-        with admin.connect() as conn:
-            conn.exec_driver_sql(f"CREATE DATABASE `{database}` CHARACTER SET utf8mb4")
-            created = True
-        settings = {**settings, "database": database}
-        initialize_database(settings)
-        engine = make_engine(settings)
+    paths = ['src/empire/features/index_prices/contract.py', 'src/empire/features/index_prices/dataset.py', 'src/empire/features/index_prices/query.py', 'src/empire/features/indices/contract.py', 'scripts/capacity_session.py', 'src/empire/contracts/security.py', 'src/empire/contracts/business_schema.py', 'sql/business-schema.json', 'src/empire/plugins/infra/mysql_store.py', 'src/empire/plugins/infra/collection_state.py', 'sql/schema.sql', 'sql/schema-contract.json', 'scripts/measure_index_prices.py']
+    session = CapacitySession(load_config()['mysql'], settings, root=root, subject='index-prices',
+                              output=args.output, input_paths=paths)
+    with session:
+        initialize_database(session.settings)
+        engine, database = session.engine, session.database
         state = {}
         observed = datetime.now(UTC)
         rows = [
@@ -99,7 +89,7 @@ def run(args):
             return operation(*args)
 
         q.mysql.read = read
-        measurements = {}
+        measurements = {'query_samples_ms': {}}
         for name, options in [
             ("index_page", dict(code="000001")),
             ("date_page", dict(start="2025-02-01", end="2025-03-01")),
@@ -111,7 +101,17 @@ def run(args):
                 values.append((time.perf_counter() - start) * 1000)
                 assert result["rows"]
             measurements[name + "_p95_ms"] = sorted(values)[18]
+            measurements["query_samples_ms"][name] = values
         with engine.connect() as conn:
+            # Verify all 1000 complete years outside the original query timings.
+            heads = conn.exec_driver_sql('SELECT index_code,quote_year,row_count,content_hash,complete '
+                                         'FROM index_price_year ORDER BY index_code,quote_year').mappings().all()
+            assert [h['index_code'] for h in heads] == [f'{i:06d}' for i in range(1000)]
+            for head in heads:
+                values = index_prices.sql_rows(conn, head['index_code'], 2025)
+                expected = revision if head['index_code'] == '000000' else rows
+                assert values == expected and head['quote_year'] == 2025 and head['row_count'] == 100
+                assert head['content_hash'] == digest(expected) and head['complete']
             conn.exec_driver_sql("ANALYZE TABLE index_daily_price,index_price_year")
             allocated = conn.execute(
                 text(
@@ -132,15 +132,9 @@ def run(args):
             allocated_bytes=int(allocated),
             state_bytes=len(json.dumps(state).encode()),
         )
-        paths = [
-            "src/empire/contracts/index_prices.py",
-            "src/empire/plugins/datasets/index_prices.py",
-            "src/empire/plugins/data/index_prices.py",
-            "scripts/measure_index_prices.py",
-        ]
         schema = (root / "sql/schema.sql").read_text("utf8")
         report = dict(
-            bindings={p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in paths},
+            bindings=dict(session.frozen_inputs),
             ddl_scopes={
                 t: hashlib.sha256(
                     re.search(r"CREATE TABLE IF NOT EXISTS " + t + r"\s*\([\s\S]*?;", schema)
@@ -170,27 +164,22 @@ def run(args):
             ),
             reviewed_tradeoffs="年度聚合证明与结构化日行；双向日期索引，主键游标分页。100000合成日行不代表全目录实采或全部历史容量；总2GiB为规划预算。状态只保留观察版本，无日线正文。",
             explain=explains,
-            cleanup="UUID-owned schema dropped in finally",
+            cleanup_protocol="CapacitySession owned database; final result only after cleanup",
         )
-        report["passed"] = all(measurements[k] <= v for k, v in report["limits"].items())
-        Path(args.output).write_text(
-            json.dumps(report, ensure_ascii=False, indent=2), encoding="utf8"
-        )
-        print(json.dumps(dict(passed=report["passed"], measurements=measurements)))
-        if not report["passed"]:
-            raise RuntimeError("指数日线容量预算未通过")
-    finally:
-        if engine:
-            engine.dispose()
-        if created:
-            assert database.endswith("_test")
-            with admin.connect() as conn:
-                conn.exec_driver_sql(f"DROP DATABASE `{database}`")
-        admin.dispose()
+        report['protocol'] = dict(schema=1, preserved_scale=True, preserved_limits=True)
+        report['correctness'] = dict(full_business_keys_and_content=True, original_year_digest=digest(rows),
+            revised_year_digest=digest(revision), repeat_zero_business_dml=repeat['written_count'] == 0,
+            revision_writes=revised['written_count'])
+        session.report.update(report)
+        if not all(measurements[k] <= limit for k, limit in report['limits'].items()):
+            raise RuntimeError('容量预算未通过')
+        session.measurements_complete = True
+    print(json.dumps(dict(passed=session.report['passed'], measurements=measurements)))
+
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--test-settings", required=True)
-    parser.add_argument("--output", default="docs/evidence/index-prices-capacity-2026-10-10.json")
+    parser.add_argument("--output", required=True)
     run(parser.parse_args())

@@ -8,7 +8,7 @@ from empire.contracts.business_schema import require_fixed_source
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.datasets.industries import (
+from empire.features.industries.dataset import (
     CONTRACT_VERSION,
     FINGERPRINT_NAMESPACE,
     FINGERPRINT_VERSION,

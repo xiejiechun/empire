@@ -575,30 +575,30 @@
       "industry": {
         "topic": "MySQL industry",
         "sources": [
-          "src/empire/plugins/datasets/industries.py",
-          "src/empire/plugins/data/industries.py"
+          "src/empire/features/industries/dataset.py",
+          "src/empire/features/industries/query.py"
         ]
       },
       "industry_member": {
         "topic": "MySQL industry_member",
         "sources": [
-          "src/empire/plugins/datasets/industries.py",
-          "src/empire/plugins/data/industries.py"
+          "src/empire/features/industries/dataset.py",
+          "src/empire/features/industries/query.py"
         ]
       },
       "stock_index": {
         "topic": "MySQL stock_index",
         "sources": [
-          "src/empire/plugins/datasets/indices.py",
-          "src/empire/plugins/data/indices.py",
-          "src/empire/plugins/data/index_prices.py"
+          "src/empire/features/indices/dataset.py",
+          "src/empire/features/indices/query.py",
+          "src/empire/features/index_prices/query.py"
         ]
       },
       "stock_index_member": {
         "topic": "MySQL stock_index_member",
         "sources": [
-          "src/empire/plugins/datasets/indices.py",
-          "src/empire/plugins/data/indices.py"
+          "src/empire/features/indices/dataset.py",
+          "src/empire/features/indices/query.py"
         ]
       },
       "stock_market_day": {
@@ -693,15 +693,15 @@
       "index_daily_price": {
         "topic": "MySQL index_daily_price",
         "sources": [
-          "src/empire/plugins/datasets/index_prices.py",
-          "src/empire/plugins/data/index_prices.py"
+          "src/empire/features/index_prices/dataset.py",
+          "src/empire/features/index_prices/query.py"
         ]
       },
       "index_price_year": {
         "topic": "MySQL index_price_year",
         "sources": [
-          "src/empire/plugins/datasets/index_prices.py",
-          "src/empire/plugins/data/index_prices.py"
+          "src/empire/features/index_prices/dataset.py",
+          "src/empire/features/index_prices/query.py"
         ]
       },
       "security_st_event": {

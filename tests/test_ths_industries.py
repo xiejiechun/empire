@@ -9,23 +9,23 @@ import pytest
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.industries import market
 from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.collectors.ths_industries import ThsIndustryCollector
-from empire.plugins.collectors.ths_industry_source import (
-    BASE,
-    members_url,
-    parse_catalog,
-    parse_members,
-)
-from empire.plugins.data.industries import IndustryDataPlugin
-from empire.plugins.datasets.industries import (
+from empire.features.industries.collector import ThsIndustryCollector
+from empire.features.industries.contract import market
+from empire.features.industries.dataset import (
     CONTRACT_VERSION,
     JOB,
     PROJECT,
     digest,
     normalize,
     validate,
+)
+from empire.features.industries.query import IndustryDataPlugin
+from empire.features.industries.source import (
+    BASE,
+    members_url,
+    parse_catalog,
+    parse_members,
 )
 from tests.prefetch_source import prefetch_http
 
@@ -113,7 +113,7 @@ def collector():
 
 
 async def test_only_complete_unit_queued_before_archive_wait(collector, monkeypatch):
-    module = 'empire.plugins.collectors.ths_industries.'
+    module = 'empire.features.industries.collector.'
     monkeypatch.setattr(module + 'wait_for_capacity', AsyncMock())
     published = []
     async def publish(ingest, stats, envelopes, **kw):
@@ -130,7 +130,7 @@ async def test_only_complete_unit_queued_before_archive_wait(collector, monkeypa
 
 @pytest.mark.parametrize('error', [ValueError('bad page'), asyncio.CancelledError()])
 async def test_failure_or_cancel_never_advances_or_publishes(collector, monkeypatch, error):
-    module = 'empire.plugins.collectors.ths_industries.'
+    module = 'empire.features.industries.collector.'
     monkeypatch.setattr(module + 'wait_for_capacity', AsyncMock())
     monkeypatch.setattr(module + 'record_error_safely', AsyncMock())
     publish = AsyncMock()

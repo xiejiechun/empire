@@ -22,7 +22,7 @@ class NavigationContext:
             from empire.contracts.security import split_unified_code
             split_unified_code(self.unified_code)
         if self.index_code:
-            from empire.contracts.indices import index_code
+            from empire.contracts.security import index_code
             index_code(self.index_code)
             if self.source != 'ths':
                 raise ValueError('指数导航必须明确同花顺来源')

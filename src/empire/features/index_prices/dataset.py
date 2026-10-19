@@ -7,12 +7,12 @@ from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.index_prices import FIELDS, day, validate_rows
-from empire.contracts.index_prices import JOB as JOB
-from empire.contracts.index_prices import PROJECT as PROJECT
-from empire.contracts.indices import index_code, label
+from empire.contracts.security import index_code
 from empire.core.time import mysql_time
-from empire.plugins.datasets.indices import digest
+from empire.features.index_prices.contract import FIELDS, day, validate_rows
+from empire.features.index_prices.contract import JOB as JOB
+from empire.features.index_prices.contract import PROJECT as PROJECT
+from empire.features.indices.contract import digest, label
 from empire.plugins.infra.collection_state import confirmed_page
 
 DATASETS = {"index.price.status", "index.price.year"}

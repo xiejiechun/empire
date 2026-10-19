@@ -1,5 +1,7 @@
 # 同花顺当前行业与成分股票
 
+正式实现归features/industries，共享HTML树位于sources/ths_catalog_html.py；原任务、页面、集合契约及保存配置保持。开发使用scripts/verify_indices.py --kinds industries --test-mysql-settings <独立13348配置> --proxy-only --output <build内新报告>，仅在不同server_uuid的私有UUID库及owner前缀验证。完整目录和全部成员核对后才通过，不把非股票粒度写成30股抽样；失败或清理未完成均不通过。
+
 ## 范围与生命周期契约
 
 独立项目 `ths-industries`，数据集 `industry.snapshot`，任务 `ths-industries-v1`，分类“证券基础”，来源“同花顺”。以用户指定的 thshy 行业目录及其成分股为范围，仅保存最新行业名称、编号、证券代码、名称和市场；不采历史归属、调入调出事件、行情或历史指数。

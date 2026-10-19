@@ -1,7 +1,9 @@
 """Source index identities and current member boundaries."""
+import hashlib
+import json
 import re
 
-from empire.contracts.security import unified_code
+from empire.contracts.security import index_code, unified_code
 
 PROJECT = 'ths-indices'
 JOB = PROJECT + '-v1'
@@ -11,10 +13,6 @@ MEMBER_LIMIT = 10000
 MAX_RESPONSE_BYTES = 8 * 1024**2
 
 
-def index_code(value):
-    if not isinstance(value, str) or not re.fullmatch('[0-9A-Z]{6}', value):
-        raise ValueError('指数来源编号无效')
-    return value
 
 
 def label(value, limit=100):
@@ -40,3 +38,8 @@ def member_identity(code):
 
 def members_url(code):
     return BASE + f'detail/code/{index_code(code)}/field/code/order/asc/page/1/size/10000/ajax/1/'
+
+
+def digest(value):
+    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
+                                     separators=(',', ':')).encode()).hexdigest()

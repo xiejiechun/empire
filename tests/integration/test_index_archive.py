@@ -12,9 +12,9 @@ from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.indices import JOB
 from empire.core.config import load_config
-from empire.plugins.datasets.indices import FINGERPRINT_NAMESPACE
+from empire.features.indices.contract import JOB
+from empire.features.indices.dataset import FINGERPRINT_NAMESPACE
 from tests.test_ths_indices import CATALOG, envelope
 from tests.test_ths_indices import collector as fake_collector
 
@@ -73,7 +73,7 @@ async def test_cold_hot_revision_late_old_unavailable_and_recovery(indices, monk
         @classmethod
         def now(cls, tz=None):
             return datetime.now(tz) - timedelta(minutes=15)
-    monkeypatch.setattr('empire.plugins.collectors.ths_indices.datetime', Earlier)
+    monkeypatch.setattr('empire.features.indices.collector.datetime', Earlier)
     await c.execute()
     archive = m.registry.get('archive.worker')
     now = datetime.now(UTC) - timedelta(minutes=10)

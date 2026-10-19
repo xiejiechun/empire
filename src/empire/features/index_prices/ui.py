@@ -15,13 +15,13 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from empire.contracts.index_prices import volume_amount_valid
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
 from empire.core.time import CHINA
+from empire.features.index_prices.chart import IndexPriceChart
+from empire.features.index_prices.contract import volume_amount_valid
 from empire.plugins.ui.common import accessible, rows
-from empire.plugins.ui.index_price_chart import IndexPriceChart
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_layout import DataNote, QueryForm
 from empire.plugins.ui.preview_search import CandidateSearch

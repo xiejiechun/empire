@@ -3,7 +3,7 @@ import json
 import re
 from html.parser import HTMLParser
 
-from empire.contracts.industries import market
+from empire.features.industries.contract import market
 from empire.plugins.datasets.stocks import normalize_row
 
 URL = 'https://q.10jqka.com.cn/index/index/board/all/field/zdf/order/desc/page/1/size/10000/ajax/1/'

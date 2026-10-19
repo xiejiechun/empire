@@ -1,0 +1,60 @@
+{
+  "active_reports": 17,
+  "invalid": {
+    "docs/evidence/indices-capacity-2026-10-09.json": {
+      "datasets": [
+        "index.catalog",
+        "index.members"
+      ],
+      "changed": [
+        "src/empire/contracts/indices.py",
+        "src/empire/plugins/datasets/indices.py",
+        "src/empire/plugins/data/indices.py",
+        "scripts/measure_indices.py"
+      ]
+    },
+    "docs/evidence/index-prices-capacity-2026-10-10.json": {
+      "datasets": [
+        "index.price.status",
+        "index.price.year"
+      ],
+      "changed": [
+        "src/empire/contracts/index_prices.py",
+        "src/empire/plugins/datasets/index_prices.py",
+        "src/empire/plugins/data/index_prices.py",
+        "scripts/measure_index_prices.py"
+      ]
+    },
+    "docs/evidence/architecture-d-holders-capacity-2026-10-19-1.json": {
+      "datasets": [
+        "holders.reports"
+      ],
+      "changed": [
+        "scripts/capacity_session.py"
+      ]
+    },
+    "docs/evidence/architecture-d-capital-capacity-2026-10-19-1.json": {
+      "datasets": [
+        "ths.capital.security"
+      ],
+      "changed": [
+        "scripts/capacity_session.py"
+      ]
+    }
+  },
+  "current_reports": [
+    "docs/evidence/preview-query-capacity-2026-10-11.json",
+    "docs/evidence/dividends-error-types-capacity-2026-10-14.json",
+    "docs/evidence/name-changes-capacity-2026-10-06.json",
+    "docs/evidence/listings-preview-capacity-2026-10-11.json",
+    "docs/evidence/listing-status-capacity-2026-10-06.json",
+    "docs/evidence/bse-code-mapping-capacity-2026-10-10.json",
+    "docs/evidence/st-events-capacity-2026-10-11.json",
+    "docs/evidence/rules-bse-capacity-2026-10-17.json",
+    "docs/evidence/repurchase-capacity-2026-10-12.json",
+    "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+    "docs/evidence/shareholder-changes-capacity-2026-10-13.json",
+    "docs/evidence/unlocks-error-types-capacity-2026-10-14.json",
+    "docs/evidence/unlock-industries-capacity-2026-10-14.json"
+  ]
+}

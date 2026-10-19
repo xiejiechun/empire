@@ -8,10 +8,10 @@ import pytest
 from sqlalchemy import text
 
 from empire.core.config import load_config
+from empire.features.index_prices.query import IndexPriceDataPlugin
+from empire.features.indices.query import IndexDataPlugin
+from empire.features.industries.query import IndustryDataPlugin
 from empire.plugins.data.capital_actions import CapitalDataPlugin
-from empire.plugins.data.index_prices import IndexPriceDataPlugin
-from empire.plugins.data.indices import IndexDataPlugin
-from empire.plugins.data.industries import IndustryDataPlugin
 from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
 from empire.plugins.data.name_changes import NameDataPlugin
 from empire.plugins.data.preview_candidates import candidates

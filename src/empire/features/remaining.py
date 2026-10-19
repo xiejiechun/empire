@@ -6,8 +6,6 @@ from empire.contracts.bundle import (
     positioned,
 )
 from empire.contracts.dataset import DatasetContribution
-from empire.contracts.indices import JOB as INDEX_JOB
-from empire.contracts.indices import PROJECT as INDEX_PROJECT
 from empire.contracts.listing_status import JOB as STATUS_JOB
 from empire.contracts.listing_status import PROJECT as STATUS_PROJECT
 from empire.contracts.listings import JOB as LISTING_JOB
@@ -40,17 +38,11 @@ from empire.plugins.collectors.tdx_suspensions import TdxSuspensionCollector
 from empire.plugins.collectors.tdx_unlock_industries import UnlockIndustryCollector
 from empire.plugins.collectors.tdx_unlocks import UnlockCollector
 from empire.plugins.collectors.ths_capital import CapitalPageCollector
-from empire.plugins.collectors.ths_index_prices import ThsIndexPriceCollector
-from empire.plugins.collectors.ths_indices import ThsIndexCollector
-from empire.plugins.collectors.ths_industries import ThsIndustryCollector
 from empire.plugins.collectors.ths_listings import ThsListingCollector
 from empire.plugins.collectors.ths_universe import ThsUniverseCollector
 from empire.plugins.collectors.trading_rules import RuleCollector
 from empire.plugins.data.adjustment import AdjustmentDataPlugin
 from empire.plugins.data.capital_actions import CapitalDataPlugin
-from empire.plugins.data.index_prices import IndexPriceDataPlugin
-from empire.plugins.data.indices import IndexDataPlugin
-from empire.plugins.data.industries import IndustryDataPlugin
 from empire.plugins.data.kaipanla_products import KaipanlaProductDataPlugin
 from empire.plugins.data.listing_status import ListingStatusDataPlugin
 from empire.plugins.data.listings import ListingDataPlugin
@@ -66,9 +58,6 @@ from empire.plugins.data.trading_rules import RuleDataPlugin
 from empire.plugins.data.unlock_industries import UnlockIndustryDataPlugin
 from empire.plugins.data.unlocks import UnlockDataPlugin
 from empire.plugins.datasets import (
-    index_prices,
-    indices,
-    industries,
     listing_status,
     listings,
     repurchases,
@@ -89,9 +78,6 @@ from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset
 from empire.plugins.datasets.unlocks import UnlockDataset
 from empire.plugins.ui.adjustment import AdjustmentUiPlugin
 from empire.plugins.ui.capital_actions import CapitalUiPlugin
-from empire.plugins.ui.index_prices import IndexPriceUiPlugin
-from empire.plugins.ui.indices import IndexUiPlugin
-from empire.plugins.ui.industries import IndustryUiPlugin
 from empire.plugins.ui.kaipanla_products import KaipanlaProductUiPlugin
 from empire.plugins.ui.listing_status import ListingStatusUiPlugin
 from empire.plugins.ui.listings import ListingUiPlugin
@@ -130,9 +116,6 @@ def bundle(cfg):
         *positioned((3900, 4000, 4100, 4200, 4300, 4400, 4500), (RuleDataPlugin(k, cfg["redis"].get("namespace", "empire"), cfg.get("archive", {})) for k in RULE_KINDS)),
         *positioned((4600, 4700, 4800, 4900, 5000, 5100, 5200), (RuleCollector(k) for k in RULE_KINDS)),
         *positioned((5300, 5400, 5500, 5600, 5700, 5800, 5900), (RuleUiPlugin(k) for k in RULE_KINDS)),
-        OrderedContribution(6000, IndexPriceDataPlugin(cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {}))),
-        OrderedContribution(6100, ThsIndexPriceCollector()),
-        OrderedContribution(6200, IndexPriceUiPlugin()),
         OrderedContribution(7300, StockDataPlugin(cfg["redis"].get("namespace", "empire"))),
         OrderedContribution(7400, ListingDataPlugin(cfg['redis'].get('namespace', 'empire'))),
         OrderedContribution(7500, ThsListingCollector()),
@@ -140,13 +123,6 @@ def bundle(cfg):
         OrderedContribution(7700, ListingStatusDataPlugin(cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {}))),
         OrderedContribution(7800, TdxListingStatusCollector()),
         OrderedContribution(7900, ListingStatusUiPlugin()),
-        OrderedContribution(8000, IndustryDataPlugin(namespace=cfg['redis'].get('namespace', 'empire'),
-                                   archive_settings=cfg.get('archive', {}))),
-        OrderedContribution(8100, ThsIndustryCollector()),
-        OrderedContribution(8200, IndustryUiPlugin()),
-        OrderedContribution(8300, IndexDataPlugin(cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {}))),
-        OrderedContribution(8400, ThsIndexCollector()),
-        OrderedContribution(8500, IndexUiPlugin()),
         *positioned((8600, 8700), (NameDataPlugin(kind, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for kind in NAME_KINDS)),
         *positioned((8800, 8900), (NameChangeCollector(kind) for kind in NAME_KINDS)),
         *positioned((9000, 9100), (NameUiPlugin(kind) for kind in NAME_KINDS)),
@@ -212,11 +188,6 @@ def bundle(cfg):
                     category='证券基础', source_name='通达信', parallel_downloads=True, unit_name='个月', default_schedule=TaskDefaults('daily',
                         description='每天北京时间18:00补缺并回查最近一个月；首次补历史，计划可编辑。'),
                     fresh_description='从1990-12-19逐日重新核验至本轮启动日；保留已归档事件，先继续活跃轮次。')),
-        OrderedContribution(2000, TaskContribution('ths-index-prices', '同花顺指数历史日行情',
-                    'collector.ths_index_prices', 'ths', '逐年补齐来源可得历史；last更新近期；开高低收及量额',
-                    category='指数数据', source_name='同花顺', parallel_downloads=True, unit_name='个指数',
-                    default_schedule=TaskDefaults('daily', description='每天北京时间18:00补缺及更新近期日线；初次补历史，计划可编辑。'),
-                    fresh_description='回查来源全部年份，保留已有历史；未完成轮次先继续，不提供历史版本回放。')),
         *positioned((2100, 2200), (TaskContribution(st_project(kind), item[0] + '（通达信）',
                     'collector.tdx_st_' + kind, 'tdx', '全部来源历史单响应；日期、前后简称、原因及行业',
                     category='交易状态', source_name='通达信', unit_name='次完整响应',
@@ -241,15 +212,6 @@ def bundle(cfg):
                     category='证券基础', source_name='同花顺', parallel_downloads=True, unit_name='只股票', default_schedule=TaskDefaults('daily',
                         description='每天北京时间18:00补新增和缺失；每七天全池回查独立修订；计划可编辑。'),
                     fresh_description='逐只重查当前股票池的上市及发行资料；保留已有记录及已入队消息。')),
-        OrderedContribution(3300, TaskContribution('ths-industries', '同花顺当前行业',
-                    'collector.ths_industries', 'ths', '最新行业名单与全部成分股票 · 不保存变化历史',
-                    category='证券基础', source_name='同花顺', interval_seconds=86400, parallel_downloads=True, unit_name='个行业',
-                    fresh_description='完整刷新当前行业和成分；已入队整轮先完成归档，不保留历史变化。')),
-        OrderedContribution(3400, TaskContribution('ths-indices', '同花顺当前指数及成分',
-                    'collector.ths_indices', 'ths', '完整指数目录及当前成分；来源暂无单独呈现，不保存历史调样',
-                    category='指数数据', source_name='同花顺', parallel_downloads=True, unit_name='个指数',
-                    default_schedule=TaskDefaults('daily', description='每天北京时间18:00完整刷新目录和当前成员；计划可编辑。'),
-                    fresh_description='完整刷新当前目录和成分；未完成轮次先续跑并归档，不保存历史调样。')),
         *positioned((3800, 3900, 4000), (TaskContribution(item[2], item[0] + '（通达信）',
                     'collector.tdx_' + kind, 'tdx', '全部可得历史核验 · 单证券完整归档',
                     category='增发送配', source_name='通达信', parallel_downloads=kind != 'rights_issues', unit_name='只股票',
@@ -279,9 +241,7 @@ def bundle(cfg):
                         {PerformanceDataset(kind).JOB: PerformanceDataset(kind).PROJECT}) for kind in PERFORMANCE_KINDS)),
         OrderedContribution(1100, DatasetContribution(repurchases, 'incremental', {'eastmoney-repurchases-v1': 'eastmoney-repurchases'})),
         *positioned((1200, 1300, 1400, 1500, 1600, 1700, 1800), (DatasetContribution(RuleDataset(kind), 'incremental', {RuleDataset(kind).JOB: RuleDataset(kind).PROJECT}) for kind in RULE_KINDS)),
-        OrderedContribution(1900, DatasetContribution(index_prices, 'incremental', {index_prices.JOB: index_prices.PROJECT})),
         OrderedContribution(2000, DatasetContribution(security_aliases, 'incremental', {security_aliases.JOB: security_aliases.PROJECT})),
-        OrderedContribution(2100, DatasetContribution(indices, 'incremental', {INDEX_JOB: INDEX_PROJECT})),
         OrderedContribution(2200, DatasetContribution(listing_status, 'incremental', {STATUS_JOB: STATUS_PROJECT})),
         OrderedContribution(2300, DatasetContribution(listings, 'incremental', {LISTING_JOB: LISTING_PROJECT})),
         *positioned((2400, 2500), (DatasetContribution(StDataset(kind), 'incremental',
@@ -290,7 +250,6 @@ def bundle(cfg):
                         {NameDataset(kind).JOB: NameDataset(kind).PROJECT}, schema_version=NAME_SCHEMA_VERSION) for kind in NAME_KINDS)),
         *positioned((2800, 2900, 3000, 3100, 3200, 3300, 3400), (DatasetContribution(ProductDataset(kind), 'incremental',
                         {ProductDataset(kind).JOB: ProductDataset(kind).PROJECT}) for kind in PRODUCTS)),
-        OrderedContribution(3500, DatasetContribution(industries, 'incremental', {industries.JOB: industries.PROJECT})),
         *positioned((3900, 4000, 4100), (DatasetContribution(CapitalDataset(kind), "incremental", {item[2] + "-v1": item[2]},
                                           schema_version=SCHEMA_VERSIONS[kind])
                       for kind, item in KINDS.items())),

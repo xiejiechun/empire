@@ -2,8 +2,9 @@
 import re
 from html.parser import HTMLParser
 
-from empire.contracts.indices import INDEX_LIMIT, MEMBER_LIMIT, index_code, label, security_code
-from empire.plugins.collectors.ths_industry_source import Document, one
+from empire.contracts.security import index_code
+from empire.features.indices.contract import INDEX_LIMIT, MEMBER_LIMIT, label, security_code
+from empire.sources.ths_catalog_html import Document, one
 
 
 def parse_catalog(source):

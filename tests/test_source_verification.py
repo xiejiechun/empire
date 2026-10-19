@@ -324,6 +324,31 @@ async def test_full_success_is_written_only_after_shutdown_cleanup_and_unlock(ve
 
 
 @pytest.mark.asyncio
+async def test_non_stock_scope_keeps_cleanup_without_claiming_stock_sampling(verifier, full_run):
+    args, events, _ = full_run
+    args.random_count, args.seed = 0, None
+    scope = dict(unit='complete_catalogue', reason='按目录及指数采集，不按股票采集', fixed=['399317'])
+
+    async def pipeline(manager, selection, args, report):
+        assert selection['selected'] == [] and selection['non_stock_scope'] == scope
+        await args.pipeline(manager, selection, args, report)
+
+    assert await verifier.verify(args, pipeline, non_stock_scope=scope)
+    report = json.loads(Path(args.output).read_text('utf-8'))
+    assert report['passed'] and not report['sample_30_applicable'] and not report['sample_30_met']
+    assert events[-6:] == ['shutdown', 'cleanup_sql', 'cleanup_redis', 'release_sql', 'unlock', 'final_pass']
+
+
+@pytest.mark.asyncio
+async def test_non_stock_scope_rejects_mixed_stock_claim_before_resources(verifier, full_run):
+    args, events, factory = full_run
+    assert not await verifier.verify(args, args.pipeline,
+        non_stock_scope=dict(unit='index', reason='非股票', fixed=[]))
+    factory.assert_not_called()
+    assert 'collect' not in events
+
+
+@pytest.mark.asyncio
 async def test_full_source_failure_writes_redacted_failure_and_still_cleans(verifier, full_run, monkeypatch):
     args, events, _ = full_run
     args.pipeline = AsyncMock(side_effect=RuntimeError('prod-p4ss test-p4ss'))

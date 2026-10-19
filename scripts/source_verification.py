@@ -250,7 +250,7 @@ async def recover(args) -> bool:
 
 
 async def verify(args, verify_scope, *, subject='source', fixed_codes=(), minimum_random=0,
-                 require_proxy=False) -> bool:
+                 require_proxy=False, non_stock_scope=None) -> bool:
     output, report = initial_report(args)
     redactor, manager, storage, lock = Redactor(), None, None, None
     try:
@@ -259,6 +259,15 @@ async def verify(args, verify_scope, *, subject='source', fixed_codes=(), minimu
         require(not require_proxy or args.proxy_only, '本次实采必须全部使用共享代理')
         require(type(args.timeout) is int and 1 <= args.timeout <= 7200, 'timeout 须为 1～7200 秒')
         require(len(args.codes) == len(set(args.codes)), '固定反例名单重复')
+        if non_stock_scope is not None:
+            require(isinstance(non_stock_scope, dict) and set(non_stock_scope) == {'unit', 'reason', 'fixed'}
+                    and all(isinstance(non_stock_scope[key], str) and non_stock_scope[key].strip()
+                            for key in ('unit', 'reason'))
+                    and isinstance(non_stock_scope['fixed'], list)
+                    and all(isinstance(code, str) and code for code in non_stock_scope['fixed'])
+                    and len(set(non_stock_scope['fixed'])) == len(non_stock_scope['fixed']), '非股票范围声明无效')
+            require(args.random_count == 0 and args.seed is None and not args.codes and not fixed_codes
+                    and minimum_random == 0, '非股票验证不得声明股票随机样本或固定股票名单')
         config_path = Path(args.pool_config or default_config_path()).resolve()
         test_path = Path(args.test_mysql_settings).resolve()
         report['input_files'] = {str(path): hashlib.sha256(path.read_bytes()).hexdigest()
@@ -273,11 +282,13 @@ async def verify(args, verify_scope, *, subject='source', fixed_codes=(), minimu
         lock = acquire_instance_lock()
         snapshot = read_pool(cfg)
         fixed = list(dict.fromkeys((*fixed_codes, *args.codes)))
-        selection = select_stocks(snapshot['stocks'], args.random_count, args.seed, fixed)
+        selection = (select_stocks(snapshot['stocks'], args.random_count, args.seed, fixed)
+                     if non_stock_scope is None else dict(selected=[], random=[], fixed=[], random_count=0,
+                                                          non_stock_scope=copy.deepcopy(non_stock_scope)))
         report.update(subject=subject, selection=selection, source_sha256=source_digest(project_root()),
                       verification_scope='proxy_pipeline' if args.proxy_only else 'development_pipeline',
                       routing_policy=dict(use_proxy=True, proxy_fallback=not args.proxy_only),
-                      sample_30_applicable=len(snapshot['stocks']) >= 30,
+                      sample_30_applicable=non_stock_scope is None and len(snapshot['stocks']) >= 30,
                       policy_snapshot_digest=digest(snapshot['settings']), acceptance_complete=False)
         write_report(output, report, redactor)
         storage = PrivateStorage(test, cfg['redis'], report['run_id'], token_hex(32), snapshot['server_uuid'])
@@ -304,7 +315,7 @@ async def verify(args, verify_scope, *, subject='source', fixed_codes=(), minimu
         report['pipeline_verified'] = all(row.get('pipeline_verified') is True for row in results.values())
         report['strict_proxy_verified'] = all(row.get('strict_proxy_verified') is True for row in results.values())
         report['acceptance_complete'] = all(row.get('acceptance_complete', True) for row in results.values())
-        report['sample_30_met'] = (report['strict_proxy_verified'] and args.random_count >= 30
+        report['sample_30_met'] = (report['sample_30_applicable'] and report['strict_proxy_verified'] and args.random_count >= 30
             and all(row.get('random_samples_complete', row.get('pipeline_verified')) is True
                     for row in results.values()))
     except BaseException as exc:

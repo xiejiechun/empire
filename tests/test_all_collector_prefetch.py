@@ -126,8 +126,10 @@ async def test_real_adapters_prefetch_without_crossing_unvalidated_frontier(fami
     }
     import importlib
     module, attribute = validation[family]
-    module = importlib.import_module('empire.features.financial_statements.collector'
-        if module == 'ths_statements' else 'empire.plugins.collectors.' + module)
+    module = importlib.import_module({
+        'ths_statements': 'empire.features.financial_statements.collector',
+        'ths_industries': 'empire.features.industries.collector',
+    }.get(module, 'empire.plugins.collectors.' + module))
     original_parse = getattr(module, attribute)
     validations = []
     def parse(*args, **kwargs):

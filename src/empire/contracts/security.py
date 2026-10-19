@@ -22,3 +22,9 @@ def unit_identity(value):
         raise ValueError('证券单元须为市场:六位代码')
     market, code = value.split(':')
     return unified_code(market, code)
+
+
+def index_code(value):
+    if not isinstance(value, str) or not re.fullmatch('[0-9A-Z]{6}', value):
+        raise ValueError('指数来源编号无效')
+    return value

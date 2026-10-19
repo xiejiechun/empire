@@ -4,7 +4,7 @@ import re
 from datetime import date
 from decimal import Decimal, InvalidOperation
 
-from empire.contracts.indices import index_code
+from empire.contracts.security import index_code
 
 PROJECT = "ths-index-prices"
 JOB = PROJECT + "-v1"

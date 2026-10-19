@@ -7,8 +7,10 @@ from functools import partial
 from uuid import uuid4
 
 from empire.contracts.data import make_envelope
-from empire.contracts.index_prices import BASE, JOB, PROJECT, url
 from empire.contracts.plugin import PluginManifest
+from empire.features.index_prices.contract import BASE, JOB, PROJECT, url
+from empire.features.index_prices.source import annual, recent
+from empire.features.indices.contract import digest
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -16,9 +18,7 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
-from empire.plugins.collectors.ths_index_prices_source import annual, recent
 from empire.plugins.collectors.ths_session import ThsSession
-from empire.plugins.datasets.indices import digest
 
 
 class ThsIndexPriceCollector:

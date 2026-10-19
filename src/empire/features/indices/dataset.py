@@ -1,16 +1,15 @@
 """Typed current catalogue and independently atomic index-member sets."""
-import hashlib
-import json
 from datetime import UTC
 
 from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.indices import (
+from empire.contracts.security import index_code
+from empire.features.indices.contract import (
     INDEX_LIMIT,
     MEMBER_LIMIT,
-    index_code,
+    digest,
     label,
     member_identity,
 )
@@ -25,9 +24,6 @@ TABLES = {'stock_index': {'index_code', 'name', 'source_group', 'members_availab
 KEYS = {'stock_index': ['index_code'], 'stock_index_member': ['index_code', 'source_code']}
 
 
-def digest(value):
-    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
-                                     separators=(',', ':')).encode()).hexdigest()
 
 
 def validate_catalog(rows):

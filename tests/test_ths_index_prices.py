@@ -10,11 +10,11 @@ import pytest
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.index_prices import JOB, number
 from empire.core.time import CHINA
-from empire.plugins.collectors.ths_index_prices import ThsIndexPriceCollector
-from empire.plugins.collectors.ths_index_prices_source import annual, recent
-from empire.plugins.datasets.index_prices import fingerprint_plan, normalize
+from empire.features.index_prices.collector import ThsIndexPriceCollector
+from empire.features.index_prices.contract import JOB, number
+from empire.features.index_prices.dataset import fingerprint_plan, normalize
+from empire.features.index_prices.source import annual, recent
 from tests.prefetch_source import prefetch_http
 from tests.test_capital_lifecycle import Publisher
 
@@ -408,7 +408,7 @@ def test_source_missing_ohl_preserves_real_close_volume_amount():
     rows = [["2004-01-02", None, None, None, "1053.27", "176978490", "976973690"]]
     snapshot = dict(years={"2004": 1}, start="2004-01-02", end="2004-01-02", rows=rows)
     assert annual(source(2004, rows, code="1B0070"), "1B0070", 2004, snapshot) == rows
-    from empire.contracts.index_prices import validate_rows
+    from empire.features.index_prices.contract import validate_rows
     validate_rows(rows, 2004)
     for field in (4, 5):
         broken = copy.deepcopy(rows)
@@ -425,7 +425,7 @@ def test_source_missing_ohl_preserves_real_close_volume_amount():
 
 
 def test_source_contradiction_preserves_values_and_exposes_quality():
-    from empire.contracts.index_prices import price_relation_valid, validate_rows
+    from empire.features.index_prices.contract import price_relation_valid, validate_rows
     rows = [["2020-07-29", "3228.96", "3300", "3265.46", "3300", "32470125000", "452959530000"]]
     snapshot = dict(years={"2020": 1}, start=rows[0][0], end=rows[0][0], rows=rows)
     assert annual(source(2020, rows, code="1C0003"), "1C0003", 2020, snapshot) == rows
@@ -449,8 +449,8 @@ def test_empty_source_amount_is_unknown_not_zero():
 
 @pytest.mark.parametrize("column", [5, 6])
 def test_signed_source_quantity_is_quality_not_parse_failure(column):
-    from empire.contracts.index_prices import validate_rows, volume_amount_valid
-    from empire.plugins.collectors.ths_index_prices_source import parse
+    from empire.features.index_prices.contract import validate_rows, volume_amount_valid
+    from empire.features.index_prices.source import parse
     rows = [["2014-12-05", "3813.84", "3823.18", "3641.33", "3756.47", "94777491000", "798120910000"]]
     rows[0][column] = "-798120910000"
     _, parsed = parse(source(2014, rows, code="399317"), "399317", 2014)

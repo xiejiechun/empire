@@ -759,7 +759,7 @@
         "regression": "页面P95<=50ms，100000导入<=20秒",
         "budget": "512MiB含索引，单指数<10000成员；100000实测不冒充1000000实测",
         "status": "measured",
-        "evidence": "docs/evidence/indices-capacity-2026-10-09.json"
+        "evidence": "docs/evidence/architecture-e2-indices-capacity-2026-10-20-1.json"
       },
       "integrity": [
         "完整目录",
@@ -800,7 +800,7 @@
         "regression": "页面P95<=50ms，100000导入<=20秒",
         "budget": "512MiB含索引，单指数<10000成员；100000实测不冒充1000000实测",
         "status": "measured",
-        "evidence": "docs/evidence/indices-capacity-2026-10-09.json"
+        "evidence": "docs/evidence/architecture-e2-indices-capacity-2026-10-20-1.json"
       },
       "integrity": [
         "完整目录",
@@ -865,7 +865,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/index-prices-capacity-2026-10-10.json",
+        "evidence": "docs/evidence/architecture-e2-index-prices-capacity-2026-10-20-1.json",
         "sample": "独立MySQL100000合成日行、1000指数",
         "budget": "导入<=30秒，200行查询P95<=50ms，分配<=64MiB；规划历史2GiB"
       },
@@ -900,7 +900,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/index-prices-capacity-2026-10-10.json",
+        "evidence": "docs/evidence/architecture-e2-index-prices-capacity-2026-10-20-1.json",
         "sample": "独立MySQL100000合成日行、1000指数",
         "budget": "导入<=30秒，200行查询P95<=50ms，分配<=64MiB；规划历史2GiB"
       },
@@ -1496,7 +1496,7 @@
         "response": "详情1MiB；最多400成员；正文审计批读10报告/4000成员",
         "regression": "查询P95≤100ms，覆盖≤1000ms，导入≤180秒，Python峰值≤128MiB",
         "status": "measured",
-        "evidence": "docs/evidence/architecture-d-holders-capacity-2026-10-19-1.json"
+        "evidence": "docs/evidence/architecture-e2-holders-capacity-2026-10-20-1.json"
       },
       "integrity": [
         "标签与正文集合匹配",
@@ -1657,7 +1657,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-d-capital-capacity-2026-10-19-1.json",
+        "evidence": "docs/evidence/architecture-e2-capital-capacity-2026-10-20-1.json",
         "sample": "历史213只不同证券实采另见原来源证据；本轮独立SQL合成容量700证券10500事实，不是本轮213只实采",
         "growth": "6000股票每年50新增事实，五年150万事实；按本次分配空间外推，不代表已采覆盖",
         "page_limit": 100,

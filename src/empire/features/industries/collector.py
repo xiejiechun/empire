@@ -7,6 +7,13 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.features.industries.dataset import JOB, PROJECT, validate
+from empire.features.industries.source import (
+    BASE,
+    members_url,
+    parse_catalog,
+    parse_members,
+)
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -14,14 +21,7 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
-from empire.plugins.collectors.ths_industry_source import (
-    BASE,
-    members_url,
-    parse_catalog,
-    parse_members,
-)
 from empire.plugins.collectors.ths_session import ThsSession
-from empire.plugins.datasets.industries import JOB, PROJECT, validate
 
 
 class ThsIndustryCollector:

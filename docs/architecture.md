@@ -262,6 +262,8 @@ Requirement.fields 表示本用途必需信息，optional_fields 表示缺少不
 
 ## 同花顺当前行业
 
+行业正式实现归features/industries，指数目录归features/indices，指数日行情归features/index_prices；各包bundle按原顺序显式贡献原插件身份。跨业务指数语法唯一位于contracts/security.py，HTML树唯一位于sources/ths_catalog_html.py，没有旧模块转发。各包README说明职责与验证入口。
+
 collector.ths_industries 复用共享 HTTP、代理与频控，本地固定版本校验脚本只生成请求校验值。每行业 page/1/size/1000 完整响应验证后，与完整目录一起作为一个 industry.snapshot 入队，统一归档在一个事务内维护 industry、industry_member 与每项目 collection_state。data.industries 提供 MySQL 查询和准备检查，ui.industries 按需创建目录页面。没有历史快照或另一套下载器。
 
 行业完整性契约 2 使用 ths_industries_v2 摘要及 SQL contract_version=2，旧证明不能放行数据准备。响应仍有分页或行数达到 1000 时失败，不增加第二套分页回退路径。

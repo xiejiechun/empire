@@ -1474,6 +1474,8 @@ MySQL 升级入口 scripts/migrate_business_schema.py 提供 preflight、migrate
 
 ## 字段与维护
 
+正式实现归features/industries，bundle保留原插件、任务、页面和顺序。开发验证使用verify_indices.py的私有UUID资源生命周期，比较完整来源/入队/SQL/正式分页集合，失败与清理未完成均不通过；不更改用户保存的网络和任务策略。
+
 字段、业务身份与当前集合保留规则见 [MySQL industry](help:MySQL%20industry)、[MySQL industry_member](help:MySQL%20industry_member)；SQL/Redis 失败保留原消息，公共归档器成功清队。
 
 结构新增通过 scripts/migrate_business_schema.py 显式执行，维护前正常关闭程序并核对队列及已有业务数据；启动不自动建表。命令行 collect-industries 使用相同任务和归档路径。程序连接仍取程序目录 config.toml。
@@ -1542,6 +1544,8 @@ stock_market_day为每项证券日业务头，保存身份、上市关联、业�
 # 指数存储与维护
 
 ## 字段与维护
+
+指数目录/成员归features/indices，日行情归features/index_prices；bundle保留原正式身份与顺序。指数标识语法由公共contracts/security.py唯一提供，HTML树由sources/ths_catalog_html.py共享。开发实采verify_indices.py及verify_index_prices.py仅向核实不同server_uuid的私有UUID库和owner前缀写入，逐项核对公开查询集合与内容；容量与来源结果分别记录，不把工具存在当成验收通过。
 
 表、主键和成员可用性见 [MySQL stock_index](help:MySQL%20stock_index)、[MySQL stock_index_member](help:MySQL%20stock_index_member)。
 

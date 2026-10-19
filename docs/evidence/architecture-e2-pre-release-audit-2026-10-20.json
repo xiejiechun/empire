@@ -1,0 +1,235 @@
+{
+  "record_kind": "e2_pre_release_evidence_audit",
+  "checked_at": "2026-10-19T17:16:22.212011+00:00",
+  "scope": "development evidence; release and actual desktop remain pending",
+  "findings": [],
+  "junit": {
+    "domain-final": {
+      "path": "build/architecture-e2-20261020/domain-final.xml",
+      "sha256": "75aecf36473a349dbde2577efa29a2a8884f08d9f1daa844f1d5b334e9a3baab",
+      "counts": {
+        "tests": 121,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "safety-final": {
+      "path": "build/architecture-e2-20261020/safety-final.xml",
+      "sha256": "9120915eb3de82dcd208bec552868ce023f2a8df8bb12dfe2086983b9dcd5183",
+      "counts": {
+        "tests": 147,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "integration": {
+      "path": "build/architecture-e2-20261020/integration.xml",
+      "sha256": "85d7f576fa580fc498c7d129c76725c78007f2b84507cb39fed715520b868b64",
+      "counts": {
+        "tests": 67,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "public-final": {
+      "path": "build/architecture-e2-20261020/public-final.xml",
+      "sha256": "0551c4878b46ea7f5bb0482fa3653dd464a3de76360ff8cd994a2aaa50a15267",
+      "counts": {
+        "tests": 408,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "docs-final": {
+      "path": "build/architecture-e2-20261020/docs-final.xml",
+      "sha256": "a0cf6572bcb2afb2b6e50f61b6bd3184892f0d81fcefde76948b8f605e3cb301",
+      "counts": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "source": [
+    {
+      "path": "docs/evidence/architecture-e2-catalogues-source-2026-10-20-1.json",
+      "sha256": "07efc42c7a1c87fbd7c5b750eab93336641a6405f88bd9cd42cb68dd0cb3828c",
+      "source_sha256": "369636112c6c21e27aae87a0158b941f94830e4b50ae3a9259164c0fed504068",
+      "pending": 0,
+      "non_stock": true
+    },
+    {
+      "path": "docs/evidence/architecture-e2-index-prices-source-2026-10-20-1.json",
+      "sha256": "aba73931e70628cf12c2c56d5e4def5afcc3caab44b3aeed1bbe432cc44ef760",
+      "source_sha256": "369636112c6c21e27aae87a0158b941f94830e4b50ae3a9259164c0fed504068",
+      "pending": 0,
+      "non_stock": true
+    }
+  ],
+  "t3": {
+    "path": "docs/evidence/architecture-performance-e2-2026-10-20-1.json",
+    "sha256": "5ecf3a1ff4474494e4cf3a29a49a8995b83d48d78993ee6d4cc7f8706662609b",
+    "source_sha256": "c21ab04ffc27e8030e47b4dfdc46104028643e1210abdfbf9efc3c4a5f7a7160",
+    "recomputed_comparison": {
+      "passed": true,
+      "incomparable": [],
+      "checks": {
+        "cold_declarations.median_ms": {
+          "baseline_ms": 1014.3281,
+          "current_ms": 1108.6131,
+          "limit_ms": 1267.9101249999999,
+          "passed": true
+        },
+        "cold_declarations.p95_ms": {
+          "baseline_ms": 1044.79302,
+          "current_ms": 1137.01447,
+          "limit_ms": 1305.991275,
+          "passed": true
+        },
+        "assembly.median_ms": {
+          "baseline_ms": 1.0358,
+          "current_ms": 1.2999,
+          "limit_ms": 3.0358,
+          "passed": true
+        },
+        "assembly.p95_ms": {
+          "baseline_ms": 1.30144,
+          "current_ms": 1.9704699999999993,
+          "limit_ms": 3.30144,
+          "passed": true
+        },
+        "news_first.median_ms": {
+          "baseline_ms": 6.184,
+          "current_ms": 5.6936,
+          "limit_ms": 7.73,
+          "passed": true
+        },
+        "news_first.p95_ms": {
+          "baseline_ms": 7.86021,
+          "current_ms": 6.21563,
+          "limit_ms": 9.825262500000001,
+          "passed": true
+        },
+        "news_next.median_ms": {
+          "baseline_ms": 1.6601,
+          "current_ms": 1.5076,
+          "limit_ms": 2.6601,
+          "passed": true
+        },
+        "news_next.p95_ms": {
+          "baseline_ms": 2.723479999999999,
+          "current_ms": 2.50088,
+          "limit_ms": 3.723479999999999,
+          "passed": true
+        },
+        "news_search.median_ms": {
+          "baseline_ms": 12.0391,
+          "current_ms": 10.5849,
+          "limit_ms": 15.048874999999999,
+          "passed": true
+        },
+        "news_search.p95_ms": {
+          "baseline_ms": 14.255209999999998,
+          "current_ms": 11.743139999999999,
+          "limit_ms": 17.8190125,
+          "passed": true
+        },
+        "holders_browse.median_ms": {
+          "baseline_ms": 3.3869,
+          "current_ms": 2.7999,
+          "limit_ms": 4.3869,
+          "passed": true
+        },
+        "holders_browse.p95_ms": {
+          "baseline_ms": 4.24259,
+          "current_ms": 3.570299999999999,
+          "limit_ms": 5.3032375,
+          "passed": true
+        },
+        "holders_detail.median_ms": {
+          "baseline_ms": 4.4895,
+          "current_ms": 3.2141,
+          "limit_ms": 5.6118749999999995,
+          "passed": true
+        },
+        "holders_detail.p95_ms": {
+          "baseline_ms": 4.95585,
+          "current_ms": 4.17108,
+          "limit_ms": 6.194812499999999,
+          "passed": true
+        },
+        "news_ui.median_ms": {
+          "baseline_ms": 21.6904,
+          "current_ms": 16.4347,
+          "limit_ms": 27.113,
+          "passed": true
+        },
+        "news_ui.p95_ms": {
+          "baseline_ms": 25.00188,
+          "current_ms": 18.16745,
+          "limit_ms": 31.25235,
+          "passed": true
+        },
+        "holders_ui.median_ms": {
+          "baseline_ms": 52.2273,
+          "current_ms": 41.7683,
+          "limit_ms": 65.284125,
+          "passed": true
+        },
+        "holders_ui.p95_ms": {
+          "baseline_ms": 58.6575,
+          "current_ms": 44.19375,
+          "limit_ms": 73.321875,
+          "passed": true
+        }
+      }
+    }
+  },
+  "capacity_bindings": {
+    "active_reports": 17,
+    "invalid": {},
+    "current_reports": [
+      "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "docs/evidence/dividends-error-types-capacity-2026-10-14.json",
+      "docs/evidence/name-changes-capacity-2026-10-06.json",
+      "docs/evidence/listings-preview-capacity-2026-10-11.json",
+      "docs/evidence/listing-status-capacity-2026-10-06.json",
+      "docs/evidence/architecture-e2-indices-capacity-2026-10-20-1.json",
+      "docs/evidence/bse-code-mapping-capacity-2026-10-10.json",
+      "docs/evidence/architecture-e2-index-prices-capacity-2026-10-20-1.json",
+      "docs/evidence/st-events-capacity-2026-10-11.json",
+      "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "docs/evidence/repurchase-capacity-2026-10-12.json",
+      "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "docs/evidence/architecture-e2-holders-capacity-2026-10-20-1.json",
+      "docs/evidence/shareholder-changes-capacity-2026-10-13.json",
+      "docs/evidence/unlocks-error-types-capacity-2026-10-14.json",
+      "docs/evidence/unlock-industries-capacity-2026-10-14.json",
+      "docs/evidence/architecture-e2-capital-capacity-2026-10-20-1.json"
+    ]
+  },
+  "equivalence": {
+    "path": "docs/evidence/architecture-e2-equivalence-2026-10-20.json",
+    "sha256": "54b38cc9bd887966224d05bdc7fa625ab7daf8d62eeffe7b9ac3a8cefceebdb7"
+  },
+  "environment": {
+    "private_mysql": {
+      "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+      "port": 13348,
+      "datadir": "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-data\\",
+      "connection_id": 7055
+    },
+    "production_pending": 1,
+    "frozen_unchanged": true,
+    "config_and_preferences_preserved": true
+  },
+  "release_status": "not_run",
+  "desktop_status": "not_run",
+  "next_stage_allowed": false,
+  "passed": true
+}

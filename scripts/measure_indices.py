@@ -9,33 +9,29 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path
 from types import SimpleNamespace
-from uuid import uuid4
 
+from capacity_session import CapacitySession
 from sqlalchemy import text
 
 from empire.contracts.data import make_envelope
-from empire.contracts.indices import JOB, PROJECT
 from empire.core.config import load_config, project_root
-from empire.plugins.data.indices import IndexDataPlugin
-from empire.plugins.datasets import indices
+from empire.features.indices import dataset as indices
+from empire.features.indices.contract import JOB, PROJECT, digest
+from empire.features.indices.query import IndexDataPlugin
 from empire.plugins.infra.collection_state import save_state
-from empire.plugins.infra.mysql_store import initialize_database, make_engine
+from empire.plugins.infra.mysql_store import initialize_database
 
 
 def run(args):
     root = project_root()
     settings = json.loads(Path(args.test_settings).read_text('utf8'))
-    production = load_config()['mysql']
-    if (settings.get('host'), settings.get('port')) == (production.get('host'), production.get('port')):
-        raise ValueError('容量实验必须使用独立MySQL服务')
-    admin, database, engine, created = make_engine(settings), 'empire_' + uuid4().hex + '_test', None, False
-    try:
-        with admin.connect() as conn:
-            conn.exec_driver_sql(f'CREATE DATABASE `{database}` CHARACTER SET utf8mb4')
-            created = True
-        settings = {**settings, 'database': database}
-        initialize_database(settings)
-        engine, observed, state = make_engine(settings), datetime.now(UTC), {}
+    paths = ['src/empire/features/indices/contract.py', 'src/empire/features/indices/dataset.py', 'src/empire/features/indices/query.py', 'scripts/capacity_session.py', 'src/empire/contracts/security.py', 'src/empire/contracts/business_schema.py', 'sql/business-schema.json', 'src/empire/plugins/infra/mysql_store.py', 'src/empire/plugins/infra/collection_state.py', 'sql/schema.sql', 'sql/schema-contract.json', 'scripts/measure_indices.py']
+    session = CapacitySession(load_config()['mysql'], settings, root=root, subject='indices',
+                              output=args.output, input_paths=paths)
+    with session:
+        initialize_database(session.settings)
+        engine, database = session.engine, session.database
+        observed, state = datetime.now(UTC), {}
         catalog = [dict(code=f'{i:06d}', name=f'容量指数{i}', group='实验') for i in range(100)]
         def archive(dataset, key, payload):
             nonlocal state
@@ -64,7 +60,7 @@ def run(args):
         q = IndexDataPlugin('capacity')
         q.mysql = SimpleNamespace(read_engine=engine, read=read)
         async def measures():
-            result = {}
+            result = {'query_samples_ms': {}}
             for name, callback in [('catalog_p95_ms', lambda: q.browse()), ('members_p95_ms', lambda: q.browse('members')),
                     ('search_p95_ms', lambda: q.browse('members', '000001')),
                     ('cursor_p95_ms', lambda: q.browse('members', after=['000050', '000500']))]:
@@ -74,12 +70,22 @@ def run(args):
                     await callback()
                     samples.append((time.perf_counter() - started) * 1000)
                 result[name] = sorted(samples)[18]
+                result['query_samples_ms'][name] = samples
             started = time.perf_counter()
             audited = q.snapshot_audit()
             assert audited[1] and audited[5] == 100000
             result['audit_seconds'] = time.perf_counter() - started
             return result
         measurements = asyncio.run(measures())
+        # Outside the original timing samples, prove every business key/content.
+        audited = q.snapshot_audit()
+        expected_proofs = {'catalog': digest(catalog)}
+        for row in catalog:
+            members = [[f'{n:06d}', '名称修订' if row['code'] == '000000' and n == 1 else '容量证券']
+                       for n in range(1, 1001)]
+            expected_proofs[row['code']] = digest([True, members])
+        assert audited[1] and set(audited[7]) == set(expected_proofs)
+        assert all(audited[7][key]['hash'] == checksum for key, checksum in expected_proofs.items())
         with engine.connect() as conn:
             conn.exec_driver_sql('ANALYZE TABLE stock_index,stock_index_member')
             allocation = conn.execute(text('SELECT SUM(DATA_LENGTH+INDEX_LENGTH) FROM information_schema.TABLES '
@@ -91,10 +97,8 @@ def run(args):
             }.items()}
         measurements.update(import_seconds=import_seconds, allocated_bytes=int(allocation),
                             state_bytes=len(json.dumps(state).encode()))
-        paths = ['src/empire/contracts/indices.py', 'src/empire/plugins/datasets/indices.py',
-                 'src/empire/plugins/data/indices.py', 'scripts/measure_indices.py']
         schema = (root / 'sql/schema.sql').read_text('utf8')
-        report = dict(bindings={p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in paths},
+        report = dict(bindings=dict(session.frozen_inputs),
             ddl_scopes={t: hashlib.sha256(re.search(r'CREATE TABLE IF NOT EXISTS ' + t + r'\s*\([\s\S]*?;', schema).group().encode()).hexdigest()
                         for t in indices.TABLES}, measurements=measurements,
             limits=dict(catalog_p95_ms=50, members_p95_ms=50, search_p95_ms=50, cursor_p95_ms=50,
@@ -103,24 +107,21 @@ def run(args):
                 synthetic=True, first_query='unforced cache', repeats=20, audited_key_set=True,
                 repeat_business_dml=repeat['written_count'], revision_writes=revision['written_count']),
             reviewed_tradeoffs='当前关系不按日累积；成员批写、主键游标、证券反查索引。来源不确定市场保留来源身份；详细准备扫描全部关系，普通页面不扫描正文。十倍到100万的512MiB是设计预算，实测只证明100000关系样本；扩大范围前重新测量。',
-            explain=explains, cleanup='UUID-owned schema dropped in finally')
-        report['passed'] = all(measurements[k] <= v for k, v in report['limits'].items())
-        Path(args.output).write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf8')
-        print(json.dumps(dict(passed=report['passed'], measurements=measurements)))
-        if not report['passed']:
-            raise RuntimeError('指数容量预算未通过')
-    finally:
-        if engine:
-            engine.dispose()
-        if created:
-            assert database.endswith('_test')
-            with admin.connect() as conn:
-                conn.exec_driver_sql(f'DROP DATABASE `{database}`')
-        admin.dispose()
+            explain=explains, cleanup_protocol='CapacitySession owned database; final result only after cleanup')
+        report['correctness'] = dict(full_business_keys_and_content=True,
+            catalogue_digest=digest(catalog), proof_set_digest=digest(expected_proofs),
+            repeat_zero_business_dml=repeat['written_count'] == 0, revision_writes=revision['written_count'])
+        report['protocol'] = dict(schema=1, preserved_scale=True, preserved_limits=True)
+        session.report.update(report)
+        if not all(measurements[k] <= limit for k, limit in report['limits'].items()):
+            raise RuntimeError('容量预算未通过')
+        session.measurements_complete = True
+    print(json.dumps(dict(passed=session.report['passed'], measurements=measurements)))
+
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--test-settings', required=True)
-    parser.add_argument('--output', default='docs/evidence/indices-capacity-2026-10-09.json')
+    parser.add_argument('--output', required=True)
     run(parser.parse_args())

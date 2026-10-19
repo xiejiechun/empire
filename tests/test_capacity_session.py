@@ -121,6 +121,18 @@ def test_same_server_alias_is_rejected_before_create(tmp_path, fake_service):
     assert 'source_dispose' in fake_service.events
 
 
+@pytest.mark.parametrize('subject', ['indices', 'index-prices'])
+def test_e2_subjects_keep_identity_and_cleanup_guards(tmp_path, fake_service, subject):
+    run = module.CapacitySession({'database': 'production'}, {'port': 13348},
+                                 root=tmp_path, subject=subject)
+    fake_service.uuid = PRODUCTION
+    with pytest.raises(ValueError, match='server_uuid'):
+        with run:
+            pytest.fail('same server accepted')
+    assert fake_service.creates == fake_service.drops == 0
+    assert not json.loads(run.output.read_text('utf-8'))['passed']
+
+
 @pytest.mark.parametrize('identity', [None, '', 'None', 'unknown'])
 def test_unverifiable_server_rejected(tmp_path, fake_service, identity):
     fake_service.uuid = identity

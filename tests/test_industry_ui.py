@@ -6,7 +6,7 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.plugins.ui.industries import IndustryPage, IndustryUiPlugin  # noqa: E402
+from empire.features.industries.ui import IndustryPage, IndustryUiPlugin  # noqa: E402
 
 
 def test_lazy_industry_page_query_does_not_overwrite_draft():

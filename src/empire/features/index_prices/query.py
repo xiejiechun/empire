@@ -5,7 +5,11 @@ from datetime import UTC, date, datetime, timedelta
 
 from sqlalchemy import text
 
-from empire.contracts.index_prices import (
+from empire.contracts.plugin import PluginManifest
+from empire.contracts.preparation import CheckEvidence, PreparationContribution
+from empire.contracts.preparation_scope import PreparationScope
+from empire.contracts.security import index_code
+from empire.features.index_prices.contract import (
     JOB,
     PROJECT,
     day,
@@ -13,18 +17,14 @@ from empire.contracts.index_prices import (
     validate_rows,
     volume_amount_valid,
 )
-from empire.contracts.indices import index_code
-from empire.contracts.plugin import PluginManifest
-from empire.contracts.preparation import CheckEvidence, PreparationContribution
-from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.datasets.index_prices import (
+from empire.features.index_prices.dataset import (
     FINGERPRINT_NAMESPACE,
     FINGERPRINT_VERSION,
     KEYS,
     TABLES,
     sql_rows,
 )
-from empire.plugins.datasets.indices import digest
+from empire.features.indices.contract import digest
 from empire.plugins.infra.collection_state import read_state
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 

@@ -1,0 +1,153 @@
+{
+  "run_id": "1f46338fab004b8491fe735f07c64263",
+  "subject": "holders",
+  "started_at": "2026-10-19T17:03:11.185903+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "checked_at": "2026-10-19T17:04:48.174105+00:00",
+  "bindings": {
+    "src/empire/features/holders/audit.py": "5f8a2294a3398f0a61a71a6218fc7823e4fbf341bf42d406476fa8ebb0e908c5",
+    "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+    "src/empire/features/holders/dataset.py": "f77f68e4fdfc13e0e9310af9b84d27c793d7765e1aab6646d897aced4fe5e7b5",
+    "src/empire/features/holders/query.py": "d5ba76980635ad4adc1f21ddde83c97689c40e7186e935245477257ddcab0993",
+    "src/empire/features/holders/source.py": "e68daa7c2efb048691e3c09e66d6d2b0e44a78aa88ee730575b422361476271a",
+    "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
+    "scripts/measure_holders.py": "6f6285e1e19f648e16911bf3d10e5f0c98562bf379c26738e5f2a939dcc15ab0",
+    "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
+    "tests/test_ths_holders.py": "212b0e34e030efe031f8cea1f2be56b6ad3c9fe374f067f2e8b59bfcb97fe3c3"
+  },
+  "ddl_scopes": {
+    "holder_report": "0841227ed7ec26af4e7503ea287b54e7e410ba1723a4f8b68d7010cd8f9e7c5f",
+    "holder_member": "6465ce1b55bccf8cb068d10417d60596a830a8d2a79ebad7ed265009442a3671"
+  },
+  "measurements": {
+    "page_p95_ms": 2.1373999770730734,
+    "page_returned": 100,
+    "security_p95_ms": 0.15689997235313058,
+    "security_returned": 2,
+    "coverage_p95_ms": 88.65819999482483,
+    "coverage_returned": 5000,
+    "detail_p95_ms": 2.1277000196278095,
+    "detail_bytes": 12183,
+    "maximum_detail_p95_ms": 8.805799996480346,
+    "maximum_detail_bytes": 557570,
+    "import_seconds": 53.744905499974266,
+    "initial_written": 120000,
+    "peak_python_bytes": 1129295,
+    "allocated_bytes": 208175104,
+    "repeated_business_dml": 0,
+    "repeated_written": 0,
+    "revised_written": 48,
+    "formal_audit_ms": 11932.210800005123,
+    "formal_combined_audit_ms": 23762.678999977652,
+    "audit_peak_python_bytes": 11721718,
+    "state_bytes": 3090650
+  },
+  "limits": {
+    "page_p95_ms": 100,
+    "security_p95_ms": 100,
+    "coverage_p95_ms": 1000,
+    "detail_p95_ms": 100,
+    "detail_bytes": 1048576,
+    "maximum_detail_p95_ms": 100,
+    "maximum_detail_bytes": 1048576,
+    "import_seconds": 180,
+    "peak_python_bytes": 134217728,
+    "allocated_bytes": 536870912,
+    "repeated_business_dml": 0,
+    "repeated_written": 0,
+    "formal_audit_ms": 30000,
+    "formal_combined_audit_ms": 90000,
+    "audit_peak_python_bytes": 134217728,
+    "state_bytes": 8388608
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "reports": 10001,
+    "members": 110400,
+    "source": "minimal source-semantic fixture; 2500 issuers × 4 periods distributed across all three kinds; long 281-character holder names",
+    "real_sample": "docs/evidence/ths-holders-source-2026-10-13.json",
+    "cache": "first unforced SQL read + nine hot repetitions; maximum bounds P95",
+    "independent_test_service": true,
+    "synthetic": true,
+    "innodb_flush_log_at_trx_commit": 2,
+    "audit_timings_ms": {
+      "top_holders": 11932.210800005123,
+      "float_holders": 6205.587200005539,
+      "bond_holders": 5624.809300003108
+    },
+    "audit_budget": "each independent formal query <=30s; three sequential queries <=90s"
+  },
+  "reviewed_tradeoffs": "按报告实体共两表，基础股/张数字及舍入精度可SQL查询。父头列表不读名字正文，单详情有界。来源窗口外保留历史，较旧修订不保证发现。容量放大不是生产覆盖，未模拟OS崩溃耐久性。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "holder_report",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_security_date,ix_date",
+        "key": "ix_date",
+        "key_len": "98",
+        "ref": null,
+        "rows": 5148,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "holder_report",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_security_date,ix_date",
+        "key": "ix_security_date",
+        "key_len": "107",
+        "ref": "const,const",
+        "rows": 2,
+        "filtered": 100.0,
+        "Extra": "Backward index scan; Using index"
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "holder_report",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_security_date,ix_date",
+        "key": "ix_security_date",
+        "key_len": "98",
+        "ref": "const",
+        "rows": 5148,
+        "filtered": 100.0,
+        "Extra": "Using filesort"
+      }
+    ]
+  },
+  "input_identity_verified": true,
+  "database": "empire_capacity_1f46338fab004b8491fe735f07c64263_test",
+  "measurement_service": {
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

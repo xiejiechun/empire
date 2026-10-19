@@ -15,7 +15,7 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
-from empire.plugins.datasets.industries import FINGERPRINT_NAMESPACE, JOB
+from empire.features.industries.dataset import FINGERPRINT_NAMESPACE, JOB
 from tests.prefetch_source import prefetch_http
 from tests.test_ths_industries import SNAPSHOT, member_page, response
 

@@ -38,7 +38,7 @@ class CapacitySession:
     """
 
     def __init__(self, production, test, *, root, subject, output=None, input_paths=()):
-        if subject not in {'holders', 'ths-capital', 'preview'}:
+        if subject not in {'holders', 'ths-capital', 'preview', 'indices', 'index-prices'}:
             raise ValueError('Unknown capacity subject')
         self.root = Path(root)
         self.run_id = uuid4().hex

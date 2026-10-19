@@ -6,24 +6,24 @@ from types import SimpleNamespace
 
 from sqlalchemy import text
 
-from empire.contracts.indices import (
-    INDEX_LIMIT,
-    JOB,
-    PROJECT,
-    index_code,
-    member_identity,
-    security_code,
-)
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.datasets.indices import (
+from empire.contracts.security import index_code
+from empire.features.indices.contract import (
+    INDEX_LIMIT,
+    JOB,
+    PROJECT,
+    digest,
+    member_identity,
+    security_code,
+)
+from empire.features.indices.dataset import (
     CONTRACT_VERSION,
     FINGERPRINT_NAMESPACE,
     FINGERPRINT_VERSION,
     KEYS,
     TABLES,
-    digest,
     normalize,
     validate_catalog,
 )

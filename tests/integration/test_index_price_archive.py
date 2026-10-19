@@ -12,9 +12,9 @@ import pytest
 from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
-from empire.contracts.index_prices import JOB
 from empire.core.config import load_config
-from empire.plugins.datasets.index_prices import FINGERPRINT_NAMESPACE
+from empire.features.index_prices.contract import JOB
+from empire.features.index_prices.dataset import FINGERPRINT_NAMESPACE
 from tests.test_ths_index_prices import CODE, ROWS, envelope
 from tests.test_ths_index_prices import collector as fake_collector
 
@@ -86,7 +86,7 @@ async def test_source_formal_query_year_proof_and_pagination(prices):
     assert next(e for e in checks if e.criterion == "coverage").status == "pass"
     assert await store.client.xlen(store.stream) == 0
     # Redis checkpoint loss uses SQL yearly proofs and makes only one last request.
-    from empire.plugins.collectors.ths_index_prices import ThsIndexPriceCollector
+    from empire.features.index_prices.collector import ThsIndexPriceCollector
 
     await c.ingest.redis.client.delete(c.ingest._checkpoint_key(JOB))
     c.http.request.reset_mock()
@@ -101,7 +101,7 @@ async def test_source_formal_query_year_proof_and_pagination(prices):
 @pytest.mark.parametrize("observed_day", [2, 3])
 async def test_latest_resolution_archives_verified_recent_values(prices, annual_values, observed_day):
     from empire.core.time import CHINA
-    from empire.plugins.collectors.ths_index_prices_source import annual, recent
+    from empire.features.index_prices.source import annual, recent
     from tests.test_ths_index_prices import source
 
     _, c, q, store, publish = prices
@@ -279,7 +279,7 @@ async def test_same_count_sql_set_corruption_fails_preparation(prices):
 
 
 async def test_nullable_source_archive_query_and_later_fill(prices):
-    from empire.plugins.collectors.ths_index_prices_source import annual, recent
+    from empire.features.index_prices.source import annual, recent
     from tests.test_ths_index_prices import source
     manager, c, q, store, publish = prices
     await c.execute()

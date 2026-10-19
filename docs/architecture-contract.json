@@ -157,30 +157,27 @@
       ]
     },
     {
-      "legacy_collector_location": true,
       "owner": "index_prices",
       "reason": "指数日行情：来源解析或纯范围规划，无请求执行",
       "role": "parser",
       "modules": [
-        "empire.plugins.collectors.ths_index_prices_source"
+        "empire.features.index_prices.source"
       ]
     },
     {
-      "legacy_collector_location": true,
       "owner": "indices",
       "reason": "指数及成分：来源解析或纯范围规划，无请求执行",
       "role": "parser",
       "modules": [
-        "empire.plugins.collectors.ths_index_source"
+        "empire.features.indices.source"
       ]
     },
     {
-      "legacy_collector_location": true,
       "owner": "industries",
       "reason": "行业及成员：来源解析或纯范围规划，无请求执行",
       "role": "parser",
       "modules": [
-        "empire.plugins.collectors.ths_industry_source"
+        "empire.features.industries.source"
       ]
     },
     {
@@ -718,7 +715,7 @@
       "reason": "指数日行情：业务标识、字段和纯规范声明",
       "role": "contract",
       "modules": [
-        "empire.contracts.index_prices"
+        "empire.features.index_prices.contract"
       ]
     },
     {
@@ -726,8 +723,8 @@
       "reason": "指数日行情：业务页面和展示状态",
       "role": "ui",
       "modules": [
-        "empire.plugins.ui.index_price_chart",
-        "empire.plugins.ui.index_prices"
+        "empire.features.index_prices.chart",
+        "empire.features.index_prices.ui"
       ]
     },
     {
@@ -735,7 +732,7 @@
       "reason": "指数日行情：归档映射、内容比较及校验",
       "role": "dataset",
       "modules": [
-        "empire.plugins.datasets.index_prices"
+        "empire.features.index_prices.dataset"
       ]
     },
     {
@@ -743,7 +740,7 @@
       "reason": "指数日行情：正式查询或准备读取实现",
       "role": "query",
       "modules": [
-        "empire.plugins.data.index_prices"
+        "empire.features.index_prices.query"
       ]
     },
     {
@@ -751,7 +748,7 @@
       "reason": "指数日行情：采集生命周期、入队和归档确认",
       "role": "collector",
       "modules": [
-        "empire.plugins.collectors.ths_index_prices"
+        "empire.features.index_prices.collector"
       ]
     },
     {
@@ -759,7 +756,7 @@
       "reason": "指数及成分：业务标识、字段和纯规范声明",
       "role": "contract",
       "modules": [
-        "empire.contracts.indices"
+        "empire.features.indices.contract"
       ]
     },
     {
@@ -767,7 +764,7 @@
       "reason": "指数及成分：业务页面和展示状态",
       "role": "ui",
       "modules": [
-        "empire.plugins.ui.indices"
+        "empire.features.indices.ui"
       ]
     },
     {
@@ -775,7 +772,7 @@
       "reason": "指数及成分：归档映射、内容比较及校验",
       "role": "dataset",
       "modules": [
-        "empire.plugins.datasets.indices"
+        "empire.features.indices.dataset"
       ]
     },
     {
@@ -783,7 +780,7 @@
       "reason": "指数及成分：正式查询或准备读取实现",
       "role": "query",
       "modules": [
-        "empire.plugins.data.indices"
+        "empire.features.indices.query"
       ]
     },
     {
@@ -791,7 +788,7 @@
       "reason": "指数及成分：采集生命周期、入队和归档确认",
       "role": "collector",
       "modules": [
-        "empire.plugins.collectors.ths_indices"
+        "empire.features.indices.collector"
       ]
     },
     {
@@ -799,7 +796,7 @@
       "reason": "行业及成员：业务标识、字段和纯规范声明",
       "role": "contract",
       "modules": [
-        "empire.contracts.industries"
+        "empire.features.industries.contract"
       ]
     },
     {
@@ -807,7 +804,7 @@
       "reason": "行业及成员：业务页面和展示状态",
       "role": "ui",
       "modules": [
-        "empire.plugins.ui.industries"
+        "empire.features.industries.ui"
       ]
     },
     {
@@ -815,7 +812,7 @@
       "reason": "行业及成员：归档映射、内容比较及校验",
       "role": "dataset",
       "modules": [
-        "empire.plugins.datasets.industries"
+        "empire.features.industries.dataset"
       ]
     },
     {
@@ -823,7 +820,7 @@
       "reason": "行业及成员：正式查询或准备读取实现",
       "role": "query",
       "modules": [
-        "empire.plugins.data.industries"
+        "empire.features.industries.query"
       ]
     },
     {
@@ -831,7 +828,7 @@
       "reason": "行业及成员：采集生命周期、入队和归档确认",
       "role": "collector",
       "modules": [
-        "empire.plugins.collectors.ths_industries"
+        "empire.features.industries.collector"
       ]
     },
     {
@@ -1729,6 +1726,62 @@
       "modules": [
         "empire.features.financial_statements"
       ]
+    },
+    {
+      "owner": "html_parser",
+      "role": "parser",
+      "reason": "Shared unchanged THS catalogue HTML parser",
+      "modules": [
+        "empire.sources.ths_catalog_html"
+      ]
+    },
+    {
+      "owner": "indices",
+      "role": "composition",
+      "reason": "E2 explicit bundle",
+      "modules": [
+        "empire.features.indices.bundle"
+      ]
+    },
+    {
+      "owner": "indices",
+      "role": "package",
+      "reason": "E2 business package",
+      "modules": [
+        "empire.features.indices"
+      ]
+    },
+    {
+      "owner": "industries",
+      "role": "composition",
+      "reason": "E2 explicit bundle",
+      "modules": [
+        "empire.features.industries.bundle"
+      ]
+    },
+    {
+      "owner": "industries",
+      "role": "package",
+      "reason": "E2 business package",
+      "modules": [
+        "empire.features.industries"
+      ]
+    },
+    {
+      "owner": "index_prices",
+      "role": "composition",
+      "reason": "E2 explicit bundle",
+      "modules": [
+        "empire.features.index_prices.bundle"
+      ]
+    },
+    {
+      "owner": "index_prices",
+      "role": "package",
+      "reason": "E2 business package",
+      "modules": [
+        "empire.features.index_prices"
+      ]
     }
   ],
   "feature_layouts": [
@@ -1791,6 +1844,66 @@
         "ui": "ui",
         "registration": "composition"
       }
+    },
+    {
+      "prefix": "empire.features.indices",
+      "owner": "indices",
+      "reason": "E2 explicit business package",
+      "roles": {
+        "contracts": "contract",
+        "contract": "contract",
+        "api": "api",
+        "query": "query",
+        "queries": "query",
+        "dataset": "dataset",
+        "datasets": "dataset",
+        "collector": "collector",
+        "collectors": "collector",
+        "source": "source_adapter",
+        "parsers": "parser",
+        "ui": "ui",
+        "registration": "composition"
+      }
+    },
+    {
+      "prefix": "empire.features.industries",
+      "owner": "industries",
+      "reason": "E2 explicit business package",
+      "roles": {
+        "contracts": "contract",
+        "contract": "contract",
+        "api": "api",
+        "query": "query",
+        "queries": "query",
+        "dataset": "dataset",
+        "datasets": "dataset",
+        "collector": "collector",
+        "collectors": "collector",
+        "source": "source_adapter",
+        "parsers": "parser",
+        "ui": "ui",
+        "registration": "composition"
+      }
+    },
+    {
+      "prefix": "empire.features.index_prices",
+      "owner": "index_prices",
+      "reason": "E2 explicit business package",
+      "roles": {
+        "contracts": "contract",
+        "contract": "contract",
+        "api": "api",
+        "query": "query",
+        "queries": "query",
+        "dataset": "dataset",
+        "datasets": "dataset",
+        "collector": "collector",
+        "collectors": "collector",
+        "source": "source_adapter",
+        "parsers": "parser",
+        "ui": "ui",
+        "registration": "composition"
+      }
     }
   ],
   "debt": [
@@ -1805,27 +1918,6 @@
       ],
       "line": 6,
       "reason": "unlock_industries imports private unlocks parser；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
-    },
-    {
-      "rule": "cross_business_private",
-      "source": "empire.plugins.collectors.ths_index_prices",
-      "target": "empire.plugins.datasets.indices",
-      "names": [
-        "digest"
-      ],
-      "line": 21,
-      "reason": "index_prices imports private indices dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
-    },
-    {
-      "rule": "cross_business_private",
-      "source": "empire.plugins.collectors.ths_index_source",
-      "target": "empire.plugins.collectors.ths_industry_source",
-      "names": [
-        "Document",
-        "one"
-      ],
-      "line": 6,
-      "reason": "indices imports private industries parser；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
     },
     {
       "rule": "cross_business_private",
@@ -1902,16 +1994,6 @@
       ],
       "line": 6,
       "reason": "calendar imports private preparation query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
-    },
-    {
-      "rule": "cross_business_private",
-      "source": "empire.plugins.data.index_prices",
-      "target": "empire.plugins.datasets.indices",
-      "names": [
-        "digest"
-      ],
-      "line": 27,
-      "reason": "index_prices imports private indices dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
     },
     {
       "rule": "cross_business_private",
@@ -2025,16 +2107,6 @@
       ],
       "line": 147,
       "reason": "suspensions imports private preparation query；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
-    },
-    {
-      "rule": "cross_business_private",
-      "source": "empire.plugins.datasets.index_prices",
-      "target": "empire.plugins.datasets.indices",
-      "names": [
-        "digest"
-      ],
-      "line": 15,
-      "reason": "index_prices imports private indices dataset；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
     },
     {
       "rule": "cross_business_private",

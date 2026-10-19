@@ -6,7 +6,7 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.plugins.ui.indices import IndexPage, IndexUiPlugin  # noqa: E402
+from empire.features.indices.ui import IndexPage, IndexUiPlugin  # noqa: E402
 
 
 def test_lazy_index_page_drafts_unavailable_members_and_cursor_navigation():

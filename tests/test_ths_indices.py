@@ -9,10 +9,10 @@ import pytest
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.indices import BASE, JOB, member_identity, members_url
-from empire.plugins.collectors.ths_index_source import parse_catalog, parse_members
-from empire.plugins.collectors.ths_indices import ThsIndexCollector
-from empire.plugins.datasets.indices import fingerprint_plan, normalize
+from empire.features.indices.collector import ThsIndexCollector
+from empire.features.indices.contract import BASE, JOB, member_identity, members_url
+from empire.features.indices.dataset import fingerprint_plan, normalize
+from empire.features.indices.source import parse_catalog, parse_members
 from tests.prefetch_source import prefetch_http
 from tests.test_capital_lifecycle import Publisher
 

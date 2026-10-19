@@ -8,9 +8,9 @@ from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.industries import MEMBER_LIMIT, market, name
 from empire.contracts.security import unified_code
 from empire.core.time import mysql_time
+from empire.features.industries.contract import MEMBER_LIMIT, market, name
 from empire.plugins.infra.collection_state import confirmed_page
 
 DATASETS = {'industry.snapshot'}

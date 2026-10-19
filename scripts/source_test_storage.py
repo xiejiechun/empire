@@ -334,7 +334,8 @@ class PrivateStorage:
         engine = make_engine(self.settings)
         try:
             with engine.begin() as conn:
-                conn.execute(text('INSERT INTO stock(unified_code,name) VALUES (:unified_code,:name)'), stocks)
+                if stocks:
+                    conn.execute(text('INSERT INTO stock(unified_code,name) VALUES (:unified_code,:name)'), stocks)
                 for row in settings:
                     conn.execute(text('INSERT INTO app_setting(namespace,kind,setting_key,payload) '
                                       'VALUES (:ns,:kind,:key,:payload)'), dict(ns=self.namespace,
