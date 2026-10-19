@@ -328,5 +328,3 @@ def parser(description: str) -> argparse.ArgumentParser:
     value.add_argument('--cleanup-only', action='store_true', help='仅清理已记录且能验证归属的私有资源')
     value.add_argument('--run-state', help='原报告旁的.ownership.json；只读且不覆盖')
     return value
-
-
