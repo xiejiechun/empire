@@ -1,6 +1,6 @@
 # D 股东复杂样板实施记录
 
-当前状态：首轮正式发布成功，两项公共桌面缺陷已修复；先前性能失败保留，19:25原冻结命令完整复测18/18通过，准备重新发布和同包桌面复验。起点为main `120ddfc70376f40e6a798a71305b5713ecb8bb27`；D及整个优化仍未验收，不能进入E0。各轮结论仅对应其所列输入。
+当前状态：D纯组织迁移范围的开发、最终正式发布和同包真实桌面已完成；严格H3来源完整性仍失败，两个固定空名债券缺口保持。按请求前登记及手册D-07/验收6.1独立接受组织迁移，不把它记为30股严格实采通过。起点为main `120ddfc70376f40e6a798a71305b5713ecb8bb27`；整个优化未完成，E0～F尚未实施。各轮结论仅对应其所列输入。
 
 ## 范围与请求前适用性登记
 
@@ -152,3 +152,40 @@ common1.xml 的明确文件集合（命令为 `python -m pytest -q --tb=short -r
 诊断后单独使用未修改的正式CLI完整重测：`.venv/Scripts/python.exe scripts/architecture_benchmark.py measure --test-settings build/architecture-evolution-20261019/mysql-settings.json --protocol docs/evidence/architecture-performance-protocol-2026-10-19.json --baseline docs/evidence/architecture-performance-baseline-2026-10-19.json --output build/architecture-d-20261019/performance-resumed8.json`，**exit0、18/18通过**，incomparable为空、cleanup=true，实际结束时间2026-10-19T11:25:22Z。[逐字节正式原报告](architecture-performance-d-resumed-2026-10-19.json)保留全部samples。source摘要仍为`e196646edd4a251063e5f89ae415d63be8fe6558f31d680f110087d8f9a58c6d`，与失败第7轮完全相同；五项冻结文件摘要逐一保持。
 
 这份结论仅证明本轮原协议内全部统计通过，不证明已找到失败根因，也不抹除前七轮失败或扩展为真实桌面速度结论。未选择单项最快样本拼接报告。原104项回归、两份容量及其绑定未改变；当前D组织迁移开发适用项通过，重新发布和同包真实U项仍待完成，H3严格来源完整性FAIL不变，E0未开始。
+
+## 最终正式发布与同包真实桌面
+
+唯一正式入口 `./verify-release.ps1` 已自然结束，exit0；未另起发布或修改冻结输入。release `de8532b2a7f146d184964805b5694b66` 的 publication 为 committed/passed，绑定干净提交 `b7f452adcd51da1ae61d7dde643789497dea7c45`；完整输入摘要 `63ef47703e4f2d553f638d03585e2c01a287aa001328a763237b3527ab6ddbbd`，EXE `8b2a59b9592b7b8e0bfc9cf5f89d922709cbb75a8e9e8de52737e50afd1cb644`，安装树 `ea9b1421cd4be510e92180bbc4b5f9eecd35773092954b2408dc764b7ed71bae`。权威本地 journal 为 `build/releases/de8532b2a7f146d184964805b5694b66/publication.json`；24步日志、retained evidence、JUnit保留。
+
+全量 **3626 passed、5 opt-in skipped、24 warnings，2253.15秒**，无failure/error。5项state-unit跳过不计通过，本批未改该恢复协议。4条新增警告来自预期非零PowerShell子进程输出的UTF-8解码；非零及调用断言通过，随后只以 `PYTHONUTF8=0` 重跑同4项，exit0、4 passed、无警告，`entrypoint-encoding.xml`；未改产品或冻结工具。独立容量、四档DPI、PyInstaller、包/异cwd/搬移/配置smoke与切换全部通过。
+
+同包真实窗口使用 computer-use/sky 观察和操作，原窗口1183900，正常退出后fresh枚举为空；最后重开窗口126750622可见。实际三栏名单、详情、债券第二页（688401.SH/2026-06-30路维转债）、来源排名提示和长基金名称可读；835×643窄窗正文滚轮26→276→26，最大化正文0→42。流通股东选中600368.SH/2026-10-12刷新后选择和正文保持；股东920296.BJ/2026-10-21的未来报告期警告保留，未改造数据。
+
+帮助页可阅读同花顺持有人说明，窄窗正文实际滚轮0→270；从帮助返回采集管理后正文恢复TasksPage，31次未保存重试草稿保留，并经历后台刷新。数字框及网络下拉框真实滚轮后仍为31和“代理优先，可回退直连”。最终撤销至原30，保持每天20:00及原网络策略，没有保存测试设置。窄窗撤销按钮首次自动定位在可见窗口外，工具拒绝操作；最大化后才完成撤销，不把被拒动作记成功。
+
+同包U1：单停债券UI时其状态已停用，其他两UI、三查询及collector仍启用，股东真实正文仍可读；恢复后再单停collector，任务管理/历史继续可读，“继续采集”回执为“该采集插件当前未启用”，活动任务仍0，未启动采集。恢复collector后，普通停用Redis被依赖保护拒绝，状态栏列出collection/HTTP/archive/ingest等依赖，Redis仍启用；未点级联。
+
+正常退出后保存本轮全量偏好快照，确认它与先前已核的全启用快照逐字节相同，无额外差异；从本会话原10项键恢复出的字节必须精确匹配开工SHA才写回，保留测试后副本，不凭猜测覆盖。两份config均未写入。执行 `.venv/Scripts/python.exe build/architecture-d-20261019/check_published_runtime.py --run de8532b2a7f146d184964805b5694b66 --report build/architecture-d-20261019/post-release-resumed-after-desktop.json`，20:57 exit0：包manifest/EXE/tree、config/原偏好、C:/Windows正式EXE doctor的Redis/MySQL真实连接、三栏browse/detail/第二页集合一致，服务正常回收，检查时全局pending0。该[只读原报告](architecture-d-post-release-2026-10-19.json)仍保留actual_desktop=pending，实际桌面事实由本节及独立窗口记录证明，不修改原报告冒充自动验收。
+
+重开后的真实工作台显示45任务、活动0、待归档0及连接正常。日常计划随启动恢复，20:11～20:24持有人自然运行仍报告来源缺口；生产股票数已随日常采集从5580变为5579，未删除业务数据或把不同时刻读取称原子快照。该动态全局状态不替代私有48证券实采的pending0。
+
+最终只读审阅命令 `.venv/Scripts/python.exe build/architecture-d-20261019/audit_final_evidence.py`，exit0；[审核输出](architecture-d-final-evidence-audit-2026-10-19.json)复核当前两份容量全部bindings/清理、T3源身份/18项/冻结物、严格来源FAIL/清理、正式JUnit及journal/同包运行身份和窗口可访问树。脚本最初把harness集合摘要错当单文件摘要而拒绝，改用原冻结工具的公开计算方式后通过；没有改任何被审报告、harness或阈值。
+
+| 验收ID | 适用范围、结果和证据 |
+| --- | --- |
+| H1、C1/C2 | 通过；一个任务/一次HTML三栏、独立查询/页面、身份与六类顺序保持；装配、migration-equivalence、业务专项及48证券正式链路 |
+| C3/C4 | 通过；八旧模块和调用方退役、无转发/双登记，architecture新债务0；搜索、assembly及最终完整门禁 |
+| H2、R1～R4 | 通过；unit1/common1、116项私有集成及最终全量覆盖旧记录补齐、冷热摘要、同数异集、首缺口恢复、取消/清理、独立入队归档和提交后重放；不扩展为生产全市场完整 |
+| H3严格来源完整性 | **失败，exit1**；30随机+18固定/48全代理、pipeline一致、pending0/清理成功，但两固定空名债券使acceptance_complete=false。完整原报告保持，不能称严格整轮通过 |
+| D组织迁移的实采适用判断 | 按首次请求前登记及D-07/6.1独立接受；生产采集表达式/异常/请求/恢复/消息契约不变，逐模块等价、规范输出、身份/顺序、私有恢复及48证券正式E2E俱全。新工具为显式私有维护，不替代生产路径；两公共UI修复另经行为回归和同包桌面验证。此结论只放行组织迁移，不豁免未来实质采集变化 |
+| D安全、容量、类型 | 通过；128项安全/恢复、SQL正向smoke、两份真实新容量且当前绑定匹配、strict mypy6文件；所有原协议/规模/阈值保持 |
+| T3 | 当前最终原冻结完整命令18/18通过；前七轮失败原样保留，原因未确定；不由一次通过推定已修复瞬时超限 |
+| U1 | 同包真实启停/拒绝/恢复完成；共享服务依赖保护生效，原偏好精确恢复 |
+| U2 | 同包帮助正确返回、草稿切页/刷新保留并撤销、滚轮保护/正文滚动、刷新选择与窄窗长名单均完成；只读取消/写命令保留由104项相关回归及完整门禁支持 |
+| U3、A4适用发布项 | 同一b7f452a包、干净身份、异cwd真实连接、正式查询、原设置/偏好和正常关开完成；5 skipped及警告如实单列 |
+| M3、T2的D适用部分 | 路径/用户正文/coverage同步及最终审阅通过，持有人公开契约纳入6文件strict mypy；不扩展为F全部公共边界已完成 |
+| M1/M2、T1及T2的F增量 | 本批不适用；D未实现F定位演练、单源聚合、影响报告、其余公共类型或测试成本优化，不提前计通过 |
+
+**D已验收仅指上述组织迁移和两项UI修复范围；H3严格来源完整性仍失败。** 全部对应命令、退出码、输入及限制见本记录；原始本地窗口树/PNG以`desktop-resumed-*`命名，其摘要/时间见审核输出。后续纯证据提交不改变已发布包身份；须完成文档契约、提交与远程核实后再进入E0。E0～F仍未开始。
+
+纯证据文档的最终检查：`documentation_contract.py review/check`、`verify_documentation.py`（208篇/1451链接/55表）及`verify_database_design.py`均exit0；`.venv/Scripts/python.exe -m pytest -q --tb=short -rs tests/test_documentation_contracts.py tests/test_documentation_review.py tests/test_documentation_sources.py tests/test_storage_help.py --basetemp build/pytest-d-accepted-docs --junitxml build/architecture-d-20261019/accepted-docs.xml`为exit0、35 passed/33.76秒。没有改变产品源码、包内资源或既有验收输入，按纯证据流程处理，不重复发布。
