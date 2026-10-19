@@ -1,6 +1,6 @@
 # E0 SQL归属资源实施与验收记录
 
-状态：最终实现的开发检查、最后文档审阅及35项最终文档回归（25.24秒）通过，正式发布待完成。2026-10-19，北京时间。未发布，不能视为E0已验收；E1尚未开始。
+状态：E0已完成开发验证、正式发布及同包真实桌面验收，2026-10-19，北京时间。最终证据审阅通过；本次结案文档待提交推送，推送核实后才进入E1。D严格H3来源失败保持独立结论。
 
 ## 首轮正式门禁及修正
 
@@ -32,9 +32,9 @@
 | H来源实采 | 不适用本批：无采集器、规范化、网络、消息、业务读写或生命周期变化，映射逐值保持 | 五映射前后等价及DDL不变作为本批替代证据 | D严格来源FAIL仍在，不据此宣称其通过 |
 | T3 | 类型补齐后最终完整协议18/18通过；最终输入首轮news_search p95失败保留；此前输入三轮仅作历史 | 原CLI `measure --test-settings build/architecture-evolution-20261019/mysql-settings.json --baseline docs/evidence/architecture-performance-baseline-2026-10-19.json --output build/architecture-e0-20261019/performance-final2.json` exit0；`compare --report .../performance-final2.json --baseline ... --output .../performance-final2-comparison.json` exit0 | 最终输入`5287ac717081d0d305bc57c37a17691acfce23f30f9bbf1156e86c1941b474ca`；超限根因未确定，未改工具/阈值/系统配置，未删除或合并样本 |
 | M文档 | 设计规范、数据库入口和程序内维护说明已同步；JSON进入审阅追踪 | 最后review/check/verify_documentation各exit0；209篇/1470链接/55表 | 用户操作、表/键、页面和任务身份无变化，coverage不新增虚构关联 |
-| U1/U2/U3 | 尚未正式发布/同包桌面 | 当前仍运行D包 | 必须本批完整门禁、配置保留、异cwd真实连接、正式查询和可见窗口 |
+| U1/U2/U3 | 正式E0包实际可见，单页/采集器启停与依赖保护、未保存草稿、滚轮、稳定选择、正常关闭重开通过 | 下文同包桌面与最终只读复核，exit0；真实窗口27921844→正常退出→1708426 | 本批未改变写命令取消或QueryScope，相关自动回归保留；动态快照不代表来源全量完整 |
 
-所有命令从项目根执行，Python为`.venv/Scripts/python.exe`。尚未执行项不能据旧D结果宣布通过；最终完整输入身份、退出码和新证据在取得后补记。
+所有命令从项目根执行，Python为`.venv/Scripts/python.exe`。上表开发时的“待做”说明保留当时语境，最终门禁及桌面事实以下列新证据为准，不能据旧D结果替代。
 
 类型补齐后同组266公共测试再次通过，42.00秒，`final-common.xml`；同组5项真实隔离恢复再次通过，19.26秒，`final-migration.xml`，各exit0、无skip。设计门禁和精确装配再次exit0；架构`final-architecture.json`无新增债务。初始未标注模块的严格mypy检查exit1/36错误，修复注解及明确边界后本模块/正式7文件均exit0，未禁用严格选项。最终[五映射/DDL/容量绑定复核](architecture-e0-final-equivalence-2026-10-19.json)同时检查额外pyproject与全部实际diff，37个measured绑定仍全部当前且无触及。
 
@@ -49,3 +49,29 @@
 本批新核自有13348实际UUID `a3e8a5eb-cb64-11f1-8ddf-380525361d4e`、端口及任务datadir匹配；仅四个系统库、无其他客户会话。共享Redis实际Stream本次只读pending0，不启动第二归档器、不改RouterProxy。两份config和原偏好SHA保持并记录在本地preflight；不输出配置正文。21:22后新观察工作台45任务、活动0/pending0，Alt+F4正常关闭D包，随后fresh窗口列表为空；本地`desktop-before-close.json`保存树。性能独占期间未运行测试/扫描/构建，工作结束重开。
 
 不执行生产DDL、数据迁移或删除业务。恢复只涉及本批代码/资源及相匹配程序包，不回退业务表；不存在启动自动迁移或并行读写路径。
+
+## 完整正式发布与最终同包验收
+
+第二轮唯一正式入口 `verify-release.ps1` 在干净HEAD `99e69dba436e52eb890f407371beae6c88938274` 完整退出0。run `8ba4515618874a4dae5fbdaba42d04d7`，publication `committed/passed`，未重复发布。完整源输入 `1ece6878aa782c16fc96e72ad43c5b8d9ee02c6ed47848ef0216242872d0c7ae`；EXE `2eb60f909c09c71109a861203fa9dbca55903e784fe9cb650f5a00e059bc4fd2`；安装树 `a772600880f929710a4bc82b632faa0a3ca12272addcab39228c15ba60683d73`。包内 `_internal/sql/business-schema.json` 与正式资源逐字节相等，SHA `30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d`。
+
+24步骤均按正式预期退出，输出完整；其中step-022为首次缺配置生成模板，预期exit1，随后step-023复查exit0，并非隐藏失败。完整pytest **3660 passed、5 skipped、24 warnings，2216.05秒**。五skip均state-unit显式drill opt-in，不计通过；E0未改该实现。四条入口子进程编码警告以 `PYTHONUTF8=0` 重跑确切参数化测试，4 passed/4.97秒、无警告，`entrypoint-encoding.xml`；其余警告保留原日志。环境、42依赖、文档、设计、架构、精确装配、ruff、mypy7、pip、quick隔离容量、四档DPI、PyInstaller、中文空格目录包/配置smoke与正式切换全部通过。
+
+命令 `.venv/Scripts/python.exe build/architecture-e0-20261019/check_published_runtime.py --run 8ba4515618874a4dae5fbdaba42d04d7 --report build/architecture-e0-20261019/post-release.json` exit0；桌面完成、正常退出后以新输出 `post-desktop-final.json` 再次exit0。后者22:46:16只读全局pending0、服务正常退出，核同包清单/EXE/树、两配置、偏好、从 `C:/Windows` 运行正式EXE doctor真实Redis/MySQL连接、股票/新闻及持有人三种browse/detail和第二页。CLI doctor由正式包执行；查询由源码正式API使用安装配置执行，实际可见页面另由下列正式EXE验证。原报告的 `actual_desktop=pending` 原样保留，不篡改为UI通过。[最终只读报告](architecture-e0-post-release-2026-10-19.json)。
+
+实际桌面通过computer-use技能的 `@oai/sky`，使用返回的正式EXE窗口27921844，逐次观察、单次操作并刷新，保存 `build/architecture-e0-20261019/desktop-*.json` 原始树/截图。不是离屏，也没有用开发源码窗口代替：
+
+- 运行状态可见 `Empire 0.1.0 · 99e69dba436e · 干净提交`、两真实服务连接、自动归档及pending0。帮助“数据库职责与查阅→程序资源与维护”新JSON正文可读，滚动条0→250、章节组合框保持。
+- 数据目录按需打开股票5579条/28页/每页200；平安银行选择在刷新后保留。日历实际2026-10月逐日显示交易/休市，不把初始异步空页算通过。
+- 财经快讯37175条快照，22:39新闻标题、北京时间和正文实际可见。前十大股东920296.BJ/2026-10-21保留来源日期超前质量提示；流通股东603833.SH/2026-10-14名单、比例可读；债券688605.SH/2026-08-22先锋转债显示实际排名缺口说明，不补造缺失持有人。这些是现有生产记录的页面可用性抽验，不扩张D实采结论。
+- 单停 `ui.calendar`，采集管理仍有45任务、巨潮日历任务可用；恢复后日历页面可重新创建。单停 `collector.cninfo_calendar`，任务管理/历史仍可读，日历立即采集正式返回“该采集插件当前未启用”；新闻计划仍完成50条。恢复采集器后核状态已启用。未执行日历实采。
+- 对Redis仅点普通停用，正式依赖保护拒绝并列出八项依赖者，Redis仍启用；未点级联。这里操作的是Empire插件，未重启/清空共享Redis服务。
+- 原日历计划每天20:30、重试2、代理优先可回退保持。仅把重试改为未保存草稿3；自动刷新、切帮助再返回仍为3，数字与网络组合框真实滚轮均不改值。撤销后回2，保存/撤销按钮禁用，从未保存测试策略。股票刷新选择、帮助正文滚动已另验。
+- Alt+F4正常关闭后fresh窗口列表无Empire；随后重新启动同一正式EXE，窗口1708426真实可见，工作台45任务、活动0、pending0、连接正常，原新闻计划继续。四个既有失败任务及来源缺口照常显示，未借本批清错或声明已修复。
+
+插件启停按原Runtime.command写入全部159个当前启用项，原偏好仅10个显式true项，导致首次关闭后 `post-desktop-close.json` exit1拒绝偏好差异，该失败报告保留。先核本轮输入、全部159项true、原10项true及实际保存代码；最初过严键交集断言遇到旧 `infra.scheduler` KeyError，未写文件。保留本轮展开文件后用精确SHA守卫恢复原字节，重新执行最终检查exit0。根/dist配置均始终SHA `5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f`；原偏好SHA `8cbc58900b35bf4c8b2f9fff47ed95f67f6e20782734f38a0819ff3c7cadd63e` 恢复且重开后仍相同。未覆盖并发未知输入或更改任何保存任务策略。
+
+最终只读审阅命令 `.venv/Scripts/python.exe build/architecture-e0-20261019/final_audit.py` exit0，[机器审阅报告](architecture-e0-final-evidence-audit-2026-10-19.json)重读24步骤预期退出/完整日志摘要、JUnit逐skip、retained outputs、包资源、最终只读结果、配置/偏好及真实观察文件身份。报告是审阅脚本实际生成，UI结论来自上述实际操作，不把文件存在本身当通过。全部最终实现输入已绑定发布，后续本结案文档提交不冒称被打入旧EXE。
+
+E0适用C/R/T/M/U退出项完成；H因无采集实质变更不适用，D两项严格来源FAIL及既有分红完整容量待解决项不因此消失。E1须在本批文档门禁、提交推送及远程核实后开始。
+
+结案文档最后审阅后，`scripts/documentation_contract.py check` exit0、`scripts/verify_documentation.py` exit0（209篇/1475链接/55表）；四文件文档专项以独立 `build/pytest-e0-close-docs` 执行exit0，**35 passed/28.62秒**，`close-docs.xml`。仅事实文档变化，不重复构建。推送前实际ls-remote仍08fe382，与前批一致。
