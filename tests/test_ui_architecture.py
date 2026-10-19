@@ -1,32 +1,17 @@
 """Guard the UI's plugin boundaries and independently managed page lifetimes."""
-import ast
 import time
 from pathlib import Path
 
 from empire.bootstrap import build_manager
 from empire.core.manager import PluginManager
 from empire.core.runtime import Runtime
+from scripts.ui_architecture_contract import check_ui_architecture
 
 
 def test_ui_modules_remain_small_and_shell_has_no_business_imports():
-    source = Path(__file__).resolve().parents[1] / "src" / "empire"
-    ui_files = [*(source / "desktop").rglob("*.py"), *(source / "plugins" / "ui").rglob("*.py")]
-    for path in ui_files:
-        text = path.read_text(encoding="utf-8")
-        if path.name == "tasks.py":
-            assert '"sina-news"' not in text and '"cninfo-calendar"' not in text
-        assert len(text.splitlines()) <= 350, f"Split UI responsibilities before growing {path.name}"
-        for node in ast.walk(ast.parse(text)):
-            if not isinstance(node, ast.ImportFrom) or not node.module:
-                continue
-            if path.parent.name == "desktop":
-                assert not node.module.startswith("empire.plugins."), path
-            if path.name == "common.py":
-                assert not node.module.startswith("empire.plugins."), path
-            # Shared controls must not be imported from a business page.
-            assert node.module != "empire.plugins.ui.collection", path
-            if node.module == "empire.plugins.ui.catalog":
-                assert all(alias.name == "DataCatalogPage" for alias in node.names), path
+    root = Path(__file__).resolve().parents[1]
+    errors = check_ui_architecture(root)
+    assert not errors, '\n'.join(errors)
 
 
 def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_path, monkeypatch):

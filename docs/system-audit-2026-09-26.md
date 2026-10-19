@@ -1,5 +1,7 @@
 # Empire 全项目系统性检查与分阶段优化报告
 
+2026-10-19 定位维护：新闻源码链接改指 `features/news` 现行文件；下列历史发现、行号说明及当时计数不重写为当前事实。
+
 审查日期：2026-09-26。对象：`D:\project\empire` 当前工作区源码、测试、配置模板、SQL、构建入口与桌面页面。
 
 本报告是审查交付，不是已完成整改的声明。本轮未修改业务实现、数据库结构、生产配置或业务数据，没有启动真实采集、清理错误记录或重启共享服务；只新增报告及无生产连接的界面审计产物。
@@ -180,7 +182,7 @@
 
 ### P2-12　SQL 单线程共享与新闻 OFFSET/全文查询形成扩展瓶颈
 
-**问题/证据（源码确认、EXPLAIN 已核查）**：[mysql_store.py:67](../src/empire/plugins/infra/mysql_store.py#L67) 读、归档及配置写共用单工作线程。[news.py:30](../src/empire/plugins/data/news.py#L30) 每次精确COUNT、正文 `%词%` 和 OFFSET，空搜索也保留LIKE；服务 offset≤100000，但界面只按总数开放下一页，足够多历史数据时会出现可点却拒绝的页面。
+**问题/证据（源码确认、EXPLAIN 已核查）**：[mysql_store.py:67](../src/empire/plugins/infra/mysql_store.py#L67) 读、归档及配置写共用单工作线程。[news.py:30](../src/empire/features/news/query.py#L30) 每次精确COUNT、正文 `%词%` 和 OFFSET，空搜索也保留LIKE；服务 offset≤100000，但界面只按总数开放下一页，足够多历史数据时会出现可点却拒绝的页面。
 
 **优化价值**：避免慢查询拖延归档、设置保存与退出；支持新闻历史自然增长。
 
@@ -200,7 +202,7 @@
 
 ### P2-14　已归档数据浏览不必要地依赖 Redis
 
-**问题/证据（依赖图确认）**：[news.py:10](../src/empire/plugins/data/news.py#L10)、[stocks.py:14](../src/empire/plugins/data/stocks.py#L14)、[trade_calendar.py:13](../src/empire/plugins/data/trade_calendar.py#L13) 将业务浏览与归档确认绑在同一插件，均要求Redis；MySQL正常、Redis未启动时，已归档查询能力也会被阻塞。
+**问题/证据（依赖图确认）**：[news.py:10](../src/empire/features/news/query.py#L10)、[stocks.py:14](../src/empire/plugins/data/stocks.py#L14)、[trade_calendar.py:13](../src/empire/plugins/data/trade_calendar.py#L13) 将业务浏览与归档确认绑在同一插件，均要求Redis；MySQL正常、Redis未启动时，已归档查询能力也会被阻塞。
 
 **优化价值**：提高只读可用性，不改变Redis纯内存策略。
 
@@ -230,7 +232,7 @@
 
 ### P2-17　采集模板重复、核心payload依赖隐式字典契约
 
-**问题/证据（源码/规模统计）**：新闻与日历重复容量等待、入队重试、归档确认和诊断流程，见[news.py:56](../src/empire/plugins/collectors/sina_news.py#L56)、[cninfo_calendar.py:51](../src/empire/plugins/collectors/cninfo_calendar.py#L51)。运行时服务使用Any/getattr；465个函数中111个标注返回类型。archive为422行、flush为106行；任务布局函数148行。行数和注解率不是单独的质量判决，当前UI文件均在350行约束以内。
+**问题/证据（源码/规模统计）**：新闻与日历重复容量等待、入队重试、归档确认和诊断流程，见[news.py:56](../src/empire/features/news/collector.py#L56)、[cninfo_calendar.py:51](../src/empire/plugins/collectors/cninfo_calendar.py#L51)。运行时服务使用Any/getattr；465个函数中111个标注返回类型。archive为422行、flush为106行；任务布局函数148行。行数和注解率不是单独的质量判决，当前UI文件均在350行约束以内。
 
 **优化价值**：减少修一处却漏另一采集器的风险，明确插件调用边界。
 
@@ -378,7 +380,7 @@
 
 ### P3-30　跨页面导航未保留完整业务上下文
 
-**问题/证据（源码确认）**：[stocks.py:54](../src/empire/plugins/ui/stocks.py#L54)、[news.py:43](../src/empire/plugins/ui/news.py#L43)、[trade_calendar.py:44](../src/empire/plugins/ui/trade_calendar.py#L44) 的管理入口跳到通用任务页而不定位对应任务；[catalog.py:87](../src/empire/plugins/ui/catalog.py#L87) 目录重绘默认选择首项。页面还各自维护部分分页/筛选交互。
+**问题/证据（源码确认）**：[stocks.py:54](../src/empire/plugins/ui/stocks.py#L54)、[news.py:43](../src/empire/features/news/ui.py#L43)、[trade_calendar.py:44](../src/empire/plugins/ui/trade_calendar.py#L44) 的管理入口跳到通用任务页而不定位对应任务；[catalog.py:87](../src/empire/plugins/ui/catalog.py#L87) 目录重绘默认选择首项。页面还各自维护部分分页/筛选交互。
 
 **优化价值**：项目增多后无需在跳转后再次找任务，减少重复操作和学习成本。
 

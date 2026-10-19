@@ -12,6 +12,15 @@ from empire.core.config import load_config, user_data_dir
 from empire.core.redaction import RedactingFormatter, Redactor, redact
 
 
+def configure_cli_output() -> None:
+    """Use one encoding for redirected source/frozen CLI output without creating GUI streams."""
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            # Frozen Python can ignore PYTHONIOENCODING; configure the actual streams.
+            reconfigure(encoding="utf-8", errors="backslashreplace")
+
+
 def configure_logging(cfg: dict) -> None:
     handler = RotatingFileHandler(
         user_data_dir() / "empire.log", maxBytes=5_000_000, backupCount=3, encoding="utf-8"
@@ -218,6 +227,7 @@ def package_smoke(screenshot: str | None = None) -> int:
 
 
 def main() -> int:
+    configure_cli_output()
     parser = argparse.ArgumentParser(description="Empire 投资研究桌面")
     parser.add_argument("--config", help="本地 TOML 配置路径")
     commands = parser.add_subparsers(dest="command")

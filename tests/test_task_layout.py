@@ -49,7 +49,7 @@ def settle(app):
 
 
 def test_plugin_defaults_keep_schedule_controls_editable_and_preserve_drafts(task_window):
-    from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS
+    from empire.contracts.task import HISTORICAL_DAY_DEFAULTS
     window, page, app = task_window
     job = page.data['jobs'][0]
     job['default_schedule'] = HISTORICAL_DAY_DEFAULTS.description

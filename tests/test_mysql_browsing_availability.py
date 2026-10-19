@@ -2,7 +2,7 @@ import pytest
 
 from empire.contracts.plugin import PluginManifest
 from empire.core.manager import DependencyError, PluginManager
-from empire.plugins.data.news import NewsDataPlugin
+from empire.features.news.query import NewsDataPlugin
 from empire.plugins.data.stocks import StockDataPlugin
 from empire.plugins.data.trade_calendar import CalendarDataPlugin
 from empire.plugins.infra.archive_confirmation import ArchiveConfirmationPlugin

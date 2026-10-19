@@ -7,12 +7,12 @@ import pytest
 
 from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.plugin import PluginContext
+from empire.contracts.task import TaskContribution
 from empire.core.manager import Registry
 from empire.core.redaction import Redactor
 from empire.plugins.collection.control import (
     CHINA,
     CollectionControl,
-    TaskContribution,
     next_due,
     retain_task_history,
     validate_policy,
@@ -234,7 +234,7 @@ def test_schedule_beijing_and_missed_days_coalesce():
 async def test_plugin_defaults_allow_saved_overrides_and_preserve_them_on_restart(mode):
     from dataclasses import replace
 
-    from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS
+    from empire.contracts.task import HISTORICAL_DAY_DEFAULTS
     control, collector, redis, http = await setup()
     context = control.context
     definition = replace(control.definitions['stocks'], default_schedule=HISTORICAL_DAY_DEFAULTS)

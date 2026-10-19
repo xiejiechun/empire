@@ -139,13 +139,82 @@ def compare(baseline, current, migration, root: Path):
     return failures
 
 
-def main():
+
+ORDER_FIELDS = ('plugins', 'startup', 'tasks', 'datasets', 'pages', 'preparation')
+
+
+def order_snapshot(root: Path):
+    """Capture order separately so the original semantic baseline stays immutable."""
+    from empire.bootstrap import build_manager
+    from empire.plugins.ui.plugin import UiPlugin
+
+    cfg = tomllib.loads((root / 'config/app.example.toml').read_text(encoding='utf-8'))
+    manager = build_manager(cfg)
+    result = {
+        'schema': 1,
+        'plugins': list(manager.entries),
+        'startup': list(manager.order),
+        'tasks': list(manager.entries['collection.control'].plugin.definitions),
+        'datasets': [c.namespace for c in manager.entries['dataset.astock'].plugin.contributions],
+        'pages': [page.id for entry in manager.entries.values()
+                  if isinstance(entry.plugin, UiPlugin) for page in entry.plugin.create_pages()],
+        'preparation': [ident + ':' + item.requirement
+                        for ident, entry in manager.entries.items()
+                        for item in getattr(entry.plugin, 'preparation', ())],
+    }
+    if manager.registry.values or any(entry.context or entry.state != 'STOPPED'
+                                      for entry in manager.entries.values()):
+        raise RuntimeError('Order inspection unexpectedly started a plugin')
+    return result
+
+
+def compare_order(baseline, current):
+    for value in (baseline, current):
+        if (value.get('schema') != 1
+                or set(value) - {'schema', 'origin_commit', *ORDER_FIELDS}
+                or any(not isinstance(value.get(key), list)
+                       or any(not isinstance(item, str) for item in value[key])
+                       or len(value[key]) != len(set(value[key])) for key in ORDER_FIELDS)):
+            raise ValueError('Invalid ordered assembly snapshot')
+    return ['order.' + key for key in ORDER_FIELDS if baseline[key] != current[key]]
+
+
+def validate_maintenance_entrypoints(root: Path, bundles):
+    """Source gate only; packaged runtime assembly must not inspect scripts."""
+    root = root.resolve()
+    scripts = root / 'scripts'
+    failures = []
+    for bundle in bundles:
+        for publisher in bundle.maintenance_publishers:
+            identity = f'{bundle.id}/{publisher.project_id}/{publisher.job_key}'
+            label = identity + ': ' + publisher.entrypoint
+            try:
+                resolved = (root / publisher.entrypoint).resolve(strict=True)
+                if not resolved.is_relative_to(scripts):
+                    failures.append('maintenance entrypoint outside root/scripts: ' + label)
+                elif not resolved.is_file():
+                    failures.append('maintenance entrypoint is not a file: ' + label)
+            except (OSError, RuntimeError):
+                failures.append('missing/unreadable maintenance entrypoint: ' + label)
+    return failures
+
+
+def source_declaration_failures(root: Path):
+    """Inspect the explicit builtin declarations without importing maintenance code."""
+    from empire.features.builtin import builtin_bundles
+
+    cfg = tomllib.loads((root / 'config/app.example.toml').read_text(encoding='utf-8'))
+    return validate_maintenance_entrypoints(root, builtin_bundles(cfg))
+
+
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('snapshot', 'check'))
     parser.add_argument('--output', type=Path)
     parser.add_argument('--baseline', type=Path)
     parser.add_argument('--mapping', type=Path)
-    args = parser.parse_args()
+    parser.add_argument('--order-baseline', type=Path)
+    args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[1]
     current = snapshot(root)
     if args.action == 'snapshot':
@@ -161,6 +230,10 @@ def main():
     baseline = json.loads(args.baseline.read_text(encoding='utf-8'))
     migration = json.loads(args.mapping.read_text(encoding='utf-8')) if args.mapping else {}
     failures = compare(baseline, current, migration, root)
+    failures += source_declaration_failures(root)
+    if args.order_baseline:
+        ordered = json.loads(args.order_baseline.read_text(encoding='utf-8'))
+        failures += compare_order(ordered, order_snapshot(root))
     if failures:
         print('FAIL assembly contract: ' + ', '.join(failures[:30]))
         return 1

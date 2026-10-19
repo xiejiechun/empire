@@ -8,10 +8,12 @@ import sys
 from types import SimpleNamespace
 
 import pytest
+from redis.exceptions import TimeoutError as RedisTimeoutError
 from sqlalchemy import create_engine, event, text
 
 from empire.contracts.dataset import DatasetContribution
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.task import TaskContribution
 from empire.diagnostics.declarations import project_declaration, query_preview
 from empire.diagnostics.project import diagnose_project, isolation, render_report
 from empire.diagnostics.readonly import Budget, DiagnosticLimit, Limits, ReadOnlyMySQL, guard_select
@@ -26,8 +28,7 @@ from empire.diagnostics.redis_evidence import (
     READ_SCRIPTS,
     RedisEvidence,
 )
-from empire.plugins.collection.control import TaskContribution
-from empire.plugins.data.news import NewsDataPlugin
+from empire.features.news.query import NewsDataPlugin
 from empire.plugins.pipeline.archive import ArchivePlugin
 
 CFG = {'redis': {'namespace': 'empire:test:diagnostic', 'password': 'RedisCredential'},
@@ -145,23 +146,72 @@ async def test_project_reads_paused_gap_pending_and_exact_ids_without_mutation(m
         mysql.close()
 
 
-@pytest.mark.parametrize('failure', ['connection', 'timeout'])
+@pytest.mark.parametrize('failure', ['connection', 'driver_timeout', 'timeout'])
 async def test_redis_failure_retains_sql_and_never_retries_or_leaks(manager, database, failure):
-    redis = MemoryRedis()
-    redis.fail, redis.pause = failure == 'connection', failure == 'timeout'
-    limits = Limits(io_seconds=.03, total_seconds=.3)
+    failure_types = {'connection': ConnectionError, 'driver_timeout': RedisTimeoutError,
+                     'timeout': TimeoutError}
+
+    class FailedRedis(MemoryRedis):
+        async def eval(self, script, count, *args):
+            assert script in READ_SCRIPTS
+            self.commands.append((script, count, args))
+            raise failure_types[failure]('redis://someone:RedisCredential@invalid; SQLCredential')
+
+    redis = FailedRedis()
+    # This verifies service independence with the real bounded SQL reader.
+    # SQLite worker scheduling is not required to finish inside the Redis timer.
+    limits = Limits()
     mysql = ReadOnlyMySQL({}, Budget(limits), engine=database[0])
     try:
         result = await diagnose_project(CFG, PROJECT, manager=manager, client=redis,
                                         mysql=mysql, limits=limits)
         assert result['status'] == 'partial'
         assert len(redis.commands) == 1
+        assert result['sections']['errors']['status'] == ('partial' if failure == 'timeout' else 'error')
         assert result['sections']['sql_state']['status'] == 'ok'
         assert result['sections']['query:news.query']['status'] == 'ok'
         assert result['sections']['isolation']['status'] == 'unknown'
+        assert result['budget']['used'] == {'sql': 3, 'redis': COMMAND_COST[LIST_ERROR_SUMMARIES]}
         assert all(secret not in render_report(result) for secret in ('SQLCredential', 'RedisCredential'))
     finally:
         mysql.close()
+
+
+async def test_redis_real_deadline_cancels_inflight_read_and_blocks_followup():
+    entered, cancelled = asyncio.Event(), asyncio.Event()
+
+    class PausedRedis(MemoryRedis):
+        async def eval(self, script, count, *args):
+            assert script in READ_SCRIPTS
+            self.commands.append((script, count, args))
+            entered.set()
+            try:
+                await asyncio.Event().wait()
+            finally:
+                cancelled.set()
+
+    redis = PausedRedis()
+    budget = Budget(Limits(io_seconds=.02))
+    evidence = RedisEvidence(redis, CFG['redis']['namespace'], budget)
+    task = asyncio.create_task(evidence.errors(PROJECT))
+    try:
+        # This is a test deadlock guard, not a performance acceptance threshold.
+        # Assert the production timer completed the task, so the guard itself
+        # cannot be mistaken for a successfully observed Redis timeout.
+        done, pending = await asyncio.wait({task}, timeout=5)
+        assert task in done and not pending
+        with pytest.raises(TimeoutError):
+            task.result()
+        assert entered.is_set() and cancelled.is_set()
+        assert evidence.unavailable
+        with pytest.raises(DiagnosticLimit, match='没有重复连接或重试'):
+            await evidence.control(PROJECT)
+        assert len(redis.commands) == 1
+        assert budget.used == {'sql': 0, 'redis': COMMAND_COST[LIST_ERROR_SUMMARIES]}
+    finally:
+        if not task.done():
+            task.cancel()
+        await asyncio.gather(task, return_exceptions=True)
 
 
 async def test_sql_failure_keeps_redis_errors_and_checkpoint(manager):

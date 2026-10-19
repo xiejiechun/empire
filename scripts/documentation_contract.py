@@ -52,29 +52,61 @@ def declarations(root: Path):
 
 
 def reachable_sources(root: Path, modules: list[str]) -> dict[str, str]:
-    """Bind feature documentation to its local implementation and business imports."""
-    result = {}
+    """Follow finite, static business imports without importing their code.
+
+    Package initializers and their ordinary reexports are source inputs too.
+    Imports in functions/type-only blocks conservatively count as dependencies.
+    Dynamic import policy remains the architecture contract's responsibility.
+    """
+    roots = ('empire.plugins.collectors', 'empire.plugins.data',
+             'empire.plugins.datasets', 'empire.plugins.ui', 'empire.contracts',
+             'empire.features', 'empire.sources')
+    result, seen = {}, set()
     pending = list(modules)
-    seen = set()
-    prefixes = ("empire.plugins.collectors.", "empire.plugins.data.",
-                "empire.plugins.datasets.", "empire.plugins.ui.", "empire.contracts.")
     while pending:
-        module = pending.pop()
+        module = pending.pop().removesuffix('.__init__')
         if module in seen:
             continue
         seen.add(module)
-        name = "src/" + module.replace(".", "/") + ".py"
-        path = root / name
-        if not path.is_file():
+        parts = module.split('.')
+        if not all(part.isidentifier() for part in parts):
+            raise ValueError('Invalid documentation source module: ' + module)
+        base = root / 'src' / Path(*parts)
+        candidates = [path for path in (base.with_suffix('.py'), base / '__init__.py')
+                      if path.is_file()]
+        if len(candidates) > 1:
+            raise ValueError('Ambiguous documentation source module/package: ' + module)
+        if not candidates:
+            # A from-import candidate may be an exported symbol, or an implicit
+            # namespace package; its explicit child module is queued separately.
             continue
-        result[name] = hashlib.sha256(path.read_bytes()).hexdigest()
-        for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
+        path = candidates[0]
+        package = parts if path.name == '__init__.py' else parts[:-1]
+        name = path.relative_to(root).as_posix()
+        contents = path.read_bytes()
+        result[name] = hashlib.sha256(contents).hexdigest()
+        # Importing a child executes each available parent initializer. Include
+        # them even when the original import named only the deepest module.
+        for count in range(1, len(parts)):
+            if (root / 'src' / Path(*parts[:count]) / '__init__.py').is_file():
+                pending.append('.'.join(parts[:count]))
+        for node in ast.walk(ast.parse(contents.decode('utf-8-sig'))):
             imports = []
-            if isinstance(node, ast.ImportFrom) and node.module:
-                imports = [node.module, *(node.module + "." + alias.name for alias in node.names)]
+            if isinstance(node, ast.ImportFrom):
+                if node.level:
+                    if node.level > len(package):
+                        raise ValueError(f'{name}:{node.lineno}: relative import escapes package')
+                    parent = '.'.join(package[:len(package) - node.level + 1])
+                    target = parent + ('.' + node.module if node.module else '')
+                else:
+                    target = node.module or ''
+                imports = [target, *(target + '.' + alias.name for alias in node.names
+                                     if alias.name != '*')]
             elif isinstance(node, ast.Import):
                 imports = [alias.name for alias in node.names]
-            pending.extend(value for value in imports if value.startswith(prefixes))
+            pending.extend(value for value in imports
+                           if any(value == allowed or value.startswith(allowed + '.')
+                                  for allowed in roots))
     return dict(sorted(result.items()))
 
 

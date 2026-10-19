@@ -11,7 +11,7 @@ from empire.contracts.data import make_envelope
 from empire.contracts.stocks import normalize_sina_stock
 from empire.plugins.collection.records import RecordsPlugin
 from empire.plugins.collectors.sina_universe import SinaUniverseCollector, decode_json, parse_count
-from empire.plugins.datasets.astock import DatasetPlugin
+from tests.catalog_factory import builtin_catalog
 
 
 def row(symbol, name="测试股票"):
@@ -75,7 +75,7 @@ class MemoryIngest:
     async def publish_page(self, envelopes, *, job_key, expected_revision, cursor, reservation=None):
         assert expected_revision == self.state["revision"]
         for event in envelopes:
-            DatasetPlugin().normalize(event)
+            builtin_catalog().normalize(event)
         self.events.extend(envelopes)
         self.state = {"revision": expected_revision + 1, "cursor": copy.deepcopy(cursor)}
         return copy.deepcopy(self.state)
@@ -206,7 +206,7 @@ def test_page_contract_rejects_duplicate_symbols():
                  "rows": [row("sz000001"), row("sz000001")]},
     )
     with pytest.raises(ValueError, match="duplicated"):
-        DatasetPlugin().normalize(event)
+        builtin_catalog().normalize(event)
 
 
 async def test_successful_response_fields_are_discarded_before_enqueue():

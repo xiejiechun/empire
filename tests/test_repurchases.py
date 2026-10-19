@@ -18,7 +18,7 @@ from empire.contracts.repurchases import (
     parse,
 )
 from empire.plugins.collectors.eastmoney_repurchase import RepurchaseCollector
-from empire.plugins.datasets.astock import DatasetPlugin
+from tests.catalog_factory import builtin_catalog
 from tests.prefetch_source import prefetch_http
 from tests.test_sina_news import Diagnostics, MemoryIngest
 
@@ -137,5 +137,5 @@ async def test_waiting_stage_resume_no_download_and_catalog_identity():
     item.confirmation.page_status.return_value = {'status': 'complete'}
     await item.execute(baseline_revision=item.ingest.state['revision'])
     assert item.http.request.await_count == calls
-    contribution = DatasetPlugin().datasets[DATASET]
+    contribution = builtin_catalog().datasets[DATASET]
     assert contribution.projects == {'eastmoney-repurchases-v1': 'eastmoney-repurchases'}

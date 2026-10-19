@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from empire.plugins.data.news import NewsDataPlugin
+from empire.features.news.query import NewsDataPlugin
 
 
 @pytest.mark.parametrize("cursor", [

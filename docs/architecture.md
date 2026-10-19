@@ -61,6 +61,10 @@ flowchart TB
 
 ## 3. 插件内核与能力边界
 
+业务按 `features/<业务>` 收拢；新闻是首个样板，入口见 [新闻包](../src/empire/features/news/README.md)。`contracts/task.py` 拥有任务与默认策略类型，`contracts/bundle.py` 拥有纯贡献结构和顺序声明。`features/builtin.py` 明确列出包工厂，`bootstrap.py` 只合并公共服务与包声明、校验归属及现有插件依赖；构造声明不启动服务、不创建页面、不读取外部配置。
+
+同一包可贡献分别启停的采集、查询和 UI 插件，插件/任务/数据集按各自稳定顺序槽合并，不能依赖白名单排列隐式改变启动顺序。任务 provider、项目/job、数据贡献和 preparation 逐项核对归属；无定时任务的北交所维护发布者通过唯一脚本精确声明，源码门禁核查其真实路径。尚未迁移业务仅在 `features/remaining.py` 维护一次声明，后续批次逐步退役它，不新增第二份业务注册表。
+
 内核只处理插件清单、依赖顺序、能力注册、状态和任务资源回收，不解释股票字段或网站规则。插件声明 `requires` / `provides`，由内部白名单注册；不存在动态扫描第三方目录。
 
 模块依赖通过 `scripts/architecture_contract.py check` 按职责和业务归属检查，已有债务逐条登记且只允许减少。`scripts/assembly_contract.py check` 对照冻结声明快照核对插件、任务、数据集、页面及 preparation 语义；实现位置改变须给出精确映射，不能用总数相同代替身份一致。业务包迁移和退出条件见 [模块化实施方案](architecture-evolution-plan.md)。

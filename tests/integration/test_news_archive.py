@@ -10,7 +10,7 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
-from empire.plugins.datasets.news import normalize_source
+from empire.features.news.source import normalize_source
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get("EMPIRE_INTEGRATION") != "1", reason="Set EMPIRE_INTEGRATION=1 explicitly"

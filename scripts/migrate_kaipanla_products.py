@@ -10,9 +10,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from sqlalchemy import inspect, text
 
+from empire.contracts.task import HISTORICAL_DAY_DEFAULTS
 from empire.core.config import load_config
 from empire.core.redaction import Redactor
-from empire.plugins.collection.task_defaults import HISTORICAL_DAY_DEFAULTS
 from empire.plugins.collectors.kaipanla_kinds import PRODUCTS, project
 from empire.plugins.datasets.intraday import digest as old_digest
 from empire.plugins.datasets.intraday import validate as validate_old

@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.data import make_envelope
 from empire.contracts.dataset import DatasetContribution
-from empire.plugins.collectors.sina_news import SinaNewsCollector
+from empire.features.news.collector import SinaNewsCollector
 from empire.plugins.collectors.sina_universe import SinaUniverseCollector
 from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.pipeline.archive import ArchivePlugin

@@ -145,8 +145,9 @@ async def test_failure_does_not_advance_frontier_and_other_product_is_independen
 
 async def test_default_disabled_policy_survives_start_and_explicit_saved_choice():
     from empire.contracts.plugin import PluginContext
+    from empire.contracts.task import TaskContribution
     from empire.core.redaction import Redactor
-    from empire.plugins.collection.control import CollectionControl, TaskContribution
+    from empire.plugins.collection.control import CollectionControl
     from tests.test_collection_control import setup
     old, collector, redis, http = await setup()
     await old.stop()

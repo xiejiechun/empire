@@ -1,97 +1,14 @@
-"""Sina flash-news business fields and idempotent historical storage."""
+"""Canonical news envelopes and the sole idempotent SQL archive mapping."""
 import json
-import re
 from datetime import UTC, datetime
-from html.parser import HTMLParser
-from urllib.parse import urlsplit
 
 from sqlalchemy import bindparam, text
 
-from empire.contracts.archive_version import ArchiveVersion
-from empire.core.time import CHINA, mysql_time
+from empire.core.time import mysql_time
+from empire.features.news.contract import DATASETS as DATASETS
+from empire.features.news.contract import FINGERPRINT_NAMESPACE, news_id
+from empire.features.news.contract import FINGERPRINT_VERSION as FINGERPRINT_VERSION
 from empire.plugins.infra.collection_state import confirmed_page
-
-DATASETS = {"news.flash.page"}
-FINGERPRINT_NAMESPACE = "news"
-FINGERPRINT_VERSION = ArchiveVersion(("utc", "utc"), observed_index=1, source_indices=(0,))
-
-
-class PlainText(HTMLParser):
-    def __init__(self):
-        super().__init__(convert_charrefs=True)
-        self.parts = []
-        self.hidden = 0
-
-    def handle_starttag(self, tag, attrs):
-        if tag in ("script", "style"):
-            self.hidden += 1
-        elif tag in ("br", "p", "div") and not self.hidden:
-            self.parts.append("\n")
-
-    def handle_endtag(self, tag):
-        if tag in ("script", "style"):
-            self.hidden = max(0, self.hidden - 1)
-        elif tag in ("p", "div") and not self.hidden:
-            self.parts.append("\n")
-
-    def handle_data(self, value):
-        if not self.hidden:
-            self.parts.append(value)
-
-
-def news_id(value):
-    if isinstance(value, bool) or not re.fullmatch(r"[1-9][0-9]{0,18}", str(value)):
-        raise ValueError("新闻 ID 必须是正整数")
-    result = int(value)
-    if result > 9223372036854775807:
-        raise ValueError("新闻 ID 超出支持范围")
-    return result
-
-
-def source_time(value):
-    date = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
-    if date.year < 2000:
-        raise ValueError("新闻来源时间无效")
-    return date.replace(tzinfo=CHINA).astimezone(UTC).isoformat()
-
-
-def normalize_source(row):
-    if not isinstance(row, dict):
-        raise ValueError("新闻条目必须是对象")
-    ident = news_id(row.get("id"))
-    raw = row.get("rich_text")
-    if not isinstance(raw, str) or len(raw.encode()) > 200000:
-        raise ValueError("新闻正文缺失或过大")
-    parser = PlainText()
-    parser.feed(raw)
-    # HTMLParser may retain trailing plain text while an ampersand could still
-    # begin a character reference (for example, "H&M").  Closing the parser
-    # flushes that valid text before we decide whether the article is empty.
-    parser.close()
-    content = "\n".join(line.strip() for line in "".join(parser.parts).splitlines() if line.strip())
-    if not content:
-        raise ValueError("新闻正文为空，不推进该页断点")
-    tags = row.get("tag", [])
-    if not isinstance(tags, list) or len(tags) > 32:
-        raise ValueError("新闻分类字段无效")
-    normalized_tags = []
-    for tag in tags:
-        if not isinstance(tag, dict) or not isinstance(tag.get("name"), str) or len(tag["name"]) > 100:
-            raise ValueError("新闻分类名称无效")
-        normalized_tags.append({"id": str(news_id(tag.get("id"))), "name": tag["name"]})
-    url = row.get("docurl") or "https://finance.sina.com.cn/7x24/"
-    parsed = urlsplit(url)
-    host = parsed.hostname or ""
-    if (len(url) > 2048 or parsed.scheme not in ("http", "https") or parsed.username
-            or not any(host == domain or host.endswith("." + domain) for domain in ("sina.com.cn", "sina.cn"))):
-        raise ValueError("新闻来源链接无效")
-    title_match = re.match(r"【([^】]+)】", content)
-    published = source_time(row.get("create_time"))
-    updated = source_time(row.get("update_time") or row.get("create_time"))
-    return {"news_id": ident, "title": (title_match.group(1) if title_match else content.splitlines()[0])[:256],
-            "content": content, "published_at": published, "source_updated_at": updated,
-            "is_important": row.get("is_focus") in (1, "1") or any(t["id"] == "9" for t in normalized_tags),
-            "tags": normalized_tags, "url": url}
 
 
 def normalize(envelope):

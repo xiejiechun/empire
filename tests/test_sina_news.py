@@ -5,11 +5,11 @@ import httpx
 import pytest
 
 from empire.contracts.download import NEWS_RESPONSE
+from empire.features.news.collector import SinaNewsCollector
+from empire.features.news.source import API_URL, normalize_source, parse_feed
 from empire.plugins.collection.records import RecordsPlugin
-from empire.plugins.collectors.sina_news import API_URL, SinaNewsCollector, parse_feed
-from empire.plugins.datasets.astock import DatasetPlugin
-from empire.plugins.datasets.news import normalize_source
 from empire.plugins.infra.resources import ByteBudget
+from tests.catalog_factory import builtin_catalog
 
 
 def raw_row(ident, content="【市场快讯】黄金 &amp; 外汇<br>第二行", **extra):
@@ -38,7 +38,7 @@ class MemoryIngest:
 
     async def publish_page(self, events, *, job_key, expected_revision, cursor, reservation=None):
         for event in events:
-            DatasetPlugin().normalize(event)
+            builtin_catalog().normalize(event)
         self.events.extend(events)
         return await self.advance_checkpoint(job_key=job_key, expected_revision=expected_revision, cursor=cursor)
 

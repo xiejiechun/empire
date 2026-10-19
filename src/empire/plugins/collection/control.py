@@ -4,7 +4,6 @@ import asyncio
 import copy
 import json
 import time
-from dataclasses import dataclass
 from datetime import datetime, timedelta
 from uuid import uuid4
 
@@ -14,7 +13,6 @@ from empire.contracts.request_retry import MAX_REQUEST_RETRIES
 from empire.core.identity import safe_project_id
 from empire.core.time import CHINA
 from empire.plugins.collection.progress import display_snapshot
-from empire.plugins.collection.task_defaults import TaskDefaults
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
 from empire.plugins.infra.settings import SettingsStore
 
@@ -31,23 +29,6 @@ def retain_task_history(records):
             retained.append(record)
             counts[ident] = count + 1
     return retained
-
-
-@dataclass(frozen=True)
-class TaskContribution:
-    id: str
-    name: str
-    capability: str
-    rate_group: str
-    description: str
-    interval_seconds: int = 86400
-    category: str = "其他"
-    source_name: str = ""
-    parallel_downloads: bool = False
-    default_enabled: bool = True
-    fresh_description: str = "创建新批次；已归档数据按对应业务规则保留。"
-    default_schedule: TaskDefaults | None = None
-    unit_name: str = "个单元"
 
 
 def validate_policy(value):

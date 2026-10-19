@@ -18,12 +18,12 @@ from empire.core.config import load_config
 from empire.core.manager import Registry
 from empire.core.redaction import Redactor
 from empire.plugins.collection.records import RecordsPlugin
-from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.infra.http import HttpService
 from empire.plugins.infra.mysql_store import MySQLPlugin
 from empire.plugins.infra.redis_store import RedisPlugin
 from empire.plugins.pipeline.archive import ArchivePlugin
 from empire.plugins.pipeline.ingest import BackpressureError, IngestPlugin, StaleCheckpointError
+from tests.catalog_factory import builtin_catalog
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get("EMPIRE_INTEGRATION") != "1", reason="Set EMPIRE_INTEGRATION=1 explicitly"
@@ -37,7 +37,7 @@ async def live():
     cfg["redis"]["namespace"] = f"empire:test:{token}"
     redis = RedisPlugin(cfg["redis"])
     mysql = MySQLPlugin(cfg["mysql"])
-    catalog = DatasetPlugin()
+    catalog = builtin_catalog()
     archive = ArchivePlugin({"interval_seconds": 3600, "batch_size": 20})
     ingest = IngestPlugin(cfg["ingest"])
     registry = Registry()

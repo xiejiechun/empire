@@ -380,7 +380,7 @@
     },
     {
       "owner": "application",
-      "reason": "应用入口和静态装配：集中构造数据集贡献，不执行采集",
+      "reason": "通用数据目录消费显式贡献，不再内置具体业务默认清单",
       "role": "dataset_registry",
       "modules": [
         "empire.plugins.datasets.astock"
@@ -522,7 +522,6 @@
         "empire.plugins.collection.record_query",
         "empire.plugins.collection.records",
         "empire.plugins.collection.rules",
-        "empire.plugins.collection.task_defaults",
         "empire.plugins.collection.unit_prefetch"
       ]
     },
@@ -1141,7 +1140,7 @@
       "reason": "财经新闻：业务页面和展示状态",
       "role": "ui",
       "modules": [
-        "empire.plugins.ui.news"
+        "empire.features.news.ui"
       ]
     },
     {
@@ -1149,7 +1148,7 @@
       "reason": "财经新闻：归档映射、内容比较及校验",
       "role": "dataset",
       "modules": [
-        "empire.plugins.datasets.news"
+        "empire.features.news.dataset"
       ]
     },
     {
@@ -1157,7 +1156,7 @@
       "reason": "财经新闻：正式查询或准备读取实现",
       "role": "query",
       "modules": [
-        "empire.plugins.data.news"
+        "empire.features.news.query"
       ]
     },
     {
@@ -1165,7 +1164,7 @@
       "reason": "财经新闻：采集生命周期、入队和归档确认",
       "role": "collector",
       "modules": [
-        "empire.plugins.collectors.sina_news"
+        "empire.features.news.collector"
       ]
     },
     {
@@ -1635,6 +1634,64 @@
       "modules": [
         "empire.plugins.collectors.tdx_unlocks"
       ]
+    },
+    {
+      "owner": "kernel",
+      "role": "contract",
+      "modules": [
+        "empire.contracts.task",
+        "empire.contracts.bundle"
+      ],
+      "reason": "纯任务、业务包与有序贡献声明"
+    },
+    {
+      "owner": "application",
+      "role": "package",
+      "modules": [
+        "empire.features"
+      ],
+      "reason": "显式内部业务包目录"
+    },
+    {
+      "owner": "application",
+      "role": "composition",
+      "modules": [
+        "empire.features.builtin",
+        "empire.features.remaining"
+      ],
+      "reason": "唯一白名单聚合与尚未迁移业务的唯一声明出处"
+    },
+    {
+      "owner": "news",
+      "role": "package",
+      "modules": [
+        "empire.features.news"
+      ],
+      "reason": "财经新闻业务包入口"
+    },
+    {
+      "owner": "news",
+      "role": "composition",
+      "modules": [
+        "empire.features.news.bundle"
+      ],
+      "reason": "新闻现有声明、归属与稳定装配顺序"
+    },
+    {
+      "owner": "news",
+      "role": "contract",
+      "modules": [
+        "empire.features.news.contract"
+      ],
+      "reason": "新闻身份、ID与版本规范"
+    },
+    {
+      "owner": "news",
+      "role": "parser",
+      "modules": [
+        "empire.features.news.source"
+      ],
+      "reason": "无I/O的新浪新闻来源响应解析"
     }
   ],
   "feature_layouts": [

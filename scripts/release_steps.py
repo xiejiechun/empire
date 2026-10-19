@@ -21,7 +21,9 @@ def verify(runner):
     runner.command([py, root / 'scripts/verify_database_design.py'])
     runner.command([py, root / 'scripts/architecture_contract.py', 'check'])
     runner.command([py, root / 'scripts/assembly_contract.py', 'check', '--baseline',
-                    root / 'docs/evidence/assembly-baseline-2026-10-19.json'])
+                    root / 'docs/evidence/assembly-baseline-2026-10-19.json',
+                    '--mapping', root / 'docs/assembly-migrations.json',
+                    '--order-baseline', root / 'docs/evidence/assembly-order-baseline-2026-10-19.json'])
     runner.command([py, '-m', 'ruff', 'check', 'src', 'tests', 'scripts'])
     runner.command([py, '-m', 'mypy'])
     runner.command([py, '-m', 'pip', 'check'])

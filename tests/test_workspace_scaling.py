@@ -10,9 +10,10 @@ from test_collection_ui import Runtime as CollectionRuntime  # noqa: E402
 from test_collection_ui import snapshot  # noqa: E402
 from test_navigation import Runtime  # noqa: E402
 
+from empire.contracts.task import TaskContribution  # noqa: E402
 from empire.contracts.ui import PageContribution  # noqa: E402
 from empire.desktop.window import MainWindow  # noqa: E402
-from empire.plugins.collection.control import CollectionControl, TaskContribution  # noqa: E402
+from empire.plugins.collection.control import CollectionControl  # noqa: E402
 from empire.plugins.ui.catalog import DataCatalogPage  # noqa: E402
 from empire.plugins.ui.collection_views.tasks import TasksPage  # noqa: E402
 

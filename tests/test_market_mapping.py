@@ -135,7 +135,7 @@ def test_unregistered_actual_dataset_cannot_bypass_design_gate(monkeypatch):
     from types import SimpleNamespace
 
     import scripts.verify_database_design as gate
-    actual = gate.DatasetPlugin().datasets
+    actual = gate.builtin_catalog().datasets
     monkeypatch.setattr(gate, 'DatasetPlugin', lambda: SimpleNamespace(datasets={**actual, 'new.unregistered': object()}))
     with pytest.raises(ValueError, match='正式数据贡献'):
         gate.verify(Path(__file__).resolve().parents[1])

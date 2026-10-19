@@ -8,6 +8,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from empire.contracts.business_schema import DATASET_TABLE_GROUPS, PRIMARY_KEYS
+from empire.features.builtin import dataset_contributions
 from empire.plugins.datasets.astock import DatasetPlugin
 
 LEGACY_BASELINES = frozenset({
@@ -34,7 +35,8 @@ def verify(root):
     tables = set(re.findall(r'CREATE TABLE IF NOT EXISTS (\w+)', schema.decode()))
     if tables != set(manifest['tables']):
         raise ValueError('DDL与结构契约表集合不一致')
-    if set(DatasetPlugin().datasets) != set(DATASET_TABLE_GROUPS):
+    if set(DatasetPlugin(dataset_contributions({
+            'redis': {}, 'mysql': {}, 'archive': {}, 'ingest': {}, 'rate_groups': {}})).datasets) != set(DATASET_TABLE_GROUPS):
         raise ValueError('正式数据贡献与业务表归属登记不一致')
     owned = {table for group in DATASET_TABLE_GROUPS.values() for table in group}
     if tables != owned | {'app_setting', 'collection_state'}:

@@ -201,7 +201,7 @@ def test_registration_schedule_isolation_and_mysql_only_browser():
     from empire.bootstrap import build_manager
     from empire.contracts.data import UnsupportedSchema
     from empire.contracts.listing_status import PROJECT
-    from empire.plugins.datasets.astock import DatasetPlugin
+    from tests.catalog_factory import builtin_catalog
     cfg = dict(redis={}, mysql={}, archive={}, ingest={}, rate_groups={})
     manager = build_manager(cfg)
     task = manager.entries['collection.control'].plugin.definitions[PROJECT]
@@ -209,7 +209,7 @@ def test_registration_schedule_isolation_and_mysql_only_browser():
     q = manager.entries['data.listing_status'].plugin
     assert q.manifest.requires == ('mysql.store',)
     e = envelope().model_copy(update={'schema_version': 2})
-    catalog = DatasetPlugin()
+    catalog = builtin_catalog()
     assert catalog.schema_owner(e) == PROJECT
     with pytest.raises(UnsupportedSchema):
         catalog.mapping(e)

@@ -19,6 +19,13 @@ def test_verification_requires_all_checks_and_stops_on_failure(tmp_path, failed)
         words = [str(v) for v in args]
         text = ' '.join(words)
         calls.append(text)
+        if 'assembly_contract.py' in text:
+            assert words == [
+                'python', str(tmp_path / 'scripts/assembly_contract.py'), 'check',
+                '--baseline', str(tmp_path / 'docs/evidence/assembly-baseline-2026-10-19.json'),
+                '--mapping', str(tmp_path / 'docs/assembly-migrations.json'),
+                '--order-baseline', str(tmp_path / 'docs/evidence/assembly-order-baseline-2026-10-19.json'),
+            ]
         if failed and ((failed == 'pytest' and '-m pytest' in text)
                        or (failed == 'capacity' and 'measure_capacity.py' in text)
                        or (failed == 'architecture' and 'architecture_contract.py' in text)

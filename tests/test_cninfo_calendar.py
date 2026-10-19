@@ -9,8 +9,8 @@ import pytest
 from empire.contracts.download import CALENDAR_RESPONSE
 from empire.plugins.collectors.cninfo_calendar import API_URL, CninfoCalendarCollector, parse_month
 from empire.plugins.data.trade_calendar import CalendarDataPlugin
-from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.datasets.trade_calendar import month_dates, months_between
+from tests.catalog_factory import builtin_catalog
 from tests.prefetch_source import prefetch_http
 
 
@@ -78,7 +78,7 @@ class MemoryIngest:
 
     async def publish_page(self, events, *, job_key, expected_revision, cursor, reservation=None):
         for event in events:
-            DatasetPlugin().normalize(event)
+            builtin_catalog().normalize(event)
         self.events.extend(events)
         return await self.advance_checkpoint(job_key=job_key, expected_revision=expected_revision, cursor=cursor)
 

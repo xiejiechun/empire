@@ -1,4 +1,4 @@
-"""Newest-window refresh and durable ID-anchored catch-up of Sina's public flash feed."""
+"""Newest-window refresh and ID-anchored Sina catch-up."""
 import asyncio
 from datetime import UTC, datetime
 from functools import partial
@@ -8,6 +8,8 @@ from uuid import uuid4
 from empire.contracts.collector import NewsRunResult
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.features.news.contract import DATASET, JOB, PROJECT, SOURCE
+from empire.features.news.source import API_URL, PAGE_SIZE, parse_feed
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -15,29 +17,6 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
-from empire.plugins.datasets.news import news_id, normalize_source
-
-API_URL = "https://app.cj.sina.com.cn/api/news/pc"
-PAGE_SIZE = 50
-
-
-def parse_feed(response, before_id=0):
-    body = response.json()
-    result = body.get("result") if isinstance(body, dict) else None
-    if not isinstance(result, dict) or result.get("status", {}).get("code") != 0:
-        raise ValueError("新浪财经新闻接口业务状态异常")
-    feed = result.get("data", {}).get("feed")
-    if not isinstance(feed, dict) or not isinstance(feed.get("list"), list):
-        raise ValueError("新浪财经新闻缺少 feed.list")
-    rows = [normalize_source(row) for row in feed["list"]]
-    if len(rows) > PAGE_SIZE:
-        raise ValueError("新浪财经新闻返回页大小超出请求范围")
-    ids = [row["news_id"] for row in rows]
-    if any(a <= b for a, b in zip(ids, ids[1:])) or (ids and before_id and ids[0] >= before_id):
-        raise ValueError("新浪新闻 ID 重复、逆序或分页游标未前进")
-    if ids and (news_id(feed.get("min_id")) != ids[-1] or news_id(feed.get("max_id")) != ids[0]):
-        raise ValueError("新浪新闻分页边界与条目 ID 不一致")
-    return rows
 
 
 class SinaNewsCollector:
@@ -48,9 +27,9 @@ class SinaNewsCollector:
 
     def __init__(self, settings=None):
         self.settings = settings or {}
-        self.job_key = "sina-news-v1"
-        self.project_id = "sina-news"
-        self.source = "sina"
+        self.job_key = JOB
+        self.project_id = PROJECT
+        self.source = SOURCE
         self.http = self.ingest = self.confirmation = self.records = None
         self.request_retries = 2
         self.stats = {"status": "stopped", "collected": 0}
@@ -113,7 +92,7 @@ class SinaNewsCollector:
                                    "upper_id": cursor["upper_id"] or (rows[0]["news_id"] if rows else 0),
                                    "collected": cursor["collected"] + len(rows),
                                    "phase": "awaiting_archive" if finished else "fetch"}
-                        event = make_envelope(source=self.source, dataset="news.flash.page", job_key=self.job_key,
+                        event = make_envelope(source=self.source, dataset=DATASET, job_key=self.job_key,
                             business_key=f"{cursor['batch_id']}:{page}", run_id=cursor["batch_id"], batch_id=cursor["batch_id"],
                             payload={"page": page, "rows": rows}).model_copy(update={"source_url": API_URL})
                         read.close()

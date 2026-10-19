@@ -13,12 +13,12 @@ from test_stock_archive import stock_database as stock_database
 
 from empire.contracts.data import UnsupportedSchema, make_envelope
 from empire.core.config import load_config
-from empire.plugins.datasets.astock import DatasetPlugin
-from empire.plugins.datasets.news import normalize_source
+from empire.features.news.source import normalize_source
 from empire.plugins.datasets.trade_calendar import month_dates
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.pipeline.archive import ArchivePlugin
 from empire.plugins.pipeline.archive_queue import SCAN_WINDOW
+from tests.catalog_factory import builtin_catalog
 
 pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get("EMPIRE_INTEGRATION") != "1", reason="Explicit integration opt-in required")]
@@ -30,7 +30,7 @@ async def archive_case():
     prefix = "empire:test:" + uuid4().hex
     worker = ArchivePlugin({"work_max_units": 3, "work_time_ms": 5000, "scan_time_ms": 5000})
     worker.redis = SimpleNamespace(client=client, prefix=prefix, stream=prefix + ":stream")
-    worker.catalog = DatasetPlugin()
+    worker.catalog = builtin_catalog()
     worker.records = SimpleNamespace(add_error=AsyncMock(), add_archive=AsyncMock())
     worker.mysql = SimpleNamespace(read=AsyncMock(return_value={}))
     worker.states = SimpleNamespace(read=None)

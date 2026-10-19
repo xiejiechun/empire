@@ -15,12 +15,12 @@ from empire.plugins.collectors.tdx_suspensions import (
     parse_page,
 )
 from empire.plugins.data.suspensions import SuspensionDataPlugin, periods_between
-from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.datasets.suspensions import (
     classify_suspension,
     event_identity,
     normalize_source_row,
 )
+from tests.catalog_factory import builtin_catalog
 from tests.prefetch_source import prefetch_http
 
 COLS = ["sc", "code", "name", "fprq", "sj", "sjcontent", "tprq"]
@@ -115,7 +115,7 @@ def test_archive_batch_cannot_cross_the_declared_month():
                  "rows": []},
     )
     with pytest.raises(ValueError, match="单一自然月"):
-        DatasetPlugin().normalize(event)
+        builtin_catalog().normalize(event)
 
 
 def test_suspension_type_and_resume_merge_rules():
@@ -249,7 +249,7 @@ class MemoryIngest:
 
     async def publish_page(self, events, *, job_key, expected_revision, cursor, reservation=None):
         for event in events:
-            DatasetPlugin().normalize(event)
+            builtin_catalog().normalize(event)
         self.events.extend(events)
         return await self.advance_checkpoint(job_key=job_key, expected_revision=expected_revision,
                                              cursor=cursor)
