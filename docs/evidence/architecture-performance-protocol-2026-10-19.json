@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "protocol_id": "architecture-cd-local-v1",
+  "registered_before_measurement": "2026-10-19",
+  "purpose": "新闻与股东组织迁移前后的同机固定负载回归，不测网站吞吐或实际桌面启动",
+  "cold_process": {"warmup": 1, "repetitions": 7},
+  "warm": {"warmup": 3, "repetitions": 15},
+  "statistics": ["median_ms", "p95_ms"],
+  "percentile": "sorted linear interpolation at (n-1)*0.95",
+  "acceptance": {
+    "relative_multiplier": 1.25,
+    "rule": "每项median和p95均须<=max(基线值*1.25,基线值+对应绝对噪声底限)；采用二者较宽者，不测后调阈值",
+    "absolute_noise_ms": {"cold": 100.0, "assembly": 2.0, "query": 1.0, "ui": 5.0}
+  },
+  "fixture": {
+    "version": 1,
+    "news_rows": 20000,
+    "news_page_size": 50,
+    "news_content_characters": 512,
+    "holder_securities": 100,
+    "holder_periods": 10,
+    "holder_kinds": ["top_holders", "float_holders", "bond_holders"],
+    "holder_current_members": 10,
+    "holder_exited_members": 2,
+    "holder_page_size": 20,
+    "fixed_datetime": "2026-01-01T09:00:00"
+  },
+  "mysql": {
+    "host": "127.0.0.1",
+    "port": 13348,
+    "datadir_relative": "build/architecture-evolution-20261019/mysql-data",
+    "schema_prefix": "empire_archbench_",
+    "schema_suffix": "_test",
+    "tables": ["finance_news", "holder_report", "holder_member"],
+    "innodb_flush_log_at_trx_commit": 2,
+    "query_lane_workers": 2,
+    "query_lane_waiting": 16,
+    "concurrent_calls": 1
+  },
+  "ui": {
+    "platform": "offscreen",
+    "scale_factor": "1",
+    "width": 1280,
+    "height": 800,
+    "style": "production desktop_style",
+    "work": "每样本新建正式PageContribution页面；注入固定正式查询结果；布局并绘制QImage，关闭及回收；不启动后台插件或来源请求"
+  },
+  "metrics": {
+    "cold_declarations": "新Python进程导入bootstrap并构造未启动manager，包含进程启动/退出；不清除OS文件缓存",
+    "assembly": "已导入进程内build_manager示例配置装配，不启动服务",
+    "news_first": "正式list_news首屏50条，包含总数",
+    "news_next": "正式list_news固定第二屏50条，固定anchor和before，不再计数",
+    "news_search": "正式list_news关键词、重点筛选及总数",
+    "holders_browse": "三个正式holder查询依次各20份报告，共60条",
+    "holders_detail": "三个正式holder详情依次各1份报告，共36名成员",
+    "news_ui": "正式新闻页面创建、50条表格及正文渲染、绘制和回收",
+    "holders_ui": "三个正式股东页面依次创建、各12名成员详情渲染、绘制和回收"
+  },
+  "environment_rules": [
+    "同机器标识、CPU、OS、Python、依赖版本与requirements.lock；环境不同拒绝性能结论",
+    "固定协议、基准脚本和fixture摘要；schema DDL摘要、MySQL版本/缓冲/事务刷盘设置相同",
+    "显式隔离测试设置；验证本机13348及datadir后仅创建UUID私有schema；结束精确删除本次schema",
+    "使用发布互斥锁，父任务避免同期门禁/构建；顺序单请求，无来源HTTP、Redis或生产数据库",
+    "正式Empire桌面须正常关闭，避免后台新闻等计划负载；迁移后重测保持同等无桌面采集负载，脚本核实没有活动Empire进程",
+    "运行前后src和sql输入摘要相同；源代码变化使该轮无效；不得挑选最快样本或删异常样本",
+    "比较必须逐项满足结果内容摘要与统计阈值；失败须修复、缩减范围或在相同冻结条件下完整重测，不改阈值"
+  ],
+  "limits": [
+    "冷进程不等于冷磁盘，不包含真实窗口、自动采集启动或数据库连接建立",
+    "热SQL仅固定规模、回环私有MySQL和单请求负载，不代表生产全量、并发或冷页性能",
+    "离屏QImage渲染不代表显示器、GPU合成、真实桌面响应或可访问性验收",
+    "隔离实例flush_log_at_trx_commit=2，未测试断电持久性；数据准备和建库耗时不计入查询延迟",
+    "有限重复次数的p95仅是本轮样本统计；保留全部样本，并使用预登记的绝对噪声底限"
+  ]
+}
