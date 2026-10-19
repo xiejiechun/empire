@@ -6,6 +6,8 @@
 
 正式字段/键字典只维护在 [离线说明正文](../src/empire/plugins/ui/storage_reference.md)，程序直接加载同一资源。本文是仓库导航，不复制另一份字段字典。MySQL 类型/主键/索引/约束与 [现行 DDL](../sql/schema.sql) 逐表核对；Redis 命名与实际源码逐项关联，见 [覆盖登记](documentation-coverage.json)。
 
+业务表归属、来源许可和查询主键的机器登记见 [SQL 归属资源](../sql/business-schema.json)。它与 [物理结构契约](../sql/schema-contract.json) 分工：前者保留数据集表组及显式维护表顺序，后者保存字段、索引和约束。维护表清单不等于全部物理表，不能用 DDL 全集自动补齐。公共存储和业务查询读取同一归属资源，新增或调整表组通过 [设计门禁](../scripts/verify_database_design.py) 核对；不会自动改库。
+
 ## 文档分工
 
 | 内容 | 正式位置 | 同步负责人 |

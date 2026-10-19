@@ -26,6 +26,7 @@ def product_sources(root: Path) -> dict[str, str]:
     files.add(root / RULES)
     files.update((root / "scripts").glob("*.py"))
     files.update((root / "sql").rglob("*.sql"))
+    files.update((root / "sql").rglob("*.json"))
     files.update(root / item for item in ("config/app.example.toml", "Empire.spec"))
     return {path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in sorted(files)}
@@ -85,6 +86,9 @@ def reachable_sources(root: Path, modules: list[str]) -> dict[str, str]:
         name = path.relative_to(root).as_posix()
         contents = path.read_bytes()
         result[name] = hashlib.sha256(contents).hexdigest()
+        if module == 'empire.contracts.business_schema':
+            resource = 'sql/business-schema.json'
+            result[resource] = hashlib.sha256((root / resource).read_bytes()).hexdigest()
         # Importing a child executes each available parent initializer. Include
         # them even when the original import named only the deepest module.
         for count in range(1, len(parts)):

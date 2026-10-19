@@ -59,7 +59,7 @@ def test_equal_total_with_wrong_internal_block_boundary_is_rejected():
 
 def test_missing_design_and_changed_ddl_fail_offline_gate(tmp_path):
     root = Path(__file__).resolve().parents[1]
-    for relative in ('sql/schema.sql', 'sql/schema-contract.json', 'docs/database-design-cards.json'):
+    for relative in ('sql/schema.sql', 'sql/schema-contract.json', 'sql/business-schema.json', 'docs/database-design-cards.json'):
         target = tmp_path/relative
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((root/relative).read_bytes())
@@ -107,7 +107,7 @@ def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
     cards = json.loads((root/'docs/database-design-cards.json').read_text('utf-8'))
     evidence_path = cards['datasets']['kaipanla.trades.day']['capacity']['evidence']
     evidence = json.loads((root/evidence_path).read_text('utf-8'))
-    paths = {'sql/schema.sql', 'sql/schema-contract.json', 'docs/database-design-cards.json', evidence_path, *evidence['bindings']}
+    paths = {'sql/schema.sql', 'sql/schema-contract.json', 'sql/business-schema.json', 'docs/database-design-cards.json', evidence_path, *evidence['bindings']}
     for card in cards['datasets'].values():
         paths.update([card['dictionary'], *card['tests']])
         if card['capacity']['status'] == 'measured':

@@ -1,0 +1,563 @@
+{
+  "schema": 1,
+  "fixed_sources": {
+    "capital_funding": "ths",
+    "capital_project": "ths",
+    "capital_transaction": "ths",
+    "capital_equity_summary": "ths",
+    "capital_equity_position": "ths",
+    "capital_ipo": "ths",
+    "capital_encumbrance": "ths",
+    "capital_release": "ths",
+    "restricted_share_unlock_industry": "tdx",
+    "restricted_share_unlock": "tdx",
+    "restricted_share_unlock_detail": "tdx",
+    "shareholder_change": "tdx",
+    "holder_report": "ths",
+    "holder_member": "ths",
+    "earnings_forecast": "tdx",
+    "earnings_quick": "tdx",
+    "earnings_disclosure": "tdx",
+    "earnings_report": "tdx",
+    "shareholder_count": "tdx",
+    "stock_repurchase_plan": "eastmoney",
+    "trading_rule_value": "reviewed_rules",
+    "trading_rule_citation": "reviewed_rules",
+    "index_daily_price": "ths",
+    "index_price_year": "ths",
+    "security_code_alias": "bse",
+    "stock_index": "ths",
+    "stock_index_member": "ths",
+    "security_listing_event": "tdx",
+    "stock_listing": "ths",
+    "stock_market_day": "kaipanla",
+    "stock_intraday_trend": "kaipanla",
+    "stock_opening_auction": "kaipanla",
+    "stock_minute_volume": "kaipanla",
+    "stock_intraday_trade_block": "kaipanla",
+    "stock_minute_entrust": "kaipanla",
+    "stock_large_order_trend": "kaipanla",
+    "stock_daily_quote": "kaipanla",
+    "stock_daily_quote_level": "kaipanla",
+    "stock": "sina",
+    "industry": "ths",
+    "industry_member": "ths",
+    "security_name_change": "tdx",
+    "security_st_event": "tdx",
+    "income_statement": "ths",
+    "balance_statement": "ths",
+    "cashflow_statement": "ths",
+    "dividend_plan": "tdx",
+    "additional_issue": "tdx",
+    "rights_issue": "tdx",
+    "suspension_event": "tdx",
+    "trade_calendar": "cninfo"
+  },
+  "tables": [
+    "capital_funding",
+    "capital_project",
+    "capital_transaction",
+    "capital_equity_summary",
+    "capital_equity_position",
+    "capital_ipo",
+    "capital_encumbrance",
+    "capital_release",
+    "restricted_share_unlock_industry",
+    "restricted_share_unlock",
+    "restricted_share_unlock_detail",
+    "shareholder_change",
+    "holder_report",
+    "holder_member",
+    "earnings_forecast",
+    "earnings_quick",
+    "earnings_disclosure",
+    "earnings_report",
+    "shareholder_count",
+    "stock_repurchase_plan",
+    "trading_rule_value",
+    "trading_rule_citation",
+    "index_daily_price",
+    "index_price_year",
+    "security_code_alias",
+    "stock_index",
+    "stock_index_member",
+    "security_listing_event",
+    "stock_listing",
+    "stock_market_day",
+    "stock_intraday_trend",
+    "stock_opening_auction",
+    "stock_minute_volume",
+    "stock_intraday_trade_block",
+    "stock_minute_entrust",
+    "stock_large_order_trend",
+    "stock_daily_quote",
+    "stock_daily_quote_level",
+    "stock",
+    "industry",
+    "industry_member",
+    "security_name_change",
+    "security_st_event",
+    "income_statement",
+    "balance_statement",
+    "cashflow_statement",
+    "dividend_plan",
+    "additional_issue",
+    "rights_issue",
+    "suspension_event",
+    "trade_calendar",
+    "finance_news",
+    "collection_state",
+    "app_setting"
+  ],
+  "dataset_tables": {
+    "ths.capital.security": "capital_funding",
+    "unlocks.tdx_industry_month": "restricted_share_unlock_industry",
+    "unlocks.tdx_month": "restricted_share_unlock",
+    "shareholder_changes.tdx_unit": "shareholder_change",
+    "holders.reports": "holder_report",
+    "earnings_forecast.tdx_unit": "earnings_forecast",
+    "earnings_quick.tdx_unit": "earnings_quick",
+    "earnings_disclosure.tdx_unit": "earnings_disclosure",
+    "earnings_report.tdx_unit": "earnings_report",
+    "holder_count.tdx_unit": "shareholder_count",
+    "repurchases.page": "stock_repurchase_plan",
+    "rules.limit_rules.complete": "trading_rule_value",
+    "rules.settlement_rules.complete": "trading_rule_value",
+    "rules.lot_rules.complete": "trading_rule_value",
+    "rules.tick_rules.complete": "trading_rule_value",
+    "rules.sessions.complete": "trading_rule_value",
+    "rules.stamp_duty.complete": "trading_rule_value",
+    "rules.transfer_fee.complete": "trading_rule_value",
+    "index.price.year": "index_daily_price",
+    "index.price.status": "index_daily_price",
+    "bse.code_mapping.complete": "security_code_alias",
+    "index.catalog": "stock_index",
+    "index.members": "stock_index",
+    "listing_status.month": "security_listing_event",
+    "listing.detail": "stock_listing",
+    "st.implementation.market": "security_st_event",
+    "st.removal.market": "security_st_event",
+    "names.company.market": "security_name_change",
+    "names.security.market": "security_name_change",
+    "kaipanla.trend.day": "stock_market_day",
+    "kaipanla.auction.day": "stock_market_day",
+    "kaipanla.volume.day": "stock_market_day",
+    "kaipanla.trades.day": "stock_market_day",
+    "kaipanla.entrust.day": "stock_market_day",
+    "kaipanla.large_order.day": "stock_market_day",
+    "kaipanla.quote.day": "stock_market_day",
+    "stock.universe.start": "stock",
+    "stock.universe.page": "stock",
+    "stock.universe.complete": "stock",
+    "industry.snapshot": "industry",
+    "income.statement": "income_statement",
+    "balance.statement": "balance_statement",
+    "cashflow.statement": "cashflow_statement",
+    "dividends.unit": "dividend_plan",
+    "additional_issues.unit": "additional_issue",
+    "rights_issues.unit": "rights_issue",
+    "calendar.month": "trade_calendar",
+    "suspensions.period": "suspension_event",
+    "news.flash.page": "finance_news"
+  },
+  "dataset_table_groups": {
+    "ths.capital.security": [
+      "capital_funding",
+      "capital_project",
+      "capital_transaction",
+      "capital_equity_summary",
+      "capital_equity_position",
+      "capital_ipo",
+      "capital_encumbrance",
+      "capital_release"
+    ],
+    "unlocks.tdx_industry_month": [
+      "restricted_share_unlock_industry"
+    ],
+    "unlocks.tdx_month": [
+      "restricted_share_unlock",
+      "restricted_share_unlock_detail"
+    ],
+    "shareholder_changes.tdx_unit": [
+      "shareholder_change"
+    ],
+    "holders.reports": [
+      "holder_report",
+      "holder_member"
+    ],
+    "earnings_forecast.tdx_unit": [
+      "earnings_forecast"
+    ],
+    "earnings_quick.tdx_unit": [
+      "earnings_quick"
+    ],
+    "earnings_disclosure.tdx_unit": [
+      "earnings_disclosure"
+    ],
+    "earnings_report.tdx_unit": [
+      "earnings_report"
+    ],
+    "holder_count.tdx_unit": [
+      "shareholder_count"
+    ],
+    "repurchases.page": [
+      "stock_repurchase_plan"
+    ],
+    "rules.limit_rules.complete": [
+      "trading_rule_value",
+      "trading_rule_citation"
+    ],
+    "rules.settlement_rules.complete": [
+      "trading_rule_value",
+      "trading_rule_citation"
+    ],
+    "rules.lot_rules.complete": [
+      "trading_rule_value",
+      "trading_rule_citation"
+    ],
+    "rules.tick_rules.complete": [
+      "trading_rule_value",
+      "trading_rule_citation"
+    ],
+    "rules.sessions.complete": [
+      "trading_rule_value",
+      "trading_rule_citation"
+    ],
+    "rules.stamp_duty.complete": [
+      "trading_rule_value",
+      "trading_rule_citation"
+    ],
+    "rules.transfer_fee.complete": [
+      "trading_rule_value",
+      "trading_rule_citation"
+    ],
+    "index.price.year": [
+      "index_daily_price",
+      "index_price_year"
+    ],
+    "index.price.status": [
+      "index_daily_price",
+      "index_price_year"
+    ],
+    "bse.code_mapping.complete": [
+      "security_code_alias"
+    ],
+    "index.catalog": [
+      "stock_index",
+      "stock_index_member"
+    ],
+    "index.members": [
+      "stock_index",
+      "stock_index_member"
+    ],
+    "listing_status.month": [
+      "security_listing_event"
+    ],
+    "listing.detail": [
+      "stock_listing"
+    ],
+    "st.implementation.market": [
+      "security_st_event"
+    ],
+    "st.removal.market": [
+      "security_st_event"
+    ],
+    "names.company.market": [
+      "security_name_change"
+    ],
+    "names.security.market": [
+      "security_name_change"
+    ],
+    "kaipanla.trend.day": [
+      "stock_market_day",
+      "stock_intraday_trend"
+    ],
+    "kaipanla.auction.day": [
+      "stock_market_day",
+      "stock_opening_auction"
+    ],
+    "kaipanla.volume.day": [
+      "stock_market_day",
+      "stock_minute_volume"
+    ],
+    "kaipanla.trades.day": [
+      "stock_market_day",
+      "stock_intraday_trade_block"
+    ],
+    "kaipanla.entrust.day": [
+      "stock_market_day",
+      "stock_minute_entrust"
+    ],
+    "kaipanla.large_order.day": [
+      "stock_market_day",
+      "stock_large_order_trend"
+    ],
+    "kaipanla.quote.day": [
+      "stock_market_day",
+      "stock_daily_quote",
+      "stock_daily_quote_level"
+    ],
+    "stock.universe.start": [
+      "stock"
+    ],
+    "stock.universe.page": [
+      "stock"
+    ],
+    "stock.universe.complete": [
+      "stock"
+    ],
+    "industry.snapshot": [
+      "industry",
+      "industry_member"
+    ],
+    "income.statement": [
+      "income_statement"
+    ],
+    "balance.statement": [
+      "balance_statement"
+    ],
+    "cashflow.statement": [
+      "cashflow_statement"
+    ],
+    "dividends.unit": [
+      "dividend_plan"
+    ],
+    "additional_issues.unit": [
+      "additional_issue"
+    ],
+    "rights_issues.unit": [
+      "rights_issue"
+    ],
+    "calendar.month": [
+      "trade_calendar"
+    ],
+    "suspensions.period": [
+      "suspension_event",
+      "suspension_source_date"
+    ],
+    "news.flash.page": [
+      "finance_news"
+    ]
+  },
+  "primary_keys": {
+    "capital_funding": [
+      "record_key"
+    ],
+    "capital_project": [
+      "record_key"
+    ],
+    "capital_transaction": [
+      "record_key"
+    ],
+    "capital_equity_summary": [
+      "record_key"
+    ],
+    "capital_equity_position": [
+      "record_key"
+    ],
+    "capital_ipo": [
+      "record_key"
+    ],
+    "capital_encumbrance": [
+      "record_key"
+    ],
+    "capital_release": [
+      "record_key"
+    ],
+    "restricted_share_unlock_industry": [
+      "unlock_month",
+      "industry"
+    ],
+    "restricted_share_unlock": [
+      "record_key"
+    ],
+    "restricted_share_unlock_detail": [
+      "group_key",
+      "record_key"
+    ],
+    "shareholder_change": [
+      "record_key"
+    ],
+    "holder_report": [
+      "report_key"
+    ],
+    "holder_member": [
+      "report_key",
+      "member_group",
+      "seq"
+    ],
+    "earnings_forecast": [
+      "record_key"
+    ],
+    "earnings_quick": [
+      "record_key"
+    ],
+    "earnings_disclosure": [
+      "record_key"
+    ],
+    "earnings_report": [
+      "record_key"
+    ],
+    "shareholder_count": [
+      "record_key"
+    ],
+    "stock_repurchase_plan": [
+      "plan_id"
+    ],
+    "trading_rule_value": [
+      "record_key"
+    ],
+    "trading_rule_citation": [
+      "citation_key"
+    ],
+    "index_daily_price": [
+      "index_code",
+      "trade_date"
+    ],
+    "index_price_year": [
+      "index_code",
+      "quote_year"
+    ],
+    "security_code_alias": [
+      "legacy_code"
+    ],
+    "stock_index": [
+      "index_code"
+    ],
+    "stock_index_member": [
+      "index_code",
+      "source_code"
+    ],
+    "security_listing_event": [
+      "event_date",
+      "unified_code",
+      "event_type",
+      "record_key"
+    ],
+    "stock_listing": [
+      "unified_code"
+    ],
+    "security_name_change": [
+      "name_kind",
+      "record_key"
+    ],
+    "security_st_event": [
+      "event_kind",
+      "record_key"
+    ],
+    "stock": [
+      "unified_code"
+    ],
+    "industry": [
+      "industry_code"
+    ],
+    "industry_member": [
+      "industry_code",
+      "unified_code"
+    ],
+    "trade_calendar": [
+      "trade_date"
+    ],
+    "suspension_event": [
+      "unified_code",
+      "suspended_at",
+      "resume_key",
+      "record_key"
+    ],
+    "suspension_source_date": [
+      "source_date",
+      "unified_code",
+      "suspended_at",
+      "resume_key",
+      "record_key"
+    ],
+    "dividend_plan": [
+      "record_key"
+    ],
+    "additional_issue": [
+      "record_key"
+    ],
+    "rights_issue": [
+      "record_key"
+    ],
+    "income_statement": [
+      "unified_code",
+      "report_date"
+    ],
+    "balance_statement": [
+      "unified_code",
+      "report_date"
+    ],
+    "cashflow_statement": [
+      "unified_code",
+      "report_date"
+    ],
+    "stock_market_day": [
+      "kind",
+      "unified_code",
+      "trade_date"
+    ],
+    "stock_intraday_trend": [
+      "unified_code",
+      "trade_date",
+      "source_time"
+    ],
+    "stock_opening_auction": [
+      "unified_code",
+      "trade_date",
+      "seq"
+    ],
+    "stock_minute_volume": [
+      "unified_code",
+      "trade_date",
+      "source_time"
+    ],
+    "stock_intraday_trade_block": [
+      "unified_code",
+      "trade_date",
+      "block_seq"
+    ],
+    "stock_minute_entrust": [
+      "unified_code",
+      "trade_date",
+      "source_time"
+    ],
+    "stock_large_order_trend": [
+      "unified_code",
+      "trade_date",
+      "source_time"
+    ],
+    "stock_daily_quote": [
+      "unified_code",
+      "trade_date"
+    ],
+    "stock_daily_quote_level": [
+      "unified_code",
+      "trade_date",
+      "side",
+      "level"
+    ]
+  },
+  "source_overrides": {
+    "stock": [
+      "sina",
+      "ths"
+    ]
+  },
+  "required_columns": {
+    "dividend_plan": [
+      "unified_code"
+    ],
+    "additional_issue": [
+      "unified_code"
+    ],
+    "rights_issue": [
+      "unified_code"
+    ]
+  },
+  "primary_key_exemptions": [
+    "finance_news",
+    "collection_state",
+    "app_setting"
+  ]
+}

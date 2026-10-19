@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from empire.contracts.business_schema import DATASET_TABLE_GROUPS, PRIMARY_KEYS
+from empire.contracts.business_schema import read_business_schema
 from empire.features.builtin import dataset_contributions
 from empire.plugins.datasets.astock import DatasetPlugin
 
@@ -27,6 +27,29 @@ def verify_scoped_ddl(evidence, schema, tables):
             raise ValueError(f'已测量业务表DDL变化，须重新测量：{table}')
 
 
+def verify_ownership(root, shapes, active_datasets):
+    """Check the explicit SQL metadata, not inferred source or table ownership."""
+    ownership = read_business_schema(root / 'sql/business-schema.json')
+    groups = {dataset: tuple(tables) for dataset, tables in ownership['dataset_table_groups'].items()}
+    if set(active_datasets) != set(groups):
+        raise ValueError('正式数据贡献与业务表归属登记不一致')
+    owned = {table for group in groups.values() for table in group}
+    if set(shapes) != owned | {'app_setting', 'collection_state'}:
+        raise ValueError('业务表必须登记实际数据集归属；配置/状态表单独登记')
+    if not set(ownership['tables']) <= set(shapes):
+        raise ValueError('业务结构维护清单含未登记物理表')
+    for table, keys in ownership['primary_keys'].items():
+        if table not in shapes or shapes[table]['primary'] != keys:
+            raise ValueError(f'{table} 主键与公共业务身份登记不一致')
+    for table, columns in ownership['required_columns'].items():
+        if not set(columns) <= set(shapes[table]['columns']):
+            raise ValueError(f'{table} 附加必需字段未登记物理列')
+    for table in ownership['fixed_sources']:
+        if 'source' in shapes[table]['columns']:
+            raise ValueError(f'{table} 固定来源表仍含旧 source 列')
+    return ownership
+
+
 def verify(root):
     schema = (root/'sql/schema.sql').read_bytes()
     manifest = json.loads((root/'sql/schema-contract.json').read_text('utf-8'))
@@ -35,23 +58,18 @@ def verify(root):
     tables = set(re.findall(r'CREATE TABLE IF NOT EXISTS (\w+)', schema.decode()))
     if tables != set(manifest['tables']):
         raise ValueError('DDL与结构契约表集合不一致')
-    if set(DatasetPlugin(dataset_contributions({
-            'redis': {}, 'mysql': {}, 'archive': {}, 'ingest': {}, 'rate_groups': {}})).datasets) != set(DATASET_TABLE_GROUPS):
-        raise ValueError('正式数据贡献与业务表归属登记不一致')
-    owned = {table for group in DATASET_TABLE_GROUPS.values() for table in group}
-    if tables != owned | {'app_setting', 'collection_state'}:
-        raise ValueError('业务表必须登记实际数据集归属；配置/状态表单独登记')
-    for table, keys in PRIMARY_KEYS.items():
-        if manifest['tables'][table]['primary'] != keys:
-            raise ValueError(f'{table} 主键与公共业务身份登记不一致')
+    catalog = DatasetPlugin(dataset_contributions({
+        'redis': {}, 'mysql': {}, 'archive': {}, 'ingest': {}, 'rate_groups': {}}))
+    ownership = verify_ownership(root, manifest['tables'], catalog.datasets)
+    dataset_table_groups = {dataset: tuple(tables) for dataset, tables in ownership['dataset_table_groups'].items()}
     designs = json.loads((root/'docs/database-design-cards.json').read_text('utf-8'))
-    if set(designs['datasets']) != set(DATASET_TABLE_GROUPS):
+    if set(designs['datasets']) != set(dataset_table_groups):
         raise ValueError('数据集设计卡缺失或包含已退役项目')
     required = {'tables', 'grain', 'identity', 'dictionary', 'queries', 'capacity', 'integrity', 'lifecycle', 'delivery', 'tests'}
     for dataset, card in designs['datasets'].items():
         if set(card) != required or any(not v for v in card.values()):
             raise ValueError(f'{dataset} 存储设计卡不完整')
-        if tuple(card['tables']) != DATASET_TABLE_GROUPS[dataset] or not set(card['tables']) <= tables:
+        if tuple(card['tables']) != dataset_table_groups[dataset] or not set(card['tables']) <= tables:
             raise ValueError(f'{dataset} 多表归属与设计卡不匹配')
         for path in (card['dictionary'], *card['tests']):
             if not (root/path).is_file():

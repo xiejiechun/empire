@@ -1,0 +1,597 @@
+{
+  "base_commit": "08fe382677298ee4b2e650fce50cfcca0aa0b868",
+  "mappings": {
+    "FIXED_SOURCES": {
+      "equal_values_types_order": true,
+      "length": 51,
+      "type": "mappingproxy",
+      "old_and_current_ordered_sha256": "d2a51acf016d92e2bfdbb5b2d9a0523a5f0174284fc6c7fb3f0cc3e33ce67612"
+    },
+    "TABLES": {
+      "equal_values_types_order": true,
+      "length": 54,
+      "type": "tuple",
+      "old_and_current_ordered_sha256": "bfd7f55668a7602a9075d2a2966d74a67321d40edbe3bd1d393c12da6a64ebdb"
+    },
+    "DATASET_TABLES": {
+      "equal_values_types_order": true,
+      "length": 49,
+      "type": "dict",
+      "old_and_current_ordered_sha256": "6483c7f74defcc3ba61062edd03c9bf1136665182b963fcd5c5d40dde51b2b3e"
+    },
+    "DATASET_TABLE_GROUPS": {
+      "equal_values_types_order": true,
+      "length": 49,
+      "type": "dict",
+      "old_and_current_ordered_sha256": "9f51f0d5379ef9a98810b0ce1c2505f762135011aa4f3300c3e65e4285bb24a4"
+    },
+    "PRIMARY_KEYS": {
+      "equal_values_types_order": true,
+      "length": 52,
+      "type": "dict",
+      "old_and_current_ordered_sha256": "8f836d3b950a46d046656a495e483c796663da387f69cdaf00305235bc05345d"
+    }
+  },
+  "frozen": {
+    "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
+    "sql/schema-contract.json": "5a434101b373eb0dd9de99dd1ad0872229c3bf0f33d21658fe71d84cd0fdce1f",
+    "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
+    "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
+    "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
+    "docs/evidence/architecture-performance-protocol-2026-10-19.json": "38679725dbf2ad41e8ff1d9a33c8a28630d4a808d33880ec3c4d39f26c3ac24b",
+    "docs/evidence/architecture-performance-baseline-2026-10-19.json": "1202baacde0866a7246a4cc032b1f4580e11b5474d599ee81a13503debfd6493"
+  },
+  "capacity": {
+    "kaipanla.trend.day": {
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "kaipanla.auction.day": {
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "kaipanla.volume.day": {
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "kaipanla.trades.day": {
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "kaipanla.entrust.day": {
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "kaipanla.large_order.day": {
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "kaipanla.quote.day": {
+      "evidence": "docs/evidence/preview-query-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "dividends.unit": {
+      "evidence": "docs/evidence/dividends-error-types-capacity-2026-10-14.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "names.company.market": {
+      "evidence": "docs/evidence/name-changes-capacity-2026-10-06.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "names.security.market": {
+      "evidence": "docs/evidence/name-changes-capacity-2026-10-06.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "listing.detail": {
+      "evidence": "docs/evidence/listings-preview-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "listing_status.month": {
+      "evidence": "docs/evidence/listing-status-capacity-2026-10-06.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "index.catalog": {
+      "evidence": "docs/evidence/indices-capacity-2026-10-09.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "index.members": {
+      "evidence": "docs/evidence/indices-capacity-2026-10-09.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "bse.code_mapping.complete": {
+      "evidence": "docs/evidence/bse-code-mapping-capacity-2026-10-10.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "index.price.status": {
+      "evidence": "docs/evidence/index-prices-capacity-2026-10-10.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "index.price.year": {
+      "evidence": "docs/evidence/index-prices-capacity-2026-10-10.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "st.implementation.market": {
+      "evidence": "docs/evidence/st-events-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "st.removal.market": {
+      "evidence": "docs/evidence/st-events-capacity-2026-10-11.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "rules.limit_rules.complete": {
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "rules.settlement_rules.complete": {
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "rules.lot_rules.complete": {
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "rules.tick_rules.complete": {
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "rules.sessions.complete": {
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "rules.stamp_duty.complete": {
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "rules.transfer_fee.complete": {
+      "evidence": "docs/evidence/rules-bse-capacity-2026-10-17.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "repurchases.page": {
+      "evidence": "docs/evidence/repurchase-capacity-2026-10-12.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "earnings_forecast.tdx_unit": {
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "earnings_quick.tdx_unit": {
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "earnings_disclosure.tdx_unit": {
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "earnings_report.tdx_unit": {
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "holder_count.tdx_unit": {
+      "evidence": "docs/evidence/tdx-performance-capacity-2026-10-12.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "holders.reports": {
+      "evidence": "docs/evidence/architecture-d-holders-capacity-2026-10-19-1.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "shareholder_changes.tdx_unit": {
+      "evidence": "docs/evidence/shareholder-changes-capacity-2026-10-13.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "unlocks.tdx_month": {
+      "evidence": "docs/evidence/unlocks-error-types-capacity-2026-10-14.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "unlocks.tdx_industry_month": {
+      "evidence": "docs/evidence/unlock-industries-capacity-2026-10-14.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    },
+    "ths.capital.security": {
+      "evidence": "docs/evidence/architecture-d-capital-capacity-2026-10-19-1.json",
+      "all_bindings_current": true,
+      "changed_bindings": []
+    }
+  },
+  "consumers": [
+    {
+      "path": "src/empire/features/holders/dataset.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/features/holders/query.py",
+      "imports": [
+        [
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/capital_actions.py",
+      "imports": [
+        [
+          "require_fixed_source",
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/financial_statements.py",
+      "imports": [
+        [
+          "require_fixed_source",
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/industries.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/listings.py",
+      "imports": [
+        [
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/preparation_inventory.py",
+      "imports": [
+        [
+          "DATASET_TABLE_GROUPS",
+          "TABLES"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/stocks.py",
+      "imports": [
+        [
+          "require_fixed_source",
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/suspensions.py",
+      "imports": [
+        [
+          "require_fixed_source",
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/tdx_performance.py",
+      "imports": [
+        [
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/ths_capital.py",
+      "imports": [
+        [
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/trade_calendar.py",
+      "imports": [
+        [
+          "require_fixed_source",
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/unlock_industries.py",
+      "imports": [
+        [
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/data/unlocks.py",
+      "imports": [
+        [
+          "schema_contract"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/astock.py",
+      "imports": [
+        [
+          "require_dataset_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/capital_archive.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/financial_archive.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/index_prices.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/indices.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/industries.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/listing_status.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/listings.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/name_changes.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/repurchases.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/security_aliases.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/st_events.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/stocks.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/suspensions.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/tdx_performance.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/ths_capital.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/trade_calendar.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/unlock_industries.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/datasets/unlocks.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "src/empire/plugins/infra/mysql_store.py",
+      "imports": [
+        [
+          "FIXED_SOURCES"
+        ]
+      ]
+    },
+    {
+      "path": "scripts/business_migration_inventory.py",
+      "imports": [
+        [
+          "FIXED_SOURCES"
+        ]
+      ]
+    },
+    {
+      "path": "scripts/documentation_storage.py",
+      "imports": [
+        [
+          "read_business_schema"
+        ]
+      ]
+    },
+    {
+      "path": "scripts/migrate_business_schema.py",
+      "imports": [
+        [
+          "FIXED_SOURCES",
+          "TABLES"
+        ]
+      ]
+    },
+    {
+      "path": "scripts/migrate_dividend_identity.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "scripts/migrate_issue_availability.py",
+      "imports": [
+        [
+          "require_fixed_source"
+        ]
+      ]
+    },
+    {
+      "path": "scripts/mysql_recovery_inventory.py",
+      "imports": [
+        [
+          "PRIMARY_KEYS"
+        ]
+      ]
+    },
+    {
+      "path": "scripts/verify_database_design.py",
+      "imports": [
+        [
+          "read_business_schema"
+        ]
+      ]
+    }
+  ],
+  "current_changed_files": [
+    "Empire.spec",
+    "docs/architecture-evolution/status.md",
+    "docs/database-design-standard.md",
+    "docs/database-reference.md",
+    "docs/documentation-review.json",
+    "docs/evidence/architecture-e0-2026-10-19.md",
+    "docs/evidence/architecture-e0-equivalence-2026-10-19.json",
+    "docs/evidence/architecture-performance-e0-2026-10-19.json",
+    "docs/evidence/architecture-performance-e0-failed1-2026-10-19.json",
+    "docs/evidence/architecture-performance-e0-failed2-2026-10-19.json",
+    "docs/evidence/architecture-performance-e0-final-2026-10-19.json",
+    "docs/evidence/architecture-performance-e0-final-failed1-2026-10-19.json",
+    "pyproject.toml",
+    "scripts/documentation_contract.py",
+    "scripts/documentation_storage.py",
+    "scripts/verify_database_design.py",
+    "sql/business-schema.json",
+    "src/empire/contracts/business_schema.py",
+    "src/empire/plugins/ui/storage_reference.md",
+    "tests/test_business_schema_metadata.py",
+    "tests/test_documentation_review.py",
+    "tests/test_market_mapping.py",
+    "tests/test_packaged_runtime.py"
+  ],
+  "schema_resource_sha256": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+  "reader_sha256": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+  "physical_tables": 55,
+  "maintenance_tables": 54
+}

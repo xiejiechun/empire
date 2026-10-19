@@ -1,7 +1,10 @@
 """Offline per-object dictionary coverage, derived from DDL and key constructors."""
 import ast
 import hashlib
+import json
 import re
+
+from empire.contracts.business_schema import read_business_schema
 
 SECTIONS = ("用途与归属", "结构与身份", "读写与关联", "保留与恢复", "维护与相关说明")
 
@@ -108,6 +111,7 @@ def verify_storage(root, coverage, articles):
 def storage_snapshots(root, storage, articles, reachable_sources):
     result = {}
     tables = mysql_objects(root)
+    ownership = read_business_schema(root / 'sql/business-schema.json')
     for kind in ('mysql', 'redis'):
         for ident, entry in storage[kind].items():
             article = articles[entry['topic']]
@@ -118,6 +122,14 @@ def storage_snapshots(root, storage, articles, reachable_sources):
             sources.update(reachable_sources(root, modules))
             if kind == 'mysql':
                 sources[f'sql/schema.sql#{ident}'] = hashlib.sha256(repr(tables[ident]).encode()).hexdigest()
+                owned = {field: ownership[field].get(ident) for field in
+                         ('fixed_sources', 'primary_keys', 'source_overrides', 'required_columns')}
+                owned['maintenance_position'] = ownership['tables'].index(ident) if ident in ownership['tables'] else None
+                owned['primary_key_exempt'] = ident in ownership['primary_key_exemptions']
+                owned['datasets'] = {dataset: group for dataset, group in
+                                     ownership['dataset_table_groups'].items() if ident in group}
+                sources[f'sql/business-schema.json#{ident}'] = hashlib.sha256(
+                    json.dumps(owned, sort_keys=True).encode()).hexdigest()
             result[f'{kind}:{ident}'] = {
                 'sources': sources,
                 'content_sha256': hashlib.sha256((article.title + article.summary + article.body).encode()).hexdigest(),

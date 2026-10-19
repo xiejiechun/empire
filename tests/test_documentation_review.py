@@ -20,7 +20,7 @@ def documented_project(tmp_path):
         shutil.copyfile(root / name, target)
     target = tmp_path / "docs/documentation-coverage.json"
     coverage = json.loads(target.read_text(encoding="utf-8"))
-    names = {'sql/schema.sql', *coverage['storage']['redis_constructors']}
+    names = {'sql/schema.sql', 'sql/business-schema.json', *coverage['storage']['redis_constructors']}
     for kind in ('mysql', 'redis'):
         names.update(p for entry in coverage['storage'][kind].values() for p in entry['sources'])
     for name in names:

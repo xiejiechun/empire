@@ -82,7 +82,9 @@
 
 ## 8. 自动检查与人工证据
 
-以下检查由 sql/schema-contract.json、docs/database-design-cards.json、运行schema核验和 scripts/verify_database_design.py 接入构建/发布门禁；来源语义与性能证据仍需人工实质核对：
+以下检查由 [物理结构契约](../sql/schema-contract.json)、[业务归属元数据](../sql/business-schema.json)、[设计卡](database-design-cards.json)、运行 schema 核验和 [设计门禁](../scripts/verify_database_design.py) 接入构建/发布门禁；来源语义与性能证据仍需人工实质核对。业务归属资源是显式登记的唯一表组、固定来源、主键和维护清单，不从 DDL 字段或说明文档推断；变更它须同步业务契约、设计卡和说明。SQL 建表仍只使用 schema.sql，应用启动不执行迁移。
+
+检查项目：
 
 1. 数据集到表、主键、字段类型、索引、约束及来源归属与 DDL 一致；schema 检查不能仅比列名。
 2. 每个新数据集有存储设计卡、字段字典、查询预算及相应反例测试。

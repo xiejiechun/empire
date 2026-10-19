@@ -18,6 +18,7 @@ a = Analysis(
         (str(project_root / "config" / "app.example.toml"), "config"),
         (str(project_root / "sql" / "schema.sql"), "sql"),
         (str(project_root / "sql" / "schema-contract.json"), "sql"),
+        (str(project_root / "sql" / "business-schema.json"), "sql"),
         (
             str(source_root / "empire" / "plugins" / "ui" / "storage_reference.md"),
             "empire/plugins/ui",

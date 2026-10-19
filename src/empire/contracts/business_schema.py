@@ -1,115 +1,121 @@
-"""Allowlisted ownership for the explicit business-schema upgrade inventory."""
+"""Read the explicit SQL ownership resource without importing concrete features."""
+import json
+import re
+from pathlib import Path
 from types import MappingProxyType
+from typing import TypedDict, cast
 
-from empire.contracts.market_storage import MARKET_TABLES, SERIES, dataset_tables
-from empire.contracts.ths_capital import TABLES as CAPITAL_PAGE_TABLES
+from empire.core.config import resource_root
 
-FIXED_SOURCES = MappingProxyType({
-    **{table: 'ths' for table in CAPITAL_PAGE_TABLES},
-    'restricted_share_unlock_industry': 'tdx', 'restricted_share_unlock': 'tdx', 'restricted_share_unlock_detail': 'tdx',
-    'shareholder_change': 'tdx',
-    'holder_report': 'ths', 'holder_member': 'ths',
-    **{table: 'tdx' for table in ('earnings_forecast', 'earnings_quick', 'earnings_disclosure',
-                                'earnings_report', 'shareholder_count')},
-    'stock_repurchase_plan': 'eastmoney',
-    'trading_rule_value': 'reviewed_rules', 'trading_rule_citation': 'reviewed_rules',
-    'index_daily_price': 'ths', 'index_price_year': 'ths',
-    'security_code_alias': 'bse',
-    'stock_index': 'ths', 'stock_index_member': 'ths',
-    'security_listing_event': 'tdx',
-    'stock_listing': 'ths',
-    **{table: 'kaipanla' for table in MARKET_TABLES},
-    'stock': 'sina',
-    'industry': 'ths', 'industry_member': 'ths',
-    'security_name_change': 'tdx', 'security_st_event': 'tdx',
-    'income_statement': 'ths', 'balance_statement': 'ths', 'cashflow_statement': 'ths',
-    'dividend_plan': 'tdx', 'additional_issue': 'tdx', 'rights_issue': 'tdx',
-    'suspension_event': 'tdx', 'stock_market_day': 'kaipanla', 'trade_calendar': 'cninfo',
-})
-TABLES = tuple(FIXED_SOURCES) + ('finance_news', 'collection_state', 'app_setting')
-
-DATASET_TABLES = {
-    'ths.capital.security': CAPITAL_PAGE_TABLES[0],
-    'unlocks.tdx_industry_month': 'restricted_share_unlock_industry',
-    'unlocks.tdx_month': 'restricted_share_unlock',
-    'shareholder_changes.tdx_unit': 'shareholder_change',
-    'holders.reports': 'holder_report',
-    **{kind + '.tdx_unit': table for kind, table in (
-        ('earnings_forecast', 'earnings_forecast'), ('earnings_quick', 'earnings_quick'),
-        ('earnings_disclosure', 'earnings_disclosure'), ('earnings_report', 'earnings_report'),
-        ('holder_count', 'shareholder_count'))},
-    'repurchases.page': 'stock_repurchase_plan',
-    **{'rules.' + k + '.complete': 'trading_rule_value' for k in ('limit_rules', 'settlement_rules', 'lot_rules', 'tick_rules', 'sessions', 'stamp_duty', 'transfer_fee')},
-    'index.price.year': 'index_daily_price', 'index.price.status': 'index_daily_price',
-    'bse.code_mapping.complete': 'security_code_alias',
-    'index.catalog': 'stock_index', 'index.members': 'stock_index',
-    'listing_status.month': 'security_listing_event',
-    'listing.detail': 'stock_listing',
-    'st.implementation.market': 'security_st_event', 'st.removal.market': 'security_st_event',
-    'names.company.market': 'security_name_change', 'names.security.market': 'security_name_change',
-    **{'kaipanla.' + kind + '.day': 'stock_market_day' for kind in
-       ('trend', 'auction', 'volume', 'trades', 'entrust', 'large_order', 'quote')},
-    'stock.universe.start': 'stock', 'stock.universe.page': 'stock',
-    'stock.universe.complete': 'stock', 'industry.snapshot': 'industry',
-    'income.statement': 'income_statement', 'balance.statement': 'balance_statement',
-    'cashflow.statement': 'cashflow_statement', 'dividends.unit': 'dividend_plan',
-    'additional_issues.unit': 'additional_issue', 'rights_issues.unit': 'rights_issue',
-    'calendar.month': 'trade_calendar',
-    'suspensions.period': 'suspension_event',
-    'news.flash.page': 'finance_news',
-}
-
-DATASET_TABLE_GROUPS = {dataset: CAPITAL_PAGE_TABLES if dataset == 'ths.capital.security' else ('restricted_share_unlock', 'restricted_share_unlock_detail') if dataset == 'unlocks.tdx_month' else ('holder_report', 'holder_member') if dataset == 'holders.reports' else ('trading_rule_value', 'trading_rule_citation') if dataset.startswith('rules.') else ('index_daily_price', 'index_price_year') if dataset.startswith('index.price.') else ('stock_index', 'stock_index_member') if dataset.startswith('index.') else dataset_tables(dataset.split('.')[1]) if dataset.startswith('kaipanla.') else ('industry', 'industry_member') if dataset == 'industry.snapshot' else ('suspension_event', 'suspension_source_date') if dataset == 'suspensions.period' else (table,)
-                        for dataset, table in DATASET_TABLES.items()}
-
-PRIMARY_KEYS = {
-    **{table: ['record_key'] for table in CAPITAL_PAGE_TABLES},
-    'restricted_share_unlock_industry': ['unlock_month', 'industry'],
-    'restricted_share_unlock': ['record_key'], 'restricted_share_unlock_detail': ['group_key', 'record_key'],
-    'shareholder_change': ['record_key'],
-    'holder_report': ['report_key'], 'holder_member': ['report_key', 'member_group', 'seq'],
-    **{table: ['record_key'] for table in ('earnings_forecast', 'earnings_quick', 'earnings_disclosure',
-                                        'earnings_report', 'shareholder_count')},
-    'stock_repurchase_plan': ['plan_id'],
-    'trading_rule_value': ['record_key'], 'trading_rule_citation': ['citation_key'],
-    'index_daily_price': ['index_code', 'trade_date'], 'index_price_year': ['index_code', 'quote_year'],
-    'security_code_alias': ['legacy_code'],
-    'stock_index': ['index_code'], 'stock_index_member': ['index_code', 'source_code'],
-    'security_listing_event': ['event_date', 'unified_code', 'event_type', 'record_key'],
-    'stock_listing': ['unified_code'],
-    'security_name_change': ['name_kind', 'record_key'],
-    'security_st_event': ['event_kind', 'record_key'],
-    'stock': ['unified_code'], 'industry': ['industry_code'],
-    'industry_member': ['industry_code', 'unified_code'],
-    'trade_calendar': ['trade_date'],
-    'suspension_event': ['unified_code', 'suspended_at', 'resume_key', 'record_key'],
-    'suspension_source_date': ['source_date', 'unified_code', 'suspended_at', 'resume_key', 'record_key'],
-    **{t: ['record_key'] for t in ('dividend_plan', 'additional_issue', 'rights_issue')},
-    **{t: ['unified_code', 'report_date'] for t in
-       ('income_statement', 'balance_statement', 'cashflow_statement')},
-    'stock_market_day': ['kind', 'unified_code', 'trade_date'],
-    **{table: ['unified_code', 'trade_date', 'block_seq' if kind == 'trades' else 'seq' if kind == 'auction' else 'source_time']
-       for kind, (table, _) in SERIES.items()},
-    'stock_daily_quote': ['unified_code', 'trade_date'],
-    'stock_daily_quote_level': ['unified_code', 'trade_date', 'side', 'level'],
-}
+_FIELDS = frozenset({'schema', 'fixed_sources', 'tables', 'dataset_tables',
+                     'dataset_table_groups', 'primary_keys', 'source_overrides',
+                     'required_columns', 'primary_key_exemptions'})
+_IDENTIFIER = re.compile(r'[a-z][a-z0-9_]*')
 
 
-def require_dataset_source(dataset, source):
+class BusinessSchema(TypedDict):
+    schema: int
+    fixed_sources: dict[str, str]
+    tables: list[str]
+    dataset_tables: dict[str, str]
+    dataset_table_groups: dict[str, list[str]]
+    primary_keys: dict[str, list[str]]
+    source_overrides: dict[str, list[str]]
+    required_columns: dict[str, list[str]]
+    primary_key_exemptions: list[str]
+
+
+def _require(value: object, message: str) -> None:
+    if not value:
+        raise ValueError('业务结构归属登记无效：' + message)
+
+
+def _unique_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        _require(key not in result, '重复 JSON 字段 ' + key)
+        result[key] = value
+    return result
+
+
+def _names(raw: object, label: str, *, identifiers: bool = True) -> None:
+    _require(isinstance(raw, list) and bool(raw), label + ' 须为非空有序列表')
+    value = cast(list[object], raw)
+    _require(all(isinstance(item, str) and bool(item) for item in value), label + ' 名称无效')
+    _require(len(value) == len(set(value)), label + ' 名称重复')
+    if identifiers:
+        _require(all(_IDENTIFIER.fullmatch(cast(str, item)) for item in value), label + ' SQL 标识无效')
+
+
+def validate_business_schema(raw: object) -> BusinessSchema:
+    """Validate resource structure; SQL shapes and active datasets are checked by the gate."""
+    _require(isinstance(raw, dict) and set(raw) == _FIELDS, '顶层字段不匹配')
+    value = cast(BusinessSchema, raw)
+    _require(type(value['schema']) is int and value['schema'] == 1, '不支持的资源版本')
+    _names(value['tables'], 'tables')
+    _names(value['primary_key_exemptions'], 'primary_key_exemptions')
+    for field in _FIELDS - {'schema', 'tables', 'primary_key_exemptions'}:
+        _require(isinstance(cast(dict[str, object], raw)[field], dict), field + ' 须为对象')
+    for field in ('fixed_sources', 'dataset_tables', 'dataset_table_groups', 'primary_keys'):
+        _require(bool(cast(dict[str, object], raw)[field]), field + ' 不得为空')
+    fixed, datasets, groups = value['fixed_sources'], value['dataset_tables'], value['dataset_table_groups']
+    _require(set(fixed) <= set(value['tables']), '固定来源表未登记维护清单')
+    _require(all(isinstance(table, str) and _IDENTIFIER.fullmatch(table) and isinstance(source, str) and bool(source)
+                 for table, source in fixed.items()), '固定来源无效')
+    _require(list(datasets) == list(groups), '数据集与表组的集合或顺序不匹配')
+    for dataset, tables in groups.items():
+        _require(isinstance(dataset, str) and bool(dataset) and len(dataset) <= 200, '数据集标识无效')
+        _names(tables, dataset)
+        _require(datasets[dataset] == tables[0], dataset + ' 主表须为表组首项')
+    known = set(value['tables']) | {table for tables in groups.values() for table in tables}
+    primary, exempt = set(value['primary_keys']), set(value['primary_key_exemptions'])
+    _require(not primary & exempt and primary | exempt == known, '主键登记及明确例外未完整覆盖业务表')
+    for field, mapping in (('primary_keys', value['primary_keys']), ('required_columns', value['required_columns'])):
+        for table, columns in mapping.items():
+            _require(table in known, field + ' 使用未登记表 ' + table)
+            _names(columns, field + '.' + table)
+    _require(set(fixed) <= set(value['primary_keys']), '固定来源表缺少主键登记')
+    _require(set(value['required_columns']) <= set(value['primary_keys']), '附加必需列缺少主键登记')
+    for table, sources in value['source_overrides'].items():
+        _require(table in fixed, '来源例外使用未登记固定来源表 ' + table)
+        _names(sources, 'source_overrides.' + table, identifiers=False)
+        _require(fixed[table] in sources, '来源例外未包含正式来源 ' + table)
+    return value
+
+
+def read_business_schema(path: Path) -> BusinessSchema:
+    """Read one explicit resource; no fallback, discovery, SQL or runtime mutation."""
+    return validate_business_schema(json.loads(path.read_text(encoding='utf-8'), object_pairs_hook=_unique_object))
+
+
+_SCHEMA = read_business_schema(resource_root() / 'sql/business-schema.json')
+FIXED_SOURCES = MappingProxyType(_SCHEMA['fixed_sources'])
+TABLES = tuple(_SCHEMA['tables'])
+DATASET_TABLES = _SCHEMA['dataset_tables']
+DATASET_TABLE_GROUPS = {dataset: tuple(tables) for dataset, tables in _SCHEMA['dataset_table_groups'].items()}
+PRIMARY_KEYS = _SCHEMA['primary_keys']
+SOURCE_OVERRIDES = {table: tuple(sources) for table, sources in _SCHEMA['source_overrides'].items()}
+REQUIRED_COLUMNS = {table: tuple(columns) for table, columns in _SCHEMA['required_columns'].items()}
+
+
+def dataset_tables(dataset: str) -> tuple[str, ...]:
+    return DATASET_TABLE_GROUPS[dataset]
+
+
+def require_dataset_source(dataset: str, source: str) -> None:
     table = DATASET_TABLES.get(dataset)
     if table and table in FIXED_SOURCES:
         require_fixed_source(table, source)
 
 
-def schema_contract(table, *columns):
+def schema_contract(table: str, *columns: str) -> tuple[dict[str, set[str]], dict[str, list[str]]]:
     required = set(PRIMARY_KEYS[table]) | set(columns)
-    if table in ('dividend_plan', 'additional_issue', 'rights_issue'):
-        required.add('unified_code')
+    required.update(REQUIRED_COLUMNS.get(table, ()))
     return {table: required}, {table: PRIMARY_KEYS[table]}
 
 
-def require_fixed_source(table, source):
-    if table == 'stock' and source in ('sina', 'ths'):
+def require_fixed_source(table: str, source: str) -> None:
+    if source in SOURCE_OVERRIDES.get(table, ()):
         return
     expected = FIXED_SOURCES[table]
     if source != expected:

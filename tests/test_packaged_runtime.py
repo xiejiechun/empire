@@ -165,4 +165,5 @@ def test_package_contains_all_runtime_owned_resources() -> None:
     spec = (Path(__file__).resolve().parents[1] / "Empire.spec").read_text(encoding="utf-8")
     assert '"config" / "app.example.toml"' in spec
     assert '"sql" / "schema.sql"' in spec
+    assert '"sql" / "business-schema.json"' in spec
     assert '"dependency-report.json"' in spec

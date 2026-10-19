@@ -1,12 +1,78 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-19T13:11:14.780603+00:00",
-  "note": "D最终事实结案：已核正式包身份、35项文档回归及可见桌面；组织迁移独立验收，H3固定空名债券FAIL原样保留；E0未实施",
+  "reviewed_at": "2026-10-19T13:35:53.115331+00:00",
+  "note": "E0逐项审阅SQL归属资源及原五映射值类型顺序、维护54/物理55区别、资源缺失损坏拒绝、打包加载及无启动DDL；同步程序资源维护、数据库入口和设计规范。逐项例外仅解释不变业务字典/任务/页面，非以无关正文抵消行为变更。266公共及5私有恢复通过；第三轮T3完整18项通过，前两轮失败原样保留。",
   "unchanged_reason": "",
-  "exceptions": {},
+  "exceptions": {
+    "mysql:additional_issue": "E0审阅additional_issue：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:balance_statement": "E0审阅balance_statement：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:capital_encumbrance": "E0审阅capital_encumbrance：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:capital_equity_position": "E0审阅capital_equity_position：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:capital_equity_summary": "E0审阅capital_equity_summary：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:capital_funding": "E0审阅capital_funding：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:capital_ipo": "E0审阅capital_ipo：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:capital_project": "E0审阅capital_project：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:capital_release": "E0审阅capital_release：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:capital_transaction": "E0审阅capital_transaction：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:cashflow_statement": "E0审阅cashflow_statement：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:dividend_plan": "E0审阅dividend_plan：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:earnings_disclosure": "E0审阅earnings_disclosure：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:earnings_forecast": "E0审阅earnings_forecast：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:earnings_quick": "E0审阅earnings_quick：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:earnings_report": "E0审阅earnings_report：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:holder_member": "E0审阅holder_member：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:holder_report": "E0审阅holder_report：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:income_statement": "E0审阅income_statement：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:index_daily_price": "E0审阅index_daily_price：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:index_price_year": "E0审阅index_price_year：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:industry": "E0审阅industry：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:industry_member": "E0审阅industry_member：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:restricted_share_unlock": "E0审阅restricted_share_unlock：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:restricted_share_unlock_detail": "E0审阅restricted_share_unlock_detail：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:restricted_share_unlock_industry": "E0审阅restricted_share_unlock_industry：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:rights_issue": "E0审阅rights_issue：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:security_code_alias": "E0审阅security_code_alias：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:security_listing_event": "E0审阅security_listing_event：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:security_name_change": "E0审阅security_name_change：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:security_st_event": "E0审阅security_st_event：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:shareholder_change": "E0审阅shareholder_change：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:shareholder_count": "E0审阅shareholder_count：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock": "E0审阅stock：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_daily_quote": "E0审阅stock_daily_quote：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_daily_quote_level": "E0审阅stock_daily_quote_level：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_index": "E0审阅stock_index：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_index_member": "E0审阅stock_index_member：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_intraday_trade_block": "E0审阅stock_intraday_trade_block：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_intraday_trend": "E0审阅stock_intraday_trend：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_large_order_trend": "E0审阅stock_large_order_trend：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_listing": "E0审阅stock_listing：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_market_day": "E0审阅stock_market_day：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_minute_entrust": "E0审阅stock_minute_entrust：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_minute_volume": "E0审阅stock_minute_volume：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_opening_auction": "E0审阅stock_opening_auction：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:stock_repurchase_plan": "E0审阅stock_repurchase_plan：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:suspension_event": "E0审阅suspension_event：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:suspension_source_date": "E0审阅suspension_source_date：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "mysql:trade_calendar": "E0审阅trade_calendar：DDL字节、逐表固定来源、主键顺序、必需列和数据集表组均保持；新增JSON逐表追踪不改变既有表字典；资源维护说明集中同步到数据库职责主题",
+    "page:calendar": "E0审阅calendar：公共SQL归属资源读取保持原schema_contract与来源校验语义；本页查询、字段、交互和数据准备日期判断未修改；资源维护说明集中同步到数据库职责主题",
+    "redis:checkpoint": "E0审阅checkpoint：SQL归属读者改动仅扩大文档依赖追踪；现有Redis键构造、类型、内容、期限、成功清队及恢复代码均未修改；资源维护说明集中同步到数据库职责主题",
+    "redis:collection-control": "E0审阅collection-control：SQL归属读者改动仅扩大文档依赖追踪；现有Redis键构造、类型、内容、期限、成功清队及恢复代码均未修改；资源维护说明集中同步到数据库职责主题",
+    "redis:preparation-report": "E0审阅preparation-report：SQL归属读者改动仅扩大文档依赖追踪；现有Redis键构造、类型、内容、期限、成功清队及恢复代码均未修改；资源维护说明集中同步到数据库职责主题",
+    "redis:stocks-committed": "E0审阅stocks-committed：SQL归属读者改动仅扩大文档依赖追踪；现有Redis键构造、类型、内容、期限、成功清队及恢复代码均未修改；资源维护说明集中同步到数据库职责主题",
+    "redis:stocks-result": "E0审阅stocks-result：SQL归属读者改动仅扩大文档依赖追踪；现有Redis键构造、类型、内容、期限、成功清队及恢复代码均未修改；资源维护说明集中同步到数据库职责主题",
+    "task:cninfo-calendar": "E0审阅cninfo-calendar：公共归属五映射已逐值逐序保持；本任务来源解析、生命周期、默认策略、消息及归档执行代码未修改；资源维护说明集中同步到数据库职责主题",
+    "task:tdx-additional-issues": "E0审阅tdx-additional-issues：公共归属五映射已逐值逐序保持；本任务来源解析、生命周期、默认策略、消息及归档执行代码未修改；资源维护说明集中同步到数据库职责主题",
+    "task:tdx-dividends": "E0审阅tdx-dividends：公共归属五映射已逐值逐序保持；本任务来源解析、生命周期、默认策略、消息及归档执行代码未修改；资源维护说明集中同步到数据库职责主题",
+    "task:tdx-rights-issues": "E0审阅tdx-rights-issues：公共归属五映射已逐值逐序保持；本任务来源解析、生命周期、默认策略、消息及归档执行代码未修改；资源维护说明集中同步到数据库职责主题",
+    "task:tdx-suspensions": "E0审阅tdx-suspensions：公共归属五映射已逐值逐序保持；本任务来源解析、生命周期、默认策略、消息及归档执行代码未修改；资源维护说明集中同步到数据库职责主题",
+    "task:tdx-unlocks": "E0审阅tdx-unlocks：公共归属五映射已逐值逐序保持；本任务来源解析、生命周期、默认策略、消息及归档执行代码未修改；资源维护说明集中同步到数据库职责主题",
+    "task:ths-index-prices": "E0审阅ths-index-prices：公共归属五映射已逐值逐序保持；本任务来源解析、生命周期、默认策略、消息及归档执行代码未修改；资源维护说明集中同步到数据库职责主题",
+    "task:ths-industries": "E0审阅ths-industries：公共归属五映射已逐值逐序保持；本任务来源解析、生命周期、默认策略、消息及归档执行代码未修改；资源维护说明集中同步到数据库职责主题",
+    "task:ths-stocks": "E0审阅ths-stocks：公共归属五映射已逐值逐序保持；本任务来源解析、生命周期、默认策略、消息及归档执行代码未修改；资源维护说明集中同步到数据库职责主题"
+  },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
-    "Empire.spec": "d2abcbcd9af91b4b8078ed45d54cf0c5f70cbedb1ec6a3d59e1168a11fb1f975",
+    "Empire.spec": "df843a6c4e9321d7bebd8dfe4e5aca64e1e170be5f1cf876f547f5a79c89e911",
     "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
     "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
     "scripts/architecture_contract.py": "29f82b73f1532a1aa17c1552971a0be389d78d4b5a6c3d1ef80355f0b68f7404",
@@ -35,8 +101,8 @@
     "scripts/create_ths_capital_schema.py": "c302510fbfaf553628f8d5c412002b394821228ca094cfa7a05dd64899caf7a0",
     "scripts/create_unlock_industry_schema.py": "9661c9cd1b5cef1feab58a9f92bbf2ad1a965d115adb9bca2c9e66d736e25b42",
     "scripts/create_unlock_schema.py": "b42339d3225466120c3254d357d27afe71947f46ebd2b35ed3a3f7e355225224",
-    "scripts/documentation_contract.py": "7e92817c32c101cd5fa58e54960333ccd83606f02bdf474ad4a18dadb39e9c92",
-    "scripts/documentation_storage.py": "2e5f7220ebc107078a7099e9477d39a83b7b7de929ee6e4a946006b7a2b0a28e",
+    "scripts/documentation_contract.py": "b7b270092b7bbda2cdb29ab748823e59d8664efe80d5507f903983b0be4b0a66",
+    "scripts/documentation_storage.py": "1cffb80ee61fe1f2e44e2b7ba9fe04ea8100b737b134ddd58d1e2baccda86119",
     "scripts/holder_pending_schema.py": "2b6068d8576c7ac112d63d2d2e5b0384843960b07605230dcf79e2ac50718682",
     "scripts/import_bse_code_mapping.py": "40678af8984ad372fa03c7846492b0d2c2b4efab2265008794328bd868db0fa9",
     "scripts/init_tdx_performance.py": "d99e06f1ba43e5dcd76fdfe362c83deb9305d812b621c37059551a31dc03b608",
@@ -91,7 +157,7 @@
     "scripts/source_test_storage.py": "9c6561a7faa90481194a83d9abf2d14369790ae2d6b4e4de200107d9a328727e",
     "scripts/source_verification.py": "ba63b31f402295bd89ad1de524a7181fffdec02b9b81099f6fa39dc41db21290",
     "scripts/ui_architecture_contract.py": "637ba511f11fe01003564cc656972dace76a236c71ab458711394d72be725b9f",
-    "scripts/verify_database_design.py": "413c6158aa7040779f90fb519151be052feee42142108de9dd5db58afb114054",
+    "scripts/verify_database_design.py": "e5040e826cb7cb7bf1624edafdfef9d7524631727a713161bd31b2156ec783e7",
     "scripts/verify_documentation.py": "71dbfdd1365391be2dd5dacd76f6e86fcbac0fe34233cf1be84b4537b4d73d92",
     "scripts/verify_foundation_ui.py": "685375b7c48bf5440b8a1bdd3188fee319b1cbe8de049f0b389047aa1bcb442c",
     "scripts/verify_index_prices.py": "fdded41af68a3ffb858b56171ee6a4b1542abc7bcd6ba701dc5c43d342526c5d",
@@ -109,10 +175,12 @@
     "scripts/verify_ths_statements.py": "5741a9a0cd0e96304194d5279afb2c453f295cd13b933b42efe6076441cabf98",
     "scripts/verify_unlock_industries.py": "3c6e9db456718a8c518b370fc137149eaf5fd31823eff6fb3885074a2176ba5b",
     "scripts/verify_unlocks.py": "3d168de5bf2fafd28aea072a87a0fbb3ae18b686d11e5ef7480873a77bf1861f",
+    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
     "sql/changes/2026-10-06-listing-status.sql": "0b33cdb0ab6733fd1610518963f984021af46b83bd8c601d500c801fdb0eb97d",
     "sql/legacy/business-v1.sql": "2b052c6caf0e79ed0c6efe1c1f06dea5daee4f47dd086e6854fcf37d439d92a5",
     "sql/legacy/intraday-v2.sql": "c90e4b2c2716cf403bc0917a3621a4dc5f9d39bff8facc9bb7a933b8409637d2",
     "sql/legacy/market-day-v1.sql": "8c33fd5cdb741c850c0cf6d6ba5b1abae4341019ac98a80759938baf8112cd78",
+    "sql/schema-contract.json": "5a434101b373eb0dd9de99dd1ad0872229c3bf0f33d21658fe71d84cd0fdce1f",
     "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
     "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
     "src/empire/__main__.py": "d14dfec24b67f6c8d4ca0af19d5899722f3e2dedd9b2ad69db6dddff02d4ff2c",
@@ -122,7 +190,7 @@
     "src/empire/contracts/adjustment.py": "3d9cfdfebb19a99eab214cb8bf1459189bf3b727f72798070dd4cb0addf5fe19",
     "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
     "src/empire/contracts/bundle.py": "cc7c1995c494f2ad3ff87b16a1459c379d9aecfb79cd41a80fd2c35b3b5ba31d",
-    "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
     "src/empire/contracts/capital_transport.py": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
     "src/empire/contracts/collection_integrity.py": "a0ed9089362c388cb58e06590ce4fcf026689dc42d5ad680214f4fdd0be64cf6",
     "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
@@ -451,7 +519,7 @@
     "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
     "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926"
   },
-  "content_sha256": "7192a8236271ea350b63398438cf45c8a551e060fb99e6a0da58706c9b73f776",
+  "content_sha256": "18bab06b61f0fe2cca293927a474933ed192532c8ab26f1321e560d122f58337",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -1658,15 +1726,14 @@
     },
     "page:calendar": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/contracts/ui.py": "da48caccbce272fc0590c7585eaf897c7d16639ce1a308c1a8e4bfa5cc90ca1e",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
@@ -1749,7 +1816,7 @@
         "src/empire/plugins/ui/help_reader.py": "e8d375e772a0e8a5a5ece80feae9fe3b312545f559e5ee9747a15d1a5d681a95",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c"
       },
-      "content_sha256": "431c6de6d8076cd0d2933277e724d3c81041d556f808030de952653d54377dcf"
+      "content_sha256": "1fe6c329143e4533dad21e50929405c9640b1ee22ae69b9c7e026ed53e330cbf"
     },
     "page:proxies": {
       "sources": {
@@ -1827,7 +1894,7 @@
         "src/empire/plugins/ui/preview_layout.py": "e3bb69109303f22cb5ffa462a8f89d330031c1015270f60dcd58bc0e92ef2364",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "fc0cfb754fe6a9d9df0dcc288ac2b5c7c2f7177ce5fcf307586323dd817ad4c4"
+      "content_sha256": "ab82616a3832c97c3fcef24316f40ace55ee4f322b84f37f9202b8935d6e3248"
     },
     "task:tdx-unlock-industries": {
       "sources": {
@@ -1849,15 +1916,14 @@
     },
     "task:tdx-unlocks": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/contracts/unlocks.py": "f7c082205645e04746d3bfb87a2bc168af3479126ca31725cdb4adec12d4a68f",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
@@ -2166,18 +2232,17 @@
     },
     "task:ths-index-prices": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/index_prices.py": "1d4dbf66cc95dd5231dbb3fbe1f65e31d75d2cd17f02b71892451d2f73074aaf",
         "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
@@ -2493,17 +2558,16 @@
     },
     "task:ths-industries": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/industries.py": "00c40a8e31fe2639bc139a26b9acce92651db829b2ab4d66e46667e7a52e777f",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
@@ -2589,17 +2653,16 @@
     },
     "task:tdx-dividends": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collection_integrity.py": "a0ed9089362c388cb58e06590ce4fcf026689dc42d5ad680214f4fdd0be64cf6",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/capital_lifecycle.py": "7ce03a5e0d5dab22945dc2fcebfe7c773ad8637c7ab56f2b8aef79ff88e65be9",
@@ -2621,17 +2684,16 @@
     },
     "task:tdx-additional-issues": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collection_integrity.py": "a0ed9089362c388cb58e06590ce4fcf026689dc42d5ad680214f4fdd0be64cf6",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/capital_lifecycle.py": "7ce03a5e0d5dab22945dc2fcebfe7c773ad8637c7ab56f2b8aef79ff88e65be9",
@@ -2653,17 +2715,16 @@
     },
     "task:tdx-rights-issues": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collection_integrity.py": "a0ed9089362c388cb58e06590ce4fcf026689dc42d5ad680214f4fdd0be64cf6",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/capital_lifecycle.py": "7ce03a5e0d5dab22945dc2fcebfe7c773ad8637c7ab56f2b8aef79ff88e65be9",
@@ -2685,18 +2746,17 @@
     },
     "task:ths-stocks": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/industries.py": "00c40a8e31fe2639bc139a26b9acce92651db829b2ab4d66e46667e7a52e777f",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
         "src/empire/contracts/stocks.py": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
@@ -2746,15 +2806,14 @@
     },
     "task:cninfo-calendar": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/cninfo_calendar.py": "90f2e6bc7ab9085e8a506ab5c91f19d74f14095d5ea79bb67bc1d0f74d3681f4",
@@ -2766,19 +2825,18 @@
     },
     "task:tdx-suspensions": {
       "sources": {
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collection_integrity.py": "a0ed9089362c388cb58e06590ce4fcf026689dc42d5ad680214f4fdd0be64cf6",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
         "src/empire/contracts/stocks.py": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
@@ -2799,16 +2857,15 @@
       "sources": {
         "src/empire/plugins/datasets/stocks.py": "ada0222a4df15b9d3b46a1ab4b199f999a5e53a3febba028fbeac6e0d7bbaec5",
         "src/empire/plugins/data/stocks.py": "4df37269b49ae295e7ce37d8d671ed3772c37df55bd2cc81d1c3f6ec1d61039f",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
         "src/empire/contracts/stocks.py": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
@@ -2819,7 +2876,8 @@
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock": "e0e049670aa2a5a0bc0fcac87ef423a22ad43910a0b6bcd5241dad333019b116"
+        "sql/schema.sql#stock": "e0e049670aa2a5a0bc0fcac87ef423a22ad43910a0b6bcd5241dad333019b116",
+        "sql/business-schema.json#stock": "7e6e8745273a515eadcf2129d8708d2646e38a14eeb00db2c6aeca9bf88ce2e4"
       },
       "content_sha256": "ec64c8bbf9b04fa7c6866da8635e19c082d79ff37c868f30189c0703d51834f5"
     },
@@ -2827,12 +2885,12 @@
       "sources": {
         "src/empire/plugins/datasets/listings.py": "06a10a663d4e8db18a6a3e43ef572c1ec9cc8c9e042051338ab21333e57259aa",
         "src/empire/plugins/data/listings.py": "f98c4183f3f1f4566cf6fd763947103c9a5e40d6287a15125cfc56b5281d984f",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -2852,7 +2910,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#stock_listing": "889a83ec530da185400eacbb517ceb0e1d579a06e9b167ce34298203f29060d5"
+        "sql/schema.sql#stock_listing": "889a83ec530da185400eacbb517ceb0e1d579a06e9b167ce34298203f29060d5",
+        "sql/business-schema.json#stock_listing": "34c636d89defd610ebf5bb07dc8c581e3d31176ca502abe75ac8bdcb50e2813b"
       },
       "content_sha256": "510f0656084f72c9200d3edab68d4b9146a44e413edd2c29a4789953f0dcbe7e"
     },
@@ -2860,12 +2919,12 @@
       "sources": {
         "src/empire/plugins/datasets/listing_status.py": "8c589faf578c281f80388d315ac7faecb0347c0c7d2441638c682155ab037550",
         "src/empire/plugins/data/listing_status.py": "07a1773d681152ecc95abe8bb67bde25f575cc0d239550dcea98afaeff58f056",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/listing_status.py": "e616ef13163210b3775dad72373df25446c9d1db0395ac4a5da90d6d2c929d21",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -2886,7 +2945,8 @@
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/data/listing_status_checks.py": "befe9a4265344379c98cc038938e3dda96baa2c147bffba764d0e554d348ea27",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#security_listing_event": "7dfb4664e1fa7c9e1e599d5936728497f1537857191e13db138fed8a70dafda4"
+        "sql/schema.sql#security_listing_event": "7dfb4664e1fa7c9e1e599d5936728497f1537857191e13db138fed8a70dafda4",
+        "sql/business-schema.json#security_listing_event": "8f82fbd0d49dc2ad70e65018bdb9ffa84847405aadb64786476da3c337ccf177"
       },
       "content_sha256": "dd4f639db17073f61db973896a06f2bfd4b10693db8fa2371a5b129809f6d44b"
     },
@@ -2901,7 +2961,8 @@
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/news/__init__.py": "72630191a4f2c5efe03b92424f3353bba71befb186ae9b9d2c0b68865faf162d",
         "src/empire/features/news/contract.py": "b8268f1b5397f81ab290640a464569646e34a1134ca6d740d3f96412c8cafcff",
-        "sql/schema.sql#finance_news": "c3e3e8abbaacdd36d2e57d9b88f13fac70b4ad88a8ff3e8f310334afe5e09586"
+        "sql/schema.sql#finance_news": "c3e3e8abbaacdd36d2e57d9b88f13fac70b4ad88a8ff3e8f310334afe5e09586",
+        "sql/business-schema.json#finance_news": "c86bca2ff645913ce62254700f228ad6aeb07f87024a2146acf1a0a21377ce02"
       },
       "content_sha256": "f76c26171d8afa57af242e136f21289c6dcaefa086c15c480b99f61dd0bc0b68"
     },
@@ -2909,16 +2970,15 @@
       "sources": {
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
         "src/empire/plugins/data/trade_calendar.py": "40629416decc06eaa3e0ed99a225a0dddab051dd6fa8c3a36a3a033e1a042a84",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
         "src/empire/contracts/stocks.py": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/data/calendar_preparation.py": "61df6cbb8838452ec7158ef0defbfa13086f504d5b45cf22562a3977f5ab097e",
@@ -2927,7 +2987,8 @@
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
         "src/empire/plugins/datasets/stocks.py": "ada0222a4df15b9d3b46a1ab4b199f999a5e53a3febba028fbeac6e0d7bbaec5",
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
-        "sql/schema.sql#trade_calendar": "2cbc87ba712de64887b7b3b782b8d815fbf835d7d347012e11a903f496e07467"
+        "sql/schema.sql#trade_calendar": "2cbc87ba712de64887b7b3b782b8d815fbf835d7d347012e11a903f496e07467",
+        "sql/business-schema.json#trade_calendar": "96a7c4191eaad7db0a26c2600af83db4697713207c93320849426e629fb9f27e"
       },
       "content_sha256": "66537d3b6512a8101ed1aa2ef3c89349086a284bbbbd160c83f563c6d757be97"
     },
@@ -2935,16 +2996,15 @@
       "sources": {
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/data/suspensions.py": "3b3b422562d2e970311e58ddaf1ba5d4a2aa3a21c541666ad4491985ff888847",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
         "src/empire/contracts/stocks.py": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/data/preparation_checks.py": "ea8143722c903aabd9f0e00470cd606641a649cae4e39260c6731d747812fb9a",
@@ -2952,7 +3012,8 @@
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
         "src/empire/plugins/datasets/stocks.py": "ada0222a4df15b9d3b46a1ab4b199f999a5e53a3febba028fbeac6e0d7bbaec5",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#suspension_event": "24db5b9aa2bfc1c6ccef7b22944a52ca88a7af19a870ffce09512251598c0f8c"
+        "sql/schema.sql#suspension_event": "24db5b9aa2bfc1c6ccef7b22944a52ca88a7af19a870ffce09512251598c0f8c",
+        "sql/business-schema.json#suspension_event": "66ab0f62ac2e44e86be8aef0e126db42f49bd2700e4e2063a11015239b6008a6"
       },
       "content_sha256": "a5b5b6ebdbbe15a1a4ffa202e31cf735b4895628935f8b3b77105629235d1c8b"
     },
@@ -2960,16 +3021,15 @@
       "sources": {
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/data/suspensions.py": "3b3b422562d2e970311e58ddaf1ba5d4a2aa3a21c541666ad4491985ff888847",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
         "src/empire/contracts/stocks.py": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/data/preparation_checks.py": "ea8143722c903aabd9f0e00470cd606641a649cae4e39260c6731d747812fb9a",
@@ -2977,7 +3037,8 @@
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
         "src/empire/plugins/datasets/stocks.py": "ada0222a4df15b9d3b46a1ab4b199f999a5e53a3febba028fbeac6e0d7bbaec5",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#suspension_source_date": "8dafd6e6036acbb46c47260eab628e4b713ae1b7a800c5f9ba976331e643c203"
+        "sql/schema.sql#suspension_source_date": "8dafd6e6036acbb46c47260eab628e4b713ae1b7a800c5f9ba976331e643c203",
+        "sql/business-schema.json#suspension_source_date": "6aa213c11bdf8f84befd4f93ca75c765f3e2cc1800c483efc66873380a1a7c4b"
       },
       "content_sha256": "4624bda7f0e2255276134e954133e75e98d9b50c70db49d05878352dc7588b94"
     },
@@ -2985,15 +3046,14 @@
       "sources": {
         "src/empire/plugins/datasets/capital_archive.py": "fc029f129c059110f129a63fb67a19244e9d49095c893e6eea5daa8649631b2f",
         "src/empire/plugins/data/capital_actions.py": "8321ee748f41a07883d68511ca7b5f3cb7c68fa0563b8e2e4af2e27c16d4a1ef",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/data/issue_candidates.py": "fd1ea369efc4d9d3c7eb86c5f09ceb679da23a6bd570f0b7bb21139421b42695",
@@ -3001,7 +3061,8 @@
         "src/empire/plugins/datasets/capital_actions.py": "6259032715ba22412b02c70069cfa706f3cc2283506f21e139ad6856e17906d3",
         "src/empire/plugins/datasets/capital_validation.py": "6f676be5196fbf96a9a0214f231dbab9a489b155d71a3e9f66dbba62b63993d1",
         "src/empire/plugins/datasets/issue_detail.py": "7b42067f60349c18d3c78812ba8397898c428eb9eef6a9ae5628a518580b818c",
-        "sql/schema.sql#dividend_plan": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025"
+        "sql/schema.sql#dividend_plan": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025",
+        "sql/business-schema.json#dividend_plan": "86ed456bf8f9e14d1efec2339baf0100ea5c6ef512bab02b2c5790e8f34531fc"
       },
       "content_sha256": "a492f01422b702792684d235fc5d2c5195f9a82c69f70bc03de30c1af15c9590"
     },
@@ -3009,15 +3070,14 @@
       "sources": {
         "src/empire/plugins/datasets/capital_archive.py": "fc029f129c059110f129a63fb67a19244e9d49095c893e6eea5daa8649631b2f",
         "src/empire/plugins/data/capital_actions.py": "8321ee748f41a07883d68511ca7b5f3cb7c68fa0563b8e2e4af2e27c16d4a1ef",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/data/issue_candidates.py": "fd1ea369efc4d9d3c7eb86c5f09ceb679da23a6bd570f0b7bb21139421b42695",
@@ -3025,7 +3085,8 @@
         "src/empire/plugins/datasets/capital_actions.py": "6259032715ba22412b02c70069cfa706f3cc2283506f21e139ad6856e17906d3",
         "src/empire/plugins/datasets/capital_validation.py": "6f676be5196fbf96a9a0214f231dbab9a489b155d71a3e9f66dbba62b63993d1",
         "src/empire/plugins/datasets/issue_detail.py": "7b42067f60349c18d3c78812ba8397898c428eb9eef6a9ae5628a518580b818c",
-        "sql/schema.sql#additional_issue": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025"
+        "sql/schema.sql#additional_issue": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025",
+        "sql/business-schema.json#additional_issue": "ebce83f39d7b29445e6f279f0e5dfa97b036d3efcd33946fb04c32602829ea09"
       },
       "content_sha256": "b54f8cfb4087ca6e44b150a0f2cd221e9deec41f50bc24bf34f1ff07d6f62128"
     },
@@ -3033,15 +3094,14 @@
       "sources": {
         "src/empire/plugins/datasets/capital_archive.py": "fc029f129c059110f129a63fb67a19244e9d49095c893e6eea5daa8649631b2f",
         "src/empire/plugins/data/capital_actions.py": "8321ee748f41a07883d68511ca7b5f3cb7c68fa0563b8e2e4af2e27c16d4a1ef",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/data/issue_candidates.py": "fd1ea369efc4d9d3c7eb86c5f09ceb679da23a6bd570f0b7bb21139421b42695",
@@ -3049,7 +3109,8 @@
         "src/empire/plugins/datasets/capital_actions.py": "6259032715ba22412b02c70069cfa706f3cc2283506f21e139ad6856e17906d3",
         "src/empire/plugins/datasets/capital_validation.py": "6f676be5196fbf96a9a0214f231dbab9a489b155d71a3e9f66dbba62b63993d1",
         "src/empire/plugins/datasets/issue_detail.py": "7b42067f60349c18d3c78812ba8397898c428eb9eef6a9ae5628a518580b818c",
-        "sql/schema.sql#rights_issue": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025"
+        "sql/schema.sql#rights_issue": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025",
+        "sql/business-schema.json#rights_issue": "592e757eab5dfdab5c0d75056ba9867ff3efe37270678fbb89fad823a87fd082"
       },
       "content_sha256": "d07ca043c77202e275b8fcb0c44744efacf96111f193eb1096bca7959d29f1e4"
     },
@@ -3057,11 +3118,11 @@
       "sources": {
         "src/empire/plugins/datasets/name_changes.py": "a7ddb5f4b0f4f5184d9ea320c9971ebe01ffd8b3e20f84a6622605fa599a5c1a",
         "src/empire/plugins/data/name_changes.py": "decea749788cd116b5d3d275e22ac7cd3048276613bb0d72201a737aeffb08ce",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/name_changes.py": "c8b9ed32c06bd0bf19f3cf1dac5d4fc9a4a79a87889075eb08590416051581e8",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
@@ -3082,7 +3143,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#security_name_change": "115b44ba9ab84f28c43a83c187c2308ae24340b28eae14f3f17d27e30a644fb3"
+        "sql/schema.sql#security_name_change": "115b44ba9ab84f28c43a83c187c2308ae24340b28eae14f3f17d27e30a644fb3",
+        "sql/business-schema.json#security_name_change": "12a59ae0c2b01c114c365c88d1ba86f70127a86d5b20ade7677b1d3538252f4f"
       },
       "content_sha256": "99a46c9b8ab35027df0b1525ab99c23aa339601c960d2bc2476aa2ea962db74e"
     },
@@ -3090,13 +3152,13 @@
       "sources": {
         "src/empire/plugins/datasets/financial_archive.py": "960c7bc22d89d8a0ed2d94832d359b8f59f254cc6d63c1b3886a8d8f6230f951",
         "src/empire/plugins/data/financial_statements.py": "1ab41e45eeb008feaafd239b2588b47df8f76a203a346bba1dc0c874f73e9995",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3122,7 +3184,8 @@
         "src/empire/plugins/datasets/financial_quality.py": "faa6f3847935f22f0d07881584bfcea82b68762b063d576936a42d649622b66f",
         "src/empire/plugins/datasets/financial_statements.py": "e787328643f4eb6532d6f9e977a0bb3367a3a9ff7698724f9728f777ea871d94",
         "src/empire/plugins/datasets/financial_wire.py": "285ee179af2fd37c68e1bc2de2aedf9a26eea84ac1814f04e0fa4dcca31d8710",
-        "sql/schema.sql#income_statement": "c00e9d2536c94c01b1f26ab25c65d8063ec049d0db4abad3a381b48bc75e4da9"
+        "sql/schema.sql#income_statement": "c00e9d2536c94c01b1f26ab25c65d8063ec049d0db4abad3a381b48bc75e4da9",
+        "sql/business-schema.json#income_statement": "9903bbc385c5065d115d847296b99ad296f69a2caa80e7571d1d1edb80b3af7c"
       },
       "content_sha256": "3dd3f94004fd9ad9d7c396a236e0ddbeaafff46aee597e1a85f0b2537d804455"
     },
@@ -3130,13 +3193,13 @@
       "sources": {
         "src/empire/plugins/datasets/financial_archive.py": "960c7bc22d89d8a0ed2d94832d359b8f59f254cc6d63c1b3886a8d8f6230f951",
         "src/empire/plugins/data/financial_statements.py": "1ab41e45eeb008feaafd239b2588b47df8f76a203a346bba1dc0c874f73e9995",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3162,7 +3225,8 @@
         "src/empire/plugins/datasets/financial_quality.py": "faa6f3847935f22f0d07881584bfcea82b68762b063d576936a42d649622b66f",
         "src/empire/plugins/datasets/financial_statements.py": "e787328643f4eb6532d6f9e977a0bb3367a3a9ff7698724f9728f777ea871d94",
         "src/empire/plugins/datasets/financial_wire.py": "285ee179af2fd37c68e1bc2de2aedf9a26eea84ac1814f04e0fa4dcca31d8710",
-        "sql/schema.sql#balance_statement": "c00e9d2536c94c01b1f26ab25c65d8063ec049d0db4abad3a381b48bc75e4da9"
+        "sql/schema.sql#balance_statement": "c00e9d2536c94c01b1f26ab25c65d8063ec049d0db4abad3a381b48bc75e4da9",
+        "sql/business-schema.json#balance_statement": "e8c86bd6442844d0cc955df0c1232e087318d0ed64090834318f53491433894b"
       },
       "content_sha256": "9a55dff4c5ed2f255f79a2f3c559e4f60471e310987a1d9ad74155cf4265c7ac"
     },
@@ -3170,13 +3234,13 @@
       "sources": {
         "src/empire/plugins/datasets/financial_archive.py": "960c7bc22d89d8a0ed2d94832d359b8f59f254cc6d63c1b3886a8d8f6230f951",
         "src/empire/plugins/data/financial_statements.py": "1ab41e45eeb008feaafd239b2588b47df8f76a203a346bba1dc0c874f73e9995",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3202,7 +3266,8 @@
         "src/empire/plugins/datasets/financial_quality.py": "faa6f3847935f22f0d07881584bfcea82b68762b063d576936a42d649622b66f",
         "src/empire/plugins/datasets/financial_statements.py": "e787328643f4eb6532d6f9e977a0bb3367a3a9ff7698724f9728f777ea871d94",
         "src/empire/plugins/datasets/financial_wire.py": "285ee179af2fd37c68e1bc2de2aedf9a26eea84ac1814f04e0fa4dcca31d8710",
-        "sql/schema.sql#cashflow_statement": "c00e9d2536c94c01b1f26ab25c65d8063ec049d0db4abad3a381b48bc75e4da9"
+        "sql/schema.sql#cashflow_statement": "c00e9d2536c94c01b1f26ab25c65d8063ec049d0db4abad3a381b48bc75e4da9",
+        "sql/business-schema.json#cashflow_statement": "5a608d5a562633ec43d5a9357210941ef32b3800d66b8dfa02461c8814b1ebb3"
       },
       "content_sha256": "ef469149cc05f12c97e3c2c4488f64093e884f6cf2bf5ddd5d3ed4a9835ff674"
     },
@@ -3210,12 +3275,12 @@
       "sources": {
         "src/empire/plugins/datasets/industries.py": "41c56a2f1d189c3c6004a62f6bc92cf3107712d5b47281d77c4c14ced007c890",
         "src/empire/plugins/data/industries.py": "3d55b17d897540d341195c7378e7d704f67989cc3022f169ecb2f38d14f6a540",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/industries.py": "00c40a8e31fe2639bc139a26b9acce92651db829b2ab4d66e46667e7a52e777f",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3235,7 +3300,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#industry": "fbe01f1ca1b99881db05b25e733ca466c8cfd3a2f532a21b1453798ad17d0ad7"
+        "sql/schema.sql#industry": "fbe01f1ca1b99881db05b25e733ca466c8cfd3a2f532a21b1453798ad17d0ad7",
+        "sql/business-schema.json#industry": "554923f927e5f8669ea3666069ad345b5616574e544f5d275b517819a88b2e60"
       },
       "content_sha256": "47def6d7ddc7bf3e812fb51adf3803edcbe0249a4ab4af95878200197ab5c5ae"
     },
@@ -3243,12 +3309,12 @@
       "sources": {
         "src/empire/plugins/datasets/industries.py": "41c56a2f1d189c3c6004a62f6bc92cf3107712d5b47281d77c4c14ced007c890",
         "src/empire/plugins/data/industries.py": "3d55b17d897540d341195c7378e7d704f67989cc3022f169ecb2f38d14f6a540",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/industries.py": "00c40a8e31fe2639bc139a26b9acce92651db829b2ab4d66e46667e7a52e777f",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3268,7 +3334,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#industry_member": "979a6ea1d4cd6204d84f06ceaf6c0198afcd36594fda12ec37ae0738b66f0823"
+        "sql/schema.sql#industry_member": "979a6ea1d4cd6204d84f06ceaf6c0198afcd36594fda12ec37ae0738b66f0823",
+        "sql/business-schema.json#industry_member": "31e64c5c1dfef3afdc26563eb9060dcec3a456c82996cc8843147cda7b998845"
       },
       "content_sha256": "4519aad5cb00944050348d8ea315f107ede74b05283098a5a4eac2f6572a66ed"
     },
@@ -3277,13 +3344,13 @@
         "src/empire/plugins/datasets/indices.py": "0be5f8f69f02351660c1086e3b71a8b5ea940ec33fe428fb158158a4935efede",
         "src/empire/plugins/data/indices.py": "fac4b7b0651b90d8bd481cfe66cccc71b4262cfc20633c0242ff73e27728e8a7",
         "src/empire/plugins/data/index_prices.py": "18f86e564738cc5f85f5ba9e9def92371dae5fff371a1410f458a6d5d435c217",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/index_prices.py": "1d4dbf66cc95dd5231dbb3fbe1f65e31d75d2cd17f02b71892451d2f73074aaf",
         "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3304,7 +3371,8 @@
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
         "src/empire/plugins/datasets/index_prices.py": "a75a6192454492e9d301ad70c1b29a9ee34d19b530a52dee27d3a5e0d8954398",
-        "sql/schema.sql#stock_index": "b03bde838f982b7265b390dec13ec89224666e700c4711ff5c6c5a062311362b"
+        "sql/schema.sql#stock_index": "b03bde838f982b7265b390dec13ec89224666e700c4711ff5c6c5a062311362b",
+        "sql/business-schema.json#stock_index": "fc5124fb09b7a3fd407f77fcd4df580e4011cf83ce1aa10e684b2aa771f6ecc4"
       },
       "content_sha256": "af48c49f90b47ee55a45c0832b878f19572397fdb9dc16c73a291c9d5dedc995"
     },
@@ -3312,12 +3380,12 @@
       "sources": {
         "src/empire/plugins/datasets/indices.py": "0be5f8f69f02351660c1086e3b71a8b5ea940ec33fe428fb158158a4935efede",
         "src/empire/plugins/data/indices.py": "fac4b7b0651b90d8bd481cfe66cccc71b4262cfc20633c0242ff73e27728e8a7",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3337,7 +3405,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#stock_index_member": "0e49ee9e8d77a4d4f57bc3117e56a71381cd7bd9c2d5b82d0cfd9970f8d16368"
+        "sql/schema.sql#stock_index_member": "0e49ee9e8d77a4d4f57bc3117e56a71381cd7bd9c2d5b82d0cfd9970f8d16368",
+        "sql/business-schema.json#stock_index_member": "e15480e59eae49cbff49ca0341630bf32b9bb62396df82d24045d995d64c4abb"
       },
       "content_sha256": "a1028750572d27fc6ab69cf657fa0719d163c580b91c5c8b5b7caf58321899c3"
     },
@@ -3345,10 +3414,11 @@
       "sources": {
         "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
         "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
@@ -3390,7 +3460,8 @@
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock_market_day": "3118991950ad7827f1c99a59f8e50d53c24b0b7b2a77859c42c2b4a74b086050"
+        "sql/schema.sql#stock_market_day": "3118991950ad7827f1c99a59f8e50d53c24b0b7b2a77859c42c2b4a74b086050",
+        "sql/business-schema.json#stock_market_day": "fd353a29757d4a8b7e14986b138e00c8893d7c4fa94ea3510c375c0af2494d26"
       },
       "content_sha256": "d172c958f93b3e7b786fac1dc229071b8a2edf2ccc441bbbc2f75d5167bb3808"
     },
@@ -3398,10 +3469,11 @@
       "sources": {
         "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
         "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
@@ -3443,7 +3515,8 @@
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock_intraday_trend": "58f47dffc2f3266a20d2887b01d10001c78eeadb8608a713f51833cff221a3a4"
+        "sql/schema.sql#stock_intraday_trend": "58f47dffc2f3266a20d2887b01d10001c78eeadb8608a713f51833cff221a3a4",
+        "sql/business-schema.json#stock_intraday_trend": "6d4cec47fb7b82b31fc16820e52ffe6078c4aaa8e93537c3c1d3f52771f1fb89"
       },
       "content_sha256": "ddd7627eb1c9b09c0c1e2d1fa853ba4603fa3d6f551293dfac4650efe237f425"
     },
@@ -3451,10 +3524,11 @@
       "sources": {
         "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
         "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
@@ -3496,7 +3570,8 @@
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock_opening_auction": "a3fef7e9fa4e591027bdd811a9385c596d30e79141468148175846a82a7ba2f6"
+        "sql/schema.sql#stock_opening_auction": "a3fef7e9fa4e591027bdd811a9385c596d30e79141468148175846a82a7ba2f6",
+        "sql/business-schema.json#stock_opening_auction": "97ad2d32c0c8d245169b31db081d076f505a591f74f9f3da6f037dcd51c76483"
       },
       "content_sha256": "35832ff8e91c1f27d24524ec1b4ad58ffdb6075d79e1c8555023a413bd4d8b65"
     },
@@ -3504,10 +3579,11 @@
       "sources": {
         "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
         "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
@@ -3549,7 +3625,8 @@
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock_minute_volume": "1933de1a79357e8d5c2cc897c55dedd83363e51ddd38e5bd180bac07ea5ebdc3"
+        "sql/schema.sql#stock_minute_volume": "1933de1a79357e8d5c2cc897c55dedd83363e51ddd38e5bd180bac07ea5ebdc3",
+        "sql/business-schema.json#stock_minute_volume": "e019427e4637adf5f9eac940dd629fe19486e54118011856dbe2dc37272e548d"
       },
       "content_sha256": "a1e6954dc1dbb48f3d2e34805e480ad729312b31b7f8fd8e0e9d157bea6ff67e"
     },
@@ -3557,10 +3634,11 @@
       "sources": {
         "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
         "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
@@ -3602,7 +3680,8 @@
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock_intraday_trade_block": "48888077d172c7b0c8e1f352e4ee974b0e6d444ce4dae2fecc39d115a54cd93c"
+        "sql/schema.sql#stock_intraday_trade_block": "48888077d172c7b0c8e1f352e4ee974b0e6d444ce4dae2fecc39d115a54cd93c",
+        "sql/business-schema.json#stock_intraday_trade_block": "815b44d31d47d66500f44bdf5b1ab42aedf39a030011d735a10af71ddbbf7a49"
       },
       "content_sha256": "724320d140fe66f9c74ddb9a09f94dee05343089971eeaefe5828687cf509a5d"
     },
@@ -3610,10 +3689,11 @@
       "sources": {
         "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
         "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
@@ -3655,7 +3735,8 @@
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock_minute_entrust": "118ab212807e06c6331b1d84e2a6b3d68efc6be7769e69576121361f068676a1"
+        "sql/schema.sql#stock_minute_entrust": "118ab212807e06c6331b1d84e2a6b3d68efc6be7769e69576121361f068676a1",
+        "sql/business-schema.json#stock_minute_entrust": "35536ebd1a3b4c5e2d9ee58906715526e0ca1e085a0fafed6d290aecb9a72e52"
       },
       "content_sha256": "a9b20c0eb6529cba5f96b86b810d5dd2224e2e7e8bd7234fd5316416efa8d803"
     },
@@ -3663,10 +3744,11 @@
       "sources": {
         "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
         "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
@@ -3708,7 +3790,8 @@
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock_large_order_trend": "15cd90d8297bf11806360b85d0e54fab80331a78a5c45ec214cc9365599b2050"
+        "sql/schema.sql#stock_large_order_trend": "15cd90d8297bf11806360b85d0e54fab80331a78a5c45ec214cc9365599b2050",
+        "sql/business-schema.json#stock_large_order_trend": "0e9c33beceab6a2ad6d4cea33476dc0e4d0b17a0b13666ed6bbebc65240720e0"
       },
       "content_sha256": "b0ca6f8631665219a4dbf3967a5e68effa62d8f0abc2304432270bb39224570f"
     },
@@ -3716,10 +3799,11 @@
       "sources": {
         "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
         "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
@@ -3761,7 +3845,8 @@
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock_daily_quote": "7b1dfcf1037e4331ab2a1527dd12f891bfa58cf63c4e35af3c0fd352e7cc459f"
+        "sql/schema.sql#stock_daily_quote": "7b1dfcf1037e4331ab2a1527dd12f891bfa58cf63c4e35af3c0fd352e7cc459f",
+        "sql/business-schema.json#stock_daily_quote": "7f69cf25c24e789eef655b67f9982ad2fd411b7e460d07ded2ff984e7158e75f"
       },
       "content_sha256": "4ba4fdfcc3630eec795fba69ff1e270c6eaa5e69f132691d09cfb8dfac40b552"
     },
@@ -3769,10 +3854,11 @@
       "sources": {
         "src/empire/plugins/datasets/market_repository.py": "f2fc680a1b6f4b77fb11bbd35995fddd45054cc5d1614060086dabcea47a7aab",
         "src/empire/plugins/data/kaipanla_products.py": "ca9e53390fcc21342214fc1bb9750b385cb3a92a8066cb61694bfaeacb3f96be",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/listings.py": "7ac03c66fafe9518cbae33e16feeb04f27961cf01598c90bf717d26d72399163",
@@ -3814,7 +3900,8 @@
         "src/empire/plugins/datasets/suspensions.py": "d108e511e4c92428f5b21de1007f7c760db49713aad99e9a12b6aca0cf907df6",
         "src/empire/plugins/datasets/trade_blocks.py": "eaae96261a9c278b97bb76ccef14ca4875dfe09b783fb815991afa1a0e9523e7",
         "src/empire/plugins/datasets/trade_calendar.py": "a0cbb36f0b4439fb65917fa7d18c0996209e6ee6c3f9da33336cdbf20da59bd2",
-        "sql/schema.sql#stock_daily_quote_level": "e34b686a9810c0ce28d94911520603a0002c544e8cb6b32c0ea66e6842bce33e"
+        "sql/schema.sql#stock_daily_quote_level": "e34b686a9810c0ce28d94911520603a0002c544e8cb6b32c0ea66e6842bce33e",
+        "sql/business-schema.json#stock_daily_quote_level": "c5616cebfd9673f77c6dc23709591ee39c0d0eb884df5c060f5b14e58863d4d6"
       },
       "content_sha256": "476ff81488eec27db23816a9b9eb3a2e176426cbf106d2a1fe22887e90454c38"
     },
@@ -3833,7 +3920,8 @@
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/infra/__init__.py": "d4f739179fd85f1a5e60e2fbf0389cad2bb147f5b88a271ee9f6c809561eca72",
         "src/empire/plugins/pipeline/__init__.py": "5bc21e78444728cd50b6ddaf95ef5a50416f7ca8f0e1caf8bf84c939b96bb22b",
-        "sql/schema.sql#collection_state": "e20b950eaaf7454b95cc6d30f7c796b759965182d215c84d5ce9678d90aeb552"
+        "sql/schema.sql#collection_state": "e20b950eaaf7454b95cc6d30f7c796b759965182d215c84d5ce9678d90aeb552",
+        "sql/business-schema.json#collection_state": "f6cb14c44cebbe9c2bbf0692c4ab490146ee04b0db59bb89ad250d16bf3b0d95"
       },
       "content_sha256": "567be9166c72e8a770f4124a4d27cba8ad16e7616a28e10c8b0ab48499c677f8"
     },
@@ -3855,7 +3943,8 @@
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collection/__init__.py": "d243b838e06bbf6e511af8a86fde0da0eaa2494f81cb08001151a1a4a721b5e2",
         "src/empire/plugins/infra/__init__.py": "d4f739179fd85f1a5e60e2fbf0389cad2bb147f5b88a271ee9f6c809561eca72",
-        "sql/schema.sql#app_setting": "670be6684a663cebea1a5c5f9c86ed209479d97518abdf8e1f4b55e205187e65"
+        "sql/schema.sql#app_setting": "670be6684a663cebea1a5c5f9c86ed209479d97518abdf8e1f4b55e205187e65",
+        "sql/business-schema.json#app_setting": "9e3d67224278ba2931b2ead7eba004176829b9a758f0d4e206c22515bd02d2aa"
       },
       "content_sha256": "9fefb1c073636801612f6ea2bd410bb46db5ab76b29ff12dfc5105a28691ca7c"
     },
@@ -3864,17 +3953,17 @@
         "src/empire/plugins/datasets/security_aliases.py": "e0ef62c2ccb028ff280329cc4622abf0a186b95ea8eea43aa15abada204e5869",
         "scripts/import_bse_code_mapping.py": "40678af8984ad372fa03c7846492b0d2c2b4efab2265008794328bd868db0fa9",
         "scripts/create_security_alias_schema.py": "ed81ec12351989d8a4152a3c2b33564771bc3db454674c074c68466e7bb0a045",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/bse_code_mapping_source.py": "5afedd66faefb5935d3a232dcc2011a11e456fc313ee01ef9866e0c8a434b41c",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#security_code_alias": "f2487ee323721af80e8ffc705e0bb8297fb59a8b112c1cc438b122994d56739e"
+        "sql/schema.sql#security_code_alias": "f2487ee323721af80e8ffc705e0bb8297fb59a8b112c1cc438b122994d56739e",
+        "sql/business-schema.json#security_code_alias": "f14eaeb7ff7f54f4fba0c5c731be63743ce61367aba82db4ee43cc57a69f85a0"
       },
       "content_sha256": "db1d7bf22349cc43741f9b42c925cee8fc9e2011d0f4063d436f405291f62e26"
     },
@@ -3882,13 +3971,13 @@
       "sources": {
         "src/empire/plugins/datasets/index_prices.py": "a75a6192454492e9d301ad70c1b29a9ee34d19b530a52dee27d3a5e0d8954398",
         "src/empire/plugins/data/index_prices.py": "18f86e564738cc5f85f5ba9e9def92371dae5fff371a1410f458a6d5d435c217",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/index_prices.py": "1d4dbf66cc95dd5231dbb3fbe1f65e31d75d2cd17f02b71892451d2f73074aaf",
         "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3909,7 +3998,8 @@
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
         "src/empire/plugins/datasets/indices.py": "0be5f8f69f02351660c1086e3b71a8b5ea940ec33fe428fb158158a4935efede",
-        "sql/schema.sql#index_daily_price": "a5b69c292493bd54bb7e22640bca0ca63191219f9325c1b40351d61eb8c96ee6"
+        "sql/schema.sql#index_daily_price": "a5b69c292493bd54bb7e22640bca0ca63191219f9325c1b40351d61eb8c96ee6",
+        "sql/business-schema.json#index_daily_price": "d6ae6409a77212c8016d9de483221040edd330694e5990ba114b04c4e6cb2bd6"
       },
       "content_sha256": "a9dcb2bf7e36b8a2ecbaeef2c8df29c4e84dadfec71c899afbf62ede0ac2cfbc"
     },
@@ -3917,13 +4007,13 @@
       "sources": {
         "src/empire/plugins/datasets/index_prices.py": "a75a6192454492e9d301ad70c1b29a9ee34d19b530a52dee27d3a5e0d8954398",
         "src/empire/plugins/data/index_prices.py": "18f86e564738cc5f85f5ba9e9def92371dae5fff371a1410f458a6d5d435c217",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/index_prices.py": "1d4dbf66cc95dd5231dbb3fbe1f65e31d75d2cd17f02b71892451d2f73074aaf",
         "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3944,7 +4034,8 @@
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
         "src/empire/plugins/datasets/indices.py": "0be5f8f69f02351660c1086e3b71a8b5ea940ec33fe428fb158158a4935efede",
-        "sql/schema.sql#index_price_year": "af9915a894c0afada37b6e60871c9ed9f3585a9b8d32d98b05841e6f4757e32f"
+        "sql/schema.sql#index_price_year": "af9915a894c0afada37b6e60871c9ed9f3585a9b8d32d98b05841e6f4757e32f",
+        "sql/business-schema.json#index_price_year": "2776da48d7a8bd80e2fe46103bf98f84b4d8acef28335fc06520012c9cef8d5c"
       },
       "content_sha256": "b587aec75ad5b118da67b3ec78bf8374a21716efeb170025aa4417943980f9b1"
     },
@@ -3953,11 +4044,11 @@
         "src/empire/contracts/st_events.py": "65cf21a94386a430369ddfd2e531d67ddd110040254e1933baa43f868d65b287",
         "src/empire/plugins/datasets/st_events.py": "443da9268a6184e767f7a089a4cc6c85aef3668ed482e7baf420e3eb565e5e19",
         "src/empire/plugins/data/st_events.py": "444c488c7d47d937cd824fa1e16a1e750ce96541cbdc6323d880e9d21033f56d",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -3977,7 +4068,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#security_st_event": "6a25468b1059aa66b2e04830ea2b86f930fed1065e54a6f9b3fc8883aa5d2665"
+        "sql/schema.sql#security_st_event": "6a25468b1059aa66b2e04830ea2b86f930fed1065e54a6f9b3fc8883aa5d2665",
+        "sql/business-schema.json#security_st_event": "d080b190cc018cff58b4a2297f3ce983633dc5761a1211a2a80a105deb3ae085"
       },
       "content_sha256": "3788bb690149215cbf4f193dae537908e3d0c1152a907f5ef95f92284288305d"
     },
@@ -4009,7 +4101,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#trading_rule_value": "afc1f8db8d3c60c10994b4d7f464781724d50aaf8ccba1e03b1c8aea6ed6a191"
+        "sql/schema.sql#trading_rule_value": "afc1f8db8d3c60c10994b4d7f464781724d50aaf8ccba1e03b1c8aea6ed6a191",
+        "sql/business-schema.json#trading_rule_value": "60f0401ac6729092910f6e0d5645b2986b5f42a72fa8decc2735e2022512ba4d"
       },
       "content_sha256": "e23c553ff80204b5b5c032f25722d0a093288ba518dd59c9a80b6bede4edaba7"
     },
@@ -4041,7 +4134,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#trading_rule_citation": "20e73edac1e67496714db954162f09ba4d4cfc87410bdba1a093f25edeb18786"
+        "sql/schema.sql#trading_rule_citation": "20e73edac1e67496714db954162f09ba4d4cfc87410bdba1a093f25edeb18786",
+        "sql/business-schema.json#trading_rule_citation": "605e11b55673a57fd6f1d0b64306fcb90650e341c69959c849fe2756445340be"
       },
       "content_sha256": "87ad36071354858088bf15902a1b417ad895c55069f2c90beb77d10b3fc9a02e"
     },
@@ -4050,11 +4144,11 @@
         "src/empire/contracts/repurchases.py": "0121912be689c7757d8757684ac167dc35a2efbf11c1dee91bc4d53892f7a3a7",
         "src/empire/plugins/datasets/repurchases.py": "060637632d4a0ceca7143221f928b0730e650a501b63b3284f9fbabe5188fd4c",
         "src/empire/plugins/data/repurchases.py": "5d68132f6bac7027ed8ff485567bec4527ccfdc711e52572315ca698dc2dd356",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4074,7 +4168,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#stock_repurchase_plan": "c87fc64b7de60b89d2e9594da0a812cff2251015b7bb51f69c756709e1942f34"
+        "sql/schema.sql#stock_repurchase_plan": "c87fc64b7de60b89d2e9594da0a812cff2251015b7bb51f69c756709e1942f34",
+        "sql/business-schema.json#stock_repurchase_plan": "220cebec1cd3bb07d393253d225abc8d532306bd446df779e94a76c8649767a3"
       },
       "content_sha256": "92ea384cdc2738af4d6febe1580ca13fae4218feaf0383355f3598e9767cf818"
     },
@@ -4083,11 +4178,11 @@
         "src/empire/contracts/tdx_performance.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/plugins/datasets/tdx_performance.py": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
         "src/empire/plugins/data/tdx_performance.py": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4107,7 +4202,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#earnings_forecast": "ab3ad7dcf0080e41bb208ed202a604b539a45b3014b7f8fedc06dca05344fc26"
+        "sql/schema.sql#earnings_forecast": "ab3ad7dcf0080e41bb208ed202a604b539a45b3014b7f8fedc06dca05344fc26",
+        "sql/business-schema.json#earnings_forecast": "01ed687b32155cc11d0ce3d3f9da8d21d3b569dcd4321e9c8bbf6bd7be4cb4c5"
       },
       "content_sha256": "25eb23225a6dc047bad87ba4c3d8e1f2add527b7f8e7840d3c5eea1e58ca9c0e"
     },
@@ -4116,11 +4212,11 @@
         "src/empire/contracts/tdx_performance.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/plugins/datasets/tdx_performance.py": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
         "src/empire/plugins/data/tdx_performance.py": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4140,7 +4236,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#earnings_quick": "9db11b796d435ceeba608ca303d702ac290c960ae14d9e26fe2f65809f4f5462"
+        "sql/schema.sql#earnings_quick": "9db11b796d435ceeba608ca303d702ac290c960ae14d9e26fe2f65809f4f5462",
+        "sql/business-schema.json#earnings_quick": "81846ac898e854edb8fb01f3c7387ad85e007682da11dedbd51d0a0895b08702"
       },
       "content_sha256": "7fc85c58c4e79f05395afa0fee95c1b76d2df9b2f4cec31b6bb1c95e21f08e66"
     },
@@ -4149,11 +4246,11 @@
         "src/empire/contracts/tdx_performance.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/plugins/datasets/tdx_performance.py": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
         "src/empire/plugins/data/tdx_performance.py": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4173,7 +4270,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#earnings_disclosure": "c7996cce1905e52fcb5ec8dfabf3a306d6e7e334f189122caeab302acfc075f9"
+        "sql/schema.sql#earnings_disclosure": "c7996cce1905e52fcb5ec8dfabf3a306d6e7e334f189122caeab302acfc075f9",
+        "sql/business-schema.json#earnings_disclosure": "d2aa00b975a918475f90fdc8ae0d7aa838828ee2b2662040f1b54f39cfe931bd"
       },
       "content_sha256": "85016153d52f0c91e86e45ae40a09b7d69591c1af7e9da60ae159073a123d9fb"
     },
@@ -4182,11 +4280,11 @@
         "src/empire/contracts/tdx_performance.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/plugins/datasets/tdx_performance.py": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
         "src/empire/plugins/data/tdx_performance.py": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4206,7 +4304,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#earnings_report": "54e88fddc1f15ae482d2d8630c39db34efeae2ccad1babb60fba99802867cbfc"
+        "sql/schema.sql#earnings_report": "54e88fddc1f15ae482d2d8630c39db34efeae2ccad1babb60fba99802867cbfc",
+        "sql/business-schema.json#earnings_report": "efb4c98b8e8e516149b0584ba8f9855a008c286e2ad1fe6cd38b43c76ee3c20c"
       },
       "content_sha256": "c1e5858173cf879870d0f55daa330321ef372638ec80b96a284b799aeff82a14"
     },
@@ -4215,11 +4314,11 @@
         "src/empire/contracts/tdx_performance.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/plugins/datasets/tdx_performance.py": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
         "src/empire/plugins/data/tdx_performance.py": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4239,7 +4338,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#shareholder_count": "9993cd08fb49fb9527b3e6a87207ca6955cc551966e29ccec65d63dd4378a356"
+        "sql/schema.sql#shareholder_count": "9993cd08fb49fb9527b3e6a87207ca6955cc551966e29ccec65d63dd4378a356",
+        "sql/business-schema.json#shareholder_count": "3a78e1af4f64f834058c8d698007eb0a5d11aee63e0b5a491e2e1976e98a0c16"
       },
       "content_sha256": "330084cdebecd641b4269f9c5a4bfb51b20ce96323815e172fb78df05df20772"
     },
@@ -4249,11 +4349,11 @@
         "src/empire/features/holders/query.py": "d5ba76980635ad4adc1f21ddde83c97689c40e7186e935245477257ddcab0993",
         "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
         "src/empire/features/holders/audit.py": "5f8a2294a3398f0a61a71a6218fc7823e4fbf341bf42d406476fa8ebb0e908c5",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4272,7 +4372,8 @@
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
-        "sql/schema.sql#holder_report": "f11bbbac5dbef0850627f5e5cf7787686adc25b6424a1275960ebbacafc62cd0"
+        "sql/schema.sql#holder_report": "f11bbbac5dbef0850627f5e5cf7787686adc25b6424a1275960ebbacafc62cd0",
+        "sql/business-schema.json#holder_report": "87b0b970f07622422c39d287efae27c1dd812664ed667c292cfa0cb07662eaa5"
       },
       "content_sha256": "2b5576662af5c32ef6b2ade80edcc6002302f9683feaa19f3e5626cd57133fd9"
     },
@@ -4282,11 +4383,11 @@
         "src/empire/features/holders/query.py": "d5ba76980635ad4adc1f21ddde83c97689c40e7186e935245477257ddcab0993",
         "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
         "src/empire/features/holders/audit.py": "5f8a2294a3398f0a61a71a6218fc7823e4fbf341bf42d406476fa8ebb0e908c5",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4305,7 +4406,8 @@
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
-        "sql/schema.sql#holder_member": "024ed60ddf75cafabd2fbb8be31b592cae6e3e60e0e1363d841c3a10be4c6d38"
+        "sql/schema.sql#holder_member": "024ed60ddf75cafabd2fbb8be31b592cae6e3e60e0e1363d841c3a10be4c6d38",
+        "sql/business-schema.json#holder_member": "5b172ac6ba537bbf3d489ba1cb802758cebf6ac9bb72204be24d9f0e8cf6df64"
       },
       "content_sha256": "8a6863f2cc04f9b93cf7fb924887b2af5bd46c6073ea15b86e7c2db74b531f49"
     },
@@ -4316,13 +4418,13 @@
         "src/empire/plugins/collectors/tdx_performance_source.py": "8a8270541521cd08465b948abde252b331ccf704768bbb8ed13ec906b95f0ae2",
         "src/empire/plugins/datasets/tdx_performance.py": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
         "src/empire/plugins/data/tdx_performance.py": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4343,7 +4445,8 @@
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#shareholder_change": "f5a0d9e6b96f7b0c90ae38f555ae2cc3d9d525fab8f604c321993d31fb0ac092"
+        "sql/schema.sql#shareholder_change": "f5a0d9e6b96f7b0c90ae38f555ae2cc3d9d525fab8f604c321993d31fb0ac092",
+        "sql/business-schema.json#shareholder_change": "b627ac2015514218fd4644516fea90b757b2f990b6e82f145a505a690d9179c9"
       },
       "content_sha256": "01b99f151c473225626e2e89b687fa06e3c7b88681a6b59df85a8572c174c8ff"
     },
@@ -4355,14 +4458,14 @@
         "src/empire/plugins/datasets/unlocks.py": "0556c91e9169c6cd6689efe839caeb90b802bfb2f83857c4182f8a10acabda0c",
         "src/empire/plugins/data/unlocks.py": "36f5760cc0380986c7c628fd5119ceea5860c8da2413c5499e22e6f4ec529693",
         "src/empire/plugins/ui/unlocks.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4389,7 +4492,8 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "sql/schema.sql#restricted_share_unlock": "c400dbd47c33c4f1aeba9c19b55d4f6b2903a6e2d7f72c11dc9d3c1fdd37681f"
+        "sql/schema.sql#restricted_share_unlock": "c400dbd47c33c4f1aeba9c19b55d4f6b2903a6e2d7f72c11dc9d3c1fdd37681f",
+        "sql/business-schema.json#restricted_share_unlock": "3f4685a5d73b962ebba73fe62817d224da1c60bb3894e6bf065abc5129ed5c7f"
       },
       "content_sha256": "76cbefbee25d9609c4efe39c3ac891250398236c843e0d6c12d9773b7196ad41"
     },
@@ -4401,14 +4505,14 @@
         "src/empire/plugins/datasets/unlocks.py": "0556c91e9169c6cd6689efe839caeb90b802bfb2f83857c4182f8a10acabda0c",
         "src/empire/plugins/data/unlocks.py": "36f5760cc0380986c7c628fd5119ceea5860c8da2413c5499e22e6f4ec529693",
         "src/empire/plugins/ui/unlocks.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4435,7 +4539,8 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "sql/schema.sql#restricted_share_unlock_detail": "0239fe7139ed96c9bf753310ceeec941ac1aa4b0ef3f7a1c277dfe3223cb0778"
+        "sql/schema.sql#restricted_share_unlock_detail": "0239fe7139ed96c9bf753310ceeec941ac1aa4b0ef3f7a1c277dfe3223cb0778",
+        "sql/business-schema.json#restricted_share_unlock_detail": "b277dd55e26ffd958ecadd7d9fa5a0c690f08dbca256fb148ec9cfa657278bd5"
       },
       "content_sha256": "0f8fd739a163534b09202fef2df9089ca12e54704304d6df1e143546bf05210b"
     },
@@ -4447,14 +4552,14 @@
         "src/empire/plugins/datasets/unlock_industries.py": "c8c171ea32e3bae65c727bdedf85b839179f6c1df0a217dd031f20efcd8c2f6b",
         "src/empire/plugins/data/unlock_industries.py": "c168ce72ad0d174af49af6991f4231aae92c3569713a386a911828231ea74c24",
         "src/empire/plugins/ui/unlock_industries.py": "6e06c6b52a1536333e4879574960e253531c483c3b20eeb9d8e2fa66d393126c",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/indices.py": "8dc3ff6d1144a5a71c415c66cf132924f55ff11c95b6b836646b51dd57014d2e",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4483,7 +4588,8 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "sql/schema.sql#restricted_share_unlock_industry": "e2d8c58fc0e2504c3e6c23dd3167b0ab4b9bcb87e66ac899917cd3dfd2708552"
+        "sql/schema.sql#restricted_share_unlock_industry": "e2d8c58fc0e2504c3e6c23dd3167b0ab4b9bcb87e66ac899917cd3dfd2708552",
+        "sql/business-schema.json#restricted_share_unlock_industry": "db879abe560eab4a2c24008cb5ffc3fee4cda526f01bf3273816451574778a33"
       },
       "content_sha256": "0724a97328b04b5e60f8a28355d3257098c550bd7f3366afeb13f227b9704f47"
     },
@@ -4492,12 +4598,12 @@
         "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/datasets/ths_capital.py": "917fdb02391a30325dbaa7feb54dbf382d77fc590e7d715148697ce9ae77af12",
         "src/empire/plugins/data/ths_capital.py": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/capital_transport.py": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4515,7 +4621,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#capital_funding": "e329a9e5ee895cf61e40cd82908d74788363ef1ceb6674262bcfae55d13c1fb1"
+        "sql/schema.sql#capital_funding": "e329a9e5ee895cf61e40cd82908d74788363ef1ceb6674262bcfae55d13c1fb1",
+        "sql/business-schema.json#capital_funding": "ff38f684ff1ad542d957e01186f2b1b643fe3281f340224c3c7a41eb5b7634b3"
       },
       "content_sha256": "35b7b5278f0fb76525c2b1ac8769af6f3782c4afa2f40cf2e213d2bab91d0798"
     },
@@ -4524,12 +4631,12 @@
         "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/datasets/ths_capital.py": "917fdb02391a30325dbaa7feb54dbf382d77fc590e7d715148697ce9ae77af12",
         "src/empire/plugins/data/ths_capital.py": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/capital_transport.py": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4547,7 +4654,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#capital_project": "204f759267975b7179b7b04541782a3395d544a24c1052b3b6e9cfc611ba85cc"
+        "sql/schema.sql#capital_project": "204f759267975b7179b7b04541782a3395d544a24c1052b3b6e9cfc611ba85cc",
+        "sql/business-schema.json#capital_project": "ac1d5e01dc1edc9966a850bacb9be458c06eb8517507379f8ef5d11ea4aa4cc9"
       },
       "content_sha256": "b8c122c32a5e01cb953cd6e37ef78e290ff7f59d6c94e4a68ae1ad43b54f49a4"
     },
@@ -4556,12 +4664,12 @@
         "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/datasets/ths_capital.py": "917fdb02391a30325dbaa7feb54dbf382d77fc590e7d715148697ce9ae77af12",
         "src/empire/plugins/data/ths_capital.py": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/capital_transport.py": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4579,7 +4687,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#capital_transaction": "b1fb3d3a9605cde39f258b1d2c11ed5eefee8769670cf58aa2c60ba8aa94df04"
+        "sql/schema.sql#capital_transaction": "b1fb3d3a9605cde39f258b1d2c11ed5eefee8769670cf58aa2c60ba8aa94df04",
+        "sql/business-schema.json#capital_transaction": "cedfd0aa8d7c389747d607ee188d3e0dcc9e8f4ded3ee6f2cc7fe8f0a3a64e9c"
       },
       "content_sha256": "02e6f361026e54ff98fd1046e461d8437d096aac62278fe79ea7a5a37b7f6071"
     },
@@ -4588,12 +4697,12 @@
         "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/datasets/ths_capital.py": "917fdb02391a30325dbaa7feb54dbf382d77fc590e7d715148697ce9ae77af12",
         "src/empire/plugins/data/ths_capital.py": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/capital_transport.py": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4611,7 +4720,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#capital_equity_summary": "60718e32ce88832410665a7e63c9ab6f56af13b7ec83c3a435fc571479cd9aa0"
+        "sql/schema.sql#capital_equity_summary": "60718e32ce88832410665a7e63c9ab6f56af13b7ec83c3a435fc571479cd9aa0",
+        "sql/business-schema.json#capital_equity_summary": "ab25f2c672a7b45d1ce024a85977406e0148c564c109210bab14509ec690d9f7"
       },
       "content_sha256": "fc4e868d2f67c555e536ec4d933b1163ed6a58a838d50ba1d9bb89fcfac7b2b2"
     },
@@ -4620,12 +4730,12 @@
         "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/datasets/ths_capital.py": "917fdb02391a30325dbaa7feb54dbf382d77fc590e7d715148697ce9ae77af12",
         "src/empire/plugins/data/ths_capital.py": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/capital_transport.py": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4643,7 +4753,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#capital_equity_position": "aca130204cc721acbe3bc16f15403bd1734333a48b0d1db676d8e3fc9bdd4b71"
+        "sql/schema.sql#capital_equity_position": "aca130204cc721acbe3bc16f15403bd1734333a48b0d1db676d8e3fc9bdd4b71",
+        "sql/business-schema.json#capital_equity_position": "4e22eff29232f47fc688cc038cde763bca3b2d30556faf7036d871a906a23a33"
       },
       "content_sha256": "21c48dbe2fd65fe51d44d290e67e70dd47701ebbe6fc7ee4e967c6b98180900c"
     },
@@ -4652,12 +4763,12 @@
         "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/datasets/ths_capital.py": "917fdb02391a30325dbaa7feb54dbf382d77fc590e7d715148697ce9ae77af12",
         "src/empire/plugins/data/ths_capital.py": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/capital_transport.py": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4675,7 +4786,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#capital_ipo": "f480da4b6ed89857b2d44774ece9e2be6a418c66652861f6e49ccf113f877989"
+        "sql/schema.sql#capital_ipo": "f480da4b6ed89857b2d44774ece9e2be6a418c66652861f6e49ccf113f877989",
+        "sql/business-schema.json#capital_ipo": "25f02166a0dbe9bf1cdde5ad43f43e825f5cf15e90bf20f88821ae08582dcffd"
       },
       "content_sha256": "63ecc49625231a6b0eb6f6e1817c1b0f82fc323d57201721f9f2b7e2eb87a536"
     },
@@ -4684,12 +4796,12 @@
         "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/datasets/ths_capital.py": "917fdb02391a30325dbaa7feb54dbf382d77fc590e7d715148697ce9ae77af12",
         "src/empire/plugins/data/ths_capital.py": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/capital_transport.py": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4707,7 +4819,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#capital_encumbrance": "907dd067b8f60af23da4f5b0db8080e526beb7d05c094b5b8e32e591ad40d2f1"
+        "sql/schema.sql#capital_encumbrance": "907dd067b8f60af23da4f5b0db8080e526beb7d05c094b5b8e32e591ad40d2f1",
+        "sql/business-schema.json#capital_encumbrance": "3762ac2d1a1983e3ad4af82e5bc41c402d7ee5f0702c6544c263eff03e235df4"
       },
       "content_sha256": "f6c88ff43eb9aaad53e5562b9bb64321b25ee51f69ea6a940fd18bc0c1ccf2c8"
     },
@@ -4716,12 +4829,12 @@
         "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/datasets/ths_capital.py": "917fdb02391a30325dbaa7feb54dbf382d77fc590e7d715148697ce9ae77af12",
         "src/empire/plugins/data/ths_capital.py": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/capital_transport.py": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -4739,7 +4852,8 @@
         "src/empire/plugins/collectors/kaipanla_kinds.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
-        "sql/schema.sql#capital_release": "04e06e36cc111ed551ff50f10ee392d17d1cbc29f6f69049ac16d6721eed5390"
+        "sql/schema.sql#capital_release": "04e06e36cc111ed551ff50f10ee392d17d1cbc29f6f69049ac16d6721eed5390",
+        "sql/business-schema.json#capital_release": "bc5a920f59add8b0849ab5b475135fbc9baa54e211214d87fa834ca1479814ff"
       },
       "content_sha256": "85e1b41a7c971f9928dcc6525d180d0702feda40179415a80252cd783c91f7e5"
     },
@@ -4767,16 +4881,15 @@
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/plugins/data/capital_actions.py": "8321ee748f41a07883d68511ca7b5f3cb7c68fa0563b8e2e4af2e27c16d4a1ef",
         "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/diagnostics/__init__.py": "8edec7a32d121934e527bc0d416cef14344fe0c32ad7a990b78e3a71829a14bc",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
@@ -4817,16 +4930,15 @@
         "src/empire/plugins/datasets/stocks.py": "ada0222a4df15b9d3b46a1ab4b199f999a5e53a3febba028fbeac6e0d7bbaec5",
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/plugins/infra/archive_confirmation.py": "e7e15d52499f98b7c3ea66e52eed79dee85b7238c951798e5d89743515c35e21",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
         "src/empire/contracts/stocks.py": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
         "src/empire/plugins/infra/__init__.py": "d4f739179fd85f1a5e60e2fbf0389cad2bb147f5b88a271ee9f6c809561eca72",
@@ -4839,16 +4951,15 @@
         "src/empire/plugins/datasets/stocks.py": "ada0222a4df15b9d3b46a1ab4b199f999a5e53a3febba028fbeac6e0d7bbaec5",
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/plugins/infra/archive_confirmation.py": "e7e15d52499f98b7c3ea66e52eed79dee85b7238c951798e5d89743515c35e21",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/security.py": "a7a088dc0070cf1a23ccf948380f58750829260696e23cb102cf6976d02774f6",
         "src/empire/contracts/stocks.py": "aec80d975710f71aa1d3a900346eda8fb7d6cfb6d3ce5f8564a59376bcaf7c0b",
-        "src/empire/contracts/ths_capital.py": "2b2573b25fe838050dfbb328522095fa02431d8eb78cf12331a07a79f857fdf7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
         "src/empire/plugins/infra/__init__.py": "d4f739179fd85f1a5e60e2fbf0389cad2bb147f5b88a271ee9f6c809561eca72",
@@ -4877,13 +4988,13 @@
         "src/empire/plugins/collection/control.py": "61eb93c27c2c4d67d345c35f0981f6c6ef00a514fdeb5606cc269b850eca7f8f",
         "src/empire/plugins/data/financial_statements.py": "1ab41e45eeb008feaafd239b2588b47df8f76a203a346bba1dc0c874f73e9995",
         "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
@@ -5014,10 +5125,10 @@
       "sources": {
         "src/empire/plugins/data/preparation_cache.py": "8200a342c92670bc93c9e7ff60911bf5cfa011a154d28ac2f71a3377cc5b6fc9",
         "src/empire/plugins/data/preparation.py": "349ff2c514394738754327a9caeb3db9c86e32a8d57c3794c9f4bd08eeedf9ca",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
-        "src/empire/contracts/business_schema.py": "9a5c153457b64c5ace243755ffb6caa154216543c313db4dba29eac081e018c0",
-        "src/empire/contracts/market_storage.py": "ba5a12e3fb37c06fc76f027976ae611229f19445c0b26a085dd984c692dc87b1",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_capital_page.py": "9ffedc2078623606654c42a77a2933c5f5e6de94b4cdd7cdb654e7962cbef83f",
