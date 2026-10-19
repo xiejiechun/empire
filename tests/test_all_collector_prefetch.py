@@ -79,8 +79,8 @@ def adapter(family):
             day = json.loads(kw['content'])['Params'][2]
             return int(day[-2:]) - 24, day_response(day, 1, [], count=0)
     else:
-        from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
-        from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
+        from empire.features.capital_actions.dividends_collector import TdxDividendsCollector
+        from empire.features.capital_actions.issues_collector import TdxAdditionalIssuesCollector
         c, _ = configured(TdxDividendsCollector if family == 'dividends' else TdxAdditionalIssuesCollector)
         c.query.securities.return_value = stocks
         c.query.dividend_history_proofs.return_value = {
@@ -115,7 +115,7 @@ async def until(predicate):
 async def test_real_adapters_prefetch_without_crossing_unvalidated_frontier(family, mode, monkeypatch):
     c, reply = adapter(family)
     if family == 'dividends':
-        monkeypatch.setattr('empire.plugins.collectors.tdx_dividend_periods.report_periods',
+        monkeypatch.setattr('empire.features.capital_actions.dividend_history.report_periods',
             AsyncMock(return_value=['2025-06-30', '2025-09-30', '2025-12-31']))
     validation = {
         'balance': ('ths_statements', 'parse'), 'income': ('ths_statements', 'parse'),
@@ -131,6 +131,8 @@ async def test_real_adapters_prefetch_without_crossing_unvalidated_frontier(fami
         'ths_industries': 'empire.features.industries.collector',
         'cninfo_calendar': 'empire.features.calendar.collector',
         'tdx_suspensions': 'empire.features.suspensions.collector',
+        'tdx_capital_source': 'empire.features.capital_actions.source',
+        'tdx_issue_detail': 'empire.features.capital_actions.issue_source',
     }.get(module, 'empire.plugins.collectors.' + module))
     original_parse = getattr(module, attribute)
     validations = []

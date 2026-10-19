@@ -7,8 +7,8 @@ import pytest
 from sqlalchemy import event, text
 
 from empire.core.time import mysql_time
-from empire.plugins.collectors.tdx_capital_source import parse
-from empire.plugins.datasets.capital_actions import digest
+from empire.features.capital_actions.contract import digest
+from empire.features.capital_actions.parser import parse
 from tests.capital_samples import issue_detail, source
 from tests.integration.test_capital_archive import capital_db as _capital_db
 

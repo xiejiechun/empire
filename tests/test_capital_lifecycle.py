@@ -7,9 +7,9 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
-from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
-from empire.plugins.collectors.tdx_rights_issues import TdxRightsIssuesCollector
+from empire.features.capital_actions.dividends_collector import TdxDividendsCollector
+from empire.features.capital_actions.issues_collector import TdxAdditionalIssuesCollector
+from empire.features.capital_actions.rights_collector import TdxRightsIssuesCollector
 from tests.capital_samples import STOCK, issue_detail, source
 from tests.prefetch_source import prefetch_http
 

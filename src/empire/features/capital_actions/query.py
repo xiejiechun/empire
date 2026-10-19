@@ -10,23 +10,19 @@ from sqlalchemy import text
 from empire.contracts.business_schema import require_fixed_source, schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
-from empire.plugins.datasets.capital_actions import (
+from empire.features.capital_actions.codec import decode
+from empire.features.capital_actions.contract import (
     KINDS,
+    chain,
     digest,
     ordered,
     security,
     unit_key,
     validate_rows,
 )
-from empire.plugins.datasets.capital_archive import CapitalDataset, chain
+from empire.features.capital_actions.dataset import CapitalDataset
 from empire.plugins.infra.collection_state import read_state
 from empire.plugins.pipeline.fingerprints import FingerprintCache
-
-
-def decode(row):
-    data = json.loads(row['payload']) if isinstance(row['payload'], str) else row['payload']
-    return {k: row[k] for k in ('record_key', 'market', 'code', 'name')} | {
-        'event_date': row['event_date'].isoformat() if row['event_date'] else None, 'data': data}
 
 
 class CapitalDataPlugin:
@@ -125,7 +121,7 @@ class CapitalDataPlugin:
         return await self.mysql.read(read)
 
     async def verified_issue_candidates(self, rows, cutoff):
-        from empire.plugins.data.issue_candidates import verified_candidates
+        from empire.features.capital_actions.issue_candidates import verified_candidates
         return await verified_candidates(self, rows, cutoff)
 
     async def list_events(self, code='', market='', limit=51, offset=0, start='', end='', status='', record_key=''):

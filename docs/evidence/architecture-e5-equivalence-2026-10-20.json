@@ -1,0 +1,178 @@
+{
+  "base": "b1418dd31ab85ba554a2d895831d78453c85bb9c",
+  "modules": [
+    {
+      "old": "src/empire/plugins/datasets/capital_actions.py",
+      "new": "src/empire/features/capital_actions/contract.py",
+      "body_sha256": "11488578582e858cb24fe4bf378cca557a5cebc446116b1f240378e828b14f50",
+      "removed_symbols": [
+        "TdxSourceError",
+        "day",
+        "number"
+      ]
+    },
+    {
+      "old": "src/empire/plugins/datasets/capital_validation.py",
+      "new": "src/empire/features/capital_actions/validation.py",
+      "body_sha256": "66c30f8160303ad05d5aadfec897d983bf042e1c4fbc429839fbbd499c6098a0",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/datasets/capital_archive.py",
+      "new": "src/empire/features/capital_actions/dataset.py",
+      "body_sha256": "6d3ff4064c4e253f70fc59002854dd3253d68cad655757fd9295725f367c5c3a",
+      "removed_symbols": [
+        "chain"
+      ]
+    },
+    {
+      "old": "src/empire/plugins/datasets/issue_detail.py",
+      "new": "src/empire/features/capital_actions/issue_contract.py",
+      "body_sha256": "238864171286f51831d655207455c382bd16077f742a3b63068d417d319b2c69",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_capital_source.py",
+      "new": "src/empire/features/capital_actions/source.py",
+      "body_sha256": "470b2898341fe4b87fad2673a294652037eaa5fec51174d0cfe0f97effe8d269",
+      "removed_symbols": [
+        "DETAIL_URL",
+        "ENTRIES",
+        "PAGE_URL",
+        "parse",
+        "result_set"
+      ]
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_dividend_periods.py",
+      "new": "src/empire/features/capital_actions/dividend_history.py",
+      "body_sha256": "0eb77ce5c2f30b9ad4beac0f8417dee128df9d1565c0e956a04cea2154b828f5",
+      "removed_symbols": [
+        "CAPACITY",
+        "COLUMNS",
+        "parse_period",
+        "period_plan"
+      ]
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_dividend_discovery.py",
+      "new": "src/empire/features/capital_actions/dividend_discovery.py",
+      "body_sha256": "a6f962014e764ee9689f0d9b2e871051470f9b189b9aa2fa9266c917fda53eb5",
+      "removed_symbols": [
+        "parse_directory"
+      ]
+    },
+    {
+      "old": "src/empire/plugins/collectors/capital_lifecycle.py",
+      "new": "src/empire/features/capital_actions/lifecycle.py",
+      "body_sha256": "c4fe6c25a47854bf34dad543029193d44528e29a07f33f3d7e6a37057f09d704",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/collectors/capital_recovery.py",
+      "new": "src/empire/features/capital_actions/recovery.py",
+      "body_sha256": "7e27367d3624e0969e89bce45b7231fe30005c3211a1a069330e98948d1b01ce",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/collectors/issue_prefetch.py",
+      "new": "src/empire/features/capital_actions/issue_prefetch.py",
+      "body_sha256": "ff87584405c35162c4d7f6930e861c200bf1bfd9fee5a2c74c8da2271710c085",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_issue_detail.py",
+      "new": "src/empire/features/capital_actions/issue_source.py",
+      "body_sha256": "c84057edc9fb73a628acee94537b4e3b0a842c7392c8cad520261f2cfc86980b",
+      "removed_symbols": [
+        "URL"
+      ]
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_dividends.py",
+      "new": "src/empire/features/capital_actions/dividends_collector.py",
+      "body_sha256": "8316f19cf70c71ae0dd5a4c46821e0bc5bcdf7019c1966cf935f53013cb107c0",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_rights_issues.py",
+      "new": "src/empire/features/capital_actions/rights_collector.py",
+      "body_sha256": "b841389b19e7d0824ab424a3ddb5051506a254d89f8a4ac28743f1ac484fe069",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_additional_issues.py",
+      "new": "src/empire/features/capital_actions/issues_collector.py",
+      "body_sha256": "bf5a19cb71c52a29b6745c114b85c29b480f394c38890643148bf0941b02dc4e",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/data/capital_actions.py",
+      "new": "src/empire/features/capital_actions/query.py",
+      "body_sha256": "7ba670bd7c902b439641e3047f21882edba5a8a7943d50c4682959f6f08de1fc",
+      "removed_symbols": [
+        "decode"
+      ]
+    },
+    {
+      "old": "src/empire/plugins/data/issue_candidates.py",
+      "new": "src/empire/features/capital_actions/issue_candidates.py",
+      "body_sha256": "bfe1635b916c205be6b02e4ee35c894650e82faf57637b464498987ea2624db2",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/ui/capital_actions.py",
+      "new": "src/empire/features/capital_actions/ui.py",
+      "body_sha256": "956cde43741cf2cf2947ea64b4781eb9f31109285633498ea2051f5687c7526c",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/ui/capital_preview.py",
+      "new": "src/empire/features/capital_actions/preview.py",
+      "body_sha256": "26d4c77b2c5d29267559553d65df849c5cf46d843f0238f9c57f5d041d2ed517",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/ui/capital_words.py",
+      "new": "src/empire/features/capital_actions/words.py",
+      "body_sha256": "336a79b5631b65339c8b26aaf79e2e1eb61639d4e4093dff960c7ea8edd2ad8b",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/contracts/adjustment.py",
+      "new": "src/empire/features/adjustment/contract.py",
+      "body_sha256": "9483819458a3bb8ca016c090dacb8f5e5487f49401876462ed4d8e166b4253cb",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/data/adjustment.py",
+      "new": "src/empire/features/adjustment/query.py",
+      "body_sha256": "5aec3025c8a74945ca06a112a161236585cecee0ddd9df9e22158dfb1d162826",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/data/adjustment_inputs.py",
+      "new": "src/empire/features/adjustment/inputs.py",
+      "body_sha256": "7fba91281b55367a1b8e722e455cae660253a033a158e3b1418082ff1bcf313e",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/ui/adjustment.py",
+      "new": "src/empire/features/adjustment/ui.py",
+      "body_sha256": "0501177f73a92149561ee033546b3f49ddf22b2d2adb13b565c662cce0dbbbba",
+      "removed_symbols": []
+    },
+    {
+      "old": "src/empire/plugins/ui/adjustment_chart.py",
+      "new": "src/empire/features/adjustment/chart.py",
+      "body_sha256": "0f1376fc0449e17d04dae630b56271edd74efc54b65bc410f59c35bfac33eba5",
+      "removed_symbols": []
+    }
+  ],
+  "exact_extracted_symbols": 16,
+  "retained_public": {
+    "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
+    "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c"
+  },
+  "note": "Import removal/reordering handled explicitly; runtime proof separate; current E4 same-connection reader preserved"
+}

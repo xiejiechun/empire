@@ -2,13 +2,11 @@
 import hashlib
 import json
 
+from empire.features.capital_actions.contract import unit_key, validate_rows
+from empire.features.capital_actions.issue_contract import parse, validate
+from empire.features.capital_actions.source_protocol import PAGE_URL, URL
 from empire.plugins.collection.unit_prefetch import DeferredResponse
 from empire.plugins.collectors.support import record_error_safely, wait_for_capacity
-from empire.plugins.collectors.tdx_capital_source import PAGE_URL
-from empire.plugins.datasets.capital_actions import unit_key, validate_rows
-from empire.plugins.datasets.issue_detail import parse, validate
-
-URL = 'http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_xgzx_zfmx'
 
 
 async def fetch_detail(c, row, aliases, *, reservation=None, defer=False):

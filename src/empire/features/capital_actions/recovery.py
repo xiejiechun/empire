@@ -1,8 +1,8 @@
 """Keep a failed security frontier while admitting independent valid securities."""
 from datetime import date, timedelta
 
+from empire.features.capital_actions.source_protocol import PAGE_URL
 from empire.plugins.collectors.support import record_error_safely
-from empire.plugins.collectors.tdx_capital_source import PAGE_URL
 
 
 def recent_plans(rows, today):

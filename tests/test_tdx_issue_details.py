@@ -4,10 +4,10 @@ import copy
 import httpx
 import pytest
 
-from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
-from empire.plugins.collectors.tdx_capital_source import parse as parse_list
-from empire.plugins.datasets.capital_actions import validate_rows
-from empire.plugins.datasets.issue_detail import COLUMNS, parse
+from empire.features.capital_actions.contract import validate_rows
+from empire.features.capital_actions.issue_contract import COLUMNS, parse
+from empire.features.capital_actions.issues_collector import TdxAdditionalIssuesCollector
+from empire.features.capital_actions.parser import parse as parse_list
 from tests.capital_samples import issue_detail, source, with_issue_detail
 from tests.test_capital_lifecycle import configured
 
@@ -123,12 +123,12 @@ async def test_incremental_details_request_only_when_needed(condition):
 
 
 async def test_incremental_new_alias_reuses_plan_and_conflicting_aliases_refetch():
-    from empire.plugins.collectors.tdx_issue_detail import reusable_details
+    from empire.features.capital_actions.issue_source import reusable_details
     base = parse_list('additional_issues', source('additional_issues'), 10000)[0]
     archived = with_issue_detail(copy.deepcopy(base))
     alias = copy.deepcopy(archived[0])
     alias['code'] = '688111'
-    from empire.plugins.datasets.capital_actions import digest
+    from empire.features.capital_actions.contract import digest
     alias['record_key'] = digest(['SH', '688111', '1001'])
     assert reusable_details([alias], base)['1001'] == archived[0]['data']['detail']
     alias['data']['detail']['issue_targets'] = '不同详情'

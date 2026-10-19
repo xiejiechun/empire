@@ -4,7 +4,7 @@ from decimal import Decimal
 
 import pytest
 
-from empire.contracts.adjustment import AdjustmentError, calculate, ex_reference
+from empire.features.adjustment.contract import AdjustmentError, calculate, ex_reference
 
 
 def price(day, value='10'):

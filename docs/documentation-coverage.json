@@ -297,7 +297,9 @@
     "docs/architecture-evolution/cdf-implementation.md",
     "docs/architecture-evolution/e-implementation.md",
     "docs/architecture-evolution/acceptance.md",
-    "docs/architecture-evolution/planned-migrations.json"
+    "docs/architecture-evolution/planned-migrations.json",
+    "src/empire/features/capital_actions/README.md",
+    "src/empire/features/adjustment/README.md"
   ],
   "tasks": {
     "tdx-listing-status": [
@@ -526,22 +528,22 @@
       "dividend_plan": {
         "topic": "MySQL dividend_plan",
         "sources": [
-          "src/empire/plugins/datasets/capital_archive.py",
-          "src/empire/plugins/data/capital_actions.py"
+          "src/empire/features/capital_actions/dataset.py",
+          "src/empire/features/capital_actions/query.py"
         ]
       },
       "additional_issue": {
         "topic": "MySQL additional_issue",
         "sources": [
-          "src/empire/plugins/datasets/capital_archive.py",
-          "src/empire/plugins/data/capital_actions.py"
+          "src/empire/features/capital_actions/dataset.py",
+          "src/empire/features/capital_actions/query.py"
         ]
       },
       "rights_issue": {
         "topic": "MySQL rights_issue",
         "sources": [
-          "src/empire/plugins/datasets/capital_archive.py",
-          "src/empire/plugins/data/capital_actions.py"
+          "src/empire/features/capital_actions/dataset.py",
+          "src/empire/features/capital_actions/query.py"
         ]
       },
       "security_name_change": {
@@ -922,7 +924,7 @@
         "sources": [
           "src/empire/plugins/pipeline/ingest.py",
           "src/empire/plugins/pipeline/archive.py",
-          "src/empire/plugins/data/capital_actions.py",
+          "src/empire/features/capital_actions/query.py",
           "src/empire/diagnostics/redis_evidence.py"
         ]
       },
@@ -1117,7 +1119,7 @@
           "errors-revision"
         ]
       },
-      "src/empire/plugins/data/capital_actions.py": {
+      "src/empire/features/capital_actions/query.py": {
         "f'{store.prefix}:checkpoint:{self.job_key}'": [
           "checkpoint"
         ]

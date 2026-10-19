@@ -4,8 +4,8 @@ from types import SimpleNamespace
 import pytest
 
 from empire.bootstrap import build_manager
-from empire.plugins.collectors.tdx_capital_source import parse
-from empire.plugins.datasets.capital_actions import KINDS
+from empire.features.capital_actions.contract import KINDS
+from empire.features.capital_actions.parser import parse
 from tests.capital_samples import source, with_issue_detail
 
 
@@ -14,7 +14,7 @@ def test_independent_lazy_page_query_and_draft_preservation(kind):
     os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.capital_actions import CapitalUiPlugin
+    from empire.features.capital_actions.ui import CapitalUiPlugin
     app = QApplication.instance() or QApplication([])
     plugin = CapitalUiPlugin(kind)
     contributions = plugin.create_pages()

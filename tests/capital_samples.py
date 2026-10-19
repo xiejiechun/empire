@@ -1,12 +1,12 @@
 """Synthetic source fixtures, independent of live business records."""
-from empire.plugins.collectors.tdx_dividend_periods import COLUMNS
-from empire.plugins.datasets.capital_actions import ISSUE_COLUMNS, RIGHTS_COLUMNS
+from empire.features.capital_actions.contract import ISSUE_COLUMNS, RIGHTS_COLUMNS
+from empire.features.capital_actions.dividend_parser import COLUMNS
 
 STOCK = dict(market='SH', code='688110', name='测试证券')
 
 
 def issue_detail(body=None):
-    from empire.plugins.datasets.issue_detail import COLUMNS
+    from empire.features.capital_actions.issue_contract import COLUMNS
     body = body or source('additional_issues')
     raw = dict(zip(ISSUE_COLUMNS, body['ResultSets'][0]['Content'][0], strict=True))
     values = {key: raw.get(key) for key in COLUMNS}
@@ -19,7 +19,7 @@ def issue_detail(body=None):
 
 
 def with_issue_detail(rows, body=None):
-    from empire.plugins.datasets.issue_detail import parse
+    from empire.features.capital_actions.issue_contract import parse
     for row in rows:
         row['data']['detail'] = parse(issue_detail(body), row, {'688110', row['code']})
     return rows

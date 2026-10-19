@@ -19,8 +19,8 @@ from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, PageContribution
 from empire.core.redaction import redact
 from empire.core.time import CHINA
+from empire.features.adjustment.chart import AdjustmentChart
 from empire.features.data_browser.search import CandidateSearch
-from empire.plugins.ui.adjustment_chart import AdjustmentChart
 from empire.plugins.ui.common import accessible, rows
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_layout import QueryForm

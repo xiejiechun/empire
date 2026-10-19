@@ -23,20 +23,15 @@ from empire.contracts.trading_rules import KINDS as RULE_KINDS
 from empire.contracts.trading_rules import project as rule_project
 from empire.plugins.collectors.eastmoney_repurchase import RepurchaseCollector
 from empire.plugins.collectors.rule_sources import RuleSources
-from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
-from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
 from empire.plugins.collectors.tdx_listing_status import TdxListingStatusCollector
 from empire.plugins.collectors.tdx_name_changes import NameChangeCollector
 from empire.plugins.collectors.tdx_performance import PerformanceCollector
-from empire.plugins.collectors.tdx_rights_issues import TdxRightsIssuesCollector
 from empire.plugins.collectors.tdx_st_events import StEventCollector
 from empire.plugins.collectors.tdx_unlock_industries import UnlockIndustryCollector
 from empire.plugins.collectors.tdx_unlocks import UnlockCollector
 from empire.plugins.collectors.ths_capital import CapitalPageCollector
 from empire.plugins.collectors.ths_listings import ThsListingCollector
 from empire.plugins.collectors.trading_rules import RuleCollector
-from empire.plugins.data.adjustment import AdjustmentDataPlugin
-from empire.plugins.data.capital_actions import CapitalDataPlugin
 from empire.plugins.data.listing_status import ListingStatusDataPlugin
 from empire.plugins.data.listings import ListingDataPlugin
 from empire.plugins.data.name_changes import NameDataPlugin
@@ -48,8 +43,6 @@ from empire.plugins.data.trading_rules import RuleDataPlugin
 from empire.plugins.data.unlock_industries import UnlockIndustryDataPlugin
 from empire.plugins.data.unlocks import UnlockDataPlugin
 from empire.plugins.datasets import listing_status, listings, repurchases, security_aliases
-from empire.plugins.datasets.capital_actions import KINDS, SCHEMA_VERSIONS
-from empire.plugins.datasets.capital_archive import CapitalDataset
 from empire.plugins.datasets.name_changes import NameDataset
 from empire.plugins.datasets.st_events import StDataset
 from empire.plugins.datasets.tdx_performance import PerformanceDataset
@@ -57,8 +50,6 @@ from empire.plugins.datasets.ths_capital import CapitalPageDataset
 from empire.plugins.datasets.trading_rules import RuleDataset
 from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset
 from empire.plugins.datasets.unlocks import UnlockDataset
-from empire.plugins.ui.adjustment import AdjustmentUiPlugin
-from empire.plugins.ui.capital_actions import CapitalUiPlugin
 from empire.plugins.ui.listing_status import ListingStatusUiPlugin
 from empire.plugins.ui.listings import ListingUiPlugin
 from empire.plugins.ui.name_changes import NameUiPlugin
@@ -105,14 +96,6 @@ def bundle(cfg):
         *positioned((9200, 9300), (StDataPlugin(kind, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for kind in ST_KINDS)),
         *positioned((9400, 9500), (StEventCollector(kind) for kind in ST_KINDS)),
         *positioned((9600, 9700), (StUiPlugin(kind) for kind in ST_KINDS)),
-        OrderedContribution(11900, AdjustmentDataPlugin(cfg['redis'].get('namespace', 'empire'))),
-        OrderedContribution(12000, AdjustmentUiPlugin()),
-        *positioned((12900, 13000, 13100), (CapitalDataPlugin(kind, namespace=cfg['redis'].get('namespace', 'empire'),
-                                    archive_settings=cfg.get('archive', {})) for kind in KINDS)),
-        OrderedContribution(13200, TdxDividendsCollector()),
-        OrderedContribution(13300, TdxAdditionalIssuesCollector()),
-        OrderedContribution(13400, TdxRightsIssuesCollector()),
-        *positioned((13500, 13600, 13700), (CapitalUiPlugin(kind) for kind in KINDS)),
     ), tasks=(
         OrderedContribution(100, TaskContribution('tdx-unlock-industries', '大小非解禁行业（通达信）',
                     'collector.tdx_unlock_industries', 'tdx', '完整可得月份行业汇总及估值基准日，无分页参数',
@@ -168,11 +151,6 @@ def bundle(cfg):
                     category='证券基础', source_name='同花顺', parallel_downloads=True, unit_name='只股票', default_schedule=TaskDefaults('daily',
                         description='每天北京时间18:00补新增和缺失；每七天全池回查独立修订；计划可编辑。'),
                     fresh_description='逐只重查当前股票池的上市及发行资料；保留已有记录及已入队消息。')),
-        *positioned((3800, 3900, 4000), (TaskContribution(item[2], item[0] + '（通达信）',
-                    'collector.tdx_' + kind, 'tdx', '全部可得历史核验 · 单证券完整归档',
-                    category='增发送配', source_name='通达信', parallel_downloads=kind != 'rights_issues', unit_name='只股票',
-                    fresh_description='从当前来源完整范围重新核验，保留已归档历史；普通采集优先续跑已入队断点。')
-                    for kind, item in KINDS.items())),
     ), datasets=(
         OrderedContribution(100, DatasetContribution(CapitalPageDataset(), 'incremental',
                         {CapitalPageDataset.JOB: CapitalPageDataset.PROJECT}, schema_version=2)),
@@ -189,8 +167,5 @@ def bundle(cfg):
                         {StDataset(kind).JOB: StDataset(kind).PROJECT}, schema_version=ST_SCHEMA_VERSION) for kind in ST_KINDS)),
         *positioned((2600, 2700), (DatasetContribution(NameDataset(kind), 'incremental',
                         {NameDataset(kind).JOB: NameDataset(kind).PROJECT}, schema_version=NAME_SCHEMA_VERSION) for kind in NAME_KINDS)),
-        *positioned((3900, 4000, 4100), (DatasetContribution(CapitalDataset(kind), "incremental", {item[2] + "-v1": item[2]},
-                                          schema_version=SCHEMA_VERSIONS[kind])
-                      for kind, item in KINDS.items())),
     ), maintenance_publishers=(MaintenancePublisher(
         security_aliases.PROJECT, security_aliases.JOB, 'scripts/import_bse_code_mapping.py'),))

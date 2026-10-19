@@ -1,7 +1,7 @@
 """Human-readable capital plans, precise per-share conversions and source-date roles."""
 from decimal import Decimal
 
-from empire.plugins.ui.capital_words import LABELS
+from empire.features.capital_actions.words import LABELS
 from empire.plugins.ui.preview_cards import card, fields, text
 
 

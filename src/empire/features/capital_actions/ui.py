@@ -17,10 +17,10 @@ from PySide6.QtWidgets import (
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.capital_actions.contract import KINDS
+from empire.features.capital_actions.preview import plan_cards, plan_profile
+from empire.features.capital_actions.words import LABELS
 from empire.features.data_browser.search import CandidateSearch
-from empire.plugins.datasets.capital_actions import KINDS
-from empire.plugins.ui.capital_preview import plan_cards, plan_profile
-from empire.plugins.ui.capital_words import LABELS
 from empire.plugins.ui.common import (
     accessible,
     bind_find,

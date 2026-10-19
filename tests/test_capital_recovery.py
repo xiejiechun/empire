@@ -6,10 +6,10 @@ import httpx
 import pytest
 
 from empire.core.time import CHINA
-from empire.plugins.collectors.capital_recovery import recent_plans
-from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
-from empire.plugins.collectors.tdx_capital_source import parse
-from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
+from empire.features.capital_actions.dividends_collector import TdxDividendsCollector
+from empire.features.capital_actions.issues_collector import TdxAdditionalIssuesCollector
+from empire.features.capital_actions.parser import parse
+from empire.features.capital_actions.recovery import recent_plans
 from tests.capital_samples import issue_detail, source, with_issue_detail
 from tests.test_capital_lifecycle import configured
 

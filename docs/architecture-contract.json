@@ -273,32 +273,6 @@
       ]
     },
     {
-      "owner": "adjustment",
-      "reason": "复权因子：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.adjustment"
-      ]
-    },
-    {
-      "owner": "adjustment",
-      "reason": "复权因子：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.adjustment",
-        "empire.plugins.ui.adjustment_chart"
-      ]
-    },
-    {
-      "owner": "adjustment",
-      "reason": "复权因子：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.adjustment",
-        "empire.plugins.data.adjustment_inputs"
-      ]
-    },
-    {
       "owner": "application",
       "reason": "应用入口和静态装配：包入口",
       "role": "package",
@@ -343,60 +317,6 @@
       "role": "contract",
       "modules": [
         "empire.contracts.capital_transport"
-      ]
-    },
-    {
-      "owner": "capital_actions",
-      "reason": "分红、增发与配股：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.capital_actions",
-        "empire.plugins.ui.capital_preview",
-        "empire.plugins.ui.capital_words"
-      ]
-    },
-    {
-      "owner": "capital_actions",
-      "reason": "分红、增发与配股：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.capital_actions",
-        "empire.plugins.datasets.capital_archive",
-        "empire.plugins.datasets.capital_validation",
-        "empire.plugins.datasets.issue_detail"
-      ]
-    },
-    {
-      "owner": "capital_actions",
-      "reason": "分红、增发与配股：来源模块包含下载/会话/生命周期执行",
-      "role": "source_adapter",
-      "modules": [
-        "empire.plugins.collectors.capital_lifecycle",
-        "empire.plugins.collectors.capital_recovery",
-        "empire.plugins.collectors.issue_prefetch",
-        "empire.plugins.collectors.tdx_capital_source",
-        "empire.plugins.collectors.tdx_dividend_discovery",
-        "empire.plugins.collectors.tdx_dividend_periods",
-        "empire.plugins.collectors.tdx_issue_detail"
-      ]
-    },
-    {
-      "owner": "capital_actions",
-      "reason": "分红、增发与配股：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.capital_actions",
-        "empire.plugins.data.issue_candidates"
-      ]
-    },
-    {
-      "owner": "capital_actions",
-      "reason": "分红、增发与配股：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.tdx_additional_issues",
-        "empire.plugins.collectors.tdx_dividends",
-        "empire.plugins.collectors.tdx_rights_issues"
       ]
     },
     {
@@ -1804,6 +1724,51 @@
         "quote_chart": "ui",
         "product_chart": "ui",
         "product_dates": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.capital_actions",
+      "owner": "capital_actions",
+      "reason": "三项独立增发送配业务；纯字段/来源协议先解环，统一契约、执行及存储各有归属",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "validation": "contract",
+        "issue_contract": "contract",
+        "dataset": "dataset",
+        "source": "source_adapter",
+        "dividend_history": "source_adapter",
+        "dividend_discovery": "source_adapter",
+        "lifecycle": "collector_support",
+        "recovery": "collector_support",
+        "issue_prefetch": "collector_support",
+        "issue_source": "source_adapter",
+        "dividends_collector": "collector",
+        "rights_collector": "collector",
+        "issues_collector": "collector",
+        "query": "query",
+        "issue_candidates": "query",
+        "ui": "ui",
+        "preview": "ui",
+        "words": "ui",
+        "fields": "contract",
+        "codec": "contract",
+        "source_protocol": "contract",
+        "parser": "parser",
+        "dividend_parser": "parser"
+      }
+    },
+    {
+      "prefix": "empire.features.adjustment",
+      "owner": "adjustment",
+      "reason": "独立只读复权计算；调用方同一RR连接贯穿输入与证明读取",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "query": "query",
+        "inputs": "query",
+        "ui": "ui",
+        "chart": "ui"
       }
     }
   ],

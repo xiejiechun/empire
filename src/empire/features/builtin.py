@@ -2,7 +2,9 @@
 from empire.contracts.bundle import FeatureBundle, ordered
 from empire.contracts.preparation import ComputationContribution
 from empire.core.identity import safe_project_id
+from empire.features.adjustment.bundle import bundle as adjustment_bundle
 from empire.features.calendar.bundle import bundle as calendar_bundle
+from empire.features.capital_actions.bundle import bundle as capital_actions_bundle
 from empire.features.data_browser.bundle import bundle as data_browser_bundle
 from empire.features.financial_statements.bundle import bundle as financial_statements_bundle
 from empire.features.holders.bundle import bundle as holders_bundle
@@ -15,7 +17,7 @@ from empire.features.remaining import bundle as remaining_bundle
 from empire.features.stocks.bundle import bundle as stocks_bundle
 from empire.features.suspensions.bundle import bundle as suspensions_bundle
 
-FACTORIES = (remaining_bundle, news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, kaipanla_bundle)
+FACTORIES = (remaining_bundle, news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, kaipanla_bundle, capital_actions_bundle, adjustment_bundle)
 
 
 def builtin_bundles(cfg) -> tuple[FeatureBundle, ...]:

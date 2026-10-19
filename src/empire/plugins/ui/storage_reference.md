@@ -2054,7 +2054,7 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 
 通达信分红送转方案，一规范方案身份一行。
 
-统一归档器调用 `datasets/capital_archive.py` 写入；`data/capital_actions.py` 提供正式查询。业务页面不直接写表。
+统一归档器调用 `features/capital_actions/dataset.py` 写入；`features/capital_actions/query.py` 提供正式查询。业务页面不直接写表。
 
 ## 结构与身份
 
@@ -2104,7 +2104,7 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 
 通达信增发方案，一规范方案身份一行。
 
-统一归档器调用 `datasets/capital_archive.py` 写入；`data/capital_actions.py` 提供正式查询。业务页面不直接写表。
+统一归档器调用 `features/capital_actions/dataset.py` 写入；`features/capital_actions/query.py` 提供正式查询。业务页面不直接写表。
 
 ## 结构与身份
 
@@ -2154,7 +2154,7 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 
 通达信配股方案，一规范方案身份一行。
 
-统一归档器调用 `datasets/capital_archive.py` 写入；`data/capital_actions.py` 提供正式查询。业务页面不直接写表。
+统一归档器调用 `features/capital_actions/dataset.py` 写入；`features/capital_actions/query.py` 提供正式查询。业务页面不直接写表。
 
 ## 结构与身份
 
@@ -3230,7 +3230,7 @@ Empire Redis 采用纯内存模式。Redis 服务或电脑重启丢失本库内�
 
 ## 维护与相关说明
 
-实现归属：`pipeline/ingest.py`、`pipeline/archive.py`、`data/capital_actions.py`。查询诊断有界且脱敏；维护按确切项目/来源/ID执行，不清空共享 Redis。
+实现归属：`pipeline/ingest.py`、`pipeline/archive.py`、`features/capital_actions/query.py`。查询诊断有界且脱敏；维护按确切项目/来源/ID执行，不清空共享 Redis。
 
 [采集断点](help:采集断点)、[数据库职责与查阅](help:数据库职责与查阅)
 

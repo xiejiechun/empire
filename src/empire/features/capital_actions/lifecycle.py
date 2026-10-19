@@ -8,21 +8,17 @@ import httpx
 
 from empire.contracts.data import make_envelope
 from empire.core.time import CHINA
+from empire.features.capital_actions.contract import SCHEMA_VERSIONS, chain, digest, unit_key
+from empire.features.capital_actions.fields import TdxSourceError
+from empire.features.capital_actions.recovery import recent_plans, retain_failure
+from empire.features.capital_actions.source import complete_response
+from empire.features.capital_actions.source_protocol import PAGE_URL
 from empire.plugins.collection.unit_prefetch import prefetch_units
-from empire.plugins.collectors.capital_recovery import recent_plans, retain_failure
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
     wait_for_archive,
 )
-from empire.plugins.collectors.tdx_capital_source import PAGE_URL, complete_response
-from empire.plugins.datasets.capital_actions import (
-    SCHEMA_VERSIONS,
-    TdxSourceError,
-    digest,
-    unit_key,
-)
-from empire.plugins.datasets.capital_archive import chain
 
 
 async def collect_units(collector, *, fresh=False, baseline_revision=0):
@@ -46,7 +42,7 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
             cursor = {}
         if cursor.get('phase') != 'awaiting_archive':
             if c.kind == 'dividends':
-                from empire.plugins.collectors.tdx_dividend_periods import collect_history
+                from empire.features.capital_actions.dividend_history import collect_history
                 units, observed, source_hash = await collect_history(c, force_history=bool(fresh and not progressed))
             else:
                 async def download_list(_, *, reservation):
@@ -91,7 +87,7 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
                     cursor['detail_refresh_recent'] = previous_refresh != today
             reusable, previous = {}, {}
             if c.kind == 'additional_issues':
-                from empire.plugins.collectors.tdx_issue_detail import (
+                from empire.features.capital_actions.issue_source import (
                     previous_details,
                     reusable_details,
                 )
@@ -122,7 +118,7 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
             async def download_unit(unit, *, reservation):
                 return units[unit], observed
             if c.kind == 'additional_issues':
-                from empire.plugins.collectors.issue_prefetch import issue_units
+                from empire.features.capital_actions.issue_prefetch import issue_units
                 downloads = issue_units(c, keys, units, aliases, reusable, previous, observed, first=cursor['index'])
             else:
                 downloads = prefetch_units(c, keys, download_unit, url=PAGE_URL,

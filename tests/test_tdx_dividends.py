@@ -4,11 +4,11 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.plugins.collectors.tdx_capital_source import parse
-from empire.plugins.collectors.tdx_dividend_periods import period_plan
-from empire.plugins.collectors.tdx_dividends import TdxDividendsCollector
-from empire.plugins.datasets.capital_actions import DIVIDEND_COLUMNS, source_row, validate_rows
-from empire.plugins.datasets.capital_validation import as_source
+from empire.features.capital_actions.contract import DIVIDEND_COLUMNS, source_row, validate_rows
+from empire.features.capital_actions.dividend_parser import period_plan
+from empire.features.capital_actions.dividends_collector import TdxDividendsCollector
+from empire.features.capital_actions.parser import parse
+from empire.features.capital_actions.validation import as_source
 from tests.capital_samples import STOCK, source
 from tests.test_capital_lifecycle import configured
 
@@ -17,7 +17,7 @@ PERIOD = '2025-12-31'
 
 @pytest.mark.parametrize('selected', ['2026-06-30', '2026-09-30'])
 async def test_selector_default_may_lag_newest_quarter_without_losing_open_dates(selected):
-    from empire.plugins.collectors.tdx_dividend_periods import report_periods
+    from empire.features.capital_actions.dividend_history import report_periods
     c, _ = configured(TdxDividendsCollector)
     c.query.dividend_report_dates = AsyncMock(return_value=['2000-05-31'])
     body = dict(ErrorCode=0, ResultSets=[dict(ColName=['T002', 'maxrq'], Count=2,
@@ -100,7 +100,7 @@ def test_quarter_plan_retains_old_history_and_known_nonquarter_dates():
 @pytest.mark.parametrize('fail', [False, True])
 async def test_full_history_reports_once_and_failure_never_publishes_partial_security(monkeypatch, fail):
     c, calls = configured(TdxDividendsCollector)
-    monkeypatch.setattr('empire.plugins.collectors.tdx_dividend_periods.report_periods',
+    monkeypatch.setattr('empire.features.capital_actions.dividend_history.report_periods',
                         AsyncMock(return_value=['1995-12-31', PERIOD]))
     async def request(method, url, **kwargs):
         import json
@@ -136,12 +136,12 @@ def directory(period='2000-05-31'):
 
 @pytest.mark.parametrize('missing', [False, True])
 async def test_history_discovery_adds_nonquarter_and_requires_business_keys(monkeypatch, missing):
-    from empire.plugins.collectors.tdx_dividend_periods import collect_history
+    from empire.features.capital_actions.dividend_history import collect_history
     c, calls = configured(TdxDividendsCollector)
     c.query.securities.return_value = [STOCK]
     c.query.dividend_history_proofs.return_value = {}
     periods = AsyncMock(return_value=['2000-05-31'])
-    monkeypatch.setattr('empire.plugins.collectors.tdx_dividend_periods.report_periods', periods)
+    monkeypatch.setattr('empire.features.capital_actions.dividend_history.report_periods', periods)
     async def request(method, url, **kw):
         import json
         params = json.loads(kw['content'])['Params']
@@ -164,19 +164,19 @@ async def test_history_discovery_adds_nonquarter_and_requires_business_keys(monk
 
 
 async def test_explicit_refresh_reenumerates_proven_security(monkeypatch):
-    from empire.plugins.collectors.tdx_dividend_periods import collect_history
+    from empire.features.capital_actions.dividend_history import collect_history
     c, _ = configured(TdxDividendsCollector)
     c.query.securities.return_value = [STOCK]
     discover = AsyncMock(return_value=(set(), {}))
-    monkeypatch.setattr('empire.plugins.collectors.tdx_dividend_discovery.discover', discover)
-    monkeypatch.setattr('empire.plugins.collectors.tdx_dividend_periods.report_periods', AsyncMock(return_value=[PERIOD]))
+    monkeypatch.setattr('empire.features.capital_actions.dividend_discovery.discover', discover)
+    monkeypatch.setattr('empire.features.capital_actions.dividend_history.report_periods', AsyncMock(return_value=[PERIOD]))
     await collect_history(c, force_history=True)
     assert discover.call_args.args[1] == {'SH:688110': STOCK}
 
 
 @pytest.mark.parametrize('problem', ['total', 'metadata', 'duplicate', 'capacity'])
 def test_history_directory_rejects_invalid_evidence(problem):
-    from empire.plugins.collectors.tdx_dividend_discovery import parse_directory
+    from empire.features.capital_actions.dividend_parser import parse_directory
     body = directory()
     if problem == 'total':
         body['ResultSets'][2]['Content'] = [[2]]
@@ -193,7 +193,7 @@ def test_history_directory_rejects_invalid_evidence(problem):
 @pytest.mark.parametrize('stamp', ['2026-01-01T00:00:00', '2099-01-01T00:00:00+00:00'])
 def test_archive_rejects_naive_or_future_history_proof(stamp):
     from empire.contracts.data import make_envelope
-    from empire.plugins.datasets.capital_archive import CapitalDataset
+    from empire.features.capital_actions.dataset import CapitalDataset
     envelope = make_envelope(source='tdx', dataset='dividends.unit', schema_version=3,
         business_key='SH:688110', job_key='tdx-dividends-v1', run_id='test', batch_id='test',
         payload=dict(page=1, unit='SH:688110', rows=[], manifest=None, history_discovered_at=stamp))

@@ -1,7 +1,7 @@
 """TDX additional-issue detail contract, including nullable historical fields."""
 from datetime import datetime
 
-from empire.plugins.datasets.capital_actions import TdxSourceError, day, number
+from empire.features.capital_actions.fields import TdxSourceError, day, number
 
 COLUMNS = ['T048', 'T049', 'code', 'name', 'T012', 'fxfs', 'fxrq', 'T044', 'T055',
            'T057', 'T080', 'T005', 'T037', 'T026', 'T102', 'T052', 'T039', 'T040',

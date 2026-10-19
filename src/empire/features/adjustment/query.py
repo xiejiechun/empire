@@ -1,15 +1,15 @@
 """On-demand factors and adjusted prices from one immutable archived-input snapshot."""
 from datetime import UTC, date, datetime, timedelta
 
-from empire.contracts.adjustment import ALGORITHM, MAX_DAYS, AdjustmentError, calculate, iso
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, ComputationContribution
 from empire.contracts.preparation_scope import PreparationScope
 from empire.contracts.security import unified_code
 from empire.core.time import CHINA
+from empire.features.adjustment.contract import ALGORITHM, MAX_DAYS, AdjustmentError, calculate, iso
+from empire.features.adjustment.inputs import close_prices, events
 from empire.features.calendar.api import read_trade_day_cutoff
-from empire.plugins.data.adjustment_inputs import close_prices, events
-from empire.plugins.datasets.capital_actions import digest
+from empire.features.capital_actions.contract import digest
 
 
 def resolve_security(conn, market, code):

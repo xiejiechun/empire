@@ -8,13 +8,13 @@ import pytest
 from PySide6.QtWidgets import QApplication
 
 from empire.bootstrap import build_manager
-from empire.contracts.adjustment import AdjustmentError
 from empire.contracts.preparation import ComputationContribution
+from empire.features.adjustment.contract import AdjustmentError
+from empire.features.adjustment.inputs import close_prices, proof_time, verify_unit
+from empire.features.adjustment.query import AdjustmentDataPlugin, resolve_security
+from empire.features.adjustment.ui import AdjustmentPage
+from empire.features.capital_actions.contract import digest
 from empire.features.preparation.catalog import BY_ID
-from empire.plugins.data.adjustment import AdjustmentDataPlugin, resolve_security
-from empire.plugins.data.adjustment_inputs import close_prices, proof_time, verify_unit
-from empire.plugins.datasets.capital_actions import digest
-from empire.plugins.ui.adjustment import AdjustmentPage
 
 
 def test_auto_market_resolves_catalogue_and_manual_mismatch_explains_correct_market():
@@ -78,7 +78,7 @@ def test_historical_close_clock_is_distinct_from_today_query_cutoff(clock, monke
     query = SimpleNamespace(iter_validated_days=lambda *args: iter([row]))
     result = SimpleNamespace(mappings=lambda: SimpleNamespace(all=lambda: [dict(trade_date=day, is_trade=1)]))
     conn = SimpleNamespace(execute=lambda *args: result)
-    monkeypatch.setattr('empire.plugins.data.adjustment_inputs.suspended', lambda *args: set())
+    monkeypatch.setattr('empire.features.adjustment.inputs.suspended', lambda *args: set())
     assert close_prices(conn, query, 'SH', '600016', day, day)[0]['close'] == '5.2'
 
 

@@ -1,8 +1,9 @@
 """Prefetch unique issue IDs, validate in order, then assemble complete securities."""
 from contextlib import asynccontextmanager
 
+from empire.features.capital_actions.issue_source import attach_detail, fetch_detail
+from empire.features.capital_actions.source_protocol import URL
 from empire.plugins.collection.unit_prefetch import UnitRead, prefetch_units
-from empire.plugins.collectors.tdx_issue_detail import URL, attach_detail, fetch_detail
 
 
 @asynccontextmanager

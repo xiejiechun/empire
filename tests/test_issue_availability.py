@@ -3,9 +3,9 @@ import copy
 import httpx
 import pytest
 
-from empire.plugins.collectors.tdx_additional_issues import TdxAdditionalIssuesCollector
-from empire.plugins.collectors.tdx_capital_source import parse
-from empire.plugins.datasets.issue_detail import validate
+from empire.features.capital_actions.issue_contract import validate
+from empire.features.capital_actions.issues_collector import TdxAdditionalIssuesCollector
+from empire.features.capital_actions.parser import parse
 from tests.capital_samples import issue_detail, source, with_issue_detail
 from tests.test_capital_lifecycle import configured
 

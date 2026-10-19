@@ -2,8 +2,8 @@ import copy
 
 import pytest
 
-from empire.plugins.collectors.tdx_capital_source import parse
-from empire.plugins.datasets.capital_actions import validate_rows
+from empire.features.capital_actions.contract import validate_rows
+from empire.features.capital_actions.parser import parse
 from tests.capital_samples import source
 
 

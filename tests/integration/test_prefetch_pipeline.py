@@ -25,7 +25,7 @@ async def test_out_of_order_source_to_real_archive_and_formal_query(family, monk
     manager = build_manager(cfg)
     c, reply = adapter(family)
     if family == 'dividends':
-        monkeypatch.setattr('empire.plugins.collectors.tdx_dividend_periods.report_periods',
+        monkeypatch.setattr('empire.features.capital_actions.dividend_history.report_periods',
             AsyncMock(return_value=['2025-06-30', '2025-09-30', '2025-12-31']))
     if family == 'suspensions':
         # Its actual archive contract starts a new coverage proof at FIRST_DATE.

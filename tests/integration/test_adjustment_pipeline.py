@@ -9,17 +9,16 @@ import pytest
 from sqlalchemy import event
 
 from empire.bootstrap import build_manager
-from empire.contracts.adjustment import AdjustmentError
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
 from empire.core.time import CHINA
+from empire.features.adjustment.contract import AdjustmentError
 from empire.features.calendar.contract import month_dates
+from empire.features.capital_actions.contract import chain, digest
+from empire.features.capital_actions.parser import parse as parse_capital
 from empire.features.kaipanla.canonical import identity
 from empire.features.kaipanla.dates import lifecycle
 from empire.features.kaipanla.parser import parse as parse_quote
-from empire.plugins.collectors.tdx_capital_source import parse as parse_capital
-from empire.plugins.datasets.capital_actions import digest
-from empire.plugins.datasets.capital_archive import chain
 from tests.capital_samples import source as capital_source
 from tests.test_kaipanla_intraday import STOCK
 from tests.test_kaipanla_products import source as quote_source

@@ -9,9 +9,9 @@ from empire.__main__ import acquire_instance_lock
 from empire.contracts.business_schema import require_fixed_source
 from empire.core.config import load_config
 from empire.core.redaction import redact
-from empire.plugins.data.capital_actions import decode
-from empire.plugins.datasets.capital_actions import digest, ordered, unit_key, validate_rows
-from empire.plugins.datasets.capital_archive import CapitalDataset
+from empire.features.capital_actions.codec import decode
+from empire.features.capital_actions.contract import digest, ordered, unit_key, validate_rows
+from empire.features.capital_actions.dataset import CapitalDataset
 from empire.plugins.infra.collection_state import read_state, save_state
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client

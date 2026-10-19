@@ -350,3 +350,9 @@ ths-capital任务使用collector.ths_capital→ths.capital.security→八个类�
 股票、日历、停复牌、数据准备与目录分别由 `features/stocks`、`calendar`、`suspensions`、`preparation`、`data_browser` 的README定位。原48模块及调用方退役，不保留转发兼容层。股票确认由纯ConfirmationContribution连接业务无状态回调和公共提供者；需求与提供须精确相等且同owner，在构造基础服务前检查。workspace由原14800槽注入惰性页面工厂，后置preparation继续在业务声明收齐后构造。原身份、顺序、持久化契约和公共下载/归档路径保持。
 
 公共preparation/scope、预览cards/navigation/layout和发布资源读取均留原公共位置。共享UI不得导入具体业务，即使目标符号公开。全局运行时通用边界仍按E4/F剩余计划收束，不能将当前门禁通过解释为全部历史债务消除。当前验证、失败和发布状态见[阶段记录](evidence/architecture-e3-2026-10-20.md)。
+
+## E5资本事件与复权归属
+
+分红、增发、配股由 [capital_actions](../src/empire/features/capital_actions/README.md) 持有，三个任务、查询、页面和数据集保持独立。纯字段、来源协议、解析与完整历史计划分开；公开codec及chain不依赖采集执行。复权独立归 [adjustment](../src/empire/features/adjustment/README.md)，原同连接快照贯穿日历、公开行情迭代、资本事件及其完整性证明。24旧入口和调用方同批退役，公共下载、预取、归档、摘要及preparation路径保持。
+
+完整新分红容量在UUID私有SQL/Redis中测量，复制历史并保留来源消失记录；容量、来源到查询管线和历史完整准备是三个结论。当前事实与未验项见 [E5记录](evidence/architecture-e5-2026-10-20.md)，不能据目录移动推断来源完整。

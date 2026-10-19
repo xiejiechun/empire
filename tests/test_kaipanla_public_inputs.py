@@ -4,8 +4,8 @@ from types import SimpleNamespace
 
 import pytest
 
+from empire.features.adjustment import inputs as adjustment_inputs
 from empire.features.kaipanla.query import KaipanlaProductDataPlugin
-from empire.plugins.data import adjustment_inputs
 
 
 def test_schema_helper_uses_only_explicit_tables_and_keeps_business_order():

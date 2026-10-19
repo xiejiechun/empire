@@ -12,8 +12,8 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
-from empire.plugins.collectors.tdx_capital_source import parse
-from empire.plugins.datasets.capital_actions import KINDS, SCHEMA_VERSIONS
+from empire.features.capital_actions.contract import KINDS, SCHEMA_VERSIONS
+from empire.features.capital_actions.parser import parse
 from tests.capital_samples import STOCK, issue_detail, source, with_issue_detail
 from tests.prefetch_source import prefetch_http
 
@@ -392,7 +392,7 @@ async def test_dividend_identity_migration_retains_business_and_observations(cap
     manager, query, collector, publish = capital_db
     if query.kind != 'dividends':
         return
-    from empire.plugins.datasets.capital_actions import digest
+    from empire.features.capital_actions.contract import digest
     from empire.plugins.infra.collection_state import read_state
     from scripts.migrate_dividend_identity import migrate_rows
     await publish()
@@ -421,7 +421,7 @@ async def test_dividend_discovery_proof_is_persisted_and_invalid_stamp_requires_
     manager, query, collector, _ = capital_db
     if query.kind != 'dividends':
         return
-    from empire.plugins.data.capital_actions import CapitalDataPlugin
+    from empire.features.capital_actions.query import CapitalDataPlugin
     from empire.plugins.infra.collection_state import read_state, save_state
     await collector.execute()
     mysql = manager.registry.get('mysql.store')

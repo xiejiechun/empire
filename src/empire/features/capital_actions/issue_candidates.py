@@ -1,8 +1,8 @@
 """Reuse a forced round's already verified details using the existing archive proof."""
 from datetime import UTC, datetime
 
-from empire.plugins.datasets.capital_actions import ordered, unit_key, validate_rows
-from empire.plugins.datasets.capital_archive import CapitalDataset
+from empire.features.capital_actions.contract import ordered, unit_key, validate_rows
+from empire.features.capital_actions.dataset import CapitalDataset
 from empire.plugins.pipeline.fingerprints import FingerprintCache, digest
 
 

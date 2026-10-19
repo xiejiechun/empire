@@ -8,8 +8,8 @@ from PySide6.QtCore import QEvent, QPointF, Qt
 from PySide6.QtGui import QKeyEvent, QMouseEvent
 from PySide6.QtWidgets import QApplication
 
-from empire.plugins.ui.adjustment import AdjustmentPage
-from empire.plugins.ui.adjustment_chart import AdjustmentChart
+from empire.features.adjustment.chart import AdjustmentChart
+from empire.features.adjustment.ui import AdjustmentPage
 from empire.plugins.ui.candlestick_chart import moving_average
 
 

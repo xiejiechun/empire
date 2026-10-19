@@ -134,7 +134,7 @@ MySQL 使用 stock 保留当前股票列表、collection_state 保留每项目�
 
 后台按多项目规模组织：数据目录按分类/来源检索，任务列表和采集记录分页，详情独立展示，业务页面按需创建；见 [可扩展工作区](docs/scalable-workspace.md)。
 
-通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。显式维护入口为 `scripts/migrate_capital_actions.py`，应用启动不改表。分红现按报告期单次容量10000批量取历史，旧@1/@2须关闭程序运行 `scripts/migrate_dividend_identity.py` 无损维护；增发、配股原本已用10000容量。生命周期、来源口径与操作见 [通达信增发送配](docs/tdx-capital-actions.md)。
+通达信增发送配新增 `dividend_plan`（分红送转）、`additional_issue`（增发）、`rights_issue`（配股）三张独立业务表，仍共用 `collection_state` 每项目一行状态。旧建表脚本 `scripts/migrate_capital_actions.py` 已退役，应用启动不改表；现行历史契约维护入口为 `scripts/migrate_dividend_identity.py` 与 `scripts/migrate_issue_availability.py`。分红现按报告期单次容量10000批量取历史，旧@1/@2须关闭程序运行 `scripts/migrate_dividend_identity.py` 无损维护；增发、配股原本已用10000容量。生命周期、来源口径与操作见 [通达信增发送配](docs/tdx-capital-actions.md)。
 
 ## 已接入数据与说明（2026-10-01）
 
@@ -197,3 +197,7 @@ MySQL 使用 stock 保留当前股票列表、collection_state 保留每项目�
 同花顺股东研究保留来源比例缺值和汇总矛盾原值，查询显示来源质量异常；数据准备分别核验集合覆盖和质量限制。必需数量/身份/日期及结构错误仍保留断点，继续后续证券。
 
 公司资本运作（同花顺）：募集资金来源、项目投资、收购兼并、股权投资、参股IPO、股权转让、关联交易、质押/冻结及解除；一次响应全部栏目，原币种与已存历史保留。入口和限制见 [使用说明](docs/ths-capital.md)。
+
+## 公司行动与复权代码定位
+
+[通达信增发送配](src/empire/features/capital_actions/README.md) 与 [自算复权](src/empire/features/adjustment/README.md) 各有独立业务包；复权通过公开规范读取已归档事件和行情，并在同一个数据库快照中验证输入。

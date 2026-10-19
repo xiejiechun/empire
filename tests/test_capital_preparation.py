@@ -4,8 +4,8 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from empire.plugins.data.capital_actions import CapitalDataPlugin
-from empire.plugins.datasets.capital_actions import digest
+from empire.features.capital_actions.contract import digest
+from empire.features.capital_actions.query import CapitalDataPlugin
 
 
 @pytest.mark.parametrize('sql_recent', [True, False])

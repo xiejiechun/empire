@@ -9,12 +9,8 @@ from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
 from empire.contracts.security import unified_code
 from empire.core.time import mysql_time
-from empire.plugins.datasets.capital_actions import KINDS, SCHEMA_VERSIONS, digest, validate_rows
+from empire.features.capital_actions.contract import KINDS, SCHEMA_VERSIONS, digest, validate_rows
 from empire.plugins.infra.collection_state import confirmed_page
-
-
-def chain(previous, unit, rows):
-    return digest([previous, unit, digest(rows), len(rows)])
 
 
 class CapitalDataset:

@@ -2,27 +2,13 @@
 import hashlib
 import json
 
+from empire.features.capital_actions.dividend_parser import parse_directory
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import record_error_safely
-from empire.plugins.datasets.capital_actions import DIVIDEND_COLUMNS, ordered, source_row
-
-
-def parse_directory(body, stock):
-    from empire.plugins.collectors.tdx_capital_source import result_set
-    values = result_set(body, 0, DIVIDEND_COLUMNS)
-    metadata = result_set(body, 1, ['page', 'nzt', 'nflag', 'strjzr'])
-    total = result_set(body, 2, ['count'])
-    if metadata != [[1, 1, 1, '1']] or total != [[1]] or len(values) > 2000:
-        raise ValueError('分红历史目录证券对象或完整响应无效')
-    rows = ordered([source_row('dividends', dict(zip(DIVIDEND_COLUMNS, row, strict=True)), stock)
-                    for row in values])
-    if len({row['record_key'] for row in rows}) != len(rows):
-        raise ValueError('分红历史目录业务键重复')
-    return {row['data']['report_date'] for row in rows}, {row['record_key'] for row in rows}
 
 
 async def discover(c, stocks):
-    from empire.plugins.collectors.tdx_capital_source import PAGE_URL
+    from empire.features.capital_actions.source_protocol import PAGE_URL
     async def download(key, *, reservation):
         response = await c.http.request('POST',
             'http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_zfsp_zfsp',
