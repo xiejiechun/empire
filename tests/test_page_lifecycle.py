@@ -138,3 +138,43 @@ def test_persistent_editor_and_untracked_write_survive_navigation():
         window.close()
         window.deleteLater()
         drain_deletes(app)
+
+
+def test_real_help_label_does_not_block_return_to_task_editor():
+    from empire.plugins.ui.collection_views.tasks import TasksPage
+    from empire.plugins.ui.help import StorageHelpPage
+
+    app = QApplication.instance() or QApplication([])
+    runtime = Runtime()
+    runtime.contributions = [
+        PageContribution("collection", "采集任务", TasksPage, "采集管理"),
+        PageContribution("help", "说明文档", StorageHelpPage, "说明文档", top_level=True),
+    ]
+    window = MainWindow(runtime, {})
+    window.timer.stop()
+    try:
+        editor = window.page_widgets["collection"]
+        editor.task_search.setText("保留的任务筛选")
+        read = editor.query_scope.invoke("workspace", runtime, "collection.control", "workspace")
+        editor.query = read
+        write = editor.action = Future()
+        assert window.navigate("help")
+        assert read.cancelled() and editor.query is None
+        assert not write.cancelled()
+        help_page = window.page_widgets["help"]
+        help_page.search.setText("持有人")
+        # Help's `scope` is a QLabel, not a read-query owner.
+        window.nav.setCurrentRow(0)
+        assert window.current_page_id == "collection"
+        assert window.pages.currentWidget() is window.page_containers["collection"]
+        assert window.page_widgets["collection"] is editor
+        assert editor.task_search.text() == "保留的任务筛选"
+        assert not write.cancelled()
+        window.nav.setCurrentRow(1)
+        assert window.current_page_id == "help"
+        assert help_page.search.text() == "持有人"
+    finally:
+        runtime.closed.set()
+        window.close()
+        window.deleteLater()
+        drain_deletes(app)

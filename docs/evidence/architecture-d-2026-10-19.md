@@ -1,6 +1,6 @@
 # D 股东复杂样板实施记录
 
-当前状态：组织迁移开发验证通过，待正式发布与真实桌面。起点为 main `120ddfc70376f40e6a798a71305b5713ecb8bb27`；尚未发布本批，不表示 D 或整个优化已验收。
+当前状态：首轮正式发布成功，真实桌面发现两项公共交互缺陷，修复已实现但最终性能验证失败，待重新发布和同包桌面复验。起点为 main `120ddfc70376f40e6a798a71305b5713ecb8bb27`；D及整个优化均未验收，不能进入E0。以下首轮开发通过结论只对应所列历史输入。
 
 ## 范围与请求前适用性登记
 
@@ -58,7 +58,17 @@ H1身份、单响应三栏和公共HTML由精确装配、[迁移等价报告](ar
 
 最终文档审阅/相关回归、完整正式发布、同包异cwd连接/查询/配置及真实桌面、证据提交和远程推送仍待完成；未完成前不进入E。13348自有测试实例仍运行，桌面目前正常关闭。远程只读核实曾因GitHub443连接失败，需重试。
 
+## 首轮发布与桌面发现（后续修复需重新发布）
+
+`b8fd9120805667c11196d4762dd17a37a456f4cf` 的 release `78cee05f837a4afa91c6075282bc41fb` 已完整运行唯一正式门禁，退出0，journal committed/passed；输入摘要 `1aa70a28a59536763d0185bc210e1afd8aba5da3ff6048e8c642acf5bd948204`。全量3623 passed、5 skipped、20 warnings，2503.09秒；跳过均为显式opt-in的state-unit，不计通过。包/配置/搬移smoke及切换通过。本地 `post-release1.json` 的只读核查通过：配置/偏好保持、安装身份匹配、异cwd真实连接、三栏正式查询及当时pending0。
+
+真实桌面已确认版本、三栏列表/详情/分页/刷新选择、原任务策略、未保存31次重试草稿切页保留及滚轮不改值，随后撤销回原30，未保存测试配置；内置持有人帮助可读。尚未完成全部U项。返回采集管理时二级菜单变化但正文仍帮助，已保存 `desktop-navigation-recheck`，因此不标桌面通过。
+
+用真实TasksPage/StorageHelpPage的离屏最小复现定位：`deactivate_page` 把帮助页名为 `scope` 的QLabel当成QueryScope，调用不存在的 `cancel_all` 抛AttributeError，中断切页。仅在具备可调用取消契约时处理作用域，不改变QueryScope本身、写命令、采集/存储/来源语义。新增真实两页面回归覆盖返回正文、筛选、只读取消、写命令保留及帮助搜索。`tests/test_page_lifecycle.py tests/test_navigation.py tests/test_collection_ui.py` 为exit0、47 passed/1.71秒，navigation1.xml；仍需完整发布和同包真实复验，首轮桌面失败证据保留。
+
 ## 最终发布前核对
+
+此节原“最终”检查对应b8fd912首轮发布前输入；下面“桌面修复后的最终检查”取代其作为当前状态，不用历史通过覆盖当前失败。
 
 最终ruff、mypy6文件、architecture（333/1318、51旧债务、0新债务、1退役）、assembly精确顺序及数据库设计门禁均exit0。最终文档review、verify_documentation（208篇/1437链接/55表）和三个文档专项 `tests/test_documentation_contracts.py tests/test_documentation_review.py tests/test_documentation_sources.py` 为exit0、30 passed/24.40秒，JUnit为documentation-final.xml。退役八模块生产/测试/脚本导入搜索无命中；release_lock、两性能工具、原协议和历史baseline的冻结摘要逐一保持。13348再次核实际UUID、端口及仅四系统库，无遗留私有业务库。
 
@@ -100,3 +110,29 @@ common1.xml 的明确文件集合（命令为 `python -m pytest -q --tb=short -r
 - `tests/test_ui_architecture.py`
 - `tests/test_ui_architecture_counterexamples.py`
 - `tests/test_unit_prefetch.py`
+
+## 桌面修复后的最终检查与未通过项
+
+第二个真实缺陷：843×643窄窗口可拖动名单正文滚动条，但鼠标滚轮不移动正文。公共过滤器把QScrollBar作为QAbstractSlider一并拦截。先增强真实QScrollArea回归，wheel-before.xml为exit1、1 failed/1 passed，实际滚动值仍0；随后排除QScrollBar，保留数字框、下拉框、QSlider、QDial的防误改。新增QTextBrowser和QTableWidget实际滚动验证，interaction3.xml为exit0、51 passed/2.30秒。两处修复均不涉及来源、消息、归档、SQL或容量工具绑定；没有仅刷新容量hash。
+
+最后两项代码修复后，ruff、strict mypy（6文件）、architecture（333模块/1318导入/51旧债务/0新债务/1退役）及精确assembly检查逐项exit0；architecture-wheel-final.json。最后合并回归命令为 `.venv/Scripts/python.exe -m pytest -q --tb=short -rs tests/test_desktop_interaction.py tests/test_page_lifecycle.py tests/test_navigation.py tests/test_collection_ui.py tests/test_documentation_contracts.py tests/test_documentation_review.py tests/test_documentation_sources.py tests/test_ui_architecture.py tests/test_ui_architecture_counterexamples.py --basetemp build/pytest-d-wheel-final --junitxml=build/architecture-d-20261019/wheel-documentation-final.xml`，exit0、104 passed/57.40秒。程序内入门和日常浏览已说明滚轮及切页/草稿行为，现有页面覆盖关联适用；最后文档review已执行。这些仍不是新包真实桌面证据。
+
+以下每轮均使用原冻结完整命令（上文T3行，仅`--output`不同），没有选择或删除单次samples。报告中的测量passed与comparison.passed分别保留，不把可比/cleanup成功等同统计通过。五个冻结文件、协议、原baseline、阈值均未修改。
+
+| 本地输出 | 正式原始报告 | 命令退出码 / 18项中失败数 |
+| --- | --- | --- |
+| performance-navigation2.json | [failed2](architecture-performance-d-navigation-failed2-2026-10-19.json) | 1 / 13 |
+| performance-pre-navigation-control.json | [修复前同机对照](architecture-performance-d-navigation-control-2026-10-19.json) | 1 / 9 |
+| performance-navigation3.json | [failed3](architecture-performance-d-navigation-failed3-2026-10-19.json) | 1 / 9 |
+| performance-navigation4.json | [failed4](architecture-performance-d-navigation-failed4-2026-10-19.json) | 1 / 14 |
+| performance-navigation5.json | [自有MySQL正常重启后failed5](architecture-performance-d-navigation-failed5-2026-10-19.json) | 1 / 8 |
+| performance-navigation-wheel6.json | [两修复failed6](architecture-performance-d-navigation-wheel-failed6-2026-10-19.json) | 1 / 12 |
+| performance-final7.json | [最终failed7](architecture-performance-d-final-failed7-2026-10-19.json) | 1 / 9 |
+
+最终第7轮在全部104项回归结束后单独执行，2026-10-19T09:52:49Z，source摘要与原始报告一致，correctness可比、cleanup=true。失败项为news_next median、news_search p95、holders_browse median/p95、holders_detail p95、news_ui median/p95、holders_ui median/p95。最终D适用T3失败，不能引用16:05首轮通过放行。
+
+对照采用git show的b8fd912前像临时还原帮助生命周期及正文，finally逐字节恢复本轮文件，performance-control-operation.json记录restored=true。不是reset/clean；LF与工作区CRLF的输入摘要差异如实保留。诊断cProfile和native thread-CPU测量另外保存本地，带剖析开销，不能作性能验收；后者session27801已结束，exit1。setHtml累计wall764.78ms/threadCPU750ms，不足以把超限归因于等待。当前普通优先级、AC供电、无显式进程节流；机器有其他应用活动，尚未确定根因，也未改变电源、优先级、亲和性或关闭他人应用来凑通过。
+
+首轮包额外真实U1核查：停一项持有人UI时另两页及三查询/采集保持；停collector后任务和历史仍可读，从页面继续采集被正式禁用保护拒绝，未发请求；全部恢复。普通停用Redis基础插件被现有依赖保护拒绝，未级联停服务。原10项插件偏好在正常关闭后按environment.json的原hash逐字节恢复，测试后全偏好副本只保留build。源/程序config均未写入。上述生命周期、窄窗及草稿观察属于b8fd912旧包，修复后同包复验仍未完成。
+
+**当前退出结论：D最终验证失败，未验收；E0未开始。** 安全/业务/容量及首轮发布事实保留，H3严格来源FAIL保留；两UI修复未重新正式发布。不得把本检查点提交当作成功发布或整个任务完成。后续先查明T3超限、在最终输入上完整复验，再更新文档审阅、提交冻结、唯一正式门禁及新包真实桌面。远程网络和资源最终状态见状态账本。

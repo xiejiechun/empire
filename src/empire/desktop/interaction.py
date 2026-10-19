@@ -1,7 +1,7 @@
 """Application-wide input rules shared by every current and future page."""
 
 from PySide6.QtCore import QEvent, QObject
-from PySide6.QtWidgets import QAbstractSlider, QAbstractSpinBox, QComboBox
+from PySide6.QtWidgets import QAbstractSlider, QAbstractSpinBox, QComboBox, QScrollBar
 
 
 class PreventAccidentalWheelChanges(QObject):
@@ -10,7 +10,7 @@ class PreventAccidentalWheelChanges(QObject):
     def eventFilter(self, watched, event):
         if event.type() == QEvent.Type.Wheel and isinstance(
             watched, (QAbstractSpinBox, QComboBox, QAbstractSlider)
-        ):
+        ) and not isinstance(watched, QScrollBar):
             event.ignore()
             return True
         return super().eventFilter(watched, event)

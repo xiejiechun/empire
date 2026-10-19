@@ -36,8 +36,9 @@ def deactivate_page(page: QWidget) -> None:
     page._empire_page_timers = timers
     for owner in _owners(page):
         scope = getattr(owner, "query_scope", None) or getattr(owner, 'scope', None)
-        if scope is not None:
-            _clear_cancelled_references(owner, set(scope.cancel_all()))
+        cancel_all = getattr(scope, "cancel_all", None)
+        if callable(cancel_all):
+            _clear_cancelled_references(owner, set(cancel_all()))
     hook = getattr(page, "page_deactivated", None)
     if callable(hook):
         hook()

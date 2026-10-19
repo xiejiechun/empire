@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-19T08:12:57.637727+00:00",
-  "note": "D提交前末尾空行整理；安全工具128项重新通过，既有业务说明与验收范围保持",
-  "unchanged_reason": "本次只删除开发验证辅助脚本末尾空行，不改变程序行为、验证断言或用户操作，无需改变用户说明",
+  "reviewed_at": "2026-10-19T09:56:24.760581+00:00",
+  "note": "D首轮真实桌面复现帮助scope取消异常和正文滚轮误拦，修复保持查询取消与写命令契约，已同步入门滚轮和日常切页草稿说明；104项相关回归及全部T3失败原报告分别记录，不据首轮旧通过放行，E0未开始。",
+  "unchanged_reason": "",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -173,8 +173,8 @@
     "src/empire/core/time.py": "2a90f5091a7f4b0361a5533354e6f166453869651940f7e00993752698729e9a",
     "src/empire/desktop/__init__.py": "b2634fda69f6ed1b8a8263e7ae334b025b894dc97972e9a3d024cc2621696069",
     "src/empire/desktop/icon.py": "0eb9bb99606dbaa20f7ac8dd0a2c2c423e3e55f19ab6512c89b1d0ae7f8ab170",
-    "src/empire/desktop/interaction.py": "d0cb15bbb12b21058509235eafac72cfe39abc4a5a9cbe3423140e50603a8cf5",
-    "src/empire/desktop/page_lifecycle.py": "60d96c05ee024c3938932adf48cfde83f0ffcb9ab024b7038a4a3ff05e485079",
+    "src/empire/desktop/interaction.py": "294b7260ce1eee885f6087c364d4deb72b22451755370530e2a3f1d376a664f1",
+    "src/empire/desktop/page_lifecycle.py": "ecc76d30a5b2ba9b8fe5ce142a4ae04aec1551b0b9b87877c45e6d98f9fa7625",
     "src/empire/desktop/theme.py": "614eed37a4ef872574c381128f29d07eef378a48150ed215fcfd1e0230467162",
     "src/empire/desktop/window.py": "65d5199d0eb64ecf34740c343dba3a022df94850ca1bc21988a75e0229310cb7",
     "src/empire/diagnostics/__init__.py": "8edec7a32d121934e527bc0d416cef14344fe0c32ad7a990b78e3a71829a14bc",
@@ -451,7 +451,7 @@
     "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
     "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926"
   },
-  "content_sha256": "b46e8160569a9133726f1866306505e016c00ad3043f53929c5cc4384f970490",
+  "content_sha256": "b229e429fbc6f5af02744fe323f84e9d5677a2e74a98dce9e089c2a7ca7dee70",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -864,7 +864,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "93ba8d1eebb68da1eced121d84a3caa83bbea840be9d58ba6809f0ffec2baf39"
+      "content_sha256": "ab6e738a4c4a13716f4361aa3491d80f4f736896c1763a046fe1d3f838f92306"
     },
     "page:listings": {
       "sources": {
@@ -886,7 +886,7 @@
         "src/empire/plugins/ui/preview_search.py": "32ff889c2a334f53fbe384eafb25a19667dd41aacfda2c7896df82470cc92399",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "c51101348f35057d3c06b2b5bca37dd79ced2141c49e301404e4ac4bc1b88ad1"
+      "content_sha256": "3b75cf6b6c087ccefd8bfd7664aa46aa7ad4a6d71b61e22c931affd83dac2eaa"
     },
     "page:listing_status": {
       "sources": {
@@ -908,7 +908,7 @@
         "src/empire/plugins/ui/preview_search.py": "32ff889c2a334f53fbe384eafb25a19667dd41aacfda2c7896df82470cc92399",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "572dd33f1ff38b72bb2506f4806e866a3df5892e8339fcf8a8db9d6cd0b36901"
+      "content_sha256": "8eb5f323fb4712a3d81797b0fe99ea769f171617fb37544fa8881465a84f57bf"
     },
     "page:industries": {
       "sources": {
@@ -928,7 +928,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "2cf1edabea89fb99896ef0312d14c41b95a5d51a6fc649b26905161a85f6c364"
+      "content_sha256": "5b355ec231d1279b85ad27516a4de02a52ff972e7cc459bcc2b735480707a4f5"
     },
     "page:indices": {
       "sources": {
@@ -948,7 +948,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "5b2d8f54eafc7951a22bb660b6e81697ed5b439ba536bfe74e2ef3067d6be6c1"
+      "content_sha256": "5904e9f704aa0023c2496004e6b29bc5b0cd6011de4630c502e80f5e54527fa8"
     },
     "page:names_company": {
       "sources": {
@@ -970,7 +970,7 @@
         "src/empire/plugins/ui/preview_search.py": "32ff889c2a334f53fbe384eafb25a19667dd41aacfda2c7896df82470cc92399",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "a1c3319c80e44aa0ee9e4c9e958c52f5b0ed7147b3f3765bc8ff282a687353a9"
+      "content_sha256": "82f7a4b42cef8c9391082c55687bd97722fd58d00303b2d6a9eb6224810ca296"
     },
     "page:names_security": {
       "sources": {
@@ -992,7 +992,7 @@
         "src/empire/plugins/ui/preview_search.py": "32ff889c2a334f53fbe384eafb25a19667dd41aacfda2c7896df82470cc92399",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "a1c3319c80e44aa0ee9e4c9e958c52f5b0ed7147b3f3765bc8ff282a687353a9"
+      "content_sha256": "82f7a4b42cef8c9391082c55687bd97722fd58d00303b2d6a9eb6224810ca296"
     },
     "page:st_implementation": {
       "sources": {
@@ -1014,7 +1014,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/st_events.py": "f54fe03d687dd54ca8122191dfac54f2cbd230295f02f97041bac407c43e72d1"
       },
-      "content_sha256": "eeda76376e626b220b2401b2e82ac77976049aec0c9d284d18587c1740693e69"
+      "content_sha256": "b20e3439dc6b1d37f5f88945a2588b295ae13485994f16085185ff729c7ee007"
     },
     "page:st_removal": {
       "sources": {
@@ -1036,7 +1036,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/st_events.py": "f54fe03d687dd54ca8122191dfac54f2cbd230295f02f97041bac407c43e72d1"
       },
-      "content_sha256": "eeda76376e626b220b2401b2e82ac77976049aec0c9d284d18587c1740693e69"
+      "content_sha256": "b20e3439dc6b1d37f5f88945a2588b295ae13485994f16085185ff729c7ee007"
     },
     "page:kaipanla_trend": {
       "sources": {
@@ -1066,7 +1066,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "a8903b660ba9c973f6d344e3fcba94896ab7e256a5fa2ef97e5d1280bef26ccb"
+      "content_sha256": "e18509951e483558cd71f9828d1afc131f109008a205412b8e74148cb804fc07"
     },
     "page:kaipanla_auction": {
       "sources": {
@@ -1096,7 +1096,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "a8903b660ba9c973f6d344e3fcba94896ab7e256a5fa2ef97e5d1280bef26ccb"
+      "content_sha256": "e18509951e483558cd71f9828d1afc131f109008a205412b8e74148cb804fc07"
     },
     "page:kaipanla_volume": {
       "sources": {
@@ -1126,7 +1126,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "a8903b660ba9c973f6d344e3fcba94896ab7e256a5fa2ef97e5d1280bef26ccb"
+      "content_sha256": "e18509951e483558cd71f9828d1afc131f109008a205412b8e74148cb804fc07"
     },
     "page:kaipanla_trades": {
       "sources": {
@@ -1156,7 +1156,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "a8903b660ba9c973f6d344e3fcba94896ab7e256a5fa2ef97e5d1280bef26ccb"
+      "content_sha256": "e18509951e483558cd71f9828d1afc131f109008a205412b8e74148cb804fc07"
     },
     "page:kaipanla_entrust": {
       "sources": {
@@ -1186,7 +1186,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "a8903b660ba9c973f6d344e3fcba94896ab7e256a5fa2ef97e5d1280bef26ccb"
+      "content_sha256": "e18509951e483558cd71f9828d1afc131f109008a205412b8e74148cb804fc07"
     },
     "page:kaipanla_large_order": {
       "sources": {
@@ -1216,7 +1216,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "a8903b660ba9c973f6d344e3fcba94896ab7e256a5fa2ef97e5d1280bef26ccb"
+      "content_sha256": "e18509951e483558cd71f9828d1afc131f109008a205412b8e74148cb804fc07"
     },
     "page:kaipanla_quote": {
       "sources": {
@@ -1246,7 +1246,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "fcd2cc75a4c2bf645ee775e9b24467400a89a09e4b7dacf9f784e25b78475ae5"
+      "content_sha256": "6c9dd9d260f1e98176dfc592cc5136889c8d2715e700f00d2d4caa6b00417d4a"
     },
     "page:adjustment": {
       "sources": {
@@ -1269,7 +1269,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "b3bedbf20c51b4ce000b2b6b8ba98b29e81907a37ec8531fdc6899572ec52a7f"
+      "content_sha256": "f5e74f417b5b09ee66f21f1a1ac35978014ae617f152c120691f06f0389d0bad"
     },
     "page:dividends": {
       "sources": {
@@ -1296,7 +1296,7 @@
         "src/empire/plugins/ui/preview_search.py": "32ff889c2a334f53fbe384eafb25a19667dd41aacfda2c7896df82470cc92399",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "97f6b8fc8366f7b60d09240f0aac8451da862b755e6053b0563bbf5761850a15"
+      "content_sha256": "63a547664a5e6b6fee43e8cb9db902ac4638c96358419b87b39d444aca5a378c"
     },
     "page:additional_issues": {
       "sources": {
@@ -1323,7 +1323,7 @@
         "src/empire/plugins/ui/preview_search.py": "32ff889c2a334f53fbe384eafb25a19667dd41aacfda2c7896df82470cc92399",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "830a19c00d4b05f0e185d0a745c4c8239fd550c9977e8952da397dae23e40953"
+      "content_sha256": "33eb158babcd5ca860bdd8370921c5810ac4d026bc6fabdc2f98350d6fb8a718"
     },
     "page:rights_issues": {
       "sources": {
@@ -1350,7 +1350,7 @@
         "src/empire/plugins/ui/preview_search.py": "32ff889c2a334f53fbe384eafb25a19667dd41aacfda2c7896df82470cc92399",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "85b73629184d0bbb4ee9542d6e1b7e66b4bcc16b2c96c6a835503dc74bb1b0c7"
+      "content_sha256": "407b568fd04b1087877f770c1b7d10887b1b532d79e7b27f2681e8511ae98fef"
     },
     "page:income": {
       "sources": {
@@ -1376,7 +1376,7 @@
         "src/empire/plugins/ui/statement_matrix.py": "f3cfa70aa5c85314a5cb334664e8485eb56e23e487c3cc076dd5df240b86cd6f",
         "src/empire/plugins/ui/statement_preview.py": "1bb3e5c1a4170b1380d859269da24dee0cdca0cd4ca61293044381311d390caa"
       },
-      "content_sha256": "9da224536ed71c33b51cf7d52459bf5b8755dd6c4385bee97bc22782fd25a480"
+      "content_sha256": "15d2c006f2988733de80bee12b20f32273d1d0ec46a86acc7e3d351765f7434d"
     },
     "page:balance": {
       "sources": {
@@ -1402,7 +1402,7 @@
         "src/empire/plugins/ui/statement_matrix.py": "f3cfa70aa5c85314a5cb334664e8485eb56e23e487c3cc076dd5df240b86cd6f",
         "src/empire/plugins/ui/statement_preview.py": "1bb3e5c1a4170b1380d859269da24dee0cdca0cd4ca61293044381311d390caa"
       },
-      "content_sha256": "9da224536ed71c33b51cf7d52459bf5b8755dd6c4385bee97bc22782fd25a480"
+      "content_sha256": "15d2c006f2988733de80bee12b20f32273d1d0ec46a86acc7e3d351765f7434d"
     },
     "page:cashflow": {
       "sources": {
@@ -1428,7 +1428,7 @@
         "src/empire/plugins/ui/statement_matrix.py": "f3cfa70aa5c85314a5cb334664e8485eb56e23e487c3cc076dd5df240b86cd6f",
         "src/empire/plugins/ui/statement_preview.py": "1bb3e5c1a4170b1380d859269da24dee0cdca0cd4ca61293044381311d390caa"
       },
-      "content_sha256": "9da224536ed71c33b51cf7d52459bf5b8755dd6c4385bee97bc22782fd25a480"
+      "content_sha256": "15d2c006f2988733de80bee12b20f32273d1d0ec46a86acc7e3d351765f7434d"
     },
     "page:home": {
       "sources": {
@@ -1447,7 +1447,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
       },
-      "content_sha256": "98d51578378878f7fb5bf399de33670a1a68adaf0e664cb7ec4f8292a77d0a22"
+      "content_sha256": "42d12c7590d35328cc83ff3b331e16b64c5f10c6eb479420bf4b150dfbf6cb2f"
     },
     "page:catalog": {
       "sources": {
@@ -1466,7 +1466,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/workspace.py": "2578f308c26d010d2363ceb2b923f3296a6d446c03585151407e8bb839be9f80"
       },
-      "content_sha256": "abf80b35a843693e94d13ec025f3deabbc91efc3f34416c24e195fc445871e55"
+      "content_sha256": "7f617ca57e7235208ac5f44d8440d8a40dce41eb8af1221cd16aabe4f387a84d"
     },
     "page:collection": {
       "sources": {
@@ -1503,7 +1503,7 @@
         "src/empire/plugins/ui/record_table.py": "cb73ca7833685b16955159457034517a5025069a180497d7a0a4b7ca521877f5",
         "src/empire/plugins/ui/records.py": "eeb1b99e0076c722a9e17a0d82a3890f94e8bdf1d1a2e82b8c228d4bcb928a35"
       },
-      "content_sha256": "7c83ef170e7c835db64c3caf224a1a00fffde53b89b764d99f5b861991e1cc90"
+      "content_sha256": "a1fa402c9f0e29f9cd640359003b8fb64e6434ed06926f814f31d4519a3ea4d5"
     },
     "page:archived_tasks": {
       "sources": {
@@ -1540,7 +1540,7 @@
         "src/empire/plugins/ui/record_table.py": "cb73ca7833685b16955159457034517a5025069a180497d7a0a4b7ca521877f5",
         "src/empire/plugins/ui/records.py": "eeb1b99e0076c722a9e17a0d82a3890f94e8bdf1d1a2e82b8c228d4bcb928a35"
       },
-      "content_sha256": "39198f0d19b18df9e884fd888a08901e16c7992314e1469c2d6ddee9f313f79e"
+      "content_sha256": "88fd21d603b1f0567d4bf8a49eb1737564b76a7dc118c564b5a0b1e088224c39"
     },
     "page:history": {
       "sources": {
@@ -1577,7 +1577,7 @@
         "src/empire/plugins/ui/record_table.py": "cb73ca7833685b16955159457034517a5025069a180497d7a0a4b7ca521877f5",
         "src/empire/plugins/ui/records.py": "eeb1b99e0076c722a9e17a0d82a3890f94e8bdf1d1a2e82b8c228d4bcb928a35"
       },
-      "content_sha256": "48dabed4df459f7a9a92f25edf80dd7a615751dda8e02f20105fbb6c6b4b5074"
+      "content_sha256": "a1414263e626d3b335538812bee7cb95974bdf094eeacdbcd0f72b36f3f766b2"
     },
     "page:sites": {
       "sources": {
@@ -1614,7 +1614,7 @@
         "src/empire/plugins/ui/record_table.py": "cb73ca7833685b16955159457034517a5025069a180497d7a0a4b7ca521877f5",
         "src/empire/plugins/ui/records.py": "eeb1b99e0076c722a9e17a0d82a3890f94e8bdf1d1a2e82b8c228d4bcb928a35"
       },
-      "content_sha256": "c43a0545df9decab3fe32eba99871dc67178625023998face0af3b2f248a8c47"
+      "content_sha256": "d95ca265610b1ba029d65d0b05e516233856c2d5c01cb83ccf84e88262fde22a"
     },
     "page:stocks": {
       "sources": {
@@ -1634,7 +1634,7 @@
         "src/empire/plugins/ui/stock_preview.py": "78f406ca82bfc3f93d82cac296ddd72b80c6664593d14bdb81017888d344768e",
         "src/empire/plugins/ui/stocks.py": "7ccc0a95410c9c9ad0eb1a2afb9bf43f3ce50864242467827761ec664d6ad7ef"
       },
-      "content_sha256": "54a6a94372240d016bc39bbab2a192546f2b7550b067e72f3ca7e3d01b4e28ff"
+      "content_sha256": "da7876c3cf330db0d7b9051ff1fbf7105656c4759fcbba2422ae8dc65d7a38f5"
     },
     "page:news": {
       "sources": {
@@ -1654,7 +1654,7 @@
         "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "4394998d6baff8efa260bfc954f443a657a5d5798bf4d868505b4b89236a3685"
+      "content_sha256": "5d431a8b5fb88c2dee89e4580b1206b5d034f90a645df3362d868317d84ec15e"
     },
     "page:calendar": {
       "sources": {
@@ -1678,7 +1678,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/trade_calendar.py": "1864b71f871fc45b69b59dcdb1a517122eb730dc8c5fd5eb26f9e2616abbf844"
       },
-      "content_sha256": "5836716b5c819ecf6832333c812e891d76d94419755fe962f66cd944f6486966"
+      "content_sha256": "fcd43c8f7a97cefe8a1e27f541e23305ff28d26e425962cf0f3ef7943a3bfbf4"
     },
     "page:suspensions": {
       "sources": {
@@ -1699,7 +1699,7 @@
         "src/empire/plugins/ui/suspension_preview.py": "fc93da8e910e2ea3e0129c0be96ab4e0b25b4bf2337cead6be04d116bc4e4da3",
         "src/empire/plugins/ui/suspensions.py": "2c64179f1dbab3ed4a6103bc7f478259cc61c163b2891a0ceaa7f2b329418bc1"
       },
-      "content_sha256": "aa5dcd39417cb256a7fddf144c1e7fdcaae2609313343bc3bdf3bd16e7ba7c41"
+      "content_sha256": "b1780b2e8bc03fb66127d0fb9041cd244534427ea8817cfe2371319070c72029"
     },
     "page:system": {
       "sources": {
@@ -1715,7 +1715,7 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/system.py": "1d985986e30d1bfa74e44bbce396b78153c9d659e72c344561c8cdda505e99b7"
       },
-      "content_sha256": "fa5b933ed833bb7bd52505413b41b263485ead66b581a0283ee6e74b1c486cdd"
+      "content_sha256": "b3e6f7331dc2d92ee8e363c1e6a01a643938ef3dbfeeaf251c6343da0c689d13"
     },
     "page:plugins": {
       "sources": {
@@ -1731,7 +1731,7 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/system.py": "1d985986e30d1bfa74e44bbce396b78153c9d659e72c344561c8cdda505e99b7"
       },
-      "content_sha256": "1ab792a685e6b207ad53d4fe07bfb0ff22e3c46debc33f5930447059852f5087"
+      "content_sha256": "925956b7ad3ebf9021631a19bb30cf28f0592b5f1d07ef4c24496e55d78c61f3"
     },
     "page:help": {
       "sources": {
@@ -1749,7 +1749,7 @@
         "src/empire/plugins/ui/help_reader.py": "e8d375e772a0e8a5a5ece80feae9fe3b312545f559e5ee9747a15d1a5d681a95",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c"
       },
-      "content_sha256": "a279899941ffac5d9be65d4e795a737762f63cceb2e3e663064e802c8dc6a519"
+      "content_sha256": "431c6de6d8076cd0d2933277e724d3c81041d556f808030de952653d54377dcf"
     },
     "page:proxies": {
       "sources": {
@@ -1766,7 +1766,7 @@
         "src/empire/plugins/ui/proxies.py": "1551e03e2ae92c1a423e3b0219c7d4b98372ea26794d9c15805a39f851c72d3f",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "c43a0545df9decab3fe32eba99871dc67178625023998face0af3b2f248a8c47"
+      "content_sha256": "d95ca265610b1ba029d65d0b05e516233856c2d5c01cb83ccf84e88262fde22a"
     },
     "page:downloads": {
       "sources": {
@@ -1787,7 +1787,7 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "45814b8b81c86d7969b906bf66918e3cd53749b1567b07d7d49cdedf819cd7ae"
+      "content_sha256": "7139b1f5ca1ef453074f89f5dc2343a859fff51204ea79d372323487e1d0dd9e"
     },
     "page:preparation": {
       "sources": {
@@ -1827,7 +1827,7 @@
         "src/empire/plugins/ui/preview_layout.py": "e3bb69109303f22cb5ffa462a8f89d330031c1015270f60dcd58bc0e92ef2364",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "ab8d9e636b46aaa3f7d0fc79ffbe3073eb2f14b367ed4505464f764b898ab182"
+      "content_sha256": "fc0cfb754fe6a9d9df0dcc288ac2b5c7c2f7177ce5fcf307586323dd817ad4c4"
     },
     "task:tdx-unlock-industries": {
       "sources": {
