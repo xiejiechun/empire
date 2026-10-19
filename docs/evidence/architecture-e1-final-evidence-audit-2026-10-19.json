@@ -1,0 +1,578 @@
+{
+  "record_kind": "read_only_evidence_audit",
+  "checked_at": "2026-10-20T00:35:53.956397+08:00",
+  "release_id": "7ad607fa635c4f36b662b324dc501e52",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "a228421fa7bb312ed9fa0d7aaa0960eb2732c487",
+    "dirty": false,
+    "source_sha256": "f988c9bfd8e9770c455d1e6f12adfa2251a24389ffa0bd9024ecb0a12d9796e6",
+    "release_id": "7ad607fa635c4f36b662b324dc501e52",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "184de38f26ecdae3c635e9a1bba1e7565cd846f672035487bb56a3d2c081c432",
+    "built_at_utc": "2026-10-19T16:07:43.986888+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3"
+  },
+  "source_sha256": "f988c9bfd8e9770c455d1e6f12adfa2251a24389ffa0bd9024ecb0a12d9796e6",
+  "exe_sha256": "40860a815a7553ad05e7a8a0551ca52b168bfcd4c129756571cfbe2808ec629b",
+  "installed_tree_sha256": "0bc87e56b53c1d13de6650ec3f706f7aa5985433eefea046dac320a26df9bdcd",
+  "publication_sha256": "43519a38bd3304f5e3ab1df5beaa48812c7d0818a7bbfa88f4bbabb2ebb2e593",
+  "initial_input_audit": {
+    "path": "build\\architecture-e1-20261019\\release-evidence-audit.json",
+    "sha256": "ae1b0fd0a51418ee9ad15b6597b5f72a7d4ca10c7484a6b0ee818eb5f5adb462",
+    "files": 1418
+  },
+  "current_changed_fact_documents": [
+    "docs/architecture-evolution/status.md",
+    "docs/evidence/architecture-e1-2026-10-19.md"
+  ],
+  "retained_outputs": [
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-001.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-001.log",
+      "sha256": "a2489a4e3e2eba868fd2e306aef244a13be1dfcaf2aacc15f4204e26e90eb497"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-001.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-001.json",
+      "sha256": "7410e02c47d9b53fae894dc6ea245e1b56885067098d6d9adce2fcff7074832d"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-002.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-002.log",
+      "sha256": "3bf8eb4dc05ee4bc0bd266c420ed621b9c11782fd1148bf351d0657afb66c9fa"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-002.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-002.json",
+      "sha256": "5ab512186ea502ed8f34ffb4aa5ec2af642d2905201bc8502d12ea3d151c9c50"
+    },
+    {
+      "original": "build/dependency-report.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\dependency-report.json",
+      "sha256": "184de38f26ecdae3c635e9a1bba1e7565cd846f672035487bb56a3d2c081c432"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-003.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-003.log",
+      "sha256": "c84923a597353ec41307453944a4198a68fbb9a31f30bcdcc8ba64f34f94ad17"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-003.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-003.json",
+      "sha256": "24df742d7df9ee36a0441f86d9491cac88f42b3d4b2ab0724fffc0ac199248fc"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-004.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-004.log",
+      "sha256": "a2cb8202870fd00b86436ce2a96183374095fbc58c1756aa7245494e5ce447e4"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-004.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-004.json",
+      "sha256": "33a683ee7c44e612d5529b792bb22ed276411a4e3a96be665a0d76ab63676ca6"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-005.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-005.log",
+      "sha256": "b11ef010f60b27382b3d696257041007a0960cbf767573796c01ba6d482654a1"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-005.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-005.json",
+      "sha256": "346ec2657bd8b07a0eee966c01946d5963b19c8c3886cfa6c82197cfdc7a1c50"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-006.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-006.log",
+      "sha256": "6151dfa85dece1af569a5b57ee824f6a957d67b74e157123b0d8ed816557770b"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-006.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-006.json",
+      "sha256": "5af689156370b74b77c89f318dd3a88ecfe1d95ebad5cbaca07614322b32f5ac"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-007.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-007.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-007.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-007.json",
+      "sha256": "898ea6d22cbe43dbe95f2f680ac5827d210bd72696aecfb46777f5cbca9855ed"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-008.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-008.log",
+      "sha256": "e2702f9afc4c0f80ff1e8624f77af7a7d2689ca184512114aae5967a76229ba8"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-008.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-008.json",
+      "sha256": "561d097f2e4c65ba5fdbf5ecf7e45c1a157b4a1f71bd16ecbae73e58fb844a1d"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-009.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-009.log",
+      "sha256": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-009.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-009.json",
+      "sha256": "4e1af10e2a40b77498c72b5a0538bb0ae05d8a824d2ade0075fc05e5b73049a4"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-010.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-010.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-010.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-010.json",
+      "sha256": "3e5ab100291c19eadebe7a98a4c339ad4c78c40d00e96421861d23e692174ad6"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-011.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-011.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-011.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-011.json",
+      "sha256": "3521044a4d7a7fb3ab631f46bbebf993dab2ac6ad3283692180a340d68da79ff"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-012.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-012.log",
+      "sha256": "51ad091af8964ad81522f47528eb3d0a24f18ced961014f3f7b1f4e14af8dbb1"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-012.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-012.json",
+      "sha256": "b87fb017dcc77d6ec5d9a5cbb7ab0ebbb22665925f1f5573234f234fc165d2d1"
+    },
+    {
+      "original": "build/release-tests.xml",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\release-tests.xml",
+      "sha256": "e567f80e9c877f5414c396ae729f12fa3e0592536210cb0c35c6f9aaa55002b6"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-013.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-013.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-013.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-013.json",
+      "sha256": "ffbd9ed400231fb00260d3edc4e0170c667500aef2238fe8b59da33197c3a78f"
+    },
+    {
+      "original": "build/generated/preparation-release.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\preparation-release.json",
+      "sha256": "f16c4aadc2f7f6978ee35598cf2b346a1b20c0ace522cb673c4a1130822511e3"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-014.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-014.log",
+      "sha256": "27c873bd203cf9aa8518e5f783ab7cef0a4d44973327aa7a69b8ad4d63e8dc53"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-014.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-014.json",
+      "sha256": "118ae685ddbc50ebb58547c72ccb64c21f0d96253cc41d79527da87c307af8fa"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/capacity-report.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\capacity-report.json",
+      "sha256": "8784c6014e211958f7edff4c6b29aa58358d02f624dab20a360bda602f906eb7"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-015.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-015.log",
+      "sha256": "397cbbc0fc261c9936e089a23887e1f900a434099f9fd669ab243adeb595461f"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-015.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-015.json",
+      "sha256": "04e87390a40391135eec6852c15c81776cfcd9499c795def7cc26be432b32b27"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-016.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-016.log",
+      "sha256": "6b180eac85f3298b3bb7e68dc5fd015dbc3a23451e7aa5d9e0cc324f354b4623"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-016.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-016.json",
+      "sha256": "ff829dd2e16443572a67ea1b2ddbbfc670a252f59eb1fb2d95e92b58b5fa5e0e"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-017.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-017.log",
+      "sha256": "73fc6e2adbc4dde6e8ee4ef14d6845f386585d0fe03d48474552fdc6c772fcaf"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-017.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-017.json",
+      "sha256": "5d7b30f83f3c0b02f5e59765c79b674c1f347811a10a589566017075572d67d5"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-018.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-018.log",
+      "sha256": "ecb27aebbf7c4aebcc42189887230570aa2be4541021738c3363590501864dca"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-018.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-018.json",
+      "sha256": "ce3f30891e6fbc49d6201750cea3fcfe884370802dbf7e15779d79d67cda7965"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-019.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-019.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-019.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-019.json",
+      "sha256": "f763cc587fbe37be8b9bcefb5bfd1fef4bcdfcc9bd8a2c6dac749cf3be114a7e"
+    },
+    {
+      "original": "build/generated/build_manifest.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\build_manifest.json",
+      "sha256": "e6961fa36d8a0ea8bbd75d15834d458a5e5dabb4f0dcdb941557bde04953f494"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-020.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-020.log",
+      "sha256": "1c897b5a315c7dbf2c4d407c5648fdfd3e090712a3c77097b18f9c442ed8bbdf"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-020.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-020.json",
+      "sha256": "2007257477fdadd09c4c5c82d4f056c438cfa7d03b62531778bcbe2f6d85806c"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-021.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-021.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-021.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-021.json",
+      "sha256": "4d4696190399cb58e13f9bb239d359cfd44a0836933a3c59e8ecabf4081eec50"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-022.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-022.log",
+      "sha256": "d5e627cf095a6574191d656e9ce71b6e81e4ca55c3b772d7b228cdffefc12f2c"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-022.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-022.json",
+      "sha256": "b3f2bf6807dc11f6f8db52e05adcbdbfe1200e81f70ad16531ecb9f6371b4f01"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-023.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-023.log",
+      "sha256": "1cf83c19f8b4671d26024243215db21f26e80ea6d6ea51fb1980f38031e06728"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-023.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-023.json",
+      "sha256": "6a9d291577c8c74b3a839fd895a8c610a7584e32bece902245bf38dc984f5fd7"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/release-smoke.png",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\release-smoke.png",
+      "sha256": "2b07f8eafcbf6d0fe62afb978d1adffb76e554773a93803ef80e73a0aab7d89f"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-024.log",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-024.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "build/releases/7ad607fa635c4f36b662b324dc501e52/steps/step-024.json",
+      "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\step-024.json",
+      "sha256": "07ff73837205f3ce19a96ae543eb59c5c03ecd73e0a69bb0fdb9339adce40905"
+    }
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "expected_exit": 0,
+      "log": "step-001.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "a2489a4e3e2eba868fd2e306aef244a13be1dfcaf2aacc15f4204e26e90eb497"
+    },
+    {
+      "step": 2,
+      "expected_exit": 0,
+      "log": "step-002.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "3bf8eb4dc05ee4bc0bd266c420ed621b9c11782fd1148bf351d0657afb66c9fa"
+    },
+    {
+      "step": 3,
+      "expected_exit": 0,
+      "log": "step-003.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "c84923a597353ec41307453944a4198a68fbb9a31f30bcdcc8ba64f34f94ad17"
+    },
+    {
+      "step": 4,
+      "expected_exit": 0,
+      "log": "step-004.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "a2cb8202870fd00b86436ce2a96183374095fbc58c1756aa7245494e5ce447e4"
+    },
+    {
+      "step": 5,
+      "expected_exit": 0,
+      "log": "step-005.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "b11ef010f60b27382b3d696257041007a0960cbf767573796c01ba6d482654a1"
+    },
+    {
+      "step": 6,
+      "expected_exit": 0,
+      "log": "step-006.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "6151dfa85dece1af569a5b57ee824f6a957d67b74e157123b0d8ed816557770b"
+    },
+    {
+      "step": 7,
+      "expected_exit": 0,
+      "log": "step-007.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "step": 8,
+      "expected_exit": 0,
+      "log": "step-008.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "e2702f9afc4c0f80ff1e8624f77af7a7d2689ca184512114aae5967a76229ba8"
+    },
+    {
+      "step": 9,
+      "expected_exit": 0,
+      "log": "step-009.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf"
+    },
+    {
+      "step": 10,
+      "expected_exit": 0,
+      "log": "step-010.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "step": 11,
+      "expected_exit": 0,
+      "log": "step-011.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "step": 12,
+      "expected_exit": 0,
+      "log": "step-012.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "51ad091af8964ad81522f47528eb3d0a24f18ced961014f3f7b1f4e14af8dbb1"
+    },
+    {
+      "step": 13,
+      "expected_exit": 0,
+      "log": "step-013.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "step": 14,
+      "expected_exit": 0,
+      "log": "step-014.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "27c873bd203cf9aa8518e5f783ab7cef0a4d44973327aa7a69b8ad4d63e8dc53"
+    },
+    {
+      "step": 15,
+      "expected_exit": 0,
+      "log": "step-015.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "397cbbc0fc261c9936e089a23887e1f900a434099f9fd669ab243adeb595461f"
+    },
+    {
+      "step": 16,
+      "expected_exit": 0,
+      "log": "step-016.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "6b180eac85f3298b3bb7e68dc5fd015dbc3a23451e7aa5d9e0cc324f354b4623"
+    },
+    {
+      "step": 17,
+      "expected_exit": 0,
+      "log": "step-017.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "73fc6e2adbc4dde6e8ee4ef14d6845f386585d0fe03d48474552fdc6c772fcaf"
+    },
+    {
+      "step": 18,
+      "expected_exit": 0,
+      "log": "step-018.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "ecb27aebbf7c4aebcc42189887230570aa2be4541021738c3363590501864dca"
+    },
+    {
+      "step": 19,
+      "expected_exit": 0,
+      "log": "step-019.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "step": 20,
+      "expected_exit": 0,
+      "log": "step-020.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "1c897b5a315c7dbf2c4d407c5648fdfd3e090712a3c77097b18f9c442ed8bbdf"
+    },
+    {
+      "step": 21,
+      "expected_exit": 0,
+      "log": "step-021.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "step": 22,
+      "expected_exit": 1,
+      "log": "step-022.log",
+      "output_complete": true,
+      "returncode": 1,
+      "log_sha256": "d5e627cf095a6574191d656e9ce71b6e81e4ca55c3b772d7b228cdffefc12f2c"
+    },
+    {
+      "step": 23,
+      "expected_exit": 0,
+      "log": "step-023.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "1cf83c19f8b4671d26024243215db21f26e80ea6d6ea51fb1980f38031e06728"
+    },
+    {
+      "step": 24,
+      "expected_exit": 0,
+      "log": "step-024.log",
+      "output_complete": true,
+      "returncode": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "junit": {
+    "path": "build\\releases\\7ad607fa635c4f36b662b324dc501e52\\evidence\\release-tests.xml",
+    "sha256": "e567f80e9c877f5414c396ae729f12fa3e0592536210cb0c35c6f9aaa55002b6",
+    "total": 3674,
+    "passed": 3669,
+    "failed": [],
+    "skips": [
+      {
+        "class": "tests.integration.test_state_unit_isolated",
+        "name": "test_large_state_bounded_transfer_and_other_unit_preserved",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "class": "tests.integration.test_state_unit_isolated",
+        "name": "test_concurrency_and_rollback",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "class": "tests.integration.test_state_unit_isolated",
+        "name": "test_missing_units_manifest_and_noop",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "class": "tests.integration.test_state_unit_isolated",
+        "name": "test_initial_unit_state_and_owner_validation",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "class": "tests.integration.test_state_unit_isolated",
+        "name": "test_preflight_is_read_only_allowlisted_and_rejects_extra_source",
+        "message": "Explicit isolated drill opt-in required"
+      }
+    ]
+  },
+  "post_desktop_report_sha256": "c5631b0e788a96b6f8669e1e47753eb24499c66a118aab6287c852bdcbf5a91a",
+  "configuration_preserved": {
+    "D:\\project\\empire\\config.toml": true,
+    "D:\\project\\empire\\dist\\Empire\\config.toml": true
+  },
+  "preferences_restoration": {
+    "observed_at": "2026-10-20T00:33:05.029204+08:00",
+    "known_plugins": 159,
+    "modified_by_acceptance": {
+      "ui.cashflow": false
+    },
+    "restored_collector_before_exit": true,
+    "original_obsolete_key_preserved": "infra.scheduler",
+    "observed_sha256": "177761ccd67720403e2edb30cac899ec128fd4830a00bfa50bcf02bd1003a499",
+    "restored_sha256": "8cbc58900b35bf4c8b2f9fff47ed95f67f6e20782734f38a0819ff3c7cadd63e",
+    "exact_hash_guard": true,
+    "backup": "build\\architecture-e1-20261019\\plugin-preferences-after-desktop.json"
+  },
+  "desktop_observations": [
+    {
+      "path": "build\\architecture-e1-20261019\\desktop-reopened-home.json",
+      "sha256": "dafd82904009e1175ea2f2af4624e336233a352a5ef0d94757db88a5676eaded",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 16058676,
+        "title": "Empire · 投资研究工作台"
+      },
+      "observed_at": "2026-10-19T16:34:07.360Z"
+    },
+    {
+      "path": "build\\architecture-e1-20261019\\desktop-reopened-cashflow.json",
+      "sha256": "65d5b05368ddf714fbfe0850956131a7af1d8be48cd44c8576b50f0791c58681",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 16058676,
+        "title": "Empire · 投资研究工作台"
+      },
+      "observed_at": "2026-10-19T16:34:59.449Z"
+    }
+  ],
+  "limitations": [
+    "Actual GUI actions and normal close are described in the E1 narrative; no simulated desktop evidence.",
+    "Source formal query APIs using installed config are distinct from the packaged visible UI.",
+    "Five opt-in state-unit skips are not passes.",
+    "D strict H3 source gaps and E1 financial quality/date limits remain.",
+    "Fact-only closure documents do not rebuild or change the released package."
+  ]
+}
