@@ -1,6 +1,6 @@
 # 模块化优化状态与下一步
 
-事实快照：2026-10-20，E3结案63eb8e2已推送并精确核实远程；E4组织迁移开发验证通过，严格来源缺口FAIL保留，尚未发布或桌面验收。本文是接手入口；重新执行时先核实 HEAD、工作区、远程、安装包与共享环境。具体步骤见 [执行入口](README.md)、[C/D/F手册](cdf-implementation.md)、[E手册](e-implementation.md)，通过条件见 [验收手册](acceptance.md)。
+事实快照：2026-10-20 06:43，E3结案63eb8e2已推送；E4组织迁移已完成唯一正式发布与同包真实桌面验收，严格来源缺口FAIL保留，结案推送核实后进入E5。本文是接手入口；重新执行时先核实 HEAD、工作区、远程、安装包与共享环境。具体步骤见 [执行入口](README.md)、[C/D/F手册](cdf-implementation.md)、[E手册](e-implementation.md)，通过条件见 [验收手册](acceptance.md)。
 
 交接提交120ddfc完成C发布收尾。用户已授权D→E→F实施；D八模块、安全工具、容量及两项公共UI修复已完成最终正式发布和同包真实桌面。**D纯组织迁移范围已验收，H3严格来源完整性仍FAIL**：两固定空名债券原样保留，按请求前登记、D-07及验收6.1独立判断组织等价，不称30股严格整轮通过。整个优化未完成；E0已完成正式发布和同包真实桌面验收，结案953a34e已推送并在该轮核实远程；E1结案4b30fcc已推送；E2现已完成正式发布与同包真实桌面，结案提交推送后第一项为E3。见[完整D记录](../evidence/architecture-d-2026-10-19.md)。
 
@@ -16,7 +16,7 @@
 | E1 财报 | 已验收；4b30fcc已推送核实 | 十模块/资源、chain公开契约、原槽位bundle、旧入口退役；54隔离/103安全、三表40股全代理/T3通过；完整发布3669 passed/5 opt-in skipped；同包三页/帮助、依赖保护、草稿撤销、偏好恢复、异cwd连接与正式查询、正常关开完成 | [E1记录](../evidence/architecture-e1-2026-10-19.md)、[最终审阅](../evidence/architecture-e1-final-evidence-audit-2026-10-19.json) |
 | E2 指数/行业/指数行情 | 已验收；b8d732d已推送核实 | 三业务包/19旧模块及调用方退役；121领域/147安全/67隔离/408公共、两轮非股票全代理链路、四份真实容量及T3 18/18；完整发布ccc04f3/release 2fa960ba、3679 passed/5 opt-in skipped；同包配置/偏好、真实连接/查询、三页/帮助、U1/U2、窄窗口及正常关开完成 | [E2记录](../evidence/architecture-e2-2026-10-20.md)、[真实桌面](../evidence/architecture-e2-desktop-2026-10-20.md)、[同包机器核验](../evidence/architecture-e2-post-release-2026-10-20.json) |
 | E3 股票/日历/停复牌/准备/目录 | 已验收 | 48旧模块退役，确认注入与惰性workspace；有限全代理来源、486公共/226生命周期、T3 18/18；d062234/release 08dd70b0完整门禁3733 passed/5 opt-in skipped；同包页面/帮助/启停保护/草稿/窄窗/正常关开、48行设置及原配置偏好保持 | [E3记录](../evidence/architecture-e3-2026-10-20.md)、[真实桌面](../evidence/architecture-e3-desktop-2026-10-20.md) |
-| E4 开盘啦七项 | 开发验证通过（组织迁移范围）；严格来源失败保留 | 24旧模块及调用方退役；279领域/274公共/58隔离、七项当前容量/T3 18项通过，安全实采管线一致且pending0，严格来源缺口FAIL保留；最终文档35项及契约通过，发布/桌面待完成 | [E实施](e-implementation.md)；本地 build/architecture-e4-20261020 |
+| E4 开盘啦七项 | 已验收（组织迁移范围）；严格来源失败保留 | 24旧模块退役；279领域/274公共/58隔离、当前容量/T3 18项通过；acb466a/release 61dc9811完整门禁3755 passed/5 opt-in skipped；同包七页/帮助、启停保护/草稿/窄窗/正常关开、48设置及原配置偏好保持；严格来源FAIL不冲销 | [E4记录](../evidence/architecture-e4-2026-10-20.md)、[真实桌面](../evidence/architecture-e4-desktop-2026-10-20.md) |
 | E5～E6g 逐业务推广 | 草稿已准备，未合入 | E4全部适用出口满足后继续，不应用完整E树 | [E实施](e-implementation.md) |
 | F 共享治理收束 | 草稿已准备，未合入 | 仅单源文档、影响报告、类型、共享门禁、定位演练和测试成本候选 | [F实施](cdf-implementation.md)；尚无测试成本收益结论 |
 
@@ -24,7 +24,9 @@
 
 ## 2. 源码、远程和已安装包身份
 
-当前安装E3正式包release `08dd70b018394bc2bdf673bc3d8b7b99`，冻结干净提交 `d062234545eb364df93e8fc402fec62491058dbb`，journal committed/passed，完整门禁自然退出0。源输入 `60c347ca9f0bf05f82347ace44c04d1f707f77c93d30fa36b4d821f970f88a06`，EXE `e1a0f0d053c4f69353486fcb546b14b0423037878f7e4c2d7cf18004b2f509c9`，安装树 `8c961f788160a454985ce5208d543b7efa4d02846bc8d9958e2b69211d3e44a1`。3733 passed/5 opt-in skipped/20 warnings、24步骤通过；1499输入与54保留输出已核实。04:34关后同包异cwd真实连接、正式查询及原配置/偏好核验exit0，全部48行设置payload/updated_at相同；验收开关和草稿已恢复。正常重开窗口19336720可见、45任务/活动0/pending0/既有失败5。结案文档不改变发布包身份；推送及ls-remote核对结果保存在 `build/architecture-e3-20261020/remote-close.json`，核实成功后才进入E4。以下E2身份为历史。
+当前安装E4正式包release `61dc981193d24b50bc84bee1c9ca1670`，冻结干净提交 `acb466aa64589400b1eea5d03abf3ee8a99a36dd`，journal committed/passed，完整门禁自然exit0。输入 `508a4fffaf9649b9d094aeae084269425d1ed34188a31cd6bbb4fb3d150f3b2a`，EXE `e6a1bd55912081d8b10846d314aedc1c9e9017aed683f4a23d8a9c66339e8a22`，安装树 `308efcdd6a3912196a0a7e535791ddde6bbaadb88224331a1e51cbb56a25ad3e`。3755 passed/5 opt-in skipped/20 warnings、2168.72秒；24步骤、容量/四DPI/打包/搬移配置smoke通过，第22步模板生成预期exit1。1528输入/54保留输出及原JUnit已机器审核。06:42关后同包异cwd真实Redis/MySQL连接、七产品正式day/完整分页和原配置/偏好核验exit0；48保存设置payload/updated_at完全相同，验收开关和草稿恢复。重开3345610可见、45任务/活动0/pending0/既有失败5。结案文档不改变包身份。详见[E4记录](../evidence/architecture-e4-2026-10-20.md)及[真实桌面](../evidence/architecture-e4-desktop-2026-10-20.md)。
+
+以下E3与E2身份为历史：E3 release `08dd70b018394bc2bdf673bc3d8b7b99`、提交d062234、3733 passed/5 opt-in skipped；04:34同包验收通过，结案63eb8e2已推送核实，原始身份与事实见[E3记录](../evidence/architecture-e3-2026-10-20.md)。
 
 当前安装E2正式包release `2fa960ba05f047fdbbbc6ca214b0000c`，journal committed/passed，冻结干净提交 `ccc04f399fcaa5d8815da6a1e1b17df72a541620`；完整输入 `c3f1a25884bbab7a61fb9fbbbdaafac9ff1205d170dce55eb6afbfc037cc6a32`，EXE `18f05709ca2c7855f6395c1c8c2c09f6eb58c176c699b00da38a460070a24652`，安装树 `b1eff9327f678d57a57d88c5eb322f82a23e4da69a7e370be3502329d3eff005`。完整门禁exit0，3679 passed/5 opt-in skipped/20 warnings；24步骤及打包/搬移/配置smoke通过。02:33关后同包复核exit0，配置和偏好精确保留、异cwd真实连接与正式查询通过。重开正式窗口7475560可见：45任务、活动0/pending0、既有失败5。桌面与SQL设置快照的适用限制见[E2真实桌面](../evidence/architecture-e2-desktop-2026-10-20.md)。本批结案文档不改变发布EXE身份；E2结案b8d732d已通过既有共享代理推送，ls-remote精确匹配，exit0。
 
@@ -80,8 +82,8 @@ D实现提交为`ab1d47339eace79a3c9d216c23bfe6beb1b1170a`，公共帮助/滚轮
 | E0 | 已完成并推送953a34e | 不重复发布 | 见E0记录 |
 | E1 | 已完成同包验收，4b30fcc已推送核实 | 发布a228421、原配置偏好保持 | 不重复发布 |
 | E2 | 已完成同包验收，b8d732d已推送核实 | ccc04f3/release 2fa960ba | 不重复发布 |
-| E3 | 已完成同包验收，结案推送后进入E4 | d062234/release 08dd70b0，原preparation契约保持 | 见E3记录，不重复发布 |
-| E4 | 开盘啦七项 | 唯一SQL归属与对应前像 | 七种kind完整样本、日期/查询/恢复、当前容量 |
+| E3 | 已完成同包验收，63eb8e2已推送核实 | d062234/release 08dd70b0，原preparation契约保持 | 见E3记录，不重复发布 |
+| E4 | 已完成同包验收，结案推送后进入E5 | acb466a/release 61dc9811，严格来源FAIL保留 | 见E4记录，不重复发布 |
 | E5 | 资本行为、分红、复权 | 先补完整分红容量方案与安全工具 | 完整来源观测/计划期数、业务查询及原容量边界 |
 | E6a | THS资本 | D已解开共享HTML | 最终路径再次容量，不能沿用D绑定 |
 | E6b | 上市、上市状态、北交所映射 | 精确维护发布者 | 各自业务专项；BSE完整1000行私有容量 |
@@ -113,7 +115,7 @@ D实现提交为`ab1d47339eace79a3c9d216c23bfe6beb1b1170a`，公共帮助/滚轮
 
 ## 7. 接手第一步及最终完成定义
 
-D、E0、E1、E2均已结案推送；E3已完成唯一正式发布、同包真实桌面及48行设置/配置/偏好恢复。E3结案推送核实后从E4开盘啦七项开始，先核前像与唯一SQL契约调用方，逐项重建七kind证据及真实新容量，不应用整份E候选。公共preparation契约保持原路径；严格持有人H3失败、停复牌旧错误与分红完整容量待办保留，E4已实际实现并开发验证，E5～F尚未实施。下列E2/E3检查点保留历史时态，以文首当前状态和最后资源快照为准。
+D～E3已结案推送；E4已完成唯一正式发布、同包真实桌面及48行设置/配置/偏好恢复。E4结案推送精确核实后从E5资本行为与复权开始；先形成完整分红容量可审协议及安全工具，再核实际前像逐项迁移，不应用整份E候选。公共preparation契约保持原路径；严格持有人H3失败、开盘啦严格来源FAIL、停复牌旧错误与分红完整容量待办保留，E5～F尚未实施。下列早期检查点保留历史时态，以文首当前状态和最后资源快照为准。
 
 执行每批时，将该批从“草稿”推进到“正式实现→开发验证→完整发布→实际桌面→已验收”，把真实证据写入本账本对应行。任何必要项失败、缺证、运行中或被跳过，不能标完成。最终要有 [验收手册](acceptance.md) 中A/D/C/R/U/H/M/T全部适用ID的逐项结论，以及远程提交、同包发布、配置保留、真实桌面、来源限制与剩余资源说明；只有全部适用项满足才能宣布整个优化完成。
 
@@ -135,3 +137,5 @@ E3最终资源快照04:34～04:36：release 08dd70b0已完整发布并完成同�
 E4当前检查点：24旧模块及调用方已正式迁移，尚未发布/验收；58隔离集成、133安全/验证器反例通过，新七kind容量真实重测通过，旧绑定报告不改写。来源工具已替换，待实际SQL守卫smoke后再执行冻结种子20261020随机30及五固定反例；见[本批记录](../evidence/architecture-e4-2026-10-20.md)。E3结案63eb8e2已推送核实。自有13348运行，当前无测试并行；桌面已正常关闭，工作结束须重开；配置/偏好与生产数据保持。
 
 E4最新资源快照05:38：source-verified已自然exit1，管线一致但严格来源FAIL；六项清理全true，无私有来源SQL/Redis残留。容量2实际exit0且全部私有资源清理；T3原阈值18/18通过。发布前自有13348再次核实际UUID/datadir，仅四系统库、无其他客户端；global pending0，48设置行和两config/偏好前像保存于build/architecture-e4-20261020。桌面仍正常关闭，正式发布与同包验收后须重开；本轮未清未解决生产错误、未启动E5。详见[E4当前记录](../evidence/architecture-e4-2026-10-20.md)。
+
+E4最终资源快照06:43～06:50：release 61dc9811已完整发布并完成同包真实桌面，正常关开后3345610工作台可见、活动0/pending0/既有失败5。48行设置payload及updated_at、两config及原偏好保持。自有13348实核UUID `a3e8a5eb-cb64-11f1-8ddf-380525361d4e`、原datadir、仅四系统库、无其他客户会话；无遗留本轮私有业务库，保持运行供下一批。旧错误/严格来源缺口未清。结案文档相关35回归及契约通过。GitHub有界直连超时保留，推送使用原共享代理；精确远程结果写本地 `build/architecture-e4-20261020/remote-close.json`，成功核实后进入E5，不将本段预写成已推送。

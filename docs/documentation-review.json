@@ -1,21 +1,9 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-19T21:33:56.478401+00:00",
-  "note": "E4已逐项审阅七种行情的查看入口、分页、日期选择、来源单位与失败缺口；同步七页面/任务说明、唯一SQL表组、连接内惰性行情API、私有实采及恢复维护路径。数据库对象逐项核DDL和读写契约不变，严格实采FAIL与组织迁移验收分别记载。",
+  "reviewed_at": "2026-10-19T22:47:42.832751+00:00",
+  "note": "E4最终结案复审：安装包七页与正文、插件保护及原设置恢复均有真实证据，补充35文档回归与资源快照，严格来源FAIL和E5容量待办保留；本次只补事实文档。",
   "unchanged_reason": "",
-  "exceptions": {
-    "mysql:stock": "E4仅把开盘啦查询依赖改为已验收股票公开API；stock字段、双源归属、publication和正式写入路径未变。",
-    "mysql:stock_market_day": "业务头归属迁入开盘啦包并从唯一SQL元数据选表；证券日键、摘要、生命周期字段和事务语义未变。",
-    "mysql:stock_intraday_trend": "分时事实读写模块仅迁址；分钟键、价格均价来源量、精度及归档清队规则未变。",
-    "mysql:stock_opening_auction": "竞价编解码与查询仅迁址；同分钟多点seq身份、字段类型、完整数组和修订规则未变。",
-    "mysql:stock_minute_volume": "量额序列模块仅迁址；241分钟集合、来源量额字段、主键索引和重复免写规则未变。",
-    "mysql:stock_intraday_trade_block": "分笔块模块仅迁址；200点块编码、seq及同秒排序、总数校验和有界解码完全保留。",
-    "mysql:stock_minute_entrust": "委托分钟事实读写仅迁址；买卖量额列、分钟集合、主键索引和未知值语义未变。",
-    "mysql:stock_large_order_trend": "大单净额读写仅迁址；净额及附加统计字段、负值支持和证券日完整归档语义未变。",
-    "mysql:stock_daily_quote": "盘口日摘要读写迁址并新增同连接惰性公开读取；列、精度、空值和版本防覆盖规则未变。",
-    "mysql:stock_daily_quote_level": "盘口档位模块仅迁址；side/level主键、十档价格量、零档与顺序校验及父子事务未变。",
-    "redis:preparation-report": "准备贡献导入开盘啦公开归属模块；报告物理键、类型、作用域、TTL及丢失后重算语义未变。"
-  },
+  "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "a77505869b2673cfaa06e6fed1a1d93848f29f3c2a4802d7dd99aaaebef4f75a",
@@ -514,7 +502,7 @@
     "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "c792ec69a6553607b6498b1060ea14f07204f6f2c3cca3c6e140b393c8667974",
+  "content_sha256": "9c34d9f9528daed4e30c1f832bf521a0eafeabec9686b0e4eebe1f83c0193a7b",
   "features": {
     "page:ths_capital": {
       "sources": {

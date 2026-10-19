@@ -1,6 +1,6 @@
 # E4 开盘啦七项实施记录
 
-当前为开发验证通过（组织迁移范围），未发布、未验收；严格来源FAIL保留，E5尚未开始。前批E3结案提交63eb8e2已推送并核实，正式安装仍为E3 release 08dd70b0。
+当前组织迁移范围已完成正式发布与同包真实桌面验收；严格来源FAIL保留，E5尚未开始。实现提交acb466a，release 61dc981193d24b50bc84bee1c9ca1670；结案提交推送核实后才进入E5。下列开发检查点保留原历史时态，最终事实见末节及[真实桌面](architecture-e4-desktop-2026-10-20.md)。
 
 ## 请求前范围登记
 
@@ -62,3 +62,23 @@ T3实际命令：`.venv/Scripts/python.exe scripts/architecture_benchmark.py mea
 日常生产数据、两个config、插件偏好、45任务原保存策略保持；本轮私有来源样本清理不涉及生产错误。停复牌旧错误38622b7215a44fe4a5224031bdf4d963未修未清，D空名债券严格H3失败与E5分红完整容量待办不变。当前尚未正式发布和可见桌面，不能进入E5。
 
 最终文档审阅由正式documentation_contract review完成，逐对象给stock、九KPL表和preparation-report具体不变理由；七页/任务正文实际同步。review/check、verify_documentation（225文档/1538链接/55表）、verify_database_design（55表/49数据集/12 JSON字段）均exit0，35文档回归/27.00秒/exit0。发布前[机器审阅](architecture-e4-pre-release-audit-2026-10-20.json)重算原始T3样本、核七组JUnit（含历史失败）、24旧路径及零Python遗留引用、760输入桥接、17容量绑定、冻结工具和原config/偏好；实际exit0。随后只读preflight-final.json再次确认自有13348实际UUID/datadir、仅四系统库且无其他客户，生产实例不同、global pending0，48行保存设置已取精确前像。此后冻结输入和HEAD执行正式发布，U1/U2/U3尚待本包实际验证。
+
+## 正式发布与最终适用出口（06:43）
+
+唯一命令 `./verify-release.ps1` 自然exit0，release `61dc981193d24b50bc84bee1c9ca1670` 的publication为committed/passed，冻结干净提交 `acb466aa64589400b1eea5d03abf3ee8a99a36dd`。完整输入 `508a4fffaf9649b9d094aeae084269425d1ed34188a31cd6bbb4fb3d150f3b2a`，EXE `e6a1bd55912081d8b10846d314aedc1c9e9017aed683f4a23d8a9c66339e8a22`，安装树 `308efcdd6a3912196a0a7e535791ddde6bbaadb88224331a1e51cbb56a25ad3e`。
+
+3755 passed、5显式opt-in skipped、20弃用警告，pytest 2168.72秒；24步骤、独立容量、四档DPI、打包和搬移/config smoke及正式切换均满足原门禁。第22步首次模板生成预期exit1，后续复核exit0，不将它伪记为exit0。`.venv/Scripts/python.exe build/architecture-e4-20261020/audit_release.py` 实际exit0，逐字节核1528输入、54保留输出、24步骤及原JUnit；[原样审核报告](architecture-e4-release-audit-2026-10-20.json)保留每步退出码和输出摘要。5个state-unit跳过仍为未执行，本批不修改该opt-in状态契约。
+
+| 验收编号 | 本批最终结论与证据 | 限制 |
+| --- | --- | --- |
+| A4、U3 | 上述完整门禁及[同包复验](architecture-e4-post-release-2026-10-20.json)，exit0；包内manifest、真实异cwd连接、七项正式查询/完整分页、配置保留 | 机器查询使用冻结源码API与安装配置；包内doctor和可见七页独立验证 |
+| U1 | 单停竞价UI和采集器、恢复；盘口采集器停用拒绝相关任务；其他任务/历史/查询可用；直接停分时查询被依赖保护拒绝 | 真实动作范围见[桌面记录](architecture-e4-desktop-2026-10-20.md)，未遍历全部插件组合 |
+| U2 | 草稿2→3未保存，滚轮/切页/后台刷新保留；撤销回2；903×892实际窄窗、滚动与保存栏通过 | 惰性/取消/写入竞态由专项及全量回归支持，未冒充全部桌面复现 |
+| U3、正常关开 | 48行SQL设置payload及updated_at、两config精确保留；159开关恢复后审计还原原偏好；Alt+F4后fresh枚举空，再重开3345610可见 | pending0/活动0为06:42动态事实，后续原日常任务继续 |
+| M2/M3 | 安装包真实主题/数据说明可读，正文与coverage在实现提交同步；结案只更新事实记录并重做文档契约/相关回归 | 不改变本次已发布EXE身份；F单源帮助仍未实施 |
+
+本批C1/C2/C3/C4、E4/R1/R2/R3/R4、T2/T3、容量和M/U适用出口已有上表及开发矩阵证据。严格来源验收仍exit1、sample_30_met=false、acceptance_complete=false；269有效/46缺口、519代理/直连0/回退0、私有pending0与全部清理保持原报告。组织范围在请求前已明确，未修来源语义，不以发布和桌面通过冲销严格来源FAIL。H1/H2/H3为D持有人专项，本批不重做；D已知H3失败继续保留。
+
+下一项E5必须先审阅完整分红容量协议并实现安全工具，再按资本行为/复权实际前像逐项迁移，不应用整份E草稿。E5～F未完成，整个模块化优化尚未完成。
+
+结案文档review/check、verify_documentation（226文档/1551链接/55表）、verify_database_design（55表/49数据集/12 JSON字段）均exit0；同四文件文档回归新轮35 passed/27.20秒/exit0，原JUnit为 `build/architecture-e4-20261020/docs-close.xml`。结案资源只读命令 `close_resource_audit.py` exit0：自有13348实际UUID/datadir不变，仅四系统库、无其他客户连接；冻结工具保持、正式包身份保持、当时global pending0。程序窗口3345610继续可见；生产MySQL/Redis未关闭，未清旧错误或业务数据。
