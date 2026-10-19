@@ -1,0 +1,410 @@
+{
+  "schema": 1,
+  "passed": true,
+  "measured_at_utc": "2026-10-19T11:25:22.003488+00:00",
+  "protocol_sha256": "38679725dbf2ad41e8ff1d9a33c8a28630d4a808d33880ec3c4d39f26c3ac24b",
+  "harness_sha256": "26996849001bb57832fa765bd0ea8dd82773115a8134388e6f2d69ab426c83e8",
+  "source_sha256": "e196646edd4a251063e5f89ae415d63be8fe6558f31d680f110087d8f9a58c6d",
+  "machine": {
+    "host_sha256": "47b85125f6eb9364e2409b65c35b117479bad3d3d5cd00da620ead015018902f",
+    "os": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "processor": "AMD64 Family 26 Model 112 Stepping 0, AuthenticAMD",
+    "logical_cpus": 32,
+    "python": "3.12.9",
+    "fonts": {
+      "msyh.ttc": "d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f",
+      "msyhbd.ttc": "4508821b3dffe01f0ef5e5326a3e60df705a44633858811f67b6982dce3f6ee6",
+      "segoeui.ttf": "704eada12961a27fd271f7d3b09e2066520e758390c1776744eff430fee30f6e"
+    }
+  },
+  "dependencies": {
+    "altgraph": "0.17.5",
+    "annotated-types": "0.8.0",
+    "anyio": "4.15.1",
+    "certifi": "2026.7.22",
+    "cffi": "2.1.1",
+    "colorama": "0.4.6",
+    "cryptography": "50.0.1",
+    "empire-research": "0.1.0",
+    "greenlet": "3.5.6",
+    "h11": "0.16.0",
+    "httpcore": "1.0.9",
+    "httpx": "0.28.1",
+    "idna": "3.20",
+    "iniconfig": "2.3.0",
+    "librt": "0.15.0",
+    "mypy": "1.20.2",
+    "mypy_extensions": "1.1.0",
+    "packaging": "26.3",
+    "pathspec": "1.1.1",
+    "pefile": "2024.8.26",
+    "pip": "24.3.1",
+    "pluggy": "1.6.0",
+    "pycparser": "3.0",
+    "pydantic": "2.13.5",
+    "pydantic_core": "2.46.5",
+    "Pygments": "2.21.0",
+    "pyinstaller": "6.22.3",
+    "pyinstaller-hooks-contrib": "2026.7",
+    "PyMySQL": "1.2.3",
+    "pypdf": "6.20.0",
+    "PySide6": "6.11.2",
+    "PySide6_Addons": "6.11.2",
+    "PySide6_Essentials": "6.11.2",
+    "pytest": "9.1.1",
+    "pytest-asyncio": "1.4.0",
+    "pywin32-ctypes": "0.2.3",
+    "redis": "6.4.0",
+    "ruff": "0.16.8",
+    "setuptools": "84.0.0",
+    "shiboken6": "6.11.2",
+    "socksio": "1.0.0",
+    "SQLAlchemy": "2.0.54",
+    "typing_extensions": "4.16.0",
+    "typing-inspection": "0.4.4"
+  },
+  "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+  "metrics": {
+    "assembly": {
+      "samples_ms": [
+        2.0138,
+        1.8129,
+        1.1951,
+        1.2483,
+        1.2079,
+        1.2617,
+        1.221,
+        1.2689,
+        1.5077,
+        1.2714,
+        1.2904,
+        1.2465,
+        1.2686,
+        1.2725,
+        1.2544
+      ],
+      "median_ms": 1.2686,
+      "p95_ms": 1.8731699999999998,
+      "min_ms": 1.1951,
+      "max_ms": 2.0138
+    },
+    "news_first": {
+      "samples_ms": [
+        4.6671,
+        5.3723,
+        5.2004,
+        5.009,
+        5.3141,
+        4.6041,
+        5.3811,
+        4.8747,
+        5.705,
+        5.4595,
+        5.521,
+        4.671,
+        4.8724,
+        4.7074,
+        4.4553
+      ],
+      "median_ms": 5.009,
+      "p95_ms": 5.5762,
+      "min_ms": 4.4553,
+      "max_ms": 5.705
+    },
+    "news_next": {
+      "samples_ms": [
+        1.6264,
+        1.5312,
+        1.5678,
+        1.5295,
+        1.29,
+        2.2912,
+        2.336,
+        1.4589,
+        1.8422,
+        1.7269,
+        1.7186,
+        1.7001,
+        1.9319,
+        1.9105,
+        2.4772
+      ],
+      "median_ms": 1.7186,
+      "p95_ms": 2.37836,
+      "min_ms": 1.29,
+      "max_ms": 2.4772
+    },
+    "news_search": {
+      "samples_ms": [
+        9.8974,
+        10.0086,
+        9.3277,
+        9.3384,
+        9.1476,
+        10.3694,
+        9.8009,
+        9.2972,
+        9.9574,
+        9.4272,
+        10.3142,
+        9.4496,
+        9.8795,
+        9.9309,
+        9.9763
+      ],
+      "median_ms": 9.8795,
+      "p95_ms": 10.33076,
+      "min_ms": 9.1476,
+      "max_ms": 10.3694
+    },
+    "holders_browse": {
+      "samples_ms": [
+        2.0425,
+        2.8917,
+        2.0704,
+        2.7241,
+        3.5503,
+        2.8658,
+        2.0811,
+        2.6486,
+        2.552,
+        2.867,
+        2.9977,
+        2.128,
+        2.6864,
+        2.0527,
+        2.8378
+      ],
+      "median_ms": 2.6864,
+      "p95_ms": 3.1634799999999994,
+      "min_ms": 2.0425,
+      "max_ms": 3.5503
+    },
+    "holders_detail": {
+      "samples_ms": [
+        2.4644,
+        2.3922,
+        2.9894,
+        3.7226,
+        2.3293,
+        2.2154,
+        2.1834,
+        2.1712,
+        3.349,
+        3.1313,
+        4.0342,
+        2.4106,
+        2.1906,
+        2.6912,
+        3.015
+      ],
+      "median_ms": 2.4644,
+      "p95_ms": 3.8160799999999995,
+      "min_ms": 2.1712,
+      "max_ms": 4.0342
+    },
+    "news_ui": {
+      "samples_ms": [
+        15.0906,
+        14.7566,
+        16.1468,
+        15.113,
+        15.0535,
+        15.6954,
+        15.2367,
+        16.0011,
+        15.1613,
+        14.7242,
+        14.3734,
+        14.5153,
+        14.241,
+        15.9324,
+        15.322
+      ],
+      "median_ms": 15.113,
+      "p95_ms": 16.044810000000002,
+      "min_ms": 14.241,
+      "max_ms": 16.1468
+    },
+    "holders_ui": {
+      "samples_ms": [
+        40.6641,
+        39.1707,
+        39.5056,
+        40.095,
+        38.7721,
+        41.3048,
+        38.8692,
+        39.7041,
+        38.8336,
+        40.4911,
+        40.5805,
+        38.8911,
+        39.7945,
+        40.0747,
+        39.2948
+      ],
+      "median_ms": 39.7041,
+      "p95_ms": 40.85631,
+      "min_ms": 38.7721,
+      "max_ms": 41.3048
+    },
+    "cold_declarations": {
+      "samples_ms": [
+        1047.0872,
+        1050.8512,
+        1038.1702,
+        1054.1724,
+        1080.6101,
+        1118.8947,
+        1065.2637
+      ],
+      "median_ms": 1054.1724,
+      "p95_ms": 1107.40932,
+      "min_ms": 1038.1702,
+      "max_ms": 1118.8947
+    }
+  },
+  "correctness": {
+    "assembly": "e8d091e266a899c9ce5057f05dc3b80e9c945a3111a15891a13c290a99e23cad",
+    "news_first": "4289fa9c10d1ddb70c21b4deb4a75f18e3df7409e4aa59c4771b8a06833a4404",
+    "news_next": "edce0c62f69bbd40162b9851a3bb4c872c4d7933dc8026e15c3db1b115aa78d5",
+    "news_search": "369e9dba3856d9dbab4014ea2e369b57ed252a3da3aaf46a9619b85d5e6050a7",
+    "holders_browse": "5247d22ac94ac7f17daf5669244b0386630c56300bcb972e0c8bc827eaa9bafc",
+    "holders_detail": "d516f2df3c04c7ae96a3d8b0e50bcf8d29251ce4f425c8e6254b89363b1b79d7",
+    "news_ui": "b7adefd38ca9f9ba19aaeb6c2e50875fa821a83fa40279fa431e0316572cde82",
+    "holders_ui": "5d741738b44eaaf7ebfe33f9f9404f2f69ab0e18052c05c41729d1d45b50e328",
+    "cold_declarations": "e8d091e266a899c9ce5057f05dc3b80e9c945a3111a15891a13c290a99e23cad"
+  },
+  "fixture_sha256": "0d0d3e3de8ceeb0bd0b90cbef48c2b483ec261a9ce68e087b7555980260ff692",
+  "ddl_sha256": "71dc148ff2046d9bdbab0d475aceff7b30e218a31257720c75722a57487e21f2",
+  "mysql": {
+    "version": "8.4.9",
+    "port": 13348,
+    "buffer_pool_bytes": 67108864,
+    "flush_at_commit": 2
+  },
+  "cleanup": true,
+  "limits": [
+    "冷进程不等于冷磁盘，不包含真实窗口、自动采集启动或数据库连接建立",
+    "热SQL仅固定规模、回环私有MySQL和单请求负载，不代表生产全量、并发或冷页性能",
+    "离屏QImage渲染不代表显示器、GPU合成、真实桌面响应或可访问性验收",
+    "隔离实例flush_log_at_trx_commit=2，未测试断电持久性；数据准备和建库耗时不计入查询延迟",
+    "有限重复次数的p95仅是本轮样本统计；保留全部样本，并使用预登记的绝对噪声底限"
+  ],
+  "comparison": {
+    "passed": true,
+    "incomparable": [],
+    "checks": {
+      "cold_declarations.median_ms": {
+        "baseline_ms": 1014.3281,
+        "current_ms": 1054.1724,
+        "limit_ms": 1267.9101249999999,
+        "passed": true
+      },
+      "cold_declarations.p95_ms": {
+        "baseline_ms": 1044.79302,
+        "current_ms": 1107.40932,
+        "limit_ms": 1305.991275,
+        "passed": true
+      },
+      "assembly.median_ms": {
+        "baseline_ms": 1.0358,
+        "current_ms": 1.2686,
+        "limit_ms": 3.0358,
+        "passed": true
+      },
+      "assembly.p95_ms": {
+        "baseline_ms": 1.30144,
+        "current_ms": 1.8731699999999998,
+        "limit_ms": 3.30144,
+        "passed": true
+      },
+      "news_first.median_ms": {
+        "baseline_ms": 6.184,
+        "current_ms": 5.009,
+        "limit_ms": 7.73,
+        "passed": true
+      },
+      "news_first.p95_ms": {
+        "baseline_ms": 7.86021,
+        "current_ms": 5.5762,
+        "limit_ms": 9.825262500000001,
+        "passed": true
+      },
+      "news_next.median_ms": {
+        "baseline_ms": 1.6601,
+        "current_ms": 1.7186,
+        "limit_ms": 2.6601,
+        "passed": true
+      },
+      "news_next.p95_ms": {
+        "baseline_ms": 2.723479999999999,
+        "current_ms": 2.37836,
+        "limit_ms": 3.723479999999999,
+        "passed": true
+      },
+      "news_search.median_ms": {
+        "baseline_ms": 12.0391,
+        "current_ms": 9.8795,
+        "limit_ms": 15.048874999999999,
+        "passed": true
+      },
+      "news_search.p95_ms": {
+        "baseline_ms": 14.255209999999998,
+        "current_ms": 10.33076,
+        "limit_ms": 17.8190125,
+        "passed": true
+      },
+      "holders_browse.median_ms": {
+        "baseline_ms": 3.3869,
+        "current_ms": 2.6864,
+        "limit_ms": 4.3869,
+        "passed": true
+      },
+      "holders_browse.p95_ms": {
+        "baseline_ms": 4.24259,
+        "current_ms": 3.1634799999999994,
+        "limit_ms": 5.3032375,
+        "passed": true
+      },
+      "holders_detail.median_ms": {
+        "baseline_ms": 4.4895,
+        "current_ms": 2.4644,
+        "limit_ms": 5.6118749999999995,
+        "passed": true
+      },
+      "holders_detail.p95_ms": {
+        "baseline_ms": 4.95585,
+        "current_ms": 3.8160799999999995,
+        "limit_ms": 6.194812499999999,
+        "passed": true
+      },
+      "news_ui.median_ms": {
+        "baseline_ms": 21.6904,
+        "current_ms": 15.113,
+        "limit_ms": 27.113,
+        "passed": true
+      },
+      "news_ui.p95_ms": {
+        "baseline_ms": 25.00188,
+        "current_ms": 16.044810000000002,
+        "limit_ms": 31.25235,
+        "passed": true
+      },
+      "holders_ui.median_ms": {
+        "baseline_ms": 52.2273,
+        "current_ms": 39.7041,
+        "limit_ms": 65.284125,
+        "passed": true
+      },
+      "holders_ui.p95_ms": {
+        "baseline_ms": 58.6575,
+        "current_ms": 40.85631,
+        "limit_ms": 73.321875,
+        "passed": true
+      }
+    }
+  }
+}

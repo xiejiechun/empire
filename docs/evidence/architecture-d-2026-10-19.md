@@ -1,6 +1,6 @@
 # D 股东复杂样板实施记录
 
-当前状态：首轮正式发布成功，真实桌面发现两项公共交互缺陷，修复已实现但最终性能验证失败，待重新发布和同包桌面复验。起点为 main `120ddfc70376f40e6a798a71305b5713ecb8bb27`；D及整个优化均未验收，不能进入E0。以下首轮开发通过结论只对应所列历史输入。
+当前状态：首轮正式发布成功，两项公共桌面缺陷已修复；先前性能失败保留，19:25原冻结命令完整复测18/18通过，准备重新发布和同包桌面复验。起点为main `120ddfc70376f40e6a798a71305b5713ecb8bb27`；D及整个优化仍未验收，不能进入E0。各轮结论仅对应其所列输入。
 
 ## 范围与请求前适用性登记
 
@@ -135,10 +135,20 @@ common1.xml 的明确文件集合（命令为 `python -m pytest -q --tb=short -r
 
 首轮包额外真实U1核查：停一项持有人UI时另两页及三查询/采集保持；停collector后任务和历史仍可读，从页面继续采集被正式禁用保护拒绝，未发请求；全部恢复。普通停用Redis基础插件被现有依赖保护拒绝，未级联停服务。原10项插件偏好在正常关闭后按environment.json的原hash逐字节恢复，测试后全偏好副本只保留build。源/程序config均未写入。上述生命周期、窄窗及草稿观察属于b8fd912旧包，修复后同包复验仍未完成。
 
-**当前退出结论：D最终验证失败，未验收；E0未开始。** 安全/业务/容量及首轮发布事实保留，H3严格来源FAIL保留；两UI修复未重新正式发布。不得把本检查点提交当作成功发布或整个任务完成。后续先查明T3超限、在最终输入上完整复验，再更新文档审阅、提交冻结、唯一正式门禁及新包真实桌面。远程网络和资源最终状态见状态账本。
+**17:56检查点退出结论：D最终验证失败，未验收；E0未开始。** 安全/业务/容量及首轮发布事实保留，H3严格来源FAIL保留；两UI修复当时未重新正式发布。不得把该检查点当作成功发布或整个任务完成。后续进展单列下节，不修改这些原失败报告。
 
 检查点实现及失败证据提交`7b0c69baf9ddc69e9870db177859601668c89d97`已推送main，Git push exit0，随后ls-remote精确匹配。GitHub直连多次443超时后，Git进程仅本次使用已核租约的node004代理环境，不保存配置、不输出凭据、不更改用户日常策略。
 
 检查点[正式包只读原报告](architecture-d-checkpoint-runtime-2026-10-19.json)为exit0，明确绑定首轮release `78cee05f837a4afa91c6075282bc41fb`，actual_desktop=pending字段原样保留；它核同包manifest/tree/EXE、两份config和插件偏好、异cwd doctor及正式query。当前源码新增UI修复未进入该包，不能由此报告推导修复桌面通过。[自有实例关闭原记录](architecture-d-checkpoint-resources-2026-10-19.json)在17:56:03北京时间前后核实际UUID/datadir、仅四系统库、other_client_sessions=0，正常SQL SHUTDOWN后13348端口关闭，数据目录保留。没有停止生产3307、清共享Redis或删除生产业务。
 
 随后通过computer-use重新启动同一正式EXE，fresh窗口71765144可见，工作台显示本地服务连接、45任务、当时活动0/待归档0；新闻日常任务17:56:35完成。实际截图和树保存本地`desktop-checkpoint-restored.png/json`，这是一时快照，后续日常采集会继续。最终再次核五项冻结文件及根/程序config、原插件偏好hash均保持；无遗留测试进程。下次需验证时先正常关闭该桌面，并重新核实或启动自有实例，不能凭旧PID清理。
+
+## 19:25恢复调查与正式T3复测
+
+用户补充“没有已知变化”，因此没有将电源或重负载变化写成根因。重新正常关闭桌面，fresh窗口为空；重新启动仅本任务自有13348，SQL实测UUID/datadir、64MiB buffer、flush=2与冻结协议一致，仅四系统库。生产3307与共享Redis未重启。最新正式实现HEAD为c037b49，产品修复仍为7b0c69b的相同字节，没有为性能改产品、工具、协议或基线。
+
+进一步核对冻结基线、C和当前news/top/float/bond四张1280×800离屏PNG逐字节相同，未发现渲染内容/布局负载差异。随后预先固定A–B–A诊断顺序：默认进程、仅本进程显式正常execution-speed提示、再默认进程。使用本地`diagnose_process_qos.py`，子进程退出即结束提示；未写机器电源/优先级/亲和性设置。三轮[诊断原数据](architecture-d-qos-diagnostic-2026-10-19.json)均明确diagnostic_only，绝不计验收。A仅holders_detail p95超限，B仅news_first p95超限，A2全统计通过；两默认进程也恢复低耗时，不支持“提示解决性能”的归因。当前仍未确定瞬时超限原因。
+
+诊断后单独使用未修改的正式CLI完整重测：`.venv/Scripts/python.exe scripts/architecture_benchmark.py measure --test-settings build/architecture-evolution-20261019/mysql-settings.json --protocol docs/evidence/architecture-performance-protocol-2026-10-19.json --baseline docs/evidence/architecture-performance-baseline-2026-10-19.json --output build/architecture-d-20261019/performance-resumed8.json`，**exit0、18/18通过**，incomparable为空、cleanup=true，实际结束时间2026-10-19T11:25:22Z。[逐字节正式原报告](architecture-performance-d-resumed-2026-10-19.json)保留全部samples。source摘要仍为`e196646edd4a251063e5f89ae415d63be8fe6558f31d680f110087d8f9a58c6d`，与失败第7轮完全相同；五项冻结文件摘要逐一保持。
+
+这份结论仅证明本轮原协议内全部统计通过，不证明已找到失败根因，也不抹除前七轮失败或扩展为真实桌面速度结论。未选择单项最快样本拼接报告。原104项回归、两份容量及其绑定未改变；当前D组织迁移开发适用项通过，重新发布和同包真实U项仍待完成，H3严格来源完整性FAIL不变，E0未开始。
