@@ -1,6 +1,6 @@
 # E6b-listings 上市与发行资料实施记录
 
-状态：**开发验证通过**；尚未发布或桌面验收，不进入E6b-status。前批E6a结案main及远程精确为 `9d8ace3615b0fe81fc716a8beb327cf36ae388a9`，工作区干净。安装仍为实现4550a9e、release 7d92659ce1604c3a918e4317f4f7caa6；本批前检实际核实包EXE、原config/偏好、冻结工具以及13348实际server_uuid/datadir、仅四系统库和无其他客户会话，exit0。10:13正常Alt+F4，观察到保存进度、结束归档和关闭连接；随后fresh窗口枚举无Empire。关闭前45任务、活动0、pending0、既有失败5。没有启动子代理。
+状态：**已验收（本子批组织迁移范围）**。唯一正式发布及同包真实桌面完成；结案提交推送核实后进入E6b-status。以下开工/开发检查点保留当时时态。前批E6a结案main及远程精确为 `9d8ace3615b0fe81fc716a8beb327cf36ae388a9`，工作区干净。安装仍为实现4550a9e、release 7d92659ce1604c3a918e4317f4f7caa6；本批前检实际核实包EXE、原config/偏好、冻结工具以及13348实际server_uuid/datadir、仅四系统库和无其他客户会话，exit0。10:13正常Alt+F4，观察到保存进度、结束归档和关闭连接；随后fresh窗口枚举无Empire。关闭前45任务、活动0、pending0、既有失败5。没有启动子代理。
 
 ## 范围与适用验收登记
 
@@ -49,3 +49,26 @@
 最终文档review/check、verify_documentation和verify_database_design均exit0，236文档/1608链接、55表/49数据集/12 JSON；八项unchanged逐项理由已登记。文档/规则四文件回归命令为 `py -m pytest tests/test_documentation_contracts.py tests/test_documentation_sources.py tests/test_documentation_review.py tests/test_collection_rules.py --basetemp build/pytest-e6b-listings-docs --junitxml build/architecture-e6b-listings-20261020/docs.xml -q`，exit0，41 passed/26.38秒。最终ruff、严格mypy八边界及diff --check exit0。
 
 `py build/architecture-e6b-listings-20261020/pre_release.py` exit0：最终实采source_digest与当前精确一致、容量全部绑定未变、原两config及插件偏好hash保持；只读保存全部48行app_setting payload及updated_at供同包桌面后核对。原冻结性能工具/协议/基线不变，T3比较无incomparable。开发适用出口通过，后续须实现提交、唯一正式发布、同包U1～U3及正常关开；此检查点不得称已验收。
+
+
+## 正式发布与结案验收
+
+实现提交 `fec74bcd50ffe00eaab19700d8c4c0d99b43dade`，干净输入冻结；设置 `EMPIRE_TEST_MYSQL_SETTINGS=build/architecture-evolution-20261019/mysql-settings.json`、`PYTHONUTF8=1` 后运行唯一 `./verify-release.ps1`，日志 `build/architecture-e6b-listings-20261020/release-console.log`。实际自然exit0，release `a2382f717972436d83956faefdfebda6` journal committed/passed；完整3780 passed/5 skipped/24 warnings，2320.47秒。五跳过均为显式opt-in的state_unit_isolated演练，不计通过。24步骤完整：第22步首次生成配置模板按预期exit1，其余exit0，容量、四DPI、构建、中文空格搬移与配置/包smoke、正式切换完成。
+
+警告完整保留：20条既有弃用，另外4条来自release entrypoint失败传播测试中UTF8环境解码GBK PowerShell错误输出的reader线程UnicodeDecodeError；单次调用与非零传播断言通过。未修改冻结工具、阈值或测试掩盖警告。
+
+`py build/architecture-e6b-listings-20261020/audit_release.py` exit0，[发布审阅](architecture-e6b-listings-release-audit-2026-10-20.json)逐一复核1583输入、54 retained outputs、24步骤与JUnit，无输入失配。发布输入source SHA256 `562ab71111d8a41e49a8210993aae87acb9a03caa441ed8e90efb87cc1b459f7`；EXE `94ce109f1efcda1fa7ed1a4a9e79bab0ea43a6dc2bccd81b318fb3801e2232a8`；安装树 `b931ee620c1f80de185d7a2a690ab029694ddc07e614f25049e2f96b6dd5e85a`。源输入、HEAD在完整门禁结束前未变，随后仅结案文档更新，不把结案提交冒称包构建提交。
+
+| 验收ID | 实际结果/证据 | 限制与剩余 |
+| --- | --- | --- |
+| C1～C4 | 上述身份/顺序、五旧入口退役、正文等价及完整发布；实现与调用方同批提交 | status/aliases未迁，remaining保留其归属 |
+| R1～R4 | 31真实私有SQL/恢复、489领域公共、41股全代理来源到正式查询一致，六清理true | 已知incomplete/unavailable原样保留，不称准备通过或全池实采 |
+| 容量/T3 | 当前15000行新测及冻结18/18，原预算与工具不变 | 合成容量与离屏性能不代表实际桌面或网站吞吐 |
+| M | 用户正文/归属/覆盖更新，八项不变理由及最终文档审阅；结案文档再check/相关回归 | 结案review/check、文档237篇/1615链接、数据库55表/49数据集/12 JSON均exit0；35文档专项通过 |
+| A4 | 本轮唯一正式门禁exit0、committed/passed、安装包匹配 | 五跳过及24警告如上保留；A1～3保护实现未改，额外破坏性演练不适用 |
+| U1～U3 | [实际桌面](architecture-e6b-listings-desktop-2026-10-20.md)、[关后机器核验](architecture-e6b-listings-post-release-2026-10-20.json)、[设置](architecture-e6b-listings-settings-2026-10-20.json) | 两config、48设置、原偏好保持；源码API与EXE页面独立标明，非生产全历史审计 |
+| 资源/恢复 | `py build/architecture-e6b-listings-20261020/final_resource.py` exit0，[只读快照](architecture-e6b-listings-resource-2026-10-20.json) | 私有实例仅系统库/无其他会话，保留13348供后批；不关生产服务、不清共享Redis/既有错误 |
+
+11:43重开正式窗口3280246可见工作台/连接/45任务/活动0/pending0/既有失败5。本批适用出口满足；H3空名债券、E4严格来源失败、资本历史限制和停复牌旧错误不冲销。下一项E6b-status须先独立审阅真实前像、安全来源/容量工具与适用验收，不能一次套入整E草稿。
+
+结案文档专项：`py -m pytest tests/test_documentation_contracts.py tests/test_documentation_sources.py tests/test_documentation_review.py tests/test_storage_help.py --basetemp build/pytest-e6b-listings-close-docs --junitxml build/architecture-e6b-listings-20261020/close-docs.xml -q`，exit0，35 passed/27.71秒。最终diff --check通过。结案仅更新事实文档及机器证据，不重新打包，不改变fec74bc正式包。

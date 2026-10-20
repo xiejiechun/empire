@@ -1,9 +1,18 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-20T02:30:07.087522+00:00",
-  "note": "完成E6b-listings最后审阅：上市正文、程序内说明、覆盖关联、实际容量和来源限制一致，归属迁移无DDL及身份变化；复核最终开发结果并保留准备失败和历史限制",
+  "reviewed_at": "2026-10-20T03:45:47.214114+00:00",
+  "note": "完成E6b上市子批结案审阅：核对同包真实查询、页面启停草稿窄窗和正常关开，保留来源缺口、五跳过和警告；结案仅文档不改变已发布实现",
   "unchanged_reason": "",
-  "exceptions": {},
+  "exceptions": {
+    "task:kaipanla-trend": "本批仅公开LISTING_LOOKAHEAD_DAYS导入路径改变，值仍31，来源参数、用户设置与已说明限制均保持",
+    "task:kaipanla-auction": "本批仅公开LISTING_LOOKAHEAD_DAYS导入路径改变，值仍31，来源参数、用户设置与已说明限制均保持",
+    "task:kaipanla-volume": "本批仅公开LISTING_LOOKAHEAD_DAYS导入路径改变，值仍31，来源参数、用户设置与已说明限制均保持",
+    "task:kaipanla-trades": "本批仅公开LISTING_LOOKAHEAD_DAYS导入路径改变，值仍31，来源参数、用户设置与已说明限制均保持",
+    "task:kaipanla-entrust": "本批仅公开LISTING_LOOKAHEAD_DAYS导入路径改变，值仍31，来源参数、用户设置与已说明限制均保持",
+    "task:kaipanla-large-order": "本批仅公开LISTING_LOOKAHEAD_DAYS导入路径改变，值仍31，来源参数、用户设置与已说明限制均保持",
+    "task:kaipanla-quote": "本批仅公开LISTING_LOOKAHEAD_DAYS导入路径改变，值仍31，来源参数、用户设置与已说明限制均保持",
+    "mysql:stock_listing": "仅归档和查询模块归属迁至features/listings，DDL字段索引身份及清理恢复规则均保持"
+  },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "a77505869b2673cfaa06e6fed1a1d93848f29f3c2a4802d7dd99aaaebef4f75a",
@@ -518,7 +527,7 @@
     "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "0e12406a7d7d33813170e341e3a5bb000efa5d37099928db2d4e2c552795ef0f",
+  "content_sha256": "b06db6fe4815293f1f70c7b1b33866b936291fb977ac25a04b079032b7d5e00f",
   "features": {
     "page:ths_capital": {
       "sources": {
