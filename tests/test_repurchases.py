@@ -6,7 +6,8 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.contracts.repurchases import (
+from empire.features.repurchases.collector import RepurchaseCollector
+from empire.features.repurchases.contract import (
     DATASET,
     PAGE_SIZE,
     SOURCE_FIELDS,
@@ -17,7 +18,6 @@ from empire.contracts.repurchases import (
     number,
     parse,
 )
-from empire.plugins.collectors.eastmoney_repurchase import RepurchaseCollector
 from tests.catalog_factory import builtin_catalog
 from tests.prefetch_source import prefetch_http
 from tests.test_sina_news import Diagnostics, MemoryIngest

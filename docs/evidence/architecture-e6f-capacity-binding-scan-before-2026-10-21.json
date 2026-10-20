@@ -1,0 +1,53 @@
+{
+  "active_measured": [
+    "kaipanla.trend.day",
+    "kaipanla.auction.day",
+    "kaipanla.volume.day",
+    "kaipanla.trades.day",
+    "kaipanla.entrust.day",
+    "kaipanla.large_order.day",
+    "kaipanla.quote.day",
+    "dividends.unit",
+    "names.company.market",
+    "names.security.market",
+    "listing.detail",
+    "listing_status.month",
+    "index.catalog",
+    "index.members",
+    "bse.code_mapping.complete",
+    "index.price.status",
+    "index.price.year",
+    "st.implementation.market",
+    "st.removal.market",
+    "rules.limit_rules.complete",
+    "rules.settlement_rules.complete",
+    "rules.lot_rules.complete",
+    "rules.tick_rules.complete",
+    "rules.sessions.complete",
+    "rules.stamp_duty.complete",
+    "rules.transfer_fee.complete",
+    "repurchases.page",
+    "earnings_forecast.tdx_unit",
+    "earnings_quick.tdx_unit",
+    "earnings_disclosure.tdx_unit",
+    "earnings_report.tdx_unit",
+    "holder_count.tdx_unit",
+    "holders.reports",
+    "shareholder_changes.tdx_unit",
+    "unlocks.tdx_month",
+    "unlocks.tdx_industry_month",
+    "ths.capital.security"
+  ],
+  "invalid": [
+    {
+      "dataset": "repurchases.page",
+      "evidence": "docs/evidence/repurchase-capacity-2026-10-12.json",
+      "changed": [
+        "src/empire/contracts/repurchases.py",
+        "src/empire/plugins/datasets/repurchases.py",
+        "src/empire/plugins/data/repurchases.py",
+        "scripts/measure_repurchases.py"
+      ]
+    }
+  ]
+}

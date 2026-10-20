@@ -12,8 +12,8 @@ from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.repurchases import DATASET, JOB, URL
 from empire.core.config import load_config
+from empire.features.repurchases.contract import DATASET, JOB, URL
 from tests.prefetch_source import prefetch_http
 from tests.test_repurchases import feed, source_row
 

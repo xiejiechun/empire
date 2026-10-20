@@ -8,7 +8,9 @@ from sqlalchemy import text
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.contracts.repurchases import (
+from empire.contracts.security import split_unified_code
+from empire.features.repurchases import dataset as mapping
+from empire.features.repurchases.contract import (
     COLUMNS,
     DATASET,
     DATES,
@@ -20,8 +22,6 @@ from empire.contracts.repurchases import (
     extend_digest,
     validate,
 )
-from empire.contracts.security import split_unified_code
-from empire.plugins.datasets import repurchases as mapping
 from empire.plugins.infra.collection_state import read_state
 
 LIST_COLUMNS = tuple(k for k in COLUMNS if k not in TEXTS)
@@ -34,7 +34,7 @@ def public(row):
             r[k] = r[k].isoformat()
     for k in NUMBERS:
         if k in r and r[k] is not None:
-            from empire.contracts.repurchases import number
+            from empire.features.repurchases.contract import number
             r[k] = number(r[k])
     return r
 
@@ -110,7 +110,7 @@ class RepurchaseDataPlugin:
                 canonical = []
                 for record in records:
                     row = validate({k: record[k] for k in COLUMNS})
-                    from empire.contracts.repurchases import digest
+                    from empire.features.repurchases.contract import digest
                     invalid += digest(row) != record['content_hash']
                     canonical.append(row)
                 summary = extend_digest(summary, canonical)

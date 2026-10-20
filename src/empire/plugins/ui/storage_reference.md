@@ -4265,6 +4265,8 @@ scripts/create_index_price_schema.py是显式新增入口，关闭Empire、待�
 
 计划金额元、数量股、价格元/股；计划上下限与累计实际分别展示。空值保持未知。初始公告、进展公告、统计截止、来源更新和完成日分别保存；当前修订不能还原当时已知版本。状态004实施中，006回购完成，其余保留来源代码。
 
+实现定位为features/repurchases；任务与页面身份、保存配置及每日全量核验保持。开发核验使用独立实例及UUID私有库/前缀，来源按全市场方案集合核对，不等同逐股票随机30只抽查；生产覆盖仍以当前正式查询和准备结果为准。
+
 ## 限制与排错
 
 股票回购不是国债逆回购；用途含注销及回购完成都不能证明实际注销。分页缺失、重复、字段变化或统计变化失败不推进断点。来源移除方案仍保留SQL历史并使当前完整集合证明失配，须核实原因。SQL失败保留消息，成功确认后统一清队；采集完成与历史信号数据准备分别报告。不保存每日累计快照及历次旧版本。
@@ -4280,7 +4282,7 @@ scripts/create_index_price_schema.py是显式新增入口，关闭Empire、待�
 
 ## 用途与归属
 
-repurchases.page归属eastmoney-repurchases-v1任务，固定来源eastmoney；datasets/repurchases.py正式写入、data/repurchases.py正式只读查询，页面不写SQL。
+repurchases.page归属eastmoney-repurchases-v1任务，固定来源eastmoney；features/repurchases/dataset.py正式写入、features/repurchases/query.py正式只读查询，页面不写SQL。
 
 ## 结构与身份
 

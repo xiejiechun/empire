@@ -1,0 +1,40 @@
+{
+  "base_commit": "b46326ca4e362d5002354793e94b7eeb39610576",
+  "modules": [
+    {
+      "old": "src/empire/contracts/repurchases.py",
+      "new": "src/empire/features/repurchases/contract.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "0121912be689c7757d8757684ac167dc35a2efbf11c1dee91bc4d53892f7a3a7",
+      "after_sha256": "0121912be689c7757d8757684ac167dc35a2efbf11c1dee91bc4d53892f7a3a7"
+    },
+    {
+      "old": "src/empire/plugins/collectors/eastmoney_repurchase.py",
+      "new": "src/empire/features/repurchases/collector.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "5a917695188f0dd2c3bb10c133d3a356381c78b93c6b2183f3f60305af2aea17",
+      "after_sha256": "4776c83b50c804da37ab68e37ef015c865688174187f86eea1e5b3bc4ccbdc3f"
+    },
+    {
+      "old": "src/empire/plugins/datasets/repurchases.py",
+      "new": "src/empire/features/repurchases/dataset.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "060637632d4a0ceca7143221f928b0730e650a501b63b3284f9fbabe5188fd4c",
+      "after_sha256": "e21dc9e531361363a27d9c063a875e800f7923620f2ad85c71f6037030595c50"
+    },
+    {
+      "old": "src/empire/plugins/data/repurchases.py",
+      "new": "src/empire/features/repurchases/query.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "5d68132f6bac7027ed8ff485567bec4527ccfdc711e52572315ca698dc2dd356",
+      "after_sha256": "d3ab68b978bbddaa6a9011c95c467b489c6bebcc440ba773f0235b765254cc87"
+    },
+    {
+      "old": "src/empire/plugins/ui/repurchases.py",
+      "new": "src/empire/features/repurchases/ui.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "220391cf8d221261518cd70ecffd1e1aaf016dc2fa95acce352019b479dce72f",
+      "after_sha256": "b9e2aa888ac55684fb1a67a539aa55d3574b344315bd7d1fe7dfd736a5c3a1f7"
+    }
+  ]
+}

@@ -60,7 +60,7 @@
 | `content_hash` | `CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 规范业务内容SHA256，排除观测时刻。 |
 | `version_observed_at` | `DATETIME(6) NOT NULL` | 当前存储版本观测时刻，北京时间；相同内容不刷新。 |
 
-字段字典由 contracts/repurchases.py 的 SOURCE_FIELDS 与 sql/schema.sql 同步：方案编号、证券、简称、股份类别、初始方案公告日 DIM_DATE、来源更新日 UPD、方案更新时间 UPDATEDATE、实际统计截止日 DIM_DATE3、实际公告日 NOTICEDATE、起止日、完成日、股东大会公告日、进展公告日；计划价格上下限(元/股)、数量上下限(股)、金额上下限(元)，累计实际价格上下限、股数、金额；实施代码、用途、方案说明、累计进展说明。日期为来源北京自然日，空值保持NULL，不用零代替。数量/金额/价格使用 DECIMAL(28,8)，精度增加或超界拒绝，数值以十进制字符串入消息。说明各限64KiB UTF-8，名称100字、股份类别80字；未知字段不入库，缺少声明字段失败。来源状态代码保留；006仅表示回购完成，不表示注销。
+字段字典由 features/repurchases/contract.py 的 SOURCE_FIELDS 与 sql/schema.sql 同步：方案编号、证券、简称、股份类别、初始方案公告日 DIM_DATE、来源更新日 UPD、方案更新时间 UPDATEDATE、实际统计截止日 DIM_DATE3、实际公告日 NOTICEDATE、起止日、完成日、股东大会公告日、进展公告日；计划价格上下限(元/股)、数量上下限(股)、金额上下限(元)，累计实际价格上下限、股数、金额；实施代码、用途、方案说明、累计进展说明。日期为来源北京自然日，空值保持NULL，不用零代替。数量/金额/价格使用 DECIMAL(28,8)，精度增加或超界拒绝，数值以十进制字符串入消息。说明各限64KiB UTF-8，名称100字、股份类别80字；未知字段不入库，缺少声明字段失败。来源状态代码保留；006仅表示回购完成，不表示注销。
 
 唯一内容位置为上述列；content_hash保存业务摘要，version_observed_at保存当前入库版本的北京时间观测时刻，仅有效内容或UPD改变才写。成功原始响应不落盘，错误按公共规则保留Redis有界脱敏样本。
 
@@ -81,3 +81,13 @@
 ## 相关说明
 
 [采集管理](collection-management.md)、[数据库参考](database-reference.md)、[开发指南](collector-development-guide.md)。开发验证及实际已归档范围分别记录在交付证据，不把设计支持范围当作已经采完。
+
+## 模块定位与隔离核验
+
+回购正式路径集中于 `src/empire/features/repurchases/`，按契约、采集、归档、查询和页面定位；原任务、页面与保存设置保持。详见[包入口](../src/empire/features/repurchases/README.md)。旧 contracts/repurchases 及 plugins 下回购入口已退役，无兼容转发。
+
+开发真实核验入口 `scripts/verify_repurchases.py` 只读正式连接定位与站点策略，在实际 UUID 不同的独立 MySQL、UUID 库及 Redis 前缀执行全市场方案游标全链路核对；不保存日常任务策略或写生产业务。显式提供 `--test-mysql-settings`、`--proxy-only` 与新的 build `--output`；中断资源仅凭 ownership 记录经 `--cleanup-only --run-state` 核实归属后清理。完整方案集合不是按证券请求的随机30股证明。
+
+容量入口 `scripts/measure_repurchases.py --test-settings <独立配置> --source-proof <本轮通过来源报告> --output <新build报告>` 拒绝旧源码、失败或未清理来源证据，保持原50000行和预算；合成容量不代表生产完整覆盖。
+
+2026-10-21本轮组织迁移的当前5万行真实隔离复测：原256MiB/60秒/列表与详情100ms/覆盖1000ms阈值保持。实际分配159678464字节、导入36.935秒、页4.229ms/证券2.092ms/状态4.704ms/详情1.000ms/覆盖745.896ms（原十次取最大值）；完整50000行集合内容一致、重复0业务DML、单修订1行、六项资源清理通过。[本轮容量报告](evidence/architecture-e6f-repurchase-capacity-2026-10-21.json)绑定本轮完整来源证明，旧2026-10-12报告保持历史。放大实验不是生产全市场覆盖或冷磁盘结论。

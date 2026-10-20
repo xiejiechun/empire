@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.repurchases import (
+from empire.features.repurchases.contract import (
     DATASET,
     JOB,
     PAGE,

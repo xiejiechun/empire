@@ -6,8 +6,8 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.contracts.repurchases import normalize  # noqa: E402
-from empire.plugins.ui.repurchases import RepurchasePage, RepurchaseUiPlugin  # noqa: E402
+from empire.features.repurchases.contract import normalize  # noqa: E402
+from empire.features.repurchases.ui import RepurchasePage, RepurchaseUiPlugin  # noqa: E402
 from tests.test_repurchases import source_row  # noqa: E402
 
 

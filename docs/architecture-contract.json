@@ -690,46 +690,6 @@
       ]
     },
     {
-      "owner": "repurchases",
-      "reason": "股票回购：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.repurchases"
-      ]
-    },
-    {
-      "owner": "repurchases",
-      "reason": "股票回购：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.repurchases"
-      ]
-    },
-    {
-      "owner": "repurchases",
-      "reason": "股票回购：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.repurchases"
-      ]
-    },
-    {
-      "owner": "repurchases",
-      "reason": "股票回购：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.repurchases"
-      ]
-    },
-    {
-      "owner": "repurchases",
-      "reason": "股票回购：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.eastmoney_repurchase"
-      ]
-    },
-    {
       "owner": "source_support",
       "reason": "共享采集准入、重试与会话：共享采集执行支持",
       "role": "collector_support",
@@ -1488,6 +1448,19 @@
         "bundle": "composition",
         "contract": "contract",
         "source": "source_adapter",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.repurchases",
+      "owner": "repurchases",
+      "reason": "回购方案契约、来源执行、归档、查询及页面同包，原身份与共享路径保持",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
         "collector": "collector",
         "dataset": "dataset",
         "query": "query",

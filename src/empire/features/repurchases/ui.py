@@ -14,9 +14,9 @@ from PySide6.QtWidgets import (
 )
 
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.repurchases import PROGRESS, PROJECT
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.repurchases.contract import PROGRESS, PROJECT
 from empire.plugins.ui.common import (
     accessible,
     hint,

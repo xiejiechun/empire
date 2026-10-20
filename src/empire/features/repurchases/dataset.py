@@ -5,7 +5,8 @@ from sqlalchemy import bindparam, text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.repurchases import (
+from empire.core.time import mysql_time
+from empire.features.repurchases.contract import (
     COLUMNS,
     DATASET,
     MAX_ROWS,
@@ -13,7 +14,6 @@ from empire.contracts.repurchases import (
     digest,
     validate,
 )
-from empire.core.time import mysql_time
 from empire.plugins.infra.collection_state import confirmed_page
 
 TABLE = 'stock_repurchase_plan'
