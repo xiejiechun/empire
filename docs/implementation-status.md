@@ -1,4 +1,4 @@
-2026-10-20 E6d解禁个股与行业已归属features/unlocks与features/unlock_industries，共享协议唯一归sources/tdx_unlock.py；旧入口及调用方退役，稳定身份与用户设置保持。业务/隔离/工具安全、有限全代理来源、两份原规模新容量和冻结性能通过，尚待正式发布与同包真实桌面，整个优化未完成。见[E6d记录](evidence/architecture-e6d-2026-10-20.md)。
+2026-10-20 E6d解禁个股与行业已归属features/unlocks与features/unlock_industries，共享协议唯一归sources/tdx_unlock.py；旧入口及调用方退役。880f227/release ea8f8bbd完整发布3810 passed/5 opt-in skipped，但真实桌面空查询仍显示旧股东明细，未验收；已修复页面请求/明细失效并补迟到结果回归，正常关闭后48设置和原config/偏好保持，正在重新验证、待新发布及同包复验。整个优化未完成，不进入E6e。见[E6d记录](evidence/architecture-e6d-2026-10-20.md)。
 
 # 当前实现与验证边界
 

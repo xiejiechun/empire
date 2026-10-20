@@ -1,6 +1,6 @@
 # E6d 解禁与行业解禁实施记录
 
-当前状态：**最终开发验证通过**，尚未发布、未验收，不进入E6e。前批E6c结案`81dbf0d4b283a6d8fd5ab730f3cc3d142f2b6249`已push，2026-10-20 18:16通过现有只读共享代理`ls-remote`精确匹配；本地收据`build/architecture-e6c-20261020/remote-close.json`，直连超时保留。E6c包release `689a04ad03ee4cdba386f39438e704f3`不因文档结案改变。
+当前状态：**正式发布后桌面验收失败，修复后重新验证中**，不进入E6e。`880f227607eed522ca5bf6090a140da9a60cbf36`的release `ea8f8bbdcac440cc846fb86dbc254e89`完整门禁exit0、committed/passed（3810 passed、5 opt-in skipped、20 warnings，2485.59秒）；同包只读身份/连接/查询通过，但真实桌面发现空查询仍展示旧股东明细，不能记为已验收。前批E6c结案`81dbf0d4b283a6d8fd5ab730f3cc3d142f2b6249`已push并精确核实。下文早期状态均为历史。
 
 ## 前像、范围与生命周期
 
@@ -68,3 +68,22 @@ H3固定空名债券、开盘啦严格来源、资本历史准备、生产历史
 - [最终行业容量](architecture-e6d-industries-capacity-final-2026-10-20.json)：12000行120月、原全部预算通过，导入0.5287秒、2916352字节；全部单元内容、重复DML0与修订1核验。两容量配置/源码绑定及清理通过，两设计卡改指本轮新报告，没有修改旧报告hash。
 - [最终冻结T3](architecture-e6d-performance-final-2026-10-20.json)：原命令18/18通过，correctness/cleanup通过；未改协议、工具、历史基线或阈值。
 - [首门禁失败](architecture-e6d-release-failed-2026-10-20.json)及[三文件修复等价](architecture-e6d-import-order-fix-2026-10-20.json)保留。正式构建尚未开始，同包桌面及结案push待执行。
+
+## 真实桌面反例及修复（未结案）
+
+19:46前在正式EXE窗口69733658从目录进入两解禁页面。个股筛选600889.SH、2027-12-01～31返回1条，2027-12-17/6493500股；点击共享明细显示南京新工投资集团有限责任公司/6493500股。改为000000查询后列表0条，但旧股东仍显示在下方，属于明细选择未随查询失效。来源与存储无错误，本次为页面交互缺陷，没有Redis错误ID；[真实观察](architecture-e6d-desktop-failed-observations-2026-10-20.jsonl)、[失败及旧实现回归复现](architecture-e6d-desktop-failure-2026-10-20.json)、[原完整发布审计](architecture-e6d-release-before-desktop-fix-audit-2026-10-20.json)保留。
+
+已正常Alt+F4关闭，观察保存/归档/关连接提示，fresh窗口列表无Empire。48项SQL设置payload/updated_at、两config及原插件偏好逐字节保持，见[关闭后设置审计](architecture-e6d-desktop-before-fix-settings-2026-10-20.json)。生产pending随后只读为4，保留正式重放，不清空。
+
+修复仅在UnlockPage内：重新查询/翻页时取消原records/detail只读任务、解除future与group所有权、清除旧列表链接和明细，等待当前结果；隐藏页面清除明细选择。已开始的请求即使取消不成功且随后返回，也不再持有可呈现的引用。新增真实组件回归覆盖运行中明细迟到、空结果、翻页和隐藏重进；对880f227原模块运行相同回归在清除group断言处真实exit1，修复后2项UI回归及25项两业务专项通过。程序内说明和来源手册同步操作行为。无采集、正式查询、SQL结构/内容或日常策略变化。
+
+源码输入改变后使用新目录`build/architecture-e6d-fix-20261020`生成新来源/性能报告，不改旧hash。两容量实际绑定未变，仍将重新实际测量后出新报告；完整新发布及同包真实桌面待执行。全仓正式范围Ruff（src/tests/scripts）、strict mypy 8文件、架构404模块/1455导入/0债务及精确装配通过。误执行`ruff check .`曾扫描ignored历史测试目录的无效TOML而失败，未修改/删除历史目录；正式命令本来即明确限定src/tests/scripts，无放宽。
+修复验证又发现相同条件刷新时滚动由1000归零，已在列表暂时清空前保存位置、最终同身份结果恢复；新增第三项UI回归，实测修复后1000保持，3项UI通过。之前新来源首轮572代理已自然exit0，但此后源码又变，因此保留unlocks-live.json为中间输入历史，最终使用unlocks-live-final.json重新同名单验证；不更新旧报告hash。最终文档review以两张MySQL对象的精确页面内部变更理由登记，正文已同步滚动与明细操作，check及文档/设计契约通过。
+
+最终修复source摘要为`cfd27855b5458033ac5e72bf0b6176d757d6f78dfb6384988667d7db35b553b3`。新目录`verify_after_source.py`逐条自然执行并保存原命令、起止、退出码、原日志摘要：最终个股572代理/30随机+固定/六个月/pending0、行业25代理/24月703行/pending0、两份容量均exit0且六项清理通过；个股10万/20万导入31.4687秒、277512192字节，行业12000行导入0.4920秒、2916352字节，全部原预算和全内容断言通过。33领域及隔离回归59.70秒、46文档回归均exit0。原106工具安全与345公共回归对应未改变实现，最终完整门禁仍须全部运行。
+
+冻结T3当前**失败，禁止发布**：[第一轮](architecture-e6d-performance-failed-1-2026-10-20.json)冷声明median1280.2331ms>1267.910125ms，新闻首屏p95 11.63588ms>9.8252625ms；[第二轮](architecture-e6d-performance-failed-2-2026-10-20.json)1279.72ms/13.55595ms同项超限，其余16项及correctness/cleanup通过，自然exit1。没有改阈值、重建基线或把失败报告重标通过。
+
+同机修复前精确source对照也出现冷声明median1276.7395ms超限，新闻首屏本次通过，见[对照原报告](architecture-e6d-performance-before-fix-control-2026-10-20.json)和[实际命令、旧source身份及finally恢复断言](architecture-e6d-performance-before-fix-command-2026-10-20.json)。只临时替换本轮自有的UI及正文两文件，旧字节须精确匹配发布inputs，旧source须精确匹配原已通过T3；结束后逐字节恢复修复版并核实最终source摘要不变。冻结工具、协议与阈值未动。此前独立目录对照因原协议要求实际datadir与项目根绑定而在建业务库前拒绝，exit1且无测量报告，只是失败准备，不计对照证据。
+
+同期现场读到另一个RouterProxy项目两条测试PID51512/23796自19:59:56持续占用CPU；未证明它们是唯一根因，也未结束其他任务。正在协调/等待测量空档，再用原命令生成新报告；成功前E6d仍为已实现待验证，不进入E6e。

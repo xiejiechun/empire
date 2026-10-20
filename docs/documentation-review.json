@@ -1,9 +1,12 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-20T10:53:34.418337+00:00",
-  "note": "E6d最终修复后审阅：三处仅import排序、工厂贡献顺序和业务行为不变；解禁页面筛选分页/共享明细和行业基准、生命周期、保存配置及限制保持，正文与覆盖已同步；新的最终实采/容量/T3证据及首门禁失败分别登记。",
-  "unchanged_reason": "builtin导入排序及两业务测试导入排序仅为全仓Ruff修复，import集合和非import AST相同，FACTORIES和用户行为没有改变，原两页操作与限制已逐项核对。",
-  "exceptions": {},
+  "reviewed_at": "2026-10-20T11:56:34.786973+00:00",
+  "note": "E6d最终UI修复同时保留相同查询的列表滚动位置；已验证1000位置刷新前后一致，空结果不残留明细，取消后迟到结果不呈现，程序内及来源操作说明同步。",
+  "unchanged_reason": "",
+  "exceptions": {
+    "mysql:restricted_share_unlock": "本次仅页面取消只读请求并清除旧链接和明细及保留相同筛选滚动，表字段主键索引和唯一归档查询SQL均未改变，对象字典保持准确。",
+    "mysql:restricted_share_unlock_detail": "本次仅解除页面旧请求组显示所有权，明细表结构、group_key关联、内容和读取接口均未改变，原对象字典保持准确。"
+  },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "a77505869b2673cfaa06e6fed1a1d93848f29f3c2a4802d7dd99aaaebef4f75a",
@@ -433,7 +436,7 @@
     "src/empire/features/unlocks/dataset.py": "9c1c7abbe65534931fd26544a99069e404bd820a619358daa3d6d1490cc49fdf",
     "src/empire/features/unlocks/query.py": "fd41f6b0b1b3ef34bc675573410e4899b210692933b349ed5e437b73989e588c",
     "src/empire/features/unlocks/source.py": "58e9f904f012f105a4b27549b6f57cea4c7e3e5171c955f13a74283bd1ca4365",
-    "src/empire/features/unlocks/ui.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
+    "src/empire/features/unlocks/ui.py": "ac56f36a59b221d5cc7dd6fe2840527640e72f99bfa782c0aae25222cfb6e377",
     "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
     "src/empire/plugins/collection/__init__.py": "d243b838e06bbf6e511af8a86fde0da0eaa2494f81cb08001151a1a4a721b5e2",
     "src/empire/plugins/collection/batch.py": "00d17444dc05a8c837be3b1fc385b1de54a8554b1220456b30c63479f3599c7f",
@@ -538,7 +541,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "82723d6e1835939fb054d1003b436bf45ebc63752008085c5f011b917953b681",
+  "content_sha256": "1045bf1eabbc69c3f4bc513979a9f6a7d9d21bb71835f3853f6f3c0cb7ab581c",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -758,7 +761,7 @@
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/unlocks/__init__.py": "af10885c64f70f384b237dba280e98e00bac130ee45fc1d935c20e6cd2bb0a81",
-        "src/empire/features/unlocks/ui.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
+        "src/empire/features/unlocks/ui.py": "ac56f36a59b221d5cc7dd6fe2840527640e72f99bfa782c0aae25222cfb6e377",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/common.py": "7ced0ad1f98f0839e9e99bc0ed282d37ad7b2a5770d0577903f87cc13e1b3543",
@@ -766,7 +769,7 @@
         "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "32c8fa0e14d9e210f1ad922525757088fc7761398a29320e886efd8db3f255d7"
+      "content_sha256": "262402753dd1a69b611289383f0a502e577fdc372e2116b11bcdc5e50a135843"
     },
     "page:repurchases": {
       "sources": {
@@ -1925,7 +1928,7 @@
         "src/empire/plugins/ui/preview_layout.py": "e3bb69109303f22cb5ffa462a8f89d330031c1015270f60dcd58bc0e92ef2364",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "69bcc680c3f24d010520aec6f418d5dac346a0f785d439536ebcc8fd4b7d1514"
+      "content_sha256": "2999b11845b82ca6508638380dc84cf133f0e7fe91861a6ac4ae2c60e6b77d9b"
     },
     "task:tdx-unlock-industries": {
       "sources": {
@@ -1971,7 +1974,7 @@
         "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
         "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082"
       },
-      "content_sha256": "719cfc18f443231d12299925d03f0cd89f6cbf4d3c3526643ecc7aad9658bd1b"
+      "content_sha256": "5d5f6b8be45ba4cb9f2008ab66186befd586f9d0fdd0d6e6d64636b995d66af8"
     },
     "task:ths-holders": {
       "sources": {
@@ -4167,7 +4170,7 @@
         "src/empire/features/unlocks/source.py": "58e9f904f012f105a4b27549b6f57cea4c7e3e5171c955f13a74283bd1ca4365",
         "src/empire/features/unlocks/dataset.py": "9c1c7abbe65534931fd26544a99069e404bd820a619358daa3d6d1490cc49fdf",
         "src/empire/features/unlocks/query.py": "fd41f6b0b1b3ef34bc675573410e4899b210692933b349ed5e437b73989e588c",
-        "src/empire/features/unlocks/ui.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
+        "src/empire/features/unlocks/ui.py": "ac56f36a59b221d5cc7dd6fe2840527640e72f99bfa782c0aae25222cfb6e377",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -4204,7 +4207,7 @@
         "src/empire/features/unlocks/source.py": "58e9f904f012f105a4b27549b6f57cea4c7e3e5171c955f13a74283bd1ca4365",
         "src/empire/features/unlocks/dataset.py": "9c1c7abbe65534931fd26544a99069e404bd820a619358daa3d6d1490cc49fdf",
         "src/empire/features/unlocks/query.py": "fd41f6b0b1b3ef34bc675573410e4899b210692933b349ed5e437b73989e588c",
-        "src/empire/features/unlocks/ui.py": "bd41cfa501b97cad2bf568e09d869d96d80b57f1fe5b1c053f81c68a05855c1a",
+        "src/empire/features/unlocks/ui.py": "ac56f36a59b221d5cc7dd6fe2840527640e72f99bfa782c0aae25222cfb6e377",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",

@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-10-20T11:49:04.644497+00:00",
+  "release": "ea8f8bbdcac440cc846fb86dbc254e89",
+  "commit": "880f227607eed522ca5bf6090a140da9a60cbf36",
+  "desktop_result": "failed",
+  "reproduction": "600889.SH / 2027-12: open one shared detail, query 000000, list is empty but prior holder remains",
+  "regression_command": "python build/architecture-e6d-20261020/red_detail.py",
+  "regression_returncode": 1,
+  "regression_stderr": "Traceback (most recent call last):\n  File \"D:\\project\\empire\\build\\architecture-e6d-20261020\\red_detail.py\", line 14, in <module>\n    test.test_filter_and_page_changes_detach_running_detail_and_old_links()\n  File \"D:\\project\\empire\\tests\\test_tdx_unlocks_ui.py\", line 76, in test_filter_and_page_changes_detach_running_detail_and_old_links\n    assert page.group == '' and page.detail_future is None\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "normal_shutdown_observed": true,
+  "next": "Fix stale detail ownership, revalidate, new formal release and real desktop"
+}

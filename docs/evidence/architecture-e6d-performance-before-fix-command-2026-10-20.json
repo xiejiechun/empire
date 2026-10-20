@@ -1,0 +1,26 @@
+{
+  "diagnostic_only": true,
+  "started": "2026-10-20T12:11:05.033668+00:00",
+  "frozen_tools_changed": false,
+  "control_source_sha256": "1274871fd26d4fa488605ebeaaa4f3f4393cdb50fae7b8051dc65cbe8c8bcb74",
+  "command": [
+    "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+    "scripts/architecture_benchmark.py",
+    "measure",
+    "--protocol",
+    "docs/evidence/architecture-performance-protocol-2026-10-19.json",
+    "--test-settings",
+    "build/architecture-evolution-20261019/mysql-settings.json",
+    "--baseline",
+    "docs/evidence/architecture-performance-baseline-2026-10-19.json",
+    "--output",
+    "D:\\project\\empire\\build\\architecture-e6d-fix-20261020\\performance-control-2.json"
+  ],
+  "exit_code": 1,
+  "ended": "2026-10-20T12:11:23.257288+00:00",
+  "restored_source_sha256": "44f8bd2934c69a388518f38ba5ce83747d735f14ee84ee529877e5f748fff785",
+  "restored_files": {
+    "src/empire/features/unlocks/ui.py": "ac56f36a59b221d5cc7dd6fe2840527640e72f99bfa782c0aae25222cfb6e377",
+    "src/empire/plugins/ui/storage_reference.md": "0bf6b1076ab805653600eb7a4dd235fdf31455a67890690ed42aba942678876d"
+  }
+}

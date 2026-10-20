@@ -61,6 +61,7 @@ class UnlockPage(QWidget):
     def find(self):
         self.applied = tuple(f.text().strip() for f in (self.code, self.start, self.end))
         self.after, self.next_cursor, self.history, self.dirty = None, None, [], True
+        self.clear_results()
 
     def move(self, forward):
         if forward and self.next_cursor:
@@ -69,6 +70,24 @@ class UnlockPage(QWidget):
         elif not forward and self.history:
             self.after = self.history.pop()
         self.dirty = True
+        self.clear_results()
+
+    def clear_detail(self):
+        self.scope.cancel('detail')
+        self.detail_future, self.group = None, ''
+        self.detail.present('<p>从当前列表选择一项查看共享股东明细。</p>', identity=None)
+
+    def clear_results(self):
+        self.scope.cancel('records')
+        self.future = None
+        self.clear_detail()
+        position = (self.reader.save_position() if self.reader.signature
+                    and self.reader.signature[0] == self.spec() else 0)
+        self.reader.present('<p>读取已归档数据…</p>', identity=self.spec())
+        self.reader.restore_position(position)
+        self.status.setText('读取已归档数据…')
+        self.previous.setEnabled(False)
+        self.next.setEnabled(False)
 
     def spec(self):
         return (*self.applied, self.after, 200)
@@ -122,6 +141,7 @@ class UnlockPage(QWidget):
         self.timer.stop()
         self.scope.cancel_all()
         self.future = self.detail_future = None
+        self.clear_detail()
         self.dirty = True
         super().hideEvent(event)
 
