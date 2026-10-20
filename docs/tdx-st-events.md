@@ -52,3 +52,11 @@
 ## 验收
 
 专项tests/test_st_events.py及tests/integration/test_st_archive.py覆盖来源到正式查询、同数异集、冷热摘要、修订、旧响应、缺行业补齐、SQL失败、提交后确认中断与成功清队，独立页面懒加载与草稿保留。无独立页协议，因此多页预取边界不适用；使用共享单完整单元预取，三市场入队后才等待。实际范围、网络路由及正式部署结果单列日期证据。
+
+## 开发验证与实现定位
+
+正式实现集中于[st_events业务包](../src/empire/features/st_events/README.md)，contract/source/collector/dataset/query/ui分别持有纯契约、来源、执行、归档、查询和页面，bundle按原槽位声明。公共EventTimeline、QueryScope及preparation保持原路径；项目、schema、页面和保存设置身份不变，无启动迁移。
+
+日常仍通过任务页面采集。`scripts/collect_st_events.py`改为显式私有实例完整来源验收CLI：`--test-mysql-settings <私有实例JSON> --proxy-only --output build/<新报告>.json`。不再默认写正式库；实施、撤销各一次完整来源响应，经共享代理和正式采集/入队/归档/分页查询，逐市场核对完整集合与内容、SQL证明及本轮待归档为0。历史旧代码及空市场参与核对，不按当前股票池裁剪；随机30股N/A，不能宣称满足股票门槛。来源质量与历史信号用途限制仍保留。
+
+入口核真实server_uuid、UUID资源owner及逐会话SQL守卫，先关闭生产者、独立清理私有SQL/Redis后才出最终结果。中断资源通过同CLI `--cleanup-only --run-state <原报告>.ownership.json`、原测试配置和新的`--output`恢复，先核原进程停止，不能删除未知锁或共享数据。测试凭据和owner原文不发布。容量入口`scripts/measure_st_events.py --test-settings <私有实例JSON> --output build/<新容量>.json`保留25000合成事件、原SQL/20次计时和阈值，直接dataset写入的容量不能冒充完整入队吞吐；真实链路由实采另验。

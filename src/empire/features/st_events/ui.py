@@ -13,10 +13,10 @@ from PySide6.QtWidgets import (
 )
 
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.st_events import KINDS, project
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
 from empire.features.data_browser.search import CandidateSearch
+from empire.features.st_events.contract import KINDS, project
 from empire.plugins.ui.common import (
     accessible,
     bind_find,

@@ -10,7 +10,7 @@ from sqlalchemy import inspect, text
 from empire.__main__ import acquire_instance_lock
 from empire.core.config import load_config, project_root
 from empire.core.redaction import redact
-from empire.plugins.datasets.name_changes import TABLE
+from empire.features.name_changes.dataset import TABLE
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import shape, validate_shapes

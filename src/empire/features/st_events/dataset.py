@@ -5,7 +5,8 @@ from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.st_events import (
+from empire.core.time import CHINA
+from empire.features.st_events.contract import (
     COLUMNS,
     MARKETS,
     digest,
@@ -15,7 +16,6 @@ from empire.contracts.st_events import (
     unpack_rows,
     validate_rows,
 )
-from empire.core.time import CHINA
 from empire.plugins.infra.collection_state import confirmed_page
 
 TABLE = 'security_st_event'

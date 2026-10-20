@@ -12,11 +12,11 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from empire.contracts.name_changes import KINDS, project
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
 from empire.features.data_browser.search import CandidateSearch
+from empire.features.name_changes.contract import KINDS, project
 from empire.plugins.ui.common import (
     accessible,
     bind_find,

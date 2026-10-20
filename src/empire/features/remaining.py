@@ -5,12 +5,6 @@ from empire.contracts.bundle import (
     positioned,
 )
 from empire.contracts.dataset import DatasetContribution
-from empire.contracts.name_changes import KINDS as NAME_KINDS
-from empire.contracts.name_changes import SCHEMA_VERSION as NAME_SCHEMA_VERSION
-from empire.contracts.name_changes import project as name_project
-from empire.contracts.st_events import KINDS as ST_KINDS
-from empire.contracts.st_events import SCHEMA_VERSION as ST_SCHEMA_VERSION
-from empire.contracts.st_events import project as st_project
 from empire.contracts.task import TaskContribution, TaskDefaults
 from empire.contracts.tdx_performance import UNIT_KINDS as PERFORMANCE_KINDS
 from empire.contracts.tdx_performance import project as performance_project
@@ -18,29 +12,21 @@ from empire.contracts.trading_rules import KINDS as RULE_KINDS
 from empire.contracts.trading_rules import project as rule_project
 from empire.plugins.collectors.eastmoney_repurchase import RepurchaseCollector
 from empire.plugins.collectors.rule_sources import RuleSources
-from empire.plugins.collectors.tdx_name_changes import NameChangeCollector
 from empire.plugins.collectors.tdx_performance import PerformanceCollector
-from empire.plugins.collectors.tdx_st_events import StEventCollector
 from empire.plugins.collectors.tdx_unlock_industries import UnlockIndustryCollector
 from empire.plugins.collectors.tdx_unlocks import UnlockCollector
 from empire.plugins.collectors.trading_rules import RuleCollector
-from empire.plugins.data.name_changes import NameDataPlugin
 from empire.plugins.data.repurchases import RepurchaseDataPlugin
-from empire.plugins.data.st_events import StDataPlugin
 from empire.plugins.data.tdx_performance import PerformanceDataPlugin
 from empire.plugins.data.trading_rules import RuleDataPlugin
 from empire.plugins.data.unlock_industries import UnlockIndustryDataPlugin
 from empire.plugins.data.unlocks import UnlockDataPlugin
 from empire.plugins.datasets import repurchases
-from empire.plugins.datasets.name_changes import NameDataset
-from empire.plugins.datasets.st_events import StDataset
 from empire.plugins.datasets.tdx_performance import PerformanceDataset
 from empire.plugins.datasets.trading_rules import RuleDataset
 from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset
 from empire.plugins.datasets.unlocks import UnlockDataset
-from empire.plugins.ui.name_changes import NameUiPlugin
 from empire.plugins.ui.repurchases import RepurchaseUiPlugin
-from empire.plugins.ui.st_events import StUiPlugin
 from empire.plugins.ui.tdx_performance import PerformanceUiPlugin
 from empire.plugins.ui.trading_rules import RuleUiPlugin
 from empire.plugins.ui.unlock_industries import UnlockIndustryUiPlugin
@@ -66,12 +52,6 @@ def bundle(cfg):
         *positioned((3900, 4000, 4100, 4200, 4300, 4400, 4500), (RuleDataPlugin(k, cfg["redis"].get("namespace", "empire"), cfg.get("archive", {})) for k in RULE_KINDS)),
         *positioned((4600, 4700, 4800, 4900, 5000, 5100, 5200), (RuleCollector(k) for k in RULE_KINDS)),
         *positioned((5300, 5400, 5500, 5600, 5700, 5800, 5900), (RuleUiPlugin(k) for k in RULE_KINDS)),
-        *positioned((8600, 8700), (NameDataPlugin(kind, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for kind in NAME_KINDS)),
-        *positioned((8800, 8900), (NameChangeCollector(kind) for kind in NAME_KINDS)),
-        *positioned((9000, 9100), (NameUiPlugin(kind) for kind in NAME_KINDS)),
-        *positioned((9200, 9300), (StDataPlugin(kind, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for kind in ST_KINDS)),
-        *positioned((9400, 9500), (StEventCollector(kind) for kind in ST_KINDS)),
-        *positioned((9600, 9700), (StUiPlugin(kind) for kind in ST_KINDS)),
     ), tasks=(
         OrderedContribution(100, TaskContribution('tdx-unlock-industries', '大小非解禁行业（通达信）',
                     'collector.tdx_unlock_industries', 'tdx', '完整可得月份行业汇总及估值基准日，无分页参数',
@@ -100,18 +80,6 @@ def bundle(cfg):
                     interval_seconds=259200, parallel_downloads=True, unit_name='组官方规则',
                     default_schedule=TaskDefaults('interval', interval_seconds=259200, description='每次任务结束3天后复查官方文件及规则目录，可编辑计划。'),
                     fresh_description='重新核验已审核官方文件；保留历史规则，已入队轮次先完成归档。') for k, title in RULE_KINDS.items())),
-        *positioned((2100, 2200), (TaskContribution(st_project(kind), item[0] + '（通达信）',
-                    'collector.tdx_st_' + kind, 'tdx', '全部来源历史单响应；日期、前后简称、原因及行业',
-                    category='交易状态', source_name='通达信', unit_name='次完整响应',
-                    default_schedule=TaskDefaults('daily', description='每天北京时间18:00完整核验历史，发现新增及修订；计划可编辑。'),
-                    fresh_description='重新核验来源全部历史；已入队轮次先完成归档，不裁定每日ST状态。')
-                    for kind, item in ST_KINDS.items())),
-        *positioned((2300, 2400), (TaskContribution(name_project(kind), item[0] + '（通达信）',
-                    'collector.tdx_' + kind + '_renames', 'tdx', '一次完整历史响应；缺名及链断裂独立显示',
-                    category='证券基础', source_name='通达信', unit_name='次完整响应', default_schedule=TaskDefaults('daily',
-                        description='每天北京时间18:00核验全部历史，一次请求发现新增与历史修订；可编辑计划。'),
-                    fresh_description='核验来源全部更名历史；已入队轮次先完成归档，缺失名称保持未知。')
-                    for kind, item in NAME_KINDS.items())),
     ), datasets=(
         OrderedContribution(200, DatasetContribution(UnlockIndustryDataset(), 'incremental', {UnlockIndustryDataset.JOB: UnlockIndustryDataset.PROJECT})),
         OrderedContribution(300, DatasetContribution(UnlockDataset(), 'incremental', {UnlockDataset.JOB: UnlockDataset.PROJECT})),
@@ -119,8 +87,4 @@ def bundle(cfg):
                         {PerformanceDataset(kind).JOB: PerformanceDataset(kind).PROJECT}) for kind in PERFORMANCE_KINDS)),
         OrderedContribution(1100, DatasetContribution(repurchases, 'incremental', {'eastmoney-repurchases-v1': 'eastmoney-repurchases'})),
         *positioned((1200, 1300, 1400, 1500, 1600, 1700, 1800), (DatasetContribution(RuleDataset(kind), 'incremental', {RuleDataset(kind).JOB: RuleDataset(kind).PROJECT}) for kind in RULE_KINDS)),
-        *positioned((2400, 2500), (DatasetContribution(StDataset(kind), 'incremental',
-                        {StDataset(kind).JOB: StDataset(kind).PROJECT}, schema_version=ST_SCHEMA_VERSION) for kind in ST_KINDS)),
-        *positioned((2600, 2700), (DatasetContribution(NameDataset(kind), 'incremental',
-                        {NameDataset(kind).JOB: NameDataset(kind).PROJECT}, schema_version=NAME_SCHEMA_VERSION) for kind in NAME_KINDS)),
     ))

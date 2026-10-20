@@ -1,0 +1,262 @@
+{
+  "run_id": "55413bb249bb45e78dac0863547e8dc3",
+  "mode": "verification",
+  "checked_at": "2026-10-20T08:45:03.066360+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4",
+    "D:\\project\\empire\\src\\empire\\features\\st_events\\contract.py": "75f54f4071005a3c37d0eb1d7ba2958d77df53eb6f52947ff674734e40740df9",
+    "D:\\project\\empire\\src\\empire\\features\\st_events\\dataset.py": "78dbbbed7d61a325ee7781b3df2844226ab399bef43645a8ae2f395bfccc04be",
+    "D:\\project\\empire\\src\\empire\\features\\st_events\\query.py": "d933dbf8cdad0ee6c4f747e8d78cf8e5fe43a3489eba4ba75a62ba5fb1b67048",
+    "D:\\project\\empire\\scripts\\measure_st_events.py": "085cc3d6325f4ca2dd533f1b3aad9206640ee167453e89c098a490e6bb38121d",
+    "D:\\project\\empire\\scripts\\event_capacity.py": "0ec356f00c67816cd85ad7c2c240863fff4e9e3ac7bb64171f70f14cebd0a56d",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "D:\\project\\empire\\scripts\\source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
+    "D:\\project\\empire\\sql\\business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+    "D:\\project\\empire\\src\\empire\\contracts\\business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
+  },
+  "subject": "st_events_capacity",
+  "source_sha256": "f330577ebfcd43d3cb7d28740ebd42b5d2ded5749708d4e5beb95d2f7827d17f",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "25000事件合成SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_55413bb249bb45e78dac0863547e8dc3_test",
+    "namespace": "empire:test:verify_ths:55413bb249bb45e78dac0863547e8dc3",
+    "run_id": "55413bb249bb45e78dac0863547e8dc3",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "5448419ab924ae79a2acfea7386899214a2f267d19bbc5878e6b7e7d0fd6c90b"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-data\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "bindings": {
+    "src/empire/features/st_events/contract.py": "75f54f4071005a3c37d0eb1d7ba2958d77df53eb6f52947ff674734e40740df9",
+    "src/empire/features/st_events/dataset.py": "78dbbbed7d61a325ee7781b3df2844226ab399bef43645a8ae2f395bfccc04be",
+    "src/empire/features/st_events/query.py": "d933dbf8cdad0ee6c4f747e8d78cf8e5fe43a3489eba4ba75a62ba5fb1b67048",
+    "scripts/measure_st_events.py": "085cc3d6325f4ca2dd533f1b3aad9206640ee167453e89c098a490e6bb38121d",
+    "scripts/event_capacity.py": "0ec356f00c67816cd85ad7c2c240863fff4e9e3ac7bb64171f70f14cebd0a56d",
+    "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "scripts/source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
+    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
+  },
+  "ddl_scopes": {
+    "security_st_event": "64810a74718bb12b7fe80775f057d795cc33cfd01b1440bf0ea8f62b8b271838"
+  },
+  "measurements": {
+    "page_p95_ms": 1.6915000160224736,
+    "security_p95_ms": 0.4398999735713005,
+    "coverage_p95_ms": 161.39909997582436,
+    "import_seconds": 2.435086300014518,
+    "allocated_bytes": 15368192
+  },
+  "limits": {
+    "page_p95_ms": 50,
+    "security_p95_ms": 50,
+    "coverage_p95_ms": 500,
+    "import_seconds": 10,
+    "allocated_bytes": 134217728
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 25000,
+    "synthetic": true,
+    "protocol": "unchanged 25000 fixed rows, direct dataset SQL write/repeat/revision; original SQL and 20 repetitions",
+    "cache": "first query unforced; subsequent hot repetitions",
+    "pipeline_scope": "SQL capacity only; separate source verification covers full pipeline"
+  },
+  "reviewed_tradeoffs": "紧凑结构化事件与索引；覆盖检查本类型至30000上限，页面200行。保持原25000样本/SQL/阈值。合成容量不宣称能一次入队或生产吞吐；超消息预算仍明确失败。",
+  "samples": {
+    "page": [
+      2.271600009407848,
+      1.6662999987602234,
+      1.4621000154875219,
+      1.440499967429787,
+      1.1501000262796879,
+      1.3661999837495387,
+      1.6915000160224736,
+      1.229099987540394,
+      1.4856999623589218,
+      1.5204999945126474,
+      1.0683000436984003,
+      1.147999952081591,
+      1.074700034223497,
+      1.0292999795638025,
+      1.0196000221185386,
+      1.019099960103631,
+      1.3689000043086708,
+      1.1340000201016665,
+      1.353900006506592,
+      1.3562999665737152
+    ],
+    "security": [
+      0.3062000032514334,
+      0.29660004656761885,
+      0.2541000139899552,
+      0.20940002286806703,
+      0.20050001330673695,
+      0.31990004936233163,
+      0.4398999735713005,
+      0.305499997921288,
+      0.19940000493079424,
+      0.19829999655485153,
+      0.20000000949949026,
+      0.19689998589456081,
+      0.20949996542185545,
+      0.2180000301450491,
+      0.1973999897018075,
+      0.4875999875366688,
+      0.3415000392124057,
+      0.22840005112811923,
+      0.20289997337386012,
+      0.19779999274760485
+    ],
+    "coverage": [
+      84.48140003019944,
+      86.26529999310151,
+      157.2691000183113,
+      86.70970000093803,
+      166.49249999318272,
+      83.11649999814108,
+      161.39909997582436,
+      82.2131999884732,
+      82.50049996422604,
+      154.23489996464923,
+      81.88940002582967,
+      81.0786000220105,
+      157.52499998779967,
+      83.1021000049077,
+      150.5054000299424,
+      82.66320003895089,
+      152.24429999943823,
+      83.51440000114962,
+      81.53210004093125,
+      155.41060001123697
+    ]
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_st_event",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_st_security,ix_st_date",
+        "key": "ix_st_date",
+        "key_len": "18",
+        "ref": "const",
+        "rows": 12354,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_st_event",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_st_security,ix_st_date",
+        "key": "ix_st_security",
+        "key_len": "32",
+        "ref": null,
+        "rows": 5,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_st_event",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_st_security,ix_st_date",
+        "key": "PRIMARY",
+        "key_len": "18",
+        "ref": "const",
+        "rows": 12354,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 20470
+    },
+    "security": {
+      "returned": 5,
+      "read_bytes": 485
+    },
+    "coverage": {
+      "returned": 25000,
+      "read_bytes": 2558756
+    }
+  },
+  "sql": {
+    "page": "SELECT unified_code,event_date,old_name,new_name,source_occurrences,csrc_industry,tdx_industry FROM security_st_event WHERE event_kind='implementation' ORDER BY event_date,unified_code,record_key LIMIT 200",
+    "security": "SELECT unified_code,event_date,old_name,new_name,csrc_industry,tdx_industry FROM security_st_event WHERE event_kind='implementation' AND unified_code='000001.SH' AND event_date BETWEEN '2020-01-01' AND '2026-10-11' ORDER BY event_date,record_key LIMIT 200",
+    "coverage": "SELECT unified_code,event_date,old_name,new_name,source_occurrences,csrc_industry,tdx_industry FROM security_st_event WHERE event_kind='implementation' ORDER BY record_key LIMIT 30001"
+  },
+  "python_peak_bytes": 11398580,
+  "initial": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 25000,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "repeat": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 0,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "revision": {
+    "status": "complete",
+    "row_count": 25000,
+    "written_count": 2,
+    "confirmed": [
+      "SH"
+    ]
+  },
+  "correctness": {
+    "all_rows_equal": true,
+    "row_count": 25000,
+    "content_digest": "a249117ecbeed051f9668e3faec51746691bbacd3ba759a24ed9d690d9268f3b"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

@@ -2206,7 +2206,7 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 
 通达信公司全称与股票简称更名来源记录，共表按类型区分。
 
-统一归档器调用 `datasets/name_changes.py` 写入；`data/name_changes.py` 提供正式查询。业务页面不直接写表。
+统一归档器调用 `features/name_changes/dataset.py` 写入；`features/name_changes/query.py` 提供正式查询。业务页面不直接写表，来源、完整性及恢复契约由同一业务包持有。
 
 ## 结构与身份
 
@@ -4077,7 +4077,7 @@ scripts/create_index_price_schema.py是显式新增入口，关闭Empire、待�
 
 ## 用途与归属
 
-两个独立项目tdx-st-implementation和tdx-st-removal使用同一风险警示事件表。固定来源tdx，统一归档调用datasets/st_events.py，正式查询data/st_events.py；页面不写SQL。
+两个独立项目tdx-st-implementation和tdx-st-removal使用同一风险警示事件表。固定来源tdx，统一归档调用features/st_events/dataset.py，正式查询features/st_events/query.py；页面不写SQL，两个项目的状态与完整性证明仍独立保存。
 
 ## 结构与身份
 

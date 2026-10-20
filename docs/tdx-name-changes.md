@@ -51,3 +51,11 @@
 显式行业升级维护会在待归档为0时通过公共断点CAS重置旧契约断点，包括SQL已提交但旧断点仍等待归档的情况；新版断点、无关任务及执行计划保持原值。队列非空拒绝重置，随后新版采集重新取得完整响应，不沿旧完成状态跳过行业补齐。
 
 完整来源证明存在时，指定证券没有更名事件是普通查询的合法空结果，不作为漏采；这不能证明证券的首个名称。历史名称回放仍按独立用途检查，不将无事件等同于初始名称已知。
+
+## 开发验证与实现定位
+
+正式实现集中于[name_changes业务包](../src/empire/features/name_changes/README.md)，由contract/source/collector/dataset/query/ui分别持有契约、来源、执行、归档、查询和页面；公共EventTimeline及preparation路径保持。两任务和两页面独立启停，用户保存计划与插件偏好不因目录迁移改变，无启动DDL。
+
+日常采集仍从“采集管理 → 任务”运行。`scripts/collect_name_changes.py`现为开发用私有完整来源验收入口，必须显式提供`--test-mysql-settings <私有实例JSON> --proxy-only --output build/<新报告>.json`；不再默认写正式库。逐栏目一次完整历史响应，经共享代理、正式规范化、Redis、统一归档及正式分页查询逐字段核对三市场完整集合，结束检查本轮待归档为0。非逐股票请求，不宣称满足随机30股门槛；缺名、链与历史用途检查按真实结果单列。
+
+验证核实实际server_uuid与生产不同，使用UUID资源、SQL守卫及归属清理，清理失败不能PASS。异常后先核原进程已退出，使用同CLI的`--cleanup-only --run-state <原报告>.ownership.json`、原测试配置和新的`--output`恢复；不能手工清共享队列。owner原文和测试凭据只留本地，不发布。`scripts/measure_name_changes.py --test-settings <私有实例JSON> --output build/<新容量>.json`保持25000合成事件的直接SQL容量协议，与真实来源链路分开；报告包含原始计时、环境及清理结果，不代表一次入队容量。

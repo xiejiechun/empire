@@ -1,0 +1,205 @@
+{
+  "run_id": "f023d13d24ce4efaadcf6c7ab7855c5b",
+  "mode": "verification",
+  "checked_at": "2026-10-20T08:40:55.068830+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": true,
+  "sample_30_met": false,
+  "results": {
+    "tdx-st-implementation": {
+      "pipeline_verified": true,
+      "routes": {
+        "proxy_requests": 1
+      },
+      "acceptance_complete": true,
+      "strict_proxy_verified": true,
+      "source_url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_bfzl_bfzl",
+      "source_page": "http://page2.tdx.com.cn:7615/site/tdxsj/html/tdxsj_bfzl_bfzl.html",
+      "source_count": 2590,
+      "response_bytes": 380850,
+      "response_sha256": "79ccddb13bc28c56a29ca18be25e64de23437a8e99deae1fe519cb6e48fefff9",
+      "through": "2026-10-20",
+      "source_query_equal": true,
+      "source_set_digest": "2c1ffbed9ddd743a44395c617850074622d5a14ed8a6b6801e54e24bf9a40a4a",
+      "sql_set_digest": "2c1ffbed9ddd743a44395c617850074622d5a14ed8a6b6801e54e24bf9a40a4a",
+      "sql_count": 2590,
+      "pending": 0,
+      "markets": {
+        "SH": {
+          "rows": 1216,
+          "digest": "fec1243dbf7deffc55de9bda368029ab4592c0fd7da45c0019fd6acd67c24668"
+        },
+        "SZ": {
+          "rows": 1369,
+          "digest": "30ea8d8e70aa7770f39828481d37cf6d008bb8bee0f5db2b8119c8ed3c85ebdd"
+        },
+        "BJ": {
+          "rows": 5,
+          "digest": "1ab14259d0892d685bc526fe4c778a0c45a00faad83f3afd1dc88dc3ad618416"
+        }
+      },
+      "date_min": "1998-04-28",
+      "date_max": "2026-09-30",
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "blocking": true,
+          "measured": "范围内2590条；证券、日期及原因原值已核验，缺名或原因10条保持未知"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "blocking": true,
+          "measured": "同一栏目证券日期唯一；重复A替代B拒绝发布"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "blocking": true,
+          "measured": "SH 1216条；SZ 1369条；BJ 5条；完整SQL集合与三市场来源证明比较；完整响应内无事件是合法空结果"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "blocking": true,
+          "measured": "保留实施/撤销栏目及前后简称、原因；不依据简称自动裁定状态"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "blocking": true,
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源事件日期不是公告可用时间；实施栏目含风险警示类型转换；不保证独立还原每日ST状态"
+        }
+      ],
+      "limitation": "完整来源栏目一次响应，包括历史旧代码与合法空市场；不裁定来源未公布历史、完整名称链或每日风险状态，不写生产库"
+    },
+    "tdx-st-removal": {
+      "pipeline_verified": true,
+      "routes": {
+        "proxy_requests": 1
+      },
+      "acceptance_complete": true,
+      "strict_proxy_verified": true,
+      "source_url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_bfzl_bfzl",
+      "source_page": "http://page2.tdx.com.cn:7615/site/tdxsj/html/tdxsj_bfzl_bfzl.html",
+      "source_count": 1361,
+      "response_bytes": 187862,
+      "response_sha256": "131efd42c6da86e63c091f55995984c5f0de097fd6b0aeabb4ca29f77f723670",
+      "through": "2026-10-20",
+      "source_query_equal": true,
+      "source_set_digest": "fb773653cb6cc71bb766a7bdf98a4021e14ab61178f5c13abb3ba1d62488ba0a",
+      "sql_set_digest": "fb773653cb6cc71bb766a7bdf98a4021e14ab61178f5c13abb3ba1d62488ba0a",
+      "sql_count": 1361,
+      "pending": 0,
+      "markets": {
+        "SH": {
+          "rows": 613,
+          "digest": "82aa561e6432ff604a973cd265a767c5fc163d1d8439cf4e6b3ef1571a8a84a2"
+        },
+        "SZ": {
+          "rows": 746,
+          "digest": "f4b1883c4e66d8814902c5d5807ca4183f3e706df8acb5300e247cf83037d048"
+        },
+        "BJ": {
+          "rows": 2,
+          "digest": "be8e61773e6fe2afcd0a94e05f91dd9da2733d1ce488d5be52ed6148fea606fd"
+        }
+      },
+      "date_min": "1999-04-28",
+      "date_max": "2026-10-20",
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "blocking": true,
+          "measured": "范围内1361条；证券、日期及原因原值已核验，缺名或原因1条保持未知"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "blocking": true,
+          "measured": "同一栏目证券日期唯一；重复A替代B拒绝发布"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "blocking": true,
+          "measured": "SH 613条；SZ 746条；BJ 2条；完整SQL集合与三市场来源证明比较；完整响应内无事件是合法空结果"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "blocking": true,
+          "measured": "保留实施/撤销栏目及前后简称、原因；不依据简称自动裁定状态"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "blocking": true,
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "blocking": false,
+          "measured": "来源事件日期不是公告可用时间；实施栏目含风险警示类型转换；不保证独立还原每日ST状态"
+        }
+      ],
+      "limitation": "完整来源栏目一次响应，包括历史旧代码与合法空市场；不裁定来源未公布历史、完整名称链或每日风险状态，不写生产库"
+    }
+  },
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4"
+  },
+  "subject": "st_events",
+  "selection": {
+    "selected": [],
+    "random": [],
+    "fixed": [],
+    "random_count": 0,
+    "non_stock_scope": {
+      "unit": "each_kind_complete_market_response",
+      "reason": "每栏目一次全市场完整历史响应；SH/SZ/BJ含空市场均核对完整集合，非按股票请求，不能以当前名单过滤历史",
+      "fixed": []
+    }
+  },
+  "source_sha256": "7c08274dc67e9e09551e1f088981cc78baa724830d0a30d4bec6c9d15bc0fbdd",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "verification_scope": "proxy_pipeline",
+  "routing_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false
+  },
+  "sample_30_applicable": false,
+  "policy_snapshot_digest": "3c4fdd69a54195d23380f748df719843aa1114e4614e270704261a85a01cdcdb",
+  "acceptance_complete": true,
+  "storage": {
+    "database": "empire_verify_ths_f023d13d24ce4efaadcf6c7ab7855c5b_test",
+    "namespace": "empire:test:verify_ths:f023d13d24ce4efaadcf6c7ab7855c5b",
+    "run_id": "f023d13d24ce4efaadcf6c7ab7855c5b",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "8a09db1866f69a3427eb110249ce78357f0c3b8d6db41dffec05ae15dac9e4e9"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

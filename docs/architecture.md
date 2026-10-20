@@ -293,7 +293,7 @@ stock_market_day是聚合业务头，七个数据集声明各自父子表集合�
 
 ## 通达信公司与股票更名（2026-10-05）
 
-公司全称与证券简称分别接入独立采集、查询和数据浏览插件，共用有类型的security_name_change事件表。默认每天北京时间18:00各请求一次完整历史，统一入队和归档；缺名、来源重复出现次数和链断裂保留并独立验收。生命周期、字段、查询、显式建表及用途限制见[公司与股票更名](tdx-name-changes.md)。
+公司全称与证券简称分别接入独立采集、查询和数据浏览插件，共用有类型的security_name_change事件表。[name_changes业务包](../src/empire/features/name_changes/README.md)集中contract/source/collector/dataset/query/ui，bundle保留原贡献身份与槽位，旧入口退役。默认每天北京时间18:00各请求一次完整历史，统一入队和归档；缺名、来源重复出现次数和链断裂保留并独立验收。生命周期、字段、查询、显式建表及用途限制见[公司与股票更名](tdx-name-changes.md)。
 
 ## 更名行业字段和普通查询验收（2026-10-06）
 
@@ -315,7 +315,7 @@ collector.ths_indices读取zs完整目录，逐指数使用共享有界预取下
 
 collector.ths_index_prices / data.index_prices / ui.index_prices独立贡献；index.price.status与index.price.year归属ths-index-prices。结构化index_daily_price事实与index_price_year年度证明同事务，collection_state仅状态及版本；复用共享下载/代理/预取与统一入队归档，不使用all.js双读。见[生命周期及存储设计](ths-index-prices.md)。
 
-实施ST/撤销ST按两个采集、查询和UI贡献登记，复用共享单完整单元预取、原子三市场入队及统一归档。共表security_st_event，业务身份与原因结构化，参见[来源设计](tdx-st-events.md)。
+实施ST/撤销ST按两个采集、查询和UI贡献登记，由[st_events业务包](../src/empire/features/st_events/README.md)集中来源、契约、归档、正式查询和按需页面，bundle保留原身份与顺序，旧入口退役。复用共享单完整单元预取、原子三市场入队及统一归档；EventTimeline、QueryScope与preparation继续位于原公共路径。共表security_st_event，业务身份与原因结构化，参见[来源设计](tdx-st-events.md)。
 
 ## 数据预览与只读查询（2026-10-11）
 

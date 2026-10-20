@@ -9,7 +9,8 @@ import httpx
 import pytest
 
 from empire.bootstrap import build_manager
-from empire.contracts.name_changes import (
+from empire.features.name_changes.collector import NameChangeCollector
+from empire.features.name_changes.contract import (
     MARKETS,
     SCHEMA_VERSION,
     identity,
@@ -17,9 +18,8 @@ from empire.contracts.name_changes import (
     unpack_rows,
     validate_rows,
 )
-from empire.plugins.collectors.tdx_name_changes import NameChangeCollector
-from empire.plugins.collectors.tdx_name_source import COLUMN_SETS, parse
-from empire.plugins.datasets.name_changes import NameDataset
+from empire.features.name_changes.dataset import NameDataset
+from empire.features.name_changes.source import COLUMN_SETS, parse
 from tests.prefetch_source import prefetch_http
 
 
@@ -150,7 +150,7 @@ def test_ui_lazy_independence_draft_and_missing_name_display(monkeypatch):
 
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.name_changes import NamePage, NameUiPlugin
+    from empire.features.name_changes.ui import NamePage, NameUiPlugin
     app = QApplication.instance() or QApplication([])
     queries = []
     future = concurrent.futures.Future()

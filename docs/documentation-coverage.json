@@ -549,8 +549,8 @@
       "security_name_change": {
         "topic": "MySQL security_name_change",
         "sources": [
-          "src/empire/plugins/datasets/name_changes.py",
-          "src/empire/plugins/data/name_changes.py"
+          "src/empire/features/name_changes/dataset.py",
+          "src/empire/features/name_changes/query.py"
         ]
       },
       "income_statement": {
@@ -709,9 +709,9 @@
       "security_st_event": {
         "topic": "MySQL security_st_event",
         "sources": [
-          "src/empire/contracts/st_events.py",
-          "src/empire/plugins/datasets/st_events.py",
-          "src/empire/plugins/data/st_events.py"
+          "src/empire/features/st_events/contract.py",
+          "src/empire/features/st_events/dataset.py",
+          "src/empire/features/st_events/query.py"
         ]
       },
       "trading_rule_value": {

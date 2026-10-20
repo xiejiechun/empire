@@ -12,8 +12,8 @@ import pytest
 from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
-from empire.contracts.name_changes import SCHEMA_VERSION, pack_rows
 from empire.core.config import load_config
+from empire.features.name_changes.contract import SCHEMA_VERSION, pack_rows
 from tests.prefetch_source import prefetch_http
 from tests.test_name_changes import source
 
@@ -120,7 +120,7 @@ async def test_hot_cold_duplicate_revision_stale_and_same_count_wrong_sql(names,
         old_count = len(writes)
         # Explicit old message proves SQL rejection, not just a Redis fingerprint check.
         from empire.contracts.data import make_envelope
-        from empire.plugins.collectors.tdx_name_source import parse
+        from empire.features.name_changes.source import parse
         groups, _ = parse(c.kind, source(c.kind), '2026-10-05')
         batch = uuid4().hex
         e = make_envelope(source='tdx', dataset='names.' + c.kind + '.market', business_key='SZ',

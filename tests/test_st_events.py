@@ -9,7 +9,8 @@ import httpx
 import pytest
 
 from empire.bootstrap import build_manager
-from empire.contracts.st_events import (
+from empire.features.st_events.collector import StEventCollector
+from empire.features.st_events.contract import (
     MARKETS,
     SCHEMA_VERSION,
     identity,
@@ -17,9 +18,8 @@ from empire.contracts.st_events import (
     unpack_rows,
     validate_rows,
 )
-from empire.plugins.collectors.tdx_st_events import StEventCollector
-from empire.plugins.collectors.tdx_st_source import COLUMN_SETS, parse
-from empire.plugins.datasets.st_events import StDataset
+from empire.features.st_events.dataset import StDataset
+from empire.features.st_events.source import COLUMN_SETS, parse
 from tests.prefetch_source import prefetch_http
 
 
@@ -138,7 +138,7 @@ def test_ui_lazy_independence_draft_and_missing_name_display(monkeypatch):
 
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.st_events import StPage, StUiPlugin
+    from empire.features.st_events.ui import StPage, StUiPlugin
     app = QApplication.instance() or QApplication([])
     queries = []
     future = concurrent.futures.Future()

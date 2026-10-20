@@ -8,7 +8,7 @@ from sqlalchemy import text
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.contracts.st_events import (
+from empire.features.st_events.contract import (
     CAPACITY,
     COLUMNS,
     KINDS,
@@ -17,7 +17,7 @@ from empire.contracts.st_events import (
     project,
     validate_rows,
 )
-from empire.plugins.datasets.st_events import (
+from empire.features.st_events.dataset import (
     CONTRACT,
     KEYS,
     TABLE,

@@ -182,15 +182,6 @@
     },
     {
       "legacy_collector_location": true,
-      "owner": "name_changes",
-      "reason": "公司及证券更名：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.tdx_name_source"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
       "owner": "performance",
       "reason": "业绩、股东人数及增减持：来源解析或纯范围规划，无请求执行",
       "role": "parser",
@@ -205,15 +196,6 @@
       "role": "parser",
       "modules": [
         "empire.plugins.collectors.ths_session"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
-      "owner": "st_events",
-      "reason": "风险警示事件：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.tdx_st_source"
       ]
     },
     {
@@ -671,46 +653,6 @@
       ]
     },
     {
-      "owner": "name_changes",
-      "reason": "公司及证券更名：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.name_changes"
-      ]
-    },
-    {
-      "owner": "name_changes",
-      "reason": "公司及证券更名：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.name_changes"
-      ]
-    },
-    {
-      "owner": "name_changes",
-      "reason": "公司及证券更名：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.name_changes"
-      ]
-    },
-    {
-      "owner": "name_changes",
-      "reason": "公司及证券更名：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.name_changes"
-      ]
-    },
-    {
-      "owner": "name_changes",
-      "reason": "公司及证券更名：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.tdx_name_changes"
-      ]
-    },
-    {
       "owner": "news",
       "reason": "财经新闻：业务页面和展示状态",
       "role": "ui",
@@ -860,46 +802,6 @@
       "role": "collector_support",
       "modules": [
         "empire.plugins.collectors.support"
-      ]
-    },
-    {
-      "owner": "st_events",
-      "reason": "风险警示事件：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.st_events"
-      ]
-    },
-    {
-      "owner": "st_events",
-      "reason": "风险警示事件：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.st_events"
-      ]
-    },
-    {
-      "owner": "st_events",
-      "reason": "风险警示事件：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.st_events"
-      ]
-    },
-    {
-      "owner": "st_events",
-      "reason": "风险警示事件：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.st_events"
-      ]
-    },
-    {
-      "owner": "st_events",
-      "reason": "风险警示事件：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.tdx_st_events"
       ]
     },
     {
@@ -1659,6 +1561,34 @@
         "contract": "contract",
         "source": "source_adapter",
         "dataset": "dataset"
+      }
+    },
+    {
+      "prefix": "empire.features.name_changes",
+      "owner": "name_changes",
+      "reason": "完整来源市场事件单一业务归属，公共路径与稳定身份保持",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "source_adapter",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.st_events",
+      "owner": "st_events",
+      "reason": "完整来源市场事件单一业务归属，公共路径与稳定身份保持",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "source_adapter",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
       }
     }
   ],

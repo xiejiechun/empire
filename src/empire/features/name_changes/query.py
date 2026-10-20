@@ -6,7 +6,10 @@ from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import text
 
-from empire.contracts.name_changes import (
+from empire.contracts.plugin import PluginManifest
+from empire.contracts.preparation import CheckEvidence, PreparationContribution
+from empire.contracts.preparation_scope import PreparationScope
+from empire.features.name_changes.contract import (
     CAPACITY,
     COLUMNS,
     KINDS,
@@ -16,10 +19,7 @@ from empire.contracts.name_changes import (
     project,
     validate_rows,
 )
-from empire.contracts.plugin import PluginManifest
-from empire.contracts.preparation import CheckEvidence, PreparationContribution
-from empire.contracts.preparation_scope import PreparationScope
-from empire.plugins.datasets.name_changes import (
+from empire.features.name_changes.dataset import (
     CONTRACT,
     KEYS,
     TABLE,

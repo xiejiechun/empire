@@ -8,10 +8,10 @@ from pathlib import Path
 from sqlalchemy import inspect, text
 
 from empire.__main__ import acquire_instance_lock
-from empire.contracts.name_changes import SCHEMA_VERSION, project
 from empire.core.config import load_config
 from empire.core.redaction import redact
-from empire.plugins.datasets.name_changes import TABLE
+from empire.features.name_changes.contract import SCHEMA_VERSION, project
+from empire.features.name_changes.dataset import TABLE
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import validate_shapes
