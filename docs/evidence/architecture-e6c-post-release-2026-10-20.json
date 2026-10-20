@@ -1,0 +1,286 @@
+{
+  "checked_at": "2026-10-20T09:35:09.535984+00:00",
+  "release_id": "689a04ad03ee4cdba386f39438e704f3",
+  "passed_read_only": true,
+  "actual_desktop": "pending_separate_real_observations",
+  "formal_query_execution": "Frozen current source APIs using installed configuration; packaged doctor and actual GUI verified separately",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "0e59ccc2f06fa14952f5ac2eee0a00f548de7ff3",
+    "dirty": false,
+    "source_sha256": "b75684ebc8af8623cbdd7a656b5c5f5bb919e9b18d9559bfe77435e664f69c70",
+    "release_id": "689a04ad03ee4cdba386f39438e704f3",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "cbe4120b76439fa803fd8095450ce30f382055cf78f935338f9885a4a0107706",
+    "built_at_utc": "2026-10-20T09:32:31.453907+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3",
+    "packaged": true
+  },
+  "exe_sha256": "108d5397b9d9a48b4595d00d24a22b0e21a24e71f1a619e01fe5add668c7f202",
+  "installed_tree_sha256": "8f1eb1da5e7464851ba4a2ea2c06bce994e55fe242af9ed269a5f61c52b993e5",
+  "configuration_and_preferences_preserved": {
+    "D:\\project\\empire\\config.toml": true,
+    "D:\\project\\empire\\dist\\Empire\\config.toml": true,
+    "C:\\Users\\52948\\AppData\\Local\\Empire\\plugin-state.json": true
+  },
+  "packaged_doctor": {
+    "cwd": "C:/Windows",
+    "exit_code": 0,
+    "redis_connected": true,
+    "mysql_connected": true
+  },
+  "formal_events": {
+    "tdx-company-renames": {
+      "rows": 3549,
+      "pages": 18,
+      "full_api_sql_equal": true,
+      "content_digest": "0c809662181ed92087d2c3433f7382833a23e1e241f07122820cde318b0930bc",
+      "same_as_latest_private_source": false,
+      "representative": {
+        "code": "600990.SH",
+        "date": "2021-03-09",
+        "rows": 1,
+        "exact_equal": true
+      },
+      "date_empty_verified": true,
+      "descending_verified": true,
+      "market_proofs": 3,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "范围内3549条；证券/日期/行业字段及来源原值已核验；缺原名/新名70条；空值保持未知",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "事件完整身份含名称组合；公司完全重复保留出现次数，股票同证券同日唯一",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "SH 1542条；SZ 1988条；BJ 19条；SQL规范集合与三市场来源证明一致",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "来源内容一致；名称链不衔接22处；600687.SH 2013-11-08、000503.SZ 2018-05-23、000737.SZ 2022-09-09、000803.SZ 2020-08-11、600767.SH 2015-06-03；不填补来源缺口",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内；最新事件日期不作为更新时效",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "普通查询保留来源事件；缺名70条、断链22处不阻断查阅。行业仅为接口返回标签，没有历史归属日期；更名日期不是公告可用日；公司早期旧新名称方向未确认，不保证完整历史全称回放",
+          "blocking": false,
+          "findings": []
+        }
+      ],
+      "limitation": "Read-only existing production snapshot; API source is identical to released input. Not a production recollection or historical preparation acceptance."
+    },
+    "tdx-security-renames": {
+      "rows": 8364,
+      "pages": 42,
+      "full_api_sql_equal": true,
+      "content_digest": "ed19abae6f73dc1b9ef5985cc85e8551d2eb38b888c222adf6dce2f5edd5e111",
+      "same_as_latest_private_source": false,
+      "representative": {
+        "code": "600874.SH",
+        "date": "1999-05-17",
+        "rows": 1,
+        "exact_equal": true
+      },
+      "date_empty_verified": true,
+      "descending_verified": true,
+      "market_proofs": 3,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "范围内8364条；证券/日期/行业字段及来源原值已核验；缺原名/新名124条；空值保持未知",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "事件完整身份含名称组合；公司完全重复保留出现次数，股票同证券同日唯一",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "SH 4141条；SZ 4124条；BJ 99条；SQL规范集合与三市场来源证明一致",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "来源内容一致；名称链不衔接17处；600750.SH 2026-01-30、600277.SH 2015-12-23、000691.SZ 2009-02-26、000416.SZ 2014-04-14、000629.SZ 2016-05-03；不填补来源缺口",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内；最新事件日期不作为更新时效",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "普通查询保留来源事件；缺名124条、断链17处不阻断查阅。行业仅为接口返回标签，没有历史归属日期；更名日期不是公告可用日；缺名或断链区间不保证完整名称回放",
+          "blocking": false,
+          "findings": []
+        }
+      ],
+      "limitation": "Read-only existing production snapshot; API source is identical to released input. Not a production recollection or historical preparation acceptance."
+    },
+    "tdx-st-implementation": {
+      "rows": 2590,
+      "pages": 13,
+      "full_api_sql_equal": true,
+      "content_digest": "2c1ffbed9ddd743a44395c617850074622d5a14ed8a6b6801e54e24bf9a40a4a",
+      "same_as_latest_private_source": true,
+      "representative": {
+        "code": "600225.SH",
+        "date": "2009-11-26",
+        "rows": 1,
+        "exact_equal": true
+      },
+      "date_empty_verified": true,
+      "descending_verified": true,
+      "market_proofs": 3,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "范围内2590条；证券、日期及原因原值已核验，缺名或原因10条保持未知",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "同一栏目证券日期唯一；重复A替代B拒绝发布",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "SH 1216条；SZ 1369条；BJ 5条；完整SQL集合与三市场来源证明比较；完整响应内无事件是合法空结果",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "保留实施/撤销栏目及前后简称、原因；不依据简称自动裁定状态",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源事件日期不是公告可用时间；实施栏目含风险警示类型转换；不保证独立还原每日ST状态",
+          "blocking": false,
+          "findings": []
+        }
+      ],
+      "limitation": "Read-only existing production snapshot; API source is identical to released input. Not a production recollection or historical preparation acceptance."
+    },
+    "tdx-st-removal": {
+      "rows": 1359,
+      "pages": 7,
+      "full_api_sql_equal": true,
+      "content_digest": "b711881baf75a1862be017cd6a52ab323a2ba7084c90c82dd7fff2c9908f87cf",
+      "same_as_latest_private_source": false,
+      "representative": {
+        "code": "688555.SH",
+        "date": "2023-06-08",
+        "rows": 1,
+        "exact_equal": true
+      },
+      "date_empty_verified": true,
+      "descending_verified": true,
+      "market_proofs": 3,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "范围内1359条；证券、日期及原因原值已核验，缺名或原因1条保持未知",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "同一栏目证券日期唯一；重复A替代B拒绝发布",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "SH 611条；SZ 746条；BJ 2条；完整SQL集合与三市场来源证明比较；完整响应内无事件是合法空结果",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "保留实施/撤销栏目及前后简称、原因；不依据简称自动裁定状态",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "measured": "SQL及匹配缓存的完整核验时间须在3天内",
+          "blocking": true,
+          "findings": []
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源事件日期不是公告可用时间；实施栏目含风险警示类型转换；不保证独立还原每日ST状态",
+          "blocking": false,
+          "findings": []
+        }
+      ],
+      "limitation": "Read-only existing production snapshot; API source is identical to released input. Not a production recollection or historical preparation acceptance."
+    }
+  },
+  "all_saved_settings_equal": {
+    "rows": 48,
+    "digest": "9e59d702765610a9f91bfdfcc19bcfc104590d239bd87be6dfa99a95c511c1ac"
+  },
+  "query_services_shutdown": true,
+  "global_pending": 0
+}
