@@ -1,0 +1,157 @@
+{
+  "run_id": "211b03724ce94959be49061cc9b7ef78",
+  "mode": "verification",
+  "checked_at": "2026-10-20T14:23:07.218320+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4",
+    "D:\\project\\empire\\docs\\evidence\\unlock-industries-source-2026-10-14.json": "80c9cb378ea49dcd224ec336d137e307f25e11c1f4c380fae4fcb060fa83c022",
+    "D:\\project\\empire\\src\\empire\\sources\\tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
+    "D:\\project\\empire\\scripts\\unlock_capacity.py": "4b5cf7cbf35c98e4d51a684a25118b10b8ede1ce040c9d56d9b2d05a25f3f9b7",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "D:\\project\\empire\\scripts\\source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
+    "D:\\project\\empire\\src\\empire\\features\\unlock_industries\\contract.py": "579a394e61918abc29ae428d9f5b5ea78480214f8519877a296432f4ab27badf",
+    "D:\\project\\empire\\src\\empire\\features\\unlock_industries\\source.py": "293e178d4c0c6afa691227359fe0360a4f9072dc2b53958e60711da6895a0b71",
+    "D:\\project\\empire\\src\\empire\\features\\unlock_industries\\collector.py": "234784504937694181ab63eaf4d574ff7d5254c77d9e48017a6be74c4b9b5b73",
+    "D:\\project\\empire\\src\\empire\\features\\unlock_industries\\dataset.py": "85fd3747f7755d36c4104711f7b65786328152e4b95537a27b8325e7d0b250cf",
+    "D:\\project\\empire\\src\\empire\\features\\unlock_industries\\query.py": "47caff1e84ecb63f631062d20f175f0b40ddd625941862122ebdebf807702ee4",
+    "D:\\project\\empire\\scripts\\measure_unlock_industries.py": "6abfdc7e52e48f492576c7b9223136a43843276e2b218a0d47c5bbfd7d2ce3fa"
+  },
+  "reviewed_sample": {
+    "path": "docs\\evidence\\unlock-industries-source-2026-10-14.json",
+    "sha256": "80c9cb378ea49dcd224ec336d137e307f25e11c1f4c380fae4fcb060fa83c022",
+    "scope": "unchanged original industry seed"
+  },
+  "subject": "industries_capacity",
+  "source_sha256": "f69968a811ac4a98aa0f4375fc00f44286a5056bd737164c8536632a657bf3a8",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原100000汇总/200000明细或12000行业行SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_211b03724ce94959be49061cc9b7ef78_test",
+    "namespace": "empire:test:verify_ths:211b03724ce94959be49061cc9b7ef78",
+    "run_id": "211b03724ce94959be49061cc9b7ef78",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "8edb3b8fb4e5487d85fc6acdafed6432a4a4bc3f8e348743b68b987edde94dc5"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-data\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 12000,
+    "months": 120,
+    "cache": "six reads including first; maximum reported",
+    "isolation": "owned UUID database independent service"
+  },
+  "reviewed_tradeoffs": "Typed monthly current rows; old directory months retained; no daily snapshot history; bounded month transactions.",
+  "measurements": {
+    "page_ms": 6.437300005927682,
+    "industry_ms": 4.546199983451515,
+    "month_ms": 3.9213999989442527,
+    "allocated_bytes": 2916352,
+    "import_seconds": 0.5203561000525951,
+    "repeat_seconds": 0.0038988000014796853,
+    "revision_seconds": 0.007043100020382553,
+    "message_bytes": 25163
+  },
+  "limits": {
+    "page_ms": 100,
+    "industry_ms": 100,
+    "month_ms": 100,
+    "allocated_bytes": 67108864,
+    "import_seconds": 60,
+    "repeat_seconds": 5,
+    "revision_seconds": 5,
+    "message_bytes": 524288
+  },
+  "explains": [
+    {
+      "id": 1,
+      "select_type": "SIMPLE",
+      "table": "restricted_share_unlock_industry",
+      "partitions": null,
+      "type": "ref",
+      "possible_keys": "ix_industry_month",
+      "key": "ix_industry_month",
+      "key_len": "802",
+      "ref": "const",
+      "rows": 120,
+      "filtered": 100.0,
+      "Extra": "Backward index scan"
+    }
+  ],
+  "ddl_scopes": {
+    "restricted_share_unlock_industry": "2127a920ec9010371806f29f41080e0c3cf9afc5f90cbae9f0a24902cacd82ae"
+  },
+  "bindings": {
+    "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
+    "scripts/unlock_capacity.py": "4b5cf7cbf35c98e4d51a684a25118b10b8ede1ce040c9d56d9b2d05a25f3f9b7",
+    "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "scripts/source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
+    "src/empire/features/unlock_industries/contract.py": "579a394e61918abc29ae428d9f5b5ea78480214f8519877a296432f4ab27badf",
+    "src/empire/features/unlock_industries/source.py": "293e178d4c0c6afa691227359fe0360a4f9072dc2b53958e60711da6895a0b71",
+    "src/empire/features/unlock_industries/collector.py": "234784504937694181ab63eaf4d574ff7d5254c77d9e48017a6be74c4b9b5b73",
+    "src/empire/features/unlock_industries/dataset.py": "85fd3747f7755d36c4104711f7b65786328152e4b95537a27b8325e7d0b250cf",
+    "src/empire/features/unlock_industries/query.py": "47caff1e84ecb63f631062d20f175f0b40ddd625941862122ebdebf807702ee4",
+    "scripts/measure_unlock_industries.py": "6abfdc7e52e48f492576c7b9223136a43843276e2b218a0d47c5bbfd7d2ce3fa"
+  },
+  "samples": {
+    "page_ms": [
+      5.579599994234741,
+      4.4303000322543085,
+      4.691000038292259,
+      5.4570999927818775,
+      6.437300005927682,
+      4.584799986332655
+    ],
+    "industry_ms": [
+      4.399100027512759,
+      4.546199983451515,
+      3.367299970705062,
+      3.6299999919719994,
+      3.781000035814941,
+      3.6730000283569098
+    ],
+    "month_ms": [
+      3.5516999778337777,
+      2.6254000258632004,
+      3.9213999989442527,
+      2.5267000310122967,
+      2.7336000348441303,
+      2.6217999984510243
+    ]
+  },
+  "correctness": {
+    "all_units_equal": true,
+    "units": 120,
+    "row_count": 12000,
+    "repeat_business_dml": 0,
+    "revision_written": 1
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

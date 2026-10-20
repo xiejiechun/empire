@@ -1,0 +1,223 @@
+{
+  "checked_at": "2026-10-20T14:27:21.953535+00:00",
+  "source_sha256": "f69968a811ac4a98aa0f4375fc00f44286a5056bd737164c8536632a657bf3a8",
+  "exports": [
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\unlocks-live-final.json",
+      "export": "docs\\evidence\\architecture-e6d-unlocks-source-guard-fix-2026-10-20.json",
+      "sha256": "88c94e6f332e20ccee31221a917523b04b428a9b7784d826429b19f272dfe5c3"
+    },
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\industries-live-final.json",
+      "export": "docs\\evidence\\architecture-e6d-industries-source-guard-fix-2026-10-20.json",
+      "sha256": "28cb305c8a53c4f7e9ba45ab025f36de3585c54e46101cb30ab4ec93c3f90f9e"
+    },
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\unlocks-capacity-remeasure.json",
+      "export": "docs\\evidence\\architecture-e6d-unlocks-capacity-guard-fix-2026-10-20.json",
+      "sha256": "3f5e490d32b6b98d5011c0761987ddddef92786c93e19ddeb2dc8b397afb8036"
+    },
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\industries-capacity-final.json",
+      "export": "docs\\evidence\\architecture-e6d-industries-capacity-guard-fix-2026-10-20.json",
+      "sha256": "41205440ce30c1293e9859f72c5b5272ad8e0255f1882e02d5ee10ae7248bb5f"
+    },
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\performance-final.json",
+      "export": "docs\\evidence\\architecture-e6d-performance-guard-fix-2026-10-20.json",
+      "sha256": "238f3e8ebc24c60d211bfbaaf6a5cc512db831cb9403191b211a24e043d2affc"
+    }
+  ],
+  "commands": [
+    {
+      "stage": "unlocks-source",
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/verify_unlocks.py",
+        "--test-mysql-settings",
+        "build/architecture-evolution-20261019/mysql-settings.json",
+        "--seed",
+        "20261020",
+        "--random-count",
+        "30",
+        "--proxy-only",
+        "--timeout",
+        "1800",
+        "--output",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-live-final.json"
+      ],
+      "started_at": "2026-10-20T14:08:37.325954+00:00",
+      "ended_at": "2026-10-20T14:14:06.770364+00:00",
+      "exit_code": 0,
+      "log": "build\\architecture-e6d-guard-20261020\\unlocks-source.log",
+      "log_sha256": "89022d6309df7a41351be4c3d194230672c5dc3a5b873911ec99163a1d20674a"
+    },
+    {
+      "stage": "industries-source",
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/verify_unlock_industries.py",
+        "--test-mysql-settings",
+        "build/architecture-evolution-20261019/mysql-settings.json",
+        "--proxy-only",
+        "--timeout",
+        "900",
+        "--output",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\industries-live-final.json"
+      ],
+      "started_at": "2026-10-20T14:14:06.801230+00:00",
+      "ended_at": "2026-10-20T14:14:25.149443+00:00",
+      "exit_code": 0,
+      "log": "build\\architecture-e6d-guard-20261020\\industries-source.log",
+      "log_sha256": "1ab5dff596791eeef48f3f1b9cf45162c1d0e7565f2ae91937549adbd7a5574e"
+    },
+    {
+      "stage": "unlocks-capacity",
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/measure_unlocks.py",
+        "--test-settings",
+        "build/architecture-evolution-20261019/mysql-settings.json",
+        "--sample",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-live-final.json",
+        "--output",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-capacity-remeasure.json"
+      ],
+      "started_at": "2026-10-20T14:21:49.293716+00:00",
+      "ended_at": "2026-10-20T14:23:02.423684+00:00",
+      "exit_code": 0,
+      "log": "build\\architecture-e6d-guard-20261020\\unlocks-capacity-remaining.log",
+      "log_sha256": "d938fa189912f8776c3deb31a6bec42f403f57b9c8e3ed936bdb076caf6bd61c"
+    },
+    {
+      "stage": "industries-capacity",
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/measure_unlock_industries.py",
+        "--test-settings",
+        "build/architecture-evolution-20261019/mysql-settings.json",
+        "--output",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\industries-capacity-final.json"
+      ],
+      "started_at": "2026-10-20T14:23:02.432704+00:00",
+      "ended_at": "2026-10-20T14:23:08.265242+00:00",
+      "exit_code": 0,
+      "log": "build\\architecture-e6d-guard-20261020\\industries-capacity-remaining.log",
+      "log_sha256": "d938fa189912f8776c3deb31a6bec42f403f57b9c8e3ed936bdb076caf6bd61c"
+    },
+    {
+      "stage": "domain",
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_tdx_unlocks.py",
+        "tests/test_tdx_unlock_industries.py",
+        "tests/test_tdx_unlocks_ui.py",
+        "tests/test_tdx_unlock_industries_ui.py",
+        "tests/integration/test_tdx_unlocks_archive.py",
+        "tests/integration/test_tdx_unlock_industries_archive.py",
+        "--basetemp",
+        "build/pytest-e6d-guard-final-domain",
+        "-q",
+        "--junitxml",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\domain-final.xml"
+      ],
+      "started_at": "2026-10-20T14:23:08.267518+00:00",
+      "ended_at": "2026-10-20T14:24:10.854611+00:00",
+      "exit_code": 0,
+      "log": "build\\architecture-e6d-guard-20261020\\domain-remaining.log",
+      "log_sha256": "204202ae87b87d5fcffe4146cb7df25d8b1d012ba34aa3a57f197eb1c8bf3ef5"
+    },
+    {
+      "stage": "documentation",
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_collection_rules.py",
+        "tests/test_documentation_contracts.py",
+        "tests/test_documentation_review.py",
+        "tests/test_documentation_sources.py",
+        "tests/test_storage_help.py",
+        "--basetemp",
+        "build/pytest-e6d-guard-reviewed-docs",
+        "-q",
+        "--junitxml",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\docs-reviewed-final.xml"
+      ],
+      "started_at": "2026-10-20T14:25:43.871667+00:00",
+      "ended_at": "2026-10-20T14:26:14.813592+00:00",
+      "exit_code": 0,
+      "log": "build\\architecture-e6d-guard-20261020\\documentation-post-review.log",
+      "log_sha256": "8685f5e08cc0a1a5e30ffca2b3fd75df9e9d3f3c4e98b1718797210ccb6897c3"
+    },
+    {
+      "stage": "performance",
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/architecture_benchmark.py",
+        "measure",
+        "--protocol",
+        "docs/evidence/architecture-performance-protocol-2026-10-19.json",
+        "--test-settings",
+        "build/architecture-evolution-20261019/mysql-settings.json",
+        "--baseline",
+        "docs/evidence/architecture-performance-baseline-2026-10-19.json",
+        "--output",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\performance-final.json"
+      ],
+      "started_at": "2026-10-20T14:26:14.826575+00:00",
+      "ended_at": "2026-10-20T14:26:31.523367+00:00",
+      "exit_code": 0,
+      "log": "build\\architecture-e6d-guard-20261020\\performance-post-review.log",
+      "log_sha256": "96d556162f4c6a71fd2423cb737089524ab9c8b44539cfc225e5b48938d9eb93"
+    }
+  ],
+  "preserved_failed_commands": [
+    {
+      "stage": "unlocks-capacity",
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/measure_unlocks.py",
+        "--test-settings",
+        "build/architecture-evolution-20261019/mysql-settings.json",
+        "--sample",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-live-final.json",
+        "--output",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-capacity-final.json"
+      ],
+      "started_at": "2026-10-20T14:14:25.151442+00:00",
+      "ended_at": "2026-10-20T14:15:18.433897+00:00",
+      "exit_code": 1,
+      "log": "build\\architecture-e6d-guard-20261020\\unlocks-capacity.log",
+      "log_sha256": "765489fd1b16cabfd78a744ff35dbeccd0d050fb1bff907dca6e1eafa8d44938"
+    },
+    {
+      "stage": "documentation",
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_collection_rules.py",
+        "tests/test_documentation_contracts.py",
+        "tests/test_documentation_review.py",
+        "tests/test_documentation_sources.py",
+        "tests/test_storage_help.py",
+        "--basetemp",
+        "build/pytest-e6d-guard-final-docs",
+        "-q",
+        "--junitxml",
+        "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\docs-final.xml"
+      ],
+      "started_at": "2026-10-20T14:24:10.861610+00:00",
+      "ended_at": "2026-10-20T14:24:38.315747+00:00",
+      "exit_code": 1,
+      "log": "build\\architecture-e6d-guard-20261020\\documentation-remaining.log",
+      "log_sha256": "59226c19b358773a5e5af534bd3eb5ba734bfd4281cb2de24078a503a679cc1e"
+    }
+  ],
+  "frozen_selection_equal": true,
+  "original_capacity_limits_unchanged": true,
+  "frozen_tools_unchanged": true
+}

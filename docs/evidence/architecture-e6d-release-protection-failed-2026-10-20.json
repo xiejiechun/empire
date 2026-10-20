@@ -1,0 +1,65 @@
+{
+  "record_kind": "failed_release_test_receipt",
+  "checked_at": "2026-10-20T14:03:02.214559+00:00",
+  "release_id": "0276ec7a91244087aa9e2822f986ddf5",
+  "source_sha256": "fcc19f8ac63af9e029fd7764e9228209f0a6088bbd416fa0ea1fd2c72e75a325",
+  "commit": "e9aec6c4b3b36c258463f7606e552c3d2a5faf24",
+  "failure": {
+    "passed": false,
+    "run_id": "0276ec7a91244087aa9e2822f986ddf5",
+    "recorded_at_utc": "2026-10-20T14:00:33.434693+00:00",
+    "detail": "Release failed or interrupted; inspect command output and publication journal"
+  },
+  "test_step": {
+    "log": "step-012.log",
+    "output_complete": true,
+    "returncode": 1
+  },
+  "published": false,
+  "junit": {
+    "path": "build\\architecture-e6d-fix-20261020\\release-protection-failed-tests.xml",
+    "sha256": "eae7317a74d4b994046c8829a548021d3dad74dd28fdb21bf84807a42703fa5e",
+    "total": 3817,
+    "passed": 3811,
+    "failures": [
+      {
+        "classname": "tests.test_release_pipeline",
+        "name": "test_edit_then_restore_bytes_still_invalidates_this_release",
+        "message": "Failed: DID NOT RAISE RuntimeError",
+        "trace": "tests\\test_release_pipeline.py:405: in test_edit_then_restore_bytes_still_invalidates_this_release\n    with pytest.raises(RuntimeError, match='restored bytes'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE RuntimeError"
+      }
+    ],
+    "errors": [],
+    "skips": [
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_large_state_bounded_transfer_and_other_unit_preserved",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_concurrency_and_rollback",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_missing_units_manifest_and_noop",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_initial_unit_state_and_owner_validation",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_preflight_is_read_only_allowlisted_and_rejects_extra_source",
+        "message": "Explicit isolated drill opt-in required"
+      }
+    ]
+  },
+  "raw_log": {
+    "path": "build\\releases\\0276ec7a91244087aa9e2822f986ddf5\\steps\\step-012.log",
+    "sha256": "614611462ea5df44a6cf50add04233415d3de6a8044b9416addec4ad8c69a66e"
+  }
+}

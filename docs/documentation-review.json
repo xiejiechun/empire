@@ -1,12 +1,9 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-20T12:28:08.657815+00:00",
-  "note": "逐项复核E6d修复后的用户说明：重新查询和翻页清除旧共享明细，隐藏后重新选择，相同查询刷新保留滚动；来源手册与页面正文已同步。核对两个业务正式路径、来源范围和空态限制不变，当前572/25全代理、两新容量与原T318项报告已真实导出，设计卡改指新测量；失败与未完成桌面均保留。",
-  "unchanged_reason": "",
-  "exceptions": {
-    "mysql:restricted_share_unlock": "仅页面查询所有权及显示状态修复；本表字段、主键、索引、归档和正式查询均未改变，对象字典逐项核对仍准确。",
-    "mysql:restricted_share_unlock_detail": "仅页面明细取消与清除旧显示，group/record关联、字段、归档和正式详情查询不变，对象字典逐项核对仍准确。"
-  },
+  "reviewed_at": "2026-10-20T14:28:47.962341+00:00",
+  "note": "最终核对E6d页面空查询清明细/滚动保持说明、NTFS发布准入与失败关闭说明、两张设计卡新容量报告及本轮来源/性能/失败证据的范围和限制；历史失败保留，新包真实桌面尚未验收。",
+  "unchanged_reason": "本轮新增实现仅加强发布工具对Windows工作区文件改写的检测，正式包页面与业务的契约沿用已同步审阅的E6d正文，不改变保存设置、来源、归档或表键；发布指南已说明NTFS准入和明确拒绝行为。",
+  "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "a77505869b2673cfaa06e6fed1a1d93848f29f3c2a4802d7dd99aaaebef4f75a",
@@ -93,7 +90,7 @@
     "scripts/mysql_recovery_inventory.py": "5232ea7b8738949174e30a8a6ac5d59f2e5e3f2122a52d109503e80ef2042e77",
     "scripts/preparation_evidence.py": "93d6a253ced4fef14d6ecec073c4f26015a8e127dd576f4beb6f347224af37d3",
     "scripts/release.py": "bf87d4938fb85622f7328f9ca9c2007212f352303d81fece473a1f727cb10e58",
-    "scripts/release_identity.py": "0f58e95eafbcddec51f52bafc2b62c9bd6d35ae52aa9aff4be3a7c0568f554ce",
+    "scripts/release_identity.py": "cb985d1d21eef1437986473313d09445da9e852b3c122dfd68d1044c2450d8d3",
     "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
     "scripts/release_publish.py": "23932c7bdc3d05b3ba3ac449ac30afa9d21e9183d3fd64aaa94e87e23988520a",
     "scripts/release_steps.py": "b74d98343110c950cdbfc91ef80554385433ca37f11ee4415b13ce9d5e7b1297",
@@ -541,7 +538,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "2bc087659c1a59d2b65c1fc1efb7dd7d1fb9043a9bf58cd098f90d61355f51f0",
+  "content_sha256": "3280785914db152d1da2b7fb446a0189622ce61f4d033496679799c831ac62f7",
   "features": {
     "page:ths_capital": {
       "sources": {

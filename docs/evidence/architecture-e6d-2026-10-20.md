@@ -1,6 +1,6 @@
 # E6d 解禁与行业解禁实施记录
 
-当前状态：**桌面缺陷修复后开发验证通过，等待新正式发布及同包桌面**，不进入E6e。`880f227607eed522ca5bf6090a140da9a60cbf36`的release `ea8f8bbdcac440cc846fb86dbc254e89`完整门禁exit0、committed/passed（3810 passed、5 opt-in skipped、20 warnings，2485.59秒）；同包只读身份/连接/查询通过，但真实桌面发现空查询仍展示旧股东明细，不能记为已验收。前批E6c结案`81dbf0d4b283a6d8fd5ab730f3cc3d142f2b6249`已push并精确核实。下文早期状态均为历史。
+当前状态：**两轮正式门禁失败后的修复已通过最终开发验证，新完整发布及同包桌面待执行**，不进入E6e。`880f227607eed522ca5bf6090a140da9a60cbf36`的release `ea8f8bbdcac440cc846fb86dbc254e89`完整门禁exit0、committed/passed（3810 passed、5 opt-in skipped、20 warnings，2485.59秒）；同包只读身份/连接/查询通过，但真实桌面发现空查询仍展示旧股东明细，不能记为已验收。前批E6c结案`81dbf0d4b283a6d8fd5ab730f3cc3d142f2b6249`已push并精确核实。下文早期状态均为历史。
 
 ## 前像、范围与生命周期
 
@@ -104,3 +104,38 @@ H3固定空名债券、开盘啦严格来源、资本历史准备、生产历史
 - [最终T3](architecture-e6d-performance-ui-fix-2026-10-20.json)与[命令/退出码/导出审计](architecture-e6d-ui-fix-validation-audit-2026-10-20.json)：原前五命令exit0及首性能exit1原样保留，另列实际第四轮exit0收据，不将失败改为成功。
 
 最终33领域/UI/私有归档集成回归和46文档回归均通过。当前开发通过；完整新发布和同包U1～U3、配置/真实连接/正式查询、正常关开及结案推送仍未执行，不进入E6e。有限月份实采不等于全历史准备，H3、E4及其他既有来源限制保持。
+
+
+## 两轮正式门禁失败及发布保护缺口修复
+
+提交e9aec6c后的正式run `7dcd1766ab6f4863b79f79936163bafd`自然exit1：3811 passed、5 opt-in skipped、20 warnings、1 setup error，2491.08秒。实际是`test_invalid_month_does_not_replace_existing_or_confirm_run`的私有库初始化TCP连接超时；早期按点号推测为上一用例teardown并不准确，已按最终栈更正。[失败收据](architecture-e6d-release-timeout-failed-2026-10-20.json)及原JUnit/日志保持。只读核对13348实际UUID/datadir、仅四系统库、无其他客户端；Uptime93084秒，各Connection_errors及Aborted_connects均0。30次新连接全部成功、最长0.0441052秒；精确用例五次与完整日历组9项均exit0，无skip。没有修改超时或服务，没有证明超时根因；[调查命令和结果](architecture-e6d-release-timeout-investigation-2026-10-20.json)保留。
+
+同提交重跑`0276ec7a91244087aa9e2822f986ddf5`自然exit1：3811 passed、5 opt-in skipped、20 warnings、1 failed，2717.35秒。前轮连接问题未复现；本轮`test_edit_then_restore_bytes_still_invalidates_this_release`未得到预期拒绝。[失败收据](architecture-e6d-release-protection-failed-2026-10-20.json)及原JUnit/日志保持。两轮均在完整测试处停止，未构建或替换旧正式包，不能算已发布。
+
+已复现真实元数据分辨率缺口：在独占临时目录对30个连续改写/恢复样本进行只读原生身份核对，其中12次mtime与改写前相同，NTFS逐文件USN全部变化。旧stat_signature依赖大小、mtime、Windows创建时间及文件身份，快速改写再恢复可使这些值全部不变。
+
+修复仅加强未冻结的`scripts/release_identity.py`本机input_stats路径：Windows源输入增加逐文件NTFS变更序号，保留原内容和metadata检查；临时只读句柄拒绝与未关闭的写入/删除句柄共享，补足最后写句柄关闭前的窗口。未知/不完整/零USN、文件系统或日志不可用、句柄冲突均失败关闭，不回退时间戳。只读当前文件记录，不管理卷日志，不增加权限，不改变程序配置、成品内容摘要或运行时。`release_lock.py`及冻结性能工具/协议/基线/阈值逐字节未改，原失败测试与断言未改。
+
+新增确定性反例强制旧metadata相同，重复30次改写后恢复，当前Runner每次均拒绝；旧原模块加载于独立子进程跑同一反例真实exit1（DID NOT RAISE），未替换正式源文件。另验未关闭写句柄、USN v2/v3、未知/损坏/不可用身份、查询失败关闭句柄和保留原异常。`py -m pytest tests/test_release_file_state.py tests/test_release_pipeline.py tests/test_release_output.py tests/test_release_steps.py --basetemp build/pytest-e6d-guard-first -q --tb=short --junitxml build/architecture-e6d-guard-20261020/release-guard-tests.xml`为76 passed/6.99秒/exit0；全仓Ruff和strict mypy8文件exit0。[旧实现真实失败及当前1701输入三次稳定核对](architecture-e6d-release-guard-verification-2026-10-20.json)是当时快照，不冒充最终完整发布。
+
+脚本/测试输入改变使旧业务source摘要失效；使用新目录`build/architecture-e6d-guard-20261020`以原池/种子/随机及固定名单、原月份和全代理政策重新实际执行来源、容量及相关验证。旧报告不改hash、冻结条件不放宽。以下记录本次最终开发结果；新正式发布与同包桌面仍未完成，不进入E6e。
+
+## 发布输入修复后的最终开发退出证据
+
+本轮业务输入`f69968a811ac4a98aa0f4375fc00f44286a5056bd737164c8536632a657bf3a8`，T3源身份`44f8bd2934c69a388518f38ba5ce83747d735f14ee84ee529877e5f748fff785`。原始报告逐字节导出，[命令及自然退出码审计](architecture-e6d-guard-final-validation-audit-2026-10-20.json)列出最终七阶段，以及保留的两次失败命令；两设计卡指向本轮新容量。
+
+| 验收ID | 实际执行及结果 | 范围与限制 |
+| --- | --- | --- |
+| A2发布保护 | 上节76项真实反例exit0；原失败用例与断言不变 | 未冻结release_identity增补NTFS逐文件身份；冻结release_lock等不改。仍需完整正式门禁验证 |
+| R2来源 | 原verify_unlocks/verify_unlock_industries命令，新output在本轮目录，两条均exit0 | [个股](architecture-e6d-unlocks-source-guard-fix-2026-10-20.json)：原30随机+固定603027.SH、六完整月18单元、572全代理、direct/fallback0、pending0；[行业](architecture-e6d-industries-source-guard-fix-2026-10-20.json)：24月703行25全代理、pending0。源→规范化→Redis→统一归档→正式查询集合/内容一致，六项清理true、无残留。行业非股票粒度，30股不适用。全历史准备及原temporal限制不冲销 |
+| 容量 | 原measure_unlocks/measure_unlock_industries协议，新sample明确本轮实采；最终两条exit0 | [个股](architecture-e6d-unlocks-capacity-guard-fix-2026-10-20.json)：10万列表/20万明细，100单元全内容/关联，导入45.4455秒、277512192字节、page最大11.1285ms；[行业](architecture-e6d-industries-capacity-guard-fix-2026-10-20.json)：120月/12000行，导入0.5204秒、2916352字节、page最大6.4373ms。原规模/样本次数/预算不变，重复DML0、修订1、六清理通过。110万行仅线性空间预测 |
+| R1～R4/U开发 | 原六领域/UI/私有归档文件，basetemp与JUnit见命令审计，exit0 | 33 passed/61.71秒，无skip；含旧明细迟到/空态、翻页/隐藏重进及相同条件滚动保持。不是正式包真实桌面 |
+| T3 | 原architecture_benchmark measure协议/基线命令，exit0 | [原18项](architecture-e6d-performance-guard-fix-2026-10-20.json)全部通过，冷声明median1109.2693/p951131.89404ms；内容签名和清理通过。未改工具、协议、基线或阈值 |
+| M文档 | 最后实现后review、check、verify_documentation、verify_database_design均exit0；五份原文档回归文件重新完整exit0 | 46 passed；发布指南同步NTFS工作区准入及失败关闭。具体全局不变理由仅说明发布工具不改变成品界面、来源、查询、表键或保存策略；此前UI正文及逐对象审阅继续保留 |
+| U3前像 | 本轮pre_release_final.py exit0 | 四最终来源/容量source及实际bindings匹配；两config、原插件偏好逐字节保持，48行SQL设置payload/updated_at保持。此为发布前事实，不替代发布后检查 |
+
+首次容量命令实际exit1，首page样本170.69299996ms超过原100ms，后四次为2.8209/2.0104/1.9238/1.9046ms，其余预算、全部内容及六项清理通过；[失败原报告](architecture-e6d-capacity-failed-guard-fix-2026-10-20.json)保留。诊断在ignored脚本观察未修改的完整协议，first page17.5306ms，其中driver execute17.0732ms、含SQL守卫的SQLAlchemy execute17.4534ms，见[诊断报告](architecture-e6d-capacity-diagnostic-guard-fix-2026-10-20.json)、[逐次观察](architecture-e6d-capacity-observations-guard-fix-2026-10-20.json)。诊断含profiler开销，不算验收报告；原170ms未复现，不能断言根因已修复。等待长跑进程退出后，按原条件完整重测保留全部五样本11.1285/2.5644/3.4043/2.1194/2.0220ms，无源码、索引、数据库设置或测量协议修改。详见[调查收据](architecture-e6d-capacity-investigation-guard-fix-2026-10-20.json)。
+
+文档回归首轮1 failed/45 passed，是发布工具源码改变后尚未更新文档审阅登记的执行顺序遗漏；原docs-final.xml与documentation-remaining.log保留，未改测试。补充具体语义审阅和发布指南核对后，完整46项重新通过，记录docs-reviewed-final.xml与post-review-commands.json；失败不改为成功。之前两轮正式门禁失败及旧桌面反例仍保留。
+
+当前开发验证通过，正式包仍为旧ea8发布；新完整门禁、同包U1～U3、真实连接/查询、正常关开、设置恢复及main推送尚未执行，不能称已验收。13348自有实例待后续验证继续使用，生产3307和共享Redis不重启、不清数据；既有H3、E4和停复牌/业绩错误限制保持。

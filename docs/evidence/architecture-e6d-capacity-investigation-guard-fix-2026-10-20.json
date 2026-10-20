@@ -1,0 +1,78 @@
+{
+  "checked_at": "2026-10-20T14:23:27.009957+00:00",
+  "failed_command": {
+    "stage": "unlocks-capacity",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "scripts/measure_unlocks.py",
+      "--test-settings",
+      "build/architecture-evolution-20261019/mysql-settings.json",
+      "--sample",
+      "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-live-final.json",
+      "--output",
+      "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-capacity-final.json"
+    ],
+    "started_at": "2026-10-20T14:14:25.151442+00:00",
+    "ended_at": "2026-10-20T14:15:18.433897+00:00",
+    "exit_code": 1,
+    "log": "build\\architecture-e6d-guard-20261020\\unlocks-capacity.log",
+    "log_sha256": "765489fd1b16cabfd78a744ff35dbeccd0d050fb1bff907dca6e1eafa8d44938"
+  },
+  "diagnostic_command": [
+    ".venv/Scripts/python.exe",
+    "build/architecture-e6d-guard-20261020/diagnose_capacity.py"
+  ],
+  "diagnostic_natural_exit_code": 0,
+  "remeasure_command": {
+    "stage": "unlocks-capacity",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "scripts/measure_unlocks.py",
+      "--test-settings",
+      "build/architecture-evolution-20261019/mysql-settings.json",
+      "--sample",
+      "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-live-final.json",
+      "--output",
+      "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-capacity-remeasure.json"
+    ],
+    "started_at": "2026-10-20T14:21:49.293716+00:00",
+    "ended_at": "2026-10-20T14:23:02.423684+00:00",
+    "exit_code": 0,
+    "log": "build\\architecture-e6d-guard-20261020\\unlocks-capacity-remaining.log",
+    "log_sha256": "d938fa189912f8776c3deb31a6bec42f403f57b9c8e3ed936bdb076caf6bd61c"
+  },
+  "exports": [
+    {
+      "path": "docs\\evidence\\architecture-e6d-capacity-failed-guard-fix-2026-10-20.json",
+      "sha256": "45cac52769ad79c6568f8dc918c880e69e28cbcaf1ca3e70dcae1d3d2ede7a06"
+    },
+    {
+      "path": "docs\\evidence\\architecture-e6d-capacity-diagnostic-guard-fix-2026-10-20.json",
+      "sha256": "64f1720b8045022a08cb557b5c68267a3d5fa8e64c8f53e89c94788fe5021870"
+    },
+    {
+      "path": "docs\\evidence\\architecture-e6d-capacity-observations-guard-fix-2026-10-20.json",
+      "sha256": "be89e0b4aad95028fe4e553215f2799ed73edcdf270dd496b4304c0f81f2c3ee"
+    }
+  ],
+  "failed_first_page_ms": 170.69299996364862,
+  "failed_remaining_page_ms": [
+    2.8209000010974705,
+    2.010399999562651,
+    1.9237999804317951,
+    1.9046000088565052
+  ],
+  "diagnostic_first_page_ms": 17.530599958263338,
+  "remeasure_page_samples_ms": [
+    11.128499987535179,
+    2.5643999688327312,
+    3.404300019610673,
+    2.1193999564275146,
+    2.022000029683113
+  ],
+  "conclusion": "Initial 170.693ms first query did not recur. Diagnostic first driver execute 17.073ms; SQLAlchemy including safety guard 17.453ms. No persistent SQL-plan or guard regression demonstrated; exact initial delay cause remains unknown. Full uninstrumented measurement rerun retained all five samples and unchanged limits, scale and bindings. No source, database settings, indexes or measurement protocol changed.",
+  "limitations": [
+    "Diagnostic includes profiler overhead and is not acceptance evidence.",
+    "Subsequent success does not prove the first transient delay is fixed."
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "record_kind": "failed_release_test_receipt",
+  "checked_at": "2026-10-20T13:13:28.173688+00:00",
+  "release_id": "7dcd1766ab6f4863b79f79936163bafd",
+  "source_sha256": "fcc19f8ac63af9e029fd7764e9228209f0a6088bbd416fa0ea1fd2c72e75a325",
+  "commit": "e9aec6c4b3b36c258463f7606e552c3d2a5faf24",
+  "failure": {
+    "passed": false,
+    "run_id": "7dcd1766ab6f4863b79f79936163bafd",
+    "recorded_at_utc": "2026-10-20T13:11:57.582237+00:00",
+    "detail": "Release failed or interrupted; inspect command output and publication journal"
+  },
+  "test_step": {
+    "log": "step-012.log",
+    "output_complete": true,
+    "returncode": 1
+  },
+  "junit": {
+    "path": "build\\architecture-e6d-fix-20261020\\release-failed-tests.xml",
+    "sha256": "85732531391e58ffd4e662abe87c5fa5c9e8acc0ea411b6bc48851a0913608cf",
+    "total": 3817,
+    "passed": 3811,
+    "errors": [
+      {
+        "classname": "tests.integration.test_calendar_archive",
+        "name": "test_invalid_month_does_not_replace_existing_or_confirm_run",
+        "message": "failed on setup with \"sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (2003, \"Can't connect to MySQL server on '127.0.0.1' (timed out)\")\n(Background on this error at: https://sqlalche.me/e/20/e3q8)\"",
+        "trace": ".venv\\Lib\\site-packages\\pymysql\\connections.py:681: in connect\n    sock = socket.create_connection(\nD:\\Programs\\Python3129\\Lib\\socket.py:865: in create_connection\n    raise exceptions[0]\nD:\\Programs\\Python3129\\Lib\\socket.py:850: in create_connection\n    sock.connect(sa)\nE   TimeoutError: timed out\n\nDuring handling of the above exception, another exception occurred:\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py:144: in __init__\n    self._dbapi_connection = engine.raw_connection()\n                             ^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py:3319: in raw_connection\n    return self.pool.connect()\n           ^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:448: in connect\n    return _ConnectionFairy._checkout(self)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:1290: in _checkout\n    fairy = _ConnectionRecord.checkout(pool)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:712: in checkout\n    rec = pool._do_get()\n          ^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\impl.py:178: in _do_get\n    with util.safe_reraise():\n         ^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\util\\langhelpers.py:122: in __exit__\n    raise exc_value.with_traceback(exc_tb)\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\impl.py:176: in _do_get\n    return self._create_connection()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:389: in _create_connection\n    return _ConnectionRecord(self)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:674: in __init__\n    self.__connect()\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:900: in __connect\n    with util.safe_reraise():\n         ^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\util\\langhelpers.py:122: in __exit__\n    raise exc_value.with_traceback(exc_tb)\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:896: in __connect\n    self.dbapi_connection = connection = pool._invoke_creator(self)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\create.py:667: in connect\n    return dialect.connect(*cargs_tup, **cparams)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\default.py:630: in connect\n    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\pymysql\\connections.py:373: in __init__\n    self.connect()\n.venv\\Lib\\site-packages\\pymysql\\connections.py:744: in connect\n    raise exc\nE   pymysql.err.OperationalError: (2003, \"Can't connect to MySQL server on '127.0.0.1' (timed out)\")\n\nThe above exception was the direct cause of the following exception:\n.venv\\Lib\\site-packages\\pytest_asyncio\\plugin.py:558: in setup\n    return super().setup()\n           ^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\pytest_asyncio\\plugin.py:926: in pytest_fixture_setup\n    return (yield)\n            ^^^^^\ntests\\integration\\conftest.py:41: in private_business_database\n    initialize_database(cfg['mysql'])\nsrc\\empire\\plugins\\infra\\mysql_store.py:29: in initialize_database\n    with engine.begin() as connection:\n         ^^^^^^^^^^^^^^\nD:\\Programs\\Python3129\\Lib\\contextlib.py:137: in __enter__\n    return next(self.gen)\n           ^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py:3259: in begin\n    with self.connect() as conn:\n         ^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py:3295: in connect\n    return self._connection_cls(self)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py:146: in __init__\n    Connection._handle_dbapi_exception_noconnection(\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py:2450: in _handle_dbapi_exception_noconnection\n    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py:144: in __init__\n    self._dbapi_connection = engine.raw_connection()\n                             ^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\base.py:3319: in raw_connection\n    return self.pool.connect()\n           ^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:448: in connect\n    return _ConnectionFairy._checkout(self)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:1290: in _checkout\n    fairy = _ConnectionRecord.checkout(pool)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:712: in checkout\n    rec = pool._do_get()\n          ^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\impl.py:178: in _do_get\n    with util.safe_reraise():\n         ^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\util\\langhelpers.py:122: in __exit__\n    raise exc_value.with_traceback(exc_tb)\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\impl.py:176: in _do_get\n    return self._create_connection()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:389: in _create_connection\n    return _ConnectionRecord(self)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:674: in __init__\n    self.__connect()\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:900: in __connect\n    with util.safe_reraise():\n         ^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\util\\langhelpers.py:122: in __exit__\n    raise exc_value.with_traceback(exc_tb)\n.venv\\Lib\\site-packages\\sqlalchemy\\pool\\base.py:896: in __connect\n    self.dbapi_connection = connection = pool._invoke_creator(self)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\create.py:667: in connect\n    return dialect.connect(*cargs_tup, **cparams)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\sqlalchemy\\engine\\default.py:630: in connect\n    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\pymysql\\connections.py:373: in __init__\n    self.connect()\n.venv\\Lib\\site-packages\\pymysql\\connections.py:744: in connect\n    raise exc\nE   sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (2003, \"Can't connect to MySQL server on '127.0.0.1' (timed out)\")\nE   (Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      }
+    ],
+    "failures": [],
+    "skips": [
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_large_state_bounded_transfer_and_other_unit_preserved",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_concurrency_and_rollback",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_missing_units_manifest_and_noop",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_initial_unit_state_and_owner_validation",
+        "message": "Explicit isolated drill opt-in required"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_preflight_is_read_only_allowlisted_and_rejects_extra_source",
+        "message": "Explicit isolated drill opt-in required"
+      }
+    ]
+  },
+  "error_stage": "private schema initialization before the test fixture or business body ran",
+  "previous_dot_position_inference_corrected": true,
+  "published": false,
+  "raw_log": {
+    "path": "build\\releases\\7dcd1766ab6f4863b79f79936163bafd\\steps\\step-012.log",
+    "sha256": "37c6ad54921a42027e69b6f83a619980bcec844db9c6c5ad222b242e27af7976"
+  }
+}

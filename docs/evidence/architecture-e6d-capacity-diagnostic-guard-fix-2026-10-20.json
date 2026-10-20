@@ -1,0 +1,483 @@
+{
+  "run_id": "88a145e36c6541529061e7f0f05c30fe",
+  "mode": "verification",
+  "checked_at": "2026-10-20T14:20:06.878878+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4",
+    "D:\\project\\empire\\build\\architecture-e6d-guard-20261020\\unlocks-live-final.json": "88c94e6f332e20ccee31221a917523b04b428a9b7784d826429b19f272dfe5c3",
+    "D:\\project\\empire\\src\\empire\\features\\unlocks\\contract.py": "f7c082205645e04746d3bfb87a2bc168af3479126ca31725cdb4adec12d4a68f",
+    "D:\\project\\empire\\src\\empire\\sources\\tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
+    "D:\\project\\empire\\scripts\\unlock_capacity.py": "4b5cf7cbf35c98e4d51a684a25118b10b8ede1ce040c9d56d9b2d05a25f3f9b7",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "D:\\project\\empire\\scripts\\source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
+    "D:\\project\\empire\\src\\empire\\features\\unlocks\\dataset.py": "9c1c7abbe65534931fd26544a99069e404bd820a619358daa3d6d1490cc49fdf",
+    "D:\\project\\empire\\src\\empire\\features\\unlocks\\query.py": "fd41f6b0b1b3ef34bc675573410e4899b210692933b349ed5e437b73989e588c",
+    "D:\\project\\empire\\scripts\\measure_unlocks.py": "2399ef1244156163fd73153f1641192e431c1d27f55782d0417f2299185e49aa"
+  },
+  "reviewed_sample": {
+    "path": "build\\architecture-e6d-guard-20261020\\unlocks-live-final.json",
+    "sha256": "88c94e6f332e20ccee31221a917523b04b428a9b7784d826429b19f272dfe5c3",
+    "scope": "current full source verification"
+  },
+  "subject": "unlocks_capacity",
+  "source_sha256": "f69968a811ac4a98aa0f4375fc00f44286a5056bd737164c8536632a657bf3a8",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原100000汇总/200000明细或12000行业行SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_88a145e36c6541529061e7f0f05c30fe_test",
+    "namespace": "empire:test:verify_ths:88a145e36c6541529061e7f0f05c30fe",
+    "run_id": "88a145e36c6541529061e7f0f05c30fe",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "e4010060865917a40fc38473abe49b2e741d3de20190eb7d0b070354ec9e74fd"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-data\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "isolation": "actual UUID verified owned private schema on independent service",
+    "cache": "first read then five warm reads; maximum reported",
+    "rows": {
+      "parents": 100000,
+      "details": 200000
+    },
+    "projection": "linear 1100000-row planning estimate; not a measured million-detail import"
+  },
+  "reviewed_tradeoffs": "Two typed business tables; request-group shared details; bounded month snapshot and message limits. No stored raw success bodies or duplicated per-parent details.",
+  "measurements": {
+    "page_ms": 17.530599958263338,
+    "security_ms": 11.768799973651767,
+    "detail_ms": 0.6854000384919345,
+    "month_ms": 121.75109999952838,
+    "range_ms": 27.819000009912997,
+    "allocated_bytes": 277512192,
+    "projected_1100000_bytes": 1017544704,
+    "import_seconds": 40.29417910001939,
+    "repeat_seconds": 0.4940072000026703,
+    "revision_seconds": 0.18528210005024448,
+    "message_bytes": 324472,
+    "query_peak_bytes": 1611718
+  },
+  "limits": {
+    "page_ms": 100,
+    "security_ms": 100,
+    "detail_ms": 100,
+    "month_ms": 5000,
+    "range_ms": 100,
+    "allocated_bytes": 805306368,
+    "projected_1100000_bytes": 2147483648,
+    "import_seconds": 300,
+    "repeat_seconds": 5,
+    "revision_seconds": 5,
+    "message_bytes": 524288,
+    "query_peak_bytes": 33554432
+  },
+  "allocation": {
+    "_empire_verifier_owner": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "additional_issue": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "app_setting": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "balance_statement": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "capital_encumbrance": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_equity_position": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_equity_summary": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_funding": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_ipo": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_project": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_release": {
+      "data": 16384,
+      "indexes": 65536
+    },
+    "capital_transaction": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "cashflow_statement": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "collection_state": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "dividend_plan": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "earnings_disclosure": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "earnings_forecast": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "earnings_quick": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "earnings_report": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "finance_news": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "holder_member": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "holder_report": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "income_statement": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "index_daily_price": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "index_price_year": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "industry": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "industry_member": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "restricted_share_unlock": {
+      "data": 56377344,
+      "indexes": 46055424
+    },
+    "restricted_share_unlock_detail": {
+      "data": 137363456,
+      "indexes": 35438592
+    },
+    "restricted_share_unlock_industry": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "rights_issue": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "security_code_alias": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "security_listing_event": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "security_name_change": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "security_st_event": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "shareholder_change": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "shareholder_count": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "stock": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "stock_daily_quote": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "stock_daily_quote_level": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "stock_index": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "stock_index_member": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "stock_intraday_trade_block": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "stock_intraday_trend": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "stock_large_order_trend": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "stock_listing": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "stock_market_day": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "stock_minute_entrust": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "stock_minute_volume": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "stock_opening_auction": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "stock_repurchase_plan": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "suspension_event": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "suspension_source_date": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "trade_calendar": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "trading_rule_citation": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "trading_rule_value": {
+      "data": 16384,
+      "indexes": 49152
+    }
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_date",
+        "key_len": "78",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_security_date",
+        "key": "ix_security_date",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock_detail",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "64",
+        "ref": "const",
+        "rows": 2,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "month": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock_detail",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_date",
+        "key": "ix_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 3714,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Using MRR; Using filesort"
+      }
+    ],
+    "range": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_date",
+        "key": "ix_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ]
+  },
+  "returned": {
+    "page": 200,
+    "security": 100,
+    "detail": 2,
+    "month": 2000,
+    "range": 200
+  },
+  "read_bytes": {
+    "page": 81200,
+    "security": 40600,
+    "detail": 690,
+    "month": 690000,
+    "range": 9600
+  },
+  "bindings": {
+    "src/empire/features/unlocks/contract.py": "f7c082205645e04746d3bfb87a2bc168af3479126ca31725cdb4adec12d4a68f",
+    "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
+    "scripts/unlock_capacity.py": "4b5cf7cbf35c98e4d51a684a25118b10b8ede1ce040c9d56d9b2d05a25f3f9b7",
+    "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "scripts/source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
+    "src/empire/features/unlocks/dataset.py": "9c1c7abbe65534931fd26544a99069e404bd820a619358daa3d6d1490cc49fdf",
+    "src/empire/features/unlocks/query.py": "fd41f6b0b1b3ef34bc675573410e4899b210692933b349ed5e437b73989e588c",
+    "scripts/measure_unlocks.py": "2399ef1244156163fd73153f1641192e431c1d27f55782d0417f2299185e49aa"
+  },
+  "ddl_scopes": {
+    "restricted_share_unlock": "9e93bda4b525128f0a1f9c83987e521b5b87fc18bc42099c31888b6955a8386d",
+    "restricted_share_unlock_detail": "956ee73532656f2271252a0e897a211f27a199eb29b790dd77f5890fa336be75"
+  },
+  "samples": {
+    "page": [
+      17.530599958263338,
+      9.009199973661453,
+      9.03319998178631,
+      9.013400005642325,
+      8.92230001045391
+    ],
+    "security": [
+      11.768799973651767,
+      4.236800014041364,
+      3.611500025726855,
+      4.459200019482523,
+      3.470499999821186
+    ],
+    "detail": [
+      0.6854000384919345,
+      0.5866000428795815,
+      0.5663000047206879,
+      0.576700025703758,
+      0.6451999652199447
+    ],
+    "month": [
+      64.34330000774935,
+      63.303700007963926,
+      67.47989996802062,
+      121.75109999952838,
+      65.70219999412075
+    ],
+    "range": [
+      27.819000009912997,
+      4.127700056415051,
+      3.112400008831173,
+      2.9605000163428485,
+      4.470600048080087
+    ]
+  },
+  "correctness": {
+    "all_units_equal": true,
+    "units": 100,
+    "parent_count": 100000,
+    "detail_count": 200000,
+    "repeat_business_dml": 0,
+    "revision_written": 1
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}
