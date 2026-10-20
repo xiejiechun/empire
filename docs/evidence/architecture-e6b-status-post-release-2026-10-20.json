@@ -1,0 +1,171 @@
+{
+  "checked_at": "2026-10-20T04:56:22.505043+00:00",
+  "release_id": "dad5a84751e44fe1a6f35ef4e577c7b0",
+  "passed_read_only": true,
+  "actual_desktop": "pending_separate_real_observations",
+  "formal_query_execution": "Frozen current source APIs using installed configuration; packaged doctor and actual GUI verified separately",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "230c5d206c3407d97cd568032dc40b398c0450f1",
+    "dirty": false,
+    "source_sha256": "d232a537fc154ce78bfe9604eac7c1edeaabc2ba641e04a7f95d7691a15c0985",
+    "release_id": "dad5a84751e44fe1a6f35ef4e577c7b0",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "09b2f4f4b5fab71679532bb12b5f834242c2a7b01c055499540aef0483753549",
+    "built_at_utc": "2026-10-20T04:50:46.771974+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3",
+    "packaged": true
+  },
+  "exe_sha256": "b41d096259efc1a6aa5c82d1a4237d42ba47ef1375ef6521eddbe1c59b4adfa4",
+  "installed_tree_sha256": "4f0286c52ca24b44ac66f86213029ac7c39199b867643fd3ab3b61a10a58e8cd",
+  "configuration_and_preferences_preserved": {
+    "D:\\project\\empire\\config.toml": true,
+    "D:\\project\\empire\\dist\\Empire\\config.toml": true,
+    "C:\\Users\\52948\\AppData\\Local\\Empire\\plugin-state.json": true
+  },
+  "packaged_doctor": {
+    "cwd": "C:/Windows",
+    "exit_code": 0,
+    "redis_connected": true,
+    "mysql_connected": true
+  },
+  "event_list": {
+    "rows": 40,
+    "pages": 2,
+    "has_more": true,
+    "formal_list_exact_equal": true,
+    "content_digest": "4cf32d40622f302efbd3f2417984070c21165ea6291396bc981973640b580439"
+  },
+  "event_details": [
+    {
+      "key": [
+        "1998-09-14",
+        "000518.SZ",
+        "suspended",
+        "dfc94cec231fb6c5558f08b77ca35a21ebf9b72c4e8183afc5662b96dffe8a27"
+      ],
+      "exact_equal": true,
+      "content_digest": "c0f9540d8d58a2781b51629ea9564f2e349a10b2343c4447c2a47e0b8154c0b0"
+    },
+    {
+      "key": [
+        "1999-07-05",
+        "600633.SH",
+        "suspended",
+        "fdfb5ac23ce152959b527b58d93666125f77c88a4a5943283958128e02081df2"
+      ],
+      "exact_equal": true,
+      "content_digest": "24cedf93036cfd52dc348498cf96c7ae2c8d5dbf93f3f3ab6293fe6f8c8e9bac"
+    },
+    {
+      "key": [
+        "1999-07-05",
+        "600837.SH",
+        "suspended",
+        "3ee2e678d381f7bd67961fc403ea32e5133955a34ce9a41685ca5482489d6a17"
+      ],
+      "exact_equal": true,
+      "content_digest": "d3df961a00fb550e4669fcb6365b9d403bc843593db8c89559ce42149f568d45"
+    },
+    {
+      "key": [
+        "1999-07-12",
+        "000508.SZ",
+        "terminated",
+        "f8a6eaa38664cd8161d0d71b240ca6b84b5c410b42f6617045eb25067d275772"
+      ],
+      "exact_equal": true,
+      "content_digest": "a44f79e54945e3939495f6bc3323a720b21745cefe1a31850df70e3777f26f2c"
+    },
+    {
+      "key": [
+        "2000-04-07",
+        "000518.SZ",
+        "resumed",
+        "cd1e56f1cc353de9f602e93dec68b8268467d3ba0843ff611e89435bf14aa2b3"
+      ],
+      "exact_equal": true,
+      "content_digest": "3c801ade9b9677978495ac5ffb5c1d6b3fc8c7537de07d652d7f0cdfcec996ec"
+    },
+    {
+      "key": [
+        "2020-05-22",
+        "000792.SZ",
+        "suspended",
+        "43c234090985ccb47715e5e2aabad8d922161f61627d1a17c433ed3a23c33881"
+      ],
+      "exact_equal": true,
+      "content_digest": "88f62e0665a87c55ea76485a5e32ff7903ec8de91c027b820f7873176ffc7377"
+    },
+    {
+      "key": [
+        "2021-08-10",
+        "000792.SZ",
+        "resumed",
+        "2efae6d6a006e4c9c68fd4b0fa65cae376935bf74783a5742fadc95e265f79a2"
+      ],
+      "exact_equal": true,
+      "content_digest": "9615154f34e210a9aec92ebace16dafdd27c8f5688b33efa7f43df6ec4f4a723"
+    }
+  ],
+  "formal_plan": {
+    "missing_or_recent": 2,
+    "exact_equal": true,
+    "declared_first": "1990-12-19",
+    "coverage_through": "2026-10-19",
+    "proofs": 431,
+    "preparation": [
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内6事件；缺失或集合不符月份0：",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "keys",
+        "status": "pass",
+        "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内6事件；缺失或集合不符月份0：",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "coverage",
+        "status": "pass",
+        "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内6事件；缺失或集合不符月份0：",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "quality",
+        "status": "pass",
+        "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内6事件；缺失或集合不符月份0：",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "freshness",
+        "status": "fail",
+        "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "temporal",
+        "status": "pass",
+        "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+        "blocking": true,
+        "findings": []
+      }
+    ],
+    "limitation": "Read-only production snapshot; not newly collected or full-history acceptance"
+  },
+  "all_saved_settings_equal": {
+    "rows": 48,
+    "digest": "9e59d702765610a9f91bfdfcc19bcfc104590d239bd87be6dfa99a95c511c1ac"
+  },
+  "query_services_shutdown": true,
+  "global_pending": 0
+}

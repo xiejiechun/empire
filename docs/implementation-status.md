@@ -1,6 +1,6 @@
 # 当前实现与验证边界
 
-2026-10-20接续：E6b-listings已结案推送13421f29并精确核远程；E6b-status七模块/调用方迁至features/listing_status，108领域/103安全及21私有SQL通过；六完整月份167全代理来源/26事件集合内容一致/pending0、当前5万事件容量原预算通过。474公共、41文档、最终输入来源与独占T3原18项已通过，开发验证通过；正式发布及同包桌面待完成，未验收，不进入aliases。见[当前记录](evidence/architecture-e6b-status-2026-10-20.md)。
+2026-10-20接续：E6b-status本批组织迁移范围已验收，结案提交待推送核实。七模块/调用方迁至features/listing_status并退役旧入口；实现230c5d2/release dad5a847完整门禁3786 passed/5 opt-in skipped，同包正式查询、真实桌面、48设置及原config/偏好、正常关开通过。六完整月份167全代理/26事件集合内容一致/pending0、当前5万事件容量及独占T3原18项通过；生产历史freshness失败保留。结案推送精确核实后继续E6b-aliases，其余E6c～g/F未实施，整个优化未完成。见[当前记录](evidence/architecture-e6b-status-2026-10-20.md)。下面旧快照保持历史时态。
 
 2026-10-20 模块化优化当前事实：D、E0～E5已完成组织迁移、正式发布和同包真实桌面并结案推送。E5结案4e1dc72已远程精确核实；release 056304060b0249828b21ac2b8fafa092，3770 passed/5 opt-in skipped，48设置及原配置偏好保留。完整新分红容量635期/58607来源行已满足原预算；历史准备失败仍保留。E6a同花顺资本七旧入口及调用方已迁移并完成正式发布及同包真实桌面验收：4550a9e/release 7d92659c，3773 passed/5 opt-in skipped，随机30+固定8全代理5080事实、新容量/T3通过，48设置和原配置偏好保持；结案提交推送后进入E6b。E6b～g/F未实施。D固定空名债券H3、E4严格来源失败及未解决错误不冲销。以[状态账本](architecture-evolution/status.md)、[E5记录](evidence/architecture-e5-2026-10-20.md)、[E6a记录](evidence/architecture-e6a-2026-10-20.md)为准，下面早期快照保留历史时态。
 

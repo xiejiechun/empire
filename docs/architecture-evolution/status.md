@@ -1,6 +1,6 @@
 # 模块化优化状态与下一步
 
-本轮接续：2026-10-20，E6b-listings结案13421f29已push并以ls-remote精确核实。**E6b-status开发验证通过，待发布/桌面**：七旧模块及调用方迁至features/listing_status，原身份/槽位保持；月份证明和版本归contract。108领域、103安全、21私有SQL、474公共、41文档通过；六完整月份167全代理/26事件/pending0、当前50000行容量及独占T3原18项通过；正式发布/同包桌面待完成，不得进入aliases。见[本批记录](../evidence/architecture-e6b-status-2026-10-20.md)。下文为此前历史。
+本轮接续：2026-10-20，**E6b-status本批组织迁移范围已验收，结案提交待推送核实**。实现230c5d206c3407d97cd568032dc40b398c0450f1，release dad5a84751e44fe1a6f35ef4e577c7b0 committed/passed，3786 passed/5 opt-in skipped。七旧模块及调用方退役、六完整月份167全代理/26事件/pending0、当前5万事件容量/T3原18项；同包正式查询、真实桌面、48保存设置及原config/偏好、正常关开均完成。生产历史freshness失败保留。结案推送精确核实后下一项E6b-aliases；未提前实施。见[本批记录](../evidence/architecture-e6b-status-2026-10-20.md)、[真实桌面](../evidence/architecture-e6b-status-desktop-2026-10-20.md)。下文旧快照保留历史时态。
 
 事实快照：2026-10-20，E5实现提交e403faa已完成唯一正式发布（056304060b0249828b21ac2b8fafa092，committed/passed），3770 passed/5 opt-in skipped；同包配置、真实连接、正式查询、全部48设置/原偏好和真实桌面、正常关开均通过。E5组织迁移范围已验收；结案4e1dc72904925f9ba7d875f1db7e35f312c67421已push并以ls-remote精确核实。E6a七旧入口及调用方已迁移并完成正式发布与同包真实桌面（4550a9e/release 7d92659c，3773 passed/5 opt-in skipped）；48设置、原配置偏好及正常关开保持。本批组织迁移范围已验收，结案提交推送后进入E6b；后续E6b～g/F未实施。历史完整准备限制保留，整个优化未完成。接手仍先核实HEAD、工作区、远程、安装包与共享环境。见[验收手册](acceptance.md)。
 
@@ -21,14 +21,14 @@
 | E4 开盘啦七项 | 已验收（组织迁移范围）；严格来源失败保留 | 24旧模块退役；279领域/274公共/58隔离、当前容量/T3 18项通过；acb466a/release 61dc9811完整门禁3755 passed/5 opt-in skipped；同包七页/帮助、启停保护/草稿/窄窗/正常关开、48设置及原配置偏好保持；严格来源FAIL不冲销 | [E4记录](../evidence/architecture-e4-2026-10-20.md)、[真实桌面](../evidence/architecture-e4-desktop-2026-10-20.md) |
 | E5资本事件与复权 | 已验收（组织迁移范围） | 24模块/16符号；新完整分红容量及资本管线/T3；e403faa/release 05630406完整门禁3770 passed/5 opt-in skipped；同包四页/帮助/启停保护/草稿/窄窗/正常关开及48设置/原配置偏好保持；历史准备失败保留 | [E5记录](../evidence/architecture-e5-2026-10-20.md)、[真实桌面](../evidence/architecture-e5-desktop-2026-10-20.md) |
 | E6a 同花顺资本 | 已验收（组织迁移范围） | 七旧入口迁移；38股全代理5080事实、新容量及T3 18/18；4550a9e/release 7d92659c完整门禁3773 passed/5 opt-in skipped；同包全部栏目/帮助/启停/草稿/窄窗/正常关开、48设置与原配置偏好保持 | [E6a记录](../evidence/architecture-e6a-2026-10-20.md)、[真实桌面](../evidence/architecture-e6a-desktop-2026-10-20.md) |
-| E6b～E6g 逐业务推广 | E6b-listings已验收；其余未实施 | 下一项E6b-status，不应用完整E树 | [E实施](e-implementation.md) |
+| E6b～E6g 逐业务推广 | E6b-listings/status已验收；其余未实施 | status结案推送核实后下一项E6b-aliases，不应用完整E树 | [E实施](e-implementation.md) |
 | F 共享治理收束 | 草稿已准备，未合入 | 仅单源文档、影响报告、类型、共享门禁、定位演练和测试成本候选 | [F实施](cdf-implementation.md)；尚无测试成本收益结论 |
 
 不计算“完成百分比”：A/B/C与后续业务批次的工作量不同。草稿的文件数、AST相同或测试工具存在均不能折算成已完成实现。
 
 ## 2. 源码、远程和已安装包身份
 
-当前安装为E6a release `7d92659ce1604c3a918e4317f4f7caa6`，干净实现提交`4550a9e43e3b83019ee534da472ea4dc4beef9a2`，journal committed/passed。完整输入`b5081a0161f78219b49b0ba624eca1b27d9ae49bec6f4c9654edae0ac067c740`，EXE `ff639a86d64fbd0a57c522ce899c2109247d26f60421c3c76a84399ac0667d1a`，安装树`3bbacf33f9cfc75898de24fad3e7f08afa0456ea64e725e9b3231bef29e1dba3`。3773 passed/5 opt-in skipped/20 warnings，2175.30秒，24步骤。发布后及10:02关后机器核验均exit0，同包真实栏目/帮助/启停/草稿/滚轮/914宽窄窗口与正常关开通过，48保存设置及两config/原偏好精确保留。10:03重开987020工作台可见、活动0/pending0/既有失败5。结案文档提交不改变此包冻结身份；远程待实际推送后再次核实。见[E6a记录](../evidence/architecture-e6a-2026-10-20.md)。
+当前安装为E6b-status release `dad5a84751e44fe1a6f35ef4e577c7b0`，干净实现提交`230c5d206c3407d97cd568032dc40b398c0450f1`，journal committed/passed。包内source `d232a537fc154ce78bfe9604eac7c1edeaabc2ba641e04a7f95d7691a15c0985`，EXE `b41d096259efc1a6aa5c82d1a4237d42ba47ef1375ef6521eddbe1c59b4adfa4`，安装树`4f0286c52ca24b44ac66f86213029ac7c39199b867643fd3ab3b61a10a58e8cd`。3786 passed/5 opt-in skipped/24 warnings，2356.08秒，24步骤；1598输入和54保留输出精确审计。发布后与正常关闭后机器核验exit0，真实桌面/帮助/独立启停/草稿/滚轮/1047宽窄窗及关开完成；48设置/两config/原偏好保持。14:59重开14682454可见，15:00构建标识与服务再次核实。结案文档不改变冻结包身份；远程待本批实际推送后精确核实。见[本批记录](../evidence/architecture-e6b-status-2026-10-20.md)。
 
 
 此前安装为E5 release `056304060b0249828b21ac2b8fafa092`、冻结干净提交 `e403faa655a4162f9a2946322a0ee25f51181ca6`。完整输入 `bcfc1b2ce7842101d52de53ebfbe9b4717648b8d48fe06a3b47932ae6473c227`，EXE `6b9ceff7ba1f78dc3fdc6925c023335047c38bb26253e85017bdcb03931b6881`，安装树 `a506088bb3e4df4a6efb7322cfeeefa9aeca12d135905c2f8c28307dfb14a27d`。3770 passed/5 opt-in skipped/20 warnings，2180.82秒；24步骤及切换通过。同包真实桌面和08:25关后机器核验通过，48设置payload/updated_at、两config及原偏好保持，重开窗口6819044工作台可见/活动0/pending0/既有失败5。详见[E5记录](../evidence/architecture-e5-2026-10-20.md)及[真实桌面](../evidence/architecture-e5-desktop-2026-10-20.md)。结案文档不改变发布身份。以下E4及更早身份均为历史。

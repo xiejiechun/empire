@@ -1,6 +1,6 @@
 # E6b-status 上市状态实施记录
 
-状态：**开发验证通过，待正式发布及同包桌面**。前批上市子批实现fec74bc/release a2382f71已完成同包真实桌面、结案13421f29fd145b2e6c23d01677f48c7e0874398b推送并ls-remote精确核实。开工工作区干净；安装保持该包。11:47前后工作台45/活动0/既有失败5/pending0，Alt+F4可见保存/结束归档/关闭连接，随后fresh枚举无Empire。无并行发布、测试、实采或维护操作；未启动子代理。13348上批最终实际UUID/datadir、仅系统库与无他人会话已核，运行工具前继续验证实际身份。
+状态：**本批组织迁移范围已验收，结案提交待推送核实**。实现230c5d206c3407d97cd568032dc40b398c0450f1、唯一正式发布dad5a84751e44fe1a6f35ef4e577c7b0及同包真实桌面均完成；六固定月份来源链路通过，生产历史freshness失败原样保留。前批上市子批实现fec74bc/release a2382f71已完成同包真实桌面、结案13421f29fd145b2e6c23d01677f48c7e0874398b推送并ls-remote精确核实。以下开工与开发过程保留历史时态：开工工作区干净，安装保持前批包；11:47前后工作台45/活动0/既有失败5/pending0，Alt+F4正常关闭。未启动子代理。
 
 ## 请求前范围与验收登记
 
@@ -44,3 +44,32 @@ T3命令 `py scripts/architecture_benchmark.py measure --test-settings build/arc
 `py build/architecture-e6b-status-20261020/pre_release.py` exit0，最终来源摘要与当前输入精确相同、容量所有bindings未变、原两config及偏好保持；只读保存全部48行app_setting供发布后核验。冻结协议、性能工具、release_lock、DDL保持。最终review/check及文档/数据库门禁已通过；结案仍须同包配置/真实连接/正式查询及实际窗口，不以离屏结果替代。
 
 发布前补充手册现行容量参数名与最终状态后，check明确拒绝正文审阅过期（exit1）；未提交或启动发布，重新审阅最终正文后再核验。最后完整开发文档检查结果为239文档/1620链接。
+
+## 最终发布、真实桌面及验收矩阵
+
+实现提交230c5d206c3407d97cd568032dc40b398c0450f1冻结后执行唯一 `.\verify-release.ps1`，自然exit0；发布dad5a84751e44fe1a6f35ef4e577c7b0的journal为committed/passed。完整24步骤（含构建、四档DPI、容量、搬移smoke、配置保留及正式切换），pytest **3786 passed / 5 opt-in skipped / 24 warnings / 2356.08秒**。五跳过均为独立state-unit显式opt-in演练，逐项理由保存在[发布审计](architecture-e6b-status-release-audit-2026-10-20.json)，不能计为通过。24 warnings包括release-entrypoint子进程读输出的4次UnicodeDecodeError线程警告，未删日志或改工具规避，pytest无失败。
+
+`audit_release.py dad5a84751e44fe1a6f35ef4e577c7b0 230c5d206c3407d97cd568032dc40b398c0450f1` exit0：1598输入精确一致、54保留输出摘要核实、24步骤退出码核实。EXE SHA256 `b41d096259efc1a6aa5c82d1a4237d42ba47ef1375ef6521eddbe1c59b4adfa4`，安装树 `4f0286c52ca24b44ac66f86213029ac7c39199b867643fd3ab3b61a10a58e8cd`，包内source `d232a537fc154ce78bfe9604eac7c1edeaabc2ba641e04a7f95d7691a15c0985`。机器正式查询与实际EXE页面分开核验，没有把源码API冒充包内CLI。
+
+| 验收ID | 本批适用范围、结果及证据 |
+| --- | --- |
+| C1/C2 | 精确插件/能力/任务/数据集/schema/页面/六类顺序；bundle及装配回归、正式门禁exit0；身份保持，无双登记 |
+| C3/C4 | 七旧模块及全部调用方退役、valid_proof/版本唯一契约；架构0新增债务、精确等价及搜索通过；AST仅辅助，实际行为另验 |
+| R1 | 重复无DML、修订/旧版、冷热摘要、SQL提交后重放、成功清队；21私有SQL/恢复与容量重复0/修订1及全量exit0 |
+| R2 | 六完整月份167全代理、26事件逐项集合/内容/证明核对、固定历史事件与市场过滤反例保留；[最终来源](architecture-e6b-status-source-2026-10-20.json)exit0。逐日全市场响应，随机30股票N/A，有限月份不冒充全历史 |
+| R3 | 有界月份预取/取消/归属/六项清理/独立实例反例，领域108、安全103及私有SQL21通过；一项安全opt-in后在隔离轮实际运行；不计跳过为来源验收 |
+| R4 | 后批下载与前批归档独立、整轮末等待；prefetch专项、统一入队/归档/摘要公共474及全量通过；本轮私有pending0，无第二实现 |
+| 容量 | 当前50000事件/120月完整内容及原预算新测exit0；[原报告](architecture-e6b-status-capacity-2026-10-20.json)。前两拒绝轮原样保留，不只刷新hash |
+| T3 | 严格独占[18项原报告](architecture-e6b-status-performance-2026-10-20.json)exit0、cleanup=true，无不可比项。首轮有扫描干扰，仅诊断；冻结工具/基线/阈值未动 |
+| M文档/规则 | 领域README、归属/设计卡/覆盖和内置说明逐功能审阅；行为不变理由明确，41相关回归exit0；结案最后review/check另执行。F的M1定位演练/M2/M3单源生成尚未实施，不由本批代替 |
+| A4 | 同一完整正式发布exit0，journal、清单、输入/产物/依赖与保留证据核实；A1～A3保护实现未改，额外破坏性演练N/A |
+| U1 | 页面单停不关采集查询，依赖阻止直接停query，collector单停拒绝原任务启动、历史查询继续，开关全部恢复；见[真实桌面](architecture-e6b-status-desktop-2026-10-20.md) |
+| U2 | 真实列表/分页/盐湖暂停恢复说明、正常切页草稿、应用后结果、时间数字/下拉滚轮、任务草稿撤销、1047宽窄窗、帮助/限制实际观察完成。页面插件销毁会清临时筛选，明确区别 |
+| U3 | 同包异cwd doctor真实连接、正式列表/详情/规划精确SQL比对、构建标识、48设置/原config及偏好保持、正常关开完成；[关后机器复核](architecture-e6b-status-post-release-closed-2026-10-20.json)、[设置](architecture-e6b-status-settings-2026-10-20.json)均exit0 |
+| 资源恢复 | [资源核验](architecture-e6b-status-resources-2026-10-20.json)exit0；13348仅四系统库、实际UUID/datadir及无其他客户会话核实，测试/生产UUID不同。未停生产或共享Redis、未删未知锁/数据/旧错误 |
+
+完整命令、退出码和产生时间对应[证据文件索引](architecture-e6b-status-evidence-index-2026-10-20.json)、原开发日志/JUnit及发布审计；本批报告为实际机器输出副本，未手写passed。桌面为106次带时间观察，正常关闭后恢复原偏好字节，14:59重开14682454可见、15:00构建身份/服务再次核实并留工作台可见；动态全局pending快照0不代表以后永远0。
+
+限制：生产2020-05准备fields/keys/coverage/quality/temporal通过但freshness失败；这是原历史只读快照，不是本轮生产新采或全历史准备通过。H3空名债券、E4严格来源失败、资本历史准备及停复牌精确旧错误均保留。下一项仅在结案提交推送且远程精确核实后进入E6b-aliases；E6c～g/F及整个优化仍未完成。
+
+结案文档最终核验：`documentation_contract.py review --note <本批结案具体说明>`、`check`、`verify_documentation.py`（240文档/1631链接）、`verify_database_design.py`（55表/49数据集/12 JSON）均exit0；`py -m pytest -q --tb=short -rs tests/test_documentation_contracts.py tests/test_documentation_review.py tests/test_documentation_sources.py tests/test_storage_help.py --basetemp build/pytest-e6b-status-close-docs --junitxml build/architecture-e6b-status-20261020/close-docs.xml` exit0，35 passed/39.93秒。结案只新增事实证据和状态，不修改产品实现、不另造发布包；补录本段后再作最后review/check。
