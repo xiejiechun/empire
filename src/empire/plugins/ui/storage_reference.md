@@ -3898,6 +3898,8 @@ Empire Redis 采用纯内存模式。Redis 服务或电脑重启丢失本库内�
 
 正常关闭Empire、待归档Stream清零后运行scripts/create_security_alias_schema.py --apply，持单实例与SQL维护锁显式新增表；启动不迁移。scripts/import_bse_code_mapping.py默认只读核实，加--apply通过共享下载器代理优先、可回退直连，校验完整表后统一入队归档；不更改日常任务政策。可直接在SQL按legacy_code或unified_code查询。具体设计见docs/bse-code-mapping.md。本映射不保证开盘啦旧代码请求成功，未解决行情错误仍保留。
 
+业务实现集中在features/security_aliases，原显式维护命令、数据集身份、整表校验和历史关系保留规则保持，没有新增页面或定时任务。开发用千行容量及官方整表代理验证各使用UUID私有测试资源，实际核实例与归属，清理并保存新报告后才报告通过；这些开发结果不代表生产已更新或未公布关系可推断。
+
 <!-- topic:数据说明|同花顺指数历史日行情 -->
 <!-- summary:按指数和日期查看收盘日线及来源量额，逐年补历史，近期窗口更新修订。 -->
 <!-- group:行业与指数 -->

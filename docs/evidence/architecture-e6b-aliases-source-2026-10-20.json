@@ -1,0 +1,83 @@
+{
+  "run_id": "4ff2d424cfcf40448c12a2e2d7a40d38",
+  "mode": "verification",
+  "checked_at": "2026-10-20T07:24:05.286335+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": true,
+  "sample_30_met": false,
+  "results": {
+    "official_table": {
+      "pipeline_verified": true,
+      "routes": {
+        "proxy_requests": 1
+      },
+      "source_url": "https://www.bse.cn/service/code_mapping.html",
+      "response_sha256": "95d43bba3b5ca2d6e5a2654755ea732ef52fa8d2c39fe667b5d4eab533a3b877",
+      "response_bytes": 459945,
+      "source_count": 248,
+      "acceptance_complete": true,
+      "strict_proxy_verified": true,
+      "source_query_equal": true,
+      "source_set_digest": "58ffb866e3d6065eae9cdb109547d038c3175b1255d750d7c1e988868c2b0e89",
+      "sql_set_digest": "58ffb866e3d6065eae9cdb109547d038c3175b1255d750d7c1e988868c2b0e89",
+      "sql_count": 248,
+      "pending": 0,
+      "fixed_example": {
+        "legacy_code": "836149",
+        "unified_code": "920149.BJ",
+        "name": "旭杰科技",
+        "listing_date": "2020-07-27"
+      },
+      "limitation": "一次完整官方换码表；不是当前北交所名单，不证明来源未公布关系或生产全历史"
+    }
+  },
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4"
+  },
+  "subject": "bse_code_mapping",
+  "selection": {
+    "selected": [],
+    "random": [],
+    "fixed": [],
+    "random_count": 0,
+    "non_stock_scope": {
+      "unit": "complete_official_mapping_table",
+      "reason": "官方一次完整表响应；不按股票请求，不以当前名单过滤历史换码关系",
+      "fixed": [
+        "836149 -> 920149.BJ"
+      ]
+    }
+  },
+  "source_sha256": "da02172087b0eab4224242522dc21f5b9b17006b81d0b7200e4ef2fbe248031e",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "verification_scope": "proxy_pipeline",
+  "routing_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false
+  },
+  "sample_30_applicable": false,
+  "policy_snapshot_digest": "3c4fdd69a54195d23380f748df719843aa1114e4614e270704261a85a01cdcdb",
+  "acceptance_complete": true,
+  "storage": {
+    "database": "empire_verify_ths_4ff2d424cfcf40448c12a2e2d7a40d38_test",
+    "namespace": "empire:test:verify_ths:4ff2d424cfcf40448c12a2e2d7a40d38",
+    "run_id": "4ff2d424cfcf40448c12a2e2d7a40d38",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "e0d82ab6b30a49bdac05634ac2614ffc9bc06552455ade2ea1d09e653507cb97"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

@@ -3,8 +3,9 @@ import copy
 import pytest
 
 from empire.contracts.data import make_envelope
-from empire.plugins.collectors.bse_code_mapping_source import HEADER, NOTE, URL, parse, validate
-from empire.plugins.datasets.security_aliases import JOB, normalize
+from empire.features.security_aliases.contract import URL, validate
+from empire.features.security_aliases.dataset import JOB, normalize
+from empire.features.security_aliases.source import HEADER, NOTE, parse
 
 ROWS = [dict(legacy_code='836149', unified_code='920149.BJ', name='旭杰科技', listing_date='2020-07-27')]
 

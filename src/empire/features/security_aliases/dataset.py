@@ -6,7 +6,7 @@ from sqlalchemy import text
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
 from empire.core.time import mysql_time
-from empire.plugins.collectors.bse_code_mapping_source import URL, validate
+from empire.features.security_aliases.contract import URL, validate
 from empire.plugins.infra.collection_state import confirmed_page
 from empire.plugins.pipeline.fingerprints import digest
 

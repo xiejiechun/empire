@@ -15,7 +15,7 @@ from empire.bootstrap import build_manager
 from empire.contracts import business_schema
 from empire.contracts.dataset import DatasetContribution
 from empire.core.config import load_config
-from empire.plugins.datasets import security_aliases
+from empire.features.security_aliases import dataset as security_aliases
 from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
@@ -102,7 +102,7 @@ async def test_shared_archive_replay_revisions_stale_and_sets(aliases):
         event.remove(mysql.engine, 'before_cursor_execute', capture)
 
 
-async def test_capacity_1000_rows(aliases):
+async def test_capacity_1000_rows(aliases, tmp_path):
     manager, publish = aliases
     rows = [dict(legacy_code=str(830000+i), unified_code=f'920{i:03d}.BJ', name=f'证券{i}', listing_date='2020-07-27') for i in range(1000)]
     started = perf_counter()
@@ -125,7 +125,7 @@ async def test_capacity_1000_rows(aliases):
     assert report['rows'] == 1000 and report['allocated_bytes'] <= 1048576
     assert report['read_ms'] <= 100 and report['import_ms'] <= 2000
     assert report['explain'][0]['key'] == 'ux_alias_security'
-    Path('build/quote-code-probe-20261010/capacity.json').write_text(json.dumps(report, indent=2, default=str), 'utf8')
+    (tmp_path / 'capacity.json').write_text(json.dumps(report, indent=2, default=str), 'utf8')
 
 
 async def test_commit_ack_failure_and_sql_failure_keep_queue(aliases, monkeypatch):

@@ -1,7 +1,6 @@
 """Single declaration owner for businesses awaiting their own package; retired by batch E."""
 from empire.contracts.bundle import (
     FeatureBundle,
-    MaintenancePublisher,
     OrderedContribution,
     positioned,
 )
@@ -32,7 +31,7 @@ from empire.plugins.data.tdx_performance import PerformanceDataPlugin
 from empire.plugins.data.trading_rules import RuleDataPlugin
 from empire.plugins.data.unlock_industries import UnlockIndustryDataPlugin
 from empire.plugins.data.unlocks import UnlockDataPlugin
-from empire.plugins.datasets import repurchases, security_aliases
+from empire.plugins.datasets import repurchases
 from empire.plugins.datasets.name_changes import NameDataset
 from empire.plugins.datasets.st_events import StDataset
 from empire.plugins.datasets.tdx_performance import PerformanceDataset
@@ -120,10 +119,8 @@ def bundle(cfg):
                         {PerformanceDataset(kind).JOB: PerformanceDataset(kind).PROJECT}) for kind in PERFORMANCE_KINDS)),
         OrderedContribution(1100, DatasetContribution(repurchases, 'incremental', {'eastmoney-repurchases-v1': 'eastmoney-repurchases'})),
         *positioned((1200, 1300, 1400, 1500, 1600, 1700, 1800), (DatasetContribution(RuleDataset(kind), 'incremental', {RuleDataset(kind).JOB: RuleDataset(kind).PROJECT}) for kind in RULE_KINDS)),
-        OrderedContribution(2000, DatasetContribution(security_aliases, 'incremental', {security_aliases.JOB: security_aliases.PROJECT})),
         *positioned((2400, 2500), (DatasetContribution(StDataset(kind), 'incremental',
                         {StDataset(kind).JOB: StDataset(kind).PROJECT}, schema_version=ST_SCHEMA_VERSION) for kind in ST_KINDS)),
         *positioned((2600, 2700), (DatasetContribution(NameDataset(kind), 'incremental',
                         {NameDataset(kind).JOB: NameDataset(kind).PROJECT}, schema_version=NAME_SCHEMA_VERSION) for kind in NAME_KINDS)),
-    ), maintenance_publishers=(MaintenancePublisher(
-        security_aliases.PROJECT, security_aliases.JOB, 'scripts/import_bse_code_mapping.py'),))
+    ))

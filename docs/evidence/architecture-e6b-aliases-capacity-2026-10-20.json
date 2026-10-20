@@ -1,0 +1,172 @@
+{
+  "run_id": "669717ea41ae4e709fa0a359976691f0",
+  "mode": "verification",
+  "checked_at": "2026-10-20T07:23:45.981428+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4",
+    "D:\\project\\empire\\scripts\\measure_bse_capacity.py": "7401e72e7a8b08bc4c54d25eb2a686905f51bda50f301bc9b86b88de008f9e30",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "D:\\project\\empire\\scripts\\source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
+    "D:\\project\\empire\\src\\empire\\features\\security_aliases\\contract.py": "201f153b245257976ab8fc2c45768454bb977dc87f9294009d56393be07369a0",
+    "D:\\project\\empire\\src\\empire\\features\\security_aliases\\dataset.py": "3906b26df3a431d39db2a9890009f65ef75d135bafab38da9a6b72e6cf451328",
+    "D:\\project\\empire\\src\\empire\\features\\security_aliases\\bundle.py": "1c17dd2a7002d43c225c80542eded9cfed85f6fd472ada9d83617a9d77ce6404",
+    "D:\\project\\empire\\scripts\\import_bse_code_mapping.py": "51de306f7aeefced16632d186adceb8148c038e7604d458a47dfd74184a86576",
+    "D:\\project\\empire\\sql\\business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+    "D:\\project\\empire\\src\\empire\\contracts\\business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
+  },
+  "subject": "bse_mapping_capacity",
+  "source_sha256": "da02172087b0eab4224242522dc21f5b9b17006b81d0b7200e4ef2fbe248031e",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "1000行固定合成容量，不请求官方来源，不替代真实完整表验收",
+  "storage": {
+    "database": "empire_verify_ths_669717ea41ae4e709fa0a359976691f0_test",
+    "namespace": "empire:test:verify_ths:669717ea41ae4e709fa0a359976691f0",
+    "run_id": "669717ea41ae4e709fa0a359976691f0",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "09d2015ac36867ca6d3299dc34eaf15932acde2582461d840fe4fff566a3eda5"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-data\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "measurements": {
+    "import_ms": 41.60960001172498,
+    "read_ms": 4.5559999998658895,
+    "allocated_bytes": 131072
+  },
+  "limits": {
+    "import_ms": 2000,
+    "read_ms": 100,
+    "allocated_bytes": 1048576
+  },
+  "bindings": {
+    "scripts/measure_bse_capacity.py": "7401e72e7a8b08bc4c54d25eb2a686905f51bda50f301bc9b86b88de008f9e30",
+    "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "scripts/source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
+    "src/empire/features/security_aliases/contract.py": "201f153b245257976ab8fc2c45768454bb977dc87f9294009d56393be07369a0",
+    "src/empire/features/security_aliases/dataset.py": "3906b26df3a431d39db2a9890009f65ef75d135bafab38da9a6b72e6cf451328",
+    "src/empire/features/security_aliases/bundle.py": "1c17dd2a7002d43c225c80542eded9cfed85f6fd472ada9d83617a9d77ce6404",
+    "scripts/import_bse_code_mapping.py": "51de306f7aeefced16632d186adceb8148c038e7604d458a47dfd74184a86576",
+    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
+  },
+  "ddl_scopes": {
+    "security_code_alias": "17be3dc6ac49a1f081a698c5b8c676115f3bb9c93c41d3816205b796419e2d0f"
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.9",
+    "rows": 1000,
+    "synthetic": true,
+    "network_requests": 0,
+    "pipeline": "checkpoint -> publish_page -> archive.flush",
+    "query": "SELECT legacy_code,unified_code,name,listing_date FROM security_code_alias ORDER BY legacy_code LIMIT 1000",
+    "read_count": 1,
+    "cache": "unforced first query; no cold-cache reset"
+  },
+  "reviewed_tradeoffs": "固定1000项及有界整表读取；一个主键和一个唯一索引，关系增量保留历史。单次首读未强制冷缓存，不推断生产网络吞吐或官方完整性。",
+  "correctness": {
+    "normalized_equal": true,
+    "source_sql_equal": true,
+    "row_count": 1000,
+    "pending": 0,
+    "expected_digest": "2d44a8ed5a560befe69868f31c48aa317b579dd0bf08f02becaf0907f9c2f1c6",
+    "actual_digest": "2d44a8ed5a560befe69868f31c48aa317b579dd0bf08f02becaf0907f9c2f1c6"
+  },
+  "explain": [
+    {
+      "id": 1,
+      "select_type": "SIMPLE",
+      "table": "security_code_alias",
+      "partitions": null,
+      "type": "const",
+      "possible_keys": "ux_alias_security",
+      "key": "ux_alias_security",
+      "key_len": "11",
+      "ref": "const",
+      "rows": 1,
+      "filtered": 100.0,
+      "Extra": null
+    }
+  ],
+  "analyze": [
+    {
+      "Table": "empire_verify_ths_669717ea41ae4e709fa0a359976691f0_test.security_code_alias",
+      "Op": "analyze",
+      "Msg_type": "status",
+      "Msg_text": "OK"
+    }
+  ],
+  "allocated_bytes": 131072,
+  "shape": {
+    "columns": {
+      "legacy_code": {
+        "type": "char(6) collate \"ascii_bin\"",
+        "nullable": false,
+        "unsigned": false
+      },
+      "unified_code": {
+        "type": "varchar(9) collate \"ascii_bin\"",
+        "nullable": false,
+        "unsigned": false
+      },
+      "name": {
+        "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+        "nullable": false,
+        "unsigned": false
+      },
+      "listing_date": {
+        "type": "date",
+        "nullable": false,
+        "unsigned": false
+      },
+      "version_observed_at": {
+        "type": "datetime",
+        "nullable": false,
+        "unsigned": false
+      }
+    },
+    "primary": [
+      "legacy_code"
+    ],
+    "indexes": {
+      "ux_alias_security": {
+        "columns": [
+          "unified_code"
+        ],
+        "expressions": null,
+        "unique": true
+      }
+    },
+    "checks": {
+      "ck_alias_current": "regexp_like(unified_code,'^920[0-9]{3}[.]bj$')",
+      "ck_alias_name": "(char_length(trim(name))between1and100)",
+      "ck_alias_old": "regexp_like(legacy_code,'^[48][0-9]{5}$')"
+    }
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

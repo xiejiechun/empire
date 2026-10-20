@@ -14,8 +14,9 @@ from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
 from empire.core.redaction import redact
-from empire.plugins.collectors.bse_code_mapping_source import URL, parse
-from empire.plugins.datasets.security_aliases import JOB, PROJECT
+from empire.features.security_aliases.contract import URL
+from empire.features.security_aliases.dataset import JOB, PROJECT
+from empire.features.security_aliases.source import parse
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
 
 

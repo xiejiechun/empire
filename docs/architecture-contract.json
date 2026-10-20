@@ -200,15 +200,6 @@
     },
     {
       "legacy_collector_location": true,
-      "owner": "security_aliases",
-      "reason": "北交所映射HTML解析与校验；没有HTTP请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.bse_code_mapping_source"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
       "owner": "source_support",
       "reason": "共享采集准入、重试与会话：来源解析或纯范围规划，无请求执行",
       "role": "parser",
@@ -861,14 +852,6 @@
       "role": "collector",
       "modules": [
         "empire.plugins.collectors.eastmoney_repurchase"
-      ]
-    },
-    {
-      "owner": "security_aliases",
-      "reason": "北交所证券代码映射：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.security_aliases"
       ]
     },
     {
@@ -1666,6 +1649,17 @@
         "audit": "query",
         "ui": "ui"
       }
+    },
+    {
+      "prefix": "empire.features.security_aliases",
+      "owner": "security_aliases",
+      "reason": "完整官方换码表与纯校验契约单一归属；显式维护入口保留",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "source_adapter",
+        "dataset": "dataset"
+      }
     }
   ],
   "debt": [
@@ -1942,17 +1936,6 @@
       ],
       "line": 14,
       "reason": "contract is source-local, not execution: 七项产品名、任务ID及能力名的纯契约；位于来源目录但不执行采集；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
-    },
-    {
-      "rule": "misplaced_source_contract",
-      "source": "empire.plugins.datasets.security_aliases",
-      "target": "empire.plugins.collectors.bse_code_mapping_source",
-      "names": [
-        "URL",
-        "validate"
-      ],
-      "line": 9,
-      "reason": "parser is source-local, not execution: 北交所映射HTML解析与校验；没有HTTP请求执行；既有纯产品契约或纯解析器放在来源目录；不将其误判为执行模块，后续移入对应业务契约/解析模块。"
     },
     {
       "rule": "misplaced_source_contract",

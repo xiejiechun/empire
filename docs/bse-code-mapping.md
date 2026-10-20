@@ -6,6 +6,8 @@
 
 来源：https://www.bse.cn/service/code_mapping.html 。这是发生换码的证券集合，不是全部当前北交所股票名单；直接使用920代码上市的证券没有可推断旧代码。上市日期按该表口径保存，精选层平移证券为原精选层挂牌日期，不代表北交所开市日。未公布换码生效日和ISIN，本表不生成这两项信息，也不据此声称开盘啦支持旧代码查询。
 
+日常入口仍为上述显式命令：不加`--apply`只下载核实，加`--apply`才在正常单实例保护下发布，须先正常关闭Empire并确认原队列已处理。查询与导入失败时保留既有关系；没有新增页面、任务计划或升级自动迁移。
+
 ## 存储设计卡（实施前）
 
 | 项目 | 设计 |
@@ -30,3 +32,9 @@ FROM security_code_alias WHERE unified_code = '920149.BJ';
 ```
 
 重复导入仍通过来源集合校验与统一归档。网页结构、代码集合或关系冲突报错后保留现有数据，不跳过坏行、不清空Redis、不清理未解决行情错误。
+
+## 实现与独立验证
+
+业务归属见[证券代码映射包](../src/empire/features/security_aliases/README.md)：URL、上限和字段集合校验由纯contract持有，HTML解析在source，数据集和维护发布者由本业务bundle登记；共享下载、代理、入队、摘要和归档仍各一条正式路径，原表、身份及历史修订规则保持。
+
+开发容量入口`scripts/measure_bse_capacity.py`仅接受独立13348测试实例，核实际server_uuid、UUID资源及owner；固定1000行从checkpoint到统一入队/归档计时，完整SQL集合内容核对后按原2秒/100ms/1MiB预算判断，清理完成才输出结果。它不请求官方来源，也不在生产构造合成行。真实完整表另用`scripts/verify_bse_code_mapping.py --proxy-only`在私有库经共享代理验证；不按股票逐只请求，不能宣称随机30股通过。两入口均要求build内新报告、不覆盖旧证据，并支持基于已记录归属的`--cleanup-only --run-state`恢复；owner秘密记录仅留本地。运行中的测试、容量、来源及正式发布须串行，完成后重开桌面。动态结果见[本批记录](evidence/architecture-e6b-aliases-2026-10-20.md)。
