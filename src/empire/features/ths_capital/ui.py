@@ -15,10 +15,10 @@ from PySide6.QtWidgets import (
 )
 
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.ths_capital import PROJECT, SECTIONS, TABLE_SECTIONS, TABLES
-from empire.contracts.ths_capital import fields as definitions
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.ths_capital.contract import PROJECT, SECTIONS, TABLE_SECTIONS, TABLES
+from empire.features.ths_capital.contract import fields as definitions
 from empire.plugins.ui.common import accessible, bind_find, hint
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_cards import CardReader, card, fields

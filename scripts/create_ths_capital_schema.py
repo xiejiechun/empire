@@ -9,9 +9,9 @@ from create_name_change_schema import ddl, inventory
 from sqlalchemy import inspect, text
 
 from empire.__main__ import acquire_instance_lock
-from empire.contracts.ths_capital import TABLES as TARGETS
 from empire.core.config import load_config
 from empire.core.redaction import redact
+from empire.features.ths_capital.contract import TABLES as TARGETS
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import shape, validate_shapes

@@ -4,8 +4,8 @@ from datetime import date
 
 import pytest
 
-from empire.contracts.ths_capital import CURRENCIES, SECTIONS, TABLES, numeric, validate
-from empire.plugins.collectors.ths_capital_source import HEADERS, parse
+from empire.features.ths_capital.contract import CURRENCIES, SECTIONS, TABLES, numeric, validate
+from empire.features.ths_capital.source import HEADERS, parse
 from empire.sources.html import Document
 
 STOCK = dict(code='601139', unified_code='601139.SH', name='样本公司')
@@ -134,7 +134,7 @@ def test_undisclosed_ipo_object_does_not_hide_broken_or_empty_row(bad):
 
 @pytest.mark.parametrize('code', ['688510.SH', '601139.SH'])
 def test_source_future_announcement_is_retained_and_explicitly_flagged(code):
-    from empire.contracts.ths_capital import FUTURE_ANNOUNCEMENT
+    from empire.features.ths_capital.contract import FUTURE_ANNOUNCEMENT
     body = source().replace('value="601139"', 'value="' + code[:6] + '"')
     body = body.replace('2025-01-01', '2026-10-19').replace('2025-01-03', '2026-10-21')
     result = parse(body.encode('gb18030'), dict(STOCK, code=code[:6], unified_code=code), date(2026, 10, 18))
@@ -148,7 +148,7 @@ def test_source_future_announcement_is_retained_and_explicitly_flagged(code):
 
 
 def test_future_report_period_is_rejected_even_with_announcement_flag():
-    from empire.contracts.ths_capital import FUTURE_ANNOUNCEMENT
+    from empire.features.ths_capital.contract import FUTURE_ANNOUNCEMENT
     result = parse(source().encode('gb18030'), STOCK)
     result['availability']['invest'] = FUTURE_ANNOUNCEMENT
     result['rows']['capital_equity_position'][0]['event_date'] = '2026-12-31'

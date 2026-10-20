@@ -236,15 +236,6 @@
     },
     {
       "legacy_collector_location": true,
-      "owner": "ths_capital",
-      "reason": "公司资本运作：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.ths_capital_source"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
       "owner": "trading_rules",
       "reason": "交易制度及费用规则：来源解析或纯范围规划，无请求执行",
       "role": "parser",
@@ -309,14 +300,6 @@
       "role": "dataset_registry",
       "modules": [
         "empire.plugins.datasets.astock"
-      ]
-    },
-    {
-      "owner": "capital_actions",
-      "reason": "分红、增发与配股：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.capital_transport"
       ]
     },
     {
@@ -1027,46 +1010,6 @@
       ]
     },
     {
-      "owner": "ths_capital",
-      "reason": "公司资本运作：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.ths_capital"
-      ]
-    },
-    {
-      "owner": "ths_capital",
-      "reason": "公司资本运作：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.ths_capital"
-      ]
-    },
-    {
-      "owner": "ths_capital",
-      "reason": "公司资本运作：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.ths_capital"
-      ]
-    },
-    {
-      "owner": "ths_capital",
-      "reason": "公司资本运作：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.ths_capital"
-      ]
-    },
-    {
-      "owner": "ths_capital",
-      "reason": "公司资本运作：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.ths_capital"
-      ]
-    },
-    {
       "owner": "trading_rules",
       "reason": "交易制度及费用规则：业务标识、字段和纯规范声明",
       "role": "contract",
@@ -1769,6 +1712,21 @@
         "inputs": "query",
         "ui": "ui",
         "chart": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.ths_capital",
+      "owner": "ths_capital",
+      "reason": "同一证券九栏目完整业务；共享HTML及公共传输留原路径，表组读取唯一SQL归属资源",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "source_adapter",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui",
+        "transport": "contract"
       }
     }
   ],

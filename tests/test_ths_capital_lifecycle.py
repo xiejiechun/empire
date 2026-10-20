@@ -7,9 +7,9 @@ import httpx
 import pytest
 
 from empire.bootstrap import build_manager
-from empire.contracts.capital_transport import unpack
-from empire.contracts.ths_capital import JOB, PROJECT, TABLES
-from empire.plugins.collectors.ths_capital import CapitalPageCollector
+from empire.features.ths_capital.collector import CapitalPageCollector
+from empire.features.ths_capital.contract import JOB, PROJECT, TABLES
+from empire.features.ths_capital.transport import unpack
 from tests.prefetch_source import prefetch_http
 from tests.test_capital_lifecycle import Publisher
 from tests.test_ths_capital import STOCK, source

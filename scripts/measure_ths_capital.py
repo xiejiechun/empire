@@ -17,25 +17,27 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from sqlalchemy import event, text
 
-from empire.contracts.capital_transport import SCHEMA, pack
 from empire.contracts.data import make_envelope
 from empire.contracts.preparation_scope import PreparationScope
-from empire.contracts.ths_capital import DATASET, JOB, PROJECT, TABLES
 from empire.core.config import load_config
-from empire.plugins.collectors.ths_capital_source import parse
-from empire.plugins.data.ths_capital import CapitalPageDataPlugin
-from empire.plugins.datasets.ths_capital import CapitalPageDataset, read_window
+from empire.features.ths_capital.contract import DATASET, JOB, PROJECT, TABLES
+from empire.features.ths_capital.dataset import CapitalPageDataset, read_window
+from empire.features.ths_capital.query import CapitalPageDataPlugin
+from empire.features.ths_capital.source import parse
+from empire.features.ths_capital.transport import SCHEMA, pack
 from empire.plugins.infra.collection_state_unit import read_unit, save_unit
 from scripts.capacity_session import CapacitySession
 from tests.test_ths_capital import STOCK, source
 
 INPUT_PATHS = (
-    'src/empire/contracts/capital_transport.py',
-    'src/empire/contracts/ths_capital.py',
-    'src/empire/plugins/collectors/ths_capital_source.py',
+    'src/empire/features/ths_capital/transport.py',
+    'sql/business-schema.json',
+    'src/empire/contracts/business_schema.py',
+    'src/empire/features/ths_capital/contract.py',
+    'src/empire/features/ths_capital/source.py',
     'src/empire/sources/html.py',
-    'src/empire/plugins/datasets/ths_capital.py',
-    'src/empire/plugins/data/ths_capital.py',
+    'src/empire/features/ths_capital/dataset.py',
+    'src/empire/features/ths_capital/query.py',
     'scripts/measure_ths_capital.py',
     'scripts/capacity_session.py',
     'tests/test_ths_capital.py',

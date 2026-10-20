@@ -7,8 +7,8 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 from PySide6.QtWidgets import QApplication  # noqa: E402
 
-from empire.plugins.collectors.ths_capital_source import parse  # noqa: E402
-from empire.plugins.ui.ths_capital import CapitalPage, CapitalPageUiPlugin, content  # noqa: E402
+from empire.features.ths_capital.source import parse  # noqa: E402
+from empire.features.ths_capital.ui import CapitalPage, CapitalPageUiPlugin, content  # noqa: E402
 from tests.test_ths_capital import STOCK, source  # noqa: E402
 
 

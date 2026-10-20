@@ -7,8 +7,8 @@ import zlib
 
 import pytest
 
-from empire.contracts.capital_transport import MAX_RAW, pack, unpack
-from empire.plugins.collectors.ths_capital_source import parse
+from empire.features.ths_capital.source import parse
+from empire.features.ths_capital.transport import MAX_RAW, pack, unpack
 from tests.test_ths_capital import STOCK, source
 
 

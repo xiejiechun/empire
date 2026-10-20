@@ -51,7 +51,7 @@
 | 粒度/表 | capital_funding融资记录；capital_project募投项目；capital_transaction交易公告（收购/转让/关联同属交易实体，section区分来源栏目）；capital_equity_summary报告期分类汇总；capital_equity_position报告期持仓；capital_ipo参股IPO；capital_encumbrance原质押/冻结；capital_release解除子记录 |
 | 身份 | SHA256规范业务锚点+同锚点确定性序号；同样内容的重复来源行保留次数，源序不当跨轮身份；证券统一unified_code；release外键身份parent_key，不依赖当前stock外键；缺来源ID不冒充来源ID |
 | 修订 | 同一锚点数量/正文等修订更新现行记录；公告日期/主体等锚点变化保留另一来源记录。无法证明跨公告同一经济交易，不合并推断。重复原事件的解除作为父内容的一部分一致归档 |
-| 字段字典 | 程序内数据库参考为正式逐字段字典；contracts/ths_capital.py的SPECS为执行契约；所有核心日期/主体/金额/比例/状态为普通列；说明为有界TEXT；无JSON业务列 |
+| 字段字典 | 程序内数据库参考为正式逐字段字典；features/ths_capital/contract.py的SPECS为执行契约；所有核心日期/主体/金额/比例/状态为普通列；说明为有界TEXT；无JSON业务列 |
 | 正式SQL | 列表按section和(event_date,unified_code,record_key)游标，单页20最多100，不投影正文；证券范围同序索引；详情按PK，最多1父+1000解除；审计按证券当前窗口键集合有界批读，不扫描历史正文 |
 | 索引 | 各业务表PK(record_key)，范围索引(section,event_date,unified_code,record_key)、(section,unified_code,event_date,record_key)及(unified_code,in_window,record_key)窗口索引；解除(parent_key,record_key)；不为长文本建索引 |
 | 容量预算 | 单响应取共享generic上限；每证券最多10000事实/1000解除每父，正文每字段至多60000字节；单入队不超过公共限制，超限失败留位置不截断。估算6000股票平均每年50条、五年150万条，正文均值2KiB约3GiB+索引，须隔离实测核查；列表/详情P95各≤100ms，10000事实冷导入≤30秒，重复零业务DML |
@@ -66,6 +66,8 @@
 
 ## 相关说明
 
-实采验收使用`scripts/verify_ths_capital.py --config <隔离验收配置> --apply --random-count 30 --codes <固定回归证券>`，默认随机30只，固定回归额外加入；仅代理，不回退直连。报告保存股票池摘要、种子、随机名单及每证券来源/SQL集合和内容核对，失败重验使用原`--seed`及固定名单。`--random-count 0 --codes ...`仅可用于不带`--apply`的来源诊断，不算入库验收。使用隔离库验证时通过显式配置指定，不能把有限样本的fresh验证用于重置生产全池断点；隔离数据不冒充生产覆盖。
+实采验收统一使用 `scripts/verify_ths_capital.py --test-mysql-settings <独立MySQL连接JSON> --output build/<本轮新报告>.json --random-count 30 --seed <整数种子> --proxy-only`。从只读正式股票池随机抽取至少30只，额外保留八只历史失败证券；`--codes`可增加固定证券，不能替代随机样本或换样。每证券一次完整HTML，经共享下载/代理/预取、原子Redis入队、统一归档和正式列表/详情/范围审计逐项核对集合与内容，报告保留九栏目数据准备原结果；来源链路通过不代表所有历史信号用途可用。
+
+工具核实实际server_uuid与生产不同，再创建UUID私有数据库和Redis命名空间，逐连接SQL守卫限制写入；不修改生产断点或用户任务设置。成功响应不保存，报告保存池/种子/名单、摘要、实际路由、正式查询及待归档0证据；六项关闭清理全部成功后才可输出PASS。旧`--config/--apply/--report`入口已退役。中断后先检查报告的cleanup/remaining；仅用共享 `--cleanup-only --run-state <原报告.ownership.json> --test-mysql-settings <同一连接JSON> --output build/<新清理报告>.json` 恢复精确归属资源，归属或运行状态未知时保留资源，不手工删库、删锁或清共享Redis。ownership文件含私密归属信息，不提交或展示。
 
 [采集开发指南](collector-development-guide.md)、[数据库参考](database-reference.md)、[业务设计规范](database-design-standard.md)。开发、有限实采、容量、发布与桌面结果分列在[交付记录](evidence/ths-capital-delivery-2026-10-16.md)，支持全池不等于全池实采完成。

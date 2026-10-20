@@ -5,11 +5,12 @@ from datetime import UTC, datetime
 from functools import partial
 from uuid import uuid4
 
-from empire.contracts.capital_transport import SCHEMA, pack
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.ths_capital import DATASET, JOB, PROJECT, TABLES, digest
 from empire.core.time import CHINA
+from empire.features.ths_capital.contract import DATASET, JOB, PROJECT, TABLES, digest
+from empire.features.ths_capital.source import parse
+from empire.features.ths_capital.transport import SCHEMA, pack
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -17,7 +18,6 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
-from empire.plugins.collectors.ths_capital_source import parse
 from empire.plugins.collectors.ths_session import ThsSession
 
 

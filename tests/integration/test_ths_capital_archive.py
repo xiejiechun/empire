@@ -11,14 +11,14 @@ import pytest
 from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
-from empire.contracts.capital_transport import SCHEMA, pack
 from empire.contracts.data import make_envelope
 from empire.contracts.preparation_scope import PreparationScope
-from empire.contracts.ths_capital import DATASET, JOB, PROJECT, TABLES
 from empire.core.config import load_config
 from empire.core.time import CHINA
-from empire.plugins.collectors.ths_capital_source import parse
-from empire.plugins.datasets.ths_capital import read_window
+from empire.features.ths_capital.contract import DATASET, JOB, PROJECT, TABLES
+from empire.features.ths_capital.dataset import read_window
+from empire.features.ths_capital.source import parse
+from empire.features.ths_capital.transport import SCHEMA, pack
 from tests.prefetch_source import prefetch_http
 from tests.test_ths_capital import STOCK, source
 
@@ -73,7 +73,7 @@ async def test_roundtrip_hot_cold_zero_dml_revision_old_replay_and_required_fiel
     assert expected['rows']['capital_ipo'][0]['eps'] == '0'
     assert expected['rows']['capital_ipo'][0]['target'] is None
     assert expected['rows']['capital_encumbrance'][0]['quantity'] is None
-    from empire.contracts.ths_capital import FUTURE_ANNOUNCEMENT
+    from empire.features.ths_capital.contract import FUTURE_ANNOUNCEMENT
     assert expected['rows']['capital_funding'][0]['event_date'] == future
     assert expected['availability']['raise_'] == FUTURE_ANNOUNCEMENT
     assert any(r['target'] is None and r['profit'] == '-10000'

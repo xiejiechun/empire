@@ -356,3 +356,7 @@ ths-capital任务使用collector.ths_capital→ths.capital.security→八个类�
 分红、增发、配股由 [capital_actions](../src/empire/features/capital_actions/README.md) 持有，三个任务、查询、页面和数据集保持独立。纯字段、来源协议、解析与完整历史计划分开；公开codec及chain不依赖采集执行。复权独立归 [adjustment](../src/empire/features/adjustment/README.md)，原同连接快照贯穿日历、公开行情迭代、资本事件及其完整性证明。24旧入口和调用方同批退役，公共下载、预取、归档、摘要及preparation路径保持。
 
 完整新分红容量在UUID私有SQL/Redis中测量，复制历史并保留来源消失记录；容量、来源到查询管线和历史完整准备是三个结论。当前事实与未验项见 [E5记录](evidence/architecture-e5-2026-10-20.md)，不能据目录移动推断来源完整。
+
+## E6a同花顺资本业务归属
+
+公司资本运作由[业务包](../src/empire/features/ths_capital/README.md)定位：contract/source/collector/dataset/query/ui及schema2 transport在同一业务目录，bundle保持原槽位。八表组只读E0 SQL归属资源，公共HTML、下载、代理、预取、入队、摘要和归档仍为原共享路径。七旧模块及全部现行调用方退役，无转发层；维护建表和实采工具使用现行业务契约。组织迁移开发状态及交付证据见[E6a记录](evidence/architecture-e6a-2026-10-20.md)。

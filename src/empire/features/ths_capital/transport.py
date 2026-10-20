@@ -4,7 +4,7 @@ import binascii
 import json
 import zlib
 
-from empire.contracts.ths_capital import TABLES, fields
+from empire.features.ths_capital.contract import TABLES, fields
 
 SCHEMA = 2
 MAX_RAW = 8 * 1024**2

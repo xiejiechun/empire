@@ -6,8 +6,8 @@ from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.capital_transport import SCHEMA, pack, unpack
-from empire.contracts.ths_capital import (
+from empire.core.time import CHINA, mysql_time
+from empire.features.ths_capital.contract import (
     DATASET,
     JOB,
     PROJECT,
@@ -18,7 +18,7 @@ from empire.contracts.ths_capital import (
     number,
     validate,
 )
-from empire.core.time import CHINA, mysql_time
+from empire.features.ths_capital.transport import SCHEMA, pack, unpack
 from empire.plugins.infra.collection_state import confirmed_page
 
 

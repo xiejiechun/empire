@@ -5,6 +5,8 @@ import re
 from datetime import date
 from decimal import Decimal
 
+from empire.contracts.business_schema import dataset_tables
+
 PROJECT, JOB, DATASET = 'ths-capital', 'ths-capital-v1', 'ths.capital.security'
 SECTIONS = dict(raise_='募集资金来源', progress='项目投资', asset='收购兼并', invest='股权投资',
                 ipo='参股IPO', transfer='股权转让', connect='关联交易', pledge='股份质押', freeze='股份冻结')
@@ -37,7 +39,7 @@ SPECS = {
     'capital_release': dict(parent_key=('原事件键', 'key'), quantity=('本次解除股数', 'num'),
         actual_date=('实际解除日期', 'date'), description=('解除相关说明', 'text')),
 }
-TABLES = tuple(SPECS)
+TABLES = dataset_tables(DATASET)
 REQUIREMENTS = dict(raise_='capital_funding', progress='capital_projects', asset='capital_acquisitions',
                     invest='equity_investments', ipo='ipo_investments', transfer='equity_transfers',
                     connect='related_transactions', pledge='pledge', freeze='freeze')

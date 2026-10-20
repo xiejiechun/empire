@@ -9,7 +9,7 @@ from empire.contracts.business_schema import schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.contracts.ths_capital import (
+from empire.features.ths_capital.contract import (
     DATASET,
     JOB,
     PROJECT,
@@ -21,7 +21,7 @@ from empire.contracts.ths_capital import (
     fields,
     validate,
 )
-from empire.plugins.datasets.ths_capital import CapitalPageDataset, decode, read_window
+from empire.features.ths_capital.dataset import CapitalPageDataset, decode, read_window
 from empire.plugins.infra.collection_state import read_state
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 

@@ -1,0 +1,74 @@
+{
+  "base_commit": "4e1dc72904925f9ba7d875f1db7e35f312c67421",
+  "method": "Compare every module AST excluding imports and TABLES assignment only; SQL authority order verified separately",
+  "modules": [
+    {
+      "old": "src/empire/plugins/collectors/ths_capital_source.py",
+      "new": "src/empire/features/ths_capital/source.py",
+      "old_sha256": "bf983f106dec71ff09732ad7da76c9b577a7b08f20cb289d4c52b65f74e962f1",
+      "new_sha256": "f86cc4995ba57d11abe35340cdec8e79a5603cad7cd97cab8b2dc92bb1cd8fde",
+      "non_import_non_tables_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/contracts/ths_capital.py",
+      "new": "src/empire/features/ths_capital/contract.py",
+      "old_sha256": "d1371a735885ade6ae34559619f30802c4f6030b5f107e0cb8cc773d5fd980ca",
+      "new_sha256": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6",
+      "non_import_non_tables_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/plugins/ui/ths_capital.py",
+      "new": "src/empire/features/ths_capital/ui.py",
+      "old_sha256": "375cc5e7f662e210faa3dc2b6f0087a74ffd90df95bc93a103777a16fe6df298",
+      "new_sha256": "063c25d41c72b253da129a9577f6aacd8b1063f1282a65dd642e5fa92ac350e4",
+      "non_import_non_tables_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/plugins/datasets/ths_capital.py",
+      "new": "src/empire/features/ths_capital/dataset.py",
+      "old_sha256": "917fdb02391a30325dbaa7feb54dbf382d77fc590e7d715148697ce9ae77af12",
+      "new_sha256": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
+      "non_import_non_tables_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/plugins/data/ths_capital.py",
+      "new": "src/empire/features/ths_capital/query.py",
+      "old_sha256": "931b7cb5cfd09e355c911edf8ad86622be9dd526d1c85543650a425fed3017ae",
+      "new_sha256": "658de67688552a51ec5224c35f0ed2adef0e40390569775a4d2680cf0f70bb0c",
+      "non_import_non_tables_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/plugins/collectors/ths_capital.py",
+      "new": "src/empire/features/ths_capital/collector.py",
+      "old_sha256": "48a3907c35cfd8c8d2ca9b5cfdad6a5d5a7385026ff68dadc5b14b5312f8176f",
+      "new_sha256": "6e02b60721ba41bc120fc8a31ce2b80f88e10952121b018f43f2fc9bc88965e8",
+      "non_import_non_tables_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/contracts/capital_transport.py",
+      "new": "src/empire/features/ths_capital/transport.py",
+      "old_sha256": "99a1137a9f344283e5301961868914d3ee7d6b72b6a0d7ad9be6971a0dbafbcc",
+      "new_sha256": "9c5d90f2270371e08c18d01bc5f294c48d40e1f5b8063c533b66d7109c4ce1fa",
+      "non_import_non_tables_ast_equal": true,
+      "old_entry_absent": true
+    }
+  ],
+  "tables_equal": true,
+  "tables": [
+    "capital_funding",
+    "capital_project",
+    "capital_transaction",
+    "capital_equity_summary",
+    "capital_equity_position",
+    "capital_ipo",
+    "capital_encumbrance",
+    "capital_release"
+  ],
+  "limitations": "AST does not replace behavioral, source, capacity, release or desktop evidence"
+}

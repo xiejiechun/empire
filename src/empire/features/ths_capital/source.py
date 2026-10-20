@@ -2,7 +2,7 @@
 import re
 from datetime import date
 
-from empire.contracts.ths_capital import (
+from empire.features.ths_capital.contract import (
     CURRENCIES,
     FUTURE_ANNOUNCEMENT,
     MISSING,

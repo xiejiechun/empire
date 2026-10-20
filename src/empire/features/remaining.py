@@ -29,7 +29,6 @@ from empire.plugins.collectors.tdx_performance import PerformanceCollector
 from empire.plugins.collectors.tdx_st_events import StEventCollector
 from empire.plugins.collectors.tdx_unlock_industries import UnlockIndustryCollector
 from empire.plugins.collectors.tdx_unlocks import UnlockCollector
-from empire.plugins.collectors.ths_capital import CapitalPageCollector
 from empire.plugins.collectors.ths_listings import ThsListingCollector
 from empire.plugins.collectors.trading_rules import RuleCollector
 from empire.plugins.data.listing_status import ListingStatusDataPlugin
@@ -38,7 +37,6 @@ from empire.plugins.data.name_changes import NameDataPlugin
 from empire.plugins.data.repurchases import RepurchaseDataPlugin
 from empire.plugins.data.st_events import StDataPlugin
 from empire.plugins.data.tdx_performance import PerformanceDataPlugin
-from empire.plugins.data.ths_capital import CapitalPageDataPlugin
 from empire.plugins.data.trading_rules import RuleDataPlugin
 from empire.plugins.data.unlock_industries import UnlockIndustryDataPlugin
 from empire.plugins.data.unlocks import UnlockDataPlugin
@@ -46,7 +44,6 @@ from empire.plugins.datasets import listing_status, listings, repurchases, secur
 from empire.plugins.datasets.name_changes import NameDataset
 from empire.plugins.datasets.st_events import StDataset
 from empire.plugins.datasets.tdx_performance import PerformanceDataset
-from empire.plugins.datasets.ths_capital import CapitalPageDataset
 from empire.plugins.datasets.trading_rules import RuleDataset
 from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset
 from empire.plugins.datasets.unlocks import UnlockDataset
@@ -56,7 +53,6 @@ from empire.plugins.ui.name_changes import NameUiPlugin
 from empire.plugins.ui.repurchases import RepurchaseUiPlugin
 from empire.plugins.ui.st_events import StUiPlugin
 from empire.plugins.ui.tdx_performance import PerformanceUiPlugin
-from empire.plugins.ui.ths_capital import CapitalPageUiPlugin
 from empire.plugins.ui.trading_rules import RuleUiPlugin
 from empire.plugins.ui.unlock_industries import UnlockIndustryUiPlugin
 from empire.plugins.ui.unlocks import UnlockUiPlugin
@@ -65,9 +61,6 @@ from empire.plugins.ui.unlocks import UnlockUiPlugin
 def bundle(cfg):
     """Unmigrated business declarations, removed here as each package takes ownership."""
     return FeatureBundle('remaining', plugins=(
-        OrderedContribution(500, CapitalPageDataPlugin(cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {}))),
-        OrderedContribution(600, CapitalPageCollector()),
-        OrderedContribution(700, CapitalPageUiPlugin()),
         *positioned((1100, 1200, 1300, 1400, 1500, 1600), (PerformanceDataPlugin(kind, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for kind in PERFORMANCE_KINDS)),
         *positioned((1700, 1800, 1900, 2000, 2100, 2200), (PerformanceCollector(kind) for kind in PERFORMANCE_KINDS)),
         *positioned((2300, 2400, 2500, 2600, 2700, 2800), (PerformanceUiPlugin(kind) for kind in PERFORMANCE_KINDS)),
@@ -107,11 +100,6 @@ def bundle(cfg):
                     category='股东数据', source_name='通达信', parallel_downloads=True, unit_name='个月', default_enabled=False,
                     default_schedule=TaskDefaults('daily', description='每天北京时间18:00核验月份列表并补明细；每轮轮换回查一个历史月；可编辑。'),
                     fresh_description='重建声明月份范围并完整回查所有股东明细；已入队轮次先完成归档。')),
-        OrderedContribution(400, TaskContribution('ths-capital', '公司资本运作（同花顺）', 'collector.ths_capital', 'ths',
-                    '一次HTML完整采集融资、投资、交易、参股IPO及质押解冻，原币种与历史保留',
-                    category='公司行动', source_name='同花顺', parallel_downloads=True, unit_name='只股票', default_enabled=False,
-                    default_schedule=TaskDefaults('daily', daily_time='18:30', description='每天北京时间18:30完整核验页面历史和解除修订；启用后生效，可编辑。'),
-                    fresh_description='重建当前股票池和页面全部栏目；保留历史；待归档阶段先确认原轮次。')),
         *positioned((500, 600, 700, 800, 900, 1000), (TaskContribution(performance_project(kind), item[0] + '（通达信）',
                     'collector.tdx_' + kind, 'tdx', '每页10000；完整来源单元、历史回查及结构化查询',
                     category=item[3], source_name='通达信', parallel_downloads=True, unit_name='个完整响应',
@@ -152,8 +140,6 @@ def bundle(cfg):
                         description='每天北京时间18:00补新增和缺失；每七天全池回查独立修订；计划可编辑。'),
                     fresh_description='逐只重查当前股票池的上市及发行资料；保留已有记录及已入队消息。')),
     ), datasets=(
-        OrderedContribution(100, DatasetContribution(CapitalPageDataset(), 'incremental',
-                        {CapitalPageDataset.JOB: CapitalPageDataset.PROJECT}, schema_version=2)),
         OrderedContribution(200, DatasetContribution(UnlockIndustryDataset(), 'incremental', {UnlockIndustryDataset.JOB: UnlockIndustryDataset.PROJECT})),
         OrderedContribution(300, DatasetContribution(UnlockDataset(), 'incremental', {UnlockDataset.JOB: UnlockDataset.PROJECT})),
         *positioned((500, 600, 700, 800, 900, 1000), (DatasetContribution(PerformanceDataset(kind), 'incremental',

@@ -1,6 +1,6 @@
 """Independent outputs from one capital.html response."""
-from empire.contracts.ths_capital import REQUIREMENTS, SECTIONS
 from empire.features.preparation.definition import R
+from empire.features.ths_capital.contract import REQUIREMENTS, SECTIONS
 
 ITEMS = tuple(R(ident, SECTIONS[section], '公司行动' if section not in ('pledge', 'freeze') else '股东数据',
     '研究', '查询来源披露的' + SECTIONS[section], '页面来源记录及同锚点重复次数',
