@@ -4,8 +4,8 @@ from types import SimpleNamespace
 import pytest
 
 from empire.bootstrap import build_manager
-from empire.contracts.tdx_performance import KINDS, identity, project
-from empire.plugins.collectors.tdx_performance_source import parse
+from empire.features.performance.contract import KINDS, identity, project
+from empire.features.performance.source import parse
 from tests.test_tdx_performance import source
 
 
@@ -15,7 +15,7 @@ def test_lazy_page_draft_navigation_and_lifecycle(kind):
     from PySide6.QtWidgets import QApplication
 
     from empire.contracts.ui import NavigationContext
-    from empire.plugins.ui.tdx_performance import PerformanceUiPlugin
+    from empire.features.performance.ui import PerformanceUiPlugin
     app = QApplication.instance() or QApplication([])
     plugin = PerformanceUiPlugin(kind)
     contribution, = plugin.create_pages()

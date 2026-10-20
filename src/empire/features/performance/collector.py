@@ -8,7 +8,8 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.tdx_performance import (
+from empire.core.time import CHINA
+from empire.features.performance.contract import (
     SCHEMA_VERSION,
     day,
     digest,
@@ -18,18 +19,10 @@ from empire.contracts.tdx_performance import (
     project,
     quarterly_plan,
 )
-from empire.contracts.tdx_performance import (
+from empire.features.performance.contract import (
     UNIT_KINDS as KINDS,
 )
-from empire.core.time import CHINA
-from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
-from empire.plugins.collectors.support import (
-    publish_with_capacity,
-    record_error_safely,
-    wait_for_archive,
-    wait_for_capacity,
-)
-from empire.plugins.collectors.tdx_performance_source import (
+from empire.features.performance.source import (
     BASE,
     CHANGES_PAGE,
     PAGE,
@@ -37,6 +30,13 @@ from empire.plugins.collectors.tdx_performance_source import (
     parse,
     parse_directory,
     request_body,
+)
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
+from empire.plugins.collectors.support import (
+    publish_with_capacity,
+    record_error_safely,
+    wait_for_archive,
+    wait_for_capacity,
 )
 
 

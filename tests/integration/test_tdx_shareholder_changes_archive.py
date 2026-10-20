@@ -21,8 +21,8 @@ pytestmark = [pytest.mark.integration, pytest.mark.skipif(os.environ.get('EMPIRE
 async def monthly(monkeypatch):
     cfg = copy.deepcopy(load_config())
     manager, store = build_manager(cfg), None
-    monkeypatch.setattr('empire.plugins.collectors.tdx_performance.monthly_plan', lambda _: [PERIOD])
-    monkeypatch.setattr('empire.plugins.data.tdx_performance.monthly_plan', lambda _: [PERIOD])
+    monkeypatch.setattr('empire.features.performance.collector.monthly_plan', lambda _: [PERIOD])
+    monkeypatch.setattr('empire.features.performance.query.monthly_plan', lambda _: [PERIOD])
     try:
         await manager.start('collector.tdx_' + KIND)
         c, q = manager.registry.get('collector.tdx_' + KIND), manager.registry.get(KIND + '.tdx_query')
@@ -75,7 +75,7 @@ async def test_duplicate_facts_query_filters_hot_cold_revision_stale_replay(mont
         c.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=source(revised=True))
         await collect(c)
         assert dml and len((await q.list_records())['rows']) == 2  # Withdrawn duplicate removed.
-        from empire.plugins.collectors.tdx_performance_source import parse
+        from empire.features.performance.source import parse
         rows = [r for r in parse(KIND, source(revised=True), PERIOD)[0] if r['unified_code'].endswith('SH')]
         prior = c.envelope(PERIOD+'|SH', rows, 1, 'replay', datetime.now(UTC))
         before = len(dml)
@@ -151,7 +151,7 @@ async def test_source_month_precision_and_unknown_quantity_separate_collection_f
 
 async def test_explicit_single_month_never_certifies_entire_default_history(monthly,monkeypatch):
     _,c,q,_=monthly
-    monkeypatch.setattr('empire.plugins.data.tdx_performance.monthly_plan',
+    monkeypatch.setattr('empire.features.performance.query.monthly_plan',
         lambda latest:[PERIOD] if latest==PERIOD else [PERIOD,'2025-09-01'])
     await c.execute(fresh=True,baseline_revision=await c.checkpoint_revision(),start_month=PERIOD,end_month=PERIOD)
     assert next(v for v in await q.preparation_check({'start':PERIOD,'end':PERIOD}) if v.criterion=='coverage').status=='pass'

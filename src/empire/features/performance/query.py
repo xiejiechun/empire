@@ -8,7 +8,8 @@ from empire.contracts.business_schema import schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.contracts.tdx_performance import (
+from empire.core.time import CHINA
+from empire.features.performance.contract import (
     SCHEMA_VERSION,
     columns,
     day,
@@ -19,11 +20,10 @@ from empire.contracts.tdx_performance import (
     quarterly_plan,
     validate_rows,
 )
-from empire.contracts.tdx_performance import (
+from empire.features.performance.contract import (
     UNIT_KINDS as KINDS,
 )
-from empire.core.time import CHINA
-from empire.plugins.datasets.tdx_performance import PerformanceDataset, decode, unit_where
+from empire.features.performance.dataset import PerformanceDataset, decode, unit_where
 from empire.plugins.infra.collection_state import read_state
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 

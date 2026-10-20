@@ -11,8 +11,8 @@ import pytest
 from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
-from empire.contracts.tdx_performance import KINDS
 from empire.core.config import load_config
+from empire.features.performance.contract import KINDS
 from tests.prefetch_source import prefetch_http
 from tests.test_tdx_performance import PERIOD, directory, source
 
@@ -33,8 +33,8 @@ async def performance(request, monkeypatch):
         return value
     monkeypatch.setattr(c, 'envelope', capture_envelope)
     store = None
-    monkeypatch.setattr('empire.plugins.collectors.tdx_performance.quarterly_plan', lambda _: [PERIOD])
-    monkeypatch.setattr('empire.plugins.data.tdx_performance.quarterly_plan', lambda _: [PERIOD])
+    monkeypatch.setattr('empire.features.performance.collector.quarterly_plan', lambda _: [PERIOD])
+    monkeypatch.setattr('empire.features.performance.query.quarterly_plan', lambda _: [PERIOD])
     def response(*args, **kw):
         params = json.loads(kw['content'])['Params']
         body = directory(kind) if 'cache' in args[1] else source(kind, security=params[1] if kind == 'holder_count' else '')

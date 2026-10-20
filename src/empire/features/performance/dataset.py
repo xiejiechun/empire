@@ -6,7 +6,8 @@ from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.tdx_performance import (
+from empire.core.time import CHINA, mysql_time
+from empire.features.performance.contract import (
     FIELDS,
     SCHEMA_VERSION,
     columns,
@@ -19,10 +20,9 @@ from empire.contracts.tdx_performance import (
     unpack,
     validate_rows,
 )
-from empire.contracts.tdx_performance import (
+from empire.features.performance.contract import (
     UNIT_KINDS as KINDS,
 )
-from empire.core.time import CHINA, mysql_time
 from empire.plugins.infra.collection_state import confirmed_page
 
 

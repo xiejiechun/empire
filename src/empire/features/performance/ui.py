@@ -5,11 +5,11 @@ from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget
 
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.tdx_performance import UNIT_KINDS as KINDS
-from empire.contracts.tdx_performance import columns, project
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
 from empire.core.time import CHINA
+from empire.features.performance.contract import UNIT_KINDS as KINDS
+from empire.features.performance.contract import columns, project
 from empire.plugins.ui.common import accessible, bind_find, hint
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.preview_cards import CardReader, card, fields

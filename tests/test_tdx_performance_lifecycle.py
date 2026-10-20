@@ -7,8 +7,8 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.contracts.tdx_performance import KINDS
-from empire.plugins.collectors.tdx_performance import PerformanceCollector
+from empire.features.performance.collector import PerformanceCollector
+from empire.features.performance.contract import KINDS
 from tests.prefetch_source import prefetch_http
 from tests.test_tdx_performance import PERIOD, directory, source
 
@@ -37,7 +37,7 @@ def collector(kind, monkeypatch):
         ensure_capacity=AsyncMock(), publish_page=AsyncMock(side_effect=publish),
         advance_checkpoint=AsyncMock(side_effect=advance), settings={})
     c.confirmation = SimpleNamespace(page_status=AsyncMock(return_value={'status': 'complete'}))
-    monkeypatch.setattr('empire.plugins.collectors.tdx_performance.quarterly_plan', lambda _: [PERIOD])
+    monkeypatch.setattr('empire.features.performance.collector.quarterly_plan', lambda _: [PERIOD])
     return c, state
 
 

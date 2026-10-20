@@ -56,7 +56,7 @@ async def run():
         # Explicitly invalidate current source proofs before full revalidation.
         from types import SimpleNamespace
 
-        from empire.plugins.datasets.tdx_performance import PerformanceDataset
+        from empire.features.performance.dataset import PerformanceDataset
         from empire.plugins.pipeline.fingerprints import FingerprintCache
         store = SimpleNamespace(client=redis, prefix=prefix)
         await FingerprintCache(store, cfg.get('archive', {}), lambda _: PerformanceDataset('shareholder_changes').FINGERPRINT_VERSION).invalidate('tdx_shareholder_changes', 'tdx')

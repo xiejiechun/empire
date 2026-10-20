@@ -182,15 +182,6 @@
     },
     {
       "legacy_collector_location": true,
-      "owner": "performance",
-      "reason": "业绩、股东人数及增减持：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.tdx_performance_source"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
       "owner": "source_support",
       "reason": "共享采集准入、重试与会话：来源解析或纯范围规划，无请求执行",
       "role": "parser",
@@ -664,46 +655,6 @@
       "role": "collector",
       "modules": [
         "empire.features.news.collector"
-      ]
-    },
-    {
-      "owner": "performance",
-      "reason": "业绩、股东人数及增减持：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.tdx_performance"
-      ]
-    },
-    {
-      "owner": "performance",
-      "reason": "业绩、股东人数及增减持：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.tdx_performance"
-      ]
-    },
-    {
-      "owner": "performance",
-      "reason": "业绩、股东人数及增减持：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.tdx_performance"
-      ]
-    },
-    {
-      "owner": "performance",
-      "reason": "业绩、股东人数及增减持：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.tdx_performance"
-      ]
-    },
-    {
-      "owner": "performance",
-      "reason": "业绩、股东人数及增减持：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.tdx_performance"
       ]
     },
     {
@@ -1519,6 +1470,20 @@
       "prefix": "empire.features.unlock_industries",
       "owner": "unlock_industries",
       "reason": "完整来源市场事件单一业务归属，公共路径与稳定身份保持",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "source_adapter",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.performance",
+      "owner": "performance",
+      "reason": "六kind来源单元与结构化业务契约同包归属，保留原稳定身份与公共路径",
       "roles": {
         "bundle": "composition",
         "contract": "contract",

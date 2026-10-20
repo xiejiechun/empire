@@ -10,9 +10,9 @@ from pathlib import Path
 from sqlalchemy import inspect, text
 
 from empire.__main__ import acquire_instance_lock
-from empire.contracts.tdx_performance import KINDS
 from empire.core.config import load_config, project_root
 from empire.core.redaction import redact
+from empire.features.performance.contract import KINDS
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import shape

@@ -4382,7 +4382,7 @@ scripts/create_repurchase_schema.py显式新增表，正常关闭Empire、待归
 
 ## 用途与归属
 
-earnings_forecast.tdx_unit归属tdx-earnings-forecast任务，固定来源tdx。datasets/tdx_performance.py唯一正式写入，data/tdx_performance.py正式只读查询，页面不写SQL。
+earnings_forecast.tdx_unit归属tdx-earnings-forecast任务，固定来源tdx。features/performance/dataset.py唯一正式写入，features/performance/query.py正式只读查询，页面不写SQL。
 
 ## 结构与身份
 
@@ -4457,7 +4457,7 @@ scripts/init_tdx_performance.py显式新增五表，正常关闭、单实例锁�
 
 ## 用途与归属
 
-earnings_quick.tdx_unit归属tdx-earnings-quick任务，固定来源tdx。datasets/tdx_performance.py唯一正式写入，data/tdx_performance.py正式只读查询，页面不写SQL。
+earnings_quick.tdx_unit归属tdx-earnings-quick任务，固定来源tdx。features/performance/dataset.py唯一正式写入，features/performance/query.py正式只读查询，页面不写SQL。
 
 ## 结构与身份
 
@@ -4545,7 +4545,7 @@ scripts/init_tdx_performance.py显式新增五表，正常关闭、单实例锁�
 
 ## 用途与归属
 
-earnings_disclosure.tdx_unit归属tdx-earnings-disclosure任务，固定来源tdx。datasets/tdx_performance.py唯一正式写入，data/tdx_performance.py正式只读查询，页面不写SQL。
+earnings_disclosure.tdx_unit归属tdx-earnings-disclosure任务，固定来源tdx。features/performance/dataset.py唯一正式写入，features/performance/query.py正式只读查询，页面不写SQL。
 
 ## 结构与身份
 
@@ -4621,7 +4621,7 @@ scripts/init_tdx_performance.py显式新增五表，正常关闭、单实例锁�
 
 ## 用途与归属
 
-earnings_report.tdx_unit归属tdx-earnings-report任务，固定来源tdx。datasets/tdx_performance.py唯一正式写入，data/tdx_performance.py正式只读查询，页面不写SQL。
+earnings_report.tdx_unit归属tdx-earnings-report任务，固定来源tdx。features/performance/dataset.py唯一正式写入，features/performance/query.py正式只读查询，页面不写SQL。
 
 ## 结构与身份
 
@@ -4701,7 +4701,7 @@ scripts/init_tdx_performance.py显式新增五表，正常关闭、单实例锁�
 
 ## 用途与归属
 
-holder_count.tdx_unit归属tdx-holder-count任务，固定来源tdx。datasets/tdx_performance.py唯一正式写入，data/tdx_performance.py正式只读查询，页面不写SQL。
+holder_count.tdx_unit归属tdx-holder-count任务，固定来源tdx。features/performance/dataset.py唯一正式写入，features/performance/query.py正式只读查询，页面不写SQL。
 
 ## 结构与身份
 
@@ -4953,7 +4953,7 @@ scripts/migrate_holder_source_rows.py显式升级来源行契约4：数量与显
 
 每个月请求一次，参数固定`["0","asc","YYYYMM","","1","1","10000"]`。10000容量边界、总数或列结构不符时失败，不以不稳定偏移分页拼凑完整集合。整月校验后按市场发布，继续后续下载，整轮入队后才等待归档。继续采集沿用已入队断点；重新初始化重建下载计划，待归档阶段先确认原轮次。Redis丢失后重新核验全部范围，相同内容由共享摘要/SQL确认，不重复写业务。
 
-显式指定月份使用 `scripts/verify_shareholder_changes.py --start YYYY-MM-01 --end YYYY-MM-01`，相同起止月份就是一次指定数据月份采集。先正常关闭桌面，脚本调用已登记组件和统一归档器，结束后重新打开；不创建第二套采集路径。未完成断点与范围不同时须显式重新初始化，已入队数据继续按原流程归档。
+日常采集使用上述任务与已保存策略。开发有限月份核验使用 `scripts/verify_shareholder_changes.py --test-mysql-settings <独立测试配置> --months YYYY-MM-01 ... --random-count 30 --seed <显式种子> --proxy-only --output build/<新报告>.json`；先正常关闭桌面，结束后重新打开。该命令核实实际server_uuid，在UUID私有测试库和Redis命名空间内调用正式采集、统一归档及正式查询，核对完整集合和内容，不写生产业务或保存日常策略。失败或取消仍须核实清理；清理失败使用 `--cleanup-only --run-state <原ownership文件>` 恢复。有限月份结果不证明生产全历史完成。
 
 日期参数必须是月份第一天 `YYYY-MM-01`；非法结束日期在发请求前明确报错。
 

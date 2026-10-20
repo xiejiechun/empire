@@ -3,7 +3,7 @@ import json
 from collections import Counter
 from datetime import datetime
 
-from empire.contracts.tdx_performance import (
+from empire.features.performance.contract import (
     CAPACITY,
     SOURCE_COLUMNS,
     day,
@@ -11,7 +11,7 @@ from empire.contracts.tdx_performance import (
     source_row,
     validate_rows,
 )
-from empire.contracts.tdx_performance import (
+from empire.features.performance.contract import (
     UNIT_KINDS as KINDS,
 )
 
@@ -117,7 +117,7 @@ def parse_changes(body, period):
     if total != len(raw) or not 0 <= total < CAPACITY:
         raise ValueError('持股变动完整月份被截断或来源总数不符')
     rows, occurrences = [], Counter()
-    from empire.contracts.tdx_performance import columns, digest
+    from empire.features.performance.contract import columns, digest
     for values in raw:
         record = dict(zip(SOURCE_COLUMNS['shareholder_changes'], values, strict=True))
         for field in ('T003', 'T004', 'T013'):

@@ -739,41 +739,41 @@
       "earnings_forecast": {
         "topic": "MySQL earnings_forecast",
         "sources": [
-          "src/empire/contracts/tdx_performance.py",
-          "src/empire/plugins/datasets/tdx_performance.py",
-          "src/empire/plugins/data/tdx_performance.py"
+          "src/empire/features/performance/contract.py",
+          "src/empire/features/performance/dataset.py",
+          "src/empire/features/performance/query.py"
         ]
       },
       "earnings_quick": {
         "topic": "MySQL earnings_quick",
         "sources": [
-          "src/empire/contracts/tdx_performance.py",
-          "src/empire/plugins/datasets/tdx_performance.py",
-          "src/empire/plugins/data/tdx_performance.py"
+          "src/empire/features/performance/contract.py",
+          "src/empire/features/performance/dataset.py",
+          "src/empire/features/performance/query.py"
         ]
       },
       "earnings_disclosure": {
         "topic": "MySQL earnings_disclosure",
         "sources": [
-          "src/empire/contracts/tdx_performance.py",
-          "src/empire/plugins/datasets/tdx_performance.py",
-          "src/empire/plugins/data/tdx_performance.py"
+          "src/empire/features/performance/contract.py",
+          "src/empire/features/performance/dataset.py",
+          "src/empire/features/performance/query.py"
         ]
       },
       "earnings_report": {
         "topic": "MySQL earnings_report",
         "sources": [
-          "src/empire/contracts/tdx_performance.py",
-          "src/empire/plugins/datasets/tdx_performance.py",
-          "src/empire/plugins/data/tdx_performance.py"
+          "src/empire/features/performance/contract.py",
+          "src/empire/features/performance/dataset.py",
+          "src/empire/features/performance/query.py"
         ]
       },
       "shareholder_count": {
         "topic": "MySQL shareholder_count",
         "sources": [
-          "src/empire/contracts/tdx_performance.py",
-          "src/empire/plugins/datasets/tdx_performance.py",
-          "src/empire/plugins/data/tdx_performance.py"
+          "src/empire/features/performance/contract.py",
+          "src/empire/features/performance/dataset.py",
+          "src/empire/features/performance/query.py"
         ]
       },
       "holder_report": {
@@ -797,11 +797,11 @@
       "shareholder_change": {
         "topic": "MySQL shareholder_change",
         "sources": [
-          "src/empire/contracts/tdx_performance.py",
-          "src/empire/plugins/collectors/tdx_performance.py",
-          "src/empire/plugins/collectors/tdx_performance_source.py",
-          "src/empire/plugins/datasets/tdx_performance.py",
-          "src/empire/plugins/data/tdx_performance.py"
+          "src/empire/features/performance/contract.py",
+          "src/empire/features/performance/collector.py",
+          "src/empire/features/performance/source.py",
+          "src/empire/features/performance/dataset.py",
+          "src/empire/features/performance/query.py"
         ]
       },
       "restricted_share_unlock": {

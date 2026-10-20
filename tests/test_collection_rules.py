@@ -35,7 +35,7 @@ def test_request_contracts_match_real_source_parameters():
 
     from empire.features.kaipanla.contract import PRODUCTS
     from empire.features.kaipanla.product_source import options
-    from empire.plugins.collectors.tdx_performance_source import params
+    from empire.features.performance.source import params
     rules = collection_rules()
     for kind in ('earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report'):
         rule = rules['tdx-' + kind.replace('_', '-')]

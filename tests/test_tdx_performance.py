@@ -6,7 +6,7 @@ from decimal import Decimal
 import pytest
 
 from empire.bootstrap import build_manager
-from empire.contracts.tdx_performance import (
+from empire.features.performance.contract import (
     FIELDS,
     KINDS,
     SOURCE_COLUMNS,
@@ -18,8 +18,8 @@ from empire.contracts.tdx_performance import (
     quarterly_plan,
     unpack,
 )
-from empire.plugins.collectors.tdx_performance_source import parse, parse_directory, request_body
-from empire.plugins.datasets.tdx_performance import PerformanceDataset
+from empire.features.performance.dataset import PerformanceDataset
+from empire.features.performance.source import parse, parse_directory, request_body
 
 PERIOD = '2026-06-30'
 

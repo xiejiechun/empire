@@ -1,0 +1,48 @@
+{
+  "base_commit": "1cae32e287b11f3c93b5542390f554d86c30ef4c",
+  "modules": [
+    {
+      "old": "src/empire/contracts/tdx_performance.py",
+      "new": "src/empire/features/performance/contract.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+      "after_sha256": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e"
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_performance.py",
+      "new": "src/empire/features/performance/collector.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "c61de9a2862a0c68fd7e861addccfb0b7de40bf1f5b5e5d4253ad4a068b63481",
+      "after_sha256": "333da879df8eb328cda0286e5ae568268d9a579669b5d1f5db20502144495cd2"
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_performance_source.py",
+      "new": "src/empire/features/performance/source.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "8a8270541521cd08465b948abde252b331ccf704768bbb8ed13ec906b95f0ae2",
+      "after_sha256": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e"
+    },
+    {
+      "old": "src/empire/plugins/datasets/tdx_performance.py",
+      "new": "src/empire/features/performance/dataset.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "3322b812bc072a06dac74f6bfed08f959bf48f5a1241ad7dee5c0b8ffaf86dc5",
+      "after_sha256": "796a71a32c6420b7d31009ac16dacda9658da419e439d398bf3e3c377e84e0af"
+    },
+    {
+      "old": "src/empire/plugins/data/tdx_performance.py",
+      "new": "src/empire/features/performance/query.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "7f067ee37add86b97fa7ace361f8c5a4b7b5733f750e8489341a43e801ffe3c8",
+      "after_sha256": "8c3430f57f0d7a9a98907bc8e511b287731eaec190a39c6320894ef82c25d167"
+    },
+    {
+      "old": "src/empire/plugins/ui/tdx_performance.py",
+      "new": "src/empire/features/performance/ui.py",
+      "non_import_ast_equal": true,
+      "before_sha256": "33cea3fe9e03b90a675b6f23f4401c88fe8494f6f6d54ca2c8fc9388620b59dc",
+      "after_sha256": "b9e623d5f5e313cfacd28661b6fba63d111e75546a5697273c1861dca4bc2a77"
+    }
+  ],
+  "limitation": "AST仅证明函数/类等表达式等价；身份顺序、运行、来源与真实桌面分别验收"
+}

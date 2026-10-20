@@ -9,9 +9,15 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.contracts.tdx_performance import SOURCE_COLUMNS, identity, monthly_plan, pack, unpack
-from empire.plugins.collectors.tdx_performance import PerformanceCollector
-from empire.plugins.collectors.tdx_performance_source import parse, request_body
+from empire.features.performance.collector import PerformanceCollector
+from empire.features.performance.contract import (
+    SOURCE_COLUMNS,
+    identity,
+    monthly_plan,
+    pack,
+    unpack,
+)
+from empire.features.performance.source import parse, request_body
 from tests.prefetch_source import prefetch_http
 
 PERIOD = '2025-08-01'
@@ -49,7 +55,7 @@ def setup_collector(monkeypatch):
     c.ingest = SimpleNamespace(checkpoint=AsyncMock(side_effect=lambda _: dict(state)), ensure_capacity=AsyncMock(),
         publish_page=AsyncMock(side_effect=publish), advance_checkpoint=AsyncMock(side_effect=advance), settings={})
     c.confirmation = SimpleNamespace(page_status=AsyncMock(return_value={'status': 'complete'}))
-    monkeypatch.setattr('empire.plugins.collectors.tdx_performance.monthly_plan', lambda _: [PERIOD])
+    monkeypatch.setattr('empire.features.performance.collector.monthly_plan', lambda _: [PERIOD])
     return c, state
 
 
@@ -124,7 +130,7 @@ async def test_source_failure_does_not_publish_or_advance(monkeypatch):
 async def test_two_months_publish_without_waiting_prior_archive(monkeypatch):
     c, state = setup_collector(monkeypatch)
     dates = [PERIOD, '2025-09-01']
-    monkeypatch.setattr('empire.plugins.collectors.tdx_performance.monthly_plan', lambda _: dates)
+    monkeypatch.setattr('empire.features.performance.collector.monthly_plan', lambda _: dates)
     def response(*args, **kw):
         month = json.loads(kw['content'])['Params'][2]
         return httpx.Response(200, json=source(month[:4] + '-' + month[4:] + '-01'))
