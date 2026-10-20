@@ -49,3 +49,5 @@
 最终实际CLI `scripts/documentation_contract.py review --note <本批六kind与安全入口具体审阅说明>`，为五个未变数据页及shareholder_change表分别记录`--unchanged FEATURE=具体理由`；不以全局理由代替逐功能审阅。`documentation_contract.py check`、`verify_documentation.py`、`verify_database_design.py`均exit0（253文档/1749链接、55表/49数据集/12JSON）。文档回归`py -m pytest tests/test_documentation_contracts.py tests/test_documentation_review.py tests/test_documentation_sources.py tests/test_storage_help.py --basetemp build/pytest-e6e-docs2 -q --tb=short --junitxml out/docs2.xml` exit0，35 passed/26.18秒；首命令误加不存在的第五文件exit4、未运行，日志保留。
 
 正式发布前源身份与source-2精确匹配、两容量bindings逐文件相同、T3源/冻结文件保持已核。48条SQL保存设置payload/updated_at与E6d原快照相同，两config及原偏好逐字节相同。待形成干净实现提交后运行唯一正式门禁；正式发布与同包真实桌面仍未完成，不能进入E6f。
+
+实现提交`3fc70828f5bcd01dfe6be887ff6acaf9c4793c4a`首轮完整发布`da0a53aa761f4fb9a1278da12666b07b`在第3步文档检查失败：最后review后继续更新状态和验收文档使content摘要过期。环境与42项依赖检查通过，未进入pytest/打包/切换，原E6d安装保持。原日志`out/release-1.log`、本轮inputs/steps/failure.json保留，该轮尚无publication journal。修复为文档定稿后重新执行同一review CLI、check、文档回归并形成新干净提交，再从头执行唯一完整发布；不改文档门禁或拼接失败轮证据。第一次修复后同四文件文档回归`--basetemp build/pytest-e6e-docs3 --junitxml out/docs3.xml` exit0，35 passed/26.93秒。
