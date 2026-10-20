@@ -6,7 +6,8 @@ from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.unlocks import (
+from empire.core.time import mysql_time
+from empire.features.unlocks.contract import (
     CONTRACT,
     DATASET,
     DETAIL_COLUMNS,
@@ -20,7 +21,6 @@ from empire.contracts.unlocks import (
     unpack,
     validate_unit,
 )
-from empire.core.time import mysql_time
 from empire.plugins.infra.collection_state import confirmed_page
 
 PARENT_TABLE, DETAIL_TABLE = 'restricted_share_unlock', 'restricted_share_unlock_detail'

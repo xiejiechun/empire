@@ -8,7 +8,8 @@ from empire.contracts.business_schema import schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.contracts.unlocks import (
+from empire.core.time import CHINA
+from empire.features.unlocks.contract import (
     CONTRACT,
     DATASET,
     JOB,
@@ -21,8 +22,7 @@ from empire.contracts.unlocks import (
     valid_proof,
     validate_unit,
 )
-from empire.core.time import CHINA
-from empire.plugins.datasets.unlocks import (
+from empire.features.unlocks.dataset import (
     TABLE_COLUMNS,
     UnlockDataset,
     decode,

@@ -3,8 +3,8 @@ import re
 from datetime import UTC, date, datetime
 from decimal import Decimal
 
-from empire.contracts.unlocks import canonical_number, digest, shares, text_value
 from empire.core.time import CHINA
+from empire.features.unlocks.contract import canonical_number, digest, shares, text_value
 
 PROJECT = 'tdx-unlock-industries'
 JOB = PROJECT + '-v1'

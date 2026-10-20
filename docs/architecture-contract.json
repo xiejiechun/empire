@@ -210,24 +210,6 @@
       ]
     },
     {
-      "legacy_collector_location": true,
-      "owner": "unlock_industries",
-      "reason": "解禁行业：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.tdx_unlock_industry_source"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
-      "owner": "unlocks",
-      "reason": "解禁明细：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.tdx_unlock_source"
-      ]
-    },
-    {
       "owner": "application",
       "reason": "应用入口和静态装配：包入口",
       "role": "package",
@@ -877,86 +859,6 @@
       ]
     },
     {
-      "owner": "unlock_industries",
-      "reason": "解禁行业：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.unlock_industries"
-      ]
-    },
-    {
-      "owner": "unlock_industries",
-      "reason": "解禁行业：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.unlock_industries"
-      ]
-    },
-    {
-      "owner": "unlock_industries",
-      "reason": "解禁行业：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.unlock_industries"
-      ]
-    },
-    {
-      "owner": "unlock_industries",
-      "reason": "解禁行业：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.unlock_industries"
-      ]
-    },
-    {
-      "owner": "unlock_industries",
-      "reason": "解禁行业：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.tdx_unlock_industries"
-      ]
-    },
-    {
-      "owner": "unlocks",
-      "reason": "解禁明细：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.unlocks"
-      ]
-    },
-    {
-      "owner": "unlocks",
-      "reason": "解禁明细：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.unlocks"
-      ]
-    },
-    {
-      "owner": "unlocks",
-      "reason": "解禁明细：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.unlocks"
-      ]
-    },
-    {
-      "owner": "unlocks",
-      "reason": "解禁明细：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.unlocks"
-      ]
-    },
-    {
-      "owner": "unlocks",
-      "reason": "解禁明细：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.tdx_unlocks"
-      ]
-    },
-    {
       "owner": "kernel",
       "role": "contract",
       "reason": "纯任务、业务包与有序贡献声明",
@@ -1198,6 +1100,14 @@
       "reason": "Pure stateless confirmation callback contribution protocol.",
       "modules": [
         "empire.contracts.confirmation"
+      ]
+    },
+    {
+      "role": "source_adapter",
+      "owner": "source_support",
+      "reason": "TDX解禁共有无I/O协议，两个业务独立解释",
+      "modules": [
+        "empire.sources.tdx_unlock"
       ]
     }
   ],
@@ -1590,21 +1500,37 @@
         "query": "query",
         "ui": "ui"
       }
+    },
+    {
+      "prefix": "empire.features.unlocks",
+      "owner": "unlocks",
+      "reason": "完整来源市场事件单一业务归属，公共路径与稳定身份保持",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "source_adapter",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.unlock_industries",
+      "owner": "unlock_industries",
+      "reason": "完整来源市场事件单一业务归属，公共路径与稳定身份保持",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "source_adapter",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
+      }
     }
   ],
   "debt": [
-    {
-      "rule": "cross_business_private",
-      "source": "empire.plugins.collectors.tdx_unlock_industry_source",
-      "target": "empire.plugins.collectors.tdx_unlock_source",
-      "names": [
-        "PAGE",
-        "body",
-        "results"
-      ],
-      "line": 6,
-      "reason": "unlock_industries imports private unlocks parser；既有业务间直接复用实现函数；后续按调用含义提取公共契约或明确公开查询接口，本轮仅固定现状。"
-    },
     {
       "rule": "cross_business_private",
       "source": "empire.plugins.data.adjustment",

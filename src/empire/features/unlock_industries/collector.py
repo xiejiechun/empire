@@ -6,7 +6,13 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.unlock_industries import DATASET, JOB, PROJECT, basis, digest, month
+from empire.features.unlock_industries.contract import DATASET, JOB, PROJECT, basis, digest, month
+from empire.features.unlock_industries.source import (
+    DIRECTORY_URL,
+    URL,
+    parse_directory,
+    parse_month,
+)
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -14,14 +20,7 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
-from empire.plugins.collectors.tdx_unlock_industry_source import (
-    DIRECTORY_URL,
-    PAGE,
-    URL,
-    body,
-    parse_directory,
-    parse_month,
-)
+from empire.sources.tdx_unlock import PAGE, body
 
 
 class UnlockIndustryCollector:

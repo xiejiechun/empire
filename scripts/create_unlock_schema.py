@@ -11,7 +11,7 @@ from sqlalchemy import inspect, text
 from empire.__main__ import acquire_instance_lock
 from empire.core.config import load_config
 from empire.core.redaction import redact
-from empire.plugins.datasets.unlocks import TABLE_COLUMNS
+from empire.features.unlocks.dataset import TABLE_COLUMNS
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import validate_shapes

@@ -74,7 +74,7 @@ async def test_hot_cold_repeat_revision_old_basis_wrong_set_and_old_month_retent
         await collect(c)
         assert calls and not dml
         params = dict(batch_id='revision', basis_date='2026-10-13', page=0)
-        from empire.plugins.collectors.tdx_unlock_industry_source import parse_month
+        from empire.features.unlock_industries.source import parse_month
         value = c.envelope(params, MONTHS[0], parse_month(source(revised=True), MONTHS[0], params['basis_date']))
         assert (await archive._archive_data(value, q.mapping.normalize(value)))['written_count'] == 1
         before = len(dml)

@@ -8,9 +8,9 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.contracts.unlock_industries import digest
-from empire.plugins.collectors.tdx_unlock_industries import UnlockIndustryCollector
-from empire.plugins.collectors.tdx_unlock_industry_source import (
+from empire.features.unlock_industries.contract import digest
+from empire.features.unlock_industries.collector import UnlockIndustryCollector
+from empire.features.unlock_industries.source import (
     SOURCE_COLUMNS,
     parse_directory,
     parse_month,

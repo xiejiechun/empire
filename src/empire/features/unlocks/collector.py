@@ -7,7 +7,8 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.unlocks import (
+from empire.core.time import CHINA
+from empire.features.unlocks.contract import (
     CONTRACT,
     DATASET,
     JOB,
@@ -19,7 +20,14 @@ from empire.contracts.unlocks import (
     valid_proof,
     validate_unit,
 )
-from empire.core.time import CHINA
+from empire.features.unlocks.dataset import list_digest
+from empire.features.unlocks.source import (
+    URL,
+    detail_params,
+    list_params,
+    parse_detail,
+    parse_list,
+)
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -27,16 +35,7 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
-from empire.plugins.collectors.tdx_unlock_source import (
-    PAGE,
-    URL,
-    body,
-    detail_params,
-    list_params,
-    parse_detail,
-    parse_list,
-)
-from empire.plugins.datasets.unlocks import list_digest
+from empire.sources.tdx_unlock import PAGE, body
 
 
 class UnlockCollector:

@@ -5077,7 +5077,7 @@ scripts/create_shareholder_change_schema.py显式新增表，正常关闭桌面�
 
 ## 限制与排错
 
-有效空列表、有效空明细、未请求及请求失败分别表示。列表存在但来源明细为空时保留来源空状态及汇总，数据准备不能把缺少股东内容判成齐全；下轮复查。来源舍入可能使明细数量合计与汇总有小差异，不用填零或篡改来源量解决。
+有效空列表、有效空明细、未请求及请求失败分别表示。列表存在但来源明细为空时保留来源空状态及汇总，数据准备不能把缺少股东内容判成齐全；下轮复查。列表与明细通过共享请求组关联，同组并列列表的明细只显示一份，不按列表行数倍乘。来源舍入可能使明细数量合计与汇总有小差异，不用填零或篡改来源量解决。
 
 ## 相关说明
 
@@ -5090,6 +5090,8 @@ scripts/create_shareholder_change_schema.py显式新增表，正常关闭桌面�
 # MySQL restricted_share_unlock
 
 ## 用途与归属
+
+源码归属`features/unlocks`：`contract`定义字段，`dataset`事务保存，`query`提供正式读取；下载经唯一共享`sources/tdx_unlock.py`协议与公共下载/入队/归档服务。入口与存储身份保持，启动不迁移。
 
 数据集unlocks.tdx_month，固定tdx，采集项目tdx-unlocks；统一归档与unlocks.tdx_query为唯一正式路径。
 
@@ -5142,6 +5144,8 @@ scripts/create_unlock_schema.py显式新增两表；正常关闭Empire、队列0
 # MySQL restricted_share_unlock_detail
 
 ## 用途与归属
+
+源码归属`features/unlocks`：`contract`定义字段，`dataset`事务保存，`query`提供正式读取；下载经唯一共享`sources/tdx_unlock.py`协议与公共下载/入队/归档服务。入口与存储身份保持，启动不迁移。
 
 数据集unlocks.tdx_month，固定tdx，采集项目tdx-unlocks；统一归档与unlocks.tdx_query为唯一正式路径。
 
@@ -5231,6 +5235,8 @@ scripts/create_unlock_schema.py显式新增两表；正常关闭Empire、队列0
 # MySQL restricted_share_unlock_industry
 
 ## 用途与归属
+
+源码归属`features/unlock_industries`：`contract`定义字段，`dataset`事务保存，`query`提供正式读取；下载经唯一共享`sources/tdx_unlock.py`协议与公共下载/入队/归档服务。入口与存储身份保持，启动不迁移。
 数据集unlocks.tdx_industry_month，固定tdx，采集项目tdx-unlock-industries；统一归档与unlock_industries.tdx_query唯一正式路径。
 
 ## 结构与身份

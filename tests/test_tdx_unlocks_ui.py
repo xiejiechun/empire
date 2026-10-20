@@ -2,7 +2,7 @@ import os
 from concurrent.futures import Future
 from types import SimpleNamespace
 
-from empire.plugins.ui.unlocks import UnlockUiPlugin
+from empire.features.unlocks.ui import UnlockUiPlugin
 from tests.test_tdx_unlocks import normalized
 
 

@@ -81,7 +81,7 @@ async def test_parent_shared_group_query_hot_cold_revision_stale_replay(monthly)
         assert dml and len((await q.list_records())['rows']) == 2
         p, d = normalized(revised=True)
         # Detail correction is separate from list correction.
-        from empire.plugins.collectors.tdx_unlock_source import parse_detail
+        from empire.features.unlocks.source import parse_detail
         d = parse_detail(detail(revised=True), p[0])
         cursor = dict(batch_id='replay', page=0)
         prior = c.envelope(MONTH + '|SH', p, d, cursor, datetime.now(UTC))

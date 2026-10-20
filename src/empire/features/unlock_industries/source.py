@@ -1,9 +1,9 @@
 """The industry endpoint returns a whole month and has no page-size parameter."""
 from datetime import date
 
-from empire.contracts.unlock_industries import NUMBERS, canonical_number, validate
-from empire.contracts.unlocks import shares, source_day, text_value
-from empire.plugins.collectors.tdx_unlock_source import PAGE, body, results
+from empire.features.unlock_industries.contract import NUMBERS, canonical_number, validate
+from empire.features.unlocks.contract import shares, source_day, text_value
+from empire.sources.tdx_unlock import results
 
 DIRECTORY_URL = 'http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cgbd_cache'
 URL = 'http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cgbd_dxfhy'
@@ -22,7 +22,7 @@ def parse_directory(value):
         months.append(date(int(raw[:4]), int(raw[4:]), 1).isoformat())
     if len(set(months)) != len(months):
         raise ValueError('解禁行业目录重复')
-    from empire.contracts.unlock_industries import basis
+    from empire.features.unlock_industries.contract import basis
     return sorted(months), basis(source_day(metadata[0][0]))
 
 
@@ -42,4 +42,4 @@ def parse_month(value, month, basis_date):
     return rows
 
 
-__all__ = ['DIRECTORY_URL', 'PAGE', 'URL', 'body', 'parse_directory', 'parse_month']
+__all__ = ['DIRECTORY_URL', 'URL', 'parse_directory', 'parse_month']

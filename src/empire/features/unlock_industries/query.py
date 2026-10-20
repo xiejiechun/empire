@@ -8,7 +8,7 @@ from empire.contracts.business_schema import schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.contracts.unlock_industries import (
+from empire.features.unlock_industries.contract import (
     COLUMNS,
     DATASET,
     JOB,
@@ -19,7 +19,7 @@ from empire.contracts.unlock_industries import (
     month,
     validate,
 )
-from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset, decode, read_month
+from empire.features.unlock_industries.dataset import UnlockIndustryDataset, decode, read_month
 from empire.plugins.infra.collection_state import read_state
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 

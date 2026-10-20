@@ -1,9 +1,8 @@
 """List capacity is large; responses and detail request groups remain bounded."""
 import calendar
-import json
 from collections import Counter
 
-from empire.contracts.unlocks import (
+from empire.features.unlocks.contract import (
     CAPACITY,
     canonical_number,
     digest,
@@ -15,8 +14,8 @@ from empire.contracts.unlocks import (
     source_day,
     text_value,
 )
+from empire.sources.tdx_unlock import results
 
-PAGE = 'http://page2.tdx.com.cn:7615/site/tdxsj/html/tdxsj_cgbd_cgbd.html'
 URL = 'http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_cgbd_dxfgg'
 LIST_COLUMNS = ['sc', 'T006', 'name', 'code', 'hyname', 'sT006', 'jjsl', 'T003', 'flag', 'T010']
 DETAIL_SOURCE_COLUMNS = ['name', 'code', 'T007', 'sc', 'T006', 'jjsl']
@@ -34,25 +33,8 @@ def detail_params(parent):
             parent['unified_code'][:6], '1', '1', str(CAPACITY)]
 
 
-def body(params):
-    return json.dumps({'Params': params}, separators=(',', ':')).encode()
 
 
-def results(value, columns):
-    if not isinstance(value, dict) or type(value.get('ErrorCode')) is not int or value['ErrorCode'] != 0:
-        raise ValueError('大小非解禁来源返回错误')
-    sets = value.get('ResultSets')
-    if not isinstance(sets, list) or len(sets) != len(columns):
-        raise ValueError('大小非解禁结果集缺失')
-    output = []
-    for s, cols in zip(sets, columns, strict=True):
-        rows = s.get('Content')
-        if (s.get('ColName') != cols or not isinstance(rows, list)
-                or type(s.get('Count')) is not int or s['Count'] != len(rows)
-                or any(not isinstance(r, list) or len(r) != len(cols) for r in rows)):
-            raise ValueError('大小非解禁列或响应条数错误')
-        output.append(rows)
-    return output
 
 
 def parse_list(value, month):
@@ -105,3 +87,5 @@ def parse_detail(value, parent):
         row['record_key'] = fact_key(row, True)
         output.append(row)
     return sorted(output, key=lambda r: r['record_key'])
+
+

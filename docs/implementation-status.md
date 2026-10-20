@@ -1,3 +1,5 @@
+2026-10-20 E6d解禁个股与行业已归属features/unlocks与features/unlock_industries，共享协议唯一归sources/tdx_unlock.py；旧入口及调用方退役，稳定身份与用户设置保持。业务/隔离/工具安全、有限全代理来源、两份原规模新容量和冻结性能通过，尚待正式发布与同包真实桌面，整个优化未完成。见[E6d记录](evidence/architecture-e6d-2026-10-20.md)。
+
 # 当前实现与验证边界
 
 2026-10-20接续核实：**E6b-aliases本批组织迁移范围已验收，结案提交待推送核实**。实现b96abe26514b0912569b6559b09c3eefe0a684c4，release e50fe39d6083405ab7abaf86d90a2561 committed/passed，3793 passed/5 opt-in skipped。两个旧入口退役、114安全/私有SQL、329公共回归、248项全代理整表/pending0、1000行真实新容量及T3原18项通过；同包正式查询、真实桌面、48设置及原config/偏好、正常关开完成。结案push精确核实后下一项E6c，更名/ST尚未实施；既有来源及历史准备失败保留，整个优化未完成。见[本批记录](./evidence/architecture-e6b-aliases-2026-10-20.md)、[真实桌面](./evidence/architecture-e6b-aliases-desktop-2026-10-20.md)。下文旧快照保留历史时态。

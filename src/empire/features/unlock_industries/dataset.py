@@ -5,7 +5,8 @@ from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.unlock_industries import (
+from empire.core.time import CHINA, mysql_time
+from empire.features.unlock_industries.contract import (
     COLUMNS,
     DATASET,
     JOB,
@@ -19,7 +20,6 @@ from empire.contracts.unlock_industries import (
     validate,
     version,
 )
-from empire.core.time import CHINA, mysql_time
 from empire.plugins.infra.collection_state import confirmed_page
 
 TABLE_COLUMNS = {TABLE: COLUMNS}

@@ -360,3 +360,5 @@ ths-capital任务使用collector.ths_capital→ths.capital.security→八个类�
 ## E6a同花顺资本业务归属
 
 公司资本运作由[业务包](../src/empire/features/ths_capital/README.md)定位：contract/source/collector/dataset/query/ui及schema2 transport在同一业务目录，bundle保持原槽位。八表组只读E0 SQL归属资源，公共HTML、下载、代理、预取、入队、摘要和归档仍为原共享路径。七旧模块及全部现行调用方退役，无转发层；维护建表和实采工具使用现行业务契约。组织迁移开发状态及交付证据见[E6a记录](evidence/architecture-e6a-2026-10-20.md)。
+
+E6d解禁职责已迁到`features/unlocks`和`features/unlock_industries`，两业务仅共享无I/O的`sources/tdx_unlock.py`协议；行业使用个股公开contract纯规范函数，不导入私有source。原月市场汇总/共享明细和月行业粒度、贡献槽位及公共preparation路径保持。当前验证/发布事实见[E6d记录](evidence/architecture-e6d-2026-10-20.md)。

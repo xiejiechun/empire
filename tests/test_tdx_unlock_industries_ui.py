@@ -2,8 +2,8 @@ import os
 from concurrent.futures import Future
 from types import SimpleNamespace
 
-from empire.plugins.collectors.tdx_unlock_industry_source import parse_month
-from empire.plugins.ui.unlock_industries import UnlockIndustryUiPlugin
+from empire.features.unlock_industries.source import parse_month
+from empire.features.unlock_industries.ui import UnlockIndustryUiPlugin
 from tests.test_tdx_unlock_industries import BASIS, MONTHS, source
 
 

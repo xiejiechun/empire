@@ -9,8 +9,8 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.contracts.unlocks import digest, monthly_plan, pack, unpack, validate_unit
-from empire.plugins.collectors.tdx_unlock_source import (
+from empire.features.unlocks.contract import digest, monthly_plan, pack, unpack, validate_unit
+from empire.features.unlocks.source import (
     DETAIL_SOURCE_COLUMNS,
     LIST_COLUMNS,
     detail_params,
@@ -18,8 +18,8 @@ from empire.plugins.collectors.tdx_unlock_source import (
     parse_detail,
     parse_list,
 )
-from empire.plugins.collectors.tdx_unlocks import UnlockCollector
-from empire.plugins.datasets.unlocks import list_digest
+from empire.features.unlocks.collector import UnlockCollector
+from empire.features.unlocks.dataset import list_digest
 from tests.prefetch_source import prefetch_http
 
 MONTH = '2020-01-01'
@@ -211,7 +211,7 @@ async def test_sql_proofs_skip_unchanged_except_rotating_review(monkeypatch):
         @staticmethod
         def now(tz):
             return datetime(2026, 10, 14, tzinfo=tz)
-    monkeypatch.setattr('empire.plugins.collectors.tdx_unlocks.datetime', Clock)
+    monkeypatch.setattr('empire.features.unlocks.collector.datetime', Clock)
     original = c.http.request.side_effect
     def response(*a, **kw):
         params = json.loads(kw['content'])['Params']

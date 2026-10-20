@@ -29,3 +29,9 @@
 ## 开发核验进度
 2026-10-14来源当前目录24月700行，2026-09至2028-08，估值基准日2026-10-13；正式采集25次代理请求，逐月规范集合及内容摘要与MySQL/正式查询一致，待归档0。专项协议/生命周期/UI/隔离归档链路13项通过，隔离12000行容量通过。显式新增行业表前后原业务库存及统一状态一致。实际证据见[evidence/unlock-industries-live-2026-10-14.json](evidence/unlock-industries-live-2026-10-14.json)。
 正式发布与真实桌面验收仍待完成；全量回归2011项通过，文档最终审阅后执行发布门禁。原股东任务的结构与容量由该任务独立处理，不属于本次行业开发的验收范围。
+
+## 实现定位与私有验证
+
+源码归属`features/unlock_industries`，contract/source/collector/dataset/query/ui各司其职，bundle保留原贡献身份和顺序；共有PAGE/body/results只有`sources/tdx_unlock.py`一份。未改业务键、表、来源范围或保存设置，无启动迁移。
+
+实采验证入口为`scripts/verify_unlock_industries.py`，必须显式独立MySQL配置、私有UUID资源及新build报告，复用SQL守卫与共享下载/代理/归档，不保存日常策略。容量由对应`measure_unlock_industries.py`执行原规模协议；个股样本必须提供本轮实际全代理来源报告，当前源绑定不符拒绝。清理失败保留归属记录，按同一入口cleanup-only恢复，不能猜库名删除。开发/实采/发布状态分别见[E6d记录](evidence/architecture-e6d-2026-10-20.md)。
