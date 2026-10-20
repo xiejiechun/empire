@@ -1,19 +1,9 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-20T00:47:30.517634+00:00",
-  "note": "E6a最终审阅当前规则路径、私有代理来源两轮与容量/T3证据、八表覆盖和九栏目时间限制；源码行为及逐功能不变理由沿用已核事实",
-  "unchanged_reason": "同花顺资本组织迁移及既有表权威接线不改变其他业务操作、持久化、来源和恢复，依赖路径变化已精确核对",
-  "exceptions": {
-    "mysql:capital_funding": "只迁移同花顺资本读写模块路径，融资表字段主键索引版本及恢复语义完全不变",
-    "mysql:capital_project": "只迁移同花顺资本读写模块路径，募投项目字段主键索引及恢复语义完全不变",
-    "mysql:capital_transaction": "只迁移同花顺资本读写模块路径，交易表栏目身份字段主键索引及恢复语义完全不变",
-    "mysql:capital_equity_summary": "只迁移同花顺资本读写模块路径，股权汇总字段身份索引及恢复语义完全不变",
-    "mysql:capital_equity_position": "只迁移同花顺资本读写模块路径，股权持仓字段身份索引及恢复语义完全不变",
-    "mysql:capital_ipo": "只迁移同花顺资本读写模块路径，参股IPO字段身份索引及恢复语义完全不变",
-    "mysql:capital_encumbrance": "只迁移同花顺资本读写模块路径，质押冻结字段父记录身份及恢复语义完全不变",
-    "mysql:capital_release": "只迁移同花顺资本读写模块路径，解除字段父子关联索引及恢复语义完全不变",
-    "redis:preparation-report": "准备模块仅改用迁移后同花顺资本公开查询，报告键类型内容期限清理恢复完全不变"
-  },
+  "reviewed_at": "2026-10-20T02:08:55.466297+00:00",
+  "note": "E6a最终结案：同包发布/真实桌面/48设置与原配置偏好/正常关开证据审阅，234文档及41项回归通过；保留首次命令路径错误和历史来源限制，下一项E6b待远程精确核实。",
+  "unchanged_reason": "",
+  "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "a77505869b2673cfaa06e6fed1a1d93848f29f3c2a4802d7dd99aaaebef4f75a",
@@ -526,7 +516,7 @@
     "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "aa31fd1b8ae90b225bf5e44ea159eccd6d37705cba37ef31375075eb6b4bc2a8",
+  "content_sha256": "2123eb460d933d611bebd16841820c30a5f33935c70661a49aa70b49c07448c9",
   "features": {
     "page:ths_capital": {
       "sources": {
