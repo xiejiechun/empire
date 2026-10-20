@@ -1,0 +1,44 @@
+{
+  "record_kind": "closure_checks_from_actual_outputs",
+  "at": "2026-10-20T17:46:06.245785+00:00",
+  "implementation_commit": "5bcffb7ce31561a44070dfc6998fe5cc87ce6e25",
+  "command": ".venv/Scripts/python.exe -m pytest tests/test_documentation_contracts.py tests/test_documentation_review.py tests/test_documentation_sources.py tests/test_storage_help.py --basetemp build/pytest-e6e-closure -q --tb=short --junitxml build/architecture-e6e-20261020/docs-closure.xml",
+  "observed_exit_code": 0,
+  "junit_sha256": "4ca912124d4995242ecde0e3551fd715ec1fde92bb8a54a0b302e58dbe15588d",
+  "tests": 35,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "log": "...................................                                      [100%]\n35 passed in 27.12s\n",
+  "checks": [
+    {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "scripts/documentation_contract.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS offline documentation coverage and review\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "scripts/verify_documentation.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS documentation contracts: documents=254, links=1766, schema_tables=55\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "scripts/verify_database_design.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS database design gate {'tables': 55, 'datasets': 49, 'json_fields': 12}\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Pure closure documentation; does not rebuild or change the accepted installed package"
+}

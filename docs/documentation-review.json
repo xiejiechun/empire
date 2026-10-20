@@ -1,16 +1,9 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-20T16:21:27.479448+00:00",
-  "note": "E6e逐项审阅六kind页面、任务、表与公共队列：原字段、单位、日期、NULL、预取恢复和稳定身份保持；更新五表读写定位，退役生产实采示例并说明独立UUID私有核验、随机30与恢复入口；两新容量、有限实采与全历史准备及来源波动分别记录。 文档定稿后重新审阅状态与全部验收原报告，首发布文档过期失败保留。",
+  "reviewed_at": "2026-10-20T17:44:30.571349+00:00",
+  "note": "E6e结案审阅：六kind组织迁移、有限来源和全历史准备分别呈现；核对release455c9c6d原24步及同包105条真实桌面观察、两次只读失败与恢复、原配置及48设置、偏好展开恢复和正常关开；本次仅证据及状态文档，不改变程序行为。",
   "unchanged_reason": "",
-  "exceptions": {
-    "page:earnings_forecast": "预告仅模块归属与导入路径迁移，原报告期筛选、正文和NULL规则、页面构造及草稿行为保持，用户说明已逐段审阅。",
-    "page:earnings_quick": "快报仅模块归属与导入路径迁移，原公司及同比行身份、元和百分数单位、游标分页和页面交互保持。",
-    "page:earnings_disclosure": "披露时间仅模块归属迁移，首次与变更预约及实际日期、报告期筛选和实际日期不超观测日规则保持。",
-    "page:earnings_report": "业绩报告仅模块归属迁移，原摘要金额、公告可用日期限制、报告期筛选及分页空态保持，未放宽总数校验。",
-    "page:holder_count": "户数仅模块归属迁移，原统计日与公告日区别、户数和前十大汇总单位、证券筛选和分页保持。",
-    "mysql:shareholder_change": "股东变动表未改DDL、字段、索引、事实身份、完整月市场替换、版本及清队契约；仅读写模块同包迁移。"
-  },
+  "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "a77505869b2673cfaa06e6fed1a1d93848f29f3c2a4802d7dd99aaaebef4f75a",
@@ -551,7 +544,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "9254537f8f96f488930258874218b46a4a0d863efa0c8f9a00cc4b4336ac9d6b",
+  "content_sha256": "73b715fb073aeb80a75d60b980f1a599fd29cf2f360d00ae964a23bc477a74cd",
   "features": {
     "page:ths_capital": {
       "sources": {

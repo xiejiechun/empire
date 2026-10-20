@@ -1,4 +1,4 @@
-2026-10-21 E6e当前：前批E6d已验收，结案1cae32e287b11f3c93b5542390f554d86c30ef4c已push并精确核实。六旧模块及调用方已迁入features/performance，原六kind身份顺序/AST通过，135领域隔离、110最终安全、405公共和35文档测试通过。第二轮有限来源30随机+3固定、59全代理/42943行集合内容一致/pending0；首轮4747/4746来源失败保留，第二轮来源自然变为4746/4746，不清生产错误。五表各10万行及变动10万行新容量、T3原18项、文档审阅/设计门禁通过，六设计卡已更新。当前开发验证通过（有限范围，非全历史准备通过），正式发布及同包真实桌面待完成，不进入E6f。见[E6e记录](../evidence/architecture-e6e-2026-10-20.md)。
+2026-10-21 E6e最终：**业绩与股东变动本批组织迁移范围已验收，结案提交待推送精确核实**。六旧模块及调用方迁入features/performance，六kind身份顺序/AST、135领域隔离/110安全/405公共通过。有限来源30随机+3固定、59全代理/42943行集合内容一致/pending0；首轮4747/4746失败及来源自然变化保留，不清生产错误。两新容量、T3原18项、文档和设计通过。干净5bcffb7/release455c9c6d完整3835 passed/5原opt-in skipped；同包六页/筛选分页/帮助/启停及依赖保护/草稿滚轮/982窄窗/正常关开完成，48保存设置及原config/偏好保持。E6f～g/F未实施，整体未完成；结案push核实后下一项E6f。见[E6e记录](../evidence/architecture-e6e-2026-10-20.md)、[真实桌面](../evidence/architecture-e6e-desktop-2026-10-21.md)。
 
 2026-10-20 E6d最终：**解禁与行业解禁本批组织迁移范围已验收，结案提交待推送核实**。修复提交7b1fb830273f928580a8d9596e0d120de418b96f、release 0cc06d1a846f42e78088bfad72ccfcd4 committed/passed，3823 passed/5原opt-in skipped/20 warnings。十二旧模块及调用方退役，共享协议唯一；最终572/25全代理来源、两新容量、T3原18项及76发布反例通过。同包真实两页、明细空态/刷新滚动、启停保护、草稿滚轮、981窄窗、帮助、配置连接与查询、正常关开完成；48保存设置、45策略、两config和原偏好保持。历史桌面、性能、容量及两轮门禁失败保留，超时/瞬时延迟根因未证明。下一项E6e须等本批push精确核实；E6e～g/F未实施，整个优化未完成。见[E6d记录](../evidence/architecture-e6d-2026-10-20.md)、[同包真实桌面](../evidence/architecture-e6d-desktop-guard-fix-2026-10-20.md)。
 
@@ -29,12 +29,14 @@
 | E4 开盘啦七项 | 已验收（组织迁移范围）；严格来源失败保留 | 24旧模块退役；279领域/274公共/58隔离、当前容量/T3 18项通过；acb466a/release 61dc9811完整门禁3755 passed/5 opt-in skipped；同包七页/帮助、启停保护/草稿/窄窗/正常关开、48设置及原配置偏好保持；严格来源FAIL不冲销 | [E4记录](../evidence/architecture-e4-2026-10-20.md)、[真实桌面](../evidence/architecture-e4-desktop-2026-10-20.md) |
 | E5资本事件与复权 | 已验收（组织迁移范围） | 24模块/16符号；新完整分红容量及资本管线/T3；e403faa/release 05630406完整门禁3770 passed/5 opt-in skipped；同包四页/帮助/启停保护/草稿/窄窗/正常关开及48设置/原配置偏好保持；历史准备失败保留 | [E5记录](../evidence/architecture-e5-2026-10-20.md)、[真实桌面](../evidence/architecture-e5-desktop-2026-10-20.md) |
 | E6a 同花顺资本 | 已验收（组织迁移范围） | 七旧入口迁移；38股全代理5080事实、新容量及T3 18/18；4550a9e/release 7d92659c完整门禁3773 passed/5 opt-in skipped；同包全部栏目/帮助/启停/草稿/窄窗/正常关开、48设置与原配置偏好保持 | [E6a记录](../evidence/architecture-e6a-2026-10-20.md)、[真实桌面](../evidence/architecture-e6a-desktop-2026-10-20.md) |
-| E6b～E6g 逐业务推广 | E6b-listings/status/aliases、E6c和E6d已验收；E6e～g未实施 | E6d结案推送核实后下一项E6e，不应用完整E树 | [E实施](e-implementation.md) |
+| E6b～E6g 逐业务推广 | E6b-listings/status/aliases、E6c、E6d及E6e已验收（组织迁移范围）；E6f～g未实施 | E6e结案推送精确核实后下一项E6f，不应用完整E树 | [E实施](e-implementation.md)、[E6e记录](../evidence/architecture-e6e-2026-10-20.md) |
 | F 共享治理收束 | 草稿已准备，未合入 | 仅单源文档、影响报告、类型、共享门禁、定位演练和测试成本候选 | [F实施](cdf-implementation.md)；尚无测试成本收益结论 |
 
 不计算“完成百分比”：A/B/C与后续业务批次的工作量不同。草稿的文件数、AST相同或测试工具存在均不能折算成已完成实现。
 
-当前安装为E6d release `0cc06d1a846f42e78088bfad72ccfcd4`，干净构建提交`7b1fb830273f928580a8d9596e0d120de418b96f`；source `f251062e919e63b689fef721c15c6b2fb20eafd9a4ac061c423b319be97c8d3d`，EXE `8e1bb81143805117049ac2aad9529ba57560913e9732dba68452196a22904751`，安装树`1dac8b902a8a708f98848d241ae59cebeaacfad782d44c4a8d36fbcc4707e43b`。同包真实桌面及正常关开已完成；本次结案文档不改变包身份。推送完成前不宣称远程已同步。下文各旧身份均为历史。
+当前安装为E6e release `455c9c6d9c33438a9022dfa863cd1ff1`，干净构建提交`5bcffb7ce31561a44070dfc6998fe5cc87ce6e25`；source `8e78697ff31ca70920f978f8ebd546f5bfc4c50044fb889363eff7ca79c54d8b`，EXE `7c0f5fbd4fb4e3006021ffd1e7f28963e5c3163aa7b798628e06136769e6e612`，安装树`1c3b9d5c70bef2ebf31f56052310de95cf0314e75bc0fd9e48da93e31d58ceb0`。同包真实桌面及正常关开已完成，窗口1316790工作台保持可见；结案文档不改变包身份。推送完成前不宣称远程已同步。下文各旧身份均为历史。
+
+E6e最终资源01:40：自有13348实际UUID a3e8a5eb-cb64-11f1-8ddf-380525361d4e与原datadir保持，仅四系统库/无其他客户端，无本轮私有残留，继续运行供后批；[只读资源报告](../evidence/architecture-e6e-final-resources-2026-10-21.json)。生产3307/共享Redis未关闭、重启或清理，冻结文件原字节保持。两个验收插件已恢复启用，未保存草稿已撤销，原10项偏好字节已恢复，48行SQL设置和两config保持。旧错误未清，E6f/g/F未实施。
 
 ## 2. 源码、远程和已安装包身份
 

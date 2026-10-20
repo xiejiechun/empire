@@ -1,6 +1,6 @@
 # E6e 业绩与股东变动实施记录
 
-当前状态：**本批组织迁移开发验证通过，正式发布及同包真实桌面待完成**。有限实采与全历史准备分别判断，限制见文末。前批E6d正式发布与真实桌面已验收，结案`1cae32e287b11f3c93b5542390f554d86c30ef4c`已推送main，以共享代理实际ls-remote精确核实。E6f～g/F未实施，整个优化未完成。
+当前状态：**本批组织迁移范围已验收，结案提交待推送精确核实**。有限实采与全历史准备分别判断，限制见文末。前批E6d正式发布与真实桌面已验收，结案`1cae32e287b11f3c93b5542390f554d86c30ef4c`已推送main，以共享代理实际ls-remote精确核实。E6f～g/F未实施，整个优化未完成。
 
 ## 前像、范围与准入
 
@@ -26,7 +26,7 @@
 | 五表容量 | `py scripts/measure_tdx_performance.py --test-settings build/architecture-evolution-20261019/mysql-settings.json --output out/performance-capacity-2.json` exit0；[新实测](architecture-e6e-performance-capacity-2026-10-21.json) | 各100000行/5000证券×20期，逐表全量业务键/内容核对、重复0业务DML及修订1行，原查询五次取最大、全部原预算通过、六清理通过 |
 | 股东变动容量 | `py scripts/measure_shareholder_changes.py --test-settings build/architecture-evolution-20261019/mysql-settings.json --output out/changes-capacity-1.json` exit0；[新实测](architecture-e6e-changes-capacity-2026-10-21.json) | 100000事件/5000证券×20月，全量内容核对；200条4.69ms、整月145.06ms、分配81313792字节、导入5.99秒、重复0.287秒/0DML、单行修订0.246秒，原预算及六清理通过 |
 | T3 | `py scripts/architecture_benchmark.py measure --protocol docs/evidence/architecture-performance-protocol-2026-10-19.json --test-settings build/architecture-evolution-20261019/mysql-settings.json --baseline docs/evidence/architecture-performance-baseline-2026-10-19.json --output out/t3-1.json` exit0；[原报告](architecture-e6e-t3-2026-10-21.json) | 原18项全部通过、correctness及cleanup通过、无不可比项；冷声明median1073.76/p951108.57ms，原阈值1267.91/1305.99ms；测前其他测试结束、CPU抽样无持续重负载，未修改冻结工具/协议/基线 |
-| M/A/U1～U3 | M文档与逐kind不变说明通过；A/U正式门禁及桌面待执行 | 同包六页/筛选分页/帮助/启停草稿/设置/正常关开及push均须完成 |
+| M/A/U1～U3 | M文档与逐kind不变说明通过；唯一正式门禁exit0、3835 passed/5原opt-in skipped；[同包真实桌面](architecture-e6e-desktop-2026-10-21.md)完成 | 六页/筛选分页/帮助/独立启停与依赖保护/草稿/滚轮/982窄窗/原设置和正常关开均有原观察；结案push精确核实后才进入E6f |
 
 历史H3空名债券、E4严格来源FAIL、资本历史准备限制和停复牌精确错误保持。必要证据缺失时不得进入E6f。
 
@@ -51,3 +51,9 @@
 正式发布前源身份与source-2精确匹配、两容量bindings逐文件相同、T3源/冻结文件保持已核。48条SQL保存设置payload/updated_at与E6d原快照相同，两config及原偏好逐字节相同。待形成干净实现提交后运行唯一正式门禁；正式发布与同包真实桌面仍未完成，不能进入E6f。
 
 实现提交`3fc70828f5bcd01dfe6be887ff6acaf9c4793c4a`首轮完整发布`da0a53aa761f4fb9a1278da12666b07b`在第3步文档检查失败：最后review后继续更新状态和验收文档使content摘要过期。环境与42项依赖检查通过，未进入pytest/打包/切换，原E6d安装保持。原日志`out/release-1.log`、本轮inputs/steps/failure.json保留，该轮尚无publication journal。修复为文档定稿后重新执行同一review CLI、check、文档回归并形成新干净提交，再从头执行唯一完整发布；不改文档门禁或拼接失败轮证据。第一次修复后同四文件文档回归`--basetemp build/pytest-e6e-docs3 --junitxml out/docs3.xml` exit0，35 passed/26.93秒。
+
+## 正式发布与桌面出口
+
+最终文档回归docs4为35 passed/26.60秒，形成干净提交`5bcffb7ce31561a44070dfc6998fe5cc87ce6e25`后执行唯一`.\verify-release.ps1`，完整exit0。release `455c9c6d9c33438a9022dfa863cd1ff1` committed/passed，24步骤/1743输入/54保留输出逐项审计通过；3835 passed、5原state-unit opt-in skipped、20 warnings、2507.41秒。source/EXE/tree身份、逐项skip及原证据见[发布审计](architecture-e6e-release-audit-2026-10-21.json)。未修改冻结工具/协议/基线/阈值，发布期间HEAD和保护输入保持。
+
+[同包真实桌面结案](architecture-e6e-desktop-2026-10-21.md)逐项覆盖U1～U3及实际限制；105条原观察、三份成功只读报告、两份失败及导出摘要均保留。原config、48保存设置和最终原偏好保持；正式包正常退出后重开1316790，工作台实际可见、45任务/pending0。只读首轮未来日期选择与关后偏好展开失败保留，修核验条件/恢复验收偏好后实际重跑，不改正式实现。纯结案文档不改变已安装包身份；文档定稿后重审与相关回归，提交并push精确核实后进入E6f。
