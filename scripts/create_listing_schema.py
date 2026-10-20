@@ -10,9 +10,9 @@ from create_name_change_schema import run
 from sqlalchemy import text
 
 from empire.__main__ import acquire_instance_lock
-from empire.contracts.listings import JOB, TABLE
 from empire.core.config import load_config
 from empire.core.redaction import redact
+from empire.features.listings.contract import JOB, TABLE
 from empire.plugins.infra.mysql_store import make_engine
 from empire.plugins.infra.redis_store import create_client
 from empire.plugins.infra.schema_manifest import validate_shapes

@@ -681,8 +681,8 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/listings-preview-capacity-2026-10-11.json",
-        "sample": "四证券实证及15000行放大",
+        "evidence": "docs/evidence/architecture-e6b-listings-capacity-2026-10-20.json",
+        "sample": "15000行原分布：2049/105078/262144字节正文；750暂无、750缺日状态；正式查询与全量规范集合审计",
         "growth": "一年/五年每证券一行；最大正文256KiB；15000行5%实测长正文及单条上限容量实验，全部满额理论约3.75GiB",
         "budget": "列表/详情/范围P95<=100ms（统一状态质量提示，原50ms取舍见容量证据）、覆盖<=500ms、审计<=5秒、表索引<=1.5GiB、15000状态单元<=8MiB"
       },

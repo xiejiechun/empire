@@ -12,11 +12,11 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from empire.contracts.listings import PROJECT, date_warning
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
 from empire.features.data_browser.search import CandidateSearch
+from empire.features.listings.contract import PROJECT, date_warning
 from empire.plugins.ui.common import (
     accessible,
     bind_find,

@@ -9,7 +9,10 @@ import pytest
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.listings import (
+from empire.core.config import load_config
+from empire.features.listings import dataset as listings
+from empire.features.listings.collector import ThsListingCollector
+from empire.features.listings.contract import (
     DATASET,
     FIELDS,
     HISTORY_MAX_BYTES,
@@ -19,9 +22,6 @@ from empire.contracts.listings import (
     parse,
     url,
 )
-from empire.core.config import load_config
-from empire.plugins.collectors.ths_listings import ThsListingCollector
-from empire.plugins.datasets import listings
 from tests.prefetch_source import prefetch_http
 
 STOCKS = [dict(market='SZ', code='000001', name='平安银行'), dict(market='SH', code='600000', name='浦发银行')]
@@ -52,7 +52,7 @@ def test_real_source_units_nulls_precision_and_market_mapping():
 def test_sql_decimal_scientific_repr_decodes_without_relaxing_source(rate):
     from datetime import date
 
-    from empire.contracts.listings import NUMBERS, decode
+    from empire.features.listings.contract import NUMBERS, decode
     body = source()
     body['data']['winning_rate'] = rate
     canonical = parse(body, STOCKS[0], '2026-10-07')
@@ -69,7 +69,7 @@ def test_sql_decimal_scientific_repr_decodes_without_relaxing_source(rate):
 
 
 def test_source_establishment_after_listing_is_preserved_with_warning():
-    from empire.contracts.listings import date_warning
+    from empire.features.listings.contract import date_warning
     body = source()
     body['data'].update(listing_date='1993-10-28', establish_date='1993-12-04')
     row = parse(body, dict(market='SZ', code='000032'), '2026-10-06')
@@ -78,7 +78,7 @@ def test_source_establishment_after_listing_is_preserved_with_warning():
 
 
 def test_announced_first_trading_day_can_be_in_the_near_future():
-    from empire.contracts.listings import validate
+    from empire.features.listings.contract import validate
     body = source()
     body['data'].update(listing_date='2026-10-09', establish_date='2006-05-24')
     stock = dict(market='BJ', code='920157')
@@ -92,7 +92,7 @@ def test_announced_first_trading_day_can_be_in_the_near_future():
 
 
 def test_only_exact_source_empty_is_unavailable():
-    from empire.contracts.listings import is_unavailable
+    from empire.features.listings.contract import is_unavailable
     empty = dict(status_code=10001, data={}, status_msg='result empty')
     row = parse(empty, STOCKS[0], '2026-10-06')
     assert is_unavailable(row) and row['unified_code'] == '000001.SZ' and 'listing_date' not in row
@@ -117,7 +117,7 @@ def test_invalid_source_fails(field, value):
 
 @pytest.mark.parametrize('missing', [None, '', '--'])
 def test_explicit_missing_listing_date_is_incomplete_not_unavailable(missing):
-    from empire.contracts.listings import is_incomplete, is_unavailable, validate
+    from empire.features.listings.contract import is_incomplete, is_unavailable, validate
     body = source()
     body['data']['listing_date'] = missing
     row = parse(body, STOCKS[0], '2026-10-08')
@@ -144,7 +144,7 @@ def test_missing_listing_date_does_not_bypass_other_validation(field, value):
 @pytest.mark.parametrize('change', [{'source_status_code':10001}, {'source_status_code':False},
                                   {'missing_fields':[]}, {'missing_fields':['history']}, {'extra':1}])
 def test_incomplete_wire_and_proof_contract_reject_unknown_shapes(change):
-    from empire.contracts.listings import unusable_proof, validate
+    from empire.features.listings.contract import unusable_proof, validate
     row = dict(unified_code='000001.SZ', detail_status='incomplete', source_status_code=0,
                missing_fields=['listing_date'])
     with pytest.raises(ValueError):
@@ -224,7 +224,7 @@ async def test_enqueue_all_before_archive_and_failure_resume(monkeypatch):
         events.extend(envelopes)
         assert c.confirmation.page_status.await_count == 0
         return await ingest.publish_page(envelopes, **kw)
-    monkeypatch.setattr('empire.plugins.collectors.ths_listings.publish_with_capacity', publish)
+    monkeypatch.setattr('empire.features.listings.collector.publish_with_capacity', publish)
     c.fetch.side_effect = [(parse(source(), STOCKS[0], '2026-10-06'), datetime.now(UTC), url(STOCKS[0])), ValueError('bad second')]
     with pytest.raises(ValueError):
         await c.execute()
@@ -247,7 +247,7 @@ async def test_daily_skip_existing_weekly_refresh_and_awaiting_resume(monkeypatc
     c, state = collector()
     async def publish(ingest, stats, envelopes, **kw):
         return await ingest.publish_page(envelopes, **kw)
-    monkeypatch.setattr('empire.plugins.collectors.ths_listings.publish_with_capacity', publish)
+    monkeypatch.setattr('empire.features.listings.collector.publish_with_capacity', publish)
     c.query.plan.return_value = (STOCKS, {'SZ:000001','SH:600000'}, {'refresh_started_at':datetime.now(UTC).isoformat()})
     result = await c.execute()
     assert c.fetch.await_count == 0 and result['pages'] == 1
@@ -265,8 +265,8 @@ def test_ui_lazy_independent_draft_and_selection_detail(monkeypatch):
 
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.listings import FIELDS as UI_FIELDS
-    from empire.plugins.ui.listings import ListingPage, ListingUiPlugin
+    from empire.features.listings.ui import FIELDS as UI_FIELDS
+    from empire.features.listings.ui import ListingPage, ListingUiPlugin
     app = QApplication.instance() or QApplication([])
     queries = []
     row = {k: None for k in UI_FIELDS}
@@ -304,7 +304,7 @@ def test_ui_missing_listing_date_explains_source_and_marks_old_record(has_old, m
 
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.listings import ListingPage
+    from empire.features.listings.ui import ListingPage
     app = QApplication.instance() or QApplication([])
     old = parse(source(), STOCKS[0], '2026-10-08')
     def invoke(*args):

@@ -15,9 +15,9 @@ from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.listings import DATASET, JOB, digest, parse
 from empire.core.config import load_config
-from empire.plugins.datasets import listings
+from empire.features.listings import dataset as listings
+from empire.features.listings.contract import DATASET, JOB, digest, parse
 from tests.prefetch_source import prefetch_http
 from tests.test_ths_listings import STOCKS, source
 
@@ -352,7 +352,7 @@ async def test_same_count_different_sql_keys_missing_coverage_and_sql_failure(li
 
 
 async def test_large_utf8_history_full_archive_and_repeat_without_business_dml(listing):
-    from empire.contracts.listings import HISTORY_MAX_BYTES
+    from empire.features.listings.contract import HISTORY_MAX_BYTES
     _, c, q, store = listing
     body = source()
     history = '文' * (HISTORY_MAX_BYTES // 3) + 'x' * (HISTORY_MAX_BYTES % 3)

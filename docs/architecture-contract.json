@@ -730,46 +730,6 @@
       ]
     },
     {
-      "owner": "listings",
-      "reason": "上市发行资料：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.listings"
-      ]
-    },
-    {
-      "owner": "listings",
-      "reason": "上市发行资料：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.listings"
-      ]
-    },
-    {
-      "owner": "listings",
-      "reason": "上市发行资料：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.listings"
-      ]
-    },
-    {
-      "owner": "listings",
-      "reason": "上市发行资料：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.listings"
-      ]
-    },
-    {
-      "owner": "listings",
-      "reason": "上市发行资料：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.ths_listings"
-      ]
-    },
-    {
       "owner": "name_changes",
       "reason": "公司及证券更名：业务标识、字段和纯规范声明",
       "role": "contract",
@@ -1727,6 +1687,19 @@
         "query": "query",
         "ui": "ui",
         "transport": "contract"
+      }
+    },
+    {
+      "prefix": "empire.features.listings",
+      "owner": "listings",
+      "reason": "上市发行资料单一业务归属；公共下载、入队、归档及准备契约留原路径",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
       }
     }
   ],

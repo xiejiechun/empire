@@ -1,0 +1,47 @@
+{
+  "base_commit": "9d8ace3615b0fe81fc716a8beb327cf36ae388a9",
+  "method": "Compare full AST excluding imports only",
+  "modules": [
+    {
+      "old": "src/empire/contracts/listings.py",
+      "new": "src/empire/features/listings/contract.py",
+      "old_sha256": "16138fc66c730a771d46f981b0128ea44fd2648aa227b9710282c281edb1703f",
+      "new_sha256": "16138fc66c730a771d46f981b0128ea44fd2648aa227b9710282c281edb1703f",
+      "non_import_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/plugins/ui/listings.py",
+      "new": "src/empire/features/listings/ui.py",
+      "old_sha256": "66f86d73eedced60f7893f27b1d05898871e48ed5d603b1e7874d8e9143e0e47",
+      "new_sha256": "6bc77920ae85f113484ce49d0ac670f0edfeaf381ec1c9aa307005854189d531",
+      "non_import_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/plugins/datasets/listings.py",
+      "new": "src/empire/features/listings/dataset.py",
+      "old_sha256": "06a10a663d4e8db18a6a3e43ef572c1ec9cc8c9e042051338ab21333e57259aa",
+      "new_sha256": "c6cd69120db1ffcf4da63706424774a0f2cbe2b9dc1f27cf8e606a22ee7137d6",
+      "non_import_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/plugins/data/listings.py",
+      "new": "src/empire/features/listings/query.py",
+      "old_sha256": "33382dde9c948a348bbd620aa8742c0fc070e70f1b2cafff67479c98ab807e56",
+      "new_sha256": "07c82570e33286bab265c1b15086a7def63e2f899f41e901914d9ff8189dfcca",
+      "non_import_ast_equal": true,
+      "old_entry_absent": true
+    },
+    {
+      "old": "src/empire/plugins/collectors/ths_listings.py",
+      "new": "src/empire/features/listings/collector.py",
+      "old_sha256": "2b9d98c734b94c27ae9d755127c36c92798b258be9520fe1e801005f16a45497",
+      "new_sha256": "ee96a7233437bf48ed2d5504dd68e5ad981b8e07c1a7c034e1375d6cef42034f",
+      "non_import_ast_equal": true,
+      "old_entry_absent": true
+    }
+  ],
+  "limitation": "Excludes import wiring; behavioral tests, real source, capacity, release and visible desktop are independently required"
+}

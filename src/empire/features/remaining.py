@@ -8,8 +8,6 @@ from empire.contracts.bundle import (
 from empire.contracts.dataset import DatasetContribution
 from empire.contracts.listing_status import JOB as STATUS_JOB
 from empire.contracts.listing_status import PROJECT as STATUS_PROJECT
-from empire.contracts.listings import JOB as LISTING_JOB
-from empire.contracts.listings import PROJECT as LISTING_PROJECT
 from empire.contracts.name_changes import KINDS as NAME_KINDS
 from empire.contracts.name_changes import SCHEMA_VERSION as NAME_SCHEMA_VERSION
 from empire.contracts.name_changes import project as name_project
@@ -29,10 +27,8 @@ from empire.plugins.collectors.tdx_performance import PerformanceCollector
 from empire.plugins.collectors.tdx_st_events import StEventCollector
 from empire.plugins.collectors.tdx_unlock_industries import UnlockIndustryCollector
 from empire.plugins.collectors.tdx_unlocks import UnlockCollector
-from empire.plugins.collectors.ths_listings import ThsListingCollector
 from empire.plugins.collectors.trading_rules import RuleCollector
 from empire.plugins.data.listing_status import ListingStatusDataPlugin
-from empire.plugins.data.listings import ListingDataPlugin
 from empire.plugins.data.name_changes import NameDataPlugin
 from empire.plugins.data.repurchases import RepurchaseDataPlugin
 from empire.plugins.data.st_events import StDataPlugin
@@ -40,7 +36,7 @@ from empire.plugins.data.tdx_performance import PerformanceDataPlugin
 from empire.plugins.data.trading_rules import RuleDataPlugin
 from empire.plugins.data.unlock_industries import UnlockIndustryDataPlugin
 from empire.plugins.data.unlocks import UnlockDataPlugin
-from empire.plugins.datasets import listing_status, listings, repurchases, security_aliases
+from empire.plugins.datasets import listing_status, repurchases, security_aliases
 from empire.plugins.datasets.name_changes import NameDataset
 from empire.plugins.datasets.st_events import StDataset
 from empire.plugins.datasets.tdx_performance import PerformanceDataset
@@ -48,7 +44,6 @@ from empire.plugins.datasets.trading_rules import RuleDataset
 from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset
 from empire.plugins.datasets.unlocks import UnlockDataset
 from empire.plugins.ui.listing_status import ListingStatusUiPlugin
-from empire.plugins.ui.listings import ListingUiPlugin
 from empire.plugins.ui.name_changes import NameUiPlugin
 from empire.plugins.ui.repurchases import RepurchaseUiPlugin
 from empire.plugins.ui.st_events import StUiPlugin
@@ -77,9 +72,6 @@ def bundle(cfg):
         *positioned((3900, 4000, 4100, 4200, 4300, 4400, 4500), (RuleDataPlugin(k, cfg["redis"].get("namespace", "empire"), cfg.get("archive", {})) for k in RULE_KINDS)),
         *positioned((4600, 4700, 4800, 4900, 5000, 5100, 5200), (RuleCollector(k) for k in RULE_KINDS)),
         *positioned((5300, 5400, 5500, 5600, 5700, 5800, 5900), (RuleUiPlugin(k) for k in RULE_KINDS)),
-        OrderedContribution(7400, ListingDataPlugin(cfg['redis'].get('namespace', 'empire'))),
-        OrderedContribution(7500, ThsListingCollector()),
-        OrderedContribution(7600, ListingUiPlugin()),
         OrderedContribution(7700, ListingStatusDataPlugin(cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {}))),
         OrderedContribution(7800, TdxListingStatusCollector()),
         OrderedContribution(7900, ListingStatusUiPlugin()),
@@ -134,11 +126,6 @@ def bundle(cfg):
                         description='每天北京时间18:00核验全部历史，一次请求发现新增与历史修订；可编辑计划。'),
                     fresh_description='核验来源全部更名历史；已入队轮次先完成归档，缺失名称保持未知。')
                     for kind, item in NAME_KINDS.items())),
-        OrderedContribution(3200, TaskContribution('ths-listings', '股票上市与发行资料（同花顺）',
-                    'collector.ths_listings', 'ths', '逐证券补缺，每七天回查当前股票池；保留已存退市证券资料',
-                    category='证券基础', source_name='同花顺', parallel_downloads=True, unit_name='只股票', default_schedule=TaskDefaults('daily',
-                        description='每天北京时间18:00补新增和缺失；每七天全池回查独立修订；计划可编辑。'),
-                    fresh_description='逐只重查当前股票池的上市及发行资料；保留已有记录及已入队消息。')),
     ), datasets=(
         OrderedContribution(200, DatasetContribution(UnlockIndustryDataset(), 'incremental', {UnlockIndustryDataset.JOB: UnlockIndustryDataset.PROJECT})),
         OrderedContribution(300, DatasetContribution(UnlockDataset(), 'incremental', {UnlockDataset.JOB: UnlockDataset.PROJECT})),
@@ -148,7 +135,6 @@ def bundle(cfg):
         *positioned((1200, 1300, 1400, 1500, 1600, 1700, 1800), (DatasetContribution(RuleDataset(kind), 'incremental', {RuleDataset(kind).JOB: RuleDataset(kind).PROJECT}) for kind in RULE_KINDS)),
         OrderedContribution(2000, DatasetContribution(security_aliases, 'incremental', {security_aliases.JOB: security_aliases.PROJECT})),
         OrderedContribution(2200, DatasetContribution(listing_status, 'incremental', {STATUS_JOB: STATUS_PROJECT})),
-        OrderedContribution(2300, DatasetContribution(listings, 'incremental', {LISTING_JOB: LISTING_PROJECT})),
         *positioned((2400, 2500), (DatasetContribution(StDataset(kind), 'incremental',
                         {StDataset(kind).JOB: StDataset(kind).PROJECT}, schema_version=ST_SCHEMA_VERSION) for kind in ST_KINDS)),
         *positioned((2600, 2700), (DatasetContribution(NameDataset(kind), 'incremental',

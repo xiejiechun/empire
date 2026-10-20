@@ -308,7 +308,7 @@ T3 仍使用已登记协议和原阈值，每项 median/p95 ≤ max(基线×1.25
 ```powershell
 & $py -m pytest tests/test_ths_listings.py tests/test_listing_status.py tests/test_listing_scope_prefetch.py --basetemp "build/pytest-$run-e6b" -q
 & $py -m pytest tests/integration/test_listing_archive.py tests/integration/test_listing_status_archive.py tests/integration/test_security_alias_archive.py --basetemp "build/pytest-$run-e6b-sql" -q
-& $py scripts/measure_listings.py --test-settings $testSettings --output "$out/listings-capacity.json"
+& $py scripts/measure_listings.py --test-mysql-settings $testSettings --output "$out/listings-capacity.json"
 & $py scripts/measure_listing_status.py --test-settings $testSettings --output "$out/listing-status-capacity.json"
 ```
 

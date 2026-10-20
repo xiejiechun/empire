@@ -2,9 +2,9 @@
 import json
 from datetime import date, datetime, timedelta
 
-from empire.contracts.listings import LISTING_LOOKAHEAD_DAYS
 from empire.contracts.security import split_unified_code
 from empire.core.time import CHINA
+from empire.features.listings.contract import LISTING_LOOKAHEAD_DAYS
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import wait_for_capacity
 
