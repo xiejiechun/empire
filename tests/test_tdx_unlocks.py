@@ -9,7 +9,9 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
+from empire.features.unlocks.collector import UnlockCollector
 from empire.features.unlocks.contract import digest, monthly_plan, pack, unpack, validate_unit
+from empire.features.unlocks.dataset import list_digest
 from empire.features.unlocks.source import (
     DETAIL_SOURCE_COLUMNS,
     LIST_COLUMNS,
@@ -18,8 +20,6 @@ from empire.features.unlocks.source import (
     parse_detail,
     parse_list,
 )
-from empire.features.unlocks.collector import UnlockCollector
-from empire.features.unlocks.dataset import list_digest
 from tests.prefetch_source import prefetch_http
 
 MONTH = '2020-01-01'

@@ -15,8 +15,6 @@ from empire.features.kaipanla.bundle import bundle as kaipanla_bundle
 from empire.features.listing_status.bundle import bundle as listing_status_bundle
 from empire.features.listings.bundle import bundle as listings_bundle
 from empire.features.name_changes.bundle import bundle as name_changes_bundle
-from empire.features.unlocks.bundle import bundle as unlocks_bundle
-from empire.features.unlock_industries.bundle import bundle as unlock_industries_bundle
 from empire.features.news.bundle import bundle as news_bundle
 from empire.features.remaining import bundle as remaining_bundle
 from empire.features.security_aliases.bundle import bundle as security_aliases_bundle
@@ -24,6 +22,8 @@ from empire.features.st_events.bundle import bundle as st_events_bundle
 from empire.features.stocks.bundle import bundle as stocks_bundle
 from empire.features.suspensions.bundle import bundle as suspensions_bundle
 from empire.features.ths_capital.bundle import bundle as ths_capital_bundle
+from empire.features.unlock_industries.bundle import bundle as unlock_industries_bundle
+from empire.features.unlocks.bundle import bundle as unlocks_bundle
 
 FACTORIES = (remaining_bundle, news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, kaipanla_bundle, capital_actions_bundle, adjustment_bundle, ths_capital_bundle, listings_bundle, listing_status_bundle, security_aliases_bundle, name_changes_bundle, st_events_bundle, unlocks_bundle, unlock_industries_bundle)
 

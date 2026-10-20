@@ -8,8 +8,8 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.features.unlock_industries.contract import digest
 from empire.features.unlock_industries.collector import UnlockIndustryCollector
+from empire.features.unlock_industries.contract import digest
 from empire.features.unlock_industries.source import (
     SOURCE_COLUMNS,
     parse_directory,

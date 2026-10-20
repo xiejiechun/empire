@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-20T10:41:49.910068+00:00",
-  "note": "E6d最终审阅：两个业务包及公共协议定位、退役入口、生命周期、页面筛选分页与明细关联、保存生效及来源限制逐项对照；数据库字典、覆盖、设计卡已同步，实际来源、容量、T3及开发通过状态分别记录，未将未发布当验收。",
-  "unchanged_reason": "",
+  "reviewed_at": "2026-10-20T10:53:34.418337+00:00",
+  "note": "E6d最终修复后审阅：三处仅import排序、工厂贡献顺序和业务行为不变；解禁页面筛选分页/共享明细和行业基准、生命周期、保存配置及限制保持，正文与覆盖已同步；新的最终实采/容量/T3证据及首门禁失败分别登记。",
+  "unchanged_reason": "builtin导入排序及两业务测试导入排序仅为全仓Ruff修复，import集合和非import AST相同，FACTORIES和用户行为没有改变，原两页操作与限制已逐项核对。",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -184,7 +184,7 @@
     "src/empire/features/adjustment/inputs.py": "c12217958c1d942a175e11903faef39703b7288470e0ec08c24af9ea91e07fc4",
     "src/empire/features/adjustment/query.py": "741b58a26f8823d1d907bc72c30337baeef17ce38e8ac7d0195f56df64e4b818",
     "src/empire/features/adjustment/ui.py": "c20376946f24565dd85cb683a6141c09b485d1b8c7edd5943e4e55c90e2b8af4",
-    "src/empire/features/builtin.py": "fa0a6cebc7fdf2213391e74e39dc04d3f425bdf8dc51f0d1bf9ee1909104e50b",
+    "src/empire/features/builtin.py": "404f118ad76de8ab226289ed69f49ec33ffa207009243ec6e1097c138902c4d9",
     "src/empire/features/calendar/__init__.py": "18dc263c87a8af06b933250d82de9de35a00cf5d8c8de5eed34eb5cea055fcbe",
     "src/empire/features/calendar/api.py": "589b1ddb5f58906f33f7de61c4f5c9fa9c20398e6fe55b00190f0d89fd9e82e4",
     "src/empire/features/calendar/audit.py": "7d3be1edc862072ac88557473603eac4fbe0a73acf83dd8b1a95b60ec5e888ff",
@@ -538,7 +538,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "06b0f70b3f009aa78cd8a7ac3968bf545fa29084f9f80a70ef290ff08da0b941",
+  "content_sha256": "82723d6e1835939fb054d1003b436bf45ebc63752008085c5f011b917953b681",
   "features": {
     "page:ths_capital": {
       "sources": {

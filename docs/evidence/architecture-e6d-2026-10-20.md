@@ -1,6 +1,6 @@
 # E6d 解禁与行业解禁实施记录
 
-当前状态：**开发验证通过**，尚未发布、未验收，不进入E6e。前批E6c结案`81dbf0d4b283a6d8fd5ab730f3cc3d142f2b6249`已push，2026-10-20 18:16通过现有只读共享代理`ls-remote`精确匹配；本地收据`build/architecture-e6c-20261020/remote-close.json`，直连超时保留。E6c包release `689a04ad03ee4cdba386f39438e704f3`不因文档结案改变。
+当前状态：**最终开发验证通过**，尚未发布、未验收，不进入E6e。前批E6c结案`81dbf0d4b283a6d8fd5ab730f3cc3d142f2b6249`已push，2026-10-20 18:16通过现有只读共享代理`ls-remote`精确匹配；本地收据`build/architecture-e6c-20261020/remote-close.json`，直连超时保留。E6c包release `689a04ad03ee4cdba386f39438e704f3`不因文档结案改变。
 
 ## 前像、范围与生命周期
 
@@ -49,3 +49,22 @@ H3固定空名债券、开盘啦严格来源、资本历史准备、生产历史
 | U3前像 | `py out/pre_release.py` exit0 | 四份最终来源/容量source摘要、配置偏好和bindings一致；48设置payload/updated_at及原偏好私密前像保留 |
 
 上述早期“未开始/正在执行”仅为历史检查点。当前为开发验证通过；正式发布、同包配置/正式查询/真实桌面与结案push尚待执行，未进入E6e。
+
+
+## 首轮正式门禁失败与修复
+
+实现提交99efc9472b3183b4271933548958ebd447a6e08b的首轮唯一正式门禁run `b958223d1db74738b0616320a975c7ea`在step007全仓Ruff因三处I001退出1，尚未pytest/构建/发布切换，原E6c安装包保持。此前定向Ruff未覆盖builtin及两份既有领域测试。已修正仅import顺序，三个文件import多重集合和非import AST精确一致，FACTORIES顺序未变；未改检查工具。全仓Ruff及strict mypy重新exit0。失败原日志和failure.json保留。
+
+源码摘要随修复改变，首轮来源/容量/T3不冒充最终证据；正在按相同池、种子、固定证券、月份和原协议生成新报告，不改旧hash。上述开发通过是首轮输入历史状态；当前等待最终重新验证、提交、完整门禁和同包桌面。
+
+
+## 导入排序修复后最终重验
+
+最终source摘要`38b3566901791de40e6449346769294ff141f5b5c93d254db82f2f4fb540125a`。使用同一正式命令，仅输出改为`unlocks-live-2-final.json`、`industries-live-2-final.json`、`unlocks-capacity-2-final.json`、`industries-capacity-2-final.json`及`performance-2-final.json`，个股容量sample明确改为本轮final实采；五条命令均真实exit0。
+
+- [最终个股来源](architecture-e6d-unlocks-source-final-2026-10-20.json)：原池/种子/30随机+固定完整名单精确相同，18单元及31证券规范集合与首轮精确一致，572全代理、pending0、六清理true，无残留/errors。
+- [最终行业来源](architecture-e6d-industries-source-final-2026-10-20.json)：24月703行、25全代理、pending0、六清理true，无残留/errors。
+- [最终个股容量](architecture-e6d-unlocks-capacity-final-2026-10-20.json)：100000/200000行、原全部预算通过，导入28.3701秒、277512192字节；全100单元集合/正文/关联、重复DML0与修订1核验。
+- [最终行业容量](architecture-e6d-industries-capacity-final-2026-10-20.json)：12000行120月、原全部预算通过，导入0.5287秒、2916352字节；全部单元内容、重复DML0与修订1核验。两容量配置/源码绑定及清理通过，两设计卡改指本轮新报告，没有修改旧报告hash。
+- [最终冻结T3](architecture-e6d-performance-final-2026-10-20.json)：原命令18/18通过，correctness/cleanup通过；未改协议、工具、历史基线或阈值。
+- [首门禁失败](architecture-e6d-release-failed-2026-10-20.json)及[三文件修复等价](architecture-e6d-import-order-fix-2026-10-20.json)保留。正式构建尚未开始，同包桌面及结案push待执行。
