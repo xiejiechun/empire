@@ -1,6 +1,6 @@
 # E6d 解禁与行业解禁实施记录
 
-当前状态：**正式发布后桌面验收失败，修复后重新验证中**，不进入E6e。`880f227607eed522ca5bf6090a140da9a60cbf36`的release `ea8f8bbdcac440cc846fb86dbc254e89`完整门禁exit0、committed/passed（3810 passed、5 opt-in skipped、20 warnings，2485.59秒）；同包只读身份/连接/查询通过，但真实桌面发现空查询仍展示旧股东明细，不能记为已验收。前批E6c结案`81dbf0d4b283a6d8fd5ab730f3cc3d142f2b6249`已push并精确核实。下文早期状态均为历史。
+当前状态：**桌面缺陷修复后开发验证通过，等待新正式发布及同包桌面**，不进入E6e。`880f227607eed522ca5bf6090a140da9a60cbf36`的release `ea8f8bbdcac440cc846fb86dbc254e89`完整门禁exit0、committed/passed（3810 passed、5 opt-in skipped、20 warnings，2485.59秒）；同包只读身份/连接/查询通过，但真实桌面发现空查询仍展示旧股东明细，不能记为已验收。前批E6c结案`81dbf0d4b283a6d8fd5ab730f3cc3d142f2b6249`已push并精确核实。下文早期状态均为历史。
 
 ## 前像、范围与生命周期
 
@@ -87,3 +87,20 @@ H3固定空名债券、开盘啦严格来源、资本历史准备、生产历史
 同机修复前精确source对照也出现冷声明median1276.7395ms超限，新闻首屏本次通过，见[对照原报告](architecture-e6d-performance-before-fix-control-2026-10-20.json)和[实际命令、旧source身份及finally恢复断言](architecture-e6d-performance-before-fix-command-2026-10-20.json)。只临时替换本轮自有的UI及正文两文件，旧字节须精确匹配发布inputs，旧source须精确匹配原已通过T3；结束后逐字节恢复修复版并核实最终source摘要不变。冻结工具、协议与阈值未动。此前独立目录对照因原协议要求实际datadir与项目根绑定而在建业务库前拒绝，exit1且无测量报告，只是失败准备，不计对照证据。
 
 同期现场读到另一个RouterProxy项目两条测试PID51512/23796自19:59:56持续占用CPU；未证明它们是唯一根因，也未结束其他任务。正在协调/等待测量空档，再用原命令生成新报告；成功前E6d仍为已实现待验证，不进入E6e。
+
+
+## 修复版最终开发验证与发布前交接
+
+20:24再次从旧包正常Alt+F4退出，观察关闭提示后fresh窗口列表无Empire。只读复核48行SQL设置payload/updated_at、两config及原插件偏好均保持；旧包行业“造纸/2028-08”筛选为1条，仅作预检，不能作为修复版验收。
+
+外部RouterProxy审计结束后，20:25:52～20:26:09使用同一冻结命令完整测量，输出`build/architecture-e6d-fix-20261020/performance-4.json`，自然exit0。原18项、全部内容签名及清理通过，冷声明median1239.4536ms/p95 1294.5955ms。没有更改工具、协议、基线、阈值或样本，没有删除异常样本。[第三轮失败](architecture-e6d-performance-failed-3-2026-10-20.json)的冷p95 1320.92484ms超限仍保留；外部负载是观察到的环境差异，未证明为唯一原因。
+
+当前source_digest仍为`cfd27855b5458033ac5e72bf0b6176d757d6f78dfb6384988667d7db35b553b3`，T3独立source_identity为`44f8bd2934c69a388518f38ba5ce83747d735f14ee84ee529877e5f748fff785`。以下原始报告逐字节导出，设计卡指向本轮真实新容量；历史报告不改hash：
+
+- [个股最终来源](architecture-e6d-unlocks-source-ui-fix-2026-10-20.json)：与旧最终报告selection精确相同，原30随机加固定证券、六完整月，572全代理/直连回退0、pending0，集合/内容与正式查询一致，六清理通过。
+- [行业最终来源](architecture-e6d-industries-source-ui-fix-2026-10-20.json)：24月703行、25全代理、pending0及六清理通过；非股票粒度，30股不适用。
+- [个股新容量](architecture-e6d-unlocks-capacity-ui-fix-2026-10-20.json)：原10万列表/20万明细、5次查询及全部原预算通过，导入31.4686818秒/277512192字节；全量关联内容相同、重复DML0/修订1，110万仅线性预测。
+- [行业新容量](architecture-e6d-industries-capacity-ui-fix-2026-10-20.json)：原120月×100行业、6次查询及原预算通过，导入0.4919709秒/2916352字节；全内容一致、重复DML0/修订1。
+- [最终T3](architecture-e6d-performance-ui-fix-2026-10-20.json)与[命令/退出码/导出审计](architecture-e6d-ui-fix-validation-audit-2026-10-20.json)：原前五命令exit0及首性能exit1原样保留，另列实际第四轮exit0收据，不将失败改为成功。
+
+最终33领域/UI/私有归档集成回归和46文档回归均通过。当前开发通过；完整新发布和同包U1～U3、配置/真实连接/正式查询、正常关开及结案推送仍未执行，不进入E6e。有限月份实采不等于全历史准备，H3、E4及其他既有来源限制保持。

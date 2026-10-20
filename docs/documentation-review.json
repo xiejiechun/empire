@@ -1,11 +1,11 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-20T11:56:34.786973+00:00",
-  "note": "E6d最终UI修复同时保留相同查询的列表滚动位置；已验证1000位置刷新前后一致，空结果不残留明细，取消后迟到结果不呈现，程序内及来源操作说明同步。",
+  "reviewed_at": "2026-10-20T12:28:08.657815+00:00",
+  "note": "逐项复核E6d修复后的用户说明：重新查询和翻页清除旧共享明细，隐藏后重新选择，相同查询刷新保留滚动；来源手册与页面正文已同步。核对两个业务正式路径、来源范围和空态限制不变，当前572/25全代理、两新容量与原T318项报告已真实导出，设计卡改指新测量；失败与未完成桌面均保留。",
   "unchanged_reason": "",
   "exceptions": {
-    "mysql:restricted_share_unlock": "本次仅页面取消只读请求并清除旧链接和明细及保留相同筛选滚动，表字段主键索引和唯一归档查询SQL均未改变，对象字典保持准确。",
-    "mysql:restricted_share_unlock_detail": "本次仅解除页面旧请求组显示所有权，明细表结构、group_key关联、内容和读取接口均未改变，原对象字典保持准确。"
+    "mysql:restricted_share_unlock": "仅页面查询所有权及显示状态修复；本表字段、主键、索引、归档和正式查询均未改变，对象字典逐项核对仍准确。",
+    "mysql:restricted_share_unlock_detail": "仅页面明细取消与清除旧显示，group/record关联、字段、归档和正式详情查询不变，对象字典逐项核对仍准确。"
   },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -541,7 +541,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "1045bf1eabbc69c3f4bc513979a9f6a7d9d21bb71835f3853f6f3c0cb7ab581c",
+  "content_sha256": "2bc087659c1a59d2b65c1fc1efb7dd7d1fb9043a9bf58cd098f90d61355f51f0",
   "features": {
     "page:ths_capital": {
       "sources": {

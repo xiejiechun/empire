@@ -1,4 +1,4 @@
-2026-10-20 E6d当前：release ea8f8bbdcac440cc846fb86dbc254e89完整门禁exit0、3810 passed/5 opt-in skipped；同包真实桌面发现空查询残留旧共享股东明细，验收失败。已正常关闭并保留48设置及原config/偏好，已实现明细取消/失效修复与迟到结果回归，正在生成新输入的验证报告；待新发布及真实复验，不进入E6e。见[E6d记录](../evidence/architecture-e6d-2026-10-20.md)。以下为历史检查点。
+2026-10-20 E6d当前：旧release ea8f8bbdcac440cc846fb86dbc254e89完整门禁通过但真实桌面失败。明细取消/失效及刷新滚动修复已提交13dfbf8；最终同名单实采、两份新容量、33领域隔离/46文档回归及冻结T3第四轮18/18已通过，三轮性能失败和旧源码对照保留。已正常关闭旧包，48设置与原config/偏好保持；当前为开发通过、等待新正式发布及同包真实桌面，未验收未推送，不进入E6e。见[E6d记录](../evidence/architecture-e6d-2026-10-20.md)。以下为历史检查点。
 
 2026-10-20 E6c最终接续：**更名/ST本批组织迁移范围已验收，结案提交待推送核实**。实现0e59ccc2f06fa14952f5ac2eee0a00f548de7ff3、release 689a04ad03ee4cdba386f39438e704f3 committed/passed，3802 passed/5 opt-in skipped；十二旧模块及调用方退役，181安全/私有SQL、379公共及46文档回归、四栏目全代理完整来源/pending0、两份25000事件新容量和T3原18项通过。同包真实四页/帮助/启停保护/草稿滚轮/窄窗、48保存设置和两config/原偏好、异cwd连接/正式查询、正常关开完成；18点四任务自然完成，原policy不变、next_due正常推进。首容量守卫拒绝与T3失败原样保留。结案push精确核实后下一项E6d；整个优化未完成。详见[E6c记录](../evidence/architecture-e6c-2026-10-20.md)、[真实桌面](../evidence/architecture-e6c-desktop-2026-10-20.md)。下文为历史快照。
 
