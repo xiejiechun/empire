@@ -1,4 +1,4 @@
-2026-10-20 E6d解禁个股与行业已归属features/unlocks与features/unlock_industries，共享协议唯一归sources/tdx_unlock.py；旧入口及调用方退役。880f227/release ea8f8bbd完整发布3810 passed/5 opt-in skipped，但真实桌面空查询仍显示旧股东明细，未验收；已修复页面请求/明细失效并补迟到结果回归，正常关闭后48设置和原config/偏好保持，正在重新验证、待新发布及同包复验。整个优化未完成，不进入E6e。见[E6d记录](evidence/architecture-e6d-2026-10-20.md)。
+2026-10-20 E6d最终：**解禁与行业解禁本批组织迁移范围已验收，结案提交待推送核实**。修复提交7b1fb830273f928580a8d9596e0d120de418b96f、release 0cc06d1a846f42e78088bfad72ccfcd4 committed/passed，3823 passed/5原opt-in skipped/20 warnings。十二旧模块及调用方退役，共享协议唯一；最终572/25全代理来源、两新容量、T3原18项及76发布反例通过。同包真实两页、明细空态/刷新滚动、启停保护、草稿滚轮、981窄窗、帮助、配置连接与查询、正常关开完成；48保存设置、45策略、两config和原偏好保持。历史桌面、性能、容量及两轮门禁失败保留，超时/瞬时延迟根因未证明。下一项E6e须等本批push精确核实；E6e～g/F未实施，整个优化未完成。见[E6d记录](evidence/architecture-e6d-2026-10-20.md)、[同包真实桌面](evidence/architecture-e6d-desktop-guard-fix-2026-10-20.md)。
 
 # 当前实现与验证边界
 

@@ -1,0 +1,181 @@
+{
+  "checked_at": "2026-10-20T15:39:39.127980+00:00",
+  "release_id": "0cc06d1a846f42e78088bfad72ccfcd4",
+  "passed_read_only": true,
+  "actual_desktop": "pending_separate_real_observations",
+  "formal_query_execution": "Frozen current source APIs using installed configuration; packaged doctor and actual GUI verified separately",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "7b1fb830273f928580a8d9596e0d120de418b96f",
+    "dirty": false,
+    "source_sha256": "f251062e919e63b689fef721c15c6b2fb20eafd9a4ac061c423b319be97c8d3d",
+    "release_id": "0cc06d1a846f42e78088bfad72ccfcd4",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "3e6aa71393519a1cf6f880f6536798c62c28772f382da09fa3b6598f4155cf61",
+    "built_at_utc": "2026-10-20T15:15:23.017512+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3",
+    "packaged": true
+  },
+  "exe_sha256": "8e1bb81143805117049ac2aad9529ba57560913e9732dba68452196a22904751",
+  "installed_tree_sha256": "1dac8b902a8a708f98848d241ae59cebeaacfad782d44c4a8d36fbcc4707e43b",
+  "configuration_and_preferences_preserved": {
+    "D:\\project\\empire\\config.toml": true,
+    "D:\\project\\empire\\dist\\Empire\\config.toml": true,
+    "C:\\Users\\52948\\AppData\\Local\\Empire\\plugin-state.json": true
+  },
+  "packaged_doctor": {
+    "cwd": "C:/Windows",
+    "exit_code": 0,
+    "redis_connected": true,
+    "mysql_connected": true
+  },
+  "formal_unlocks": {
+    "scope_months": [
+      "2027-12-01",
+      "2027-11-01"
+    ],
+    "2027-12-01": {
+      "rows": 102,
+      "pages": 1,
+      "full_api_sql_equal": true,
+      "content_digest": "e31ce3fd849d77cb818572fa12dc5c30f23c7434e0b2ae1c6a732b71ca32359d",
+      "representative": {
+        "code": "600889.SH",
+        "date": "2027-12-17",
+        "group": "412359bd479f0819474f20ad1b7e22c0205fab2fa383432ee4dc6cea1ed9e0db",
+        "detail_count": 1,
+        "group_sql_api_equal": true
+      }
+    },
+    "2027-11-01": {
+      "rows": 85,
+      "pages": 1,
+      "full_api_sql_equal": true,
+      "content_digest": "6d045298ee6ab5dc187530d06725fe9a1dcd97790f9e6041e344a2e35b1f9216",
+      "representative": {
+        "code": "600593.SH",
+        "date": "2027-11-01",
+        "group": "b56a1ed3dba0a458e87c1cf31b02854139181d12cc60619792dac6fbccc2d9c7",
+        "detail_count": 7,
+        "group_sql_api_equal": true
+      }
+    },
+    "empty_query_verified": true,
+    "scope_preparation": [
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "核验102条列表；必需字段缺失0；来源空明细组0",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "keys",
+        "status": "pass",
+        "measured": "列表事实与共享明细分别核对业务键集合及正文摘要",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "coverage",
+        "status": "pass",
+        "measured": "完整月份、三市场及最终范围集合证明核验",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "quality",
+        "status": "pass",
+        "measured": "股数精确换算；并列列表保留；共享明细不重复计数，未知不填零",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "freshness",
+        "status": "pass",
+        "measured": "匹配完整范围的SQL或可信摘要确认须在3天内",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "temporal",
+        "status": "fail",
+        "measured": "来源没有公告可用日期；解禁日期不能证明历史信号已公开",
+        "blocking": false,
+        "findings": []
+      }
+    ]
+  },
+  "formal_industries": {
+    "rows": 703,
+    "pages": 4,
+    "full_api_sql_equal": true,
+    "content_digest": "48bd9bfb0fb8973b05a4065872651098a834d677858cc118228763fc2d410456",
+    "representative": {
+      "unlock_month": "2028-08-01",
+      "industry": "造纸",
+      "basis_date": "2026-10-20",
+      "shares": "110000",
+      "unlock_value": "2887500",
+      "market_cap": "206149395839.68",
+      "negotiable_cap": "190973331837",
+      "market_percent": "0.00140068",
+      "float_percent": "0.00151199"
+    },
+    "industry_filter_equal": true,
+    "empty_query_verified": true,
+    "preparation": [
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "703条行业汇总；未知数值0",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "keys",
+        "status": "pass",
+        "measured": "月/行业唯一集合、完整正文及内容摘要核验",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "coverage",
+        "status": "pass",
+        "measured": "当前可得目录完整覆盖",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "quality",
+        "status": "pass",
+        "measured": "单位换算及基准日明确；未知不填零",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "freshness",
+        "status": "pass",
+        "measured": "完整目录SQL或可信摘要确认不超过3天",
+        "blocking": true,
+        "findings": []
+      },
+      {
+        "criterion": "temporal",
+        "status": "fail",
+        "measured": "没有公告可用日期；估值基准日不等于历史已知时间",
+        "blocking": false,
+        "findings": []
+      }
+    ]
+  },
+  "formal_query_scope": "Existing production up to two populated monthly snapshots selected from the first formal page and full industry inventory; not a production recollection or full historical acceptance",
+  "all_saved_settings_equal": {
+    "rows": 48,
+    "digest": "9e59d702765610a9f91bfdfcc19bcfc104590d239bd87be6dfa99a95c511c1ac"
+  },
+  "query_services_shutdown": true,
+  "global_pending": 0
+}

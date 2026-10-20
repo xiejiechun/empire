@@ -1,6 +1,6 @@
 # E6d 解禁与行业解禁实施记录
 
-当前状态：**两轮正式门禁失败后的修复已通过最终开发验证，新完整发布及同包桌面待执行**，不进入E6e。`880f227607eed522ca5bf6090a140da9a60cbf36`的release `ea8f8bbdcac440cc846fb86dbc254e89`完整门禁exit0、committed/passed（3810 passed、5 opt-in skipped、20 warnings，2485.59秒）；同包只读身份/连接/查询通过，但真实桌面发现空查询仍展示旧股东明细，不能记为已验收。前批E6c结案`81dbf0d4b283a6d8fd5ab730f3cc3d142f2b6249`已push并精确核实。下文早期状态均为历史。
+当前状态：**本批组织迁移范围已验收，结案提交待推送精确核实**。正式修复包release `0cc06d1a846f42e78088bfad72ccfcd4`绑定干净提交`7b1fb830273f928580a8d9596e0d120de418b96f`，完整门禁及同包真实桌面/设置/正常关开已完成。详见文末最终结案；下文失败和待办均为历史检查点，未改写原始报告。E6e尚未开始。
 
 ## 前像、范围与生命周期
 
@@ -139,3 +139,19 @@ H3固定空名债券、开盘啦严格来源、资本历史准备、生产历史
 文档回归首轮1 failed/45 passed，是发布工具源码改变后尚未更新文档审阅登记的执行顺序遗漏；原docs-final.xml与documentation-remaining.log保留，未改测试。补充具体语义审阅和发布指南核对后，完整46项重新通过，记录docs-reviewed-final.xml与post-review-commands.json；失败不改为成功。之前两轮正式门禁失败及旧桌面反例仍保留。
 
 当前开发验证通过，正式包仍为旧ea8发布；新完整门禁、同包U1～U3、真实连接/查询、正常关开、设置恢复及main推送尚未执行，不能称已验收。13348自有实例待后续验证继续使用，生产3307和共享Redis不重启、不清数据；既有H3、E4和停复牌/业绩错误限制保持。
+
+## E6d 最终发布与同包结案
+
+唯一命令`./verify-release.ps1`完整自然exit0，release `0cc06d1a846f42e78088bfad72ccfcd4` committed/passed；3823 passed、5原opt-in skipped、20 warnings、2584.38秒。输入提交`7b1fb830273f928580a8d9596e0d120de418b96f`，dirty=false。完整source `f251062e919e63b689fef721c15c6b2fb20eafd9a4ac061c423b319be97c8d3d`，EXE `8e1bb81143805117049ac2aad9529ba57560913e9732dba68452196a22904751`，安装树`1dac8b902a8a708f98848d241ae59cebeaacfad782d44c4a8d36fbcc4707e43b`。
+
+| 验收ID | 实际命令、证据与结果 | 适用范围和限制 |
+| --- | --- | --- |
+| A1～A4 | 唯一完整门禁exit0；`py out/audit_release.py <run> <commit>` exit0，[发布审计](architecture-e6d-release-audit-guard-fix-2026-10-20.json) | 24步骤、54留存输出、1715输入核对通过；原两轮完整失败与NTFS反例保持，不改冻结release_lock |
+| C1～C4/R1～R4/容量/T3/M | 上列最终开发矩阵及完整门禁通过 | 最终个股原30随机+固定、六完整月572全代理；行业24月703行25全代理，各pending0/六清理；两容量和原T3的18项通过。有限实采不等于全历史准备 |
+| U1～U3 | `py out/check_published_runtime.py --run <run> --report <path>`发布后及关闭后均exit0；`py out/close_desktop_settings_final.py`、`py out/final_resource.py <run>`、两次`read_schedules.py`和`export_close_final.py`均exit0；[真实桌面结案](architecture-e6d-desktop-guard-fix-2026-10-20.md) | 两页面/关联空态/分页/刷新滚动/帮助/启停保护/草稿滚轮/981窄窗通过，同包异cwd真实连接与正式查询分证；48设置、45策略、两config/原偏好保持，正常关开和资源核查通过 |
+
+`out`为`build/architecture-e6d-guard-20261020`。机器导出的原文件及SHA见[最终导出审计](architecture-e6d-final-evidence-audit-guard-fix-2026-10-20.json)；补充重开观察独立导出，原误标签及更正事实保留。误触启动行业日常任务自然完成、不算隔离实采；结束工作台活动1而非0。原容量170ms、性能超限、连接超时及发布保护失败均保留，不声称根因全部修复。
+
+E6d本批组织迁移适用出口已满足；结案文档审阅/回归及main推送精确核实完成后才能进入E6e。H3固定空名债券、E4严格来源失败、资本历史准备与停复牌/业绩旧错误保持；E6e～E6g和F尚未实施，整个优化未完成。
+
+结案文档验证实际完成：documentation_contract review/check、verify_documentation（251文档/1741链接）、verify_database_design（55表/49数据集/12JSON）均exit0；原五文件46回归全部通过/38.99秒，无skip，JUnit为build/architecture-e6d-guard-20261020/close-docs.xml。本次仅结案文档与脱敏证据，不重新打包、不改变上述正式包身份。

@@ -1,0 +1,2153 @@
+{
+  "record_kind": "evidence_export_and_assertion_audit",
+  "checked_at": "2026-10-20T15:40:23.419108+00:00",
+  "files": [
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\release-evidence-audit.json",
+      "export": "docs\\evidence\\architecture-e6d-release-audit-guard-fix-2026-10-20.json",
+      "sha256": "c04d88faee3b03b2c46100d5ad3bd9806a632f60d923f04d2920530366201b8b",
+      "bytes": 23267
+    },
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\post-release.json",
+      "export": "docs\\evidence\\architecture-e6d-post-release-guard-fix-2026-10-20.json",
+      "sha256": "bf024781cee1c1828e9a9d419d4e2a94a2ab30c7d69c63506f6be42edfcf0340",
+      "bytes": 6195
+    },
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\post-release-closed.json",
+      "export": "docs\\evidence\\architecture-e6d-post-release-closed-guard-fix-2026-10-20.json",
+      "sha256": "7fae3cd37658dfc66ed33654261735c032bead3b51e32a1d8e6e0aa563c7ebca",
+      "bytes": 6192
+    },
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\desktop-settings-restored-final.json",
+      "export": "docs\\evidence\\architecture-e6d-settings-guard-fix-2026-10-20.json",
+      "sha256": "f08ca719e2fa84d908348a54c1d488db2e07bc1d64696b3e5ef61e37c5e026cd",
+      "bytes": 971
+    },
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\final-resource.json",
+      "export": "docs\\evidence\\architecture-e6d-final-resources-guard-fix-2026-10-20.json",
+      "sha256": "d2fd403c471107d9defeb6d3978cfa692b24ed2f7371a22699162a194c7add4e",
+      "bytes": 2165
+    },
+    {
+      "source": "build\\architecture-e6d-guard-20261020\\desktop-observations.jsonl",
+      "export": "docs\\evidence\\architecture-e6d-desktop-observations-guard-fix-2026-10-20.jsonl",
+      "sha256": "7874bad990c45245813f61cd0283132c2a5e333df2dfb352fed24ab1f20e14aa",
+      "bytes": 1129886
+    }
+  ],
+  "schedule_comparison": {
+    "jobs": 45,
+    "all_saved_policies_equal": true,
+    "snapshots": {
+      "before": "2026-10-20T10:41:16.123637+00:00",
+      "closed": "2026-10-20T15:40:03.193106+00:00",
+      "reopened": "2026-10-20T15:40:22.939155+00:00"
+    },
+    "unlock_jobs": {
+      "before": {
+        "tdx-unlock-industries": {
+          "policy": {
+            "mode": "daily",
+            "interval_seconds": 86400,
+            "daily_time": "18:00",
+            "request_retries": 2,
+            "enabled": true,
+            "use_proxy": true,
+            "proxy_fallback": true,
+            "archived": false
+          },
+          "next_due": 1792576800.0,
+          "active": null,
+          "last_status": "complete",
+          "error": "",
+          "notice": ""
+        },
+        "tdx-unlocks": {
+          "policy": {
+            "mode": "daily",
+            "interval_seconds": 86400,
+            "daily_time": "18:00",
+            "request_retries": 2,
+            "enabled": true,
+            "use_proxy": true,
+            "proxy_fallback": true,
+            "archived": false
+          },
+          "next_due": 1792576800.0,
+          "active": null,
+          "last_status": "paused",
+          "error": "",
+          "notice": ""
+        }
+      },
+      "closed": {
+        "tdx-unlock-industries": {
+          "policy": {
+            "mode": "daily",
+            "interval_seconds": 86400,
+            "daily_time": "18:00",
+            "request_retries": 2,
+            "enabled": true,
+            "use_proxy": true,
+            "proxy_fallback": true,
+            "archived": false
+          },
+          "next_due": 1792576800.0,
+          "active": null,
+          "last_status": "complete",
+          "error": "",
+          "notice": ""
+        },
+        "tdx-unlocks": {
+          "policy": {
+            "mode": "daily",
+            "interval_seconds": 86400,
+            "daily_time": "18:00",
+            "request_retries": 2,
+            "enabled": true,
+            "use_proxy": true,
+            "proxy_fallback": true,
+            "archived": false
+          },
+          "next_due": 1792576800.0,
+          "active": null,
+          "last_status": "paused",
+          "error": "",
+          "notice": ""
+        }
+      },
+      "reopened": {
+        "tdx-unlock-industries": {
+          "policy": {
+            "mode": "daily",
+            "interval_seconds": 86400,
+            "daily_time": "18:00",
+            "request_retries": 2,
+            "enabled": true,
+            "use_proxy": true,
+            "proxy_fallback": true,
+            "archived": false
+          },
+          "next_due": 1792576800.0,
+          "active": null,
+          "last_status": "complete",
+          "error": "",
+          "notice": ""
+        },
+        "tdx-unlocks": {
+          "policy": {
+            "mode": "daily",
+            "interval_seconds": 86400,
+            "daily_time": "18:00",
+            "request_retries": 2,
+            "enabled": true,
+            "use_proxy": true,
+            "proxy_fallback": true,
+            "archived": false
+          },
+          "next_due": 1792576800.0,
+          "active": null,
+          "last_status": "paused",
+          "error": "",
+          "notice": ""
+        }
+      }
+    },
+    "limitation": "Other interval tasks may advance next_due naturally; saved policies must remain identical"
+  },
+  "reopened_preserved_hashes": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\dist\\Empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "C:\\Users\\52948\\AppData\\Local\\Empire\\plugin-state.json": "8cbc58900b35bf4c8b2f9fff47ed95f67f6e20782734f38a0819ff3c7cadd63e"
+  },
+  "desktop_observations": [
+    {
+      "at": "2026-10-20T15:18:55.827Z",
+      "label": "新发布启动可见工作台",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "6aa466510d6c27b99d1ed0777008a3d1ad03f2a3c0a7ab54901f78d3299094cb",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:19:04.984Z",
+      "label": "进入数据浏览目录",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "e97b788eb857cb8e4febf5f8e1f3d4dcbc1de4f006bde5b393d1460b40fef396",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:19:25.701Z",
+      "label": "目录搜索解禁",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "885a9f428ee3c8e6932471c126aa9b874fb7eaac6bcd6c46af2b15b23a9b42f0",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:19:33.917Z",
+      "label": "打开个股解禁默认分页",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "2428b619bbbb6b0221b8348bff7e51aaa9c7fbc5f890d73b5583421873b3b982",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:19:42.547Z",
+      "label": "个股默认首屏200条及分页就绪",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "c388110184c34d63461be9e2d71ab10f96b11f2344794ad7b567a9bc8365fa8f",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:19:51.900Z",
+      "label": "个股列表滚动前像",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "c388110184c34d63461be9e2d71ab10f96b11f2344794ad7b567a9bc8365fa8f",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:20:06.851Z",
+      "label": "相同条件刷新立即清理旧关联",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "d0348dc0aabca381aee566cfee3d2725bdd10653c6e5466fb1a4d936028b7a7a",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:20:15.310Z",
+      "label": "相同筛选刷新后保持易思维卡片位置",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b1370b8267b025575e2e7a8fc53cc43aeb06730bb04a271ae5f7525ea0b11e0f",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:20:26.015Z",
+      "label": "个股下一页清理旧列表明细",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b1370b8267b025575e2e7a8fc53cc43aeb06730bb04a271ae5f7525ea0b11e0f",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:20:36.636Z",
+      "label": "个股第二页200条",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "bb8d9677b7d69e01560923245af0601f7cc55025f775e835a9007102071c42fc",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:20:48.044Z",
+      "label": "个股返回上一页",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "d0348dc0aabca381aee566cfee3d2725bdd10653c6e5466fb1a4d936028b7a7a",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:21:18.887Z",
+      "label": "输入固定原反例证券",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "f264c611a42d5ae0d235ff54adb3b4327e9d79b7141bc3a3f2f47e007f962e23",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:21:29.324Z",
+      "label": "设置原反例开始日期",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "82a6ec220836a0b3c1ee6d00ef613a0b50cd0acb6f48343c565e7d732c08efb2",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:21:45.863Z",
+      "label": "设置原反例截止日期",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "d89429379d6ccea9408e665f0915d69f1621086f11b6da3fa7fcd435c1fbdb36",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:21:54.262Z",
+      "label": "执行原反例600889查询",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b37f6ee50dee035842f24828c697b0b7071c4cb39a3fd0f1c9286d12673f24bd",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:22:04.706Z",
+      "label": "原反例600889返回一条6493500股",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "cf2d760f9afce3d84f48c8a4eca19123e17c68a2ff5573f974861c49896683a1",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:22:15.261Z",
+      "label": "展开原反例共享股东明细",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "2e7407188f79eb29a9e4bbe0cfb123c1353c8bbfb47d2c80dda3330d7fb7c178",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:22:23.262Z",
+      "label": "600889共享明细南京新工6493500股",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "d3f10ab5df8e58db8adeeefd569ca86f82112cfb6e02ff0e1ad472fa2d1c018e",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:22:35.893Z",
+      "label": "原反例切换到不存在证券草稿",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "83f303f88aac1dae13655447da37a2d6c63b601080c89b5fd80ba3246843033f",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:22:46.422Z",
+      "label": "空查询立即清除南京新工旧明细",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b0b65f4c17f5d4a0dfe017b3fa2ae7aa8ccb1b15f31928ade6905138dea30648",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:23:02.668Z",
+      "label": "空查询零条旧股东不再显示",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "ad9ff3f259e2ac3d056421db8cc25479dcb607b528abf886803ad124fb89bde7",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:23:24.505Z",
+      "label": "返回解禁目录",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "15850f52f1f31b1e5d88efc26b49003fe08f7c32e9989bb7d4921787c663b7d5",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:23:39.703Z",
+      "label": "打开行业解禁默认列表",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "8d1a8a9d3e3da43b67beaa89eb326294a639a163d31ac4fa59c66385495d560e",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:23:58.811Z",
+      "label": "行业默认首屏200条基准日与单位",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "a0fb00a0de9b6fc9ff43d46b89909bc480fc39c281e391d1f8ea56f552eaccf5",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:24:24.654Z",
+      "label": "行业游标下一页请求",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "a0fb00a0de9b6fc9ff43d46b89909bc480fc39c281e391d1f8ea56f552eaccf5",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:26:30.018Z",
+      "label": "接手续验行业第二页",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b71053c4a1327ba133af3fe94926821b00fd912caa7210fbd67b448c9277da89",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:26:43.991Z",
+      "label": "行业返回首页",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b71053c4a1327ba133af3fe94926821b00fd912caa7210fbd67b448c9277da89",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:26:53.263Z",
+      "label": "行业首页异步完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "a0fb00a0de9b6fc9ff43d46b89909bc480fc39c281e391d1f8ea56f552eaccf5",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:26:53.542Z",
+      "label": "行业筛选已填写",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "0b330147f8b4f037e2fb7fdf7dac9d8430c0da3499030932c8aa1b2e7eaecee9",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:04.598Z",
+      "label": "行业开始月",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "54ccbf0301d4e37140f874807f2c8593d1ddff3ba95337bd6121a0c51ca8b5f1",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:05.004Z",
+      "label": "行业截止月",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "71824814c352436483b312ea46fba9ae1710bd567155969a159b16e598fc1cb8",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:05.265Z",
+      "label": "行业限定查询提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "71824814c352436483b312ea46fba9ae1710bd567155969a159b16e598fc1cb8",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:15.102Z",
+      "label": "行业单月结果确认",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b4cb0bb445bceb41d32e7ba5855457f9fc7459e40321e013cf3a0e23f0849d6b",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:15.433Z",
+      "label": "行业空态条件",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "32713a162f1a1dc036c31c8259f8ba89fb8b12abbd5732030f84df6ad86b8e85",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:15.685Z",
+      "label": "行业空态查询提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "32713a162f1a1dc036c31c8259f8ba89fb8b12abbd5732030f84df6ad86b8e85",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:23.532Z",
+      "label": "行业空结果确认",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:23.815Z",
+      "label": "行业窄窗布局",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:34.872Z",
+      "label": "行业窗口缩小实测",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:49.182Z",
+      "label": "窗口尺寸系统操作",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:27:58.315Z",
+      "label": "窗口系统菜单",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        },
+        {
+          "height": 147,
+          "id": "screenshot-1",
+          "originX": 1060,
+          "originY": 266,
+          "width": 193,
+          "zIndex": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:28:14.248Z",
+      "label": "进入尺寸调整",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:28:14.482Z",
+      "label": "选择右边界",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:28:14.786Z",
+      "label": "开始缩小右边界",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1311,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:28:27.443Z",
+      "label": "确认尺寸调整",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1311,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:28:27.692Z",
+      "label": "行业窄窗实际布局",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1311,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:28:41.792Z",
+      "label": "窄窗菜单",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:28:41.932Z",
+      "label": "窄窗调整模式",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:28:42.130Z",
+      "label": "窄窗右边界",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:28:48.862Z",
+      "label": "行业约980宽真实窄窗",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7efa8dc8e36f32a131cd853bb0b646b99648fd0899c7a479461251a54a632a45",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:29:00.485Z",
+      "label": "窄窗有效行业",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "c8271b28015825a71d963a313ad06f3fc93256fd794362439aa057486be984ec",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:29:00.662Z",
+      "label": "窄窗查询提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "c8271b28015825a71d963a313ad06f3fc93256fd794362439aa057486be984ec",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:29:10.805Z",
+      "label": "行业981宽数据与单位",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b4cb0bb445bceb41d32e7ba5855457f9fc7459e40321e013cf3a0e23f0849d6b",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:29:11.040Z",
+      "label": "行业管理任务入口",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b4cb0bb445bceb41d32e7ba5855457f9fc7459e40321e013cf3a0e23f0849d6b",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:29:26.169Z",
+      "label": "行业任务加载完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "2972972729d157339950a54305a78e47434ef1b51b2a53a4430a7c8a873f398b",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:29:37.662Z",
+      "label": "行业任务配置前像",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b45a0791282604540ddc63f5fbfdc073c61ea1adb9b7ea3361ea7ab4fb350f03",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:29:50.299Z",
+      "label": "滚轮执行方式保持每天定时",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "faea2609069f4eb4a42672e240032d47a937e6ef0d16726d123bebafb3896b7b",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:29:50.517Z",
+      "label": "行业未保存任务草稿",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "0017891c4685ab887afcff16a5879968cc7764206565c466e66893c7bfb04154",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:29:50.748Z",
+      "label": "草稿切离工作台",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "880bb9fb54edd30cb6daa377a8ba14c9355fce8b19b36f6d06ea52c2fd77b47d",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:30:04.378Z",
+      "label": "返回任务核查操作结果",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "3b7fce47e8a1be98cb5e4ddceea7dc09f9f5428fca965aaf8dbd597d093301d4",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:30:23.598Z",
+      "label": "任务配置滚回顶部",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "d806e80b07e28ae666a43edf17037d85ab76a4497faac801329afbcec46b84b3",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:30:34.636Z",
+      "label": "行业草稿确实未保存",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "d806e80b07e28ae666a43edf17037d85ab76a4497faac801329afbcec46b84b3",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:30:34.809Z",
+      "label": "草稿切页工作台",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "43683fc08c399d617e662ee28bdc74a3952852ae27db52b71fea1bfec67a3a19",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:30:35.052Z",
+      "label": "返回任务草稿保留",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "ec3d1706326070a6bab58997a115b9bc182db938c829432d31d2e59b850c5276",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:30:51.166Z",
+      "label": "行业草稿后台刷新仍未覆盖",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "ec3d1706326070a6bab58997a115b9bc182db938c829432d31d2e59b850c5276",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:30:51.366Z",
+      "label": "撤销行业草稿",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "ec3d1706326070a6bab58997a115b9bc182db938c829432d31d2e59b850c5276",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:30:51.563Z",
+      "label": "系统设置入口",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b60acfde134c798d1a23c16bf64294998874477a0484242c829f822809e3b83a",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:31:05.793Z",
+      "label": "新包运行版本身份",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "beed212b32640b9be6e90ed44cfc23e10f149a953fc2f2db7d3b84ef95b3574a",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:31:06.012Z",
+      "label": "插件管理初始",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "635b4e56a4a91349b1d57ca8b6353993508b52cf90dc88497a6f71a65ec73d90",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:31:19.120Z",
+      "label": "定位解禁插件行",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "635b4e56a4a91349b1d57ca8b6353993508b52cf90dc88497a6f71a65ec73d90",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:31:33.675Z",
+      "label": "插件滚动后新索引",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "acbeef41b7fd68c44f8c7cec8c0b0060a8d6e1b58f24f8ad26a4042ce77e9342",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:31:33.896Z",
+      "label": "继续定位解禁插件",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "917cbe23c6dcc6b2192eae67a1ad57c34481e8324bebf7dd774aae6da079cd03",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:31:48.161Z",
+      "label": "选中行业界面插件",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "1c897f07ecfafdffc082233a0e26071a5e9b32291fc15eade4be55efd62e5861",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:31:48.356Z",
+      "label": "停用行业界面请求",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "1c897f07ecfafdffc082233a0e26071a5e9b32291fc15eade4be55efd62e5861",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:32:04.028Z",
+      "label": "行业界面停用完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b79aecabaf36552ec6f7d44a5ea88fb6de19abceaea4af11f6e284ddc5b97098",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:32:20.353Z",
+      "label": "行业UI停用数据目录",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "be5aaf43991b40d320ea8e06267cebfaeeaf4c11aff34f784bfa7235d8e5dbe3",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:32:38.254Z",
+      "label": "行业停用只余个股目录",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "dc06a9d33c16457d700228c124bdccce40b745ade099e06e3c283ba5ee6d7b9e",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:32:38.623Z",
+      "label": "行业停用时个股仍可打开",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "23fca02dc20cb320c5b47a0209678514bfccef996d73d38d21e4ad2810fd071b",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:32:55.706Z",
+      "label": "返回插件恢复行业",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "9a9c2ccb970b620301bb8e4b57f18ab0e9526ce6abb6309b75be5e2f06797ba6",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:33:10.099Z",
+      "label": "恢复行业UI提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "26668f7cb6c1956fed932f62170ab8a45a6df22694a0e6ed3879be15221637d0",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:33:33.996Z",
+      "label": "行业UI恢复完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "5fafdb96031605c4aea5f3fcf77c1fea2e0520829a209e50b527044dbccdc3e9",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:33:34.227Z",
+      "label": "个股UI行滚入可见",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "9d0f7e714bf5a64e7e49ff140510e5644802d40e4d252616c591e5564206fed6",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:33:57.791Z",
+      "label": "选中个股UI",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7001083de44f296b4fda55bd2792a81265463bae9364f7f500e8838fdb903e8a",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:34:12.262Z",
+      "label": "停用个股UI提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "7001083de44f296b4fda55bd2792a81265463bae9364f7f500e8838fdb903e8a",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:34:27.016Z",
+      "label": "个股UI停用完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "6352f1ecd51d28fb75f9e2fcfbe3c2efe51ddbab614e80192babf1d585eb8cc0",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:34:43.913Z",
+      "label": "个股UI停用后目录",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "75dc0354443eee65279daefd73d6f16ce32ea7c47dde15e33b345a76d9864c3c",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:35:01.531Z",
+      "label": "返回恢复个股UI",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "23a9fc712f765e3d1f1523b553aa6d6c111e23e791fee144e1d0b1b92ea552a9",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:35:17.854Z",
+      "label": "个股UI恢复提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "caa25faf2606a187c8f03ec8c6f0715300e42f51ccdc908999e20e8810c73dd2",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:35:34.809Z",
+      "label": "个股UI恢复完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "5f8c13b0a54078415135b3f0b86e24619a1ff119235cba431879fb3c4058e6cd",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:35:35.014Z",
+      "label": "选中个股采集插件",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "527809c8b590af3f4ecd49fbc830cd8dd9f9ba19fde48f4329be6148eae54d5b",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:35:50.281Z",
+      "label": "个股collector停用提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "527809c8b590af3f4ecd49fbc830cd8dd9f9ba19fde48f4329be6148eae54d5b",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:36:11.247Z",
+      "label": "个股collector停用完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "83e7bb66ed84bb7d2c01f02a69006c43fa18fe627cd138d957cc515a18c057b2",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:36:28.084Z",
+      "label": "个股collector恢复提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "83e7bb66ed84bb7d2c01f02a69006c43fa18fe627cd138d957cc515a18c057b2",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:36:44.450Z",
+      "label": "个股collector恢复完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "527809c8b590af3f4ecd49fbc830cd8dd9f9ba19fde48f4329be6148eae54d5b",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:36:44.696Z",
+      "label": "选中行业collector",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b3a22a4c93aa0d136359f8b70079bff1f1c328bf676670b155d7b3538ef2d366",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:36:44.886Z",
+      "label": "行业collector停用提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "ae21fffabaf4a550c52ce3444662741883a6ce7e0117a6e8ace39dce286d1a67",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:37:04.299Z",
+      "label": "行业collector停用完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "34bb5363ded08a7e6b35e6233a65e618a9d939636486f93f2f17bd504ec0d169",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:37:04.470Z",
+      "label": "行业collector恢复提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "34bb5363ded08a7e6b35e6233a65e618a9d939636486f93f2f17bd504ec0d169",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:37:20.726Z",
+      "label": "行业collector恢复完成",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "b3a22a4c93aa0d136359f8b70079bff1f1c328bf676670b155d7b3538ef2d366",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:37:20.949Z",
+      "label": "选中行业查询依赖",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "eed5886ddca665b11f94d2a961cf8edabc8964c799ef2062cb9f538418d4cfec",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:37:21.164Z",
+      "label": "行业查询依赖保护提交",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "eed5886ddca665b11f94d2a961cf8edabc8964c799ef2062cb9f538418d4cfec",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:37:38.718Z",
+      "label": "行业查询拒绝停用保留依赖",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "ae022929bd2598b5539a43b83d830a2bb03572642960553757179e662d2e5edc",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:37:38.919Z",
+      "label": "选中个股查询依赖",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "ad55f02ef5ca94b316cc6422721d17eafcebdd0d7b87aad3d68ee01f693d06de",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:37:39.132Z",
+      "label": "个股查询拒绝停用",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "ad55f02ef5ca94b316cc6422721d17eafcebdd0d7b87aad3d68ee01f693d06de",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:37:55.675Z",
+      "label": "两查询依赖保护及全部开关已恢复",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "d892bfb2c9e8dafdf943df44dacb9eff5281f3634eb769e7c8b16a642f18da1e",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:37:55.884Z",
+      "label": "正式包说明文档入口",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "59eba0115734869422ec1f7a24909baf8d9bd9399b3a9d62f6f080457b656623",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:38:13.417Z",
+      "label": "解禁帮助搜索",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "fc9d168b6dbc2e6929e3d65743508c92603161c3f704f78300d97ec20f44172d",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:38:35.747Z",
+      "label": "行业正式帮助正文",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "fc9d168b6dbc2e6929e3d65743508c92603161c3f704f78300d97ec20f44172d",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:38:54.793Z",
+      "label": "行业帮助最终已加载",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "3b920a03373c4aec26be5fa18325750bb1af6480e0736081203da68291518d2a",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:38:55.013Z",
+      "label": "正式包正常关闭等待",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "89c17fddf627e9a0acfe0734a126b04cce6c9f970756cd34c47864351683fad8",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 981,
+          "zIndex": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-20T15:39:16.450Z",
+      "label": "正常关闭后fresh窗口列表无Empire",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 857908,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "1324d2392dcd7e07b2ec88c65cc9de89cc1fad3f029ba840226af715d99d61c5",
+      "screenshots": []
+    },
+    {
+      "at": "2026-10-20T15:40:22.340Z",
+      "label": "同正式包正常重开工作台可见",
+      "window": {
+        "app": "process:D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "id": 1514190,
+        "title": "Empire · 投资研究工作台"
+      },
+      "tree_sha256": "dc7ff9d5de4d0785c62f6eee187cac7aa3da295e978f21a24ece1c53b9140ec6",
+      "screenshots": [
+        {
+          "height": 892,
+          "id": "screenshot-0",
+          "originX": 1059,
+          "originY": 235,
+          "width": 1322,
+          "zIndex": 0
+        }
+      ]
+    }
+  ],
+  "assertions_completed": [
+    "All 24 release steps and retained outputs audited",
+    "No release input mismatch",
+    "Closed same-package read-only runtime check passed",
+    "48 SQL settings payload and updated_at preserved",
+    "All saved task policies preserved",
+    "Reopened configurations and preference hashes preserved"
+  ]
+}
