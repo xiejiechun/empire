@@ -1,6 +1,6 @@
 # E6b-aliases 证券代码映射实施记录
 
-当前状态：**开发验证通过，待正式发布与同包桌面**。2026-10-20从已验收并推送的E6b-status结案提交`290a6ae458f2f878772a9107d55f5732aea740b8`接续；开工工作区干净，`ls-remote`精确匹配。前批release `dad5a84751e44fe1a6f35ef4e577c7b0` committed/passed，安装EXE SHA256 `b41d096259efc1a6aa5c82d1a4237d42ba47ef1375ef6521eddbe1c59b4adfa4`一致。本批未发布，不能进入E6c。
+当前状态：**本批组织迁移范围已验收，结案提交待推送核实**。实现`b96abe26514b0912569b6559b09c3eefe0a684c4`，release `e50fe39d6083405ab7abaf86d90a2561` committed/passed，3793 passed/5 opt-in skipped；同包正式查询、原配置/偏好与48保存设置、真实桌面及正常关开通过。结案推送精确核实后进入E6c，整个优化未完成。2026-10-20从已验收并推送的E6b-status结案`290a6ae458f2f878772a9107d55f5732aea740b8`接续，开工工作区干净、远程精确匹配；前批release `dad5a84751e44fe1a6f35ef4e577c7b0`已核实。
 
 ## 请求前范围与不变量
 
@@ -38,6 +38,16 @@
 
 `py <out>/pre_release.py` exit0：最终来源摘要与实际树一致、容量所有bindings不变、两config及原偏好hash保持；只读保存全部48行app_setting（含payload与updated_at）供同包核验，私密原值仅留ignored目录。正式发布前桌面已正常退出，未强杀或删除锁。无本批业务错误ID清理。
 
-## 待完成
+## A/M/U 正式发布与结案证据
 
-实现提交及完整发布、同包配置/真实连接/正式查询/可见桌面与正常关开、结案提交及远程核实待执行。不能以开发通过代替这些出口，也不能进入E6c。
+| 验收ID/范围 | 实际命令、退出码与证据 | 结果及限制 |
+| --- | --- | --- |
+| A1～A4 完整正式发布 | `.\verify-release.ps1` 自然退出0；release `e50fe39d6083405ab7abaf86d90a2561`，本机`release-console.log`、publication及24步日志保留；`py <out>/audit_release.py` exit0，[审计](architecture-e6b-aliases-release-audit-2026-10-20.json) | journal committed/passed，3793 passed/5 skipped/20 warnings/2396.62秒；5个state-unit opt-in跳过不计通过。1620输入精确一致、54保留输出核实、24步骤完成；HEAD和受保护输入全程冻结。可选QML插件构建警告原样保留 |
+| A4/U3 同包配置/连接/正式查询 | `py <out>/check_published_runtime.py --run e50fe39d6083405ab7abaf86d90a2561 --report <out>/post-release.json`及关闭后`--report <out>/post-release-closed.json`均exit0，[关闭后报告](architecture-e6b-aliases-post-release-closed-2026-10-20.json) | 正式EXE在C:/Windows cwd的doctor真实连接通过；生产248项及固定例、两个索引查询集合内容一致，恰与本轮官方整表相同；只读，不执行生产import，不作生产新鲜度声明 |
+| U1/U2/U3 真实桌面 | computer-use/sky实际操作，详见[真实桌面](architecture-e6b-aliases-desktop-2026-10-20.md)和[观察索引](architecture-e6b-aliases-desktop-observations-2026-10-20.json) | 真实运行状态构建标识、帮助搜索/正文/滚动、正常退出及重开、本地连接和45任务/0活动/既有失败4/pending0。领域页面启停/草稿N/A，本业务没有这些贡献；不冒充桌面全部业务验收 |
+| U3 设置保留 | `py <out>/close_desktop_settings.py` exit0，[保存设置](architecture-e6b-aliases-settings-2026-10-20.json)；重开后Get-FileHash再次核实 | 两config SHA256均`5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f`，偏好`8cbc58900b35bf4c8b2f9fff47ed95f67f6e20782734f38a0819ff3c7cadd63e`原字节不变，无需恢复；48行payload/updated_at摘要`9e59d702765610a9f91bfdfcc19bcfc104590d239bd87be6dfa99a95c511c1ac`相同 |
+| 资源与冻结边界 | `py <out>/final_resource.py` exit0，[最终资源](architecture-e6b-aliases-final-resources-2026-10-20.json) | 私有13348实际UUID/datadir，四系统库、无其他客户，生产与测试隔离；冻结工具/原阈值未变，pending0，无锁/共享Redis/生产业务清理 |
+
+正式EXE SHA256 `ed8ed8d58ae3a8b3bf712ae8e953acdcf5454ed0e827b0f36d5a4c537ba68be1`，安装树`1f6a8abade47f3bd0e40f77eeb129729182d6a31543d6d3eaef30db66b817c9b`，source `428c85bbd53d5ad3bdb349efa3db0cbbec4ef38149b46a49ad9679666d2a7a8f`。机器报告原desktop pending字段未改，用独立实际记录补足。`py <out>/finalize_evidence.py` exit0复制原机器收据并索引26份真实文件，[证据索引](architecture-e6b-aliases-evidence-index-2026-10-20.json)不包含私密设置/owner或成功HTML全文。
+
+结案只更新验收事实，不更改已发布运行时代码或正文。最终`documentation_contract.py review`与`check`、`verify_documentation.py`（243文档/1655链接）、`verify_database_design.py`（55表/49数据集/12JSON）实际均exit0；同前述四个文档测试、`--basetemp build/pytest-e6b-aliases-closure-docs --junitxml <out>/closure-docs.xml`实际exit0，35 passed/25.42秒。结案提交/push与远程精确核实完成后才能实施E6c；H3/E4、资本历史和生产历史freshness失败不冲销，随机30股N/A不计满足股票门槛。

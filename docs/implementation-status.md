@@ -1,6 +1,6 @@
 # 当前实现与验证边界
 
-2026-10-20接续核实：E6b-status结案`290a6ae458f2f878772a9107d55f5732aea740b8`已推送，ls-remote与本地精确一致。当前E6b-aliases开发验证通过：两个旧入口退役，显式维护入口保留；114安全及私有SQL、329公共回归、真实248项全代理整表、1000行当前容量和冻结T3原18项通过。尚待完整发布与同包桌面验收，不进入E6c。见[本批记录](./evidence/architecture-e6b-aliases-2026-10-20.md)。
+2026-10-20接续核实：**E6b-aliases本批组织迁移范围已验收，结案提交待推送核实**。实现b96abe26514b0912569b6559b09c3eefe0a684c4，release e50fe39d6083405ab7abaf86d90a2561 committed/passed，3793 passed/5 opt-in skipped。两个旧入口退役、114安全/私有SQL、329公共回归、248项全代理整表/pending0、1000行真实新容量及T3原18项通过；同包正式查询、真实桌面、48设置及原config/偏好、正常关开完成。结案push精确核实后下一项E6c，更名/ST尚未实施；既有来源及历史准备失败保留，整个优化未完成。见[本批记录](./evidence/architecture-e6b-aliases-2026-10-20.md)、[真实桌面](./evidence/architecture-e6b-aliases-desktop-2026-10-20.md)。下文旧快照保留历史时态。
 
 2026-10-20接续：E6b-status本批组织迁移范围已验收，结案提交待推送核实。七模块/调用方迁至features/listing_status并退役旧入口；实现230c5d2/release dad5a847完整门禁3786 passed/5 opt-in skipped，同包正式查询、真实桌面、48设置及原config/偏好、正常关开通过。六完整月份167全代理/26事件集合内容一致/pending0、当前5万事件容量及独占T3原18项通过；生产历史freshness失败保留。结案推送精确核实后继续E6b-aliases，其余E6c～g/F未实施，整个优化未完成。见[当前记录](evidence/architecture-e6b-status-2026-10-20.md)。下面旧快照保持历史时态。
 

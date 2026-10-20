@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-10-20T08:13:27.863404+00:00",
+  "release_id": "e50fe39d6083405ab7abaf86d90a2561",
+  "passed_read_only": true,
+  "actual_desktop": "pending_separate_real_observations",
+  "formal_query_execution": "Read-only original maintenance SQL using installed configuration; packaged doctor and GUI separately verified",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "b96abe26514b0912569b6559b09c3eefe0a684c4",
+    "dirty": false,
+    "source_sha256": "428c85bbd53d5ad3bdb349efa3db0cbbec4ef38149b46a49ad9679666d2a7a8f",
+    "release_id": "e50fe39d6083405ab7abaf86d90a2561",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "7784c82496b8473eb34678bfb916008819ff66626752cc9811f9b7c867ab4691",
+    "built_at_utc": "2026-10-20T08:10:51.815528+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3",
+    "packaged": true
+  },
+  "exe_sha256": "ed8ed8d58ae3a8b3bf712ae8e953acdcf5454ed0e827b0f36d5a4c537ba68be1",
+  "installed_tree_sha256": "1f6a8abade47f3bd0e40f77eeb129729182d6a31543d6d3eaef30db66b817c9b",
+  "configuration_and_preferences_preserved": {
+    "D:\\project\\empire\\config.toml": true,
+    "D:\\project\\empire\\dist\\Empire\\config.toml": true,
+    "C:\\Users\\52948\\AppData\\Local\\Empire\\plugin-state.json": true
+  },
+  "packaged_doctor": {
+    "cwd": "C:/Windows",
+    "exit_code": 0,
+    "redis_connected": true,
+    "mysql_connected": true
+  },
+  "formal_sql_queries": {
+    "query": "Original explicit-maintenance ordered LIMIT 1000 plus both indexed identity lookups",
+    "rows": 248,
+    "fixed_example": {
+      "legacy_code": "836149",
+      "unified_code": "920149.BJ",
+      "name": "旭杰科技",
+      "listing_date": "2020-07-27"
+    },
+    "both_identity_queries_equal": true,
+    "source_set_digest": "58ffb866e3d6065eae9cdb109547d038c3175b1255d750d7c1e988868c2b0e89",
+    "current_source_equal": true,
+    "limitation": "Read-only production snapshot; no production import, no new source freshness claim"
+  },
+  "all_saved_settings_equal": {
+    "rows": 48,
+    "digest": "9e59d702765610a9f91bfdfcc19bcfc104590d239bd87be6dfa99a95c511c1ac"
+  },
+  "global_pending": 0
+}

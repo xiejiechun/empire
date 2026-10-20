@@ -1,6 +1,6 @@
 # 模块化优化状态与下一步
 
-2026-10-20接续核实：E6b-status结案`290a6ae458f2f878772a9107d55f5732aea740b8`已推送，ls-remote与本地精确一致。当前E6b-aliases开发验证通过：两个旧入口退役，显式维护入口保留；114安全及私有SQL、329公共回归、真实248项全代理整表、1000行当前容量和冻结T3原18项通过。尚待完整发布与同包桌面验收，不进入E6c。见[本批记录](../evidence/architecture-e6b-aliases-2026-10-20.md)。
+2026-10-20接续核实：**E6b-aliases本批组织迁移范围已验收，结案提交待推送核实**。实现b96abe26514b0912569b6559b09c3eefe0a684c4，release e50fe39d6083405ab7abaf86d90a2561 committed/passed，3793 passed/5 opt-in skipped。两个旧入口退役、114安全/私有SQL、329公共回归、248项全代理整表/pending0、1000行真实新容量及T3原18项通过；同包正式查询、真实桌面、48设置及原config/偏好、正常关开完成。结案push精确核实后下一项E6c，更名/ST尚未实施；既有来源及历史准备失败保留，整个优化未完成。见[本批记录](../evidence/architecture-e6b-aliases-2026-10-20.md)、[真实桌面](../evidence/architecture-e6b-aliases-desktop-2026-10-20.md)。下文旧快照保留历史时态。
 
 本轮接续：2026-10-20，**E6b-status本批组织迁移范围已验收，结案提交待推送核实**。实现230c5d206c3407d97cd568032dc40b398c0450f1，release dad5a84751e44fe1a6f35ef4e577c7b0 committed/passed，3786 passed/5 opt-in skipped。七旧模块及调用方退役、六完整月份167全代理/26事件/pending0、当前5万事件容量/T3原18项；同包正式查询、真实桌面、48保存设置及原config/偏好、正常关开均完成。生产历史freshness失败保留。结案推送精确核实后下一项E6b-aliases；未提前实施。见[本批记录](../evidence/architecture-e6b-status-2026-10-20.md)、[真实桌面](../evidence/architecture-e6b-status-desktop-2026-10-20.md)。下文旧快照保留历史时态。
 
@@ -23,7 +23,7 @@
 | E4 开盘啦七项 | 已验收（组织迁移范围）；严格来源失败保留 | 24旧模块退役；279领域/274公共/58隔离、当前容量/T3 18项通过；acb466a/release 61dc9811完整门禁3755 passed/5 opt-in skipped；同包七页/帮助、启停保护/草稿/窄窗/正常关开、48设置及原配置偏好保持；严格来源FAIL不冲销 | [E4记录](../evidence/architecture-e4-2026-10-20.md)、[真实桌面](../evidence/architecture-e4-desktop-2026-10-20.md) |
 | E5资本事件与复权 | 已验收（组织迁移范围） | 24模块/16符号；新完整分红容量及资本管线/T3；e403faa/release 05630406完整门禁3770 passed/5 opt-in skipped；同包四页/帮助/启停保护/草稿/窄窗/正常关开及48设置/原配置偏好保持；历史准备失败保留 | [E5记录](../evidence/architecture-e5-2026-10-20.md)、[真实桌面](../evidence/architecture-e5-desktop-2026-10-20.md) |
 | E6a 同花顺资本 | 已验收（组织迁移范围） | 七旧入口迁移；38股全代理5080事实、新容量及T3 18/18；4550a9e/release 7d92659c完整门禁3773 passed/5 opt-in skipped；同包全部栏目/帮助/启停/草稿/窄窗/正常关开、48设置与原配置偏好保持 | [E6a记录](../evidence/architecture-e6a-2026-10-20.md)、[真实桌面](../evidence/architecture-e6a-desktop-2026-10-20.md) |
-| E6b～E6g 逐业务推广 | E6b-listings/status已验收；其余未实施 | status结案推送核实后下一项E6b-aliases，不应用完整E树 | [E实施](e-implementation.md) |
+| E6b～E6g 逐业务推广 | E6b-listings/status/aliases已验收；E6c～g未实施 | aliases结案推送核实后下一项E6c，不应用完整E树 | [E实施](e-implementation.md) |
 | F 共享治理收束 | 草稿已准备，未合入 | 仅单源文档、影响报告、类型、共享门禁、定位演练和测试成本候选 | [F实施](cdf-implementation.md)；尚无测试成本收益结论 |
 
 不计算“完成百分比”：A/B/C与后续业务批次的工作量不同。草稿的文件数、AST相同或测试工具存在均不能折算成已完成实现。
