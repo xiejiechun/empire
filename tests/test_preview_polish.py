@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QApplication, QTabWidget, QWidget
 
 from empire.features.data_browser.directory import DirectoryPanel
 from empire.features.financial_statements.ui import StatementPage
+from empire.features.listing_status.ui import ListingStatusPage
 from empire.features.suspensions.ui import SuspensionsPage
-from empire.plugins.ui.listing_status import ListingStatusPage
 from empire.plugins.ui.month_grid import MonthGrid
 from empire.plugins.ui.preview_layout import DetailSplit
 from empire.plugins.ui.series_chart import SeriesChart

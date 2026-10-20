@@ -1,6 +1,6 @@
 # 模块化优化状态与下一步
 
-本轮接续：2026-10-20，**E6b-listings已验收（本子批组织迁移范围）**：实现fec74bc，release a2382f717972436d83956faefdfebda6完整门禁3780 passed/5 opt-in skipped，journal committed/passed；41股全代理链路、当前15000行容量/T3原18项、同包真实桌面/启停草稿窄窗/正常关开均完成，两config、48设置与原偏好保持。来源缺日期/暂无及准备失败保留。结案提交推送精确核实后进入E6b-status，aliases及E6c～F未实施，不称整E6b或全优化完成。见[本批记录](../evidence/architecture-e6b-listings-2026-10-20.md)、[真实桌面](../evidence/architecture-e6b-listings-desktop-2026-10-20.md)。下文未实施表述保留历史时态，以本段为准。
+本轮接续：2026-10-20，E6b-listings结案13421f29已push并以ls-remote精确核实。**E6b-status开发验证通过，待发布/桌面**：七旧模块及调用方迁至features/listing_status，原身份/槽位保持；月份证明和版本归contract。108领域、103安全、21私有SQL、474公共、41文档通过；六完整月份167全代理/26事件/pending0、当前50000行容量及独占T3原18项通过；正式发布/同包桌面待完成，不得进入aliases。见[本批记录](../evidence/architecture-e6b-status-2026-10-20.md)。下文为此前历史。
 
 事实快照：2026-10-20，E5实现提交e403faa已完成唯一正式发布（056304060b0249828b21ac2b8fafa092，committed/passed），3770 passed/5 opt-in skipped；同包配置、真实连接、正式查询、全部48设置/原偏好和真实桌面、正常关开均通过。E5组织迁移范围已验收；结案4e1dc72904925f9ba7d875f1db7e35f312c67421已push并以ls-remote精确核实。E6a七旧入口及调用方已迁移并完成正式发布与同包真实桌面（4550a9e/release 7d92659c，3773 passed/5 opt-in skipped）；48设置、原配置偏好及正常关开保持。本批组织迁移范围已验收，结案提交推送后进入E6b；后续E6b～g/F未实施。历史完整准备限制保留，整个优化未完成。接手仍先核实HEAD、工作区、远程、安装包与共享环境。见[验收手册](acceptance.md)。
 

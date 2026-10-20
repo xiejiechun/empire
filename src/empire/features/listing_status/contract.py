@@ -5,6 +5,7 @@ import json
 import re
 from datetime import date, timedelta
 
+from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.security import split_unified_code
 
 PROJECT, JOB, DATASET = 'tdx-listing-status', 'tdx-listing-status-v1', 'listing_status.month'
@@ -74,3 +75,23 @@ def validate_rows(rows, start, end):
 
 def content(rows, counts):
     return dict(rows=rows, source_counts=counts)
+
+
+FINGERPRINT_VERSION = ArchiveVersion(('utc',), observed_index=0)
+
+
+def valid_proof(proof, month, end):
+    try:
+        start, expected_end = bounds(month, end)
+        counts = proof['source_counts']
+        FINGERPRINT_VERSION.key([proof['observed_at']])
+        return (proof.get('contract') == 1 and proof['start'] == start.isoformat()
+                and proof['end'] == expected_end.isoformat()
+                and re.fullmatch('[0-9a-f]{64}', proof['digest']) is not None
+                and isinstance(counts, list) and len(counts) == (expected_end - start).days + 1
+                and all(type(n) is int and 0 <= n < 1000 for n in counts)
+                and type(proof['row_count']) is int and proof['row_count'] == sum(counts)
+                and 0 <= proof['row_count'] <= 5000)
+    except (ValueError, TypeError, KeyError):
+        return False
+

@@ -13,9 +13,9 @@ from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.listing_status import DATASET, JOB
 from empire.core.config import load_config
-from empire.plugins.datasets import listing_status as mapping
+from empire.features.listing_status import dataset as mapping
+from empire.features.listing_status.contract import DATASET, JOB
 from tests.prefetch_source import prefetch_http
 from tests.test_listing_status import envelope, row, source
 
@@ -183,7 +183,7 @@ async def test_sql_failure_leaves_queue_and_month_proof_unadvanced(status, monke
 async def test_sql_plan_missing_middle_month_and_redis_loss(status):
     _, c, q, store = status
     await collect(c)
-    from empire.plugins.data.listing_status import ListingStatusDataPlugin
+    from empire.features.listing_status.query import ListingStatusDataPlugin
     # Formal planner after discarding only this test-owned checkpoint.
     await store.client.delete(c.ingest._checkpoint_key(JOB))
     plan = await ListingStatusDataPlugin.plan(q, date(2001, 8, 2))

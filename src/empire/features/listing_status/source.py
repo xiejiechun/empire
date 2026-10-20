@@ -1,8 +1,8 @@
 """One bounded complete calendar response per date, never offset-page merging."""
 import json
 
-from empire.contracts.listing_status import MAX_DAY, SOURCE_TYPES, identity, validate_rows
 from empire.contracts.security import unified_code
+from empire.features.listing_status.contract import MAX_DAY, SOURCE_TYPES, identity, validate_rows
 
 API_URL = 'http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_tzrl_gsrl'
 PAGE_URL = 'http://page2.tdx.com.cn:7615/site/tdxsj/html/tdxsj_tzrl_tzrl.html'

@@ -1,0 +1,1281 @@
+{
+  "run_id": "04b836d1033d495a856237d59bce5633",
+  "mode": "verification",
+  "checked_at": "2026-10-20T03:56:01.147458+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": true,
+  "sample_30_met": false,
+  "results": {
+    "listing_status": {
+      "pipeline_verified": true,
+      "routes": {
+        "proxy_requests": 167
+      },
+      "published_units": [
+        "1990-12",
+        "1999-07",
+        "2020-05",
+        "2021-08",
+        "2022-04",
+        "2024-07"
+      ],
+      "months": {
+        "1990-12": {
+          "days": 13,
+          "events": 0,
+          "digest": "d260ed9884175b0b139952c5ba8203c8e262a36c521e20292445375bca9cc08a",
+          "types": {
+            "suspended": 0,
+            "resumed": 0,
+            "terminated": 0
+          },
+          "query_equal": true,
+          "preparation": [
+            {
+              "criterion": "fields",
+              "status": "pass",
+              "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内0事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "keys",
+              "status": "pass",
+              "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内0事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "coverage",
+              "status": "pass",
+              "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内0事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "quality",
+              "status": "pass",
+              "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内0事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "freshness",
+              "status": "pass",
+              "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "temporal",
+              "status": "pass",
+              "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+              "blocking": true,
+              "findings": []
+            }
+          ]
+        },
+        "1999-07": {
+          "days": 31,
+          "events": 3,
+          "digest": "faa3361b72d79c7e3f2bbc5257f418afcba34d732abf71254658f5839d81cddc",
+          "types": {
+            "suspended": 2,
+            "resumed": 0,
+            "terminated": 1
+          },
+          "query_equal": true,
+          "preparation": [
+            {
+              "criterion": "fields",
+              "status": "pass",
+              "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内3事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "keys",
+              "status": "pass",
+              "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内3事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "coverage",
+              "status": "pass",
+              "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内3事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "quality",
+              "status": "pass",
+              "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内3事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "freshness",
+              "status": "pass",
+              "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "temporal",
+              "status": "pass",
+              "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+              "blocking": true,
+              "findings": []
+            }
+          ]
+        },
+        "2020-05": {
+          "days": 31,
+          "events": 6,
+          "digest": "522cbf616766885b2cfce8eeaee89c95f98161a5a3a5931797c4038289f25f9e",
+          "types": {
+            "suspended": 6,
+            "resumed": 0,
+            "terminated": 0
+          },
+          "query_equal": true,
+          "preparation": [
+            {
+              "criterion": "fields",
+              "status": "pass",
+              "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内6事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "keys",
+              "status": "pass",
+              "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内6事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "coverage",
+              "status": "pass",
+              "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内6事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "quality",
+              "status": "pass",
+              "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内6事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "freshness",
+              "status": "pass",
+              "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "temporal",
+              "status": "pass",
+              "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+              "blocking": true,
+              "findings": []
+            }
+          ]
+        },
+        "2021-08": {
+          "days": 31,
+          "events": 2,
+          "digest": "6579450265cc4bca9c09adbabb38f5ca692db8b70e49b09726c69a184ae660e7",
+          "types": {
+            "suspended": 0,
+            "resumed": 1,
+            "terminated": 1
+          },
+          "query_equal": true,
+          "preparation": [
+            {
+              "criterion": "fields",
+              "status": "pass",
+              "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内2事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "keys",
+              "status": "pass",
+              "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内2事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "coverage",
+              "status": "pass",
+              "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内2事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "quality",
+              "status": "pass",
+              "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内2事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "freshness",
+              "status": "pass",
+              "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "temporal",
+              "status": "pass",
+              "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+              "blocking": true,
+              "findings": []
+            }
+          ]
+        },
+        "2022-04": {
+          "days": 30,
+          "events": 2,
+          "digest": "4f05644c931e43ea582279d6fad843d367b4af181a0d9c89a2637075c7aeeda8",
+          "types": {
+            "suspended": 0,
+            "resumed": 0,
+            "terminated": 2
+          },
+          "query_equal": true,
+          "preparation": [
+            {
+              "criterion": "fields",
+              "status": "pass",
+              "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内2事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "keys",
+              "status": "pass",
+              "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内2事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "coverage",
+              "status": "pass",
+              "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内2事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "quality",
+              "status": "pass",
+              "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内2事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "freshness",
+              "status": "pass",
+              "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "temporal",
+              "status": "pass",
+              "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+              "blocking": true,
+              "findings": []
+            }
+          ]
+        },
+        "2024-07": {
+          "days": 31,
+          "events": 13,
+          "digest": "7757f1ebccfbc6895303c3bb7bf1ba3600b64955c31ea6a6854a04b61e581ac2",
+          "types": {
+            "suspended": 0,
+            "resumed": 0,
+            "terminated": 13
+          },
+          "query_equal": true,
+          "preparation": [
+            {
+              "criterion": "fields",
+              "status": "pass",
+              "measured": "证券、来源日期、三类事件与来源字段已核验；说明可空；1个月；范围内13事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "keys",
+              "status": "pass",
+              "measured": "完整来源身份含并列说明，不按当前股票目录过滤；1个月；范围内13事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "coverage",
+              "status": "pass",
+              "measured": "有效空日期与未核验分开，SQL内容摘要匹配月证明；1个月；范围内13事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "quality",
+              "status": "pass",
+              "measured": "暂停、恢复、终止分别保存，不按简称判定退市；1个月；范围内13事件；缺失或集合不符月份0：",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "freshness",
+              "status": "pass",
+              "measured": "声明范围末月核验完整，SQL或匹配可信摘要核验在三天内",
+              "blocking": true,
+              "findings": []
+            },
+            {
+              "criterion": "temporal",
+              "status": "pass",
+              "measured": "来源日历日期用于事件查阅；无最后交易日、公告可用日或完整重新上市记录；不推断永久退市",
+              "blocking": true,
+              "findings": []
+            }
+          ]
+        }
+      },
+      "source_days": {
+        "1990-12-19": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-20": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-21": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-22": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-23": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-24": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-25": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-26": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-27": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-28": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-29": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-30": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1990-12-31": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-01": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-02": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-03": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-04": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-05": {
+          "events": 2,
+          "count": 2,
+          "content_digest": "d35a51552ffef47416a6a1ff8ea96b8ffc0b27ef76f52638dc06f4ca3033ad9e"
+        },
+        "1999-07-06": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-07": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-08": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-09": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-10": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-11": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-12": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "d83009ec3d8cd71ac8be7bb2f536ca4474f71e5fa78f96937cd1c46afe8f246e"
+        },
+        "1999-07-13": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-14": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-15": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-16": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-17": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-18": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-19": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-20": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-21": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-22": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-23": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-24": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-25": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-26": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-27": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-28": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-29": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-30": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "1999-07-31": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-01": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-02": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-03": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-04": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-05": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-06": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-07": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-08": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-09": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-10": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-11": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-12": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-13": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "d01928a569ed82acfba042c5f943d54272fe14c58e6693202911501dd5e52c93"
+        },
+        "2020-05-14": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-15": {
+          "events": 2,
+          "count": 2,
+          "content_digest": "21b33ca13535d20f2121ece865bc0952841bc2c8c0387210fc86aecf553fcadb"
+        },
+        "2020-05-16": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-17": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-18": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-19": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-20": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-21": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-22": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "079e870134cb1f5abba19e40838e26acd4953cbfd558bd9c253cbd18580202ad"
+        },
+        "2020-05-23": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-24": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-25": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-26": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-27": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-28": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-29": {
+          "events": 2,
+          "count": 2,
+          "content_digest": "8bc3ea7c18223ecd6b4f34f582252c32322ab1e2981d8c255a52717daed1c4fa"
+        },
+        "2020-05-30": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2020-05-31": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-01": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-02": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-03": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-04": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-05": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-06": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-07": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-08": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-09": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-10": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "713e5b1005ef0cc3e0c640607e664a99a3840afe89fe4d51aad8fc38889e6893"
+        },
+        "2021-08-11": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-12": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-13": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-14": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-15": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-16": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-17": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-18": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-19": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-20": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-21": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-22": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-23": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-24": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-25": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-26": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-27": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-28": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-29": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2021-08-30": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "d369262504f2fef3a034f96f74416a79b19cbed4511c1868478ea6684d7a2eef"
+        },
+        "2021-08-31": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-01": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-02": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-03": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-04": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-05": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-06": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-07": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-08": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-09": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-10": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-11": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-12": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-13": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-14": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-15": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-16": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-17": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-18": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-19": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-20": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-21": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-22": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-23": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-24": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-25": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-26": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-27": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-28": {
+          "events": 2,
+          "count": 2,
+          "content_digest": "ee6c0c4bffb8ba29dff3e9755048219f62963b79bd7aec3d62b0cae61bc43c8d"
+        },
+        "2022-04-29": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2022-04-30": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-01": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-02": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-03": {
+          "events": 3,
+          "count": 3,
+          "content_digest": "3da5bd77a06a4a3aacb794e5f6161c7ade5563f3655a6b9a2e59e27dfdd1f98e"
+        },
+        "2024-07-04": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-05": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "748b80e1ec45c58fffa2256cfb1278e2ee37a33c4d4cfc9130a12b5eea4b123d"
+        },
+        "2024-07-06": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-07": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-08": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-09": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-10": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "fdce4d4f1d6246163791be826ec3c2d9cedbc7536fcf76cc2d646d84e99addc0"
+        },
+        "2024-07-11": {
+          "events": 2,
+          "count": 2,
+          "content_digest": "986b7972dd7ab1b43c7f8cccd2f22beaad18fe104f063d30d4319e745940caf3"
+        },
+        "2024-07-12": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-13": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-14": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-15": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-16": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-17": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-18": {
+          "events": 2,
+          "count": 2,
+          "content_digest": "d44466aa62322441ad9163f82da8934c728fc35a8381255fd974f9252776842e"
+        },
+        "2024-07-19": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-20": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-21": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-22": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "279869a281b1f85c9e2fc2b36f04d5aaa1b9c74801f54006b1ff745a8d3cf191"
+        },
+        "2024-07-23": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-24": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "302533ee0f7c2382494843f58dc80e37e42af70075d1a03f9e42c17cf08e7d00"
+        },
+        "2024-07-25": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "6983f0c15e3471565689825ea86e4b750f5fbb1a65f9e220dbc10c04e142fbc6"
+        },
+        "2024-07-26": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-27": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-28": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-29": {
+          "events": 1,
+          "count": 1,
+          "content_digest": "e4b928a3c3d935dde0bd370e83f621032596e1c952ebadfa8007d82420b13f1c"
+        },
+        "2024-07-30": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        },
+        "2024-07-31": {
+          "events": 0,
+          "count": 0,
+          "content_digest": "a0646f93e4e31cc38309f981062e113f7c471b525289a54d8c29d2a5dcf1959d"
+        }
+      },
+      "fixed_regressions": {
+        "1999-07-12": {
+          "kind": "terminated",
+          "security": null,
+          "present": true
+        },
+        "2020-05-22": {
+          "kind": "suspended",
+          "security": "000792.SZ",
+          "present": true
+        },
+        "2021-08-10": {
+          "kind": "resumed",
+          "security": "000792.SZ",
+          "present": true
+        }
+      },
+      "acceptance_complete": true,
+      "strict_proxy_verified": true,
+      "pending": 0,
+      "cursor": {
+        "phase": "complete",
+        "batch_id": "6d0ed3193580443cb7599c3a1781bbe4",
+        "through": "2026-10-20",
+        "fresh": true,
+        "next_month": "2024-08",
+        "pages": 6,
+        "collected": 26,
+        "dates_checked": 167,
+        "contract": 1
+      },
+      "source_query_equal": true,
+      "full_history_complete": false,
+      "limitation": "完整固定月份；不按股票请求，不证明全历史、北交所或重新上市完整"
+    }
+  },
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4"
+  },
+  "subject": "listing_status",
+  "selection": {
+    "selected": [],
+    "random": [],
+    "fixed": [],
+    "random_count": 0,
+    "non_stock_scope": {
+      "unit": "complete_calendar_months",
+      "reason": "每日完整市场响应，不按股票请求或当前股票名单过滤",
+      "fixed": [
+        "1990-12",
+        "1999-07",
+        "2020-05",
+        "2021-08",
+        "2022-04",
+        "2024-07"
+      ]
+    }
+  },
+  "source_sha256": "e2a6e73bd265d64c4c006acb518bd4f7cbfb96d3587bda4edf087a583ae7a590",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "verification_scope": "proxy_pipeline",
+  "routing_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false
+  },
+  "sample_30_applicable": false,
+  "policy_snapshot_digest": "3c4fdd69a54195d23380f748df719843aa1114e4614e270704261a85a01cdcdb",
+  "acceptance_complete": true,
+  "storage": {
+    "database": "empire_verify_ths_04b836d1033d495a856237d59bce5633_test",
+    "namespace": "empire:test:verify_ths:04b836d1033d495a856237d59bce5633",
+    "run_id": "04b836d1033d495a856237d59bce5633",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "0069d3c4ff0aad15656e7d769207b8b18f9c613cfd1198cfddc3af9cb0d3a99e"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

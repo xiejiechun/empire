@@ -5,40 +5,25 @@ from datetime import UTC, date, datetime, timedelta
 
 from sqlalchemy import text
 
-from empire.contracts.listing_status import (
-    COLUMNS,
-    DATASET,
-    FIRST,
-    JOB,
-    PROJECT,
-    TYPES,
-    bounds,
-    months,
-)
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
 from empire.contracts.security import split_unified_code
 from empire.core.time import CHINA
-from empire.plugins.datasets import listing_status as mapping
+from empire.features.listing_status import dataset as mapping
+from empire.features.listing_status.contract import (
+    COLUMNS,
+    DATASET,
+    FINGERPRINT_VERSION,
+    FIRST,
+    JOB,
+    PROJECT,
+    TYPES,
+    months,
+    valid_proof,
+)
 from empire.plugins.infra.collection_state import read_state
 from empire.plugins.pipeline.fingerprints import FingerprintCache
-
-
-def valid_proof(proof, month, end):
-    try:
-        start, expected_end = bounds(month, end)
-        counts = proof['source_counts']
-        mapping.FINGERPRINT_VERSION.key([proof['observed_at']])
-        return (proof.get('contract') == 1 and proof['start'] == start.isoformat()
-                and proof['end'] == expected_end.isoformat()
-                and re.fullmatch('[0-9a-f]{64}', proof['digest']) is not None
-                and isinstance(counts, list) and len(counts) == (expected_end - start).days + 1
-                and all(type(n) is int and 0 <= n < 1000 for n in counts)
-                and type(proof['row_count']) is int and proof['row_count'] == sum(counts)
-                and 0 <= proof['row_count'] <= 5000)
-    except (ValueError, TypeError, KeyError):
-        return False
 
 
 class ListingStatusDataPlugin:
@@ -124,7 +109,7 @@ class ListingStatusDataPlugin:
         return await self.mysql.read(read)
 
     async def preparation_check(self, scope=None):
-        from empire.plugins.data.listing_status_checks import check
+        from empire.features.listing_status.audit import check
         return await check(self, PreparationScope.parse(scope))
 
     async def latest_observed(self, month, proof):
@@ -132,10 +117,10 @@ class ListingStatusDataPlugin:
         store = self.context.optional('redis.store') if self.context else None
         if store:
             try:
-                cache = FingerprintCache(store, self.archive_settings, lambda _: mapping.FINGERPRINT_VERSION)
+                cache = FingerprintCache(store, self.archive_settings, lambda _: FINGERPRINT_VERSION)
                 value = (await asyncio.wait_for(cache.peek(mapping.FINGERPRINT_NAMESPACE, 'tdx', [month]), 3)).get(month, {})
                 if value.get('hash') == proof['digest']:
-                    observed = mapping.FINGERPRINT_VERSION.key(value['version'])[0].astimezone(UTC).isoformat(timespec='microseconds')
+                    observed = FINGERPRINT_VERSION.key(value['version'])[0].astimezone(UTC).isoformat(timespec='microseconds')
                     stamp = max(stamp, observed)
             except Exception:
                 pass

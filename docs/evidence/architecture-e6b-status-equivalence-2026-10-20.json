@@ -1,0 +1,57 @@
+{
+  "checked_at": "2026-10-20T03:56:55.275440+00:00",
+  "scope": "AST body comparison; not a behavioral acceptance substitute",
+  "modules": [
+    {
+      "old": "src/empire/plugins/collectors/tdx_listing_status_source.py",
+      "new": "src/empire/features/listing_status/source.py",
+      "body_equal_except_moved_symbols": true,
+      "before_sha256": "268faa4cd6b78a5577f26e3397e2340c03d41954b3991209179593523ec2ea96",
+      "after_sha256": "ec66966364f18f4800fd08ebb3185e6e11931eaedc942c781584fa04ca607d9f"
+    },
+    {
+      "old": "src/empire/contracts/listing_status.py",
+      "new": "src/empire/features/listing_status/contract.py",
+      "body_equal_except_moved_symbols": true,
+      "before_sha256": "e616ef13163210b3775dad72373df25446c9d1db0395ac4a5da90d6d2c929d21",
+      "after_sha256": "e403764e544a3f9d84a5c78743d5a2b05303b653ec0830350f232c3bbef88245"
+    },
+    {
+      "old": "src/empire/plugins/ui/listing_status.py",
+      "new": "src/empire/features/listing_status/ui.py",
+      "body_equal_except_moved_symbols": true,
+      "before_sha256": "f12edb37bd59e2ca077e0c2a8d036497e86a1bf798306409ad5ea2c091193046",
+      "after_sha256": "aa8ef80a26c638c7315d7cfe64a7012849a0f210df3d619a3e6bd92ad21ea46e"
+    },
+    {
+      "old": "src/empire/plugins/datasets/listing_status.py",
+      "new": "src/empire/features/listing_status/dataset.py",
+      "body_equal_except_moved_symbols": true,
+      "before_sha256": "8c589faf578c281f80388d315ac7faecb0347c0c7d2441638c682155ab037550",
+      "after_sha256": "aad79d06c42618f933176bfaddb738846cd76478a9b1e665017a33cdd6981453"
+    },
+    {
+      "old": "src/empire/plugins/data/listing_status.py",
+      "new": "src/empire/features/listing_status/query.py",
+      "body_equal_except_moved_symbols": true,
+      "before_sha256": "07a1773d681152ecc95abe8bb67bde25f575cc0d239550dcea98afaeff58f056",
+      "after_sha256": "ec02ef1e193993f68aba6a80ec1bc89d85ec9a4a0d4af89a782740f9e53f4bc1"
+    },
+    {
+      "old": "src/empire/plugins/data/listing_status_checks.py",
+      "new": "src/empire/features/listing_status/audit.py",
+      "body_equal_except_moved_symbols": true,
+      "before_sha256": "befe9a4265344379c98cc038938e3dda96baa2c147bffba764d0e554d348ea27",
+      "after_sha256": "21007cf0251083d9c63bcc57b86a820fca4b6bd3b972aab637edf77f316a1c2b"
+    },
+    {
+      "old": "src/empire/plugins/collectors/tdx_listing_status.py",
+      "new": "src/empire/features/listing_status/collector.py",
+      "body_equal_except_moved_symbols": true,
+      "before_sha256": "fdba9f82f2dd6dc625f1cce37024ac68ced8e472ba847f4ebe43fa5d9eda88bb",
+      "after_sha256": "04a29cc45c319abc48a4e55e70fd731a94d4a37513f9b78e32ede275986adea1"
+    }
+  ],
+  "valid_proof_body_equal": true,
+  "version_identity": "ArchiveVersion((utc,), observed_index=0)"
+}

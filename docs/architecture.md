@@ -301,7 +301,7 @@ stock_market_day是聚合业务头，七个数据集声明各自父子表集合�
 
 ## 通达信上市状态事件
 
-listing_status.month贡献security_listing_event结构化事件表；独立采集、查询和按需数据目录UI插件使用公共下载、代理、tdx频控、入队、统一归档与摘要。逐日验证、按月入队后继续下载，整轮等待归档；每项目一条collection_state保存月份完整集合证明。正式查询列表不投影说明，详情按身份查询，不依赖Redis。见[来源与生命周期](tdx-listing-status.md)。
+features/listing_status统一持有来源、契约、归档、查询、准备审计和按需页面；valid_proof与FINGERPRINT_VERSION由contract公开。listing_status.month贡献security_listing_event结构化事件表；独立采集、查询和按需数据目录UI插件使用公共下载、代理、tdx频控、入队、统一归档与摘要。逐日验证、按月入队后继续下载，整轮等待归档；每项目一条collection_state保存月份完整集合证明。正式查询列表不投影说明，详情按身份查询，不依赖Redis。见[来源与生命周期](tdx-listing-status.md)。
 
 ## 同花顺当前指数及成分
 

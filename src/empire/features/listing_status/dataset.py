@@ -3,9 +3,9 @@ from datetime import UTC, date, timedelta
 
 from sqlalchemy import text
 
-from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
-from empire.contracts.listing_status import (
+from empire.core.time import CHINA
+from empire.features.listing_status.contract import (
     COLUMNS,
     DATASET,
     FIRST,
@@ -14,13 +14,12 @@ from empire.contracts.listing_status import (
     digest,
     validate_rows,
 )
-from empire.core.time import CHINA
+from empire.features.listing_status.contract import FINGERPRINT_VERSION as FINGERPRINT_VERSION
 from empire.plugins.infra.collection_state import confirmed_page
 
 TABLE = 'security_listing_event'
 DATASETS = {DATASET}
 FINGERPRINT_NAMESPACE = 'tdx_listing_status_v1'
-FINGERPRINT_VERSION = ArchiveVersion(('utc',), observed_index=0)
 TABLES, KEYS = {TABLE: set(COLUMNS)}, {TABLE: list(COLUMNS[:4])}
 
 

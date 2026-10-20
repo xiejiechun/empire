@@ -128,6 +128,7 @@ async def test_real_adapters_prefetch_without_crossing_unvalidated_frontier(fami
     module, attribute = validation[family]
     module = importlib.import_module({
         'ths_listings': 'empire.features.listings.collector',
+        'tdx_listing_status': 'empire.features.listing_status.collector',
         'ths_statements': 'empire.features.financial_statements.collector',
         'ths_industries': 'empire.features.industries.collector',
         'cninfo_calendar': 'empire.features.calendar.collector',

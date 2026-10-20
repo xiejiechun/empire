@@ -10,10 +10,17 @@ import httpx
 import pytest
 
 from empire.contracts.data import make_envelope
-from empire.contracts.listing_status import DATASET, FIRST, JOB, SOURCE_TYPES, bounds, months
-from empire.plugins.collectors.tdx_listing_status import TdxListingStatusCollector
-from empire.plugins.collectors.tdx_listing_status_source import parse, request_body
-from empire.plugins.datasets import listing_status as mapping
+from empire.features.listing_status import dataset as mapping
+from empire.features.listing_status.collector import TdxListingStatusCollector
+from empire.features.listing_status.contract import (
+    DATASET,
+    FIRST,
+    JOB,
+    SOURCE_TYPES,
+    bounds,
+    months,
+)
+from empire.features.listing_status.source import parse, request_body
 from tests.prefetch_source import prefetch_http
 
 
@@ -200,7 +207,7 @@ async def test_failed_publication_never_advances_month():
 def test_registration_schedule_isolation_and_mysql_only_browser():
     from empire.bootstrap import build_manager
     from empire.contracts.data import UnsupportedSchema
-    from empire.contracts.listing_status import PROJECT
+    from empire.features.listing_status.contract import PROJECT
     from tests.catalog_factory import builtin_catalog
     cfg = dict(redis={}, mysql={}, archive={}, ingest={}, rate_groups={})
     manager = build_manager(cfg)
@@ -220,7 +227,7 @@ def test_ui_lazy_read_scope_filter_draft_and_restore():
 
     from PySide6.QtWidgets import QApplication
 
-    from empire.plugins.ui.listing_status import ListingStatusPage, ListingStatusUiPlugin
+    from empire.features.listing_status.ui import ListingStatusPage, ListingStatusUiPlugin
     app = QApplication.instance() or QApplication([])
     queries = []
     def invoke(*args):

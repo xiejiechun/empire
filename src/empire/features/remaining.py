@@ -6,8 +6,6 @@ from empire.contracts.bundle import (
     positioned,
 )
 from empire.contracts.dataset import DatasetContribution
-from empire.contracts.listing_status import JOB as STATUS_JOB
-from empire.contracts.listing_status import PROJECT as STATUS_PROJECT
 from empire.contracts.name_changes import KINDS as NAME_KINDS
 from empire.contracts.name_changes import SCHEMA_VERSION as NAME_SCHEMA_VERSION
 from empire.contracts.name_changes import project as name_project
@@ -21,14 +19,12 @@ from empire.contracts.trading_rules import KINDS as RULE_KINDS
 from empire.contracts.trading_rules import project as rule_project
 from empire.plugins.collectors.eastmoney_repurchase import RepurchaseCollector
 from empire.plugins.collectors.rule_sources import RuleSources
-from empire.plugins.collectors.tdx_listing_status import TdxListingStatusCollector
 from empire.plugins.collectors.tdx_name_changes import NameChangeCollector
 from empire.plugins.collectors.tdx_performance import PerformanceCollector
 from empire.plugins.collectors.tdx_st_events import StEventCollector
 from empire.plugins.collectors.tdx_unlock_industries import UnlockIndustryCollector
 from empire.plugins.collectors.tdx_unlocks import UnlockCollector
 from empire.plugins.collectors.trading_rules import RuleCollector
-from empire.plugins.data.listing_status import ListingStatusDataPlugin
 from empire.plugins.data.name_changes import NameDataPlugin
 from empire.plugins.data.repurchases import RepurchaseDataPlugin
 from empire.plugins.data.st_events import StDataPlugin
@@ -36,14 +32,13 @@ from empire.plugins.data.tdx_performance import PerformanceDataPlugin
 from empire.plugins.data.trading_rules import RuleDataPlugin
 from empire.plugins.data.unlock_industries import UnlockIndustryDataPlugin
 from empire.plugins.data.unlocks import UnlockDataPlugin
-from empire.plugins.datasets import listing_status, repurchases, security_aliases
+from empire.plugins.datasets import repurchases, security_aliases
 from empire.plugins.datasets.name_changes import NameDataset
 from empire.plugins.datasets.st_events import StDataset
 from empire.plugins.datasets.tdx_performance import PerformanceDataset
 from empire.plugins.datasets.trading_rules import RuleDataset
 from empire.plugins.datasets.unlock_industries import UnlockIndustryDataset
 from empire.plugins.datasets.unlocks import UnlockDataset
-from empire.plugins.ui.listing_status import ListingStatusUiPlugin
 from empire.plugins.ui.name_changes import NameUiPlugin
 from empire.plugins.ui.repurchases import RepurchaseUiPlugin
 from empire.plugins.ui.st_events import StUiPlugin
@@ -72,9 +67,6 @@ def bundle(cfg):
         *positioned((3900, 4000, 4100, 4200, 4300, 4400, 4500), (RuleDataPlugin(k, cfg["redis"].get("namespace", "empire"), cfg.get("archive", {})) for k in RULE_KINDS)),
         *positioned((4600, 4700, 4800, 4900, 5000, 5100, 5200), (RuleCollector(k) for k in RULE_KINDS)),
         *positioned((5300, 5400, 5500, 5600, 5700, 5800, 5900), (RuleUiPlugin(k) for k in RULE_KINDS)),
-        OrderedContribution(7700, ListingStatusDataPlugin(cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {}))),
-        OrderedContribution(7800, TdxListingStatusCollector()),
-        OrderedContribution(7900, ListingStatusUiPlugin()),
         *positioned((8600, 8700), (NameDataPlugin(kind, cfg['redis'].get('namespace', 'empire'), cfg.get('archive', {})) for kind in NAME_KINDS)),
         *positioned((8800, 8900), (NameChangeCollector(kind) for kind in NAME_KINDS)),
         *positioned((9000, 9100), (NameUiPlugin(kind) for kind in NAME_KINDS)),
@@ -109,11 +101,6 @@ def bundle(cfg):
                     interval_seconds=259200, parallel_downloads=True, unit_name='组官方规则',
                     default_schedule=TaskDefaults('interval', interval_seconds=259200, description='每次任务结束3天后复查官方文件及规则目录，可编辑计划。'),
                     fresh_description='重新核验已审核官方文件；保留历史规则，已入队轮次先完成归档。') for k, title in RULE_KINDS.items())),
-        OrderedContribution(1900, TaskContribution('tdx-listing-status', '暂停恢复终止上市（通达信）',
-                    'collector.tdx_listing_status', 'tdx', '沪深A股三类事件；逐日核验，按月独立归档',
-                    category='证券基础', source_name='通达信', parallel_downloads=True, unit_name='个月', default_schedule=TaskDefaults('daily',
-                        description='每天北京时间18:00补缺并回查最近一个月；首次补历史，计划可编辑。'),
-                    fresh_description='从1990-12-19逐日重新核验至本轮启动日；保留已归档事件，先继续活跃轮次。')),
         *positioned((2100, 2200), (TaskContribution(st_project(kind), item[0] + '（通达信）',
                     'collector.tdx_st_' + kind, 'tdx', '全部来源历史单响应；日期、前后简称、原因及行业',
                     category='交易状态', source_name='通达信', unit_name='次完整响应',
@@ -134,7 +121,6 @@ def bundle(cfg):
         OrderedContribution(1100, DatasetContribution(repurchases, 'incremental', {'eastmoney-repurchases-v1': 'eastmoney-repurchases'})),
         *positioned((1200, 1300, 1400, 1500, 1600, 1700, 1800), (DatasetContribution(RuleDataset(kind), 'incremental', {RuleDataset(kind).JOB: RuleDataset(kind).PROJECT}) for kind in RULE_KINDS)),
         OrderedContribution(2000, DatasetContribution(security_aliases, 'incremental', {security_aliases.JOB: security_aliases.PROJECT})),
-        OrderedContribution(2200, DatasetContribution(listing_status, 'incremental', {STATUS_JOB: STATUS_PROJECT})),
         *positioned((2400, 2500), (DatasetContribution(StDataset(kind), 'incremental',
                         {StDataset(kind).JOB: StDataset(kind).PROJECT}, schema_version=ST_SCHEMA_VERSION) for kind in ST_KINDS)),
         *positioned((2600, 2700), (DatasetContribution(NameDataset(kind), 'incremental',

@@ -1811,7 +1811,7 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 
 通达信暂停、恢复、终止上市来源事件。
 
-统一归档器调用 `datasets/listing_status.py` 写入；`data/listing_status.py` 提供正式查询。业务页面不直接写表。
+统一归档器调用 `features/listing_status/dataset.py` 写入；`features/listing_status/query.py` 提供正式查询。业务页面不直接写表。
 
 ## 结构与身份
 

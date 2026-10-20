@@ -182,15 +182,6 @@
     },
     {
       "legacy_collector_location": true,
-      "owner": "listing_status",
-      "reason": "暂停恢复终止上市：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.tdx_listing_status_source"
-      ]
-    },
-    {
-      "legacy_collector_location": true,
       "owner": "name_changes",
       "reason": "公司及证券更名：来源解析或纯范围规划，无请求执行",
       "role": "parser",
@@ -686,47 +677,6 @@
         "empire.core.redaction",
         "empire.core.runtime",
         "empire.core.time"
-      ]
-    },
-    {
-      "owner": "listing_status",
-      "reason": "暂停恢复终止上市：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.listing_status"
-      ]
-    },
-    {
-      "owner": "listing_status",
-      "reason": "暂停恢复终止上市：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.listing_status"
-      ]
-    },
-    {
-      "owner": "listing_status",
-      "reason": "暂停恢复终止上市：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.listing_status"
-      ]
-    },
-    {
-      "owner": "listing_status",
-      "reason": "暂停恢复终止上市：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.listing_status",
-        "empire.plugins.data.listing_status_checks"
-      ]
-    },
-    {
-      "owner": "listing_status",
-      "reason": "暂停恢复终止上市：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.tdx_listing_status"
       ]
     },
     {
@@ -1699,6 +1649,21 @@
         "collector": "collector",
         "dataset": "dataset",
         "query": "query",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.listing_status",
+      "owner": "listing_status",
+      "reason": "上市状态来源事件与完整月份证明单一业务归属，公共准备契约保持原路径",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "source_adapter",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "audit": "query",
         "ui": "ui"
       }
     }

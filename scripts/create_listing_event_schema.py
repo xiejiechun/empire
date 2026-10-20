@@ -6,7 +6,7 @@ from create_name_change_schema import run
 
 from empire.core.config import load_config
 from empire.core.redaction import redact
-from empire.plugins.datasets.listing_status import TABLE
+from empire.features.listing_status.dataset import TABLE
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
