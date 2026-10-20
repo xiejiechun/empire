@@ -1,6 +1,6 @@
 # E5 资本事件与复权实施记录
 
-状态：**开发验证通过，待正式发布与同包桌面**。尚未正式发布、尚未同包桌面验收；不进入E6a。前批结案 `b1418dd31ab85ba554a2d895831d78453c85bb9c` 已推送，实际远程核实记录在本机 `build/architecture-e4-20261020/remote-close.json`。本轮从该干净main前像开始；E4包 `61dc981193d24b50bc84bee1c9ca1670` 的journal/EXE、冻结工具与测试实例身份已只读核实。现场没有其他发布、测试、实采或维护。
+状态：**已验收（组织迁移范围）**。正式实现e403faa已完成唯一发布056304060b0249828b21ac2b8fafa092；3770 passed/5 opt-in skipped。同包真实连接、正式查询、配置与48行设置/偏好保持、真实桌面及正常关开均通过，见[桌面记录](architecture-e5-desktop-2026-10-20.md)。结案提交推送精确核实后进入E6a；历史准备限制保留。前批结案 `b1418dd31ab85ba554a2d895831d78453c85bb9c` 已推送，实际远程核实记录在本机 `build/architecture-e4-20261020/remote-close.json`。本轮从该干净main前像开始；E4包 `61dc981193d24b50bc84bee1c9ca1670` 的journal/EXE、冻结工具与测试实例身份已只读核实。现场没有其他发布、测试、实采或维护。
 
 ## 范围、调用方及退役
 
@@ -40,9 +40,9 @@
 | E5完整容量/真实来源 | 下节三条正式命令及提交JSON | exit0；容量与当前管线通过，历史完整准备限制保留 |
 | T3冻结性能 | `py scripts/architecture_benchmark.py measure --test-settings <本机13348配置> --baseline docs/evidence/architecture-performance-baseline-2026-10-19.json --output build/architecture-e5-20261020/performance-2.json` | exit0，原阈值18/18，incomparable为空；失败首轮另留 |
 | M文档 | documentation_contract review/check、verify_documentation、verify_database_design；文档四文件回归 `build/architecture-e5-20261020/docs-2.xml` | 各exit0，230文档/1573链接/55表；41 passed/24.46秒；四页面分别记录组织迁移不影响操作的理由 |
-| 正式发布及U1～U3 | 唯一完整发布、同包桌面待完成 | 未完成 |
+| A4/正式发布及U1～U3 | 唯一完整发布、同包机器核验及真实窗口；见下列结案和独立桌面记录 | exit0；适用组织迁移范围已验收，来源限制保留 |
 
-初次安全单测107 passed/1 skipped/1 failed：测试误把DeferredResponse当作UnitRead调用resolve；按正式consume契约修正测试后上述135项全部执行通过。首次两个静态CLI缺action、一次装配CLI缺baseline，各自exit2保留；补齐正式参数后通过。容量旧报告随路径退役失效，`verify_database_design.py`当前exit1，必须由真实新测报告恢复，未刷新旧hash。
+初次安全单测107 passed/1 skipped/1 failed：测试误把DeferredResponse当作UnitRead调用resolve；按正式consume契约修正测试后上述135项全部执行通过。首次两个静态CLI缺action、一次装配CLI缺baseline，各自exit2保留；补齐正式参数后通过。该早期检查点容量旧报告随路径退役失效，`verify_database_design.py`当时exit1；后由下列真实新测报告恢复，未刷新旧hash。
 
 后续实际观察器SQL冒烟扩展首先因合成快照漏market/code、日期仍为字符串而失败，修成真实SQL行形状后通过。首次容量预检因工具误把统一状态dataset当消息dataset而exit1，在生产只读阶段拒绝、无来源请求/无私有资源；核实正式值为`dividends`后精确修正，没有放宽为多种格式。最终安全回归为 `safety-sql-4.xml`，135 passed/4.50秒。公共首轮139 passed/6 failed来自测试动态导入未迁，迁至source/issue_source后145全部通过。旧容量失效曾exit1；新实测登记后数据库设计门禁exit0，55表/49数据集/12 JSON。
 
@@ -72,3 +72,18 @@ T3首轮exit1：17/18，holders_browse P95 5.43936ms超过5.3032375ms，15样本
 发布前检查：原48行设置payload及updated_at摘要仍为9e59d702765610a9f91bfdfcc19bcfc104590d239bd87be6dfa99a95c511c1ac，两config和原偏好均精确保留；本地前像为preflight-preserved.json及desktop-settings/preferences-before文件。13348实核UUID/datadir，仅四系统库、无其他客户会话，全局pending0、原E4包身份和冻结文件保持。首次文档测试路径拼写错误exit4/零测试，改用实际四文件后41 passed；首次文档review指出四页面正文不变，针对各页面逐项审阅并记录具体不变理由后通过，未全局豁免。
 
 接续发布前最终复核：资源实核保存preflight-resume-resource.json，原包/私有实例/冻结输入保持、全局pending0。GitHub直连首次ls-remote失败（443连接超时），尚不能声称本轮远程已核实。最终文档复核首条命令误指不存在test_database_reference.py，exit1/零测试，随后按实际原四文件执行，未计首条通过。
+
+
+## 正式发布与结案
+
+唯一 `./verify-release.ps1` 自然exit0；release `056304060b0249828b21ac2b8fafa092` 的publication committed/passed，绑定干净实现提交 `e403faa655a4162f9a2946322a0ee25f51181ca6`。全量3770 passed、5 opt-in skipped、20 warnings/2180.82秒。24步骤、真实容量、四DPI、打包/搬移/配置及切换通过，第22步首次模板生成预期exit1，未写成0。完整源输入 `bcfc1b2ce7842101d52de53ebfbe9b4717648b8d48fe06a3b47932ae6473c227`，EXE `6b9ceff7ba1f78dc3fdc6925c023335047c38bb26253e85017bdcb03931b6881`，树 `a506088bb3e4df4a6efb7322cfeeefa9aeca12d135905c2f8c28307dfb14a27d`。
+
+[发布审计](architecture-e5-release-evidence-audit-2026-10-20.json)实际重核1556输入/54输出及原JUnit；5跳过均为显式state-unit维护演练，本批未修改该路径，不计通过。该审计先于结案文档，不宣称完整输入仍与结案文档相同。
+
+07:57～08:26真实可见窗口逐项验证四页/详情/帮助、滚轮、草稿保留和撤销、UI独立启停、collector单停时实际命令拒绝、依赖保护及928×892窄窗；随后正常关开。[同包报告](architecture-e5-post-release-2026-10-20.json)和[设置审计](architecture-e5-settings-restored-2026-10-20.json)证明两config、原偏好及全部48设置payload/updated_at保持；C:/Windows下正式EXE真实连接通过，三资本正式查询与复权查询正常。最终窗口6819044工作台可见，活动0/pending0/既有失败5。全部适用U项与实际动作限制见[独立桌面记录](architecture-e5-desktop-2026-10-20.md)，不由离屏或静态等价替代。
+
+E5验收矩阵：C1/C2身份顺序与C3/C4单一路径由上列装配/架构及迁移审计覆盖；R1～R4由67隔离及159领域专项、135安全与145公共回归覆盖；E5来源/容量按三原始报告范围判断，严格随机30不自动适用，历史完整准备仍失败；T3首轮失败保留、最终18项通过；M由最后review/check及四文档回归覆盖；A1～A3实现未改，沿既有保护证据，A4由本轮完整发布/实际桌面覆盖；D1～D3诊断实现未改，不另造故障环境。H3严格来源与E4失败仍独立保留。
+
+最终结案文档review/check、verify_documentation及verify_database_design均exit0；231文档/1583链接/55表。原四文档回归实际exit0、35 passed/27.20秒，原JUnit `build/architecture-e5-20261020/docs-close.xml`，未新增实现测试或重打包。
+
+08:20资源核实：自有13348实际UUID a3e8a5eb-cb64-11f1-8ddf-380525361d4e、原datadir、仅四系统库/无其他客户端；全部来源私有资源已清，无测试/实采/发布并行。实例运行供后批；生产3307、Redis及未解决错误未动。E6a～F未实施，最终优化尚未完成。纯结案文档不重新打包、不改变EXE身份；本批提交及远程精确结果在实际push后核验。
