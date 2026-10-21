@@ -1,6 +1,6 @@
 # 按用途和范围证明数据可用性
 
-股东回报P0＋P1已验收；P2区间名义现金股息率当前已实现待发布及桌面，见[P2执行账本](evidence/shareholder-return-p2-2026-10-22.md)。固定000001范围已通过正式管线补齐190个证券日；局部当前结果不改变下文完整历史失败。原[业务方案](shareholder-return-analysis-plan.md)保留审阅时快照，P3/P4仍未实施。
+股东回报P0＋P1已验收；P2区间名义现金股息率已正式发布，固定000001范围已通过同包真实桌面，见[P2执行账本](evidence/shareholder-return-p2-2026-10-22.md)。原范围通过正式管线补齐190个证券日；严格代理固定002731四个证券日仍失败，P2全样本准入未通过。局部当前结果不改变下文完整历史失败。原[业务方案](shareholder-return-analysis-plan.md)保留审阅时快照，P3/P4仍未实施。
 
 ## 设计与验收边界（实施前登记，2026-10-21）
 
@@ -12,7 +12,7 @@
 
 不从聚合摘要反推来源成员。不匹配单元可能包含保留历史、当前来源变更或未知遗漏，仅凭日期筛选不能证明它的任何子集，继续阻断并明确需要原来源成员/内容证明。范围外的其他证券不参与本范围的完整性判断。未指定证券保留原全范围严格检查；不静默缩成有数据证券。增发未知详情不被删掉或解释成空详情。完整分红容量原已通过；本专项不改采集消息、归档、结构或容量布局。
 
-用途沿用公共 PreparationScope 的 analysis / historical_signal。analysis 是当前修订版的事后分析；历史信号要求当时可用的版本，不能把报告期或最早预案公告日当作修订可用日。当前资本契约缺少稳定事件关联与每次修订可用日，因此历史信号明确来源受限；不新增可用时间假设。股息率项目未实施，不能把原始事件浏览或理论复权称为现金收益计算。
+用途沿用公共 PreparationScope 的 analysis / historical_signal。analysis 是当前修订版的事后分析；历史信号要求当时可用的版本，不能把报告期或最早预案公告日当作修订可用日。当前资本契约缺少稳定事件关联与每次修订可用日，因此历史信号明确来源受限；不新增可用时间假设。现有名义派息及区间名义现金股息率均是事后分析；持仓及到账现金收益未实现，原始事件浏览或理论复权不能代替它们。
 
 ### 预案与实施
 
@@ -57,7 +57,7 @@
 | U2 | 已验收阻断行为；600938分红及001228未知增发继续失败，不能以日期内看似正常记录替代完整单元证明 | 同上及[同包真实桌面](evidence/usability-closure-2026-10-22.md) |
 | U3 | 已验收；同数异键、同键异内容和损坏存储摘要反例均失败，隔离SQL经原正式入口复核 | 领域test_unit_must_match_keys_and_content_before_date_filter、隔离test_scope_proofs_ignore_other_history_but_never_missing_required_records |
 | U4 | 已验收；仅经完整单元证明的空日期投影通过；无证明空集仍失败，生产不填零、不造空数据 | 领域test_proven_empty_date_projection_ignores_other_security_unknown及正式全量门禁 |
-| U5 | 已验收防双计；六原证券预案与实施的精确历史键、状态、金额及除息日仍正式可查；预案不计复权，歧义拒绝；股息率/现金收益尚未实现 | [原SQL审计](evidence/usability-formal-audit-2026-10-21.json)、[新只读审计](evidence/usability-optional-formal-audit-2026-10-22.json)和计算反例 |
+| U5 | 已验收防双计；六原证券预案与实施的精确历史键、状态、金额及除息日仍正式可查；预案不计复权，歧义拒绝。后续P1名义派息已验收，P2已发布且固定范围桌面通过但严格全样本仍失败；持仓现金收益未实现 | [原SQL审计](evidence/usability-formal-audit-2026-10-21.json)、[新只读审计](evidence/usability-optional-formal-audit-2026-10-22.json)、[P2当前账本](evidence/shareholder-return-p2-2026-10-22.md)和计算反例 |
 | U6 | 已验收限制呈现；000001同范围数据条件满足时，historical_signal仍因temporal来源契约缺失阻断，同包显示“来源受限” | 新只读审计scopes/historical_signal、同包桌面记录 |
 | U7 | 已验收恢复；13:40原失败保留；同包正常回查后满足10-21 15:30目标，第三轮热重复SQLstate完全不变，可信摘要时间真实推进。不是10-22收盘后证明 | [原盘前快照](evidence/usability-suspension-before-2026-10-22.json)、[热重复快照](evidence/usability-suspension-after3-2026-10-22.json)、CLI实际退出码及结案报告 |
 | U8 | 已验收；过期/失配/旧版/超前/离线回SQL，SQL独立盘后证据可通过，SQL仍盘前则失败；没有停共享Redis来造故障 | 领域test_optional_time_proof_never_extends_dates_or_bypasses_sql、test_sql_post_close_evidence_survives_redis_offline及隔离归档反例 |

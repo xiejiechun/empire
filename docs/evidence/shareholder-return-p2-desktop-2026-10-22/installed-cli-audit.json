@@ -1,0 +1,143 @@
+{
+  "at": "2026-10-21T21:52:21.603825+00:00",
+  "release_id": "4c672429732f48669159d410a91917d9",
+  "executable_sha256": "7daaf84de6a00f36eb745a980ab3d632e07da1c07d0c5dd33531d3231a54f576",
+  "cwd": "C:\\Windows",
+  "runs": [
+    {
+      "command": [
+        "D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "doctor"
+      ],
+      "exit_code": 0,
+      "log": "build\\returns-p2-20261022\\connections-installed.log",
+      "log_sha256": "a1cc1c9607d338d198d80d86248f41935f6002bf95814de0f5e9c58c38134a7c"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "doctor",
+        "--project",
+        "kaipanla-quote",
+        "--security",
+        "000001.SZ",
+        "--date",
+        "2026-10-20"
+      ],
+      "exit_code": 2,
+      "log": "build\\returns-p2-20261022\\quote-project-installed.log",
+      "log_sha256": "1207cb56cb9b49a4204d9c499343218dfb7f050f2a01b70d315bf81d8a8337a5"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "doctor",
+        "--project",
+        "tdx-dividends",
+        "--security",
+        "000001.SZ",
+        "--date",
+        "2026-10-20"
+      ],
+      "exit_code": 2,
+      "log": "build\\returns-p2-20261022\\dividends-project-installed.log",
+      "log_sha256": "4d88f39dc966d0c4dc0147e2993f7d2607e10247f623a4c8ce103129025b4fce"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "doctor",
+        "--project",
+        "tdx-suspensions",
+        "--error-id",
+        "38622b7215a44fe4a5224031bdf4d963",
+        "--security",
+        "603517.SH",
+        "--date",
+        "2026-10-19"
+      ],
+      "exit_code": 2,
+      "log": "build\\returns-p2-20261022\\suspension-project-installed.log",
+      "log_sha256": "e82b6dc644daf21a30d537dc96606a877f3749538b8085a34ce718a6186b0860"
+    }
+  ],
+  "connections": {
+    "redis": {
+      "connected": true,
+      "version": "8.6.3",
+      "aof_enabled": 0,
+      "maxmemory_policy": "noeviction",
+      "used_memory": 42377950,
+      "maxmemory": 68719476736,
+      "required_commands": true,
+      "namespace": "empire:dev"
+    },
+    "mysql": {
+      "connected": true,
+      "version": "8.4.9",
+      "database": "empire",
+      "port": 3307,
+      "tables": [
+        "additional_issue",
+        "app_setting",
+        "balance_statement",
+        "capital_encumbrance",
+        "capital_equity_position",
+        "capital_equity_summary",
+        "capital_funding",
+        "capital_ipo",
+        "capital_project",
+        "capital_release",
+        "capital_transaction",
+        "cashflow_statement",
+        "collection_state",
+        "dividend_plan",
+        "earnings_disclosure",
+        "earnings_forecast",
+        "earnings_quick",
+        "earnings_report",
+        "finance_news",
+        "holder_member",
+        "holder_report",
+        "income_statement",
+        "index_daily_price",
+        "index_price_year",
+        "industry",
+        "industry_member",
+        "restricted_share_unlock",
+        "restricted_share_unlock_detail",
+        "restricted_share_unlock_industry",
+        "rights_issue",
+        "router_device",
+        "router_proxy_auth",
+        "router_runtime_config",
+        "router_schema_version",
+        "security_code_alias",
+        "security_listing_event",
+        "security_name_change",
+        "security_st_event",
+        "shareholder_change",
+        "shareholder_count",
+        "stock",
+        "stock_daily_quote",
+        "stock_daily_quote_level",
+        "stock_index",
+        "stock_index_member",
+        "stock_intraday_trade_block",
+        "stock_intraday_trend",
+        "stock_large_order_trend",
+        "stock_listing",
+        "stock_market_day",
+        "stock_minute_entrust",
+        "stock_minute_volume",
+        "stock_opening_auction",
+        "stock_repurchase_plan",
+        "suspension_event",
+        "suspension_source_date",
+        "trade_calendar",
+        "trading_rule_citation",
+        "trading_rule_value"
+      ]
+    }
+  }
+}

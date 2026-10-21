@@ -1,0 +1,714 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-21T21:47:49+00:00",
+  "mode": "quick-release-gate",
+  "scope": "in-process virtual directory and MockTransport; no external services",
+  "model": {
+    "exit_matrix": [
+      10,
+      30,
+      50,
+      100
+    ],
+    "baseline_response_delay_ms": 4,
+    "parse_delay_ms": 1,
+    "archive_queue_delay_ms": 1,
+    "redis_confirm_delay_ms": 1,
+    "sql_confirm_delay_ms": 2,
+    "churn_cancel_iterations": 1000
+  },
+  "environment": {
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 26 Model 112 Stepping 0, AuthenticAMD"
+  },
+  "baseline": [
+    {
+      "name": "independent-10",
+      "devices": 10,
+      "distinct_exit_ips": 10,
+      "request_count": 10,
+      "completed": 10,
+      "failed": 0,
+      "cancelled": 0,
+      "attempts": 10,
+      "elapsed_seconds": 0.0185,
+      "throughput_rps": 541.41,
+      "error_rate": 0.0,
+      "peak_concurrency": 10,
+      "latency": {
+        "queue": {
+          "p50_ms": 0.124,
+          "p95_ms": 0.741,
+          "max_ms": 1.154
+        },
+        "download": {
+          "p50_ms": 15.873,
+          "p95_ms": 16.499,
+          "max_ms": 16.565
+        },
+        "parse": {
+          "p50_ms": 0.179,
+          "p95_ms": 0.272,
+          "max_ms": 0.287
+        },
+        "archive_queue": {
+          "p50_ms": 0.063,
+          "p95_ms": 0.066,
+          "max_ms": 0.067
+        },
+        "redis_confirm": {
+          "p50_ms": 0.061,
+          "p95_ms": 0.065,
+          "max_ms": 0.066
+        },
+        "sql_confirm": {
+          "p50_ms": 0.059,
+          "p95_ms": 0.065,
+          "max_ms": 0.066
+        },
+        "end_to_end": {
+          "p50_ms": 16.369,
+          "p95_ms": 17.67,
+          "max_ms": 18.193
+        }
+      },
+      "directory_reads": 1,
+      "candidate_checks": 10,
+      "site_cooldown_created": false,
+      "resources": {
+        "rss_before": 52527104,
+        "rss_peak": 54296576,
+        "rss_after": 54296576,
+        "rss_delta": 1769472,
+        "handles_before": 203,
+        "handles_peak": 213,
+        "handles_after": 203,
+        "handles_delta": 0
+      },
+      "cleanup": {
+        "pool_waiting": 0,
+        "pool_busy": 0,
+        "pool_retired": 0,
+        "pool_close_tasks": 0,
+        "http_inflight": 0,
+        "open_responses": 0,
+        "buffer_used_bytes": 0,
+        "global_active": 0,
+        "site_active": 0,
+        "admission_waiting": 0
+      }
+    },
+    {
+      "name": "independent-30",
+      "devices": 30,
+      "distinct_exit_ips": 30,
+      "request_count": 30,
+      "completed": 30,
+      "failed": 0,
+      "cancelled": 0,
+      "attempts": 30,
+      "elapsed_seconds": 0.0076,
+      "throughput_rps": 3932.11,
+      "error_rate": 0.0,
+      "peak_concurrency": 30,
+      "latency": {
+        "queue": {
+          "p50_ms": 0.116,
+          "p95_ms": 0.227,
+          "max_ms": 1.172
+        },
+        "download": {
+          "p50_ms": 3.519,
+          "p95_ms": 5.213,
+          "max_ms": 5.375
+        },
+        "parse": {
+          "p50_ms": 0.375,
+          "p95_ms": 0.606,
+          "max_ms": 0.608
+        },
+        "archive_queue": {
+          "p50_ms": 0.117,
+          "p95_ms": 0.156,
+          "max_ms": 0.16
+        },
+        "redis_confirm": {
+          "p50_ms": 0.114,
+          "p95_ms": 0.151,
+          "max_ms": 0.155
+        },
+        "sql_confirm": {
+          "p50_ms": 0.108,
+          "p95_ms": 0.143,
+          "max_ms": 0.145
+        },
+        "end_to_end": {
+          "p50_ms": 4.331,
+          "p95_ms": 6.173,
+          "max_ms": 7.422
+        }
+      },
+      "directory_reads": 1,
+      "candidate_checks": 30,
+      "site_cooldown_created": false,
+      "resources": {
+        "rss_before": 54427648,
+        "rss_peak": 54894592,
+        "rss_after": 54894592,
+        "rss_delta": 466944,
+        "handles_before": 203,
+        "handles_peak": 233,
+        "handles_after": 203,
+        "handles_delta": 0
+      },
+      "cleanup": {
+        "pool_waiting": 0,
+        "pool_busy": 0,
+        "pool_retired": 0,
+        "pool_close_tasks": 0,
+        "http_inflight": 0,
+        "open_responses": 0,
+        "buffer_used_bytes": 0,
+        "global_active": 0,
+        "site_active": 0,
+        "admission_waiting": 0
+      }
+    },
+    {
+      "name": "independent-50",
+      "devices": 50,
+      "distinct_exit_ips": 50,
+      "request_count": 50,
+      "completed": 50,
+      "failed": 0,
+      "cancelled": 0,
+      "attempts": 50,
+      "elapsed_seconds": 0.0296,
+      "throughput_rps": 1687.55,
+      "error_rate": 0.0,
+      "peak_concurrency": 50,
+      "latency": {
+        "queue": {
+          "p50_ms": 0.113,
+          "p95_ms": 0.15,
+          "max_ms": 1.105
+        },
+        "download": {
+          "p50_ms": 23.918,
+          "p95_ms": 26.716,
+          "max_ms": 27.022
+        },
+        "parse": {
+          "p50_ms": 0.56,
+          "p95_ms": 0.958,
+          "max_ms": 1.014
+        },
+        "archive_queue": {
+          "p50_ms": 0.162,
+          "p95_ms": 0.21,
+          "max_ms": 0.215
+        },
+        "redis_confirm": {
+          "p50_ms": 0.157,
+          "p95_ms": 0.208,
+          "max_ms": 0.214
+        },
+        "sql_confirm": {
+          "p50_ms": 0.154,
+          "p95_ms": 0.202,
+          "max_ms": 0.207
+        },
+        "end_to_end": {
+          "p50_ms": 25.276,
+          "p95_ms": 28.044,
+          "max_ms": 29.352
+        }
+      },
+      "directory_reads": 1,
+      "candidate_checks": 50,
+      "site_cooldown_created": false,
+      "resources": {
+        "rss_before": 54894592,
+        "rss_peak": 55255040,
+        "rss_after": 55255040,
+        "rss_delta": 360448,
+        "handles_before": 203,
+        "handles_peak": 253,
+        "handles_after": 203,
+        "handles_delta": 0
+      },
+      "cleanup": {
+        "pool_waiting": 0,
+        "pool_busy": 0,
+        "pool_retired": 0,
+        "pool_close_tasks": 0,
+        "http_inflight": 0,
+        "open_responses": 0,
+        "buffer_used_bytes": 0,
+        "global_active": 0,
+        "site_active": 0,
+        "admission_waiting": 0
+      }
+    },
+    {
+      "name": "independent-100",
+      "devices": 100,
+      "distinct_exit_ips": 100,
+      "request_count": 100,
+      "completed": 100,
+      "failed": 0,
+      "cancelled": 0,
+      "attempts": 100,
+      "elapsed_seconds": 0.0252,
+      "throughput_rps": 3967.86,
+      "error_rate": 0.0,
+      "peak_concurrency": 100,
+      "latency": {
+        "queue": {
+          "p50_ms": 0.139,
+          "p95_ms": 0.237,
+          "max_ms": 1.657
+        },
+        "download": {
+          "p50_ms": 13.738,
+          "p95_ms": 20.28,
+          "max_ms": 20.967
+        },
+        "parse": {
+          "p50_ms": 1.0,
+          "p95_ms": 1.632,
+          "max_ms": 1.685
+        },
+        "archive_queue": {
+          "p50_ms": 0.284,
+          "p95_ms": 0.432,
+          "max_ms": 0.452
+        },
+        "redis_confirm": {
+          "p50_ms": 0.276,
+          "p95_ms": 0.424,
+          "max_ms": 0.443
+        },
+        "sql_confirm": {
+          "p50_ms": 0.265,
+          "p95_ms": 0.402,
+          "max_ms": 0.421
+        },
+        "end_to_end": {
+          "p50_ms": 16.078,
+          "p95_ms": 22.428,
+          "max_ms": 24.799
+        }
+      },
+      "directory_reads": 1,
+      "candidate_checks": 100,
+      "site_cooldown_created": false,
+      "resources": {
+        "rss_before": 55250944,
+        "rss_peak": 56115200,
+        "rss_after": 56115200,
+        "rss_delta": 864256,
+        "handles_before": 203,
+        "handles_peak": 303,
+        "handles_after": 203,
+        "handles_delta": 0
+      },
+      "cleanup": {
+        "pool_waiting": 0,
+        "pool_busy": 0,
+        "pool_retired": 0,
+        "pool_close_tasks": 0,
+        "http_inflight": 0,
+        "open_responses": 0,
+        "buffer_used_bytes": 0,
+        "global_active": 0,
+        "site_active": 0,
+        "admission_waiting": 0
+      }
+    }
+  ],
+  "shared_egress": {
+    "name": "shared-egress",
+    "devices": 50,
+    "distinct_exit_ips": 10,
+    "request_count": 50,
+    "completed": 50,
+    "failed": 0,
+    "cancelled": 0,
+    "attempts": 50,
+    "elapsed_seconds": 0.4431,
+    "throughput_rps": 112.83,
+    "error_rate": 0.0,
+    "peak_concurrency": 10,
+    "latency": {
+      "queue": {
+        "p50_ms": 209.576,
+        "p95_ms": 436.535,
+        "max_ms": 437.339
+      },
+      "download": {
+        "p50_ms": 2.458,
+        "p95_ms": 17.052,
+        "max_ms": 17.434
+      },
+      "parse": {
+        "p50_ms": 1.339,
+        "p95_ms": 2.373,
+        "max_ms": 2.42
+      },
+      "archive_queue": {
+        "p50_ms": 0.074,
+        "p95_ms": 0.823,
+        "max_ms": 0.826
+      },
+      "redis_confirm": {
+        "p50_ms": 0.06,
+        "p95_ms": 0.136,
+        "max_ms": 0.139
+      },
+      "sql_confirm": {
+        "p50_ms": 0.064,
+        "p95_ms": 0.127,
+        "max_ms": 2.667
+      },
+      "end_to_end": {
+        "p50_ms": 228.375,
+        "p95_ms": 437.318,
+        "max_ms": 440.325
+      }
+    },
+    "directory_reads": 1,
+    "candidate_checks": 96,
+    "site_cooldown_created": false,
+    "resources": {
+      "rss_before": 56115200,
+      "rss_peak": 56131584,
+      "rss_after": 56131584,
+      "rss_delta": 16384,
+      "handles_before": 203,
+      "handles_peak": 253,
+      "handles_after": 203,
+      "handles_delta": 0
+    },
+    "cleanup": {
+      "pool_waiting": 0,
+      "pool_busy": 0,
+      "pool_retired": 0,
+      "pool_close_tasks": 0,
+      "http_inflight": 0,
+      "open_responses": 0,
+      "buffer_used_bytes": 0,
+      "global_active": 0,
+      "site_active": 0,
+      "admission_waiting": 0
+    }
+  },
+  "fault_matrix": [
+    {
+      "name": "transport-failure",
+      "devices": 10,
+      "distinct_exit_ips": 10,
+      "request_count": 20,
+      "completed": 20,
+      "failed": 0,
+      "cancelled": 0,
+      "attempts": 25,
+      "elapsed_seconds": 0.3513,
+      "throughput_rps": 56.93,
+      "error_rate": 0.0,
+      "peak_concurrency": 10,
+      "latency": {
+        "queue": {
+          "p50_ms": 50.421,
+          "p95_ms": 216.208,
+          "max_ms": 216.3
+        },
+        "download": {
+          "p50_ms": 16.036,
+          "p95_ms": 131.375,
+          "max_ms": 132.49
+        },
+        "parse": {
+          "p50_ms": 0.489,
+          "p95_ms": 0.916,
+          "max_ms": 0.937
+        },
+        "archive_queue": {
+          "p50_ms": 0.058,
+          "p95_ms": 0.063,
+          "max_ms": 0.069
+        },
+        "redis_confirm": {
+          "p50_ms": 0.049,
+          "p95_ms": 0.058,
+          "max_ms": 0.066
+        },
+        "sql_confirm": {
+          "p50_ms": 0.051,
+          "p95_ms": 0.06,
+          "max_ms": 0.07
+        },
+        "end_to_end": {
+          "p50_ms": 115.971,
+          "p95_ms": 237.958,
+          "max_ms": 349.103
+        }
+      },
+      "directory_reads": 1,
+      "candidate_checks": 42,
+      "site_cooldown_created": false,
+      "resources": {
+        "rss_before": 56131584,
+        "rss_peak": 56131584,
+        "rss_after": 56131584,
+        "rss_delta": 0,
+        "handles_before": 203,
+        "handles_peak": 213,
+        "handles_after": 203,
+        "handles_delta": 0
+      },
+      "cleanup": {
+        "pool_waiting": 0,
+        "pool_busy": 0,
+        "pool_retired": 0,
+        "pool_close_tasks": 0,
+        "http_inflight": 0,
+        "open_responses": 0,
+        "buffer_used_bytes": 0,
+        "global_active": 0,
+        "site_active": 0,
+        "admission_waiting": 0
+      }
+    },
+    {
+      "name": "site-429",
+      "devices": 10,
+      "distinct_exit_ips": 10,
+      "request_count": 10,
+      "completed": 8,
+      "failed": 2,
+      "cancelled": 0,
+      "attempts": 10,
+      "elapsed_seconds": 0.0137,
+      "throughput_rps": 732.34,
+      "error_rate": 0.2,
+      "peak_concurrency": 10,
+      "latency": {
+        "queue": {
+          "p50_ms": 0.113,
+          "p95_ms": 0.401,
+          "max_ms": 0.572
+        },
+        "download": {
+          "p50_ms": 11.955,
+          "p95_ms": 12.372,
+          "max_ms": 12.392
+        },
+        "parse": {
+          "p50_ms": 0.219,
+          "p95_ms": 0.283,
+          "max_ms": 0.291
+        },
+        "archive_queue": {
+          "p50_ms": 0.053,
+          "p95_ms": 0.055,
+          "max_ms": 0.056
+        },
+        "redis_confirm": {
+          "p50_ms": 0.05,
+          "p95_ms": 0.053,
+          "max_ms": 0.054
+        },
+        "sql_confirm": {
+          "p50_ms": 0.049,
+          "p95_ms": 0.051,
+          "max_ms": 0.052
+        },
+        "end_to_end": {
+          "p50_ms": 12.453,
+          "p95_ms": 13.211,
+          "max_ms": 13.411
+        }
+      },
+      "directory_reads": 1,
+      "candidate_checks": 10,
+      "site_cooldown_created": true,
+      "resources": {
+        "rss_before": 56131584,
+        "rss_peak": 56135680,
+        "rss_after": 56135680,
+        "rss_delta": 4096,
+        "handles_before": 203,
+        "handles_peak": 213,
+        "handles_after": 203,
+        "handles_delta": 0
+      },
+      "cleanup": {
+        "pool_waiting": 0,
+        "pool_busy": 0,
+        "pool_retired": 0,
+        "pool_close_tasks": 0,
+        "http_inflight": 0,
+        "open_responses": 0,
+        "buffer_used_bytes": 0,
+        "global_active": 0,
+        "site_active": 0,
+        "admission_waiting": 0
+      }
+    },
+    {
+      "name": "request-cancel",
+      "devices": 10,
+      "distinct_exit_ips": 10,
+      "request_count": 20,
+      "completed": 10,
+      "failed": 0,
+      "cancelled": 10,
+      "attempts": 15,
+      "elapsed_seconds": 0.1274,
+      "throughput_rps": 78.49,
+      "error_rate": 0.0,
+      "peak_concurrency": 10,
+      "latency": {
+        "queue": {
+          "p50_ms": 55.611,
+          "p95_ms": 111.209,
+          "max_ms": 111.266
+        },
+        "download": {
+          "p50_ms": 14.548,
+          "p95_ms": 16.38,
+          "max_ms": 16.436
+        },
+        "parse": {
+          "p50_ms": 0.362,
+          "p95_ms": 0.516,
+          "max_ms": 0.528
+        },
+        "archive_queue": {
+          "p50_ms": 0.048,
+          "p95_ms": 0.051,
+          "max_ms": 0.052
+        },
+        "redis_confirm": {
+          "p50_ms": 0.044,
+          "p95_ms": 0.045,
+          "max_ms": 0.045
+        },
+        "sql_confirm": {
+          "p50_ms": 0.044,
+          "p95_ms": 0.046,
+          "max_ms": 0.046
+        },
+        "end_to_end": {
+          "p50_ms": 70.924,
+          "p95_ms": 127.549,
+          "max_ms": 127.575
+        }
+      },
+      "directory_reads": 1,
+      "candidate_checks": 25,
+      "site_cooldown_created": false,
+      "resources": {
+        "rss_before": 56135680,
+        "rss_peak": 56135680,
+        "rss_after": 56135680,
+        "rss_delta": 0,
+        "handles_before": 203,
+        "handles_peak": 213,
+        "handles_after": 208,
+        "handles_delta": 5
+      },
+      "cleanup": {
+        "pool_waiting": 0,
+        "pool_busy": 0,
+        "pool_retired": 0,
+        "pool_close_tasks": 0,
+        "http_inflight": 0,
+        "open_responses": 0,
+        "buffer_used_bytes": 0,
+        "global_active": 0,
+        "site_active": 0,
+        "admission_waiting": 0
+      }
+    }
+  ],
+  "churn": {
+    "iterations": 1000,
+    "cancelled_acquires": 1000,
+    "elapsed_seconds": 0.1386,
+    "directory_reads": 2001,
+    "candidate_checks": 1000,
+    "resource_samples": [
+      {
+        "rss_bytes": 56135680,
+        "handles": 208
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      },
+      {
+        "rss_bytes": 56135680,
+        "handles": 201
+      }
+    ],
+    "rss_growth_bytes": 0,
+    "handle_growth": -7,
+    "stable_within_guardrail": true,
+    "cleanup": {
+      "pool_waiting": 0,
+      "pool_busy": 0,
+      "pool_retired": 0,
+      "pool_close_tasks": 0
+    }
+  },
+  "checks": {
+    "all_cleanup_zero": true,
+    "candidate_lease_checked_per_attempt": true,
+    "shared_ip_does_not_expand_concurrency": true,
+    "429_created_site_cooldown": true,
+    "cancellation_observed": true,
+    "transport_replay_recovered": true,
+    "churn_1000_completed": true,
+    "churn_resources_stable": true
+  },
+  "passed": true
+}

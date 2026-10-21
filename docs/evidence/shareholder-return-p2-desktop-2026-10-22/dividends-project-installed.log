@@ -1,0 +1,582 @@
+{
+  "schema": 1,
+  "project_id": "tdx-dividends",
+  "started_at": "2026-10-22T05:52:23.651875+08:00",
+  "read_only": true,
+  "status": "partial",
+  "sections": {
+    "declaration": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:23.651875+08:00",
+      "acquired_at": "2026-10-22T05:52:23.651875+08:00",
+      "reason": "",
+      "data": {
+        "project_id": "tdx-dividends",
+        "task": {
+          "id": "tdx-dividends",
+          "name": "分红送转（通达信）",
+          "capability": "collector.tdx_dividends",
+          "rate_group": "tdx",
+          "description": "全部可得历史核验 · 单证券完整归档",
+          "interval_seconds": 86400,
+          "category": "增发送配",
+          "source_name": "通达信",
+          "parallel_downloads": true,
+          "default_enabled": true,
+          "fresh_description": "从当前来源完整范围重新核验，保留已归档历史；普通采集优先续跑已入队断点。",
+          "default_schedule": null,
+          "unit_name": "只股票"
+        },
+        "job_keys": [
+          "tdx-dividends-v1"
+        ],
+        "datasets": [
+          "dividends.unit"
+        ],
+        "declared_scope": [
+          {
+            "id": "dividends",
+            "title": "分红送转",
+            "category": "增发送配",
+            "priority": "核心",
+            "purpose": "除权收益与持仓现金流",
+            "grain": "证券的一次分红送转方案",
+            "fields": "证券编号、报告期/方案标识、公告日、股权登记日、除权除息日、每股现金、送股比例、转增比例、含税口径、状态",
+            "key": "来源 + 证券编号 + 稳定方案标识（无编号时声明业务组合键）",
+            "coverage": "来源支持区间的分红送转方案；列明已实施、取消等状态的实际覆盖",
+            "cadence": "每日跟踪预案、实施与修订",
+            "dependencies": [],
+            "criteria": [
+              {
+                "id": "fields",
+                "title": "字段与单位",
+                "expected": "证券编号、报告期/方案标识、公告日、股权登记日、除权除息日、每股现金、送股比例、转增比例、含税口径、状态",
+                "action": "检查必需字段和单位；可选字段未提供不影响本项通过"
+              },
+              {
+                "id": "keys",
+                "title": "唯一键与重复",
+                "expected": "来源 + 证券编号 + 稳定方案标识（无编号时声明业务组合键）；重复键为 0",
+                "action": "明确业务键，清查重复与版本冲突"
+              },
+              {
+                "id": "coverage",
+                "title": "历史与对象覆盖",
+                "expected": "来源支持区间的分红送转方案；列明已实施、取消等状态的实际覆盖",
+                "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明"
+              },
+              {
+                "id": "quality",
+                "title": "业务质量",
+                "expected": "方案与实施区分，现金/比例单位一致，日期链合理，防止同方案多次入账",
+                "action": "修复数据或解析规则，并补充业务语义回归"
+              },
+              {
+                "id": "freshness",
+                "title": "更新与时效",
+                "expected": "每日跟踪预案、实施与修订",
+                "action": "验证最新成功核验时间与数据水位，恢复更新计划"
+              },
+              {
+                "id": "temporal",
+                "title": "日期与使用范围",
+                "expected": "本项目按用户确认采用除权除息日作为现金支付/记账日，派息按含税金额；预案不得入账。此为项目记账口径，不保证各市场实际到账日相同；修订值不能按原预案公告日提前使用",
+                "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史"
+              }
+            ],
+            "kind": "采集",
+            "boundary": "对标通达信“增发送配 → 分红送转”；独立分红送转采集插件；现金、送股、转增是同一方案字段，不包含增发或配股。通达信每十股金额及比例须除以 10 转为每股。",
+            "related": [
+              "listings"
+            ],
+            "optional_fields": "独立现金到账日期、来源方案编号、修订版本、完整旧方案",
+            "capability": "dividends.query",
+            "dataset": "dividends.unit"
+          }
+        ]
+      }
+    },
+    "isolation": {
+      "status": "unknown",
+      "started_at": "2026-10-22T05:52:23.651875+08:00",
+      "acquired_at": "2026-10-22T05:52:23.651875+08:00",
+      "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离",
+      "data": {
+        "status": "unknown",
+        "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离"
+      }
+    },
+    "errors": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:23.652872+08:00",
+      "acquired_at": "2026-10-22T05:52:23.654870+08:00",
+      "reason": "",
+      "data": {
+        "revision": "27",
+        "total": 27,
+        "rows": [
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "065a1c5f03a94c738550b02474e7c5a3",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T18:19:12.544942+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node013 请求失败（ProxyError），已临时隔离",
+            "id": "1af4e3f8acca42d28aa8bb82e2cee6b7",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T18:19:01.102110+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node020 请求失败（ProxyError），已临时隔离",
+            "id": "7d019d1dcff74c5785250ca04497fe83",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T18:18:50.231868+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "1fded5be62224a00840289f50a5b21bd",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T18:18:24.068179+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "ff56bf7377fe4b35b6c89bfdb5a36619",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T18:18:03.075883+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node002 请求失败（ProxyError），已临时隔离",
+            "id": "eb21712893d44477abc3333471da82a3",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T18:17:47.003177+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "",
+            "id": "2ddfeef573b84d69baa7cfaab27e0263",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:48:56.582296+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node012 请求失败（ProxyError），已临时隔离",
+            "id": "65688a3811494c008ca1984188ee402a",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:48:54.342272+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "4f0c1749cb5a4252b25c3a9951276e11",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:48:51.811033+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "5b673860f9b341d0b6cd564140119d64",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:48:45.080992+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node010 请求失败（ProxyError），已临时隔离",
+            "id": "cec1a59db10141558c674957d7f73cf3",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:48:40.527738+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node006 请求失败（ProxyError），已临时隔离",
+            "id": "0b2e1bf427a8446597e729a61bc0d24b",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:48:30.080544+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node005 请求失败（ReadError），已临时隔离",
+            "id": "9f36ab2e29a54767b1772cef8649dc85",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:48:19.449614+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node002 请求失败（ProxyError），已临时隔离",
+            "id": "78bc844d210043e6aceb84c009b373c3",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:48:09.049265+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+            "id": "653eaf03fe6f48ecbb8ce5eea959d8eb",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:47:06.700259+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "946cf701f0b8478e97c9311436491163",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:25.279819+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "8ca57e8d0946489294a068d319eefd3d",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:21.046265+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "9889ce6eb13643da8f178175a339bde6",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:17.802783+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node002 请求失败（ProxyError），已临时隔离",
+            "id": "3e522fa231b648bd997f466a7a3a6329",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:15.535022+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node020 请求失败（ProxyError），已临时隔离",
+            "id": "e8c7df189e0b43bc95de7d568d1ca456",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:15.297592+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+            "id": "9b2944b6483747dda8322add0ca5fef5",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:14.973077+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node006 请求失败（ProxyError），已临时隔离",
+            "id": "c3a4b49aee834845a87ad733b0db56d3",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:14.667136+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node014 请求失败（ProxyError），已临时隔离",
+            "id": "a8e990838b1f4cc9b2b353a00a1b699d",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:14.378104+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node010 请求失败（ProxyError），已临时隔离",
+            "id": "4da011db7adb4c519a02264612b30bde",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:14.020762+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node012 请求失败（ProxyError），已临时隔离",
+            "id": "e9d0d97ed3234775ac26f9740f04462f",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:13.671573+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node005 请求失败（ReadError），已临时隔离",
+            "id": "fa7e734e5bbc45c4bc4745796db78d1c",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:13.132231+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node013 请求失败（ProxyError），已临时隔离",
+            "id": "8207c8ce6d9640d9a84b096be370e2b3",
+            "project_id": "tdx-dividends",
+            "created_at": "2026-10-17T15:14:12.879825+00:00",
+            "stage": "http"
+          }
+        ],
+        "truncated": false,
+        "body_included": false
+      }
+    },
+    "task_state": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:23.654870+08:00",
+      "acquired_at": "2026-10-22T05:52:23.660389+08:00",
+      "reason": "",
+      "data": {
+        "history": [
+          {
+            "network": {
+              "proxy_requests": 639
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "queued_records": 56138,
+              "total_units": 5580,
+              "batch_id": "472765568032401b8540300eb1bea7d8",
+              "units": 5580,
+              "current_security": "SZ:302132",
+              "failed_units": 0,
+              "collected": 56138,
+              "processed_units": 5580,
+              "pages": 5581,
+              "continuous_collected": 56138
+            },
+            "task_id": "tdx-dividends",
+            "fresh": false,
+            "finished_at": 1792604867.9587,
+            "status": "complete",
+            "started_at": 1792604749.3888,
+            "proxy_fallback": true,
+            "run_id": "d96ead7661cc4aceb0db5a89c4fb497f",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 44652
+          },
+          {
+            "network": {
+              "proxy_requests": 637
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "queued_records": 56133,
+              "total_units": 5579,
+              "batch_id": "d446d658d5a24094a53745f9ea3c8f17",
+              "units": 5579,
+              "current_security": "SZ:302132",
+              "failed_units": 0,
+              "collected": 56133,
+              "processed_units": 5579,
+              "pages": 5580,
+              "continuous_collected": 56133
+            },
+            "task_id": "tdx-dividends",
+            "fresh": false,
+            "finished_at": 1792561548.8325,
+            "status": "complete",
+            "started_at": 1792561205.3623,
+            "proxy_fallback": true,
+            "run_id": "141fde0c2cdf4148bbdd543a2d214f74",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 39071
+          },
+          {
+            "network": {
+              "proxy_requests": 637
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "queued_records": 56133,
+              "total_units": 5579,
+              "batch_id": "09663185c5644c3c8dadd3d00ab71f0f",
+              "units": 5579,
+              "current_security": "SZ:302132",
+              "failed_units": 0,
+              "collected": 56133,
+              "processed_units": 5579,
+              "pages": 5580,
+              "continuous_collected": 56133
+            },
+            "task_id": "tdx-dividends",
+            "fresh": false,
+            "finished_at": 1792516464.7162,
+            "status": "complete",
+            "started_at": 1792516280.01,
+            "proxy_fallback": true,
+            "run_id": "ba47f47cd9f54173afe00759f52eac22",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 33490
+          }
+        ],
+        "job": {
+          "last_status": "complete",
+          "next_due": 1792648067.9587,
+          "active": null,
+          "notice": "",
+          "policy": {
+            "enabled": true,
+            "request_retries": 2,
+            "daily_time": "18:00",
+            "proxy_fallback": true,
+            "archived": false,
+            "interval_seconds": 43200,
+            "use_proxy": true,
+            "mode": "interval"
+          },
+          "error": ""
+        }
+      }
+    },
+    "checkpoint:tdx-dividends-v1": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:23.660389+08:00",
+      "acquired_at": "2026-10-22T05:52:23.661403+08:00",
+      "reason": "",
+      "data": {
+        "cursor": {
+          "phase": "complete",
+          "batch_id": "472765568032401b8540300eb1bea7d8",
+          "index": 5580,
+          "pages": 5581,
+          "collected": 56138,
+          "source_hash": "38c262b16b362f358ea39d35285f240628a42bcf6ec8a7f7e546975f24bcc35e",
+          "scope_hash": "597b878e2874df2b8a7f3f0542285414048c263c3c25c72719201a36797aea8a",
+          "units": 5580,
+          "rolling": "e1b2fb35e6ac45e0a780c964f75ff78a4360a23e7a1a406dbe461edeff5f782f",
+          "started_at": "2026-10-21T17:47:06.812820+00:00",
+          "schema_version": 3,
+          "scope_changed": true
+        },
+        "revision": "50234"
+      }
+    },
+    "archive_progress:tdx-dividends-v1": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:23.661403+08:00",
+      "acquired_at": "2026-10-22T05:52:23.661403+08:00",
+      "reason": "",
+      "data": {
+        "batch_id": "472765568032401b8540300eb1bea7d8",
+        "page": 5581,
+        "status": "complete",
+        "row_count": 0,
+        "error_text": "",
+        "observed_at": "2026-10-21T17:47:27.919631+00:00"
+      }
+    },
+    "queue": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:23.661403+08:00",
+      "acquired_at": "2026-10-22T05:52:23.661403+08:00",
+      "reason": "",
+      "data": {
+        "stream_total": 0,
+        "unreadable": 0,
+        "truncated": false,
+        "exact": true,
+        "fetched_envelope_bytes": 0,
+        "scanned": 0,
+        "stream_ids": {},
+        "project_lower_bound": 0
+      }
+    },
+    "sql_state": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:23.681360+08:00",
+      "acquired_at": "2026-10-22T05:52:23.719051+08:00",
+      "reason": "",
+      "data": {
+        "source": "tdx",
+        "dataset": "dividends",
+        "updated_at": "2026-10-22 01:47:47.117523",
+        "state_bytes": 1214217,
+        "progress": "{\"page\": 5581, \"status\": \"complete\", \"batch_id\": \"472765568032401b8540300eb1bea7d8\", \"row_count\": 0, \"error_text\": \"\", \"observed_at\": \"2026-10-21T17:47:27.919631+00:00\"}",
+        "progress_truncated": 0,
+        "coverage": null,
+        "coverage_truncated": 0,
+        "contract_version": "3",
+        "truncated": false,
+        "projection_only": true
+      }
+    },
+    "saved_policy": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:23.719051+08:00",
+      "acquired_at": "2026-10-22T05:52:23.720051+08:00",
+      "reason": "",
+      "data": {
+        "updated_at": "2026-09-30 07:21:00.716946",
+        "bytes": 152,
+        "policy": "{\"mode\": \"interval\", \"enabled\": true, \"use_proxy\": true, \"daily_time\": \"18:00\", \"proxy_fallback\": true, \"request_retries\": 2, \"interval_seconds\": 43200}",
+        "truncated": false
+      }
+    },
+    "query:dividends.query": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:23.720051+08:00",
+      "acquired_at": "2026-10-22T05:52:23.725392+08:00",
+      "reason": "",
+      "data": {
+        "capability": "dividends.query",
+        "method": "list_events",
+        "arguments": {
+          "limit": 20,
+          "code": "000001",
+          "market": "SZ",
+          "start": "2026-10-20",
+          "end": "2026-10-20"
+        },
+        "result": [],
+        "scope": "正式有界预览，非完整性验收"
+      }
+    }
+  },
+  "note": "各项分时读取，非 Redis/SQL 原子快照。任务阶段与 next_due 来自临时记录；正式预览不证明来源完整、时效或全部待归档为零。",
+  "limits_note": "队列最多逐条读取 5 个现有 Envelope；累计达到 256 KiB 后不取下一条，最后一条可超过此阈值，超过 256 KiB 的正文不解析。错误详情最多查现有保留的 300 条；控制状态读取上限 8 MiB，断点/归档进度各 128 KiB。报告上限不等同 Redis 服务总内存上限。",
+  "sql_cleanup": {
+    "closed_to_new_sql": true,
+    "outstanding_workers": 0,
+    "complete": true
+  },
+  "finished_at": "2026-10-22T05:52:23.725392+08:00",
+  "budget": {
+    "limits": {
+      "sql": 10,
+      "redis": 20,
+      "io_seconds": 5,
+      "total_seconds": 30,
+      "report_bytes": 1048576,
+      "errors": 50,
+      "body_bytes": 65536
+    },
+    "used": {
+      "sql": 8,
+      "redis": 15
+    },
+    "elapsed_seconds": 0.312,
+    "counting": "SQL 包含受守卫 SELECT 及每个物理连接五次驱动只读探测的保守预留；连接协议、SET 会话初始化及事务清理不计为业务查询。Redis 按脚本内 redis.call 读取命令的最大次数预留，包含返回前未使用预留。"
+  }
+}

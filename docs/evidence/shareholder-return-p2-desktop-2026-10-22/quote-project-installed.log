@@ -1,0 +1,969 @@
+{
+  "schema": 1,
+  "project_id": "kaipanla-quote",
+  "started_at": "2026-10-22T05:52:22.845435+08:00",
+  "read_only": true,
+  "status": "partial",
+  "sections": {
+    "declaration": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:22.845435+08:00",
+      "acquired_at": "2026-10-22T05:52:22.845435+08:00",
+      "reason": "",
+      "data": {
+        "project_id": "kaipanla-quote",
+        "task": {
+          "id": "kaipanla-quote",
+          "name": "开盘啦历史盘口与日行情摘要",
+          "capability": "collector.kaipanla_quote",
+          "rate_group": "kaipanla",
+          "description": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放",
+          "interval_seconds": 86400,
+          "category": "高频行情",
+          "source_name": "开盘啦",
+          "parallel_downloads": true,
+          "default_enabled": false,
+          "fresh_description": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+          "default_schedule": {
+            "mode": "daily",
+            "interval_seconds": 86400,
+            "daily_time": "18:00",
+            "description": "建议默认计划：每天北京时间 18:00。首次补历史，以后补新增日及缺口，每周复核最近五个交易日；可按需修改执行方式和时间。"
+          },
+          "unit_name": "股票日"
+        },
+        "job_keys": [
+          "kaipanla-quote-v1"
+        ],
+        "datasets": [
+          "kaipanla.quote.day"
+        ],
+        "declared_scope": [
+          {
+            "id": "historical_quote",
+            "title": "历史盘口与日行情摘要",
+            "category": "股票行情",
+            "priority": "核心",
+            "purpose": "日频回测价格与估值输入",
+            "grain": "当前证券 × 交易日 × 来源序号",
+            "fields": "证券日、上市关联、开高低收、量额及买卖档位；来源总股本、流通股本、总/流通/实际流通市值和估值字段保留原值，缺失显示未知",
+            "key": "数据类型 + unified_code + trade_date；数组内部保留来源顺序",
+            "coverage": "2021 年起当前上市证券的必要交易日；失败不作空日",
+            "cadence": "逐日补缺，回看最近五个交易日",
+            "dependencies": [],
+            "criteria": [
+              {
+                "id": "fields",
+                "title": "字段与单位",
+                "expected": "证券日、上市关联、开高低收、量额及买卖档位；来源总股本、流通股本、总/流通/实际流通市值和估值字段保留原值，缺失显示未知",
+                "action": "检查必需字段和单位；可选字段未提供不影响本项通过"
+              },
+              {
+                "id": "keys",
+                "title": "唯一键与重复",
+                "expected": "数据类型 + unified_code + trade_date；数组内部保留来源顺序；重复键为 0",
+                "action": "明确业务键，清查重复与版本冲突"
+              },
+              {
+                "id": "coverage",
+                "title": "历史与对象覆盖",
+                "expected": "2021 年起当前上市证券的必要交易日；失败不作空日",
+                "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明"
+              },
+              {
+                "id": "quality",
+                "title": "业务质量",
+                "expected": "精确分钟集合或来源总数、完整数组及证券日关联校验",
+                "action": "修复数据或解析规则，并补充业务语义回归"
+              },
+              {
+                "id": "freshness",
+                "title": "更新与时效",
+                "expected": "逐日补缺，回看最近五个交易日",
+                "action": "验证最新成功核验时间与数据水位，恢复更新计划"
+              },
+              {
+                "id": "temporal",
+                "title": "日期与使用范围",
+                "expected": "历史数据分析，不承诺当时可用版本或交易所完整事件流",
+                "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史"
+              }
+            ],
+            "kind": "采集",
+            "boundary": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放；总股本、流通股本按交易日快照复用，不另采股本表；实际流通市值是金额，不能当作来源直接公布的自由流通股数。行情检查通过不代表股本关系及任意估值公式已验收；快照日不是股本公告日或变更生效日。",
+            "related": [],
+            "optional_fields": "",
+            "capability": "kaipanla_quote.query",
+            "dataset": "kaipanla.quote.day"
+          }
+        ]
+      }
+    },
+    "isolation": {
+      "status": "unknown",
+      "started_at": "2026-10-22T05:52:22.845435+08:00",
+      "acquired_at": "2026-10-22T05:52:22.845435+08:00",
+      "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离",
+      "data": {
+        "status": "unknown",
+        "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离"
+      }
+    },
+    "errors": {
+      "status": "partial",
+      "started_at": "2026-10-22T05:52:22.845435+08:00",
+      "acquired_at": "2026-10-22T05:52:22.853493+08:00",
+      "reason": "",
+      "data": {
+        "revision": "59120",
+        "total": 300,
+        "rows": [
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "1ab2e6b03a464bfaabc5c85c92cbe176",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T12:26:01.154700+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "a250ea4ebe91439cb66741fd6c224cdc",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T12:18:31.803670+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "6e2b240453284edda48afe726a0136a6",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T12:12:25.984675+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "29ef54115da64a6096542805188ebf76",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T12:06:35.808807+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "ee90dd6fbf7c467daa36a6f589c65752",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T12:00:16.098422+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "f2c8a2661e0848dd9db9129003967740",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:58:16.495422+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "7dd6db70a71646d687b7d7871400662d",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:56:29.369659+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "60128141ec3b463fb4db5f8dd52165a4",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:54:01.583583+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "771f4c84ee8344b19bf3b54a8c58e1a0",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:51:10.914894+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "d6e1f6c0af48468b8df80662724104fc",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:48:43.901725+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node013 请求失败（ProxyError），已临时隔离",
+            "id": "d321fb2cfc2e42208835ee2263451509",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:48:37.212646+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "29f14259792849d4a64de9ee9c820ac1",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:47:03.782984+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "6e18971ef5964de9a0f154744c70dedf",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:44:46.109773+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "e42b91949ce0464ca3cfed0337158898",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:42:50.061727+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "ee4bac2f5a4644a3978e2c9c337e6c67",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:56.000399+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node004 请求失败（ConnectError），已临时隔离",
+            "id": "e664a40a8e6746fd989e62c70baeffad",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:11.224703+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node002 请求失败（ConnectError），已临时隔离",
+            "id": "981fba7ebaba4d228714e370718970a2",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:11.223704+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node012 请求失败（ConnectError），已临时隔离",
+            "id": "3645659586ec4d4db31d4018ae639308",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:11.211341+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node015 请求失败（ConnectError），已临时隔离",
+            "id": "d452dc8e2ce34543a540fc473d2ebb97",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:11.212338+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node010 请求失败（ConnectError），已临时隔离",
+            "id": "c4b27666ac814433880d65db3e1c206f",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:11.210327+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node006 请求失败（ConnectError），已临时隔离",
+            "id": "e2067775eb3c40cfb1ea079eb9be335d",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:11.174542+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node005 请求失败（ConnectError），已临时隔离",
+            "id": "e0b6e56183114479a4f255e2e6db7980",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:11.173496+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node014 请求失败（ConnectError），已临时隔离",
+            "id": "de0e0111860749139de9ef19cd10265f",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:11.172861+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node013 请求失败（WriteError），已临时隔离",
+            "id": "3ce8785924814307bf3b29448ecd6063",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:40:09.143047+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "6433ae7fd65f4fc09eea5818204c77ef",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:39:15.791135+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "0d1573b62ff444d593b92e9866b70f10",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:37:49.529182+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "34271eddfd66469c9788a203a7c565d9",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:36:07.059256+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node014 请求失败（ProxyError），已临时隔离",
+            "id": "85af67c4333a4e6e9a907c4bf9b7a669",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:34:57.369032+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node012 请求失败（ProxyError），已临时隔离",
+            "id": "bae69a364cdd4784b4a2d2abbb7a3a6c",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:34:57.227464+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node010 请求失败（ProxyError），已临时隔离",
+            "id": "18beee65c4914a46bbba2aff9e289f6f",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:34:57.105931+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node015 请求失败（ProxyError），已临时隔离",
+            "id": "b2378173e5e144ed837026e8e73adff8",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:34:56.990877+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node013 请求失败（ProxyError），已临时隔离",
+            "id": "28de1bcefecf47408429f12b86ff072b",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:34:56.579350+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "7ce2b0b0ed1e47ba88643472219b104a",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:33:54.635402+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "1956718cef94477d93997e3db5c115ba",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:31:48.956346+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "4af317103059475a8496a1c9ebd8c274",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:29:41.255168+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "8cb9a6d49ed145799c9b882b3a538d22",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:28:18.873619+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "6b144e9fb35a48bf8c8348d54314a72c",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:26:49.912921+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "404cf939c1ad46d7926ae11d393f3e08",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:25:17.964477+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "f38d8f50e4db462d8ec70700ec2f6f72",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:23:44.110212+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "b3fc46b6d3f940279d4a82b1ec0dad2d",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:22:17.968161+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "0ad50e9fe5a44f6a88aa81ccb9085654",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:20:54.459946+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "99c2b41dcbf14e428b34459c13985ecd",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:18:59.618530+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "da4308c4fe6e4df7ac8d318e85664ee0",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:17:03.057872+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "6152f5ee7cbc48d78e5783f324e17157",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:15:16.101679+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "815e0a37e73c48aca95de9556e700b93",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:13:20.380735+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "8fb16e01a4484b9ba212bd8f427bc3e6",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:11:24.677917+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "efdb0be1e20f4132a91e4f432b860d1d",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:09:28.402301+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "ca3d41e4c3e948589fb11922f2730027",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:08:09.665420+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "3f2618d5fbba4eb69fbbf8a2ef459eba",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:06:52.273490+00:00",
+            "stage": "source_validation"
+          },
+          {
+            "status_code": 200,
+            "error": "开盘啦接口未成功，不能证明空日",
+            "id": "0464af139cf44245b22b40b7e1b17601",
+            "project_id": "kaipanla-quote",
+            "created_at": "2026-10-21T11:05:38.100172+00:00",
+            "stage": "source_validation"
+          }
+        ],
+        "truncated": true,
+        "body_included": false
+      }
+    },
+    "task_state": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:22.853493+08:00",
+      "acquired_at": "2026-10-22T05:52:22.857785+08:00",
+      "reason": "",
+      "data": {
+        "history": [
+          {
+            "result": {
+              "index": 190,
+              "end_date": "2026-10-20",
+              "total_units": 190,
+              "unit_name": "证券日",
+              "first_gap": null,
+              "completed_units": 190,
+              "record_name": "点位",
+              "pages": 190,
+              "failed_units": 0,
+              "current_date": "2026-10-20",
+              "request": {
+                "start": "2026-01-01",
+                "proxy_priority": true,
+                "securities": [
+                  "000001.SZ"
+                ],
+                "end": "2026-10-20"
+              },
+              "scope": "6b912c6cc80d2ea1cdd891991e32121a955559f2ed2ba618282e760363b82a59",
+              "review_days": [
+                "2026-10-14",
+                "2026-10-15",
+                "2026-10-16",
+                "2026-10-19",
+                "2026-10-20"
+              ],
+              "review_token": "[REDACTED]",
+              "last_review": "2026-10-16",
+              "batch_id": "09274027643d4bf194fdb10f7f2a15e5",
+              "unlisted_without_date": 0,
+              "current_security": "SZ:000001 / 2026-10-20",
+              "start_date": "2026-01-05",
+              "started_at": "2026-10-21T20:34:39.655613+00:00",
+              "collected": 190,
+              "phase": "complete",
+              "failure_categories": {}
+            },
+            "network": {
+              "proxy_requests": 202
+            },
+            "origin": "manual",
+            "notice": "",
+            "request": {
+              "start": "2026-01-01",
+              "proxy_priority": true,
+              "securities": [
+                "000001.SZ"
+              ],
+              "end": "2026-10-20"
+            },
+            "task_id": "kaipanla-quote",
+            "status": "complete",
+            "finished_at": 1792614891.5376,
+            "proxy_fallback": true,
+            "started_at": 1792614877.3882,
+            "fresh": false,
+            "run_id": "89af6208b505429e98a2406bc0b31de7",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 1218054
+          },
+          {
+            "network": {
+              "direct_requests": 4,
+              "fallback_requests": 4,
+              "proxy_requests": 75896
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "current_date": "2024-11-04",
+              "failure_categories": {
+                "invalid_fields": 3397,
+                "source_request": 9133
+              },
+              "total_units": 7010094,
+              "unlisted_without_date": 3,
+              "unit_name": "证券日",
+              "current_security": "SH:688399 / 2024-11-04",
+              "completed_units": 2968097,
+              "record_name": "点位",
+              "collected": 63330,
+              "pages": 63330,
+              "failed_units": 12530
+            },
+            "task_id": "kaipanla-quote",
+            "fresh": false,
+            "finished_at": 1792585649.9862,
+            "status": "paused",
+            "started_at": 1792576800.3329,
+            "proxy_fallback": true,
+            "run_id": "24b14508b48f41448636e0b15fe82cf5",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 1142194
+          },
+          {
+            "network": {
+              "proxy_requests": 494
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "current_date": "2026-10-20",
+              "failure_categories": {
+                "invalid_fields": 127,
+                "source_request": 228
+              },
+              "total_units": 7004520,
+              "unlisted_without_date": 4,
+              "unit_name": "证券日",
+              "current_security": "BJ:920030 / 2026-10-20",
+              "completed_units": 14833,
+              "record_name": "点位",
+              "collected": 112,
+              "pages": 112,
+              "failed_units": 355
+            },
+            "task_id": "kaipanla-quote",
+            "fresh": false,
+            "finished_at": 1792490657.2862,
+            "status": "paused",
+            "started_at": 1792490400.4979,
+            "proxy_fallback": true,
+            "run_id": "213d1e72e9ca44038bed164df0749c8f",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 1141727
+          }
+        ],
+        "job": {
+          "last_status": "complete",
+          "next_due": 1792663200,
+          "active": null,
+          "notice": "",
+          "policy": {
+            "enabled": true,
+            "request_retries": 2,
+            "daily_time": "18:00",
+            "proxy_fallback": true,
+            "archived": false,
+            "interval_seconds": 86400,
+            "use_proxy": true,
+            "mode": "daily"
+          },
+          "error": ""
+        }
+      }
+    },
+    "checkpoint:kaipanla-quote-v1": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:22.857785+08:00",
+      "acquired_at": "2026-10-22T05:52:22.857785+08:00",
+      "reason": "",
+      "data": {
+        "cursor": {
+          "phase": "complete",
+          "scope": "6b912c6cc80d2ea1cdd891991e32121a955559f2ed2ba618282e760363b82a59",
+          "batch_id": "09274027643d4bf194fdb10f7f2a15e5",
+          "index": 190,
+          "pages": 190,
+          "collected": 190,
+          "started_at": "2026-10-21T20:34:39.655613+00:00",
+          "start_date": "2026-01-05",
+          "end_date": "2026-10-20",
+          "last_review": null,
+          "review_token": "[REDACTED]",
+          "review_days": [
+            "2026-10-14",
+            "2026-10-15",
+            "2026-10-16",
+            "2026-10-19",
+            "2026-10-20"
+          ],
+          "request": {
+            "securities": [
+              "000001.SZ"
+            ],
+            "start": "2026-01-01",
+            "end": "2026-10-20",
+            "proxy_priority": true
+          },
+          "first_gap": null,
+          "failed_units": 0,
+          "unlisted_without_date": 0
+        },
+        "revision": "1218247"
+      }
+    },
+    "archive_progress:kaipanla-quote-v1": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:22.857785+08:00",
+      "acquired_at": "2026-10-22T05:52:22.858609+08:00",
+      "reason": "",
+      "data": {
+        "batch_id": "09274027643d4bf194fdb10f7f2a15e5",
+        "page": 190,
+        "status": "complete",
+        "row_count": 1,
+        "error_text": "",
+        "observed_at": "2026-10-21T20:34:50.323266+00:00"
+      }
+    },
+    "queue": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:22.858609+08:00",
+      "acquired_at": "2026-10-22T05:52:22.858609+08:00",
+      "reason": "",
+      "data": {
+        "stream_total": 0,
+        "unreadable": 0,
+        "truncated": false,
+        "exact": true,
+        "fetched_envelope_bytes": 0,
+        "scanned": 0,
+        "stream_ids": {},
+        "project_lower_bound": 0
+      }
+    },
+    "sql_state": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:22.880496+08:00",
+      "acquired_at": "2026-10-22T05:52:22.905620+08:00",
+      "reason": "",
+      "data": {
+        "source": "kaipanla",
+        "dataset": "kaipanla_quote_v1",
+        "updated_at": "2026-10-22 04:34:50.579220",
+        "state_bytes": 250,
+        "progress": "{\"page\": 190, \"status\": \"complete\", \"batch_id\": \"09274027643d4bf194fdb10f7f2a15e5\", \"row_count\": 1, \"error_text\": \"\", \"observed_at\": \"2026-10-21T20:34:50.323266+00:00\"}",
+        "progress_truncated": 0,
+        "coverage": null,
+        "coverage_truncated": 0,
+        "contract_version": "1",
+        "truncated": false,
+        "projection_only": true
+      }
+    },
+    "saved_policy": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:22.905620+08:00",
+      "acquired_at": "2026-10-22T05:52:22.905620+08:00",
+      "reason": "",
+      "data": {
+        "updated_at": "2026-10-10 10:10:03.390930",
+        "bytes": 168,
+        "policy": "{\"mode\": \"daily\", \"enabled\": true, \"archived\": false, \"use_proxy\": true, \"daily_time\": \"18:00\", \"proxy_fallback\": true, \"request_retries\": 2, \"interval_seconds\": 86400}",
+        "truncated": false
+      }
+    },
+    "query:kaipanla_quote.query": {
+      "status": "ok",
+      "started_at": "2026-10-22T05:52:22.905620+08:00",
+      "acquired_at": "2026-10-22T05:52:22.909821+08:00",
+      "reason": "",
+      "data": {
+        "capability": "kaipanla_quote.query",
+        "method": "day",
+        "arguments": {
+          "market": "SZ",
+          "code": "000001",
+          "trade_date": "2026-10-20"
+        },
+        "result": {
+          "data": {
+            "kind": "quote",
+            "code": "000001",
+            "market": "SZ",
+            "trade_date": "2026-10-20",
+            "source_code": "000001",
+            "aliases": {},
+            "data": {
+              "name": "平安银行",
+              "status": 86,
+              "sourcetype": 8,
+              "preclose_px": 11.65,
+              "real": {
+                "time": 153833000,
+                "up_px": 12.82,
+                "avg_px": 11.482,
+                "low_px": 11.38,
+                "down_px": 10.49,
+                "high_px": 11.68,
+                "last_px": 11.44,
+                "open_px": 11.62,
+                "pe_rate": 4.32,
+                "jtPeRate": 5.2,
+                "TTMPeRate": 5.11,
+                "amount_in": 681094,
+                "amplitude": 2.58,
+                "px_change": -0.21,
+                "vol_ratio": 1.06,
+                "amount_out": 564001,
+                "dyn_pb_rate": 0.48,
+                "phcj_volume": 211,
+                "entrust_rate": -28.45,
+                "market_value": 222003704185,
+                "total_amount": 1245096,
+                "total_shares": 19405918198,
+                "phcj_turnover": 241384,
+                "px_change_rate": -1.8,
+                "total_turnover": 1429559866,
+                "turnover_ratio": 0.64,
+                "circulation_value": 222001036297,
+                "circulation_amount": 19405684991,
+                "actualcirculation_value": 98395946414
+              },
+              "weituo": {
+                "totalb": 105013,
+                "totals": 188528,
+                "avg_askpx": 11.89,
+                "avg_bidpx": 11.16,
+                "b1": [
+                  11.43,
+                  573
+                ],
+                "b2": [
+                  11.42,
+                  1433
+                ],
+                "b3": [
+                  11.41,
+                  2998
+                ],
+                "b4": [
+                  11.4,
+                  7844
+                ],
+                "b5": [
+                  11.39,
+                  7063
+                ],
+                "b6": [
+                  0,
+                  0
+                ],
+                "b7": [
+                  0,
+                  0
+                ],
+                "b8": [
+                  0,
+                  0
+                ],
+                "b9": [
+                  0,
+                  0
+                ],
+                "b10": [
+                  0,
+                  0
+                ],
+                "s1": [
+                  11.44,
+                  1441
+                ],
+                "s2": [
+                  11.45,
+                  2612
+                ],
+                "s3": [
+                  11.46,
+                  3447
+                ],
+                "s4": [
+                  11.47,
+                  1597
+                ],
+                "s5": [
+                  11.48,
+                  2742
+                ],
+                "s6": [
+                  0,
+                  0
+                ],
+                "s7": [
+                  0,
+                  0
+                ],
+                "s8": [
+                  0,
+                  0
+                ],
+                "s9": [
+                  0,
+                  0
+                ],
+                "s10": [
+                  0,
+                  0
+                ]
+              }
+            },
+            "lifecycle": {
+              "listing_date": "1991-04-03",
+              "listing_source": "eastmoney",
+              "market_start": "1991-04-03"
+            },
+            "metadata": {
+              "ts": 1792481917
+            }
+          },
+          "observed_at": "2026-10-22 04:34:50.323266"
+        },
+        "scope": "正式有界预览，非完整性验收"
+      }
+    }
+  },
+  "note": "各项分时读取，非 Redis/SQL 原子快照。任务阶段与 next_due 来自临时记录；正式预览不证明来源完整、时效或全部待归档为零。",
+  "limits_note": "队列最多逐条读取 5 个现有 Envelope；累计达到 256 KiB 后不取下一条，最后一条可超过此阈值，超过 256 KiB 的正文不解析。错误详情最多查现有保留的 300 条；控制状态读取上限 8 MiB，断点/归档进度各 128 KiB。报告上限不等同 Redis 服务总内存上限。",
+  "sql_cleanup": {
+    "closed_to_new_sql": true,
+    "outstanding_workers": 0,
+    "complete": true
+  },
+  "finished_at": "2026-10-22T05:52:22.909821+08:00",
+  "budget": {
+    "limits": {
+      "sql": 10,
+      "redis": 20,
+      "io_seconds": 5,
+      "total_seconds": 30,
+      "report_bytes": 1048576,
+      "errors": 50,
+      "body_bytes": 65536
+    },
+    "used": {
+      "sql": 10,
+      "redis": 15
+    },
+    "elapsed_seconds": 0.328,
+    "counting": "SQL 包含受守卫 SELECT 及每个物理连接五次驱动只读探测的保守预留；连接协议、SET 会话初始化及事务清理不计为业务查询。Redis 按脚本内 redis.call 读取命令的最大次数预留，包含返回前未使用预留。"
+  }
+}
