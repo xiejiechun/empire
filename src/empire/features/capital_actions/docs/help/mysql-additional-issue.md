@@ -47,3 +47,5 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 维护入口：`scripts/migrate_business_schema.py`（按该入口的预检与显式操作执行，不直接将历史维护当每次启动步骤）。
 
 [增发](help:增发)、[数据库职责与查阅](help:数据库职责与查阅)、[MySQL collection_state](help:MySQL%20collection_state)
+
+范围准备读取本表完整证券单元，与同事务collection_state的业务键/规范内容摘要比较后再按事件日期投影；保留历史不删除，成员未证实不能仅按数量放行。不改字段、唯一键、索引或写入契约。

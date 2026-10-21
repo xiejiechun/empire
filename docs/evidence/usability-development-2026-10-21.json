@@ -1,0 +1,136 @@
+{
+  "at": "2026-10-21T15:15:10.910145+00:00",
+  "commands": [
+    {
+      "command": ".venv/Scripts/python.exe -X utf8 -m pytest tests/test_capital_scope.py tests/test_suspension_time_proof.py tests/test_capital_preparation.py tests/test_adjustment.py tests/test_adjustment_query.py tests/test_preparation.py tests/test_trading_day_cutoff.py tests/test_assembly_contract.py --basetemp build/pytest-usability-final-domain2 -q --junitxml build/usability-20261021/final-domain2.xml",
+      "exit_code": 0,
+      "cases": 153,
+      "failed": [],
+      "skipped": [],
+      "evidence": "build\\usability-20261021\\final-domain2.xml",
+      "sha256": "ba0798f81456b7448efa5cbb0839b5515a600d1e7d0080c53495d85cf186ae10"
+    },
+    {
+      "command": "EMPIRE_INTEGRATION=1 EMPIRE_TEST_MYSQL_SETTINGS=<私有13348文件> .venv/Scripts/python.exe -X utf8 -m pytest tests/integration/test_capital_archive.py tests/integration/test_suspension_archive.py tests/integration/test_adjustment_pipeline.py tests/integration/test_issue_availability_archive.py --basetemp build/pytest-usability-final-integration -q --junitxml build/usability-20261021/final-integration.xml",
+      "exit_code": 0,
+      "cases": 72,
+      "failed": [],
+      "skipped": [],
+      "evidence": "build\\usability-20261021\\final-integration.xml",
+      "sha256": "32eb0d821166c4e1bddd21006b5c3f9d9f0054b40f53f304c404701cbb3efadf"
+    }
+  ],
+  "limitations": [
+    "原B1/B2未再次请求；原失败未改。原45键正式可查，B4确切ID未清。",
+    "生产部分资本证券精确集合可匹配，但SQL证据10-16已超三日；六分红及001228未知仍阻断。",
+    "没有来源精确成员清单时，不匹配证券不能投影任意日期子集。"
+  ],
+  "static": {
+    "at": "2026-10-21T15:12:15.747258+00:00",
+    "steps": [
+      {
+        "command": [
+          "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+          "-m",
+          "ruff",
+          "check",
+          "src",
+          "tests",
+          "scripts"
+        ],
+        "exit_code": 0,
+        "log": "build\\usability-20261021\\final-check-1.log",
+        "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+      },
+      {
+        "command": [
+          "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+          "-m",
+          "mypy"
+        ],
+        "exit_code": 0,
+        "log": "build\\usability-20261021\\final-check-2.log",
+        "sha256": "a3aaf5f81b19b41bca4db48201304558d1f7ca3800bae38ee86392e044969fad"
+      },
+      {
+        "command": [
+          "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+          "scripts/verify_database_design.py"
+        ],
+        "exit_code": 0,
+        "log": "build\\usability-20261021\\final-check-3.log",
+        "sha256": "a2cb8202870fd00b86436ce2a96183374095fbc58c1756aa7245494e5ce447e4"
+      },
+      {
+        "command": [
+          "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+          "scripts/architecture_contract.py",
+          "check"
+        ],
+        "exit_code": 0,
+        "log": "build\\usability-20261021\\final-check-4.log",
+        "sha256": "1bbe6933f293be7befaeda145dc335cb23289a900a7a7ed999b3f981ddae5a72"
+      },
+      {
+        "command": [
+          "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+          "scripts/assembly_contract.py",
+          "check",
+          "--baseline",
+          "docs/evidence/assembly-baseline-2026-10-19.json",
+          "--mapping",
+          "docs/assembly-migrations.json",
+          "--feature-changes",
+          "docs/assembly-feature-changes.json",
+          "--order-baseline",
+          "docs/evidence/assembly-order-baseline-2026-10-19.json"
+        ],
+        "exit_code": 0,
+        "log": "build\\usability-20261021\\final-check-5.log",
+        "sha256": "6151dfa85dece1af569a5b57ee824f6a957d67b74e157123b0d8ed816557770b"
+      },
+      {
+        "command": [
+          "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+          "scripts/verify_documentation.py"
+        ],
+        "exit_code": 0,
+        "log": "build\\usability-20261021\\final-check-6.log",
+        "sha256": "f98ffb6cd26896643b0dd3b667861a555340f8b970dcac9309925990c15a4ad4"
+      },
+      {
+        "command": [
+          "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+          "scripts/documentation_contract.py",
+          "check"
+        ],
+        "exit_code": 0,
+        "log": "build\\usability-20261021\\final-check-7.log",
+        "sha256": "c5f35856a6eef07c7a8eb73bf787f7cfc7ff28c1814edd0a01c109d5f1bd60cf"
+      },
+      {
+        "command": [
+          "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+          "scripts/documentation_build.py",
+          "check"
+        ],
+        "exit_code": 0,
+        "log": "build\\usability-20261021\\final-check-8.log",
+        "sha256": "8367353e54b3d9b9cb2a26c4aac3ce4ede1eba1d6d93386517e857319b5a807d"
+      },
+      {
+        "command": [
+          "git",
+          "-c",
+          "core.whitespace=cr-at-eol",
+          "diff",
+          "--check"
+        ],
+        "exit_code": 0,
+        "log": "build\\usability-20261021\\final-check-9.log",
+        "sha256": "9dc0f0381a02aafbc82efb5449cda62e1b6b799be5fce188080d6115bfedbe3f"
+      }
+    ],
+    "passed": true
+  }
+}

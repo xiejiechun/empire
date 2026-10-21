@@ -86,21 +86,25 @@
     "suspensions": [
       "历史停复牌",
       "交易日历",
-      "查找与浏览数据"
+      "查找与浏览数据",
+      "数据准备"
     ],
     "dividends": [
       "分红送转",
       "增发送配存储与断点",
-      "查找与浏览数据"
+      "查找与浏览数据",
+      "数据准备"
     ],
     "additional_issues": [
       "增发",
       "采集进度与运行记录",
-      "查找与浏览数据"
+      "查找与浏览数据",
+      "数据准备"
     ],
     "rights_issues": [
       "配股",
-      "查找与浏览数据"
+      "查找与浏览数据",
+      "数据准备"
     ],
     "income": [
       "同花顺三大报表",
@@ -300,7 +304,8 @@
     "docs/architecture-evolution/planned-migrations.json",
     "src/empire/features/capital_actions/README.md",
     "src/empire/features/adjustment/README.md",
-    "src/empire/documentation/README.md"
+    "src/empire/documentation/README.md",
+    "docs/data-usability-scope.md"
   ],
   "tasks": {
     "tdx-listing-status": [
@@ -926,7 +931,8 @@
           "src/empire/plugins/pipeline/ingest.py",
           "src/empire/plugins/pipeline/archive.py",
           "src/empire/features/capital_actions/query.py",
-          "src/empire/diagnostics/redis_evidence.py"
+          "src/empire/diagnostics/redis_evidence.py",
+          "src/empire/features/capital_actions/preparation.py"
         ]
       },
       "fingerprints": {
@@ -936,7 +942,9 @@
         ],
         "sources": [
           "src/empire/plugins/pipeline/fingerprints.py",
-          "src/empire/plugins/pipeline/archive.py"
+          "src/empire/plugins/pipeline/archive.py",
+          "src/empire/features/capital_actions/preparation.py",
+          "src/empire/features/suspensions/coverage.py"
         ]
       },
       "fingerprint-expiry": {
@@ -945,7 +953,9 @@
           "<namespace>:archive:fingerprints:v1:<dataset>:<source>:expiry"
         ],
         "sources": [
-          "src/empire/plugins/pipeline/fingerprints.py"
+          "src/empire/plugins/pipeline/fingerprints.py",
+          "src/empire/features/capital_actions/preparation.py",
+          "src/empire/features/suspensions/coverage.py"
         ]
       },
       "stocks-result": {
@@ -1213,6 +1223,11 @@
         ],
         "f'{redis.prefix}:stocks:result:{source}'": [
           "stocks-result"
+        ]
+      },
+      "src/empire/features/capital_actions/preparation.py": {
+        "f'{store.prefix}:checkpoint:{plugin.job_key}'": [
+          "checkpoint"
         ]
       }
     }

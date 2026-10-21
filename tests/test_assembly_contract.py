@@ -64,3 +64,21 @@ def test_exact_module_mapping_does_not_rewrite_business_strings(declared):
 
 def test_differences_detect_same_count_replaced_identity():
     assert differences({'one': {'id': 'one'}}, {'two': {'id': 'two'}}) == ['one', 'two']
+
+
+def test_preparation_feature_changes_are_exact_and_do_not_waive_identity_or_order(declared):
+    ident = 'data.dividends:dividends'
+    before = copy.deepcopy(declared)
+    before['semantic']['preparation'][ident]['scoped'] = False
+    change = dict(path='semantic.preparation.'+ident+'.scoped',before=False,after=True,
+        design='docs/data-usability-scope.md',tests=['tests/test_capital_scope.py'])
+    assert not compare(before,declared,{},ROOT,[change])
+    with pytest.raises(ValueError,match='stale'):
+        compare(before,declared,{},ROOT,[dict(change,after=False)])
+    with pytest.raises(ValueError,match='design and tests'):
+        compare(before,declared,{},ROOT,[dict(change,tests=['tests/missing_test.py'])])
+    with pytest.raises(ValueError,match='Only explicit preparation'):
+        compare(before,declared,{},ROOT,[dict(change,path='semantic.tasks.sina-news.interval_seconds')])
+    changed = copy.deepcopy(declared)
+    changed['semantic']['tasks']['sina-news']['interval_seconds'] = 99
+    assert compare(before,changed,{},ROOT,[change]) == ['semantic.tasks.sina-news.interval_seconds']

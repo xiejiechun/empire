@@ -19,3 +19,5 @@
 ## 程序内说明维护
 
 离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。
+
+coverage.confirmed_coverage只读匹配的统一摘要补充已有SQL范围的观测时间，Redis失败回SQL；不伸展覆盖、不写SQL时间、不改采集或调度策略。盘前证据不能当盘后证明。

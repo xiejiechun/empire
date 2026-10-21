@@ -36,7 +36,7 @@ class AdjustmentDataPlugin:
     preparation = tuple(ComputationContribution(requirement, 'adjustment.query', '自算：通达信事件 / 开盘啦价格',
         'empire-' + requirement.replace('_', '-'), ('tests/test_adjustment.py', 'tests/test_adjustment_query.py'),
         ('tests/integration/test_adjustment_pipeline.py',), ALGORITHM,
-        page_id='adjustment',
+        page_id='adjustment', cache_revision=2,
         method='preparation_check' if requirement == 'adjustment_factors' else 'prices_preparation_check')
         for requirement in ('adjustment_factors', 'adjusted_prices'))
 

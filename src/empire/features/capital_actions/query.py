@@ -10,6 +10,7 @@ from sqlalchemy import text
 from empire.contracts.business_schema import require_fixed_source, schema_contract
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
+from empire.contracts.preparation_scope import PreparationScope
 from empire.features.capital_actions.codec import decode
 from empire.features.capital_actions.contract import (
     KINDS,
@@ -37,7 +38,8 @@ class CapitalDataPlugin:
             self.job_key, kind + '.unit', 'collector.tdx_' + kind,
             ('tests/test_tdx_' + kind + '.py', 'tests/test_capital_lifecycle.py', 'tests/test_all_collector_prefetch.py') +
             (('tests/test_tdx_issue_details.py',) if kind == 'additional_issues' else ()),
-            ('tests/integration/test_capital_archive.py', 'tests/integration/test_prefetch_pipeline.py')),)
+            ('tests/integration/test_capital_archive.py', 'tests/integration/test_prefetch_pipeline.py'),
+            scoped=True, cache_revision=2),)
 
     async def start(self, context):
         self.context = context
@@ -218,7 +220,11 @@ class CapitalDataPlugin:
             finally:
                 records.close()
 
-    async def preparation_check(self):
+    async def preparation_check(self, request=None):
+        from empire.features.capital_actions.preparation import preparation_check, temporal
+        scope = PreparationScope.parse(request)
+        if scope.codes:
+            return await preparation_check(self, scope)
         try:
             actual, complete, fresh, detail, observed = await self.mysql.read(self._audit)
         except (KeyError, ValueError, TypeError) as exc:
@@ -245,14 +251,17 @@ class CapitalDataPlugin:
                     stamp = CapitalDataset.FINGERPRINT_VERSION.key(proof['version'])[0]
                     if observed is not None and stamp >= observed:
                         fresh = datetime.now(UTC) - timedelta(days=3) <= stamp <= datetime.now(UTC)
+                        if fresh:
+                            observed = stamp
             except Exception:
                 pass  # Optional read-only evidence; SQL remains independently usable.
-        checks = [CheckEvidence(key, 'pass' if complete else 'fail', detail)
+        stamp_text = observed.isoformat() if observed else ''
+        checks = [CheckEvidence(key, 'pass' if complete else 'fail', detail, observed_at=stamp_text)
                   for key in ('fields', 'keys', 'coverage', 'quality')]
         checks.append(CheckEvidence('freshness', 'pass' if fresh else 'fail',
-            'SQL / 匹配的只读可信摘要证明最近三日内核验' if fresh else '缺少三日内可信完整范围核验'))
-        checks.append(CheckEvidence('temporal', 'pass' if complete else 'unknown',
-            '按来源日期保存；缺失日期保持未知，不作为公告前信号；详见增发送配说明'))
+            ('SQL / 匹配的只读可信摘要证明最近三日内核验；' if fresh else '缺少三日内可信完整范围核验；')
+            + f'实际证据 {stamp_text or "缺少"}；未指定证券，保持完整来源严格核验', observed_at=stamp_text))
+        checks.append(temporal(scope, stamp_text))
         return tuple(checks)
 
     async def stop(self):

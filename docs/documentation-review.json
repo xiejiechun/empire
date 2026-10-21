@@ -1,7 +1,7 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-21T13:58:32.614455+00:00",
-  "note": "业务完整性结案最终审阅：实际3974全量、25步发布审计和同包桌面/正常关开已完成，48设置与配置保持；补全原失败范围、资源正常关闭及实现远程精确回执，不改变用户正文与产品实现",
+  "reviewed_at": "2026-10-21T15:16:17.235727+00:00",
+  "note": "冻结前逐项审阅U1至U10账本、范围审计和新容量证据：开发与实际数据/未发布分别标记，原全历史失败与资本时效缺口保留，发布与桌面仍待验收。",
   "unchanged_reason": "",
   "exceptions": {},
   "sources": {
@@ -10,7 +10,7 @@
     "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
     "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
     "scripts/architecture_contract.py": "9f1919d29f21a6f3bb29c5b3ed3d9416589fcf581ebe9bf58c608a86b132a91c",
-    "scripts/assembly_contract.py": "e7efe9a0ceb5dbc3ea516f94e072d04e554e15b6c8c44f9f80540c62dd266210",
+    "scripts/assembly_contract.py": "60b2865dbf55ae8bb5c4a11342db69146867c287376b1b558d4342dc7b123489",
     "scripts/audit_dependencies.py": "c9804426ecd17b020a44252722d6cb5a627a9bc274eddb5a1dbe35b8214bcc2f",
     "scripts/build_icon.py": "1f9fab6a7f0dbe95dad2bcfb56a28d58b3446c772be6a557849bc7dda4355ae3",
     "scripts/business_migration_engine.py": "c9a9704e856b9429557f01a98e399e19e35de3c02a5b18f90f34bdf20cdebda8",
@@ -98,7 +98,7 @@
     "scripts/release_identity.py": "fa49417bc31db34fcf26df7db392a88ecd9ff31e2812c7e16bad62a6375af578",
     "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
     "scripts/release_publish.py": "23932c7bdc3d05b3ba3ac449ac30afa9d21e9183d3fd64aaa94e87e23988520a",
-    "scripts/release_steps.py": "d3b2f91ec8ed2b605f163ab738c31dc4b2498a54e5619d7e7a696ac1e9f7fc51",
+    "scripts/release_steps.py": "75efed73c5f31f10fc7401c2a646a83415cbff898af9a1d90bc3db546a8c4baa",
     "scripts/repurchase_capacity.py": "18f58faee1b3e26c338337dd05955fcf053046815baf788d0e1a64d9a98c80d8",
     "scripts/repurchase_verification.py": "1015b437da390122cae82de1bb84d6b088ba517b72dec92d4bc9cb7c10c87db9",
     "scripts/scan_preparation.py": "9f36428b983023db6fc5a20454fddf5866179745e8941a1f3eee96edabe6f4bb",
@@ -156,7 +156,7 @@
     "src/empire/contracts/download.py": "e5d037c6e900e8cb67765f4bf8d6f6313bf84896cfaff715f83b031d9776af04",
     "src/empire/contracts/download_settings.py": "dbe540b7e276b51e0c1ec5a6f93e1d06c6996aa5372a9d1a8ceae449f047f024",
     "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-    "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+    "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
     "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
     "src/empire/contracts/request_retry.py": "72e47b364e9a7b7ed7ffeb8530fb195850977dc0eadfa223afb5ef114f57f732",
     "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
@@ -185,9 +185,9 @@
     "src/empire/features/adjustment/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/empire/features/adjustment/bundle.py": "3b37f5f905469dacb35257ae724ef77305c451968d9eb6ef2444178c0cc8c1f1",
     "src/empire/features/adjustment/chart.py": "8159a5054f920a23060bddde112375c3ebd4c11b8942ec6d1336f6f13a7d819e",
-    "src/empire/features/adjustment/contract.py": "3d9cfdfebb19a99eab214cb8bf1459189bf3b727f72798070dd4cb0addf5fe19",
+    "src/empire/features/adjustment/contract.py": "1da56fc7a33f849cf7213e566dea6965b7cbdbc7729c48a7116949541b73db32",
     "src/empire/features/adjustment/inputs.py": "c12217958c1d942a175e11903faef39703b7288470e0ec08c24af9ea91e07fc4",
-    "src/empire/features/adjustment/query.py": "741b58a26f8823d1d907bc72c30337baeef17ce38e8ac7d0195f56df64e4b818",
+    "src/empire/features/adjustment/query.py": "44d9c74d1ad1f1496c0ce510e49c5b69c381487a69c0ddcf6ad665b4e677ed02",
     "src/empire/features/adjustment/ui.py": "c20376946f24565dd85cb683a6141c09b485d1b8c7edd5943e4e55c90e2b8af4",
     "src/empire/features/builtin.py": "6106eef5f1d7d3664ba886b99ed0e04808a35a53b43da4fd09b62a05f6db89ab",
     "src/empire/features/calendar/__init__.py": "18dc263c87a8af06b933250d82de9de35a00cf5d8c8de5eed34eb5cea055fcbe",
@@ -218,8 +218,9 @@
     "src/empire/features/capital_actions/issues_collector.py": "2bfb967f2cbd5675a80f2b617f121ef3b8ad7dfdb045fe03f97c3da49b2cc884",
     "src/empire/features/capital_actions/lifecycle.py": "68f98d247800a0c642dd0688b700d8d36a14162a0913943454690312876492c1",
     "src/empire/features/capital_actions/parser.py": "ed273769526310d6247a39fd9fb8ce3e0e4221e2dd768b8150956a8d5493ff55",
+    "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
     "src/empire/features/capital_actions/preview.py": "07fe0921b0bd924fb278304e4f8efe79d866f09824b7cbc2f797ff1dd02ee94a",
-    "src/empire/features/capital_actions/query.py": "b794d85e83f832c2fe3c67bedba543f79e3a8c77ae9859194f481c3bfab74139",
+    "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
     "src/empire/features/capital_actions/recovery.py": "0c3c385097356179529ead0dd7ead9766492b63dc7a4e4fc927346f42df703f6",
     "src/empire/features/capital_actions/rights_collector.py": "386846fe1eb1f3e5e36d929f2a526dbb0d80515c81139f775459e7b7b70c83b3",
     "src/empire/features/capital_actions/source.py": "aca0e786d57be273587c7a9cd10bb812d9b42386d91b76a7cabc42ba9e7bd8ee",
@@ -370,12 +371,12 @@
     "src/empire/features/preparation/inventory.py": "cdeee76b6a111707458c4d8de46f1ccdc5c4634f7f8692eaca9aeaf7afe4435e",
     "src/empire/features/preparation/markets.py": "505cdd688b54ff23ebe62c6ae4d22cc0c6f43f8fd4ff108f33aa1a398a0180da",
     "src/empire/features/preparation/processing.py": "2e60862964cc15f192c60032002f60c50e25cf56561960a7f47b5e2889d083cf",
-    "src/empire/features/preparation/query.py": "db734ca5f1d05c298363560ff5ac9cb064f5876a6b7dbae5ba981369f23a153c",
+    "src/empire/features/preparation/query.py": "431c713d042facdbf69af75bf5629439fbc5dea403313cff689b07352db5449b",
     "src/empire/features/preparation/research.py": "fe793a73828436d3d4a186e36f0817a288199201b3ed29e805fe2a960252e216",
-    "src/empire/features/preparation/results.py": "b25dacec93b00b8dc97abc2346cd28d44d9a23d7e6a02e4969ac870f35c7354a",
+    "src/empire/features/preparation/results.py": "9e1a92480e36c8c2c8c8cecfb8ef4f74a1534260f187d251445ee6d87570a549",
     "src/empire/features/preparation/ui.py": "d3fb613b1ef9314dfa85b4e546bfd23c439095f760cd894fa05fb029560c0829",
     "src/empire/features/preparation/ui_actions.py": "33998ec4679780db8b51fb5fca5ac62054352890ddf6609238c9e65d3712a43c",
-    "src/empire/features/preparation/ui_detail.py": "6c29f11d201a0cc7466d270e628141c0d3e20ccecc0eea91787f30fdd2822d52",
+    "src/empire/features/preparation/ui_detail.py": "e55da369996fabf2bd07a44a15e2ec31f40ae9147968cc68c0a96a75dbd8a4ef",
     "src/empire/features/preparation/ui_directory.py": "f7d0137bcf4799b6ce1b93f1fec4d02950e0121452df643ce840b0d432dea91c",
     "src/empire/features/preparation/ui_inventory.py": "faf0185c5c8d51114ef04b748fe0ebb0af42b824c17964ffd63ed215731fe76c",
     "src/empire/features/preparation/ui_scope.py": "8b131b9caf04efe6dc0d4b225739b54ec82a014714819a47f46657745a10cec2",
@@ -417,16 +418,16 @@
     "src/empire/features/stocks/ths_source.py": "11620911331fc994f3f0a1f0636ca36797eab74e6f3bf2415d9ae1961c089eae",
     "src/empire/features/stocks/ui.py": "8c24023239ef440ecc318815e493a52e46a40b62c5c903fbc528e4212e202d94",
     "src/empire/features/suspensions/__init__.py": "5e365c5bdb276ed0997d646dd9f780724917b6e942ac5da42658b8d70724b0f8",
-    "src/empire/features/suspensions/audit.py": "197bd338b2cc9492fea8a058f4cef8dd8155104ba0e9b9720fc2dc9cc940deeb",
+    "src/empire/features/suspensions/audit.py": "e8fccd1af1e8fabd819f27aa05d6fb15388d59ce771f995fe0b448052ee31745",
     "src/empire/features/suspensions/batches.py": "9bb503eba5a486779f95f7b8c7673b97d488f4698ea574e172f3c58160f84d0a",
-    "src/empire/features/suspensions/bundle.py": "5dc6da6a1f495552571c02b595877853aabebef1fe117e294f1a3b33daa676e5",
+    "src/empire/features/suspensions/bundle.py": "7d5a0a2eca98fe1ea59a1f6ec80ba9b345cd93fa9cfc7dcfa14c7d3c96edabf5",
     "src/empire/features/suspensions/collector.py": "c2635940e57db3f4b239fdf8746c347034ecb1d77399fad8ea2cec793e275936",
     "src/empire/features/suspensions/contract.py": "b93631f23b89cac60090c169dfcf74b3b328ff296abccda06695356bb6fdad73",
-    "src/empire/features/suspensions/coverage.py": "18d461a3dc598becb42944050d93f2327b24c83ebe4c5b4abe0e2d27ec8b94da",
+    "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
     "src/empire/features/suspensions/dataset.py": "9fa0882d6b76eadefc8ab2477ea4a42c85a10ae8537affa250b9ca6a9f42e9b1",
     "src/empire/features/suspensions/exclusions.py": "bca029fc7aaedec694c49c4b6e9d564d62297cae6a0e658c778d8ed16104d414",
     "src/empire/features/suspensions/preview.py": "47b65909381487372446567487998e3de5ee4261549528e07071eb3fe1498cfa",
-    "src/empire/features/suspensions/query.py": "09f2e0bbd36520f9117f0021d84e313e089cdfb83074e15eae4a692f58e5d3cc",
+    "src/empire/features/suspensions/query.py": "b2ba28a9e42c6ef4e7a70546c9b5e7e1892119ffae69bec7e41657ba662a17ca",
     "src/empire/features/suspensions/ui.py": "856fc04e23b3df96fb73f99de9e13eab635f0cf5f69cdf9a3b0c80b97792c54f",
     "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
     "src/empire/features/ths_capital/bundle.py": "c38517c630bba3f2336a7e11580f422b2a87f582bf0909eedc6f0faef60c39a3",
@@ -553,7 +554,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "dc8451522f2f13b1b74ddc5e46578eea0550466fc9a1e1ffe09c1dc1eef48bc5",
+  "content_sha256": "c3688e461b29a71a30ca60f61d66d338a58e358d8fb09af6116f771edd3ec738",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -1441,7 +1442,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "24369f2a30dd59565e79accccb531278cb494f4b9d208958893696ddd64399c4",
+      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1489,7 +1490,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "24369f2a30dd59565e79accccb531278cb494f4b9d208958893696ddd64399c4",
+      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1537,7 +1538,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "24369f2a30dd59565e79accccb531278cb494f4b9d208958893696ddd64399c4",
+      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1585,7 +1586,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "24369f2a30dd59565e79accccb531278cb494f4b9d208958893696ddd64399c4",
+      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1633,7 +1634,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "24369f2a30dd59565e79accccb531278cb494f4b9d208958893696ddd64399c4",
+      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1681,7 +1682,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "24369f2a30dd59565e79accccb531278cb494f4b9d208958893696ddd64399c4",
+      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1729,7 +1730,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "cb65800e45e06d3e8682e68a88720ae9f60fea91e598c8d840e1e793428b6e0f",
+      "content_sha256": "c5d8a3e667784f0f29fde5e40b830bb7b09fb8f15763e862d4cc7aca024b5db5",
       "documentation": {
         "历史盘口与日行情摘要": {
           "owner": "kaipanla",
@@ -1772,7 +1773,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "f5e74f417b5b09ee66f21f1a1ac35978014ae617f152c120691f06f0389d0bad",
+      "content_sha256": "d3e80bbf0713734cd29449cfde83430e792e14db8483539c20230a3c8d0e83ce",
       "documentation": {
         "自算复权因子与行情": {
           "owner": "adjustment",
@@ -1815,7 +1816,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "5f3862933871c1addb7c4c3763f80727882823defcda5c1091223cfdf9fc1c48",
+      "content_sha256": "407eb90f0b5f65591e9cf80c53477b2ecf7bf5e43bfb9db82ff1ecac28ee6c26",
       "documentation": {
         "分红送转": {
           "owner": "capital_actions",
@@ -1828,6 +1829,10 @@
         "查找与浏览数据": {
           "owner": "shared",
           "path": "src/empire/documentation/topics/browsing.md"
+        },
+        "数据准备": {
+          "owner": "shared",
+          "path": "src/empire/documentation/topics/preparation.md"
         }
       }
     },
@@ -1858,7 +1863,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "0cb34cffe9b0fabedf12b5073779968c0594af830de8c653816368ac68d92a36",
+      "content_sha256": "952d92adb74a6d7bcbc35a3085507c81349bcb05beeafc084bd00f826091d688",
       "documentation": {
         "增发": {
           "owner": "capital_actions",
@@ -1871,6 +1876,10 @@
         "查找与浏览数据": {
           "owner": "shared",
           "path": "src/empire/documentation/topics/browsing.md"
+        },
+        "数据准备": {
+          "owner": "shared",
+          "path": "src/empire/documentation/topics/preparation.md"
         }
       }
     },
@@ -1901,7 +1910,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "407b568fd04b1087877f770c1b7d10887b1b532d79e7b27f2681e8511ae98fef",
+      "content_sha256": "33c14b643d0a78dc62c8253c27b79c62cb2ef6f3c91ed0a69790fd0da326a985",
       "documentation": {
         "配股": {
           "owner": "capital_actions",
@@ -1910,6 +1919,10 @@
         "查找与浏览数据": {
           "owner": "shared",
           "path": "src/empire/documentation/topics/browsing.md"
+        },
+        "数据准备": {
+          "owner": "shared",
+          "path": "src/empire/documentation/topics/preparation.md"
         }
       }
     },
@@ -2384,7 +2397,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "e6874539c3db205d8eca73d11108bd589f8f76b3f17d71277c0ec79983e71978",
+      "content_sha256": "3a0c29baa9c5c8507c894ed350d6674b4642af848eb82987b90e81ab384d19b2",
       "documentation": {
         "历史停复牌": {
           "owner": "suspensions",
@@ -2397,6 +2410,10 @@
         "查找与浏览数据": {
           "owner": "shared",
           "path": "src/empire/documentation/topics/browsing.md"
+        },
+        "数据准备": {
+          "owner": "shared",
+          "path": "src/empire/documentation/topics/preparation.md"
         }
       }
     },
@@ -2554,17 +2571,17 @@
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/preparation/__init__.py": "a0093fce6c943a79758701bfb6f45844a7d4eb3e9b4796f76ae7d4c5472111d4",
         "src/empire/features/preparation/definition.py": "afc240589f112c3520186b3d06341c6cdeed320f11d2d3bb664ae3631850dad1",
-        "src/empire/features/preparation/results.py": "b25dacec93b00b8dc97abc2346cd28d44d9a23d7e6a02e4969ac870f35c7354a",
+        "src/empire/features/preparation/results.py": "9e1a92480e36c8c2c8c8cecfb8ef4f74a1534260f187d251445ee6d87570a549",
         "src/empire/features/preparation/ui.py": "d3fb613b1ef9314dfa85b4e546bfd23c439095f760cd894fa05fb029560c0829",
         "src/empire/features/preparation/ui_actions.py": "33998ec4679780db8b51fb5fca5ac62054352890ddf6609238c9e65d3712a43c",
-        "src/empire/features/preparation/ui_detail.py": "6c29f11d201a0cc7466d270e628141c0d3e20ccecc0eea91787f30fdd2822d52",
+        "src/empire/features/preparation/ui_detail.py": "e55da369996fabf2bd07a44a15e2ec31f40ae9147968cc68c0a96a75dbd8a4ef",
         "src/empire/features/preparation/ui_directory.py": "f7d0137bcf4799b6ce1b93f1fec4d02950e0121452df643ce840b0d432dea91c",
         "src/empire/features/preparation/ui_inventory.py": "faf0185c5c8d51114ef04b748fe0ebb0af42b824c17964ffd63ed215731fe76c",
         "src/empire/features/preparation/ui_scope.py": "8b131b9caf04efe6dc0d4b225739b54ec82a014714819a47f46657745a10cec2",
@@ -2576,7 +2593,7 @@
         "src/empire/plugins/ui/preview_layout.py": "e3bb69109303f22cb5ffa462a8f89d330031c1015270f60dcd58bc0e92ef2364",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "928bf4e7a9955c9e2a0a7b8a9f6a1642b7e9f16bec73de6df2ab73c53cf54fcb",
+      "content_sha256": "f80f39e0b056d360311ddcbe880c624952cfd24f1069a5e68632c425a3ccacc0",
       "documentation": {
         "数据准备": {
           "owner": "shared",
@@ -3850,7 +3867,7 @@
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "0656ed6805d05097123f1ec3b406cd26edc44885dbce5f9da2486e11be517f35",
+      "content_sha256": "34964fac9218ef1ebfda5d49edd74b3bc579d5a41b08b3addc95a00704ae7123",
       "documentation": {
         "分红送转": {
           "owner": "capital_actions",
@@ -3899,7 +3916,7 @@
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "c1008b7f2f9afc696782a0c640776414c3c0e6b198d62664976ad4e75e95fdba",
+      "content_sha256": "98221f986d826e265377942b6d647d94df0ba7654ec1ec7176ff48ed08981e8e",
       "documentation": {
         "增发": {
           "owner": "capital_actions",
@@ -3940,7 +3957,7 @@
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "010065e5d450320e5ebd365e710837a6e68d9e5fa62fe91951398a855c9f3a28",
+      "content_sha256": "0f3852adc05ff9adaffa78a791216e65c15bcb5059c2196d5e65b0c0291d0c62",
       "documentation": {
         "配股": {
           "owner": "capital_actions",
@@ -4094,7 +4111,7 @@
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "a2d8b9dd8aa425c3070d616c0edddabed712a23bf4aa84e6d364dbd1181a6944",
+      "content_sha256": "1ee67e6bcd9ff846d04d4d08700dbae20544f6baa040d74f670cfc7cf1425789",
       "documentation": {
         "历史停复牌": {
           "owner": "suspensions",
@@ -4116,7 +4133,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/data_browser/__init__.py": "d0165a70e408c1f0f88eaa868983f8263e912635523fa811abcd693047874b86",
@@ -4152,7 +4169,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4179,7 +4196,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4229,7 +4246,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/calendar/__init__.py": "18dc263c87a8af06b933250d82de9de35a00cf5d8c8de5eed34eb5cea055fcbe",
         "src/empire/features/calendar/audit.py": "7d3be1edc862072ac88557473603eac4fbe0a73acf83dd8b1a95b60ec5e888ff",
@@ -4252,14 +4269,14 @@
     "mysql:suspension_event": {
       "sources": {
         "src/empire/features/suspensions/dataset.py": "9fa0882d6b76eadefc8ab2477ea4a42c85a10ae8537affa250b9ca6a9f42e9b1",
-        "src/empire/features/suspensions/query.py": "09f2e0bbd36520f9117f0021d84e313e089cdfb83074e15eae4a692f58e5d3cc",
+        "src/empire/features/suspensions/query.py": "b2ba28a9e42c6ef4e7a70546c9b5e7e1892119ffae69bec7e41657ba662a17ca",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/calendar/__init__.py": "18dc263c87a8af06b933250d82de9de35a00cf5d8c8de5eed34eb5cea055fcbe",
@@ -4268,13 +4285,13 @@
         "src/empire/features/preparation/__init__.py": "a0093fce6c943a79758701bfb6f45844a7d4eb3e9b4796f76ae7d4c5472111d4",
         "src/empire/features/preparation/evidence.py": "4c9679f0eab88571b8e025025d0387d0624cdc7780d18ea399b97f79f3716bba",
         "src/empire/features/suspensions/__init__.py": "5e365c5bdb276ed0997d646dd9f780724917b6e942ac5da42658b8d70724b0f8",
-        "src/empire/features/suspensions/audit.py": "197bd338b2cc9492fea8a058f4cef8dd8155104ba0e9b9720fc2dc9cc940deeb",
+        "src/empire/features/suspensions/audit.py": "e8fccd1af1e8fabd819f27aa05d6fb15388d59ce771f995fe0b448052ee31745",
         "src/empire/features/suspensions/contract.py": "b93631f23b89cac60090c169dfcf74b3b328ff296abccda06695356bb6fdad73",
-        "src/empire/features/suspensions/coverage.py": "18d461a3dc598becb42944050d93f2327b24c83ebe4c5b4abe0e2d27ec8b94da",
+        "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
         "sql/schema.sql#suspension_event": "24db5b9aa2bfc1c6ccef7b22944a52ca88a7af19a870ffce09512251598c0f8c",
         "sql/business-schema.json#suspension_event": "66ab0f62ac2e44e86be8aef0e126db42f49bd2700e4e2063a11015239b6008a6"
       },
-      "content_sha256": "a5b5b6ebdbbe15a1a4ffa202e31cf735b4895628935f8b3b77105629235d1c8b",
+      "content_sha256": "6e0c76ca3adbc012909f31244c64126f7b106792297eefd037f94004ce0fc549",
       "documentation": {
         "MySQL suspension_event": {
           "owner": "suspensions",
@@ -4285,14 +4302,14 @@
     "mysql:suspension_source_date": {
       "sources": {
         "src/empire/features/suspensions/dataset.py": "9fa0882d6b76eadefc8ab2477ea4a42c85a10ae8537affa250b9ca6a9f42e9b1",
-        "src/empire/features/suspensions/query.py": "09f2e0bbd36520f9117f0021d84e313e089cdfb83074e15eae4a692f58e5d3cc",
+        "src/empire/features/suspensions/query.py": "b2ba28a9e42c6ef4e7a70546c9b5e7e1892119ffae69bec7e41657ba662a17ca",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/calendar/__init__.py": "18dc263c87a8af06b933250d82de9de35a00cf5d8c8de5eed34eb5cea055fcbe",
@@ -4301,13 +4318,13 @@
         "src/empire/features/preparation/__init__.py": "a0093fce6c943a79758701bfb6f45844a7d4eb3e9b4796f76ae7d4c5472111d4",
         "src/empire/features/preparation/evidence.py": "4c9679f0eab88571b8e025025d0387d0624cdc7780d18ea399b97f79f3716bba",
         "src/empire/features/suspensions/__init__.py": "5e365c5bdb276ed0997d646dd9f780724917b6e942ac5da42658b8d70724b0f8",
-        "src/empire/features/suspensions/audit.py": "197bd338b2cc9492fea8a058f4cef8dd8155104ba0e9b9720fc2dc9cc940deeb",
+        "src/empire/features/suspensions/audit.py": "e8fccd1af1e8fabd819f27aa05d6fb15388d59ce771f995fe0b448052ee31745",
         "src/empire/features/suspensions/contract.py": "b93631f23b89cac60090c169dfcf74b3b328ff296abccda06695356bb6fdad73",
-        "src/empire/features/suspensions/coverage.py": "18d461a3dc598becb42944050d93f2327b24c83ebe4c5b4abe0e2d27ec8b94da",
+        "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
         "sql/schema.sql#suspension_source_date": "8dafd6e6036acbb46c47260eab628e4b713ae1b7a800c5f9ba976331e643c203",
         "sql/business-schema.json#suspension_source_date": "6aa213c11bdf8f84befd4f93ca75c765f3e2cc1800c483efc66873380a1a7c4b"
       },
-      "content_sha256": "4624bda7f0e2255276134e954133e75e98d9b50c70db49d05878352dc7588b94",
+      "content_sha256": "cf40b4e62d6562b4adb1ae48d14a8c8c0cce7144f17ee766d64d27c485069992",
       "documentation": {
         "MySQL suspension_source_date": {
           "owner": "suspensions",
@@ -4318,14 +4335,15 @@
     "mysql:dividend_plan": {
       "sources": {
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
-        "src/empire/features/capital_actions/query.py": "b794d85e83f832c2fe3c67bedba543f79e3a8c77ae9859194f481c3bfab74139",
+        "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
+        "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -4334,11 +4352,12 @@
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_candidates.py": "303cf4d89ee202d10e79200fd7b8f9f6360369bc3f06f95eb59373f895d10c6c",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
+        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
         "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
         "sql/schema.sql#dividend_plan": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025",
         "sql/business-schema.json#dividend_plan": "86ed456bf8f9e14d1efec2339baf0100ea5c6ef512bab02b2c5790e8f34531fc"
       },
-      "content_sha256": "d58f1e64ac79493f6ffe47092cc69fe52b5edf66c5660bf34629653f94e0a9d2",
+      "content_sha256": "b531d5e60b60c435f0aff1abfc36dfa2060c7a8ced4b1bc0de009748b0032e27",
       "documentation": {
         "MySQL dividend_plan": {
           "owner": "capital_actions",
@@ -4349,14 +4368,15 @@
     "mysql:additional_issue": {
       "sources": {
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
-        "src/empire/features/capital_actions/query.py": "b794d85e83f832c2fe3c67bedba543f79e3a8c77ae9859194f481c3bfab74139",
+        "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
+        "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -4365,11 +4385,12 @@
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_candidates.py": "303cf4d89ee202d10e79200fd7b8f9f6360369bc3f06f95eb59373f895d10c6c",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
+        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
         "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
         "sql/schema.sql#additional_issue": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025",
         "sql/business-schema.json#additional_issue": "ebce83f39d7b29445e6f279f0e5dfa97b036d3efcd33946fb04c32602829ea09"
       },
-      "content_sha256": "57a8ad36583b95797865c8ffb486b3e2eb03df035d77feeb526852327b58a60c",
+      "content_sha256": "d51e494b1ad3be2463562edace22b7e39a27fd666221bb810f04ed19c71c2f76",
       "documentation": {
         "MySQL additional_issue": {
           "owner": "capital_actions",
@@ -4380,14 +4401,15 @@
     "mysql:rights_issue": {
       "sources": {
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
-        "src/empire/features/capital_actions/query.py": "b794d85e83f832c2fe3c67bedba543f79e3a8c77ae9859194f481c3bfab74139",
+        "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
+        "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -4396,11 +4418,12 @@
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_candidates.py": "303cf4d89ee202d10e79200fd7b8f9f6360369bc3f06f95eb59373f895d10c6c",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
+        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
         "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
         "sql/schema.sql#rights_issue": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025",
         "sql/business-schema.json#rights_issue": "592e757eab5dfdab5c0d75056ba9867ff3efe37270678fbb89fad823a87fd082"
       },
-      "content_sha256": "ab446af16e99361e7f44355d9b07b4dff5e14fec174b3df88295b9b7723bf1eb",
+      "content_sha256": "e0b469ec1af83563d3ef99571602ab91f542c8a40c551c4207017ade150c6735",
       "documentation": {
         "MySQL rights_issue": {
           "owner": "capital_actions",
@@ -4418,7 +4441,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4445,7 +4468,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4475,7 +4498,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4505,7 +4528,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4535,7 +4558,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4562,7 +4585,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4590,7 +4613,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4620,7 +4643,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4647,7 +4670,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4699,7 +4722,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4751,7 +4774,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4803,7 +4826,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4855,7 +4878,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4907,7 +4930,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -4959,7 +4982,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5011,7 +5034,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5063,7 +5086,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5194,7 +5217,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5223,7 +5246,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5253,7 +5276,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5277,7 +5300,7 @@
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
@@ -5303,7 +5326,7 @@
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
@@ -5332,7 +5355,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5359,7 +5382,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5386,7 +5409,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5413,7 +5436,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5440,7 +5463,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5467,7 +5490,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5495,7 +5518,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
@@ -5522,7 +5545,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
@@ -5552,7 +5575,7 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5587,7 +5610,7 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
@@ -5630,7 +5653,7 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
@@ -5673,7 +5696,7 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
@@ -5713,7 +5736,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
@@ -5740,7 +5763,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
@@ -5767,7 +5790,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
@@ -5794,7 +5817,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
@@ -5821,7 +5844,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
@@ -5848,7 +5871,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
@@ -5875,7 +5898,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
@@ -5902,7 +5925,7 @@
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
@@ -5946,8 +5969,9 @@
       "sources": {
         "src/empire/plugins/pipeline/ingest.py": "747f612a67f543f42ed8c9925b2838b6cf1dbece9d16a50a06842a50bbf8057d",
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
-        "src/empire/features/capital_actions/query.py": "b794d85e83f832c2fe3c67bedba543f79e3a8c77ae9859194f481c3bfab74139",
+        "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
         "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
+        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -5955,7 +5979,8 @@
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
+        "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/diagnostics/__init__.py": "8edec7a32d121934e527bc0d416cef14344fe0c32ad7a990b78e3a71829a14bc",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
@@ -5970,7 +5995,7 @@
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/pipeline/__init__.py": "5bc21e78444728cd50b6ddaf95ef5a50416f7ca8f0e1caf8bf84c939b96bb22b"
       },
-      "content_sha256": "cecbb978b28fb0b80dcc09c8893716b79c061edca6b0f9b3ae83b82265724440",
+      "content_sha256": "e1541a26254c8db23568a4513f294bd92f9e4d2558f1dd5e1902cc63f7f55c03",
       "documentation": {
         "Redis checkpoint": {
           "owner": "shared",
@@ -5982,14 +6007,31 @@
       "sources": {
         "src/empire/plugins/pipeline/fingerprints.py": "80a671107f6588059708c9f742d42ecd368efdda6a641cf99c68d9520f7b8c82",
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
+        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
+        "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/empire/features/capital_actions/codec.py": "42e769dda18eaad469b72664c53ba407601c9d551139445fd9a29cae3b4cc1f6",
+        "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
+        "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
+        "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
+        "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
+        "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
+        "src/empire/features/suspensions/__init__.py": "5e365c5bdb276ed0997d646dd9f780724917b6e942ac5da42658b8d70724b0f8",
+        "src/empire/features/suspensions/contract.py": "b93631f23b89cac60090c169dfcf74b3b328ff296abccda06695356bb6fdad73",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/pipeline/__init__.py": "5bc21e78444728cd50b6ddaf95ef5a50416f7ca8f0e1caf8bf84c939b96bb22b"
       },
-      "content_sha256": "3d636296211979b9c0e01a8370ee35cbc28184248a2146cfa190400bfeafb3ab",
+      "content_sha256": "575c8713275fb1102bbfa03e167bc89bb478d01dc22e7921268f554736054b41",
       "documentation": {
         "Redis fingerprints": {
           "owner": "shared",
@@ -6000,11 +6042,29 @@
     "redis:fingerprint-expiry": {
       "sources": {
         "src/empire/plugins/pipeline/fingerprints.py": "80a671107f6588059708c9f742d42ecd368efdda6a641cf99c68d9520f7b8c82",
+        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
+        "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
+        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/empire/features/capital_actions/codec.py": "42e769dda18eaad469b72664c53ba407601c9d551139445fd9a29cae3b4cc1f6",
+        "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
+        "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
+        "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
+        "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
+        "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
+        "src/empire/features/suspensions/__init__.py": "5e365c5bdb276ed0997d646dd9f780724917b6e942ac5da42658b8d70724b0f8",
+        "src/empire/features/suspensions/contract.py": "b93631f23b89cac60090c169dfcf74b3b328ff296abccda06695356bb6fdad73",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/pipeline/__init__.py": "5bc21e78444728cd50b6ddaf95ef5a50416f7ca8f0e1caf8bf84c939b96bb22b"
       },
-      "content_sha256": "a95636c788830e435cf88abe8fead89bd6f63e52bbb947ca38e2531245ba2617",
+      "content_sha256": "7f307fec696b59f4b71bd082af9de0ff4cb66a884a482ef062d0c36843d0a397",
       "documentation": {
         "Redis fingerprint-expiry": {
           "owner": "shared",
@@ -6105,7 +6165,7 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/contracts/request_retry.py": "72e47b364e9a7b7ed7ffeb8530fb195850977dc0eadfa223afb5ef114f57f732",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
@@ -6267,13 +6327,13 @@
     "redis:preparation-report": {
       "sources": {
         "src/empire/features/preparation/cache.py": "9f3032bb978eb577a07674091e4c52766a05c8709aeac46b06239c70bdc8bbb8",
-        "src/empire/features/preparation/query.py": "db734ca5f1d05c298363560ff5ac9cb064f5876a6b7dbae5ba981369f23a153c",
+        "src/empire/features/preparation/query.py": "431c713d042facdbf69af75bf5629439fbc5dea403313cff689b07352db5449b",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/preparation.py": "3fcf369d3ae6b2fdf8abc4382cf9d5c9b9f41632215a37c2760cb792cf3f0000",
+        "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/kaipanla/__init__.py": "107aaf007136c2231a5ae9a908d955d2672369ebb85a573920d97c3dc22d065d",
@@ -6290,11 +6350,11 @@
         "src/empire/features/preparation/markets.py": "505cdd688b54ff23ebe62c6ae4d22cc0c6f43f8fd4ff108f33aa1a398a0180da",
         "src/empire/features/preparation/processing.py": "2e60862964cc15f192c60032002f60c50e25cf56561960a7f47b5e2889d083cf",
         "src/empire/features/preparation/research.py": "fe793a73828436d3d4a186e36f0817a288199201b3ed29e805fe2a960252e216",
-        "src/empire/features/preparation/results.py": "b25dacec93b00b8dc97abc2346cd28d44d9a23d7e6a02e4969ac870f35c7354a",
+        "src/empire/features/preparation/results.py": "9e1a92480e36c8c2c8c8cecfb8ef4f74a1534260f187d251445ee6d87570a549",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6"
       },
-      "content_sha256": "623b8cf54bd77e033fe4bd615476fc2045c4f53fca344c4aa960889c50b85116",
+      "content_sha256": "3839ee9f0cbe762ce1073a05a41ade8810c5659c65dd3ccc88a76c9dc59e8da0",
       "documentation": {
         "Redis preparation-report": {
           "owner": "shared",

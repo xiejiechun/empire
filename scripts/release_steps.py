@@ -26,6 +26,7 @@ def verify(runner):
     runner.command([py, root / 'scripts/assembly_contract.py', 'check', '--baseline',
                     root / 'docs/evidence/assembly-baseline-2026-10-19.json',
                     '--mapping', root / 'docs/assembly-migrations.json',
+                    '--feature-changes', root / 'docs/assembly-feature-changes.json',
                     '--order-baseline', root / 'docs/evidence/assembly-order-baseline-2026-10-19.json'])
     runner.command([py, '-m', 'ruff', 'check', 'src', 'tests', 'scripts'])
     runner.command([py, '-m', 'mypy'])

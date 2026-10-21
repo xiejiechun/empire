@@ -152,6 +152,8 @@ class PreparationPlugin:
             checks[-1]['kind'] = requirement.kind
             checks[-1]['blocking'] = evidence.blocking if evidence else True
             checks[-1]['findings'] = evidence.findings if evidence else ()
+            checks[-1]['reason'] = evidence.reason if evidence else ('query_error' if problem.startswith('查询失败') else '')
+            checks[-1]['observed_at'] = evidence.observed_at if evidence else ''
             if c and c.scoped and criterion.id in ('fields', 'quality'):
                 checks[-1]['recommended_action'] = '保留来源缺值与异常标记；按用途排除受影响记录，或核实原始披露。不要编造字段或修改来源内容来让检查通过。'
             if evidence and not evidence.blocking:

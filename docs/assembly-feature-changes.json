@@ -1,0 +1,88 @@
+[
+  {
+    "tests": [
+      "tests/test_capital_scope.py",
+      "tests/integration/test_capital_archive.py"
+    ],
+    "design": "docs/data-usability-scope.md",
+    "before": false,
+    "path": "semantic.preparation.data.additional_issues:additional_issues.scoped",
+    "after": true
+  },
+  {
+    "tests": [
+      "tests/test_capital_scope.py"
+    ],
+    "design": "docs/data-usability-scope.md",
+    "before": 1,
+    "path": "semantic.preparation.data.additional_issues:additional_issues.cache_revision",
+    "after": 2
+  },
+  {
+    "tests": [
+      "tests/test_capital_scope.py",
+      "tests/integration/test_capital_archive.py"
+    ],
+    "design": "docs/data-usability-scope.md",
+    "before": false,
+    "path": "semantic.preparation.data.dividends:dividends.scoped",
+    "after": true
+  },
+  {
+    "tests": [
+      "tests/test_capital_scope.py"
+    ],
+    "design": "docs/data-usability-scope.md",
+    "before": 1,
+    "path": "semantic.preparation.data.dividends:dividends.cache_revision",
+    "after": 2
+  },
+  {
+    "tests": [
+      "tests/test_capital_scope.py",
+      "tests/integration/test_capital_archive.py"
+    ],
+    "design": "docs/data-usability-scope.md",
+    "before": false,
+    "path": "semantic.preparation.data.rights_issues:rights_issues.scoped",
+    "after": true
+  },
+  {
+    "tests": [
+      "tests/test_capital_scope.py"
+    ],
+    "design": "docs/data-usability-scope.md",
+    "before": 1,
+    "path": "semantic.preparation.data.rights_issues:rights_issues.cache_revision",
+    "after": 2
+  },
+  {
+    "tests": [
+      "tests/test_suspension_time_proof.py"
+    ],
+    "design": "docs/data-usability-scope.md",
+    "before": 1,
+    "path": "semantic.preparation.data.suspensions:suspensions.cache_revision",
+    "after": 2
+  },
+  {
+    "path": "semantic.preparation.data.adjustment:adjustment_factors.cache_revision",
+    "before": 1,
+    "after": 2,
+    "design": "docs/data-usability-scope.md",
+    "tests": [
+      "tests/test_adjustment.py",
+      "tests/test_adjustment_query.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.adjustment:adjusted_prices.cache_revision",
+    "before": 1,
+    "after": 2,
+    "design": "docs/data-usability-scope.md",
+    "tests": [
+      "tests/test_adjustment.py",
+      "tests/test_adjustment_query.py"
+    ]
+  }
+]

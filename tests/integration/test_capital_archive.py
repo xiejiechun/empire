@@ -259,6 +259,36 @@ async def test_source_to_collector_redis_archive_query_and_manifest(capital_db):
     assert await query.list_events(code='000001') == []
 
 
+async def test_scope_proofs_ignore_other_history_but_never_missing_required_records(capital_db):
+    manager, query, collector, _ = capital_db
+    await collector.execute()
+    before = await query.list_events()
+    checks = {c.criterion:c for c in await query.preparation_check(dict(codes=['688110'],start='2026-01-01',end='2026-09-30'))}
+    assert all(checks[k].status == 'pass' for k in ('keys','fields','quality','coverage','freshness'))
+    assert checks['coverage'].observed_at and checks['coverage'].findings[0]['code'] == '688110.SH'
+    historical = {c.criterion:c for c in await query.preparation_check(dict(codes=['688110'],purpose='historical_signal'))}
+    assert historical['temporal'].status == 'fail' and historical['temporal'].reason == 'source_limit'
+    from empire.plugins.infra.collection_state import read_state, save_state
+    mysql = manager.registry.get('mysql.store')
+    with mysql.engine.begin() as conn:
+        old = read_state(conn,query.namespace,query.project_id,query.source,lock=True)
+        changed = copy.deepcopy(old)
+        changed['units']['SZ:001228'] = dict(count=1,digest='unknown-historical')
+        save_state(conn,query.namespace,query.project_id,query.source,query.kind+'.unit',changed,old)
+    assert all(c.status == 'pass' for c in await query.preparation_check(dict(codes=['688110'])))
+    # Corrupt only a test-owned proof: same count, different business set.
+    with mysql.engine.begin() as conn:
+        old = read_state(conn,query.namespace,query.project_id,query.source,lock=True)
+        changed = copy.deepcopy(old)
+        changed['units']['SH:688110']['digest'] = '0'*64
+        save_state(conn,query.namespace,query.project_id,query.source,query.kind+'.unit',changed,old)
+    checks = {c.criterion:c for c in await query.preparation_check(dict(codes=['688110'],start='2026-09-01'))}
+    assert checks['coverage'].status == 'fail' and '未知缺口' in checks['coverage'].findings[0]['message']
+    assert await query.list_events() == before
+    store = manager.registry.get('redis.store')
+    assert await store.client.xlen(store.stream) == 0
+
+
 async def test_repeat_hot_cold_revision_old_response_and_missing_fields(capital_db, monkeypatch):
     manager, query, collector, publish = capital_db
     archive, mysql = manager.registry.get('archive.worker'), manager.registry.get('mysql.store')

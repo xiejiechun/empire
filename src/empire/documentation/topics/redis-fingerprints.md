@@ -30,3 +30,5 @@ Empire Redis 采用纯内存模式。Redis 服务或电脑重启丢失本库内�
 实现归属：`pipeline/fingerprints.py`、`pipeline/archive.py`。查询诊断有界且脱敏；维护按确切项目/来源/ID执行，不清空共享 Redis。
 
 [存储与归档规则](help:存储与归档规则)、[数据库职责与查阅](help:数据库职责与查阅)
+
+资本范围准备先逐证券核对SQL完整单元的键和内容，再读取相同单元摘要补充时效；停复牌只对SQL已连续覆盖的同月范围读取精确checked_dates摘要。只读peek不刷新TTL、不清消息，缺失/损坏/过期/超前回SQL；不扩展范围或以时间掩盖集合缺口。

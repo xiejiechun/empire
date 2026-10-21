@@ -47,7 +47,7 @@ def ex_reference(previous_close, cash, shares, rights, rights_price):
 
 def actions(dividends, rights, lower, upper):
     """Do not choose among parallel plans, infer missing components or use proposals."""
-    grouped, seen = {}, set()
+    grouped, seen, report_events = {}, set(), {}
     for kind, records in (('dividends', dividends), ('rights', rights)):
         if len(records) > 2000:
             raise AdjustmentError('单证券公司行动超过计算上限')
@@ -66,6 +66,8 @@ def actions(dividends, rights, lower, upper):
             if not day:
                 raise AdjustmentError('已实施公司行动缺少除权除息日期', identity=key)
             iso(day)
+            if kind == 'dividends' and data.get('report_date'):
+                report_events.setdefault(data['report_date'], []).append((day, key))
             # The first output date is the explicit normalization base. Events
             # on/before it cancel in every ratio; no earlier close is invented.
             if not lower < day <= upper:
@@ -82,6 +84,12 @@ def actions(dividends, rights, lower, upper):
             except AdjustmentError as exc:
                 raise AdjustmentError(str(exc), day=day, identity=key) from None
             group[kind] = (key, values)
+    for records in report_events.values():
+        if len({day for day, _ in records}) > 1:
+            relevant = [(day, key) for day, key in records if lower < day <= upper]
+            if relevant:
+                day, key = relevant[0]
+                raise AdjustmentError('同报告期存在不同除息日的实施记录，缺事件关联，不能裁定或重复计入', day=day, identity=key)
     return grouped
 
 

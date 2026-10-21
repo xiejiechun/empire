@@ -9,7 +9,8 @@ from empire.features.suspensions.ui import SuspensionsUiPlugin
 
 def bundle(cfg):
     return FeatureBundle('suspensions', plugins=(
-        OrderedContribution(12700, SuspensionDataPlugin(namespace=cfg["redis"].get("namespace", "empire"))),
+        OrderedContribution(12700, SuspensionDataPlugin(namespace=cfg["redis"].get("namespace", "empire"),
+                                                       archive_settings=cfg.get('archive', {}))),
         OrderedContribution(12800, TdxSuspensionCollector()),
         OrderedContribution(15300, SuspensionsUiPlugin()),
     ), tasks=(

@@ -35,4 +35,9 @@ def summarize(checks):
         '不可用' if any(c['status'] == 'fail' and c.get('blocking', True) for c in data) else '未确认')
     if result['integrity'] != '通过' and result['quality'] == '通过':
         result['quality'] = '已查部分通过'
+    blocking = [c for c in data if c['status'] != 'pass' and c.get('blocking', True)]
+    result['outcome'] = ('检查失败' if any(c.get('reason') == 'query_error' for c in blocking) else
+                         '未检查' if not data or any(c['status'] == 'unknown' for c in blocking) else
+                         '检查失败' if any(c.get('reason') != 'source_limit' for c in blocking) else
+                         '来源受限' if blocking else '通过')
     return result

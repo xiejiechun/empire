@@ -91,6 +91,27 @@ def test_duplicate_identity_is_error_even_when_counts_match():
         calculate([price('2026-09-01'), price('2026-09-02')], [dividend(), dividend()], [])
 
 
+def test_proposal_and_implementation_are_preserved_but_only_implementation_counts():
+    proposal = dividend(cash='0.8', key='proposal', status='董事会预案')
+    implementation = dividend(cash='1', key='implementation')
+    for row in (proposal, implementation):
+        row['data']['report_date'] = '2025-12-31'
+    original = deepcopy([proposal, implementation])
+    result = calculate([price('2026-09-01'), price('2026-09-02','9')], [proposal, implementation], [])
+    assert result[-1]['events'] == ['implementation']
+    assert [proposal, implementation] == original
+
+
+def test_same_report_different_implementation_dates_require_event_link_contract():
+    rows = [dividend(key='first'), dividend('2026-09-03', key='revised')]
+    for row in rows:
+        row['data']['report_date'] = '2025-12-31'
+    with pytest.raises(AdjustmentError, match='缺事件关联'):
+        calculate([price('2026-09-01'),price('2026-09-02'),price('2026-09-03')],rows,[])
+    with pytest.raises(AdjustmentError, match='缺事件关联'):
+        calculate([price('2026-09-02'),price('2026-09-03')],rows,[])
+
+
 def test_event_on_absent_or_suspended_day_is_not_moved_to_later_date():
     with pytest.raises(AdjustmentError, match='2026-09-02'):
         calculate([price('2026-09-01'), price('2026-09-03')], [dividend()], [])

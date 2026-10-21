@@ -39,6 +39,7 @@ def test_calculation_registration_is_not_a_collector_or_archive():
     assert 'security_types' not in BY_ID
     assert 'adjustment' not in manager.entries['collection.control'].plugin.definitions
     for c in q.preparation:
+        assert c.cache_revision == 2  # Old successful checks cannot bypass new ambiguity rejection.
         checks = prep.development(c, {}, '尚未运行测试', '计算')
         assert all(x['status'] == 'pass' for x in checks[:3])
         assert all(x['status'] == 'unknown' for x in checks[3:5])

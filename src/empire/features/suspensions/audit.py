@@ -13,7 +13,7 @@ from empire.features.suspensions.coverage import coverage_as_of
 from empire.plugins.infra.collection_state import read_state
 
 
-def check_suspensions(plugin):
+def check_suspensions(plugin, confirmed=None):
     now = datetime.now(CHINA)
     with plugin.mysql.read_engine.connect() as conn:
         row = conn.execute(text('''
@@ -35,13 +35,16 @@ def check_suspensions(plugin):
         except SQLAlchemyError:
             cutoff, calendar_note = None, '正式交易日历查询失败，不能推断交易日；字段与业务键检查仍独立呈现'
     coverage = state.get('coverage', {})
+    if (confirmed and all(confirmed.get(k) == coverage.get(k) for k in ('from', 'through'))
+            and confirmed.get('sql_confirmed_at', confirmed.get('confirmed_at')) == coverage.get('confirmed_at')):
+        coverage = confirmed
     from_date, through = coverage.get('from'), coverage.get('through')
     complete = (state.get('collection_integrity_version') == 2
                 and from_date == SUSPENSION_FIRST_DATE.isoformat()
                 and cutoff is not None and through is not None and through >= cutoff.date().isoformat())
     total, bad = row['total'], (row['bad'] or 0) + (row['missing_dates'] or 0)
     stamp_status, stamp_note = coverage_as_of(coverage, now, cutoff)
-    stamp = CheckEvidence('freshness', stamp_status, stamp_note)
+    stamp = CheckEvidence('freshness', stamp_status, stamp_note, observed_at=coverage.get('confirmed_at', ''))
     complete &= stamp_status == 'pass'
     return (
         evidence('fields', total > 0 and not bad,

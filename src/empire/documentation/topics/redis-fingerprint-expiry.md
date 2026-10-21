@@ -30,3 +30,5 @@ Empire Redis 采用纯内存模式。Redis 服务或电脑重启丢失本库内�
 实现归属：`pipeline/fingerprints.py`。查询诊断有界且脱敏；维护按确切项目/来源/ID执行，不清空共享 Redis。
 
 [Redis fingerprints](help:Redis%20fingerprints)、[数据库职责与查阅](help:数据库职责与查阅)
+
+资本与停复牌准备读取现有有效期索引核验可信摘要；不会续期或重建证明，索引过期或Redis不可用使用SQL证据。

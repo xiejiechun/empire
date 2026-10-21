@@ -117,12 +117,17 @@ class PreparationDetail(QWidget):
         data_remaining = [c for c in remaining if c['phase'] == '数据']
         restrictions = [c for c in self.checks if not c.get('blocking', True)]
         pieces = [SOURCE_POLICY, f"本项只负责：{plain(self.entry['specification'].boundary)}",
+                  f"本次结论：{assessment['outcome']}（仅限下述用途与范围）",
                   f"配合使用的数据：{'、'.join(plain(v) for v in self.entry['related']) or '无'}（不影响本项单独完成）",
                   f"还需要先准备好：{'、'.join(plain(v) for v in self.entry['blockers']) or '没有其他数据挡着这一步'}",
                   f"本项功能：{'已开启' if provider['running'] else '未开启或还没接入'}。暂停运行不代表功能没做好。",
                   '检查范围：' + provider.get('scope', self.entry.get('scope', '来源声明范围')),
                   '采集完整性、来源质量、用途条件分别查看；采集一致不代表来源金额无异常。',
                   f"开发验收有 {len(development_remaining)} 项待处理；数据用途有 {len(data_remaining)} 项阻断或待确认，另有 {len(restrictions)} 项限制。"]
+        pieces.append('实际来源/归档证据时间：' + ('、'.join(sorted({c['observed_at'] for c in self.checks if c.get('observed_at')}))
+            or '见逐项实际记录；没有独立时间字段的检查不能以本次执行时间代替'))
+        pieces.append('已满足条件：' + ('、'.join(check_title(c) for c in self.checks
+            if c['phase'] == '数据' and c['status'] == 'pass') or '尚无'))
         for c in remaining:
             pieces.append(f"【{check_title(c)} · {result_label(c)}】\n"
                           f"现在：{finding(c)}\n接下来：{action(c)}")

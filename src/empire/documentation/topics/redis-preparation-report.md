@@ -9,6 +9,8 @@
 
 ## 结构与身份
 
+逐项证据可包含reason=source_limit与observed_at：分别说明来源用途限制和实际来源/归档证据时间。报告的checked_at只是执行时间。详情中的outcome区分未检查、检查失败、来源受限与通过，blocking仍独立决定本用途是否可用；完整性缺口不能改成非阻断限制。资本证券范围与停复牌只读时效规则升级后使用新cache_revision，旧报告自然到期，不清理共享键。
+
 键模板：`<namespace>:preparation:report:<scope_digest>`
 
 类型：**String / JSON**。

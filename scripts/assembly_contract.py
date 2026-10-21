@@ -98,7 +98,7 @@ def differences(before, after, prefix=''):
     return [] if before == after else [prefix]
 
 
-def compare(baseline, current, migration, root: Path):
+def compare(baseline, current, migration, root: Path, features=None):
     if baseline.get('schema') != 1 or current.get('schema') != 1:
         raise ValueError('Unsupported assembly snapshot schema')
     modules = migration.get('modules', {})
@@ -124,6 +124,30 @@ def compare(baseline, current, migration, root: Path):
     if used_modules != set(modules) or used_tests != set(test_paths):
         raise ValueError('Migration includes unused mappings')
     failures = differences(baseline['semantic'], current['semantic'], 'semantic')
+    if features is not None:
+        if not isinstance(features, list):
+            raise ValueError('Feature changes must be an explicit list')
+        seen = set()
+        for change in features:
+            if not isinstance(change, dict) or set(change) != {'path', 'before', 'after', 'design', 'tests'}:
+                raise ValueError('Feature change requires exact before/after and independent design/tests')
+            path = change['path']
+            parts = path.split('.')
+            if (len(parts) != 5 or parts[:2] != ['semantic', 'preparation']
+                    or parts[-1] not in ('scoped', 'cache_revision') or path in seen):
+                raise ValueError('Only explicit preparation scope/cache feature changes are supported')
+            seen.add(path)
+            identity = '.'.join(parts[2:-1])
+            old = baseline['semantic']['preparation'][identity][parts[-1]]
+            new = current['semantic']['preparation'][identity][parts[-1]]
+            if (type(old) is not type(change['before']) or type(new) is not type(change['after'])
+                    or old != change['before'] or new != change['after'] or old == new):
+                raise ValueError('Feature change is stale or does not match the exact semantic difference')
+            if (not isinstance(change['tests'], list) or not change['tests'] or
+                    any(not isinstance(p, str) or not (root / p).resolve().is_relative_to(root.resolve())
+                        or not (root / p).is_file() for p in [change['design'], *change['tests']])):
+                raise ValueError('Feature change design and tests must exist inside the repository')
+            failures.remove(path)
     failures += differences(expected, current['bindings'], 'bindings')
     for group in ('plugins', 'datasets', 'pages'):
         for binding in current['bindings'][group].values():
@@ -214,6 +238,7 @@ def main(argv=None):
     parser.add_argument('--baseline', type=Path)
     parser.add_argument('--mapping', type=Path)
     parser.add_argument('--order-baseline', type=Path)
+    parser.add_argument('--feature-changes', type=Path)
     args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[1]
     current = snapshot(root)
@@ -229,7 +254,8 @@ def main(argv=None):
         parser.error('check requires --baseline')
     baseline = json.loads(args.baseline.read_text(encoding='utf-8'))
     migration = json.loads(args.mapping.read_text(encoding='utf-8')) if args.mapping else {}
-    failures = compare(baseline, current, migration, root)
+    features = json.loads(args.feature_changes.read_text(encoding='utf-8')) if args.feature_changes else None
+    failures = compare(baseline, current, migration, root, features)
     failures += source_declaration_failures(root)
     if args.order_baseline:
         ordered = json.loads(args.order_baseline.read_text(encoding='utf-8'))

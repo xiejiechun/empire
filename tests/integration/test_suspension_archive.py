@@ -89,6 +89,27 @@ async def suspension_db():
         await manager.shutdown()
 
 
+async def test_no_change_recheck_time_uses_trusted_cache_without_sql_timestamp_write(suspension_db):
+    from empire.features.suspensions.coverage import confirmed_coverage
+    from empire.plugins.infra.collection_state import read_state
+    manager, query, publish = suspension_db
+    mysql, store = manager.registry.get('mysql.store'), manager.registry.get('redis.store')
+    early = datetime.now(UTC)-timedelta(hours=2)
+    late = datetime.now(UTC)-timedelta(hours=1)
+    await publish([suspension_row()], observed=early)
+    with mysql.engine.connect() as conn:
+        before = read_state(conn,query.namespace,query.project_id,query.source)['coverage']
+    await publish([suspension_row()], observed=late)
+    with mysql.engine.connect() as conn:
+        after = read_state(conn,query.namespace,query.project_id,query.source)['coverage']
+    assert before == after  # Unified trusted cache bypasses SQL entirely.
+    supplemented = await confirmed_coverage(after,store,{},datetime.now(UTC))
+    assert datetime.fromisoformat(supplemented['confirmed_at']) == late
+    assert supplemented['through'] == '2004-12-27'
+    assert await confirmed_coverage(after,None,{},datetime.now(UTC)) == before
+    assert await store.client.xlen(store.stream) == 0
+
+
 @pytest.mark.parametrize('note', ['停牌', ''])
 async def test_insert_repeat_cache_hit_and_cache_loss_have_no_duplicate_dml(suspension_db, monkeypatch, note):
     manager, query, publish = suspension_db

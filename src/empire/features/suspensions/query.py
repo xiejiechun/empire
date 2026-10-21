@@ -16,7 +16,7 @@ class SuspensionDataPlugin:
     preparation = (PreparationContribution(
         "suspensions", "suspensions.query", "通达信", "tdx-suspensions",
         "tdx-suspensions-v1", "suspensions.period", "collector.tdx_suspensions",
-        ("tests/test_tdx_suspensions.py", "tests/test_all_collector_prefetch.py"), ("tests/integration/test_suspension_archive.py", "tests/integration/test_prefetch_pipeline.py")),)
+        ("tests/test_tdx_suspensions.py", "tests/test_all_collector_prefetch.py"), ("tests/integration/test_suspension_archive.py", "tests/integration/test_prefetch_pipeline.py"), cache_revision=2),)
 
     manifest = PluginManifest(
         "data.suspensions", "沪深 A 股历史停复牌查询",
@@ -25,11 +25,13 @@ class SuspensionDataPlugin:
     )
 
     def __init__(self, source="tdx", job_key="tdx-suspensions-v1",
-                 project_id="tdx-suspensions", namespace="empire"):
+                 project_id="tdx-suspensions", namespace="empire", archive_settings=None):
         self.source, self.job_key, self.project_id = source, job_key, project_id
         self.namespace, self.mysql = namespace, None
+        self.context, self.archive_settings = None, archive_settings or {}
 
     async def start(self, context):
+        self.context = context
         self.mysql = context.get("mysql.store")
         require_fixed_source('suspension_event', self.source)
         await self.mysql.require_schema(*schema_contract('suspension_event', 'name','resumed_at','source_dates_known','suspension_type','source_note','reason','version_observed_at'))
@@ -107,7 +109,10 @@ class SuspensionDataPlugin:
             with self.mysql.read_engine.connect() as conn:
                 state = read_state(conn, self.namespace, self.project_id, self.source)
                 return state.get('coverage', {})
-        return await self.mysql.read(read)
+        coverage = await self.mysql.read(read)
+        from empire.features.suspensions.coverage import confirmed_coverage
+        store = self.context.optional('redis.store') if self.context else None
+        return await confirmed_coverage(coverage, store, self.archive_settings, datetime.now(CHINA))
 
     async def source_month(self, month, market='', code=''):
         year, number = map(int, month.split('-'))
@@ -131,7 +136,8 @@ class SuspensionDataPlugin:
 
     async def preparation_check(self):
         from empire.features.suspensions.audit import check_suspensions
-        return await self.mysql.read(check_suspensions, self)
+        coverage = await self.calendar_coverage()
+        return await self.mysql.read(check_suspensions, self, coverage)
 
     async def stop(self):
         self.mysql = None
