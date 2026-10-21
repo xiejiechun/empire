@@ -33,8 +33,8 @@
 | E6b-aliases | b96abe2 / e50fe39d6083405ab7abaf86d90a2561 | [代码映射](architecture-e6b-aliases-2026-10-20.md)，3793 passed |
 | E6c | 0e59ccc / 689a04ad03ee4cdba386f39438e704f3 | [更名/ST](architecture-e6c-2026-10-20.md)，3802 passed |
 | E6d | 7b1fb83 / 0cc06d1a846f42e78088bfad72ccfcd4 | [解禁](architecture-e6d-2026-10-20.md)，3823 passed；两轮门禁失败保留 |
-| E6e | 5bcffb7 / 455c9c6d（全ID见记录） | [业绩/股东变动](architecture-e6e-2026-10-20.md)，3835 passed |
-| E6f | 0c2ab3c / 7f5acbb5（全ID见记录） | [回购](architecture-e6f-2026-10-21.md)，3840 passed |
+| E6e | 5bcffb7 / 455c9c6d9c33438a9022dfa863cd1ff1 | [业绩/股东变动](architecture-e6e-2026-10-20.md)，3835 passed |
+| E6f | 0c2ab3c / 7f5acbb5a3e9412c9ff407e0978f4c80 | [回购](architecture-e6f-2026-10-21.md)，3840 passed |
 | E6g | 7373f38 / 7e85c4e4db9f47bdbd5a137e731c7041 | [交易规则](architecture-e6g-2026-10-21.md)，3844 passed；结案5802df6已推送精确核实 |
 | F | 280a7da / 4f8f55d07a274ad4adfe78a34f815076 | [实现](architecture-f-2026-10-21.md)、[修复](architecture-f-desktop-repair-2026-10-21.md)、[同包真实桌面](architecture-f-desktop-2026-10-21.md)，3972 passed |
 
@@ -50,7 +50,7 @@
 | A2 | 最终提交/内容/stat/证据身份；`tests/test_release_pipeline.py`、gate及E6d反例 | 0，通过；[E6d](architecture-e6d-2026-10-20.md)保留原失败及修复反例，F1978输入无失配；未改冻结release_lock |
 | A3 | 失败、中断、占用、配置与journal恢复；发布专项+唯一门禁 | 0，通过；[A/B](architecture-ab-2026-10-19.md)及F原始步骤；首包GUI失败单独记录，不能将发布成功代替桌面 |
 | A4 | writer→reader、真实声明、包smoke及安装身份；`verify-release.ps1`和`audit_repair_release.py <run> <head>` | 0，通过；F3972 passed/5原skip，EXE/tree/source精确身份见[桌面结案](architecture-f-desktop-2026-10-21.md)；当前包仍280a7da |
-| D1 | B项目诊断；`python -m empire doctor --project <ID>`，真实新闻/财报/股东/KPL | 0/partial按各项原状态保留，能力通过；[A/B](architecture-ab-2026-10-19.md)列时间、确切错误ID、队列/范围/未知，不声称进程内隔离可见 |
+| D1 | B项目诊断；`python -m empire doctor --project <ID>`，真实新闻/财报/股东/KPL | 现场partial及原退出状态保留，相关专项0，诊断能力通过；[A/B](architecture-ab-2026-10-19.md)列时间、确切错误ID、队列/范围/未知，不声称进程内隔离可见或所有现场检查全通过 |
 | D2 | 预算、限额、一侧故障仍返回；project diagnostics及真实MySQL隔离集成 | 0，通过；[A/B](architecture-ab-2026-10-19.md)3真实SQL集成，SQL≤10/Redis≤20/时间正文上限；真实连接初始化计入预算 |
 | D3 | 只读诊断前后状态、线程回收；诊断专项/真实报告 | 0，通过；[A/B](architecture-ab-2026-10-19.md)，不启动collector/archive、不清错误、不刷新摘要；不是生产全历史审计 |
 | C1 | 业务贡献精确身份与归属；assembly/feature_bundles/dataset/manager专项 | 0，通过；逐批迁移证据+F138架构装配回归；不是只比较总数 |
@@ -76,6 +76,8 @@
 
 ## 容量、来源失败及不适用项
 
+F修复T3实际命令：`.venv/Scripts/python.exe scripts/architecture_benchmark.py measure --protocol docs/evidence/architecture-performance-protocol-2026-10-19.json --test-settings build/architecture-evolution-20261019/mysql-settings.json --baseline docs/evidence/architecture-performance-baseline-2026-10-19.json --output build/architecture-f-20261021/t3-repair-1.json`，exit0。公开原始报告保留全部样本/环境/输入/正确性/清理，私有连接文件不导出。
+
 路径/绑定变化均生成新的真实容量报告。F预览七kind+100000同秒点、原30次/预算与六清理通过，更新七设计卡；[17份当前绑定审计](architecture-f-capacity-bindings-2026-10-21.json)有效，未刷新旧报告hash代替测量。E5完整分红容量已完成5579证券、635期、58607来源行/636代理请求，池内56131条经5580消息归档，原预算通过，不能再写成只读诊断或待办。
 
 以下仍为失败或范围限制，构成后续业务质量工作，不算本轮组织迁移的通过项：
@@ -92,7 +94,10 @@ F没有实质改采集或解析，本批随机30股实采不适用，不称本�
 
 同包真实桌面、配置hash、48设置hash、正式查询范围、正常退出/重开及原观察时间见[F桌面结案](architecture-f-desktop-2026-10-21.md)。最终窗口4197432保持可见。自有13348在UTC07:41:34正常SQL SHUTDOWN，实核UUID/datadir/四系统库/无其他客户端，目录保留；[原报告](architecture-f-private-mysql-close-2026-10-21.json)。生产3307和共享Redis未关闭未清理，没有遗留本轮私有库/namespace或维护任务。
 
-结案仅更新证据与指南，不修改产品源码/包内资源，不再运行已成功的正式发布。发布审计和三轮只读报告的原`actual_desktop`待分离观察字段保持，桌面结论来自实际操作记录。最终文档检查与结案远程精确结果在实际执行后附录；在其确认前不声称已推送。
+结案仅更新证据与指南，不修改产品源码/包内资源，不再运行已成功的正式发布。发布审计和三轮只读报告的原`actual_desktop`待分离观察字段保持，桌面结论来自实际操作记录。最终文档检查与结案远程精确结果见下列实际执行附录。
 
 
 最终结案文档检查已执行：显式`documentation_contract.py review --note <本轮具体审阅>`（保留逐消费者具体不变理由）、`check`、`verify_documentation.py`和`verify_database_design.py`均exit0；408文档/2392链接/55表、49数据集/12JSON字段。原四文件文档与帮助回归使用`--basetemp build/pytest-f-closure-docs --junitxml build/architecture-f-20261021/closure-docs.xml`，exit0、40 passed/59.82秒，无skip。实际参数、日志及JUnit摘要见[结案检查](architecture-f-closure-checks-2026-10-21.json)。该报告由实际子进程退出码和原JUnit产生，未手写通过标志。源码及包内资源无本轮结案差异。
+
+
+Git交付：`.venv/Scripts/python.exe build/architecture-f-20261021/push_via_existing_proxy.py`实际exit0，通过正式ProxyPool读取现有有效租约，仅为本次Git子进程配置传输，未改保存的Git/网络设置。首次设备路由push exit128，第二路由push及`git ls-remote origin refs/heads/main`均exit0，远程精确为结案主体`da012188b4f54a4cd39daf98c553f1cdb1364fa0`，包含F两实现提交及全部前批历史；[原始脱敏回执](architecture-f-remote-closure-2026-10-21.json)原字节导出。最后后记仅记录已执行的检查与远程事实，不改变发布包身份；后记提交仍按同一有界传输推送及精确核实，最终HEAD由交付回执给出。
