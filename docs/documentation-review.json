@@ -1,9 +1,15 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-21T17:58:38.273604+00:00",
-  "note": "最终审阅第一阶段业务方案：补齐复权公式变量与独立例，核实000001分红0.609元每股、回购5586与5553失配、无日行情、逐产物依赖及S1至S12待验收边界；纯方案和只读证据，不改产品、不新增发布或真实桌面验收。",
+  "reviewed_at": "2026-10-21T18:36:16.299392+00:00",
+  "note": "首批P0+P1最终审阅：准备具体产物及版本缓存、分红闭区间Decimal逐笔和非到账限制、完整单元/空集/歧义/时间/回源、复权单一资格规则与边界、保留失败与P2以后未实现；表和Redis写入契约不变。",
   "unchanged_reason": "",
-  "exceptions": {},
+  "exceptions": {
+    "mysql:additional_issue": "共享准备函数只增加返回同快照内已读取单元供分红使用，本表字段索引业务身份读写和原准备判定均未改变。",
+    "mysql:rights_issue": "共享准备函数只增加返回同快照内已读取单元供分红使用，本表字段索引业务身份读写和原准备判定均未改变。",
+    "redis:checkpoint": "仅抽取原有scope_changed只读检查，无新增键无断点写入或清理变化，原生命周期和失败前沿说明继续准确。",
+    "redis:fingerprints": "分红计算复用原有peek可信摘要核验，没有写摘要或修改版本有效期及成功清队规则，原说明继续准确。",
+    "redis:fingerprint-expiry": "新只读计算不改摘要索引类型容量期限维护及清理规则，仍使用原有原子核验和SQL回源。"
+  },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "3302de5e1d316bdcd80fd7cae560bade24eec79bb08f352e8aebd5d4cf6b4557",
@@ -185,9 +191,9 @@
     "src/empire/features/adjustment/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/empire/features/adjustment/bundle.py": "3b37f5f905469dacb35257ae724ef77305c451968d9eb6ef2444178c0cc8c1f1",
     "src/empire/features/adjustment/chart.py": "8159a5054f920a23060bddde112375c3ebd4c11b8942ec6d1336f6f13a7d819e",
-    "src/empire/features/adjustment/contract.py": "1da56fc7a33f849cf7213e566dea6965b7cbdbc7729c48a7116949541b73db32",
-    "src/empire/features/adjustment/inputs.py": "c12217958c1d942a175e11903faef39703b7288470e0ec08c24af9ea91e07fc4",
-    "src/empire/features/adjustment/query.py": "44d9c74d1ad1f1496c0ce510e49c5b69c381487a69c0ddcf6ad665b4e677ed02",
+    "src/empire/features/adjustment/contract.py": "2d342c907285c2234d81f9b9b53b10ff76249818983cc178e0fa11e9b88ebaf7",
+    "src/empire/features/adjustment/inputs.py": "9fbb3360c22369920f391b2b17012fcb5b3d86358a5b5ce4d20aea4c8abbc8cf",
+    "src/empire/features/adjustment/query.py": "03191cd55fa71d73ece37b4b4fb076b4ce36280de5093c34a477576a6ad60444",
     "src/empire/features/adjustment/ui.py": "c20376946f24565dd85cb683a6141c09b485d1b8c7edd5943e4e55c90e2b8af4",
     "src/empire/features/builtin.py": "6106eef5f1d7d3664ba886b99ed0e04808a35a53b43da4fd09b62a05f6db89ab",
     "src/empire/features/calendar/__init__.py": "18dc263c87a8af06b933250d82de9de35a00cf5d8c8de5eed34eb5cea055fcbe",
@@ -206,10 +212,13 @@
     "src/empire/features/capital_actions/codec.py": "42e769dda18eaad469b72664c53ba407601c9d551139445fd9a29cae3b4cc1f6",
     "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
     "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
+    "src/empire/features/capital_actions/distribution.py": "0224a80c5fcbf61111ce2c857b76ffc5a1ebfa1736dc144863d12cff5ec0aca9",
+    "src/empire/features/capital_actions/distribution_text.py": "23d316a738e09799ff075ab7e414ab85cc94c4a3d3dfd63702369370a3963c4d",
     "src/empire/features/capital_actions/dividend_discovery.py": "b1ba2ce4f9f8f8cd9a9153a048941cc22e09b73da7140d0bff7c5b84381b9b2f",
     "src/empire/features/capital_actions/dividend_history.py": "c0930a68f423e96f8c6a0da13017971cbff1d4ac57a669409157c77795c03c0d",
     "src/empire/features/capital_actions/dividend_parser.py": "ffc823686ba78359167fc42e1acfc12cb91882bcb562069e81f9bb92b8d67839",
     "src/empire/features/capital_actions/dividends_collector.py": "c556b640bdf40e8f618b7c0900b078aea8ae3bb16052459a9c4c6c5bc7c8a615",
+    "src/empire/features/capital_actions/event_rules.py": "555ef0e56360e341e1f3a52a607ae7d7f46d3ee9343a7ecca6d898875f37f413",
     "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
     "src/empire/features/capital_actions/issue_candidates.py": "303cf4d89ee202d10e79200fd7b8f9f6360369bc3f06f95eb59373f895d10c6c",
     "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
@@ -218,14 +227,15 @@
     "src/empire/features/capital_actions/issues_collector.py": "2bfb967f2cbd5675a80f2b617f121ef3b8ad7dfdb045fe03f97c3da49b2cc884",
     "src/empire/features/capital_actions/lifecycle.py": "68f98d247800a0c642dd0688b700d8d36a14162a0913943454690312876492c1",
     "src/empire/features/capital_actions/parser.py": "ed273769526310d6247a39fd9fb8ce3e0e4221e2dd768b8150956a8d5493ff55",
-    "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
+    "src/empire/features/capital_actions/preparation.py": "7ee941cc9be2bd7539346f31ff2188f33fd014885b1b0d2c1797eb117d9757f1",
     "src/empire/features/capital_actions/preview.py": "07fe0921b0bd924fb278304e4f8efe79d866f09824b7cbc2f797ff1dd02ee94a",
-    "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
+    "src/empire/features/capital_actions/query.py": "7fa1c5b3577cbaa7a190aca49b242cd7c1644750be8402323f7994f94fbcf15a",
     "src/empire/features/capital_actions/recovery.py": "0c3c385097356179529ead0dd7ead9766492b63dc7a4e4fc927346f42df703f6",
     "src/empire/features/capital_actions/rights_collector.py": "386846fe1eb1f3e5e36d929f2a526dbb0d80515c81139f775459e7b7b70c83b3",
     "src/empire/features/capital_actions/source.py": "aca0e786d57be273587c7a9cd10bb812d9b42386d91b76a7cabc42ba9e7bd8ee",
     "src/empire/features/capital_actions/source_protocol.py": "6cc2a689d89ea0775bd2b528df62810e8ec1fbcf64691dca0ad2b4d816f0efdb",
-    "src/empire/features/capital_actions/ui.py": "c76f328534139480431f6334c6bd4df6b421739347cba04f7cf30fbc37fcb1af",
+    "src/empire/features/capital_actions/ui.py": "7d5d937fa87ec5b943fd5810c6a61485bab9315ca887abc1a3f72a5c08737434",
+    "src/empire/features/capital_actions/ui_distribution.py": "73e8aab75fcb94be06a178f3ac916546da5cc53ba94c57826c8a6ec638f3b3f5",
     "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
     "src/empire/features/capital_actions/words.py": "a6976df19f954d88cf0eb528d872aaae116aee08baef95f038c522c784a69cfd",
     "src/empire/features/data_browser/__init__.py": "d0165a70e408c1f0f88eaa868983f8263e912635523fa811abcd693047874b86",
@@ -371,12 +381,13 @@
     "src/empire/features/preparation/inventory.py": "cdeee76b6a111707458c4d8de46f1ccdc5c4634f7f8692eaca9aeaf7afe4435e",
     "src/empire/features/preparation/markets.py": "505cdd688b54ff23ebe62c6ae4d22cc0c6f43f8fd4ff108f33aa1a398a0180da",
     "src/empire/features/preparation/processing.py": "2e60862964cc15f192c60032002f60c50e25cf56561960a7f47b5e2889d083cf",
-    "src/empire/features/preparation/query.py": "431c713d042facdbf69af75bf5629439fbc5dea403313cff689b07352db5449b",
-    "src/empire/features/preparation/research.py": "fe793a73828436d3d4a186e36f0817a288199201b3ed29e805fe2a960252e216",
+    "src/empire/features/preparation/products.py": "059f1060825de619386a6f856306b629c5cabadc5dd2e6a7ce63fc130ceae401",
+    "src/empire/features/preparation/query.py": "027104cdec43099a1ffbe14dba70ef82af4f9e67109ee5291b156b01ecd28bec",
+    "src/empire/features/preparation/research.py": "819c30728be2d6f0075efeed8270f8cadfb8c79a2d9b1b0435c788a4d18cdce1",
     "src/empire/features/preparation/results.py": "9e1a92480e36c8c2c8c8cecfb8ef4f74a1534260f187d251445ee6d87570a549",
-    "src/empire/features/preparation/ui.py": "d3fb613b1ef9314dfa85b4e546bfd23c439095f760cd894fa05fb029560c0829",
+    "src/empire/features/preparation/ui.py": "390f4f25e1cf33d15c4814a1834cad3ca4de8b9131d66eeb820bd2730cbf2ef1",
     "src/empire/features/preparation/ui_actions.py": "33998ec4679780db8b51fb5fca5ac62054352890ddf6609238c9e65d3712a43c",
-    "src/empire/features/preparation/ui_detail.py": "e55da369996fabf2bd07a44a15e2ec31f40ae9147968cc68c0a96a75dbd8a4ef",
+    "src/empire/features/preparation/ui_detail.py": "f2b52811ffc1c8c3fc0ecb2df0b61fd1c755e5f10c314fbed01a932090a6dfcc",
     "src/empire/features/preparation/ui_directory.py": "f7d0137bcf4799b6ce1b93f1fec4d02950e0121452df643ce840b0d432dea91c",
     "src/empire/features/preparation/ui_inventory.py": "faf0185c5c8d51114ef04b748fe0ebb0af42b824c17964ffd63ed215731fe76c",
     "src/empire/features/preparation/ui_scope.py": "8b131b9caf04efe6dc0d4b225739b54ec82a014714819a47f46657745a10cec2",
@@ -554,7 +565,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "42065074ee4aba644b6d800604066be7795e7f2e3a122b391124c8b9654645e6",
+  "content_sha256": "51eb977bf45ec600345bbf5564239e05f2a1f8fe0b73562270fc74a9a7a1d0c2",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -1442,7 +1453,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
+      "content_sha256": "631378855f99859f456ee9073cd4850cdcdc4404c82ce905f350a00c13e4d1df",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1490,7 +1501,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
+      "content_sha256": "631378855f99859f456ee9073cd4850cdcdc4404c82ce905f350a00c13e4d1df",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1538,7 +1549,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
+      "content_sha256": "631378855f99859f456ee9073cd4850cdcdc4404c82ce905f350a00c13e4d1df",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1586,7 +1597,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
+      "content_sha256": "631378855f99859f456ee9073cd4850cdcdc4404c82ce905f350a00c13e4d1df",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1634,7 +1645,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
+      "content_sha256": "631378855f99859f456ee9073cd4850cdcdc4404c82ce905f350a00c13e4d1df",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1682,7 +1693,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "3a8f1b089c307e3de8ac3f1d694c6248ca58eca1e4c6a489873cb667ecc7e453",
+      "content_sha256": "631378855f99859f456ee9073cd4850cdcdc4404c82ce905f350a00c13e4d1df",
       "documentation": {
         "开盘啦分时及竞价": {
           "owner": "kaipanla",
@@ -1730,7 +1741,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "c5d8a3e667784f0f29fde5e40b830bb7b09fb8f15763e862d4cc7aca024b5db5",
+      "content_sha256": "7e1c66ea0a93275d572716a5c428f8c0e3c52e43b45ddde622c73cdc2bcb4849",
       "documentation": {
         "历史盘口与日行情摘要": {
           "owner": "kaipanla",
@@ -1773,7 +1784,7 @@
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
         "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24"
       },
-      "content_sha256": "d3e80bbf0713734cd29449cfde83430e792e14db8483539c20230a3c8d0e83ce",
+      "content_sha256": "246d6d861375fb36d22081e3868d66df868986848b9be562f9084f1ff8c6f3dc",
       "documentation": {
         "自算复权因子与行情": {
           "owner": "adjustment",
@@ -1799,10 +1810,12 @@
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
+        "src/empire/features/capital_actions/distribution_text.py": "23d316a738e09799ff075ab7e414ab85cc94c4a3d3dfd63702369370a3963c4d",
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
         "src/empire/features/capital_actions/preview.py": "07fe0921b0bd924fb278304e4f8efe79d866f09824b7cbc2f797ff1dd02ee94a",
-        "src/empire/features/capital_actions/ui.py": "c76f328534139480431f6334c6bd4df6b421739347cba04f7cf30fbc37fcb1af",
+        "src/empire/features/capital_actions/ui.py": "7d5d937fa87ec5b943fd5810c6a61485bab9315ca887abc1a3f72a5c08737434",
+        "src/empire/features/capital_actions/ui_distribution.py": "73e8aab75fcb94be06a178f3ac916546da5cc53ba94c57826c8a6ec638f3b3f5",
         "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
         "src/empire/features/capital_actions/words.py": "a6976df19f954d88cf0eb528d872aaae116aee08baef95f038c522c784a69cfd",
         "src/empire/features/data_browser/__init__.py": "d0165a70e408c1f0f88eaa868983f8263e912635523fa811abcd693047874b86",
@@ -1816,7 +1829,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "407eb90f0b5f65591e9cf80c53477b2ecf7bf5e43bfb9db82ff1ecac28ee6c26",
+      "content_sha256": "1ccc42b662c9de620b35b52a0e3101f45567c86cefda50823985d77fe017f0dd",
       "documentation": {
         "分红送转": {
           "owner": "capital_actions",
@@ -1846,10 +1859,12 @@
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
+        "src/empire/features/capital_actions/distribution_text.py": "23d316a738e09799ff075ab7e414ab85cc94c4a3d3dfd63702369370a3963c4d",
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
         "src/empire/features/capital_actions/preview.py": "07fe0921b0bd924fb278304e4f8efe79d866f09824b7cbc2f797ff1dd02ee94a",
-        "src/empire/features/capital_actions/ui.py": "c76f328534139480431f6334c6bd4df6b421739347cba04f7cf30fbc37fcb1af",
+        "src/empire/features/capital_actions/ui.py": "7d5d937fa87ec5b943fd5810c6a61485bab9315ca887abc1a3f72a5c08737434",
+        "src/empire/features/capital_actions/ui_distribution.py": "73e8aab75fcb94be06a178f3ac916546da5cc53ba94c57826c8a6ec638f3b3f5",
         "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
         "src/empire/features/capital_actions/words.py": "a6976df19f954d88cf0eb528d872aaae116aee08baef95f038c522c784a69cfd",
         "src/empire/features/data_browser/__init__.py": "d0165a70e408c1f0f88eaa868983f8263e912635523fa811abcd693047874b86",
@@ -1863,7 +1878,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "952d92adb74a6d7bcbc35a3085507c81349bcb05beeafc084bd00f826091d688",
+      "content_sha256": "5a3c6a78cffff22f2f40541f3ee0ffbb6fb29caa38c379fb2da2ad5ae3a47d95",
       "documentation": {
         "增发": {
           "owner": "capital_actions",
@@ -1893,10 +1908,12 @@
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
+        "src/empire/features/capital_actions/distribution_text.py": "23d316a738e09799ff075ab7e414ab85cc94c4a3d3dfd63702369370a3963c4d",
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
         "src/empire/features/capital_actions/preview.py": "07fe0921b0bd924fb278304e4f8efe79d866f09824b7cbc2f797ff1dd02ee94a",
-        "src/empire/features/capital_actions/ui.py": "c76f328534139480431f6334c6bd4df6b421739347cba04f7cf30fbc37fcb1af",
+        "src/empire/features/capital_actions/ui.py": "7d5d937fa87ec5b943fd5810c6a61485bab9315ca887abc1a3f72a5c08737434",
+        "src/empire/features/capital_actions/ui_distribution.py": "73e8aab75fcb94be06a178f3ac916546da5cc53ba94c57826c8a6ec638f3b3f5",
         "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
         "src/empire/features/capital_actions/words.py": "a6976df19f954d88cf0eb528d872aaae116aee08baef95f038c522c784a69cfd",
         "src/empire/features/data_browser/__init__.py": "d0165a70e408c1f0f88eaa868983f8263e912635523fa811abcd693047874b86",
@@ -1910,7 +1927,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "33c14b643d0a78dc62c8253c27b79c62cb2ef6f3c91ed0a69790fd0da326a985",
+      "content_sha256": "ee0a10ea35af51e32594344ff2085406542451006ae12b3e433a88c5e2281825",
       "documentation": {
         "配股": {
           "owner": "capital_actions",
@@ -2397,7 +2414,7 @@
         "src/empire/plugins/ui/preview_navigation.py": "691a96cd77ce2324b8db22f63eae6a950a8fd87d2dc8b03ddc669e2ecc9c10c2",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "3a0c29baa9c5c8507c894ed350d6674b4642af848eb82987b90e81ab384d19b2",
+      "content_sha256": "59f5f62dfc1c087393ceea7cee05fae8de726186efd6b614306af2357cbaa42a",
       "documentation": {
         "历史停复牌": {
           "owner": "suspensions",
@@ -2576,12 +2593,15 @@
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/empire/features/capital_actions/distribution_text.py": "23d316a738e09799ff075ab7e414ab85cc94c4a3d3dfd63702369370a3963c4d",
         "src/empire/features/preparation/__init__.py": "a0093fce6c943a79758701bfb6f45844a7d4eb3e9b4796f76ae7d4c5472111d4",
         "src/empire/features/preparation/definition.py": "afc240589f112c3520186b3d06341c6cdeed320f11d2d3bb664ae3631850dad1",
+        "src/empire/features/preparation/products.py": "059f1060825de619386a6f856306b629c5cabadc5dd2e6a7ce63fc130ceae401",
         "src/empire/features/preparation/results.py": "9e1a92480e36c8c2c8c8cecfb8ef4f74a1534260f187d251445ee6d87570a549",
-        "src/empire/features/preparation/ui.py": "d3fb613b1ef9314dfa85b4e546bfd23c439095f760cd894fa05fb029560c0829",
+        "src/empire/features/preparation/ui.py": "390f4f25e1cf33d15c4814a1834cad3ca4de8b9131d66eeb820bd2730cbf2ef1",
         "src/empire/features/preparation/ui_actions.py": "33998ec4679780db8b51fb5fca5ac62054352890ddf6609238c9e65d3712a43c",
-        "src/empire/features/preparation/ui_detail.py": "e55da369996fabf2bd07a44a15e2ec31f40ae9147968cc68c0a96a75dbd8a4ef",
+        "src/empire/features/preparation/ui_detail.py": "f2b52811ffc1c8c3fc0ecb2df0b61fd1c755e5f10c314fbed01a932090a6dfcc",
         "src/empire/features/preparation/ui_directory.py": "f7d0137bcf4799b6ce1b93f1fec4d02950e0121452df643ce840b0d432dea91c",
         "src/empire/features/preparation/ui_inventory.py": "faf0185c5c8d51114ef04b748fe0ebb0af42b824c17964ffd63ed215731fe76c",
         "src/empire/features/preparation/ui_scope.py": "8b131b9caf04efe6dc0d4b225739b54ec82a014714819a47f46657745a10cec2",
@@ -2593,7 +2613,7 @@
         "src/empire/plugins/ui/preview_layout.py": "e3bb69109303f22cb5ffa462a8f89d330031c1015270f60dcd58bc0e92ef2364",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "f80f39e0b056d360311ddcbe880c624952cfd24f1069a5e68632c425a3ccacc0",
+      "content_sha256": "e881cef014a2e8fce16c1d7e324e4957c27dfb7b78e6c6f455b2a627e7238823",
       "documentation": {
         "数据准备": {
           "owner": "shared",
@@ -2654,6 +2674,10 @@
         "数据库职责与查阅": {
           "owner": "shared",
           "path": "src/empire/documentation/topics/database-overview.md"
+        },
+        "分红送转": {
+          "owner": "capital_actions",
+          "path": "src/empire/features/capital_actions/docs/help/dividends.md"
         }
       }
     },
@@ -3867,7 +3891,7 @@
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "34964fac9218ef1ebfda5d49edd74b3bc579d5a41b08b3addc95a00704ae7123",
+      "content_sha256": "2ad028dc8ce893408c2f173f5f89fb55b470ee065535574a93875941ba08452e",
       "documentation": {
         "分红送转": {
           "owner": "capital_actions",
@@ -4335,7 +4359,7 @@
     "mysql:dividend_plan": {
       "sources": {
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
-        "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
+        "src/empire/features/capital_actions/query.py": "7fa1c5b3577cbaa7a190aca49b242cd7c1644750be8402323f7994f94fbcf15a",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -4349,15 +4373,17 @@
         "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "src/empire/features/capital_actions/codec.py": "42e769dda18eaad469b72664c53ba407601c9d551139445fd9a29cae3b4cc1f6",
         "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
+        "src/empire/features/capital_actions/distribution.py": "0224a80c5fcbf61111ce2c857b76ffc5a1ebfa1736dc144863d12cff5ec0aca9",
+        "src/empire/features/capital_actions/event_rules.py": "555ef0e56360e341e1f3a52a607ae7d7f46d3ee9343a7ecca6d898875f37f413",
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_candidates.py": "303cf4d89ee202d10e79200fd7b8f9f6360369bc3f06f95eb59373f895d10c6c",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
-        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
+        "src/empire/features/capital_actions/preparation.py": "7ee941cc9be2bd7539346f31ff2188f33fd014885b1b0d2c1797eb117d9757f1",
         "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
         "sql/schema.sql#dividend_plan": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025",
         "sql/business-schema.json#dividend_plan": "86ed456bf8f9e14d1efec2339baf0100ea5c6ef512bab02b2c5790e8f34531fc"
       },
-      "content_sha256": "b531d5e60b60c435f0aff1abfc36dfa2060c7a8ced4b1bc0de009748b0032e27",
+      "content_sha256": "854b79c6c4498792370b1e4bc16ac876c7f59753295137066e72e5a6edf60bbc",
       "documentation": {
         "MySQL dividend_plan": {
           "owner": "capital_actions",
@@ -4368,7 +4394,7 @@
     "mysql:additional_issue": {
       "sources": {
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
-        "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
+        "src/empire/features/capital_actions/query.py": "7fa1c5b3577cbaa7a190aca49b242cd7c1644750be8402323f7994f94fbcf15a",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -4382,10 +4408,12 @@
         "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "src/empire/features/capital_actions/codec.py": "42e769dda18eaad469b72664c53ba407601c9d551139445fd9a29cae3b4cc1f6",
         "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
+        "src/empire/features/capital_actions/distribution.py": "0224a80c5fcbf61111ce2c857b76ffc5a1ebfa1736dc144863d12cff5ec0aca9",
+        "src/empire/features/capital_actions/event_rules.py": "555ef0e56360e341e1f3a52a607ae7d7f46d3ee9343a7ecca6d898875f37f413",
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_candidates.py": "303cf4d89ee202d10e79200fd7b8f9f6360369bc3f06f95eb59373f895d10c6c",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
-        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
+        "src/empire/features/capital_actions/preparation.py": "7ee941cc9be2bd7539346f31ff2188f33fd014885b1b0d2c1797eb117d9757f1",
         "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
         "sql/schema.sql#additional_issue": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025",
         "sql/business-schema.json#additional_issue": "ebce83f39d7b29445e6f279f0e5dfa97b036d3efcd33946fb04c32602829ea09"
@@ -4401,7 +4429,7 @@
     "mysql:rights_issue": {
       "sources": {
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
-        "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
+        "src/empire/features/capital_actions/query.py": "7fa1c5b3577cbaa7a190aca49b242cd7c1644750be8402323f7994f94fbcf15a",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -4415,10 +4443,12 @@
         "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "src/empire/features/capital_actions/codec.py": "42e769dda18eaad469b72664c53ba407601c9d551139445fd9a29cae3b4cc1f6",
         "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
+        "src/empire/features/capital_actions/distribution.py": "0224a80c5fcbf61111ce2c857b76ffc5a1ebfa1736dc144863d12cff5ec0aca9",
+        "src/empire/features/capital_actions/event_rules.py": "555ef0e56360e341e1f3a52a607ae7d7f46d3ee9343a7ecca6d898875f37f413",
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_candidates.py": "303cf4d89ee202d10e79200fd7b8f9f6360369bc3f06f95eb59373f895d10c6c",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
-        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
+        "src/empire/features/capital_actions/preparation.py": "7ee941cc9be2bd7539346f31ff2188f33fd014885b1b0d2c1797eb117d9757f1",
         "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
         "sql/schema.sql#rights_issue": "fd42c0febb0d761ae6b847c18e44539db345e4436f23a622971b19ae7dcd1025",
         "sql/business-schema.json#rights_issue": "592e757eab5dfdab5c0d75056ba9867ff3efe37270678fbb89fad823a87fd082"
@@ -5969,9 +5999,9 @@
       "sources": {
         "src/empire/plugins/pipeline/ingest.py": "747f612a67f543f42ed8c9925b2838b6cf1dbece9d16a50a06842a50bbf8057d",
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
-        "src/empire/features/capital_actions/query.py": "4333e6538c0dc5c4341fa416a4480ede0f304763ad5fffd3a7b1ab5bab15320b",
+        "src/empire/features/capital_actions/query.py": "7fa1c5b3577cbaa7a190aca49b242cd7c1644750be8402323f7994f94fbcf15a",
         "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
-        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
+        "src/empire/features/capital_actions/preparation.py": "7ee941cc9be2bd7539346f31ff2188f33fd014885b1b0d2c1797eb117d9757f1",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -5988,6 +6018,8 @@
         "src/empire/features/capital_actions/codec.py": "42e769dda18eaad469b72664c53ba407601c9d551139445fd9a29cae3b4cc1f6",
         "src/empire/features/capital_actions/contract.py": "9b4fee242c072cef61b6d9b18b9d465a5beef20e5afde9985c102784c11046e3",
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
+        "src/empire/features/capital_actions/distribution.py": "0224a80c5fcbf61111ce2c857b76ffc5a1ebfa1736dc144863d12cff5ec0aca9",
+        "src/empire/features/capital_actions/event_rules.py": "555ef0e56360e341e1f3a52a607ae7d7f46d3ee9343a7ecca6d898875f37f413",
         "src/empire/features/capital_actions/fields.py": "2b17bdb24655690782175fdfbb3c651dc93c132dad519bb4a69786fc2a027779",
         "src/empire/features/capital_actions/issue_candidates.py": "303cf4d89ee202d10e79200fd7b8f9f6360369bc3f06f95eb59373f895d10c6c",
         "src/empire/features/capital_actions/issue_contract.py": "4480bb10bacc29656cc74e89cfe223a72eacc75eb8dd07012692797325473e00",
@@ -6007,7 +6039,7 @@
       "sources": {
         "src/empire/plugins/pipeline/fingerprints.py": "80a671107f6588059708c9f742d42ecd368efdda6a641cf99c68d9520f7b8c82",
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
-        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
+        "src/empire/features/capital_actions/preparation.py": "7ee941cc9be2bd7539346f31ff2188f33fd014885b1b0d2c1797eb117d9757f1",
         "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
@@ -6042,7 +6074,7 @@
     "redis:fingerprint-expiry": {
       "sources": {
         "src/empire/plugins/pipeline/fingerprints.py": "80a671107f6588059708c9f742d42ecd368efdda6a641cf99c68d9520f7b8c82",
-        "src/empire/features/capital_actions/preparation.py": "8316f3e914945327ef9f70e96793c2215b70587e6c60c4e2497a276ef7e8a4d4",
+        "src/empire/features/capital_actions/preparation.py": "7ee941cc9be2bd7539346f31ff2188f33fd014885b1b0d2c1797eb117d9757f1",
         "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
@@ -6327,7 +6359,7 @@
     "redis:preparation-report": {
       "sources": {
         "src/empire/features/preparation/cache.py": "9f3032bb978eb577a07674091e4c52766a05c8709aeac46b06239c70bdc8bbb8",
-        "src/empire/features/preparation/query.py": "431c713d042facdbf69af75bf5629439fbc5dea403313cff689b07352db5449b",
+        "src/empire/features/preparation/query.py": "027104cdec43099a1ffbe14dba70ef82af4f9e67109ee5291b156b01ecd28bec",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -6336,6 +6368,8 @@
         "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/empire/features/capital_actions/distribution_text.py": "23d316a738e09799ff075ab7e414ab85cc94c4a3d3dfd63702369370a3963c4d",
         "src/empire/features/kaipanla/__init__.py": "107aaf007136c2231a5ae9a908d955d2672369ebb85a573920d97c3dc22d065d",
         "src/empire/features/kaipanla/contract.py": "2cbcb9467f1cb77f2db9b48c8d5bcab185e4b3208155beb10dbed3701f4376b2",
         "src/empire/features/preparation/__init__.py": "a0093fce6c943a79758701bfb6f45844a7d4eb3e9b4796f76ae7d4c5472111d4",
@@ -6349,12 +6383,13 @@
         "src/empire/features/preparation/inventory.py": "cdeee76b6a111707458c4d8de46f1ccdc5c4634f7f8692eaca9aeaf7afe4435e",
         "src/empire/features/preparation/markets.py": "505cdd688b54ff23ebe62c6ae4d22cc0c6f43f8fd4ff108f33aa1a398a0180da",
         "src/empire/features/preparation/processing.py": "2e60862964cc15f192c60032002f60c50e25cf56561960a7f47b5e2889d083cf",
-        "src/empire/features/preparation/research.py": "fe793a73828436d3d4a186e36f0817a288199201b3ed29e805fe2a960252e216",
+        "src/empire/features/preparation/products.py": "059f1060825de619386a6f856306b629c5cabadc5dd2e6a7ce63fc130ceae401",
+        "src/empire/features/preparation/research.py": "819c30728be2d6f0075efeed8270f8cadfb8c79a2d9b1b0435c788a4d18cdce1",
         "src/empire/features/preparation/results.py": "9e1a92480e36c8c2c8c8cecfb8ef4f74a1534260f187d251445ee6d87570a549",
         "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6"
       },
-      "content_sha256": "3839ee9f0cbe762ce1073a05a41ade8810c5659c65dd3ccc88a76c9dc59e8da0",
+      "content_sha256": "2f5dd354270abe82f38a133f6c587e797996fd7199310455596807a7bea6130e",
       "documentation": {
         "Redis preparation-report": {
           "owner": "shared",

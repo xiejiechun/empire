@@ -17,6 +17,8 @@
 
 checked_at、scope、checking=false、checked_requirements/total_requirements、research、rows、cache_sha256 等完整报告；research为本次必需输入统计及研究条件，rows含required角色和来源集合状态；未选项目保留未核验；每份数据的四项业务检查共同保存，规范序列化校验摘要。最大 8 MiB。
 
+研究模板版本2增加products具体产物；分红行关联同一结果，包含未检查/已计算/数据阻断/来源受限及功能未实现状态。已计算名义派息包含逐笔键、金额、范围、公式版本及实际证据时间；不存第二份长期业务数据。主题总检查不被独立产物通过覆盖。旧模板缓存自然过期；新范围、用途或契约使用新身份，重新检查重算，缓存读取不重算也不刷新证据时间。
+
 ## 读写与关联
 
 时效缓存核对前后使用同一栏目内容摘要，SQL并发修订时不把新内容的确认时间用于此前已审计的旧内容。
@@ -33,7 +35,7 @@ Empire Redis 采用纯内存模式。Redis 服务或电脑重启丢失本库内�
 
 ## 维护与相关说明
 
-实现归属：`data/preparation_cache.py`、`data/preparation.py`。查询诊断有界且脱敏；维护按确切项目/来源/ID执行，不清空共享 Redis。
+实现归属：`features/preparation/cache.py`、`query.py`、`products.py`。查询诊断有界且脱敏；维护按确切项目/来源/ID执行，不清空共享 Redis。
 
 [数据准备](help:数据准备)、[数据库职责与查阅](help:数据库职责与查阅)
 

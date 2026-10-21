@@ -9,11 +9,11 @@ from PySide6.QtWidgets import QApplication
 
 from empire.bootstrap import build_manager
 from empire.contracts.preparation import ComputationContribution
-from empire.features.adjustment.contract import AdjustmentError
 from empire.features.adjustment.inputs import close_prices, proof_time, verify_unit
 from empire.features.adjustment.query import AdjustmentDataPlugin, resolve_security
 from empire.features.adjustment.ui import AdjustmentPage
 from empire.features.capital_actions.contract import digest
+from empire.features.capital_actions.event_rules import ActionError
 from empire.features.preparation.catalog import BY_ID
 
 
@@ -21,10 +21,10 @@ def test_auto_market_resolves_catalogue_and_manual_mismatch_explains_correct_mar
     conn = SimpleNamespace(execute=lambda *args: SimpleNamespace(scalars=lambda: ['600009.SH']))
     assert resolve_security(conn, 'AUTO', '600009') == '600009.SH'
     assert resolve_security(conn, 'SH', '600009') == '600009.SH'
-    with pytest.raises(AdjustmentError, match='属于SH市场'):
+    with pytest.raises(ActionError, match='属于SH市场'):
         resolve_security(conn, 'SZ', '600009')
     missing = SimpleNamespace(execute=lambda *args: SimpleNamespace(scalars=lambda: []))
-    with pytest.raises(AdjustmentError, match='不存在或市场不唯一'):
+    with pytest.raises(ActionError, match='不存在或市场不唯一'):
         resolve_security(missing, 'AUTO', '000001')
     assert resolve_security(missing, 'SZ', '000001') == '000001.SZ'
 
@@ -51,15 +51,15 @@ def test_complete_empty_input_requires_proof_and_same_count_different_set_fails(
                                                            observed_at=datetime.now(UTC).isoformat())})
     assert verify_unit('dividends', 'SZ:000001', [], state)
     state['units']['SZ:000001']['digest'] = digest(['not-the-empty-set'])
-    with pytest.raises(AdjustmentError, match='同数异集'):
+    with pytest.raises(ActionError, match='同数异集'):
         verify_unit('dividends', 'SZ:000001', [], state)
-    with pytest.raises(AdjustmentError):
+    with pytest.raises(ActionError):
         verify_unit('dividends', 'SZ:000001', [], {})
 
 
 @pytest.mark.parametrize('value', [None, 'invalid', '2026-09-01T00:00:00', (datetime.now(UTC)+timedelta(days=1)).isoformat()])
 def test_future_or_unzoned_proof_rejected(value):
-    with pytest.raises(AdjustmentError):
+    with pytest.raises(ActionError):
         proof_time(value)
 
 
@@ -67,7 +67,7 @@ def test_intraday_latest_quote_is_not_accepted_as_close():
     row = dict(trade_date='2026-09-01', lifecycle={'listing_date': '1991-01-01'},
                data=dict(real=dict(time=145900000, open_px=10, high_px=10, low_px=10, last_px=10)))
     query = SimpleNamespace(iter_validated_days=lambda *args: iter([row]))
-    with pytest.raises(AdjustmentError, match='收盘后'):
+    with pytest.raises(ActionError, match='收盘后'):
         close_prices(None, query, 'SZ', '000001', date(2026, 9, 1), date(2026, 9, 1))
 
 
@@ -121,6 +121,6 @@ async def test_computation_readiness_does_not_claim_source_version_history():
     checks = await q.preparation_check(scope)
     assert all(c.status == 'pass' for c in checks[:-1])
     assert checks[-1].status == 'fail'
-    q.calculate.side_effect = AdjustmentError('缺收盘', day='2026-09-01')
+    q.calculate.side_effect = ActionError('缺收盘', day='2026-09-01')
     checks = await q.preparation_check(scope)
     assert all(c.status == 'fail' for c in checks) and checks[0].findings[0]['date'] == '2026-09-01'

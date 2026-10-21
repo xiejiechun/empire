@@ -6,10 +6,11 @@ from empire.contracts.preparation import CheckEvidence, ComputationContribution
 from empire.contracts.preparation_scope import PreparationScope
 from empire.contracts.security import unified_code
 from empire.core.time import CHINA
-from empire.features.adjustment.contract import ALGORITHM, MAX_DAYS, AdjustmentError, calculate, iso
+from empire.features.adjustment.contract import ALGORITHM, MAX_DAYS, calculate
 from empire.features.adjustment.inputs import close_prices, events
 from empire.features.calendar.api import read_trade_day_cutoff
 from empire.features.capital_actions.contract import digest
+from empire.features.capital_actions.event_rules import ActionError, iso
 
 
 def resolve_security(conn, market, code):
@@ -20,11 +21,11 @@ def resolve_security(conn, market, code):
     matches = list(conn.execute(sql, dict(keys=candidates)).scalars())
     if market == 'AUTO':
         if len(matches) != 1:
-            raise AdjustmentError('股票代码在当前目录中不存在或市场不唯一，请明确选择SH/SZ/BJ')
+            raise ActionError('股票代码在当前目录中不存在或市场不唯一，请明确选择SH/SZ/BJ')
         return matches[0]
     security = unified_code(market, code)
     if len(matches) == 1 and matches[0] != security:
-        raise AdjustmentError(f'{code}属于{matches[0][-2:]}市场，当前选择{market}；请选择自动识别或正确市场')
+        raise ActionError(f'{code}属于{matches[0][-2:]}市场，当前选择{market}；请选择自动识别或正确市场')
     return security
 
 
@@ -53,19 +54,19 @@ class AdjustmentDataPlugin:
     def _history(self, market, code, start, end, *, require_adjustment=False):
         lower, upper = date.fromisoformat(iso(start)), date.fromisoformat(iso(end))
         if lower < date(2021, 1, 1) or lower > upper or (upper-lower).days > MAX_DAYS:
-            raise AdjustmentError('现有行情支持2021年起；起止须有序且最多3660日')
+            raise ActionError('现有行情支持2021年起；起止须有序且最多3660日')
         with self.mysql.read_engine.connect().execution_options(isolation_level='REPEATABLE READ') as conn, conn.begin():
             security = resolve_security(conn, market, code)
             market, code = security[-2:], security[:6]
             cutoff, problem = read_trade_day_cutoff(conn, datetime.now(CHINA))
             if cutoff is None:
-                raise AdjustmentError(problem)
+                raise ActionError(problem)
             if upper > cutoff.date():
                 from sqlalchemy import text
                 future_trade = conn.execute(text('SELECT 1 FROM trade_calendar WHERE trade_date>:cutoff '
                     'AND trade_date<=:upper AND is_trade=1 LIMIT 1'), dict(cutoff=cutoff.date(), upper=upper)).first()
                 if upper > datetime.now(CHINA).date() or future_trade:
-                    raise AdjustmentError('范围包含尚未结束的交易日，请缩短计算范围')
+                    raise ActionError('范围包含尚未结束的交易日，请缩短计算范围')
             prices = close_prices(conn, self.quotes, market, code, lower, upper)
             problem, observed, event_plans = '', [], {}
             try:
@@ -130,7 +131,7 @@ class AdjustmentDataPlugin:
         for security in securities:
             try:
                 results.append(await self.calculate(security[-2:], security[:6], scope.start, scope.end))
-            except (AdjustmentError, ValueError, KeyError, TypeError) as exc:
+            except (ActionError, ValueError, KeyError, TypeError) as exc:
                 findings = (dict(security=security, date=getattr(exc, 'day', ''), identity=getattr(exc, 'identity', ''), message=str(exc)),)
                 return tuple(CheckEvidence(k, 'fail', security + '：' + str(exc), findings=findings) for k in identifiers)
         message = f'核实{len(results)}只证券，共{sum(len(r["rows"]) for r in results)}个交易日；输入完整集合、摘要和计算规则通过'

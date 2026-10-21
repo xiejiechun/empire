@@ -48,6 +48,9 @@ class PreparationDetail(QWidget):
         self.tabs = QTabWidget()
         self.tabs.setAccessibleName('数据准备详细信息')
         layout.addWidget(self.tabs)
+        self.products = QTextBrowser()
+        self.products.setAccessibleName('具体产物与名义派息结果')
+        self.tabs.addTab(self.products, '具体产物')
         acceptance = QWidget()
         acceptance_layout = QVBoxLayout(acceptance)
         self.table = table(['检查什么', '哪一部分', '结果'])
@@ -82,6 +85,9 @@ class PreparationDetail(QWidget):
         old_id = self.entry['id'] if self.entry else None
         old_source = self.source.currentText() if old_id == entry['id'] else entry['source']
         self.entry = entry
+        from empire.features.preparation.products import initial_products, products_text
+        self.products.setPlainText(products_text(entry.get('products', initial_products()))
+            if entry['id'] == 'dividends' else '本项不是分红汇总；在分红送转的具体产物中查看独立计算。')
         self.heading.setText(f"{plain(entry['title'])} · {STATUS.get(entry['status'], entry['status'])}")
         self.source.blockSignals(True)
         self.source.clear()
@@ -159,3 +165,4 @@ class PreparationDetail(QWidget):
         rows(self.findings, [])
         for browser in (self.evidence, self.specification, self.blockers, self.technical):
             browser.clear()
+        self.products.clear()

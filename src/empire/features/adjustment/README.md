@@ -4,7 +4,8 @@
 
 | 修改内容 | 正式位置 |
 | --- | --- |
-| 价格/事件计算、错误与 ALGORITHM | `contract.py` |
+| 理论价格公式、因子计算与 ALGORITHM | `contract.py` |
+| 唯一事件资格/歧义、ActionError与数值日期规则 | `capital_actions/event_rules.py`（公开纯规则；原contract.actions及AdjustmentError已退役） |
 | 输入证明、事件解码、停牌范围、收盘完整集合 | `inputs.py` |
 | 同快照读取、计算、用途与新鲜度判定 | `query.py` |
 | 页面交互与图表 | `ui.py`、`chart.py` |

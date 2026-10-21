@@ -95,6 +95,11 @@ class CapitalPage(QWidget):
         details_layout = QVBoxLayout(details)
         details_layout.addWidget(self.table, 1)
         self.views.addTab(details, '检索明细')
+        self.distribution = None
+        if kind == 'dividends':
+            from empire.features.capital_actions.ui_distribution import DistributionPanel
+            self.distribution = DistributionPanel(self)
+            self.views.addTab(self.distribution, '名义派息汇总')
         self.profile = CardReader('所选方案档案与关键日期')
         self.splitter = DetailSplit(self.views, self.profile, '方案与关键日期')
         layout.addWidget(self.splitter, 1)
@@ -177,6 +182,8 @@ class CapitalPage(QWidget):
             self.query_scope.close()
             self.timer.stop()
             return
+        if self.distribution is not None:
+            self.distribution.tick()
         if self.future and self.future.done():
             future, self.future = self.future, None
             if self.requested != self.spec():

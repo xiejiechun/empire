@@ -202,3 +202,5 @@ MySQL 使用 stock 保留当前股票列表、collection_state 保留每项目�
 ## 公司行动与复权代码定位
 
 [通达信增发送配](src/empire/features/capital_actions/README.md) 与 [自算复权](src/empire/features/adjustment/README.md) 各有独立业务包；复权通过公开规范读取已归档事件和行情，并在同一个数据库快照中验证输入。
+
+股东回报首批：数据准备保留主题总检查，并在分红具体产物及分红送转页面提供闭区间已实施名义每股含税派息汇总；不是到账现金。股息率、持仓现金、回购汇总及稀释未实现，原历史失败保留。见[本批状态与矩阵](docs/evidence/shareholder-return-p0p1-2026-10-22.md)。

@@ -9,6 +9,7 @@
 | 跨业务范围与输入选项 | `empire.contracts.preparation_scope` |
 | 纯通用证据和三日观测时效 | `evidence.py` |
 | 正式检查聚合、缓存和计算调度 | `query.py`、`cache.py`、`computation.py`、`inventory.py`、`results.py` |
+| 具体产物状态、独立分红正式查询和同报告缓存绑定 | `products.py`；不增准备贡献或第二准备系统 |
 | 页面布局、交互、详情和范围草稿 | `ui.py` 与 `ui_*` |
 | 已有最终装配阶段 | `composition.plugins_for(plugins)` |
 

@@ -1,0 +1,1107 @@
+{
+  "started_at": "2026-10-21T18:37:09.843494+00:00",
+  "head": "db21f1d7d3be439fe495b57d8bbb8a1f85c2b75f",
+  "source_digest": "b06b3baf074a5750ed58bc5d0a210ab1ae406577f2d3fdf138c54513af9bd221",
+  "source_requests": 0,
+  "collectors_started": false,
+  "archiver_started": false,
+  "scope": {
+    "codes": [
+      "000001"
+    ],
+    "start": "2026-01-01",
+    "end": "2026-10-20"
+  },
+  "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "summary": {
+    "id": "nominal_dividends",
+    "title": "已实施名义每股派息",
+    "state": "已计算",
+    "purpose": "analysis",
+    "scope": {
+      "purpose": "analysis",
+      "codes": [
+        "000001"
+      ],
+      "start": "2026-01-01",
+      "end": "2026-10-20",
+      "index_codes": [],
+      "study": "",
+      "focus": "",
+      "scan": "all"
+    },
+    "checked_at": "2026-10-21T18:37:10.190145+00:00",
+    "observed_at": "2026-10-21T17:45:49.469196+00:00",
+    "currency": "CNY",
+    "unit": "元/当期股（含税）",
+    "formula": "Σ所选闭区间除息日的明确实施每股含税现金；每10股=每股×10",
+    "version": "nominal-dividend-v1",
+    "checks": [
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "keys",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "coverage",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "quality",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "freshness",
+        "status": "pass",
+        "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "temporal",
+        "status": "pass",
+        "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+        "blocking": false,
+        "findings": [],
+        "reason": "source_limit",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      }
+    ],
+    "securities": [
+      {
+        "security": "000001.SZ",
+        "rows": [
+          {
+            "record_key": "f01ac91aae58b442287c27341239a550c4dcc043a5a35ac03a67a18206aa28eb",
+            "ex_date": "2026-06-12",
+            "report_date": "2025-12-31",
+            "record_date": "2026-06-11",
+            "cash_per_share": "0.36",
+            "cash_per_ten": "3.6",
+            "status": "实施方案"
+          },
+          {
+            "record_key": "3ab54e7a1963d64c20e4a82008b1302da938e81ba7ca51e22ce25a9f69e9be02",
+            "ex_date": "2026-09-24",
+            "report_date": "2026-06-30",
+            "record_date": "2026-09-23",
+            "cash_per_share": "0.249",
+            "cash_per_ten": "2.49",
+            "status": "实施方案"
+          }
+        ],
+        "cash_per_share": "0.609",
+        "cash_per_ten": "6.09",
+        "full_unit_count": 28,
+        "unit_content_hash": "5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33"
+      }
+    ],
+    "limitations": [
+      "名义每股含税派息，不是到账现金；各事件当期一股口径，不是期初一股收益。",
+      "当前来源修订版；缺稳定事件关联和逐次修订可用日，不用于历史信号。",
+      "无持仓、支付日及税费；不计算股息率、现金收益或稀释。股数基准变化时名义金额不可当持仓收益。"
+    ],
+    "input_hash": "5fa8528dbc8e637c476c3152cda8ddd1dd97e0cc81529992951ea3de8ec1976b"
+  },
+  "independent_oracle": "360/1000 + 249/1000 = 609/1000 yuan/share; ten shares 609/100",
+  "boundaries": {
+    "2026-06-11": {
+      "id": "nominal_dividends",
+      "title": "已实施名义每股派息",
+      "state": "已计算",
+      "purpose": "analysis",
+      "scope": {
+        "purpose": "analysis",
+        "codes": [
+          "000001"
+        ],
+        "start": "2026-01-01",
+        "end": "2026-06-11",
+        "index_codes": [],
+        "study": "",
+        "focus": "",
+        "scan": "all"
+      },
+      "checked_at": "2026-10-21T18:37:10.214147+00:00",
+      "observed_at": "2026-10-21T17:45:49.469196+00:00",
+      "currency": "CNY",
+      "unit": "元/当期股（含税）",
+      "formula": "Σ所选闭区间除息日的明确实施每股含税现金；每10股=每股×10",
+      "version": "nominal-dividend-v1",
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-06-11；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-06-11；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-06-11；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-06-11；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+          "blocking": true,
+          "findings": [],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+          "blocking": false,
+          "findings": [],
+          "reason": "source_limit",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        }
+      ],
+      "securities": [
+        {
+          "security": "000001.SZ",
+          "rows": [],
+          "cash_per_share": "0",
+          "cash_per_ten": "0",
+          "full_unit_count": 28,
+          "unit_content_hash": "5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33"
+        }
+      ],
+      "limitations": [
+        "名义每股含税派息，不是到账现金；各事件当期一股口径，不是期初一股收益。",
+        "当前来源修订版；缺稳定事件关联和逐次修订可用日，不用于历史信号。",
+        "无持仓、支付日及税费；不计算股息率、现金收益或稀释。股数基准变化时名义金额不可当持仓收益。"
+      ],
+      "input_hash": "21e37c60d17245d23a66028fb258d3982e41e3e654c8c95b4be7c4f10c89b44b"
+    },
+    "2026-06-12": {
+      "id": "nominal_dividends",
+      "title": "已实施名义每股派息",
+      "state": "已计算",
+      "purpose": "analysis",
+      "scope": {
+        "purpose": "analysis",
+        "codes": [
+          "000001"
+        ],
+        "start": "2026-01-01",
+        "end": "2026-06-12",
+        "index_codes": [],
+        "study": "",
+        "focus": "",
+        "scan": "all"
+      },
+      "checked_at": "2026-10-21T18:37:10.247950+00:00",
+      "observed_at": "2026-10-21T17:45:49.469196+00:00",
+      "currency": "CNY",
+      "unit": "元/当期股（含税）",
+      "formula": "Σ所选闭区间除息日的明确实施每股含税现金；每10股=每股×10",
+      "version": "nominal-dividend-v1",
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-06-12；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 1 条；键集合 72161f084870764a25e125f570a5f7ff2aa486e7883c48fe51772471a097a013；内容 e77f071f7fd49694c0e3a1e4a79152501170d27615a2ce2f5bab0c5626cb15f4；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-06-12；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 1 条；键集合 72161f084870764a25e125f570a5f7ff2aa486e7883c48fe51772471a097a013；内容 e77f071f7fd49694c0e3a1e4a79152501170d27615a2ce2f5bab0c5626cb15f4；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-06-12；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 1 条；键集合 72161f084870764a25e125f570a5f7ff2aa486e7883c48fe51772471a097a013；内容 e77f071f7fd49694c0e3a1e4a79152501170d27615a2ce2f5bab0c5626cb15f4；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-06-12；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 1 条；键集合 72161f084870764a25e125f570a5f7ff2aa486e7883c48fe51772471a097a013；内容 e77f071f7fd49694c0e3a1e4a79152501170d27615a2ce2f5bab0c5626cb15f4；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+          "blocking": true,
+          "findings": [],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+          "blocking": false,
+          "findings": [],
+          "reason": "source_limit",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        }
+      ],
+      "securities": [
+        {
+          "security": "000001.SZ",
+          "rows": [
+            {
+              "record_key": "f01ac91aae58b442287c27341239a550c4dcc043a5a35ac03a67a18206aa28eb",
+              "ex_date": "2026-06-12",
+              "report_date": "2025-12-31",
+              "record_date": "2026-06-11",
+              "cash_per_share": "0.36",
+              "cash_per_ten": "3.6",
+              "status": "实施方案"
+            }
+          ],
+          "cash_per_share": "0.36",
+          "cash_per_ten": "3.6",
+          "full_unit_count": 28,
+          "unit_content_hash": "5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33"
+        }
+      ],
+      "limitations": [
+        "名义每股含税派息，不是到账现金；各事件当期一股口径，不是期初一股收益。",
+        "当前来源修订版；缺稳定事件关联和逐次修订可用日，不用于历史信号。",
+        "无持仓、支付日及税费；不计算股息率、现金收益或稀释。股数基准变化时名义金额不可当持仓收益。"
+      ],
+      "input_hash": "097e4697ea8b55b93554ca3fe1408f8f567b94f5f9127eee9f82440133bab3d2"
+    },
+    "2026-09-23": {
+      "id": "nominal_dividends",
+      "title": "已实施名义每股派息",
+      "state": "已计算",
+      "purpose": "analysis",
+      "scope": {
+        "purpose": "analysis",
+        "codes": [
+          "000001"
+        ],
+        "start": "2026-01-01",
+        "end": "2026-09-23",
+        "index_codes": [],
+        "study": "",
+        "focus": "",
+        "scan": "all"
+      },
+      "checked_at": "2026-10-21T18:37:10.270641+00:00",
+      "observed_at": "2026-10-21T17:45:49.469196+00:00",
+      "currency": "CNY",
+      "unit": "元/当期股（含税）",
+      "formula": "Σ所选闭区间除息日的明确实施每股含税现金；每10股=每股×10",
+      "version": "nominal-dividend-v1",
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-09-23；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 1 条；键集合 72161f084870764a25e125f570a5f7ff2aa486e7883c48fe51772471a097a013；内容 e77f071f7fd49694c0e3a1e4a79152501170d27615a2ce2f5bab0c5626cb15f4；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-09-23；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 1 条；键集合 72161f084870764a25e125f570a5f7ff2aa486e7883c48fe51772471a097a013；内容 e77f071f7fd49694c0e3a1e4a79152501170d27615a2ce2f5bab0c5626cb15f4；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-09-23；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 1 条；键集合 72161f084870764a25e125f570a5f7ff2aa486e7883c48fe51772471a097a013；内容 e77f071f7fd49694c0e3a1e4a79152501170d27615a2ce2f5bab0c5626cb15f4；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-09-23；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 1 条；键集合 72161f084870764a25e125f570a5f7ff2aa486e7883c48fe51772471a097a013；内容 e77f071f7fd49694c0e3a1e4a79152501170d27615a2ce2f5bab0c5626cb15f4；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+          "blocking": true,
+          "findings": [],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+          "blocking": false,
+          "findings": [],
+          "reason": "source_limit",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        }
+      ],
+      "securities": [
+        {
+          "security": "000001.SZ",
+          "rows": [
+            {
+              "record_key": "f01ac91aae58b442287c27341239a550c4dcc043a5a35ac03a67a18206aa28eb",
+              "ex_date": "2026-06-12",
+              "report_date": "2025-12-31",
+              "record_date": "2026-06-11",
+              "cash_per_share": "0.36",
+              "cash_per_ten": "3.6",
+              "status": "实施方案"
+            }
+          ],
+          "cash_per_share": "0.36",
+          "cash_per_ten": "3.6",
+          "full_unit_count": 28,
+          "unit_content_hash": "5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33"
+        }
+      ],
+      "limitations": [
+        "名义每股含税派息，不是到账现金；各事件当期一股口径，不是期初一股收益。",
+        "当前来源修订版；缺稳定事件关联和逐次修订可用日，不用于历史信号。",
+        "无持仓、支付日及税费；不计算股息率、现金收益或稀释。股数基准变化时名义金额不可当持仓收益。"
+      ],
+      "input_hash": "91d46091c46caa2bc136ade83f38dd7fcdd03d18b0c745ada591f9588117e49e"
+    },
+    "2026-09-24": {
+      "id": "nominal_dividends",
+      "title": "已实施名义每股派息",
+      "state": "已计算",
+      "purpose": "analysis",
+      "scope": {
+        "purpose": "analysis",
+        "codes": [
+          "000001"
+        ],
+        "start": "2026-01-01",
+        "end": "2026-09-24",
+        "index_codes": [],
+        "study": "",
+        "focus": "",
+        "scan": "all"
+      },
+      "checked_at": "2026-10-21T18:37:10.279273+00:00",
+      "observed_at": "2026-10-21T17:45:49.469196+00:00",
+      "currency": "CNY",
+      "unit": "元/当期股（含税）",
+      "formula": "Σ所选闭区间除息日的明确实施每股含税现金；每10股=每股×10",
+      "version": "nominal-dividend-v1",
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-09-24；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-09-24；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-09-24；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-09-24；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+          "blocking": true,
+          "findings": [],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+          "blocking": false,
+          "findings": [],
+          "reason": "source_limit",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        }
+      ],
+      "securities": [
+        {
+          "security": "000001.SZ",
+          "rows": [
+            {
+              "record_key": "f01ac91aae58b442287c27341239a550c4dcc043a5a35ac03a67a18206aa28eb",
+              "ex_date": "2026-06-12",
+              "report_date": "2025-12-31",
+              "record_date": "2026-06-11",
+              "cash_per_share": "0.36",
+              "cash_per_ten": "3.6",
+              "status": "实施方案"
+            },
+            {
+              "record_key": "3ab54e7a1963d64c20e4a82008b1302da938e81ba7ca51e22ce25a9f69e9be02",
+              "ex_date": "2026-09-24",
+              "report_date": "2026-06-30",
+              "record_date": "2026-09-23",
+              "cash_per_share": "0.249",
+              "cash_per_ten": "2.49",
+              "status": "实施方案"
+            }
+          ],
+          "cash_per_share": "0.609",
+          "cash_per_ten": "6.09",
+          "full_unit_count": 28,
+          "unit_content_hash": "5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33"
+        }
+      ],
+      "limitations": [
+        "名义每股含税派息，不是到账现金；各事件当期一股口径，不是期初一股收益。",
+        "当前来源修订版；缺稳定事件关联和逐次修订可用日，不用于历史信号。",
+        "无持仓、支付日及税费；不计算股息率、现金收益或稀释。股数基准变化时名义金额不可当持仓收益。"
+      ],
+      "input_hash": "388b7009fadfd0c728bb8c2011bd11cea688cd5f60371e3625bccd7d6d7bf5f5"
+    }
+  },
+  "changed_security": {
+    "id": "nominal_dividends",
+    "title": "已实施名义每股派息",
+    "state": "已计算",
+    "purpose": "analysis",
+    "scope": {
+      "purpose": "analysis",
+      "codes": [
+        "600000"
+      ],
+      "start": "2026-01-01",
+      "end": "2026-10-20",
+      "index_codes": [],
+      "study": "",
+      "focus": "",
+      "scan": "all"
+    },
+    "checked_at": "2026-10-21T18:37:10.316850+00:00",
+    "observed_at": "2026-10-21T17:45:49.469196+00:00",
+    "currency": "CNY",
+    "unit": "元/当期股（含税）",
+    "formula": "Σ所选闭区间除息日的明确实施每股含税现金；每10股=每股×10",
+    "version": "nominal-dividend-v1",
+    "checks": [
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；600000；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600000.SH",
+            "message": "完整单元 26 条，范围内 1 条；键集合 4d130a066f05df8e69b4646d3a09dabab5812411e912e487063f81437b4747ae；内容 3361241724be67a16a0ebf0e5ee2bdff93305991fbe25d587f41ac169c3bcb78；完整单元内容 3134dac8a08ae63e19497374eb69cca58e228edb29a0cd8ffcaa181d8d4180ee；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "keys",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；600000；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600000.SH",
+            "message": "完整单元 26 条，范围内 1 条；键集合 4d130a066f05df8e69b4646d3a09dabab5812411e912e487063f81437b4747ae；内容 3361241724be67a16a0ebf0e5ee2bdff93305991fbe25d587f41ac169c3bcb78；完整单元内容 3134dac8a08ae63e19497374eb69cca58e228edb29a0cd8ffcaa181d8d4180ee；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "coverage",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；600000；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600000.SH",
+            "message": "完整单元 26 条，范围内 1 条；键集合 4d130a066f05df8e69b4646d3a09dabab5812411e912e487063f81437b4747ae；内容 3361241724be67a16a0ebf0e5ee2bdff93305991fbe25d587f41ac169c3bcb78；完整单元内容 3134dac8a08ae63e19497374eb69cca58e228edb29a0cd8ffcaa181d8d4180ee；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "quality",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；600000；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600000.SH",
+            "message": "完整单元 26 条，范围内 1 条；键集合 4d130a066f05df8e69b4646d3a09dabab5812411e912e487063f81437b4747ae；内容 3361241724be67a16a0ebf0e5ee2bdff93305991fbe25d587f41ac169c3bcb78；完整单元内容 3134dac8a08ae63e19497374eb69cca58e228edb29a0cd8ffcaa181d8d4180ee；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "freshness",
+        "status": "pass",
+        "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "temporal",
+        "status": "pass",
+        "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+        "blocking": false,
+        "findings": [],
+        "reason": "source_limit",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      }
+    ],
+    "securities": [
+      {
+        "security": "600000.SH",
+        "rows": [
+          {
+            "record_key": "2de09ccf2dd3d6d28ba06a7cb68c2a2828ff1a4e77364ed17d87dd40340c91e6",
+            "ex_date": "2026-07-16",
+            "report_date": "2025-12-31",
+            "record_date": "2026-07-15",
+            "cash_per_share": "0.42",
+            "cash_per_ten": "4.2",
+            "status": "实施方案"
+          }
+        ],
+        "cash_per_share": "0.42",
+        "cash_per_ten": "4.2",
+        "full_unit_count": 26,
+        "unit_content_hash": "3134dac8a08ae63e19497374eb69cca58e228edb29a0cd8ffcaa181d8d4180ee"
+      }
+    ],
+    "limitations": [
+      "名义每股含税派息，不是到账现金；各事件当期一股口径，不是期初一股收益。",
+      "当前来源修订版；缺稳定事件关联和逐次修订可用日，不用于历史信号。",
+      "无持仓、支付日及税费；不计算股息率、现金收益或稀释。股数基准变化时名义金额不可当持仓收益。"
+    ],
+    "input_hash": "3acb27abe0182903a0793cb302aca3ee08404d355fc986de89b4ced41315d172"
+  },
+  "retained_failure_600938": {
+    "id": "nominal_dividends",
+    "title": "已实施名义每股派息",
+    "state": "数据阻断",
+    "purpose": "analysis",
+    "scope": {
+      "purpose": "analysis",
+      "codes": [
+        "600938"
+      ],
+      "start": "2026-01-01",
+      "end": "2026-10-20",
+      "index_codes": [],
+      "study": "",
+      "focus": "",
+      "scan": "all"
+    },
+    "checked_at": "2026-10-21T18:37:10.340776+00:00",
+    "observed_at": "",
+    "currency": "CNY",
+    "unit": "元/当期股（含税）",
+    "formula": "Σ所选闭区间除息日的明确实施每股含税现金；每10股=每股×10",
+    "version": "nominal-dividend-v1",
+    "checks": [
+      {
+        "criterion": "fields",
+        "status": "fail",
+        "measured": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600938.SH",
+            "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+          }
+        ],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "keys",
+        "status": "fail",
+        "measured": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600938.SH",
+            "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+          }
+        ],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "coverage",
+        "status": "fail",
+        "measured": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600938.SH",
+            "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+          }
+        ],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "quality",
+        "status": "fail",
+        "measured": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600938.SH",
+            "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+          }
+        ],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "freshness",
+        "status": "fail",
+        "measured": "各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "temporal",
+        "status": "pass",
+        "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+        "blocking": false,
+        "findings": [],
+        "reason": "source_limit",
+        "observed_at": ""
+      }
+    ],
+    "securities": [],
+    "limitations": [
+      "名义每股含税派息，不是到账现金；各事件当期一股口径，不是期初一股收益。",
+      "当前来源修订版；缺稳定事件关联和逐次修订可用日，不用于历史信号。",
+      "无持仓、支付日及税费；不计算股息率、现金收益或稀释。股数基准变化时名义金额不可当持仓收益。"
+    ],
+    "problem": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。；各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间"
+  },
+  "historical_signal": {
+    "id": "nominal_dividends",
+    "title": "已实施名义每股派息",
+    "state": "来源受限",
+    "purpose": "historical_signal",
+    "scope": {
+      "purpose": "historical_signal",
+      "codes": [
+        "000001"
+      ],
+      "start": "2026-01-01",
+      "end": "2026-10-20",
+      "index_codes": [],
+      "study": "",
+      "focus": "",
+      "scan": "all"
+    },
+    "checked_at": "2026-10-21T18:37:10.366100+00:00",
+    "observed_at": "2026-10-21T17:45:49.469196+00:00",
+    "currency": "CNY",
+    "unit": "元/当期股（含税）",
+    "formula": "Σ所选闭区间除息日的明确实施每股含税现金；每10股=每股×10",
+    "version": "nominal-dividend-v1",
+    "checks": [
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "历史选股回测；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "keys",
+        "status": "pass",
+        "measured": "历史选股回测；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "coverage",
+        "status": "pass",
+        "measured": "历史选股回测；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "quality",
+        "status": "pass",
+        "measured": "历史选股回测；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "freshness",
+        "status": "pass",
+        "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "temporal",
+        "status": "fail",
+        "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+        "blocking": true,
+        "findings": [],
+        "reason": "source_limit",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      }
+    ],
+    "securities": [],
+    "limitations": [
+      "名义每股含税派息，不是到账现金；各事件当期一股口径，不是期初一股收益。",
+      "当前来源修订版；缺稳定事件关联和逐次修订可用日，不用于历史信号。",
+      "无持仓、支付日及税费；不计算股息率、现金收益或稀释。股数基准变化时名义金额不可当持仓收益。"
+    ],
+    "problem": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。"
+  },
+  "full_history_count": 28,
+  "repurchase_checks": [
+    {
+      "criterion": "fields",
+      "status": "fail",
+      "measured": "5586方案；身份、日期、数量金额及来源说明逐行校验；NULL保持未知",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "keys",
+      "status": "fail",
+      "measured": "唯一来源方案编号；完整SQL键与规范内容滚动摘要匹配",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "coverage",
+      "status": "fail",
+      "measured": "完整来源集合与SQL逐行摘要核对；不是依据最大日期或条数推断完整",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "quality",
+      "status": "fail",
+      "measured": "计划与累计实际分开，未知状态保留；回购完成不推断注销完成",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "freshness",
+      "status": "fail",
+      "measured": "SQL完整集合匹配后，以SQL或匹配完整已归档轮次的核验时间确认3天时效；Redis可选",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "仅当前修订和公告自然日，无完整旧版本/日内时刻，不用于严格历史信号回放",
+      "blocking": false,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    }
+  ],
+  "repurchase_audit": {
+    "count": 5586,
+    "digest": "1322bf7908bae464addeac6939f3f9b0db7fe6bb7c85fced2caa43324794688d",
+    "valid": false,
+    "proof": {
+      "count": 5553,
+      "digest": "6a7832dede22b8ac4cb646ba424d49b6cd177634f28b593dcad4980faf742467",
+      "contract": 1,
+      "observed_at": "2026-10-16T01:47:09.508899+00:00"
+    },
+    "last": {
+      "plan_id": "9998",
+      "unified_code": "002108.SZ",
+      "name": "沧州明珠",
+      "share_type": "流通A股",
+      "plan_date": "2023-06-01",
+      "updated_date": "2025-07-19",
+      "progress_code": "006",
+      "plan_updated_date": "2025-07-19",
+      "actual_through": "2023-06-09",
+      "notice_date": "2023-06-13",
+      "start_date": "2023-05-31",
+      "end_date": "2023-11-30",
+      "finish_date": "2023-06-09",
+      "shareholder_notice_date": null,
+      "advance_date": "2023-06-09",
+      "plan_price_upper": "6.5",
+      "plan_price_lower": null,
+      "plan_quantity_upper": "16923000",
+      "plan_quantity_lower": "13846200",
+      "plan_amount_upper": "110000000",
+      "plan_amount_lower": "90000000",
+      "actual_price_upper": "4.66",
+      "actual_price_lower": "4.39",
+      "actual_quantity": "24099560",
+      "actual_amount": "109986450.42",
+      "objective": "基于对公司价值的认可和未来发展前景的坚定信心,为维护广大投资者利益,进一步健全公司长效激励机制,充分调动公司员工的主动性与创造力,共同促进公司的长期发展。公司计划以自有资金通过集中竞价的方式从二级市场回购股份,用于实施股权激励或员工持股计划。",
+      "remark": "2023.06.01公告\r\n自董事会审议通过回购股份方案之日起6个月内。\r\n\r\n2025.07.19公告\r\n因公司拟终止实施2023年股权激励计划,故公司对该部分股份变更用途,由原方案“用于实施股权激励计划或员工持股计划”变更为“用于注销并减少公司注册资本”,拟注销库存股740,500股,股份数量占公司目前总股本的0.0445%。",
+      "progress_remark": null
+    },
+    "invalid": 0
+  },
+  "adjustment": {
+    "blocked": "000001.SZ在2026-01-01～2026-10-20没有已归档日行情；请在采集管理的“历史盘口与日行情摘要”补齐该证券和日期，再加载K线"
+  },
+  "global_pending": 0,
+  "running_jobs": [],
+  "finished_at": "2026-10-21T18:37:11.216607+00:00",
+  "sql_verbs": {
+    "show": 18,
+    "select": 92,
+    "start": 8
+  }
+}

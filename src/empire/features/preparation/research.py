@@ -2,7 +2,7 @@
 from empire.contracts.preparation_scope import FOCUSES, STUDIES
 from empire.features.preparation.catalog import BY_ID
 
-RESEARCH_VERSION = 1
+RESEARCH_VERSION = 2
 SIGNALS = {
     'price': ('historical_quote', 'adjusted_prices'),
     'valuation': ('pe', 'pb', 'ps', 'market_value', 'dividend_yield'),

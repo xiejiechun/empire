@@ -264,6 +264,12 @@ class CapitalDataPlugin:
         checks.append(temporal(scope, stamp_text))
         return tuple(checks)
 
+    async def distribution_summary(self, request):
+        from empire.features.capital_actions.distribution import summarize_distribution
+        if self.kind != 'dividends':
+            raise ValueError('仅分红支持名义派息汇总')
+        return await summarize_distribution(self, request)
+
     async def stop(self):
         self.mysql = None
 

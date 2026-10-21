@@ -15,6 +15,8 @@
 | 三项采集插件 | `dividends_collector.py`、`issues_collector.py`、`rights_collector.py` |
 | 唯一业务归档、内容比较、旧版保护与摘要贡献 | `dataset.py` |
 | 正式有界查询、完整集合证明、详情复用候选 | `query.py`、`issue_candidates.py` |
+| 唯一事件资格/歧义、公开错误与数值日期规则（复权共同使用） | `event_rules.py` |
+| 只读名义派息、结果文字和分红页操作 | `distribution.py`、`distribution_text.py`、`ui_distribution.py` |
 | 页面、方案预览与字段文字 | `ui.py`、`preview.py`、`words.py` |
 
 公开 `contract` / `fields` / `codec` 提供原有纯规范；跨业务读取方不借用采集执行或查询插件实现。`contract.validate_rows` 仍用现有源字段重建及详情校验，详情只依赖字段叶子模块，避免循环导入。所有来源URL、列名、过滤、数量口径、解析异常、资金单位与规范摘要算法保持原定义，不增加反射插件发现、兼容转发或第二归档路径。

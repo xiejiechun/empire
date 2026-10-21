@@ -73,7 +73,7 @@ async def test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_n
     monkeypatch.setattr('empire.plugins.pipeline.fingerprints.FingerprintCache.peek',AsyncMock(return_value=proofs))
     client = SimpleNamespace(hget=AsyncMock(return_value='{"phase":"fetch","scope_changed":true}' if case=='pending' else '{}'))
     store=SimpleNamespace(prefix='unit-test',client=client)
-    plugin=SimpleNamespace(mysql=SimpleNamespace(read=AsyncMock(return_value=(checks,verified))),
+    plugin=SimpleNamespace(mysql=SimpleNamespace(read=AsyncMock(return_value=(checks,verified,{}))),
         kind='dividends',source='tdx',job_key='tdx-dividends-v1',archive_settings={},
         context=SimpleNamespace(optional=lambda _:None if case=='offline' else store))
     result={c.criterion:c for c in await preparation_check(plugin,PreparationScope())}

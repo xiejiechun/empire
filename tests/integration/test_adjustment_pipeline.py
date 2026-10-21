@@ -12,9 +12,9 @@ from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
 from empire.core.config import load_config
 from empire.core.time import CHINA
-from empire.features.adjustment.contract import AdjustmentError
 from empire.features.calendar.contract import month_dates
 from empire.features.capital_actions.contract import chain, digest
+from empire.features.capital_actions.event_rules import ActionError
 from empire.features.capital_actions.parser import parse as parse_capital
 from empire.features.kaipanla.canonical import identity
 from empire.features.kaipanla.dates import lifecycle
@@ -122,10 +122,10 @@ async def test_revision_old_response_and_commit_replay_propagate_only_accepted_i
     # Amount changes are distinct source plan identities, not automatically a
     # source-ID revision. The old retained plan makes the proof mismatch rather
     # than being silently discarded by a factor calculator.
-    with pytest.raises(AdjustmentError, match='完整单元'):
+    with pytest.raises(ActionError, match='完整单元'):
         await q.calculate('SZ', '000001', '2026-09-01', '2026-09-02')
     await dividend(10, now+timedelta(minutes=1))
-    with pytest.raises(AdjustmentError):
+    with pytest.raises(ActionError):
         await q.calculate('SZ', '000001', '2026-09-01', '2026-09-02')
     assert old['rows']
     acknowledge = archive.acknowledge
@@ -154,10 +154,10 @@ async def test_rights_combination_and_missing_close_not_silently_filled(inputs):
     await rights(False, now+timedelta(minutes=1))
     result = await q.calculate('SZ', '000001', '2026-09-01', '2026-09-02')
     assert abs(Decimal(result['rows'][-1]['reference'])-Decimal('10.8')/Decimal('1.3')) < Decimal('1e-26')
-    with pytest.raises(AdjustmentError, match='交易日集合'):
+    with pytest.raises(ActionError, match='交易日集合'):
         await q.calculate('SZ', '000001', '2026-09-01', '2026-09-03')
     await quote('2026-09-02', 9, now+timedelta(minutes=2), clock=145900000)
-    with pytest.raises(AdjustmentError, match='收盘后'):
+    with pytest.raises(ActionError, match='收盘后'):
         await q.calculate('SZ', '000001', '2026-09-01', '2026-09-02')
 
 
@@ -168,10 +168,10 @@ async def test_raw_chart_remains_valid_when_archived_ex_date_is_unknown(inputs):
     assert '缺少除权除息日期' in history['adjustment_problem']
     assert [r['close'] for r in history['rows']] == ['10', '9']
     assert all(r['factor'] is None and r['forward_close'] is None for r in history['rows'])
-    with pytest.raises(AdjustmentError, match='缺少除权除息日期'):
+    with pytest.raises(ActionError, match='缺少除权除息日期'):
         await q.calculate('SZ', '000001', '2026-09-01', '2026-09-02')
     await quote('2026-09-02', 9, now+timedelta(minutes=3), clock=145900000)
-    with pytest.raises(AdjustmentError, match='收盘后'):
+    with pytest.raises(ActionError, match='收盘后'):
         await q.history('SZ', '000001', '2026-09-01', '2026-09-02')
     assert await store.client.xlen(store.stream) == 0
 
@@ -184,6 +184,6 @@ async def test_invalid_archived_open_stays_a_gap_and_blocks_all_adjustment(input
     assert history['rows'][0]['close'] == '10' and history['rows'][-1]['close'] is None
     assert '2026-09-02' in history['adjustment_problem'] and '缺口' in history['adjustment_problem']
     assert all(row['factor'] is None and row['forward_close'] is None for row in history['rows'])
-    with pytest.raises(AdjustmentError):
+    with pytest.raises(ActionError):
         await q.calculate('SZ', '000001', '2026-09-01', '2026-09-02')
     assert await store.client.xlen(store.stream) == 0

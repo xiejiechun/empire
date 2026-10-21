@@ -49,7 +49,7 @@ def inspect_unit(kind, unit, stored, state, scope, now):
 
 
 def scoped_check(plugin, scope):
-    now, findings, failed, stamps, verified = datetime.now(UTC), [], [], [], {}
+    now, findings, failed, stamps, verified, units = datetime.now(UTC), [], [], [], {}, {}
     with plugin.mysql.read_engine.connect().execution_options(isolation_level='REPEATABLE READ') as conn:
         conn.exec_driver_sql('START TRANSACTION READ ONLY')
         state = read_state(conn, plugin.namespace, plugin.project_id, plugin.source)
@@ -58,7 +58,7 @@ def scoped_check(plugin, scope):
             'ORDER BY unified_code LIMIT 301').bindparams(bindparam('codes', expanding=True))
         securities = list(conn.execute(sql, dict(codes=list(scope.codes))).scalars())
         if len(securities) != len(scope.codes) or {s[:6] for s in securities} != set(scope.codes):
-            return tuple(CheckEvidence(k, 'fail', '证券不存在或跨市场身份不唯一，不能把缺证券当空集合') for k in CRITERIA), {}
+            return tuple(CheckEvidence(k, 'fail', '证券不存在或跨市场身份不唯一，不能把缺证券当空集合') for k in CRITERIA), {}, {}
         for security in securities:
             stored = conn.execute(text(f'SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code '
                 f'FROM {plugin.table} WHERE unified_code=:security ORDER BY record_key LIMIT 2001'),
@@ -69,6 +69,7 @@ def scoped_check(plugin, scope):
                 stamps.append(stamp)
                 verified[security[-2:] + ':' + security[:6]] = (
                     digest({'rows': ordered([decode(r) for r in stored]), 'manifest': None}), stamp)
+                units[security] = ordered([decode(r) for r in stored])
             except (ValueError, TypeError, KeyError) as exc:
                 failed.append(dict(code=security, message=str(exc)))
         conn.rollback()
@@ -81,11 +82,20 @@ def scoped_check(plugin, scope):
     checks.append(CheckEvidence('freshness', 'pass' if fresh else 'fail',
         f'各完整证券单元SQL证据须在三日内；最早 {observed or "缺少"}；检查执行时间不替代来源时间', observed_at=observed))
     checks.append(temporal(scope, observed))
-    return tuple(checks), verified
+    return tuple(checks), verified, units
+
+
+async def checked_units(plugin, scope):
+    checks, verified, units = await plugin.mysql.read(scoped_check, plugin, scope)
+    return await optional_evidence(plugin, checks, verified), units
 
 
 async def preparation_check(plugin, scope):
-    checks, verified = await plugin.mysql.read(scoped_check, plugin, scope)
+    checks, _ = await checked_units(plugin, scope)
+    return checks
+
+
+async def optional_evidence(plugin, checks, verified):
     store = plugin.context.optional('redis.store') if plugin.context else None
     if store is None:
         return checks

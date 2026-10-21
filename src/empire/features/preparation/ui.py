@@ -242,6 +242,12 @@ class PreparationPage(PreparationActions, QWidget):
             + '\n\n'.join(f"{g['title']} · {g['state']}\n{g['detail']}" for g in guards)
             + '\n\n输入原料、已实现计算、因子研究结果与回测引擎分别验收。未登记产物不会显示已计算。'
               '\n扫描不补采或修改业务值；数据改变后须重新检查。未核验的子集不能自动视为可用。')
+        from empire.features.preparation.products import initial_products, products_text
+        products = report.get('products', initial_products())
+        self.research_summary.setText(self.research_summary.text() + '；产物：' +
+            '；'.join(f"{p['title']}：{p['state']}" for p in products))
+        self.research_conditions.setPlainText(self.research_conditions.toPlainText() +
+            '\n\n具体产物（与主题总检查分别判断）：\n' + products_text(products))
         if report.get('inventory'):
             self.inventory_view.render(report['inventory'])
         if report.get('cache_note'):
@@ -287,6 +293,8 @@ class PreparationPage(PreparationActions, QWidget):
         if not self.report:
             return
         lines = ['数据准备检查报告', self.summary.text(), self.research_summary.toolTip()]
+        from empire.features.preparation.products import products_text
+        lines.append(products_text(self.report.get('products', [])))
         for entry in self.entries:
             lines.append(f"\n【{entry['kind']}】{plain(entry['title'])}：{STATUS.get(entry['status'], entry['status'])}\n"
                          f"开发验收：{entry['assessment']['development']}；采集完整性：{entry['assessment']['integrity']}；"

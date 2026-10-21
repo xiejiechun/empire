@@ -265,6 +265,8 @@ class PreparationPlugin:
         report = self.assemble_report(results_by_id, error or f"本版本测试证据：{artifact['checked_at']}", scope)
         report.update(checked_at=cached['checked_at'], cache_note=cached['cache_note'],
                       started_at=cached.get('started_at', ''), finished_at=cached.get('finished_at', ''))
+        from empire.features.preparation.products import bind_products
+        bind_products(report, cached['products'])
         return report
 
     async def _run_report(self, request, scope):
@@ -298,6 +300,8 @@ class PreparationPlugin:
                 self._progress = self.assemble_report(results_by_id, evidence, scope)
             self._checking, self._current = False, ''
             self._progress = self.assemble_report(results_by_id, evidence, scope)
+            from empire.features.preparation.products import attach_products
+            await attach_products(self._progress, self.context, request)
             return self._progress
         finally:
             self._checking, self._current = False, ''

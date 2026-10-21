@@ -4,7 +4,8 @@ from decimal import Decimal
 
 import pytest
 
-from empire.features.adjustment.contract import AdjustmentError, calculate, ex_reference
+from empire.features.adjustment.contract import calculate, ex_reference
+from empire.features.capital_actions.event_rules import ActionError
 
 
 def price(day, value='10'):
@@ -69,7 +70,7 @@ def test_first_date_is_relative_base_and_future_events_do_not_leak():
 def test_required_components_and_date_are_not_inferred(changes):
     plan = dividend()
     plan['data'].update(changes)
-    with pytest.raises(AdjustmentError):
+    with pytest.raises(ActionError):
         calculate([price('2026-09-01'), price('2026-09-02')], [plan], [])
 
 
@@ -82,12 +83,12 @@ def test_send_total_is_authoritative_even_when_source_components_are_null():
 def test_parallel_same_day_events_are_not_summed_or_selected(kind):
     divs = [dividend(), dividend(cash='2', key='other')] if kind == 'dividends' else []
     rs = [rights(), rights(key='other')] if kind == 'rights' else []
-    with pytest.raises(AdjustmentError, match='同日并列'):
+    with pytest.raises(ActionError, match='同日并列'):
         calculate([price('2026-09-01'), price('2026-09-02')], divs, rs)
 
 
 def test_duplicate_identity_is_error_even_when_counts_match():
-    with pytest.raises(AdjustmentError, match='业务键重复'):
+    with pytest.raises(ActionError, match='业务键重复'):
         calculate([price('2026-09-01'), price('2026-09-02')], [dividend(), dividend()], [])
 
 
@@ -106,29 +107,29 @@ def test_same_report_different_implementation_dates_require_event_link_contract(
     rows = [dividend(key='first'), dividend('2026-09-03', key='revised')]
     for row in rows:
         row['data']['report_date'] = '2025-12-31'
-    with pytest.raises(AdjustmentError, match='缺事件关联'):
+    with pytest.raises(ActionError, match='缺事件关联'):
         calculate([price('2026-09-01'),price('2026-09-02'),price('2026-09-03')],rows,[])
-    with pytest.raises(AdjustmentError, match='缺事件关联'):
+    with pytest.raises(ActionError, match='缺事件关联'):
         calculate([price('2026-09-02'),price('2026-09-03')],rows,[])
 
 
 def test_event_on_absent_or_suspended_day_is_not_moved_to_later_date():
-    with pytest.raises(AdjustmentError, match='2026-09-02'):
+    with pytest.raises(ActionError, match='2026-09-02'):
         calculate([price('2026-09-01'), price('2026-09-03')], [dividend()], [])
 
 
 @pytest.mark.parametrize('value', [None, True, 'nan', 'inf', '-1', '1e25'])
 def test_invalid_values_rejected(value):
-    with pytest.raises(AdjustmentError):
+    with pytest.raises(ActionError):
         ex_reference('10', value, '0', '0', '0')
 
 
 def test_invalid_ohlc_order_and_cash_over_price_rejected():
     raw = [price('2026-09-01'), price('2026-09-02')]
     raw[0]['high'] = '9'
-    with pytest.raises(AdjustmentError, match='高低价'):
+    with pytest.raises(ActionError, match='高低价'):
         calculate(raw, [], [])
-    with pytest.raises(AdjustmentError, match='现金分红'):
+    with pytest.raises(ActionError, match='现金分红'):
         calculate([price('2026-09-01'), price('2026-09-02')], [dividend(cash='10')], [])
 
 

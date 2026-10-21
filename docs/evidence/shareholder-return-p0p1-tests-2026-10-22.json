@@ -1,0 +1,1502 @@
+{
+  "final-domain": {
+    "path": "build\\returns-p0p1-20261022\\final-domain.xml",
+    "tests": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "189",
+      "time": "33.996",
+      "timestamp": "2026-10-22T02:35:25.334716+08:00",
+      "hostname": "xiejiechun"
+    },
+    "cases": [
+      {
+        "name": "test_manual_decimal_oracle_and_closed_endpoints[2026-06-11-0-0]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_manual_decimal_oracle_and_closed_endpoints[2026-06-12-0.36-3.6]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_manual_decimal_oracle_and_closed_endpoints[2026-09-23-0.36-3.6]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_manual_decimal_oracle_and_closed_endpoints[2026-09-24-0.609-6.09]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_summary_includes_first_day_but_adjustment_normalizes_it_away",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_no_per_event_rounding_and_shares_not_required_for_nominal_cash",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_preserved_proposals_never_count[\\u8463\\u4e8b\\u4f1a\\u9884\\u6848]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_preserved_proposals_never_count[\\u80a1\\u4e1c\\u5927\\u4f1a\\u9884\\u6848]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_preserved_proposals_never_count[\\u516c\\u53f8\\u9884\\u6848]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_preserved_proposals_never_count[\\u53d6\\u6d88\\u5206\\u7ea2]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_preserved_proposals_never_count[\\u7ec8\\u6b62]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_ambiguity_and_required_unknowns_block_instead_of_guessing[parallel]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_ambiguity_and_required_unknowns_block_instead_of_guessing[cross_range_report]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_ambiguity_and_required_unknowns_block_instead_of_guessing[missing_date]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_ambiguity_and_required_unknowns_block_instead_of_guessing[missing_cash]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_ambiguity_and_required_unknowns_block_instead_of_guessing[duplicate]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_ambiguity_and_required_unknowns_block_instead_of_guessing[unknown_status]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_ambiguity_and_required_unknowns_block_instead_of_guessing[tax]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_result_states_never_confuse_unproved_empty_with_zero[passed]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_result_states_never_confuse_unproved_empty_with_zero[empty_proven]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_result_states_never_confuse_unproved_empty_with_zero[missing_proof]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_result_states_never_confuse_unproved_empty_with_zero[historical_signal]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_result_states_never_confuse_unproved_empty_with_zero[missing_identity]",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_repurchase_theme_blocker_does_not_propagate_to_independent_dividend_product",
+        "class": "tests.test_dividend_distribution",
+        "status": "passed"
+      },
+      {
+        "name": "test_scope_changes_cancel_old_results_and_recheck_uses_current_fields",
+        "class": "tests.test_distribution_ui",
+        "status": "passed"
+      },
+      {
+        "name": "test_dated_product_cached_force_recheck_and_scope_change",
+        "class": "tests.test_distribution_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_unspecified_range_stays_unchecked_instead_of_zero_or_error",
+        "class": "tests.test_distribution_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_proven_empty_date_projection_ignores_other_security_unknown",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_unit_must_match_keys_and_content_before_date_filter[missing]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_unit_must_match_keys_and_content_before_date_filter[different_key]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_unit_must_match_keys_and_content_before_date_filter[different_content]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_unit_must_match_keys_and_content_before_date_filter[damaged_hash]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_unit_must_match_keys_and_content_before_date_filter[old_contract]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_unit_must_match_keys_and_content_before_date_filter[missing_proof]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_current_revisions_are_never_authorized_as_historical_signals",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_negative_evidence[valid]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_negative_evidence[offline]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_negative_evidence[wrong]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_negative_evidence[old]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_negative_evidence[future]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_negative_evidence[pending]",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_preparation_outcomes_separate_failure_source_limit_and_unchecked",
+        "class": "tests.test_capital_scope",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_lazy_page_query_and_draft_preservation[dividends]",
+        "class": "tests.test_capital_ui",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_lazy_page_query_and_draft_preservation[additional_issues]",
+        "class": "tests.test_capital_ui",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_lazy_page_query_and_draft_preservation[rights_issues]",
+        "class": "tests.test_capital_ui",
+        "status": "passed"
+      },
+      {
+        "name": "test_three_independent_collectors_datasets_and_queries_registered",
+        "class": "tests.test_capital_ui",
+        "status": "passed"
+      },
+      {
+        "name": "test_cash_dividend_removes_mechanical_drop_and_keeps_raw_price",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_theoretical_reference_for_send_transfer_rights_and_combined[0-1-0-0-5]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_theoretical_reference_for_send_transfer_rights_and_combined[0-0-0.5-4-8]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_theoretical_reference_for_send_transfer_rights_and_combined[1-0.5-0.5-4-5.5]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_theoretical_reference_for_send_transfer_rights_and_combined[0-0-1-20-15]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_combined_same_day_and_multiple_events_compound",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_non_implemented_plans_never_affect_factors[\\u8463\\u4e8b\\u4f1a\\u9884\\u6848]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_non_implemented_plans_never_affect_factors[\\u80a1\\u4e1c\\u5927\\u4f1a\\u9884\\u6848]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_non_implemented_plans_never_affect_factors[\\u516c\\u53f8\\u9884\\u6848]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_non_implemented_plans_never_affect_factors[\\u53d6\\u6d88\\u5206\\u7ea2]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_non_implemented_plans_never_affect_factors[\\u7ec8\\u6b62]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_first_date_is_relative_base_and_future_events_do_not_leak",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_required_components_and_date_are_not_inferred[changes0]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_required_components_and_date_are_not_inferred[changes1]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_required_components_and_date_are_not_inferred[changes2]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_required_components_and_date_are_not_inferred[changes3]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_required_components_and_date_are_not_inferred[changes4]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_send_total_is_authoritative_even_when_source_components_are_null",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_parallel_same_day_events_are_not_summed_or_selected[dividends]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_parallel_same_day_events_are_not_summed_or_selected[rights]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_duplicate_identity_is_error_even_when_counts_match",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_proposal_and_implementation_are_preserved_but_only_implementation_counts",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_same_report_different_implementation_dates_require_event_link_contract",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_event_on_absent_or_suspended_day_is_not_moved_to_later_date",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_values_rejected[None]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_values_rejected[True]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_values_rejected[nan]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_values_rejected[inf]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_values_rejected[-1]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_values_rejected[1e25]",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_ohlc_order_and_cash_over_price_rejected",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_repeat_and_revision_recompute_and_fixed_anchor",
+        "class": "tests.test_adjustment",
+        "status": "passed"
+      },
+      {
+        "name": "test_auto_market_resolves_catalogue_and_manual_mismatch_explains_correct_market",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_calculation_registration_is_not_a_collector_or_archive",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_complete_empty_input_requires_proof_and_same_count_different_set_fails",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_future_or_unzoned_proof_rejected[None]",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_future_or_unzoned_proof_rejected[invalid]",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_future_or_unzoned_proof_rejected[2026-09-01T00:00:00]",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_future_or_unzoned_proof_rejected[2026-10-22T18:35:26.790957+00:00]",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_intraday_latest_quote_is_not_accepted_as_close",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_historical_close_clock_is_distinct_from_today_query_cutoff[150000000]",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_historical_close_clock_is_distinct_from_today_query_cutoff[150300870]",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_historical_close_clock_is_distinct_from_today_query_cutoff[153759000]",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_preparation_missing_scope_does_not_scan_all_history",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_factor_page_has_independent_draft_and_discards_stale_query",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_computation_readiness_does_not_claim_source_version_history",
+        "class": "tests.test_adjustment_query",
+        "status": "passed"
+      },
+      {
+        "name": "test_moving_averages_need_full_period_and_include_prices_before_viewport",
+        "class": "tests.test_adjustment_chart",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_raw_day_remains_visible_gap_without_price_or_bridged_average",
+        "class": "tests.test_adjustment_chart",
+        "status": "passed"
+      },
+      {
+        "name": "test_candles_use_entire_query_and_explicit_zoom_pan_boundaries",
+        "class": "tests.test_adjustment_chart",
+        "status": "passed"
+      },
+      {
+        "name": "test_missing_adjustment_never_draws_raw_as_adjusted",
+        "class": "tests.test_adjustment_chart",
+        "status": "passed"
+      },
+      {
+        "name": "test_chart_keyboard_inspection_and_drag_keep_date_and_ohlc_identity",
+        "class": "tests.test_adjustment_chart",
+        "status": "passed"
+      },
+      {
+        "name": "test_table_pagination_does_not_truncate_or_reset_chart_and_drafts",
+        "class": "tests.test_adjustment_chart",
+        "status": "passed"
+      },
+      {
+        "name": "test_recreated_page_restores_applied_result_page_and_independent_draft",
+        "class": "tests.test_adjustment_chart",
+        "status": "passed"
+      },
+      {
+        "name": "test_partial_and_invalid_evidence_never_finishes",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_failure_and_stopped_plugin_revoke_previous_pass",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_sources_cannot_pool_partial_passes",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_one_source_passes_without_corroboration[False]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_one_source_passes_without_corroboration[True]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_registration_is_separate_from_execution_and_missing_tests",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_catalog_is_detailed_unique_and_acyclic",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_catalog_rejects_bad_contributions",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_source_tests_need_real_pass_not_skip_or_other_suite",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_stock_counts_alone_do_not_pass_identifiers_or_market_coverage",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_calendar_same_count_with_missing_date_fails",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_old_sql_upper_bound_and_future_timestamp_are_not_fresh",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_ui_filters_detail_selection_and_lifecycle",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_changed_source_or_corrupt_artifact_cannot_pass",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_dependencies_block_completion_even_when_own_checks_pass",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_stock_sql_wall_clock_is_beijing_without_double_conversion",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_collection_projects_have_independent_boundaries",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_one_project_cannot_claim_two_independent_collection_outputs",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_explicit_same_response_preserves_separate_quality_checks",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_scope_removes_unrelated_preparation_but_preserves_news_service",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_backtest_valuation_scope_keeps_strategy_factors_and_dependencies",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_collection_does_not_wait_for_related_datasets",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_retired_combined_projects_are_not_registered",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_projects_require_independent_collector_plugins[True]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_projects_require_independent_collector_plugins[False]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_company_actions_and_catalog_visible_in_ui",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_preparation_scope_rejects_invalid_requests[value0]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_preparation_scope_rejects_invalid_requests[value1]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_preparation_scope_rejects_invalid_requests[value2]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_preparation_scope_rejects_invalid_requests[value3]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_readiness_separates_source_quality_and_use_limitations",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_checker_cannot_hide_integrity_failure_as_limitation",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_only_declared_analysis_source_quality_can_be_a_limitation[True-analysis-quality-fail-True]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_only_declared_analysis_source_quality_can_be_a_limitation[False-analysis-quality-fail-False]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_only_declared_analysis_source_quality_can_be_a_limitation[True-historical_signal-quality-fail-False]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_only_declared_analysis_source_quality_can_be_a_limitation[True-analysis-coverage-fail-False]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_only_declared_analysis_source_quality_can_be_a_limitation[True-analysis-fields-fail-False]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_only_declared_analysis_source_quality_can_be_a_limitation[True-analysis-quality-unknown-False]",
+        "class": "tests.test_preparation",
+        "status": "passed"
+      },
+      {
+        "name": "test_cached_report_survives_page_and_plugin_recreation_without_provider_reads",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_manual_recheck_replaces_result_and_resets_ttl",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_different_scopes_are_isolated_and_release_evidence_does_not_recheck",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_all_four_business_dimensions_survive_unrelated_plugin_and_test_changes[pass]",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_all_four_business_dimensions_survive_unrelated_plugin_and_test_changes[fail]",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_business_revision_and_query_availability_revoke_cached_checks",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_or_expired_cache_is_rechecked[expired]",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_or_expired_cache_is_rechecked[broken]",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_or_expired_cache_is_rechecked[partial]",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_or_expired_cache_is_rechecked[modified]",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_or_expired_cache_is_rechecked[retired_catalog]",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_or_expired_cache_is_rechecked[retired_share_capital]",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_or_expired_cache_is_rechecked[retired_free_float]",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_cancellation_never_stores_partial_report",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_redis_failure_preserves_check_result_and_displays_cache_failure",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_normalized_scope_uses_same_key",
+        "class": "tests.test_preparation_cache",
+        "status": "passed"
+      },
+      {
+        "name": "test_templates_only_require_selected_inputs_and_preserve_dependencies",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_current_pool_and_raw_input_success_do_not_fake_research_products",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_scope_rejects_incompatible_time_semantics[value0]",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_scope_rejects_incompatible_time_semantics[value1]",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_scope_rejects_incompatible_time_semantics[value2]",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_scope_rejects_incompatible_time_semantics[value3]",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_selected_research_does_not_scan_unrelated_sources",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_financial_announcement_limit_is_blocking_only_for_historical_study",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_overview_does_not_start_any_deep_check",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_partial_coverage_cannot_claim_whole_range_quality",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_exact_inventory_reads_counts_and_edges_without_business_payload",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_inventory_failure_never_returns_zero_rows",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_research_identity_cannot_reuse_different_focus_or_scan_cache",
+        "class": "tests.test_preparation_research",
+        "status": "passed"
+      },
+      {
+        "name": "test_ui_modules_remain_small_and_shell_has_no_business_imports",
+        "class": "tests.test_ui_architecture",
+        "status": "passed"
+      },
+      {
+        "name": "test_ui_plugin_stop_restart_and_restore_preserve_other_contributions",
+        "class": "tests.test_ui_architecture",
+        "status": "passed"
+      },
+      {
+        "name": "test_role_classified_ui_move_cannot_evade_350_line_limit[empire.plugins.ui.news]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_role_classified_ui_move_cannot_evade_350_line_limit[empire.features.news.ui]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_role_classified_ui_move_cannot_evade_350_line_limit[empire.features.news.presentation.detail]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_feature_layout_role_is_used_without_filename_special_cases",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_shell_cannot_import_moved_page_using_alternative_syntax[from empire.features.news.ui import Page]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_shell_cannot_import_moved_page_using_alternative_syntax[import empire.features.news.ui as news]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_shell_cannot_import_moved_page_using_alternative_syntax[from ..features.news.ui import Page]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_shell_cannot_import_moved_page_using_alternative_syntax[from ..features.news import ui]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_existing_collection_page_boundary_handles_relative_and_module_imports[from .collection import CollectionPage]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_existing_collection_page_boundary_handles_relative_and_module_imports[import empire.plugins.ui.collection as collection]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_existing_collection_page_boundary_handles_relative_and_module_imports[from empire.plugins.ui import collection]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_shared_controls_cannot_depend_on_feature_business_page",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_public_symbol_does_not_allow_shared_ui_to_import_business",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_common_retains_its_existing_no_plugin_import_rule[from .queries import QueryScope]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_common_retains_its_existing_no_plugin_import_rule[import empire.plugins.ui.queries as queries]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_catalog_public_symbol_exception_is_exact[from empire.features.data_browser.catalog import DataCatalogPage-True]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_catalog_public_symbol_exception_is_exact[from empire.features.data_browser.catalog import hidden-False]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_catalog_public_symbol_exception_is_exact[import empire.features.data_browser.catalog as catalog-False]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_catalog_public_symbol_exception_is_exact[from . import catalog-False]",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_unclassified_moved_module_fails_instead_of_silently_skipping",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      },
+      {
+        "name": "test_static_scan_does_not_execute_pages_and_preserves_legacy_task_rule",
+        "class": "tests.test_ui_architecture_counterexamples",
+        "status": "passed"
+      }
+    ]
+  },
+  "final-docs": {
+    "path": "build\\returns-p0p1-20261022\\final-docs.xml",
+    "tests": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "35",
+      "time": "9.311",
+      "timestamp": "2026-10-22T02:36:30.169004+08:00",
+      "hostname": "xiejiechun"
+    },
+    "cases": [
+      {
+        "name": "test_current_documentation_contracts",
+        "class": "tests.test_documentation_contracts",
+        "status": "passed"
+      },
+      {
+        "name": "test_link_checker_rejects_missing_absolute_and_out_of_range_targets",
+        "class": "tests.test_documentation_contracts",
+        "status": "passed"
+      },
+      {
+        "name": "test_schema_table_parser_tracks_formal_tables",
+        "class": "tests.test_documentation_contracts",
+        "status": "passed"
+      },
+      {
+        "name": "test_link_checker_ignores_literal_sql_but_checks_real_code_labels",
+        "class": "tests.test_documentation_contracts",
+        "status": "passed"
+      },
+      {
+        "name": "test_stable_evidence_contains_no_secret_material",
+        "class": "tests.test_documentation_contracts",
+        "status": "passed"
+      },
+      {
+        "name": "test_generation_is_ordered_deterministic_and_cwd_independent",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_stale_aggregate_is_rejected_without_modifying_any_input[source]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_stale_aggregate_is_rejected_without_modifying_any_input[aggregate]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_stale_aggregate_is_rejected_without_modifying_any_input[index-order]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[missing]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[orphan]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[duplicate-path]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[duplicate-topic]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[path-traversal]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[owner]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[bad-summary]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[broken-link]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[relative-link]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[multiple-topics]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_fragment_sets_fail_closed[case-collision]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_undeclared_nested_or_noncanonical_fragment_paths_cannot_be_hidden[src/empire/features/news/docs/help/nested/orphan.md]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_undeclared_nested_or_noncanonical_fragment_paths_cannot_be_hidden[src/empire/documentation/topics/nested/orphan.md]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_undeclared_nested_or_noncanonical_fragment_paths_cannot_be_hidden[src/empire/features/news/docs/help/ORPHAN.md]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_undeclared_nested_or_noncanonical_fragment_paths_cannot_be_hidden[src/empire/documentation/topics/orphan.MD]",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_reader_has_one_identical_resource_path_in_source_and_packaged_layout",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_formal_aggregate_has_exactly_the_authoritative_article_sequence",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_linked_fragment_is_rejected_without_following_or_rewriting_it",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_cli_relative_report_belongs_to_build_independent_of_cwd",
+        "class": "tests.test_documentation_build",
+        "status": "passed"
+      },
+      {
+        "name": "test_directory_keeps_registered_missing_data_out_of_planned",
+        "class": "tests.test_preparation_directory",
+        "status": "passed"
+      },
+      {
+        "name": "test_directory_restores_scope_and_selection_across_reports",
+        "class": "tests.test_preparation_directory",
+        "status": "passed"
+      },
+      {
+        "name": "test_opening_only_reads_overview_and_scope_edits_do_not_scan",
+        "class": "tests.test_preparation_directory",
+        "status": "passed"
+      },
+      {
+        "name": "test_shared_collector_opens_the_selected_business_page",
+        "class": "tests.test_preparation_directory",
+        "status": "passed"
+      },
+      {
+        "name": "test_catalog_and_progress_are_available_before_slow_source_finishes",
+        "class": "tests.test_preparation_progress",
+        "status": "passed"
+      },
+      {
+        "name": "test_cancelled_report_releases_owner_and_never_marks_pending_data_ready",
+        "class": "tests.test_preparation_progress",
+        "status": "passed"
+      },
+      {
+        "name": "test_ui_renders_partial_catalog_while_full_query_is_pending",
+        "class": "tests.test_preparation_progress",
+        "status": "passed"
+      }
+    ]
+  },
+  "integration-1": {
+    "path": "build\\returns-p0p1-20261022\\integration-1.xml",
+    "tests": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "5",
+      "skipped": "0",
+      "tests": "59",
+      "time": "173.037",
+      "timestamp": "2026-10-22T02:26:58.540542+08:00",
+      "hostname": "xiejiechun"
+    },
+    "cases": [
+      {
+        "name": "test_official_source_archive_decimal_and_sql_only_readiness[dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "failure"
+      },
+      {
+        "name": "test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[key-dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "failure"
+      },
+      {
+        "name": "test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[content-dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "failure"
+      },
+      {
+        "name": "test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[missing-dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "failure"
+      },
+      {
+        "name": "test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[proof-dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "failure"
+      },
+      {
+        "name": "test_replan_retains_old_queue_and_confirms_only_new_complete_scope[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_replan_retains_old_queue_and_confirms_only_new_complete_scope[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_replan_retains_old_queue_and_confirms_only_new_complete_scope[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_changed_scope_does_not_reuse_old_ready_proof[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_changed_scope_does_not_reuse_old_ready_proof[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_changed_scope_does_not_reuse_old_ready_proof[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_forced_round_reuses_verified_unavailable_and_refreshes_next_round[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_forced_round_reuses_verified_unavailable_and_refreshes_next_round[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_forced_round_reuses_verified_unavailable_and_refreshes_next_round[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_security_archives_before_failed_frontier_is_repaired[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_security_archives_before_failed_frontier_is_repaired[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_independent_security_archives_before_failed_frontier_is_repaired[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_source_to_collector_redis_archive_query_and_manifest[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_source_to_collector_redis_archive_query_and_manifest[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_source_to_collector_redis_archive_query_and_manifest[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_scope_proofs_ignore_other_history_but_never_missing_required_records[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_scope_proofs_ignore_other_history_but_never_missing_required_records[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_scope_proofs_ignore_other_history_but_never_missing_required_records[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_repeat_hot_cold_revision_old_response_and_missing_fields[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_repeat_hot_cold_revision_old_response_and_missing_fields[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_repeat_hot_cold_revision_old_response_and_missing_fields[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_sql_commit_then_ack_failure_replays_without_business_dml[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_sql_commit_then_ack_failure_replays_without_business_dml[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_sql_commit_then_ack_failure_replays_without_business_dml[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_sql_failure_retains_valid_queue_until_replay[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_sql_failure_retains_valid_queue_until_replay[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_sql_failure_retains_valid_queue_until_replay[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_cache_freshness_cannot_hide_missing_sql_content[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_cache_freshness_cannot_hide_missing_sql_content[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_cache_freshness_cannot_hide_missing_sql_content[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_unknown_schema_isolates_only_registered_project[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_unknown_schema_isolates_only_registered_project[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_unknown_schema_isolates_only_registered_project[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_parallel_same_date_dividends_survive_full_pipeline[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_parallel_same_date_dividends_survive_full_pipeline[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_parallel_same_date_dividends_survive_full_pipeline[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_dividend_identity_migration_retains_business_and_observations[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_dividend_identity_migration_retains_business_and_observations[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_dividend_identity_migration_retains_business_and_observations[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_dividend_discovery_proof_is_persisted_and_invalid_stamp_requires_discovery[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_dividend_discovery_proof_is_persisted_and_invalid_stamp_requires_discovery[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_dividend_discovery_proof_is_persisted_and_invalid_stamp_requires_discovery[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_dividend_identity_collision_rolls_back_without_merging[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_dividend_identity_collision_rolls_back_without_merging[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_dividend_identity_collision_rolls_back_without_merging[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_issue_detail_backfill_migration_and_detail_only_revision[dividends]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_issue_detail_backfill_migration_and_detail_only_revision[additional_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_issue_detail_backfill_migration_and_detail_only_revision[rights_issues]",
+        "class": "tests.integration.test_capital_archive",
+        "status": "passed"
+      },
+      {
+        "name": "test_archive_to_query_and_repeated_computation_has_no_business_dml",
+        "class": "tests.integration.test_adjustment_pipeline",
+        "status": "passed"
+      },
+      {
+        "name": "test_revision_old_response_and_commit_replay_propagate_only_accepted_inputs",
+        "class": "tests.integration.test_adjustment_pipeline",
+        "status": "passed"
+      },
+      {
+        "name": "test_price_revision_recomputes_hash_and_late_old_does_not_roll_back",
+        "class": "tests.integration.test_adjustment_pipeline",
+        "status": "passed"
+      },
+      {
+        "name": "test_rights_combination_and_missing_close_not_silently_filled",
+        "class": "tests.integration.test_adjustment_pipeline",
+        "status": "passed"
+      },
+      {
+        "name": "test_raw_chart_remains_valid_when_archived_ex_date_is_unknown",
+        "class": "tests.integration.test_adjustment_pipeline",
+        "status": "passed"
+      },
+      {
+        "name": "test_invalid_archived_open_stays_a_gap_and_blocks_all_adjustment",
+        "class": "tests.integration.test_adjustment_pipeline",
+        "status": "passed"
+      }
+    ]
+  },
+  "integration-2": {
+    "path": "build\\returns-p0p1-20261022\\integration-2.xml",
+    "tests": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "5",
+      "time": "17.071",
+      "timestamp": "2026-10-22T02:30:54.117628+08:00",
+      "hostname": "xiejiechun"
+    },
+    "cases": [
+      {
+        "name": "test_official_source_archive_decimal_and_sql_only_readiness[dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "passed"
+      },
+      {
+        "name": "test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[key-dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "passed"
+      },
+      {
+        "name": "test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[content-dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "passed"
+      },
+      {
+        "name": "test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[missing-dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "passed"
+      },
+      {
+        "name": "test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[proof-dividends]",
+        "class": "tests.integration.test_distribution_pipeline",
+        "status": "passed"
+      }
+    ]
+  }
+}
