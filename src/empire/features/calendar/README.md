@@ -16,3 +16,7 @@
 日历验收先读完整 SQL 内容，再只读比对可用的 Redis 摘要、版本和到期索引。不可用缓存回到 SQL 证据；不为验收写回 SQL/Redis，也不让较新时间遮住缺日。完整月份、旧版保护、无变化不写业务 DML 和成功清队保持原正式路径。
 
 验证入口为 `tests/test_calendar_preparation.py`、`tests/test_trading_day_cutoff.py`、日历采集/归档集成测试、`tests/test_foundation_public_api.py` 和统一装配身份检查。按月份业务核验，不能把证券随机30只机械当作日历验收。路径和规则归属迁移不构成新的实采或桌面验收证据。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

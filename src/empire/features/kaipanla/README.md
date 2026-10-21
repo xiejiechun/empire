@@ -27,3 +27,7 @@ normalize 的 storage_check=True 仍执行 codec.encode 检查可表示性；rep
 scripts/verify_kaipanla.py 使用共享source_verification/PrivateStorage生命周期，显式独立13348配置、实际server_uuid、UUID归属与SQL守卫；参考日历/停牌只读快照在私有守卫建立前完成。最低随机30、显式seed及proxy-only不可省略，原002731/三只北交所/605333反例额外固定加入；日期由显式有界规划控制。观察正式来源规范化、Redis入队、统一归档、day与完整分页的集合/内容，记录每随机证券的有效单元，不将有来源缺口的管线一致当成30股全成功。来源失败保留首缺口及严格FAIL；清理/取消/恢复由共享生命周期执行，不写生产业务或改变日常计划。
 
 若改变来源/范围/参数/解析/版本/校验/恢复行为，必须满足采集开发指南随机30股及已知失败固定回归；纯组织迁移也需独立的隔离恢复、有限真实正式查询、UI和发布证据。实际结果和动态缺口单列到docs/evidence，不把本文作为已执行证明。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/intraday.md](docs/help/intraday.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

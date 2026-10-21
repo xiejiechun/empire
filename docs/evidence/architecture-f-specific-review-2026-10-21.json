@@ -1,0 +1,419 @@
+{
+  "page:collection": {
+    "changed_sources": [
+      "src/empire/plugins/ui/help_content.py"
+    ],
+    "reason": "page:collection逐项核对：规则页复用的原read_articles改调用等价纯文本parser，主题所有Article字段和顺序保持，现有规则内容及用户入口不变"
+  },
+  "page:archived_tasks": {
+    "changed_sources": [
+      "src/empire/plugins/ui/help_content.py"
+    ],
+    "reason": "page:archived_tasks逐项核对：规则页复用的原read_articles改调用等价纯文本parser，主题所有Article字段和顺序保持，现有规则内容及用户入口不变"
+  },
+  "page:history": {
+    "changed_sources": [
+      "src/empire/plugins/ui/help_content.py"
+    ],
+    "reason": "page:history逐项核对：规则页复用的原read_articles改调用等价纯文本parser，主题所有Article字段和顺序保持，现有规则内容及用户入口不变"
+  },
+  "page:sites": {
+    "changed_sources": [
+      "src/empire/plugins/ui/help_content.py"
+    ],
+    "reason": "page:sites逐项核对：规则页复用的原read_articles改调用等价纯文本parser，主题所有Article字段和顺序保持，现有规则内容及用户入口不变"
+  },
+  "page:calendar": {
+    "changed_sources": [
+      "src/empire/features/calendar/contract.py"
+    ],
+    "reason": "page:calendar逐项核对：日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持"
+  },
+  "page:preparation": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "page:preparation逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "task:ths-stocks": {
+    "changed_sources": [
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "task:ths-stocks逐项核对：股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "task:cninfo-calendar": {
+    "changed_sources": [
+      "src/empire/features/calendar/contract.py"
+    ],
+    "reason": "task:cninfo-calendar逐项核对：日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持"
+  },
+  "mysql:stock": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:stock_listing": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:stock_listing逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:security_listing_event": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:security_listing_event逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:trade_calendar": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/contract.py"
+    ],
+    "reason": "mysql:trade_calendar逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持"
+  },
+  "mysql:suspension_event": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py"
+    ],
+    "reason": "mysql:suspension_event逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持"
+  },
+  "mysql:suspension_source_date": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py"
+    ],
+    "reason": "mysql:suspension_source_date逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持"
+  },
+  "mysql:dividend_plan": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:dividend_plan逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:additional_issue": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:additional_issue逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:rights_issue": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:rights_issue逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:security_name_change": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:security_name_change逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:income_statement": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:income_statement逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:balance_statement": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:balance_statement逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:cashflow_statement": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:cashflow_statement逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:industry": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:industry逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:industry_member": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:industry_member逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:stock_index": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:stock_index逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:stock_index_member": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:stock_index_member逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:stock_market_day": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock_market_day逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:stock_intraday_trend": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock_intraday_trend逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:stock_opening_auction": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock_opening_auction逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:stock_minute_volume": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock_minute_volume逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:stock_intraday_trade_block": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock_intraday_trade_block逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:stock_minute_entrust": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock_minute_entrust逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:stock_large_order_trend": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock_large_order_trend逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:stock_daily_quote": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock_daily_quote逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:stock_daily_quote_level": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py",
+      "src/empire/features/calendar/api.py",
+      "src/empire/features/calendar/contract.py",
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "mysql:stock_daily_quote_level逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持；日历API仅标注原连接与时间返回，原366天同连接范围、收盘日选择和失败理由不变；日历函数仅加日期及行字段注解，原月份完整性/时区/15:30截止/重复和缺日拒绝保持；股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "mysql:index_daily_price": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:index_daily_price逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:index_price_year": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:index_price_year逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:security_st_event": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:security_st_event逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:trading_rule_value": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:trading_rule_value逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:trading_rule_citation": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:trading_rule_citation逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:stock_repurchase_plan": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:stock_repurchase_plan逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:earnings_forecast": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:earnings_forecast逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:earnings_quick": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:earnings_quick逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:earnings_disclosure": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:earnings_disclosure逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:earnings_report": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:earnings_report逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:shareholder_count": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:shareholder_count逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:holder_report": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:holder_report逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:holder_member": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:holder_member逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:shareholder_change": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:shareholder_change逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:restricted_share_unlock": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:restricted_share_unlock逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:restricted_share_unlock_detail": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:restricted_share_unlock_detail逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:restricted_share_unlock_industry": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:restricted_share_unlock_industry逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:capital_funding": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:capital_funding逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:capital_project": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:capital_project逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:capital_transaction": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:capital_transaction逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:capital_equity_summary": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:capital_equity_summary逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:capital_equity_position": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:capital_equity_position逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:capital_ipo": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:capital_ipo逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:capital_encumbrance": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:capital_encumbrance逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "mysql:capital_release": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "mysql:capital_release逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "redis:checkpoint": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "redis:checkpoint逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "redis:stocks-result": {
+    "changed_sources": [
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "redis:stocks-result逐项核对：股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "redis:stocks-committed": {
+    "changed_sources": [
+      "src/empire/features/stocks/api.py"
+    ],
+    "reason": "redis:stocks-committed逐项核对：股票目录API仅标注既有Connection及异构payload，原同连接SQL/锁/版本选择不变，目录及结果确认身份不变"
+  },
+  "redis:collection-control": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "redis:collection-control逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  },
+  "redis:preparation-report": {
+    "changed_sources": [
+      "src/empire/contracts/preparation.py"
+    ],
+    "reason": "redis:preparation-report逐项核对：公共CheckEvidence仅补findings及初始化返回注解，原值校验/失败理由/证据状态与该对象字段、主键和读写恢复契约保持"
+  }
+}

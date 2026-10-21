@@ -17,6 +17,9 @@ def verify(runner):
     runner.command([py, root / 'scripts/verify_release_environment.py'])
     runner.command([py, root / 'scripts/audit_dependencies.py', '--output', dependency])
     runner.evidence[dependency.relative_to(root).as_posix()] = sha256(dependency)
+    help_report = run / 'help-report.json'
+    runner.command([py, root / 'scripts/documentation_build.py', 'check', '--report', help_report])
+    runner.evidence[help_report.relative_to(root).as_posix()] = sha256(help_report)
     runner.command([py, root / 'scripts/verify_documentation.py'])
     runner.command([py, root / 'scripts/verify_database_design.py'])
     runner.command([py, root / 'scripts/architecture_contract.py', 'check'])
@@ -87,6 +90,11 @@ def package(runner, publication, dependency):
         embedded = publication.stage / '_internal/empire' / name
         if not embedded.is_file() or sha256(embedded) != sha256(expected):
             raise RuntimeError('Packaged release evidence differs from verified outputs: ' + name)
+    reference = root / 'src/empire/plugins/ui/storage_reference.md'
+    embedded_help = publication.stage / '_internal/empire/plugins/ui/storage_reference.md'
+    if not embedded_help.is_file() or sha256(embedded_help) != sha256(reference):
+        raise RuntimeError('Packaged offline help differs from the checked aggregate')
+    runner.evidence[reference.relative_to(root).as_posix()] = sha256(reference)
     return manifest
 
 

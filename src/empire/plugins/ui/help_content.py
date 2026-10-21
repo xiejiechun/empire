@@ -16,9 +16,9 @@ class Article:
     summary: str = ""
 
 
-def read_articles(path: Path) -> list[Article]:
+def parse_articles(text: str) -> list[Article]:
     result = []
-    for part in path.read_text(encoding="utf-8").split("<!-- topic:")[1:]:
+    for part in text.split("<!-- topic:")[1:]:
         heading, body = part.split(" -->", 1)
         category, title = heading.split("|", 1)
         group = re.search(r"<!-- group:([^>]+) -->", body)
@@ -55,6 +55,10 @@ def read_articles(path: Path) -> list[Article]:
             if unquote(target) not in titles:
                 raise ValueError(f"说明链接目标不存在：{item.title} → {target}")
     return result
+
+
+def read_articles(path: Path) -> list[Article]:
+    return parse_articles(path.read_text(encoding="utf-8"))
 
 
 def articles():

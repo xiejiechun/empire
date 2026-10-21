@@ -1,0 +1,105 @@
+{
+  "source_sha256": "624fc83a0fb3c46497fb784fa839867b6df9906a18544a82653872189fd0fcc4",
+  "frozen": {
+    "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
+    "sql/schema-contract.json": "5a434101b373eb0dd9de99dd1ad0872229c3bf0f33d21658fe71d84cd0fdce1f",
+    "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
+    "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
+    "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
+    "docs/evidence/architecture-performance-protocol-2026-10-19.json": "38679725dbf2ad41e8ff1d9a33c8a28630d4a808d33880ec3c4d39f26c3ac24b",
+    "docs/evidence/architecture-performance-baseline-2026-10-19.json": "1202baacde0866a7246a4cc032b1f4580e11b5474d599ee81a13503debfd6493"
+  },
+  "junit": {
+    "help-final": {
+      "path": "build/architecture-f-20261021/help-final.xml",
+      "sha256": "80425d771cd709ac35d452842ff4833b06189510405857322cc14814f1038033",
+      "tests": 182,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 56.834
+    },
+    "help-cli": {
+      "path": "build/architecture-f-20261021/help-cli.xml",
+      "sha256": "37fab8a61f5f0ac829f93cffc531fa9e58cff3b73fe12d78f668e4c2155c8e8d",
+      "tests": 32,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.932
+    },
+    "help-cli-fixed": {
+      "path": "build/architecture-f-20261021/help-cli-fixed.xml",
+      "sha256": "400d7ee4b03261704df2d7a3727aeeb72bf031596596b660187b1306a9968fcb",
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.798
+    },
+    "help-reviewed-2": {
+      "path": "build/architecture-f-20261021/help-reviewed-2.xml",
+      "sha256": "488def47a517188e274e3a0683c5776bd312a31a3bf52ebad20091a56dbd8af2",
+      "tests": 182,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 59.781
+    }
+  },
+  "exports": [
+    {
+      "path": "docs/evidence/architecture-f-t3-2026-10-21.json",
+      "sha256": "534bb062899aa87db3aaf57f6e90e64b13b4c17c598355c4a1503d6bf4511876"
+    },
+    {
+      "path": "docs/evidence/architecture-f-specific-review-2026-10-21.json",
+      "sha256": "587f9463399c37ba3899e41613c748f504ef32dedcdd61d5d6c45ff841f09ccf"
+    }
+  ],
+  "commands": [
+    {
+      "command": "review_docs.py",
+      "exit_code": 0
+    },
+    {
+      "command": "scripts/documentation_contract.py check",
+      "exit_code": 0
+    },
+    {
+      "command": "scripts/verify_documentation.py",
+      "exit_code": 0,
+      "documents": 405,
+      "links": 2324,
+      "tables": 55
+    },
+    {
+      "command": "-m ruff check src tests scripts",
+      "exit_code": 0
+    },
+    {
+      "command": "-m mypy",
+      "exit_code": 0,
+      "strict_files": 13
+    }
+  ],
+  "retained_invocation_failures": [
+    {
+      "command": "review_docs.py before local sys.path correction",
+      "exit_code": 1,
+      "reason": "ModuleNotFoundError: scripts; review was not created"
+    },
+    {
+      "command": "-m ruff check .",
+      "exit_code": 2,
+      "reason": "Scanned historical ignored pytest fixture containing intentionally invalid TOML; corrected to formal src tests scripts scope"
+    },
+    {
+      "command": "pytest with nonexistent test_documentation_coverage.py",
+      "exit_code": 1,
+      "reason": "No tests ran; corrected to original nine files"
+    }
+  ],
+  "optional_cost_experiment": "not adopted; not run; no speed claim",
+  "source_collection": "not applicable: types/help/tool governance; existing strict source failures retained"
+}

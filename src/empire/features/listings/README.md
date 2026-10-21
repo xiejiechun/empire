@@ -3,3 +3,7 @@
 contract为来源字段、证券身份、精确十进制及资料可用性契约；collector使用共享下载/代理/预取，逐证券原子入队、整轮末等待归档；dataset执行单证券归档，query提供正式详情、列表、覆盖与准备检查；ui按需创建；bundle保持原插件、任务和数据集顺序。
 
 日常入口、初始化、七天回查、补缺、来源暂无与缺上市日期、历史限制见[业务手册](../../../../docs/ths-listings.md)。公共preparation、调度、摘要及归档只有原正式路径。未新增表或启动迁移，不删除退出现有股票池的已存资料。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

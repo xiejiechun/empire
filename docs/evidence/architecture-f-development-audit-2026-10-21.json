@@ -1,0 +1,134 @@
+{
+  "exports": [
+    {
+      "local": "pre-release-resource.json",
+      "exported": "docs/evidence/architecture-f-preflight-2026-10-21.json",
+      "sha256": "514188483522a5721d865654f7741983337f9f8dc4eaf73dec2c02f7ca9ba8d5"
+    },
+    {
+      "local": "shared-applied.json",
+      "exported": "docs/evidence/architecture-f-shared-delta-2026-10-21.json",
+      "sha256": "76289698653d5ec78441e97c08b05d7607e3f5cbe0b1d000481ba270bbf46614"
+    },
+    {
+      "local": "types-applied.json",
+      "exported": "docs/evidence/architecture-f-types-delta-2026-10-21.json",
+      "sha256": "e80445e054afaa8b32bd9e56beac88b7824e4552d8551e98a23b584500330839"
+    },
+    {
+      "local": "static-audit.json",
+      "exported": "docs/evidence/architecture-f-static-audit-2026-10-21.json",
+      "sha256": "53aaaccbed729073f6b2bcf12a55a691d7dafed93de97b5fe338d1d37aac0677"
+    },
+    {
+      "local": "help-extraction/extraction.json",
+      "exported": "docs/evidence/architecture-f-help-extraction-2026-10-21.json",
+      "sha256": "d71eb430d8f28029dbe06a303fb7b2ee0a210eb5abbd61d02a9f626c38f62cf8"
+    },
+    {
+      "local": "run-59d96b3885e44a4b982d6ce3b11bc740/report.json",
+      "exported": "docs/evidence/architecture-f-locality-first-failed-2026-10-21.json",
+      "sha256": "49508ed4a1556c8e23c97464117bb3457fbccdb9a6dbeef0b4a46c73cb3ba9bc"
+    },
+    {
+      "local": "run-75293d31af5742d890a755b28db5954a/report.json",
+      "exported": "docs/evidence/architecture-f-locality-2026-10-21.json",
+      "sha256": "d01e65002bb9a109c1a997db36279c592ab39a688e7ce24d7437160fb0950c1f"
+    },
+    {
+      "local": "impact-news.json",
+      "exported": "docs/evidence/architecture-f-impact-news-first-failed-2026-10-21.json",
+      "sha256": "d76e826e10b6625b8671ec70a030cb2cb7abaa9502bfd583ce4bf658d7a9054d"
+    },
+    {
+      "local": "impact-news-2.json",
+      "exported": "docs/evidence/architecture-f-impact-news-2026-10-21.json",
+      "sha256": "c0daae62912ceb764c1784c6b6870101125aa1b9e32f23170c6e03780d4259f0"
+    },
+    {
+      "local": "impact-holders-2.json",
+      "exported": "docs/evidence/architecture-f-impact-holders-2026-10-21.json",
+      "sha256": "adb9da0bd4604666b2eab4ae3ed3cb70798de63b1930d9440d674f93640fda34"
+    },
+    {
+      "local": "impact-public-2.json",
+      "exported": "docs/evidence/architecture-f-impact-public-2026-10-21.json",
+      "sha256": "6cfaed14785421451f4febb2e8ac1362336d2ae99e79a3d02933ae041f549359"
+    },
+    {
+      "local": "preview-capacity-1.json",
+      "exported": "docs/evidence/architecture-f-preview-capacity-2026-10-21.json",
+      "sha256": "c79737057e6985b2c163dd3f3e1d009df1bf7f1d1f68407c938737922a3466ae"
+    },
+    {
+      "local": "capacity-bindings-final.json",
+      "exported": "docs/evidence/architecture-f-capacity-bindings-2026-10-21.json",
+      "sha256": "55937607def716adaba53f5b39506137f28cbb4c00852f694bbcef8db19c4003"
+    }
+  ],
+  "junit": {
+    "shared": {
+      "junit": "build/architecture-f-20261021/shared.xml",
+      "sha256": "2f75c756ab52c75f6c7812d4768fb39def2814945d5e11b126b11584dbf4c96b",
+      "tests": 138,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 19.714
+    },
+    "types": {
+      "junit": "build/architecture-f-20261021/types.xml",
+      "sha256": "d05ef0fece17b1811536b7d63ac4570346fe63655ca6603533899976b80c8b33",
+      "tests": 101,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 8.867
+    },
+    "help": {
+      "junit": "build/architecture-f-20261021/help.xml",
+      "sha256": "49bc712f561719241e97cab77ba8d1ad706e758af6d3f09b45af4bc52ded7920",
+      "tests": 179,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "time": 62.857
+    },
+    "help-extra": {
+      "junit": "build/architecture-f-20261021/help-extra.xml",
+      "sha256": "5dee3a06778a58669c457420f017191ab22186419088402c5100563265f830c8",
+      "tests": 31,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.845
+    },
+    "impact": {
+      "junit": "build/architecture-f-20261021/impact.xml",
+      "sha256": "62f646f05714a3a0810c29cc05864b71fa96a9ac6f658336dc4fe43537fc1766",
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.625
+    },
+    "impact-final": {
+      "junit": "build/architecture-f-20261021/impact-final.xml",
+      "sha256": "992d37be57f88b519e987672c832308d23aafaaa20128848edb43acd4431067c",
+      "tests": 45,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.475
+    },
+    "integration": {
+      "junit": "build/architecture-f-20261021/integration.xml",
+      "sha256": "6f8eb9feecfb732a3d5259abe95dd020ab09792294c1b98777e45e651dd6cfc7",
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 102.127
+    }
+  }
+}

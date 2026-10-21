@@ -351,7 +351,7 @@ Invoke-CheckedPython @('scripts/change_impact.py','--changed','src/empire/contra
 在私有源码副本做三个M1演练，不能把演练代码留在正式src：
 
 1. 页面文案：仅修改新闻页面placeholder，实际离屏构造原Page验证文案和只读详情；本项不是可见桌面验收。
-2. 来源字段：复用当前 `tests/test_sina_news.py` 的 `raw_row` 与 `test_plain_text_with_ampersand_is_flushed_before_empty_validation` 原函数。移除parser.close复现H&M尾部丢失，失败必须定位该历史函数且以AssertionError结束；ImportError、非零退出本身不算成功复现。恢复原源码后同一原断言通过。
+2. 来源字段：复用当前 `tests/test_sina_news.py` 的 `raw_row` 与 `test_plain_text_with_ampersand_is_flushed_before_empty_validation` 原函数。移除parser.close复现H&M缓冲缺陷；Python 3.12 单次feed会在内容断言前触发正文为空的ValueError，该结果保留但不满足内容断言演练。仅在私有副本把feed分为&前缀和剩余部分，再移除close，演练非空前缀及尾部丢失，失败须定位该历史函数的原内容断言且以AssertionError结束。记录这两处故障注入，不能冒称单独移除close得到断言失败。ImportError、非零退出本身不算成功复现。恢复完整原源码后同一原断言通过。
 3. 独立业务：在副本新增仅声明bundle，中央 `FACTORIES` 仅加一项；完整原插件/task/dataset字段和既有相对顺序保留。声明期间socket/file/read_text/read_bytes/manager.start/autostart/QWidget创建均有禁止哨兵；不启动采集、入队或数据库。
 
 **副本必须复制受Git跟踪的 `sql/` 资源，包括 `sql/business-schema.json`。** E之后公开存储权威会在导入时读取该资源；只复制src会出现假ImportError。不得复制config.toml、私有MySQL目录、ownership恢复凭据或数据库业务文件。正式源输入在演练前后及finally逐文件核对，失败也落盘且源变化必令passed=false。

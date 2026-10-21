@@ -1,0 +1,40 @@
+{
+  "passed": false,
+  "scope": "Isolated code-edit exercises, not live source/production desktop acceptance",
+  "commit": "5802df660ee87914ec628ef02f425b7419fa94d3",
+  "source_inputs_sha256": "1c0a4362425cf42d2fe9ff7791d75644edfcaff9ece41f2564be28f6de27ba48",
+  "cases": {
+    "page": {
+      "passed": true,
+      "check": {
+        "exit": 0,
+        "stdout_sha256": "be6f415a6003a6bfc25b36ce296fbb3fd7b40b92bb4cbcc736cdfdaa5b58b62c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "Actual offscreen NewsPage placeholder verified\r\n"
+      },
+      "changed_files": [
+        "src/empire/features/news/ui.py"
+      ],
+      "before_sha256": "7bfc43ac31fe14f0631bbb4f39a3491e1af469a95ae6dc5a924f9441e27babc3",
+      "after_sha256": "9b139f824de0091db9e208c7d287110463ea291602d22c98c3615260d98e26c0"
+    },
+    "source": {
+      "passed": false,
+      "existing_regression": {
+        "path": "tests/test_sina_news.py",
+        "sha256": "969d02848683aeae00b7dce4e853f4aa82180c6f992a341dcdb4b98c9b001848",
+        "test": "test_plain_text_with_ampersand_is_flushed_before_empty_validation"
+      },
+      "fault_changed_files": [
+        "src/empire/features/news/source.py"
+      ],
+      "expected_regression": {
+        "exit": 1,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e2a585c425eedde9521fc3876d0d60810ed040bba967c2bd98a12d4237827b07",
+        "stdout": ""
+      }
+    }
+  },
+  "original_inputs_unchanged": true
+}

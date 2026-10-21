@@ -36,9 +36,9 @@ class CheckEvidence:
     status: str
     measured: str
     blocking: bool = True
-    findings: tuple[dict, ...] = ()
+    findings: tuple[dict[str, str], ...] = ()
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.status not in {"pass", "fail", "unknown"} or not self.measured.strip():
             raise ValueError("检查证据必须有明确状态与观测结果")
         if type(self.blocking) is not bool or not isinstance(self.findings, tuple) or len(self.findings) > 100:

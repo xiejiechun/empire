@@ -15,6 +15,8 @@ from pathlib import Path
 READ_ROLES = {'query', 'ui', 'shared_ui', 'dataset', 'dataset_registry',
               'diagnostic', 'diagnostic_internal'}
 EXECUTION_ROLES = {'collector', 'source_adapter', 'collector_support'}
+COMPOSITION_ROLES = {'composition', 'dataset_registry'}
+PLATFORM_COMPOSITION_ROLES = {'application': COMPOSITION_ROLES, 'diagnostics': {'composition'}}
 ROLES = READ_ROLES | EXECUTION_ROLES | {
     'contract', 'parser', 'api', 'composition', 'kernel', 'infrastructure', 'package',
     'shared_ui', 'management', 'pipeline',
@@ -138,6 +140,9 @@ def module_metadata(modules: dict[str, Module], policy: dict) -> tuple[dict, lis
     metadata, errors = {}, []
     declared = {}
     owners = policy.get('owners', {})
+    for owner, definition in owners.items():
+        if not isinstance(definition, dict) or definition.get('kind') not in {'platform', 'business'}:
+            errors.append(f'Invalid owner kind: {owner}')
     for group in policy.get('module_groups', []):
         for name in group['modules']:
             if name in declared:
@@ -163,6 +168,13 @@ def module_metadata(modules: dict[str, Module], policy: dict) -> tuple[dict, lis
             continue
         if record.get('owner') not in owners or record.get('role') not in ROLES:
             errors.append(f'Invalid owner/role for {name}')
+            continue
+        definition = owners[record['owner']]
+        if not isinstance(definition, dict) or definition.get('kind') not in {'platform', 'business'}:
+            continue
+        if (definition['kind'] == 'platform' and record['role'] in COMPOSITION_ROLES
+                and record['role'] not in PLATFORM_COMPOSITION_ROLES.get(record['owner'], set())):
+            errors.append(f'Shared service cannot be relabeled as composition: {name}')
             continue
         if not record.get('reason', '').strip():
             errors.append(f'Missing responsibility reason: {name}')
@@ -240,14 +252,16 @@ def analyze(root: Path, policy: dict) -> dict:
                     f"{target['role']} is source-local, not execution: {target['reason']}")
         different = source['owner'] != target['owner']
         business_target = policy['owners'][target['owner']]['kind'] == 'business'
-        if different and business_target and source['role'] == 'shared_ui':
-            add('shared_ui_to_business', edge, 'Shared UI imports a concrete business')
+        if (business_target and policy['owners'][source['owner']]['kind'] == 'platform'
+                and source['role'] not in COMPOSITION_ROLES):
+            add('shared_to_business', edge,
+                f"{source['owner']} shared {source['role']} imports {target['owner']} business")
         public_module = target['role'] in {'contract', 'api', 'package'}
         public_symbols = set(target.get('public_symbols', []))
         private_symbol = any(name.startswith('_') for name in edge.names)
         explicitly_public = set(edge.names) <= public_symbols
         if (different and business_target
-                and source['role'] not in {'composition', 'dataset_registry'}
+                and source['role'] not in COMPOSITION_ROLES
                 and (private_symbol or not public_module and not explicitly_public)):
             add('cross_business_private', edge,
                 f"{source['owner']} imports private {target['owner']} {target['role']}")
@@ -258,6 +272,8 @@ def analyze(root: Path, policy: dict) -> dict:
             add('module_cycle', edge, 'Static import cycle; includes deferred/type-only imports')
     baseline = {}
     for item in policy.get('debt', []):
+        if item.get('rule') == 'shared_to_business':
+            errors.append('Shared-to-business dependencies cannot be grandfathered as debt')
         key = finding_key(item)
         if key in baseline or not item.get('reason', '').strip():
             errors.append(f'Duplicate or unexplained debt: {key}')

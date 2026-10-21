@@ -1,0 +1,1080 @@
+{
+  "schema": 1,
+  "purpose": "development_feedback_only",
+  "changed": [
+    "src/empire/features/holders/source.py"
+  ],
+  "mode": "selected",
+  "full_reasons": [],
+  "errors": [],
+  "affected_businesses": [
+    "holders"
+  ],
+  "impacted_modules": [
+    "empire.__main__",
+    "empire.bootstrap",
+    "empire.diagnostics.declarations",
+    "empire.diagnostics.project",
+    "empire.features.builtin",
+    "empire.features.holders",
+    "empire.features.holders.audit",
+    "empire.features.holders.bundle",
+    "empire.features.holders.collector",
+    "empire.features.holders.contract",
+    "empire.features.holders.dataset",
+    "empire.features.holders.query",
+    "empire.features.holders.source",
+    "empire.features.holders.ui",
+    "scripts.architecture_benchmark",
+    "scripts.assembly_contract",
+    "scripts.change_impact",
+    "scripts.configure_kaipanla_task_defaults",
+    "scripts.configure_stock_directory",
+    "scripts.create_holder_schema",
+    "scripts.create_index_price_schema",
+    "scripts.create_index_schema",
+    "scripts.create_listing_schema",
+    "scripts.create_name_change_schema",
+    "scripts.create_security_alias_schema",
+    "scripts.create_ths_capital_schema",
+    "scripts.create_unlock_industry_schema",
+    "scripts.create_unlock_schema",
+    "scripts.documentation_contract",
+    "scripts.event_capacity",
+    "scripts.holder_pending_schema",
+    "scripts.import_bse_code_mapping",
+    "scripts.init_tdx_performance",
+    "scripts.measure_bse_capacity",
+    "scripts.measure_dividend_capacity",
+    "scripts.measure_holders",
+    "scripts.measure_kaipanla_day",
+    "scripts.measure_listing_status",
+    "scripts.measure_listings",
+    "scripts.measure_preview_queries",
+    "scripts.migrate_business_schema",
+    "scripts.migrate_collection_state",
+    "scripts.migrate_dividend_identity",
+    "scripts.migrate_download_capacity",
+    "scripts.migrate_download_settings",
+    "scripts.migrate_holder_source_rows",
+    "scripts.migrate_holder_task",
+    "scripts.migrate_holder_ties",
+    "scripts.migrate_index_price_nulls",
+    "scripts.migrate_issue_availability",
+    "scripts.migrate_kaipanla_products",
+    "scripts.migrate_market_storage",
+    "scripts.migrate_name_industries",
+    "scripts.migrate_shareholder_start_precision",
+    "scripts.migrate_suspension_identity",
+    "scripts.performance_capacity",
+    "scripts.repurchase_capacity",
+    "scripts.scan_preparation",
+    "scripts.smoke_kaipanla_storage_sql",
+    "scripts.smoke_source_storage_sql",
+    "scripts.source_verification",
+    "scripts.trading_rule_capacity",
+    "scripts.unlock_capacity",
+    "scripts.verify_database_design",
+    "scripts.verify_documentation",
+    "scripts.verify_preview_ui",
+    "scripts.verify_ths_holders",
+    "tests.catalog_factory",
+    "tests.integration.test_adjustment_pipeline",
+    "tests.integration.test_archive_fairness",
+    "tests.integration.test_calendar_archive",
+    "tests.integration.test_capital_archive",
+    "tests.integration.test_collection_settings",
+    "tests.integration.test_download_settings_persistence",
+    "tests.integration.test_financial_archive",
+    "tests.integration.test_holder_archive",
+    "tests.integration.test_holder_run_outcome",
+    "tests.integration.test_holder_source_migration",
+    "tests.integration.test_index_archive",
+    "tests.integration.test_index_price_archive",
+    "tests.integration.test_industry_archive",
+    "tests.integration.test_intraday_archive",
+    "tests.integration.test_issue_availability_archive",
+    "tests.integration.test_kaipanla_products_archive",
+    "tests.integration.test_kaipanla_suspension_scope",
+    "tests.integration.test_listing_archive",
+    "tests.integration.test_listing_status_archive",
+    "tests.integration.test_live_pipeline",
+    "tests.integration.test_market_storage",
+    "tests.integration.test_name_archive",
+    "tests.integration.test_news_archive",
+    "tests.integration.test_prefetch_pipeline",
+    "tests.integration.test_preview_queries",
+    "tests.integration.test_repurchase_archive",
+    "tests.integration.test_rule_archive",
+    "tests.integration.test_security_alias_archive",
+    "tests.integration.test_st_archive",
+    "tests.integration.test_state_unit_isolated",
+    "tests.integration.test_stock_archive",
+    "tests.integration.test_suspension_archive",
+    "tests.integration.test_suspension_migration",
+    "tests.integration.test_tdx_performance_archive",
+    "tests.integration.test_tdx_shareholder_changes_archive",
+    "tests.integration.test_tdx_unlock_industries_archive",
+    "tests.integration.test_tdx_unlocks_archive",
+    "tests.integration.test_ths_capital_archive",
+    "tests.integration.test_ths_stock_archive",
+    "tests.test_adjustment_query",
+    "tests.test_all_collector_prefetch",
+    "tests.test_architecture_benchmark",
+    "tests.test_assembly_contract",
+    "tests.test_assembly_order",
+    "tests.test_assembly_source_gate",
+    "tests.test_business_schema_metadata",
+    "tests.test_capital_ui",
+    "tests.test_change_impact",
+    "tests.test_cli_encoding",
+    "tests.test_cninfo_calendar",
+    "tests.test_collection_rules",
+    "tests.test_desktop_runtime",
+    "tests.test_dividend_capacity",
+    "tests.test_documentation_contracts",
+    "tests.test_documentation_review",
+    "tests.test_documentation_sources",
+    "tests.test_event_verification_tools",
+    "tests.test_existing_capacity_tools",
+    "tests.test_feature_bundles",
+    "tests.test_fingerprint_versions",
+    "tests.test_holder_combined",
+    "tests.test_holder_error_shapes",
+    "tests.test_holder_feature_lifecycle",
+    "tests.test_holder_identity_gaps",
+    "tests.test_holder_quality",
+    "tests.test_holder_ui",
+    "tests.test_intraday_ui",
+    "tests.test_kaipanla_products",
+    "tests.test_kaipanla_quote_ui",
+    "tests.test_kaipanla_task_rules",
+    "tests.test_kaipanla_verification",
+    "tests.test_listing_status",
+    "tests.test_listing_status_verification",
+    "tests.test_listing_verification",
+    "tests.test_market_mapping",
+    "tests.test_name_changes",
+    "tests.test_navigation",
+    "tests.test_package_smoke_declarations",
+    "tests.test_performance_verification_tools",
+    "tests.test_preparation",
+    "tests.test_preparation_cache",
+    "tests.test_preparation_directory",
+    "tests.test_preparation_progress",
+    "tests.test_preparation_research",
+    "tests.test_preview_polish",
+    "tests.test_preview_redesign",
+    "tests.test_project_diagnostics",
+    "tests.test_repurchase_ui",
+    "tests.test_repurchase_verification_tools",
+    "tests.test_repurchases",
+    "tests.test_shared_boundary_injection",
+    "tests.test_sina_news",
+    "tests.test_sina_universe",
+    "tests.test_st_events",
+    "tests.test_tdx_performance",
+    "tests.test_tdx_performance_lifecycle",
+    "tests.test_tdx_performance_ui",
+    "tests.test_tdx_suspensions",
+    "tests.test_ths_capital_lifecycle",
+    "tests.test_ths_capital_verification",
+    "tests.test_ths_holders",
+    "tests.test_ths_index_prices",
+    "tests.test_ths_indices",
+    "tests.test_ths_industries",
+    "tests.test_ths_listings",
+    "tests.test_ths_statements",
+    "tests.test_ths_universe",
+    "tests.test_trading_rule_verification_tools",
+    "tests.test_ui_architecture",
+    "tests.test_unit_prefetch",
+    "tests.test_unlock_verification_tools",
+    "tests.test_verify_capital_actions",
+    "tests.test_verify_ths_holders"
+  ],
+  "contributions": [
+    {
+      "id": "data.bond_holders:bond_holders",
+      "owner": "holders",
+      "requirement": "bond_holders",
+      "project": "ths-holders",
+      "tests": [
+        "tests/integration/test_holder_archive.py",
+        "tests/integration/test_holder_run_outcome.py",
+        "tests/test_holder_combined.py",
+        "tests/test_holder_identity_gaps.py",
+        "tests/test_ths_holders.py"
+      ]
+    },
+    {
+      "id": "data.float_holders:float_holders",
+      "owner": "holders",
+      "requirement": "float_holders",
+      "project": "ths-holders",
+      "tests": [
+        "tests/integration/test_holder_archive.py",
+        "tests/integration/test_holder_run_outcome.py",
+        "tests/test_holder_combined.py",
+        "tests/test_holder_identity_gaps.py",
+        "tests/test_ths_holders.py"
+      ]
+    },
+    {
+      "id": "data.top_holders:top_holders",
+      "owner": "holders",
+      "requirement": "top_holders",
+      "project": "ths-holders",
+      "tests": [
+        "tests/integration/test_holder_archive.py",
+        "tests/integration/test_holder_run_outcome.py",
+        "tests/test_holder_combined.py",
+        "tests/test_holder_identity_gaps.py",
+        "tests/test_ths_holders.py"
+      ]
+    }
+  ],
+  "selected_tests": [
+    "tests/integration/test_adjustment_pipeline.py",
+    "tests/integration/test_archive_fairness.py",
+    "tests/integration/test_calendar_archive.py",
+    "tests/integration/test_capacity_migration.py",
+    "tests/integration/test_capital_archive.py",
+    "tests/integration/test_collection_settings.py",
+    "tests/integration/test_collection_state_migration.py",
+    "tests/integration/test_download_settings_persistence.py",
+    "tests/integration/test_financial_archive.py",
+    "tests/integration/test_holder_archive.py",
+    "tests/integration/test_holder_run_outcome.py",
+    "tests/integration/test_holder_source_migration.py",
+    "tests/integration/test_index_archive.py",
+    "tests/integration/test_index_price_archive.py",
+    "tests/integration/test_industry_archive.py",
+    "tests/integration/test_intraday_archive.py",
+    "tests/integration/test_issue_availability_archive.py",
+    "tests/integration/test_kaipanla_products_archive.py",
+    "tests/integration/test_kaipanla_suspension_scope.py",
+    "tests/integration/test_listing_archive.py",
+    "tests/integration/test_listing_status_archive.py",
+    "tests/integration/test_live_pipeline.py",
+    "tests/integration/test_market_storage.py",
+    "tests/integration/test_name_archive.py",
+    "tests/integration/test_news_archive.py",
+    "tests/integration/test_prefetch_pipeline.py",
+    "tests/integration/test_preview_queries.py",
+    "tests/integration/test_repurchase_archive.py",
+    "tests/integration/test_rule_archive.py",
+    "tests/integration/test_security_alias_archive.py",
+    "tests/integration/test_st_archive.py",
+    "tests/integration/test_state_unit_isolated.py",
+    "tests/integration/test_stock_archive.py",
+    "tests/integration/test_suspension_archive.py",
+    "tests/integration/test_suspension_migration.py",
+    "tests/integration/test_tdx_performance_archive.py",
+    "tests/integration/test_tdx_shareholder_changes_archive.py",
+    "tests/integration/test_tdx_unlock_industries_archive.py",
+    "tests/integration/test_tdx_unlocks_archive.py",
+    "tests/integration/test_ths_capital_archive.py",
+    "tests/integration/test_ths_stock_archive.py",
+    "tests/test_adjustment_query.py",
+    "tests/test_all_collector_prefetch.py",
+    "tests/test_architecture_benchmark.py",
+    "tests/test_assembly_contract.py",
+    "tests/test_assembly_order.py",
+    "tests/test_assembly_source_gate.py",
+    "tests/test_business_schema_metadata.py",
+    "tests/test_capacity_settings.py",
+    "tests/test_capital_ui.py",
+    "tests/test_catalogue_verification.py",
+    "tests/test_change_impact.py",
+    "tests/test_cli_encoding.py",
+    "tests/test_cninfo_calendar.py",
+    "tests/test_collection_rules.py",
+    "tests/test_collector_contracts.py",
+    "tests/test_desktop_interaction.py",
+    "tests/test_desktop_runtime.py",
+    "tests/test_dividend_capacity.py",
+    "tests/test_documentation_contracts.py",
+    "tests/test_documentation_review.py",
+    "tests/test_documentation_sources.py",
+    "tests/test_download_settings_migration.py",
+    "tests/test_event_verification_tools.py",
+    "tests/test_existing_capacity_tools.py",
+    "tests/test_feature_bundles.py",
+    "tests/test_fingerprint_versions.py",
+    "tests/test_foundation_verification.py",
+    "tests/test_holder_combined.py",
+    "tests/test_holder_error_shapes.py",
+    "tests/test_holder_feature_lifecycle.py",
+    "tests/test_holder_identity_gaps.py",
+    "tests/test_holder_quality.py",
+    "tests/test_holder_ui.py",
+    "tests/test_intraday_ui.py",
+    "tests/test_kaipanla_measurement.py",
+    "tests/test_kaipanla_products.py",
+    "tests/test_kaipanla_quote_ui.py",
+    "tests/test_kaipanla_task_rules.py",
+    "tests/test_kaipanla_verification.py",
+    "tests/test_listing_status.py",
+    "tests/test_listing_status_verification.py",
+    "tests/test_listing_verification.py",
+    "tests/test_market_mapping.py",
+    "tests/test_name_changes.py",
+    "tests/test_navigation.py",
+    "tests/test_package_smoke_declarations.py",
+    "tests/test_packaged_runtime.py",
+    "tests/test_performance_verification_tools.py",
+    "tests/test_preparation.py",
+    "tests/test_preparation_cache.py",
+    "tests/test_preparation_directory.py",
+    "tests/test_preparation_progress.py",
+    "tests/test_preparation_research.py",
+    "tests/test_preview_polish.py",
+    "tests/test_preview_redesign.py",
+    "tests/test_project_diagnostics.py",
+    "tests/test_release_entrypoints.py",
+    "tests/test_release_file_state.py",
+    "tests/test_release_gate.py",
+    "tests/test_release_output.py",
+    "tests/test_release_pipeline.py",
+    "tests/test_release_steps.py",
+    "tests/test_repurchase_ui.py",
+    "tests/test_repurchase_verification_tools.py",
+    "tests/test_repurchases.py",
+    "tests/test_shared_boundary_injection.py",
+    "tests/test_sina_news.py",
+    "tests/test_sina_universe.py",
+    "tests/test_source_verification.py",
+    "tests/test_st_events.py",
+    "tests/test_tdx_performance.py",
+    "tests/test_tdx_performance_lifecycle.py",
+    "tests/test_tdx_performance_ui.py",
+    "tests/test_tdx_suspensions.py",
+    "tests/test_ths_capital_lifecycle.py",
+    "tests/test_ths_capital_verification.py",
+    "tests/test_ths_holders.py",
+    "tests/test_ths_index_prices.py",
+    "tests/test_ths_indices.py",
+    "tests/test_ths_industries.py",
+    "tests/test_ths_listings.py",
+    "tests/test_ths_statements.py",
+    "tests/test_ths_universe.py",
+    "tests/test_trading_rule_verification_tools.py",
+    "tests/test_ui_architecture.py",
+    "tests/test_unit_prefetch.py",
+    "tests/test_unlock_verification_tools.py",
+    "tests/test_verify_capital_actions.py",
+    "tests/test_verify_ths_holders.py",
+    "tests/test_verify_ths_statements.py"
+  ],
+  "execution_evidence": [
+    {
+      "path": "tests/integration/test_adjustment_pipeline.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_archive_fairness.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_calendar_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_capacity_migration.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_capital_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_collection_settings.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_collection_state_migration.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_download_settings_persistence.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_financial_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_holder_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_holder_run_outcome.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_holder_source_migration.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_index_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_index_price_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_industry_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_intraday_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_issue_availability_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_kaipanla_products_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_kaipanla_suspension_scope.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_listing_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_listing_status_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_live_pipeline.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_market_storage.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_name_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_news_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_prefetch_pipeline.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_preview_queries.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_repurchase_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_rule_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_security_alias_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_st_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_state_unit_isolated.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_stock_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_suspension_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_suspension_migration.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_tdx_performance_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_tdx_shareholder_changes_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_tdx_unlock_industries_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_tdx_unlocks_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_ths_capital_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/integration/test_ths_stock_archive.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_adjustment_query.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_all_collector_prefetch.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_architecture_benchmark.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_assembly_contract.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_assembly_order.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_assembly_source_gate.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_business_schema_metadata.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_capacity_settings.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_capital_ui.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_catalogue_verification.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_change_impact.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_cli_encoding.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_cninfo_calendar.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_collection_rules.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_collector_contracts.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_desktop_interaction.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_desktop_runtime.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_dividend_capacity.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_documentation_contracts.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_documentation_review.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_documentation_sources.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_download_settings_migration.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_event_verification_tools.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_existing_capacity_tools.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_feature_bundles.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_fingerprint_versions.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_foundation_verification.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_holder_combined.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_holder_error_shapes.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_holder_feature_lifecycle.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_holder_identity_gaps.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_holder_quality.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_holder_ui.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_intraday_ui.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_kaipanla_measurement.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_kaipanla_products.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_kaipanla_quote_ui.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_kaipanla_task_rules.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_kaipanla_verification.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_listing_status.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_listing_status_verification.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_listing_verification.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_market_mapping.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_name_changes.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_navigation.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_package_smoke_declarations.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_packaged_runtime.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_performance_verification_tools.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_preparation.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_preparation_cache.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_preparation_directory.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_preparation_progress.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_preparation_research.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_preview_polish.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_preview_redesign.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_project_diagnostics.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_release_entrypoints.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_release_file_state.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_release_gate.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_release_output.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_release_pipeline.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_release_steps.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_repurchase_ui.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_repurchase_verification_tools.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_repurchases.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_shared_boundary_injection.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_sina_news.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_sina_universe.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_source_verification.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_st_events.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_tdx_performance.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_tdx_performance_lifecycle.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_tdx_performance_ui.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_tdx_suspensions.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ths_capital_lifecycle.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ths_capital_verification.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ths_holders.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ths_index_prices.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ths_indices.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ths_industries.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ths_listings.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ths_statements.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ths_universe.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_trading_rule_verification_tools.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_ui_architecture.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_unit_prefetch.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_unlock_verification_tools.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_verify_capital_actions.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_verify_ths_holders.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    },
+    {
+      "path": "tests/test_verify_ths_statements.py",
+      "status": "not_verified",
+      "reason": "代码/测试已改变，既有测试证据已失效；重新执行发布门禁"
+    }
+  ],
+  "selection_status": "ready",
+  "verification_status": "not_complete",
+  "live_validation": {
+    "status": "not_assessed",
+    "references": [],
+    "rule": "Apply collector-development-guide to source, execution, contract or recovery changes; pure moves still need scoped end-to-end evidence. Random 30 applies only to stock-grained work."
+  },
+  "desktop_validation": "not_assessed",
+  "official_release": "full_gate_required",
+  "conservative_tests": [
+    "tests.integration.test_capacity_migration",
+    "tests.integration.test_collection_state_migration",
+    "tests.integration.test_index_price_archive",
+    "tests.integration.test_prefetch_pipeline",
+    "tests.test_all_collector_prefetch",
+    "tests.test_architecture_benchmark",
+    "tests.test_business_schema_metadata",
+    "tests.test_capacity_settings",
+    "tests.test_catalogue_verification",
+    "tests.test_dividend_capacity",
+    "tests.test_download_settings_migration",
+    "tests.test_event_verification_tools",
+    "tests.test_existing_capacity_tools",
+    "tests.test_feature_bundles",
+    "tests.test_foundation_verification",
+    "tests.test_kaipanla_measurement",
+    "tests.test_kaipanla_verification",
+    "tests.test_listing_status_verification",
+    "tests.test_listing_verification",
+    "tests.test_packaged_runtime",
+    "tests.test_performance_verification_tools",
+    "tests.test_release_entrypoints",
+    "tests.test_release_file_state",
+    "tests.test_release_gate",
+    "tests.test_release_output",
+    "tests.test_release_pipeline",
+    "tests.test_release_steps",
+    "tests.test_repurchase_verification_tools",
+    "tests.test_source_verification",
+    "tests.test_ths_capital_verification",
+    "tests.test_trading_rule_verification_tools",
+    "tests.test_unlock_verification_tools",
+    "tests.test_verify_capital_actions",
+    "tests.test_verify_ths_holders",
+    "tests.test_verify_ths_statements"
+  ],
+  "limitations": [
+    "Static dependency graph is not a call graph.",
+    "Historical evidence references do not attest current source.",
+    "Skipped, absent, failed or stale cases are never passing evidence.",
+    "This command starts no tests, collectors, services, migrations or desktop."
+  ],
+  "source_sha256": "ec0a3020d6fe361297ed4897bb02ba164bc7654697a0736717457bdab96121cf"
+}

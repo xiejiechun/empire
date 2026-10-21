@@ -5,3 +5,7 @@ contract公开日期、事件身份、月份证明valid_proof及FINGERPRINT_VERS
 入口、生命周期、状态丢失恢复和来源限制见[业务说明](../../../../docs/tdx-listing-status.md)。不按当前股票名单过滤、不推断永久退市；空月须有合法完整日响应及内容证明。公共preparation、摘要、入队、归档和调度保持唯一正式路径；未改表或用户保存设置。
 
 业务专项为tests/test_listing_status.py、tests/test_listing_scope_prefetch.py与tests/integration/test_listing_status_archive.py；安全实采和容量工具须通过当前隔离验证后执行。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

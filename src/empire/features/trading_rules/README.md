@@ -19,3 +19,7 @@
 专项：`tests/test_trading_rules.py`、`tests/test_rule_documents.py`；全链路/恢复：`tests/integration/test_rule_archive.py`；私有工具守卫与取消：`tests/test_trading_rule_verification_tools.py`。安全实采入口`scripts/collect_trading_rules.py`使用独立13348、UUID SQL/Redis资源；容量入口`scripts/measure_trading_rules.py`保留77审核参数加10000压力行及原预算。均要求新build报告，不能用旧同名脚本写生产计划。规则按文件组采集，不适用逐股票随机30只门槛；仍须逐kind来源→队列→SQL→全部正式分页/引用核对，pending为0且清理完成。
 
 用户操作、来源与日期限制见[交易规则说明](../../../../docs/trading-rules.md)，SQL对象字典见[数据库参考](../../../../docs/database-reference.md)。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

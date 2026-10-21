@@ -18,3 +18,7 @@
 用户操作、字段、容量及限制见[来源说明](../../../../docs/eastmoney-repurchases.md)。领域与恢复：`tests/test_repurchases.py`、`tests/test_repurchase_ui.py`、`tests/integration/test_repurchase_archive.py`。安全工具专项为`tests/test_repurchase_verification_tools.py`。
 
 真实验证使用`scripts/verify_repurchases.py`，显式独立测试实例及新build输出；共享资源生命周期/SQL守卫来自`source_verification.py`和`source_test_storage.py`。按方案全市场整轮核对，不宣称随机30股票。容量入口`scripts/measure_repurchases.py`要求本轮已通过来源证明`--source-proof`，复用相同私有资源保障；保留原50000行及全部原阈值。应用启动无DDL；现有显式建表维护入口仍为`scripts/create_repurchase_schema.py`。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

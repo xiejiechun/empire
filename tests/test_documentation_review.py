@@ -4,14 +4,16 @@ from pathlib import Path
 
 import pytest
 
-from empire.plugins.ui.help_content import read_articles
+from scripts.documentation_build import SOURCE_INDEX, compile_help, generate
 from scripts.documentation_contract import record_review, verify_coverage, verify_review
 
 
 @pytest.fixture
 def documented_project(tmp_path):
     root = Path(__file__).resolve().parents[1]
-    for name in ("src/empire/plugins/ui/storage_reference.md", "config/app.example.toml",
+    index = json.loads((root / SOURCE_INDEX).read_text(encoding="utf-8"))
+    fragment_names = [item["path"] for item in index["sources"]]
+    for name in (SOURCE_INDEX, *fragment_names, "config/app.example.toml",
                  "src/empire/plugins/collection/rules.json",
                  "Empire.spec", "docs/documentation-coverage.json",
                  "src/empire/features/stocks/ui.py"):
@@ -29,7 +31,13 @@ def documented_project(tmp_path):
         shutil.copyfile(root / name, destination)
     coverage["guides"] = []
     target.write_text(json.dumps(coverage), encoding="utf-8")
+    (tmp_path / "src/empire/plugins/ui").mkdir(parents=True, exist_ok=True)
+    generate(tmp_path)
     return tmp_path
+
+
+def topic_file(root, title):
+    return root / compile_help(root).origins[title]["path"]
 
 
 def test_source_change_cannot_reuse_review_without_document_update(documented_project):
@@ -84,14 +92,15 @@ def test_page_without_usage_article_or_retired_topic_fails(documented_project):
 def test_content_change_and_broken_offline_links_fail(documented_project):
     root = documented_project
     record_review(root, "核对说明")
-    target = root / "src/empire/plugins/ui/storage_reference.md"
+    target = topic_file(root, "财经快讯")
     contents = target.read_text(encoding="utf-8")
     target.write_text(contents + "\n补充限制。\n", encoding="utf-8")
+    generate(root)
     with pytest.raises(RuntimeError, match="文档审阅已过期"):
         verify_review(root)
     target.write_text(contents + "\n[不存在](help:已删除主题)\n", encoding="utf-8")
     with pytest.raises(ValueError, match="链接目标不存在"):
-        read_articles(target)
+        compile_help(documented_project)
 
 
 def test_unrelated_article_update_cannot_hide_changed_feature(documented_project):
@@ -99,8 +108,9 @@ def test_unrelated_article_update_cannot_hide_changed_feature(documented_project
     record_review(root, "核对当前功能")
     code = root / "src/empire/features/stocks/ui.py"
     code.write_text(code.read_text(encoding="utf-8") + "\n# revised stock behavior\n", encoding="utf-8")
-    article = root / "src/empire/plugins/ui/storage_reference.md"
+    article = topic_file(root, "文档分工与更新")
     article.write_text(article.read_text(encoding="utf-8") + "\n无关技术参考的补充。\n", encoding="utf-8")
+    generate(root)
     with pytest.raises(RuntimeError, match="page:stocks"):
         record_review(root, "修改了其他文章", "全局原因不能代替逐功能核对")
     record_review(root, "核对股票内部注释", exceptions={"page:stocks": "只改内部注释，市场筛选、查询和复制行为均未改变"})
@@ -108,11 +118,11 @@ def test_unrelated_article_update_cannot_hide_changed_feature(documented_project
 
 
 def test_offline_links_require_encoded_spaces(documented_project):
-    target = documented_project / 'src/empire/plugins/ui/storage_reference.md'
+    target = topic_file(documented_project, '股票列表')
     contents = target.read_text(encoding='utf-8')
     target.write_text(contents.replace('help:MySQL%20stock', 'help:MySQL stock', 1), encoding='utf-8')
     with pytest.raises(ValueError, match='空格须编码'):
-        read_articles(target)
+        compile_help(documented_project)
 
 
 def test_collector_without_data_page_still_requires_coverage(documented_project):
@@ -125,11 +135,11 @@ def test_collector_without_data_page_still_requires_coverage(documented_project)
 
 
 def test_data_articles_require_structured_user_sections(documented_project):
-    target = documented_project / "src/empire/plugins/ui/storage_reference.md"
+    target = topic_file(documented_project, "股票列表")
     contents = target.read_text(encoding="utf-8").replace("## 字段与日期", "## 只有技术字段", 1)
     target.write_text(contents, encoding="utf-8")
     with pytest.raises(ValueError, match="缺少章节 字段与日期"):
-        read_articles(target)
+        compile_help(documented_project)
 
 
 def test_data_page_cannot_be_documented_only_by_homepage(documented_project):
@@ -152,11 +162,8 @@ def test_every_table_requires_its_own_dictionary(documented_project):
 
 @pytest.mark.parametrize('change', ['column', 'type', 'index'])
 def test_dictionary_is_checked_locally_against_ddl(documented_project, change):
-    target = documented_project / 'src/empire/plugins/ui/storage_reference.md'
-    content = target.read_text(encoding='utf-8')
-    start = content.index('<!-- topic:数据库参考|MySQL stock_listing -->')
-    end = content.index('<!-- topic:', start + 5)
-    article = content[start:end]
+    target = topic_file(documented_project, 'MySQL stock_listing')
+    article = target.read_text(encoding='utf-8')
     if change == 'column':
         # Still present in source-specific technical prose: global word matching would pass.
         article = '\n'.join(line for line in article.splitlines() if not line.startswith('| `history` |')) + '\n'
@@ -165,7 +172,8 @@ def test_dictionary_is_checked_locally_against_ddl(documented_project, change):
     else:
         article = article.replace('KEY ix_listing_date (listing_date, unified_code)',
                                   'KEY ix_listing_date (unified_code, listing_date)')
-    target.write_text(content[:start] + article + content[end:], encoding='utf-8')
+    target.write_text(article, encoding='utf-8')
+    generate(documented_project)
     with pytest.raises(RuntimeError, match='字典与 DDL 不一致|索引或约束说明未同步'):
         verify_coverage(documented_project)
 
@@ -195,7 +203,58 @@ def test_unrelated_article_cannot_cover_storage_source_changes(documented_projec
     record_review(root, '核对每张表与每类键')
     code = root / 'src/empire/plugins/pipeline/fingerprints.py'
     code.write_text(code.read_text(encoding='utf-8') + '\n# Changed cache lifetime contract\n', encoding='utf-8')
-    article = root / 'src/empire/plugins/ui/storage_reference.md'
+    article = topic_file(root, '文档分工与更新')
     article.write_text(article.read_text(encoding='utf-8') + '\n仅修改无关文章。\n', encoding='utf-8')
+    generate(root)
     with pytest.raises(RuntimeError, match='redis:fingerprints'):
         record_review(root, '更新了其他对象的正文')
+
+
+def test_review_rejects_changed_authority_before_explicit_generation(documented_project):
+    root = documented_project
+    record_review(root, "核对权威正文与聚合物")
+    article = topic_file(root, "财经快讯")
+    article.write_text(article.read_text(encoding="utf-8") + "\n新增新闻范围说明。\n", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="aggregate is stale"):
+        record_review(root, "未生成时不能刷新审阅")
+    generate(root)
+    with pytest.raises(RuntimeError, match="文档审阅已过期"):
+        verify_review(root)
+    record_review(root, "生成后实际审阅新闻范围说明")
+    verify_review(root)
+
+
+def test_schema_three_binds_feature_documents_to_authoritative_owners_and_paths(documented_project):
+    root = documented_project
+    record_review(root, '核对每个功能所引用的权威来源')
+    review = json.loads((root / 'docs/documentation-review.json').read_text(encoding='utf-8'))
+    bundle = compile_help(root)
+    assert review['schema'] == 3
+    for feature in review['features'].values():
+        assert feature['documentation']
+        for title, origin in feature['documentation'].items():
+            assert origin == bundle.origins[title]
+            assert origin['path'] in bundle.inputs
+
+
+def test_fragment_relocation_invalidates_review_even_when_reader_bytes_do_not_change(documented_project):
+    root = documented_project
+    record_review(root, '核对新闻主题原始来源')
+    aggregate = root / 'src/empire/plugins/ui/storage_reference.md'
+    previous = aggregate.read_bytes()
+    index_path = root / SOURCE_INDEX
+    index = json.loads(index_path.read_text(encoding='utf-8'))
+    old = topic_file(root, '财经快讯')
+    new = old.with_name('relocated-news.md')
+    new.write_bytes(old.read_bytes())
+    old.unlink()
+    for entry in index['sources']:
+        if entry['path'] == old.relative_to(root).as_posix():
+            entry['path'] = new.relative_to(root).as_posix()
+    index_path.write_text(json.dumps(index), encoding='utf-8')
+    generate(root)
+    assert aggregate.read_bytes() == previous
+    with pytest.raises(RuntimeError, match='文档审阅已过期'):
+        verify_review(root)
+    record_review(root, '逐项核对来源迁移，新闻正文及操作规则未改变')
+    verify_review(root)

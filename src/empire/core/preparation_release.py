@@ -13,6 +13,8 @@ def source_digest(root):
                      and '__pycache__' not in p.parts and p.name != 'local.toml')
     paths.extend(root / name for name in ('requirements.lock', 'pyproject.toml', 'Empire.spec',
                                          'build.ps1', 'verify-release.ps1'))
+    if (root / '.gitattributes').is_file():
+        paths.append(root / '.gitattributes')
     digest = hashlib.sha256()
     for path in sorted(paths):
         digest.update(path.relative_to(root).as_posix().encode())

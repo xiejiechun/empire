@@ -216,8 +216,7 @@
       "role": "composition",
       "modules": [
         "empire.__main__",
-        "empire.bootstrap",
-        "empire.build_info"
+        "empire.bootstrap"
       ]
     },
     {
@@ -394,30 +393,6 @@
       "modules": [
         "empire.features.financial_statements.audit",
         "empire.features.financial_statements.query"
-      ]
-    },
-    {
-      "owner": "help",
-      "public_symbols": [
-        "Article",
-        "read_articles",
-        "topics"
-      ],
-      "reason": "程序说明文档：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.help_content"
-      ]
-    },
-    {
-      "owner": "help",
-      "public_symbols": [
-        "render_article"
-      ],
-      "reason": "程序说明文档：业务页面和展示状态；以上 public_symbols 是已审阅的复用展示/文档接口，其余实现不公开",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.help_reader"
       ]
     },
     {
@@ -957,6 +932,38 @@
       "reason": "TDX解禁共有无I/O协议，两个业务独立解释",
       "modules": [
         "empire.sources.tdx_unlock"
+      ]
+    },
+    {
+      "owner": "application",
+      "reason": "应用构建身份的只读公共接口：读取并校验发布清单、格式化版本与来源摘要；不创建管理器、不收集业务贡献，不享有业务装配豁免",
+      "role": "api",
+      "modules": [
+        "empire.build_info"
+      ]
+    },
+    {
+      "owner": "ui_components",
+      "public_symbols": [
+        "Article",
+        "read_articles",
+        "topics"
+      ],
+      "reason": "共享离线文档内容模型与解析：Article、主题/章节/help链接校验、唯一正文资源读取及文本搜索；无页面状态、控件或具体业务数据访问，帮助页与任务规则共同使用",
+      "role": "parser",
+      "modules": [
+        "empire.plugins.ui.help_content"
+      ]
+    },
+    {
+      "owner": "ui_components",
+      "public_symbols": [
+        "render_article"
+      ],
+      "reason": "共享Markdown与章节渲染：仅格式化调用方传入的浏览器、章节控件和正文，不读取文档资源、不注册页面、不拥有具体业务状态；帮助页与任务规则共同使用",
+      "role": "shared_ui",
+      "modules": [
+        "empire.plugins.ui.help_reader"
       ]
     }
   ],

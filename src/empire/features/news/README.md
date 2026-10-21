@@ -13,3 +13,7 @@
 日常操作与来源生命周期以 [新浪财经新闻说明](../../../../docs/sina-news.md) 为权威正文。数据只经共享下载、入队、归档和正式查询路径；业务包不复制这些公共服务，也没有独立 preparation 项。
 
 专项入口：`tests/test_sina_news.py`、`tests/test_news_query.py`、`tests/test_news_ui.py`。正式归档与恢复：`tests/integration/test_news_archive.py`、`tests/integration/test_archive_fairness.py`。共有约束见 [采集开发指南](../../../../docs/collector-development-guide.md)；来源行为改变须按指南重新完成适用实采，新闻不属于按股票随机30样本的业务粒度。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

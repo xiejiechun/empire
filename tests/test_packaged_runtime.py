@@ -59,9 +59,13 @@ def test_build_manifest_is_strict_and_identifies_dirty_artifacts(tmp_path, monke
     assert "干净提交" in build_info.build_summary()[0]
 
 
-@pytest.mark.parametrize("release_id", ("e" * 32, "not-a-canonical-release-id"),
-                         ids=("current-writer-contract", "invalid-identity-before-pyinstaller"))
-def test_package_validates_writer_identity_before_running_packager(tmp_path, monkeypatch, release_id):
+@pytest.mark.parametrize(("release_id", "help_damage"), [
+    ("e" * 32, None), ("not-a-canonical-release-id", None),
+    ("e" * 32, "missing"), ("e" * 32, "changed"),
+], ids=("current-writer-contract", "invalid-identity-before-pyinstaller",
+        "missing-help-resource", "changed-help-resource"))
+def test_package_validates_writer_identity_before_running_packager(
+        tmp_path, monkeypatch, release_id, help_damage):
     root = tmp_path / "workspace"
     generated = root / "build/generated"
     generated.mkdir(parents=True)
@@ -72,6 +76,9 @@ def test_package_validates_writer_identity_before_running_packager(tmp_path, mon
                                       "component_count": 41}), encoding="utf-8")
     run = root / "build/releases" / release_id
     stage = run / "portable/Empire"
+    reference = root / "src/empire/plugins/ui/storage_reference.md"
+    reference.parent.mkdir(parents=True)
+    reference.write_bytes(b"checked help bytes\n")
     commands = []
 
     def fake_package_command(args, *, env):
@@ -83,6 +90,10 @@ def test_package_validates_writer_identity_before_running_packager(tmp_path, mon
         internal.mkdir(parents=True)
         for name in ("build_manifest.json", "preparation-release.json", "dependency-report.json"):
             shutil.copyfile(dependency if name == dependency.name else generated / name, internal / name)
+        if help_damage != "missing":
+            bundled_help = internal / "plugins/ui/storage_reference.md"
+            bundled_help.parent.mkdir(parents=True)
+            bundled_help.write_bytes(b"changed" if help_damage else reference.read_bytes())
 
     runner = SimpleNamespace(root=root, run_directory=run, python=root / "python.exe",
                              inputs={"sha256": "d" * 64}, commit="a" * 40, dirty=False,
@@ -97,10 +108,17 @@ def test_package_validates_writer_identity_before_running_packager(tmp_path, mon
         assert commands == [] and runner.evidence == {}
         assert not stage.exists()
         return
+    if help_damage:
+        with pytest.raises(RuntimeError, match="Packaged offline help differs"):
+            release_steps.package(runner, SimpleNamespace(stage=stage), dependency)
+        assert len(commands) == 1
+        return
     value = release_steps.package(runner, SimpleNamespace(stage=stage), dependency)
     assert len(commands) == 1
     assert value["source_sha256"] == runner.inputs["sha256"]
     assert value["release_id"] == run.name
+    assert runner.evidence[reference.relative_to(root).as_posix()] == sha256(reference)
+    assert sha256(stage / '_internal/empire/plugins/ui/storage_reference.md') == sha256(reference)
     embedded = stage / "_internal/empire/build_manifest.json"
     assert build_info.load_build_info(embedded) == {**value, "packaged": True}
 

@@ -37,7 +37,10 @@ def installed(tmp_path):
                                 'tests/test_x.py', 'scripts/build.py', 'sql/schema.sql',
                                 'docs/guide.md', 'docs/documentation-coverage.json',
                                 'config/app.example.toml', 'requirements.lock', 'Empire.spec',
-                                'verify-release.ps1'])
+                                'verify-release.ps1', '.gitattributes',
+                                'src/empire/documentation/help-index.json',
+                                'src/empire/features/news/docs/help/overview.md',
+                                'src/empire/plugins/ui/storage_reference.md'])
 def test_input_manifest_detects_all_declared_input_classes(tmp_path, name):
     file = tmp_path / name
     file.parent.mkdir(parents=True, exist_ok=True)

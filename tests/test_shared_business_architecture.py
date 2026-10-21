@@ -32,7 +32,7 @@ def test_shared_imports_of_business_fail_even_for_public_symbols(tmp_path, owner
         ], feature_layouts=[], debt=[])
     report = analyze(tmp_path, policy)
     assert not report['errors']
-    expected = 'shared_ui_to_business' if role == 'shared_ui' else 'shared_to_business'
+    expected = 'shared_to_business'
     assert expected in {item['rule'] for item in report['new_debt']}
 
 

@@ -154,7 +154,7 @@ def input_inventory(root):
     root = Path(root).resolve()
     paths = [p for folder in INPUT_DIRECTORIES for p in files(root / folder)]
     paths.extend(p for p in root.iterdir() if p.is_file()
-                 and (p.suffix in ROOT_SUFFIXES or p.name == '.gitignore')
+                 and (p.suffix in ROOT_SUFFIXES or p.name in {'.gitignore', '.gitattributes'})
                  and p.name not in {'.build.lock', 'config.toml'})
     entries = {}
     for path in sorted(paths):

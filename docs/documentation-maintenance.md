@@ -14,7 +14,11 @@
 
 ## 正式资源
 
-唯一离线正文为 src/empire/plugins/ui/storage_reference.md。help_content.py 解析主题、摘要和业务分组，阅读器与门禁共享同一规则；help_reader.py 只负责 Markdown 与章节定位，help.py 管理导航、搜索和阅读状态。
+权威正文按完整主题放在 `src/empire/features/<业务>/docs/help/`，跨业务操作与公共存储说明放在 `src/empire/documentation/topics/`。[来源清单](../src/empire/documentation/help-index.json) 只登记业务归属、片段路径与阅读顺序，不复制标题、正文或页面/任务登记。每个主题只有一份权威片段；同一业务的数据说明、存储字典与专项技术说明按原有职责分篇，不按字数切碎。
+
+`src/empire/plugins/ui/storage_reference.md` 是跟踪在 Git 中的自动生成聚合物，禁止手工维护。`scripts/documentation_build.py generate` 在发布冻结前按清单确定性生成 UTF-8/LF 字节； `.gitattributes` 固定该资源和权威输入的换行。相同输入重复生成不重写文件。源码与正式 EXE 仍使用这一份聚合资源，help_content.py 的文章解析、help_reader.py 的 Markdown/章节定位及 help.py 的导航/搜索保持现有路径，不加入运行时编译或旧文件回退。
+
+`check` 只读核对片段集合、归属、唯一主题、help 链接及聚合字节；片段修改后忘记生成、手改聚合物、主题改名漏改关联均拒绝通过。离线正文的可点链接使用现阅读器支持的 help: 主题链接，源码文件链接留在本业务 README 与 docs 指南，避免搬移或打包后失效。
 
 README 和桌面指南给当前入口与概览，来源专项文档给完整生命周期、来源差异和范围证据。实际采集数量与核查时间写入 evidence；支持能力、实采完成及用途可用分别报告，不把旧进度当永久规则。规划工作数量以当前界面为准，不在多篇说明重复手写数字。
 
@@ -66,25 +70,26 @@ scripts/documentation_storage.py 扫描全部 src Python 的 namespace 前缀构
 ## 开发同步顺序
 
 1. 开工列出受影响的用户动作、默认值、来源、范围、字段、日期、恢复和限制；核实共享工作区冲突。
-2. 实现完成后修改对应正文和摘要。新增页面、采集项目、表或键同步覆盖登记；新增查询/维护还须补技术参考、架构/存储/恢复和来源专项说明。
+2. 实现完成后修改对应权威片段正文和摘要。新增页面、采集项目、表或键同步覆盖登记；新增查询/维护还须补技术参考、架构/存储/恢复和来源专项说明。
 3. 更新 README / 桌面概览及实现状态，保留动态证据与永久规则的区别。已存在的旧文章不能替代新增必需字段与用途限制。
-4. 执行文档契约与界面专项；新增或改造数据库遵循独立设计准入，方案中的工具不写成已实现保障。
+4. 显式执行 `scripts/documentation_build.py generate`，把片段、来源清单和聚合物一同提交；随后执行文档契约与界面专项；新增或改造数据库遵循独立设计准入，方案中的工具不写成已实现保障。
 5. 最后一次实现修改后显式记录审阅，再运行正式门禁：
 
 ```powershell
+.\.venv\Scripts\python.exe scripts/documentation_build.py generate
 .\.venv\Scripts\python.exe scripts/documentation_contract.py review --note '具体说明本次功能变化、更新的主题和限制'
 .\.venv\Scripts\python.exe scripts/verify_documentation.py
 ```
 
 ## 按功能防止无关更新代替同步
 
-[审阅记录](documentation-review.json) 使用现行 schema 2，保存整体源码/指南摘要，以及每个 page:ID、task:ID、mysql:TABLE 和 redis:KEY_FAMILY 的关联正文摘要和相关源码摘要。页面/任务相关源码由实际插件声明及本地业务模块导入关系取得；存储对象绑定已登记的真实读写文件及其可达业务模块，MySQL 另绑定本表 DDL，包含其可达采集、查询、规范和 UI 模块。共用模块可能影响多个功能，必须逐项核对；这不是运行时第二份插件登记。
+[审阅记录](documentation-review.json) 使用 schema 3，整体内容摘要绑定来源清单及权威片段原始字节；每个功能额外保存所引用主题的权威路径和业务归属。聚合物必须与权威片段一致才允许显式 review，不能通过刷新聚合摘要代替原文审阅。原有整体源码/指南摘要及逐功能正文摘要规则保持：每个 page:ID、task:ID、mysql:TABLE 和 redis:KEY_FAMILY 的关联正文摘要和相关源码摘要。页面/任务相关源码由实际插件声明及本地业务模块导入关系取得；存储对象绑定已登记的真实读写文件及其可达业务模块，MySQL 另绑定本表 DDL，包含其可达采集、查询、规范和 UI 模块。共用模块可能影响多个功能，必须逐项核对；这不是运行时第二份插件登记。
 
 若股票功能源码变化，但只在其他文章加一句话，review 会拒绝股票功能；不能再靠“整体说明改过”通过。新增任务缺数据范围、数据页只关联首页、文章缺章节、重复关联、旧审阅和失效链接都会失败。检查已由 verify_documentation.py、verify-release.ps1 和 build.ps1 执行。
 
 确实只是内部改造且不改变某功能的用户契约时，可用 --unchanged 'page:stocks=具体原因' 或 --unchanged 'task:sina-stocks=具体原因'；存储可使用 mysql:stock / redis:checkpoint 逐功能登记；理由至少 12 字。全局 --unchanged-reason 仅说明其余共享源码无用户行为变化，不能代替逐功能例外。功能行为改变必须修改正文，不得用例外逃避；实际审阅仍由开发者负责。
 
-schema 1 的审阅记录必须通过上述显式 review 重新建立现行记录，check 不接受旧记录。不在启动时迁移文档登记，程序正文只使用现行格式。
+schema 1/2 的旧审阅记录必须通过上述显式 review 重新建立现行记录，check 不接受旧记录。不在启动时迁移文档登记，程序正文只使用现行格式。
 
 ## 能证明和不能证明什么
 
@@ -94,4 +99,6 @@ schema 1 的审阅记录必须通过上述显式 review 重新建立现行记录
 
 界面代码变化需正式门禁、打包和真实桌面验证，保留程序目录 config.toml。宽窄离屏截图用于布局检查，真实桌面操作另列。共享源码正在其他聊天修复时先完成各自实现和专项，再对同一份最终源码执行一次发布；不要并行重写审阅、构建或操作桌面。
 
-纯正文变更只需文档契约和相关回归，可同步外置资源并注明未重建。说明变更不授权迁移数据库、清业务数据或发送其他聊天消息。
+正式发布冻结前完成 generate 和显式 review；发布门禁内部只 check，并将来源/主题/聚合摘要写入本轮独占目录的 help-report.json。Empire.spec 只打包已检查聚合物，打包后再次逐字节核对嵌入资源并保留摘要证据；门禁不得在测试中或打包中重写 src。
+
+纯正文变更只需生成、文档契约和相关回归，可同步外置聚合资源并注明未重建。说明变更不授权迁移数据库、清业务数据或发送其他聊天消息。

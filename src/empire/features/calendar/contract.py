@@ -1,10 +1,27 @@
 """Business-owned calendar.contract."""
 import calendar
 import re
+from collections.abc import Iterable
 from datetime import date, datetime, time, timedelta
+from typing import Any, Literal, Protocol, overload
 
 from empire.contracts.archive_version import ArchiveVersion
 from empire.core.time import CHINA
+
+# Raw source dictionaries are checked field by field by validate_rows below.
+# Keeping this explicit Any boundary avoids pretending an annotation validates JSON.
+type RawCalendarRow = dict[str, Any]
+
+
+class CalendarDayRow(Protocol):
+    """The two typed fields consumed from an existing SQL mapping; no copying."""
+
+    @overload
+    def __getitem__(self, key: Literal['trade_date']) -> date: ...
+
+    @overload
+    def __getitem__(self, key: Literal['is_trade']) -> int: ...
+
 
 FINGERPRINT_NAMESPACE = "calendar"
 
@@ -15,20 +32,20 @@ FINGERPRINT_VERSION = ArchiveVersion(("utc",), observed_index=0)
 FIRST_DATE = date(1990, 12, 19)
 
 
-def month_start(month):
+def month_start(month: str) -> date:
     if not isinstance(month, str) or not re.fullmatch(r"\d{4}-\d{2}", month):
         raise ValueError("月份必须为 YYYY-MM")
     return date.fromisoformat(month + "-01")
 
 
-def month_dates(month):
+def month_dates(month: str) -> list[date]:
     start = month_start(month)
     end = start.replace(day=calendar.monthrange(start.year, start.month)[1])
     start = max(start, FIRST_DATE)
     return [start + timedelta(days=i) for i in range(max(0, (end - start).days + 1))]
 
 
-def months_between(start, end):
+def months_between(start: str, end: str) -> list[str]:
     first, last = month_start(start), month_start(end)
     if first > last:
         return []
@@ -36,10 +53,10 @@ def months_between(start, end):
             for index in range(first.year * 12 + first.month - 1, last.year * 12 + last.month)]
 
 
-def validate_rows(month, rows):
+def validate_rows(month: str, rows: object) -> list[RawCalendarRow]:
     if not isinstance(rows, list) or not 1 <= len(rows) <= 31:
         raise ValueError(f"{month} 来源月份为空或条数无效，不当作全月休市")
-    clean = []
+    clean: list[RawCalendarRow] = []
     for row in rows:
         if (not isinstance(row, dict) or set(row) != {"trade_date", "is_trade"}
                 or type(row["is_trade"]) is not bool or not isinstance(row["trade_date"], str)):
@@ -57,9 +74,11 @@ def validate_rows(month, rows):
 A_SHARE_DAY_END = time(15, 30)
 
 
-def last_closed_trade_day(rows, now):
+def last_closed_trade_day(
+    rows: Iterable[CalendarDayRow], now: datetime,
+) -> tuple[datetime | None, str]:
     now = now.astimezone(CHINA)
-    calendar = {}
+    calendar: dict[date, int] = {}
     for row in rows:
         day, flag = row['trade_date'], row['is_trade']
         if day in calendar or flag not in (0, 1):

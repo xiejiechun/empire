@@ -1,3 +1,5 @@
+<!-- GENERATED: do not edit. Authoritative fragments: src/empire/documentation/help-index.json; run python scripts/documentation_build.py generate before release freeze. -->
+
 <!-- topic:入门|开始使用 -->
 <!-- summary:按你的目的选择入口，完成浏览、采集、归档和用途检查。 -->
 # 开始使用
@@ -1599,9 +1601,13 @@ stock_market_day为每项证券日业务头，保存身份、上市关联、业�
 
 ## 开发者什么时候更新
 
-实现同一功能的人负责把操作、业务、存储与开发说明一起完成，不能留给后续开发者补。新增/改表或 Redis 键要登记独立条目；改字段、索引、值契约、期限、清理或读写方须同步对应页。先更新正文和覆盖登记，再显式 review，文档检查通过后执行本次必要回归及发布门禁。
+实现同一功能的人负责把操作、业务、存储与开发说明一起完成，不能留给后续开发者补。新增/改表或 Redis 键要登记独立条目；改字段、索引、值契约、期限、清理或读写方须同步对应页。先更新本业务权威片段和覆盖登记，生成阅读器聚合物后再显式 review，文档检查通过后执行本次必要回归及发布门禁。
 
 当前门禁核对页面、任务、全部 MySQL 表/字段/索引/约束、Redis 命名构造及逐项归属，并检查对应源码和正文审阅是否过期；缺项拒绝交付。Redis 的静态检查覆盖现有命名构造方式，新构造方式需补检查规则，语义正确仍须实际审阅。
+
+## 正文维护位置
+
+业务正文按完整主题放在本业务包的 docs/help 目录，共享说明位于 empire/documentation/topics；help-index.json 只声明归属、来源和阅读顺序。阅读器使用的 storage_reference.md 是自动生成资源。开发者在发布冻结前显式生成；缺少生成、主题关联失效或聚合字节被手改都会被门禁拒绝，审阅也不能在过期聚合物上通过。用户仍从说明文档入口搜索、选择章节和打开相关链接。
 
 <!-- topic:数据库参考|数据库职责与查阅 -->
 <!-- summary:按持久业务、临时队列、缓存、配置和外部目录查每张表与每类键。 -->
@@ -3860,7 +3866,6 @@ Empire Redis 采用纯内存模式。Redis 服务或电脑重启丢失本库内�
 
 [Redis router-mapping](help:Redis%20router-mapping)、[数据库职责与查阅](help:数据库职责与查阅)
 
-
 <!-- topic:数据库参考|MySQL security_code_alias -->
 <!-- summary:北交所官方历史换码关系，可按旧代码或当前统一证券键查询，不推算换码日期。 -->
 <!-- group:MySQL -->
@@ -5087,7 +5092,6 @@ scripts/create_shareholder_change_schema.py显式新增表，正常关闭桌面�
 
 [执行采集与计划](help:执行采集与计划) · [MySQL restricted_share_unlock](help:MySQL%20restricted_share_unlock) · [MySQL restricted_share_unlock_detail](help:MySQL%20restricted_share_unlock_detail)
 
-
 <!-- topic:数据库参考|MySQL restricted_share_unlock -->
 <!-- summary:大小非解禁完整月份市场的列表事实或共享股东明细，结构化字段和单事务集合证明。 -->
 <!-- group:MySQL -->
@@ -5232,7 +5236,6 @@ scripts/create_unlock_schema.py显式新增两表；正常关闭Empire、队列0
 ## 相关说明
 [执行采集与计划](help:执行采集与计划) · [MySQL restricted_share_unlock_industry](help:MySQL%20restricted_share_unlock_industry)
 
-
 <!-- topic:数据库参考|MySQL restricted_share_unlock_industry -->
 <!-- group:MySQL -->
 <!-- summary:月与来源行业名唯一的类型化汇总；保留历史，基准日版本保护。 -->
@@ -5330,7 +5333,6 @@ scripts/create_unlock_schema.py显式新增两表；正常关闭Empire、队列0
 ## 相关说明
 
 [查看数据库字段](help:MySQL%20capital_funding)、[执行采集与计划](help:执行采集与计划)、[查看采集规则](help:查看采集规则)。实际采集进度查看运行记录和数据准备，不把支持范围当作已采完。
-
 
 <!-- topic:数据库参考|MySQL capital_funding -->
 <!-- group:MySQL -->

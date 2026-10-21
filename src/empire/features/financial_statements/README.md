@@ -17,3 +17,7 @@
 报告期不是公告日期；来源早期、非季末报告、缺值及金额舍入均原样保留，不生成单季/TTM，不承诺历史公告前选股可用。来源质量与集合完整性分别判断。业务说明及历史实采范围见 [三表说明](../../../../docs/ths-financial-statements.md)，存储字段以 [数据库参考](../../../../docs/database-reference.md) 为准。
 
 安全实采复用 scripts/source_verification.py 和 source_test_storage.py：正式库仅只读股票池/共享设置与实例身份，写入仅在核实不同 server_uuid 的13348私有UUID库及带owner的Redis前缀。三表逐项核对日期集合、内容、质量、SQL manifest、正式audit及pending=0；固定历史反例另加随机30股。报告的采集完整不代表金额质量或历史信号用途通过，不变更用户日常网络配置。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

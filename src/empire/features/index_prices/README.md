@@ -7,3 +7,7 @@
 缺OHLC、缺成交额、负量额和来源占位保持既定区分；年度完整不等于所有策略可用。固定399317/2014-12-05负成交额原样保留，正式查询标为量额异常；页面不补造来源值。query提供有界列表、有限完整图表和年度audit，chart负责绘图。
 
 专项为tests/test_ths_index_prices.py、tests/integration/test_index_price_archive.py。scripts/verify_index_prices.py先正式采集指数目录，再验固定指数所有来源年份、入队/SQL/公开列表与图表集合；私有资源/取消/清理复用共享生命周期。scripts/measure_index_prices.py保留100000行及原阈值。工具不代表已验收，见[E2记录](../../../../docs/evidence/architecture-e2-2026-10-20.md)和[行情说明](../../../../docs/ths-index-prices.md)。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

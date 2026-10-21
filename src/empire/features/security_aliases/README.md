@@ -10,3 +10,7 @@
 - 查验证：`tests/test_bse_code_mapping.py`、`tests/integration/test_security_alias_archive.py`；安全容量与实采分别使用`measure_bse_capacity.py`及`verify_bse_code_mapping.py`。
 
 初始化与后续均一次下载完整官方表；SQL成功或确认无需写入并清队才完成。失败留原数据和未确认消息，Redis丢失重新下载；网页移除关系不删除SQL历史。本表不是当前北交所名单，不推算未公布旧代码、生效日或ISIN。正式查询是有界SQL，操作、生命周期和字典见[业务说明](../../../../docs/bse-code-mapping.md)。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/mysql-security-code-alias.md](docs/help/mysql-security-code-alias.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

@@ -15,3 +15,7 @@
 完整性、补采、旧记录关联日期修复、摘要规范版本、相同内容免业务 DML、旧响应拒绝和成功清队均沿用既有正式路径。缺少来源日期或日历证据须保持失败或未知，不能凭目录移动宣布准备完成。
 
 验证入口包括 `tests/test_trading_day_cutoff.py`、`tests/test_market_suspension_days.py`、停复牌采集/归档回归、开盘啦停复牌范围集成测试和统一装配身份检查。新增/实改来源解析仍受共享代理随机30股及已知失败固定样本规则约束；本目录说明不证明已执行。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

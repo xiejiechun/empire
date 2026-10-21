@@ -20,6 +20,7 @@ a = Analysis(
         (str(project_root / "sql" / "schema-contract.json"), "sql"),
         (str(project_root / "sql" / "business-schema.json"), "sql"),
         (
+            # Checked tracked aggregate; never generate during release.
             str(source_root / "empire" / "plugins" / "ui" / "storage_reference.md"),
             "empire/plugins/ui",
         ),

@@ -97,7 +97,8 @@ def test_reexported_feature_change_requires_that_features_document_review(tmp_pa
     article = SimpleNamespace(title='News', summary='', group='', body='Original instructions')
     manager = SimpleNamespace(entries={}, providers={})
     monkeypatch.setattr(contract, 'declarations', lambda root: (manager, {'news': plugin}, {}))
-    monkeypatch.setattr(contract, 'read_articles', lambda path: [article])
+    monkeypatch.setattr(contract, 'compile_help', lambda root: SimpleNamespace(
+        articles=[article], origins={'News': {'owner': 'news', 'path': 'news-test.md'}}))
     monkeypatch.setattr(contract, 'storage_snapshots', lambda *args: {})
     monkeypatch.setattr(contract, 'verify_coverage', lambda root: coverage)
     monkeypatch.setattr(contract, 'product_sources', lambda root: contract.reachable_sources(
@@ -111,3 +112,17 @@ def test_reexported_feature_change_requires_that_features_document_review(tmp_pa
     article.body = 'Updated behavior instructions'
     contract.record_review(tmp_path, 'Reviewed changed query behavior')
     contract.verify_review(tmp_path)
+
+
+def test_public_business_schema_resource_stays_in_documentation_reachability(tmp_path):
+    source(tmp_path, 'empire.features.news.query',
+           'from empire.contracts.business_schema import read_business_schema')
+    source(tmp_path, 'empire.contracts.business_schema', 'def read_business_schema(): pass')
+    resource = tmp_path / 'sql/business-schema.json'
+    resource.parent.mkdir()
+    resource.write_text('{"schema":1}', encoding='utf8')
+    before = contract.reachable_sources(tmp_path, ['empire.features.news.query'])
+    assert 'sql/business-schema.json' in before
+    resource.write_text('{"schema":2}', encoding='utf8')
+    after = contract.reachable_sources(tmp_path, ['empire.features.news.query'])
+    assert before['sql/business-schema.json'] != after['sql/business-schema.json']

@@ -24,6 +24,7 @@ Windows 环境直接连接本机运行或已有的 Redis / MySQL 服务，不使
 - [依赖与供应链治理](docs/dependency-governance-review.md)
 - [独立分发与配置路径](docs/portable-distribution-review.md)
 - [文档契约与稳定证据](docs/documentation-governance-review.md)
+- [程序内说明维护](docs/documentation-maintenance.md)：修改本业务权威片段，在发布冻结前运行 `scripts/documentation_build.py generate`；`storage_reference.md` 是自动生成资源，禁止手工维护。
 - [新浪股票列表：字段、采集与续跑](docs/sina-stock-list.md)
 - [当前股票目录：同花顺完整单页与采集任务归档还原](docs/stock-directory.md)
 - [开盘啦七项历史数据：范围、独立启用与续采](docs/kaipanla-intraday.md)

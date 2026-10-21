@@ -7,3 +7,7 @@
 两业务共用唯一`sources/tdx_unlock.py`的PAGE/body/results协议，行业只使用个股公开contract纯规范函数，不引用个股私有source。公共preparation、QueryScope和共享服务保持原路径；无DDL、兼容转发、双登记或启动迁移。来源没有公告可用日，空明细与未知数量如实保留。
 
 操作、单位、关联与限制见[业务说明](../../../../docs/tdx-unlocks.md)。专项分别为`tests/test_tdx_unlocks.py`/`test_tdx_unlock_industries.py`及各自UI和私有归档集成；安全实采/容量入口见`scripts/verify_unlocks.py`、`verify_unlock_industries.py`及两份measure工具。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

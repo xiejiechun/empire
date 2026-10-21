@@ -16,3 +16,7 @@
 使用与限制见 [复权说明](../../../../docs/adjustment-factors.md)。专项入口为 `tests/test_adjustment.py`、`tests/test_adjustment_query.py`、`tests/test_adjustment_chart.py`，正式输入链路见 `tests/integration/test_adjustment_pipeline.py`。开盘啦公共读取补丁的同conn/惰性/首错停止专项需同步运行；纯AST等价不能替代这些运行结果。
 
 当前修订版输入不证明历史时点可知，当前成分不推导历史归属；价格不能用于成交和现金记账。目录迁移不新增数据库或修改用户保存的配置，计算仍按需运行。
+
+## 程序内说明维护
+
+离线帮助的权威正文位于本包 [docs/help/overview.md](docs/help/overview.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。

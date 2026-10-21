@@ -7,16 +7,15 @@ import tomllib
 from datetime import UTC, datetime
 from pathlib import Path
 
-from empire.plugins.ui.help_content import read_articles
-
 if __package__:
+    from .documentation_build import check_generated, compile_help
     from .documentation_storage import storage_snapshots, verify_storage
 else:
+    from documentation_build import check_generated, compile_help
     from documentation_storage import storage_snapshots, verify_storage
 
 INDEX = "docs/documentation-coverage.json"
 REVIEW = "docs/documentation-review.json"
-REFERENCE = "src/empire/plugins/ui/storage_reference.md"
 RULES = "src/empire/plugins/collection/rules.json"
 
 
@@ -34,7 +33,8 @@ def product_sources(root: Path) -> dict[str, str]:
 
 def content_digest(root: Path, coverage: dict) -> str:
     digest = hashlib.sha256()
-    for name in sorted({REFERENCE, INDEX, RULES, *coverage["guides"]}):
+    authority = compile_help(root).inputs
+    for name in sorted({*authority, INDEX, RULES, *coverage["guides"]}):
         digest.update(name.encode())
         digest.update((root / name).read_bytes())
     return digest.hexdigest()
@@ -116,7 +116,8 @@ def reachable_sources(root: Path, modules: list[str]) -> dict[str, str]:
 
 def feature_snapshots(root: Path, coverage: dict) -> dict:
     manager, pages, tasks = declarations(root)
-    article_map = {a.title: a for a in read_articles(root / REFERENCE)}
+    bundle = compile_help(root)
+    article_map = {a.title: a for a in bundle.articles}
     result = {}
     for kind, entries in (("page", pages), ("task", tasks)):
         for ident, value in entries.items():
@@ -132,14 +133,21 @@ def feature_snapshots(root: Path, coverage: dict) -> dict:
             result[f"{kind}:{ident}"] = {
                 "sources": reachable_sources(root, [type(plugin).__module__]),
                 "content_sha256": digest.hexdigest(),
+                "documentation": {title: bundle.origins[title] for title in titles},
             }
-    result.update(storage_snapshots(root, coverage['storage'], article_map, reachable_sources))
+    storage = storage_snapshots(root, coverage['storage'], article_map, reachable_sources)
+    for kind in ('mysql', 'redis'):
+        for ident, entry in coverage['storage'][kind].items():
+            title = entry['topic']
+            storage[f'{kind}:{ident}']['documentation'] = {title: bundle.origins[title]}
+    result.update(storage)
     return result
 
 
 def verify_coverage(root: Path) -> dict:
     coverage = json.loads((root / INDEX).read_text(encoding="utf-8"))
-    articles = {item.title: item for item in read_articles(root / REFERENCE)}
+    bundle = check_generated(root)
+    articles = {item.title: item for item in bundle.articles}
     # Construct declarations only; never start plugins or connect to services.
     manager, page_plugins, tasks = declarations(root)
     pages = set(page_plugins)
@@ -177,7 +185,7 @@ def verify_coverage(root: Path) -> dict:
 def verify_review(root: Path) -> None:
     coverage = verify_coverage(root)
     review = json.loads((root / REVIEW).read_text(encoding="utf-8"))
-    if review.get("schema") != 2:
+    if review.get("schema") != 3:
         raise RuntimeError("须通过显式 review 建立按功能审阅记录")
     current = product_sources(root)
     previous = review["sources"]
@@ -213,7 +221,7 @@ def record_review(root: Path, note: str, unchanged_reason: str = "", *, exceptio
             raise RuntimeError("受影响功能的说明未更新，修改无关文章不能通过：" + ", ".join(stale))
         if previous["sources"] != current and previous["content_sha256"] == digest and not unchanged_reason.strip():
             raise RuntimeError("源码已改变但说明未更新；须补齐说明，或用 --unchanged-reason 记录无需变更用户说明的具体原因")
-    value = {"schema": 2, "reviewed_at": datetime.now(UTC).isoformat(), "note": note,
+    value = {"schema": 3, "reviewed_at": datetime.now(UTC).isoformat(), "note": note,
              "unchanged_reason": unchanged_reason, "exceptions": exceptions,
              "sources": current, "content_sha256": digest, "features": features}
     target.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

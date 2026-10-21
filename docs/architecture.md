@@ -1,5 +1,9 @@
 # Empire 架构设计
 
+F 的共享边界按 owner.kind 统一检查：platform 不能导入任何业务模块或公开业务契约；只有 application 的 composition/dataset_registry 和 diagnostics 的 composition 是受审装配入口。build_info 是只读 application/api；help_content 和 help_reader 分属公共解析与渲染，帮助页面仍属于业务。该检查覆盖静态导入及字面量动态导入，不是任意 Python 反射的运行时沙箱。
+
+程序内说明由[单源清单](../src/empire/documentation/help-index.json)按顺序组合各业务完整主题与公共主题；发布前显式生成，门禁只检查并核对包内字节。公共 preparation 与 confirmation 协议保留在 contracts 原路径。开发影响报告入口为 scripts/change_impact.py，静态闭包不明或公共/资源变更扩大为全量；报告不启动测试、不代替全量发布或实际来源/桌面验证。
+
 同花顺上市与发行详情由 [listings 业务包](../src/empire/features/listings/README.md) 持有来源契约、采集、归档、查询及按需UI，登记 `listing.detail → stock_listing`；bundle 保持原插件、任务、数据集和页面身份与顺序。每证券类型化记录，复用共享请求、代理、预取、入队、摘要及归档路径。逐证券补缺与七天全池回查见[生命周期及存储设计](ths-listings.md)，范围不包含从未采集的退市证券。
 
 数据准备优先读取按用途、证券、日期及业务检查契约、相关查询可用性和数据库范围区分的 Redis 检查结果，完成后保存 7 天，读取不续期；手动重新检查绕过缓存并原子替换结果及有效期。未命中时只展示未核验元数据，用户手动检查后通过页面拥有的请求核验，服务锁保证不重叠；进度快照只保存有界项目证据，先呈现完整清单，再替换各项目结果。UI独立读取同范围快照，不重复SQL、不缓存完整业务正文。切页取消仍由QueryScope管理，未完成检查不写缓存；SQL线程由SQLLane保有关闭所有权，停用数据准备等待所属核验结束。Redis 故障保留检查结果并提示缓存失败，不改变业务采集、入队或归档。正式缓存契约见[数据准备](data-preparation.md)。

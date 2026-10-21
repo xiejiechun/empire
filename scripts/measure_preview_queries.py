@@ -120,6 +120,7 @@ def run(args):
                 logical_cpus=os.cpu_count(), python=sys.version,
                 dependencies={name: version(name) for name in ('SQLAlchemy', 'PyMySQL')}),
             conditions=dict(test_server_port=capacity.identity['server_port'], mysql=capacity.identity['version'],
+                fixture_version_observed_at='2026-10-11 fixed fixture version date, not execution date',
                 repetitions=30, cache='30次热查询；一次有界正式查询，未启动采集；生产只读一致性快照'),
             reviewed_tradeoffs='本批组织迁移、显式表组和连接内公开查询，结构/归档写入语义未变；原存储写入、20万业务头和空间基线保留在绑定的2026-10-05证据。当前页、时间窗及完整证券日重新测量。10ms为页面查询预算，100ms为有限整日预算，不承诺冷盘或全部历史容量。',
             sample_scope=dict(required_kinds=list(kinds), observed_kinds=[row['kind'] for row, _ in samples]))
