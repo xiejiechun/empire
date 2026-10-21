@@ -1,4 +1,4 @@
-2026-10-21 E6f接续：前批E6e结案b46326ca4e362d5002354793e94b7eeb39610576已推送，2026-10-21 01:46通过ls-remote精确核实（本地build/architecture-e6e-20261020/remote-close.json）。本批回购五模块及调用方已迁入features/repurchases，原身份/槽位/业务逻辑保持，开发验证通过（领域15/安全129/公共318、完整5586方案12全代理、新5万行容量及T3第三轮18项）；尚未发布或桌面验收。当前开发与资源见[本批记录](../evidence/architecture-e6f-2026-10-21.md)。E6g/F未开始，整个优化未完成。下文为各批当时快照。
+2026-10-21 E6f最终：**回购本批组织迁移范围已验收，结案提交待推送精确核实**。前批b46326c已推送精确核实；五旧模块及调用方迁入features/repurchases，身份/顺序/语义保持。领域15/安全129/公共318、完整5586方案12全代理、新5万容量和T3第三轮18项通过；首两轮性能失败保留。干净0c2ab3c/release7f5acbb5完整3840 passed/5原opt-in skipped；同包查询、真实回购页/分页筛选/启停/依赖保护/草稿滚轮/刷新滚动/982窄窗/帮助/正常关开通过，48设置与原config/偏好保持。见[本批记录](../evidence/architecture-e6f-2026-10-21.md)、[真实桌面](../evidence/architecture-e6f-desktop-2026-10-21.md)。结案push精确核实后下一项E6g，F未开始，整个优化未完成。下文为各批当时快照。
 
 2026-10-21 E6e最终：**业绩与股东变动本批组织迁移范围已验收，结案提交待推送精确核实**。六旧模块及调用方迁入features/performance，六kind身份顺序/AST、135领域隔离/110安全/405公共通过。有限来源30随机+3固定、59全代理/42943行集合内容一致/pending0；首轮4747/4746失败及来源自然变化保留，不清生产错误。两新容量、T3原18项、文档和设计通过。干净5bcffb7/release455c9c6d完整3835 passed/5原opt-in skipped；同包六页/筛选分页/帮助/启停及依赖保护/草稿滚轮/982窄窗/正常关开完成，48保存设置及原config/偏好保持。E6f～g/F未实施，整体未完成；结案push核实后下一项E6f。见[E6e记录](../evidence/architecture-e6e-2026-10-20.md)、[真实桌面](../evidence/architecture-e6e-desktop-2026-10-21.md)。
 
@@ -31,7 +31,7 @@
 | E4 开盘啦七项 | 已验收（组织迁移范围）；严格来源失败保留 | 24旧模块退役；279领域/274公共/58隔离、当前容量/T3 18项通过；acb466a/release 61dc9811完整门禁3755 passed/5 opt-in skipped；同包七页/帮助、启停保护/草稿/窄窗/正常关开、48设置及原配置偏好保持；严格来源FAIL不冲销 | [E4记录](../evidence/architecture-e4-2026-10-20.md)、[真实桌面](../evidence/architecture-e4-desktop-2026-10-20.md) |
 | E5资本事件与复权 | 已验收（组织迁移范围） | 24模块/16符号；新完整分红容量及资本管线/T3；e403faa/release 05630406完整门禁3770 passed/5 opt-in skipped；同包四页/帮助/启停保护/草稿/窄窗/正常关开及48设置/原配置偏好保持；历史准备失败保留 | [E5记录](../evidence/architecture-e5-2026-10-20.md)、[真实桌面](../evidence/architecture-e5-desktop-2026-10-20.md) |
 | E6a 同花顺资本 | 已验收（组织迁移范围） | 七旧入口迁移；38股全代理5080事实、新容量及T3 18/18；4550a9e/release 7d92659c完整门禁3773 passed/5 opt-in skipped；同包全部栏目/帮助/启停/草稿/窄窗/正常关开、48设置与原配置偏好保持 | [E6a记录](../evidence/architecture-e6a-2026-10-20.md)、[真实桌面](../evidence/architecture-e6a-desktop-2026-10-20.md) |
-| E6b～E6g 逐业务推广 | E6b-listings/status/aliases、E6c、E6d及E6e已验收（组织迁移范围）；E6f～g未实施 | E6e结案推送精确核实后下一项E6f，不应用完整E树 | [E实施](e-implementation.md)、[E6e记录](../evidence/architecture-e6e-2026-10-20.md) |
+| E6b～E6g 逐业务推广 | E6b-listings/status/aliases、E6c、E6d、E6e及E6f已验收（组织迁移范围）；E6g未实施 | E6f结案推送精确核实后下一项E6g，不应用完整E树 | [E实施](e-implementation.md)、[E6f记录](../evidence/architecture-e6f-2026-10-21.md) |
 | F 共享治理收束 | 草稿已准备，未合入 | 仅单源文档、影响报告、类型、共享门禁、定位演练和测试成本候选 | [F实施](cdf-implementation.md)；尚无测试成本收益结论 |
 
 不计算“完成百分比”：A/B/C与后续业务批次的工作量不同。草稿的文件数、AST相同或测试工具存在均不能折算成已完成实现。
@@ -177,3 +177,5 @@ E6b-listings最终快照11:43：fec74bc/release a2382f71同包已正常关开，
 E6c最终资源接续：release 689a04ad03ee4cdba386f39438e704f3及同包真实桌面已验收，30346474重开工作台可见；两config/原偏好与48保存设置保持、45policy保持，四daily自然推进次日18点。自有13348实际UUID a3e8a5eb-cb64-11f1-8ddf-380525361d4e、原datadir保持，仅四系统库/无其他客户、无本轮私有资源；保持运行供下批。未清未解决错误，业绩披露/报告日常错误留E6e调查。结案35文档回归及契约通过，尚待本轮push精确核实；下一批E6d尚未开始。
 
 E6d最终资源23:40：同包正常重开1514190，最后工作台可见，45任务/活动1/既有失败2/pending0。两config、原偏好、48保存设置和45策略保持；自有13348实际UUID a3e8a5eb-cb64-11f1-8ddf-380525361d4e、原datadir保持，仅四系统库、无其他客户/本轮私有残留，继续运行。生产库/共享Redis未关闭或清理，未清未解决错误。先结案push核远程，再进入E6e；重开误标签已另留更正记录。
+
+E6f最终资源快照10:28～10:30：release7f5acbb5同包正常关开，17699188工作台可见，45任务/活动0/既有失败2/pending0；两config、原偏好及48设置精确保留。自有13348实际UUID a3e8a5eb-cb64-11f1-8ddf-380525361d4e、原datadir、仅四系统库/无其他客户会话，无本轮私有资源，继续运行供后续。生产服务/数据/未解决错误保留。下一项E6g，先完成本批结案push精确核实。

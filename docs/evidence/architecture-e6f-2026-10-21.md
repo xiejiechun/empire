@@ -1,6 +1,6 @@
 # E6f 回购模块迁移实施记录
 
-状态：开发验证通过，待唯一正式发布与同包桌面验收。整个优化尚未完成，不进入E6g/F。
+状态：本批组织迁移范围已验收，结案提交待推送精确核实。唯一正式发布及同包桌面已完成；结案推送核实后下一项E6g，F未实施，整个优化尚未完成。
 
 ## 前像和范围
 
@@ -23,7 +23,7 @@ main/b46326ca4e362d5002354793e94b7eeb39610576，开工工作区干净；前批E6
 | E6f容量 | 原50000行真实测量通过，完整内容一致/重复0DML/单修订1行/六清理通过 | 新measure_repurchases.py/repurchase_capacity.py保留原50000行/全部原阈值；显式本轮source-proof，实际server UUID、UUID owner/锁、会话SQL守卫、取消settle及最终清理，拒绝覆盖报告 |
 | T3 | 第三轮完整18/18通过，首两轮失败保留 | 同原完整measure命令，新输出out/t3-3.json，exit0；[最终T3](architecture-e6f-t3-final-2026-10-21.json)，正确性/可比性/cleanup通过 |
 | M文档 | 正文及coverage已同步，开发文档35项通过；发布前最终审阅在当前正文定稿后执行 | 来源说明、包README、程序内回购和MySQL归属、状态及证据；无DDL，字段字典/数据库设计保持 |
-| A4/U1～U3 | 未发布、未验收 | 必须完整唯一verify-release后，同包真实查询/桌面/启停/草稿/滚轮/窄窗/帮助/正常关开、两config及48保存设置/原偏好保持 |
+| A4/U1～U3 | 本批适用范围已验收 | 0c2ab3c/release7f5acbb5完整门禁exit0；同包查询/真实桌面、独立启停/依赖保护、草稿/滚轮/刷新滚动、982窄窗/帮助、正常关开及两config/48设置/原偏好保持，见[同包结案](architecture-e6f-desktop-2026-10-21.md) |
 | A1～A3 | 发布保护未修改，无新增破坏性演练 | 完整正式门禁仍必须执行相关反例 |
 | M1/F类型与成本实验 | F专属未开始 | 不借本批测试宣称完成 |
 
@@ -41,7 +41,7 @@ Empire1316790已Alt+F4正常关闭，界面显示保存进度/结束归档/关�
 
 最终正式Ruff范围`py -m ruff check src scripts tests`已exit0，两处测试仅导入排序修正。strict使用pyproject既定八文件`py -m mypy`exit0；未扩展F的类型范围。完整来源输入摘要e305262a07da615fc7d247a426837841e552436ce8dc51b7992d3fc98cc059e6；原collector/统一归档/全5586方案列表与详情以及全SQL规范集合逐列一致，五基础preparation通过，temporal=fail但analysis用途nonblocking，保持原严格历史限制。
 
-[当前容量绑定扫描](architecture-e6f-capacity-binding-scan-before-2026-10-21.json)仅repurchases.page四绑定失效，正在真实重测；其他当前measured报告无变化。初始[资源核查](architecture-e6f-preflight-resource-2026-10-21.json)、[前像](architecture-e6f-preimage-2026-10-21.json)和[五模块等价](architecture-e6f-organization-equivalence-2026-10-21.json)均来自本轮实际执行。
+[迁移前绑定扫描](architecture-e6f-capacity-binding-scan-before-2026-10-21.json)当时仅repurchases.page四绑定失效；已完成下述真实重测，最终37份现行measured报告绑定有效，其他当前measured报告无变化。初始[资源核查](architecture-e6f-preflight-resource-2026-10-21.json)、[前像](architecture-e6f-preimage-2026-10-21.json)和[五模块等价](architecture-e6f-organization-equivalence-2026-10-21.json)均来自本轮实际执行。
 
 容量实际命令`py scripts/measure_repurchases.py --test-settings build/architecture-evolution-20261019/mysql-settings.json --source-proof out/source-1.json --output out/capacity-1.json`exit0，报告[新容量](architecture-e6f-repurchase-capacity-2026-10-21.json)。原查询、规模、10次最大值及全部预算保持，增加实际UUID/owner/SQL守卫、全行内容核对和原样本证据检查；不改旧数字/hash。设计卡已指向新报告。
 
@@ -52,3 +52,7 @@ T3第二轮同一完整命令改新输出out/t3-2.json，exit1、17/18：前轮�
 T3第三轮前实测10秒进程CPU快照（out/ambient-cpu-before-t3-3.json）未见同期测试/构建主导负载，等待30秒空档后完整重测，exit0、18/18；不是从首两轮挑通过子项。首两轮单次延迟尖峰根因未证明，所有报告与原样本保留。基线、工具、协议、阈值及release_lock原字节保持。
 
 最终文档动作：回购源说明与程序内回购数据/SQL归属逐项同步、coverage迁移、原存储字段和用户行为保持。最终审阅采用`documentation_contract.py review --note <回购五模块与安全实采/容量的具体审阅说明> --unchanged-reason <其他业务与共享服务未改的具体依据>`；此前同命令及设计/架构/装配均exit0，35文档专项/25.71秒通过，当前定稿后再建立最终审阅并核门禁。
+
+## 发布后最终事实
+
+唯一verify-release已自然exit0，3840 passed/5原opt-in skipped/20 warnings；1770输入、54保留输出和24步骤重新核对。正式构建0c2ab3c/release7f5acbb5；源输入、EXE、安装树、真实桌面和失败恢复详见[同包结案](architecture-e6f-desktop-2026-10-21.md)。发布后、恢复原偏好后的正常关后、异cwd重开后只读核验均exit0；两config、原偏好及48保存设置精确保留，pending0。真实回购查询/筛选分页/未知值、982窄窗/帮助、独立启停/共享依赖拒绝、草稿撤销/滚轮/刷新保留与正常关开已观察；最终窗口17699188可见。首次偏好恢复脚本缺依赖、恢复前关后核验失败均保留，不计为通过。前文发布前检查点仅记录当时事实。
