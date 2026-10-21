@@ -1,0 +1,861 @@
+{
+  "started_at": "2026-10-21T17:49:07.533468+00:00",
+  "read_only": true,
+  "source_requests": 0,
+  "collectors_started": false,
+  "archiver_started": false,
+  "scope": {
+    "codes": [
+      "000001"
+    ],
+    "start": "2026-01-01",
+    "end": "2026-10-20",
+    "purpose": "analysis"
+  },
+  "head": "31fc865a50d68e0bfce18995ae539da10e10f55f",
+  "source_digest": "f2d37e68bf3beda0988cf5ce991548ce4e5e5c8c1440b8b8ee9e814ce745b980",
+  "exe_sha256": "9a89eee2b4da1b2be09346d251272e6f3c16269fe295931100a847fbf6cedc43",
+  "database": {
+    "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+    "server_time": "2026-10-22 01:49:07"
+  },
+  "repurchases": {
+    "audit": {
+      "count": 5586,
+      "digest": "1322bf7908bae464addeac6939f3f9b0db7fe6bb7c85fced2caa43324794688d",
+      "valid": false,
+      "proof": {
+        "count": 5553,
+        "digest": "6a7832dede22b8ac4cb646ba424d49b6cd177634f28b593dcad4980faf742467",
+        "contract": 1,
+        "observed_at": "2026-10-16T01:47:09.508899+00:00"
+      },
+      "invalid": 0
+    },
+    "checks": [
+      {
+        "criterion": "fields",
+        "status": "fail",
+        "measured": "5586方案；身份、日期、数量金额及来源说明逐行校验；NULL保持未知",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "keys",
+        "status": "fail",
+        "measured": "唯一来源方案编号；完整SQL键与规范内容滚动摘要匹配",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "coverage",
+        "status": "fail",
+        "measured": "完整来源集合与SQL逐行摘要核对；不是依据最大日期或条数推断完整",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "quality",
+        "status": "fail",
+        "measured": "计划与累计实际分开，未知状态保留；回购完成不推断注销完成",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "freshness",
+        "status": "fail",
+        "measured": "SQL完整集合匹配后，以SQL或匹配完整已归档轮次的核验时间确认3天时效；Redis可选",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "temporal",
+        "status": "fail",
+        "measured": "仅当前修订和公告自然日，无完整旧版本/日内时刻，不用于严格历史信号回放",
+        "blocking": false,
+        "findings": [],
+        "reason": "",
+        "observed_at": ""
+      }
+    ],
+    "selected": {
+      "rows": [],
+      "next": null
+    },
+    "all_security_plans": {
+      "rows": [],
+      "next": null
+    }
+  },
+  "capital": {
+    "dividends": {
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+          "blocking": true,
+          "findings": [],
+          "reason": "",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+          "blocking": false,
+          "findings": [],
+          "reason": "source_limit",
+          "observed_at": "2026-10-21T17:45:49.469196+00:00"
+        }
+      ],
+      "rows": [
+        {
+          "record_key": "3ab54e7a1963d64c20e4a82008b1302da938e81ba7ca51e22ce25a9f69e9be02",
+          "market": "SZ",
+          "code": "000001",
+          "name": "平安银行",
+          "event_date": "2026-09-24",
+          "data": {
+            "status": "实施方案",
+            "ex_date": "2026-09-24",
+            "tax_basis": "含税",
+            "record_date": "2026-09-23",
+            "report_date": "2026-06-30",
+            "cash_per_share": "0.249",
+            "bonus_per_share": "0",
+            "announcement_date": "2026-08-15",
+            "earnings_per_share": "1.24",
+            "transfer_per_share": "0",
+            "net_assets_per_share": "24.13",
+            "total_bonus_per_share": "0",
+            "capital_reserve_per_share": "4.1445",
+            "retained_profit_per_share": "14.8334"
+          }
+        },
+        {
+          "record_key": "f01ac91aae58b442287c27341239a550c4dcc043a5a35ac03a67a18206aa28eb",
+          "market": "SZ",
+          "code": "000001",
+          "name": "平安银行",
+          "event_date": "2026-06-12",
+          "data": {
+            "status": "实施方案",
+            "ex_date": "2026-06-12",
+            "tax_basis": "含税",
+            "record_date": "2026-06-11",
+            "report_date": "2025-12-31",
+            "cash_per_share": "0.36",
+            "bonus_per_share": "0",
+            "announcement_date": "2026-03-21",
+            "earnings_per_share": "2.07",
+            "transfer_per_share": "0",
+            "net_assets_per_share": "23.25",
+            "total_bonus_per_share": "0",
+            "capital_reserve_per_share": "4.1555",
+            "retained_profit_per_share": "13.9538"
+          }
+        }
+      ],
+      "adjacent_prior": [
+        {
+          "record_key": "6b38c5e9cf06901d65dc7e1973af8816c267a21ab726572c8dfd42e4e475bd93",
+          "market": "SZ",
+          "code": "000001",
+          "name": "平安银行",
+          "event_date": "2025-10-15",
+          "data": {
+            "status": "实施方案",
+            "ex_date": "2025-10-15",
+            "tax_basis": "含税",
+            "record_date": "2025-10-14",
+            "report_date": "2025-06-30",
+            "cash_per_share": "0.236",
+            "bonus_per_share": "0",
+            "announcement_date": "2025-08-23",
+            "earnings_per_share": "1.18",
+            "transfer_per_share": "0",
+            "net_assets_per_share": "22.68",
+            "total_bonus_per_share": "0",
+            "capital_reserve_per_share": "4.1586",
+            "retained_profit_per_share": "13.3571"
+          }
+        },
+        {
+          "record_key": "261799504fe062b9e0214719e4cedb03a14e314f8004817cc15412223faa60b7",
+          "market": "SZ",
+          "code": "000001",
+          "name": "平安银行",
+          "event_date": "2025-06-12",
+          "data": {
+            "status": "实施方案",
+            "ex_date": "2025-06-12",
+            "tax_basis": "含税",
+            "record_date": "2025-06-11",
+            "report_date": "2024-12-31",
+            "cash_per_share": "0.362",
+            "bonus_per_share": "0",
+            "announcement_date": "2025-03-15",
+            "earnings_per_share": "2.15",
+            "transfer_per_share": "0",
+            "net_assets_per_share": "21.89",
+            "total_bonus_per_share": "0",
+            "capital_reserve_per_share": "4.1592",
+            "retained_profit_per_share": "12.5531"
+          }
+        }
+      ]
+    },
+    "additional_issues": {
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 4 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 0f0a042227975b2cb222bd4219a70924de6af2dab1f51a3f8572ca66e0992ffe；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:39.979160+00:00"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 4 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 0f0a042227975b2cb222bd4219a70924de6af2dab1f51a3f8572ca66e0992ffe；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:39.979160+00:00"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 4 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 0f0a042227975b2cb222bd4219a70924de6af2dab1f51a3f8572ca66e0992ffe；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:39.979160+00:00"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 4 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 0f0a042227975b2cb222bd4219a70924de6af2dab1f51a3f8572ca66e0992ffe；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:39.979160+00:00"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:40:39.979160+00:00；须在三日内",
+          "blocking": true,
+          "findings": [],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:39.979160+00:00"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+          "blocking": false,
+          "findings": [],
+          "reason": "source_limit",
+          "observed_at": "2026-10-21T17:40:39.979160+00:00"
+        }
+      ],
+      "rows": []
+    },
+    "rights_issues": {
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 5 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 60100ef205b0ee0750ce53dbffb4eb8351f24199d3b2d99f9359f932d9832942；SQL来源证据 2026-10-16T04:22:40.227492+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:26.870585+00:00"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 5 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 60100ef205b0ee0750ce53dbffb4eb8351f24199d3b2d99f9359f932d9832942；SQL来源证据 2026-10-16T04:22:40.227492+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:26.870585+00:00"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 5 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 60100ef205b0ee0750ce53dbffb4eb8351f24199d3b2d99f9359f932d9832942；SQL来源证据 2026-10-16T04:22:40.227492+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:26.870585+00:00"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+          "blocking": true,
+          "findings": [
+            {
+              "code": "000001.SZ",
+              "message": "完整单元 5 条，范围内 0 条；键集合 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；内容 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945；完整单元内容 60100ef205b0ee0750ce53dbffb4eb8351f24199d3b2d99f9359f932d9832942；SQL来源证据 2026-10-16T04:22:40.227492+00:00"
+            }
+          ],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:26.870585+00:00"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:40:26.870585+00:00；须在三日内",
+          "blocking": true,
+          "findings": [],
+          "reason": "",
+          "observed_at": "2026-10-21T17:40:26.870585+00:00"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。",
+          "blocking": false,
+          "findings": [],
+          "reason": "source_limit",
+          "observed_at": "2026-10-21T17:40:26.870585+00:00"
+        }
+      ],
+      "rows": []
+    }
+  },
+  "adjustment": {
+    "outcome": "blocked",
+    "error": "000001.SZ在2026-01-01～2026-10-20没有已归档日行情；请在采集管理的“历史盘口与日行情摘要”补齐该证券和日期，再加载K线",
+    "day": "",
+    "identity": ""
+  },
+  "quote_archived_bounds": [],
+  "suspension_saved_policy": {
+    "mode": "interval",
+    "enabled": true,
+    "use_proxy": true,
+    "daily_time": "18:00",
+    "proxy_fallback": true,
+    "request_retries": 2,
+    "interval_seconds": 43200
+  },
+  "global_pending": 6,
+  "running_jobs": [
+    "ths-balance"
+  ],
+  "finished_at": "2026-10-21T17:49:08.846070+00:00",
+  "sql_verbs": {
+    "show": 24,
+    "select": 87,
+    "start": 3
+  },
+  "source_preserved": true,
+  "configs_preserved": true,
+  "dividend_identity_context": {
+    "at": "2026-10-21T17:51:54.055034+00:00",
+    "formal_method": "dividends.query.list_events",
+    "security": "000001.SZ",
+    "full_unit_count": 28,
+    "identity_index": [
+      {
+        "record_key": "3ab54e7a1963d64c20e4a82008b1302da938e81ba7ca51e22ce25a9f69e9be02",
+        "status": "实施方案",
+        "report_date": "2026-06-30",
+        "announcement_date": "2026-08-15",
+        "record_date": "2026-09-23",
+        "ex_date": "2026-09-24",
+        "cash_per_share": "0.249",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "f01ac91aae58b442287c27341239a550c4dcc043a5a35ac03a67a18206aa28eb",
+        "status": "实施方案",
+        "report_date": "2025-12-31",
+        "announcement_date": "2026-03-21",
+        "record_date": "2026-06-11",
+        "ex_date": "2026-06-12",
+        "cash_per_share": "0.36",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "6b38c5e9cf06901d65dc7e1973af8816c267a21ab726572c8dfd42e4e475bd93",
+        "status": "实施方案",
+        "report_date": "2025-06-30",
+        "announcement_date": "2025-08-23",
+        "record_date": "2025-10-14",
+        "ex_date": "2025-10-15",
+        "cash_per_share": "0.236",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "261799504fe062b9e0214719e4cedb03a14e314f8004817cc15412223faa60b7",
+        "status": "实施方案",
+        "report_date": "2024-12-31",
+        "announcement_date": "2025-03-15",
+        "record_date": "2025-06-11",
+        "ex_date": "2025-06-12",
+        "cash_per_share": "0.362",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "a8bc6a52e77c394e09bf4ca316bc327ac0c5e815486e067046fdaa8188616743",
+        "status": "实施方案",
+        "report_date": "2024-06-30",
+        "announcement_date": "2024-08-16",
+        "record_date": "2024-10-09",
+        "ex_date": "2024-10-10",
+        "cash_per_share": "0.246",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "a674297d880b74fe2b0c4fe3c5f7fe1536b8e59678f98af3993b13ddd4f83deb",
+        "status": "实施方案",
+        "report_date": "2023-12-31",
+        "announcement_date": "2024-03-15",
+        "record_date": "2024-06-13",
+        "ex_date": "2024-06-14",
+        "cash_per_share": "0.719",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "30452a0620ff8d948f6262e20b0cec23cd5120ad171512000914f0b42b8b02fd",
+        "status": "实施方案",
+        "report_date": "2022-12-31",
+        "announcement_date": "2023-03-09",
+        "record_date": "2023-06-13",
+        "ex_date": "2023-06-14",
+        "cash_per_share": "0.285",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "b88bd2b9238588a1c1e1b2ed9793ccd47f1447bb3f9769ba6e0735a128ae2030",
+        "status": "实施方案",
+        "report_date": "2021-12-31",
+        "announcement_date": "2022-03-10",
+        "record_date": "2022-07-21",
+        "ex_date": "2022-07-22",
+        "cash_per_share": "0.228",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "b69a4af10f2c2605cf5a78d9e6f65da0d9d9bdd3b1cf6a46b345ea97448c99aa",
+        "status": "实施方案",
+        "report_date": "2020-12-31",
+        "announcement_date": "2021-02-02",
+        "record_date": "2021-05-13",
+        "ex_date": "2021-05-14",
+        "cash_per_share": "0.18",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "8b8286d3c4ed77b2c32cf17f3c55f4b70d925dd452de81b060ffe98317d55bf0",
+        "status": "实施方案",
+        "report_date": "2019-12-31",
+        "announcement_date": "2020-02-14",
+        "record_date": "2020-05-27",
+        "ex_date": "2020-05-28",
+        "cash_per_share": "0.218",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "993550375b0f28a6e4c0c9a0532df440196e972f3d1bf7f83c8606ea6a0c532d",
+        "status": "实施方案",
+        "report_date": "2018-12-31",
+        "announcement_date": "2019-03-07",
+        "record_date": "2019-06-25",
+        "ex_date": "2019-06-26",
+        "cash_per_share": "0.145",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "0d8487be7bb1836d78a0f3446240ad7c75e4d429f41aabab5814988463ee6107",
+        "status": "实施方案",
+        "report_date": "2017-12-31",
+        "announcement_date": "2018-03-15",
+        "record_date": "2018-07-11",
+        "ex_date": "2018-07-12",
+        "cash_per_share": "0.136",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "2bd43cfee2731996dbb4f60cb4326b94a93c5ef4221a61aff8007a79af2f40bf",
+        "status": "实施方案",
+        "report_date": "2016-12-31",
+        "announcement_date": "2017-03-17",
+        "record_date": "2017-07-20",
+        "ex_date": "2017-07-21",
+        "cash_per_share": "0.158",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "845c4939979c053fa96a85f12831a944fe6ea5dbb32578d91b94d64f518eccd8",
+        "status": "实施方案",
+        "report_date": "2015-12-31",
+        "announcement_date": "2016-03-10",
+        "record_date": "2016-06-15",
+        "ex_date": "2016-06-16",
+        "cash_per_share": "0.153",
+        "total_bonus_per_share": "0.2",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "ecef11d3cada1796031c958a2900014ff3d4ddac24d4fcf6c4de926bd533c13b",
+        "status": "实施方案",
+        "report_date": "2014-12-31",
+        "announcement_date": "2015-03-13",
+        "record_date": "2015-04-10",
+        "ex_date": "2015-04-13",
+        "cash_per_share": "0.174",
+        "total_bonus_per_share": "0.2",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "0600cca8ce4021daf58c38b08580fdfba2fd61108829a725e666fbb7ce65ffbf",
+        "status": "实施方案",
+        "report_date": "2013-12-31",
+        "announcement_date": "2014-03-07",
+        "record_date": "2014-06-11",
+        "ex_date": "2014-06-12",
+        "cash_per_share": "0.16",
+        "total_bonus_per_share": "0.2",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "5b5ea712e25ce85cba819e170da0cd2b24b694e024e9ae78a455435bb2f9135c",
+        "status": "实施方案",
+        "report_date": "2012-12-31",
+        "announcement_date": "2013-03-08",
+        "record_date": "2013-06-19",
+        "ex_date": "2013-06-20",
+        "cash_per_share": "0.17",
+        "total_bonus_per_share": "0.6",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "1bbc753601f58dd3d923f3a67f61b22bd94019de194b6209008cbf7716d790b7",
+        "status": "实施方案",
+        "report_date": "2012-06-30",
+        "announcement_date": "2012-08-16",
+        "record_date": "2012-10-18",
+        "ex_date": "2012-10-19",
+        "cash_per_share": "0.1",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "99f5d21d90f02c593e6a3bb670084532b7a6cb5d8ef6110d4f3ffe404f3ada7e",
+        "status": "实施方案",
+        "report_date": "2008-06-30",
+        "announcement_date": "2008-08-21",
+        "record_date": "2008-10-30",
+        "ex_date": "2008-10-31",
+        "cash_per_share": "0.0335",
+        "total_bonus_per_share": "0.3",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "70434ba29b1c66a261dc06bec3d22101761165a9b675ff4bfc9eb3b6f49356a5",
+        "status": "实施方案",
+        "report_date": "2007-05-24",
+        "announcement_date": "2007-05-24",
+        "record_date": "2007-06-15",
+        "ex_date": "2007-06-20",
+        "cash_per_share": "0.009",
+        "total_bonus_per_share": "0.1",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "db3414fef691be122c55236f25c6ff905852bcf5094502641ecb7331d0c4a37c",
+        "status": "实施方案",
+        "report_date": "2002-12-31",
+        "announcement_date": "2003-04-24",
+        "record_date": "2003-09-26",
+        "ex_date": "2003-09-29",
+        "cash_per_share": "0.15",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "45404d5c7b0b6f2de72e48c3c01165a3eadfc186f1346ed38c41b925e38da291",
+        "status": "实施方案",
+        "report_date": "2001-12-31",
+        "announcement_date": "2002-04-19",
+        "record_date": "2002-07-22",
+        "ex_date": "2002-07-23",
+        "cash_per_share": "0.15",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "b55076bd3d38c8e90a3d17ea30321028b80d2fc94df02251a98226186d3d659a",
+        "status": "实施方案",
+        "report_date": "1999-06-30",
+        "announcement_date": "1999-07-17",
+        "record_date": "1999-10-15",
+        "ex_date": "1999-10-18",
+        "cash_per_share": "0.6",
+        "total_bonus_per_share": "0",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "db8f8d7dd57df1863c8728e1f0cce265da2edac77efbf0e748f4dfd35e9eec67",
+        "status": "实施方案",
+        "report_date": "1996-12-31",
+        "announcement_date": "1997-04-21",
+        "record_date": "1997-08-22",
+        "ex_date": "1997-08-25",
+        "cash_per_share": "0.2",
+        "total_bonus_per_share": "0.5",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "10320a961264c3dcff8756c9c0e8f2c4591b2a7012dcb9b8857d93b011ae525d",
+        "status": "实施方案",
+        "report_date": "1995-12-31",
+        "announcement_date": "1996-03-14",
+        "record_date": "1996-05-24",
+        "ex_date": "1996-05-27",
+        "cash_per_share": "0",
+        "total_bonus_per_share": "1",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "6a9fa8ffdca4a3af94756c38cd5033beaca0e9272bf28d7ec9ed378013de56bb",
+        "status": "实施方案",
+        "report_date": "1994-12-31",
+        "announcement_date": "1995-03-10",
+        "record_date": "1995-09-22",
+        "ex_date": "1995-09-25",
+        "cash_per_share": "0.3",
+        "total_bonus_per_share": "0.2",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "b0860c6ccda185fea7d03b9727c56ea29b34d3adbdb084766ad9a52e3133407c",
+        "status": "实施方案",
+        "report_date": "1993-12-31",
+        "announcement_date": "1994-05-14",
+        "record_date": "1994-07-08",
+        "ex_date": "1994-07-11",
+        "cash_per_share": "0.5",
+        "total_bonus_per_share": "0.5",
+        "tax_basis": "含税"
+      },
+      {
+        "record_key": "fa0a9cd0f2da83e6bc5477d99a605e38dc60812eea86a63b1043d487f73557a4",
+        "status": "实施方案",
+        "report_date": "1992-12-31",
+        "announcement_date": null,
+        "record_date": "1993-05-21",
+        "ex_date": "1993-05-24",
+        "cash_per_share": "0.3",
+        "total_bonus_per_share": "0.85",
+        "tax_basis": "含税"
+      }
+    ],
+    "oracle": {
+      "type": "manual fixed-input decimal arithmetic",
+      "expression": "0.360 + 0.249",
+      "result": "0.609",
+      "unit": "CNY per contemporaneous share",
+      "per_ten": "6.090",
+      "hypothetical_1000_eligible_shares": "609.000",
+      "warning": "Not an existing product metric, not cash received, no tax/payment/holdings evidence"
+    }
+  },
+  "audit_tools": {
+    "audit.py": {
+      "path": "build/shareholder-return-plan-20261022/audit.py",
+      "sha256": "d758ae7805b5ad7b0ca0cfafe7cc4261c31f7442624ac954f091dbbb82098f9f"
+    },
+    "dividend_context.py": {
+      "path": "build/shareholder-return-plan-20261022/dividend_context.py",
+      "sha256": "9bfb80a36a27b82e48cdf67fdeb88f4d2209cb5c68dea2cb4d788b69ee5bb2da"
+    }
+  },
+  "commands": [
+    {
+      "command": ".venv/Scripts/python.exe -X utf8 build/shareholder-return-plan-20261022/audit.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -X utf8 build/shareholder-return-plan-20261022/dividend_context.py",
+      "exit_code": 0
+    }
+  ],
+  "interpretation": "Read-only design investigation; a blocked business query is retained as blocked, not an acceptance pass. No source collection or new desktop acceptance.",
+  "design_document": "docs/shareholder-return-analysis-plan.md",
+  "remote_preflight": {
+    "command": "git ls-remote origin refs/heads/main",
+    "exit_code": 0,
+    "head": "31fc865a50d68e0bfce18995ae539da10e10f55f"
+  },
+  "documentation_validation": {
+    "recorded_at": "2026-10-21T17:59:23.059929+00:00",
+    "commands": [
+      {
+        "command": "scripts/documentation_contract.py review --note <最终审阅第一阶段业务方案，见docs/documentation-review.json>",
+        "exit_code": 0
+      },
+      {
+        "command": "scripts/documentation_contract.py check",
+        "exit_code": 0,
+        "output": "PASS offline documentation coverage and review"
+      },
+      {
+        "command": "scripts/documentation_build.py check",
+        "exit_code": 0,
+        "output": "PASS offline help check: 143 topics"
+      },
+      {
+        "command": "scripts/verify_documentation.py",
+        "exit_code": 0,
+        "output": "PASS documentation contracts: documents=413, links=2480, schema_tables=55"
+      },
+      {
+        "command": "-m pytest tests/test_documentation_contracts.py tests/test_documentation_review.py tests/test_documentation_sources.py tests/test_preparation_research.py --basetemp build/pytest-shareholder-return-plan-20261022 --junitxml build/shareholder-return-plan-20261022/docs-tests.xml -q",
+        "exit_code": 0,
+        "output": "47 passed in 60.54s"
+      },
+      {
+        "command": "-m pytest tests/test_documentation_sources.py tests/test_documentation_contracts.py --basetemp build/pytest-shareholder-return-plan-final-20261022 --junitxml build/shareholder-return-plan-20261022/docs-final-tests.xml -q",
+        "exit_code": 0,
+        "output": "14 passed in 6.30s",
+        "scope": "final documentation-only formula clarification"
+      },
+      {
+        "command": "git diff --check",
+        "exit_code": 0
+      }
+    ],
+    "python": ".venv/Scripts/python.exe -X utf8",
+    "not_executed": [
+      "new source collection",
+      "new production implementation",
+      "new release/build",
+      "new desktop acceptance"
+    ],
+    "boundary": "Design-review delivery only; prior architectural and usability acceptance statuses remain unchanged."
+  }
+}
