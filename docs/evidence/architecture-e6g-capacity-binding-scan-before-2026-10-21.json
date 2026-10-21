@@ -1,0 +1,21 @@
+{
+  "docs/evidence/rules-bse-capacity-2026-10-17.json": {
+    "datasets": [
+      "rules.limit_rules.complete",
+      "rules.settlement_rules.complete",
+      "rules.lot_rules.complete",
+      "rules.tick_rules.complete",
+      "rules.sessions.complete",
+      "rules.stamp_duty.complete",
+      "rules.transfer_fee.complete"
+    ],
+    "invalid": [
+      "src/empire/contracts/trading_rules.py",
+      "src/empire/contracts/rule_review.py",
+      "src/empire/contracts/rule_bse_review.py",
+      "src/empire/plugins/datasets/trading_rules.py",
+      "src/empire/plugins/data/trading_rules.py",
+      "scripts/measure_trading_rules.py"
+    ]
+  }
+}

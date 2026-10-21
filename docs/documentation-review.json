@@ -1,8 +1,8 @@
 {
   "schema": 2,
-  "reviewed_at": "2026-10-21T02:33:16.379728+00:00",
-  "note": "E6f回购五模块迁移及唯一发布7f5acbb5结案：逐项审阅完整方案来源、新容量、三轮性能及失败、真实回购页筛选分页未知值、独立启停与依赖保护、草稿撤销滚轮刷新、正常关开和48设置原配置偏好保持；历史H3及E4与准备限制保留，E6g和F未实施",
-  "unchanged_reason": "本次仅补实际发布和桌面证据及状态时态，正式运行源码和既有离线正文未改变，用户入口范围字段及恢复规则仍与已发布包一致",
+  "reviewed_at": "2026-10-21T02:56:48.501179+00:00",
+  "note": "E6g最终：11模块与全部调用方/规则source_file/coverage/assembly/ownership迁移，remaining最后贡献退役；七规则操作/原计划保存与启停、参数引用同事务、原用途失败、私有验证/容量、真实77参数和10000压力/T3均逐项核对，开发记录已据实际输出定稿。",
+  "unchanged_reason": "纯组织迁移11模块去导入AST相同；builtin同槽替换remaining，不改变其他业务及七规则的稳定身份/默认策略/页面行为/来源/恢复。公共preparation、下载代理频控预取入队归档摘要SQL调度与公共UI唯一路径未改。安全脚本仅私有资源核验，未修改日常任务网络配置或生产数据。",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -19,7 +19,7 @@
     "scripts/catalogue_verification.py": "e7310a762da07c4c0a9baaf8441b1768db4c2cee9282a26249c6903e97a5f429",
     "scripts/collect_name_changes.py": "637a83ef352bcee595c4f517587ab0fb1cf68991d307d2cc312377dbc24af6fa",
     "scripts/collect_st_events.py": "807b0cb4541c2708437161be357b71712961b18de4f6889153d60840164810d0",
-    "scripts/collect_trading_rules.py": "0331b223c1370d2a52aca0c4e901209aa54daa1fbafb1c64f0bb800ae17b894a",
+    "scripts/collect_trading_rules.py": "a11c1a4cd2789acc8cc0f208d9d57262360ad2ff16e4ce27e9378ff47e4e6913",
     "scripts/configure_kaipanla_task_defaults.py": "6d996856d1075bb10a63d172ef1a6fe5a6dc59ac971b8b7f72c5909cc6b1b42a",
     "scripts/configure_stock_directory.py": "031f90027539d98de310197e9f1e00a93ded470e289a3107f20505443110d011",
     "scripts/create_holder_schema.py": "e80b72db9e1cc173c124700c5be837570f0fb3476b0ae09f224e0d6b5b7131ca",
@@ -65,7 +65,7 @@
     "scripts/measure_st_events.py": "085cc3d6325f4ca2dd533f1b3aad9206640ee167453e89c098a490e6bb38121d",
     "scripts/measure_tdx_performance.py": "59be9e1bfbb8c00f160076e44d0a3f018f5ef52fc9f7268d5be8450926857afd",
     "scripts/measure_ths_capital.py": "d1ce9f14c7a2b05b746fa06779e8387929c924f7dd4e1aa94b630f1b7165aaa5",
-    "scripts/measure_trading_rules.py": "7a63faed60c09c1aca544782bf09ca1a2beedf57741f35eb4f553884f784505d",
+    "scripts/measure_trading_rules.py": "32f220235276b023a41fd2ef3bcbc3d9985142fa81808f9ef915b8173d210dfa",
     "scripts/measure_unlock_industries.py": "6abfdc7e52e48f492576c7b9223136a43843276e2b218a0d47c5bbfd7d2ce3fa",
     "scripts/measure_unlocks.py": "2399ef1244156163fd73153f1641192e431c1d27f55782d0417f2299185e49aa",
     "scripts/migrate_business_schema.py": "13c4ed0afc70d28136c170184983cd8655b9bace3c5b4658f7b7ea6c9a0b0deb",
@@ -104,6 +104,8 @@
     "scripts/smoke_source_storage_sql.py": "9cc246a638f5c3ef27cc265476725b41bd6249248dbecbde3203f4fee2f80893",
     "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
     "scripts/source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
+    "scripts/trading_rule_capacity.py": "47303fbcf8e76aeeef042d796cfd5a2a1a786be4a21a7e9eba48ba1c59e2200a",
+    "scripts/trading_rule_verification.py": "99a6a071bd04c71f53d6a9e72e304de647bc5b824413592884c4a2d4fac9cc3f",
     "scripts/ui_architecture_contract.py": "37cc5378706cf21b45079849bbb09c292d51b1381e7d559e5e58e508939415a2",
     "scripts/unlock_capacity.py": "4b5cf7cbf35c98e4d51a684a25118b10b8ede1ce040c9d56d9b2d05a25f3f9b7",
     "scripts/unlock_verification.py": "1643e5abd08fe0d3877a9a04d4fa68ff1fa65398a0a61beba46292dcc1768d46",
@@ -155,11 +157,8 @@
     "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
     "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
     "src/empire/contracts/request_retry.py": "72e47b364e9a7b7ed7ffeb8530fb195850977dc0eadfa223afb5ef114f57f732",
-    "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-    "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
     "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
     "src/empire/contracts/task.py": "9b9705a9400456b88543bb2cac037930f412afe736fea2e28de16da874b52d46",
-    "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
     "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
     "src/empire/core/__init__.py": "f81922ea8f2d6e30488778606b3b60990179a28cef1ce6e502ccb85b39117122",
     "src/empire/core/config.py": "d62cb8bdf3f80e9e2e3ba8d91fe77907d1f8275d27312424d9ab5870da42192b",
@@ -188,7 +187,7 @@
     "src/empire/features/adjustment/inputs.py": "c12217958c1d942a175e11903faef39703b7288470e0ec08c24af9ea91e07fc4",
     "src/empire/features/adjustment/query.py": "741b58a26f8823d1d907bc72c30337baeef17ce38e8ac7d0195f56df64e4b818",
     "src/empire/features/adjustment/ui.py": "c20376946f24565dd85cb683a6141c09b485d1b8c7edd5943e4e55c90e2b8af4",
-    "src/empire/features/builtin.py": "ddab301138c3432d1d2c4510bf86145f6c15e275482f573d258dc7973ab4c0f2",
+    "src/empire/features/builtin.py": "6106eef5f1d7d3664ba886b99ed0e04808a35a53b43da4fd09b62a05f6db89ab",
     "src/empire/features/calendar/__init__.py": "18dc263c87a8af06b933250d82de9de35a00cf5d8c8de5eed34eb5cea055fcbe",
     "src/empire/features/calendar/api.py": "589b1ddb5f58906f33f7de61c4f5c9fa9c20398e6fe55b00190f0d89fd9e82e4",
     "src/empire/features/calendar/audit.py": "7d3be1edc862072ac88557473603eac4fbe0a73acf83dd8b1a95b60ec5e888ff",
@@ -379,7 +378,6 @@
     "src/empire/features/preparation/ui_inventory.py": "faf0185c5c8d51114ef04b748fe0ebb0af42b824c17964ffd63ed215731fe76c",
     "src/empire/features/preparation/ui_scope.py": "8b131b9caf04efe6dc0d4b225739b54ec82a014714819a47f46657745a10cec2",
     "src/empire/features/preparation/ui_words.py": "e7ea010a64dd3a4fb8af6a2f6fbdcc33ed702e7ad61458e07133a32784444b16",
-    "src/empire/features/remaining.py": "d7dc32b8cfeb2b90239825feffb1226fb03e8f5fcb883f1cccb9d022762fef4b",
     "src/empire/features/repurchases/__init__.py": "6e3480d5ca5c2548b88d18ca902b7399f5c856c43c632d67b2b1b2ea33111269",
     "src/empire/features/repurchases/bundle.py": "c3fecc0351a42ead4cf4b1663b609b20b3143fc475b274164b7840b8c305832b",
     "src/empire/features/repurchases/collector.py": "4776c83b50c804da37ab68e37ef015c865688174187f86eea1e5b3bc4ccbdc3f",
@@ -437,6 +435,19 @@
     "src/empire/features/ths_capital/source.py": "f86cc4995ba57d11abe35340cdec8e79a5603cad7cd97cab8b2dc92bb1cd8fde",
     "src/empire/features/ths_capital/transport.py": "9c5d90f2270371e08c18d01bc5f294c48d40e1f5b8063c533b66d7109c4ce1fa",
     "src/empire/features/ths_capital/ui.py": "063c25d41c72b253da129a9577f6aacd8b1063f1282a65dd642e5fa92ac350e4",
+    "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+    "src/empire/features/trading_rules/bse.py": "6863ebb099eb52eacf0b63845fec83a49fbe49da050cb21cf62a54d1624fa003",
+    "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+    "src/empire/features/trading_rules/bundle.py": "1463742a92252302cf776d197db76dd412abd4e40ca99bedc491fb265a30085f",
+    "src/empire/features/trading_rules/collector.py": "537dac8c18c0e0ee47a1a8064cdcd973263c0304f4ebd2f15f769e86bdee974d",
+    "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+    "src/empire/features/trading_rules/dataset.py": "1b2b5853a50ac1442a0ee42f3a0063df98b0e4e00b033123389902540f5f1841",
+    "src/empire/features/trading_rules/documents.py": "d2bdcbd502269ad2632ed21e235b9d88b59acdadfa70876313b379261cdbfdea",
+    "src/empire/features/trading_rules/parameters.py": "11015c587ffe20458dc8bbdb35df740bfb33c3ba713f7fa020cddbb17fe8cdc7",
+    "src/empire/features/trading_rules/query.py": "ea1ae98358b9eac81a9f5850bb59c0c27d4dd1b433dfa598bf5a2b55f0359bda",
+    "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+    "src/empire/features/trading_rules/sources.py": "0a9fbb9b8ff1e3d7cf9dfa2d04214b6653d1ce6568c43eb4083a57466c3310e2",
+    "src/empire/features/trading_rules/ui.py": "3c7762a2e251ff7ab88adc04073d566e9bcea010709b44de8ae2567cc5dda87a",
     "src/empire/features/unlock_industries/__init__.py": "af10885c64f70f384b237dba280e98e00bac130ee45fc1d935c20e6cd2bb0a81",
     "src/empire/features/unlock_industries/bundle.py": "86ee33b599ce2e5473e7d346e77948c727f7fbf1835167745280f84350119429",
     "src/empire/features/unlock_industries/collector.py": "234784504937694181ab63eaf4d574ff7d5254c77d9e48017a6be74c4b9b5b73",
@@ -461,24 +472,17 @@
     "src/empire/plugins/collection/progress.py": "a15c257c2543b6d6c1e3d07bbd1965154293da3951fa9b0da0968d7ef8f17186",
     "src/empire/plugins/collection/record_query.py": "7c1f1409c686f54968f8d78a5e3eb7c69fe73ce93a2277343c3a3dfd3f5fe85f",
     "src/empire/plugins/collection/records.py": "cc33a16e2bed3aee7e28ffbbf90656cd344ce6af6c8e146def26c9884b27f877",
-    "src/empire/plugins/collection/rules.json": "21314f8e47a0202ee6be990ef17f47b7d89da8f242e03b6aa1f4695ab0cfd5dc",
+    "src/empire/plugins/collection/rules.json": "2e90896e4cd62ad9e5644c70533fc1a6b1fc21c0f9a41a336968084d7c8f89ec",
     "src/empire/plugins/collection/rules.py": "d37390bf0803201540b963921285810a2bc7e7b3429cfa9044273217d27fd0e2",
     "src/empire/plugins/collection/unit_prefetch.py": "45b25930ff3f2447d7de9bfc24eec890d8004774334f81fec3891e187fe0fd71",
     "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
     "src/empire/plugins/collectors/resources/ths.js": "0163e41dfdcbd889755142f4179a83a8d9f575f5343a56413546cc7fc0262376",
     "src/empire/plugins/collectors/resources/ths_directory.js": "5fb6a6d0404b2ca6155de118d6b0eac5621a7b0e9b0a942ced35a6d15ac5ac1e",
-    "src/empire/plugins/collectors/rule_bse.py": "0e250ad0f53f77e6549a79a0dbe5b4529047825aa1e6e0be96da65c44cc0e329",
-    "src/empire/plugins/collectors/rule_documents.py": "e5ddd7fa637e04a3124c323249a8fc33a697198652561da4b13a77f042286a2a",
-    "src/empire/plugins/collectors/rule_parameters.py": "afa74eef9265aeaa3d8c76725fb8245d7c819a1b0985f7c11da89352c422fbba",
-    "src/empire/plugins/collectors/rule_sources.py": "ddb71bab3456800b4569e255a701958aee9b1712d24ca4d2a6f0669a6b82b2c0",
     "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
     "src/empire/plugins/collectors/ths_session.py": "66b5214b14560c36977e89930b2f1e6c2860ef29d3588ae39317d58618c606ef",
-    "src/empire/plugins/collectors/trading_rules.py": "36926b86ee6b2d8107039082c712db18de5ebe6668640272a226d7461b5b830e",
     "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
-    "src/empire/plugins/data/trading_rules.py": "afbce0932e5cb93cc50f8fd35eebb85d4c46504eab482a4de1439871689d50b8",
     "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
     "src/empire/plugins/datasets/astock.py": "2dffcf398c3b92b49ef0e98ac62096bb7d9025f341dd110242d2f0af4323ec3f",
-    "src/empire/plugins/datasets/trading_rules.py": "2ef592e1f8bf20d0cf7813eb9cfb272d31216b7d1f0408d6ae4a007320331448",
     "src/empire/plugins/infra/__init__.py": "d4f739179fd85f1a5e60e2fbf0389cad2bb147f5b88a271ee9f6c809561eca72",
     "src/empire/plugins/infra/archive_confirmation.py": "edca1a62e7c524e37f6de3c41722629506e66da95c2fe8a72e82154274acee17",
     "src/empire/plugins/infra/capacity.py": "ce5c25c1386ed00d7d11b0e355935cf8aa9992fa35f9ddef3ac060edcb052438",
@@ -541,14 +545,13 @@
     "src/empire/plugins/ui/records.py": "eeb1b99e0076c722a9e17a0d82a3890f94e8bdf1d1a2e82b8c228d4bcb928a35",
     "src/empire/plugins/ui/series_chart.py": "c6818dae215ff78f6786b6db0f011d13508f561de52e45351b3f335a6b539f24",
     "src/empire/plugins/ui/system.py": "1d985986e30d1bfa74e44bbce396b78153c9d659e72c344561c8cdda505e99b7",
-    "src/empire/plugins/ui/trading_rules.py": "acf5a48fc83eaaee026b5e38d52d94e7ec3d5fff868da6defecf3658fe593ccb",
     "src/empire/plugins/ui/workspace.py": "598776920b3112b4bd5cbfe395de28f35de0478f9112a44b806a02fc141f1ba0",
     "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
     "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "af64f0262cb0f62448b432da99689a14aaa2d403965badd6bac0a496b143f225",
+  "content_sha256": "745692d5a9dc18c4dc2eb0a3cc98c19b8febd1d113d1bcd31645aaec2050e3d5",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -814,133 +817,147 @@
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+        "src/empire/features/trading_rules/ui.py": "3c7762a2e251ff7ab88adc04073d566e9bcea010709b44de8ae2567cc5dda87a",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/common.py": "7ced0ad1f98f0839e9e99bc0ed282d37ad7b2a5770d0577903f87cc13e1b3543",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
-        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "src/empire/plugins/ui/trading_rules.py": "acf5a48fc83eaaee026b5e38d52d94e7ec3d5fff868da6defecf3658fe593ccb"
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "ee6f9c6d89431b5211bc8b0a5e26ea6a577e9301573d2426923c0fa14bb811ac"
+      "content_sha256": "a11e53243b2fd3e592e23d10534a647b59169d18bbe1f436292928d2ec772454"
     },
     "page:rules_settlement_rules": {
       "sources": {
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+        "src/empire/features/trading_rules/ui.py": "3c7762a2e251ff7ab88adc04073d566e9bcea010709b44de8ae2567cc5dda87a",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/common.py": "7ced0ad1f98f0839e9e99bc0ed282d37ad7b2a5770d0577903f87cc13e1b3543",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
-        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "src/empire/plugins/ui/trading_rules.py": "acf5a48fc83eaaee026b5e38d52d94e7ec3d5fff868da6defecf3658fe593ccb"
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "ee6f9c6d89431b5211bc8b0a5e26ea6a577e9301573d2426923c0fa14bb811ac"
+      "content_sha256": "a11e53243b2fd3e592e23d10534a647b59169d18bbe1f436292928d2ec772454"
     },
     "page:rules_lot_rules": {
       "sources": {
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+        "src/empire/features/trading_rules/ui.py": "3c7762a2e251ff7ab88adc04073d566e9bcea010709b44de8ae2567cc5dda87a",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/common.py": "7ced0ad1f98f0839e9e99bc0ed282d37ad7b2a5770d0577903f87cc13e1b3543",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
-        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "src/empire/plugins/ui/trading_rules.py": "acf5a48fc83eaaee026b5e38d52d94e7ec3d5fff868da6defecf3658fe593ccb"
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "ee6f9c6d89431b5211bc8b0a5e26ea6a577e9301573d2426923c0fa14bb811ac"
+      "content_sha256": "a11e53243b2fd3e592e23d10534a647b59169d18bbe1f436292928d2ec772454"
     },
     "page:rules_tick_rules": {
       "sources": {
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+        "src/empire/features/trading_rules/ui.py": "3c7762a2e251ff7ab88adc04073d566e9bcea010709b44de8ae2567cc5dda87a",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/common.py": "7ced0ad1f98f0839e9e99bc0ed282d37ad7b2a5770d0577903f87cc13e1b3543",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
-        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "src/empire/plugins/ui/trading_rules.py": "acf5a48fc83eaaee026b5e38d52d94e7ec3d5fff868da6defecf3658fe593ccb"
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "ee6f9c6d89431b5211bc8b0a5e26ea6a577e9301573d2426923c0fa14bb811ac"
+      "content_sha256": "a11e53243b2fd3e592e23d10534a647b59169d18bbe1f436292928d2ec772454"
     },
     "page:rules_sessions": {
       "sources": {
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+        "src/empire/features/trading_rules/ui.py": "3c7762a2e251ff7ab88adc04073d566e9bcea010709b44de8ae2567cc5dda87a",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/common.py": "7ced0ad1f98f0839e9e99bc0ed282d37ad7b2a5770d0577903f87cc13e1b3543",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
-        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "src/empire/plugins/ui/trading_rules.py": "acf5a48fc83eaaee026b5e38d52d94e7ec3d5fff868da6defecf3658fe593ccb"
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "ee6f9c6d89431b5211bc8b0a5e26ea6a577e9301573d2426923c0fa14bb811ac"
+      "content_sha256": "a11e53243b2fd3e592e23d10534a647b59169d18bbe1f436292928d2ec772454"
     },
     "page:rules_stamp_duty": {
       "sources": {
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+        "src/empire/features/trading_rules/ui.py": "3c7762a2e251ff7ab88adc04073d566e9bcea010709b44de8ae2567cc5dda87a",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/common.py": "7ced0ad1f98f0839e9e99bc0ed282d37ad7b2a5770d0577903f87cc13e1b3543",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
-        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "src/empire/plugins/ui/trading_rules.py": "acf5a48fc83eaaee026b5e38d52d94e7ec3d5fff868da6defecf3658fe593ccb"
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "ee6f9c6d89431b5211bc8b0a5e26ea6a577e9301573d2426923c0fa14bb811ac"
+      "content_sha256": "a11e53243b2fd3e592e23d10534a647b59169d18bbe1f436292928d2ec772454"
     },
     "page:rules_transfer_fee": {
       "sources": {
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
         "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+        "src/empire/features/trading_rules/ui.py": "3c7762a2e251ff7ab88adc04073d566e9bcea010709b44de8ae2567cc5dda87a",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/common.py": "7ced0ad1f98f0839e9e99bc0ed282d37ad7b2a5770d0577903f87cc13e1b3543",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
-        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
-        "src/empire/plugins/ui/trading_rules.py": "acf5a48fc83eaaee026b5e38d52d94e7ec3d5fff868da6defecf3658fe593ccb"
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "ee6f9c6d89431b5211bc8b0a5e26ea6a577e9301573d2426923c0fa14bb811ac"
+      "content_sha256": "a11e53243b2fd3e592e23d10534a647b59169d18bbe1f436292928d2ec772454"
     },
     "page:index_prices": {
       "sources": {
@@ -2181,15 +2198,17 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/collector.py": "537dac8c18c0e0ee47a1a8064cdcd973263c0304f4ebd2f15f769e86bdee974d",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
-        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
-        "src/empire/plugins/collectors/trading_rules.py": "36926b86ee6b2d8107039082c712db18de5ebe6668640272a226d7461b5b830e"
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "cb1a0c766a5c1c8996e757f31e56a1aae113087ea76931d7e633e2f910f89e05"
+      "content_sha256": "013ec1fcb123a9d23c84313fe6b7350636cd6f5b766349771df4f90708448227"
     },
     "task:rules-settlement-rules": {
       "sources": {
@@ -2198,15 +2217,17 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/collector.py": "537dac8c18c0e0ee47a1a8064cdcd973263c0304f4ebd2f15f769e86bdee974d",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
-        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
-        "src/empire/plugins/collectors/trading_rules.py": "36926b86ee6b2d8107039082c712db18de5ebe6668640272a226d7461b5b830e"
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "58213bd3283d8d1e2025b0b48207270498c4a2dcb28b2a78e91ff31da28240d1"
+      "content_sha256": "5a08e5f97b3c30993a376157388678054c898b4780f62abdfa658c4cae0ca319"
     },
     "task:rules-lot-rules": {
       "sources": {
@@ -2215,15 +2236,17 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/collector.py": "537dac8c18c0e0ee47a1a8064cdcd973263c0304f4ebd2f15f769e86bdee974d",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
-        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
-        "src/empire/plugins/collectors/trading_rules.py": "36926b86ee6b2d8107039082c712db18de5ebe6668640272a226d7461b5b830e"
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "51f615e7503acbd68c93a29920f0166ee71a282783db10586cc1eea805001548"
+      "content_sha256": "d2a75c5cc21a52e03aabbcdd6c7ff861149e05048ac4802c21e58c2062a13fdd"
     },
     "task:rules-tick-rules": {
       "sources": {
@@ -2232,15 +2255,17 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/collector.py": "537dac8c18c0e0ee47a1a8064cdcd973263c0304f4ebd2f15f769e86bdee974d",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
-        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
-        "src/empire/plugins/collectors/trading_rules.py": "36926b86ee6b2d8107039082c712db18de5ebe6668640272a226d7461b5b830e"
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "6862e88a05806ebbb9a32684ef3016e181497e5192fd34d2ee10829766857b2e"
+      "content_sha256": "62d5898a6a361bb6b7ac9bd35038623822e93711832a3e23f00b49714b4ef814"
     },
     "task:rules-sessions": {
       "sources": {
@@ -2249,15 +2274,17 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/collector.py": "537dac8c18c0e0ee47a1a8064cdcd973263c0304f4ebd2f15f769e86bdee974d",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
-        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
-        "src/empire/plugins/collectors/trading_rules.py": "36926b86ee6b2d8107039082c712db18de5ebe6668640272a226d7461b5b830e"
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "740428e4fcfcee5fdca1a444eb4ac70853a27a9a35581c14bc688e82f132ad6a"
+      "content_sha256": "662a7530da2c826562e4917e1dc8e1d79e64d27854d8758c8e2795dd96044f50"
     },
     "task:rules-stamp-duty": {
       "sources": {
@@ -2266,15 +2293,17 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/collector.py": "537dac8c18c0e0ee47a1a8064cdcd973263c0304f4ebd2f15f769e86bdee974d",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
-        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
-        "src/empire/plugins/collectors/trading_rules.py": "36926b86ee6b2d8107039082c712db18de5ebe6668640272a226d7461b5b830e"
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "7842354e27559f743cd8aed7e208263cfe62c808cfae59d5359ee5cd3234c508"
+      "content_sha256": "5d30e718041e3f52873cb65184dbeeb9394b7c7907ac242cdd645bc204b40cbc"
     },
     "task:rules-transfer-fee": {
       "sources": {
@@ -2283,15 +2312,17 @@
         "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
         "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/collector.py": "537dac8c18c0e0ee47a1a8064cdcd973263c0304f4ebd2f15f769e86bdee974d",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
-        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
-        "src/empire/plugins/collectors/trading_rules.py": "36926b86ee6b2d8107039082c712db18de5ebe6668640272a226d7461b5b830e"
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "3f4b24b0102fd56c5e0d5bf53c360eb745f7d37e941815520626cf1a721d5fc2"
+      "content_sha256": "5f7a196e44928c462f59283839d59d896696dd9530be209bc7993452e73659ed"
     },
     "task:tdx-listing-status": {
       "sources": {
@@ -3956,45 +3987,43 @@
     },
     "mysql:trading_rule_value": {
       "sources": {
-        "src/empire/plugins/datasets/trading_rules.py": "2ef592e1f8bf20d0cf7813eb9cfb272d31216b7d1f0408d6ae4a007320331448",
-        "src/empire/plugins/data/trading_rules.py": "afbce0932e5cb93cc50f8fd35eebb85d4c46504eab482a4de1439871689d50b8",
+        "src/empire/features/trading_rules/dataset.py": "1b2b5853a50ac1442a0ee42f3a0063df98b0e4e00b033123389902540f5f1841",
+        "src/empire/features/trading_rules/query.py": "ea1ae98358b9eac81a9f5850bb59c0c27d4dd1b433dfa598bf5a2b55f0359bda",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
-        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
-        "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
-        "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
         "sql/schema.sql#trading_rule_value": "afc1f8db8d3c60c10994b4d7f464781724d50aaf8ccba1e03b1c8aea6ed6a191",
         "sql/business-schema.json#trading_rule_value": "60f0401ac6729092910f6e0d5645b2986b5f42a72fa8decc2735e2022512ba4d"
       },
-      "content_sha256": "e23c553ff80204b5b5c032f25722d0a093288ba518dd59c9a80b6bede4edaba7"
+      "content_sha256": "2b12b7f337a8c7de983f024f83b001890f3a7e4c6a5e2704e90a9e27228e217f"
     },
     "mysql:trading_rule_citation": {
       "sources": {
-        "src/empire/plugins/datasets/trading_rules.py": "2ef592e1f8bf20d0cf7813eb9cfb272d31216b7d1f0408d6ae4a007320331448",
-        "src/empire/plugins/data/trading_rules.py": "afbce0932e5cb93cc50f8fd35eebb85d4c46504eab482a4de1439871689d50b8",
+        "src/empire/features/trading_rules/dataset.py": "1b2b5853a50ac1442a0ee42f3a0063df98b0e4e00b033123389902540f5f1841",
+        "src/empire/features/trading_rules/query.py": "ea1ae98358b9eac81a9f5850bb59c0c27d4dd1b433dfa598bf5a2b55f0359bda",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
         "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
         "src/empire/contracts/preparation.py": "2e0238ac18faee16f67a2076cfb496cf7d0b3148292c45f9b3d06189594c7768",
         "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
-        "src/empire/contracts/rule_bse_review.py": "c715b8ebcd8570095981f5456c9f11fffd3eade97ab6da53d9f1810e2ba670a9",
-        "src/empire/contracts/rule_review.py": "d34c75d2b27104bbd6531accfca94cbec5168e4652cbde7d3b5a35ceeee83d2d",
-        "src/empire/contracts/trading_rules.py": "078482e28cc21097781e6b8c559fed78cf4982270993f2a48b64b99abefbf5da",
-        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
-        "src/empire/plugins/data/__init__.py": "7aeb20c2bd14ac4e5bd3f134ec999d412a241188d8896fad9ea44a8d559ae4c7",
-        "src/empire/plugins/datasets/__init__.py": "e17139fe0a50d3b380958f8416e9726581de75761565c5f33b38204896039530",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/trading_rules/__init__.py": "57beb2067363af5a70d23e38df9cad9acad9d9df4571822a6781a1c4bb788e32",
+        "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+        "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+        "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
         "sql/schema.sql#trading_rule_citation": "20e73edac1e67496714db954162f09ba4d4cfc87410bdba1a093f25edeb18786",
         "sql/business-schema.json#trading_rule_citation": "605e11b55673a57fd6f1d0b64306fcb90650e341c69959c849fe2756445340be"
       },
-      "content_sha256": "87ad36071354858088bf15902a1b417ad895c55069f2c90beb77d10b3fc9a02e"
+      "content_sha256": "f2c0bb0ba6c9b38452a82b1fd102ac4141375b5c66e8cbf4494bafacc8acf531"
     },
     "mysql:stock_repurchase_plan": {
       "sources": {

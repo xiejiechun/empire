@@ -6,7 +6,7 @@ from datetime import date, time
 from decimal import Decimal
 from urllib.parse import urlsplit
 
-from empire.contracts.rule_review import EXPECTED, REFERENCES
+from empire.features.trading_rules.review import EXPECTED, REFERENCES
 
 KINDS = {
     'limit_rules': '涨跌幅规则记录', 'settlement_rules': '买入后何时能卖的规则',

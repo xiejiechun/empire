@@ -1,0 +1,620 @@
+{
+  "run_id": "1457324a51bd4d4981500cbeef93e348",
+  "mode": "verification",
+  "checked_at": "2026-10-21T02:48:14.627910+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": true,
+  "sample_30_met": false,
+  "results": {
+    "rules-limit-rules": {
+      "pipeline_verified": true,
+      "acceptance_complete": true,
+      "pending_stream": 0,
+      "rows": 14,
+      "citations": 8,
+      "digest": "9a7aa03a38d90498d4cc257c979cad1b08de44f02a0b7ad537e2917519d40d49",
+      "state": {
+        "digest": "9a7aa03a38d90498d4cc257c979cad1b08de44f02a0b7ad537e2917519d40d49",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "19c8f5882e2e4668a44f243ee064a603",
+          "row_count": 14,
+          "error_text": "",
+          "observed_at": "2026-10-21T02:48:16.681172+00:00"
+        },
+        "row_count": 14,
+        "observed_at": "2026-10-21T02:48:16.681172+00:00"
+      },
+      "markets": [
+        "BJ",
+        "SH",
+        "SZ"
+      ],
+      "source_queue_sql_query_equal": true,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "blocking": true,
+          "measured": "北交所30%及首日豁免已保存；涨跌价格舍入规则尚需核实"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "blocking": true,
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "blocking": true,
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "blocking": true,
+          "measured": "北交所30%及首日豁免已保存；涨跌价格舍入规则尚需核实"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "blocking": true,
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "blocking": true,
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "strict_proxy_verified": true
+    },
+    "rules-settlement-rules": {
+      "pipeline_verified": true,
+      "acceptance_complete": true,
+      "pending_stream": 0,
+      "rows": 5,
+      "citations": 3,
+      "digest": "a4c60897075b6cb1a1adebf3ac336ccac2cf5897ad9784eecc49921a04f390bb",
+      "state": {
+        "digest": "a4c60897075b6cb1a1adebf3ac336ccac2cf5897ad9784eecc49921a04f390bb",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "dfc245af5ebd4660b67a172fb91606db",
+          "row_count": 5,
+          "error_text": "",
+          "observed_at": "2026-10-21T02:48:25.712048+00:00"
+        },
+        "row_count": 5,
+        "observed_at": "2026-10-21T02:48:25.712048+00:00"
+      },
+      "markets": [
+        "BJ",
+        "SH",
+        "SZ"
+      ],
+      "source_queue_sql_query_equal": true,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "blocking": true,
+          "measured": "交收前禁卖原文已保存；数值T+1交收依据尚缺"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "blocking": true,
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "blocking": true,
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "blocking": true,
+          "measured": "交收前禁卖原文已保存；数值T+1交收依据尚缺"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "blocking": true,
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "blocking": true,
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "strict_proxy_verified": true
+    },
+    "rules-lot-rules": {
+      "pipeline_verified": true,
+      "acceptance_complete": true,
+      "pending_stream": 0,
+      "rows": 14,
+      "citations": 6,
+      "digest": "253c97c2352f2537f41054a28502e9296237ae3d22a394d29442dcce20c36c8b",
+      "state": {
+        "digest": "253c97c2352f2537f41054a28502e9296237ae3d22a394d29442dcce20c36c8b",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "8f9fc6757a7d46ad8480b49b0f8177cb",
+          "row_count": 14,
+          "error_text": "",
+          "observed_at": "2026-10-21T02:48:26.750598+00:00"
+        },
+        "row_count": 14,
+        "observed_at": "2026-10-21T02:48:26.750598+00:00"
+      },
+      "markets": [
+        "BJ",
+        "SH",
+        "SZ"
+      ],
+      "source_queue_sql_query_equal": true,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "blocking": true,
+          "measured": "科创板200股及上限、北交所100股及上限已保存；当前递增股数仍需明确依据"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "blocking": true,
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "blocking": true,
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "blocking": true,
+          "measured": "科创板200股及上限、北交所100股及上限已保存；当前递增股数仍需明确依据"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "blocking": true,
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "blocking": true,
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "strict_proxy_verified": true
+    },
+    "rules-tick-rules": {
+      "pipeline_verified": true,
+      "acceptance_complete": true,
+      "pending_stream": 0,
+      "rows": 5,
+      "citations": 3,
+      "digest": "061e8c38da63f8b70f5ddb6e05d1580a3035e9032af0d0bf22079c7b06735e67",
+      "state": {
+        "digest": "061e8c38da63f8b70f5ddb6e05d1580a3035e9032af0d0bf22079c7b06735e67",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "556f91672299441da2899aea575a532f",
+          "row_count": 5,
+          "error_text": "",
+          "observed_at": "2026-10-21T02:48:27.783039+00:00"
+        },
+        "row_count": 5,
+        "observed_at": "2026-10-21T02:48:27.783039+00:00"
+      },
+      "markets": [
+        "BJ",
+        "SH",
+        "SZ"
+      ],
+      "source_queue_sql_query_equal": true,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "blocking": true,
+          "measured": "类型、单位、生效段及关联官方依据完整"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "blocking": true,
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "blocking": true,
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "blocking": true,
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "blocking": true,
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "blocking": true,
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "strict_proxy_verified": true
+    },
+    "rules-sessions": {
+      "pipeline_verified": true,
+      "acceptance_complete": true,
+      "pending_stream": 0,
+      "rows": 23,
+      "citations": 5,
+      "digest": "a1a6a2cb4bb1a2353d5da7a768c2aeee508941876d4f37a66eae84eee5052253",
+      "state": {
+        "digest": "a1a6a2cb4bb1a2353d5da7a768c2aeee508941876d4f37a66eae84eee5052253",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "999beb1c732c40088e00f99aa0c79be4",
+          "row_count": 23,
+          "error_text": "",
+          "observed_at": "2026-10-21T02:48:28.803848+00:00"
+        },
+        "row_count": 23,
+        "observed_at": "2026-10-21T02:48:28.803848+00:00"
+      },
+      "markets": [
+        "BJ",
+        "SH",
+        "SZ"
+      ],
+      "source_queue_sql_query_equal": true,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "blocking": true,
+          "measured": "类型、单位、生效段及关联官方依据完整"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "blocking": true,
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "blocking": true,
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "blocking": true,
+          "measured": "沪深北2026-07-06起普通竞价条款；北交所盘后仍暂缓；早期历史不在本次范围"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "blocking": true,
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "blocking": true,
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "strict_proxy_verified": true
+    },
+    "rules-stamp-duty": {
+      "pipeline_verified": true,
+      "acceptance_complete": true,
+      "pending_stream": 0,
+      "rows": 4,
+      "citations": 4,
+      "digest": "6124b54785a4f603205f7fd6a2a24cf0d8ead4bec0fe6438d1b8bc574836f733",
+      "state": {
+        "digest": "6124b54785a4f603205f7fd6a2a24cf0d8ead4bec0fe6438d1b8bc574836f733",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "2d7b579613524ae78266ccb6744baf9d",
+          "row_count": 4,
+          "error_text": "",
+          "observed_at": "2026-10-21T02:48:29.844520+00:00"
+        },
+        "row_count": 4,
+        "observed_at": "2026-10-21T02:48:29.844520+00:00"
+      },
+      "markets": [
+        "CN"
+      ],
+      "source_queue_sql_query_equal": true,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "blocking": true,
+          "measured": "类型、单位、生效段及关联官方依据完整"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "blocking": true,
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "blocking": true,
+          "measured": "印花税从2022-07-01起；法定税率及2023减半政策，非政策目录全集"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "blocking": true,
+          "measured": "印花税从2022-07-01起；法定税率及2023减半政策，非政策目录全集"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "blocking": true,
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "blocking": true,
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "strict_proxy_verified": true
+    },
+    "rules-transfer-fee": {
+      "pipeline_verified": true,
+      "acceptance_complete": true,
+      "pending_stream": 0,
+      "rows": 12,
+      "citations": 1,
+      "digest": "8075ed513b5d69fbd04cbeb43ce05386568b72789b3982fdc1f00544cf71f5f0",
+      "state": {
+        "digest": "8075ed513b5d69fbd04cbeb43ce05386568b72789b3982fdc1f00544cf71f5f0",
+        "contract": 1,
+        "progress": {
+          "page": 1,
+          "status": "complete",
+          "batch_id": "63c8670df157445e8658fc26e2e05475",
+          "row_count": 12,
+          "error_text": "",
+          "observed_at": "2026-10-21T02:48:32.832803+00:00"
+        },
+        "row_count": 12,
+        "observed_at": "2026-10-21T02:48:32.832803+00:00"
+      },
+      "markets": [
+        "BJ",
+        "SH",
+        "SZ"
+      ],
+      "source_queue_sql_query_equal": true,
+      "preparation": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "blocking": true,
+          "measured": "过户费仅保存2022-04-29新华社转述的调整公告；最低收费及2026现行附件尚未核实"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "blocking": true,
+          "measured": "规范业务键集合及全部引用与同事务归档证明一致"
+        },
+        {
+          "criterion": "coverage",
+          "status": "fail",
+          "blocking": true,
+          "measured": "过户费仅保存2022-04-29新华社转述的调整公告；最低收费及2026现行附件尚未核实"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "blocking": true,
+          "measured": "过户费仅保存2022-04-29新华社转述的调整公告；最低收费及2026现行附件尚未核实"
+        },
+        {
+          "criterion": "freshness",
+          "status": "fail",
+          "blocking": true,
+          "measured": "固定文件及交易所目录每3天复查；允许1天执行余量；过户费原公告复查不证明现行收费表已核实"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "blocking": true,
+          "measured": "按生效段读取，现行规则不回填早期；未知终止不代表永久有效"
+        }
+      ],
+      "strict_proxy_verified": true
+    }
+  },
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4"
+  },
+  "subject": "trading_rules",
+  "selection": {
+    "selected": [],
+    "random": [],
+    "fixed": [],
+    "random_count": 0,
+    "non_stock_scope": {
+      "unit": "七项已审核官方文档完整参数与引用集合",
+      "reason": "纯组织迁移；来源按法规/税费文档组采集，无按股票请求入口，逐kind核验全部键和内容，不声明随机30股",
+      "fixed": []
+    }
+  },
+  "source_sha256": "28b0c9dcf3d0019b71ecd56ddfdba7708cac6a8b98270a48153248d1d099dc3b",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "verification_scope": "proxy_pipeline",
+  "routing_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false
+  },
+  "sample_30_applicable": false,
+  "policy_snapshot_digest": "3c4fdd69a54195d23380f748df719843aa1114e4614e270704261a85a01cdcdb",
+  "acceptance_complete": true,
+  "storage": {
+    "database": "empire_verify_ths_1457324a51bd4d4981500cbeef93e348_test",
+    "namespace": "empire:test:verify_ths:1457324a51bd4d4981500cbeef93e348",
+    "run_id": "1457324a51bd4d4981500cbeef93e348",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "8faf677b6f374bd8bd77346f36fb4e2138e8f3207702c33b281f061ded96a3b6"
+  },
+  "responses": [
+    {
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/",
+      "method": "GET",
+      "bytes": 29531,
+      "sha256": "657b066e99f137fe656956bfbfa7195412a4ca9f81d87e88cb04a0697ec2f007"
+    },
+    {
+      "url": "https://www.szse.cn/api/search/content",
+      "method": "POST",
+      "bytes": 9325,
+      "sha256": "a3a773d6380c4b43a9e9edc216c23d894025024db9711c9b2765d2039f280a81"
+    },
+    {
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/c_20260424_10816492.shtml",
+      "method": "GET",
+      "bytes": 33604,
+      "sha256": "4c75fe71efb4c1213c2a10f9304b2a4a1278841d5b6f4e8a6ace31324fe9cb26"
+    },
+    {
+      "url": "https://www.szse.cn/lawrules/rule/trade/current/t20260424_620190.html",
+      "method": "GET",
+      "bytes": 19374,
+      "sha256": "08d05a9d3f9c7dac31e8ac33712bac26b3995585718031e99a953e9128eec2d2"
+    },
+    {
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/58bd5ce4dfc94b57a5391f60eb2719ab.docx",
+      "method": "GET",
+      "bytes": 65302,
+      "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888"
+    },
+    {
+      "url": "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713155663.pdf",
+      "method": "GET",
+      "bytes": 282084,
+      "sha256": "9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586"
+    },
+    {
+      "url": "https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/10816492/files/7476908baade49b8b14881439d2f89b6.docx",
+      "method": "GET",
+      "bytes": 16476,
+      "sha256": "f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5"
+    },
+    {
+      "url": "https://www.bse.cn/info/listseSub.do",
+      "method": "POST",
+      "bytes": 21596,
+      "sha256": "8cfae8416da376b57b48ce1af8c50591d7a3919c7371f6e561c5f93d724d888d"
+    },
+    {
+      "url": "https://www.bse.cn/jygl_list/200028217.html",
+      "method": "GET",
+      "bytes": 158953,
+      "sha256": "cf89a37eb754baae0e303c4b9e6ff2fe2b328118aac1203d1de853d807983082"
+    },
+    {
+      "url": "https://www.bse.cn/jygl_list/200029608.html",
+      "method": "GET",
+      "bytes": 17026,
+      "sha256": "6ba4d09e8689f384e386ab0d6a3bf35bc9340ea5d318284ffb47b6172c647ea1"
+    },
+    {
+      "url": "https://www.bse.cn/uploads/6/file/public/202604/20260424170528_52kqyhc7p9.docx",
+      "method": "GET",
+      "bytes": 82385,
+      "sha256": "56145494879dbb8192e9f6e2b5c91cbad102364de83b799c14b263f9a7c50cd2"
+    },
+    {
+      "url": "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5193058/content.html",
+      "method": "GET",
+      "bytes": 45814,
+      "sha256": "b9c03f76774935b5bc40c46b88d69de5391128269d84cf9ee08df812de44f699"
+    },
+    {
+      "url": "https://tianjin.chinatax.gov.cn/11200000000/0300/030005/20220725150235434.shtml",
+      "method": "GET",
+      "bytes": 30513,
+      "sha256": "d591c00404d01583b9fee11288900815f9a1315ce0bd3704ccd7ecd9d368f075"
+    },
+    {
+      "url": "https://www.gov.cn/zhengce/zhengceku/202308/content_6900443.htm",
+      "method": "GET",
+      "bytes": 24482,
+      "sha256": "66704a735da25e688a0b94f32a5afd3e4afaf0a71855e1931a24da2ba7951522"
+    },
+    {
+      "url": "http://cn.chinagate.cn/news/2022-04/29/content_78193990.htm",
+      "method": "GET",
+      "bytes": 10437,
+      "sha256": "f8b76e77d0849a3cf913b1179b49df6ca1335736e7e4943ac89069be1b4de35b"
+    }
+  ],
+  "routes": {
+    "proxy_requests": 15
+  },
+  "source_scope": "当前已审核沪深北规则、印花税及2022过户费转述公告；用途缺口保持",
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

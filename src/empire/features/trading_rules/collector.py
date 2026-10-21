@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.trading_rules import KINDS, SOURCE, VERSION, project
+from empire.features.trading_rules.contract import KINDS, SOURCE, VERSION, project
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,

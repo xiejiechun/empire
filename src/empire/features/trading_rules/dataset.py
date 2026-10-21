@@ -5,7 +5,7 @@ from decimal import Decimal
 from sqlalchemy import text
 
 from empire.contracts.archive_version import ArchiveVersion
-from empire.contracts.trading_rules import (
+from empire.features.trading_rules.contract import (
     CITATION_COLUMNS,
     SOURCE,
     VALUE_COLUMNS,

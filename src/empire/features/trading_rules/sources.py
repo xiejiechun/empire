@@ -5,18 +5,18 @@ import re
 import time
 
 from empire.contracts.plugin import PluginManifest
-from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
-from empire.plugins.collectors.rule_bse import BJ_FIELDS, BJ_FILE, BJ_LIST, BJ_NOTICE, BJ_RESUMED
-from empire.plugins.collectors.rule_bse import directory as bj_directory
-from empire.plugins.collectors.rule_bse import notice as bj_notice
-from empire.plugins.collectors.rule_documents import (
+from empire.features.trading_rules.bse import BJ_FIELDS, BJ_FILE, BJ_LIST, BJ_NOTICE, BJ_RESUMED
+from empire.features.trading_rules.bse import directory as bj_directory
+from empire.features.trading_rules.bse import notice as bj_notice
+from empire.features.trading_rules.documents import (
     RuleDocument,
     compact,
     docx_document,
     html_document,
     official_url,
 )
-from empire.plugins.collectors.rule_parameters import Parameters, exchange_parameters
+from empire.features.trading_rules.parameters import Parameters, exchange_parameters
+from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 
 SH_LIST = 'https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/'
 SH_NOTICE = SH_LIST + 'c/c_20260424_10816492.shtml'

@@ -1,4 +1,4 @@
-"""Single declaration owner for businesses awaiting their own package; retired by batch E."""
+"""Reviewed trading-rule identities and original contribution slots, owned once."""
 from empire.contracts.bundle import (
     FeatureBundle,
     OrderedContribution,
@@ -6,18 +6,18 @@ from empire.contracts.bundle import (
 )
 from empire.contracts.dataset import DatasetContribution
 from empire.contracts.task import TaskContribution, TaskDefaults
-from empire.contracts.trading_rules import KINDS as RULE_KINDS
-from empire.contracts.trading_rules import project as rule_project
-from empire.plugins.collectors.rule_sources import RuleSources
-from empire.plugins.collectors.trading_rules import RuleCollector
-from empire.plugins.data.trading_rules import RuleDataPlugin
-from empire.plugins.datasets.trading_rules import RuleDataset
-from empire.plugins.ui.trading_rules import RuleUiPlugin
+from empire.features.trading_rules.collector import RuleCollector
+from empire.features.trading_rules.contract import KINDS as RULE_KINDS
+from empire.features.trading_rules.contract import project as rule_project
+from empire.features.trading_rules.dataset import RuleDataset
+from empire.features.trading_rules.query import RuleDataPlugin
+from empire.features.trading_rules.sources import RuleSources
+from empire.features.trading_rules.ui import RuleUiPlugin
 
 
 def bundle(cfg):
-    """Unmigrated business declarations, removed here as each package takes ownership."""
-    return FeatureBundle('remaining', plugins=(
+    """Seven rule projects retain their original identities and shared services."""
+    return FeatureBundle('trading_rules', plugins=(
         OrderedContribution(3800, RuleSources()),
         *positioned((3900, 4000, 4100, 4200, 4300, 4400, 4500), (RuleDataPlugin(k, cfg["redis"].get("namespace", "empire"), cfg.get("archive", {})) for k in RULE_KINDS)),
         *positioned((4600, 4700, 4800, 4900, 5000, 5100, 5200), (RuleCollector(k) for k in RULE_KINDS)),

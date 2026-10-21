@@ -15,9 +15,9 @@ from PySide6.QtWidgets import (
 )
 
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.trading_rules import KINDS, project
 from empire.contracts.ui import NavigationContext, NavigationTarget, PageContribution
 from empire.core.redaction import redact
+from empire.features.trading_rules.contract import KINDS, project
 from empire.plugins.ui.common import accessible, hint, rows, table
 from empire.plugins.ui.plugin import UiPlugin
 from empire.plugins.ui.queries import QueryScope

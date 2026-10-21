@@ -190,17 +190,6 @@
       ]
     },
     {
-      "legacy_collector_location": true,
-      "owner": "trading_rules",
-      "reason": "交易制度及费用规则：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.plugins.collectors.rule_bse",
-        "empire.plugins.collectors.rule_documents",
-        "empire.plugins.collectors.rule_parameters"
-      ]
-    },
-    {
       "owner": "application",
       "reason": "应用入口和静态装配：包入口",
       "role": "package",
@@ -698,56 +687,6 @@
       ]
     },
     {
-      "owner": "trading_rules",
-      "reason": "交易制度及费用规则：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.contracts.rule_bse_review",
-        "empire.contracts.rule_review",
-        "empire.contracts.trading_rules"
-      ]
-    },
-    {
-      "owner": "trading_rules",
-      "reason": "交易制度及费用规则：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.plugins.ui.trading_rules"
-      ]
-    },
-    {
-      "owner": "trading_rules",
-      "reason": "交易制度及费用规则：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.plugins.datasets.trading_rules"
-      ]
-    },
-    {
-      "owner": "trading_rules",
-      "reason": "交易制度及费用规则：来源模块包含下载/会话/生命周期执行",
-      "role": "source_adapter",
-      "modules": [
-        "empire.plugins.collectors.rule_sources"
-      ]
-    },
-    {
-      "owner": "trading_rules",
-      "reason": "交易制度及费用规则：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.plugins.data.trading_rules"
-      ]
-    },
-    {
-      "owner": "trading_rules",
-      "reason": "交易制度及费用规则：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.plugins.collectors.trading_rules"
-      ]
-    },
-    {
       "owner": "ui_components",
       "reason": "公共展示和查询生命周期控件：业务标识、字段和纯规范声明",
       "role": "contract",
@@ -789,10 +728,9 @@
     {
       "owner": "application",
       "role": "composition",
-      "reason": "唯一白名单聚合与尚未迁移业务的唯一声明出处",
+      "reason": "唯一显式内部业务白名单与跨贡献所有权核验",
       "modules": [
-        "empire.features.builtin",
-        "empire.features.remaining"
+        "empire.features.builtin"
       ]
     },
     {
@@ -1462,6 +1400,25 @@
         "bundle": "composition",
         "contract": "contract",
         "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.trading_rules",
+      "owner": "trading_rules",
+      "reason": "七项已审核交易规则、引用与税费的完整业务包，公共下载及归档唯一",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "review": "contract",
+        "bse_review": "contract",
+        "collector": "collector",
+        "sources": "parser",
+        "parameters": "parser",
+        "documents": "parser",
+        "bse": "parser",
         "dataset": "dataset",
         "query": "query",
         "ui": "ui"

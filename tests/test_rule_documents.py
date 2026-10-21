@@ -5,7 +5,7 @@ import zipfile
 import pytest
 from pypdf import PdfWriter
 
-from empire.plugins.collectors.rule_documents import (
+from empire.features.trading_rules.documents import (
     MAX_TEXT_BYTES,
     RuleDocument,
     docx_document,

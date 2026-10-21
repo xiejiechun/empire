@@ -7,8 +7,8 @@ from sqlalchemy import text
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
-from empire.contracts.trading_rules import KINDS, SOURCE, digest, project, validate
-from empire.plugins.datasets.trading_rules import (
+from empire.features.trading_rules.contract import KINDS, SOURCE, digest, project, validate
+from empire.features.trading_rules.dataset import (
     KEYS,
     TABLES,
     RuleDataset,

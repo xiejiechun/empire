@@ -1,0 +1,54 @@
+{
+  "run_id": "d16e2887e1b443319a6dc243b9c30b31",
+  "mode": "verification",
+  "checked_at": "2026-10-21T02:48:46.761628+00:00",
+  "passed": false,
+  "pipeline_verified": false,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [
+    {
+      "stage": "capacity",
+      "message": "No module named 'tests'",
+      "type": "ModuleNotFoundError"
+    }
+  ],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4"
+  },
+  "subject": "trading_rules_capacity",
+  "source_sha256": "28b0c9dcf3d0019b71ecd56ddfdba7708cac6a8b98270a48153248d1d099dc3b",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": false,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原77审核参数加10000行未来历史SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_d16e2887e1b443319a6dc243b9c30b31_test",
+    "namespace": "empire:test:verify_ths:d16e2887e1b443319a6dc243b9c30b31",
+    "run_id": "d16e2887e1b443319a6dc243b9c30b31",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "542c2c76102a311b2e07f4719fd455c6d368b32068ca1e4c5937c01fa6a62972"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-data\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

@@ -1,5 +1,5 @@
 """Reviewed interpretation of the 2026 Shanghai/Shenzhen auction rules."""
-from empire.contracts.trading_rules import citation_identity, identity, payload
+from empire.features.trading_rules.contract import citation_identity, identity, payload
 
 
 class Parameters:

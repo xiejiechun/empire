@@ -1,7 +1,7 @@
 """Complete Beijing directory and explicit deferred-clause checks."""
 import json
 
-from empire.plugins.collectors.rule_documents import compact, html_document
+from empire.features.trading_rules.documents import compact, html_document
 
 BJ_LIST = 'https://www.bse.cn/info/listseSub.do'
 BJ_NOTICE = 'https://www.bse.cn/jygl_list/200028217.html'

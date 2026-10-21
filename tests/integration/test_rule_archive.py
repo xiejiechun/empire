@@ -12,8 +12,8 @@ from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
 from empire.contracts.data import make_envelope
-from empire.contracts.trading_rules import KINDS, SOURCE, citation_identity, digest
 from empire.core.config import load_config
+from empire.features.trading_rules.contract import KINDS, SOURCE, citation_identity, digest
 from tests.prefetch_source import prefetch_http
 from tests.test_trading_rules import responses, sample
 
@@ -59,7 +59,7 @@ async def test_seven_sources_to_formal_query_and_scope_limits(rules):
     result = await collect(c)
     values = (await q.list_rules())['rows']
     assert len(values) == result['collected'] == len(sample(c.kind)['rows'])
-    from empire.plugins.datasets.trading_rules import canonical_payload
+    from empire.features.trading_rules.dataset import canonical_payload
     expected = canonical_payload(c.kind, c.last_source)
     snapshot = await q.mysql.read(q.snapshot)
     assert values == expected['rows'] and snapshot[1] == expected['citations']

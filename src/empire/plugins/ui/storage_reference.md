@@ -1065,7 +1065,7 @@ Empire 是运行在本机 Windows 上的单体桌面应用。界面、计划调�
 
 ## 插件内核
 
-业务包负责一项业务的来源、规范、归档映射、查询和界面定位；纯函数不用注册成可启停插件。新闻位于 `features/news`，股东研究位于 `features/holders`；各包 `bundle.py` 提供声明，`features/builtin.py` 是唯一业务白名单，未迁移业务暂由 `features/remaining.py` 持有声明。包本身不是新的运行时开关，下载、调度、入队和归档继续共用唯一公共实现。
+业务包负责一项业务的来源、规范、归档映射、查询和界面定位；纯函数不用注册成可启停插件。新闻位于 `features/news`，股东研究位于 `features/holders`；各包 `bundle.py` 提供声明，`features/builtin.py` 是唯一业务白名单，交易规则归入 `features/trading_rules` 后，最后的remaining声明及入口已退役。包本身不是新的运行时开关，下载、调度、入队和归档继续共用唯一公共实现。
 
 股东业务的纯契约、正式查询/审计和页面分别在包内 `contract.py`、`query.py`/`audit.py`、`ui.py`；一个采集任务仍服务三个独立浏览页。股东与资本运作共用 `sources/html.py` 的节点树和标签/嵌套表格处理，各自保有来源字段规则。代码归位不改变已保存的任务设置、插件偏好、页面入口和数据库身份，也不在启动时执行维护。
 
@@ -4127,7 +4127,7 @@ scripts/create_index_price_schema.py是显式新增入口，关闭Empire、待�
 
 ## 如何查看
 
-在“数据浏览”目录搜索涨跌幅、买入后何时能卖、最小买卖数量、最小价格变动、交易时段、印花税或过户费。七项有独立页面，市场筛选及每页最多200条；市场、板块和参数用中文显示，涨跌幅与税费率显示百分数及%单位，未知终止日显示“未明确”。选择参数查看原文和依据链接。“管理采集任务”直接打开对应项目。
+在“数据浏览”目录搜索涨跌幅、买入后何时能卖、最小买卖数量、最小价格变动、交易时段、印花税或过户费。业务归组后仍使用原七项入口与保存设置，独立采集、查询、页面插件的启停方式保持。七项有独立页面，市场筛选及每页最多200条；市场、板块和参数用中文显示，涨跌幅与税费率显示百分数及%单位，未知终止日显示“未明确”。选择参数查看原文和依据链接。“管理采集任务”直接打开对应项目。
 
 ## 数据范围与更新
 
@@ -4162,7 +4162,7 @@ scripts/create_index_price_schema.py是显式新增入口，关闭Empire、待�
 
 ## 用途与归属
 
-固定归属reviewed_rules，七项独立任务共用datasets/trading_rules.py正式归档及data/trading_rules.py有界查询；页面不写SQL。
+固定归属reviewed_rules，七项独立任务共用features/trading_rules/dataset.py正式归档及features/trading_rules/query.py有界查询；页面不写SQL。规则值、引用和状态保持同事务，结构及稳定身份不变。
 
 ## 结构与身份
 
@@ -4202,7 +4202,7 @@ scripts/create_index_price_schema.py是显式新增入口，关闭Empire、待�
 
 ## 用途与归属
 
-固定归属reviewed_rules，七项独立任务共用datasets/trading_rules.py正式归档及data/trading_rules.py有界查询；页面不写SQL。
+固定归属reviewed_rules，七项独立任务共用features/trading_rules/dataset.py正式归档及features/trading_rules/query.py有界查询；页面不写SQL。规则值、引用和状态保持同事务，结构及稳定身份不变。
 
 ## 结构与身份
 

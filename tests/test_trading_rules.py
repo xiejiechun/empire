@@ -13,11 +13,11 @@ from pypdf.generic import (
     NumberObject,
 )
 
-from empire.contracts.rule_review import EXPECTED
-from empire.contracts.trading_rules import KINDS, validate
-from empire.plugins.collectors.rule_bse import BJ_FILE, BJ_LIST, BJ_NOTICE, BJ_RESUMED
-from empire.plugins.collectors.rule_bse import directory as bj_directory
-from empire.plugins.collectors.rule_sources import (
+from empire.features.trading_rules.bse import BJ_FILE, BJ_LIST, BJ_NOTICE, BJ_RESUMED
+from empire.features.trading_rules.bse import directory as bj_directory
+from empire.features.trading_rules.contract import KINDS, validate
+from empire.features.trading_rules.review import EXPECTED
+from empire.features.trading_rules.sources import (
     FEE_ANNOUNCEMENT,
     SH_DEFERRED,
     SH_FILE,
@@ -181,7 +181,7 @@ def test_beijing_old_resumption_directory_is_not_current():
 
 
 def test_percentage_display_preserves_magnitude():
-    from empire.plugins.ui.trading_rules import display_value
+    from empire.features.trading_rules.ui import display_value
     for raw, expected in [('0.10', '10'), ('0.20', '20'), ('0.0005', '0.05'), ('0.00001', '0.001'), ('0', '0'), ('1', '100')]:
         assert display_value(dict(number_value=raw, unit='ratio'), 'number_value') == expected
 

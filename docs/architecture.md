@@ -69,7 +69,7 @@ flowchart TB
 
 共享 HTML 节点树位于 `sources/html.py`，由股东和资本运作来源解析器共同使用；它只处理节点/文本及标签、嵌套表格边界，不拥有业务字段、请求或生命周期。纯函数不注册插件，共享辅助变更须覆盖两侧消费者。目录迁移保持单任务、一次必要HTML三栏、三查询/页面、消息schema5、SQL证明contract4及数据归属；不触发DDL、清队、摘要重建或用户配置迁移。
 
-同一包可贡献分别启停的采集、查询和 UI 插件，插件/任务/数据集按各自稳定顺序槽合并，不能依赖白名单排列隐式改变启动顺序。任务 provider、项目/job、数据贡献和 preparation 逐项核对归属；无定时任务的北交所维护发布者通过唯一脚本精确声明，源码门禁核查其真实路径。尚未迁移业务仅在 `features/remaining.py` 维护一次声明，后续批次逐步退役它，不新增第二份业务注册表。
+同一包可贡献分别启停的采集、查询和 UI 插件，插件/任务/数据集按各自稳定顺序槽合并，不能依赖白名单排列隐式改变启动顺序。任务 provider、项目/job、数据贡献和 preparation 逐项核对归属；无定时任务的北交所维护发布者通过唯一脚本精确声明，源码门禁核查其真实路径。交易规则已归入[features/trading_rules](../src/empire/features/trading_rules/README.md)，最后的remaining声明及入口已退役；所有业务各自持有唯一贡献声明，不新增第二份业务注册表。
 
 内核只处理插件清单、依赖顺序、能力注册、状态和任务资源回收，不解释股票字段或网站规则。插件声明 `requires` / `provides`，由内部白名单注册；不存在动态扫描第三方目录。
 
@@ -323,7 +323,7 @@ collector.ths_index_prices / data.index_prices / ui.index_prices独立贡献；i
 
 公共卡片、日历、目录与时间轴组件独立；各页面声明业务字段、单位和缺值。全日图查询完整有限证券日，分笔按时间窗和原始seq查询，指数范围图上限40年/15000日，财报矩阵按选定证券完整历史；明细另行分页。图表不保存冗余业务副本，不触发采集或DDL。新增查询反例及交付边界见[实施记录](evidence/data-preview-redesign-2026-10-11.md)。
 
-七项交易规则与税费按独立collector/data/UI贡献登记，共享RuleSources的一分钟解析缓存和typed参数/引用表；必要正文在公共预取消费期间解码，成功原文不持久化。只有已审核参数及引用集合可原子入队，未知新规则拒绝；每项独立摘要与SQL状态，见[规则设计](trading-rules.md)。
+七项交易规则与税费位于features/trading_rules，按独立collector/data/UI贡献登记，共享RuleSources的一分钟解析缓存和typed参数/引用表；必要正文在公共预取消费期间解码，成功原文不持久化。只有已审核参数及引用集合可原子入队，未知新规则拒绝；每项独立摘要与SQL状态，见[规则设计](trading-rules.md)。
 
 东方财富股票回购：`eastmoney-repurchases`任务与`stock_repurchase_plan`正式表，数据目录按需打开方案列表及详情；固定2000ms、每日18:00全量核验。字段、生命周期、显式建表和容量证据见[股票回购](eastmoney-repurchases.md)。回购完成不推断注销。
 
