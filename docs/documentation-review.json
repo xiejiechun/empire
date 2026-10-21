@@ -1,7 +1,7 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-21T18:36:16.299392+00:00",
-  "note": "首批P0+P1最终审阅：准备具体产物及版本缓存、分红闭区间Decimal逐笔和非到账限制、完整单元/空集/歧义/时间/回源、复权单一资格规则与边界、保留失败与P2以后未实现；表和Redis写入契约不变。",
+  "reviewed_at": "2026-10-21T19:46:42.934865+00:00",
+  "note": "P0+P1结案审阅：实现和权威帮助保持e6374ea，补齐统一发布与同包真实桌面、四日期边界和证券切换、正常关开、配置偏好及48设置保留证据；原B1-B4和回购/600938阻断不变，P2以后未实施；本次仅整理动态状态和证据。",
   "unchanged_reason": "",
   "exceptions": {
     "mysql:additional_issue": "共享准备函数只增加返回同快照内已读取单元供分红使用，本表字段索引业务身份读写和原准备判定均未改变。",
@@ -565,7 +565,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "51eb977bf45ec600345bbf5564239e05f2a1f8fe0b73562270fc74a9a7a1d0c2",
+  "content_sha256": "3337326f2ed4e3ee774a8fc360794c1258e38b9024c58eb6f87282bb494bf1f9",
   "features": {
     "page:ths_capital": {
       "sources": {
