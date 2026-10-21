@@ -82,3 +82,22 @@ def test_preparation_feature_changes_are_exact_and_do_not_waive_identity_or_orde
     changed = copy.deepcopy(declared)
     changed['semantic']['tasks']['sina-news']['interval_seconds'] = 99
     assert compare(before,changed,{},ROOT,[change]) == ['semantic.tasks.sina-news.interval_seconds']
+
+
+def test_exact_new_computation_requires_existing_provider_and_all_bindings(declared):
+    ident = 'data.dividends:dividend_yield'
+    before = copy.deepcopy(declared)
+    declaration = before['semantic']['preparation'].pop(ident)
+    bindings = before['bindings']['tests'].pop(ident)
+    change = dict(path='semantic.preparation.'+ident, before=None, after={**declaration, **bindings},
+        design='docs/shareholder-return-analysis-plan.md',
+        tests=bindings['rule_tests']+bindings['integration_tests'])
+    assert not compare(before, declared, {}, ROOT, [change])
+    assert compare(before, declared, {}, ROOT) == ['semantic.preparation.'+ident, 'bindings.tests.'+ident]
+    for field, value in [('capability', 'unknown.query'), ('output_version', 'other'),
+                         ('integration_tests', [])]:
+        with pytest.raises(ValueError, match='Additive computation'):
+            compare(before,declared,{},ROOT,[{**change,'after':{**change['after'],field:value}}])
+    changed = copy.deepcopy(declared)
+    changed['semantic']['tasks']['sina-news']['interval_seconds'] = 99
+    assert compare(before,changed,{},ROOT,[change]) == ['semantic.tasks.sina-news.interval_seconds']

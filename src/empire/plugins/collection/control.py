@@ -159,7 +159,7 @@ class CollectionControl:
                 return "设置已保存到 MySQL 并生效；Redis 运行状态同步失败，重启后将按已保存配置重建计划"
         return "设置已保存到 MySQL；执行计划立即生效，重试和代理策略在下次运行生效"
 
-    async def run(self, ident, fresh=False, origin="manual"):
+    async def run(self, ident, fresh=False, origin="manual", request=None):
         async with self.lock:
             job = self.state["jobs"][ident]
             if job['policy'].get('archived'):
@@ -171,6 +171,16 @@ class CollectionControl:
             previous = copy.deepcopy(job)
             # An interrupted active record is reused, including its run identifier.
             active = job["active"]
+            if active and request is None:
+                request = active.get('request')
+            collector = self.context.optional(self.definitions[ident].capability)
+            if request is not None:
+                validate = getattr(collector, 'validate_request', None)
+                if not callable(validate):
+                    raise ValueError('该任务不支持显式运行范围')
+                request = validate(request)
+            if active and active.get('request') != request:
+                raise ValueError('待恢复任务的范围不同，不能覆盖原活动记录')
             if not active:
                 collector = self.context.optional(self.definitions[ident].capability)
                 if collector is None:
@@ -179,6 +189,8 @@ class CollectionControl:
                 active = {"run_id": uuid4().hex, "task_id": ident,
                     "started_at": time.time(), "origin": origin, "fresh": fresh,
                     "baseline_revision": baseline}
+                if request is not None:
+                    active['request'] = request
             if job["active"] and fresh:
                 raise ValueError("存在待恢复任务，请先停止后再重新采集")
             job.update(active=active, last_status="running", error="", notice="")
@@ -208,16 +220,18 @@ class CollectionControl:
                 await self._persist()
             return
         status, error, notice, result = "complete", "", "", {}
-        proxy_token = USE_PROXY.set(job["policy"]["use_proxy"])
-        fallback_token = PROXY_FALLBACK.set(job["policy"].get("proxy_fallback", True))
+        priority = active.get('request', {}).get('proxy_priority', False)
+        proxy_token = USE_PROXY.set(True if priority else job["policy"]["use_proxy"])
+        fallback_token = PROXY_FALLBACK.set(True if priority else job["policy"].get("proxy_fallback", True))
         network_counts = {}
         counts_token = ROUTE_COUNTS.set(network_counts)
         active["use_proxy"] = USE_PROXY.get()
         active["proxy_fallback"] = PROXY_FALLBACK.get()
         try:
             collector.request_retries = job["policy"]["request_retries"]
+            options = {'request': active['request']} if 'request' in active else {}
             result = await collector.execute(fresh=active["fresh"],
-                                             baseline_revision=active["baseline_revision"])
+                                             baseline_revision=active["baseline_revision"], **options)
         except asyncio.CancelledError:
             status = "paused"
         except CollectionSourceGap as exc:

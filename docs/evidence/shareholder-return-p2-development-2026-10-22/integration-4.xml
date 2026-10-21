@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.477" timestamp="2026-10-22T04:39:45.171822+08:00" hostname="xiejiechun"><testcase classname="tests.integration.test_dividend_yield_pipeline" name="test_denominator_suspension_exact_day_and_full_source_identity[6.09]" time="2.322"><failure message="sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (3819, &quot;Check constraint 'ck_suspension_resume_key_v2' is violated.&quot;)&#10;[SQL: UPDATE suspension_event SET resumed_at='2026-09-02 09:30']&#10;(Background on this error at: https://sqlalche.me/e/20/e3q8)">self = &lt;sqlalchemy.engine.base.Connection object at 0x000001248C9E3AA0&gt;
+dialect = &lt;sqlalchemy.dialects.mysql.pymysql.MySQLDialect_pymysql object at 0x000001248D00AFC0&gt;
+context = &lt;sqlalchemy.dialects.mysql.mysqldb.MySQLExecutionContext_mysqldb object at 0x000001248D2FAED0&gt;
+statement = &lt;sqlalchemy.dialects.mysql.mysqldb.MySQLCompiler_mysqldb object at 0x000001248D2FB230&gt;
+parameters = [{}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -&gt; CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+&gt;                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1969: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+.venv\Lib\site-packages\pymysql\cursors.py:170: in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pymysql\cursors.py:335: in _query
+    conn.query(q)
+.venv\Lib\site-packages\pymysql\connections.py:581: in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pymysql\connections.py:857: in _read_query_result
+    result.read()
+.venv\Lib\site-packages\pymysql\connections.py:1290: in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pymysql\connections.py:810: in _read_packet
+    packet.raise_for_error()
+.venv\Lib\site-packages\pymysql\protocol.py:219: in raise_for_error
+    err.raise_mysql_exception(self._data)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data = b"\xff\xeb\x0e#HY000Check constraint 'ck_suspension_resume_key_v2' is violated."
+
+    def raise_mysql_exception(data):
+        errno = struct.unpack("&lt;h", data[1:3])[0]
+        # https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_basic_err_packet.html
+        # Error packet has optional sqlstate that is 5 bytes and starts with '#'.
+        sqlstate = None
+        if data[3] == 0x23:  # '#'
+            sqlstate = data[4:9].decode()
+            errval = data[9:].decode("utf-8", "replace")
+        else:
+            errval = data[3:].decode("utf-8", "replace")
+        errorclass = error_map.get(errno)
+        if errorclass is None:
+            errorclass = InternalError if errno &lt; 1000 else OperationalError
+&gt;       raise errorclass(errno, errval, sqlstate=sqlstate)
+E       pymysql.err.OperationalError: (3819, "Check constraint 'ck_suspension_resume_key_v2' is violated.")
+
+.venv\Lib\site-packages\pymysql\err.py:154: OperationalError
+
+The above exception was the direct cause of the following exception:
+
+inputs = (&lt;empire.features.adjustment.query.AdjustmentDataPlugin object at 0x000001248D0D61E0&gt;, &lt;empire.plugins.infra.redis_sto...&gt;.rights at 0x000001248D2947C0&gt;, datetime.datetime(2026, 10, 21, 20, 9, 47, 921733, tzinfo=datetime.timezone.utc), ...)
+
+    async def test_denominator_suspension_exact_day_and_full_source_identity(inputs):
+        from empire.core.time import CHINA
+        from empire.features.suspensions.query import closing_price_evidence
+        from empire.plugins.infra.collection_state import read_state, save_state
+    
+        q, _, _, _, _, _, _ = inputs
+        await dividend_query(q)
+        day, now = date(2026, 9, 2), datetime.now(CHINA)
+        def check():
+            with q.mysql.read_engine.connect() as conn:
+                return closing_price_evidence(conn, q.namespace, '000001.SZ', day, now)
+        # An old null-resume record is retained, not extended to the denominator day.
+        with q.mysql.engine.begin() as conn:
+            conn.execute(text("INSERT INTO suspension_event "
+                "(unified_code,suspended_at,resume_key,record_key,name,resumed_at,source_dates_known,"
+                "suspension_type,source_note,reason,version_observed_at) VALUES "
+                "('000001.SZ','2005-01-04 09:30','1000-01-01',:key,'样本',NULL,1,"
+                "'full_day','停牌','历史未知',:now)"), dict(key='a'*64, now=now.replace(tzinfo=None)))
+            # Same record_key on another date/security is not evidence for our row.
+            conn.execute(text("INSERT INTO suspension_source_date VALUES "
+                "(:day,'600000.SH','2005-01-04 09:30','1000-01-01',:key)"), dict(day=day, key='a'*64))
+        assert check()['date'] == day.isoformat()
+        with q.mysql.engine.begin() as conn:
+            conn.execute(text("INSERT INTO suspension_source_date VALUES "
+                "(:day,'000001.SZ','2005-01-04 09:30','1000-01-01',:key)"), dict(day=day, key='a'*64))
+        with pytest.raises(ValueError, match='未裁定'):
+            check()
+        # An explicit resumption before this day's opening is not a current halt.
+        with q.mysql.engine.begin() as conn:
+&gt;           conn.execute(text("UPDATE suspension_event SET resumed_at='2026-09-02 09:30'"))
+
+tests\integration\test_dividend_yield_pipeline.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1421: in execute
+    return meth(
+.venv\Lib\site-packages\sqlalchemy\sql\elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1643: in _execute_clauseelement
+    ret = self._execute_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1848: in _execute_context
+    return self._exec_single_context(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1988: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:2365: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv\Lib\site-packages\sqlalchemy\engine\base.py:1969: in _exec_single_context
+    self.dialect.do_execute(
+.venv\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+.venv\Lib\site-packages\pymysql\cursors.py:170: in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pymysql\cursors.py:335: in _query
+    conn.query(q)
+.venv\Lib\site-packages\pymysql\connections.py:581: in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pymysql\connections.py:857: in _read_query_result
+    result.read()
+.venv\Lib\site-packages\pymysql\connections.py:1290: in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv\Lib\site-packages\pymysql\connections.py:810: in _read_packet
+    packet.raise_for_error()
+.venv\Lib\site-packages\pymysql\protocol.py:219: in raise_for_error
+    err.raise_mysql_exception(self._data)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data = b"\xff\xeb\x0e#HY000Check constraint 'ck_suspension_resume_key_v2' is violated."
+
+    def raise_mysql_exception(data):
+        errno = struct.unpack("&lt;h", data[1:3])[0]
+        # https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_basic_err_packet.html
+        # Error packet has optional sqlstate that is 5 bytes and starts with '#'.
+        sqlstate = None
+        if data[3] == 0x23:  # '#'
+            sqlstate = data[4:9].decode()
+            errval = data[9:].decode("utf-8", "replace")
+        else:
+            errval = data[3:].decode("utf-8", "replace")
+        errorclass = error_map.get(errno)
+        if errorclass is None:
+            errorclass = InternalError if errno &lt; 1000 else OperationalError
+&gt;       raise errorclass(errno, errval, sqlstate=sqlstate)
+E       sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (3819, "Check constraint 'ck_suspension_resume_key_v2' is violated.")
+E       [SQL: UPDATE suspension_event SET resumed_at='2026-09-02 09:30']
+E       (Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+.venv\Lib\site-packages\pymysql\err.py:154: OperationalError</failure></testcase></testsuite></testsuites>

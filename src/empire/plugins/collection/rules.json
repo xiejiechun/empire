@@ -2271,7 +2271,7 @@
       "source_file": "src/empire/features/kaipanla/collector.py",
       "source": "kaipanla",
       "fingerprint_source": "kaipanla",
-      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
+      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。 可显式限定本轮1～50个市场证券和最多3660日闭区间；不改日常策略，范围绑定原任务断点，待归档先恢复原范围。"
     },
     "ths-income": {
       "requests": [

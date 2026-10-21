@@ -27,7 +27,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.skipif(os.environ.get('EMPIRE
 
 
 @pytest.fixture
-async def inputs():
+async def inputs(request):
     cfg = copy.deepcopy(load_config())
     cfg['redis']['namespace'] = 'empire:test:' + uuid4().hex
     manager = build_manager(cfg)
@@ -51,9 +51,10 @@ async def inputs():
             rows = [dict(trade_date=d.isoformat(), is_trade=d.weekday() < 5) for d in month_dates(month)]
             await publish('calendar.month', 'cninfo', 'cninfo-calendar-v1', month, dict(page=1, month=month, rows=rows))
 
-        async def quote(day, value, stamp=now, clock=153807000, opening=None):
+        async def quote(day, value, stamp=now, clock=153807000, opening=None, shares=1000):
             body = quote_source('quote', day.replace('-', ''))
             body['real'].update(time=clock, last_px=value, open_px=value, high_px=value, low_px=value)
+            body['real']['total_shares'] = shares
             if opening is not None:
                 body['real']['open_px'] = opening
             row = {**parse_quote(body, '000001', date.fromisoformat(day), 'quote'), 'market': 'SZ', 'lifecycle': lifecycle(STOCK)}
@@ -86,7 +87,7 @@ async def inputs():
 
         await quote('2026-09-01', 10)
         await quote('2026-09-02', 9)
-        await dividend()
+        await dividend(getattr(request, 'param', 10))
         await rights()
         yield q, store, quote, dividend, rights, now, archive
     finally:

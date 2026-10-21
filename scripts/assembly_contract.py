@@ -133,6 +133,32 @@ def compare(baseline, current, migration, root: Path, features=None):
                 raise ValueError('Feature change requires exact before/after and independent design/tests')
             path = change['path']
             parts = path.split('.')
+            if len(parts) == 4 and parts[:2] == ['semantic', 'preparation']:
+                identity = '.'.join(parts[2:])
+                from empire.contracts.preparation import ComputationContribution
+                after = change['after']
+                fields = {f.name for f in dataclasses.fields(ComputationContribution)}
+                if (path in seen or change['before'] is not None or not isinstance(after, dict)
+                        or set(after) != fields or identity in baseline['semantic']['preparation']):
+                    raise ValueError('Only exact additive computation declarations are supported')
+                seen.add(path)
+                declaration = {k: v for k, v in after.items() if k not in ('rule_tests', 'integration_tests')}
+                tests = {k: after[k] for k in ('rule_tests', 'integration_tests')}
+                plugin_id = identity.rsplit(':', 1)[0]
+                provider = baseline['semantic']['plugins'].get(plugin_id, {})
+                if (current['semantic']['preparation'].get(identity) != declaration
+                        or current['bindings']['tests'].get(identity) != tests
+                        or after['capability'] not in provider.get('provides', [])
+                        or identity.rsplit(':', 1)[1] != after['requirement']
+                        or not after['output_version'] or not all(tests.values())
+                        or change['tests'] != tests['rule_tests'] + tests['integration_tests']):
+                    raise ValueError('Additive computation differs from exact provider, declaration or tests')
+                if any(not isinstance(p, str) or not (root / p).resolve().is_relative_to(root.resolve())
+                       or not (root / p).is_file() for p in [change['design'], *change['tests']]):
+                    raise ValueError('Feature change design and tests must exist inside the repository')
+                failures.remove(path)
+                expected['tests'][identity] = tests
+                continue
             if (len(parts) != 5 or parts[:2] != ['semantic', 'preparation']
                     or parts[-1] not in ('scoped', 'cache_revision') or path in seen):
                 raise ValueError('Only explicit preparation scope/cache feature changes are supported')
@@ -192,7 +218,7 @@ def order_snapshot(root: Path):
     return result
 
 
-def compare_order(baseline, current):
+def compare_order(baseline, current, features=None):
     for value in (baseline, current):
         if (value.get('schema') != 1
                 or set(value) - {'schema', 'origin_commit', *ORDER_FIELDS}
@@ -200,7 +226,14 @@ def compare_order(baseline, current):
                        or any(not isinstance(item, str) for item in value[key])
                        or len(value[key]) != len(set(value[key])) for key in ORDER_FIELDS)):
             raise ValueError('Invalid ordered assembly snapshot')
-    return ['order.' + key for key in ORDER_FIELDS if baseline[key] != current[key]]
+    added = {change['path'].removeprefix('semantic.preparation.') for change in features or []
+             if change.get('before') is None and change.get('path', '').startswith('semantic.preparation.')
+             and isinstance(change.get('after'), dict) and change['after'].get('output_version')}
+    # An exact new calculation may be inserted; every old identity stays in order.
+    return ['order.' + key for key in ORDER_FIELDS if baseline[key] !=
+            ([value for value in current[key] if value not in added]
+             if key == 'preparation' and added <= set(current[key]) and not added.intersection(baseline[key])
+             else current[key])]
 
 
 def validate_maintenance_entrypoints(root: Path, bundles):
@@ -259,7 +292,7 @@ def main(argv=None):
     failures += source_declaration_failures(root)
     if args.order_baseline:
         ordered = json.loads(args.order_baseline.read_text(encoding='utf-8'))
-        failures += compare_order(ordered, order_snapshot(root))
+        failures += compare_order(ordered, order_snapshot(root), features)
     if failures:
         print('FAIL assembly contract: ' + ', '.join(failures[:30]))
         return 1

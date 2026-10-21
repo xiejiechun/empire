@@ -16,5 +16,11 @@ def distribution_text(result):
         for row in security['rows']:
             lines.append(f"除息日 {row['ex_date']} · 报告期 {row['report_date']} · {row['status']} · "
                          f"{row['cash_per_share']} 元/股；业务键 {row['record_key']}")
+        if 'denominator' in security:
+            denominator = security['denominator']
+            lines.extend([f"实际分母日 {denominator['date']}；{denominator['price']} 元/股（未复权）；来源 {denominator['source']} / {denominator['security']}",
+                f"价格实际证据 {denominator['observed_at']}；来源盘后时刻 {denominator['source_clock']}",
+                f"Y = {security['cash_per_share']} / {denominator['price']} × 100% = {security['yield_percent']}%",
+                f"股数基准核对 {denominator['basis_days']} 个交易日；总股本 {denominator['basis_shares']} 股；日历证据 {'、'.join(security['calendar']['observed_at'])}"])
     lines.extend('限制：' + limitation for limitation in result['limitations'])
     return '\n'.join(lines)

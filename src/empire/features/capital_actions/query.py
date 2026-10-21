@@ -9,7 +9,11 @@ from sqlalchemy import text
 
 from empire.contracts.business_schema import require_fixed_source, schema_contract
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.preparation import CheckEvidence, PreparationContribution
+from empire.contracts.preparation import (
+    CheckEvidence,
+    ComputationContribution,
+    PreparationContribution,
+)
 from empire.contracts.preparation_scope import PreparationScope
 from empire.features.capital_actions.codec import decode
 from empire.features.capital_actions.contract import (
@@ -27,6 +31,7 @@ from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
 class CapitalDataPlugin:
+    output_version = 'interval-nominal-dividend-yield-v1'
     def __init__(self, kind, namespace='empire', source='tdx', archive_settings=None):
         self.kind, self.namespace, self.source = kind, namespace, source
         title, self.table, self.project_id = KINDS[kind]
@@ -40,6 +45,12 @@ class CapitalDataPlugin:
             (('tests/test_tdx_issue_details.py',) if kind == 'additional_issues' else ()),
             ('tests/integration/test_capital_archive.py', 'tests/integration/test_prefetch_pipeline.py'),
             scoped=True, cache_revision=2),)
+        if kind == 'dividends':
+            self.preparation += (ComputationContribution('dividend_yield', 'dividends.query',
+                '通达信分红 / 巨潮日历 / 开盘啦未复权收盘价', 'empire-dividend-yield',
+                ('tests/test_dividend_yield.py',), ('tests/integration/test_dividend_yield_pipeline.py',),
+                self.output_version, page_id='dividends', execute_method='dividend_yield',
+                method='yield_preparation_check', cache_revision=1),)
 
     async def start(self, context):
         self.context = context
@@ -272,6 +283,16 @@ class CapitalDataPlugin:
 
     async def stop(self):
         self.mysql = None
+
+    async def dividend_yield(self, request):
+        from empire.features.capital_actions.dividend_yield import calculate_yield
+        if self.kind != 'dividends':
+            raise ValueError('仅分红支持区间名义现金股息率')
+        return await calculate_yield(self, request)
+
+    async def yield_preparation_check(self, request=None):
+        from empire.features.capital_actions.dividend_yield import preparation_check
+        return await preparation_check(self, request)
 
     def health(self):
         return {'status': 'ok' if self.mysql else 'stopped'}

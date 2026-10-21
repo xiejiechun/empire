@@ -102,7 +102,7 @@ def compare_payload(envelope, sources, listings, kind):
     return key, copy.deepcopy(row)
 
 
-async def verify_kind(manager, kind, selected, days, events, proxy_only, result):
+async def verify_kind(manager, kind, selected, days, events, proxy_only, result, bounded_request=False):
     await manager.start('collector.kaipanla_' + kind)
     collector = manager.registry.get('collector.kaipanla_' + kind)
     query = collector.query
@@ -155,8 +155,11 @@ async def verify_kind(manager, kind, selected, days, events, proxy_only, result)
     collector.ingest.publish_page = observe_publish(publish, check, published)
     try:
         try:
+            options = {'request':dict(securities=sorted(wanted), start=days[0].isoformat(),
+                end=days[-1].isoformat(), proxy_priority=False)} if bounded_request else {}
+            result['execution_request'] = options.get('request')
             result['outcome'] = await routed(lambda: collector.execute(fresh=True,
-                baseline_revision=state['revision']), counts, proxy_only)
+                baseline_revision=state['revision'], **options), counts, proxy_only)
         except Exception as exc:
             result['execution_error'] = dict(type=type(exc).__name__, message=collector.records.sanitize_text(exc))
     finally:
@@ -223,12 +226,13 @@ async def verify_scope(manager, selection, args, report, events):
     selected = selection['selected']
     require(report['reference_snapshot']['server_uuid'] != report['storage']['server_uuid'],
             '来源参考与私有库实例相同')
-    report['applicability'] = 'E4纯组织迁移；额外执行随机30和原五个固定反例，严格来源失败独立保留'
+    report['applicability'] = '明确产品及有限日期；随机30和原五固定反例，旧历史失败独立保留'
     for kind in args.kinds:
         for name, stocks, scope_days in [('random_and_fixed', selected, days),
                 ('historical_fixed', [s for s in selected if s['unified_code'] in FIXED_CODES], fixed_days)]:
             result = report['results'][kind + '/' + name] = {}
-            await verify_kind(manager, kind, stocks, scope_days, events, args.proxy_only, result)
+            await verify_kind(manager, kind, stocks, scope_days, events, args.proxy_only, result,
+                              getattr(args, 'bounded_request', False))
             if name == 'random_and_fixed':
                 result['random_coverage'] = random_coverage(result, selection['random'])
                 result['random_samples_complete'] = result['random_coverage']['complete']

@@ -19,7 +19,7 @@ CRITERIA = ('fields', 'keys', 'coverage', 'quality', 'freshness', 'temporal')
 def temporal(scope, observed_at=''):
     return CheckEvidence('temporal', 'pass' if scope.purpose == 'analysis' else 'fail',
         '当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；'
-        '仅用于事后分析，不用于历史信号；股息率/现金收益计算尚未实现。',
+        '仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。',
         blocking=scope.purpose != 'analysis', reason='source_limit', observed_at=observed_at)
 
 
@@ -49,30 +49,36 @@ def inspect_unit(kind, unit, stored, state, scope, now):
 
 
 def scoped_check(plugin, scope):
-    now, findings, failed, stamps, verified, units = datetime.now(UTC), [], [], [], {}, {}
     with plugin.mysql.read_engine.connect().execution_options(isolation_level='REPEATABLE READ') as conn:
         conn.exec_driver_sql('START TRANSACTION READ ONLY')
-        state = read_state(conn, plugin.namespace, plugin.project_id, plugin.source)
-        sql = text('SELECT unified_code FROM stock WHERE LEFT(unified_code,6) IN :codes UNION '
-            f'SELECT DISTINCT unified_code FROM {plugin.table} WHERE LEFT(unified_code,6) IN :codes '
-            'ORDER BY unified_code LIMIT 301').bindparams(bindparam('codes', expanding=True))
-        securities = list(conn.execute(sql, dict(codes=list(scope.codes))).scalars())
-        if len(securities) != len(scope.codes) or {s[:6] for s in securities} != set(scope.codes):
-            return tuple(CheckEvidence(k, 'fail', '证券不存在或跨市场身份不唯一，不能把缺证券当空集合') for k in CRITERIA), {}, {}
-        for security in securities:
-            stored = conn.execute(text(f'SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code '
-                f'FROM {plugin.table} WHERE unified_code=:security ORDER BY record_key LIMIT 2001'),
-                dict(security=security)).mappings().all()
-            try:
-                _, stamp, finding = inspect_unit(plugin.kind, security[-2:] + ':' + security[:6], stored, state, scope, now)
-                findings.append(finding)
-                stamps.append(stamp)
-                verified[security[-2:] + ':' + security[:6]] = (
-                    digest({'rows': ordered([decode(r) for r in stored]), 'manifest': None}), stamp)
-                units[security] = ordered([decode(r) for r in stored])
-            except (ValueError, TypeError, KeyError) as exc:
-                failed.append(dict(code=security, message=str(exc)))
+        result = snapshot_units(plugin, scope, conn)
         conn.rollback()
+        return result
+
+
+def snapshot_units(plugin, scope, conn):
+    """Reuse full-unit proof within a caller-owned immutable SQL snapshot."""
+    now, findings, failed, stamps, verified, units = datetime.now(UTC), [], [], [], {}, {}
+    state = read_state(conn, plugin.namespace, plugin.project_id, plugin.source)
+    sql = text('SELECT unified_code FROM stock WHERE LEFT(unified_code,6) IN :codes UNION '
+        f'SELECT DISTINCT unified_code FROM {plugin.table} WHERE LEFT(unified_code,6) IN :codes '
+        'ORDER BY unified_code LIMIT 301').bindparams(bindparam('codes', expanding=True))
+    securities = list(conn.execute(sql, dict(codes=list(scope.codes))).scalars())
+    if len(securities) != len(scope.codes) or {s[:6] for s in securities} != set(scope.codes):
+        return tuple(CheckEvidence(k, 'fail', '证券不存在或跨市场身份不唯一，不能把缺证券当空集合') for k in CRITERIA), {}, {}
+    for security in securities:
+        stored = conn.execute(text(f'SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code '
+            f'FROM {plugin.table} WHERE unified_code=:security ORDER BY record_key LIMIT 2001'),
+            dict(security=security)).mappings().all()
+        try:
+            _, stamp, finding = inspect_unit(plugin.kind, security[-2:] + ':' + security[:6], stored, state, scope, now)
+            findings.append(finding)
+            stamps.append(stamp)
+            verified[security[-2:] + ':' + security[:6]] = (
+                digest({'rows': ordered([decode(r) for r in stored]), 'manifest': None}), stamp)
+            units[security] = ordered([decode(r) for r in stored])
+        except (ValueError, TypeError, KeyError) as exc:
+            failed.append(dict(code=security, message=str(exc)))
     observed = min(stamps).isoformat() if stamps else ''
     message = f'{scope.label()}；已证实 {len(findings)} 个完整证券单元，未证实 {len(failed)} 个；'
     message += '证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。'

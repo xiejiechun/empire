@@ -17,6 +17,7 @@
 | 正式有界查询、完整集合证明、详情复用候选 | `query.py`、`issue_candidates.py` |
 | 唯一事件资格/歧义、公开错误与数值日期规则（复权共同使用） | `event_rules.py` |
 | 只读名义派息、结果文字和分红页操作 | `distribution.py`、`distribution_text.py`、`ui_distribution.py` |
+| 区间名义现金股息率及一致SQL快照输入 | `dividend_yield.py`、`yield_inputs.py`；复用上述分红证明与事件规则 |
 | 页面、方案预览与字段文字 | `ui.py`、`preview.py`、`words.py` |
 
 公开 `contract` / `fields` / `codec` 提供原有纯规范；跨业务读取方不借用采集执行或查询插件实现。`contract.validate_rows` 仍用现有源字段重建及详情校验，详情只依赖字段叶子模块，避免循环导入。所有来源URL、列名、过滤、数量口径、解析异常、资金单位与规范摘要算法保持原定义，不增加反射插件发现、兼容转发或第二归档路径。
@@ -32,3 +33,5 @@
 离线帮助的权威正文位于本包 [docs/help/dividends.md](docs/help/dividends.md) 及同目录其他完整主题；[来源清单](../../documentation/help-index.json) 统一声明阅读顺序。修改片段后在发布冻结前显式执行 scripts/documentation_build.py generate，再完成文档审阅与相关验证。原有来源指南继续解释业务契约；生成聚合物不手工维护。
 
 本次用途范围专项：preparation.py只读核验现行SQL单元的精确业务键、内容和证明后投影日期；query.py接收既定PreparationScope。原全范围审计仍保留，完整历史失败不被局部范围覆盖。
+
+P2在既有dividends.query登记dividend_yield；完整分红、日历、未复权quote及分母日停复牌由调用方同一RR READ ONLY事务核验。共享收盘时刻规则在kaipanla.closing，停复牌连接内公开检查为suspensions.query.closing_price_evidence。逐交易日股数基准变化、送转或必需输入缺失即阻断；名义派息产物仍可独立使用。没有新业务表、写库或第二计算规则。P3/P4仍未实现，验收见[本批账本](../../../../docs/evidence/shareholder-return-p2-2026-10-22.md)。

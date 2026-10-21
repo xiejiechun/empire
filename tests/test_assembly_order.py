@@ -23,7 +23,8 @@ def test_order_snapshot_is_declaration_only_and_matches_pre_migration_baseline(m
     current = order_snapshot(ROOT)
     baseline = json.loads((ROOT / 'docs/evidence/assembly-order-baseline-2026-10-19.json').read_text('utf8'))
     assert current == order_snapshot(ROOT)
-    assert not compare_order(baseline, current)
+    features = json.loads((ROOT / 'docs/assembly-feature-changes.json').read_text('utf8'))
+    assert not compare_order(baseline, current, features)
 
 
 @pytest.mark.parametrize('key', ORDER_FIELDS)
@@ -50,3 +51,16 @@ def test_order_baseline_cannot_disable_comparison(damage):
         after['schema'] = 2
     with pytest.raises(ValueError, match='Invalid ordered'):
         compare_order(before, after)
+
+
+def test_additive_computation_cannot_waive_old_order_or_unrelated_additions():
+    before = {**{name: ['a', 'b'] for name in ORDER_FIELDS}, 'schema': 1}
+    after = copy.deepcopy(before)
+    after['preparation'].insert(1, 'data.dividends:dividend_yield')
+    feature = [dict(path='semantic.preparation.data.dividends:dividend_yield',
+                    before=None, after=dict(output_version='v1'))]
+    assert not compare_order(before, after, feature)
+    after['preparation'] = ['b', 'data.dividends:dividend_yield', 'a']
+    assert compare_order(before, after, feature) == ['order.preparation']
+    after['preparation'].append('unknown')
+    assert compare_order(before, after, feature) == ['order.preparation']

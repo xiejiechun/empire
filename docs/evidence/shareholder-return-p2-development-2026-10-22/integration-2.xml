@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="5.556" timestamp="2026-10-22T04:28:21.670195+08:00" hostname="xiejiechun"><testcase classname="tests.integration.test_dividend_yield_pipeline" name="test_readonly_yield_cache_revision_and_sql_only_evidence[6.09]" time="2.296" /><testcase classname="tests.integration.test_dividend_yield_pipeline" name="test_yield_failure_does_not_invalidate_nominal_distribution[missing-6.09]" time="2.197"><failure message="AssertionError: assert ('已计算' in ('数据阻断', '来源受限'))">inputs = (&lt;empire.features.adjustment.query.AdjustmentDataPlugin object at 0x000002CF59A8E210&gt;, &lt;empire.plugins.infra.redis_sto....rights at 0x000002CF59AAC680&gt;, datetime.datetime(2026, 10, 21, 19, 58, 26, 691708, tzinfo=datetime.timezone.utc), ...)
+case = 'missing'
+
+    @pytest.mark.parametrize("case", ["missing", "intraday", "basis", "bonus", "historical"])
+    async def test_yield_failure_does_not_invalidate_nominal_distribution(inputs, case):
+        q, store, quote, dividend, _, now, _ = inputs
+        query = await dividend_query(q)
+        await dividend(6.09)
+        if case != "missing":
+            await quote(
+                "2026-09-01", 12, now + timedelta(minutes=2), shares=900 if case == "basis" else 1000
+            )
+            await quote(
+                "2026-09-02",
+                12,
+                now + timedelta(minutes=2),
+                clock=140000000 if case == "intraday" else 153833000,
+            )
+        request = {**SCOPE, "purpose": "historical_signal"} if case == "historical" else SCOPE
+        if case == "bonus":
+            # Existing source fixture doesn't expose bonus mutation: require unknown
+            # shares directly through the formal quote contract instead.
+            await quote("2026-09-02", 12, now + timedelta(minutes=3), shares=None)
+        blocked = await query.dividend_yield(request)
+&gt;       assert blocked["state"] in ("数据阻断", "来源受限") and blocked["securities"] == []
+E       AssertionError: assert ('已计算' in ('数据阻断', '来源受限'))
+
+tests\integration\test_dividend_yield_pipeline.py:90: AssertionError</failure></testcase></testsuite></testsuites>

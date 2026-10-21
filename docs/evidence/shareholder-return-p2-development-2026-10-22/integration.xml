@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="17" time="43.816" timestamp="2026-10-22T04:27:18.673012+08:00" hostname="xiejiechun"><testcase classname="tests.integration.test_dividend_yield_pipeline" name="test_readonly_yield_cache_revision_and_sql_only_evidence" time="3.329"><failure message="AssertionError: 数据分析 / 财务估值；000001；日期 / 报告期 2026-09-01 ～ 2026-09-02；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。；各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间&#10;assert '数据阻断' == '已计算'&#10;  &#10;  - 已计算&#10;  + 数据阻断">inputs = (&lt;empire.features.adjustment.query.AdjustmentDataPlugin object at 0x000001B71870AB40&gt;, &lt;empire.plugins.infra.redis_sto....rights at 0x000001B718905EE0&gt;, datetime.datetime(2026, 10, 21, 19, 57, 22, 609952, tzinfo=datetime.timezone.utc), ...)
+
+    async def test_readonly_yield_cache_revision_and_sql_only_evidence(inputs):
+        q, store, quote, dividend, _, now, _ = inputs
+        query = await dividend_query(q)
+        await dividend(6.09)
+        await quote("2026-09-01", 12)
+        await quote("2026-09-02", 12)
+        statements = []
+    
+        def capture(conn, cursor, statement, params, context, many):
+            statements.append(statement)
+    
+        event.listen(q.mysql.read_engine, "before_cursor_execute", capture)
+        try:
+            result = await query.dividend_yield(SCOPE)
+&gt;           assert result["state"] == "已计算", result.get("problem")
+E           AssertionError: 数据分析 / 财务估值；000001；日期 / 报告期 2026-09-01 ～ 2026-09-02；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。；各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间
+E           assert '数据阻断' == '已计算'
+E             
+E             - 已计算
+E             + 数据阻断
+
+tests\integration\test_dividend_yield_pipeline.py:51: AssertionError</failure></testcase><testcase classname="tests.integration.test_dividend_yield_pipeline" name="test_yield_failure_does_not_invalidate_nominal_distribution[missing]" time="2.121"><failure message="AssertionError: assert ('数据阻断' == '已计算'&#10;  &#10;  - 已计算&#10;  + 数据阻断)">inputs = (&lt;empire.features.adjustment.query.AdjustmentDataPlugin object at 0x000001B7186E0080&gt;, &lt;empire.plugins.infra.redis_sto....rights at 0x000001B718A34C20&gt;, datetime.datetime(2026, 10, 21, 19, 57, 24, 823402, tzinfo=datetime.timezone.utc), ...)
+case = 'missing'
+
+    @pytest.mark.parametrize("case", ["missing", "intraday", "basis", "bonus", "historical"])
+    async def test_yield_failure_does_not_invalidate_nominal_distribution(inputs, case):
+        q, store, quote, dividend, _, now, _ = inputs
+        query = await dividend_query(q)
+        await dividend(6.09)
+        if case != "missing":
+            await quote(
+                "2026-09-01", 12, now + timedelta(minutes=2), shares=900 if case == "basis" else 1000
+            )
+            await quote(
+                "2026-09-02",
+                12,
+                now + timedelta(minutes=2),
+                clock=140000000 if case == "intraday" else 153833000,
+            )
+        request = {**SCOPE, "purpose": "historical_signal"} if case == "historical" else SCOPE
+        if case == "bonus":
+            # Existing source fixture doesn't expose bonus mutation: require unknown
+            # shares directly through the formal quote contract instead.
+            await quote("2026-09-02", 12, now + timedelta(minutes=3), shares=None)
+        blocked = await query.dividend_yield(request)
+        assert blocked["state"] in ("数据阻断", "来源受限") and blocked["securities"] == []
+        nominal = await query.distribution_summary(SCOPE)
+&gt;       assert nominal["state"] == "已计算" and Decimal(
+            nominal["securities"][0]["cash_per_share"]
+        ) == Decimal("0.609")
+E       AssertionError: assert ('数据阻断' == '已计算'
+E         
+E         - 已计算
+E         + 数据阻断)
+
+tests\integration\test_dividend_yield_pipeline.py:91: AssertionError</failure></testcase><testcase classname="tests.integration.test_dividend_yield_pipeline" name="test_yield_failure_does_not_invalidate_nominal_distribution[intraday]" time="2.035"><failure message="AssertionError: assert ('数据阻断' == '已计算'&#10;  &#10;  - 已计算&#10;  + 数据阻断)">inputs = (&lt;empire.features.adjustment.query.AdjustmentDataPlugin object at 0x000001B718AC37A0&gt;, &lt;empire.plugins.infra.redis_sto....rights at 0x000001B718A35580&gt;, datetime.datetime(2026, 10, 21, 19, 57, 26, 868472, tzinfo=datetime.timezone.utc), ...)
+case = 'intraday'
+
+    @pytest.mark.parametrize("case", ["missing", "intraday", "basis", "bonus", "historical"])
+    async def test_yield_failure_does_not_invalidate_nominal_distribution(inputs, case):
+        q, store, quote, dividend, _, now, _ = inputs
+        query = await dividend_query(q)
+        await dividend(6.09)
+        if case != "missing":
+            await quote(
+                "2026-09-01", 12, now + timedelta(minutes=2), shares=900 if case == "basis" else 1000
+            )
+            await quote(
+                "2026-09-02",
+                12,
+                now + timedelta(minutes=2),
+                clock=140000000 if case == "intraday" else 153833000,
+            )
+        request = {**SCOPE, "purpose": "historical_signal"} if case == "historical" else SCOPE
+        if case == "bonus":
+            # Existing source fixture doesn't expose bonus mutation: require unknown
+            # shares directly through the formal quote contract instead.
+            await quote("2026-09-02", 12, now + timedelta(minutes=3), shares=None)
+        blocked = await query.dividend_yield(request)
+        assert blocked["state"] in ("数据阻断", "来源受限") and blocked["securities"] == []
+        nominal = await query.distribution_summary(SCOPE)
+&gt;       assert nominal["state"] == "已计算" and Decimal(
+            nominal["securities"][0]["cash_per_share"]
+        ) == Decimal("0.609")
+E       AssertionError: assert ('数据阻断' == '已计算'
+E         
+E         - 已计算
+E         + 数据阻断)
+
+tests\integration\test_dividend_yield_pipeline.py:91: AssertionError</failure></testcase><testcase classname="tests.integration.test_dividend_yield_pipeline" name="test_yield_failure_does_not_invalidate_nominal_distribution[basis]" time="2.079"><failure message="AssertionError: assert ('数据阻断' == '已计算'&#10;  &#10;  - 已计算&#10;  + 数据阻断)">inputs = (&lt;empire.features.adjustment.query.AdjustmentDataPlugin object at 0x000001B718AC3140&gt;, &lt;empire.plugins.infra.redis_sto....rights at 0x000001B718A0D800&gt;, datetime.datetime(2026, 10, 21, 19, 57, 28, 981597, tzinfo=datetime.timezone.utc), ...)
+case = 'basis'
+
+    @pytest.mark.parametrize("case", ["missing", "intraday", "basis", "bonus", "historical"])
+    async def test_yield_failure_does_not_invalidate_nominal_distribution(inputs, case):
+        q, store, quote, dividend, _, now, _ = inputs
+        query = await dividend_query(q)
+        await dividend(6.09)
+        if case != "missing":
+            await quote(
+                "2026-09-01", 12, now + timedelta(minutes=2), shares=900 if case == "basis" else 1000
+            )
+            await quote(
+                "2026-09-02",
+                12,
+                now + timedelta(minutes=2),
+                clock=140000000 if case == "intraday" else 153833000,
+            )
+        request = {**SCOPE, "purpose": "historical_signal"} if case == "historical" else SCOPE
+        if case == "bonus":
+            # Existing source fixture doesn't expose bonus mutation: require unknown
+            # shares directly through the formal quote contract instead.
+            await quote("2026-09-02", 12, now + timedelta(minutes=3), shares=None)
+        blocked = await query.dividend_yield(request)
+        assert blocked["state"] in ("数据阻断", "来源受限") and blocked["securities"] == []
+        nominal = await query.distribution_summary(SCOPE)
+&gt;       assert nominal["state"] == "已计算" and Decimal(
+            nominal["securities"][0]["cash_per_share"]
+        ) == Decimal("0.609")
+E       AssertionError: assert ('数据阻断' == '已计算'
+E         
+E         - 已计算
+E         + 数据阻断)
+
+tests\integration\test_dividend_yield_pipeline.py:91: AssertionError</failure></testcase><testcase classname="tests.integration.test_dividend_yield_pipeline" name="test_yield_failure_does_not_invalidate_nominal_distribution[bonus]" time="2.176"><failure message="AssertionError: assert ('数据阻断' == '已计算'&#10;  &#10;  - 已计算&#10;  + 数据阻断)">inputs = (&lt;empire.features.adjustment.query.AdjustmentDataPlugin object at 0x000001B718AC03E0&gt;, &lt;empire.plugins.infra.redis_sto....rights at 0x000001B718B07880&gt;, datetime.datetime(2026, 10, 21, 19, 57, 31, 135186, tzinfo=datetime.timezone.utc), ...)
+case = 'bonus'
+
+    @pytest.mark.parametrize("case", ["missing", "intraday", "basis", "bonus", "historical"])
+    async def test_yield_failure_does_not_invalidate_nominal_distribution(inputs, case):
+        q, store, quote, dividend, _, now, _ = inputs
+        query = await dividend_query(q)
+        await dividend(6.09)
+        if case != "missing":
+            await quote(
+                "2026-09-01", 12, now + timedelta(minutes=2), shares=900 if case == "basis" else 1000
+            )
+            await quote(
+                "2026-09-02",
+                12,
+                now + timedelta(minutes=2),
+                clock=140000000 if case == "intraday" else 153833000,
+            )
+        request = {**SCOPE, "purpose": "historical_signal"} if case == "historical" else SCOPE
+        if case == "bonus":
+            # Existing source fixture doesn't expose bonus mutation: require unknown
+            # shares directly through the formal quote contract instead.
+            await quote("2026-09-02", 12, now + timedelta(minutes=3), shares=None)
+        blocked = await query.dividend_yield(request)
+        assert blocked["state"] in ("数据阻断", "来源受限") and blocked["securities"] == []
+        nominal = await query.distribution_summary(SCOPE)
+&gt;       assert nominal["state"] == "已计算" and Decimal(
+            nominal["securities"][0]["cash_per_share"]
+        ) == Decimal("0.609")
+E       AssertionError: assert ('数据阻断' == '已计算'
+E         
+E         - 已计算
+E         + 数据阻断)
+
+tests\integration\test_dividend_yield_pipeline.py:91: AssertionError</failure></testcase><testcase classname="tests.integration.test_dividend_yield_pipeline" name="test_yield_failure_does_not_invalidate_nominal_distribution[historical]" time="2.085"><failure message="AssertionError: assert ('数据阻断' == '已计算'&#10;  &#10;  - 已计算&#10;  + 数据阻断)">inputs = (&lt;empire.features.adjustment.query.AdjustmentDataPlugin object at 0x000001B718B4A090&gt;, &lt;empire.plugins.infra.redis_sto....rights at 0x000001B718B6EB60&gt;, datetime.datetime(2026, 10, 21, 19, 57, 33, 229051, tzinfo=datetime.timezone.utc), ...)
+case = 'historical'
+
+    @pytest.mark.parametrize("case", ["missing", "intraday", "basis", "bonus", "historical"])
+    async def test_yield_failure_does_not_invalidate_nominal_distribution(inputs, case):
+        q, store, quote, dividend, _, now, _ = inputs
+        query = await dividend_query(q)
+        await dividend(6.09)
+        if case != "missing":
+            await quote(
+                "2026-09-01", 12, now + timedelta(minutes=2), shares=900 if case == "basis" else 1000
+            )
+            await quote(
+                "2026-09-02",
+                12,
+                now + timedelta(minutes=2),
+                clock=140000000 if case == "intraday" else 153833000,
+            )
+        request = {**SCOPE, "purpose": "historical_signal"} if case == "historical" else SCOPE
+        if case == "bonus":
+            # Existing source fixture doesn't expose bonus mutation: require unknown
+            # shares directly through the formal quote contract instead.
+            await quote("2026-09-02", 12, now + timedelta(minutes=3), shares=None)
+        blocked = await query.dividend_yield(request)
+        assert blocked["state"] in ("数据阻断", "来源受限") and blocked["securities"] == []
+        nominal = await query.distribution_summary(SCOPE)
+&gt;       assert nominal["state"] == "已计算" and Decimal(
+            nominal["securities"][0]["cash_per_share"]
+        ) == Decimal("0.609")
+E       AssertionError: assert ('数据阻断' == '已计算'
+E         
+E         - 已计算
+E         + 数据阻断)
+
+tests\integration\test_dividend_yield_pipeline.py:91: AssertionError</failure></testcase><testcase classname="tests.integration.test_distribution_pipeline" name="test_official_source_archive_decimal_and_sql_only_readiness[dividends]" time="2.993" /><testcase classname="tests.integration.test_distribution_pipeline" name="test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[key-dividends]" time="3.366" /><testcase classname="tests.integration.test_distribution_pipeline" name="test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[content-dividends]" time="3.165" /><testcase classname="tests.integration.test_distribution_pipeline" name="test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[missing-dividends]" time="3.126" /><testcase classname="tests.integration.test_distribution_pipeline" name="test_equal_counts_or_empty_projection_cannot_bypass_full_unit_proof[proof-dividends]" time="3.066" /><testcase classname="tests.integration.test_adjustment_pipeline" name="test_archive_to_query_and_repeated_computation_has_no_business_dml" time="2.067" /><testcase classname="tests.integration.test_adjustment_pipeline" name="test_revision_old_response_and_commit_replay_propagate_only_accepted_inputs" time="2.287" /><testcase classname="tests.integration.test_adjustment_pipeline" name="test_price_revision_recomputes_hash_and_late_old_does_not_roll_back" time="2.191" /><testcase classname="tests.integration.test_adjustment_pipeline" name="test_rights_combination_and_missing_close_not_silently_filled" time="2.291" /><testcase classname="tests.integration.test_adjustment_pipeline" name="test_raw_chart_remains_valid_when_archived_ex_date_is_unknown" time="2.160" /><testcase classname="tests.integration.test_adjustment_pipeline" name="test_invalid_archived_open_stays_a_gap_and_blocks_all_adjustment" time="2.072" /></testsuite></testsuites>

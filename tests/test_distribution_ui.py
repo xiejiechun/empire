@@ -36,6 +36,17 @@ def test_scope_changes_cancel_old_results_and_recheck_uses_current_fields():
     assert second.cancelled() and '未检查' in panel.result.toPlainText()
     panel.calculate()
     assert calls[-1][0][-1]['codes'] == ['600000']
+    panel.invalidate()
+    panel.yield_button.click()
+    assert calls[-1][0][1] == 'dividend_yield'
+    assert not panel.button.isEnabled() and not panel.yield_button.isEnabled()
+    old_yield = calls[-1][1]
+    page.end.setText('2026-10-20')
+    assert old_yield.cancelled() and panel.yield_button.isEnabled()
+    assert '未检查' in panel.result.toPlainText()
+    panel.yield_button.click()
+    assert calls[-1][0] == ('dividends.query', 'dividend_yield',
+        dict(codes=['600000'], start='2026-01-01', end='2026-10-20'))
     page.query_scope.close()
     page.deleteLater()
     app.processEvents()

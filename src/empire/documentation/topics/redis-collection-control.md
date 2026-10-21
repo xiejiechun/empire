@@ -41,6 +41,7 @@ jobs 按 task_id 保存 policy、next_due、active、last_status、error、notic
 | run_id / task_id | 本次运行标识与所属采集项目；异常恢复复用运行标识。 |
 | started_at / finished_at | 开始 / 结束的 Unix 秒时间戳；界面转为北京时间。 |
 | origin / fresh | manual 手动或 schedule 计划；fresh 表示明确从头创建新批次。 |
+| request | 仅支持该契约的采集任务可保存本次显式范围：quote为1～50个精确市场证券、起止日期及proxy_priority布尔；不改policy或SQL保存设置。恢复复用原请求，不能覆盖活动任务范围，结束后保留到有界历史。 |
 | baseline_revision | 执行前游标版本，用于判断恢复时是否已推进断点。 |
 | status / error / notice | complete、paused、error、source_gap 等结果；error 保存真正失败，notice 保存来源限制，均脱敏且最多4096字符。source_gap 仅在有效消息全部确认归档后使用，不代表完整覆盖，不能推进缺口断点。旧记录不补写。 |
 | result | 结果摘要，如 snapshot_id、collected、expected_count、pages；结束、暂停和失败时补充已提供的显示字段，包括 completed_units、processed_units、total_units、total_months、当前位置、失败数与分类及暂无详情数。新增快照仅使用固定白名单标量和四类失败计数，字符串最长512字符，不复制游标或业务数组；返回结果中的同名值优先。旧记录不补造统计。 |

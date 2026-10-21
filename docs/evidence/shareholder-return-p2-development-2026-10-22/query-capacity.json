@@ -1,0 +1,173 @@
+{
+  "at": "2026-10-21T20:56:07.447411+00:00",
+  "conditions": "Three consecutive warm production read-only queries; no source requests; private capacity run has ended.",
+  "scope": {
+    "codes": [
+      "000001"
+    ],
+    "start": "2026-01-01",
+    "end": "2026-10-20"
+  },
+  "budget_ms": 5000,
+  "runs": [
+    {
+      "ms": 128.51189996581525,
+      "state": "已计算",
+      "input_hash": "f8a90f4db7a404b11a786179a8db77add0081f1e4738904e57c4993511158c55",
+      "basis_days": 190
+    },
+    {
+      "ms": 113.63370000617579,
+      "state": "已计算",
+      "input_hash": "f8a90f4db7a404b11a786179a8db77add0081f1e4738904e57c4993511158c55",
+      "basis_days": 190
+    },
+    {
+      "ms": 158.9683000347577,
+      "state": "已计算",
+      "input_hash": "f8a90f4db7a404b11a786179a8db77add0081f1e4738904e57c4993511158c55",
+      "basis_days": 190
+    }
+  ],
+  "sql_count": 105,
+  "explain": [
+    {
+      "sql": "SELECT unified_code FROM stock WHERE LEFT(unified_code,6) IN (%(codes_1)s) UNION SELECT DISTINCT unified_code FROM dividend_plan WHERE LEFT(unified_code,6) IN (%(codes_1)s) ORDER BY unified_code LIMIT 301",
+      "plan": [
+        {
+          "id": 1,
+          "select_type": "PRIMARY",
+          "table": "stock",
+          "partitions": null,
+          "type": "index",
+          "possible_keys": null,
+          "key": "PRIMARY",
+          "key_len": "11",
+          "ref": null,
+          "rows": 5580,
+          "filtered": 100.0,
+          "Extra": "Using where; Using index"
+        },
+        {
+          "id": 2,
+          "select_type": "UNION",
+          "table": "dividend_plan",
+          "partitions": null,
+          "type": "range",
+          "possible_keys": "ix_security_date,ix_security_order,ix_event_date",
+          "key": "ix_security_date",
+          "key_len": "11",
+          "ref": null,
+          "rows": 4756,
+          "filtered": 100.0,
+          "Extra": "Using where; Using index for group-by"
+        },
+        {
+          "id": 3,
+          "select_type": "UNION RESULT",
+          "table": "<union1,2>",
+          "partitions": null,
+          "type": "ALL",
+          "possible_keys": null,
+          "key": null,
+          "key_len": null,
+          "ref": null,
+          "rows": null,
+          "filtered": null,
+          "Extra": "Using temporary; Using filesort"
+        }
+      ]
+    },
+    {
+      "sql": "SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code FROM dividend_plan WHERE unified_code=%(security)s ORDER BY record_key LIMIT 2001",
+      "plan": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "dividend_plan",
+          "partitions": null,
+          "type": "ref",
+          "possible_keys": "ix_security_date",
+          "key": "ix_security_date",
+          "key_len": "11",
+          "ref": "const",
+          "rows": 28,
+          "filtered": 100.0,
+          "Extra": "Using filesort"
+        }
+      ]
+    },
+    {
+      "sql": "SELECT * FROM stock_market_day WHERE kind=%(kind)s AND unified_code=%(security)s AND trade_date BETWEEN %(start)s AND %(end)s ORDER BY trade_date LIMIT 10001",
+      "plan": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "stock_market_day",
+          "partitions": null,
+          "type": "range",
+          "possible_keys": "PRIMARY,ix_market_date",
+          "key": "PRIMARY",
+          "key_len": "32",
+          "ref": null,
+          "rows": 190,
+          "filtered": 100.0,
+          "Extra": "Using where"
+        }
+      ]
+    },
+    {
+      "sql": "SELECT trade_date,version_observed_at,content_hash FROM stock_market_day WHERE kind='quote' AND unified_code=%(security)s AND trade_date BETWEEN %(start)s AND %(end)s ORDER BY trade_date",
+      "plan": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "stock_market_day",
+          "partitions": null,
+          "type": "range",
+          "possible_keys": "PRIMARY,ix_market_date",
+          "key": "PRIMARY",
+          "key_len": "32",
+          "ref": null,
+          "rows": 190,
+          "filtered": 100.0,
+          "Extra": "Using where"
+        }
+      ]
+    },
+    {
+      "sql": "SELECT s.* FROM suspension_event s WHERE s.unified_code=%(security)s AND s.suspended_at<%(close)s AND (s.resumed_at>%(open)s OR (s.resumed_at IS NULL AND (s.suspended_at>=%(lower)s OR EXISTS (SELECT 1 FROM suspension_source_date d WHERE d.source_date=%(day)s AND d.unified_code=s.unified_code AND d.suspended_at=s.suspended_at AND d.resume_key=s.resume_key AND d.record_key=s.record_key)))) ORDER BY s.suspended_at,s.resume_key,s.record_key LIMIT 1001",
+      "plan": [
+        {
+          "id": 1,
+          "select_type": "PRIMARY",
+          "table": "s",
+          "partitions": null,
+          "type": "range",
+          "possible_keys": "PRIMARY,ix_suspension_start,ix_suspension_resume",
+          "key": "PRIMARY",
+          "key_len": "19",
+          "ref": null,
+          "rows": 77,
+          "filtered": 40.0,
+          "Extra": "Using where"
+        },
+        {
+          "id": 2,
+          "select_type": "DEPENDENT SUBQUERY",
+          "table": "d",
+          "partitions": null,
+          "type": "eq_ref",
+          "possible_keys": "PRIMARY,ix_suspension_identity",
+          "key": "PRIMARY",
+          "key_len": "94",
+          "ref": "const,empire.s.unified_code,empire.s.suspended_at,empire.s.resume_key,empire.s.record_key",
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": "Using index"
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

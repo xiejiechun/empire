@@ -12,6 +12,41 @@ from empire.features.suspensions.contract import FIRST_DATE, periods_between
 from empire.plugins.infra.collection_state import read_state
 
 
+def closing_price_evidence(conn, namespace, security, day, now):
+    """Prove this denominator day only; unknown old resumes are not infinite halts."""
+    from datetime import time
+
+    from empire.features.suspensions.coverage import coverage_as_of
+    from empire.features.suspensions.exclusions import excluded_days
+
+    if security[-2:] not in ('SH', 'SZ') or day < FIRST_DATE:
+        raise ValueError('分母日或证券市场超出停复牌来源支持范围')
+    coverage = read_state(conn, namespace, 'tdx-suspensions', 'tdx')
+    proof = coverage.get('coverage', {})
+    cutoff = datetime.combine(day, time(15, 30), CHINA)
+    status, note = coverage_as_of(proof, now, cutoff)
+    if (coverage.get('collection_integrity_version') != 2 or coverage.get('source_calendar_version') != 1
+            or proof.get('from') != FIRST_DATE.isoformat()
+            or proof.get('through', '') < day.isoformat() or status != 'pass'):
+        raise ValueError('分母日停复牌来源覆盖未证明：'+note)
+    # Full compound identity is required: record_key alone is not globally unique.
+    on_day = ('EXISTS (SELECT 1 FROM suspension_source_date d WHERE d.source_date=:day '
+        'AND d.unified_code=s.unified_code AND d.suspended_at=s.suspended_at '
+        'AND d.resume_key=s.resume_key AND d.record_key=s.record_key)')
+    rows = list(conn.execute(text('SELECT s.* FROM suspension_event s '
+        'WHERE s.unified_code=:security AND s.suspended_at<:close AND '
+        '(s.resumed_at>:open OR (s.resumed_at IS NULL AND (s.suspended_at>=:lower OR '
+        + on_day + '))) ORDER BY s.suspended_at,s.resume_key,s.record_key LIMIT 1001'),
+        dict(security=security, day=day, lower=datetime.combine(day, time()),
+             open=datetime.combine(day, time(9, 30)), close=datetime.combine(day, time(15)))).mappings())
+    if len(rows) > 1000:
+        raise ValueError('分母日停复牌证据超过上限')
+    excluded = excluded_days(rows, [security], day, day)[security]
+    if excluded or rows:
+        raise ValueError('分母日有停复牌或未裁定记录，不采用替代价格')
+    return dict(source='tdx', date=day.isoformat(), coverage=proof, note=note)
+
+
 class SuspensionDataPlugin:
     preparation = (PreparationContribution(
         "suspensions", "suspensions.query", "通达信", "tdx-suspensions",

@@ -32,6 +32,8 @@ source_date 前缀用于日历日查询；ix_suspension_identity 用于查同一
 
 与 suspension_event 同事务合并实际出现日，重复不写；没有证据须补采，不推断为无记录。
 
+股息率的分母日证据按source_date及unified_code、suspended_at、resume_key、record_key完整关联，只用record_key会误关联其他证券或时段。空日须另有collection_state连续范围和盘后确认，不能以无行代替覆盖证明；本用途只读。
+
 ## 保留与恢复
 
 MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源生命周期重采。成功、同内容及旧版本确认后统一清队，失败保留。手工修改业务前正常关闭归档并失效相关来源摘要，不直接清空 Redis。

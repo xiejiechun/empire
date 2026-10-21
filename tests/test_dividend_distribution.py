@@ -107,5 +107,6 @@ async def test_repurchase_theme_blocker_does_not_propagate_to_independent_divide
     await attach_products(report, SimpleNamespace(optional=lambda k: service if k == 'dividends.query' else None),
         dict(codes=['000001'], start='2026-01-01', end='2026-10-20'))
     assert report['products'][0]['state'] == '已计算' and not report['research']['ready']
-    assert all(p['state'] == '功能未实现' for p in report['products'][1:])
+    assert report['products'][1]['state'] == '数据阻断'
+    assert all(p['state'] == '功能未实现' for p in report['products'][2:])
     assert report['rows'][0]['products'] is report['products']

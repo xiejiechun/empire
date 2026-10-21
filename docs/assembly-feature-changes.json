@@ -84,5 +84,32 @@
       "tests/test_adjustment.py",
       "tests/test_adjustment_query.py"
     ]
+  },
+  {
+    "path": "semantic.preparation.data.dividends:dividend_yield",
+    "before": null,
+    "after": {
+      "cache_revision": 1,
+      "capability": "dividends.query",
+      "execute_method": "dividend_yield",
+      "method": "yield_preparation_check",
+      "output_version": "interval-nominal-dividend-yield-v1",
+      "page_id": "dividends",
+      "project_id": "empire-dividend-yield",
+      "requirement": "dividend_yield",
+      "scoped": true,
+      "source": "通达信分红 / 巨潮日历 / 开盘啦未复权收盘价",
+      "integration_tests": [
+        "tests/integration/test_dividend_yield_pipeline.py"
+      ],
+      "rule_tests": [
+        "tests/test_dividend_yield.py"
+      ]
+    },
+    "design": "docs/evidence/shareholder-return-p2-2026-10-22.md",
+    "tests": [
+      "tests/test_dividend_yield.py",
+      "tests/integration/test_dividend_yield_pipeline.py"
+    ]
   }
 ]

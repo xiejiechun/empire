@@ -8,7 +8,7 @@
 
 父头字段、明细与块的关联见 [MySQL stock_market_day](help:MySQL%20stock_market_day)，对应八张明细表在“数据库参考 → MySQL”逐项查阅。共享头不共享七个项目完成状态。
 
-显式迁移入口 `scripts/migrate_kaipanla_products.py`，默认只核查，`--apply` 才转换。必须正常关闭 Empire 并排空待归档；每个旧 stock_intraday 证券日拆成 trend 和 auction，在事务内精确读回两条数据、摘要及版本后移除旧行。旧完成状态和计划不继承，旧版拆分入口产生的停用手动配置通过 `scripts/configure_kaipanla_task_defaults.py --apply` 设置推荐默认计划，保留启停、代理和重试；验证转换完成后删除旧表；正式建表不再创建旧表。程序启动不迁移或建表。命令行 `collect-intraday --kind <kind>` 执行独立项目，须先在任务配置启用。
+显式迁移入口 `scripts/migrate_kaipanla_products.py`，默认只核查，`--apply` 才转换。必须正常关闭 Empire 并排空待归档；每个旧 stock_intraday 证券日拆成 trend 和 auction，在事务内精确读回两条数据、摘要及版本后移除旧行。旧完成状态和计划不继承，旧版拆分入口产生的停用手动配置通过 `scripts/configure_kaipanla_task_defaults.py --apply` 设置推荐默认计划，保留启停、代理和重试；验证转换完成后删除旧表；正式建表不再创建旧表。程序启动不迁移或建表。命令行 `collect-intraday --kind <kind>` 执行独立项目，须先在任务配置启用。quote可显式提供securities/start/end限定本轮，沿同一任务、数据集和归档路径；参数保存在有界活动记录与原断点，不进入app_setting。
 
 容量实验 `scripts/measure_kaipanla_day.py` 是临时测量入口，十个接口、gzip 文件与正式七项 MySQL 存储范围不同，不能直接把原文容量当 MySQL容量；实验结束删除正文，保留摘要报告。
 

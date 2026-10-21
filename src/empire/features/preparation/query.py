@@ -265,8 +265,9 @@ class PreparationPlugin:
         report = self.assemble_report(results_by_id, error or f"本版本测试证据：{artifact['checked_at']}", scope)
         report.update(checked_at=cached['checked_at'], cache_note=cached['cache_note'],
                       started_at=cached.get('started_at', ''), finished_at=cached.get('finished_at', ''))
-        from empire.features.preparation.products import bind_products
-        bind_products(report, cached['products'])
+        from empire.features.preparation.products import attach_products
+        await attach_products(report, self.context, request)
+        report['cache_note'] += '；具体派息及股息率产物已重新核验当前输入，未复用旧数值。'
         return report
 
     async def _run_report(self, request, scope):

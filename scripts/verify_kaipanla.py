@@ -15,6 +15,7 @@ def parser():
     value.add_argument('--kinds', nargs='+', choices=list(PRODUCTS), default=list(PRODUCTS))
     value.add_argument('--days', nargs='+', default=['2026-09-30'])
     value.add_argument('--fixed-days', nargs='+', default=['2026-09-28', '2026-09-29', '2026-09-30'])
+    value.add_argument('--bounded-request', action='store_true', help='验证quote正式显式运行范围参数')
     return value
 
 

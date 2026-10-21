@@ -13,7 +13,8 @@ from empire.features.capital_actions.contract import (
     unit_key,
     validate_rows,
 )
-from empire.features.capital_actions.event_rules import ActionError, decimal
+from empire.features.capital_actions.event_rules import ActionError
+from empire.features.kaipanla.closing import closing_clock
 from empire.features.kaipanla.dates import required_days
 from empire.plugins.infra.collection_state import read_state
 
@@ -108,17 +109,7 @@ def close_prices(conn, query, market, code, lower, upper):
             raise ActionError('行情上市生命周期不一致，请补采核实')
         life = row['lifecycle']
         values, day = row['data']['real'], row['trade_date']
-        # GetStockPanKou uses HHMMSSmmm, not a UNIX timestamp. A day
-        # association alone cannot establish that last_px is a closing price.
-        clock = decimal(values.get('time'))
-        if clock != int(clock):
-            raise ActionError('行情快照时刻无效，不能认定收盘价', day=day)
-        clock = int(clock)
-        # Historical source snapshots can be stamped shortly after the 15:00
-        # market close. The separate trade-day cutoff still excludes today's
-        # unfinished day until 15:30; source clock is not that query cutoff.
-        if not (150000000 <= clock <= 235959999 and clock // 100000 % 100 < 60 and clock // 1000 % 100 < 60):
-            raise ActionError('行情不是有效收盘后快照，不能以最新价替代收盘价', day=day)
+        closing_clock(values, day)
         result.append(dict(date=day, **{k: str(values[v]) for k, v in
             (('open', 'open_px'), ('high', 'high_px'), ('low', 'low_px'), ('close', 'last_px'))}))
     if life is None:

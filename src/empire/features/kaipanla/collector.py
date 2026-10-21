@@ -48,16 +48,30 @@ class KaipanlaProductCollector:
     async def checkpoint_revision(self):
         return (await self.ingest.checkpoint(self.job_key))['revision']
 
-    async def execute(self, *, fresh=False, baseline_revision=0):
+    def validate_request(self, request):
+        if self.kind != 'quote':
+            raise ValueError('当前仅历史盘口与日行情摘要支持显式有限采集范围')
+        from empire.features.kaipanla.selection import validate_request
+        return validate_request(request)
+
+    async def execute(self, *, fresh=False, baseline_revision=0, request=None):
         stage = 'plan'
         try:
             state = await self.ingest.checkpoint(self.job_key)
             cursor = state['cursor']
-            if state['revision'] > baseline_revision and cursor.get('phase') == 'complete':
+            if request is not None:
+                request = self.validate_request(request)
+            if cursor.get('phase') == 'awaiting_archive' and cursor.get('request') != request:
+                raise ValueError('待归档断点属于另一采集范围，须先恢复原范围')
+            if (state['revision'] > baseline_revision and cursor.get('phase') == 'complete'
+                    and cursor.get('request') == request):
                 return cursor
             if cursor.get('phase') == 'awaiting_archive':
                 return await self.finish(state)
             stocks, days = await self.query.plan()
+            if request is not None:
+                from empire.features.kaipanla.selection import select_plan
+                stocks, days = select_plan(request, stocks, days)
             self.aliases = {}  # Exchange identity proof is scoped to this download/resume round.
             if not days:
                 raise ValueError('分时计划没有已结束交易日')
@@ -73,14 +87,18 @@ class KaipanlaProductCollector:
                                        sorted(d.isoformat() for d in excluded)]).encode())
             scope = checksum.hexdigest()
             last_review = cursor.get('last_review')
-            if fresh or cursor.get('scope') != scope or cursor.get('phase') == 'complete':
+            if (fresh or cursor.get('scope') != scope or cursor.get('phase') == 'complete'
+                    or cursor.get('request') != request):
                 cursor = {}
             if not cursor:
                 token, review = review_days(days, last_review)
                 cursor = dict(phase='collecting', scope=scope, batch_id=uuid4().hex,
                               index=0, pages=0, collected=0, started_at=datetime.now(UTC).isoformat(),
                               start_date=days[0].isoformat(), end_date=days[-1].isoformat(),
-                              last_review=last_review, review_token=token, review_days=review)
+                              last_review=last_review, review_token=last_review if request else token,
+                              review_days=review)
+                if request is not None:
+                    cursor['request'] = request
             total = sum(count for _, count in plans)
             first_gap, failed = None, 0
             cursor = {**cursor, 'first_gap': None, 'failed_units': 0,

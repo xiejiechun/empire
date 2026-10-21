@@ -967,6 +967,13 @@
       ]
     },
     {
+      "owner": "suspensions",
+      "role": "query",
+      "public_symbols": ["closing_price_evidence"],
+      "reason": "调用方拥有同一只读事务的分母日覆盖及完整来源身份检查；不打开连接，不采集，不推断未知复牌为永久停牌",
+      "modules": ["empire.features.suspensions.query"]
+    },
+    {
       "owner": "capital_actions",
       "role": "query",
       "reason": "按用途与范围核验已有SQL完整证券单元证明；不执行采集",
@@ -1236,7 +1243,9 @@
         "quote_format": "ui",
         "quote_chart": "ui",
         "product_chart": "ui",
-        "product_dates": "ui"
+        "product_dates": "ui",
+        "closing": "contract",
+        "selection": "contract"
       }
     },
     {
@@ -1272,7 +1281,9 @@
         "event_rules": "contract",
         "distribution": "query",
         "distribution_text": "contract",
-        "ui_distribution": "ui"
+        "ui_distribution": "ui",
+        "dividend_yield": "query",
+        "yield_inputs": "query"
       }
     },
     {
