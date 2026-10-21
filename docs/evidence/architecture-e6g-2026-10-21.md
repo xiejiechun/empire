@@ -1,6 +1,6 @@
 # E6g 交易规则归组实施记录
 
-状态：开发验证通过，尚未发布/桌面验收，F未开始。前批E6f结案提交0d7b2fe9d93c336aa17cea6e0e0c665ebd194c12已推送且ls-remote精确匹配；不是重做前批验收。
+状态：本批组织迁移范围已验收，结案提交待推送精确核实；同包真实桌面已完成，F未开始，整个优化未完成。前批E6f结案提交0d7b2fe9d93c336aa17cea6e0e0c665ebd194c12已推送且ls-remote精确匹配；不是重做前批验收。
 
 ## 输入、范围及身份
 
@@ -27,8 +27,8 @@ remaining当前只含规则，原插件3800～5900、任务1200～1800、数据�
 | R公共/U架构 | 318 passed/139.15秒，exit0 | 既定装配/架构/管理器/任务控制/公共下载及入队/预取/归档公平/live pipeline回归；out/public.xml |
 | T3 | 首轮完整18/18通过，exit0，正确性/cleanup通过，无不可比项 | py scripts/architecture_benchmark.py measure --test-settings build/architecture-evolution-20261019/mysql-settings.json --baseline docs/evidence/architecture-performance-baseline-2026-10-19.json --output out/t3-1.json；[原报告](architecture-e6g-t3-2026-10-21.json) |
 | M文档 | 正文/coverage同步，具体review与check均exit0，verify_documentation exit0/259文/1804链接/55表；41文档专项exit0/26.95秒 | 规则操作/限制、SQL归属、架构、包README；无关业务的行为不变理由逐项审阅 |
-| A1～A3 | 冻结保护未改，无新增破坏性演练 | 完整门禁仍须执行发布反例，不能借开工核实标发布通过 |
-| A4/U1～U3 | 未发布待后续 | 同包配置/连接/全部七query与可见页、独立启停/依赖保护/草稿/滚轮/窄窗/正常关开仍须完成 |
+| A1～A3 | 冻结保护未改，无新增破坏性演练 | 完整门禁对应发布反例通过；全过程冻结1794输入及HEAD，54输出/24步骤重新审计 |
+| A4/U1～U3 | 本批适用范围已验收 | 干净7373f38/release7e85c4e4完整3844 passed/5原opt-in skipped，同包七query与页面/引用/空态、启停保护/草稿滚轮/刷新滚动/982窄窗/帮助及正常关开、48设置与原config/偏好保持；见[同包结案](architecture-e6g-desktop-2026-10-21.md) |
 | F/M1/类型扩展/成本实验 | 未开始 | E6g未结案前不实施F |
 
 ## 真实来源适用范围
@@ -56,3 +56,7 @@ remaining当前只含规则，原插件3800～5900、任务1200～1800、数据�
 当前源码第二轮来源命令同首轮，仅新输出out/source-2.json，exit0，15全代理、七kind参数/引用与全部正式查询一致、pending0，六清理true。见[最终来源](architecture-e6g-source-2026-10-21.json)，[首轮](architecture-e6g-source-first-2026-10-21.json)保留。两轮间仅容量CLI恢复测试样本导入路径，正式11业务模块/来源解释无变化；未把首轮全源摘要假装改后摘要。
 
 最终17份现行measured报告绑定均有效；当前source2与T3分别按各自工具的不同源摘要范围重新核对有效，不能混用两种hash。一次额外审计错误假设二者摘要同范围导致assert失败，无数据操作；改为各自正式摘要函数核对通过。T3前10秒实际CPU快照未见测试/构建主导负载，并实核无活动pytest/PyInstaller/T3/实采命令和Empire线程；整轮原18项通过，工具/协议/阈值/历史基线/release_lock未改。文档最终审阅采用documentation_contract.py review --note <七规则逐项说明> --unchanged-reason <11模块AST/身份及其他业务与公共路径不变的具体依据>；check、verify_documentation及41文档/规则专项均exit0，最后定稿后再审阅。
+
+## 发布后最终事实
+
+唯一verify-release自然exit0，3844 passed/5原opt-in skipped/20 warnings，2616.54秒；1794输入、54保留输出、24步骤重新核对。正式包7373f38/release7e85c4e4，配置/连接/正式七kind完整查询、真实七页及交互、正常关开完成，48设置/原config/偏好保持，pending0。发布后、正常关后和异cwd重开后只读核验均exit0，最终窗口18616692保持可见。身份、命令/证据和中间失败详见[同包结案](architecture-e6g-desktop-2026-10-21.md)。前文发布前检查点保留当时事实；F未开始，结案push精确核实后才进入。
