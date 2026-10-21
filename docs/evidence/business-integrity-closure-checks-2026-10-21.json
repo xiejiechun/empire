@@ -1,0 +1,109 @@
+{
+  "started_at": "2026-10-21T13:55:58.532207+00:00",
+  "commands": [
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/documentation_contract.py",
+        "review",
+        "--note",
+        "B1至B5结案审阅：诊断差异字段修复已同包发布/真实桌面/正常关开；逐项来源缺口、历史超集和旧错误保留失败，431月时效当前通过；结案只补事实证据，不改产品或包内正文"
+      ],
+      "started_at": "2026-10-21T13:55:58.532207+00:00",
+      "finished_at": "2026-10-21T13:56:06.153709+00:00",
+      "exit_code": 0,
+      "log": "build\\business-integrity-20261021\\closure-step-1.log",
+      "sha256": "c5f35856a6eef07c7a8eb73bf787f7cfc7ff28c1814edd0a01c109d5f1bd60cf"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/documentation_contract.py",
+        "check"
+      ],
+      "started_at": "2026-10-21T13:56:06.162737+00:00",
+      "finished_at": "2026-10-21T13:56:13.430592+00:00",
+      "exit_code": 0,
+      "log": "build\\business-integrity-20261021\\closure-step-2.log",
+      "sha256": "c5f35856a6eef07c7a8eb73bf787f7cfc7ff28c1814edd0a01c109d5f1bd60cf"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/documentation_build.py",
+        "check"
+      ],
+      "started_at": "2026-10-21T13:56:13.432144+00:00",
+      "finished_at": "2026-10-21T13:56:13.653473+00:00",
+      "exit_code": 0,
+      "log": "build\\business-integrity-20261021\\closure-step-3.log",
+      "sha256": "8367353e54b3d9b9cb2a26c4aac3ce4ede1eba1d6d93386517e857319b5a807d"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/verify_documentation.py"
+      ],
+      "started_at": "2026-10-21T13:56:13.662713+00:00",
+      "finished_at": "2026-10-21T13:56:20.911129+00:00",
+      "exit_code": 0,
+      "log": "build\\business-integrity-20261021\\closure-step-4.log",
+      "sha256": "f61541ae5e890c7fe7b2931fe6da1b10dab7ff55ecd79cfffc3cb3dabc94ee14"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/verify_database_design.py"
+      ],
+      "started_at": "2026-10-21T13:56:20.918920+00:00",
+      "finished_at": "2026-10-21T13:56:22.101760+00:00",
+      "exit_code": 0,
+      "log": "build\\business-integrity-20261021\\closure-step-5.log",
+      "sha256": "a2cb8202870fd00b86436ce2a96183374095fbc58c1756aa7245494e5ce447e4"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-q",
+        "--tb=short",
+        "-rs",
+        "tests/test_documentation_contracts.py",
+        "tests/test_documentation_review.py",
+        "tests/test_documentation_sources.py",
+        "tests/test_storage_help.py",
+        "--basetemp",
+        "build/pytest-business-integrity-closure",
+        "--junitxml",
+        "build/business-integrity-20261021/closure-docs.xml"
+      ],
+      "started_at": "2026-10-21T13:56:22.103761+00:00",
+      "finished_at": "2026-10-21T13:57:36.635248+00:00",
+      "exit_code": 0,
+      "log": "build\\business-integrity-20261021\\closure-step-6.log",
+      "sha256": "58d7ced645fd1d3a4773b3d65cd99edc9d559444465ccdf210fff471095bc7d2"
+    }
+  ],
+  "junit": {
+    "total": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "path": "build\\business-integrity-20261021\\closure-docs.xml",
+    "sha256": "daf0635595c42909a4eb7867554aa6418dad03162710d54c79593c315ed0f7f0"
+  },
+  "finished_at": "2026-10-21T13:57:36.653989+00:00"
+}

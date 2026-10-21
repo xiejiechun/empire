@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-21T13:57:57.759471+00:00",
+  "local_commit": "df226b595c534aee58083149790cd3418709c7e3",
+  "runs": [
+    {
+      "command": [
+        "git",
+        "-c",
+        "http.proxy=http://127.0.0.1:7890",
+        "push",
+        "origin",
+        "main"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "To https://github.com/xiejiechun/empire.git\n   9adb1f1..df226b5  main -> main\n"
+    },
+    {
+      "command": [
+        "git",
+        "-c",
+        "http.proxy=http://127.0.0.1:7890",
+        "ls-remote",
+        "origin",
+        "refs/heads/main"
+      ],
+      "exit_code": 0,
+      "stdout": "df226b595c534aee58083149790cd3418709c7e3\trefs/heads/main\n",
+      "stderr": ""
+    }
+  ]
+}

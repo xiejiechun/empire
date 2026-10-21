@@ -1,0 +1,562 @@
+{
+  "schema": 1,
+  "project_id": "tdx-suspensions",
+  "started_at": "2026-10-21T21:37:17.522586+08:00",
+  "read_only": true,
+  "status": "partial",
+  "sections": {
+    "declaration": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.522586+08:00",
+      "acquired_at": "2026-10-21T21:37:17.522586+08:00",
+      "reason": "",
+      "data": {
+        "project_id": "tdx-suspensions",
+        "task": {
+          "id": "tdx-suspensions",
+          "name": "沪深 A 股历史停复牌（通达信）",
+          "capability": "collector.tdx_suspensions",
+          "rate_group": "tdx",
+          "description": "2004-12-27 起逐自然日完整检查 · 停牌 / 复牌 / 全天或临停",
+          "interval_seconds": 86400,
+          "category": "交易可实现性",
+          "source_name": "通达信",
+          "parallel_downloads": true,
+          "default_enabled": true,
+          "fresh_description": "从 2004-12-27 起按自然月重新核验至今；保留已归档事件。",
+          "default_schedule": null,
+          "unit_name": "个月"
+        },
+        "job_keys": [
+          "tdx-suspensions-v1"
+        ],
+        "datasets": [
+          "suspensions.period"
+        ],
+        "declared_scope": [
+          {
+            "id": "suspensions",
+            "title": "历史停复牌",
+            "category": "交易可实现性",
+            "priority": "核心",
+            "purpose": "排除不能买卖的日期",
+            "grain": "证券 × 停复牌事件/时段",
+            "fields": "市场、证券代码、停牌开始日期、复牌日期（未确定可空）、全天/临停类型",
+            "key": "来源 + 市场 + 证券代码 + 停牌起始日期/时间",
+            "coverage": "按单一来源可得区间采集并列明起止、市场和已知缺口；不要求补齐来源起点以前的历史",
+            "cadence": "每日更新停复牌安排；已停牌但未确定复牌的事件持续跟进",
+            "dependencies": [],
+            "criteria": [
+              {
+                "id": "fields",
+                "title": "字段与单位",
+                "expected": "市场、证券代码、停牌开始日期、复牌日期（未确定可空）、全天/临停类型",
+                "action": "检查必需字段和单位；可选字段未提供不影响本项通过"
+              },
+              {
+                "id": "keys",
+                "title": "唯一键与重复",
+                "expected": "来源 + 市场 + 证券代码 + 停牌起始日期/时间；重复键为 0",
+                "action": "明确业务键，清查重复与版本冲突"
+              },
+              {
+                "id": "coverage",
+                "title": "历史与对象覆盖",
+                "expected": "按单一来源可得区间采集并列明起止、市场和已知缺口；不要求补齐来源起点以前的历史",
+                "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明"
+              },
+              {
+                "id": "quality",
+                "title": "业务质量",
+                "expected": "日期有效、重复事件去重；复牌未知保持未知，临停不能直接当作全天不可交易",
+                "action": "修复数据或解析规则，并补充业务语义回归"
+              },
+              {
+                "id": "freshness",
+                "title": "更新与时效",
+                "expected": "每日更新停复牌安排；已停牌但未确定复牌的事件持续跟进",
+                "action": "验证最新成功核验时间与数据水位，恢复更新计划"
+              },
+              {
+                "id": "temporal",
+                "title": "日期与使用范围",
+                "expected": "按事件日期约束日频成交；公告时间和原因可选，不将事后信息用作事前选股信号",
+                "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史"
+              }
+            ],
+            "kind": "采集",
+            "boundary": "单一来源的停复牌事件可独立完成；日频成交约束不要求公告时点回放、跨网站验证或行情缺口核对。",
+            "related": [
+              "calendar",
+              "listings"
+            ],
+            "optional_fields": "证券简称、停牌原因、公告日期/编号、精确停复牌时刻、来源修订信息",
+            "capability": "suspensions.query",
+            "dataset": "suspensions.period"
+          }
+        ]
+      }
+    },
+    "isolation": {
+      "status": "unknown",
+      "started_at": "2026-10-21T21:37:17.522586+08:00",
+      "acquired_at": "2026-10-21T21:37:17.522586+08:00",
+      "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离",
+      "data": {
+        "status": "unknown",
+        "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离"
+      }
+    },
+    "errors": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.522586+08:00",
+      "acquired_at": "2026-10-21T21:37:17.525584+08:00",
+      "reason": "",
+      "data": {
+        "revision": "19",
+        "total": 19,
+        "rows": [
+          {
+            "status_code": null,
+            "error": "同一停复牌来源记录内容冲突：SH|603517|2026-10-19T09:30+08:00|2026-10-20T09:30+08:00|5ad98d35d514ead84b69c3749db76914fc9f87b3234fa9d00d14b8ea0074b008；来源日期：2026-10-19、2026-10-20",
+            "id": "38622b7215a44fe4a5224031bdf4d963",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-19T16:41:11.379176+00:00",
+            "stage": "suspension_validation"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "c78c1e6b211e438d80101f9176e16230",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T18:19:21.557212+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "152aaf8d6c6143289cbc86192ee5f6dc",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T18:19:14.796080+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node010 请求失败（ProxyError），已临时隔离",
+            "id": "25d304eb07bc4b7ea2f10f467efebeeb",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T18:19:11.621744+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "4c8b5bd64f4747c9b5b4801bdadadc4b",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T18:19:07.836466+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node012 请求失败（ProxyError），已临时隔离",
+            "id": "c4cb4e21066d4880940aee72eefc5880",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T18:19:00.579532+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+            "id": "3068b3383fdc4853b4d2e013eb265729",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T18:18:56.285226+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node014 请求失败（ProxyError），已临时隔离",
+            "id": "1ec068449d8842df91370d1014815e6c",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T18:18:50.546817+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node020 请求失败（ProxyError），已临时隔离",
+            "id": "ddb25c89275b4c66b66515fc728901c5",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T18:18:29.135218+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node005 请求失败（ReadError），已临时隔离",
+            "id": "a5cdd7762a94468fb67fdaf8111dabba",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T18:17:48.016872+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "44da9b1e388b4c078a187c3e37afde47",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T15:48:03.502254+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+            "id": "41f0c5a6511b4e00a32094e0583acd12",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T15:47:59.020031+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node006 请求失败（ProxyError），已临时隔离",
+            "id": "f64c300c80e84964a919c7a77819d22b",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T15:47:58.444733+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node014 请求失败（ProxyError），已临时隔离",
+            "id": "f31024f3ed784f2583fd63d60f906c1c",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T15:47:57.989380+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node005 请求失败（ReadError），已临时隔离",
+            "id": "91e00aaa3c6546ebab72d94bfab81603",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T15:47:38.100052+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node002 请求失败（ProxyError），已临时隔离",
+            "id": "cd572764dcae401baa7b5790d0141050",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T15:47:37.334267+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node013 请求失败（ProxyError），已临时隔离",
+            "id": "5274adefcf4f4ba48e72d419983ccdd4",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T15:47:27.878007+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "57be3130764c47fa901ceb8177e3fa88",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T15:47:05.926583+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "e233e780c0da4a7b988147fcb6f2f431",
+            "project_id": "tdx-suspensions",
+            "created_at": "2026-10-17T15:47:01.444267+00:00",
+            "stage": "http"
+          }
+        ],
+        "truncated": false,
+        "body_included": false
+      }
+    },
+    "task_state": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.525584+08:00",
+      "acquired_at": "2026-10-21T21:37:17.530501+08:00",
+      "reason": "",
+      "data": {
+        "history": [
+          {
+            "network": {
+              "proxy_requests": 1
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "dates_checked": 1,
+              "current_month": "2026-10",
+              "end_date": "2026-10-21",
+              "total_months": 1,
+              "batch_id": "0fd05aa738bb4bf1b121417671f3f567",
+              "start_date": "2026-10-21",
+              "current_date": "2026-10-21",
+              "collected": 1,
+              "pages": 1,
+              "source_pages": 1
+            },
+            "task_id": "tdx-suspensions",
+            "fresh": false,
+            "finished_at": 1792561211.3411,
+            "status": "complete",
+            "started_at": 1792561205.4812,
+            "proxy_fallback": true,
+            "run_id": "43c4c8bc2b5449ee91ec0aab83705935",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 20
+          },
+          {
+            "network": {
+              "proxy_requests": 2
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "dates_checked": 2,
+              "current_month": "2026-10",
+              "end_date": "2026-10-21",
+              "total_months": 1,
+              "batch_id": "8e54a3c0284b47e6aa2973b3a3b85a41",
+              "start_date": "2026-10-20",
+              "current_date": "2026-10-21",
+              "collected": 4,
+              "pages": 1,
+              "source_pages": 2
+            },
+            "task_id": "tdx-suspensions",
+            "fresh": false,
+            "finished_at": 1792516282.502,
+            "status": "complete",
+            "started_at": 1792516280.2811,
+            "proxy_fallback": true,
+            "run_id": "40c27439eadf490095da2f845e821142",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 18
+          },
+          {
+            "network": {
+              "proxy_requests": 2
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "dates_checked": 2,
+              "current_month": "2026-10",
+              "end_date": "2026-10-20",
+              "total_months": 1,
+              "batch_id": "dc63fb6ed5794061b80a247df2ddc573",
+              "start_date": "2026-10-19",
+              "current_date": "2026-10-20",
+              "collected": 6,
+              "pages": 1,
+              "source_pages": 2
+            },
+            "task_id": "tdx-suspensions",
+            "fresh": false,
+            "finished_at": 1792472264.1367,
+            "status": "complete",
+            "started_at": 1792472260.627,
+            "proxy_fallback": true,
+            "run_id": "014b6107f025494dbc06fb1cdaac4246",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 16
+          }
+        ],
+        "job": {
+          "last_status": "complete",
+          "next_due": 1792604411.3411,
+          "active": null,
+          "notice": "",
+          "policy": {
+            "enabled": true,
+            "request_retries": 2,
+            "daily_time": "18:00",
+            "proxy_fallback": true,
+            "archived": false,
+            "interval_seconds": 43200,
+            "use_proxy": true,
+            "mode": "interval"
+          },
+          "error": ""
+        }
+      }
+    },
+    "checkpoint:tdx-suspensions-v1": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.530501+08:00",
+      "acquired_at": "2026-10-21T21:37:17.530501+08:00",
+      "reason": "",
+      "data": {
+        "cursor": {
+          "start_date": "2026-10-21",
+          "end_date": "2026-10-21",
+          "expected_days": 1,
+          "coverage_through": "2026-10-21",
+          "batch_id": "0fd05aa738bb4bf1b121417671f3f567",
+          "phase": "complete",
+          "period_index": 1,
+          "pages": 1,
+          "collected": 1,
+          "dates_checked": 1,
+          "started_at": "2026-10-21T05:40:05.496027+00:00",
+          "resume_date": "2026-10-22",
+          "source_pages": 1
+        },
+        "revision": "22"
+      }
+    },
+    "archive_progress:tdx-suspensions-v1": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.530501+08:00",
+      "acquired_at": "2026-10-21T21:37:17.530501+08:00",
+      "reason": "",
+      "data": {
+        "batch_id": "0fd05aa738bb4bf1b121417671f3f567",
+        "page": 1,
+        "status": "complete",
+        "row_count": 1,
+        "error_text": "",
+        "observed_at": "2026-10-21T05:40:10.172898+00:00"
+      }
+    },
+    "queue": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.530501+08:00",
+      "acquired_at": "2026-10-21T21:37:17.530501+08:00",
+      "reason": "",
+      "data": {
+        "stream_total": 0,
+        "unreadable": 0,
+        "truncated": false,
+        "exact": true,
+        "fetched_envelope_bytes": 0,
+        "scanned": 0,
+        "stream_ids": {},
+        "project_lower_bound": 0
+      }
+    },
+    "error_detail": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.530501+08:00",
+      "acquired_at": "2026-10-21T21:37:17.531935+08:00",
+      "reason": "",
+      "data": {
+        "id": "38622b7215a44fe4a5224031bdf4d963",
+        "project_id": "tdx-suspensions",
+        "created_at": "2026-10-19T16:41:11.379176+00:00",
+        "version": "0.1.0 (a228421fa7bb)",
+        "stage": "suspension_validation",
+        "error": "同一停复牌来源记录内容冲突：SH|603517|2026-10-19T09:30+08:00|2026-10-20T09:30+08:00|5ad98d35d514ead84b69c3749db76914fc9f87b3234fa9d00d14b8ea0074b008；来源日期：2026-10-19、2026-10-20",
+        "request_url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_tzrl_gsrl",
+        "status_code": null,
+        "metadata": {
+          "date": "2026-10-20",
+          "period": {
+            "period": "2026-10",
+            "start_date": "2026-10-19",
+            "end_date": "2026-10-20"
+          }
+        },
+        "body": "",
+        "body_truncated": false,
+        "body_complete": true,
+        "observed_bytes": 0,
+        "original_bytes": 0,
+        "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sample_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "sql_state": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.554570+08:00",
+      "acquired_at": "2026-10-21T21:37:17.602571+08:00",
+      "reason": "",
+      "data": {
+        "source": "tdx",
+        "dataset": "suspensions",
+        "updated_at": "2026-10-21 13:40:10.184784",
+        "state_bytes": 397,
+        "progress": "{\"page\": 1, \"status\": \"complete\", \"batch_id\": \"0fd05aa738bb4bf1b121417671f3f567\", \"row_count\": 1, \"error_text\": \"\", \"observed_at\": \"2026-10-21T05:40:10.172898+00:00\"}",
+        "progress_truncated": 0,
+        "coverage": "{\"from\": \"2004-12-27\", \"through\": \"2026-10-21\", \"confirmed_at\": \"2026-10-21T05:40:10.172898+00:00\"}",
+        "coverage_truncated": 0,
+        "contract_version": null,
+        "truncated": false,
+        "projection_only": true
+      }
+    },
+    "saved_policy": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.602571+08:00",
+      "acquired_at": "2026-10-21T21:37:17.603694+08:00",
+      "reason": "",
+      "data": {
+        "updated_at": "2026-09-30 07:20:43.494654",
+        "bytes": 152,
+        "policy": "{\"mode\": \"interval\", \"enabled\": true, \"use_proxy\": true, \"daily_time\": \"18:00\", \"proxy_fallback\": true, \"request_retries\": 2, \"interval_seconds\": 43200}",
+        "truncated": false
+      }
+    },
+    "query:suspensions.query": {
+      "status": "ok",
+      "started_at": "2026-10-21T21:37:17.603694+08:00",
+      "acquired_at": "2026-10-21T21:37:17.604955+08:00",
+      "reason": "",
+      "data": {
+        "capability": "suspensions.query",
+        "method": "list_events",
+        "arguments": {
+          "limit": 20,
+          "code": "603517",
+          "market": "SH",
+          "start": "2026-10-19",
+          "end": "2026-10-19"
+        },
+        "result": [
+          {
+            "market": "SH",
+            "code": "603517",
+            "name": "绝味食品",
+            "suspended_at": "2026-10-19T09:30:00",
+            "resumed_at": "2026-10-20T09:30:00",
+            "suspension_type": "full_day",
+            "source_note": "停牌1天",
+            "reason": "重要公告"
+          }
+        ],
+        "scope": "正式有界预览，非完整性验收"
+      }
+    }
+  },
+  "note": "各项分时读取，非 Redis/SQL 原子快照。任务阶段与 next_due 来自临时记录；正式预览不证明来源完整、时效或全部待归档为零。",
+  "limits_note": "队列最多逐条读取 5 个现有 Envelope；累计达到 256 KiB 后不取下一条，最后一条可超过此阈值，超过 256 KiB 的正文不解析。错误详情最多查现有保留的 300 条；控制状态读取上限 8 MiB，断点/归档进度各 128 KiB。报告上限不等同 Redis 服务总内存上限。",
+  "sql_cleanup": {
+    "closed_to_new_sql": true,
+    "outstanding_workers": 0,
+    "complete": true
+  },
+  "finished_at": "2026-10-21T21:37:17.605967+08:00",
+  "budget": {
+    "limits": {
+      "sql": 10,
+      "redis": 20,
+      "io_seconds": 5,
+      "total_seconds": 30,
+      "report_bytes": 1048576,
+      "errors": 50,
+      "body_bytes": 65536
+    },
+    "used": {
+      "sql": 8,
+      "redis": 17
+    },
+    "elapsed_seconds": 0.344,
+    "counting": "SQL 包含受守卫 SELECT 及每个物理连接五次驱动只读探测的保守预留；连接协议、SET 会话初始化及事务清理不计为业务查询。Redis 按脚本内 redis.call 读取命令的最大次数预留，包含返回前未使用预留。"
+  }
+}
