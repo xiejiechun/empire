@@ -1,0 +1,687 @@
+{
+  "at": "2026-10-21T06:16:18.966643+00:00",
+  "head": "f2fbe995ab4c975808b42769fe26e50f849f2f43",
+  "status": "repair_development_verified_pending_performance_release_desktop",
+  "exports": [
+    {
+      "path": "docs/evidence/architecture-f-first-release-audit-2026-10-21.json",
+      "sha256": "64088879f7b0bd5c7f74c703f4b8c0e83ae0a64a8b35f2958f939de211220d8d"
+    },
+    {
+      "path": "docs/evidence/architecture-f-first-package-readonly-2026-10-21.json",
+      "sha256": "0f03d8a8b11f7897673d120ebfa1aaa48380ae91e95cc633768740bc9e313681"
+    },
+    {
+      "path": "docs/evidence/architecture-f-desktop-recovery-resource-2026-10-21.json",
+      "sha256": "c796d8982ed032eb9d6e57ac551bd38108c4efafca14fb7a8fe0df5ec2f8bafb"
+    },
+    {
+      "path": "docs/evidence/architecture-f-tree-counterexample-2026-10-21.json",
+      "sha256": "2a8c7000fde98d7f58d4927a0c73e57b3e97d3d39642cad452b3bfcd64759be6"
+    },
+    {
+      "path": "docs/evidence/architecture-f-tree-specific-review-2026-10-21.json",
+      "sha256": "944ad468188f214c8ff1d19cb41e5a9fbbb240cdacb765c50ab3eeb613004a76"
+    }
+  ],
+  "junit": {
+    "tree-counterexample": {
+      "path": "build/architecture-f-20261021/tree-counterexample.xml",
+      "sha256": "abb99ecb636ebeb124cbac221f842c7df79f57a1e8f721f576b5c3069f483224",
+      "tests": 1,
+      "errors": 0,
+      "failures": 1,
+      "skipped": 0,
+      "seconds": 0.236
+    },
+    "tree-fix-1": {
+      "path": "build/architecture-f-20261021/tree-fix-1.xml",
+      "sha256": "66d19300db62922c8b08fe82a7271e63ec10c40d8a6e78f84b0803279c920694",
+      "tests": 1,
+      "errors": 0,
+      "failures": 1,
+      "skipped": 0,
+      "seconds": 0.207
+    },
+    "tree-fix-2": {
+      "path": "build/architecture-f-20261021/tree-fix-2.xml",
+      "sha256": "b7aff5bb068d3b7aebc302b9c4e89c13f9090d3e647983a614b6ddc3076de59f",
+      "tests": 1,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 0.233
+    },
+    "tree-regression": {
+      "path": "build/architecture-f-20261021/tree-regression.xml",
+      "sha256": "db94b7cda2ccc45f57713fd33a32b5c1b311fd5946dc06f1207c9f9bba378acb",
+      "tests": 111,
+      "errors": 0,
+      "failures": 2,
+      "skipped": 0,
+      "seconds": 87.003
+    },
+    "tree-final": {
+      "path": "build/architecture-f-20261021/tree-final.xml",
+      "sha256": "15839a72e947188bb58bc781e5c591b075bf627848869acba15f799c7742bb30",
+      "tests": 217,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 94.924
+    }
+  },
+  "native_main_threads": [
+    {
+      "local": "build/architecture-f-20261021/unresponsive-native-detached.json",
+      "sha256": "680ed9f73354289b3c75ab3da789ce0fb41bbb157f15a3813f4752fa88f8d8ea",
+      "pid": 29740,
+      "frames": [
+        {
+          "name": "CStdStubBuffer_Invoke",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CStdStubBuffer_Invoke",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CStdStubBuffer_Invoke",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaNodeFromProvider",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaNodeFromProvider",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "0x7ffe525110bf",
+          "filename": "C:\\Windows\\System32\\OneCoreCommonProxyStub.dll",
+          "line": 0
+        },
+        {
+          "name": "Ndr64AsyncServerCall64",
+          "filename": "C:\\Windows\\System32\\RPCRT4.dll",
+          "line": 0
+        },
+        {
+          "name": "NdrStubCall3",
+          "filename": "C:\\Windows\\System32\\RPCRT4.dll",
+          "line": 0
+        },
+        {
+          "name": "CStdStubBuffer_Invoke",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CStdStubBuffer_Invoke",
+          "filename": "C:\\Windows\\System32\\RPCRT4.dll",
+          "line": 0
+        },
+        {
+          "name": "CoInitializeSecurity",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoInitializeSecurity",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoInitializeSecurity",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "HBITMAP_UserSize",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoWaitForMultipleHandles",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoTaskMemAlloc",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoTaskMemAlloc",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "Ordinal95",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CallWindowProcW",
+          "filename": "C:\\Windows\\System32\\USER32.dll",
+          "line": 0
+        },
+        {
+          "name": "IsWindowUnicode",
+          "filename": "C:\\Windows\\System32\\USER32.dll",
+          "line": 0
+        },
+        {
+          "name": "QEventDispatcherWin32::processEvents",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\Qt6Core.dll",
+          "line": 0
+        },
+        {
+          "name": "QWindowsGuiEventDispatcher::processEvents",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\Qt6Gui.dll",
+          "line": 0
+        },
+        {
+          "name": "QEventLoop::exec",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\Qt6Core.dll",
+          "line": 0
+        },
+        {
+          "name": "QCoreApplication::exec",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\Qt6Core.dll",
+          "line": 0
+        },
+        {
+          "name": "PyInit_QtWidgets",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\QtWidgets.pyd",
+          "line": 0
+        },
+        {
+          "name": "PyObject_Vectorcall",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyObject_Vectorcall",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyEval_EvalFrameDefault",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyObject_ClearManagedDict",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyEval_EvalCode",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "0x7ff708344639",
+          "filename": "D:\\project\\empire\\dist\\empire\\empire.exe",
+          "line": 0
+        },
+        {
+          "name": "0x7ff7083456b7",
+          "filename": "D:\\project\\empire\\dist\\empire\\empire.exe",
+          "line": 0
+        },
+        {
+          "name": "0x7ff70834e6f9",
+          "filename": "D:\\project\\empire\\dist\\empire\\empire.exe",
+          "line": 0
+        },
+        {
+          "name": "run_gui",
+          "filename": "__main__.py",
+          "line": 145
+        },
+        {
+          "name": "main",
+          "filename": "__main__.py",
+          "line": 346
+        },
+        {
+          "name": "<module>",
+          "filename": "__main__.py",
+          "line": 356
+        }
+      ]
+    },
+    {
+      "local": "build/architecture-f-20261021/unresponsive-native-repro-2.json",
+      "sha256": "420c6217d08cbb95fd1c269d96ef98424c8b06b9c5603d7214ff0fc0a1d56339",
+      "pid": 30584,
+      "frames": [
+        {
+          "name": "RtlRunOnceBeginInitialize",
+          "filename": "C:\\Windows\\SYSTEM32\\ntdll.dll",
+          "line": 0
+        },
+        {
+          "name": "SysFreeString",
+          "filename": "C:\\Windows\\System32\\OLEAUT32.dll",
+          "line": 0
+        },
+        {
+          "name": "SafeArrayDestroy",
+          "filename": "C:\\Windows\\System32\\OLEAUT32.dll",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaNodeFromProvider",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaNodeFromProvider",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "UiaRaiseAutomationPropertyChangedEvent",
+          "filename": "C:\\Windows\\SYSTEM32\\UIAutomationCore.DLL",
+          "line": 0
+        },
+        {
+          "name": "0x7ffe525110bf",
+          "filename": "C:\\Windows\\System32\\OneCoreCommonProxyStub.dll",
+          "line": 0
+        },
+        {
+          "name": "Ndr64AsyncServerCall64",
+          "filename": "C:\\Windows\\System32\\RPCRT4.dll",
+          "line": 0
+        },
+        {
+          "name": "NdrStubCall3",
+          "filename": "C:\\Windows\\System32\\RPCRT4.dll",
+          "line": 0
+        },
+        {
+          "name": "CStdStubBuffer_Invoke",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CStdStubBuffer_Invoke",
+          "filename": "C:\\Windows\\System32\\RPCRT4.dll",
+          "line": 0
+        },
+        {
+          "name": "CoInitializeSecurity",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoInitializeSecurity",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoInitializeSecurity",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "HBITMAP_UserSize",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoWaitForMultipleHandles",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoTaskMemAlloc",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CoTaskMemAlloc",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "Ordinal95",
+          "filename": "C:\\Windows\\System32\\combase.dll",
+          "line": 0
+        },
+        {
+          "name": "CallWindowProcW",
+          "filename": "C:\\Windows\\System32\\USER32.dll",
+          "line": 0
+        },
+        {
+          "name": "IsWindowUnicode",
+          "filename": "C:\\Windows\\System32\\USER32.dll",
+          "line": 0
+        },
+        {
+          "name": "QEventDispatcherWin32::processEvents",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\Qt6Core.dll",
+          "line": 0
+        },
+        {
+          "name": "QWindowsGuiEventDispatcher::processEvents",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\Qt6Gui.dll",
+          "line": 0
+        },
+        {
+          "name": "QEventLoop::exec",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\Qt6Core.dll",
+          "line": 0
+        },
+        {
+          "name": "QCoreApplication::exec",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\Qt6Core.dll",
+          "line": 0
+        },
+        {
+          "name": "PyInit_QtWidgets",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\PySide6\\QtWidgets.pyd",
+          "line": 0
+        },
+        {
+          "name": "PyObject_Vectorcall",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyObject_Vectorcall",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyEval_EvalFrameDefault",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyObject_ClearManagedDict",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyEval_EvalCode",
+          "filename": "D:\\project\\empire\\dist\\empire\\_internal\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "0x7ff708344639",
+          "filename": "D:\\project\\empire\\dist\\empire\\empire.exe",
+          "line": 0
+        },
+        {
+          "name": "0x7ff7083456b7",
+          "filename": "D:\\project\\empire\\dist\\empire\\empire.exe",
+          "line": 0
+        },
+        {
+          "name": "0x7ff70834e6f9",
+          "filename": "D:\\project\\empire\\dist\\empire\\empire.exe",
+          "line": 0
+        },
+        {
+          "name": "run_gui",
+          "filename": "__main__.py",
+          "line": 145
+        },
+        {
+          "name": "main",
+          "filename": "__main__.py",
+          "line": 346
+        },
+        {
+          "name": "<module>",
+          "filename": "__main__.py",
+          "line": 356
+        }
+      ]
+    },
+    {
+      "local": "build/architecture-f-20261021/minimal-help-native-1.json",
+      "sha256": "d036f606987cbcb8ad556de92a61efd3716e59f1841de2f6253a837c0f9068a4",
+      "pid": 44448,
+      "frames": [
+        {
+          "name": "NtUserMsgWaitForMultipleObjectsEx",
+          "filename": "C:\\Windows\\System32\\win32u.dll",
+          "line": 0
+        },
+        {
+          "name": "QEventDispatcherWin32::processEvents",
+          "filename": "D:\\project\\empire\\.venv\\Lib\\site-packages\\PySide6\\Qt6Core.dll",
+          "line": 0
+        },
+        {
+          "name": "QWindowsGuiEventDispatcher::processEvents",
+          "filename": "D:\\project\\empire\\.venv\\Lib\\site-packages\\PySide6\\Qt6Gui.dll",
+          "line": 0
+        },
+        {
+          "name": "QEventLoop::exec",
+          "filename": "D:\\project\\empire\\.venv\\Lib\\site-packages\\PySide6\\Qt6Core.dll",
+          "line": 0
+        },
+        {
+          "name": "QCoreApplication::exec",
+          "filename": "D:\\project\\empire\\.venv\\Lib\\site-packages\\PySide6\\Qt6Core.dll",
+          "line": 0
+        },
+        {
+          "name": "PyInit_QtWidgets",
+          "filename": "D:\\project\\empire\\.venv\\Lib\\site-packages\\PySide6\\QtWidgets.pyd",
+          "line": 0
+        },
+        {
+          "name": "PyObject_Vectorcall",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyObject_Vectorcall",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyEval_EvalFrameDefault",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyObject_ClearManagedDict",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyEval_EvalCode",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyWeakref_NewProxy",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyWeakref_NewProxy",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyDict_DelItemString",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyRun_SimpleFileObject",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyRun_AnyFileObject",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyEval_MakePendingCalls",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "PyEval_MakePendingCalls",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "Py_RunMain",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "Py_RunMain",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "Py_Main",
+          "filename": "D:\\Programs\\Python3129\\python312.dll",
+          "line": 0
+        },
+        {
+          "name": "0x7ff6ae061230",
+          "filename": "D:\\Programs\\Python3129\\python.exe",
+          "line": 0
+        },
+        {
+          "name": "<module>",
+          "filename": "D:\\project\\empire\\build\\architecture-f-20261021\\reproduce_help.py",
+          "line": 29
+        }
+      ]
+    }
+  ],
+  "capacity": {
+    "active_reports": 17,
+    "invalid": {}
+  },
+  "desktop_termination": {
+    "pid29740": "explicit exact PID authorization; verified Empire path; stopped only this application",
+    "pid30584": "recovered after computer-use kernel reset; Alt+F4 normal exit; no forced termination"
+  },
+  "additional_failures": [
+    {
+      "command": "ambient Python sample importing psutil",
+      "exit_code": 1,
+      "reason": "psutil not installed; no environment change; replaced with read-only PowerShell CPU sampling"
+    },
+    {
+      "action": "private help window activation",
+      "result": "computer-use timeout; not counted as native acceptance"
+    }
+  ],
+  "frozen_constraints": "No release_lock, benchmark tool/protocol/baseline/threshold, dependency, config, preference or data changes"
+}

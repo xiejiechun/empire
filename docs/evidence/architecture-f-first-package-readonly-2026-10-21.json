@@ -1,0 +1,63 @@
+{
+  "checked_at": "2026-10-21T05:39:47.676217+00:00",
+  "release_id": "b1193f65e3084a88a82b17c71ba40499",
+  "passed_read_only": true,
+  "actual_desktop": "pending_separate_real_observations",
+  "formal_query_execution": "Frozen current source APIs using installed configuration; packaged doctor and actual GUI verified separately",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "f2fbe995ab4c975808b42769fe26e50f849f2f43",
+    "dirty": false,
+    "source_sha256": "5d533da845fc38abccc1837f2d70bbfd3158a49ae64af1f1fa43710487e66bb4",
+    "release_id": "b1193f65e3084a88a82b17c71ba40499",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "bd98197561576427b91bdbb72556d49dd4e9322439c4b89dbe8dcc995db33c8b",
+    "built_at_utc": "2026-10-21T05:36:49.910230+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3",
+    "packaged": true
+  },
+  "exe_sha256": "03c8b714630e8bc6d76e90f5c6f9c7cd64b058ba4b58c6bd91f39706975c31c8",
+  "installed_tree_sha256": "9920f5c0a15bb5f8eee48c3fabb57a7713e050cc80bf50aa3105a778459c83ca",
+  "configuration_and_preferences_preserved": {
+    "D:\\project\\empire\\config.toml": true,
+    "D:\\project\\empire\\dist\\Empire\\config.toml": true,
+    "C:\\Users\\52948\\AppData\\Local\\Empire\\plugin-state.json": true
+  },
+  "packaged_doctor": {
+    "cwd": "C:/Windows",
+    "exit_code": 0,
+    "redis_connected": true,
+    "mysql_connected": true
+  },
+  "formal_public_api": {
+    "directory_source": "ths",
+    "stock_sample_rows": 20,
+    "cutoff": [
+      "2026-10-20 15:30:00+08:00",
+      "今天交易尚未结束（15:30 前）；日频验收目标为最近已结束交易日 2026-10-20 15:30（北京时间）"
+    ],
+    "calendar_input_days": 367
+  },
+  "formal_calendar_month": {
+    "rows": 31,
+    "complete": true
+  },
+  "formal_news": {
+    "rows": 20,
+    "first_id": 5157489
+  },
+  "all_saved_settings_equal": {
+    "rows": 48,
+    "digest": "9e59d702765610a9f91bfdfcc19bcfc104590d239bd87be6dfa99a95c511c1ac"
+  },
+  "formal_query_scope": "Frozen current source APIs: stock first20 exact SQL comparison, directory API and 366day cutoff same-connection contract comparison, current calendar month, news first20; package doctor and real GUI separately. Does not assert complete historical preparation.",
+  "packaged_help": {
+    "topics": 143,
+    "sha256": "aad914156a1ce2b5c42925ca091145315de8ae5985bafeff96c9a1ef1a2953fa",
+    "all_article_fields_equal": true
+  },
+  "query_services_shutdown": true,
+  "global_pending": 0
+}

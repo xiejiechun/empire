@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from PySide6.QtCore import QItemSelectionModel, QSignalBlocker, Qt, Signal
-from PySide6.QtGui import QKeySequence, QShortcut
+from PySide6.QtGui import QAccessible, QAccessibleTableModelChangeEvent, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QHBoxLayout,
@@ -61,6 +61,24 @@ def accessible(widget, name, description=""):
     if description:
         widget.setAccessibleDescription(description)
     return widget
+
+
+def bind_tree_accessibility(tree):
+    """Invalidate Qt's visible-row cache before clients reuse a collapsed tree.
+
+    Qt's tree accessibility interface caches cells by visible row, but expanding
+    or collapsing branches can leave those cells mapped to their former rows.
+    Keep the standard interface and notify clients of the new visible model.
+    """
+    def changed(*_):
+        if not QAccessible.isActive():
+            return
+        event = QAccessibleTableModelChangeEvent(
+            tree, QAccessibleTableModelChangeEvent.ModelChangeType.ModelReset)
+        QAccessible.updateAccessibility(event)
+
+    tree.expanded.connect(changed)
+    tree.collapsed.connect(changed)
 
 
 def bind_find(parent, field):

@@ -9,6 +9,56 @@ from empire.core.config import project_root  # noqa: E402
 from empire.plugins.ui.help import CATEGORIES, StorageHelpPage, articles, topics  # noqa: E402
 
 
+def test_accessible_directory_rows_follow_collapse_expand_and_search():
+    from PySide6.QtGui import QAccessible
+
+    app = QApplication.instance() or QApplication([])
+    was_active = QAccessible.isActive()
+    QAccessible.setActive(True)
+    page = StorageHelpPage(None)
+    page.show()
+    app.processEvents()
+    interface = QAccessible.queryAccessibleInterface(page.index)
+
+    def check_rows():
+        expected = []
+
+        def visible(item):
+            expected.append(item.text(0))
+            if item.isExpanded():
+                for n in range(item.childCount()):
+                    visible(item.child(n))
+
+        for n in range(page.index.topLevelItemCount()):
+            visible(page.index.topLevelItem(n))
+        names = []
+        for n in range(interface.childCount()):
+            child = interface.child(n)
+            assert interface.indexOfChild(child) == n
+            if child.role() == QAccessible.Role.TreeItem:
+                names.append(child.text(QAccessible.Text.Name))
+        assert names == expected
+
+    try:
+        check_rows()  # Prime Qt's row-index cache as an accessibility client does.
+        for index in (0, 1, 2, 2, 1, 0):
+            item = page.index.topLevelItem(index)
+            item.setExpanded(not item.isExpanded())
+            check_rows()
+        assert page.current_topic == '开始使用'
+        assert page.history == ['开始使用']
+        page.open_topic('MySQL stock_listing')
+        check_rows()
+        page.search.setText('复权')
+        check_rows()
+        page.search.clear()
+        check_rows()
+    finally:
+        page.deleteLater()
+        app.processEvents()
+        QAccessible.setActive(was_active)
+
+
 def test_reference_covers_all_current_schema_columns_and_example_settings():
     documentation = "\n".join(topics().values())
     schema = (project_root() / "sql/schema.sql").read_text(encoding="utf-8")

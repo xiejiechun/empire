@@ -18,7 +18,7 @@ from PySide6.QtWidgets import (
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.ui import PageContribution
 from empire.desktop.theme import DOCUMENT_STYLE, windows_high_contrast
-from empire.plugins.ui.common import accessible, bind_find
+from empire.plugins.ui.common import accessible, bind_find, bind_tree_accessibility
 from empire.plugins.ui.help_content import CATEGORIES, articles, search_articles
 from empire.plugins.ui.help_content import topics as topics
 from empire.plugins.ui.help_reader import render_article
@@ -119,6 +119,7 @@ class StorageHelpPage(QWidget):
         layout.addWidget(split, 1)
         self.filter_topics()
         self.open_topic("开始使用")
+        bind_tree_accessibility(self.index)
 
     def filter_topics(self):
         query = self.search.text().strip()
