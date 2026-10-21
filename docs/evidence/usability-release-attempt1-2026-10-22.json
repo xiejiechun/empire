@@ -1,0 +1,70 @@
+{
+  "release_id": "a0068799a0fd43e7ab3ed754848861c0",
+  "command": "./verify-release.ps1",
+  "exit_code": 1,
+  "installed_package_switched": false,
+  "junit": {
+    "path": "build/usability-20261021/failed-release-tests.xml",
+    "sha256": "792ed170d779e18b339540f2c903d70c129f99844ed5ec426926b38853298582",
+    "total": 4010,
+    "failed": [
+      {
+        "classname": "tests.test_release_steps",
+        "name": "test_verification_requires_all_checks_and_stops_on_failure[None]",
+        "time": "0.016"
+      },
+      {
+        "classname": "tests.test_release_steps",
+        "name": "test_verification_requires_all_checks_and_stops_on_failure[pytest]",
+        "time": "0.006"
+      },
+      {
+        "classname": "tests.test_release_steps",
+        "name": "test_verification_requires_all_checks_and_stops_on_failure[capacity]",
+        "time": "0.007"
+      },
+      {
+        "classname": "tests.test_release_steps",
+        "name": "test_verification_requires_all_checks_and_stops_on_failure[assembly]",
+        "time": "0.006"
+      }
+    ],
+    "skipped": [
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_large_state_bounded_transfer_and_other_unit_preserved",
+        "time": "0.000"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_concurrency_and_rollback",
+        "time": "0.000"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_missing_units_manifest_and_noop",
+        "time": "0.000"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_initial_unit_state_and_owner_validation",
+        "time": "0.000"
+      },
+      {
+        "classname": "tests.integration.test_state_unit_isolated",
+        "name": "test_preflight_is_read_only_allowlisted_and_rejects_extra_source",
+        "time": "0.000"
+      }
+    ]
+  },
+  "log": "build\\releases\\a0068799a0fd43e7ab3ed754848861c0\\steps\\step-013.log",
+  "log_sha256": "9ca9209e3095e22a3a925f44b80ef957dcca966430a3c296791cf4c6b529cd1c",
+  "cause": "Release runner exact command assertion omitted the newly authorized feature-changes argument; update test call expectation without weakening assembly identity or ordering checks.",
+  "fix_validation": {
+    "command": "python -m pytest tests/test_release_steps.py tests/test_release_pipeline.py tests/test_release_output.py tests/test_release_gate.py tests/test_release_file_state.py tests/test_release_entrypoints.py tests/test_documentation_sources.py tests/test_documentation_review.py tests/test_documentation_contracts.py tests/test_documentation_build.py tests/test_assembly_source_gate.py tests/test_assembly_order.py tests/test_assembly_contract.py --basetemp build/pytest-usability-release-final -q --junitxml build/usability-20261021/release-final.xml",
+    "exit_code": 0,
+    "cases": 187,
+    "junit": "build/usability-20261021/release-final.xml",
+    "sha256": "7612b3e25d6c487d8396b4d36fbd31bb8a057eb6b6488e923b794e21b6e446be"
+  }
+}

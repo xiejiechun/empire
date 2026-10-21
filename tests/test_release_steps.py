@@ -24,6 +24,7 @@ def test_verification_requires_all_checks_and_stops_on_failure(tmp_path, failed)
                 'python', str(tmp_path / 'scripts/assembly_contract.py'), 'check',
                 '--baseline', str(tmp_path / 'docs/evidence/assembly-baseline-2026-10-19.json'),
                 '--mapping', str(tmp_path / 'docs/assembly-migrations.json'),
+                '--feature-changes', str(tmp_path / 'docs/assembly-feature-changes.json'),
                 '--order-baseline', str(tmp_path / 'docs/evidence/assembly-order-baseline-2026-10-19.json'),
             ]
         if 'documentation_build.py' in text:
