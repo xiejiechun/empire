@@ -16,7 +16,13 @@ def bounded_batches(days, *, source, job_key, batch_id, first_page, limit, sourc
                 try:
                     events[identity] = merge(events[identity], row) if identity in events else row
                 except ValueError as exc:
-                    raise ValueError(f'{exc}；来源日期：{dates[identity]}、{day}') from None
+                    conflict = ValueError(f'{exc}；来源日期：{dates[identity]}、{day}')
+                    if hasattr(exc, 'suspension_conflict'):
+                        conflict.suspension_conflict = {
+                            **exc.suspension_conflict,
+                            'source_dates': [dates[identity], day],
+                        }
+                    raise conflict from None
                 dates[identity] = day
                 appearances.setdefault(identity, set()).add(day)
         start, end = part[0][0], part[-1][0]

@@ -70,7 +70,14 @@ def parse_page(response, requested_date, requested_page, *, initial):
 def merge_event(existing, incoming):
     if existing == incoming:
         return existing
-    raise ValueError(f"同一停复牌来源记录内容冲突：{event_identity(existing)}")
+    conflict = ValueError(f"同一停复牌来源记录内容冲突：{event_identity(existing)}")
+    conflict.suspension_conflict = {
+        'identity': event_identity(existing),
+        'fields': {key: [existing.get(key), incoming.get(key)]
+                   for key in sorted(existing.keys() | incoming.keys())
+                   if existing.get(key) != incoming.get(key)},
+    }
+    raise conflict
 
 
 class TdxSuspensionCollector:
@@ -254,7 +261,9 @@ class TdxSuspensionCollector:
                 self.records, self.stats, self.project_id, exc, stage=stage,
                 unavailable_message="错误记录暂未写入 Redis；断点保留",
                 fields={"request_url": API_URL,
-                        "metadata": {"date": current_date, "period": current_period}},
+                        "metadata": {"date": current_date, "period": current_period,
+                                     **({'conflict': exc.suspension_conflict}
+                                        if hasattr(exc, 'suspension_conflict') else {})}},
             )
             raise
 

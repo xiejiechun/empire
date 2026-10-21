@@ -1,0 +1,50 @@
+{
+  "validation": {
+    "domain": {
+      "path": "build/business-integrity-20261021/domain.xml",
+      "sha256": "bd9246b188d32f028bcf93f3e18dd74176551fec75fa795403084396a9430975",
+      "tests": 52,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "integration": {
+      "path": "build/business-integrity-20261021/integration.xml",
+      "sha256": "a183bd29b06798e9d2a4cffd4c42b4d35c507b505f7d79175813f35bb8cb1b6f",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "related-2": {
+      "path": "build/business-integrity-20261021/related-2.xml",
+      "sha256": "021c80497a66608d336d7e0f4667437447d94b7ac74b79e83332819e939e5851",
+      "tests": 127,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "exit_code": 0
+    }
+  },
+  "source_changes": [
+    "src/empire/features/suspensions/collector.py",
+    "src/empire/features/suspensions/batches.py"
+  ],
+  "not_changed": [
+    "business identities",
+    "schema",
+    "shared downloader",
+    "archive",
+    "queries",
+    "frozen release/performance tools"
+  ],
+  "early_failures": [
+    "red test KeyError conflict (exit1)",
+    "probe decode date-string AttributeError (exit1), independent followup completed observations; original retained",
+    "first formal-query helper used absent list_reports (exit1); rerun using actual APIs",
+    "first related command referenced absent tests/test_collection_records.py (exit4), no tests executed; corrected127 passed",
+    "direct git ls-remote failed; existing localhost7890 request-scoped proxy succeeded, no persistent config change"
+  ]
+}

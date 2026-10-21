@@ -323,6 +323,29 @@ async def test_failed_date_does_not_publish_partial_month_or_advance_checkpoint(
     assert item.records.add_error.call_args.kwargs["metadata"]["date"] == "2026-09-25"
 
 
+async def test_cross_date_conflict_records_both_source_dates_and_field_values():
+    item = collector()
+    item.query.plan = AsyncMock(return_value={
+        'start_date': '2026-10-19', 'end_date': '2026-10-20',
+        'expected_days': 2, 'coverage_through': '2026-10-19'})
+    item.http = prefetch_http()
+    first = normalize_source_row(dict(sc=1, code='603517', name='原来源简称',
+        tprq='2026-10-19 09:30', fprq='2026-10-20 09:30', sj='停牌1天', sjcontent='重要公告'))
+    item._collect_day = AsyncMock(side_effect=[([first], 1), ([{**first, 'name': '另一来源简称'}], 1)])
+    async def download(day, **kwargs):
+        return await item._collect_day(day)
+    item.download_day = download
+    with pytest.raises(ValueError, match='内容冲突'):
+        await item.execute()
+    metadata = item.records.add_error.call_args.kwargs['metadata']
+    assert metadata['conflict'] == {
+        'identity': event_identity(first),
+        'source_dates': ['2026-10-19', '2026-10-20'],
+        'fields': {'name': ['原来源简称', '另一来源简称']}}
+    assert not item.ingest.events
+    assert item.ingest.state == {'revision': 0, 'cursor': {}}
+
+
 async def test_full_history_checkpoints_remain_small_and_cover_every_date():
     item = collector()
     query = SuspensionDataPlugin()

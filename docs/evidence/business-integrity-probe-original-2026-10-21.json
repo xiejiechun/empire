@@ -1,0 +1,2021 @@
+{
+  "run_id": "fe9f621c27a64463846377d4c34cde2d",
+  "mode": "verification",
+  "checked_at": "2026-10-21T12:30:14.824959+00:00",
+  "passed": false,
+  "pipeline_verified": false,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {
+    "diagnosis": {
+      "pipeline_verified": false,
+      "acceptance_complete": false,
+      "reason": "targeted read-only source investigation; not random30 or archive acceptance",
+      "routes": {
+        "proxy_requests": 64
+      },
+      "holders": {
+        "300398": {
+          "status": 200,
+          "bytes": 177254,
+          "sha256": "026829750b2acdc08939856305ce9f09830765418d3d0bd8faed44c4574b2805",
+          "blocks": [
+            {
+              "name_slots": [
+                {
+                  "text": "债券名称 :",
+                  "attrs": {
+                    "class": "sec"
+                  },
+                  "spans": [
+                    {
+                      "text": "",
+                      "attrs": {}
+                    }
+                  ]
+                }
+              ],
+              "tabs": [
+                {
+                  "date": "2023-12-31",
+                  "panel": "b0her_1"
+                }
+              ]
+            },
+            {
+              "name_slots": [
+                {
+                  "text": "债券名称 : 飞凯转债",
+                  "attrs": {
+                    "class": "sec"
+                  },
+                  "spans": [
+                    {
+                      "text": "飞凯转债",
+                      "attrs": {}
+                    }
+                  ]
+                }
+              ],
+              "tabs": [
+                {
+                  "date": "2024-12-31",
+                  "panel": "b1her_1"
+                },
+                {
+                  "date": "2024-06-30",
+                  "panel": "b1her_2"
+                },
+                {
+                  "date": "2023-12-31",
+                  "panel": "b1her_3"
+                }
+              ]
+            }
+          ],
+          "gaps": [
+            {
+              "kind": "bond_holders",
+              "report_date": "2023-12-31",
+              "source_panel": "b0her_1",
+              "reason": "instrument_name_missing"
+            }
+          ],
+          "normalized_counts": {
+            "top_holders": 5,
+            "float_holders": 5,
+            "bond_holders": 3
+          },
+          "normalized_digest": "8d1cf26a9aefac3dd3455d4bbcc26d9712a4da9da514b8e611988101ef6d11d9"
+        },
+        "601515": {
+          "status": 200,
+          "bytes": 201767,
+          "sha256": "72ad5845c9657c3357671d1e3584c293f5529fc42abfdcef92679ec92dd3f35a",
+          "blocks": [
+            {
+              "name_slots": [
+                {
+                  "text": "债券名称 :",
+                  "attrs": {
+                    "class": "sec"
+                  },
+                  "spans": [
+                    {
+                      "text": "",
+                      "attrs": {}
+                    }
+                  ]
+                }
+              ],
+              "tabs": [
+                {
+                  "date": "2024-06-30",
+                  "panel": "b0her_1"
+                }
+              ]
+            },
+            {
+              "name_slots": [
+                {
+                  "text": "债券名称 : 东风转债",
+                  "attrs": {
+                    "class": "sec"
+                  },
+                  "spans": [
+                    {
+                      "text": "东风转债",
+                      "attrs": {}
+                    }
+                  ]
+                }
+              ],
+              "tabs": [
+                {
+                  "date": "2025-06-30",
+                  "panel": "b1her_1"
+                },
+                {
+                  "date": "2024-12-31",
+                  "panel": "b1her_2"
+                },
+                {
+                  "date": "2024-06-30",
+                  "panel": "b1her_3"
+                }
+              ]
+            }
+          ],
+          "gaps": [
+            {
+              "kind": "bond_holders",
+              "report_date": "2024-06-30",
+              "source_panel": "b0her_1",
+              "reason": "instrument_name_missing"
+            }
+          ],
+          "normalized_counts": {
+            "top_holders": 5,
+            "float_holders": 5,
+            "bond_holders": 3
+          },
+          "normalized_digest": "65b2d7e5922f9837ce5638d45a235545fbe80df80ffb292c43d911aac07dca58"
+        }
+      },
+      "kaipanla": {
+        "trend/002731.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "trend/002731.SZ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "trend/002731.SZ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 trend 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "auction/920161.BJ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "auction/920304.BJ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "auction/920665.BJ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "auction/002731.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "auction/920112.BJ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "auction/920175.BJ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "auction/002731.SZ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "auction/002731.SZ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦 auction 请求未成功（errcode=1017），不能确认空日期",
+          "category": "source_request",
+          "details": {
+            "interface_code": "1017"
+          }
+        },
+        "volume/002731.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "volume/002731.SZ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "volume/002731.SZ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "trades/002731.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "trades/002731.SZ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "trades/002731.SZ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "entrust/603073.SH/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "minute_gap",
+            "message": "分钟键集合缺失、重复或跨时段"
+          },
+          "status": 200,
+          "bytes": 8940,
+          "sha256": "e3fe5ac81654ea267b05647cbb745ce54a617b26c92348927209b6368e89950d",
+          "errcode": "0",
+          "source_code": "603073",
+          "source_day": "20260930",
+          "point_count": 240,
+          "missing": [
+            "14:59"
+          ],
+          "extra": [],
+          "duplicate": [],
+          "ordered": true,
+          "parsed": false,
+          "error": "分钟键集合缺失、重复或跨时段",
+          "category": "minute_gap",
+          "details": {}
+        },
+        "entrust/603210.SH/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "minute_gap",
+            "message": "分钟键集合缺失、重复或跨时段"
+          },
+          "status": 200,
+          "bytes": 9011,
+          "sha256": "12f20bf1642d20ed0cf5cc0a43c064ffb4ea353b04861c414801f845a126d382",
+          "errcode": "0",
+          "source_code": "603210",
+          "source_day": "20260930",
+          "point_count": 238,
+          "missing": [
+            "11:22",
+            "13:12",
+            "13:19"
+          ],
+          "extra": [],
+          "duplicate": [],
+          "ordered": true,
+          "parsed": false,
+          "error": "分钟键集合缺失、重复或跨时段",
+          "category": "minute_gap",
+          "details": {}
+        },
+        "entrust/605255.SH/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "minute_gap",
+            "message": "分钟键集合缺失、重复或跨时段"
+          },
+          "status": 200,
+          "bytes": 8801,
+          "sha256": "ca4314f2bd040c960e751b9726b163c3e373e30c1f29967af4b4a9fcf352ee8e",
+          "errcode": "0",
+          "source_code": "605255",
+          "source_day": "20260930",
+          "point_count": 240,
+          "missing": [
+            "14:59"
+          ],
+          "extra": [],
+          "duplicate": [],
+          "ordered": true,
+          "parsed": false,
+          "error": "分钟键集合缺失、重复或跨时段",
+          "category": "minute_gap",
+          "details": {}
+        },
+        "entrust/688712.SH/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "minute_gap",
+            "message": "分钟键集合缺失、重复或跨时段"
+          },
+          "status": 200,
+          "bytes": 9034,
+          "sha256": "69ef357d060e9029dcce17bae353a281750c7e5295bfa8677d39de59f7485258",
+          "errcode": "0",
+          "source_code": "688712",
+          "source_day": "20260930",
+          "point_count": 240,
+          "missing": [
+            "14:59"
+          ],
+          "extra": [],
+          "duplicate": [],
+          "ordered": true,
+          "parsed": false,
+          "error": "分钟键集合缺失、重复或跨时段",
+          "category": "minute_gap",
+          "details": {}
+        },
+        "entrust/001202.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "minute_gap",
+            "message": "分钟键集合缺失、重复或跨时段"
+          },
+          "status": 200,
+          "bytes": 8753,
+          "sha256": "a196a73bce615a13ac6830883ffaf2de06c4918a5b831231bab2902b2e375a2b",
+          "errcode": "0",
+          "source_code": "001202",
+          "source_day": "20260930",
+          "point_count": 240,
+          "missing": [
+            "14:01"
+          ],
+          "extra": [],
+          "duplicate": [],
+          "ordered": true,
+          "parsed": false,
+          "error": "分钟键集合缺失、重复或跨时段",
+          "category": "minute_gap",
+          "details": {}
+        },
+        "entrust/002216.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "minute_gap",
+            "message": "分钟键集合缺失、重复或跨时段"
+          },
+          "status": 200,
+          "bytes": 8836,
+          "sha256": "138f338f321097c6944543371460e82e9b1021ef1167c6bbb2fe0ffc2c7da7c6",
+          "errcode": "0",
+          "source_code": "002216",
+          "source_day": "20260930",
+          "point_count": 240,
+          "missing": [
+            "11:24"
+          ],
+          "extra": [],
+          "duplicate": [],
+          "ordered": true,
+          "parsed": false,
+          "error": "分钟键集合缺失、重复或跨时段",
+          "category": "minute_gap",
+          "details": {}
+        },
+        "entrust/002731.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "entrust/300564.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "minute_gap",
+            "message": "分钟键集合缺失、重复或跨时段"
+          },
+          "status": 200,
+          "bytes": 8704,
+          "sha256": "cfb3c06b0031ae0a09a1593ca4031abac530094a2728002176f8263732b553a0",
+          "errcode": "0",
+          "source_code": "300564",
+          "source_day": "20260930",
+          "point_count": 240,
+          "missing": [
+            "10:54"
+          ],
+          "extra": [],
+          "duplicate": [],
+          "ordered": true,
+          "parsed": false,
+          "error": "分钟键集合缺失、重复或跨时段",
+          "category": "minute_gap",
+          "details": {}
+        },
+        "entrust/605333.SH/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "minute_gap",
+            "message": "分钟键集合缺失、重复或跨时段"
+          },
+          "status": 200,
+          "bytes": 8653,
+          "sha256": "1603af6fea3ce337ff418954eb36224a3ff256027e6c0dc6ee7f221f13bc098c",
+          "errcode": "0",
+          "source_code": "605333",
+          "source_day": "20260928",
+          "point_count": 240,
+          "missing": [
+            "14:07"
+          ],
+          "extra": [],
+          "duplicate": [],
+          "ordered": true,
+          "parsed": false,
+          "error": "分钟键集合缺失、重复或跨时段",
+          "category": "minute_gap",
+          "details": {}
+        },
+        "entrust/002731.SZ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "entrust/002731.SZ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920112.BJ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920161.BJ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920174.BJ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920175.BJ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920304.BJ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920665.BJ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/002731.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920112.BJ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920112.BJ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920175.BJ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920175.BJ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920304.BJ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/920304.BJ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/002731.SZ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "large_order/002731.SZ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "quote/002731.SZ/2026-09-30": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "quote/002731.SZ/2026-09-28": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        },
+        "quote/002731.SZ/2026-09-29": {
+          "original": {
+            "type": "SourceError",
+            "category": "source_request",
+            "message": "开盘啦接口未成功，不能证明空日"
+          },
+          "status": 200,
+          "bytes": 72,
+          "sha256": "413c0cfff199544c1cfa162a380ce558522a61b95ab7d084cbfd70671190cfe9",
+          "errcode": "1017",
+          "source_code": null,
+          "source_day": null,
+          "parsed": false,
+          "error": "开盘啦接口未成功，不能证明空日",
+          "category": "source_request",
+          "details": {}
+        }
+      },
+      "capital": {
+        "dividends": [
+          {
+            "record_key": "021527a7c018f206c60c4dc3916fe3096ebaa284f50bb0eedc849a6a35176cd9",
+            "security": "601198.SH",
+            "period": "2023-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "021527a7c018f206c60c4dc3916fe3096ebaa284f50bb0eedc849a6a35176cd9",
+                "event_date": "2024-08-09",
+                "data": {
+                  "report_date": "2023-12-31",
+                  "announcement_date": "2024-04-04",
+                  "record_date": "2024-08-08",
+                  "ex_date": "2024-08-09",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.102",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.254",
+                  "net_assets_per_share": "8.374",
+                  "capital_reserve_per_share": "4.2574",
+                  "retained_profit_per_share": "1.396"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "0b535b98d6c0c81a12078b181c246b58ad6604cc398ae7ccf26a3a6c43e6fa06",
+            "security": "601198.SH",
+            "period": "2024-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "0b535b98d6c0c81a12078b181c246b58ad6604cc398ae7ccf26a3a6c43e6fa06",
+                "event_date": "2025-08-15",
+                "data": {
+                  "report_date": "2024-12-31",
+                  "announcement_date": "2025-04-04",
+                  "record_date": "2025-08-14",
+                  "ex_date": "2025-08-15",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.09",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.478",
+                  "net_assets_per_share": "8.771",
+                  "capital_reserve_per_share": "4.2574",
+                  "retained_profit_per_share": "1.5367"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "15dba84bc7218c015d135ccab270c0b21e986d860fae8417673451f6caf969a0",
+            "security": "600938.SH",
+            "period": "2026-06-30",
+            "in_pool": true,
+            "source_contains": false,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "600938",
+                "name": "中国海油",
+                "record_key": "40863dce2a77525d32e0e0a5f71077c875c23b2c029ffeeadc3af3edcb88d013",
+                "event_date": "2026-10-16",
+                "data": {
+                  "report_date": "2026-06-30",
+                  "announcement_date": "2026-08-27",
+                  "record_date": "2026-10-15",
+                  "ex_date": "2026-10-16",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.81324",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "1.81",
+                  "net_assets_per_share": "18.0108",
+                  "capital_reserve_per_share": "0.038",
+                  "retained_profit_per_share": "9.51"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "23846dbc5643532cd8c31554dd92dced1959fbac2692c56cbc9483ae468d07a6",
+            "security": "601198.SH",
+            "period": "2021-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "23846dbc5643532cd8c31554dd92dced1959fbac2692c56cbc9483ae468d07a6",
+                "event_date": "2022-07-28",
+                "data": {
+                  "report_date": "2021-12-31",
+                  "announcement_date": "2022-04-29",
+                  "record_date": "2022-07-27",
+                  "ex_date": "2022-07-28",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.26",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.582",
+                  "net_assets_per_share": "8.247",
+                  "capital_reserve_per_share": "4.2574",
+                  "retained_profit_per_share": "1.5174"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "2c8798760f4262eb1683864a9acebf616b97340278b879e873f766bf82b9247e",
+            "security": "601198.SH",
+            "period": "2016-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "2c8798760f4262eb1683864a9acebf616b97340278b879e873f766bf82b9247e",
+                "event_date": "2017-06-29",
+                "data": {
+                  "report_date": "2016-12-31",
+                  "announcement_date": "2017-04-24",
+                  "record_date": "2017-06-28",
+                  "ex_date": "2017-06-29",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.15",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.527",
+                  "net_assets_per_share": "6.642",
+                  "capital_reserve_per_share": "3.5396",
+                  "retained_profit_per_share": "1.2904"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "5119382c9381372337b977b27c337627d18d92a8cdde00d2213ff9b1941c1bef",
+            "security": "601059.SH",
+            "period": "2025-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601059",
+                "name": "信达证券",
+                "record_key": "5119382c9381372337b977b27c337627d18d92a8cdde00d2213ff9b1941c1bef",
+                "event_date": "2026-07-28",
+                "data": {
+                  "report_date": "2025-12-31",
+                  "announcement_date": "2026-03-31",
+                  "record_date": "2026-07-27",
+                  "ex_date": "2026-07-28",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.04",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.54",
+                  "net_assets_per_share": "6.4972",
+                  "capital_reserve_per_share": "1.2349",
+                  "retained_profit_per_share": "2.6085"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "60c59e17d3840ab86b7c2f324910b04050009a9f61a9c515f97835f4caf815d5",
+            "security": "601059.SH",
+            "period": "2025-06-30",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601059",
+                "name": "信达证券",
+                "record_key": "60c59e17d3840ab86b7c2f324910b04050009a9f61a9c515f97835f4caf815d5",
+                "event_date": "2025-10-27",
+                "data": {
+                  "report_date": "2025-06-30",
+                  "announcement_date": "2025-08-28",
+                  "record_date": "2025-10-24",
+                  "ex_date": "2025-10-27",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.047",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.3",
+                  "net_assets_per_share": "6.2462",
+                  "capital_reserve_per_share": "1.2372",
+                  "retained_profit_per_share": "2.4808"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "62e9150873ca9d18bcee9970236344313df7a249e3fb3d959b2541f9c5f21e7e",
+            "security": "601198.SH",
+            "period": "2020-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "62e9150873ca9d18bcee9970236344313df7a249e3fb3d959b2541f9c5f21e7e",
+                "event_date": "2021-07-06",
+                "data": {
+                  "report_date": "2020-12-31",
+                  "announcement_date": "2021-04-22",
+                  "record_date": "2021-07-05",
+                  "ex_date": "2021-07-06",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.17",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.558",
+                  "net_assets_per_share": "7.668",
+                  "capital_reserve_per_share": "3.5396",
+                  "retained_profit_per_share": "1.5331"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "6f790f5487411ebdb00fdc3a7a5fcee5a5c865cfe3671e26bf7caa6cedc21392",
+            "security": "601059.SH",
+            "period": "2022-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601059",
+                "name": "信达证券",
+                "record_key": "6f790f5487411ebdb00fdc3a7a5fcee5a5c865cfe3671e26bf7caa6cedc21392",
+                "event_date": "2023-08-18",
+                "data": {
+                  "report_date": "2022-12-31",
+                  "announcement_date": "2023-03-14",
+                  "record_date": "2023-08-17",
+                  "ex_date": "2023-08-18",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.044",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.42",
+                  "net_assets_per_share": "4.69",
+                  "capital_reserve_per_share": "0.6028",
+                  "retained_profit_per_share": "2.0266"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "706d1926dfd3b0a70148876fd69c7799841733584877cdb2fe963a4d02a3a343",
+            "security": "601198.SH",
+            "period": "2019-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "706d1926dfd3b0a70148876fd69c7799841733584877cdb2fe963a4d02a3a343",
+                "event_date": "2020-07-23",
+                "data": {
+                  "report_date": "2019-12-31",
+                  "announcement_date": "2020-04-30",
+                  "record_date": "2020-07-22",
+                  "ex_date": "2020-07-23",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.14",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.443",
+                  "net_assets_per_share": "7.3578",
+                  "capital_reserve_per_share": "3.5396",
+                  "retained_profit_per_share": "1.3302"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "7ec9b707d0ac3696ee5f76e75124742c477a2d0e7e8a6248696564a1cade480b",
+            "security": "601198.SH",
+            "period": "2015-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "7ec9b707d0ac3696ee5f76e75124742c477a2d0e7e8a6248696564a1cade480b",
+                "event_date": "2016-06-28",
+                "data": {
+                  "report_date": "2015-12-31",
+                  "announcement_date": "2016-03-05",
+                  "record_date": "2016-06-27",
+                  "ex_date": "2016-06-28",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.25",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.844",
+                  "net_assets_per_share": "5.4253",
+                  "capital_reserve_per_share": "2.116",
+                  "retained_profit_per_share": "1.3237"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "832a5350df4add25fc4c54fe0bfa1912058fca459af7f2d1338fc3de753e509b",
+            "security": "301139.SZ",
+            "period": "2023-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SZ",
+                "code": "301139",
+                "name": "元道退",
+                "record_key": "832a5350df4add25fc4c54fe0bfa1912058fca459af7f2d1338fc3de753e509b",
+                "event_date": "2024-06-28",
+                "data": {
+                  "report_date": "2023-12-31",
+                  "announcement_date": "2024-04-25",
+                  "record_date": "2024-06-27",
+                  "ex_date": "2024-06-28",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.057",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.57",
+                  "net_assets_per_share": "15.6595",
+                  "capital_reserve_per_share": "10.2278",
+                  "retained_profit_per_share": "3.9981"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "886f75106ad8d5396af6654947097f6ea9310426920dc646b105c056fbdfd91f",
+            "security": "000528.SZ",
+            "period": "2026-06-30",
+            "in_pool": true,
+            "source_contains": false,
+            "same_period_security": [
+              {
+                "market": "SZ",
+                "code": "000528",
+                "name": "柳    工",
+                "record_key": "9e6e197c5a00b317009bde5f5be21954a546b03dcca8ac8a64d4b027956b4bde",
+                "event_date": "2026-10-22",
+                "data": {
+                  "report_date": "2026-06-30",
+                  "announcement_date": "2026-08-27",
+                  "record_date": "2026-10-21",
+                  "ex_date": "2026-10-22",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.0542207",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.5222",
+                  "net_assets_per_share": "9.2194",
+                  "capital_reserve_per_share": "3.282",
+                  "retained_profit_per_share": "4.8614"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "9020b830338928ff0dc583233df1819ba4b5edfcb9be89e6f1e98d20bb54c289",
+            "security": "301232.SZ",
+            "period": "2026-06-30",
+            "in_pool": true,
+            "source_contains": false,
+            "same_period_security": [
+              {
+                "market": "SZ",
+                "code": "301232",
+                "name": "飞沃科技",
+                "record_key": "da011b4f14ead5e5f9e89bdea70725256ae39ca978a8be3d8f210d4e04eade68",
+                "event_date": "2026-10-21",
+                "data": {
+                  "report_date": "2026-06-30",
+                  "announcement_date": "2026-08-28",
+                  "record_date": "2026-10-20",
+                  "ex_date": "2026-10-21",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.0998841",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.06",
+                  "net_assets_per_share": "13.2902",
+                  "capital_reserve_per_share": "9.4301",
+                  "retained_profit_per_share": "2.82"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "9f226fca5516242b26500c8b01439cbdf89251a5bdf1bb29cad31962ed62e0d1",
+            "security": "601198.SH",
+            "period": "2022-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "9f226fca5516242b26500c8b01439cbdf89251a5bdf1bb29cad31962ed62e0d1",
+                "event_date": "2023-08-18",
+                "data": {
+                  "report_date": "2022-12-31",
+                  "announcement_date": "2023-03-31",
+                  "record_date": "2023-08-17",
+                  "ex_date": "2023-08-18",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.05",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.16",
+                  "net_assets_per_share": "8.059",
+                  "capital_reserve_per_share": "4.2574",
+                  "retained_profit_per_share": "1.2771"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "9f88d2a4cb9baebaa3a952400879f9d6fbefb9c13688972a32098e0fedde42d9",
+            "security": "000403.SZ",
+            "period": "2026-06-30",
+            "in_pool": true,
+            "source_contains": false,
+            "same_period_security": [
+              {
+                "market": "SZ",
+                "code": "000403",
+                "name": "派林生物",
+                "record_key": "25783f4ddb73dfc1541d5af6b79a7702400392a9245266f2290f71c7112dc567",
+                "event_date": "2026-10-23",
+                "data": {
+                  "report_date": "2026-06-30",
+                  "announcement_date": "2026-08-24",
+                  "record_date": "2026-10-22",
+                  "ex_date": "2026-10-23",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.1500687",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.09",
+                  "net_assets_per_share": "8.4767",
+                  "capital_reserve_per_share": "4.7758",
+                  "retained_profit_per_share": "2.6356"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "a5902b77eec08a73fbef9815f4c887992aababbdd27b39f6578d75ce0c64e4f5",
+            "security": "601198.SH",
+            "period": "2025-06-30",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "a5902b77eec08a73fbef9815f4c887992aababbdd27b39f6578d75ce0c64e4f5",
+                "event_date": "2025-10-15",
+                "data": {
+                  "report_date": "2025-06-30",
+                  "announcement_date": "2025-08-27",
+                  "record_date": "2025-10-14",
+                  "ex_date": "2025-10-15",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.076",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.253",
+                  "net_assets_per_share": "9.0062",
+                  "capital_reserve_per_share": "4.2574",
+                  "retained_profit_per_share": "1.6813"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "b168fe4f3ec3783d658cea56ab2db74bca3e19c26e16a16081f585c0357f75ff",
+            "security": "601198.SH",
+            "period": "2017-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "b168fe4f3ec3783d658cea56ab2db74bca3e19c26e16a16081f585c0357f75ff",
+                "event_date": "2018-08-09",
+                "data": {
+                  "report_date": "2017-12-31",
+                  "announcement_date": "2018-04-27",
+                  "record_date": "2018-08-08",
+                  "ex_date": "2018-08-09",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.15",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.475",
+                  "net_assets_per_share": "6.9685",
+                  "capital_reserve_per_share": "3.5396",
+                  "retained_profit_per_share": "1.4302"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "b24ccc34ef9eb3ca3f965976fc07306d7c6300ead121862f994fe5719806d90c",
+            "security": "601198.SH",
+            "period": "2018-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "b24ccc34ef9eb3ca3f965976fc07306d7c6300ead121862f994fe5719806d90c",
+                "event_date": "2019-07-19",
+                "data": {
+                  "report_date": "2018-12-31",
+                  "announcement_date": "2019-04-27",
+                  "record_date": "2019-07-18",
+                  "ex_date": "2019-07-19",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.11",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.366",
+                  "net_assets_per_share": "7.1214",
+                  "capital_reserve_per_share": "3.5396",
+                  "retained_profit_per_share": "1.5057"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "c28589a3a6412965621af7a29923613bfc0e5c96f513b5620ba8745f3e71400c",
+            "security": "601198.SH",
+            "period": "2025-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "c28589a3a6412965621af7a29923613bfc0e5c96f513b5620ba8745f3e71400c",
+                "event_date": "2026-07-28",
+                "data": {
+                  "report_date": "2025-12-31",
+                  "announcement_date": "2026-03-31",
+                  "record_date": "2026-07-27",
+                  "ex_date": "2026-07-28",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.09",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.647",
+                  "net_assets_per_share": "9.355",
+                  "capital_reserve_per_share": "4.2539",
+                  "retained_profit_per_share": "1.7989"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "cdf607bda0e1504ea3d27ec578ae47c763bea315d094ca92196cd8d8f3d2140f",
+            "security": "601059.SH",
+            "period": "2023-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601059",
+                "name": "信达证券",
+                "record_key": "cdf607bda0e1504ea3d27ec578ae47c763bea315d094ca92196cd8d8f3d2140f",
+                "event_date": "2024-08-21",
+                "data": {
+                  "report_date": "2023-12-31",
+                  "announcement_date": "2024-03-27",
+                  "record_date": "2024-08-20",
+                  "ex_date": "2024-08-21",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.046",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.46",
+                  "net_assets_per_share": "5.4761",
+                  "capital_reserve_per_share": "1.2384",
+                  "retained_profit_per_share": "2.1002"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "cefc7f616b969edca687109db4ef2272af558960ea5b27a2cf961e24dee37bf6",
+            "security": "301139.SZ",
+            "period": "2022-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SZ",
+                "code": "301139",
+                "name": "元道退",
+                "record_key": "cefc7f616b969edca687109db4ef2272af558960ea5b27a2cf961e24dee37bf6",
+                "event_date": "2023-07-04",
+                "data": {
+                  "report_date": "2022-12-31",
+                  "announcement_date": "2023-04-26",
+                  "record_date": "2023-07-03",
+                  "ex_date": "2023-07-04",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.104",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "1.21",
+                  "net_assets_per_share": "15.1936",
+                  "capital_reserve_per_share": "10.2278",
+                  "retained_profit_per_share": "3.5876"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "d367872ecfbae6d86d887096a1308186b5136185084fffd2640ec769c15077d7",
+            "security": "601198.SH",
+            "period": "2014-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "d367872ecfbae6d86d887096a1308186b5136185084fffd2640ec769c15077d7",
+                "event_date": "2015-06-17",
+                "data": {
+                  "report_date": "2014-12-31",
+                  "announcement_date": "2015-03-31",
+                  "record_date": "2015-06-16",
+                  "ex_date": "2015-06-17",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.16",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0",
+                  "net_assets_per_share": "0",
+                  "capital_reserve_per_share": "0",
+                  "retained_profit_per_share": "0"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "d8995f00761ef57586c76aa7c2ef0262954aff242c8061143cd8cd8141d3b7b4",
+            "security": "000498.SZ",
+            "period": "2026-06-30",
+            "in_pool": true,
+            "source_contains": false,
+            "same_period_security": [
+              {
+                "market": "SZ",
+                "code": "000498",
+                "name": "山东路桥",
+                "record_key": "4e27bcb850e20a7ca18a767e808f50416a6b99731de0e9460fd6512ee1a92d80",
+                "event_date": "2026-10-22",
+                "data": {
+                  "report_date": "2026-06-30",
+                  "announcement_date": "2026-08-26",
+                  "record_date": "2026-10-21",
+                  "ex_date": "2026-10-22",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.0264499",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.3447",
+                  "net_assets_per_share": "11.6129",
+                  "capital_reserve_per_share": "0.8441",
+                  "retained_profit_per_share": "8.8205"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "d905b538825fbc52f9554e1a783bf8a0f6a81226b097cf66d3189549d3e954ce",
+            "security": "002475.SZ",
+            "period": "2026-06-30",
+            "in_pool": true,
+            "source_contains": false,
+            "same_period_security": [
+              {
+                "market": "SZ",
+                "code": "002475",
+                "name": "立讯精密",
+                "record_key": "bd3b20e1802fc42e56222004419fd7a371438ffb424d4407de6e6de70d199cd0",
+                "event_date": "2026-10-22",
+                "data": {
+                  "report_date": "2026-06-30",
+                  "announcement_date": "2026-08-25",
+                  "record_date": "2026-10-21",
+                  "ex_date": "2026-10-22",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.1099231",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "1.0774",
+                  "net_assets_per_share": "12.7244",
+                  "capital_reserve_per_share": "1.8272",
+                  "retained_profit_per_share": "10.04"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "da4260db76d1654e741d2fdba6534c9a488397b97a43cf2daa2cb2a6092aa27e",
+            "security": "601198.SH",
+            "period": "2024-06-30",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601198",
+                "name": "东兴证券",
+                "record_key": "da4260db76d1654e741d2fdba6534c9a488397b97a43cf2daa2cb2a6092aa27e",
+                "event_date": "2024-10-15",
+                "data": {
+                  "report_date": "2024-06-30",
+                  "announcement_date": "2024-08-28",
+                  "record_date": "2024-10-14",
+                  "ex_date": "2024-10-15",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.054",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.178",
+                  "net_assets_per_share": "8.5199",
+                  "capital_reserve_per_share": "4.2574",
+                  "retained_profit_per_share": "1.4636"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "f91ac09a617ff4c7d2abaaf873989efbf4f5e01728f630cc1187d9e0a10fb7b2",
+            "security": "601059.SH",
+            "period": "2024-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601059",
+                "name": "信达证券",
+                "record_key": "f91ac09a617ff4c7d2abaaf873989efbf4f5e01728f630cc1187d9e0a10fb7b2",
+                "event_date": "2025-08-15",
+                "data": {
+                  "report_date": "2024-12-31",
+                  "announcement_date": "2025-03-26",
+                  "record_date": "2025-08-14",
+                  "ex_date": "2025-08-15",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.027",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.41",
+                  "net_assets_per_share": "5.954",
+                  "capital_reserve_per_share": "1.2372",
+                  "retained_profit_per_share": "2.3046"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "f97fd8f2527bef3de5ef3b3793d66c3d0e7b758ace2ef60de4f87cf1129ea36a",
+            "security": "601059.SH",
+            "period": "2024-06-30",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SH",
+                "code": "601059",
+                "name": "信达证券",
+                "record_key": "f97fd8f2527bef3de5ef3b3793d66c3d0e7b758ace2ef60de4f87cf1129ea36a",
+                "event_date": "2024-10-25",
+                "data": {
+                  "report_date": "2024-06-30",
+                  "announcement_date": "2024-08-28",
+                  "record_date": "2024-10-24",
+                  "ex_date": "2024-10-25",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.037",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.19",
+                  "net_assets_per_share": "5.6447",
+                  "capital_reserve_per_share": "1.2384",
+                  "retained_profit_per_share": "2.1817"
+                }
+              }
+            ]
+          },
+          {
+            "record_key": "fcac3a4e67eaae79b98b0fe42e7cd17d669368bf4cd4f737890cef3561dc5b14",
+            "security": "301139.SZ",
+            "period": "2024-12-31",
+            "in_pool": false,
+            "source_contains": true,
+            "same_period_security": [
+              {
+                "market": "SZ",
+                "code": "301139",
+                "name": "元道退",
+                "record_key": "fcac3a4e67eaae79b98b0fe42e7cd17d669368bf4cd4f737890cef3561dc5b14",
+                "event_date": "2025-07-09",
+                "data": {
+                  "report_date": "2024-12-31",
+                  "announcement_date": "2025-04-29",
+                  "record_date": "2025-07-08",
+                  "ex_date": "2025-07-09",
+                  "bonus_per_share": "0",
+                  "transfer_per_share": "0",
+                  "cash_per_share": "0.035",
+                  "total_bonus_per_share": "0",
+                  "status": "实施方案",
+                  "tax_basis": "含税",
+                  "earnings_per_share": "0.35",
+                  "net_assets_per_share": "15.9509",
+                  "capital_reserve_per_share": "10.2278",
+                  "retained_profit_per_share": "4.2537"
+                }
+              }
+            ]
+          }
+        ],
+        "additional_issues": {
+          "source_count": 6542,
+          "source_digest": "31d626d24950f5b915cddd4ba3dab6c3971c0afb0639ec12953e1ca326bad6a7",
+          "retained": []
+        }
+      },
+      "suspensions": {}
+    }
+  },
+  "errors": [
+    {
+      "stage": "verification",
+      "message": "'str' object has no attribute 'isoformat'",
+      "type": "AttributeError"
+    }
+  ],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4"
+  },
+  "subject": "business-integrity-source-diagnosis",
+  "selection": {
+    "selected": [],
+    "random": [],
+    "fixed": [],
+    "random_count": 0,
+    "non_stock_scope": {
+      "unit": "original_failure_units",
+      "reason": "B1 two fixed securities; B2 original46; B3 retained keys/periods; B4 two full days; diagnosis only",
+      "fixed": []
+    }
+  },
+  "source_sha256": "8fe5c5cdeb67de37d2d151f7264c9a6d07a176c979aac36f2d6ebb9ead4972e9",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "verification_scope": "proxy_pipeline",
+  "routing_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false
+  },
+  "sample_30_applicable": false,
+  "policy_snapshot_digest": "3c4fdd69a54195d23380f748df719843aa1114e4614e270704261a85a01cdcdb",
+  "acceptance_complete": false,
+  "storage": {
+    "database": "empire_verify_ths_fe9f621c27a64463846377d4c34cde2d_test",
+    "namespace": "empire:test:verify_ths:fe9f621c27a64463846377d4c34cde2d",
+    "run_id": "fe9f621c27a64463846377d4c34cde2d",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "3a1f1166038b13b0e57456da47b3e650ede82759c3e5b1572dce15da1fd3fbe3"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

@@ -41,6 +41,8 @@ id、project_id、created_at、version、stage、error、request_url、status_co
 | original_sha256 | 完整读取时原始内容的 SHA-256；未完整读取为空，不能把前缀摘要当作完整摘要。 |
 | sample_sha256 | 最终脱敏样本的 SHA-256，与原文摘要含义不同。 |
 
+停复牌跨来源日期的同身份内容冲突在 metadata.conflict 中附 identity、source_dates 和 fields（每个差异字段的前后值）。该对象沿用公共元数据的深度、节点、文本及 8 KiB 序列化上限；超限明确截断。它是冲突诊断，不是成功响应存档或历史字段补录。旧记录缺少该对象时仍未知，不能从后续成功响应还原旧差异。
+
 ## 读写与关联
 
 最新在首，确定 ID 替换同记录；与 errors-revision 原子更新。修复先登记项目/ID，先修复并验证，再按确切 ID 清理并记结果，保留并发新增和未解决项。
