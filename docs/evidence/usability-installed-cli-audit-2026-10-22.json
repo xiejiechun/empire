@@ -1,0 +1,113 @@
+{
+  "at": "2026-10-21T17:03:35.454683+00:00",
+  "release_id": "a62017f2868244ffb86e4bf2c7dd7f02",
+  "executable_sha256": "9a89eee2b4da1b2be09346d251272e6f3c16269fe295931100a847fbf6cedc43",
+  "cwd": "C:\\Windows",
+  "runs": [
+    {
+      "command": [
+        "D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "doctor"
+      ],
+      "exit_code": 0,
+      "log": "build\\usability-20261021\\connections-installed.log",
+      "log_sha256": "624b890bfe9fef928e86ad6bfb8ef2e1d55c7ed696f2ee9e5d2662916da6d93d"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\dist\\Empire\\Empire.exe",
+        "doctor",
+        "--project",
+        "tdx-suspensions",
+        "--error-id",
+        "38622b7215a44fe4a5224031bdf4d963",
+        "--security",
+        "603517.SH",
+        "--date",
+        "2026-10-19"
+      ],
+      "exit_code": 2,
+      "log": "build\\usability-20261021\\suspension-project-installed.log",
+      "log_sha256": "a233bf932f54c501c5a5411087ef2ef8d9ade887cfbe4d4d843029cde7f2a860"
+    }
+  ],
+  "connections": {
+    "redis": {
+      "connected": true,
+      "version": "8.6.3",
+      "aof_enabled": 0,
+      "maxmemory_policy": "noeviction",
+      "used_memory": 38600948,
+      "maxmemory": 68719476736,
+      "required_commands": true,
+      "namespace": "empire:dev"
+    },
+    "mysql": {
+      "connected": true,
+      "version": "8.4.9",
+      "database": "empire",
+      "port": 3307,
+      "tables": [
+        "additional_issue",
+        "app_setting",
+        "balance_statement",
+        "capital_encumbrance",
+        "capital_equity_position",
+        "capital_equity_summary",
+        "capital_funding",
+        "capital_ipo",
+        "capital_project",
+        "capital_release",
+        "capital_transaction",
+        "cashflow_statement",
+        "collection_state",
+        "dividend_plan",
+        "earnings_disclosure",
+        "earnings_forecast",
+        "earnings_quick",
+        "earnings_report",
+        "finance_news",
+        "holder_member",
+        "holder_report",
+        "income_statement",
+        "index_daily_price",
+        "index_price_year",
+        "industry",
+        "industry_member",
+        "restricted_share_unlock",
+        "restricted_share_unlock_detail",
+        "restricted_share_unlock_industry",
+        "rights_issue",
+        "router_device",
+        "router_proxy_auth",
+        "router_runtime_config",
+        "router_schema_version",
+        "security_code_alias",
+        "security_listing_event",
+        "security_name_change",
+        "security_st_event",
+        "shareholder_change",
+        "shareholder_count",
+        "stock",
+        "stock_daily_quote",
+        "stock_daily_quote_level",
+        "stock_index",
+        "stock_index_member",
+        "stock_intraday_trade_block",
+        "stock_intraday_trend",
+        "stock_large_order_trend",
+        "stock_listing",
+        "stock_market_day",
+        "stock_minute_entrust",
+        "stock_minute_volume",
+        "stock_opening_auction",
+        "stock_repurchase_plan",
+        "suspension_event",
+        "suspension_source_date",
+        "trade_calendar",
+        "trading_rule_citation",
+        "trading_rule_value"
+      ]
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "started_at": "2026-10-21T17:35:04.757172+00:00",
+  "record_kind": "actual_final_document_checks",
+  "steps": [
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/documentation_contract.py",
+        "review",
+        "--note",
+        "按用途范围专项最终结案审阅：核对资本精确单元与日期投影、预案实施防双计和历史修订信号限制；同包桌面四种结果及实际证据时间可见，停复牌盘前失败与最近已结束日真实恢复分开；原B1至B4失败、45历史键和确切错误ID保留。结案仅更新账本与脱敏证据，不改变已发布产品正文或包身份。"
+      ],
+      "exit_code": 0,
+      "log": "build/usability-20261021/closure-check-1.log",
+      "sha256": "c5f35856a6eef07c7a8eb73bf787f7cfc7ff28c1814edd0a01c109d5f1bd60cf"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/documentation_contract.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "log": "build/usability-20261021/closure-check-2.log",
+      "sha256": "c5f35856a6eef07c7a8eb73bf787f7cfc7ff28c1814edd0a01c109d5f1bd60cf"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/documentation_build.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "log": "build/usability-20261021/closure-check-3.log",
+      "sha256": "8367353e54b3d9b9cb2a26c4aac3ce4ede1eba1d6d93386517e857319b5a807d"
+    },
+    {
+      "command": [
+        "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+        "scripts/verify_documentation.py"
+      ],
+      "exit_code": 1,
+      "log": "build/usability-20261021/closure-check-4.log",
+      "sha256": "492905338b6954d50de7eab95ceae1ab28ba3c81f21b9ae44a262335ea8b0ba2"
+    }
+  ],
+  "finished_at": "2026-10-21T17:35:18.875249+00:00",
+  "completed_steps": 4,
+  "failed_steps": [
+    4
+  ]
+}

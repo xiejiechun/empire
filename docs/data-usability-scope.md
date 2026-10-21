@@ -43,7 +43,7 @@
 
 ## 执行记录
 
-当前：已实现、领域153项和隔离集成72项通过，静态/文档检查通过；未发布、未桌面验收。来源/解析与业务表无变更，无旧正式入口退役；原preparation_check升级接收既定范围，原全范围检查仍是同一入口的未选证券分支。
+当前（2026-10-22）：**本专项已实现、正式发布及同包真实桌面验收**。领域153项、隔离集成72项和正式全量4005项通过，5项既有opt-in检查未执行；逐项结果见下表和[同包结案报告](evidence/usability-closure-2026-10-22.md)。这不代表全历史业务数据通过。来源/解析与业务表无变更，无旧正式入口退役；原preparation_check升级接收既定范围，原全范围检查仍是同一入口的未选证券分支。
 
 装配的原baseline/order baseline不重建。新功能明确改变资本三项scoped和cache_revision、停复牌cache_revision及复权两项cache_revision，共9个声明字段；在assembly-feature-changes.json逐项写明原值、新值、设计和独立测试。装配比较仅支持这两类preparation字段的精确差异，失配、重复、未解释身份/顺序变化继续拒绝；完整发布仍运行所有测试。路径迁移清单不承载语义变更，冻结release_lock、性能协议/工具/历史基线/阈值不动。
 
@@ -51,15 +51,21 @@
 
 | 验收 | 当前状态、实际结果与限制 | 证据 |
 | --- | --- | --- |
-| U1～U4 | 开发通过；完整单元精确匹配才能日期投影，证券外未知不阻断，缺行/同数异键/内容损坏/无证明空集仍失败 | [153领域与72隔离命令/退出码](evidence/usability-development-2026-10-21.json) |
-| U5 | 开发通过；六原证券各保留预案与实施，正式键/状态/金额/除息日逐条可查；计算排除预案，歧义拒绝，未实现股息率与现金收益 | [正式查询原始记录](evidence/usability-formal-audit-2026-10-21.json) |
-| U6 | 开发通过；historical_signal仍阻断，缺稳定事件关联和逐修订真实可用日，不能套最早预案日期 | 同上及领域反例 |
-| U7～U8 | 开发通过；盘前仍失败、可信摘要可补同范围时间，过期/失配/超前/离线回SQL；生产13:40原失败保留，真实正常回查恢复待同包验证 | 领域/隔离归档反例及正式审计 |
-| U9 | 当前只读审计通过；45原历史键存在，确切B4错误ID仍在；B1/B2原证据hash保留且无新请求；完整资本原失败独立保留 | 正式审计old_keys/immutable_originals/b4_error_present |
+| U1 | 已验收；000001在2026-01-01～10-20三资本完整单元精确匹配，其他证券未知不阻断；未选证券的全历史分红/增发仍失败 | [153领域与72隔离命令/退出码](evidence/usability-development-2026-10-21.json)、[含可选摘要的生产正式审计](evidence/usability-optional-formal-audit-2026-10-22.json) |
+| U2 | 已验收阻断行为；600938分红及001228未知增发继续失败，不能以日期内看似正常记录替代完整单元证明 | 同上及[同包真实桌面](evidence/usability-closure-2026-10-22.md) |
+| U3 | 已验收；同数异键、同键异内容和损坏存储摘要反例均失败，隔离SQL经原正式入口复核 | 领域test_unit_must_match_keys_and_content_before_date_filter、隔离test_scope_proofs_ignore_other_history_but_never_missing_required_records |
+| U4 | 已验收；仅经完整单元证明的空日期投影通过；无证明空集仍失败，生产不填零、不造空数据 | 领域test_proven_empty_date_projection_ignores_other_security_unknown及正式全量门禁 |
+| U5 | 已验收防双计；六原证券预案与实施的精确历史键、状态、金额及除息日仍正式可查；预案不计复权，歧义拒绝；股息率/现金收益尚未实现 | [原SQL审计](evidence/usability-formal-audit-2026-10-21.json)、[新只读审计](evidence/usability-optional-formal-audit-2026-10-22.json)和计算反例 |
+| U6 | 已验收限制呈现；000001同范围数据条件满足时，historical_signal仍因temporal来源契约缺失阻断，同包显示“来源受限” | 新只读审计scopes/historical_signal、同包桌面记录 |
+| U7 | 已验收恢复；13:40原失败保留；同包正常回查后满足10-21 15:30目标，第三轮热重复SQLstate完全不变，可信摘要时间真实推进。不是10-22收盘后证明 | [原盘前快照](evidence/usability-suspension-before-2026-10-22.json)、[热重复快照](evidence/usability-suspension-after3-2026-10-22.json)、CLI实际退出码及结案报告 |
+| U8 | 已验收；过期/失配/旧版/超前/离线回SQL，SQL独立盘后证据可通过，SQL仍盘前则失败；没有停共享Redis来造故障 | 领域test_optional_time_proof_never_extends_dates_or_bypasses_sql、test_sql_post_close_evidence_survives_redis_offline及隔离归档反例 |
+| U9 | 已验收保留；45原历史键存在，确切B4错误ID仍在；B1/B2原证据hash一致且未新请求；原全历史失败保留 | [原证据复算与副本索引](evidence/usability-receipt-index-2026-10-22.json)、[最终保留核对](evidence/usability-post-release-final-2026-10-22.json) |
 | 容量 | 新绑定真实复测通过，源636期/58614行、5580证券，SQL56168行，连续10次查询最大2.6677ms、pending0、638代理；当前源外历史30键与原29键是不同时间快照，均按精确键保留 | [新原始报告](evidence/usability-dividend-capacity-2026-10-21.json) |
-| U10 / 发布 | 未开始；实现尚未正式发布及同包桌面验收，不能按开发通过宣布已交付 | 待唯一发布及桌面记录 |
+| U10 / 发布 | 已验收；唯一正式门禁exit0，包绑定干净dd86f9c；真实桌面核对未检查、通过、检查失败、来源受限及用途/范围/时间/满足/限制；新说明可读，正常关开后工作台可见 | [2019输入/58保留输出/25步骤审计](evidence/usability-release-audit-2026-10-22.json)、[真实桌面原观察](evidence/usability-desktop-observations-2026-10-22.json)、结案报告 |
 
-生产范围审计抽取9只明确证券（000001、600000、600938、000528、301232、000403、000498、002475、001228），三资本项目均经正式preparation_check与list_events，只读、无来源请求。部分完整证券单元可精确匹配，但10-16证据超三日仍时效失败；六分红差异与001228未知详情继续阻断。此审计不宣称全历史可用。源码身份前后核对一致，查询各范围分时读取，不冒充生产全库原子快照。
+生产范围审计抽取9只明确证券（000001、600000、600938、000528、301232、000403、000498、002475、001228），三资本项目均经正式preparation_check与list_events，只读、无来源请求。早期只SQL审计中部分完整单元匹配，但10-16证据超三日仍时效失败，原报告不改；后续显式启用既有可选Redis能力的只读审计取得匹配摘要10-21T05:40:05.472355Z（配股.479414），000001三项满足分析条件，600000分红/增发满足、配股失败。六分红差异及001228未知增发继续阻断。全范围分红、增发仍失败；配股当次全范围通过，不扩写为全历史资本均失败或均通过。源码身份前后核对一致，各范围分时读取，不冒充生产全库原子快照，不是新实采。
 
 
 首次正式门禁 `a0068799a0fd43e7ab3ed754848861c0` exit1：4001通过、4失败、5既有opt-in跳过，未切换包。4项失败均来自test_release_steps对装配命令精确断言漏同步新feature-changes参数；补齐原断言参数，不删除失败测试，不放宽身份、顺序或发布门禁。[首次失败原回执](evidence/usability-release-attempt1-2026-10-22.json)保留；修复后重新执行完整唯一门禁。
+
+正式发布`a62017f2868244ffb86e4bf2c7dd7f02`已完成：干净提交`dd86f9c07e886ac4dffad1bcd09d94b83d5086a3`，全量4005 passed / 5既有opt-in skipped / 20 warnings，2803.56秒；冻结保护文件、协议、性能工具/基线/阈值未修改。最终两份config、插件偏好及48项保存设置保持，生产UUID不变、global pending0；13348私有实例核实UUID和四系统库/无其他客户端后SQL SHUTDOWN正常关闭。包内实现身份与随后纯证据结案提交分别记录，结案不重打包。适用验收、实际命令/退出码、辅助失败和仍受限范围集中在[结案报告](evidence/usability-closure-2026-10-22.md)。

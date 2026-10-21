@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "D:\project\empire\build\usability-20261021\audit_release.py", line 83, in <module>
+    main()
+  File "D:\project\empire\build\usability-20261021\audit_release.py", line 36, in main
+    assert sha(ROOT / 'Empire.lnk') == journal['shortcut']['candidate_sha256']
+                                       ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
