@@ -1,0 +1,2489 @@
+{
+  "run_id": "9d2a16dbc72641528d5cb82a2a2497bb",
+  "checked_at": "2026-10-22T18:34:30.499613+00:00",
+  "passed": true,
+  "source_sha256": "a8036d54b37e9a10bbd2a1ad536e4d40115a7655e7adaa3cbf1b5af8fdb335c2",
+  "strict_proxy_verified": true,
+  "sample_30_met": true,
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  },
+  "raw_report": {
+    "path": "build\\tdx-lhb-research\\source-4.json",
+    "sha256": "fbd026cdb01efbccc874ec02adc260c238e4b98a914e2e071485286213c38764"
+  },
+  "sampling": {
+    "algorithm": "python.random.Random.sample on sorted unified_code pool",
+    "seed": 20261023,
+    "pool_digest": "4766dcfce15add9aa1cf608b090f2274903e16d6c99097468f938829c193c361",
+    "random": [
+      "300621.SZ",
+      "300718.SZ",
+      "300174.SZ",
+      "603779.SH",
+      "301669.SZ",
+      "300516.SZ",
+      "688101.SH",
+      "600133.SH",
+      "000650.SZ",
+      "600583.SH",
+      "002103.SZ",
+      "600498.SH",
+      "300194.SZ",
+      "301135.SZ",
+      "301571.SZ",
+      "300993.SZ",
+      "688256.SH",
+      "300676.SZ",
+      "688135.SH",
+      "600006.SH",
+      "000913.SZ",
+      "688048.SH",
+      "600545.SH",
+      "000601.SZ",
+      "002692.SZ",
+      "601231.SH",
+      "688319.SH",
+      "600234.SH",
+      "002728.SZ",
+      "300955.SZ"
+    ],
+    "fixed": [
+      "601139.SH",
+      "000001.SZ"
+    ],
+    "random_count": 30,
+    "pool_count": 5580
+  },
+  "sample_count": 32,
+  "date_count": 1160,
+  "statuses": {
+    "present": 1124,
+    "source_empty": 36
+  },
+  "source_responses": 1192,
+  "routes": {
+    "proxy_requests": 1193
+  },
+  "pending_stream": 0,
+  "network_interruptions": [],
+  "stocks": {
+    "600006.SH": {
+      "dates": 39,
+      "directory_sha256": "ebb02e4e0012ebbe6fa07a9b1134b57d4df8e6a297b94b026d2adeb75214930a",
+      "statuses": {
+        "2024-11-12": "present",
+        "2024-03-19": "present",
+        "2024-03-15": "present",
+        "2024-03-05": "present",
+        "2024-01-24": "present",
+        "2024-01-22": "present",
+        "2023-10-23": "present",
+        "2023-03-07": "present",
+        "2022-06-29": "present",
+        "2022-06-10": "present",
+        "2022-06-09": "present",
+        "2022-06-08": "present",
+        "2022-06-02": "present",
+        "2022-05-31": "present",
+        "2021-03-09": "present",
+        "2020-12-18": "present",
+        "2020-12-15": "present",
+        "2020-12-14": "present",
+        "2020-11-02": "present",
+        "2019-04-11": "present",
+        "2016-06-22": "present",
+        "2016-06-13": "present",
+        "2015-09-02": "present",
+        "2015-08-13": "present",
+        "2015-07-06": "present",
+        "2015-05-15": "present",
+        "2015-05-13": "present",
+        "2014-08-20": "present",
+        "2014-08-14": "present",
+        "2013-12-05": "present",
+        "2013-05-13": "present",
+        "2013-05-10": "present",
+        "2013-01-28": "present",
+        "2012-10-25": "present",
+        "2012-10-24": "present",
+        "2012-02-27": "present",
+        "2009-11-02": "present",
+        "2006-11-13": "present",
+        "2004-03-11": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验420条；必需来源明细缺失日期1"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "600133.SH": {
+      "dates": 63,
+      "directory_sha256": "7df0b036ec488a857dbf944077e5e5cbaa21acd8053858dc7bdef52e494f58fc",
+      "statuses": {
+        "2026-01-14": "present",
+        "2025-10-09": "present",
+        "2024-10-28": "present",
+        "2024-09-12": "present",
+        "2024-07-24": "present",
+        "2023-12-06": "present",
+        "2023-07-03": "present",
+        "2022-04-08": "present",
+        "2021-10-28": "present",
+        "2021-05-14": "present",
+        "2020-08-12": "present",
+        "2020-03-11": "present",
+        "2018-11-06": "present",
+        "2018-08-24": "present",
+        "2018-07-03": "present",
+        "2018-06-29": "present",
+        "2017-09-22": "present",
+        "2017-05-02": "present",
+        "2016-03-28": "present",
+        "2016-01-14": "present",
+        "2015-09-10": "present",
+        "2015-08-31": "present",
+        "2015-08-19": "present",
+        "2015-08-17": "present",
+        "2015-07-06": "present",
+        "2014-12-09": "present",
+        "2013-09-16": "present",
+        "2013-07-25": "present",
+        "2013-03-04": "present",
+        "2013-01-08": "present",
+        "2012-10-31": "present",
+        "2012-08-07": "present",
+        "2012-02-21": "present",
+        "2010-12-28": "present",
+        "2010-12-09": "present",
+        "2010-07-20": "present",
+        "2010-07-19": "present",
+        "2010-03-26": "present",
+        "2010-03-25": "present",
+        "2010-03-02": "present",
+        "2010-02-23": "present",
+        "2010-02-12": "present",
+        "2010-02-08": "present",
+        "2010-01-26": "present",
+        "2010-01-25": "present",
+        "2010-01-21": "present",
+        "2010-01-20": "present",
+        "2010-01-05": "present",
+        "2009-11-20": "present",
+        "2009-05-12": "present",
+        "2008-01-29": "present",
+        "2008-01-25": "present",
+        "2008-01-24": "present",
+        "2008-01-23": "present",
+        "2008-01-22": "present",
+        "2007-10-23": "present",
+        "2007-08-14": "present",
+        "2006-07-11": "source_empty",
+        "2006-03-28": "source_empty",
+        "2005-03-23": "source_empty",
+        "2004-12-29": "source_empty",
+        "2004-04-22": "source_empty",
+        "2004-04-01": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验635条；必需来源明细缺失日期6"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "600234.SH": {
+      "dates": 98,
+      "directory_sha256": "1f29e4bb6cce54c02c0243022b6a1733de357d1f6b77d6ecfc5ad1744295f17a",
+      "statuses": {
+        "2026-05-26": "present",
+        "2026-05-11": "present",
+        "2026-04-22": "present",
+        "2026-04-20": "present",
+        "2025-12-18": "present",
+        "2025-12-17": "present",
+        "2025-12-03": "present",
+        "2025-10-14": "present",
+        "2025-10-13": "present",
+        "2025-08-28": "present",
+        "2025-05-22": "present",
+        "2025-03-17": "present",
+        "2024-12-25": "present",
+        "2024-12-13": "present",
+        "2024-11-15": "present",
+        "2024-11-13": "present",
+        "2024-10-29": "present",
+        "2024-10-08": "present",
+        "2024-08-22": "present",
+        "2024-08-02": "present",
+        "2024-06-14": "present",
+        "2024-05-29": "present",
+        "2024-05-24": "present",
+        "2024-05-20": "present",
+        "2024-05-15": "present",
+        "2024-05-10": "present",
+        "2024-05-07": "present",
+        "2024-04-26": "present",
+        "2024-04-24": "present",
+        "2024-04-23": "present",
+        "2024-03-25": "present",
+        "2024-03-22": "present",
+        "2024-03-21": "present",
+        "2024-02-20": "present",
+        "2024-02-06": "present",
+        "2024-01-08": "present",
+        "2023-12-19": "present",
+        "2023-12-18": "present",
+        "2023-12-15": "present",
+        "2023-04-12": "present",
+        "2022-08-12": "present",
+        "2021-12-24": "present",
+        "2021-12-23": "present",
+        "2021-12-15": "present",
+        "2021-12-14": "present",
+        "2021-05-17": "present",
+        "2021-05-14": "present",
+        "2021-05-13": "present",
+        "2020-08-19": "present",
+        "2018-07-18": "present",
+        "2016-12-28": "present",
+        "2016-05-12": "present",
+        "2016-03-11": "present",
+        "2016-03-10": "present",
+        "2016-03-07": "present",
+        "2016-02-15": "present",
+        "2016-02-03": "present",
+        "2016-01-20": "present",
+        "2015-12-17": "present",
+        "2015-11-20": "present",
+        "2015-11-17": "present",
+        "2015-11-16": "present",
+        "2015-11-13": "present",
+        "2015-11-12": "present",
+        "2015-09-09": "present",
+        "2015-09-02": "present",
+        "2015-07-23": "present",
+        "2015-07-06": "present",
+        "2015-05-28": "present",
+        "2015-04-03": "present",
+        "2015-02-11": "present",
+        "2014-08-15": "present",
+        "2014-08-14": "present",
+        "2014-08-13": "present",
+        "2014-06-12": "present",
+        "2014-06-09": "present",
+        "2014-05-26": "present",
+        "2014-05-14": "present",
+        "2014-05-13": "present",
+        "2014-05-08": "present",
+        "2014-05-07": "present",
+        "2014-04-23": "present",
+        "2013-04-12": "present",
+        "2012-07-31": "present",
+        "2012-05-04": "present",
+        "2012-03-30": "present",
+        "2012-03-12": "present",
+        "2011-12-28": "present",
+        "2011-12-06": "present",
+        "2011-11-30": "present",
+        "2010-11-12": "present",
+        "2009-06-05": "present",
+        "2007-06-07": "present",
+        "2007-05-15": "present",
+        "2007-03-05": "present",
+        "2007-02-09": "present",
+        "2007-01-12": "present",
+        "2002-11-18": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验1077条；必需来源明细缺失日期1"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "600498.SH": {
+      "dates": 22,
+      "directory_sha256": "8c5bcb8f044898ada2a3d1970072334a80e7f1419b2eda947cd3caf31933fe97",
+      "statuses": {
+        "2026-06-26": "present",
+        "2026-05-08": "present",
+        "2026-03-06": "present",
+        "2026-02-27": "present",
+        "2026-01-14": "present",
+        "2025-02-19": "present",
+        "2015-12-30": "present",
+        "2012-06-13": "present",
+        "2011-06-20": "present",
+        "2008-12-24": "present",
+        "2008-05-26": "present",
+        "2008-05-09": "present",
+        "2007-11-12": "present",
+        "2007-11-09": "present",
+        "2007-10-23": "present",
+        "2006-03-07": "source_empty",
+        "2006-01-19": "source_empty",
+        "2005-06-09": "source_empty",
+        "2005-01-12": "source_empty",
+        "2003-10-27": "source_empty",
+        "2002-11-26": "source_empty",
+        "2002-11-04": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验160条；必需来源明细缺失日期7"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "600545.SH": {
+      "dates": 93,
+      "directory_sha256": "95b2b26402e1ccc28f7688c93a80728fb4669c47910ff5e61843742c9bb5ed2d",
+      "statuses": {
+        "2026-07-20": "present",
+        "2026-07-03": "present",
+        "2026-06-30": "present",
+        "2026-06-26": "present",
+        "2026-06-18": "present",
+        "2026-05-26": "present",
+        "2026-05-11": "present",
+        "2026-04-30": "present",
+        "2026-03-20": "present",
+        "2026-03-17": "present",
+        "2026-03-16": "present",
+        "2026-03-11": "present",
+        "2026-03-06": "present",
+        "2026-03-05": "present",
+        "2026-02-25": "present",
+        "2026-02-13": "present",
+        "2026-02-12": "present",
+        "2025-10-10": "present",
+        "2025-09-10": "present",
+        "2025-09-03": "present",
+        "2025-08-29": "present",
+        "2025-07-08": "present",
+        "2025-01-16": "present",
+        "2025-01-14": "present",
+        "2024-12-25": "present",
+        "2024-12-23": "present",
+        "2024-12-20": "present",
+        "2024-12-18": "present",
+        "2024-12-17": "present",
+        "2024-12-11": "present",
+        "2024-12-10": "present",
+        "2024-12-09": "present",
+        "2024-12-06": "present",
+        "2024-12-05": "present",
+        "2024-11-05": "present",
+        "2024-02-08": "present",
+        "2024-02-06": "present",
+        "2023-09-28": "present",
+        "2023-09-27": "present",
+        "2023-09-26": "present",
+        "2023-06-15": "present",
+        "2022-05-05": "present",
+        "2022-04-29": "present",
+        "2022-03-14": "present",
+        "2021-10-18": "present",
+        "2021-07-26": "present",
+        "2021-03-30": "present",
+        "2021-02-04": "present",
+        "2019-11-14": "present",
+        "2019-09-03": "present",
+        "2019-01-21": "present",
+        "2019-01-14": "present",
+        "2018-10-10": "present",
+        "2018-10-09": "present",
+        "2016-12-21": "present",
+        "2016-12-12": "present",
+        "2016-11-25": "present",
+        "2016-11-24": "present",
+        "2016-11-22": "present",
+        "2016-11-21": "present",
+        "2016-11-18": "present",
+        "2015-09-08": "present",
+        "2015-09-07": "present",
+        "2015-08-19": "present",
+        "2015-07-06": "present",
+        "2015-04-01": "present",
+        "2014-04-29": "present",
+        "2014-04-16": "present",
+        "2014-03-31": "present",
+        "2013-09-17": "present",
+        "2012-12-12": "present",
+        "2012-04-16": "present",
+        "2011-08-22": "present",
+        "2010-03-17": "present",
+        "2010-03-12": "present",
+        "2010-02-26": "present",
+        "2010-02-23": "present",
+        "2010-02-22": "present",
+        "2010-02-05": "present",
+        "2010-02-04": "present",
+        "2010-02-03": "present",
+        "2010-01-11": "present",
+        "2010-01-08": "present",
+        "2009-11-06": "present",
+        "2008-12-31": "present",
+        "2008-08-04": "present",
+        "2008-07-08": "present",
+        "2008-07-02": "present",
+        "2007-06-01": "present",
+        "2007-05-23": "present",
+        "2007-04-19": "present",
+        "2007-01-24": "present",
+        "2006-03-29": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验974条；必需来源明细缺失日期1"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "600583.SH": {
+      "dates": 16,
+      "directory_sha256": "d4f3b59afa54927fc68c9b70afd4882caa20cf25e5021e098859e068bc8514f4",
+      "statuses": {
+        "2026-03-03": "present",
+        "2024-03-19": "present",
+        "2023-03-16": "present",
+        "2021-02-04": "present",
+        "2018-05-18": "present",
+        "2018-02-02": "present",
+        "2015-07-06": "present",
+        "2014-01-09": "present",
+        "2011-09-21": "present",
+        "2010-07-28": "present",
+        "2010-07-20": "present",
+        "2008-08-27": "present",
+        "2006-04-19": "source_empty",
+        "2006-01-25": "source_empty",
+        "2006-01-24": "source_empty",
+        "2004-07-15": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验120条；必需来源明细缺失日期4"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "601139.SH": {
+      "dates": 15,
+      "directory_sha256": "8b840b1824a3cbb1f5926414fc49b3263814dfa8489d475d68bc9f90e5b9f37f",
+      "statuses": {
+        "2026-03-03": "present",
+        "2021-09-06": "present",
+        "2021-08-13": "present",
+        "2021-08-05": "present",
+        "2010-10-13": "present",
+        "2010-10-12": "present",
+        "2010-01-07": "present",
+        "2010-01-06": "present",
+        "2010-01-05": "present",
+        "2010-01-04": "present",
+        "2009-12-31": "present",
+        "2009-12-30": "present",
+        "2009-12-29": "present",
+        "2009-12-28": "present",
+        "2009-12-25": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验170条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "601231.SH": {
+      "dates": 39,
+      "directory_sha256": "b2d4b1684b7978c62bc29df07bb82dc6161bfe57bbecdab41bc1ca281d11928f",
+      "statuses": {
+        "2026-08-06": "present",
+        "2026-02-27": "present",
+        "2025-10-27": "present",
+        "2025-10-24": "present",
+        "2023-07-03": "present",
+        "2022-10-27": "present",
+        "2020-10-30": "present",
+        "2020-08-10": "present",
+        "2019-12-20": "present",
+        "2019-12-17": "present",
+        "2019-11-14": "present",
+        "2018-09-13": "present",
+        "2016-09-14": "present",
+        "2016-05-23": "present",
+        "2014-01-03": "present",
+        "2014-01-02": "present",
+        "2013-09-11": "present",
+        "2013-05-22": "present",
+        "2013-05-13": "present",
+        "2012-08-21": "present",
+        "2012-04-06": "present",
+        "2012-03-21": "present",
+        "2012-03-20": "present",
+        "2012-03-15": "present",
+        "2012-03-14": "present",
+        "2012-03-13": "present",
+        "2012-03-12": "present",
+        "2012-03-09": "present",
+        "2012-03-08": "present",
+        "2012-03-07": "present",
+        "2012-03-06": "present",
+        "2012-03-05": "present",
+        "2012-03-02": "present",
+        "2012-03-01": "present",
+        "2012-02-27": "present",
+        "2012-02-23": "present",
+        "2012-02-22": "present",
+        "2012-02-21": "present",
+        "2012-02-20": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验440条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "603779.SH": {
+      "dates": 61,
+      "directory_sha256": "b88932ecac8f16ea0aba0d9a6529d9a13ad2bffd04cc91bdea21e9ed0492d07b",
+      "statuses": {
+        "2026-07-31": "present",
+        "2026-07-24": "present",
+        "2026-07-21": "present",
+        "2026-05-29": "present",
+        "2026-05-26": "present",
+        "2026-05-25": "present",
+        "2026-05-22": "present",
+        "2026-05-21": "present",
+        "2026-05-20": "present",
+        "2026-05-18": "present",
+        "2026-05-14": "present",
+        "2026-05-13": "present",
+        "2025-01-24": "present",
+        "2024-12-09": "present",
+        "2024-01-02": "present",
+        "2023-12-29": "present",
+        "2023-12-28": "present",
+        "2023-12-21": "present",
+        "2023-12-20": "present",
+        "2023-11-09": "present",
+        "2023-11-08": "present",
+        "2023-06-27": "present",
+        "2023-06-26": "present",
+        "2023-06-20": "present",
+        "2023-06-12": "present",
+        "2023-06-08": "present",
+        "2023-06-07": "present",
+        "2023-06-06": "present",
+        "2023-05-12": "present",
+        "2021-12-09": "present",
+        "2021-12-07": "present",
+        "2021-12-03": "present",
+        "2021-08-12": "present",
+        "2021-07-26": "present",
+        "2021-06-04": "present",
+        "2020-07-15": "present",
+        "2019-12-24": "present",
+        "2019-11-27": "present",
+        "2018-05-28": "present",
+        "2017-01-09": "present",
+        "2017-01-05": "present",
+        "2016-12-20": "present",
+        "2016-12-19": "present",
+        "2016-07-07": "present",
+        "2016-06-29": "present",
+        "2016-06-28": "present",
+        "2016-06-22": "present",
+        "2016-06-21": "present",
+        "2016-06-17": "present",
+        "2016-06-16": "present",
+        "2016-06-15": "present",
+        "2016-06-14": "present",
+        "2016-06-13": "present",
+        "2016-06-07": "present",
+        "2016-06-02": "present",
+        "2016-05-30": "present",
+        "2016-05-27": "present",
+        "2016-05-25": "present",
+        "2016-05-23": "present",
+        "2016-05-18": "present",
+        "2016-05-16": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验716条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "688048.SH": {
+      "dates": 15,
+      "directory_sha256": "5f10469c3c19f84676c22c50b877222ffeb03d6a843a4c85a0a2a117d7d752f4",
+      "statuses": {
+        "2026-10-08": "present",
+        "2026-07-17": "present",
+        "2026-06-30": "present",
+        "2026-04-22": "present",
+        "2026-03-10": "present",
+        "2025-12-08": "present",
+        "2025-12-05": "present",
+        "2025-11-26": "present",
+        "2025-11-25": "present",
+        "2025-11-06": "present",
+        "2025-02-07": "present",
+        "2025-01-13": "present",
+        "2024-03-18": "present",
+        "2023-06-15": "present",
+        "2023-05-19": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验170条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "688101.SH": {
+      "dates": 3,
+      "directory_sha256": "fae4aff37cdcf6393f32cdbca2313723de1a5f6072f1ac7b3de252bd2451c49d",
+      "statuses": {
+        "2026-07-13": "present",
+        "2021-07-07": "present",
+        "2020-02-06": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验30条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "688135.SH": {
+      "dates": 13,
+      "directory_sha256": "aebee1066bbc030b6524dc6c3abbbf4be245d3b03614d190e8fda410749f43ff",
+      "statuses": {
+        "2026-04-13": "present",
+        "2025-09-17": "present",
+        "2025-09-01": "present",
+        "2025-05-20": "present",
+        "2025-02-12": "present",
+        "2023-08-30": "present",
+        "2021-10-12": "present",
+        "2021-10-11": "present",
+        "2021-06-08": "present",
+        "2021-06-07": "present",
+        "2021-04-02": "present",
+        "2020-11-19": "present",
+        "2020-11-18": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验130条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "688256.SH": {
+      "dates": 18,
+      "directory_sha256": "a97f24815509de5da69d829a70fbb2141ca0235adcbb6e5d6672351c5b893354",
+      "statuses": {
+        "2026-04-30": "present",
+        "2025-08-22": "present",
+        "2025-08-14": "present",
+        "2025-08-12": "present",
+        "2025-02-21": "present",
+        "2024-10-18": "present",
+        "2024-10-09": "present",
+        "2024-07-16": "present",
+        "2023-10-23": "present",
+        "2023-10-19": "present",
+        "2023-05-26": "present",
+        "2023-04-20": "present",
+        "2023-03-24": "present",
+        "2023-03-22": "present",
+        "2023-03-17": "present",
+        "2022-09-02": "present",
+        "2022-03-15": "present",
+        "2021-01-21": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验200条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "688319.SH": {
+      "dates": 7,
+      "directory_sha256": "638c1880fbfb9bd5816304266bba6940ebdd3a3df9c43cc52330550e91374e80",
+      "statuses": {
+        "2026-07-13": "present",
+        "2026-03-18": "present",
+        "2026-01-16": "present",
+        "2025-08-20": "present",
+        "2025-07-18": "present",
+        "2022-05-13": "present",
+        "2021-06-28": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验80条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "000001.SZ": {
+      "dates": 37,
+      "directory_sha256": "4c2a967f3a0e9d95b718144c011196ffdc93be26d7b48c757d7b619dec970abb",
+      "statuses": {
+        "2024-02-21": "present",
+        "2022-11-29": "present",
+        "2017-07-11": "present",
+        "2015-09-01": "present",
+        "2015-07-13": "present",
+        "2015-07-08": "present",
+        "2015-07-07": "present",
+        "2015-04-10": "present",
+        "2014-11-28": "present",
+        "2013-09-09": "present",
+        "2013-07-11": "present",
+        "2013-03-05": "present",
+        "2013-02-28": "present",
+        "2013-01-28": "present",
+        "2010-09-17": "present",
+        "2009-07-30": "present",
+        "2009-06-15": "present",
+        "2009-02-25": "present",
+        "2008-10-13": "present",
+        "2008-09-16": "present",
+        "2008-03-04": "present",
+        "2007-06-27": "present",
+        "2007-06-25": "present",
+        "2007-06-21": "present",
+        "2007-06-20": "present",
+        "2007-01-05": "present",
+        "2006-11-22": "present",
+        "2006-11-21": "present",
+        "2006-06-13": "source_empty",
+        "2006-06-12": "source_empty",
+        "2006-04-26": "source_empty",
+        "2006-02-21": "source_empty",
+        "2005-10-21": "source_empty",
+        "2005-04-08": "source_empty",
+        "2005-04-07": "source_empty",
+        "2003-04-16": "source_empty",
+        "2003-01-14": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验290条；必需来源明细缺失日期9"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "000601.SZ": {
+      "dates": 62,
+      "directory_sha256": "5d63f96cb4d1f5c74cee23bcd3e862a4cdffdcdee622e3b8d38f3fa851bf496c",
+      "statuses": {
+        "2026-10-14": "present",
+        "2026-07-20": "present",
+        "2026-07-02": "present",
+        "2026-06-03": "present",
+        "2026-05-27": "present",
+        "2026-05-14": "present",
+        "2026-05-13": "present",
+        "2026-03-26": "present",
+        "2026-03-25": "present",
+        "2026-03-24": "present",
+        "2026-03-23": "present",
+        "2026-03-19": "present",
+        "2026-03-09": "present",
+        "2025-07-10": "present",
+        "2025-07-07": "present",
+        "2025-04-29": "present",
+        "2025-04-25": "present",
+        "2025-04-15": "present",
+        "2025-04-02": "present",
+        "2025-03-31": "present",
+        "2025-03-27": "present",
+        "2025-03-25": "present",
+        "2025-03-24": "present",
+        "2025-03-21": "present",
+        "2025-03-20": "present",
+        "2022-07-14": "present",
+        "2022-07-13": "present",
+        "2022-07-11": "present",
+        "2022-06-21": "present",
+        "2022-06-20": "present",
+        "2021-09-28": "present",
+        "2020-07-16": "present",
+        "2020-03-26": "present",
+        "2020-03-24": "present",
+        "2020-03-05": "present",
+        "2020-03-04": "present",
+        "2018-06-25": "present",
+        "2016-02-03": "present",
+        "2015-12-28": "present",
+        "2015-11-18": "present",
+        "2015-11-17": "present",
+        "2015-08-13": "present",
+        "2015-07-28": "present",
+        "2015-07-06": "present",
+        "2015-03-09": "present",
+        "2014-10-29": "present",
+        "2014-09-16": "present",
+        "2014-01-07": "present",
+        "2013-12-30": "present",
+        "2011-11-15": "present",
+        "2011-04-22": "present",
+        "2010-11-15": "present",
+        "2010-11-12": "present",
+        "2010-11-09": "present",
+        "2010-07-16": "present",
+        "2010-07-13": "present",
+        "2010-01-12": "present",
+        "2009-09-29": "present",
+        "2009-04-29": "present",
+        "2007-02-16": "present",
+        "2006-02-23": "source_empty",
+        "2006-01-09": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验650条；必需来源明细缺失日期2"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "000650.SZ": {
+      "dates": 48,
+      "directory_sha256": "efef6ac037ff368d075ccb510b57763a9c77a5bbb73de02b749ec06c82e071d7",
+      "statuses": {
+        "2025-08-21": "present",
+        "2022-12-07": "present",
+        "2021-07-07": "present",
+        "2021-07-05": "present",
+        "2021-06-28": "present",
+        "2021-05-26": "present",
+        "2021-05-25": "present",
+        "2021-05-18": "present",
+        "2021-05-11": "present",
+        "2020-02-03": "present",
+        "2020-01-21": "present",
+        "2019-05-21": "present",
+        "2019-05-16": "present",
+        "2019-05-15": "present",
+        "2019-05-08": "present",
+        "2019-05-07": "present",
+        "2019-04-30": "present",
+        "2019-04-29": "present",
+        "2019-04-22": "present",
+        "2018-08-03": "present",
+        "2018-07-12": "present",
+        "2015-10-23": "present",
+        "2015-09-21": "present",
+        "2015-09-18": "present",
+        "2015-09-16": "present",
+        "2014-11-20": "present",
+        "2014-09-29": "present",
+        "2013-08-26": "present",
+        "2013-03-29": "present",
+        "2012-10-30": "present",
+        "2011-01-21": "present",
+        "2010-10-18": "present",
+        "2009-07-22": "present",
+        "2009-07-21": "present",
+        "2009-04-07": "present",
+        "2008-09-12": "present",
+        "2008-03-05": "present",
+        "2007-07-23": "present",
+        "2007-07-20": "present",
+        "2007-06-08": "present",
+        "2007-06-01": "present",
+        "2007-05-21": "present",
+        "2007-04-03": "present",
+        "2007-04-02": "present",
+        "2007-03-29": "present",
+        "2005-02-04": "source_empty",
+        "2004-08-20": "source_empty",
+        "2004-03-15": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验520条；必需来源明细缺失日期3"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "000913.SZ": {
+      "dates": 44,
+      "directory_sha256": "49f2ac9180c0c12e888acf48d33d0b4f083c02a1e1b1c8a70f7787ca1336f9e5",
+      "statuses": {
+        "2026-04-22": "present",
+        "2024-05-09": "present",
+        "2024-04-19": "present",
+        "2023-04-03": "present",
+        "2023-01-10": "present",
+        "2023-01-09": "present",
+        "2022-05-25": "present",
+        "2021-06-03": "present",
+        "2021-03-22": "present",
+        "2021-01-06": "present",
+        "2020-12-08": "present",
+        "2020-10-14": "present",
+        "2020-09-10": "present",
+        "2020-09-03": "present",
+        "2020-08-21": "present",
+        "2020-06-22": "present",
+        "2020-06-18": "present",
+        "2019-11-06": "present",
+        "2019-11-05": "present",
+        "2018-08-27": "present",
+        "2018-08-24": "present",
+        "2018-08-23": "present",
+        "2018-02-28": "present",
+        "2018-02-26": "present",
+        "2017-12-14": "present",
+        "2017-11-21": "present",
+        "2017-08-24": "present",
+        "2016-04-15": "present",
+        "2016-04-01": "present",
+        "2016-03-31": "present",
+        "2016-03-29": "present",
+        "2015-11-20": "present",
+        "2015-11-18": "present",
+        "2015-11-17": "present",
+        "2015-11-16": "present",
+        "2014-06-26": "present",
+        "2013-05-07": "present",
+        "2012-02-27": "present",
+        "2011-04-26": "present",
+        "2009-12-04": "present",
+        "2009-01-16": "present",
+        "2006-08-14": "present",
+        "2004-10-19": "source_empty",
+        "2003-04-15": "source_empty"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "fail",
+          "measured": "核验447条；必需来源明细缺失日期2"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "fail",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "002103.SZ": {
+      "dates": 79,
+      "directory_sha256": "065fe246f1182bbe0aa0d3c3f962b989cfafa745eb2258d3f97180878eac1130",
+      "statuses": {
+        "2025-06-06": "present",
+        "2025-05-28": "present",
+        "2025-01-15": "present",
+        "2024-12-05": "present",
+        "2024-12-04": "present",
+        "2024-12-03": "present",
+        "2024-11-28": "present",
+        "2024-11-25": "present",
+        "2024-11-21": "present",
+        "2024-01-23": "present",
+        "2024-01-17": "present",
+        "2023-12-28": "present",
+        "2023-12-27": "present",
+        "2023-12-22": "present",
+        "2023-11-27": "present",
+        "2023-11-22": "present",
+        "2023-11-21": "present",
+        "2023-11-17": "present",
+        "2023-02-07": "present",
+        "2023-02-06": "present",
+        "2023-01-16": "present",
+        "2023-01-11": "present",
+        "2022-05-09": "present",
+        "2021-04-12": "present",
+        "2020-06-22": "present",
+        "2020-06-19": "present",
+        "2020-06-18": "present",
+        "2020-06-17": "present",
+        "2020-06-11": "present",
+        "2020-06-10": "present",
+        "2020-06-09": "present",
+        "2020-06-08": "present",
+        "2020-06-05": "present",
+        "2020-06-04": "present",
+        "2020-06-03": "present",
+        "2020-06-02": "present",
+        "2020-05-29": "present",
+        "2020-05-28": "present",
+        "2020-01-03": "present",
+        "2020-01-02": "present",
+        "2019-12-27": "present",
+        "2019-06-26": "present",
+        "2019-05-15": "present",
+        "2019-05-14": "present",
+        "2019-04-04": "present",
+        "2019-01-11": "present",
+        "2019-01-10": "present",
+        "2018-12-05": "present",
+        "2018-12-04": "present",
+        "2018-05-10": "present",
+        "2018-05-09": "present",
+        "2018-05-08": "present",
+        "2018-05-07": "present",
+        "2016-06-24": "present",
+        "2016-06-20": "present",
+        "2016-03-07": "present",
+        "2016-02-26": "present",
+        "2016-02-25": "present",
+        "2016-02-24": "present",
+        "2016-02-23": "present",
+        "2016-02-18": "present",
+        "2015-08-25": "present",
+        "2015-06-03": "present",
+        "2015-05-14": "present",
+        "2015-03-26": "present",
+        "2015-02-17": "present",
+        "2015-01-20": "present",
+        "2014-04-25": "present",
+        "2012-04-05": "present",
+        "2008-08-05": "present",
+        "2008-03-05": "present",
+        "2008-01-08": "present",
+        "2008-01-07": "present",
+        "2008-01-04": "present",
+        "2007-09-05": "present",
+        "2007-01-19": "present",
+        "2007-01-17": "present",
+        "2007-01-11": "present",
+        "2007-01-10": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验1009条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "002692.SZ": {
+      "dates": 47,
+      "directory_sha256": "b37e2c0da8f5f785113e7121204c34bd9b716e17484fd6c9da358c09484754bf",
+      "statuses": {
+        "2026-10-15": "present",
+        "2026-10-14": "present",
+        "2026-10-13": "present",
+        "2026-10-12": "present",
+        "2025-01-24": "present",
+        "2025-01-22": "present",
+        "2025-01-21": "present",
+        "2025-01-09": "present",
+        "2023-11-10": "present",
+        "2023-11-09": "present",
+        "2023-11-08": "present",
+        "2023-11-02": "present",
+        "2022-03-28": "present",
+        "2019-09-27": "present",
+        "2019-09-19": "present",
+        "2019-07-22": "present",
+        "2019-06-18": "present",
+        "2019-06-12": "present",
+        "2019-06-11": "present",
+        "2019-06-10": "present",
+        "2019-01-17": "present",
+        "2019-01-07": "present",
+        "2018-12-26": "present",
+        "2018-11-09": "present",
+        "2018-09-26": "present",
+        "2018-09-25": "present",
+        "2018-09-21": "present",
+        "2018-09-20": "present",
+        "2018-09-19": "present",
+        "2018-09-18": "present",
+        "2018-09-13": "present",
+        "2018-09-12": "present",
+        "2018-09-10": "present",
+        "2018-07-13": "present",
+        "2018-06-25": "present",
+        "2018-05-31": "present",
+        "2018-05-07": "present",
+        "2018-05-04": "present",
+        "2018-05-03": "present",
+        "2016-08-30": "present",
+        "2016-03-15": "present",
+        "2015-06-10": "present",
+        "2012-08-15": "present",
+        "2012-08-13": "present",
+        "2012-08-10": "present",
+        "2012-08-09": "present",
+        "2012-08-08": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验530条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "002728.SZ": {
+      "dates": 79,
+      "directory_sha256": "ceacb5a2bcd89d894f4a86e3a78bb8cf9ed59fca6645abecc9fa2f4b5069763d",
+      "statuses": {
+        "2025-11-28": "present",
+        "2025-11-27": "present",
+        "2025-11-26": "present",
+        "2025-11-17": "present",
+        "2025-11-14": "present",
+        "2025-11-13": "present",
+        "2025-11-12": "present",
+        "2025-11-03": "present",
+        "2025-10-31": "present",
+        "2025-10-27": "present",
+        "2025-10-24": "present",
+        "2025-10-23": "present",
+        "2025-10-22": "present",
+        "2025-10-21": "present",
+        "2024-04-22": "present",
+        "2023-12-05": "present",
+        "2023-12-04": "present",
+        "2023-12-01": "present",
+        "2023-11-30": "present",
+        "2023-11-28": "present",
+        "2023-11-27": "present",
+        "2023-11-24": "present",
+        "2023-10-16": "present",
+        "2023-05-24": "present",
+        "2023-05-23": "present",
+        "2023-04-27": "present",
+        "2023-03-01": "present",
+        "2023-02-28": "present",
+        "2023-02-20": "present",
+        "2023-02-17": "present",
+        "2023-02-16": "present",
+        "2022-12-19": "present",
+        "2022-12-06": "present",
+        "2022-12-01": "present",
+        "2022-11-30": "present",
+        "2022-11-29": "present",
+        "2022-11-28": "present",
+        "2022-11-25": "present",
+        "2022-11-24": "present",
+        "2022-11-22": "present",
+        "2022-11-21": "present",
+        "2022-11-18": "present",
+        "2022-11-17": "present",
+        "2022-11-16": "present",
+        "2022-11-09": "present",
+        "2021-11-19": "present",
+        "2021-11-18": "present",
+        "2021-11-17": "present",
+        "2021-11-16": "present",
+        "2021-05-20": "present",
+        "2021-04-22": "present",
+        "2017-03-22": "present",
+        "2017-03-21": "present",
+        "2017-03-20": "present",
+        "2017-03-17": "present",
+        "2017-03-15": "present",
+        "2016-09-02": "present",
+        "2015-08-31": "present",
+        "2015-08-18": "present",
+        "2015-08-14": "present",
+        "2015-08-12": "present",
+        "2015-04-24": "present",
+        "2015-04-23": "present",
+        "2014-09-12": "present",
+        "2014-09-11": "present",
+        "2014-09-10": "present",
+        "2014-09-03": "present",
+        "2014-09-02": "present",
+        "2014-08-27": "present",
+        "2014-08-20": "present",
+        "2014-08-15": "present",
+        "2014-08-14": "present",
+        "2014-08-13": "present",
+        "2014-08-12": "present",
+        "2014-08-08": "present",
+        "2014-08-07": "present",
+        "2014-08-06": "present",
+        "2014-08-05": "present",
+        "2014-07-31": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验1031条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "300174.SZ": {
+      "dates": 36,
+      "directory_sha256": "0c7844f64df9cc166bdf8af03619f58826a1507d9d75c22fe14b18b1abecb4a1",
+      "statuses": {
+        "2026-05-22": "present",
+        "2020-07-13": "present",
+        "2019-06-11": "present",
+        "2019-06-10": "present",
+        "2019-06-05": "present",
+        "2019-04-08": "present",
+        "2019-04-04": "present",
+        "2019-04-03": "present",
+        "2019-03-27": "present",
+        "2016-12-19": "present",
+        "2016-12-16": "present",
+        "2015-12-21": "present",
+        "2015-07-27": "present",
+        "2015-07-24": "present",
+        "2015-07-01": "present",
+        "2015-04-15": "present",
+        "2015-04-13": "present",
+        "2014-07-10": "present",
+        "2013-12-13": "present",
+        "2013-12-12": "present",
+        "2013-12-11": "present",
+        "2013-12-10": "present",
+        "2013-12-09": "present",
+        "2013-12-06": "present",
+        "2013-10-22": "present",
+        "2013-03-19": "present",
+        "2012-12-03": "present",
+        "2012-11-22": "present",
+        "2012-11-21": "present",
+        "2012-02-22": "present",
+        "2012-02-21": "present",
+        "2011-02-15": "present",
+        "2011-02-14": "present",
+        "2011-02-11": "present",
+        "2011-02-09": "present",
+        "2011-02-01": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验370条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "300194.SZ": {
+      "dates": 35,
+      "directory_sha256": "126cc34f667085ea189decfbd6bb7c3e8193d53e335a8b9b7c75d9ad19ead081",
+      "statuses": {
+        "2023-09-12": "present",
+        "2020-04-14": "present",
+        "2020-03-25": "present",
+        "2020-03-23": "present",
+        "2020-02-13": "present",
+        "2019-12-19": "present",
+        "2019-10-08": "present",
+        "2019-09-12": "present",
+        "2019-09-10": "present",
+        "2019-08-30": "present",
+        "2019-08-28": "present",
+        "2019-08-27": "present",
+        "2019-08-26": "present",
+        "2019-08-23": "present",
+        "2019-04-22": "present",
+        "2019-04-19": "present",
+        "2019-04-18": "present",
+        "2019-04-17": "present",
+        "2019-04-16": "present",
+        "2019-04-15": "present",
+        "2019-04-12": "present",
+        "2019-04-10": "present",
+        "2019-04-08": "present",
+        "2019-04-04": "present",
+        "2019-04-02": "present",
+        "2018-09-17": "present",
+        "2016-12-30": "present",
+        "2016-01-06": "present",
+        "2016-01-05": "present",
+        "2015-02-13": "present",
+        "2014-11-05": "present",
+        "2014-08-01": "present",
+        "2013-03-04": "present",
+        "2012-03-14": "present",
+        "2011-03-22": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验407条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "300516.SZ": {
+      "dates": 27,
+      "directory_sha256": "f2666c0a0d94cb4c20decb33bcdd37050119aba216b4b126db0a2baf84f653d1",
+      "statuses": {
+        "2026-06-03": "present",
+        "2025-12-31": "present",
+        "2025-12-16": "present",
+        "2025-11-24": "present",
+        "2025-11-21": "present",
+        "2023-03-21": "present",
+        "2021-06-24": "present",
+        "2021-04-15": "present",
+        "2020-08-13": "present",
+        "2019-08-08": "present",
+        "2019-07-18": "present",
+        "2019-07-08": "present",
+        "2019-07-05": "present",
+        "2019-07-04": "present",
+        "2019-07-03": "present",
+        "2017-03-31": "present",
+        "2016-07-06": "present",
+        "2016-07-05": "present",
+        "2016-07-01": "present",
+        "2016-06-30": "present",
+        "2016-06-29": "present",
+        "2016-06-24": "present",
+        "2016-06-21": "present",
+        "2016-06-16": "present",
+        "2016-06-13": "present",
+        "2016-06-07": "present",
+        "2016-06-02": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验309条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "300621.SZ": {
+      "dates": 25,
+      "directory_sha256": "6daafbab4c65c96b5dac28b0d9850c224f3dfb1a7724f839f72f8357e770bd22",
+      "statuses": {
+        "2024-10-30": "present",
+        "2024-10-15": "present",
+        "2024-02-07": "present",
+        "2021-03-09": "present",
+        "2020-04-09": "present",
+        "2020-03-03": "present",
+        "2020-02-27": "present",
+        "2019-09-04": "present",
+        "2019-09-03": "present",
+        "2019-08-30": "present",
+        "2018-04-11": "present",
+        "2018-01-10": "present",
+        "2018-01-09": "present",
+        "2018-01-08": "present",
+        "2017-10-19": "present",
+        "2017-04-10": "present",
+        "2017-04-07": "present",
+        "2017-04-06": "present",
+        "2017-04-05": "present",
+        "2017-03-31": "present",
+        "2017-03-29": "present",
+        "2017-03-27": "present",
+        "2017-03-22": "present",
+        "2017-03-20": "present",
+        "2017-03-16": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验303条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "300676.SZ": {
+      "dates": 42,
+      "directory_sha256": "4d420bde70c721deb588915a835acdf4a6d7f65c534f05f45110744cf86f7326",
+      "statuses": {
+        "2023-03-27": "present",
+        "2020-07-14": "present",
+        "2020-05-26": "present",
+        "2020-05-25": "present",
+        "2020-04-20": "present",
+        "2020-04-16": "present",
+        "2020-03-26": "present",
+        "2020-02-03": "present",
+        "2019-10-15": "present",
+        "2019-02-13": "present",
+        "2018-10-16": "present",
+        "2018-07-17": "present",
+        "2017-12-18": "present",
+        "2017-11-27": "present",
+        "2017-11-24": "present",
+        "2017-11-23": "present",
+        "2017-11-13": "present",
+        "2017-10-31": "present",
+        "2017-09-18": "present",
+        "2017-09-08": "present",
+        "2017-08-31": "present",
+        "2017-08-25": "present",
+        "2017-08-21": "present",
+        "2017-08-17": "present",
+        "2017-08-16": "present",
+        "2017-08-11": "present",
+        "2017-08-10": "present",
+        "2017-08-09": "present",
+        "2017-08-08": "present",
+        "2017-08-07": "present",
+        "2017-08-04": "present",
+        "2017-08-02": "present",
+        "2017-08-01": "present",
+        "2017-07-31": "present",
+        "2017-07-28": "present",
+        "2017-07-26": "present",
+        "2017-07-25": "present",
+        "2017-07-21": "present",
+        "2017-07-19": "present",
+        "2017-07-18": "present",
+        "2017-07-17": "present",
+        "2017-07-14": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验494条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "300718.SZ": {
+      "dates": 39,
+      "directory_sha256": "d973479acaf4c5197ee594d18f049640099e9c088a93c67ede630bcc464b80e3",
+      "statuses": {
+        "2026-08-19": "present",
+        "2026-07-03": "present",
+        "2025-07-21": "present",
+        "2025-02-19": "present",
+        "2025-02-17": "present",
+        "2025-02-06": "present",
+        "2025-01-21": "present",
+        "2025-01-20": "present",
+        "2025-01-03": "present",
+        "2024-12-26": "present",
+        "2024-12-25": "present",
+        "2024-08-22": "present",
+        "2024-08-21": "present",
+        "2024-08-20": "present",
+        "2022-09-07": "present",
+        "2020-11-05": "present",
+        "2020-10-29": "present",
+        "2020-07-20": "present",
+        "2020-07-17": "present",
+        "2020-01-15": "present",
+        "2020-01-14": "present",
+        "2018-07-17": "present",
+        "2018-07-16": "present",
+        "2018-07-13": "present",
+        "2018-07-12": "present",
+        "2018-07-11": "present",
+        "2018-06-13": "present",
+        "2018-06-12": "present",
+        "2018-04-25": "present",
+        "2018-02-06": "present",
+        "2018-01-30": "present",
+        "2018-01-29": "present",
+        "2017-11-20": "present",
+        "2017-11-17": "present",
+        "2017-11-16": "present",
+        "2017-11-15": "present",
+        "2017-11-14": "present",
+        "2017-11-09": "present",
+        "2017-11-06": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验470条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "300955.SZ": {
+      "dates": 20,
+      "directory_sha256": "744414607b14fee018e8fde005d90c08cfb6b81fd6b9b89ffb9f6343b14f297e",
+      "statuses": {
+        "2025-10-13": "present",
+        "2025-10-10": "present",
+        "2025-09-02": "present",
+        "2025-07-23": "present",
+        "2024-02-07": "present",
+        "2021-05-19": "present",
+        "2021-05-17": "present",
+        "2021-05-14": "present",
+        "2021-05-13": "present",
+        "2021-05-06": "present",
+        "2021-04-30": "present",
+        "2021-04-29": "present",
+        "2021-04-28": "present",
+        "2021-04-27": "present",
+        "2021-04-22": "present",
+        "2021-04-15": "present",
+        "2021-04-12": "present",
+        "2021-04-09": "present",
+        "2021-03-31": "present",
+        "2021-03-24": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验210条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "300993.SZ": {
+      "dates": 7,
+      "directory_sha256": "ade8bbae3eb76760abb85419348582dd9868997fdb61a5f432ce65401d8fe875",
+      "statuses": {
+        "2025-09-22": "present",
+        "2025-09-19": "present",
+        "2025-06-27": "present",
+        "2024-06-12": "present",
+        "2021-06-24": "present",
+        "2021-06-03": "present",
+        "2021-05-24": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验70条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "301135.SZ": {
+      "dates": 12,
+      "directory_sha256": "2f89d03036711babd6215002b2d035b3f079aefa3f6654a7d01f934adadc87b1",
+      "statuses": {
+        "2025-02-28": "present",
+        "2025-02-27": "present",
+        "2024-10-23": "present",
+        "2024-10-22": "present",
+        "2024-03-15": "present",
+        "2022-08-12": "present",
+        "2022-08-11": "present",
+        "2022-07-15": "present",
+        "2022-07-14": "present",
+        "2022-06-30": "present",
+        "2022-05-05": "present",
+        "2022-04-12": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验130条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "301571.SZ": {
+      "dates": 10,
+      "directory_sha256": "ffab5ed1ba0a570d36a852177d5f918d1ae37c7a4652afc46d42232e91b027df",
+      "statuses": {
+        "2025-05-23": "present",
+        "2025-05-22": "present",
+        "2024-10-09": "present",
+        "2024-09-30": "present",
+        "2024-09-03": "present",
+        "2024-09-02": "present",
+        "2024-08-30": "present",
+        "2024-08-29": "present",
+        "2024-08-28": "present",
+        "2024-08-21": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验100条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    },
+    "301669.SZ": {
+      "dates": 9,
+      "directory_sha256": "2de8df9ab6a728c5e16a84895950740be4335315e7a9853b8a4d1181db1be36e",
+      "statuses": {
+        "2026-07-01": "present",
+        "2026-06-26": "present",
+        "2026-06-25": "present",
+        "2026-06-24": "present",
+        "2026-06-22": "present",
+        "2026-06-18": "present",
+        "2026-06-17": "present",
+        "2026-06-16": "present",
+        "2026-06-09": "present"
+      },
+      "checks": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "核验100条；必需来源明细缺失日期0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "核对日期集合、原因与方向排名、正文SHA256；同名机构不合并"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "来源日期目录与SQL集合绑定；待采日期不能被最大日期掩盖"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "NULL与零分别保留；单日与多日榜不重复相加"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "SQL或匹配可信摘要的完整证券证明不超过3天"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail",
+          "measured": "来源缺公布时刻和完整历史版本，不支持盘中或严格历史信号回放"
+        }
+      ],
+      "complete": true
+    }
+  }
+}
