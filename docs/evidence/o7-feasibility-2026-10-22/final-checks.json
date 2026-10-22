@@ -1,0 +1,63 @@
+[
+  {
+    "name": "final-generate",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_build.py",
+      "generate"
+    ],
+    "at": "2026-10-22T08:16:37.893901+00:00",
+    "seconds": 0.22794669994618744,
+    "exit_code": 0,
+    "log": "final-generate.log"
+  },
+  {
+    "name": "final-review",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_contract.py",
+      "review",
+      "--note",
+      "O7调查设计最终审阅：公告内有限A与四对象B限制、完整候选设计卡和未来F1-F10矩阵；补记实际63项文档回归及退出，不改变产品、正式采集或生产数据，原失败和P3包保持。"
+    ],
+    "at": "2026-10-22T08:16:38.122802+00:00",
+    "seconds": 5.647554900031537,
+    "exit_code": 0,
+    "log": "final-review.log"
+  },
+  {
+    "name": "final-verify",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/verify_documentation.py"
+    ],
+    "at": "2026-10-22T08:16:43.770825+00:00",
+    "seconds": 6.082555799977854,
+    "exit_code": 0,
+    "log": "final-verify.log"
+  },
+  {
+    "name": "final-contract",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "tests/test_documentation_contracts.py",
+      "-q",
+      "--basetemp=build/pytest-o7-feasibility-final",
+      "--junitxml=docs\\evidence\\o7-feasibility-2026-10-22\\final-contract.xml"
+    ],
+    "at": "2026-10-22T08:16:49.853914+00:00",
+    "seconds": 6.523286300012842,
+    "exit_code": 0,
+    "log": "final-contract.log"
+  }
+]

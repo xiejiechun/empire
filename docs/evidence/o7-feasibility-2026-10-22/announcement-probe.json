@@ -1,0 +1,560 @@
+{
+  "started_at": "2026-10-22T07:55:01.074342+00:00",
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "requests": [
+    {
+      "id": "tdx-rights-html",
+      "method": "GET",
+      "url": "http://page2.tdx.com.cn:7615/site/tdxsj/html/tdxsj_xgzx_pg.html",
+      "params": null,
+      "requested_at": "2026-10-22T07:55:01.368845+00:00",
+      "route_before": {},
+      "error": "Client error '404 Not Found' for url 'http://page2.tdx.com.cn:7615/site/tdxsj/html/tdxsj_xgzx_pg.html'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404",
+      "route_after": {
+        "proxy_requests": 1
+      }
+    },
+    {
+      "id": "announcements-600590",
+      "method": "POST",
+      "url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+      "params": {
+        "pageNum": "1",
+        "pageSize": "30",
+        "column": "sse",
+        "tabName": "fulltext",
+        "stock": "600590,gssh0600590",
+        "searchkey": "发行",
+        "secid": "",
+        "category": "",
+        "trade": "",
+        "seDate": "2016-01-01~2016-02-29",
+        "sortName": "time",
+        "sortType": "desc",
+        "isHLtitle": "false"
+      },
+      "requested_at": "2026-10-22T07:55:01.938374+00:00",
+      "route_before": {
+        "proxy_requests": 1
+      },
+      "status": 200,
+      "bytes": 10413,
+      "sha256": "75c5287352ef314b71c868702f3930de7646b37a834d4914f8d56490a10ff971",
+      "acquired_at": "2026-10-22T07:55:02.310536+00:00",
+      "keys": [
+        "announcements",
+        "categoryList",
+        "classifiedAnnouncements",
+        "hasMore",
+        "totalAnnouncement",
+        "totalRecordNum",
+        "totalSecurities",
+        "totalpages"
+      ],
+      "totalAnnouncement": 13,
+      "hasMore": false,
+      "announcements": [
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1202003671",
+          "announcementTitle": "发行股份购买资产之股份发行结果暨股本变动公告",
+          "announcementTime": 1456502400000,
+          "adjunctUrl": "finalpage/2016-02-27/1202003671.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1202003673",
+          "announcementTitle": "国信证券股份有限公司关于股份有限公司发行股份购买资产并募集配套资金暨关联交易实施情况之独立财务顾问核查意见",
+          "announcementTime": 1456502400000,
+          "adjunctUrl": "finalpage/2016-02-27/1202003673.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1202005072",
+          "announcementTitle": "关于发行股份购买资产相关方承诺事项的公告",
+          "announcementTime": 1456502400000,
+          "adjunctUrl": "finalpage/2016-02-27/1202005072.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1202003669",
+          "announcementTitle": "北京市天元律师事务所关于股份有限公司发行股份购买资产并募集配套资金暨关联交易之发行股份购买资产实施结果的法律意见",
+          "announcementTime": 1456502400000,
+          "adjunctUrl": "finalpage/2016-02-27/1202003669.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1201954664",
+          "announcementTitle": "国信证券股份有限公司关于公司发行股份购买资产并募集配套资金暨关联交易涉及资产过户事宜之独立财务顾问核查意见",
+          "announcementTime": 1454083200000,
+          "adjunctUrl": "finalpage/2016-01-30/1201954664.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1201954667",
+          "announcementTitle": "北京市天元律师事务所关于公司发行股份购买资产并募集配套资金暨关联交易的标的资产过户的法律意见",
+          "announcementTime": 1454083200000,
+          "adjunctUrl": "finalpage/2016-01-30/1201954667.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1201954663",
+          "announcementTitle": "发行股份购买资产并募集配套资金暨关联交易之标的资产过户完成的公告",
+          "announcementTime": 1454083200000,
+          "adjunctUrl": "finalpage/2016-01-30/1201954663.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1201926717",
+          "announcementTitle": "发行股份购买资产并募集配套资金暨关联交易报告书的修订说明公告",
+          "announcementTime": 1453219200000,
+          "adjunctUrl": "finalpage/2016-01-20/1201926717.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1201926528",
+          "announcementTitle": "关于发行股份购买资产并募集配套资金暨关联交易事项获得中国证监会核准批复的公告",
+          "announcementTime": 1453219200000,
+          "adjunctUrl": "finalpage/2016-01-20/1201926528.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1201926723",
+          "announcementTitle": "发行股份购买资产并募集配套资金暨关联交易报告书（修订稿）摘要",
+          "announcementTime": 1453219200000,
+          "adjunctUrl": "finalpage/2016-01-20/1201926723.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1201926729",
+          "announcementTitle": "发行股份购买资产并募集配套资金暨关联交易报告书（修订稿）",
+          "announcementTime": 1453219200000,
+          "adjunctUrl": "finalpage/2016-01-20/1201926729.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1201926716",
+          "announcementTitle": "国信证券股份有限公司关于股份有限公司发行股份购买资产并募集配套资金暨关联交易之独立财务顾问报告",
+          "announcementTime": 1453219200000,
+          "adjunctUrl": "finalpage/2016-01-20/1201926716.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "600590",
+          "secName": "泰豪科技",
+          "orgId": "gssh0600590",
+          "announcementId": "1201901560",
+          "announcementTitle": "关于公开发行公司债事项获得中国证券监督管理委员会核准的公告",
+          "announcementTime": 1452182400000,
+          "adjunctUrl": "finalpage/2016-01-08/1201901560.PDF",
+          "adjunctType": "PDF"
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 2
+      }
+    },
+    {
+      "id": "announcements-300176",
+      "method": "POST",
+      "url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+      "params": {
+        "pageNum": "1",
+        "pageSize": "30",
+        "column": "szse",
+        "tabName": "fulltext",
+        "stock": "300176,9900016527",
+        "searchkey": "配股",
+        "secid": "",
+        "category": "",
+        "trade": "",
+        "seDate": "2026-08-01~2026-09-15",
+        "sortName": "time",
+        "sortType": "desc",
+        "isHLtitle": "false"
+      },
+      "requested_at": "2026-10-22T07:55:02.310536+00:00",
+      "route_before": {
+        "proxy_requests": 2
+      },
+      "status": 200,
+      "bytes": 8137,
+      "sha256": "7f44c75864ed5cce9335bd00ae19b9aa5e3250057ae0598c1039f54cb3217e67",
+      "acquired_at": "2026-10-22T07:55:02.673848+00:00",
+      "keys": [
+        "announcements",
+        "categoryList",
+        "classifiedAnnouncements",
+        "hasMore",
+        "totalAnnouncement",
+        "totalRecordNum",
+        "totalSecurities",
+        "totalpages"
+      ],
+      "totalAnnouncement": 11,
+      "hasMore": false,
+      "announcements": [
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225530947",
+          "announcementTitle": "广东鸿特科技股份有限公司配股新增股份变动报告及上市公告书",
+          "announcementTime": 1787914347000,
+          "adjunctUrl": "finalpage/2026-08-28/1225530947.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225486243",
+          "announcementTitle": "广东鸿特科技股份有限公司配股发行结果公告",
+          "announcementTime": 1787241600000,
+          "adjunctUrl": "finalpage/2026-08-21/1225486243.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225479034",
+          "announcementTitle": "广东鸿特科技股份有限公司配股提示性公告",
+          "announcementTime": 1787068800000,
+          "adjunctUrl": "finalpage/2026-08-19/1225479034.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225476236",
+          "announcementTitle": "广东鸿特科技股份有限公司配股提示性公告",
+          "announcementTime": 1786982400000,
+          "adjunctUrl": "finalpage/2026-08-18/1225476236.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225473230",
+          "announcementTitle": "广东鸿特科技股份有限公司配股提示性公告",
+          "announcementTime": 1786896000000,
+          "adjunctUrl": "finalpage/2026-08-17/1225473230.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225471208",
+          "announcementTitle": "广东鸿特科技股份有限公司配股提示性公告",
+          "announcementTime": 1786636800000,
+          "adjunctUrl": "finalpage/2026-08-14/1225471208.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225470703",
+          "announcementTitle": "广东鸿特科技股份有限公司代销方式配股首次提示性公告",
+          "announcementTime": 1786550400000,
+          "adjunctUrl": "finalpage/2026-08-13/1225470703.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225464995",
+          "announcementTitle": "广东鸿特科技股份有限公司配股说明书摘要",
+          "announcementTime": 1786291200000,
+          "adjunctUrl": "finalpage/2026-08-10/1225464995.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225464993",
+          "announcementTitle": "广东鸿特科技股份有限公司配股说明书",
+          "announcementTime": 1786291200000,
+          "adjunctUrl": "finalpage/2026-08-10/1225464993.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225464992",
+          "announcementTitle": "广东鸿特科技股份有限公司配股提示性公告",
+          "announcementTime": 1786291200000,
+          "adjunctUrl": "finalpage/2026-08-10/1225464992.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "300176",
+          "secName": "鸿特科技",
+          "orgId": "9900016527",
+          "announcementId": "1225464994",
+          "announcementTitle": "广东鸿特科技股份有限公司配股发行公告",
+          "announcementTime": 1786291200000,
+          "adjunctUrl": "finalpage/2026-08-10/1225464994.PDF",
+          "adjunctType": "PDF"
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 3
+      }
+    },
+    {
+      "id": "announcements-001228",
+      "method": "POST",
+      "url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+      "params": {
+        "pageNum": "1",
+        "pageSize": "30",
+        "column": "szse",
+        "tabName": "fulltext",
+        "stock": "001228,nssc1000083",
+        "searchkey": "发行",
+        "secid": "",
+        "category": "",
+        "trade": "",
+        "seDate": "2026-09-01~2026-10-22",
+        "sortName": "time",
+        "sortType": "desc",
+        "isHLtitle": "false"
+      },
+      "requested_at": "2026-10-22T07:55:02.673848+00:00",
+      "route_before": {
+        "proxy_requests": 3
+      },
+      "status": 200,
+      "bytes": 4821,
+      "sha256": "fffa6563851e2e1074cc753c395b14edded65c56ac0e0a15d1953c50302816a0",
+      "acquired_at": "2026-10-22T07:55:03.114517+00:00",
+      "keys": [
+        "announcements",
+        "categoryList",
+        "classifiedAnnouncements",
+        "hasMore",
+        "totalAnnouncement",
+        "totalRecordNum",
+        "totalSecurities",
+        "totalpages"
+      ],
+      "totalAnnouncement": 6,
+      "hasMore": false,
+      "announcements": [
+        {
+          "secCode": "001228",
+          "secName": "永泰运",
+          "orgId": "nssc1000083",
+          "announcementId": "1225587665",
+          "announcementTitle": "永泰运化工物流股份有限公司向特定对象发行股票上市公告书",
+          "announcementTime": 1790697600000,
+          "adjunctUrl": "finalpage/2026-09-30/1225587665.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "001228",
+          "secName": "永泰运",
+          "orgId": "nssc1000083",
+          "announcementId": "1225587664",
+          "announcementTitle": "关于向特定对象发行股票上市公告书披露的提示性公告",
+          "announcementTime": 1790697600000,
+          "adjunctUrl": "finalpage/2026-09-30/1225587664.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "001228",
+          "secName": "永泰运",
+          "orgId": "nssc1000083",
+          "announcementId": "1225573956",
+          "announcementTitle": "关于向特定对象发行股票发行情况报告书披露的提示性公告",
+          "announcementTime": 1790006400000,
+          "adjunctUrl": "finalpage/2026-09-22/1225573956.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "001228",
+          "secName": "永泰运",
+          "orgId": "nssc1000083",
+          "announcementId": "1225573958",
+          "announcementTitle": "甬兴证券有限公司关于永泰运化工物流股份有限公司向特定对象发行股票发行过程和认购对象合规性的报告",
+          "announcementTime": 1790006400000,
+          "adjunctUrl": "finalpage/2026-09-22/1225573958.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "001228",
+          "secName": "永泰运",
+          "orgId": "nssc1000083",
+          "announcementId": "1225573959",
+          "announcementTitle": "北京海润天睿律师事务所关于永泰运化工物流股份有限公司向特定对象发行股票发行过程和认购对象合规性的法律意见书",
+          "announcementTime": 1790006400000,
+          "adjunctUrl": "finalpage/2026-09-22/1225573959.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "001228",
+          "secName": "永泰运",
+          "orgId": "nssc1000083",
+          "announcementId": "1225573957",
+          "announcementTitle": "永泰运化工物流股份有限公司向特定对象发行股票发行情况报告书",
+          "announcementTime": 1790006400000,
+          "adjunctUrl": "finalpage/2026-09-22/1225573957.PDF",
+          "adjunctType": "PDF"
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 4
+      }
+    },
+    {
+      "id": "announcements-601127",
+      "method": "POST",
+      "url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+      "params": {
+        "pageNum": "1",
+        "pageSize": "30",
+        "column": "sse",
+        "tabName": "fulltext",
+        "stock": "601127,9900024265",
+        "searchkey": "发行",
+        "secid": "",
+        "category": "",
+        "trade": "",
+        "seDate": "2021-06-01~2021-06-30",
+        "sortName": "time",
+        "sortType": "desc",
+        "isHLtitle": "false"
+      },
+      "requested_at": "2026-10-22T07:55:03.115024+00:00",
+      "route_before": {
+        "proxy_requests": 4
+      },
+      "status": 200,
+      "bytes": 3935,
+      "sha256": "ed461e2c9755f978b23e5f861110603a85de6d8c629fc24f65f83a72b9063728",
+      "acquired_at": "2026-10-22T07:55:03.606755+00:00",
+      "keys": [
+        "announcements",
+        "categoryList",
+        "classifiedAnnouncements",
+        "hasMore",
+        "totalAnnouncement",
+        "totalRecordNum",
+        "totalSecurities",
+        "totalpages"
+      ],
+      "totalAnnouncement": 5,
+      "hasMore": false,
+      "announcements": [
+        {
+          "secCode": "601127",
+          "secName": "小康股份",
+          "orgId": "9900024265",
+          "announcementId": "1210364916",
+          "announcementTitle": "非公开发行股票发行结果暨股本变动公告",
+          "announcementTime": 1624982400000,
+          "adjunctUrl": "finalpage/2021-06-30/1210364916.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "601127",
+          "secName": "小康股份",
+          "orgId": "9900024265",
+          "announcementId": "1210364921",
+          "announcementTitle": "中国国际金融股份有限公司关于重庆小康工业集团股份有限公司非公开发行A股股票发行过程和认购对象合规性的报告",
+          "announcementTime": 1624982400000,
+          "adjunctUrl": "finalpage/2021-06-30/1210364921.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "601127",
+          "secName": "小康股份",
+          "orgId": "9900024265",
+          "announcementId": "1210364919",
+          "announcementTitle": "北京市金杜律师事务所关于重庆小康工业集团股份有限公司非公开发行A股股票发行过程和认购对象合规性的法律意见书",
+          "announcementTime": 1624982400000,
+          "adjunctUrl": "finalpage/2021-06-30/1210364919.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "601127",
+          "secName": "小康股份",
+          "orgId": "9900024265",
+          "announcementId": "1210364924",
+          "announcementTitle": "关于非公开发行股票调整可转债转股价格的提示性公告",
+          "announcementTime": 1624982400000,
+          "adjunctUrl": "finalpage/2021-06-30/1210364924.PDF",
+          "adjunctType": "PDF"
+        },
+        {
+          "secCode": "601127",
+          "secName": "小康股份",
+          "orgId": "9900024265",
+          "announcementId": "1210364920",
+          "announcementTitle": "非公开发行A股股票发行情况报告书",
+          "announcementTime": 1624982400000,
+          "adjunctUrl": "finalpage/2021-06-30/1210364920.PDF",
+          "adjunctType": "PDF"
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 5
+      }
+    }
+  ],
+  "no_collectors": true,
+  "no_ingest": true,
+  "no_archive": true,
+  "pending_before": 0,
+  "pending_after": 0,
+  "network": {
+    "proxy_requests": 5
+  },
+  "finished_at": "2026-10-22T07:55:03.612675+00:00"
+}

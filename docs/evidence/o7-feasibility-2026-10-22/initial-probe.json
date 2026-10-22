@@ -1,0 +1,388 @@
+{
+  "started_at": "2026-10-22T07:53:49.275226+00:00",
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "requests": [
+    {
+      "id": "tdx-issue-html",
+      "method": "GET",
+      "url": "http://page2.tdx.com.cn:7615/site/tdxsj/html/tdxsj_xgzx_zfmx.html",
+      "params": null,
+      "requested_at": "2026-10-22T07:53:49.575347+00:00",
+      "route_before": {},
+      "status": 200,
+      "bytes": 5731,
+      "sha256": "f41a7e2e283adea8df9055caa0ad06ca8325e50d7b653d8ba87aabee88d7b191",
+      "acquired_at": "2026-10-22T07:53:50.289894+00:00",
+      "title": [
+        "新股基本资料"
+      ],
+      "scripts": [
+        "../mylib/xss.js",
+        "../mylib/datacenter.js"
+      ],
+      "links": [
+        "../qscss/",
+        "../css/datecenter.css",
+        "../css/datacenterextend.css",
+        "../mylib/xss.js",
+        "../mylib/datacenter.js"
+      ],
+      "snippets": {
+        "T005": [
+          "me:\"增发股上市日期\",colfield:\"T001\"},{name:\"总发行数量(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T080\"},{colfield:\"T004\",field:\"T005\",type:\"1\"}],[{name:\"股权登记日\",colfield:\"T001\"},{name:\"实际募资总额(万元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T037\"},{colfield:\"T004\",field:\"T026\",type:\"1\"}],[{name:\"网上中签结果公告日\",colfield:\"T001\"},{name:\"网上发行中签率(%)\",colfield:\"T003\"},{colf"
+        ],
+        "T039": [
+          "ield:\"T052\",type:\"1\"}],[{name:\"发行前总股本(万股)\",colfield:\"T001\"},{name:\"发行后总股本(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T039\",type:\"1\"},{colfield:\"T004\",field:\"T040\",type:\"1\"}],[{name:\"发行后每股收益(元)\",colfield:\"T001\"},{name:\"发行后每股净资产(元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T104\",type:\"1\"},{colfield:\"T004\",field:\"T024\",type:\"1\"}],[{name:\"主承销商\",colfield"
+        ],
+        "T040": [
+          ")\",colfield:\"T001\"},{name:\"发行后总股本(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T039\",type:\"1\"},{colfield:\"T004\",field:\"T040\",type:\"1\"}],[{name:\"发行后每股收益(元)\",colfield:\"T001\"},{name:\"发行后每股净资产(元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T104\",type:\"1\"},{colfield:\"T004\",field:\"T024\",type:\"1\"}],[{name:\"主承销商\",colfield:\"T001\"},{name:\"承销方式\",colfield:\"T003\"},{"
+        ],
+        "发行": [
+          "olfield:\"T003\"},{colfield:\"T002\",field:\"code\"},{colfield:\"T004\",field:\"name\"}],[{name:\"增发价格(元)\",colfield:\"T001\"},{name:\"发行方式\",colfield:\"T003\"},{colfield:\"T002\",field:\"T012\",type:\"1\"},{colfield:\"T004\",field:\"fxfs\"}],[{name:\"网上发行日期\",colfield:\"T001\"},{name:\"网上配售日期\",colfield:\"T003\"},{colfield:\"T002\",field:\"fxrq\"},{colfield:\"T004\",field:\"T044\"}],[{name:\"网",
+          "\"T001\"},{name:\"发行方式\",colfield:\"T003\"},{colfield:\"T002\",field:\"T012\",type:\"1\"},{colfield:\"T004\",field:\"fxfs\"}],[{name:\"网上发行日期\",colfield:\"T001\"},{name:\"网上配售日期\",colfield:\"T003\"},{colfield:\"T002\",field:\"fxrq\"},{colfield:\"T004\",field:\"T044\"}],[{name:\"网上发行数量(万股)\",colfield:\"T001\"},{name:\"网下配售数量(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T055\",type:\"1\"},{",
+          "lfield:\"T001\"},{name:\"网上配售日期\",colfield:\"T003\"},{colfield:\"T002\",field:\"fxrq\"},{colfield:\"T004\",field:\"T044\"}],[{name:\"网上发行数量(万股)\",colfield:\"T001\"},{name:\"网下配售数量(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T055\",type:\"1\"},{colfield:\"T004\",field:\"T057\",type:\"1\"}],[{name:\"增发股上市日期\",colfield:\"T001\"},{name:\"总发行数量(万股)\",colfield:\"T003\"},{colfield:\"T002\",fi",
+          "lfield:\"T002\",field:\"T055\",type:\"1\"},{colfield:\"T004\",field:\"T057\",type:\"1\"}],[{name:\"增发股上市日期\",colfield:\"T001\"},{name:\"总发行数量(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T080\"},{colfield:\"T004\",field:\"T005\",type:\"1\"}],[{name:\"股权登记日\",colfield:\"T001\"},{name:\"实际募资总额(万元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T037\"},{colfield:\"T004\",field:\"T026\",type",
+          "\"},{colfield:\"T002\",field:\"T037\"},{colfield:\"T004\",field:\"T026\",type:\"1\"}],[{name:\"网上中签结果公告日\",colfield:\"T001\"},{name:\"网上发行中签率(%)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T102\"},{colfield:\"T004\",field:\"T052\",type:\"1\"}],[{name:\"发行前总股本(万股)\",colfield:\"T001\"},{name:\"发行后总股本(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T039\",type:\"1\"},{colfield:\"T004\",fie",
+          "1\"},{name:\"网上发行中签率(%)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T102\"},{colfield:\"T004\",field:\"T052\",type:\"1\"}],[{name:\"发行前总股本(万股)\",colfield:\"T001\"},{name:\"发行后总股本(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T039\",type:\"1\"},{colfield:\"T004\",field:\"T040\",type:\"1\"}],[{name:\"发行后每股收益(元)\",colfield:\"T001\"},{name:\"发行后每股净资产(元)\",colfield:\"T003\"},{colfield:\"T",
+          "3\"},{colfield:\"T002\",field:\"T102\"},{colfield:\"T004\",field:\"T052\",type:\"1\"}],[{name:\"发行前总股本(万股)\",colfield:\"T001\"},{name:\"发行后总股本(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T039\",type:\"1\"},{colfield:\"T004\",field:\"T040\",type:\"1\"}],[{name:\"发行后每股收益(元)\",colfield:\"T001\"},{name:\"发行后每股净资产(元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T104\",type:\"1\"},{colfiel",
+          ":\"发行后总股本(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T039\",type:\"1\"},{colfield:\"T004\",field:\"T040\",type:\"1\"}],[{name:\"发行后每股收益(元)\",colfield:\"T001\"},{name:\"发行后每股净资产(元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T104\",type:\"1\"},{colfield:\"T004\",field:\"T024\",type:\"1\"}],[{name:\"主承销商\",colfield:\"T001\"},{name:\"承销方式\",colfield:\"T003\"},{colfield:\"T002\",field:\""
+        ],
+        "上市": [
+          "下配售数量(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T055\",type:\"1\"},{colfield:\"T004\",field:\"T057\",type:\"1\"}],[{name:\"增发股上市日期\",colfield:\"T001\"},{name:\"总发行数量(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T080\"},{colfield:\"T004\",field:\"T005\",type:\"1\"}],[{name:\"股权登记日\",colfield:\"T001\"},{name:\"实际募资总额(万元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T037\"},{co",
+          "ield:\"T001\"},{colfield:\"T002\",field:\"T109\"}],[{name:\"发行定价方式\",colfield:\"T001\"},{colfield:\"T002\",field:\"T017\"}],[{name:\"增发上市首日开盘价\",colfield:\"T001\"},{name:\"增发上市首日收盘价(元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"OpenPrice\",type:\"1\"},{colfield:\"T004\",field:\"ClosePrice\",type:\"1\"}],[{name:\"增发上市首日开盘相对增发价涨幅(%)\",colfield:\"T001\"},{name:\"增发上市首日收盘相对增发价涨幅(%)\",colf",
+          ":\"T109\"}],[{name:\"发行定价方式\",colfield:\"T001\"},{colfield:\"T002\",field:\"T017\"}],[{name:\"增发上市首日开盘价\",colfield:\"T001\"},{name:\"增发上市首日收盘价(元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"OpenPrice\",type:\"1\"},{colfield:\"T004\",field:\"ClosePrice\",type:\"1\"}],[{name:\"增发上市首日开盘相对增发价涨幅(%)\",colfield:\"T001\"},{name:\"增发上市首日收盘相对增发价涨幅(%)\",colfield:\"T003\"},{colfield:\"T002\",field",
+          ",colfield:\"T003\"},{colfield:\"T002\",field:\"OpenPrice\",type:\"1\"},{colfield:\"T004\",field:\"ClosePrice\",type:\"1\"}],[{name:\"增发上市首日开盘相对增发价涨幅(%)\",colfield:\"T001\"},{name:\"增发上市首日收盘相对增发价涨幅(%)\",colfield:\"T003\"},{colfield:\"T002\",field:\"kpzdf\",type:\"1\"},{colfield:\"T004\",field:\"spzdf\",type:\"1\"}]],e[0].rows[0])}),$.fn.bsgrid.gridObjs.jbzl.mergeCells([{field:\"T002\",c",
+          "enPrice\",type:\"1\"},{colfield:\"T004\",field:\"ClosePrice\",type:\"1\"}],[{name:\"增发上市首日开盘相对增发价涨幅(%)\",colfield:\"T001\"},{name:\"增发上市首日收盘相对增发价涨幅(%)\",colfield:\"T003\"},{colfield:\"T002\",field:\"kpzdf\",type:\"1\"},{colfield:\"T004\",field:\"spzdf\",type:\"1\"}]],e[0].rows[0])}),$.fn.bsgrid.gridObjs.jbzl.mergeCells([{field:\"T002\",colspan:3,index:11},{field:\"T002\",colspan:3,i"
+        ],
+        "公告": [
+          "ame:\"实际募资总额(万元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T037\"},{colfield:\"T004\",field:\"T026\",type:\"1\"}],[{name:\"网上中签结果公告日\",colfield:\"T001\"},{name:\"网上发行中签率(%)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T102\"},{colfield:\"T004\",field:\"T052\",type:\"1\"}],[{name:\"发行前总股本(万股)\",colfield:\"T001\"},{name:\"发行后总股本(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T039\""
+        ],
+        "股本": [
+          "{name:\"网上发行中签率(%)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T102\"},{colfield:\"T004\",field:\"T052\",type:\"1\"}],[{name:\"发行前总股本(万股)\",colfield:\"T001\"},{name:\"发行后总股本(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T039\",type:\"1\"},{colfield:\"T004\",field:\"T040\",type:\"1\"}],[{name:\"发行后每股收益(元)\",colfield:\"T001\"},{name:\"发行后每股净资产(元)\",colfield:\"T003\"},{colfield:\"T002\"",
+          "{colfield:\"T002\",field:\"T102\"},{colfield:\"T004\",field:\"T052\",type:\"1\"}],[{name:\"发行前总股本(万股)\",colfield:\"T001\"},{name:\"发行后总股本(万股)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T039\",type:\"1\"},{colfield:\"T004\",field:\"T040\",type:\"1\"}],[{name:\"发行后每股收益(元)\",colfield:\"T001\"},{name:\"发行后每股净资产(元)\",colfield:\"T003\"},{colfield:\"T002\",field:\"T104\",type:\"1\"},{colfield:\"T"
+        ]
+      },
+      "route_after": {
+        "proxy_requests": 1
+      }
+    },
+    {
+      "id": "tdx-detail-1020265",
+      "method": "POST",
+      "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_xgzx_zfmx",
+      "params": {
+        "Params": [
+          "1020265"
+        ]
+      },
+      "requested_at": "2026-10-22T07:53:50.290408+00:00",
+      "route_before": {
+        "proxy_requests": 1
+      },
+      "status": 200,
+      "bytes": 930,
+      "sha256": "b13926959fd21bd492c4c63827a6cdeaeced045af11f483102608b4463e0c028",
+      "acquired_at": "2026-10-22T07:53:50.595164+00:00",
+      "source_error_code": 0,
+      "sets": [
+        {
+          "columns": [
+            "T048",
+            "T049",
+            "code",
+            "name",
+            "T012",
+            "fxfs",
+            "fxrq",
+            "T044",
+            "T055",
+            "T057",
+            "T080",
+            "T005",
+            "T037",
+            "T026",
+            "T102",
+            "T052",
+            "T039",
+            "T040",
+            "T104",
+            "T024",
+            "cT012",
+            "T111",
+            "T109",
+            "T017",
+            "OpenPrice",
+            "ClosePrice",
+            "kpzdf",
+            "spzdf"
+          ],
+          "count": 1,
+          "selected_rows": [
+            [
+              null,
+              null,
+              "600590",
+              "泰豪科技",
+              13.37,
+              "定向增发",
+              "2016-01-28",
+              null,
+              null,
+              null,
+              "2016-02-18",
+              4771.5512,
+              null,
+              63795.6395,
+              "",
+              null,
+              61924.5072,
+              66696.0584,
+              null,
+              null,
+              null,
+              null,
+              "购买资产的发行对象为胡健、宁波杰宝投资合伙企业（有限合伙）、余弓卜、宁波杰赢投资管理合伙企业（有限合伙）等上海博辕信息技术服务有限公司除泰豪晟大创业投资有限公司以外的股东。",
+              "购买资产及募集配套资金的发行价格为定价基准日(2015年11月3日)前20个交易日公司股票交易均价的90%，即13.37元/股。",
+              13.2,
+              12.61,
+              -1.27,
+              -5.68
+            ]
+          ]
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 2
+      }
+    },
+    {
+      "id": "tdx-detail-1031614",
+      "method": "POST",
+      "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_xgzx_zfmx",
+      "params": {
+        "Params": [
+          "1031614"
+        ]
+      },
+      "requested_at": "2026-10-22T07:53:50.595164+00:00",
+      "route_before": {
+        "proxy_requests": 2
+      },
+      "status": 200,
+      "bytes": 810,
+      "sha256": "8c0c5a3b4f7628a45b5568aaa5e89e8f7e22fe0aaff9eaddddf0732f6d6371c8",
+      "acquired_at": "2026-10-22T07:53:50.863072+00:00",
+      "source_error_code": 0,
+      "sets": [
+        {
+          "columns": [
+            "T048",
+            "T049",
+            "code",
+            "name",
+            "T012",
+            "fxfs",
+            "fxrq",
+            "T044",
+            "T055",
+            "T057",
+            "T080",
+            "T005",
+            "T037",
+            "T026",
+            "T102",
+            "T052",
+            "T039",
+            "T040",
+            "T104",
+            "T024",
+            "cT012",
+            "T111",
+            "T109",
+            "T017",
+            "OpenPrice",
+            "ClosePrice",
+            "kpzdf",
+            "spzdf"
+          ],
+          "count": 1,
+          "selected_rows": [
+            [
+              null,
+              null,
+              "601127",
+              "赛力斯",
+              46,
+              "定向增发",
+              "2021-06-03",
+              null,
+              null,
+              null,
+              "2021-06-28",
+              5636.8913,
+              null,
+              259296.9998,
+              "",
+              null,
+              130166.477,
+              135803.3746,
+              null,
+              null,
+              null,
+              null,
+              "募集资金的发行对象为广发基金管理有限公司、杨龙勇、JPMorgan Chase Bank, NationalAssociation等共计10名投资者。",
+              "募集资金的发行价格不低于定价基准日（发行期首日）前20个交易日公司股票交易均价的80%，最终确定为46.00元/股。",
+              74.36,
+              74.99,
+              61.65,
+              63.02
+            ]
+          ]
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 3
+      }
+    },
+    {
+      "id": "cninfo-search-600590",
+      "method": "POST",
+      "url": "https://www.cninfo.com.cn/new/information/topSearch/query",
+      "params": {
+        "keyWord": "600590",
+        "maxNum": "10"
+      },
+      "requested_at": "2026-10-22T07:53:50.864722+00:00",
+      "route_before": {
+        "proxy_requests": 3
+      },
+      "status": 200,
+      "bytes": 149,
+      "sha256": "e3c4ffbfbadc5f95da2da3a4af92b4e4342719cebbe17c56b9b0a62982156da8",
+      "acquired_at": "2026-10-22T07:53:51.266071+00:00",
+      "results": [
+        {
+          "code": "600590",
+          "pinyin": "thkj",
+          "sjstsBond": "false",
+          "category": "A股",
+          "type": "shj",
+          "delisted": "false",
+          "orgId": "gssh0600590",
+          "zwjc": "泰豪科技"
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 4
+      }
+    },
+    {
+      "id": "cninfo-search-300176",
+      "method": "POST",
+      "url": "https://www.cninfo.com.cn/new/information/topSearch/query",
+      "params": {
+        "keyWord": "300176",
+        "maxNum": "10"
+      },
+      "requested_at": "2026-10-22T07:53:51.266071+00:00",
+      "route_before": {
+        "proxy_requests": 4
+      },
+      "status": 200,
+      "bytes": 148,
+      "sha256": "2c8cc6cebbac197b346e945fc47e0b78e054411eb4f915470972416fdf0c8312",
+      "acquired_at": "2026-10-22T07:53:51.816811+00:00",
+      "results": [
+        {
+          "code": "300176",
+          "pinyin": "htkj",
+          "sjstsBond": "false",
+          "category": "A股",
+          "type": "shj",
+          "delisted": "false",
+          "orgId": "9900016527",
+          "zwjc": "鸿特科技"
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 5
+      }
+    },
+    {
+      "id": "cninfo-search-001228",
+      "method": "POST",
+      "url": "https://www.cninfo.com.cn/new/information/topSearch/query",
+      "params": {
+        "keyWord": "001228",
+        "maxNum": "10"
+      },
+      "requested_at": "2026-10-22T07:53:51.816811+00:00",
+      "route_before": {
+        "proxy_requests": 5
+      },
+      "status": 200,
+      "bytes": 145,
+      "sha256": "bce924a903b265f6ad4c372b163c0d21e64c6262ab5967a1289b562f503fd729",
+      "acquired_at": "2026-10-22T07:53:52.348536+00:00",
+      "results": [
+        {
+          "code": "001228",
+          "pinyin": "yty",
+          "sjstsBond": "false",
+          "category": "A股",
+          "type": "shj",
+          "delisted": "false",
+          "orgId": "nssc1000083",
+          "zwjc": "永泰运"
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 6
+      }
+    },
+    {
+      "id": "cninfo-search-601127",
+      "method": "POST",
+      "url": "https://www.cninfo.com.cn/new/information/topSearch/query",
+      "params": {
+        "keyWord": "601127",
+        "maxNum": "10"
+      },
+      "requested_at": "2026-10-22T07:53:52.348536+00:00",
+      "route_before": {
+        "proxy_requests": 6
+      },
+      "status": 200,
+      "bytes": 144,
+      "sha256": "82da97f45d43f8c5f5398f2d95b4619ca22b2f0b9902ab3224e1004c11089c34",
+      "acquired_at": "2026-10-22T07:53:53.010715+00:00",
+      "results": [
+        {
+          "code": "601127",
+          "pinyin": "sls",
+          "sjstsBond": "false",
+          "category": "A股",
+          "type": "shj",
+          "delisted": "false",
+          "orgId": "9900024265",
+          "zwjc": "赛力斯"
+        }
+      ],
+      "route_after": {
+        "proxy_requests": 7
+      }
+    }
+  ],
+  "no_collectors": true,
+  "no_ingest": true,
+  "no_archive": true,
+  "pending_before": 0,
+  "pending_after": 0,
+  "network": {
+    "proxy_requests": 7
+  },
+  "finished_at": "2026-10-22T07:53:53.018213+00:00"
+}

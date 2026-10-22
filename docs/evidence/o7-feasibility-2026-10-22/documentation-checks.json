@@ -1,0 +1,79 @@
+[
+  {
+    "name": "generate",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_build.py",
+      "generate"
+    ],
+    "at": "2026-10-22T08:14:11.868546+00:00",
+    "seconds": 0.2263557999394834,
+    "exit_code": 0,
+    "log": "generate.log"
+  },
+  {
+    "name": "review",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_contract.py",
+      "review",
+      "--note",
+      "O7有界可行性调查：五对象两来源路径，官方公告内单事件有限A正例及日期、关联、并发变化B限制；仅提交研究证据和候选设计，未改产品/生产结构/正式采集器，O7未实现未发布，原失败与既有能力保持。"
+    ],
+    "at": "2026-10-22T08:14:12.095346+00:00",
+    "seconds": 8.490592199959792,
+    "exit_code": 0,
+    "log": "review.log"
+  },
+  {
+    "name": "verify",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/verify_documentation.py"
+    ],
+    "at": "2026-10-22T08:14:20.586222+00:00",
+    "seconds": 6.132728800061159,
+    "exit_code": 0,
+    "log": "verify.log"
+  },
+  {
+    "name": "documentation-tests",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "tests/test_documentation_build.py",
+      "tests/test_documentation_review.py",
+      "tests/test_documentation_contracts.py",
+      "tests/test_documentation_sources.py",
+      "tests/test_storage_help.py",
+      "-q",
+      "--basetemp=build/pytest-o7-feasibility-docs",
+      "--junitxml=D:\\project\\empire\\docs\\evidence\\o7-feasibility-2026-10-22\\documentation.xml"
+    ],
+    "at": "2026-10-22T08:14:26.718956+00:00",
+    "seconds": 61.57527739997022,
+    "exit_code": 0,
+    "log": "documentation-tests.log"
+  },
+  {
+    "name": "diff",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "at": "2026-10-22T08:15:28.295694+00:00",
+    "seconds": 0.08062859997153282,
+    "exit_code": 0,
+    "log": "diff.log"
+  }
+]

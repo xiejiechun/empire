@@ -1,0 +1,525 @@
+{
+  "schema": 1,
+  "project_id": "tdx-rights-issues",
+  "started_at": "2026-10-22T16:09:27.980968+08:00",
+  "read_only": true,
+  "status": "partial",
+  "sections": {
+    "declaration": {
+      "status": "ok",
+      "started_at": "2026-10-22T16:09:27.980968+08:00",
+      "acquired_at": "2026-10-22T16:09:27.980968+08:00",
+      "reason": "",
+      "data": {
+        "project_id": "tdx-rights-issues",
+        "task": {
+          "id": "tdx-rights-issues",
+          "name": "配股（通达信）",
+          "capability": "collector.tdx_rights_issues",
+          "rate_group": "tdx",
+          "description": "全部可得历史核验 · 单证券完整归档",
+          "interval_seconds": 86400,
+          "category": "增发送配",
+          "source_name": "通达信",
+          "parallel_downloads": false,
+          "default_enabled": true,
+          "fresh_description": "从当前来源完整范围重新核验，保留已归档历史；普通采集优先续跑已入队断点。",
+          "default_schedule": null,
+          "unit_name": "只股票"
+        },
+        "job_keys": [
+          "tdx-rights-issues-v1"
+        ],
+        "datasets": [
+          "rights_issues.unit"
+        ],
+        "declared_scope": [
+          {
+            "id": "rights_issues",
+            "title": "配股",
+            "category": "增发送配",
+            "priority": "核心",
+            "purpose": "知道配股需要追加多少资金",
+            "grain": "一次配股方案",
+            "fields": "市场、股票编号、配股比例、配股价、登记日、缴款起始日、除权日；缴款结束日/上市日按来源可得保存",
+            "key": "来源 + 市场 + 股票编号 + 登记日 + 认购代码 + 缴款起始日",
+            "coverage": "通达信全部可得配股记录及代码关联；不承诺预案取消历史",
+            "cadence": "每轮完整回查全部可得配股记录",
+            "dependencies": [],
+            "criteria": [
+              {
+                "id": "fields",
+                "title": "字段与单位",
+                "expected": "市场、股票编号、配股比例、配股价、登记日、缴款起始日、除权日；缴款结束日/上市日按来源可得保存",
+                "action": "检查必需字段和单位；可选字段未提供不影响本项通过"
+              },
+              {
+                "id": "keys",
+                "title": "唯一键与重复",
+                "expected": "来源 + 市场 + 股票编号 + 登记日 + 认购代码 + 缴款起始日；重复键为 0",
+                "action": "明确业务键，清查重复与版本冲突"
+              },
+              {
+                "id": "coverage",
+                "title": "历史与对象覆盖",
+                "expected": "通达信全部可得配股记录及代码关联；不承诺预案取消历史",
+                "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明"
+              },
+              {
+                "id": "quality",
+                "title": "业务质量",
+                "expected": "价格比例有效，缴款和上市顺序合理",
+                "action": "修复数据或解析规则，并补充业务语义回归"
+              },
+              {
+                "id": "freshness",
+                "title": "更新与时效",
+                "expected": "每轮完整回查全部可得配股记录",
+                "action": "验证最新成功核验时间与数据水位，恢复更新计划"
+              },
+              {
+                "id": "temporal",
+                "title": "日期与使用范围",
+                "expected": "栏目无公告时间，不用于公告前选股；缺少缴款结束/上市日时不能推断可交易日期",
+                "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史"
+              }
+            ],
+            "kind": "采集",
+            "boundary": "对标通达信“增发送配 → 配股”；独立配股采集插件；不包含分红送转、增发、拆并股或换股。",
+            "related": [],
+            "optional_fields": "公告时间、来源方案编号、取消历史、旧缴款结束日与上市日",
+            "capability": "rights_issues.query",
+            "dataset": "rights_issues.unit"
+          }
+        ]
+      }
+    },
+    "isolation": {
+      "status": "unknown",
+      "started_at": "2026-10-22T16:09:27.980968+08:00",
+      "acquired_at": "2026-10-22T16:09:27.980968+08:00",
+      "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离",
+      "data": {
+        "status": "unknown",
+        "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离"
+      }
+    },
+    "errors": {
+      "status": "ok",
+      "started_at": "2026-10-22T16:09:27.980968+08:00",
+      "acquired_at": "2026-10-22T16:09:27.983990+08:00",
+      "reason": "",
+      "data": {
+        "revision": "17",
+        "total": 17,
+        "rows": [
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "37c46af80d734156899f4928c308d543",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:19:30.545408+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "40b16d7749824080bf44b17f6495f180",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:19:23.798494+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "0a116a9cee2a480ca7c529efc915c7ef",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:19:19.293019+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node012 请求失败（ProxyError），已临时隔离",
+            "id": "f5c59ed3c98e413d85df1705d7ae04bc",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:19:11.272653+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node004 请求失败（ProxyError），已临时隔离",
+            "id": "533611e6b42148e198ad16b7e90d827c",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:19:08.043334+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node006 请求失败（ProxyError），已临时隔离",
+            "id": "7a86eb7769764902bd66593499b1d0c1",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:19:00.959548+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node013 请求失败（ProxyError），已临时隔离",
+            "id": "79923a59065a4b69a371af6cef4c2f29",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:18:50.647246+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node002 请求失败（ProxyError），已临时隔离",
+            "id": "59906bb0f4784a57bd43e9964640fb74",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:18:49.903891+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node014 请求失败（ProxyError），已临时隔离",
+            "id": "e9c28eee37a8492fa6cb17b798b89735",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:18:29.340993+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node020 请求失败（ProxyError），已临时隔离",
+            "id": "b46bbe552eb943f9b312b2910a380f6b",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T18:18:07.668790+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "4d8bff8c7d8c4c1b8f97baf24d2745c6",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T15:48:26.972051+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "2db9addbc2994213af6387c736cbec8b",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T15:48:22.271315+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node010 请求失败（ProxyError），已临时隔离",
+            "id": "034e217e2589456ca04ef312052a1da0",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T15:48:19.395340+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "All connection attempts failed",
+            "id": "fdbff78e22df467daa1a600e08ec6b4d",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T15:48:08.095430+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node006 请求失败（ProxyError），已临时隔离",
+            "id": "f394295353dc4957b726b2f088a45b83",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T15:47:26.961888+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node002 请求失败（ProxyError），已临时隔离",
+            "id": "63b47c73d7e649a390cba03a74abdb50",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T15:47:16.653919+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node013 请求失败（ProxyError），已临时隔离",
+            "id": "8737589ccbe44cc4b00603bdcf514536",
+            "project_id": "tdx-rights-issues",
+            "created_at": "2026-10-17T15:47:06.338023+00:00",
+            "stage": "http"
+          }
+        ],
+        "truncated": false,
+        "body_included": false
+      }
+    },
+    "task_state": {
+      "status": "ok",
+      "started_at": "2026-10-22T16:09:27.983990+08:00",
+      "acquired_at": "2026-10-22T16:09:27.989648+08:00",
+      "reason": "",
+      "data": {
+        "history": [
+          {
+            "network": {
+              "proxy_requests": 1
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "queued_records": 1191,
+              "units": 766,
+              "total_units": 766,
+              "expected_count": 1191,
+              "batch_id": "dd8494984ad746acaa7fa4a04bd2e0ed",
+              "current_security": "SZ:300772",
+              "failed_units": 0,
+              "collected": 1191,
+              "processed_units": 766,
+              "pages": 767,
+              "continuous_collected": 1191
+            },
+            "task_id": "tdx-rights-issues",
+            "fresh": false,
+            "finished_at": 1792648428.1031,
+            "status": "complete",
+            "started_at": 1792648423.0569,
+            "proxy_fallback": true,
+            "run_id": "08efd649280e41e2a174e4e3a009a216",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 8448
+          },
+          {
+            "network": {
+              "proxy_requests": 1
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "queued_records": 1191,
+              "units": 766,
+              "total_units": 766,
+              "expected_count": 1191,
+              "batch_id": "ae3fd201f19d4f20abeea94b89c6ec19",
+              "current_security": "SZ:300772",
+              "failed_units": 0,
+              "collected": 1191,
+              "processed_units": 766,
+              "pages": 767,
+              "continuous_collected": 1191
+            },
+            "task_id": "tdx-rights-issues",
+            "fresh": false,
+            "finished_at": 1792604429.8069,
+            "status": "complete",
+            "started_at": 1792604426.8666,
+            "proxy_fallback": true,
+            "run_id": "c8ee81ee6cf940c79c32aad2441f07a3",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 7680
+          },
+          {
+            "network": {
+              "proxy_requests": 1
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "queued_records": 1191,
+              "units": 766,
+              "total_units": 766,
+              "expected_count": 1191,
+              "batch_id": "c31f00c551dd436cb608caaa147affe2",
+              "current_security": "SZ:300772",
+              "failed_units": 0,
+              "collected": 1191,
+              "processed_units": 766,
+              "pages": 767,
+              "continuous_collected": 1191
+            },
+            "task_id": "tdx-rights-issues",
+            "fresh": false,
+            "finished_at": 1792561225.9538,
+            "status": "complete",
+            "started_at": 1792561205.4683,
+            "proxy_fallback": true,
+            "run_id": "5b64931dd2d24af4ac71356d660504b9",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 6912
+          }
+        ],
+        "job": {
+          "last_status": "complete",
+          "next_due": 1792691628.1031,
+          "active": null,
+          "notice": "",
+          "policy": {
+            "enabled": true,
+            "request_retries": 2,
+            "daily_time": "18:00",
+            "proxy_fallback": true,
+            "archived": false,
+            "interval_seconds": 43200,
+            "use_proxy": true,
+            "mode": "interval"
+          },
+          "error": ""
+        }
+      }
+    },
+    "checkpoint:tdx-rights-issues-v1": {
+      "status": "ok",
+      "started_at": "2026-10-22T16:09:27.989648+08:00",
+      "acquired_at": "2026-10-22T16:09:27.990655+08:00",
+      "reason": "",
+      "data": {
+        "cursor": {
+          "phase": "complete",
+          "batch_id": "dd8494984ad746acaa7fa4a04bd2e0ed",
+          "index": 766,
+          "pages": 767,
+          "collected": 1191,
+          "source_hash": "ccfab41209002a1bf31ecd46a54edd4dd77ca933bff1c64e2fc15cdbfc37430a",
+          "scope_hash": "7b02cb72fad272fe0ed2436e88eb2cb9358db315023be713490aa868759164fd",
+          "units": 766,
+          "rolling": "767160a3d7d5570f9f1a1e84718ca5746757678b7510a4c7369e9835e13a0a89",
+          "started_at": "2026-10-22T05:53:43.667192+00:00",
+          "schema_version": 1
+        },
+        "revision": "9216"
+      }
+    },
+    "archive_progress:tdx-rights-issues-v1": {
+      "status": "ok",
+      "started_at": "2026-10-22T16:09:27.990655+08:00",
+      "acquired_at": "2026-10-22T16:09:27.990655+08:00",
+      "reason": "",
+      "data": {
+        "batch_id": "dd8494984ad746acaa7fa4a04bd2e0ed",
+        "page": 767,
+        "status": "complete",
+        "row_count": 0,
+        "error_text": "",
+        "observed_at": "2026-10-22T05:53:46.104758+00:00"
+      }
+    },
+    "queue": {
+      "status": "ok",
+      "started_at": "2026-10-22T16:09:27.990655+08:00",
+      "acquired_at": "2026-10-22T16:09:27.990655+08:00",
+      "reason": "",
+      "data": {
+        "stream_total": 0,
+        "unreadable": 0,
+        "truncated": false,
+        "exact": true,
+        "fetched_envelope_bytes": 0,
+        "scanned": 0,
+        "stream_ids": {},
+        "project_lower_bound": 0
+      }
+    },
+    "sql_state": {
+      "status": "ok",
+      "started_at": "2026-10-22T16:09:28.058208+08:00",
+      "acquired_at": "2026-10-22T16:09:28.105865+08:00",
+      "reason": "",
+      "data": {
+        "source": "tdx",
+        "dataset": "rights_issues",
+        "updated_at": "2026-10-16 13:14:34.451713",
+        "state_bytes": 119966,
+        "progress": "{\"page\": 767, \"status\": \"complete\", \"batch_id\": \"34efb213757a4292bdd6b03a67b7a6d6\", \"row_count\": 0, \"error_text\": \"\", \"observed_at\": \"2026-10-16T04:23:12.220854+00:00\"}",
+        "progress_truncated": 0,
+        "coverage": null,
+        "coverage_truncated": 0,
+        "contract_version": "1",
+        "truncated": false,
+        "projection_only": true
+      }
+    },
+    "saved_policy": {
+      "status": "ok",
+      "started_at": "2026-10-22T16:09:28.105865+08:00",
+      "acquired_at": "2026-10-22T16:09:28.106368+08:00",
+      "reason": "",
+      "data": {
+        "updated_at": "2026-09-30 02:25:46.412792",
+        "bytes": 152,
+        "policy": "{\"mode\": \"interval\", \"enabled\": true, \"use_proxy\": true, \"daily_time\": \"18:00\", \"proxy_fallback\": true, \"request_retries\": 2, \"interval_seconds\": 43200}",
+        "truncated": false
+      }
+    },
+    "query:rights_issues.query": {
+      "status": "ok",
+      "started_at": "2026-10-22T16:09:28.106368+08:00",
+      "acquired_at": "2026-10-22T16:09:28.109260+08:00",
+      "reason": "",
+      "data": {
+        "capability": "rights_issues.query",
+        "method": "list_events",
+        "arguments": {
+          "limit": 20,
+          "code": "300176",
+          "market": "SZ",
+          "start": "2026-08-21",
+          "end": "2026-08-21"
+        },
+        "result": [
+          {
+            "record_key": "c8ed4edb9b8251f702415f05cad38d6cf781e1401dc9fee1ac92ce92c63b8090",
+            "market": "SZ",
+            "code": "300176",
+            "name": "鸿特科技",
+            "event_date": "2026-08-21",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "2026-08-21",
+              "payment_end": "2026-08-19",
+              "record_date": "2026-08-12",
+              "listing_date": "2026-09-02",
+              "rights_price": "3.36",
+              "shares_after": "531453919",
+              "issued_shares": "144173119",
+              "payment_start": "2026-08-13",
+              "shares_before": "387280800",
+              "rights_per_share": "0.4",
+              "announcement_date": null,
+              "subscription_code": "380176"
+            }
+          }
+        ],
+        "scope": "正式有界预览，非完整性验收"
+      }
+    }
+  },
+  "note": "各项分时读取，非 Redis/SQL 原子快照。任务阶段与 next_due 来自临时记录；正式预览不证明来源完整、时效或全部待归档为零。",
+  "limits_note": "队列最多逐条读取 5 个现有 Envelope；累计达到 256 KiB 后不取下一条，最后一条可超过此阈值，超过 256 KiB 的正文不解析。错误详情最多查现有保留的 300 条；控制状态读取上限 8 MiB，断点/归档进度各 128 KiB。报告上限不等同 Redis 服务总内存上限。",
+  "sql_cleanup": {
+    "closed_to_new_sql": true,
+    "outstanding_workers": 0,
+    "complete": true
+  },
+  "finished_at": "2026-10-22T16:09:28.109765+08:00",
+  "budget": {
+    "limits": {
+      "sql": 10,
+      "redis": 20,
+      "io_seconds": 5,
+      "total_seconds": 30,
+      "report_bytes": 1048576,
+      "errors": 50,
+      "body_bytes": 65536
+    },
+    "used": {
+      "sql": 8,
+      "redis": 15
+    },
+    "elapsed_seconds": 0.797,
+    "counting": "SQL 包含受守卫 SELECT 及每个物理连接五次驱动只读探测的保守预留；连接协议、SET 会话初始化及事务清理不计为业务查询。Redis 按脚本内 redis.call 读取命令的最大次数预留，包含返回前未使用预留。"
+  }
+}
