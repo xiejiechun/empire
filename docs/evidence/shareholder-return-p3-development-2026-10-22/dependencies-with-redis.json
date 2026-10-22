@@ -1,0 +1,2929 @@
+{
+  "at": "2026-10-22T02:33:50.767620+00:00",
+  "sql_only": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "5588方案；身份、日期、数量金额及来源说明逐行校验；NULL保持未知",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "唯一来源方案编号；完整SQL键与规范内容滚动摘要匹配",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "完整来源集合与SQL逐行摘要核对；不是依据最大日期或条数推断完整",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "计划与累计实际分开，未知状态保留；回购完成不推断注销完成",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "SQL完整集合匹配后，以SQL或匹配完整已归档轮次的核验时间确认3天时效；Redis可选",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "仅当前修订和公告自然日，无完整旧版本/日内时刻，不用于严格历史信号回放",
+      "blocking": false,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    }
+  ],
+  "historical": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "5588方案；身份、日期、数量金额及来源说明逐行校验；NULL保持未知",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "唯一来源方案编号；完整SQL键与规范内容滚动摘要匹配",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "完整来源集合与SQL逐行摘要核对；不是依据最大日期或条数推断完整",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "计划与累计实际分开，未知状态保留；回购完成不推断注销完成",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "SQL完整集合匹配后，以SQL或匹配完整已归档轮次的核验时间确认3天时效；Redis可选",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "仅当前修订和公告自然日，无完整旧版本/日内时刻，不用于严格历史信号回放",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    }
+  ],
+  "injected_redis_unavailable": [
+    {
+      "criterion": "fields",
+      "status": "pass",
+      "measured": "5588方案；身份、日期、数量金额及来源说明逐行校验；NULL保持未知",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "keys",
+      "status": "pass",
+      "measured": "唯一来源方案编号；完整SQL键与规范内容滚动摘要匹配",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass",
+      "measured": "完整来源集合与SQL逐行摘要核对；不是依据最大日期或条数推断完整",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "quality",
+      "status": "pass",
+      "measured": "计划与累计实际分开，未知状态保留；回购完成不推断注销完成",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass",
+      "measured": "SQL完整集合匹配后，以SQL或匹配完整已归档轮次的核验时间确认3天时效；Redis可选",
+      "blocking": true,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail",
+      "measured": "仅当前修订和公告自然日，无完整旧版本/日内时刻，不用于严格历史信号回放",
+      "blocking": false,
+      "findings": [],
+      "reason": "",
+      "observed_at": ""
+    }
+  ],
+  "sql_proof": {
+    "count": 5588,
+    "digest": "356f1c29cdcc6eac17718be43fdd070cbf6d351021954795f5e0e0be00ac024f",
+    "valid": true,
+    "proof": {
+      "count": 5588,
+      "digest": "356f1c29cdcc6eac17718be43fdd070cbf6d351021954795f5e0e0be00ac024f",
+      "contract": 1,
+      "observed_at": "2026-10-22T02:24:20.728003+00:00"
+    },
+    "last": {
+      "plan_id": "9998",
+      "unified_code": "002108.SZ",
+      "name": "沧州明珠",
+      "share_type": "流通A股",
+      "plan_date": "2023-06-01",
+      "updated_date": "2025-07-19",
+      "progress_code": "006",
+      "plan_updated_date": "2025-07-19",
+      "actual_through": "2023-06-09",
+      "notice_date": "2023-06-13",
+      "start_date": "2023-05-31",
+      "end_date": "2023-11-30",
+      "finish_date": "2023-06-09",
+      "shareholder_notice_date": null,
+      "advance_date": "2023-06-09",
+      "plan_price_upper": "6.5",
+      "plan_price_lower": null,
+      "plan_quantity_upper": "16923000",
+      "plan_quantity_lower": "13846200",
+      "plan_amount_upper": "110000000",
+      "plan_amount_lower": "90000000",
+      "actual_price_upper": "4.66",
+      "actual_price_lower": "4.39",
+      "actual_quantity": "24099560",
+      "actual_amount": "109986450.42",
+      "objective": "基于对公司价值的认可和未来发展前景的坚定信心,为维护广大投资者利益,进一步健全公司长效激励机制,充分调动公司员工的主动性与创造力,共同促进公司的长期发展。公司计划以自有资金通过集中竞价的方式从二级市场回购股份,用于实施股权激励或员工持股计划。",
+      "remark": "2023.06.01公告\r\n自董事会审议通过回购股份方案之日起6个月内。\r\n\r\n2025.07.19公告\r\n因公司拟终止实施2023年股权激励计划,故公司对该部分股份变更用途,由原方案“用于实施股权激励计划或员工持股计划”变更为“用于注销并减少公司注册资本”,拟注销库存股740,500股,股份数量占公司目前总股本的0.0445%。",
+      "progress_remark": null
+    },
+    "invalid": 0
+  },
+  "distribution": {
+    "id": "nominal_dividends",
+    "title": "已实施名义每股派息",
+    "state": "已计算",
+    "purpose": "analysis",
+    "scope": {
+      "purpose": "analysis",
+      "codes": [
+        "000001"
+      ],
+      "start": "2026-01-01",
+      "end": "2026-10-20",
+      "index_codes": [],
+      "study": "",
+      "focus": "",
+      "scan": "all"
+    },
+    "checked_at": "2026-10-22T02:33:52.620666+00:00",
+    "observed_at": "2026-10-21T17:45:49.469196+00:00",
+    "currency": "CNY",
+    "unit": "元/当期股（含税）",
+    "formula": "Σ所选闭区间除息日的明确实施每股含税现金；每10股=每股×10",
+    "version": "nominal-dividend-v1",
+    "checks": [
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "keys",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "coverage",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "quality",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "freshness",
+        "status": "pass",
+        "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "temporal",
+        "status": "pass",
+        "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+        "blocking": false,
+        "findings": [],
+        "reason": "source_limit",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      }
+    ],
+    "securities": [
+      {
+        "security": "000001.SZ",
+        "rows": [
+          {
+            "record_key": "f01ac91aae58b442287c27341239a550c4dcc043a5a35ac03a67a18206aa28eb",
+            "ex_date": "2026-06-12",
+            "report_date": "2025-12-31",
+            "record_date": "2026-06-11",
+            "cash_per_share": "0.36",
+            "cash_per_ten": "3.6",
+            "status": "实施方案"
+          },
+          {
+            "record_key": "3ab54e7a1963d64c20e4a82008b1302da938e81ba7ca51e22ce25a9f69e9be02",
+            "ex_date": "2026-09-24",
+            "report_date": "2026-06-30",
+            "record_date": "2026-09-23",
+            "cash_per_share": "0.249",
+            "cash_per_ten": "2.49",
+            "status": "实施方案"
+          }
+        ],
+        "cash_per_share": "0.609",
+        "cash_per_ten": "6.09",
+        "full_unit_count": 28,
+        "unit_content_hash": "5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33"
+      }
+    ],
+    "limitations": [
+      "名义每股含税派息，不是到账现金；各事件当期一股口径，不是期初一股收益。",
+      "当前来源修订版；缺稳定事件关联和逐次修订可用日，不用于历史信号。",
+      "无持仓、支付日及税费；本项不计算现金收益或稀释。股息率另核验价格及股数基准，股数变化时名义金额不可当持仓收益。"
+    ],
+    "input_hash": "5fa8528dbc8e637c476c3152cda8ddd1dd97e0cc81529992951ea3de8ec1976b"
+  },
+  "yield": {
+    "id": "dividend_yield",
+    "title": "区间名义现金股息率",
+    "state": "已计算",
+    "purpose": "analysis",
+    "scope": {
+      "purpose": "analysis",
+      "codes": [
+        "000001"
+      ],
+      "start": "2026-01-01",
+      "end": "2026-10-20",
+      "index_codes": [],
+      "study": "",
+      "focus": "",
+      "scan": "all"
+    },
+    "checked_at": "2026-10-22T02:33:52.878075+00:00",
+    "observed_at": "2026-10-21T17:45:49.469196+00:00",
+    "currency": "CNY",
+    "unit": "%",
+    "formula": "Y = Σ闭区间实施每股含税派息 / 截止日对应最近已结束交易日未复权收盘价 × 100%",
+    "version": "interval-nominal-dividend-yield-v1",
+    "checks": [
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "keys",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "coverage",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "quality",
+        "status": "pass",
+        "measured": "数据分析 / 财务估值；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "freshness",
+        "status": "pass",
+        "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "temporal",
+        "status": "pass",
+        "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+        "blocking": false,
+        "findings": [],
+        "reason": "source_limit",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "同一只读SQL快照：完整分红、正式日历、未复权收盘后证券日和停复牌；逐交易日股本基准一致。",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": ""
+      }
+    ],
+    "securities": [
+      {
+        "security": "000001.SZ",
+        "rows": [
+          {
+            "record_key": "f01ac91aae58b442287c27341239a550c4dcc043a5a35ac03a67a18206aa28eb",
+            "ex_date": "2026-06-12",
+            "report_date": "2025-12-31",
+            "record_date": "2026-06-11",
+            "cash_per_share": "0.36",
+            "cash_per_ten": "3.6",
+            "status": "实施方案"
+          },
+          {
+            "record_key": "3ab54e7a1963d64c20e4a82008b1302da938e81ba7ca51e22ce25a9f69e9be02",
+            "ex_date": "2026-09-24",
+            "report_date": "2026-06-30",
+            "record_date": "2026-09-23",
+            "cash_per_share": "0.249",
+            "cash_per_ten": "2.49",
+            "status": "实施方案"
+          }
+        ],
+        "cash_per_share": "0.609",
+        "cash_per_ten": "6.09",
+        "full_unit_count": 28,
+        "unit_content_hash": "5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33",
+        "calendar": {
+          "source": "cninfo",
+          "months": [
+            "2026-01",
+            "2026-02",
+            "2026-03",
+            "2026-04",
+            "2026-05",
+            "2026-06",
+            "2026-07",
+            "2026-08",
+            "2026-09",
+            "2026-10"
+          ],
+          "observed_at": [
+            "2026-09-23T00:21:06.301287+00:00",
+            "2026-09-23T00:21:08.345748+00:00",
+            "2026-09-23T00:21:10.369544+00:00",
+            "2026-09-23T00:21:12.336951+00:00",
+            "2026-09-23T00:21:14.338958+00:00",
+            "2026-09-23T00:21:16.391279+00:00",
+            "2026-09-23T00:21:18.610739+00:00",
+            "2026-09-23T00:21:20.410007+00:00",
+            "2026-09-26T12:30:01.109193+00:00",
+            "2026-10-16T02:59:11.521172+00:00"
+          ],
+          "days": [
+            {
+              "trade_date": "2026-01-01",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-02",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-03",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-04",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-05",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-06",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-07",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-08",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-09",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-10",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-11",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-12",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-13",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-14",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-15",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-16",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-17",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-18",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-19",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-20",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-21",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-22",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-23",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-24",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-25",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-01-26",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-27",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-28",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-29",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-30",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-01-31",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-01",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-02",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-03",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-04",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-05",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-06",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-07",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-08",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-09",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-10",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-11",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-12",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-13",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-14",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-15",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-16",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-17",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-18",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-19",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-20",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-21",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-22",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-23",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-02-24",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-25",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-26",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-27",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-02-28",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-01",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-02",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-03",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-04",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-05",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-06",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-07",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-08",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-09",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-10",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-11",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-12",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-13",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-14",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-15",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-16",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-17",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-18",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-19",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-20",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-21",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-22",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-23",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-24",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-25",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-26",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-27",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-28",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-29",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-03-30",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-03-31",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-01",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-02",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-03",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-04",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-04-05",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-04-06",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-04-07",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-08",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-09",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-10",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-11",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-04-12",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-04-13",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-14",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-15",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-16",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-17",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-18",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-04-19",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-04-20",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-21",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-22",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-23",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-24",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-25",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-04-26",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-04-27",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-28",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-29",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-04-30",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-01",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-02",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-03",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-04",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-05",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-06",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-07",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-08",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-09",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-10",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-11",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-12",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-13",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-14",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-15",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-16",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-17",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-18",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-19",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-20",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-21",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-22",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-23",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-24",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-25",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-26",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-27",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-28",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-29",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-05-30",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-05-31",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-01",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-02",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-03",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-04",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-05",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-06",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-07",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-08",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-09",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-10",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-11",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-12",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-13",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-14",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-15",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-16",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-17",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-18",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-19",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-20",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-21",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-22",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-23",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-24",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-25",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-26",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-27",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-28",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-06-29",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-06-30",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-01",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-02",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-03",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-04",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-07-05",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-07-06",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-07",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-08",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-09",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-10",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-11",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-07-12",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-07-13",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-14",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-15",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-16",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-17",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-18",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-07-19",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-07-20",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-21",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-22",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-23",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-24",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-25",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-07-26",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-07-27",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-28",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-29",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-30",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-07-31",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-01",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-02",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-03",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-04",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-05",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-06",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-07",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-08",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-09",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-10",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-11",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-12",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-13",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-14",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-15",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-16",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-17",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-18",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-19",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-20",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-21",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-22",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-23",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-24",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-25",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-26",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-27",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-28",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-08-29",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-30",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-08-31",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-01",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-02",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-03",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-04",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-05",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-09-06",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-09-07",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-08",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-09",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-10",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-11",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-12",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-09-13",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-09-14",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-15",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-16",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-17",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-18",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-19",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-09-20",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-09-21",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-22",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-23",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-24",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-25",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-09-26",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-09-27",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-09-28",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-29",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-09-30",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-01",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-02",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-03",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-04",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-05",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-06",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-07",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-08",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-09",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-10",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-11",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-12",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-13",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-14",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-15",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-16",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-17",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-18",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-19",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-20",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-21",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-22",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-23",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-24",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-25",
+              "is_trade": 0
+            },
+            {
+              "trade_date": "2026-10-26",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-27",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-28",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-29",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-30",
+              "is_trade": 1
+            },
+            {
+              "trade_date": "2026-10-31",
+              "is_trade": 0
+            }
+          ]
+        },
+        "denominator": {
+          "date": "2026-10-20",
+          "price": "11.44",
+          "source": "kaipanla",
+          "security": "000001.SZ",
+          "adjustment": "未复权",
+          "source_clock": 153833000,
+          "observed_at": "2026-10-22T04:34:50.323266+08:00",
+          "basis_shares": "19405918198",
+          "basis_days": 190,
+          "evidence": [
+            {
+              "date": "2026-01-05",
+              "observed_at": "2026-10-22T04:34:39.657034+08:00",
+              "content_hash": "88af44b68a3e60c80700f0f6e740b2b633828a92404f6bdf89e4c770801331b3"
+            },
+            {
+              "date": "2026-01-06",
+              "observed_at": "2026-10-22T04:34:39.657034+08:00",
+              "content_hash": "411c1ad20da5778f4ada33b9ab039eb0b4674eeff9c54fbce5aae0543ca17a8c"
+            },
+            {
+              "date": "2026-01-07",
+              "observed_at": "2026-10-22T04:34:39.657034+08:00",
+              "content_hash": "aacde1a9e5648a0588deba619f489a80b2f5538d6b6fb87d0080ab6ea384c958"
+            },
+            {
+              "date": "2026-01-08",
+              "observed_at": "2026-10-22T04:34:39.657034+08:00",
+              "content_hash": "0f6ac47aa9253fe8ff0b27d694cc02c3cb72f8ccbb28dcdda4f42450cae7bf37"
+            },
+            {
+              "date": "2026-01-09",
+              "observed_at": "2026-10-22T04:34:39.657034+08:00",
+              "content_hash": "2446ad2ec243ca6d0b98ba15357ad489fad8f5a3abf6b53934616d6a08af1e85"
+            },
+            {
+              "date": "2026-01-12",
+              "observed_at": "2026-10-22T04:34:39.657034+08:00",
+              "content_hash": "4a576f4b3dcae1b781944410a2dab5260a368d02710c07a27e2036f845803c97"
+            },
+            {
+              "date": "2026-01-13",
+              "observed_at": "2026-10-22T04:34:39.657034+08:00",
+              "content_hash": "9a4dc00dafc9fc4b16cd4eab40cc176f6ef10d70b8cc17f7d88a55add2296af7"
+            },
+            {
+              "date": "2026-01-14",
+              "observed_at": "2026-10-22T04:34:39.657034+08:00",
+              "content_hash": "2fe78de54b71182affa334752d1c7b9845534d29e1747a8e94c65c82c8f14cc2"
+            },
+            {
+              "date": "2026-01-15",
+              "observed_at": "2026-10-22T04:34:39.657034+08:00",
+              "content_hash": "fdfe4130211b823442216bf0b134e21569ad0eb738d4960b21dc9d2758baaa9e"
+            },
+            {
+              "date": "2026-01-16",
+              "observed_at": "2026-10-22T04:34:40.175926+08:00",
+              "content_hash": "b494943fed962e697ff88545f44ec186d585049802d4dd54e98eda38fc14a887"
+            },
+            {
+              "date": "2026-01-19",
+              "observed_at": "2026-10-22T04:34:40.289009+08:00",
+              "content_hash": "b8dc83ebd0ce71c5741e13d093d6fdef87a8ad6dc1bb2082ac1009d4ed8ab904"
+            },
+            {
+              "date": "2026-01-20",
+              "observed_at": "2026-10-22T04:34:40.289009+08:00",
+              "content_hash": "9fb2523e53b9ad297f8ceac5ff662983e31ac1c58605379806443a0e37b098ed"
+            },
+            {
+              "date": "2026-01-21",
+              "observed_at": "2026-10-22T04:34:40.599369+08:00",
+              "content_hash": "20fef043b8122e9b4e2b363aad96fc94acb1cf84b25c808f8c3f3f737e3e4a67"
+            },
+            {
+              "date": "2026-01-22",
+              "observed_at": "2026-10-22T04:34:40.600368+08:00",
+              "content_hash": "b331a957a64578e2f383ee5a927b0324c6c961a02714d62efdea8c4586e303b2"
+            },
+            {
+              "date": "2026-01-23",
+              "observed_at": "2026-10-22T04:34:40.605369+08:00",
+              "content_hash": "4b292b6595bf0171c1c7865d7dd669f1698ace42e5168268e3b2064d300403cd"
+            },
+            {
+              "date": "2026-01-26",
+              "observed_at": "2026-10-22T04:34:40.608738+08:00",
+              "content_hash": "7db1dd79fc3fc7a07dc222211a838fedb5d7ffc6f614526eb8cb3a2807e8a931"
+            },
+            {
+              "date": "2026-01-27",
+              "observed_at": "2026-10-22T04:34:40.611798+08:00",
+              "content_hash": "545aa291e69f4bd28c3d51d067c685f73824a3a051f9c0dfda9338f846665760"
+            },
+            {
+              "date": "2026-01-28",
+              "observed_at": "2026-10-22T04:34:40.614521+08:00",
+              "content_hash": "146267bebef0de00d95b665f7da859977e76493ccfef0ac5201ba9c65586edcd"
+            },
+            {
+              "date": "2026-01-29",
+              "observed_at": "2026-10-22T04:34:40.618650+08:00",
+              "content_hash": "0263d309e447d82dbd036a2d4f586537e44fb4b44fd582511d4e3ce0ec82be56"
+            },
+            {
+              "date": "2026-01-30",
+              "observed_at": "2026-10-22T04:34:40.621674+08:00",
+              "content_hash": "562c9ac9e9834c531da6c27b9b8afee5740b3272e2dda082e57b60f98a4503ef"
+            },
+            {
+              "date": "2026-02-02",
+              "observed_at": "2026-10-22T04:34:40.623680+08:00",
+              "content_hash": "8ca79115775379581b97d73376054882fa52def6b0f292960892216cbfc83c93"
+            },
+            {
+              "date": "2026-02-03",
+              "observed_at": "2026-10-22T04:34:40.730613+08:00",
+              "content_hash": "683b1ab752a2966578b70fea3068230daece3b50011b22702ab24150bdb2782a"
+            },
+            {
+              "date": "2026-02-04",
+              "observed_at": "2026-10-22T04:34:40.732938+08:00",
+              "content_hash": "8d27eade6aab233bc808c148541898b2bff86c1eca0f25fed18ffc5950157cb4"
+            },
+            {
+              "date": "2026-02-05",
+              "observed_at": "2026-10-22T04:34:40.736617+08:00",
+              "content_hash": "fb8624c212493273a9ca0b045a91f4d2ff2e0c1646b1f274b041d0ce7bc90582"
+            },
+            {
+              "date": "2026-02-06",
+              "observed_at": "2026-10-22T04:34:40.738918+08:00",
+              "content_hash": "31f328447eff520c7967e711f2049a8b102328edc57f40290a76335403550ee3"
+            },
+            {
+              "date": "2026-02-09",
+              "observed_at": "2026-10-22T04:34:40.741214+08:00",
+              "content_hash": "522798ae251cd8deba87571e7447039d5a789610d607f892432b87383ac3bd7e"
+            },
+            {
+              "date": "2026-02-10",
+              "observed_at": "2026-10-22T04:34:40.742432+08:00",
+              "content_hash": "a949d7993234bd7ab91826d9a15aad0111dd44294d1ace8eba48d1829c6c9913"
+            },
+            {
+              "date": "2026-02-11",
+              "observed_at": "2026-10-22T04:34:40.743440+08:00",
+              "content_hash": "07d95152fda78b9939f8cfb1316094f6f079b6140406dd6f9bbb559deedf5a12"
+            },
+            {
+              "date": "2026-02-12",
+              "observed_at": "2026-10-22T04:34:41.177906+08:00",
+              "content_hash": "3d7dabe03508d1b6412f6c1fe11f281e59ad0bc264e696e97512a1d0ff4edc52"
+            },
+            {
+              "date": "2026-02-13",
+              "observed_at": "2026-10-22T04:34:41.179254+08:00",
+              "content_hash": "44a5046370e285a193df6d21f696b5298753dcf8a7a9103b4e2fdb455be0a321"
+            },
+            {
+              "date": "2026-02-24",
+              "observed_at": "2026-10-22T04:34:41.368174+08:00",
+              "content_hash": "778e357b05f69fc3a790b96a82cf48c7995c5eb2af91b818429045783f082538"
+            },
+            {
+              "date": "2026-02-25",
+              "observed_at": "2026-10-22T04:34:41.369471+08:00",
+              "content_hash": "d94f19d7bc9c7e55353ba2a4cd8ff46979ec813f7224a6f1146ada9e40a713d2"
+            },
+            {
+              "date": "2026-02-26",
+              "observed_at": "2026-10-22T04:34:41.372858+08:00",
+              "content_hash": "204a689679d879567b0661e8c29516fa8164307ccd9d6df2ebd1397fc39317e6"
+            },
+            {
+              "date": "2026-02-27",
+              "observed_at": "2026-10-22T04:34:41.376058+08:00",
+              "content_hash": "1fe8deea84066891b1944e5df35e263cbd00758ef2fd501ee0464d65c3e61972"
+            },
+            {
+              "date": "2026-03-02",
+              "observed_at": "2026-10-22T04:34:41.377450+08:00",
+              "content_hash": "7f967e41eb4619b99b3a492f77c8cee9f2a542968d2f0a2cd16767d6468ea2a1"
+            },
+            {
+              "date": "2026-03-03",
+              "observed_at": "2026-10-22T04:34:41.379742+08:00",
+              "content_hash": "e496189c653ba1f46232e651ff9bed1141aa4e1a78879b3cfd590568cbe32c7a"
+            },
+            {
+              "date": "2026-03-04",
+              "observed_at": "2026-10-22T04:34:41.381926+08:00",
+              "content_hash": "45a9af0fd8be33c328439fc7e48852cf6e74d60e70cb391f93e4d05e7960e9e5"
+            },
+            {
+              "date": "2026-03-05",
+              "observed_at": "2026-10-22T04:34:41.383637+08:00",
+              "content_hash": "73a29afc28033b34ae3888a67754707c76e1a08828486a9ca2b3ec8af8fad13e"
+            },
+            {
+              "date": "2026-03-06",
+              "observed_at": "2026-10-22T04:34:41.385742+08:00",
+              "content_hash": "e521a61f610cce7c757c0bc33ce8a9c42fad6b9783cc427224ecef2a7cdabdd7"
+            },
+            {
+              "date": "2026-03-09",
+              "observed_at": "2026-10-22T04:34:41.679332+08:00",
+              "content_hash": "99939cc96f71ccd5cbe5cbdf990ca8a37c6ca1848565b373c953e3a59f466072"
+            },
+            {
+              "date": "2026-03-10",
+              "observed_at": "2026-10-22T04:34:41.730606+08:00",
+              "content_hash": "baa5dcc963e91d8f19fac67614252ffe4cfa5d3f2b7430a1beabdb9cefa6b858"
+            },
+            {
+              "date": "2026-03-11",
+              "observed_at": "2026-10-22T04:34:41.730606+08:00",
+              "content_hash": "23b99be8084143ec4d0b5efd2c882e7d0c9fcfdd886d6711f1e69cd7f8dbdcb8"
+            },
+            {
+              "date": "2026-03-12",
+              "observed_at": "2026-10-22T04:34:42.183646+08:00",
+              "content_hash": "12a3f4888e6799452762fc133580a0db795f3b51eed50d0527ae93fb5f50a01e"
+            },
+            {
+              "date": "2026-03-13",
+              "observed_at": "2026-10-22T04:34:42.186055+08:00",
+              "content_hash": "695654edf05464c77c29d964f759b75bb6fc6beddd7e21bd67d4b9eed97e70fb"
+            },
+            {
+              "date": "2026-03-16",
+              "observed_at": "2026-10-22T04:34:42.191526+08:00",
+              "content_hash": "26992c0a4066f3369e7560e862fb55f2497bbc8c4918216f91ec098a0437f8cf"
+            },
+            {
+              "date": "2026-03-17",
+              "observed_at": "2026-10-22T04:34:42.194611+08:00",
+              "content_hash": "50cfc0f32b0d6fd93d686963dbd9751ee3332348261247c945126fc8c940b2fe"
+            },
+            {
+              "date": "2026-03-18",
+              "observed_at": "2026-10-22T04:34:42.197258+08:00",
+              "content_hash": "9f5f035bca31548ec5f9bd7571c84435756dc07738109a470132f34cbc6f5162"
+            },
+            {
+              "date": "2026-03-19",
+              "observed_at": "2026-10-22T04:34:42.199764+08:00",
+              "content_hash": "48e1f0ae50cd0010bd490e7b8832bf928738bd25accb8ac4cb01c559c89397ab"
+            },
+            {
+              "date": "2026-03-20",
+              "observed_at": "2026-10-22T04:34:42.200766+08:00",
+              "content_hash": "0fb91713b0d05e7ea46384a3f82901fa12e1999a4b50972404a8994def3b75c5"
+            },
+            {
+              "date": "2026-03-23",
+              "observed_at": "2026-10-22T04:34:42.204397+08:00",
+              "content_hash": "a8472ced2ad9f43f40cb4df6b2bd3e28d7b7a16ad51591bf901080bed31a8591"
+            },
+            {
+              "date": "2026-03-24",
+              "observed_at": "2026-10-22T04:34:42.227734+08:00",
+              "content_hash": "98ab1900b1c2e1e0f3210273c3021ca75f0adad0eca0a70cee2ec974cb68479a"
+            },
+            {
+              "date": "2026-03-25",
+              "observed_at": "2026-10-22T04:34:42.295230+08:00",
+              "content_hash": "4f29c6eb72d8800da3107ad977c6a06fae2b8c0b29175b1f10863dc8afe3d39d"
+            },
+            {
+              "date": "2026-03-26",
+              "observed_at": "2026-10-22T04:34:42.296313+08:00",
+              "content_hash": "d75bc96addb8a0294b1efed619eb9fa6545b97e7b3ba86c8fdb3524aac9e6eab"
+            },
+            {
+              "date": "2026-03-27",
+              "observed_at": "2026-10-22T04:34:42.298319+08:00",
+              "content_hash": "a769e3ddaabe75c7edeaa3b00393c8afe638e1a149499e45c8f19a397b172952"
+            },
+            {
+              "date": "2026-03-30",
+              "observed_at": "2026-10-22T04:34:42.739401+08:00",
+              "content_hash": "39c60f89eabb9297e2dadcc3552e42a1c7376ad1de57ca7777e24e0208866ebf"
+            },
+            {
+              "date": "2026-03-31",
+              "observed_at": "2026-10-22T04:34:42.766080+08:00",
+              "content_hash": "f8549835301aca8ec3b17528f8690e57c78d914ebf84a002ea7936358c03a29b"
+            },
+            {
+              "date": "2026-04-01",
+              "observed_at": "2026-10-22T04:34:42.768913+08:00",
+              "content_hash": "ff2c5811b7f01e97c690ee35ef616016d52f7c71a538799462920f13a67eea83"
+            },
+            {
+              "date": "2026-04-02",
+              "observed_at": "2026-10-22T04:34:42.771929+08:00",
+              "content_hash": "2c41c79a6f90bc9c5fcac1efc9f8819f300322b29832745558b18acc403e9980"
+            },
+            {
+              "date": "2026-04-03",
+              "observed_at": "2026-10-22T04:34:42.775426+08:00",
+              "content_hash": "459053ca31ae91c3f56c82382650cc101c379e13f7312fad50b27b696f5fab8f"
+            },
+            {
+              "date": "2026-04-07",
+              "observed_at": "2026-10-22T04:34:42.777549+08:00",
+              "content_hash": "f77ef9981b06c287de206cdfde512749088463785587261f0dbbd867af8e773e"
+            },
+            {
+              "date": "2026-04-08",
+              "observed_at": "2026-10-22T04:34:42.779548+08:00",
+              "content_hash": "a5281090030435bf0f657ea169ca58229e1f55d1c184929dbdcf3adad0801b78"
+            },
+            {
+              "date": "2026-04-09",
+              "observed_at": "2026-10-22T04:34:42.781777+08:00",
+              "content_hash": "6fc0f0d36de9f13658ee07cb8d4c5958cea00d6b86273a4557cbbd155bc87f66"
+            },
+            {
+              "date": "2026-04-10",
+              "observed_at": "2026-10-22T04:34:42.783778+08:00",
+              "content_hash": "ce8a03f22e5f0c721599b0ef6538d2bf09d87971b959866b410c1f0ed64b2033"
+            },
+            {
+              "date": "2026-04-13",
+              "observed_at": "2026-10-22T04:34:42.789894+08:00",
+              "content_hash": "92c864413859bc0e5972cb93079d91a78c121081a11c4099b0fdf0daa6ab00cf"
+            },
+            {
+              "date": "2026-04-14",
+              "observed_at": "2026-10-22T04:34:42.885537+08:00",
+              "content_hash": "383c5eaa2cefe844350b3027491e7c1a29a1570d2ff5af5a83517be75159cab3"
+            },
+            {
+              "date": "2026-04-15",
+              "observed_at": "2026-10-22T04:34:43.257435+08:00",
+              "content_hash": "7076a6e2a14b1740a408be953b734c35035420c9a9912c4ecd0b7a9f01edadce"
+            },
+            {
+              "date": "2026-04-16",
+              "observed_at": "2026-10-22T04:34:43.264589+08:00",
+              "content_hash": "27c1eb819052df8f20af8d614d38ce1a7f3f15971903309dc799b22d894c2042"
+            },
+            {
+              "date": "2026-04-17",
+              "observed_at": "2026-10-22T04:34:43.265770+08:00",
+              "content_hash": "1eaf2927b816f5bf94f7730c1e5a305a0d629b38bfcb69cdaa5a62483c14960c"
+            },
+            {
+              "date": "2026-04-20",
+              "observed_at": "2026-10-22T04:34:43.363898+08:00",
+              "content_hash": "369eb545707c59c189676ab91c3cfebbf67f9c284e14c966cfbba7128d860b57"
+            },
+            {
+              "date": "2026-04-21",
+              "observed_at": "2026-10-22T04:34:43.365902+08:00",
+              "content_hash": "d4ac714db1efa523c0a2811c3ef3f5f72205033473895bd45ad5fab6992e0336"
+            },
+            {
+              "date": "2026-04-22",
+              "observed_at": "2026-10-22T04:34:43.369503+08:00",
+              "content_hash": "c679224e316f9f833f9a6877fc47982e223bda3d0fc2000354da6e3386780a44"
+            },
+            {
+              "date": "2026-04-23",
+              "observed_at": "2026-10-22T04:34:43.371876+08:00",
+              "content_hash": "2fcf3f99b71811ad60b2ff4930941aa60849c31dbb4209c8082396df6b7ed726"
+            },
+            {
+              "date": "2026-04-24",
+              "observed_at": "2026-10-22T04:34:43.374136+08:00",
+              "content_hash": "9a725306e7043be8008fd51d504f2355ea04408da8384840015bff875cff2371"
+            },
+            {
+              "date": "2026-04-27",
+              "observed_at": "2026-10-22T04:34:43.407008+08:00",
+              "content_hash": "212372861f10aca2a2f704220108593838af81a6ac5f41e048566893aa0c46f4"
+            },
+            {
+              "date": "2026-04-28",
+              "observed_at": "2026-10-22T04:34:43.407008+08:00",
+              "content_hash": "8e03b07b2087fadf3f5e288eb0d6c47385096bc1cb05b89a7f60c8adf0b007be"
+            },
+            {
+              "date": "2026-04-29",
+              "observed_at": "2026-10-22T04:34:43.812838+08:00",
+              "content_hash": "d4b9c2f85a903425a295cd83167ff6b0b8decc0853a0a17f1b1cb3809452bbbd"
+            },
+            {
+              "date": "2026-04-30",
+              "observed_at": "2026-10-22T04:34:43.812838+08:00",
+              "content_hash": "30b343a100cd7090c0a70d8f118b1ed6a0e990a4b0333a3dad7392d47a769644"
+            },
+            {
+              "date": "2026-05-06",
+              "observed_at": "2026-10-22T04:34:43.815119+08:00",
+              "content_hash": "11e5c9a7ac587393f53cf11c2c6791d80b830f4f528e232e4e3c5f07e403368d"
+            },
+            {
+              "date": "2026-05-07",
+              "observed_at": "2026-10-22T04:34:43.819834+08:00",
+              "content_hash": "b34cda889d6292f03c26b79d4b569f94358d4caca2620017baa7b5eb14011aca"
+            },
+            {
+              "date": "2026-05-08",
+              "observed_at": "2026-10-22T04:34:43.821826+08:00",
+              "content_hash": "03146a3898a0f15a498291e635c17f0ac750b866a669a0afdbd9fc112355213e"
+            },
+            {
+              "date": "2026-05-11",
+              "observed_at": "2026-10-22T04:34:43.823823+08:00",
+              "content_hash": "7517bb934bf08eb0a10a8801c3622d7fa0bdaaec2e0047337641b57ae2f1e06d"
+            },
+            {
+              "date": "2026-05-12",
+              "observed_at": "2026-10-22T04:34:43.824828+08:00",
+              "content_hash": "a9d94e3868130e17d5c5b5af6dac4a3de86a3fcbef3cb9e8c4becea5b0a199a6"
+            },
+            {
+              "date": "2026-05-13",
+              "observed_at": "2026-10-22T04:34:44.259571+08:00",
+              "content_hash": "5378d697794148a6704bb657335779e2697b827693f47c0cd8a82cfb4e2468ba"
+            },
+            {
+              "date": "2026-05-14",
+              "observed_at": "2026-10-22T04:34:44.332752+08:00",
+              "content_hash": "d61b72c515b6abea261fea45994f021fc66dfdc92bcab36f49748db6daad390a"
+            },
+            {
+              "date": "2026-05-15",
+              "observed_at": "2026-10-22T04:34:44.337279+08:00",
+              "content_hash": "c56ff44334026dc238ea2a9173e6056efd0db06910e930f715761ad93527960d"
+            },
+            {
+              "date": "2026-05-18",
+              "observed_at": "2026-10-22T04:34:44.340514+08:00",
+              "content_hash": "64dc97d520df0f63d696372e23bc124d23eff570b4dc0ed3f6abc01fbda56786"
+            },
+            {
+              "date": "2026-05-19",
+              "observed_at": "2026-10-22T04:34:44.343516+08:00",
+              "content_hash": "80c55d342ec601134bbccbd21fa405ee6522c53e0cd4bb549f935d84fe0e845e"
+            },
+            {
+              "date": "2026-05-20",
+              "observed_at": "2026-10-22T04:34:44.409059+08:00",
+              "content_hash": "dc12e856badef536b8d0e7d5a97d79b4f6facaf6e127d11948f6c4eeddf2d595"
+            },
+            {
+              "date": "2026-05-21",
+              "observed_at": "2026-10-22T04:34:44.410109+08:00",
+              "content_hash": "2ab8000711c7c7474a802829a860d742fd9751c922fa43e8aaba7290e5ea04a2"
+            },
+            {
+              "date": "2026-05-22",
+              "observed_at": "2026-10-22T04:34:44.414226+08:00",
+              "content_hash": "f0734e8b06cbd38bdd29bf9d843984f5dac34facda53768b7efa353c3853fb49"
+            },
+            {
+              "date": "2026-05-25",
+              "observed_at": "2026-10-22T04:34:44.415717+08:00",
+              "content_hash": "56830c0fcfa01c03957c403457eaae337a5b32843a423c6c80cf2de3f0139fc1"
+            },
+            {
+              "date": "2026-05-26",
+              "observed_at": "2026-10-22T04:34:44.417000+08:00",
+              "content_hash": "386fed979c2655aef47e06fdbeb50c4f58bf1fc88e23494aa6c67149b4240ff3"
+            },
+            {
+              "date": "2026-05-27",
+              "observed_at": "2026-10-22T04:34:44.784991+08:00",
+              "content_hash": "a2fea1d868aee94afb6bb693561f9ec329314787a7789772e49d40a9ac9929d3"
+            },
+            {
+              "date": "2026-05-28",
+              "observed_at": "2026-10-22T04:34:44.787206+08:00",
+              "content_hash": "61f271130f3c312a6bebdf6b6536976905f49a55fd37bc262a505e9ca50b2141"
+            },
+            {
+              "date": "2026-05-29",
+              "observed_at": "2026-10-22T04:34:44.790687+08:00",
+              "content_hash": "c63868d73630c0a8ecbb329f3636502128eaace0deccd1c475703343fa3758c2"
+            },
+            {
+              "date": "2026-06-01",
+              "observed_at": "2026-10-22T04:34:44.793149+08:00",
+              "content_hash": "75ec2ef85b4a38bf018f85d7fed228a716f4b73c425f471aeeea5dfcf099dd64"
+            },
+            {
+              "date": "2026-06-02",
+              "observed_at": "2026-10-22T04:34:44.795240+08:00",
+              "content_hash": "aaab1eab516647c40752154cc445a5a15533bebb21a11b1081a875885397839b"
+            },
+            {
+              "date": "2026-06-03",
+              "observed_at": "2026-10-22T04:34:44.882687+08:00",
+              "content_hash": "d656c4829210803005a9baebdb72d6fc937ce508720bbeaa3985a40c5dc34225"
+            },
+            {
+              "date": "2026-06-04",
+              "observed_at": "2026-10-22T04:34:45.235964+08:00",
+              "content_hash": "94ca2034eb1d26e19b409594598dddec1862fb867de70183d74d8eb2ac87f5d2"
+            },
+            {
+              "date": "2026-06-05",
+              "observed_at": "2026-10-22T04:34:45.236955+08:00",
+              "content_hash": "4422df9eb566e0e30d4a62af9eb188bc33ae0b5f0634452cc3a5988f09e771e1"
+            },
+            {
+              "date": "2026-06-08",
+              "observed_at": "2026-10-22T04:34:45.239644+08:00",
+              "content_hash": "8947b45d643638bf3d271c93ced77c2e333d064c605ed813cbbc49e5cccb065c"
+            },
+            {
+              "date": "2026-06-09",
+              "observed_at": "2026-10-22T04:34:45.241498+08:00",
+              "content_hash": "bcd2d46d6d9951b65e14a731f5d88d6933bcd8092f4b6d64bc72a8e2ff66b3e9"
+            },
+            {
+              "date": "2026-06-10",
+              "observed_at": "2026-10-22T04:34:45.302962+08:00",
+              "content_hash": "89786d0428cadb7a1187b735d400b95185a75266302c54f8c090b7f886e60d00"
+            },
+            {
+              "date": "2026-06-11",
+              "observed_at": "2026-10-22T04:34:45.303981+08:00",
+              "content_hash": "55cbee689b930da24dc691a572449cb32f209e3cad430e2ea0e8369e1fef3de9"
+            },
+            {
+              "date": "2026-06-12",
+              "observed_at": "2026-10-22T04:34:45.756318+08:00",
+              "content_hash": "f134798e07682b9a906ac9e45ff53fe1037d5af3d66554101e8edf88fc6575ce"
+            },
+            {
+              "date": "2026-06-15",
+              "observed_at": "2026-10-22T04:34:45.757843+08:00",
+              "content_hash": "31a0d14d4d753e320ef22ce675e51a16eba21c199bb49632b93a3e85717d58d4"
+            },
+            {
+              "date": "2026-06-16",
+              "observed_at": "2026-10-22T04:34:45.762325+08:00",
+              "content_hash": "bb7c2f23f550346ecde310ef0833e0857acb4b394df0d5f1dace32dc11289179"
+            },
+            {
+              "date": "2026-06-17",
+              "observed_at": "2026-10-22T04:34:45.766124+08:00",
+              "content_hash": "83a2d802562e0daf744820bb30c15bd3aea1fab3a49122f9bb79cac8889f2603"
+            },
+            {
+              "date": "2026-06-18",
+              "observed_at": "2026-10-22T04:34:45.769247+08:00",
+              "content_hash": "ad3b0070a3dd130522f24e80faee740a888ff42bf957008e52aba593b1fa3ef0"
+            },
+            {
+              "date": "2026-06-22",
+              "observed_at": "2026-10-22T04:34:45.771461+08:00",
+              "content_hash": "3ff94373b1c0f167c587ee60aae703a855e274eaaece89ac22a379da0213eb1e"
+            },
+            {
+              "date": "2026-06-23",
+              "observed_at": "2026-10-22T04:34:45.774235+08:00",
+              "content_hash": "2fa5b7b944e1b36501b69d7cca13a1e24c3804b6d4f1b50d071bb4ca9037bf3a"
+            },
+            {
+              "date": "2026-06-24",
+              "observed_at": "2026-10-22T04:34:45.777289+08:00",
+              "content_hash": "da78ee8af5f31555b8ac2b4184a5832d712f8a0d0656fa1d8a6cf09cdb58522d"
+            },
+            {
+              "date": "2026-06-25",
+              "observed_at": "2026-10-22T04:34:45.782947+08:00",
+              "content_hash": "07965ea32cd2762616f349d36dd8b1591ea1d372077b95238956767f378057ff"
+            },
+            {
+              "date": "2026-06-26",
+              "observed_at": "2026-10-22T04:34:45.898048+08:00",
+              "content_hash": "75b1c166dfe18ea1da815a2e7287673f9186ca74146de41cf0f7381c7fef8c5c"
+            },
+            {
+              "date": "2026-06-29",
+              "observed_at": "2026-10-22T04:34:45.899272+08:00",
+              "content_hash": "e91ccdc905b5088d131b5483f88110ed4cd8331ee6a1ce6feb1f4b7fe21def7a"
+            },
+            {
+              "date": "2026-06-30",
+              "observed_at": "2026-10-22T04:34:45.902757+08:00",
+              "content_hash": "3957f4dc69a774b873c256ddff12979ea66d1275dd1060c5780fe42750540595"
+            },
+            {
+              "date": "2026-07-01",
+              "observed_at": "2026-10-22T04:34:45.904200+08:00",
+              "content_hash": "6844c92104a99136e6901bf96431cb7c4a3a44455d0b1c19068207ea58ca8bfe"
+            },
+            {
+              "date": "2026-07-02",
+              "observed_at": "2026-10-22T04:34:45.905220+08:00",
+              "content_hash": "7c1278135a33a57abffed707eee763921fc6ca1322f7b34bae2bde90eaaad946"
+            },
+            {
+              "date": "2026-07-03",
+              "observed_at": "2026-10-22T04:34:45.925560+08:00",
+              "content_hash": "7273a179ed11084076dfc110c369786385217ae8136cadf62ff292496f93deb1"
+            },
+            {
+              "date": "2026-07-06",
+              "observed_at": "2026-10-22T04:34:46.368684+08:00",
+              "content_hash": "cb146331e6d9103be4e9a9f4ed0d9333dda5459ff81112f473f9a795688fb453"
+            },
+            {
+              "date": "2026-07-07",
+              "observed_at": "2026-10-22T04:34:46.370181+08:00",
+              "content_hash": "06f6a39316b51484e6316c7e97c8d13f6df12dc27aaeee12f16ecfb1fd1e865f"
+            },
+            {
+              "date": "2026-07-08",
+              "observed_at": "2026-10-22T04:34:46.374723+08:00",
+              "content_hash": "ee28fe71fa541095d290900b4463fbd9f99caa95af65df6f9f92b0b10e95fe41"
+            },
+            {
+              "date": "2026-07-09",
+              "observed_at": "2026-10-22T04:34:46.378431+08:00",
+              "content_hash": "60cfdc5b3b1a30b259d801bfc7cc18c84977a7d64fe9035b3f1572835d181687"
+            },
+            {
+              "date": "2026-07-10",
+              "observed_at": "2026-10-22T04:34:46.380587+08:00",
+              "content_hash": "7f2a8537e592916310ee67b72ce89e2e8353704accec38bfa5d76351373b3d28"
+            },
+            {
+              "date": "2026-07-13",
+              "observed_at": "2026-10-22T04:34:46.382058+08:00",
+              "content_hash": "0beaf1cbbaaa8128fca3e584b5a2042f7176c0105a206678830e91eb9d7d4431"
+            },
+            {
+              "date": "2026-07-14",
+              "observed_at": "2026-10-22T04:34:46.868006+08:00",
+              "content_hash": "44ddb421369fd80d0acd41866352182d339ab8ed44f98f287c0efda241b20c83"
+            },
+            {
+              "date": "2026-07-15",
+              "observed_at": "2026-10-22T04:34:46.870160+08:00",
+              "content_hash": "2edec373461420a484f8e638eee0684ae347c3be57075e77f177e44383c664df"
+            },
+            {
+              "date": "2026-07-16",
+              "observed_at": "2026-10-22T04:34:46.873160+08:00",
+              "content_hash": "c9de9197fe6466e2e33f38910357ea8654c2e39122723e6dde04cf5d478201e8"
+            },
+            {
+              "date": "2026-07-17",
+              "observed_at": "2026-10-22T04:34:46.877200+08:00",
+              "content_hash": "fd7b18359cbafa56fa77ce66b0b6d45f6dfb4f630172c69e22e01d8140e20619"
+            },
+            {
+              "date": "2026-07-20",
+              "observed_at": "2026-10-22T04:34:46.880307+08:00",
+              "content_hash": "3f953e80ffc9bf3de0650368bbd522ba1db75358f1025a5682aacd53fbd5c356"
+            },
+            {
+              "date": "2026-07-21",
+              "observed_at": "2026-10-22T04:34:46.906608+08:00",
+              "content_hash": "af9f96aa53206bec7036892b05da25f006dd43ff04aa606a5d4ae0e54e48ff32"
+            },
+            {
+              "date": "2026-07-22",
+              "observed_at": "2026-10-22T04:34:46.907606+08:00",
+              "content_hash": "7c88a092f4809654520f46bf863d0679150b3f1a283a4e899a09094e68611793"
+            },
+            {
+              "date": "2026-07-23",
+              "observed_at": "2026-10-22T04:34:46.909606+08:00",
+              "content_hash": "3b5754b2d5c305e59894e439ed653566bd6348a8b71674c0f8df9beccab88188"
+            },
+            {
+              "date": "2026-07-24",
+              "observed_at": "2026-10-22T04:34:46.912040+08:00",
+              "content_hash": "613bec12212d3bec11c0c59c0925feb070ba192d0f9eb125641758b351f71f88"
+            },
+            {
+              "date": "2026-07-27",
+              "observed_at": "2026-10-22T04:34:46.955415+08:00",
+              "content_hash": "42dc0f6f366c9fd39fb352d8fd6e01789492778014b83bfabe5e3f2600911422"
+            },
+            {
+              "date": "2026-07-28",
+              "observed_at": "2026-10-22T04:34:46.957421+08:00",
+              "content_hash": "125762edd57ccb80879e2cfcbf76e129cdbeb665f3e7317929c387dec85d8d4f"
+            },
+            {
+              "date": "2026-07-29",
+              "observed_at": "2026-10-22T04:34:46.958419+08:00",
+              "content_hash": "5e79b09b26c6c55cceee13851e9e74b8589d89609f0230a1401633cace2e5c3a"
+            },
+            {
+              "date": "2026-07-30",
+              "observed_at": "2026-10-22T04:34:47.315020+08:00",
+              "content_hash": "7f6165b6cdfd64582a12f38af436991b19d61b3798b334402ede13765e804204"
+            },
+            {
+              "date": "2026-07-31",
+              "observed_at": "2026-10-22T04:34:47.316019+08:00",
+              "content_hash": "969336854b4f154a23d4e8ac6b54c2535b15d86bce703fed88ef83a3e7899490"
+            },
+            {
+              "date": "2026-08-03",
+              "observed_at": "2026-10-22T04:34:47.318020+08:00",
+              "content_hash": "efab4a1f2ae363553d75f7babae5cf899496f9499d933cebebb58a415a6aeb37"
+            },
+            {
+              "date": "2026-08-04",
+              "observed_at": "2026-10-22T04:34:47.745746+08:00",
+              "content_hash": "52d37d8a9315a2997d36d8aec587e969f8b29f556bfe7a7122623673fc8127f2"
+            },
+            {
+              "date": "2026-08-05",
+              "observed_at": "2026-10-22T04:34:47.746892+08:00",
+              "content_hash": "351f09f54bf05552ac2e2973427b1946d2788f37657f2d67fe0928438db5ffda"
+            },
+            {
+              "date": "2026-08-06",
+              "observed_at": "2026-10-22T04:34:47.751558+08:00",
+              "content_hash": "eb18d847ffae1e48d5cbd35eea85908d4bcbe68abd11af8ca37327fac03623d9"
+            },
+            {
+              "date": "2026-08-07",
+              "observed_at": "2026-10-22T04:34:47.754315+08:00",
+              "content_hash": "d00275fa82b77822eed51ff1176bee53336875102a39afbdf51d1f19e3862044"
+            },
+            {
+              "date": "2026-08-10",
+              "observed_at": "2026-10-22T04:34:47.755694+08:00",
+              "content_hash": "e1999ca4d8f43fca2a8b99a688fd4a1b39114c623aa052bb92aac0e76c77eff8"
+            },
+            {
+              "date": "2026-08-11",
+              "observed_at": "2026-10-22T04:34:47.757816+08:00",
+              "content_hash": "7da4476c7b48d105fbee0b5db05c8132c29b4b51d1e55545e860a33faa39f464"
+            },
+            {
+              "date": "2026-08-12",
+              "observed_at": "2026-10-22T04:34:47.964192+08:00",
+              "content_hash": "aa6543c0d505aa7c35e5109d1a8e6d3e6e2aab3ae1e9be8b71f4bc61ff6c6cd6"
+            },
+            {
+              "date": "2026-08-13",
+              "observed_at": "2026-10-22T04:34:47.965193+08:00",
+              "content_hash": "6307ca677de8f2bcb68b7ee5075cc41cd79b8b66fc25bce7040b0561292e1524"
+            },
+            {
+              "date": "2026-08-14",
+              "observed_at": "2026-10-22T04:34:47.969571+08:00",
+              "content_hash": "839cce221210d0a008b279aaee9317249371a8519d3287a5ed338ed2857de514"
+            },
+            {
+              "date": "2026-08-17",
+              "observed_at": "2026-10-22T04:34:47.972271+08:00",
+              "content_hash": "7458b578be8055ba877b96a67c1b9a99c94678b35011d88f57c8edabb0953819"
+            },
+            {
+              "date": "2026-08-18",
+              "observed_at": "2026-10-22T04:34:47.974269+08:00",
+              "content_hash": "7f2f64544be61cbb1f926e9b5194ef8ef82e2b57ea41cc544c7d944b97066e80"
+            },
+            {
+              "date": "2026-08-19",
+              "observed_at": "2026-10-22T04:34:47.976289+08:00",
+              "content_hash": "6f4d9a277548ee06f4d0be3b3c572ebc7601b8167627799722dbde20457eabff"
+            },
+            {
+              "date": "2026-08-20",
+              "observed_at": "2026-10-22T04:34:47.978772+08:00",
+              "content_hash": "64a62af5365b469a54c0b3a1ad7a6c83735004a8b7b4037e6d62986f104319f3"
+            },
+            {
+              "date": "2026-08-21",
+              "observed_at": "2026-10-22T04:34:47.981258+08:00",
+              "content_hash": "487c5cff0dc9a0f76f618ecca60b9bdd6586ae8809005ef1a3ab8578a7496c0b"
+            },
+            {
+              "date": "2026-08-24",
+              "observed_at": "2026-10-22T04:34:47.983051+08:00",
+              "content_hash": "b3439ad85b75a97c71c2d6e9f308cc9efdf45249273d554efb6fd6781852da60"
+            },
+            {
+              "date": "2026-08-25",
+              "observed_at": "2026-10-22T04:34:48.068001+08:00",
+              "content_hash": "82deef0306fca4030d987e366ba318e705480fe823bb7d53f4a15f87dc2f1887"
+            },
+            {
+              "date": "2026-08-26",
+              "observed_at": "2026-10-22T04:34:48.339494+08:00",
+              "content_hash": "8b49008c182a3e386d9819846761fc4fdf9761c810f93552db5ab60922907d5c"
+            },
+            {
+              "date": "2026-08-27",
+              "observed_at": "2026-10-22T04:34:48.539732+08:00",
+              "content_hash": "84753509459f53aa2c7594d70102647599a6999ebc8c8ffd09d5be4e2eae617a"
+            },
+            {
+              "date": "2026-08-28",
+              "observed_at": "2026-10-22T04:34:48.540733+08:00",
+              "content_hash": "b7882c4dedfc90c6849940780c0f2bb1c0e474b08529bfc2bf86ef9c3310b099"
+            },
+            {
+              "date": "2026-08-31",
+              "observed_at": "2026-10-22T04:34:48.544732+08:00",
+              "content_hash": "0cfc6bc8e0d5cfc9e9013332f988c03d6f60899cb07b8f8177cd18b5e0e6fc96"
+            },
+            {
+              "date": "2026-09-01",
+              "observed_at": "2026-10-22T04:34:48.547732+08:00",
+              "content_hash": "489af0cf99a118d6c0bb7f410e73637d044afe640556b51dd526bcab447d816a"
+            },
+            {
+              "date": "2026-09-02",
+              "observed_at": "2026-10-22T04:34:48.549735+08:00",
+              "content_hash": "d125269c0d95f994f183168c500bcd330f7613a1e9384fd6c572359fa31a6ce9"
+            },
+            {
+              "date": "2026-09-03",
+              "observed_at": "2026-10-22T04:34:48.551735+08:00",
+              "content_hash": "ba250a2b7358d524c5b9a8933cdc319273798e95e350a6f1a02c1d2ae34dbc06"
+            },
+            {
+              "date": "2026-09-04",
+              "observed_at": "2026-10-22T04:34:48.553733+08:00",
+              "content_hash": "d844469ebcdc45e8d9ffbb5dd680bf1961df677735a625ad2d7668fca35327c8"
+            },
+            {
+              "date": "2026-09-07",
+              "observed_at": "2026-10-22T04:34:48.555732+08:00",
+              "content_hash": "8a23fcab2b52d07b99027c6ad4c21edae7906178ccc433fd03609b0bf986b5c0"
+            },
+            {
+              "date": "2026-09-08",
+              "observed_at": "2026-10-22T04:34:48.763576+08:00",
+              "content_hash": "e682aeef7e32c0bd1a43b2ef37d76bcb9803ad93736713125ab6590ae3c3de3f"
+            },
+            {
+              "date": "2026-09-09",
+              "observed_at": "2026-10-22T04:34:48.848936+08:00",
+              "content_hash": "29279897b59793b6426284e9766f3150b153710c60a115ff981d4a72835065b0"
+            },
+            {
+              "date": "2026-09-10",
+              "observed_at": "2026-10-22T04:34:49.304332+08:00",
+              "content_hash": "7f94eede52789bd5f7198edb355496fd7729c00a0cea690871c9a37dca19f2ff"
+            },
+            {
+              "date": "2026-09-11",
+              "observed_at": "2026-10-22T04:34:49.305332+08:00",
+              "content_hash": "7eab24827d28e5c71264bfe7fc3cd70514232968b0d0df387b4ca3de76f1a8e4"
+            },
+            {
+              "date": "2026-09-14",
+              "observed_at": "2026-10-22T04:34:49.307332+08:00",
+              "content_hash": "4bce9bbf97b0fffb313a8c947eed58bea4aaead6fdb8c46a18a9bd1bce9912dc"
+            },
+            {
+              "date": "2026-09-15",
+              "observed_at": "2026-10-22T04:34:49.310936+08:00",
+              "content_hash": "2247d973c3792d4511cc96e6e903c73ad6a867a26e4861e1e2f1743fc9a58e5e"
+            },
+            {
+              "date": "2026-09-16",
+              "observed_at": "2026-10-22T04:34:49.314186+08:00",
+              "content_hash": "d816bbc36b41a9e2600bbec4fa829cb2885788ad190f654a3be5ed495b53fc7e"
+            },
+            {
+              "date": "2026-09-17",
+              "observed_at": "2026-10-22T04:34:49.316788+08:00",
+              "content_hash": "070c4810d3ee7ddc582a2929614cd07333d725970acd14689bb70692385ebbba"
+            },
+            {
+              "date": "2026-09-18",
+              "observed_at": "2026-10-22T04:34:49.317936+08:00",
+              "content_hash": "c31dc88f57f51e8f9bba1b4fcf83ce175740b82d3df3422e67a08b55317ec624"
+            },
+            {
+              "date": "2026-09-21",
+              "observed_at": "2026-10-22T04:34:49.320487+08:00",
+              "content_hash": "433fce2cdfa102e71aa1421aad259b6a6dc59f6e4a1a81913a97c90ef4437971"
+            },
+            {
+              "date": "2026-09-22",
+              "observed_at": "2026-10-22T04:34:49.320487+08:00",
+              "content_hash": "66ec5637166da949de4370beef4b8dad98a0290f49b3dc80c5ab68cc460da6be"
+            },
+            {
+              "date": "2026-09-23",
+              "observed_at": "2026-10-22T04:34:49.822743+08:00",
+              "content_hash": "8bf043ac0ddfc9b9a86d1e59c759117e719081d3d7fc24fdb49011a45a2abd9a"
+            },
+            {
+              "date": "2026-09-24",
+              "observed_at": "2026-10-22T04:34:49.823742+08:00",
+              "content_hash": "5933cc12bd137c59b302757d6b1f38666b965874d1eafa632586fd7bcf7e392e"
+            },
+            {
+              "date": "2026-09-28",
+              "observed_at": "2026-10-22T04:34:49.828673+08:00",
+              "content_hash": "50b94a97e5674c72b14588bd5e83e7d2aad7ebb046fe9018fb869200ba37fcc0"
+            },
+            {
+              "date": "2026-09-29",
+              "observed_at": "2026-10-22T04:34:49.831723+08:00",
+              "content_hash": "c4f00be609a953485d4fd06f160ce583a7b80ffae425ea20f3de64081b8c883d"
+            },
+            {
+              "date": "2026-09-30",
+              "observed_at": "2026-10-22T04:34:49.834067+08:00",
+              "content_hash": "84dffa46d933e6b6ea0fb58026e69128d614abdb957e1f331d3534e9d9e730aa"
+            },
+            {
+              "date": "2026-10-08",
+              "observed_at": "2026-10-22T04:34:49.836573+08:00",
+              "content_hash": "e4010c634c5173ed378382c48a8273eac7584a0267d7109fc12b860c57752c66"
+            },
+            {
+              "date": "2026-10-09",
+              "observed_at": "2026-10-22T04:34:49.838580+08:00",
+              "content_hash": "56bdcd97671fcc37741ddf0f3d44caef0157581fd6215da16b28753ce6c60523"
+            },
+            {
+              "date": "2026-10-12",
+              "observed_at": "2026-10-22T04:34:49.841794+08:00",
+              "content_hash": "431ca2ca1d972f60a63407e8330256cd509749b3d6de0c5cc86484158816a802"
+            },
+            {
+              "date": "2026-10-13",
+              "observed_at": "2026-10-22T04:34:49.843794+08:00",
+              "content_hash": "47c9ef4bff4062cf8732dd439605059162ae5cf8c8e33bf806088bfd59aa07c4"
+            },
+            {
+              "date": "2026-10-14",
+              "observed_at": "2026-10-22T04:34:49.858055+08:00",
+              "content_hash": "9acddd43aa767ed90aa9339ab8d236f8bd549836da12076c113ebbb084b6775e"
+            },
+            {
+              "date": "2026-10-15",
+              "observed_at": "2026-10-22T04:34:49.858055+08:00",
+              "content_hash": "d132342ba7793f8d1b094f0b09418b800dc5e28b19a1337078e8d2ef3c834d1d"
+            },
+            {
+              "date": "2026-10-16",
+              "observed_at": "2026-10-22T04:34:50.061268+08:00",
+              "content_hash": "53762b3e50e15b125d0189cd0705a9ff4a9c1915c751e1246425122c274c57de"
+            },
+            {
+              "date": "2026-10-19",
+              "observed_at": "2026-10-22T04:34:50.321264+08:00",
+              "content_hash": "e23bc761a8644543a75492dcab2e971ce5321c3c85fb1b4cf72e754a7e3718bf"
+            },
+            {
+              "date": "2026-10-20",
+              "observed_at": "2026-10-22T04:34:50.323266+08:00",
+              "content_hash": "cb446d73d3286789722b1d07b20955250c38a8fda669f88f20641d0d6900d11c"
+            }
+          ],
+          "suspension": {
+            "source": "tdx",
+            "date": "2026-10-20",
+            "coverage": {
+              "from": "2004-12-27",
+              "through": "2026-10-22",
+              "confirmed_at": "2026-10-21T17:09:08.609606+00:00"
+            },
+            "note": "最近确认 2026-10-22T01:09:08.609606+08:00 已覆盖目标交易日结束；休市期间不按自然日过期；SQL证据"
+          }
+        },
+        "yield_percent": "5.32342657342657342657342657342657342657342657342657342657343"
+      }
+    ],
+    "limitations": [
+      "名义每股含税派息除以期末未复权价格，不是到账现金、持仓收益、年化或TTM。",
+      "当前来源修订版，用于事后分析；缺逐次修订可用日期，不用于历史可知信号。",
+      "股本基准由区间逐交易日来源快照核对，不证明日内变动或全部历史版本；送转或基准变化不计算简版。",
+      "不含持仓资格、支付日、税费、再投资、回购及稀释计算。"
+    ],
+    "input_hash": "f8a90f4db7a404b11a786179a8db77add0081f1e4738904e57c4993511158c55"
+  },
+  "600938": {
+    "id": "dividend_yield",
+    "title": "区间名义现金股息率",
+    "state": "数据阻断",
+    "purpose": "analysis",
+    "scope": {
+      "purpose": "analysis",
+      "codes": [
+        "600938"
+      ],
+      "start": "2026-01-01",
+      "end": "2026-10-20",
+      "index_codes": [],
+      "study": "",
+      "focus": "",
+      "scan": "all"
+    },
+    "checked_at": "2026-10-22T02:33:52.927150+00:00",
+    "observed_at": "",
+    "currency": "CNY",
+    "unit": "%",
+    "formula": "Y = Σ闭区间实施每股含税派息 / 截止日对应最近已结束交易日未复权收盘价 × 100%",
+    "version": "interval-nominal-dividend-yield-v1",
+    "checks": [
+      {
+        "criterion": "fields",
+        "status": "fail",
+        "measured": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600938.SH",
+            "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+          }
+        ],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "keys",
+        "status": "fail",
+        "measured": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600938.SH",
+            "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+          }
+        ],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "coverage",
+        "status": "fail",
+        "measured": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600938.SH",
+            "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+          }
+        ],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "quality",
+        "status": "fail",
+        "measured": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "600938.SH",
+            "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+          }
+        ],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "freshness",
+        "status": "fail",
+        "measured": "各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": ""
+      },
+      {
+        "criterion": "temporal",
+        "status": "pass",
+        "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+        "blocking": false,
+        "findings": [],
+        "reason": "source_limit",
+        "observed_at": ""
+      }
+    ],
+    "securities": [],
+    "limitations": [
+      "名义每股含税派息除以期末未复权价格，不是到账现金、持仓收益、年化或TTM。",
+      "当前来源修订版，用于事后分析；缺逐次修订可用日期，不用于历史可知信号。",
+      "股本基准由区间逐交易日来源快照核对，不证明日内变动或全部历史版本；送转或基准变化不计算简版。",
+      "不含持仓资格、支付日、税费、再投资、回购及稀释计算。"
+    ],
+    "problem": "数据分析 / 财务估值；600938；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。；各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间"
+  },
+  "dividend_historical": {
+    "id": "dividend_yield",
+    "title": "区间名义现金股息率",
+    "state": "来源受限",
+    "purpose": "historical_signal",
+    "scope": {
+      "purpose": "historical_signal",
+      "codes": [
+        "000001"
+      ],
+      "start": "2026-01-01",
+      "end": "2026-10-20",
+      "index_codes": [],
+      "study": "",
+      "focus": "",
+      "scan": "all"
+    },
+    "checked_at": "2026-10-22T02:33:53.220726+00:00",
+    "observed_at": "2026-10-21T17:45:49.469196+00:00",
+    "currency": "CNY",
+    "unit": "%",
+    "formula": "Y = Σ闭区间实施每股含税派息 / 截止日对应最近已结束交易日未复权收盘价 × 100%",
+    "version": "interval-nominal-dividend-yield-v1",
+    "checks": [
+      {
+        "criterion": "fields",
+        "status": "pass",
+        "measured": "历史选股回测；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "keys",
+        "status": "pass",
+        "measured": "历史选股回测；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "coverage",
+        "status": "pass",
+        "measured": "历史选股回测；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "quality",
+        "status": "pass",
+        "measured": "历史选股回测；000001；日期 / 报告期 2026-01-01 ～ 2026-10-20；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+        "blocking": true,
+        "findings": [
+          {
+            "code": "000001.SZ",
+            "message": "完整单元 28 条，范围内 2 条；键集合 429362f40380fb2a1aaf8c4ddc8994766f70fc9df4e307b3458bc3c1fda82401；内容 53d889b1223b9b7b93b66face47005294e836bf98b8bf16f29270e61a91533cd；完整单元内容 5b97ffd4809b89e77ad088315e14e8fe80dd13bbd6361662f1dbaf6d17055a33；SQL来源证据 2026-10-16T17:40:48.568588+00:00"
+          }
+        ],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "freshness",
+        "status": "pass",
+        "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-21T17:45:49.469196+00:00；须在三日内",
+        "blocking": true,
+        "findings": [],
+        "reason": "",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      },
+      {
+        "criterion": "temporal",
+        "status": "fail",
+        "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+        "blocking": true,
+        "findings": [],
+        "reason": "source_limit",
+        "observed_at": "2026-10-21T17:45:49.469196+00:00"
+      }
+    ],
+    "securities": [],
+    "limitations": [
+      "名义每股含税派息除以期末未复权价格，不是到账现金、持仓收益、年化或TTM。",
+      "当前来源修订版，用于事后分析；缺逐次修订可用日期，不用于历史可知信号。",
+      "股本基准由区间逐交易日来源快照核对，不证明日内变动或全部历史版本；送转或基准变化不计算简版。",
+      "不含持仓资格、支付日、税费、再投资、回购及稀释计算。"
+    ],
+    "problem": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。"
+  },
+  "B4_exact_id_preserved": true
+}

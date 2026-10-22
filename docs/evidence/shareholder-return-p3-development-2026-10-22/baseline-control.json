@@ -1,0 +1,265 @@
+{
+  "run_id": "84f8ad535b0742d589bcd164aa382e6f",
+  "mode": "capacity_control",
+  "checked_at": "2026-10-22T02:38:07.076973+00:00",
+  "passed": false,
+  "pipeline_verified": false,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [
+    {
+      "stage": "baseline_control",
+      "message": "Prechange control exceeds unchanged thresholds"
+    }
+  ],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "control": "prechange e204cfb git archive; unchanged original measure function and thresholds; no new source request",
+  "source_sha256": "9eb4e6303e322f0a24ddeecea04db9f4552aefd554a49a0eca3aa61ada4e1c18",
+  "input_files": {
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4",
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\returns-p3-20261022\\private-source.json": "f5a59246e8703f6ba919dba1a7d4500db789496909b5dd88cfebada7608054da"
+  },
+  "storage": {
+    "database": "empire_verify_ths_84f8ad535b0742d589bcd164aa382e6f_test",
+    "namespace": "empire:test:verify_ths:84f8ad535b0742d589bcd164aa382e6f",
+    "run_id": "84f8ad535b0742d589bcd164aa382e6f",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "bde3e1621199b91beb6fb2d3b62cda36de3f8e6ea73d868be55f9086cf6c8839"
+  },
+  "samples": {
+    "page": [
+      6.835900014266372,
+      8.925299975089729,
+      9.818200021982193,
+      7.286299951374531,
+      8.151000016368926,
+      9.269199916161597,
+      9.737999993376434,
+      5.6087999837473035,
+      7.936700014397502,
+      8.766600047238171
+    ],
+    "security": [
+      3.231799928471446,
+      0.9102000622078776,
+      0.7688999176025391,
+      0.9353000205010176,
+      0.7236000383272767,
+      1.1385999387130141,
+      1.2632000725716352,
+      1.0186999570578337,
+      1.0516999755054712,
+      0.9611999848857522
+    ],
+    "progress": [
+      8.974500000476837,
+      7.921600015833974,
+      7.3244000086560845,
+      10.223299963399768,
+      5.926499958150089,
+      6.4561000326648355,
+      11.53140002861619,
+      11.920199962332845,
+      9.147599921561778,
+      8.01550003234297
+    ],
+    "detail": [
+      1.862000091932714,
+      0.6962999468669295,
+      0.7591999601572752,
+      0.8436000207439065,
+      1.2547000078484416,
+      0.7922999793663621,
+      0.7953000022098422,
+      0.8022000547498465,
+      0.5521000130102038,
+      0.4732999950647354
+    ],
+    "coverage": [
+      851.8741999287158,
+      883.3970000268891,
+      882.99630000256,
+      851.7043000319973,
+      833.5709000239149,
+      861.7244000779465,
+      784.4010000117123,
+      751.8211000133306,
+      788.4517000056803,
+      771.3962999405339
+    ]
+  },
+  "all_rows_verified": 50000,
+  "bindings": {
+    "src/empire/features/repurchases/contract.py": "770edbf7376fc77dacffcc9708b231fe9527716d9364a12b2f11101e77b922c0",
+    "src/empire/features/repurchases/dataset.py": "9888a1695a7ff8f0d0c1ce431b77440562a7767c0265bf9468e4d0619845e3b6",
+    "src/empire/features/repurchases/query.py": "1f04a7fb1ecbfaa43f5b6b739ddbbc952104efe17035637e671a01505bbb936f",
+    "scripts/measure_repurchases.py": "312e2b39ceee3d2ec1914e3a397857402952b2278a0ed3bcb9dbbe9b8a06b042",
+    "scripts/repurchase_capacity.py": "18f58faee1b3e26c338337dd05955fcf053046815baf788d0e1a64d9a98c80d8",
+    "scripts/repurchase_verification.py": "72b6aab8ec85dbb6ef06680bd12c2872493052107d5d71bf8c74fa7f1f544464",
+    "scripts/source_test_storage.py": "d83e0ce03410e54010d35278a0e3f2292b62a608611e10ecfbff58ecb257e074",
+    "scripts/source_verification.py": "b9c920c0baeddc31572a83dfc5e961c659007b82bc7903e870a030d452012547"
+  },
+  "ddl_scopes": {
+    "stock_repurchase_plan": "90495c60933b3dd6cbcb694168acf783dd4c43d167cfd09bfc43d6cfe6435f8a"
+  },
+  "measurements": {
+    "page_p95_ms": 9.818200021982193,
+    "security_p95_ms": 3.231799928471446,
+    "progress_p95_ms": 11.920199962332845,
+    "detail_p95_ms": 1.862000091932714,
+    "coverage_p95_ms": 883.3970000268891,
+    "import_seconds": 88.10081930004526,
+    "allocated_bytes": 159678464,
+    "repeated_business_dml": 0
+  },
+  "limits": {
+    "page_p95_ms": 100,
+    "security_p95_ms": 100,
+    "progress_p95_ms": 100,
+    "detail_p95_ms": 100,
+    "coverage_p95_ms": 1000,
+    "import_seconds": 60,
+    "allocated_bytes": 268435456,
+    "repeated_business_dml": 0
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 50000,
+    "source_sample": "normalized live first plan; 2100-byte synthetic remark; 5000 securities/10 dates",
+    "cache": "first unforced, nine hot repetitions; max of ten conservatively bounds P95",
+    "synthetic": true,
+    "independent_test_service": true
+  },
+  "reviewed_tradeoffs": "一次方案一行typed存储；索引对应范围/状态/证券查询，TEXT不进入列表。完整审计有界200行逐批读取，轻量头覆盖扫描与正文审计不同；5万行放大实验不是生产覆盖声明。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_plan_date",
+        "key_len": "25",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_security_date,ix_plan_date",
+        "key": "ix_security_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 10,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ],
+    "progress": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_progress_date",
+        "key": "ix_progress_date",
+        "key_len": "18",
+        "ref": "const",
+        "rows": 21868,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": null,
+        "rows": 43736,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 200,
+      "first_ms": 6.835900014266372
+    },
+    "security": {
+      "returned": 10,
+      "read_bytes": 3455,
+      "estimated_scan_rows": 10,
+      "first_ms": 3.231799928471446
+    },
+    "progress": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 21868,
+      "first_ms": 8.974500000476837
+    },
+    "detail": {
+      "returned": 1,
+      "read_bytes": 2233,
+      "estimated_scan_rows": 1,
+      "first_ms": 1.862000091932714
+    },
+    "coverage": {
+      "returned": 50000,
+      "read_bytes": 3938894,
+      "estimated_scan_rows": 43736,
+      "first_ms": 851.8741999287158
+    }
+  },
+  "python_peak_bytes": 6615038,
+  "initial_rows_written": 50000,
+  "revised_rows_written": 1,
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

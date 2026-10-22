@@ -175,6 +175,7 @@ async def test_failed_sql_retains_queue_and_same_count_different_collection(plan
         with q.mysql.engine.begin() as conn:
             conn.execute(text("UPDATE stock_repurchase_plan SET plan_id='2' WHERE plan_id='1'"))
     assert (await q.preparation_check())[2].status == 'fail'
+
     original = q.mysql.archive
     monkeypatch.setattr(q.mysql, 'archive', AsyncMock(side_effect=RuntimeError('test SQL interruption')))
     task = asyncio.create_task(collect(c))
@@ -192,3 +193,49 @@ async def test_failed_sql_retains_queue_and_same_count_different_collection(plan
     assert (await q.detail('1')) and await store.client.xlen(store.stream) == 0
     # Historical extra rows are retained; source disappearance must remain a visible coverage mismatch.
     assert (await q.preparation_check())[2].status == 'fail'
+
+
+async def test_early_revision_with_hot_final_page_updates_whole_source_proof(plans):
+    m, c, q, store, source = plans
+    source[:] = [source_row(str(i)) for i in range(1, 602)]
+    first = await collect(c)
+    assert (await q.mysql.read(q.audit))['valid']
+    source[0]['REMARK2'] = '首方案修订，末页所有业务内容均不变'
+    second = await collect(c)
+    audit = await q.mysql.read(q.audit)
+    assert second['digest'] != first['digest']
+    assert audit['proof']['digest'] == second['digest']
+    assert audit['valid'] and audit['count'] == 601
+    assert (await q.detail('1'))['progress_remark'] == source[0]['REMARK2']
+    assert (await q.preparation_check())[2].status == 'pass'
+    assert await store.client.xlen(store.stream) == 0
+
+
+async def test_incomplete_refresh_and_same_key_content_mismatch_do_not_pass(plans, monkeypatch):
+    m, c, q, store, source = plans
+    source[:] = [source_row(str(i)) for i in range(1, 602)]
+    await collect(c)
+    old = await q.mysql.read(q.audit)
+    source[0]['REMARK2'] = '前页修订'
+    download = c.download
+    async def failed_tail(cursor, **kwargs):
+        if cursor['collected']:
+            raise ValueError('test missing tail')
+        return await download(cursor, **kwargs)
+    monkeypatch.setattr(c, 'download', failed_tail)
+    with pytest.raises(ValueError, match='missing tail'):
+        await collect(c)
+    await m.registry.get('archive.worker').flush()
+    audit = await q.mysql.read(q.audit)
+    assert not audit['valid'] and audit['proof'] == old['proof']
+    assert (await c.ingest.checkpoint(JOB))['cursor']['phase'] == 'fetch'
+    # Equal keys/count with modified content must also fail, independently of a
+    # stored content_hash mismatch (SQL recomputes both the row and full digest).
+    async with m.registry.get('archive.worker').lock:
+        from empire.features.repurchases.contract import digest, normalize
+        changed = normalize(source_row('2', REMARK2='同键异内容'))
+        with q.mysql.engine.begin() as conn:
+            conn.execute(text('UPDATE stock_repurchase_plan SET progress_remark=:remark,content_hash=:hash WHERE plan_id=:id'),
+                dict(id='2', remark=changed['progress_remark'], hash=digest(changed)))
+    audit = await q.mysql.read(q.audit)
+    assert audit['count'] == 601 and audit['invalid'] == 0 and not audit['valid']

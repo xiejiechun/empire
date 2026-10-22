@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "D:\project\empire\build\returns-p3-20261022\dependencies.py", line 46, in <module>
+    asyncio.run(main())
+  File "D:\Programs\Python3129\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "D:\Programs\Python3129\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\Python3129\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\project\empire\build\returns-p3-20261022\dependencies.py", line 42, in main
+    assert r['distribution']['state']==r['yield']['state']=='�Ѽ���'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

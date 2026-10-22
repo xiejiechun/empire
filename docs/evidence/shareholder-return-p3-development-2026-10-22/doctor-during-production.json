@@ -1,0 +1,457 @@
+{
+  "schema": 1,
+  "project_id": "eastmoney-repurchases",
+  "started_at": "2026-10-22T10:25:12.496221+08:00",
+  "read_only": true,
+  "status": "partial",
+  "sections": {
+    "declaration": {
+      "status": "ok",
+      "started_at": "2026-10-22T10:25:12.497223+08:00",
+      "acquired_at": "2026-10-22T10:25:12.497223+08:00",
+      "reason": "",
+      "data": {
+        "project_id": "eastmoney-repurchases",
+        "task": {
+          "id": "eastmoney-repurchases",
+          "name": "股票回购（东方财富）",
+          "capability": "collector.eastmoney_repurchase",
+          "rate_group": "eastmoney",
+          "description": "唯一方案编号游标，全量核验历史及修订；不推断股份注销",
+          "interval_seconds": 86400,
+          "category": "公司行动",
+          "source_name": "东方财富",
+          "parallel_downloads": false,
+          "default_enabled": true,
+          "fresh_description": "从首方案重新核验完整来源；不删除历史；待归档阶段先确认原轮次，下载阶段可重新建立范围。",
+          "default_schedule": {
+            "mode": "daily",
+            "interval_seconds": 86400,
+            "daily_time": "18:00",
+            "description": "每天北京时间18:00完整核验方案与累计进展，发现历史修订；可编辑。"
+          },
+          "unit_name": "页"
+        },
+        "job_keys": [
+          "eastmoney-repurchases-v1"
+        ],
+        "datasets": [
+          "repurchases.page"
+        ],
+        "declared_scope": [
+          {
+            "id": "repurchases",
+            "title": "股票回购",
+            "category": "公司行动",
+            "priority": "研究",
+            "purpose": "查看回购融资行为与累计进展",
+            "grain": "来源的一份回购方案当前版本",
+            "fields": "方案编号、证券、股份类别、初始公告日、更新日、计划价格数量金额、实际数量金额、状态与用途",
+            "key": "REPURCODE",
+            "coverage": "接口可见全部方案，唯一编号游标全量核验",
+            "cadence": "每天18:00完整回查修订；最近完整核验3天内",
+            "dependencies": [],
+            "criteria": [
+              {
+                "id": "fields",
+                "title": "字段与单位",
+                "expected": "方案编号、证券、股份类别、初始公告日、更新日、计划价格数量金额、实际数量金额、状态与用途",
+                "action": "检查必需字段和单位；可选字段未提供不影响本项通过"
+              },
+              {
+                "id": "keys",
+                "title": "唯一键与重复",
+                "expected": "REPURCODE；重复键为 0",
+                "action": "明确业务键，清查重复与版本冲突"
+              },
+              {
+                "id": "coverage",
+                "title": "历史与对象覆盖",
+                "expected": "接口可见全部方案，唯一编号游标全量核验",
+                "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明"
+              },
+              {
+                "id": "quality",
+                "title": "业务质量",
+                "expected": "数值非负、区间有效、NULL保持未知、来源身份集合完整",
+                "action": "修复数据或解析规则，并补充业务语义回归"
+              },
+              {
+                "id": "freshness",
+                "title": "更新与时效",
+                "expected": "每天18:00完整回查修订；最近完整核验3天内",
+                "action": "验证最新成功核验时间与数据水位，恢复更新计划"
+              },
+              {
+                "id": "temporal",
+                "title": "日期与使用范围",
+                "expected": "公告自然日与当前修订分开；不用于严格历史信号回放",
+                "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史"
+              }
+            ],
+            "kind": "采集",
+            "boundary": "股票回购，不包括国债逆回购；回购完成不等于股份注销。",
+            "related": [],
+            "optional_fields": "来源为空的起止日期、实际回购数值及完成日",
+            "capability": "repurchases.query",
+            "dataset": "repurchases.page"
+          }
+        ]
+      }
+    },
+    "isolation": {
+      "status": "unknown",
+      "started_at": "2026-10-22T10:25:12.497223+08:00",
+      "acquired_at": "2026-10-22T10:25:12.497223+08:00",
+      "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离",
+      "data": {
+        "status": "unknown",
+        "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离"
+      }
+    },
+    "errors": {
+      "status": "ok",
+      "started_at": "2026-10-22T10:25:12.497223+08:00",
+      "acquired_at": "2026-10-22T10:25:12.498237+08:00",
+      "reason": "",
+      "data": {
+        "revision": "0",
+        "total": 0,
+        "rows": [],
+        "truncated": false,
+        "body_included": false
+      }
+    },
+    "task_state": {
+      "status": "ok",
+      "started_at": "2026-10-22T10:25:12.498237+08:00",
+      "acquired_at": "2026-10-22T10:25:12.503421+08:00",
+      "reason": "",
+      "data": {
+        "history": [
+          {
+            "network": {
+              "proxy_requests": 12
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "contract": 1,
+              "total": 5586,
+              "after": "9998",
+              "phase": "complete",
+              "total_units": 5586,
+              "batch_id": "8056268a82374c06902ef0ea8517df31",
+              "unit_name": "条回购方案",
+              "completed_at": "2026-10-21T10:00:22.271752+00:00",
+              "completed_units": 5586,
+              "record_name": "条回购方案",
+              "collected": 5586,
+              "pages": 23,
+              "digest": "1322bf7908bae464addeac6939f3f9b0db7fe6bb7c85fced2caa43324794688d"
+            },
+            "task_id": "eastmoney-repurchases",
+            "fresh": false,
+            "finished_at": 1792576822.2728,
+            "status": "complete",
+            "started_at": 1792576800.2087,
+            "proxy_fallback": true,
+            "run_id": "12ef84beea4a489bacda36c98bd884a9",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 288
+          },
+          {
+            "network": {
+              "proxy_requests": 12
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "contract": 1,
+              "total": 5585,
+              "after": "9998",
+              "phase": "complete",
+              "total_units": 5585,
+              "batch_id": "5f74f4c215cb4ce7bba14042050c2189",
+              "unit_name": "条回购方案",
+              "completed_at": "2026-10-20T10:00:14.337694+00:00",
+              "completed_units": 5585,
+              "record_name": "条回购方案",
+              "collected": 5585,
+              "pages": 23,
+              "digest": "eb5d1e06c64942fb7013dfc6e6bec5b3c454470fd52d250f270d1d40783bb196"
+            },
+            "task_id": "eastmoney-repurchases",
+            "fresh": false,
+            "finished_at": 1792490414.3377,
+            "status": "complete",
+            "started_at": 1792490400.4418,
+            "proxy_fallback": true,
+            "run_id": "a0a4f746d3de43bfbf50869950f4fd78",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 264
+          },
+          {
+            "network": {
+              "proxy_requests": 12
+            },
+            "origin": "schedule",
+            "notice": "",
+            "result": {
+              "contract": 1,
+              "total": 5575,
+              "after": "9998",
+              "phase": "complete",
+              "total_units": 5575,
+              "batch_id": "6126ad18dad0425ab696dff02faaa629",
+              "unit_name": "条回购方案",
+              "completed_at": "2026-10-19T10:00:16.007364+00:00",
+              "completed_units": 5575,
+              "record_name": "条回购方案",
+              "collected": 5575,
+              "pages": 23,
+              "digest": "cb7f94ab542283710a8aee43b24572174c9dd6f715dad31535a6eb176db0a8de"
+            },
+            "task_id": "eastmoney-repurchases",
+            "fresh": false,
+            "finished_at": 1792404016.0095,
+            "status": "complete",
+            "started_at": 1792404000.6925,
+            "proxy_fallback": true,
+            "run_id": "f99026384c8245ac9fd1b2054294651f",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 240
+          }
+        ],
+        "job": {
+          "last_status": "complete",
+          "next_due": 1792663200,
+          "active": null,
+          "notice": "",
+          "policy": {
+            "enabled": true,
+            "request_retries": 2,
+            "daily_time": "18:00",
+            "proxy_fallback": true,
+            "archived": false,
+            "interval_seconds": 86400,
+            "use_proxy": true,
+            "mode": "daily"
+          },
+          "error": ""
+        }
+      }
+    },
+    "checkpoint:eastmoney-repurchases-v1": {
+      "status": "ok",
+      "started_at": "2026-10-22T10:25:12.503421+08:00",
+      "acquired_at": "2026-10-22T10:25:12.503421+08:00",
+      "reason": "",
+      "data": {
+        "cursor": {
+          "phase": "complete",
+          "batch_id": "2a854b361dd84d48a01827c8e846fc18",
+          "pages": 23,
+          "collected": 5588,
+          "total": 5588,
+          "after": "9998",
+          "digest": "356f1c29cdcc6eac17718be43fdd070cbf6d351021954795f5e0e0be00ac024f",
+          "contract": 1,
+          "completed_at": "2026-10-22T02:24:21.861766+00:00"
+        },
+        "revision": "336"
+      }
+    },
+    "archive_progress:eastmoney-repurchases-v1": {
+      "status": "ok",
+      "started_at": "2026-10-22T10:25:12.503421+08:00",
+      "acquired_at": "2026-10-22T10:25:12.504428+08:00",
+      "reason": "",
+      "data": {
+        "batch_id": "2a854b361dd84d48a01827c8e846fc18",
+        "page": 23,
+        "status": "complete",
+        "row_count": 88,
+        "error_text": "",
+        "observed_at": "2026-10-22T02:24:20.728003+00:00"
+      }
+    },
+    "queue": {
+      "status": "ok",
+      "started_at": "2026-10-22T10:25:12.504428+08:00",
+      "acquired_at": "2026-10-22T10:25:12.504428+08:00",
+      "reason": "",
+      "data": {
+        "stream_total": 0,
+        "unreadable": 0,
+        "truncated": false,
+        "exact": true,
+        "fetched_envelope_bytes": 0,
+        "scanned": 0,
+        "stream_ids": {},
+        "project_lower_bound": 0
+      }
+    },
+    "sql_state": {
+      "status": "ok",
+      "started_at": "2026-10-22T10:25:12.572320+08:00",
+      "acquired_at": "2026-10-22T10:25:12.597336+08:00",
+      "reason": "",
+      "data": {
+        "source": "eastmoney",
+        "dataset": "eastmoney_repurchase_v1",
+        "updated_at": "2026-10-22 10:24:20.885345",
+        "state_bytes": 355,
+        "progress": "{\"page\": 23, \"status\": \"complete\", \"batch_id\": \"2a854b361dd84d48a01827c8e846fc18\", \"row_count\": 88, \"error_text\": \"\", \"observed_at\": \"2026-10-22T02:24:20.728003+00:00\"}",
+        "progress_truncated": 0,
+        "coverage": "{\"count\": 5588, \"digest\": \"356f1c29cdcc6eac17718be43fdd070cbf6d351021954795f5e0e0be00ac024f\", \"contract\": 1, \"observed_at\": \"2026-10-22T02:24:20.728003+00:00\"}",
+        "coverage_truncated": 0,
+        "contract_version": null,
+        "truncated": false,
+        "projection_only": true
+      }
+    },
+    "saved_policy": {
+      "status": "ok",
+      "started_at": "2026-10-22T10:25:12.597336+08:00",
+      "acquired_at": "2026-10-22T10:25:12.598335+08:00",
+      "reason": "",
+      "data": {
+        "updated_at": "2026-10-12 13:16:03.766360",
+        "bytes": 168,
+        "policy": "{\"mode\": \"daily\", \"enabled\": true, \"archived\": false, \"use_proxy\": true, \"daily_time\": \"18:00\", \"proxy_fallback\": true, \"request_retries\": 2, \"interval_seconds\": 86400}",
+        "truncated": false
+      }
+    },
+    "query:repurchases.query": {
+      "status": "ok",
+      "started_at": "2026-10-22T10:25:12.598335+08:00",
+      "acquired_at": "2026-10-22T10:25:12.600362+08:00",
+      "reason": "",
+      "data": {
+        "capability": "repurchases.query",
+        "method": "list_plans",
+        "arguments": {
+          "limit": 20,
+          "start": "2026-10-22",
+          "end": "2026-10-22"
+        },
+        "result": {
+          "rows": [
+            {
+              "plan_id": "16696",
+              "unified_code": "603162.SH",
+              "name": "海通发展",
+              "share_type": "流通A股",
+              "plan_date": "2026-10-22",
+              "updated_date": "2026-10-22",
+              "progress_code": "001",
+              "plan_updated_date": "2026-10-22",
+              "actual_through": null,
+              "notice_date": null,
+              "start_date": null,
+              "end_date": null,
+              "finish_date": null,
+              "shareholder_notice_date": null,
+              "advance_date": null,
+              "plan_price_upper": "20.31",
+              "plan_price_lower": null,
+              "plan_quantity_upper": "3938946",
+              "plan_quantity_lower": "1969473",
+              "plan_amount_upper": "80000000",
+              "plan_amount_lower": "40000000",
+              "actual_price_upper": null,
+              "actual_price_lower": null,
+              "actual_quantity": null,
+              "actual_amount": null
+            },
+            {
+              "plan_id": "16693",
+              "unified_code": "603396.SH",
+              "name": "金辰股份",
+              "share_type": "流通A股",
+              "plan_date": "2026-10-22",
+              "updated_date": "2026-10-22",
+              "progress_code": "001",
+              "plan_updated_date": "2026-10-22",
+              "actual_through": null,
+              "notice_date": null,
+              "start_date": "2026-10-21",
+              "end_date": "2027-10-21",
+              "finish_date": null,
+              "shareholder_notice_date": null,
+              "advance_date": null,
+              "plan_price_upper": "47.31",
+              "plan_price_lower": null,
+              "plan_quantity_upper": "2113718",
+              "plan_quantity_lower": "1056860",
+              "plan_amount_upper": "100000000",
+              "plan_amount_lower": "50000000",
+              "actual_price_upper": null,
+              "actual_price_lower": null,
+              "actual_quantity": null,
+              "actual_amount": null
+            },
+            {
+              "plan_id": "16669",
+              "unified_code": "600183.SH",
+              "name": "生益科技",
+              "share_type": "流通A股",
+              "plan_date": "2026-10-22",
+              "updated_date": "2026-10-22",
+              "progress_code": "001",
+              "plan_updated_date": "2026-10-22",
+              "actual_through": null,
+              "notice_date": null,
+              "start_date": "2026-10-21",
+              "end_date": "2027-10-21",
+              "finish_date": null,
+              "shareholder_notice_date": null,
+              "advance_date": null,
+              "plan_price_upper": "207.99",
+              "plan_price_lower": null,
+              "plan_quantity_upper": "1442377",
+              "plan_quantity_lower": "961585",
+              "plan_amount_upper": "300000000",
+              "plan_amount_lower": "200000000",
+              "actual_price_upper": null,
+              "actual_price_lower": null,
+              "actual_quantity": null,
+              "actual_amount": null
+            }
+          ],
+          "next": null
+        },
+        "scope": "正式有界预览，非完整性验收"
+      }
+    }
+  },
+  "note": "各项分时读取，非 Redis/SQL 原子快照。任务阶段与 next_due 来自临时记录；正式预览不证明来源完整、时效或全部待归档为零。",
+  "limits_note": "队列最多逐条读取 5 个现有 Envelope；累计达到 256 KiB 后不取下一条，最后一条可超过此阈值，超过 256 KiB 的正文不解析。错误详情最多查现有保留的 300 条；控制状态读取上限 8 MiB，断点/归档进度各 128 KiB。报告上限不等同 Redis 服务总内存上限。",
+  "sql_cleanup": {
+    "closed_to_new_sql": true,
+    "outstanding_workers": 0,
+    "complete": true
+  },
+  "finished_at": "2026-10-22T10:25:12.601372+08:00",
+  "budget": {
+    "limits": {
+      "sql": 10,
+      "redis": 20,
+      "io_seconds": 5,
+      "total_seconds": 30,
+      "report_bytes": 1048576,
+      "errors": 50,
+      "body_bytes": 65536
+    },
+    "used": {
+      "sql": 8,
+      "redis": 15
+    },
+    "elapsed_seconds": 0.782,
+    "counting": "SQL 包含受守卫 SELECT 及每个物理连接五次驱动只读探测的保守预留；连接协议、SET 会话初始化及事务清理不计为业务查询。Redis 按脚本内 redis.call 读取命令的最大次数预留，包含返回前未使用预留。"
+  }
+}

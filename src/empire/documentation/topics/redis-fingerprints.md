@@ -15,6 +15,8 @@
 
 field 为声明的业务键，value 为 JSON {hash, version}。dataset 是摘要命名空间（如 stocks），不是每个 Envelope 的原始 dataset 名；股票 source=current 共用目录证明。
 
+回购的eastmoney_repurchase_v1/eastmoney桶除数字方案编号外，末批声明一个coverage项，保存完整来源contract/count/digest的摘要和观测版本。它不是方案行或成员清单，不能由摘要反推历史成员；与方案共用原容量和期限。集合变化时须经SQL归档更新原集合证明，相同末页方案命中不能代替集合证明的比较；不增加旁路存储。
+
 ## 读写与关联
 
 SQL 成功提交或确认同内容后才写；必须同时匹配 hash、合法版本和未过期 expiry 索引。命中免 MySQL（含 collection_state），不可信/缺失/损坏/过期回 SQL。SQL 拒绝旧版本不得缓存为当前。

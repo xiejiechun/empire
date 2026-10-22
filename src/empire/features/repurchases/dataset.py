@@ -21,6 +21,7 @@ TABLES, KEYS = {TABLE: {*COLUMNS, 'content_hash', 'version_observed_at'}}, {TABL
 DATASETS = {DATASET}
 FINGERPRINT_NAMESPACE = 'eastmoney_repurchase_v1'
 FINGERPRINT_VERSION = ArchiveVersion(('china', 'utc'), observed_index=1, source_indices=(0,))
+COVERAGE_KEY = 'coverage'  # Plan IDs are decimal strings; this cannot collide.
 
 
 def normalize(envelope):
@@ -47,13 +48,22 @@ def canonical_payload(envelope, data):
 
 
 def fingerprint_plan(envelope, data):
-    return FINGERPRINT_NAMESPACE, {r['plan_id']: (r, [r['updated_date'] + 'T00:00:00.000000',
-        envelope.observed_at.astimezone(UTC).isoformat(timespec='microseconds')]) for r in data['rows']}
+    observed = envelope.observed_at.astimezone(UTC).isoformat(timespec='microseconds')
+    plan = {r['plan_id']: (r, [r['updated_date'] + 'T00:00:00.000000', observed])
+            for r in data['rows']}
+    if data['finished']:
+        # The final page's rows may all be hot while an earlier page changed.
+        # Give the complete source proof its own content identity in the same
+        # bounded cache, so changed coverage reaches the existing SQL writer.
+        plan[COVERAGE_KEY] = (dict(contract=1, count=data['total'], digest=data['digest']),
+            [mysql_time(envelope.observed_at).isoformat(timespec='microseconds'), observed])
+    return FINGERPRINT_NAMESPACE, plan
 
 
 def fingerprint_subset(data, identities):
     rows = [r for r in data['rows'] if r['plan_id'] in identities]
-    return {**data, 'rows': rows, 'row_count': len(rows)}
+    return {**data, 'rows': rows, 'row_count': len(rows),
+            'confirm_coverage': COVERAGE_KEY in identities}
 
 
 def write(conn, envelope, data):
@@ -82,12 +92,16 @@ def write(conn, envelope, data):
         conn.execute(text(f'INSERT INTO {TABLE}({",".join(fields)}) '
             f'VALUES({",".join(":"+k for k in fields)}) ON DUPLICATE KEY UPDATE '
             + ','.join(f'{k}=VALUES({k})' for k in fields if k != 'plan_id')), changed)
+    if (data.get('finished') and data.get('confirm_coverage', True)
+            and envelope.observed_at.isoformat(timespec='microseconds') >=
+            data.get('archive_state', {}).get('coverage', {}).get('observed_at', '')):
+        confirmed.append(COVERAGE_KEY)
     return dict(status='complete', row_count=data['row_count'], written_count=len(changed), confirmed=confirmed)
 
 
 def archive_state(envelope, data, outcome, previous):
     state = {**previous, 'progress': confirmed_page(envelope, data, previous)}
-    if data['finished'] and envelope.observed_at.isoformat() >= previous.get('coverage', {}).get('observed_at', ''):
+    if COVERAGE_KEY in outcome['confirmed']:
         state['coverage'] = dict(count=data['total'], digest=data['digest'], contract=1,
                                 observed_at=envelope.observed_at.isoformat(timespec='microseconds'))
     return state

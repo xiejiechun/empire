@@ -1,0 +1,30 @@
+{
+  "run_id": "7ab474566edc4c58a7a0b8439fccc284",
+  "mode": "verification",
+  "checked_at": "2026-10-22T02:24:08.437620+00:00",
+  "passed": false,
+  "pipeline_verified": false,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [
+    {
+      "stage": "capacity",
+      "message": "Empire 已在当前用户下运行，请先关闭其他窗口或写入任务。",
+      "type": "RuntimeError"
+    }
+  ],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4",
+    "D:\\project\\empire\\build\\returns-p3-20261022\\private-source.json": "f5a59246e8703f6ba919dba1a7d4500db789496909b5dd88cfebada7608054da"
+  }
+}

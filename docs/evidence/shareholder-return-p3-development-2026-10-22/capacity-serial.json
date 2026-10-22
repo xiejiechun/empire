@@ -1,0 +1,292 @@
+{
+  "run_id": "0da2bbfc850b491799066753d42a733b",
+  "mode": "verification",
+  "checked_at": "2026-10-22T02:29:46.864974+00:00",
+  "passed": false,
+  "pipeline_verified": false,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [
+    {
+      "stage": "capacity",
+      "message": "容量超出冻结原预算",
+      "type": "ValueError"
+    }
+  ],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4",
+    "D:\\project\\empire\\build\\returns-p3-20261022\\private-source.json": "f5a59246e8703f6ba919dba1a7d4500db789496909b5dd88cfebada7608054da",
+    "D:\\project\\empire\\src\\empire\\features\\repurchases\\contract.py": "0121912be689c7757d8757684ac167dc35a2efbf11c1dee91bc4d53892f7a3a7",
+    "D:\\project\\empire\\src\\empire\\features\\repurchases\\dataset.py": "eed075714862df913c263fe3925fd2b0007104345a58919db5713ce5b5bb4fa8",
+    "D:\\project\\empire\\src\\empire\\features\\repurchases\\query.py": "d3ab68b978bbddaa6a9011c95c467b489c6bebcc440ba773f0235b765254cc87",
+    "D:\\project\\empire\\scripts\\measure_repurchases.py": "312e2b39ceee3d2ec1914e3a397857402952b2278a0ed3bcb9dbbe9b8a06b042",
+    "D:\\project\\empire\\scripts\\repurchase_capacity.py": "18f58faee1b3e26c338337dd05955fcf053046815baf788d0e1a64d9a98c80d8",
+    "D:\\project\\empire\\scripts\\repurchase_verification.py": "1015b437da390122cae82de1bb84d6b088ba517b72dec92d4bc9cb7c10c87db9",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "D:\\project\\empire\\scripts\\source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206"
+  },
+  "subject": "repurchases_capacity",
+  "source_sha256": "70c3eb19dbdc22532b357ab7a601bbf6bd4bab4791d28dae91278631eef1c13f",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": false,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原回购50000行SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_0da2bbfc850b491799066753d42a733b_test",
+    "namespace": "empire:test:verify_ths:0da2bbfc850b491799066753d42a733b",
+    "run_id": "0da2bbfc850b491799066753d42a733b",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "86c49edc1550ae3cc67233c35275676168218aa9f88fb8321eed79f995480c09"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-data\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "samples": {
+    "page": [
+      8.672399912029505,
+      9.871400077827275,
+      10.076600010506809,
+      10.124900029040873,
+      10.327299940399826,
+      8.68660002015531,
+      10.35319990478456,
+      10.129300062544644,
+      9.09109995700419,
+      9.657299960963428
+    ],
+    "security": [
+      2.839099965058267,
+      1.479900092817843,
+      0.9679000359028578,
+      1.5042000450193882,
+      1.4534000074490905,
+      1.0179999517276883,
+      1.4581000432372093,
+      1.688100048340857,
+      1.0982999810948968,
+      1.2310000602155924
+    ],
+    "progress": [
+      10.357300052419305,
+      7.185599999502301,
+      9.559700032696128,
+      9.692400111816823,
+      10.401700041256845,
+      10.236999951303005,
+      8.822200004942715,
+      7.8702999744564295,
+      5.401400034315884,
+      9.290799964219332
+    ],
+    "detail": [
+      0.9601000929251313,
+      0.6749999010935426,
+      1.055500004440546,
+      1.0430000256747007,
+      0.5978000117465854,
+      0.6252999883145094,
+      0.6915000267326832,
+      0.4914999008178711,
+      0.5772000877186656,
+      0.8940999396145344
+    ],
+    "coverage": [
+      802.6604999322444,
+      839.9242999730632,
+      755.6310000363737,
+      735.7308999635279,
+      758.150199893862,
+      722.8869000682607,
+      763.6675999965519,
+      745.5480999778956,
+      761.239800020121,
+      752.2156999912113
+    ]
+  },
+  "all_rows_verified": 50000,
+  "bindings": {
+    "src/empire/features/repurchases/contract.py": "0121912be689c7757d8757684ac167dc35a2efbf11c1dee91bc4d53892f7a3a7",
+    "src/empire/features/repurchases/dataset.py": "eed075714862df913c263fe3925fd2b0007104345a58919db5713ce5b5bb4fa8",
+    "src/empire/features/repurchases/query.py": "d3ab68b978bbddaa6a9011c95c467b489c6bebcc440ba773f0235b765254cc87",
+    "scripts/measure_repurchases.py": "312e2b39ceee3d2ec1914e3a397857402952b2278a0ed3bcb9dbbe9b8a06b042",
+    "scripts/repurchase_capacity.py": "18f58faee1b3e26c338337dd05955fcf053046815baf788d0e1a64d9a98c80d8",
+    "scripts/repurchase_verification.py": "1015b437da390122cae82de1bb84d6b088ba517b72dec92d4bc9cb7c10c87db9",
+    "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
+    "scripts/source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206"
+  },
+  "ddl_scopes": {
+    "stock_repurchase_plan": "90495c60933b3dd6cbcb694168acf783dd4c43d167cfd09bfc43d6cfe6435f8a"
+  },
+  "measurements": {
+    "page_p95_ms": 10.35319990478456,
+    "security_p95_ms": 2.839099965058267,
+    "progress_p95_ms": 10.401700041256845,
+    "detail_p95_ms": 1.055500004440546,
+    "coverage_p95_ms": 839.9242999730632,
+    "import_seconds": 90.02478460001294,
+    "allocated_bytes": 159678464,
+    "repeated_business_dml": 0
+  },
+  "limits": {
+    "page_p95_ms": 100,
+    "security_p95_ms": 100,
+    "progress_p95_ms": 100,
+    "detail_p95_ms": 100,
+    "coverage_p95_ms": 1000,
+    "import_seconds": 60,
+    "allocated_bytes": 268435456,
+    "repeated_business_dml": 0
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 50000,
+    "source_sample": "normalized live first plan; 2100-byte synthetic remark; 5000 securities/10 dates",
+    "cache": "first unforced, nine hot repetitions; max of ten conservatively bounds P95",
+    "synthetic": true,
+    "independent_test_service": true
+  },
+  "reviewed_tradeoffs": "一次方案一行typed存储；索引对应范围/状态/证券查询，TEXT不进入列表。完整审计有界200行逐批读取，轻量头覆盖扫描与正文审计不同；5万行放大实验不是生产覆盖声明。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_plan_date",
+        "key_len": "25",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_security_date,ix_plan_date",
+        "key": "ix_security_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 10,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ],
+    "progress": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_progress_date",
+        "key": "ix_progress_date",
+        "key_len": "18",
+        "ref": "const",
+        "rows": 19824,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": null,
+        "rows": 39648,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 200,
+      "first_ms": 8.672399912029505
+    },
+    "security": {
+      "returned": 10,
+      "read_bytes": 3455,
+      "estimated_scan_rows": 10,
+      "first_ms": 2.839099965058267
+    },
+    "progress": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 19824,
+      "first_ms": 10.357300052419305
+    },
+    "detail": {
+      "returned": 1,
+      "read_bytes": 2233,
+      "estimated_scan_rows": 1,
+      "first_ms": 0.9601000929251313
+    },
+    "coverage": {
+      "returned": 50000,
+      "read_bytes": 3938894,
+      "estimated_scan_rows": 39648,
+      "first_ms": 802.6604999322444
+    }
+  },
+  "python_peak_bytes": 6616168,
+  "initial_rows_written": 50000,
+  "revised_rows_written": 1,
+  "source_proof": {
+    "path": "D:\\project\\empire\\build\\returns-p3-20261022\\private-source.json",
+    "sha256": "f5a59246e8703f6ba919dba1a7d4500db789496909b5dd88cfebada7608054da",
+    "run_id": "70c4c826a40944e3b0b598a26ba2080e",
+    "source_sha256": "70c3eb19dbdc22532b357ab7a601bbf6bd4bab4791d28dae91278631eef1c13f"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

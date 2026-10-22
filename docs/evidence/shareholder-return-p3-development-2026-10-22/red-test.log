@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_early_revision_with_hot_final_page_updates_whole_source_proof ______
+
+plans = (<empire.core.manager.PluginManager object at 0x000002692B1C46E0>, <empire.features.repurchases.collector.RepurchaseCo...'��ͨA��', ...}, {'REPURCODE': '6', 'SECUCODE': '600000.SH', 'SECURITYSHORTNAME': '���Թ�˾', 'SHARETYPE': '��ͨA��', ...}, ...])
+
+    async def test_early_revision_with_hot_final_page_updates_whole_source_proof(plans):
+        m, c, q, store, source = plans
+        source[:] = [source_row(str(i)) for i in range(1, 602)]
+        first = await collect(c)
+        assert (await q.mysql.read(q.audit))['valid']
+        source[0]['REMARK2'] = '�׷����޶���ĩҳ����ҵ�����ݾ�����'
+        second = await collect(c)
+        audit = await q.mysql.read(q.audit)
+        assert second['digest'] != first['digest']
+>       assert audit['proof']['digest'] == second['digest']
+E       AssertionError: assert '068631d1c01e...9fced6d0ebe88' == '0b6d35635794...b24de77bad7d8'
+E         
+E         - 0b6d35635794dfef68ce1f4b7b688e2ab3a22095a9d5e5746a2b24de77bad7d8
+E         + 068631d1c01e3ed6f75fb73def23717d281269372986363df639fced6d0ebe88
+
+tests\integration\test_repurchase_archive.py:207: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/integration/test_repurchase_archive.py::test_early_revision_with_hot_final_page_updates_whole_source_proof
+1 failed in 7.30s

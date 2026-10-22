@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-21T22:15:43.694011+00:00",
-  "note": "P2最终结案审阅：README及范围/实现/业务账本对应正式release与同包桌面原证据，保留002731四证券日严格准入失败、原B项/600938/回购和P3P4限制；原始证据分层，正常关开配置及48设置核对完成。",
-  "unchanged_reason": "本次仅整理发布后的动态证据与当前状态，产品源码、权威帮助、数据及操作契约与已发布实现完全相同。",
+  "reviewed_at": "2026-10-22T02:40:44.902909+00:00",
+  "note": "P3最终发布前审阅：回购唯一归档的coverage摘要项，正式SQL严格检查及空查询解释，源当前全集5588逐键内容一致、历史保留；P1/P2正常、旧B项不变；容量90.02秒与前像88.10秒失败均公开，页面任务原关联适用",
+  "unchanged_reason": "",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -394,7 +394,7 @@
     "src/empire/features/repurchases/bundle.py": "c3fecc0351a42ead4cf4b1663b609b20b3143fc475b274164b7840b8c305832b",
     "src/empire/features/repurchases/collector.py": "4776c83b50c804da37ab68e37ef015c865688174187f86eea1e5b3bc4ccbdc3f",
     "src/empire/features/repurchases/contract.py": "0121912be689c7757d8757684ac167dc35a2efbf11c1dee91bc4d53892f7a3a7",
-    "src/empire/features/repurchases/dataset.py": "e21dc9e531361363a27d9c063a875e800f7923620f2ad85c71f6037030595c50",
+    "src/empire/features/repurchases/dataset.py": "eed075714862df913c263fe3925fd2b0007104345a58919db5713ce5b5bb4fa8",
     "src/empire/features/repurchases/query.py": "d3ab68b978bbddaa6a9011c95c467b489c6bebcc440ba773f0235b765254cc87",
     "src/empire/features/repurchases/ui.py": "b9e2aa888ac55684fb1a67a539aa55d3574b344315bd7d1fe7dfd736a5c3a1f7",
     "src/empire/features/security_aliases/__init__.py": "725aa17467b99954e4c753f8ac304e5745f0c4dc9d1ef438ba001330623e7d97",
@@ -563,7 +563,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "26e992a5ba52307d460e99ff00f4033320e9910ba3f4c0b0ce076b5533b05d1f",
+  "content_sha256": "de0f0f9f030ff5d18ce58193d19d5302cf4e2a20372ea83e0d28becbf3c171b9",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -914,7 +914,7 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "0d57305b6ec209b5001c8d8355bf39f5c9e82c8650f40d1b55aa91411dcad9b2",
+      "content_sha256": "a0a50875f0d49741f895fb39bb999b3e3ec166a6a12ff12cc6ecf50c044f0fdd",
       "documentation": {
         "股票回购": {
           "owner": "repurchases",
@@ -3008,7 +3008,7 @@
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "c6ee757ca30d316ffecca28398f265e961c8c9f13cacfc7bc0bbfcfd99e2220f",
+      "content_sha256": "1ed7139c3e5335a168fb070985e54e7f8b24c622bf6a99f2f5c62f444aa74205",
       "documentation": {
         "股票回购": {
           "owner": "repurchases",
@@ -5441,7 +5441,7 @@
     "mysql:stock_repurchase_plan": {
       "sources": {
         "src/empire/features/repurchases/contract.py": "0121912be689c7757d8757684ac167dc35a2efbf11c1dee91bc4d53892f7a3a7",
-        "src/empire/features/repurchases/dataset.py": "e21dc9e531361363a27d9c063a875e800f7923620f2ad85c71f6037030595c50",
+        "src/empire/features/repurchases/dataset.py": "eed075714862df913c263fe3925fd2b0007104345a58919db5713ce5b5bb4fa8",
         "src/empire/features/repurchases/query.py": "d3ab68b978bbddaa6a9011c95c467b489c6bebcc440ba773f0235b765254cc87",
         "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
@@ -5457,7 +5457,7 @@
         "sql/schema.sql#stock_repurchase_plan": "c87fc64b7de60b89d2e9594da0a812cff2251015b7bb51f69c756709e1942f34",
         "sql/business-schema.json#stock_repurchase_plan": "220cebec1cd3bb07d393253d225abc8d532306bd446df779e94a76c8649767a3"
       },
-      "content_sha256": "c116bc2e9171d817ccb858b6266b19ccf32c127e8df6effac1a7558a41685a47",
+      "content_sha256": "6ff93ffbe4e825d6a9722a235e9a1e0c7c83333d52decde5c545fff2f1c28b4b",
       "documentation": {
         "MySQL stock_repurchase_plan": {
           "owner": "repurchases",
@@ -6142,7 +6142,7 @@
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/pipeline/__init__.py": "5bc21e78444728cd50b6ddaf95ef5a50416f7ca8f0e1caf8bf84c939b96bb22b"
       },
-      "content_sha256": "575c8713275fb1102bbfa03e167bc89bb478d01dc22e7921268f554736054b41",
+      "content_sha256": "67fb2d45b352074c006aa4df97e5aaa62b7f764deab6187f589bcecceda7c14b",
       "documentation": {
         "Redis fingerprints": {
           "owner": "shared",
