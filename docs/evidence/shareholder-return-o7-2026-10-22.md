@@ -85,3 +85,5 @@
 最终文档检查：generate/review/verify_documentation均exit0，421文档/3525链接/55表；五文件文档回归63 passed、61.83秒、exit0，见[实际命令记录](shareholder-return-o7-2026-10-22/documentation-checks.json)、[JUnit](shareholder-return-o7-2026-10-22/documentation.xml)。首次文档verify曾exit1，原因是工具先核查链接、后复制证据，目标文件当时缺失；已改为先归档原件再验证，保留[首次失败](shareholder-return-o7-2026-10-22/initial-documentation.log)及原执行记录，没有删除链接或放宽检查。
 
 [现场身份复核](shareholder-return-o7-2026-10-22/context.json)工具实际exit0：源产品/测试/工具/SQL/打包配置相对于P3包提交6808f85无差异，EXE和完整程序树hash匹配原P3正式发布事务，运行进程仍8380。仅开发文档和证据提交，不重打包、不重启、不将旧桌面充当O7验收。追加本段后再显式generate/review/verify；其原始退出记录另存final-documentation-checks.json。远程main在提交推送后精确核对，结案文档提交与原包身份保持区分。
+
+提交后归档复核发现Git索引沿用首次自动换行规范化的部分证据blob，本地原件没有变化；首提交59a825c尚未推送时即发现。随后仅对本证据目录声明保留原字节并显式重新入索引，逐一核对30份原记录SHA256与Git内容相同，`git diff --cached --check` exit0；[逐文件核对](shareholder-return-o7-2026-10-22/git-byte-verification.json)同时保留首提交与纠正后摘要。不改原证据或旧报告摘要，不改变产品、性能工具、协议、门禁阈值；CRLF只作为原始记录行尾保存。更正随下一文档提交推送，首提交不是独立交付结论。
