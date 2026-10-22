@@ -1,0 +1,17 @@
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_release_environment.py
+PASS Python 3.12.9 · Empire 0.1.0 · locked environment
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\audit_dependencies.py --output D:\project\empire\build\dependency-report.json
+PASS dependency inventory: 42 locked components
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\documentation_build.py check --report D:\project\empire\build\releases\2a81d1bbcc50472fb16d6ab81b7f990d\help-report.json
+PASS offline help check: 144 topics
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_documentation.py
+PASS documentation contracts: documents=418, links=3018, schema_tables=55
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_database_design.py
+Traceback (most recent call last):
+  File "D:\project\empire\scripts\verify_database_design.py", line 107, in <module>
+    print('PASS database design gate', verify(Path(__file__).resolve().parents[1]))
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\empire\scripts\verify_database_design.py", line 90, in verify
+    raise ValueError(f'{dataset} 容量证据已过期：{path}')
+ValueError: repurchases.page 容量证据已过期：src/empire/features/repurchases/dataset.py
+Release step failed (exit 1): python.exe; output: D:\project\empire\build\releases\2a81d1bbcc50472fb16d6ab81b7f990d\steps\step-005.log

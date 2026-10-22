@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "D:\project\empire\scripts\verify_database_design.py", line 107, in <module>
+    print('PASS database design gate', verify(Path(__file__).resolve().parents[1]))
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\empire\scripts\verify_database_design.py", line 93, in verify
+    raise ValueError(f'{dataset} ����Ԥ�㳬�ޣ�{key}')
+ValueError: repurchases.page ����Ԥ�㳬�ޣ�import_seconds

@@ -1,0 +1,223 @@
+........................................................................ [  1%]
+........................................................................ [  3%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [  8%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+.....................sssss.............................................. [ 14%]
+........................................................................ [ 15%]
+........................................................................ [ 17%]
+........................................................................ [ 19%]
+........................................................................ [ 21%]
+........................................................................ [ 22%]
+........................................................................ [ 24%]
+........................................................................ [ 26%]
+........................................................................ [ 28%]
+........................................................................ [ 29%]
+........................................................................ [ 31%]
+........................................................................ [ 33%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 38%]
+........................................................................ [ 40%]
+........................................................................ [ 42%]
+........................................................................ [ 44%]
+........................................................................ [ 45%]
+........................................................................ [ 47%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+................................................................FF...... [ 52%]
+........................................................................ [ 54%]
+........................................................................ [ 56%]
+........................................................................ [ 58%]
+........................................................................ [ 59%]
+........................................................................ [ 61%]
+........................................................................ [ 63%]
+........................................................................ [ 65%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 70%]
+........................................................................ [ 72%]
+........................................................................ [ 74%]
+........................................................................ [ 75%]
+........................................................................ [ 77%]
+........................................................................ [ 79%]
+........................................................................ [ 81%]
+........................................................................ [ 82%]
+........................................................................ [ 84%]
+........................................................................ [ 86%]
+........................................................................ [ 88%]
+........................................................................ [ 89%]
+........................................................................ [ 91%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 96%]
+........................................................................ [ 98%]
+....................................................                     [100%]
+================================== FAILURES ===================================
+_____________ test_capacity_evidence_is_bound_and_enforced[stale] _____________
+
+tmp_path = WindowsPath('D:/project/empire/build/pytest-p3-full/test_capacity_evidence_is_boun0')
+failure = 'stale'
+
+    @pytest.mark.parametrize('failure', ['stale', 'over_budget'])
+    def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
+        root = Path(__file__).resolve().parents[1]
+        cards = json.loads((root/'docs/database-design-cards.json').read_text('utf-8'))
+        evidence_path = cards['datasets']['kaipanla.trades.day']['capacity']['evidence']
+        evidence = json.loads((root/evidence_path).read_text('utf-8'))
+        paths = {'sql/schema.sql', 'sql/schema-contract.json', 'sql/business-schema.json', 'docs/database-design-cards.json', evidence_path, *evidence['bindings']}
+        for card in cards['datasets'].values():
+            paths.update([card['dictionary'], *card['tests']])
+            if card['capacity']['status'] == 'measured':
+                path = card['capacity']['evidence']
+                measured = json.loads((root/path).read_text('utf-8'))
+                paths.update([path, *measured['bindings']])
+        for path in paths:
+            target = tmp_path/path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((root/path).read_bytes())
+>       assert verify(tmp_path)['tables'] == 55
+               ^^^^^^^^^^^^^^^^
+
+tests\test_market_mapping.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('D:/project/empire/build/pytest-p3-full/test_capacity_evidence_is_boun0')
+
+    def verify(root):
+        schema = (root/'sql/schema.sql').read_bytes()
+        manifest = json.loads((root/'sql/schema-contract.json').read_text('utf-8'))
+        if manifest['schema_sha256'] != hashlib.sha256(schema).hexdigest():
+            raise ValueError('DDL�ѱ仯������ʽ���Ĳ���������/����/Լ����Լ')
+        tables = set(re.findall(r'CREATE TABLE IF NOT EXISTS (\w+)', schema.decode()))
+        if tables != set(manifest['tables']):
+            raise ValueError('DDL��ṹ��Լ�����ϲ�һ��')
+        catalog = DatasetPlugin(dataset_contributions({
+            'redis': {}, 'mysql': {}, 'archive': {}, 'ingest': {}, 'rate_groups': {}}))
+        ownership = verify_ownership(root, manifest['tables'], catalog.datasets)
+        dataset_table_groups = {dataset: tuple(tables) for dataset, tables in ownership['dataset_table_groups'].items()}
+        designs = json.loads((root/'docs/database-design-cards.json').read_text('utf-8'))
+        if set(designs['datasets']) != set(dataset_table_groups):
+            raise ValueError('���ݼ���ƿ�ȱʧ�������������Ŀ')
+        required = {'tables', 'grain', 'identity', 'dictionary', 'queries', 'capacity', 'integrity', 'lifecycle', 'delivery', 'tests'}
+        for dataset, card in designs['datasets'].items():
+            if set(card) != required or any(not v for v in card.values()):
+                raise ValueError(f'{dataset} �洢��ƿ�������')
+            if tuple(card['tables']) != dataset_table_groups[dataset] or not set(card['tables']) <= tables:
+                raise ValueError(f'{dataset} �����������ƿ���ƥ��')
+            for path in (card['dictionary'], *card['tests']):
+                if not (root/path).is_file():
+                    raise ValueError(f'{dataset} �ֵ��ר����Բ����ڣ�{path}')
+            capacity = card['capacity']
+            if capacity.get('status') not in ('measured', 'legacy_baseline'):
+                raise ValueError(f'{dataset} ȱ����������״̬')
+            if capacity['status'] == 'legacy_baseline' and dataset not in LEGACY_BASELINES:
+                raise ValueError(f'{dataset} �����ݼ�����ð����ʷ��������')
+            if capacity['status'] == 'measured':
+                evidence = json.loads((root/capacity['evidence']).read_text('utf-8'))
+                if 'sql/schema.sql' not in evidence['bindings']:
+                    # Existing measurements may bind an archived DDL, but must still
+                    # prove every table used by this dataset unchanged in current SQL.
+                    verify_scoped_ddl(evidence, schema.decode(), card['tables'])
+                for path, checksum in evidence['bindings'].items():
+                    if hashlib.sha256((root/path).read_bytes()).hexdigest() != checksum:
+>                       raise ValueError(f'{dataset} ����֤���ѹ��ڣ�{path}')
+E                       ValueError: repurchases.page ����֤���ѹ��ڣ�src/empire/features/repurchases/dataset.py
+
+scripts\verify_database_design.py:90: ValueError
+__________ test_capacity_evidence_is_bound_and_enforced[over_budget] __________
+
+tmp_path = WindowsPath('D:/project/empire/build/pytest-p3-full/test_capacity_evidence_is_boun1')
+failure = 'over_budget'
+
+    @pytest.mark.parametrize('failure', ['stale', 'over_budget'])
+    def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
+        root = Path(__file__).resolve().parents[1]
+        cards = json.loads((root/'docs/database-design-cards.json').read_text('utf-8'))
+        evidence_path = cards['datasets']['kaipanla.trades.day']['capacity']['evidence']
+        evidence = json.loads((root/evidence_path).read_text('utf-8'))
+        paths = {'sql/schema.sql', 'sql/schema-contract.json', 'sql/business-schema.json', 'docs/database-design-cards.json', evidence_path, *evidence['bindings']}
+        for card in cards['datasets'].values():
+            paths.update([card['dictionary'], *card['tests']])
+            if card['capacity']['status'] == 'measured':
+                path = card['capacity']['evidence']
+                measured = json.loads((root/path).read_text('utf-8'))
+                paths.update([path, *measured['bindings']])
+        for path in paths:
+            target = tmp_path/path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((root/path).read_bytes())
+>       assert verify(tmp_path)['tables'] == 55
+               ^^^^^^^^^^^^^^^^
+
+tests\test_market_mapping.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('D:/project/empire/build/pytest-p3-full/test_capacity_evidence_is_boun1')
+
+    def verify(root):
+        schema = (root/'sql/schema.sql').read_bytes()
+        manifest = json.loads((root/'sql/schema-contract.json').read_text('utf-8'))
+        if manifest['schema_sha256'] != hashlib.sha256(schema).hexdigest():
+            raise ValueError('DDL�ѱ仯������ʽ���Ĳ���������/����/Լ����Լ')
+        tables = set(re.findall(r'CREATE TABLE IF NOT EXISTS (\w+)', schema.decode()))
+        if tables != set(manifest['tables']):
+            raise ValueError('DDL��ṹ��Լ�����ϲ�һ��')
+        catalog = DatasetPlugin(dataset_contributions({
+            'redis': {}, 'mysql': {}, 'archive': {}, 'ingest': {}, 'rate_groups': {}}))
+        ownership = verify_ownership(root, manifest['tables'], catalog.datasets)
+        dataset_table_groups = {dataset: tuple(tables) for dataset, tables in ownership['dataset_table_groups'].items()}
+        designs = json.loads((root/'docs/database-design-cards.json').read_text('utf-8'))
+        if set(designs['datasets']) != set(dataset_table_groups):
+            raise ValueError('���ݼ���ƿ�ȱʧ�������������Ŀ')
+        required = {'tables', 'grain', 'identity', 'dictionary', 'queries', 'capacity', 'integrity', 'lifecycle', 'delivery', 'tests'}
+        for dataset, card in designs['datasets'].items():
+            if set(card) != required or any(not v for v in card.values()):
+                raise ValueError(f'{dataset} �洢��ƿ�������')
+            if tuple(card['tables']) != dataset_table_groups[dataset] or not set(card['tables']) <= tables:
+                raise ValueError(f'{dataset} �����������ƿ���ƥ��')
+            for path in (card['dictionary'], *card['tests']):
+                if not (root/path).is_file():
+                    raise ValueError(f'{dataset} �ֵ��ר����Բ����ڣ�{path}')
+            capacity = card['capacity']
+            if capacity.get('status') not in ('measured', 'legacy_baseline'):
+                raise ValueError(f'{dataset} ȱ����������״̬')
+            if capacity['status'] == 'legacy_baseline' and dataset not in LEGACY_BASELINES:
+                raise ValueError(f'{dataset} �����ݼ�����ð����ʷ��������')
+            if capacity['status'] == 'measured':
+                evidence = json.loads((root/capacity['evidence']).read_text('utf-8'))
+                if 'sql/schema.sql' not in evidence['bindings']:
+                    # Existing measurements may bind an archived DDL, but must still
+                    # prove every table used by this dataset unchanged in current SQL.
+                    verify_scoped_ddl(evidence, schema.decode(), card['tables'])
+                for path, checksum in evidence['bindings'].items():
+                    if hashlib.sha256((root/path).read_bytes()).hexdigest() != checksum:
+>                       raise ValueError(f'{dataset} ����֤���ѹ��ڣ�{path}')
+E                       ValueError: repurchases.page ����֤���ѹ��ڣ�src/empire/features/repurchases/dataset.py
+
+scripts\verify_database_design.py:90: ValueError
+============================== warnings summary ===============================
+tests/test_adjustment_chart.py::test_chart_keyboard_inspection_and_drag_keep_date_and_ohlc_identity
+  D:\project\empire\tests\test_adjustment_chart.py:115: DeprecationWarning: Function: 'QMouseEvent.QMouseEvent(QEvent.Type type, const QPointF &localPos, Qt.MouseButton button, QFlags<Qt.MouseButton> buttons, QFlags<Qt.KeyboardModifier> modifiers, const QPointingDevice *device)' is marked as deprecated, please check the documentation for more information.
+    canvas.mousePressEvent(QMouseEvent(QEvent.Type.MouseButtonPress, QPointF(500, 100),
+
+tests/test_adjustment_chart.py::test_chart_keyboard_inspection_and_drag_keep_date_and_ohlc_identity
+  D:\project\empire\tests\test_adjustment_chart.py:117: DeprecationWarning: Function: 'QMouseEvent.QMouseEvent(QEvent.Type type, const QPointF &localPos, Qt.MouseButton button, QFlags<Qt.MouseButton> buttons, QFlags<Qt.KeyboardModifier> modifiers, const QPointingDevice *device)' is marked as deprecated, please check the documentation for more information.
+    canvas.mouseMoveEvent(QMouseEvent(QEvent.Type.MouseMove, QPointF(650, 100),
+
+tests/test_project_diagnostics.py: 16 warnings
+  D:\project\empire\.venv\Lib\site-packages\sqlalchemy\engine\default.py:952: DeprecationWarning: The default datetime adapter is deprecated as of Python 3.12; see the sqlite3 documentation for suggested replacement recipes
+    cursor.execute(statement, parameters)
+
+tests/test_project_diagnostics.py::test_market_preview_reads_requested_old_day_when_a_newer_day_exists
+tests/test_project_diagnostics.py::test_market_preview_reads_requested_old_day_when_a_newer_day_exists
+  D:\project\empire\.venv\Lib\site-packages\sqlalchemy\engine\default.py:952: DeprecationWarning: The default date adapter is deprecated as of Python 3.12; see the sqlite3 documentation for suggested replacement recipes
+    cursor.execute(statement, parameters)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_market_mapping.py::test_capacity_evidence_is_bound_and_enforced[stale]
+FAILED tests/test_market_mapping.py::test_capacity_evidence_is_bound_and_enforced[over_budget]
+2 failed, 4077 passed, 5 skipped, 20 warnings in 3311.64s (0:55:11)

@@ -1,6 +1,6 @@
 # P3：回购完整性诊断及必要修复
 
-状态：**已实现、相关开发与真实全源核验通过；正式发布及同包桌面待完成；容量导入项当前失败。** 本批不实施P4、回购支出/实际注销计算或新业务表。P2严格002731失败与原B1～B4不结案。
+状态：**已实现、相关专项与真实全源核验通过；完整回归未通过，容量超限阻断正式发布；P3未验收。** 本批不实施P4、回购支出/实际注销计算或新业务表。P2严格002731失败与原B1～B4不结案。生产数据本轮已恢复一致，不等于修复已部署；当前安装包仍为P2，旧包存在再次遗漏证明更新的风险。
 
 ## 现场与根因
 
@@ -50,10 +50,10 @@
 | 重复/旧版本/重放/SQL故障 | 可信重复免SQL、冷重复0业务DML、迟到旧响应不覆盖、提交后ACK失败重放清队、SQL失败保留、下载不逐批等归档 | tests/integration/test_repurchase_archive.py原恢复专项均保留通过 |
 | 真实集合/空查询解释 | 私有与生产全源分别通过；精确键与规范内容比较，历史原键全部保留 | private-source.json / production-source.json，均exit0；各12代理、pending0 |
 | SQL fallback | 不启动Redis/ingest的查询用SQL新完整证明；Redis无可用辅助时不改证明 | dependencies-with-redis.json exit0；SQL证明有效。dependencies.json初次脚本exit1：错误地期待陈旧资本SQL单独通过，已保留；它正确阻断未刷时间，不是产品回归 |
-| 当前累计/区间支出/注销 | 原正式列表/详情语义保留并补帮助；本批不提供O6期间支出、O8实际注销 | 真实桌面待验；P4后续批次 |
+| 当前累计/区间支出/注销 | 原正式列表/详情语义保留并补帮助；本批不提供O6期间支出、O8实际注销 | P3同包桌面未执行（未生成新包）；P4后续批次 |
 | 分红/股息率独立依赖 | 000001仍应0.609/11.44×100=5.3234265734…%；600938、historical_signal及B项不放行 | dependencies-with-redis.json exit0：正常共享Redis可选证据下P1/P2已计算，600938数据阻断、historical_signal来源受限，B4确切ID仍在；同包桌面待完成 |
-| 容量 | 旧报告绑定变化，实际重测原50000行/原阈值；首次因单实例锁拒绝exit1，无测量，保留 | capacity.json exit1（锁拒绝）；capacity-serial.json exit1（真实导入90.0248秒>60，其余原阈值全部通过、全50000键内容一致、重复0业务DML、修订1行、六清理true）。原e204cfb精确源码git archive使用未改原measure函数/协议同机对照baseline-control.json exit1：88.1008秒>60。两版都失败，不能证明本次metadata导致性能退化；并发RouterProxy/Trae负载观测见environment-load.json，但环境耗时根因尚未证实，不把负载解释冒充通过。没有修改工具/协议/阈值；本项仍失败 |
-| 文档与发布 | 回购数据说明、原SQL表及共享指纹正文已同步、关联保持，review/ruff/mypy通过 | 最终完整门禁、同包桌面及push待执行 |
+| 容量 | 旧报告绑定变化，实际重测原50000行/原阈值；最后一次导入86.4695秒>冻结60秒，失败 | capacity-final.json/log exit1，8项输入绑定均匹配；查询、空间预算通过，全50000键内容一致、重复0业务DML、修订1行、六清理true。此前capacity.json为锁拒绝，无测量；capacity-serial.json导入90.0248秒失败。精确前像e204cfb的baseline-control.json同机88.1008秒也失败。两版都超限，具体耗时根因尚未证实，不能归咎特定后台应用或证明本次metadata显著退化。设计卡引用本轮真实失败报告，未改工具、协议、历史基线或阈值 |
+| 文档与发布 | 回购数据说明、原SQL表及共享指纹正文已同步、关联保持，review/ruff/mypy通过；正式发布被容量阻断 | 初次统一门禁2a81d1bbcc50472fb16d6ab81b7f990d exit1，第005步拒绝旧容量报告绑定；没有publication.json或P3新包，同包桌面未执行。最终输入的门禁与资源恢复结果见下文 |
 
 正式命令：`.venv/Scripts/python.exe -m empire doctor --project eastmoney-repurchases ...`（exit1，partial原因见上）；`audit_state.py`（exit0，生产只读快照）；`pytest tests/integration/test_repurchase_archive.py tests/test_repurchases.py tests/test_repurchase_verification_tools.py -q --basetemp=build/pytest-p3-related`（EMPIRE_INTEGRATION=1及显式13348配置，exit0）；`scripts/verify_repurchases.py --test-mysql-settings build/architecture-evolution-20261019/mysql-settings.json --proxy-only --output build/returns-p3-20261022/private-source.json --timeout 240`（exit0）；`production_verify.py`（exit0；脚本纳入原始证据）；`ruff check ...`及`mypy`（exit0）。完整日志、输入hash和运行身份以原JSON为准。
 
@@ -62,3 +62,13 @@
 源接口无快照令牌，整轮各页代表本轮读取当前版本，不声称同一秒快照或完整历次修订。本轮证明恢复只覆盖当前可见全集与当前修订版analysis；原5553证明精确旧成员不可重建，严格历史信号回放、区间回购支出、实际注销、持仓现金与P4均未实现/受限。P2的002731四个quote证券日严格失败及B1空名债券、B2原46单元、B3旧全历史/未知增发、B4原ID继续保留；600938仍须阻断。回购恢复不等于整个研究主题或全项目所有数据通过。
 
 开发补充：81项回购UI、分红汇总、股息率及文档专项exit0（ui-doc-tests.log）；ruff、严格mypy和文档契约均exit0。baseline-control为修复前源码的容量对照，不是当前版本验收；不使用其报告替代候选报告。读基线资源活动时发现UUID库已被正常清理，诊断返回Unknown database，未删除/重建或重跑来源。
+
+## 完整回归与发布阻断
+
+在实现提交`ca657447338118d6618e1be2bd20fbb7a54ccc68`执行完整回归，期间src/scripts/tests/sql/config与提交无差异。命令为`EMPIRE_INTEGRATION=1 EMPIRE_TEST_MYSQL_SETTINGS=build/architecture-evolution-20261019/mysql-settings.json .venv/Scripts/python.exe -m pytest --basetemp=build/pytest-p3-full --junitxml=build/returns-p3-20261022/full-tests.xml -q`。实际退出码1，3311.64秒：4077 passed、2 failed、5 skipped。原始[日志](shareholder-return-p3-development-2026-10-22/full-tests.log)、[JUnit](shareholder-return-p3-development-2026-10-22/full-tests.xml)及[命令身份](shareholder-return-p3-development-2026-10-22/full-tests-exit.json)均保留。
+
+两项失败为`tests/test_market_mapping.py::test_capacity_evidence_is_bound_and_enforced[stale]`与`[over_budget]`，它们首先要求当前全部容量证据有效；回购旧E6f报告不再匹配dataset.py，故在该前提失败，不是它们构造的反例被错误放行。不能将整轮写成通过。五项skip均为`tests.integration.test_state_unit_isolated`要求额外`Explicit isolated drill opt-in required`的既有演练，不记作本轮通过。Ruff、严格mypy、architecture_contract及assembly_contract各自exit0，不能替代失败的完整回归或统一门禁。
+
+生产根因补证[causal-evidence.json](shareholder-return-p3-development-2026-10-22/causal-evidence.json)确认原末批86条的规范内容hash全在可信缓存中，结合已完成checkpoint/清队和旧SQL证明，支持已复现的归档路径缺陷；不从旧5553聚合摘要猜测成员。最终容量[capacity-final.json](shareholder-return-p3-development-2026-10-22/capacity-final.json)为当前实现的真实失败测量，不能只刷新旧报告hash。解决剩余导入预算并重过完整门禁后，才可生成P3包及补做同包桌面；本轮不继续无新线索地反复请求来源或跑容量碰运气。
+
+更新设计卡引用后，`scripts/verify_database_design.py`再次实际exit1，拒绝理由为`repurchases.page 容量预算超限：import_seconds`（current-capacity-gate.log），不是仍以旧绑定替代当前测量。最后一次正文修改后的文档生成、review及verify_documentation均exit0；`pytest tests/test_documentation_build.py tests/test_documentation_review.py tests/test_documentation_contracts.py tests/test_documentation_sources.py tests/test_storage_help.py tests/test_repurchase_ui.py tests/test_distribution_ui.py tests/test_distribution_cache.py tests/test_dividend_distribution.py tests/test_dividend_yield.py -q --basetemp=build/pytest-p3-final-docs`实际120 passed、121.57秒、exit0（final-doc-tests.log）。这一专项通过不覆盖上述完整回归失败。
