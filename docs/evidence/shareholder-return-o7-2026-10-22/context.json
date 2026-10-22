@@ -1,0 +1,74 @@
+{
+  "at": "2026-10-22T07:13:40.957443+00:00",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "0dbeac57a62d5692b4b7b11bbaca594336b1a55e",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "-c",
+        "http.proxy=http://127.0.0.1:7890",
+        "ls-remote",
+        "origin",
+        "refs/heads/main"
+      ],
+      "exit_code": 0,
+      "stdout": "0dbeac57a62d5692b4b7b11bbaca594336b1a55e\trefs/heads/main",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "6808f85188be0aae58c897b417e5819a9e6da529",
+        "--",
+        "src",
+        "scripts",
+        "tests",
+        "sql",
+        "config",
+        "Empire.spec",
+        "verify-release.ps1"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-Command",
+        "Get-Process Empire -ErrorAction Stop | Select-Object Id,Path,StartTime | ConvertTo-Json -Compress"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"Id\":8380,\"Path\":\"D:\\\\project\\\\empire\\\\dist\\\\empire\\\\empire.exe\",\"StartTime\":\"\\/Date(1792649349208)\\/\"}",
+      "stderr": ""
+    }
+  ],
+  "release_id": "3892410b3e6a48858002a318bee648d5",
+  "manifest": {
+    "version": "0.1.0",
+    "commit": "6808f85188be0aae58c897b417e5819a9e6da529",
+    "dirty": false,
+    "source_sha256": "46e090cbdedeaa37e52a428c4a6c3e2df349e9d83e8002094d19b7a779a38573",
+    "release_id": "3892410b3e6a48858002a318bee648d5",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "fe93361883808d74021aeaa2ca790c8354ecdb31ca7d2e06cda84b1192f075e8",
+    "built_at_utc": "2026-10-22T05:49:17.306843+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3"
+  },
+  "exe_sha256": "cc767690af7b2feb4649faaf9352de70b99f532c2bf78a1529c24302b0bac0df",
+  "tree_sha256": "ea7c3adca247c8d46c2c8ba4522dcd16c1e0c6f669accfe8a6c51a99ed9be694"
+}

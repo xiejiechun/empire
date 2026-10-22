@@ -1,0 +1,41 @@
+[
+  {
+    "name": "preservation",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "D:\\project\\empire\\build\\returns-o7-20261022\\preservation.py"
+    ],
+    "started_at": "2026-10-22T07:05:19.828857+00:00",
+    "seconds": 2.0585792999481782,
+    "exit_code": 0,
+    "log": "preservation.log"
+  },
+  {
+    "name": "related",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "tests/test_tdx_additional_issues.py",
+      "tests/test_tdx_rights_issues.py",
+      "tests/test_tdx_issue_details.py",
+      "tests/test_capital_scope.py",
+      "tests/test_capital_preparation.py",
+      "tests/test_capital_recovery.py",
+      "tests/test_dividend_distribution.py",
+      "tests/test_dividend_yield.py",
+      "tests/test_repurchases.py",
+      "-q",
+      "--basetemp=build/pytest-o7-contract-audit",
+      "--junitxml=build/returns-o7-20261022/related.xml"
+    ],
+    "started_at": "2026-10-22T07:05:21.888803+00:00",
+    "seconds": 1.8855649000033736,
+    "exit_code": 0,
+    "log": "related.log"
+  }
+]

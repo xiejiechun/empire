@@ -1,0 +1,68 @@
+[
+  {
+    "name": "generate",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "scripts/documentation_build.py",
+      "generate"
+    ],
+    "at": "2026-10-22T07:10:03.467798+00:00",
+    "exit_code": 0,
+    "seconds": 0.2264578000176698
+  },
+  {
+    "name": "review",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "scripts/documentation_contract.py",
+      "review",
+      "--note",
+      "O7正式输入调查：逐键核实增发与配股，记录实施、股份口径及归因契约不足；无真实计算正例，按用户要求保持O7未实施未验收。未改产品正文/行为/数据路径，P3及原B/P2失败保持。"
+    ],
+    "at": "2026-10-22T07:10:09.343493+00:00",
+    "exit_code": 0,
+    "seconds": 5.8747959999600425
+  },
+  {
+    "name": "documentation",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "scripts/verify_documentation.py"
+    ],
+    "at": "2026-10-22T07:10:15.447726+00:00",
+    "exit_code": 0,
+    "seconds": 6.104129899991676
+  },
+  {
+    "name": "documentation-tests",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "tests/test_documentation_build.py",
+      "tests/test_documentation_review.py",
+      "tests/test_documentation_contracts.py",
+      "tests/test_documentation_sources.py",
+      "tests/test_storage_help.py",
+      "-q",
+      "--basetemp=build/pytest-o7-contract-docs",
+      "--junitxml=build/returns-o7-20261022/documentation.xml"
+    ],
+    "at": "2026-10-22T07:11:18.167701+00:00",
+    "exit_code": 0,
+    "seconds": 62.72023480001371
+  },
+  {
+    "name": "diff",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "at": "2026-10-22T07:11:18.723106+00:00",
+    "exit_code": 0,
+    "seconds": 0.554396599996835
+  }
+]

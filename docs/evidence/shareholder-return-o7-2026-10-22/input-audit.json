@@ -1,0 +1,2048 @@
+{
+  "started_at": "2026-10-22T07:02:01.880546+00:00",
+  "mode": "SQL READ ONLY; all Engine mutation guard",
+  "source_requests": 0,
+  "collectors_started": 0,
+  "archivers_started": 0,
+  "selection_rule": "600962/601966/600590 historical cross-checked candidates; 001228 fixed unknown; first 3 newest/oldest per dataset; first key with missing capital / inconsistent delta; no success filtering",
+  "preserved_inputs_before": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\dist\\Empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f"
+  },
+  "pending_before": 0,
+  "datasets": {
+    "additional_issues": {
+      "count": 6558,
+      "ordered_keys_digest": "944a0d7255a892b60c09b75e8d447b42eac6afd7fec4c987a48ee7a34fe6dd75",
+      "normalized_content_digest": "493a0f754d965f3f0a37d2a222ca061e7b1d66ddfd76d89d2ee2e0ee0b81c2c1",
+      "stats": {
+        "positive_capital": 6535,
+        "delta_equals_issued": 6503,
+        "status:来源发行记录": 6558,
+        "detail_unavailable": 52,
+        "missing_listing_date": 22,
+        "missing_shares_before": 23,
+        "missing_shares_after": 23,
+        "delta_differs_from_issued": 32,
+        "missing_issue_date": 8,
+        "detail_unknown": 1
+      },
+      "payload_fields": [
+        "announcement_date",
+        "detail",
+        "issue_date",
+        "issue_method",
+        "issue_price",
+        "issued_shares",
+        "listing_date",
+        "lock_months",
+        "private_issue_date",
+        "public_issue_date",
+        "record_date",
+        "shares_after",
+        "shares_before",
+        "source_id",
+        "status",
+        "subscription_code"
+      ],
+      "contract_version": 3,
+      "manifest": {
+        "count": 6542,
+        "units": 3031,
+        "digest": "cadbfba08e3db6123fb47c8c54ea80f851e7d8d2c9eb5f4b05320bf74815daeb",
+        "scope_hash": "7028f6869f5a86c11d651e40400687ba7126cc645bbc3fbb35b60b7bcc8c505b",
+        "observed_at": "2026-10-21T17:40:53.364475+00:00"
+      },
+      "samples": [
+        {
+          "row": {
+            "record_key": "02fea30d24d609c087f09f2b1b926eb32985c441011e75e95ccd827c903ce914",
+            "market": "SH",
+            "code": "600630",
+            "name": "龙头股份",
+            "event_date": "1998-06-26",
+            "data": {
+              "detail": {
+                "issue_targets": "于1998年5月12日收盘时登记在册的原股东及其他在上交所开立股票帐户的境内自然人及法人(法律、法规禁止者除外)",
+                "online_shares": "106500000",
+                "first_day_open": "8",
+                "gross_proceeds": "618000000",
+                "offline_shares": "13500000",
+                "post_issue_eps": null,
+                "pricing_method": "定价发行",
+                "first_day_close": "8.06",
+                "lead_underwriter": null,
+                "subscription_name": "龙头配售",
+                "underwriting_method": "余额包销",
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": "1.4283463",
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "55.34",
+                "first_day_close_change_percent": "56.5"
+              },
+              "status": "来源发行记录",
+              "source_id": "1019314",
+              "issue_date": "1998-06-26",
+              "issue_price": "5.15",
+              "lock_months": null,
+              "record_date": "1998-05-12",
+              "issue_method": "公开增发",
+              "listing_date": "1998-07-06",
+              "shares_after": "375202154",
+              "issued_shares": "120000000",
+              "shares_before": "255202154",
+              "announcement_date": null,
+              "public_issue_date": "1998-06-26",
+              "subscription_code": "700630",
+              "private_issue_date": null
+            }
+          },
+          "content_hash": "1f61eeaa55d0e7dc6678cbbc702b672f91e0893a2cbb5cf04568e3615dcbfb6d",
+          "hash_matches": true,
+          "version_observed_at": "2026-10-01 01:11:53.773557",
+          "unit_proof": {
+            "count": 1,
+            "digest": "06c13f767e018037abc83b4fcc7c56fb2db00eb6861a1d0ff20a450b0f3279de",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "04643d5e625e1634c283b7538a9c6e685417657844690f5bad643adb3eed7dff",
+            "market": "SH",
+            "code": "688306",
+            "name": "均普智能",
+            "event_date": "2026-09-24",
+            "data": {
+              "detail": {
+                "issue_targets": "募集资金的发行对象为鹏华基金管理有限公司、UBS AG、吴秀芳等共计15名投资者。",
+                "online_shares": null,
+                "first_day_open": null,
+                "gross_proceeds": "1025424159",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "募集资金的发行价格不低于定价基准日（发行期首日）前20个交易日公司股票交易均价的80%，最终确定为7.12元/股。",
+                "first_day_close": null,
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": null,
+                "first_day_close_change_percent": null
+              },
+              "status": "来源发行记录",
+              "source_id": "1044096",
+              "issue_date": "2026-09-24",
+              "issue_price": "7.12",
+              "lock_months": null,
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": null,
+              "shares_after": null,
+              "issued_shares": "144020247",
+              "shares_before": null,
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2026-09-24"
+            }
+          },
+          "content_hash": "65dc00a19e5711c8424b5d3450e9534f3113818d0999469b0b7c5d8a2ad859bb",
+          "hash_matches": true,
+          "version_observed_at": "2026-10-17 01:40:54.477312",
+          "unit_proof": {
+            "count": 1,
+            "digest": "70a474a50795b94d450af94077a7dd5829e4da39a216df6ef60d79423143b460",
+            "observed_at": "2026-10-16T17:40:54.477312+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "06f3f8004d4768bffdffc2f458e15f09d59bcbf0f9cf3b843ca546d22ff4dabd",
+            "market": "SH",
+            "code": "601127",
+            "name": "赛力斯",
+            "event_date": "2021-06-03",
+            "data": {
+              "detail": {
+                "issue_targets": "募集资金的发行对象为广发基金管理有限公司、杨龙勇、JPMorgan Chase Bank, NationalAssociation等共计10名投资者。",
+                "online_shares": null,
+                "first_day_open": "74.36",
+                "gross_proceeds": "2592969998",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "募集资金的发行价格不低于定价基准日（发行期首日）前20个交易日公司股票交易均价的80%，最终确定为46.00元/股。",
+                "first_day_close": "74.99",
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "61.65",
+                "first_day_close_change_percent": "63.02"
+              },
+              "status": "来源发行记录",
+              "source_id": "1031614",
+              "issue_date": "2021-06-03",
+              "issue_price": "46",
+              "lock_months": "6",
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": "2021-06-28",
+              "shares_after": "1358033746",
+              "issued_shares": "56368913",
+              "shares_before": "1301664770",
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2021-06-03"
+            }
+          },
+          "content_hash": "483e09a397ef005a0058e930f455fddc326e512eda3f052f64cd4c773d5c72bd",
+          "hash_matches": true,
+          "version_observed_at": "2026-10-01 01:11:53.773557",
+          "unit_proof": {
+            "count": 4,
+            "digest": "34ab30b8b304311e327b27c6c73f7b7dd965dca476b7bac1c9ee240cb7ee7788",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "1f841c24194fb20c5d27e124f5b71e605b1e8dc53de69df802d0dfda4ed4778b",
+            "market": "SH",
+            "code": "601966",
+            "name": "玲珑轮胎",
+            "event_date": "2020-11-20",
+            "data": {
+              "detail": {
+                "issue_targets": "在中国证券登记结算有限责任公司上海分公司开立A股股票账户的境内自然人、法人和证券投资基金以及符合相关法律、法规规定的其他投资者（国家法律、法规、规章和政策禁止者除外）。",
+                "online_shares": "14903000",
+                "first_day_open": "31.28",
+                "gross_proceeds": "1991135580",
+                "offline_shares": "35645659",
+                "post_issue_eps": "1.13",
+                "pricing_method": "发行价格不低于募集说明书刊登日(2020年11月18日）前20个交易日公司股票交易均价，最终确定为31.21元/股。",
+                "first_day_close": "32.65",
+                "lead_underwriter": null,
+                "subscription_name": "玲珑增发",
+                "underwriting_method": "余额包销",
+                "online_allotment_date": "2020-11-20",
+                "post_issue_net_assets": "9.47",
+                "online_winning_percent": "38.49312946",
+                "winning_announcement_date": "2020-11-26",
+                "first_day_open_change_percent": "0.22",
+                "first_day_close_change_percent": "4.61"
+              },
+              "status": "来源发行记录",
+              "source_id": "1033161",
+              "issue_date": "2020-11-20",
+              "issue_price": "31.21",
+              "lock_months": null,
+              "record_date": "2020-11-19",
+              "issue_method": "公开增发",
+              "listing_date": "2020-12-11",
+              "shares_after": "1373512412",
+              "issued_shares": "63798000",
+              "shares_before": "1309714412",
+              "announcement_date": null,
+              "public_issue_date": "2020-11-20",
+              "subscription_code": "780966",
+              "private_issue_date": null
+            }
+          },
+          "content_hash": "f117538efc294c380792a1ea1f35f2027cce75fcf1020b05193b1a458499aceb",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 03:20:25.452325",
+          "unit_proof": {
+            "count": 2,
+            "digest": "75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "30f7514d974c1e3f66915444ed357031bb811c75056b25b0618d47216ded7b23",
+            "market": "SH",
+            "code": "600590",
+            "name": "泰豪科技",
+            "event_date": "2016-01-28",
+            "data": {
+              "detail": {
+                "issue_targets": "购买资产的发行对象为胡健、宁波杰宝投资合伙企业（有限合伙）、余弓卜、宁波杰赢投资管理合伙企业（有限合伙）等上海博辕信息技术服务有限公司除泰豪晟大创业投资有限公司以外的股东。",
+                "online_shares": null,
+                "first_day_open": "13.2",
+                "gross_proceeds": "637956395",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "购买资产及募集配套资金的发行价格为定价基准日(2015年11月3日)前20个交易日公司股票交易均价的90%，即13.37元/股。",
+                "first_day_close": "12.61",
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "-1.27",
+                "first_day_close_change_percent": "-5.68"
+              },
+              "status": "来源发行记录",
+              "source_id": "1020265",
+              "issue_date": "2016-01-28",
+              "issue_price": "13.37",
+              "lock_months": "36",
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": "2016-02-18",
+              "shares_after": "666960584",
+              "issued_shares": "47715512",
+              "shares_before": "619245072",
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2016-01-28"
+            }
+          },
+          "content_hash": "29d66c9c633eac4d2025428caf24f4dfa20206c76196c3cf5988c87a8f16f04f",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 03:20:25.452325",
+          "unit_proof": {
+            "count": 4,
+            "digest": "2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "418cf413bc8f93e186cd6d6356c653a67ad021bc0b1a159f3a34323722ee44e2",
+            "market": "SH",
+            "code": "601966",
+            "name": "玲珑轮胎",
+            "event_date": "2022-03-24",
+            "data": {
+              "detail": {
+                "issue_targets": "募集资金的发行对象为兴证全球基金管理有限公司、JPMorgan Chase Bank, National Association、财通基金管理有限公司等共计19名投资者。",
+                "online_shares": null,
+                "first_day_open": "20.06",
+                "gross_proceeds": "2404999997",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "募集资金的发行价格不低于定价基准日（发行期首日）前20个交易日公司股票交易均价的80%，最终确定为21.45元/股。",
+                "first_day_close": "20.22",
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "-6.48",
+                "first_day_close_change_percent": "-5.73"
+              },
+              "status": "来源发行记录",
+              "source_id": "1033994",
+              "issue_date": "2022-03-24",
+              "issue_price": "21.45",
+              "lock_months": "6",
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": "2022-04-15",
+              "shares_after": "1484246913",
+              "issued_shares": "112121212",
+              "shares_before": "1372125701",
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2022-03-24"
+            }
+          },
+          "content_hash": "a8345ead14fd72f190fa962988094bab0bf59b83b70e48d419a39f93cd9db61e",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 03:20:25.452325",
+          "unit_proof": {
+            "count": 2,
+            "digest": "75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "4bf108daa1cb95f3d60087b5f4fb1164470337727aa9c601bb771d823bcd1401",
+            "market": "SH",
+            "code": "600590",
+            "name": "泰豪科技",
+            "event_date": "2015-06-30",
+            "data": {
+              "detail": {
+                "issue_targets": "泰豪集团有限公司、中国海外控股集团有限公司、南京瑞森投资管理合伙企业（有限合伙）、天津硅谷天堂阳光股权投资基金合伙企业（有限合伙）、新疆硅谷天堂嘉鸿股权投资合伙企业（有限合伙）",
+                "online_shares": null,
+                "first_day_open": "10.34",
+                "gross_proceeds": "849895200",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "发行价格不低于定价基准日（2014年10月15日）前20个交易日公司股票交易均价的90%，本次股票价格为7.56元/股。2014年度利润分配方案实施后调整为7.50元/股。",
+                "first_day_close": "10.25",
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "37.87",
+                "first_day_close_change_percent": "36.67"
+              },
+              "status": "来源发行记录",
+              "source_id": "1021390",
+              "issue_date": "2015-06-30",
+              "issue_price": "7.5",
+              "lock_months": "36",
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": "2015-07-07",
+              "shares_after": "619645072",
+              "issued_shares": "113319360",
+              "shares_before": "506325712",
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2015-06-30"
+            }
+          },
+          "content_hash": "8b021b1360cb099b3c9a64c267ccb5714b509babf228938590d474d1fdd03759",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 03:20:25.452325",
+          "unit_proof": {
+            "count": 4,
+            "digest": "2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "4d5857da839503de76b6ed6fb169b2b515ac9e289704d36ea69713f33acb34ab",
+            "market": "SH",
+            "code": "600962",
+            "name": "国投中鲁",
+            "event_date": "2008-07-02",
+            "data": {
+              "detail": {
+                "issue_targets": "作为本次非公开发行股票发行对象的投资者应当符合下列条件：\r\n　　1、属于境内注册的证券投资基金管理公司、证券公司、信托投资公司、财务公司、保险机构投资者或合格境外机构投资者（含上述投资者的自营账户或管理",
+                "online_shares": null,
+                "first_day_open": "17.25",
+                "gross_proceeds": "402966000",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "本次非公开发行股票发行价格不低于本次董事会决议公告日(2007年4月10日)前二十个交易日公司股票均价的90%。",
+                "first_day_close": "16.6",
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "57.1",
+                "first_day_close_change_percent": "51.18"
+              },
+              "status": "来源发行记录",
+              "source_id": "1018978",
+              "issue_date": "2008-07-02",
+              "issue_price": "10.98",
+              "lock_months": null,
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": "2008-07-10",
+              "shares_after": "201700000",
+              "issued_shares": "36700000",
+              "shares_before": "165000000",
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2008-07-02"
+            }
+          },
+          "content_hash": "f638bfb0b433b83e225256210f01e6e79a89e94159ba39eea983d44620a81aa6",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 03:20:25.452325",
+          "unit_proof": {
+            "count": 2,
+            "digest": "20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "5e1fbd1afaa48e760b265651e8a6266242a865cff2f1e538b80e4c49ae7fb7c0",
+            "market": "SZ",
+            "code": "001228",
+            "name": "永泰运",
+            "event_date": "2026-09-15",
+            "data": {
+              "detail": {
+                "issue_targets": "募集资金的发行对象为宁波永泰运投资合伙企业(有限合伙)。",
+                "online_shares": null,
+                "first_day_open": "38.71",
+                "gross_proceeds": "249999997",
+                "offline_shares": null,
+                "post_issue_eps": "0.42",
+                "pricing_method": "募集资金的发行价格不低于定价基准日（发行期首日）前20个交易日公司股票交易均价的80%，即为23.35元/股。",
+                "first_day_close": "36.39",
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": "17.07",
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "65.78",
+                "first_day_close_change_percent": "55.85"
+              },
+              "status": "来源发行记录",
+              "source_id": "1043987",
+              "issue_date": "2026-09-15",
+              "issue_price": "23.35",
+              "lock_months": "36",
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": "2026-10-12",
+              "shares_after": "114571247",
+              "issued_shares": "10706638",
+              "shares_before": "103864609",
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2026-09-15"
+            }
+          },
+          "content_hash": "a350d74615cd72d37fbd1724b71356caacc40909a1dd60d18e4c9dfe6ad1e44d",
+          "hash_matches": true,
+          "version_observed_at": "2026-10-13 03:42:40.008042",
+          "unit_proof": {
+            "count": 1,
+            "digest": "435c13236f5cda95940cdea42f0abfbc2975a74727285c3296ad02b7fc8fea45",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "81b9e316c399947780280a7764b61e3e9f0cb9ea86f8ca366cbfcefa8a4950e2",
+            "market": "SH",
+            "code": "600590",
+            "name": "泰豪科技",
+            "event_date": "2006-06-09",
+            "data": {
+              "detail": {
+                "issue_targets": "于股权登记日登记在册的原社会公众股股东及其他在上证所开立股票帐户的机构投资者（法律、法规禁止购买者除外）",
+                "online_shares": "0",
+                "first_day_open": "8.1",
+                "gross_proceeds": "340632022",
+                "offline_shares": "45600003",
+                "post_issue_eps": null,
+                "pricing_method": "询价发行",
+                "first_day_close": "8.53",
+                "lead_underwriter": null,
+                "subscription_name": "泰豪配售",
+                "underwriting_method": "余额包销",
+                "online_allotment_date": "2006-05-31",
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "8.43",
+                "first_day_close_change_percent": "14.19"
+              },
+              "status": "来源发行记录",
+              "source_id": "1033154",
+              "issue_date": null,
+              "issue_price": "7.47",
+              "lock_months": null,
+              "record_date": "2006-05-30",
+              "issue_method": "公开增发",
+              "listing_date": "2006-06-09",
+              "shares_after": "196330410",
+              "issued_shares": "45600003",
+              "shares_before": "150730407",
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": "700590",
+              "private_issue_date": null
+            }
+          },
+          "content_hash": "514b5d1878b3b6d3cb2be8a4ecaef4860acd7950f7588209710d0402e7518e56",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 03:20:25.452325",
+          "unit_proof": {
+            "count": 4,
+            "digest": "2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "82ce009b4acc0e78211c233345831f2791efae896e44954a95c2ba776e299ed7",
+            "market": "SH",
+            "code": "600962",
+            "name": "国投中鲁",
+            "event_date": "2026-09-23",
+            "data": {
+              "detail": {
+                "issue_targets": "购买资产的发行对象为国家开发投资集团有限公司、宁波市新世达壹号管理咨询合伙企业(有限合伙)、国家集成电路产业投资基金二期股份有限公司、广州产投建广股权投资合伙企业(有限合伙)等共计7名交易对方。",
+                "online_shares": null,
+                "first_day_open": null,
+                "gross_proceeds": "6025810352",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "购买资产的发行价格不低于定价基准日（2025年07月05日）前120个交易日公司股票交易均价的80%，即10.98元/股。",
+                "first_day_close": null,
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": null,
+                "first_day_close_change_percent": null
+              },
+              "status": "来源发行记录",
+              "source_id": "1043936",
+              "issue_date": "2026-09-23",
+              "issue_price": "10.98",
+              "lock_months": null,
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": null,
+              "shares_after": null,
+              "issued_shares": "548798757",
+              "shares_before": null,
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2026-09-23"
+            }
+          },
+          "content_hash": "5551ac89cd4433d994b0a8330b9e54a4a4877182154858dd67da6aac1bd7fe43",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 03:20:25.452325",
+          "unit_proof": {
+            "count": 2,
+            "digest": "20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "8b563c1ee2f096d9eac348def05945bbec8514e0e4018f96cfd1d02542b19925",
+            "market": "SH",
+            "code": "600626",
+            "name": "申达股份",
+            "event_date": "1998-07-06",
+            "data": {
+              "detail": {
+                "issue_targets": "于1998年5月12日收市时登记在册的原股东及其他在上交所开立股票帐户的境内自然人及法人(法律、法规禁止者除外)",
+                "online_shares": "62328000",
+                "first_day_open": "7.6",
+                "gross_proceeds": "307500000",
+                "offline_shares": "12672000",
+                "post_issue_eps": null,
+                "pricing_method": "定价发行",
+                "first_day_close": "7.72",
+                "lead_underwriter": null,
+                "subscription_name": "申达配售",
+                "underwriting_method": "余额包销",
+                "online_allotment_date": null,
+                "post_issue_net_assets": "2.4",
+                "online_winning_percent": "0.3384189",
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "85.37",
+                "first_day_close_change_percent": "88.29"
+              },
+              "status": "来源发行记录",
+              "source_id": "1019329",
+              "issue_date": "1998-07-06",
+              "issue_price": "4.1",
+              "lock_months": null,
+              "record_date": "1998-05-12",
+              "issue_method": "公开增发",
+              "listing_date": "1998-07-14",
+              "shares_after": "276382896",
+              "issued_shares": "75000000",
+              "shares_before": "201382896",
+              "announcement_date": null,
+              "public_issue_date": "1998-07-06",
+              "subscription_code": "700626",
+              "private_issue_date": null
+            }
+          },
+          "content_hash": "77d78246d32bc7a4e2486362bc68428108f502e35eabea58a31bd31969392f20",
+          "hash_matches": true,
+          "version_observed_at": "2026-10-01 01:11:53.773557",
+          "unit_proof": {
+            "count": 4,
+            "digest": "fc9e9ed90df75538b79f22052d07865be5aaf074abe91381fcbf233eb5b7eac4",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "acc6c0beeac91cfcf42327f292374af6a9056e522978df87a3ca2eda212bc32f",
+            "market": "SH",
+            "code": "600590",
+            "name": "泰豪科技",
+            "event_date": "2012-05-18",
+            "data": {
+              "detail": {
+                "issue_targets": "泰豪集团有限公司、江西赣能股份有限公司、泰豪地产控股有限公司、江西丰源电力（集团）有限责任公司、涂彦彬、黄代放、刘花兰。",
+                "online_shares": null,
+                "first_day_open": "8.06",
+                "gross_proceeds": "399150000",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "发行价格不低于定价基准日（2011年10月21日）前20个交易日公司股票交易均价，即8.87 元/股。",
+                "first_day_close": "8.09",
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "-9.13",
+                "first_day_close_change_percent": "-8.79"
+              },
+              "status": "来源发行记录",
+              "source_id": "1019661",
+              "issue_date": "2012-05-18",
+              "issue_price": "8.87",
+              "lock_months": "12",
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": "2012-05-29",
+              "shares_after": "500325712",
+              "issued_shares": "45000000",
+              "shares_before": "455325712",
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2012-05-18"
+            }
+          },
+          "content_hash": "8a346762bc0caffbe44881fe2c1fb1345ffd5be4f99f1f6c86ea0e8a84b56052",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 03:20:25.452325",
+          "unit_proof": {
+            "count": 4,
+            "digest": "2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "af6e1557801d3eb3cfd0ae5e65f8debf7803923b1280ce4130e1d6a8f77869a8",
+            "market": "SZ",
+            "code": "002185",
+            "name": "华天科技",
+            "event_date": "2026-10-20",
+            "data": {
+              "detail": {
+                "issue_targets": "购买资产的发行对象为天水华天电子集团股份有限公司、西安后羿投资管理合伙企业（有限合伙）、西安芯天钰铂企业管理合伙企业（有限合伙）等共计25名投资者。",
+                "online_shares": null,
+                "first_day_open": null,
+                "gross_proceeds": "2636792719",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "购买资产的发行价格不低于定价基准日(2025年10月17日）前120个交易日公司股票交易均价的80%，即8.35元/股，因2025年度利润分配调整为8.33元/股。",
+                "first_day_close": null,
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": null,
+                "first_day_close_change_percent": null
+              },
+              "status": "来源发行记录",
+              "source_id": "1044112",
+              "issue_date": "2026-10-20",
+              "issue_price": "8.33",
+              "lock_months": null,
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": null,
+              "shares_after": null,
+              "issued_shares": "316541743",
+              "shares_before": null,
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2026-10-20"
+            }
+          },
+          "content_hash": "c3e160d75266ed8c8fc8ee777979eccdae6e0a44b4a142540e54823e65ccfd1e",
+          "hash_matches": true,
+          "version_observed_at": "2026-10-20 00:42:08.955516",
+          "unit_proof": {
+            "count": 4,
+            "digest": "d073d9047aef89a97628490416e865c52f60610b588c048be1b22e79bea7a306",
+            "observed_at": "2026-10-19T16:42:08.955516+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "b0e7639683c95122acdf0cd28f870ba3a618204df59fd9d84ddd2a15417a28db",
+            "market": "SZ",
+            "code": "001228",
+            "name": "永泰运",
+            "event_date": "2026-09-15",
+            "data": {
+              "status": "来源发行记录",
+              "source_id": "1043980",
+              "issue_date": "2026-09-15",
+              "issue_price": "23.35",
+              "lock_months": "36",
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": "2026-10-12",
+              "shares_after": "114571247",
+              "issued_shares": "10706638",
+              "shares_before": "103864609",
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2026-09-15"
+            }
+          },
+          "content_hash": "b4b1a2e3878b127036403356d6f1f6abe3cf41c41d2468c1c1a37022b74f410f",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:51:29.649105",
+          "unit_proof": {
+            "count": 1,
+            "digest": "435c13236f5cda95940cdea42f0abfbc2975a74727285c3296ad02b7fc8fea45",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "b2544494b345b9b2ba7666c007abf0fd7e8625cf90a623fa74a12164d2d94777",
+            "market": "SH",
+            "code": "600667",
+            "name": "太极实业",
+            "event_date": "1998-07-13",
+            "data": {
+              "detail": {
+                "issue_targets": "于股权登记日收盘时登记在册的原股东及其他在上交所开立股票帐户的境内自然人及法人(法律、法规禁止者除外)",
+                "online_shares": "33800000",
+                "first_day_open": "6.6",
+                "gross_proceeds": "336000000",
+                "offline_shares": "46200000",
+                "post_issue_eps": null,
+                "pricing_method": "定价发行",
+                "first_day_close": "6.62",
+                "lead_underwriter": null,
+                "subscription_name": "无锡太极",
+                "underwriting_method": "余额包销",
+                "online_allotment_date": null,
+                "post_issue_net_assets": "2.81",
+                "online_winning_percent": "0.1145",
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": "57.14",
+                "first_day_close_change_percent": "57.62"
+              },
+              "status": "来源发行记录",
+              "source_id": "1019304",
+              "issue_date": "1998-07-13",
+              "issue_price": "4.2",
+              "lock_months": null,
+              "record_date": "1998-05-12",
+              "issue_method": "公开增发",
+              "listing_date": "1998-07-21",
+              "shares_after": "335280000",
+              "issued_shares": "80000000",
+              "shares_before": "255280000",
+              "announcement_date": null,
+              "public_issue_date": "1998-07-13",
+              "subscription_code": "730667",
+              "private_issue_date": null
+            }
+          },
+          "content_hash": "9c6256d3b600f36705c5fbf1959c685c5b0a0d8e92c6a2f694e6aa7c3e58031d",
+          "hash_matches": true,
+          "version_observed_at": "2026-10-01 01:11:53.773557",
+          "unit_proof": {
+            "count": 4,
+            "digest": "3dede28e5711b8a5ad676513a8a85ed317c4c505114bd1e34fce9c8ebd20b6cb",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "c86ed5a85539a9b75eda57164d09a1d6f167b09e3e6e2e85e6591be7f9662346",
+            "market": "BJ",
+            "code": "920982",
+            "name": "锦波生物",
+            "event_date": "2026-10-13",
+            "data": {
+              "detail": {
+                "availability": "unavailable",
+                "source_error_code": -1005
+              },
+              "status": "来源发行记录",
+              "source_id": "1044102",
+              "issue_date": "2026-10-13",
+              "issue_price": "277.22",
+              "lock_months": null,
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": null,
+              "shares_after": null,
+              "issued_shares": "3607243",
+              "shares_before": null,
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2026-10-13"
+            }
+          },
+          "content_hash": "ed6e41dd0478e0dae6a0b6942971e118959f32369efe0c451c14dc02305a6c23",
+          "hash_matches": true,
+          "version_observed_at": "2026-10-17 00:25:12.692693",
+          "unit_proof": {
+            "count": 1,
+            "digest": "41f5e954ec03710ea6776e42ec7745586e241d588a3066cc1032484df5345ea1",
+            "observed_at": "2026-10-16T16:25:12.692693+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "daf42a94342d0c931011f2811c6b9ef2ec980ae163b3b6b3860d353dc611578e",
+            "market": "SZ",
+            "code": "301033",
+            "name": "迈普医学",
+            "event_date": "2026-10-14",
+            "data": {
+              "detail": {
+                "issue_targets": "购买资产的发行对象为广州泽新医疗科技有限公司、广州易创享投资合伙企业（有限合伙）、广州福恒投资有限公司、袁紫扬等共计10名投资者。",
+                "online_shares": null,
+                "first_day_open": null,
+                "gross_proceeds": "301058592",
+                "offline_shares": null,
+                "post_issue_eps": null,
+                "pricing_method": "购买资产的发行价格不低于定价基准日(2025年06月06日）前120个交易日公司股票均价的80%，即41.40元/股，因2025年度利润分配调整为40.7元/股。",
+                "first_day_close": null,
+                "lead_underwriter": null,
+                "subscription_name": null,
+                "underwriting_method": null,
+                "online_allotment_date": null,
+                "post_issue_net_assets": null,
+                "online_winning_percent": null,
+                "winning_announcement_date": null,
+                "first_day_open_change_percent": null,
+                "first_day_close_change_percent": null
+              },
+              "status": "来源发行记录",
+              "source_id": "1044086",
+              "issue_date": "2026-10-14",
+              "issue_price": "40.7",
+              "lock_months": null,
+              "record_date": null,
+              "issue_method": "定向增发",
+              "listing_date": null,
+              "shares_after": null,
+              "issued_shares": "7397017",
+              "shares_before": null,
+              "announcement_date": null,
+              "public_issue_date": null,
+              "subscription_code": null,
+              "private_issue_date": "2026-10-14"
+            }
+          },
+          "content_hash": "10f2ebc39777afe02c417235da8e202df7208785ef35829229d418e03c1cc57a",
+          "hash_matches": true,
+          "version_observed_at": "2026-10-16 02:29:51.112406",
+          "unit_proof": {
+            "count": 1,
+            "digest": "411b1d13fb0e93ba62908cd6ba4506edacb50cf46921a363441b20c83e546be4",
+            "observed_at": "2026-10-16T04:21:39.472550+00:00"
+          }
+        }
+      ],
+      "formal_sample_queries": {
+        "001228": {
+          "count": 2,
+          "content_hash": "8117fd906cd528395f597435055c5185b1c2a6ea1529434fb4fdecca5fc42cac"
+        },
+        "002185": {
+          "count": 4,
+          "content_hash": "d073d9047aef89a97628490416e865c52f60610b588c048be1b22e79bea7a306"
+        },
+        "301033": {
+          "count": 1,
+          "content_hash": "411b1d13fb0e93ba62908cd6ba4506edacb50cf46921a363441b20c83e546be4"
+        },
+        "600590": {
+          "count": 4,
+          "content_hash": "2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6"
+        },
+        "600626": {
+          "count": 4,
+          "content_hash": "fc9e9ed90df75538b79f22052d07865be5aaf074abe91381fcbf233eb5b7eac4"
+        },
+        "600630": {
+          "count": 1,
+          "content_hash": "06c13f767e018037abc83b4fcc7c56fb2db00eb6861a1d0ff20a450b0f3279de"
+        },
+        "600667": {
+          "count": 4,
+          "content_hash": "3dede28e5711b8a5ad676513a8a85ed317c4c505114bd1e34fce9c8ebd20b6cb"
+        },
+        "600962": {
+          "count": 2,
+          "content_hash": "20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07"
+        },
+        "601127": {
+          "count": 4,
+          "content_hash": "34ab30b8b304311e327b27c6c73f7b7dd965dca476b7bac1c9ee240cb7ee7788"
+        },
+        "601966": {
+          "count": 2,
+          "content_hash": "75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576"
+        },
+        "688306": {
+          "count": 1,
+          "content_hash": "70a474a50795b94d450af94077a7dd5829e4da39a216df6ef60d79423143b460"
+        },
+        "920982": {
+          "count": 1,
+          "content_hash": "41f5e954ec03710ea6776e42ec7745586e241d588a3066cc1032484df5345ea1"
+        }
+      },
+      "scoped_preparation": {
+        "600962": [
+          {
+            "criterion": "fields",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600962；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600962.SH",
+                "message": "完整单元 2 条，范围内 2 条；键集合 997fb28d91149594c2f8fca10d7e59cbc44b08d827380365d2c648deaa85dccd；内容 20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07；完整单元内容 20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "keys",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600962；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600962.SH",
+                "message": "完整单元 2 条，范围内 2 条；键集合 997fb28d91149594c2f8fca10d7e59cbc44b08d827380365d2c648deaa85dccd；内容 20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07；完整单元内容 20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "coverage",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600962；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600962.SH",
+                "message": "完整单元 2 条，范围内 2 条；键集合 997fb28d91149594c2f8fca10d7e59cbc44b08d827380365d2c648deaa85dccd；内容 20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07；完整单元内容 20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "quality",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600962；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600962.SH",
+                "message": "完整单元 2 条，范围内 2 条；键集合 997fb28d91149594c2f8fca10d7e59cbc44b08d827380365d2c648deaa85dccd；内容 20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07；完整单元内容 20bf4ac8e10c0d1a927670dc83039f951df955cec9be6863814c50ff3221bd07；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "freshness",
+            "status": "pass",
+            "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-22T05:53:43.062105+00:00；须在三日内",
+            "blocking": true,
+            "findings": [],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "temporal",
+            "status": "pass",
+            "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+            "blocking": false,
+            "findings": [],
+            "reason": "source_limit",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          }
+        ],
+        "601966": [
+          {
+            "criterion": "fields",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；601966；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "601966.SH",
+                "message": "完整单元 2 条，范围内 2 条；键集合 cd8898b8c1a1626e21e15c01dc97ab776a4c1772fb3a1fca9c715f40a5d48b3f；内容 75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576；完整单元内容 75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "keys",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；601966；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "601966.SH",
+                "message": "完整单元 2 条，范围内 2 条；键集合 cd8898b8c1a1626e21e15c01dc97ab776a4c1772fb3a1fca9c715f40a5d48b3f；内容 75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576；完整单元内容 75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "coverage",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；601966；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "601966.SH",
+                "message": "完整单元 2 条，范围内 2 条；键集合 cd8898b8c1a1626e21e15c01dc97ab776a4c1772fb3a1fca9c715f40a5d48b3f；内容 75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576；完整单元内容 75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "quality",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；601966；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "601966.SH",
+                "message": "完整单元 2 条，范围内 2 条；键集合 cd8898b8c1a1626e21e15c01dc97ab776a4c1772fb3a1fca9c715f40a5d48b3f；内容 75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576；完整单元内容 75dbe225105714747dace793ce8ad59fb0c5ced2ae59d28dcd4af966b930e576；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "freshness",
+            "status": "pass",
+            "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-22T05:53:43.062105+00:00；须在三日内",
+            "blocking": true,
+            "findings": [],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "temporal",
+            "status": "pass",
+            "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+            "blocking": false,
+            "findings": [],
+            "reason": "source_limit",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          }
+        ],
+        "600590": [
+          {
+            "criterion": "fields",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600590；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600590.SH",
+                "message": "完整单元 4 条，范围内 4 条；键集合 39fa0621fdda07c517a6531291a76db277c56b61a3ff9227c8b1f5ed1bd59d6a；内容 2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6；完整单元内容 2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "keys",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600590；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600590.SH",
+                "message": "完整单元 4 条，范围内 4 条；键集合 39fa0621fdda07c517a6531291a76db277c56b61a3ff9227c8b1f5ed1bd59d6a；内容 2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6；完整单元内容 2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "coverage",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600590；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600590.SH",
+                "message": "完整单元 4 条，范围内 4 条；键集合 39fa0621fdda07c517a6531291a76db277c56b61a3ff9227c8b1f5ed1bd59d6a；内容 2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6；完整单元内容 2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "quality",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600590；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600590.SH",
+                "message": "完整单元 4 条，范围内 4 条；键集合 39fa0621fdda07c517a6531291a76db277c56b61a3ff9227c8b1f5ed1bd59d6a；内容 2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6；完整单元内容 2ec85d259ecb30dd72e11cba85a90bf066d000be9716efc83d6cd446141054f6；SQL来源证据 2026-10-16T04:21:39.472550+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "freshness",
+            "status": "pass",
+            "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-22T05:53:43.062105+00:00；须在三日内",
+            "blocking": true,
+            "findings": [],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          },
+          {
+            "criterion": "temporal",
+            "status": "pass",
+            "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+            "blocking": false,
+            "findings": [],
+            "reason": "source_limit",
+            "observed_at": "2026-10-22T05:53:43.062105+00:00"
+          }
+        ],
+        "001228": [
+          {
+            "criterion": "fields",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；001228；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "001228.SZ",
+                "message": "增发详情尚未补齐"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "keys",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；001228；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "001228.SZ",
+                "message": "增发详情尚未补齐"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "coverage",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；001228；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "001228.SZ",
+                "message": "增发详情尚未补齐"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "quality",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；001228；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "001228.SZ",
+                "message": "增发详情尚未补齐"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "freshness",
+            "status": "fail",
+            "measured": "各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间",
+            "blocking": true,
+            "findings": [],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "temporal",
+            "status": "pass",
+            "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+            "blocking": false,
+            "findings": [],
+            "reason": "source_limit",
+            "observed_at": ""
+          }
+        ]
+      },
+      "checkpoint": {
+        "phase": "complete",
+        "batch_id": "ef94a93a1bb9472fa2a36fe20cae6a60",
+        "index": 3031,
+        "pages": 3032,
+        "collected": 6542,
+        "source_hash": "31d626d24950f5b915cddd4ba3dab6c3971c0afb0639ec12953e1ca326bad6a7",
+        "scope_hash": "7028f6869f5a86c11d651e40400687ba7126cc645bbc3fbb35b60b7bcc8c505b",
+        "units": 3031,
+        "rolling": "cadbfba08e3db6123fb47c8c54ea80f851e7d8d2c9eb5f4b05320bf74815daeb",
+        "started_at": "2026-10-22T05:53:44.087559+00:00",
+        "schema_version": 3,
+        "detail_refresh_all": false,
+        "detail_refresh_cutoff": "2026-10-22T05:53:43.062105+00:00",
+        "detail_refresh_day": "2026-10-22",
+        "detail_refresh_recent": false
+      }
+    },
+    "rights_issues": {
+      "count": 1191,
+      "ordered_keys_digest": "078b57bfd6e90aeccc266eb130f04af4e24cc4c7c28e987b2b51152673e00b2f",
+      "normalized_content_digest": "ccfab41209002a1bf31ecd46a54edd4dd77ca933bff1c64e2fc15cdbfc37430a",
+      "stats": {
+        "missing_issue_date": 1191,
+        "positive_capital": 1171,
+        "delta_equals_issued": 1121,
+        "detail_unknown": 1191,
+        "status:来源配股记录": 1191,
+        "delta_differs_from_issued": 64,
+        "missing_listing_date": 16,
+        "nonpositive_capital": 14,
+        "missing_shares_before": 6,
+        "missing_shares_after": 5
+      },
+      "payload_fields": [
+        "announcement_date",
+        "ex_date",
+        "issued_shares",
+        "listing_date",
+        "payment_end",
+        "payment_start",
+        "record_date",
+        "rights_per_share",
+        "rights_price",
+        "shares_after",
+        "shares_before",
+        "status",
+        "subscription_code"
+      ],
+      "contract_version": 1,
+      "manifest": {
+        "count": 1191,
+        "units": 766,
+        "digest": "767160a3d7d5570f9f1a1e84718ca5746757678b7510a4c7369e9835e13a0a89",
+        "scope_hash": "7b02cb72fad272fe0ed2436e88eb2cb9358db315023be713490aa868759164fd",
+        "observed_at": "2026-10-16T04:23:12.220854+00:00"
+      },
+      "samples": [
+        {
+          "row": {
+            "record_key": "03f66c114393d4aa1fab7df5505b2e056db9354a163713a79c5ee1e44bb52f8e",
+            "market": "SZ",
+            "code": "000013",
+            "name": "*ST石化Ａ",
+            "event_date": "1993-06-15",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "1993-06-15",
+              "payment_end": "1993-07-22",
+              "record_date": "1993-06-11",
+              "listing_date": "1993-07-12",
+              "rights_price": "7",
+              "shares_after": "194458320",
+              "issued_shares": "24779760",
+              "payment_start": "1993-07-05",
+              "shares_before": "138898800",
+              "rights_per_share": "0.2",
+              "announcement_date": null,
+              "subscription_code": null
+            }
+          },
+          "content_hash": "ee6d4357ed918dae1a280bbfa29a09c4cfbb2c8a040af9d0424cc69ce7f35567",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:53:02.988985",
+          "unit_proof": {
+            "count": 2,
+            "digest": "0cfa72c873b5f72b6ddcf5e7a4953c43efb875f152350abf75de835c07a218cd",
+            "observed_at": "2026-10-16T04:22:40.227492+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "255b7ad6eb9e98a5eb1565a462329143d915132c72f265f03e8cf00d799e6d1e",
+            "market": "SZ",
+            "code": "000002",
+            "name": "万  科Ａ",
+            "event_date": "1991-06-01",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "1991-06-01",
+              "payment_end": null,
+              "record_date": "1991-05-31",
+              "listing_date": null,
+              "rights_price": "4.4",
+              "shares_after": "0",
+              "issued_shares": "28366340",
+              "payment_start": "1991-06-01",
+              "shares_before": "41332680",
+              "rights_per_share": "0.5",
+              "announcement_date": null,
+              "subscription_code": null
+            }
+          },
+          "content_hash": "2063944d98d671364f9c9b5a95bd8ba17b8fe169537660bc430a6ebbff238c25",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:53:02.988985",
+          "unit_proof": {
+            "count": 4,
+            "digest": "2fac4ecfe2b808f3ba98b7776b5d791cd5ae7b6023efc473baffa33b2aa6fccf",
+            "observed_at": "2026-10-16T04:22:40.227492+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "2e662624e1d428864967bce7bcff5006ee39cb579d3eda3c2aac880c79329a03",
+            "market": "SZ",
+            "code": "000013",
+            "name": "*ST石化Ａ",
+            "event_date": "1993-06-15",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "1993-06-15",
+              "payment_end": "1993-07-23",
+              "record_date": "1993-06-17",
+              "listing_date": "1993-08-06",
+              "rights_price": "7",
+              "shares_after": null,
+              "issued_shares": "3000000",
+              "payment_start": "1993-06-28",
+              "shares_before": null,
+              "rights_per_share": "0.2",
+              "announcement_date": null,
+              "subscription_code": null
+            }
+          },
+          "content_hash": "a0d55f369c246ad525b7819db748376f9301a6af2ccdde93646d99a59db250d5",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:53:02.988985",
+          "unit_proof": {
+            "count": 2,
+            "digest": "0cfa72c873b5f72b6ddcf5e7a4953c43efb875f152350abf75de835c07a218cd",
+            "observed_at": "2026-10-16T04:22:40.227492+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "41f9dec82a64854ed772ab940d14fa0987110c81092857cd9573ab2243169371",
+            "market": "SZ",
+            "code": "000049",
+            "name": "德赛电池",
+            "event_date": "2023-12-08",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "2023-12-08",
+              "payment_end": "2023-12-06",
+              "record_date": "2023-11-29",
+              "listing_date": "2023-12-25",
+              "rights_price": "21.16",
+              "shares_after": "384638534",
+              "issued_shares": "85251672",
+              "payment_start": "2023-11-30",
+              "shares_before": "299386862",
+              "rights_per_share": "0.3",
+              "announcement_date": null,
+              "subscription_code": "080049"
+            }
+          },
+          "content_hash": "22546ed8280468f9e8ea7d1bb4f00f9d529094afde9e8c2053cad1397e817551",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:53:02.988985",
+          "unit_proof": {
+            "count": 1,
+            "digest": "82816d8eb4ff394a48c626c35a6c1c04490c1e3828743f4996605ae79f911955",
+            "observed_at": "2026-10-16T04:22:40.227492+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "95769e6a0d15387a2f498c2030e73d365e81dd63ca68e6d56383e27288e0b2b7",
+            "market": "SZ",
+            "code": "000003",
+            "name": "PT金田Ａ",
+            "event_date": "1991-06-01",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "1991-06-01",
+              "payment_end": null,
+              "record_date": "1991-05-31",
+              "listing_date": null,
+              "rights_price": "4.5",
+              "shares_after": "0",
+              "issued_shares": "8416080",
+              "payment_start": "1991-06-01",
+              "shares_before": "21040200",
+              "rights_per_share": "0.4",
+              "announcement_date": null,
+              "subscription_code": null
+            }
+          },
+          "content_hash": "9e7523f902049ef2a610c58a6bb936d1b4b4cf881a5db054bbdfb59d8bb30cd1",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:53:02.988985",
+          "unit_proof": {
+            "count": 4,
+            "digest": "9e364f21328bd9c51358e1ad0bd83208ffffbc03125db05a4cfe9ef8941eac0d",
+            "observed_at": "2026-10-16T04:22:40.227492+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "bb41df0ad1a0f5073688d3ce2d9165fd24fec31a650822f7304f00a1d53fdc67",
+            "market": "SH",
+            "code": "600081",
+            "name": "东风科技",
+            "event_date": "2023-08-10",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "2023-08-10",
+              "payment_end": "2023-08-08",
+              "record_date": "2023-08-01",
+              "listing_date": "2023-08-24",
+              "rights_price": "9.59",
+              "shares_after": "578343529",
+              "issued_shares": "131067214",
+              "payment_start": "2023-08-02",
+              "shares_before": "447276315",
+              "rights_per_share": "0.3",
+              "announcement_date": null,
+              "subscription_code": "700081"
+            }
+          },
+          "content_hash": "e6b32eb3b82f19d5bb839d1ac595c082ee571910d56e990020584a61d20117b1",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:53:02.988985",
+          "unit_proof": {
+            "count": 2,
+            "digest": "ef2806286f01db417871d32a5a361c24f69b56581b3e795a9891dfabe73d2e17",
+            "observed_at": "2026-10-16T04:22:40.227492+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "c8ed4edb9b8251f702415f05cad38d6cf781e1401dc9fee1ac92ce92c63b8090",
+            "market": "SZ",
+            "code": "300176",
+            "name": "鸿特科技",
+            "event_date": "2026-08-21",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "2026-08-21",
+              "payment_end": "2026-08-19",
+              "record_date": "2026-08-12",
+              "listing_date": "2026-09-02",
+              "rights_price": "3.36",
+              "shares_after": "531453919",
+              "issued_shares": "144173119",
+              "payment_start": "2026-08-13",
+              "shares_before": "387280800",
+              "rights_per_share": "0.4",
+              "announcement_date": null,
+              "subscription_code": "380176"
+            }
+          },
+          "content_hash": "cd716341d1a6b6e0b15069ce6a1fcd7fff5402197fa7875715c910f92bbaba34",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:53:02.988985",
+          "unit_proof": {
+            "count": 1,
+            "digest": "5d4bde0d1ddb1409e997445e025b9a2d95d9f7647f5c4f2cf45ca4c8fa55d7e5",
+            "observed_at": "2026-10-16T04:22:40.227492+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "e602aaf44325aef37cb6b41911725da61b3f6adb61efb49cce4ae044ecfc0c6e",
+            "market": "SH",
+            "code": "600590",
+            "name": "泰豪科技",
+            "event_date": "2009-08-07",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "2009-08-07",
+              "payment_end": "2009-08-05",
+              "record_date": "2009-07-29",
+              "listing_date": "2009-08-18",
+              "rights_price": "7.56",
+              "shares_after": "379438093",
+              "issued_shares": "84942478",
+              "payment_start": "2009-07-30",
+              "shares_before": "294495615",
+              "rights_per_share": "0.3",
+              "announcement_date": null,
+              "subscription_code": "700590"
+            }
+          },
+          "content_hash": "636bfdf4ecebcfce609c309c0a3692e37fcec3d0bae8132b2dcba3be043355c5",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:53:02.988985",
+          "unit_proof": {
+            "count": 1,
+            "digest": "3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481",
+            "observed_at": "2026-10-16T04:22:40.227492+00:00"
+          }
+        },
+        {
+          "row": {
+            "record_key": "f3b7bb6ef9a23140f323aaca5eedbc64bf2d34ddd13594c56c36a391f585102b",
+            "market": "SZ",
+            "code": "000001",
+            "name": "平安银行",
+            "event_date": "1990-03-01",
+            "data": {
+              "status": "来源配股记录",
+              "ex_date": "1990-03-01",
+              "payment_end": null,
+              "record_date": "1990-02-28",
+              "listing_date": null,
+              "rights_price": "3.56",
+              "shares_after": null,
+              "issued_shares": "8720000",
+              "payment_start": "1990-03-01",
+              "shares_before": null,
+              "rights_per_share": "0.1",
+              "announcement_date": null,
+              "subscription_code": null
+            }
+          },
+          "content_hash": "c449e7466ad6390f7f54f9ef2b3989a9ea3950a1813269bc007f94bb91f575f2",
+          "hash_matches": true,
+          "version_observed_at": "2026-09-30 01:53:02.988985",
+          "unit_proof": {
+            "count": 5,
+            "digest": "60100ef205b0ee0750ce53dbffb4eb8351f24199d3b2d99f9359f932d9832942",
+            "observed_at": "2026-10-16T04:22:40.227492+00:00"
+          }
+        }
+      ],
+      "formal_sample_queries": {
+        "000001": {
+          "count": 5,
+          "content_hash": "60100ef205b0ee0750ce53dbffb4eb8351f24199d3b2d99f9359f932d9832942"
+        },
+        "000002": {
+          "count": 4,
+          "content_hash": "2fac4ecfe2b808f3ba98b7776b5d791cd5ae7b6023efc473baffa33b2aa6fccf"
+        },
+        "000003": {
+          "count": 4,
+          "content_hash": "9e364f21328bd9c51358e1ad0bd83208ffffbc03125db05a4cfe9ef8941eac0d"
+        },
+        "000013": {
+          "count": 2,
+          "content_hash": "0cfa72c873b5f72b6ddcf5e7a4953c43efb875f152350abf75de835c07a218cd"
+        },
+        "000049": {
+          "count": 1,
+          "content_hash": "82816d8eb4ff394a48c626c35a6c1c04490c1e3828743f4996605ae79f911955"
+        },
+        "300176": {
+          "count": 1,
+          "content_hash": "5d4bde0d1ddb1409e997445e025b9a2d95d9f7647f5c4f2cf45ca4c8fa55d7e5"
+        },
+        "600081": {
+          "count": 2,
+          "content_hash": "ef2806286f01db417871d32a5a361c24f69b56581b3e795a9891dfabe73d2e17"
+        },
+        "600590": {
+          "count": 1,
+          "content_hash": "3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481"
+        }
+      },
+      "scoped_preparation": {
+        "600962": [
+          {
+            "criterion": "fields",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；600962；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600962.SH",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "keys",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；600962；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600962.SH",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "coverage",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；600962；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600962.SH",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "quality",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；600962；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600962.SH",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "freshness",
+            "status": "fail",
+            "measured": "各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间",
+            "blocking": true,
+            "findings": [],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "temporal",
+            "status": "pass",
+            "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+            "blocking": false,
+            "findings": [],
+            "reason": "source_limit",
+            "observed_at": ""
+          }
+        ],
+        "601966": [
+          {
+            "criterion": "fields",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；601966；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "601966.SH",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "keys",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；601966；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "601966.SH",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "coverage",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；601966；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "601966.SH",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "quality",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；601966；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "601966.SH",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "freshness",
+            "status": "fail",
+            "measured": "各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间",
+            "blocking": true,
+            "findings": [],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "temporal",
+            "status": "pass",
+            "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+            "blocking": false,
+            "findings": [],
+            "reason": "source_limit",
+            "observed_at": ""
+          }
+        ],
+        "600590": [
+          {
+            "criterion": "fields",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600590；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600590.SH",
+                "message": "完整单元 1 条，范围内 1 条；键集合 f0098895f2d62ca8edcdc7fc282024392f000d0b60e8aed1dfde73cdd512cef6；内容 3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481；完整单元内容 3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481；SQL来源证据 2026-10-16T04:22:40.227492+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.067127+00:00"
+          },
+          {
+            "criterion": "keys",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600590；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600590.SH",
+                "message": "完整单元 1 条，范围内 1 条；键集合 f0098895f2d62ca8edcdc7fc282024392f000d0b60e8aed1dfde73cdd512cef6；内容 3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481；完整单元内容 3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481；SQL来源证据 2026-10-16T04:22:40.227492+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.067127+00:00"
+          },
+          {
+            "criterion": "coverage",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600590；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600590.SH",
+                "message": "完整单元 1 条，范围内 1 条；键集合 f0098895f2d62ca8edcdc7fc282024392f000d0b60e8aed1dfde73cdd512cef6；内容 3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481；完整单元内容 3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481；SQL来源证据 2026-10-16T04:22:40.227492+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.067127+00:00"
+          },
+          {
+            "criterion": "quality",
+            "status": "pass",
+            "measured": "数据分析 / 财务估值；600590；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 1 个完整证券单元，未证实 0 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "600590.SH",
+                "message": "完整单元 1 条，范围内 1 条；键集合 f0098895f2d62ca8edcdc7fc282024392f000d0b60e8aed1dfde73cdd512cef6；内容 3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481；完整单元内容 3c3077f7e646aa187031d94eca8623edb106f6a313a0b619a99aca70ccc57481；SQL来源证据 2026-10-16T04:22:40.227492+00:00"
+              }
+            ],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.067127+00:00"
+          },
+          {
+            "criterion": "freshness",
+            "status": "pass",
+            "measured": "SQL或匹配的只读证券单元摘要；最早实际证据 2026-10-22T05:53:43.067127+00:00；须在三日内",
+            "blocking": true,
+            "findings": [],
+            "reason": "",
+            "observed_at": "2026-10-22T05:53:43.067127+00:00"
+          },
+          {
+            "criterion": "temporal",
+            "status": "pass",
+            "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+            "blocking": false,
+            "findings": [],
+            "reason": "source_limit",
+            "observed_at": "2026-10-22T05:53:43.067127+00:00"
+          }
+        ],
+        "001228": [
+          {
+            "criterion": "fields",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；001228；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "001228.SZ",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "keys",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；001228；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "001228.SZ",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "coverage",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；001228；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "001228.SZ",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "quality",
+            "status": "fail",
+            "measured": "数据分析 / 财务估值；001228；日期 / 报告期 来源最早 ～ 来源最新；指数：来源指数目录；按各数据必要字段检查；全部项目；已证实 0 个完整证券单元，未证实 1 个；证券外历史不参与此范围；完整历史原失败独立保留。日期按event_date（除息日优先，否则报告期）。",
+            "blocking": true,
+            "findings": [
+              {
+                "code": "001228.SZ",
+                "message": "完整证券单元的业务键与内容未匹配；可能包含历史保留或未知缺口，不能凭日期过滤放行"
+              }
+            ],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "freshness",
+            "status": "fail",
+            "measured": "各完整证券单元SQL证据须在三日内；最早 缺少；检查执行时间不替代来源时间",
+            "blocking": true,
+            "findings": [],
+            "reason": "",
+            "observed_at": ""
+          },
+          {
+            "criterion": "temporal",
+            "status": "pass",
+            "measured": "当前来源修订版；缺稳定事件关联及逐次修订可用日。报告期、最早预案公告日不证明实施修订当时可知；仅用于事后分析，不用于历史信号；区间名义现金股息率另核验价格及基准；持仓现金收益尚未实现。",
+            "blocking": false,
+            "findings": [],
+            "reason": "source_limit",
+            "observed_at": ""
+          }
+        ]
+      },
+      "checkpoint": {
+        "phase": "complete",
+        "batch_id": "dd8494984ad746acaa7fa4a04bd2e0ed",
+        "index": 766,
+        "pages": 767,
+        "collected": 1191,
+        "source_hash": "ccfab41209002a1bf31ecd46a54edd4dd77ca933bff1c64e2fc15cdbfc37430a",
+        "scope_hash": "7b02cb72fad272fe0ed2436e88eb2cb9358db315023be713490aa868759164fd",
+        "units": 766,
+        "rolling": "767160a3d7d5570f9f1a1e84718ca5746757678b7510a4c7369e9835e13a0a89",
+        "started_at": "2026-10-22T05:53:43.667192+00:00",
+        "schema_version": 1
+      }
+    }
+  },
+  "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "pending_after": 0,
+  "sql_counts": {
+    "SHOW": 11,
+    "SELECT": 53,
+    "START": 10
+  },
+  "preserved_inputs_after": {
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\dist\\Empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f"
+  },
+  "finished_at": "2026-10-22T07:02:02.449222+00:00"
+}

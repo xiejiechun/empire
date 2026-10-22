@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "D:\project\empire\scripts\verify_documentation.py", line 159, in <module>
+    result = verify(project_root)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\empire\scripts\verify_documentation.py", line 120, in verify
+    raise RuntimeError("Documentation links are invalid:\n" + "\n".join(links))
+RuntimeError: Documentation links are invalid:
+docs\evidence\shareholder-return-o7-2026-10-22.md:13: missing link shareholder-return-o7-2026-10-22/input-audit.json
+docs\evidence\shareholder-return-o7-2026-10-22.md:15: missing link shareholder-return-o7-2026-10-22/doctor-tdx-additional-issues.json
+docs\evidence\shareholder-return-o7-2026-10-22.md:15: missing link shareholder-return-o7-2026-10-22/doctor-tdx-rights-issues.json
+docs\evidence\shareholder-return-o7-2026-10-22.md:65: missing link shareholder-return-o7-2026-10-22/preservation.json
+docs\evidence\shareholder-return-o7-2026-10-22.md:76: missing link shareholder-return-o7-2026-10-22/input-audit.json
+docs\evidence\shareholder-return-o7-2026-10-22.md:79: missing link shareholder-return-o7-2026-10-22/checks.json
+docs\evidence\shareholder-return-o7-2026-10-22.md:79: missing link shareholder-return-o7-2026-10-22/related.xml
+docs\evidence\shareholder-return-o7-2026-10-22.md:79: missing link shareholder-return-o7-2026-10-22/related.log
