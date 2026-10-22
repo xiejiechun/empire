@@ -1,13 +1,9 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-22T20:11:12.493895+00:00",
-  "note": "修复龙虎榜来源并列排名误判，保留不同席位，完整重复仍报错；补充使用说明及专项回归。",
+  "reviewed_at": "2026-10-22T21:06:31.961746+00:00",
+  "note": "补充龙虎榜并列排名修复的真实33股代理验收、完整发布、精确错误清理与运行中初始化进度；明确当前尚未完成全市场，不把开发验收当采完。",
   "unchanged_reason": "",
-  "exceptions": {
-    "mysql:hot_list_day": "仅修复规范席位的重复判断，日头字段身份索引与存储契约不变",
-    "mysql:hot_list_reason": "仅修复规范席位的重复判断，原因字段身份索引与存储契约不变",
-    "mysql:hot_list_seat": "沿用原有完整单元序号主键，并列排名一直是普通属性，无结构或查询入口改变"
-  },
+  "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "3302de5e1d316bdcd80fd7cae560bade24eec79bb08f352e8aebd5d4cf6b4557",
@@ -581,7 +577,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "3fa6e6439ebe39e066a13a982a94fbddc682870d0fa57dbcbd9a25313273f8c1",
+  "content_sha256": "04d3ddfa3ae64ab45666b8b13eb76765546d825e971f3cbef4b8f41f303d9ac8",
   "features": {
     "page:ths_capital": {
       "sources": {

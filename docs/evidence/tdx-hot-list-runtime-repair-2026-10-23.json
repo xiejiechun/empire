@@ -1,0 +1,215 @@
+{
+  "project": "tdx-hot-list",
+  "issue_ids": [
+    "ae98a77d3e144909a07317abb87b9f76"
+  ],
+  "root_cause": "000063.SZ/2018-06-22两个不同卖出席位并列第1名；错误地把原因/方向/排名当作唯一身份",
+  "correction": "完整规范席位内容检查重复，允许并列排名；同键按完整内容稳定排序，序号主键不变",
+  "storage": "无需DDL；历史正确事实保留。旧已通过记录排名键不重复，规范内容/摘要不受影响；原失败响应未曾入队，当前未完成证券经正式续采补齐证明。",
+  "tests": {
+    "targeted_passed": 25,
+    "release_passed": 4113,
+    "opt_in_skipped": 5,
+    "warnings": 20
+  },
+  "source": {
+    "passed": true,
+    "source_sha256": "05777936b4da78d65ba464c7ad90836597bea82499f1aa939d4a17ed9664dbd3",
+    "report_sha256": "f8f645a5f188f67f02b7704e8a388dd081728dcfce7b175c785141bf135549d7",
+    "command": "scripts/verify_hot_list.py --test-mysql-settings build/architecture-evolution-20261019/mysql-settings.json --output build/tdx-lhb-runtime-repair/source-1.json --seed 20261023 --codes 000063.SZ --proxy-only --timeout 7200",
+    "pool_count": 5580,
+    "pool_digest": "4766dcfce15add9aa1cf608b090f2274903e16d6c99097468f938829c193c361",
+    "seed": 20261023,
+    "random": [
+      "300621.SZ",
+      "300718.SZ",
+      "300174.SZ",
+      "603779.SH",
+      "301669.SZ",
+      "300516.SZ",
+      "688101.SH",
+      "600133.SH",
+      "000650.SZ",
+      "600583.SH",
+      "002103.SZ",
+      "600498.SH",
+      "300194.SZ",
+      "301135.SZ",
+      "301571.SZ",
+      "300993.SZ",
+      "688256.SH",
+      "300676.SZ",
+      "688135.SH",
+      "600006.SH",
+      "000913.SZ",
+      "688048.SH",
+      "600545.SH",
+      "000601.SZ",
+      "002692.SZ",
+      "601231.SH",
+      "688319.SH",
+      "600234.SH",
+      "002728.SZ",
+      "300955.SZ"
+    ],
+    "fixed": [
+      "601139.SH",
+      "000001.SZ",
+      "000063.SZ"
+    ],
+    "stocks": 33,
+    "dates": 1227,
+    "successful_responses": 1260,
+    "routes": {
+      "proxy_requests": 1293
+    },
+    "network_interruptions": 3,
+    "direct_requests": 0,
+    "fallback_requests": 0,
+    "strict_proxy_verified": true,
+    "pending": 0,
+    "source_empty_dates": 45,
+    "cleanup": {
+      "shutdown": true,
+      "sql": true,
+      "redis": true,
+      "sql_lock": true,
+      "connections": true,
+      "instance_lock": true
+    },
+    "scope": "独立库及命名空间33股全部来源历史；不代表生产全市场完成"
+  },
+  "capacity": "tdx-hot-list-capacity-2026-10-23.json:实际重测通过，重复业务DML=0",
+  "release": {
+    "version": "0.1.0",
+    "commit": "20d4b135579b2dbe375d5c9477aff25712c4f3e2",
+    "dirty": false,
+    "source_sha256": "bd06ec9a96d146451b5bbf48dad3b8ba9ffce958d50d1cabdb8a9fb70bd2233b",
+    "release_id": "e7d448f5c6424752b971906c67be7099",
+    "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+    "dependency_count": 42,
+    "dependency_report_sha256": "6e0cc960422e87271427205ad356719c5fea02cd76de9a89cc27bcda35990227",
+    "built_at_utc": "2026-10-22T21:00:04.006943+00:00",
+    "python": "3.12.9",
+    "pyinstaller": "6.22.3"
+  },
+  "exact_cleanup": {
+    "project": "tdx-hot-list",
+    "processed_ids": [
+      "ae98a77d3e144909a07317abb87b9f76"
+    ],
+    "removed": 1,
+    "remaining": {
+      "revision": "2",
+      "total": 0,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": []
+    },
+    "evidence": "source-1.json:33 stocks/1227 dates strict proxy;25 regression/integration tests passed"
+  },
+  "production_known_failure": {
+    "passed": true,
+    "code": "000063.SZ",
+    "date": "2018-06-22",
+    "seats": 10,
+    "tied_sellers": [
+      {
+        "seq": 6,
+        "reason_code": "070002",
+        "side": "S",
+        "seat_rank": 1,
+        "seat_name": "中国国际金融股份有限公司上海分公司",
+        "buy_amount": "0",
+        "sell_amount": "1498",
+        "net_amount": "-1498",
+        "extension": {
+          "bq1": null,
+          "bq2": null,
+          "bq3": null,
+          "bq4": null,
+          "gsd": 0,
+          "yxyz": 0,
+          "schema": 1
+        }
+      },
+      {
+        "seq": 7,
+        "reason_code": "070002",
+        "side": "S",
+        "seat_rank": 1,
+        "seat_name": "机构专用",
+        "buy_amount": "0",
+        "sell_amount": "1498",
+        "net_amount": "-1498",
+        "extension": {
+          "bq1": null,
+          "bq2": null,
+          "bq3": null,
+          "bq4": null,
+          "gsd": 0,
+          "yxyz": 0,
+          "schema": 1
+        }
+      }
+    ],
+    "status": "present"
+  },
+  "initialization": {
+    "complete": false,
+    "checked_at": "2026-10-23T05:04:51.968343+08:00",
+    "cursor": {
+      "phase": "fetch",
+      "contract": 1,
+      "batch_id": "4a1a3b8211fa47df958673ae90b27717",
+      "index": 44,
+      "pages": 3765,
+      "collected": 37743,
+      "securities": 5580,
+      "scope_hash": "92a9e2ca52808b25c01f802a3e19ba5fd216655976d4dfa18dfb14b50f40b5da",
+      "start": "",
+      "end": "",
+      "through": "2026-10-23",
+      "force": false,
+      "directory_hash": "8b8d4382110a5d20e26cfe89e7d90a36f9842f3d7a872ad9cbe9e045de295f06",
+      "last_date": "2025-11-11"
+    },
+    "errors": {
+      "revision": "2",
+      "total": 0,
+      "rows": [],
+      "truncated": false,
+      "body_included": false
+    },
+    "queue": {
+      "stream_total": 0,
+      "unreadable": 0,
+      "truncated": false,
+      "exact": true,
+      "fetched_envelope_bytes": 0,
+      "scanned": 0,
+      "stream_ids": {},
+      "project_lower_bound": 0
+    },
+    "policy": {
+      "enabled": true,
+      "request_retries": 2,
+      "daily_time": "19:30",
+      "proxy_fallback": true,
+      "archived": false,
+      "interval_seconds": 86400,
+      "use_proxy": true,
+      "mode": "daily"
+    },
+    "note": "正式EXE已可见重开，通过继续采集恢复原批次；全市场仍在采集，10分钟聊天跟进保持启用，完成后另行核验"
+  },
+  "test_server": {
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "port": 13348,
+    "other_clients": 0,
+    "normal_sql_shutdown": true,
+    "port_closed": true,
+    "production_3307_untouched": true
+  }
+}
