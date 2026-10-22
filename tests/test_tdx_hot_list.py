@@ -155,6 +155,29 @@ def test_old_repeated_reason_rows_without_seats_preserved():
     assert len(value["reasons"]) == 5 and value["status"] == "source_empty"
 
 
+def test_000063_tied_sell_rank_preserves_both_seats_and_stable_order():
+    # 2018-06-22: two different sellers each disclose 1498万元 at rank 1.
+    body = detail()
+    seats = body["ResultSets"][1]
+    seller = seats["Content"][1]
+    seller[3:6] = [0, 1498, -1498]
+    tied = copy.deepcopy(seller)
+    tied[2] = "中国国际金融股份有限公司上海分公司"
+    seats["Content"].append(tied)
+    seats["Count"] = 3
+    value = parse_detail(body)
+    assert value["status"] == "present"
+    sellers = [r for r in value["seats"] if r["side"] == "S"]
+    assert [(r["seat_rank"], r["sell_amount"]) for r in sellers] == [(1, "1498")] * 2
+    assert {r["seat_name"] for r in sellers} == {"机构专用", tied[2]}
+    seats["Content"].reverse()
+    assert parse_detail(body) == value
+    # Same count with one seller replacing the other must still fail.
+    seats["Content"][1] = copy.deepcopy(seats["Content"][0])
+    with pytest.raises(ValueError, match="完整席位集合重复"):
+        parse_detail(body)
+
+
 def test_display_cross_list_total_does_not_drop_distinct_institutions():
     value = parse_detail(detail(shenzhen=True))
     assert summary(value, "070001") == (Decimal(22), Decimal(19))

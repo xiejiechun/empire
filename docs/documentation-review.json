@@ -1,9 +1,13 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-22T19:30:39.012356+00:00",
-  "note": "仅结案文档：补齐龙虎榜最终代理30股加2固定回归、正式两股52日期、4111测试通过及发布/真实桌面证据，链接实现状态；未更改源码、测试、采集契约或内置正文，本次不重建EXE。",
+  "reviewed_at": "2026-10-22T20:11:12.493895+00:00",
+  "note": "修复龙虎榜来源并列排名误判，保留不同席位，完整重复仍报错；补充使用说明及专项回归。",
   "unchanged_reason": "",
-  "exceptions": {},
+  "exceptions": {
+    "mysql:hot_list_day": "仅修复规范席位的重复判断，日头字段身份索引与存储契约不变",
+    "mysql:hot_list_reason": "仅修复规范席位的重复判断，原因字段身份索引与存储契约不变",
+    "mysql:hot_list_seat": "沿用原有完整单元序号主键，并列排名一直是普通属性，无结构或查询入口改变"
+  },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "3302de5e1d316bdcd80fd7cae560bade24eec79bb08f352e8aebd5d4cf6b4557",
@@ -270,11 +274,11 @@
     "src/empire/features/hot_list/__init__.py": "f1ef7aff61b93781c7b666e01f66909b8e19320cc4d3689f8cb694a12b32fd9e",
     "src/empire/features/hot_list/bundle.py": "3d5af6e3633c0e2dd00b2d15c8b275763b09fdd1a1da4a92f34e131ee1c9c839",
     "src/empire/features/hot_list/collector.py": "de140279eb565753e6a0de06f808f26aa218bb490ed0091170b2ac064c064a7b",
-    "src/empire/features/hot_list/contract.py": "27380c20d37e752079d834e4c498275280c8594eadb8e1402116dea77d2f992b",
+    "src/empire/features/hot_list/contract.py": "581052c7cb0bc0fcf57dae611542545a0185345108bd29d9da0da659ed4f26c2",
     "src/empire/features/hot_list/dataset.py": "d085145a84d678338614e9afa4121709abeb270d2750d7d3b89f81babe8433dd",
     "src/empire/features/hot_list/presentation.py": "cf32f36affd2dad0fca17d823c91f1d3e8c0d3297452e2ac499632dba0666bfc",
     "src/empire/features/hot_list/query.py": "7eafab38548e1748b9fe806f6cec409cd427eaaf36335195aac173869a376147",
-    "src/empire/features/hot_list/source.py": "8094e4cac097c3b8f4b6b3cbeae3366f73ee87585610dd7c20e3b15f69fb1b61",
+    "src/empire/features/hot_list/source.py": "a119f27a67f2a9c485b547f4511e586bad03e93352619d926643fa56e8336be2",
     "src/empire/features/hot_list/ui.py": "842eff551e52800ac1f1ed1f5fefa5fe3aa3ee5d261e658956576ec4fdb9ca47",
     "src/empire/features/index_prices/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/empire/features/index_prices/bundle.py": "5c871427844a947045d765f24daa1c51ff5ce59dd709d689dc74404c48b9e374",
@@ -577,7 +581,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "bfdbe1c42652b07d1542de49fa0c306db68ba2466abe1908d0755646e59eadd6",
+  "content_sha256": "3fa6e6439ebe39e066a13a982a94fbddc682870d0fa57dbcbd9a25313273f8c1",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -2612,7 +2616,7 @@
         "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/hot_list/__init__.py": "f1ef7aff61b93781c7b666e01f66909b8e19320cc4d3689f8cb694a12b32fd9e",
-        "src/empire/features/hot_list/contract.py": "27380c20d37e752079d834e4c498275280c8594eadb8e1402116dea77d2f992b",
+        "src/empire/features/hot_list/contract.py": "581052c7cb0bc0fcf57dae611542545a0185345108bd29d9da0da659ed4f26c2",
         "src/empire/features/hot_list/presentation.py": "cf32f36affd2dad0fca17d823c91f1d3e8c0d3297452e2ac499632dba0666bfc",
         "src/empire/features/hot_list/ui.py": "842eff551e52800ac1f1ed1f5fefa5fe3aa3ee5d261e658956576ec4fdb9ca47",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
@@ -2621,7 +2625,7 @@
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
         "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
       },
-      "content_sha256": "69158a163b4179dce5c781e26cd7eca8d1640ec48832b42d31bae70082bfd752",
+      "content_sha256": "b603d7a8968614b9176a7baf4ba461555579372a8c34b6b48b7ff0d67450aba9",
       "documentation": {
         "通达信个股龙虎榜": {
           "owner": "hot_list",
@@ -4215,13 +4219,13 @@
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/hot_list/__init__.py": "f1ef7aff61b93781c7b666e01f66909b8e19320cc4d3689f8cb694a12b32fd9e",
         "src/empire/features/hot_list/collector.py": "de140279eb565753e6a0de06f808f26aa218bb490ed0091170b2ac064c064a7b",
-        "src/empire/features/hot_list/contract.py": "27380c20d37e752079d834e4c498275280c8594eadb8e1402116dea77d2f992b",
-        "src/empire/features/hot_list/source.py": "8094e4cac097c3b8f4b6b3cbeae3366f73ee87585610dd7c20e3b15f69fb1b61",
+        "src/empire/features/hot_list/contract.py": "581052c7cb0bc0fcf57dae611542545a0185345108bd29d9da0da659ed4f26c2",
+        "src/empire/features/hot_list/source.py": "a119f27a67f2a9c485b547f4511e586bad03e93352619d926643fa56e8336be2",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
       },
-      "content_sha256": "22fce65863a7b3314e8ed21721094227ecbe3d3bf0bc7ffbbb7cb419b6b71792",
+      "content_sha256": "472bbf53de4f8f39dec337b5ac76d929383b654d4811d03bb5e818270a1a3729",
       "documentation": {
         "通达信个股龙虎榜": {
           "owner": "hot_list",
@@ -6106,7 +6110,7 @@
     },
     "mysql:hot_list_day": {
       "sources": {
-        "src/empire/features/hot_list/contract.py": "27380c20d37e752079d834e4c498275280c8594eadb8e1402116dea77d2f992b",
+        "src/empire/features/hot_list/contract.py": "581052c7cb0bc0fcf57dae611542545a0185345108bd29d9da0da659ed4f26c2",
         "src/empire/features/hot_list/dataset.py": "d085145a84d678338614e9afa4121709abeb270d2750d7d3b89f81babe8433dd",
         "src/empire/features/hot_list/query.py": "7eafab38548e1748b9fe806f6cec409cd427eaaf36335195aac173869a376147",
         "sql/business-schema.json": "2af69cbe187562af6b4f12c4410720b5bef530251051d3e0579062eae85511cd",
@@ -6133,7 +6137,7 @@
     },
     "mysql:hot_list_reason": {
       "sources": {
-        "src/empire/features/hot_list/contract.py": "27380c20d37e752079d834e4c498275280c8594eadb8e1402116dea77d2f992b",
+        "src/empire/features/hot_list/contract.py": "581052c7cb0bc0fcf57dae611542545a0185345108bd29d9da0da659ed4f26c2",
         "src/empire/features/hot_list/dataset.py": "d085145a84d678338614e9afa4121709abeb270d2750d7d3b89f81babe8433dd",
         "src/empire/features/hot_list/query.py": "7eafab38548e1748b9fe806f6cec409cd427eaaf36335195aac173869a376147",
         "sql/business-schema.json": "2af69cbe187562af6b4f12c4410720b5bef530251051d3e0579062eae85511cd",
@@ -6160,7 +6164,7 @@
     },
     "mysql:hot_list_seat": {
       "sources": {
-        "src/empire/features/hot_list/contract.py": "27380c20d37e752079d834e4c498275280c8594eadb8e1402116dea77d2f992b",
+        "src/empire/features/hot_list/contract.py": "581052c7cb0bc0fcf57dae611542545a0185345108bd29d9da0da659ed4f26c2",
         "src/empire/features/hot_list/dataset.py": "d085145a84d678338614e9afa4121709abeb270d2750d7d3b89f81babe8433dd",
         "src/empire/features/hot_list/query.py": "7eafab38548e1748b9fe806f6cec409cd427eaaf36335195aac173869a376147",
         "sql/business-schema.json": "2af69cbe187562af6b4f12c4410720b5bef530251051d3e0579062eae85511cd",

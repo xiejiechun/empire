@@ -65,6 +65,30 @@ async def collect(c, **options):
     )
 
 
+async def test_tied_source_rank_roundtrip_and_replay(pipeline):
+    import copy
+
+    _, c, q, store = pipeline
+    body = detail()
+    seats = body["ResultSets"][1]
+    tied = copy.deepcopy(seats["Content"][1])
+    tied[2] = "中国国际金融股份有限公司上海分公司"
+    seats["Content"].append(tied)
+    seats["Count"] = 3
+    c.http.request.side_effect = lambda *a, **k: httpx.Response(
+        200, json=directory() if json.loads(k["content"])["Params"][0] == "0" else body
+    )
+    await collect(c, fresh=True)
+    sellers = [r for r in (await q.detail(CODE, DATE))["seats"] if r["side"] == "S"]
+    assert len(sellers) == 2
+    assert {r["seat_name"] for r in sellers} == {"机构专用", tied[2]}
+    assert [r["seat_rank"] for r in sellers] == [1, 1]
+    seats["Content"].reverse()
+    await collect(c, fresh=True)
+    assert [r for r in (await q.detail(CODE, DATE))["seats"] if r["side"] == "S"] == sellers
+    assert await store.client.xlen(store.stream) == 0
+
+
 async def test_cold_hot_revision_old_replay_and_source_empty(pipeline):
     manager, c, q, store = pipeline
     await collect(c, fresh=True)
@@ -177,39 +201,47 @@ async def test_failed_transaction_retains_queue_and_post_commit_replay(pipeline,
     manager, c, q, store = pipeline
     from empire.features.hot_list.contract import DATASET
 
-    archive = manager.registry.get('archive.worker')
+    archive = manager.registry.get("archive.worker")
     await archive.stop()
     archive.stop_event.clear()
     task = asyncio.create_task(collect(c, fresh=True))
     async with asyncio.timeout(5):
         while await store.client.xlen(store.stream) != 4:
-            await asyncio.sleep(.01)
+            await asyncio.sleep(0.01)
     task.cancel()
     await asyncio.gather(task, return_exceptions=True)
-    mapping = next(d.mapping for d in manager.registry.get('dataset.catalog').contributions if DATASET in d.mapping.DATASETS)
+    mapping = next(
+        d.mapping
+        for d in manager.registry.get("dataset.catalog").contributions
+        if DATASET in d.mapping.DATASETS
+    )
     original = mapping.write
+
     def fail(conn, envelope, data):
         result = original(conn, envelope, data)
-        if data['mode'] == 'detail':
-            raise RuntimeError('injected detail transaction failure')
+        if data["mode"] == "detail":
+            raise RuntimeError("injected detail transaction failure")
         return result
-    monkeypatch.setattr(mapping, 'write', fail)
-    with pytest.raises(RuntimeError, match='transaction failure'):
+
+    monkeypatch.setattr(mapping, "write", fail)
+    with pytest.raises(RuntimeError, match="transaction failure"):
         await archive.flush()
     current = await q.detail(CODE, DATE)
-    assert current['detail_status'] == 'pending' and not current['seats']
+    assert current["detail_status"] == "pending" and not current["seats"]
     assert await store.client.xlen(store.stream) == 3
-    monkeypatch.setattr(mapping, 'write', original)
+    monkeypatch.setattr(mapping, "write", original)
     put = archive.fingerprints.put
+
     async def fail_redis(*args, **kwargs):
-        raise RuntimeError('injected post-commit failure')
-    monkeypatch.setattr(archive.fingerprints, 'put', fail_redis)
-    with pytest.raises(RuntimeError, match='post-commit'):
+        raise RuntimeError("injected post-commit failure")
+
+    monkeypatch.setattr(archive.fingerprints, "put", fail_redis)
+    with pytest.raises(RuntimeError, match="post-commit"):
         await archive.flush()
-    assert (await q.detail(CODE, DATE))['detail_status'] == 'present'
+    assert (await q.detail(CODE, DATE))["detail_status"] == "present"
     assert await store.client.xlen(store.stream) == 3
-    monkeypatch.setattr(archive.fingerprints, 'put', put)
+    monkeypatch.setattr(archive.fingerprints, "put", put)
     await archive.flush()
     assert await store.client.xlen(store.stream) == 0
     result = await collect(c)
-    assert result['phase'] == 'complete'
+    assert result["phase"] == "complete"

@@ -120,7 +120,9 @@ def validate_detail(value):
         ):
             raise ValueError("龙虎榜方向或排名无效")
         text_value(row["seat_name"], 256)
-        keys.append((row["reason_code"], row["side"], row["seat_rank"]))
+        # Source ranks can tie. Only the complete canonical seat identifies a
+        # duplicate; seq identifies its position in the complete response.
+        keys.append(digest({k: v for k, v in row.items() if k != "seq"}))
         for key in ("buy_amount", "sell_amount", "net_amount"):
             if row[key] != number(row[key]):
                 raise ValueError("龙虎榜席位金额非规范格式")
@@ -140,7 +142,7 @@ def validate_detail(value):
         if len(json.dumps(ext, ensure_ascii=False).encode()) > 4096:
             raise ValueError("龙虎榜席位扩展超限")
     if len(keys) != len(set(keys)):
-        raise ValueError("龙虎榜方向排名集合重复，不能覆盖另一席位")
+        raise ValueError("龙虎榜完整席位集合重复，不能以去重掩盖遗漏")
     reason_keys = {r["reason_code"] for r in reasons}
     if not {r["reason_code"] for r in seats} <= reason_keys:
         raise ValueError("龙虎榜席位缺少原因关联")

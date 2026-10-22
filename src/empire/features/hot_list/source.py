@@ -125,7 +125,14 @@ def parse_detail(body):
     if len(institutions) != 1:
         raise ValueError("龙虎榜机构辅助次数结构改变")
     headers.sort(key=lambda r: json.dumps(r, sort_keys=True, ensure_ascii=False))
-    entries.sort(key=lambda r: (r["reason_code"], r["side"], r["seat_rank"]))
+    entries.sort(
+        key=lambda r: (
+            r["reason_code"],
+            r["side"],
+            r["seat_rank"],
+            json.dumps(r, sort_keys=True, ensure_ascii=False),
+        )
+    )
     headers = [dict(seq=i, **r) for i, r in enumerate(headers, 1)]
     entries = [dict(seq=i, **r) for i, r in enumerate(entries, 1)]
     reason_keys, seat_keys = (
