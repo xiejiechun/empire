@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "D:\project\empire\scripts\verify_database_design.py", line 107, in <module>
+    print('PASS database design gate', verify(Path(__file__).resolve().parents[1]))
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\empire\scripts\verify_database_design.py", line 93, in verify
+    raise ValueError(f'{dataset} 容量预算超限：{key}')
+ValueError: repurchases.page 容量预算超限：import_seconds

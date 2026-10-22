@@ -72,3 +72,15 @@
 生产根因补证[causal-evidence.json](shareholder-return-p3-development-2026-10-22/causal-evidence.json)确认原末批86条的规范内容hash全在可信缓存中，结合已完成checkpoint/清队和旧SQL证明，支持已复现的归档路径缺陷；不从旧5553聚合摘要猜测成员。最终容量[capacity-final.json](shareholder-return-p3-development-2026-10-22/capacity-final.json)为当前实现的真实失败测量，不能只刷新旧报告hash。解决剩余导入预算并重过完整门禁后，才可生成P3包及补做同包桌面；本轮不继续无新线索地反复请求来源或跑容量碰运气。
 
 更新设计卡引用后，`scripts/verify_database_design.py`再次实际exit1，拒绝理由为`repurchases.page 容量预算超限：import_seconds`（current-capacity-gate.log），不是仍以旧绑定替代当前测量。最后一次正文修改后的文档生成、review及verify_documentation均exit0；`pytest tests/test_documentation_build.py tests/test_documentation_review.py tests/test_documentation_contracts.py tests/test_documentation_sources.py tests/test_storage_help.py tests/test_repurchase_ui.py tests/test_distribution_ui.py tests/test_distribution_cache.py tests/test_dividend_distribution.py tests/test_dividend_yield.py -q --basetemp=build/pytest-p3-final-docs`实际120 passed、121.57秒、exit0（final-doc-tests.log）。这一专项通过不覆盖上述完整回归失败。
+
+## 最终门禁、桌面恢复与资源交接
+
+实现提交为`ca657447338118d6618e1be2bd20fbb7a54ccc68`。在后续干净证据提交`8db0dca`冻结Git HEAD及受保护输入，实际再次执行唯一入口`verify-release.ps1`：运行号`1d82d451c39247f6b2f15cc0968b5b4c`，退出码1。环境、依赖、帮助生成检查及文档契约四步通过，第005步按本轮实测报告拒绝`repurchases.page 容量预算超限：import_seconds`。原始[运行日志](shareholder-return-p3-development-2026-10-22/final-release.log)、[命令/提交/退出码](shareholder-return-p3-development-2026-10-22/final-release-exit.json)与[第005步](shareholder-return-p3-development-2026-10-22/release-1d82d451c39247f6b2f15cc0968b5b4c/steps/step-005.json)保留。没有publication.json、没有新包切换，也未执行P3同包桌面验收；没有绕过门禁另行打包。
+
+自有13348在全部开发验证结束后，使用已审阅`stop_owned_mysql.py`重新核实实际UUID、端口、datadir、仅四系统库、无其他客户端，然后正常SQL SHUTDOWN，exit0且端口关闭，见[资源关闭原件](shareholder-return-p3-development-2026-10-22/private-mysql-close.json)。没有强杀数据库、删除锁、重启或清空共享Redis。后续会话不能假定13348仍运行。
+
+恢复的是既有P2包：release `4c672429732f48669159d410a91917d9`，包绑定实现`dba889f8b7aeb086b7d8264971a9b1c2a62d9b3a`，EXE SHA-256 `7daaf84de6a00f36eb745a980ab3d632e07da1c07d0c5dd33531d3231a54f576`。通过computer-use实际重新打开，PID52932、窗口30346504，观察工作台“本地服务已连接”及待归档0，再实际点击数据浏览并观察数据目录正常响应；[窗口原观察](shareholder-return-p3-development-2026-10-22/desktop-restoration.json)仅证明旧包恢复。原正常关闭发生在实采前，未强制结束Empire。
+
+随后`post_release.py 4c672429732f48669159d410a91917d9 restored-p2-package`只读核对exit0：[包与正式查询原件](shareholder-return-p3-development-2026-10-22/restored-p2-package.json)确认EXE/产品树与原P2包一致，两份config、插件偏好、48项SQL保存设置均保持，生产UUID仍为`77f9ba30-b666-11f1-81c5-380525361d4e`，回购审计仍有效、pending0、B4原ID仍在。正式查询复用当前源码的既有query提供者（本批没有修改这些查询），不是在新P3 EXE内执行。旧包按原保存策略恢复日常任务，没有改网络、调度或任务设置。
+
+**下一步明确**：查明并解决原50000行导入预算超限，在不修改冻结工具/协议/基线/阈值的前提下取得新实测；再执行完整相关回归及统一门禁，生成同一P3包并做业务页面、准备检查和正常关开验收。此前P3保持“已实现待完成验证/发布、未验收”。当前数据一致性恢复、程序修复、正式部署三项分别记录；旧包仍可能再次遇到证明更新缺陷。P4及原B项/P2严格002731失败不随本轮改变。
