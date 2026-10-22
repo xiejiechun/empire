@@ -254,6 +254,7 @@ async def test_workspace_direct_help_and_collection_grouping():
             pages.extend(next(iter(provided.values())))
     management = {page.id: page.management for page in pages if page.management is not None}
     assert {key: value.context.task_id for key, value in management.items()} == {
+        'hot_list': 'tdx-hot-list',
         'ths_capital': 'ths-capital',
         **{k: 'ths-holders' for k in ('top_holders', 'float_holders', 'bond_holders')},
         **{k: 'tdx-' + k.replace('_', '-') for k in ('earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report', 'holder_count', 'shareholder_changes')},

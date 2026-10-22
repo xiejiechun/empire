@@ -113,7 +113,7 @@ def test_database_directory_and_direct_object_lookup():
         database = page.index.topLevelItem(CATEGORIES.index('数据库参考'))
         groups = {database.child(i).text(0): database.child(i) for i in range(database.childCount())}
         assert set(groups) == {'总览', 'MySQL', 'Redis'}
-        assert groups['MySQL'].childCount() == 55
+        assert groups['MySQL'].childCount() == 58
         assert groups['Redis'].childCount() == 18
         page.search.setText('MySQL suspension_source_date')
         assert page.index.topLevelItem(0).text(0) == 'MySQL suspension_source_date'
