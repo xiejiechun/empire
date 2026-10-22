@@ -1,0 +1,53 @@
+[
+  {
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "scripts/documentation_build.py",
+      "generate"
+    ],
+    "started_at": "2026-10-22T06:14:48.452750+00:00",
+    "returncode": 0,
+    "finished_at": "2026-10-22T06:14:48.687693+00:00"
+  },
+  {
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "scripts/documentation_contract.py",
+      "review",
+      "--note",
+      "P3发布结案：复核回购终批全热证明与事务恢复说明、实际容量绑定、正式包身份、真实桌面关开、配置保存及原B项/P2/历史信号与累计注销限制；只更新验收账本和实现状态，产品正文与行为未再变更。"
+    ],
+    "started_at": "2026-10-22T06:14:48.688196+00:00",
+    "returncode": 0,
+    "finished_at": "2026-10-22T06:14:54.703213+00:00"
+  },
+  {
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "scripts/verify_documentation.py"
+    ],
+    "started_at": "2026-10-22T06:14:54.703213+00:00",
+    "returncode": 0,
+    "finished_at": "2026-10-22T06:15:01.143935+00:00"
+  },
+  {
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "tests/test_documentation_build.py",
+      "tests/test_documentation_review.py",
+      "tests/test_documentation_contracts.py",
+      "tests/test_documentation_sources.py",
+      "tests/test_storage_help.py",
+      "-q",
+      "--basetemp=build/pytest-p3-closeout-docs",
+      "--junitxml=build/returns-p3-release-20261022/closeout-documentation-tests.xml"
+    ],
+    "started_at": "2026-10-22T06:15:01.143935+00:00",
+    "returncode": 0,
+    "finished_at": "2026-10-22T06:16:06.831336+00:00"
+  }
+]

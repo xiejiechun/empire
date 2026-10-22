@@ -1,0 +1,289 @@
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_release_environment.py
+PASS Python 3.12.9 ¬∑ Empire 0.1.0 ¬∑ locked environment
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\audit_dependencies.py --output D:\project\empire\build\dependency-report.json
+PASS dependency inventory: 42 locked components
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\documentation_build.py check --report D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\help-report.json
+PASS offline help check: 144 topics
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_documentation.py
+PASS documentation contracts: documents=419, links=3041, schema_tables=55
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_database_design.py
+PASS database design gate {'tables': 55, 'datasets': 49, 'json_fields': 12}
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\architecture_contract.py check
+PASS architecture: 419 modules, 1517 imports, 0 existing debt, 0 new debt, 45 retired debt
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\assembly_contract.py check --baseline D:\project\empire\docs\evidence\assembly-baseline-2026-10-19.json --mapping D:\project\empire\docs\assembly-migrations.json --feature-changes D:\project\empire\docs\assembly-feature-changes.json --order-baseline D:\project\empire\docs\evidence\assembly-order-baseline-2026-10-19.json
+PASS exact assembly identities, semantics and mapped implementation/test locations
+Release step: D:\project\empire\.venv\Scripts\python.exe -m ruff check src tests scripts
+All checks passed!
+Release step: D:\project\empire\.venv\Scripts\python.exe -m mypy
+Success: no issues found in 13 source files
+Release step: D:\project\empire\.venv\Scripts\python.exe -m pip check
+No broken requirements found.
+Release step: git -C D:\project\empire -c core.whitespace=cr-at-eol diff --check
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\preparation_evidence.py begin
+Release step: D:\project\empire\.venv\Scripts\python.exe -m pytest -q --tb=short -rs --basetemp D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\pytest --junitxml D:\project\empire\build\release-tests.xml
+........................................................................ [  1%]
+........................................................................ [  3%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [  8%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+.......................sssss............................................ [ 14%]
+........................................................................ [ 15%]
+........................................................................ [ 17%]
+........................................................................ [ 19%]
+........................................................................ [ 21%]
+........................................................................ [ 22%]
+........................................................................ [ 24%]
+........................................................................ [ 26%]
+........................................................................ [ 28%]
+........................................................................ [ 29%]
+........................................................................ [ 31%]
+........................................................................ [ 33%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 38%]
+........................................................................ [ 40%]
+........................................................................ [ 42%]
+........................................................................ [ 44%]
+........................................................................ [ 45%]
+........................................................................ [ 47%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+........................................................................ [ 52%]
+........................................................................ [ 54%]
+........................................................................ [ 56%]
+........................................................................ [ 58%]
+........................................................................ [ 59%]
+........................................................................ [ 61%]
+........................................................................ [ 63%]
+........................................................................ [ 65%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 70%]
+........................................................................ [ 72%]
+........................................................................ [ 74%]
+........................................................................ [ 75%]
+........................................................................ [ 77%]
+........................................................................ [ 79%]
+........................................................................ [ 81%]
+........................................................................ [ 82%]
+........................................................................ [ 84%]
+........................................................................ [ 86%]
+........................................................................ [ 88%]
+........................................................................ [ 89%]
+........................................................................ [ 91%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 96%]
+........................................................................ [ 98%]
+......................................................                   [100%]
+============================== warnings summary ===============================
+tests/test_adjustment_chart.py::test_chart_keyboard_inspection_and_drag_keep_date_and_ohlc_identity
+  D:\project\empire\tests\test_adjustment_chart.py:115: DeprecationWarning: Function: 'QMouseEvent.QMouseEvent(QEvent.Type type, const QPointF &localPos, Qt.MouseButton button, QFlags<Qt.MouseButton> buttons, QFlags<Qt.KeyboardModifier> modifiers, const QPointingDevice *device)' is marked as deprecated, please check the documentation for more information.
+    canvas.mousePressEvent(QMouseEvent(QEvent.Type.MouseButtonPress, QPointF(500, 100),
+
+tests/test_adjustment_chart.py::test_chart_keyboard_inspection_and_drag_keep_date_and_ohlc_identity
+  D:\project\empire\tests\test_adjustment_chart.py:117: DeprecationWarning: Function: 'QMouseEvent.QMouseEvent(QEvent.Type type, const QPointF &localPos, Qt.MouseButton button, QFlags<Qt.MouseButton> buttons, QFlags<Qt.KeyboardModifier> modifiers, const QPointingDevice *device)' is marked as deprecated, please check the documentation for more information.
+    canvas.mouseMoveEvent(QMouseEvent(QEvent.Type.MouseMove, QPointF(650, 100),
+
+tests/test_project_diagnostics.py: 16 warnings
+  D:\project\empire\.venv\Lib\site-packages\sqlalchemy\engine\default.py:952: DeprecationWarning: The default datetime adapter is deprecated as of Python 3.12; see the sqlite3 documentation for suggested replacement recipes
+    cursor.execute(statement, parameters)
+
+tests/test_project_diagnostics.py::test_market_preview_reads_requested_old_day_when_a_newer_day_exists
+tests/test_project_diagnostics.py::test_market_preview_reads_requested_old_day_when_a_newer_day_exists
+  D:\project\empire\.venv\Lib\site-packages\sqlalchemy\engine\default.py:952: DeprecationWarning: The default date adapter is deprecated as of Python 3.12; see the sqlite3 documentation for suggested replacement recipes
+    cursor.execute(statement, parameters)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+SKIPPED [1] tests\integration\test_state_unit_isolated.py:76: Explicit isolated drill opt-in required
+SKIPPED [1] tests\integration\test_state_unit_isolated.py:132: Explicit isolated drill opt-in required
+SKIPPED [1] tests\integration\test_state_unit_isolated.py:146: Explicit isolated drill opt-in required
+SKIPPED [1] tests\integration\test_state_unit_isolated.py:159: Explicit isolated drill opt-in required
+SKIPPED [1] tests\integration\test_state_unit_isolated.py:171: Explicit isolated drill opt-in required
+4081 passed, 5 skipped, 20 warnings in 2720.00s (0:45:19)
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\preparation_evidence.py finish
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\measure_capacity.py --quick --output D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\capacity-report.json
+PASS isolated capacity baseline: D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\capacity-report.json
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_foundation_ui.py
+PASS scale=1 size=1320x860 page=collection actual=1320x860
+PASS scale=1 size=1320x860 page=sites actual=1320x860
+PASS scale=1 size=1320x860 page=proxies actual=1320x860
+PASS scale=1 size=1320x860 page=preparation actual=1320x860
+PASS scale=1 size=1320x860 page=suspensions actual=1320x860
+PASS scale=1 size=880x560 page=collection actual=880x560
+PASS scale=1 size=880x560 page=sites actual=880x560
+PASS scale=1 size=880x560 page=proxies actual=880x560
+PASS scale=1 size=880x560 page=preparation actual=880x560
+PASS scale=1 size=880x560 page=suspensions actual=880x560
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_foundation_ui.py
+PASS scale=1.25 size=1320x860 page=collection actual=1320x860
+PASS scale=1.25 size=1320x860 page=sites actual=1320x860
+PASS scale=1.25 size=1320x860 page=proxies actual=1320x860
+PASS scale=1.25 size=1320x860 page=preparation actual=1320x860
+PASS scale=1.25 size=1320x860 page=suspensions actual=1320x860
+PASS scale=1.25 size=880x560 page=collection actual=880x560
+PASS scale=1.25 size=880x560 page=sites actual=880x560
+PASS scale=1.25 size=880x560 page=proxies actual=880x560
+PASS scale=1.25 size=880x560 page=preparation actual=880x560
+PASS scale=1.25 size=880x560 page=suspensions actual=880x560
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_foundation_ui.py
+PASS scale=1.5 size=1320x860 page=collection actual=1320x860
+PASS scale=1.5 size=1320x860 page=sites actual=1320x860
+PASS scale=1.5 size=1320x860 page=proxies actual=1320x860
+PASS scale=1.5 size=1320x860 page=preparation actual=1320x860
+PASS scale=1.5 size=1320x860 page=suspensions actual=1320x860
+PASS scale=1.5 size=880x560 page=collection actual=880x560
+PASS scale=1.5 size=880x560 page=sites actual=880x560
+PASS scale=1.5 size=880x560 page=proxies actual=880x560
+PASS scale=1.5 size=880x560 page=preparation actual=880x560
+PASS scale=1.5 size=880x560 page=suspensions actual=880x560
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\verify_foundation_ui.py
+PASS scale=2 size=1320x860 page=collection actual=1320x860
+PASS scale=2 size=1320x860 page=sites actual=1320x860
+PASS scale=2 size=1320x860 page=proxies actual=1320x860
+PASS scale=2 size=1320x860 page=preparation actual=1320x860
+PASS scale=2 size=1320x860 page=suspensions actual=1320x860
+PASS scale=2 size=880x560 page=collection actual=880x560
+PASS scale=2 size=880x560 page=sites actual=880x560
+PASS scale=2 size=880x560 page=proxies actual=880x560
+PASS scale=2 size=880x560 page=preparation actual=880x560
+PASS scale=2 size=880x560 page=suspensions actual=880x560
+Release step: D:\project\empire\.venv\Scripts\python.exe D:\project\empire\scripts\preparation_evidence.py package
+Release step: D:\project\empire\.venv\Scripts\python.exe -m PyInstaller --noconfirm --clean --distpath D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\staging\÷–Œƒ ø’∏Ò --workpath D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\pyinstaller D:\project\empire\Empire.spec
+154 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.7
+155 INFO: Python: 3.12.9
+188 INFO: Platform: Windows-11-10.0.26200-SP0
+188 INFO: Python environment: D:\project\empire\.venv
+190 INFO: Removing temporary files and cleaning cache in C:\Users\52948\AppData\Local\pyinstaller
+195 INFO: Module search paths (PYTHONPATH):
+['D:\\project\\empire',
+ 'D:\\Programs\\Python3129\\python312.zip',
+ 'D:\\Programs\\Python3129\\DLLs',
+ 'D:\\Programs\\Python3129\\Lib',
+ 'D:\\Programs\\Python3129',
+ 'D:\\project\\empire\\.venv',
+ 'D:\\project\\empire\\.venv\\Lib\\site-packages',
+ 'D:\\project\\empire\\src',
+ 'D:\\project\\empire\\src']
+534 INFO: Appending 'datas' from .spec
+535 INFO: checking Analysis
+535 INFO: Building Analysis because Analysis-00.toc is non existent
+535 INFO: Looking for Python shared library...
+535 INFO: Using Python shared library: D:\Programs\Python3129\python312.dll
+535 INFO: Running Analysis Analysis-00.toc
+535 INFO: Target bytecode optimization level: 0
+535 INFO: Initializing module dependency graph...
+536 INFO: Initializing module graph hook caches...
+558 INFO: Analyzing modules for base_library.zip ...
+1674 INFO: Processing standard module hook 'hook-encodings.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+2239 INFO: Processing standard module hook 'hook-math.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+2816 INFO: Processing standard module hook 'hook-pickle.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+3986 INFO: Processing standard module hook 'hook-heapq.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+5678 INFO: Caching module dependency graph...
+5698 INFO: Analyzing D:\project\empire\src\empire\__main__.py
+5906 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+6074 INFO: Processing standard module hook 'hook-xml.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+6477 INFO: Processing standard module hook 'hook-_ctypes.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+7224 INFO: Processing standard module hook 'hook-PySide6.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+7418 INFO: Processing standard module hook 'hook-shiboken6.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+7581 INFO: Processing standard module hook 'hook-PySide6.QtNetwork.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+9331 INFO: Processing standard module hook 'hook-PySide6.QtCore.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+13240 INFO: Processing standard module hook 'hook-PySide6.QtWidgets.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+17808 INFO: Processing standard module hook 'hook-PySide6.QtGui.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+49975 INFO: Processing standard module hook 'hook-cryptography.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+50999 INFO: hook-cryptography: cryptography does not seem to be using dynamically linked OpenSSL.
+52191 INFO: Processing standard module hook 'hook-platform.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+52285 INFO: Processing standard module hook 'hook-sqlalchemy.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+52824 INFO: Processing standard module hook 'hook-sysconfig.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+52887 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+52890 INFO: SetuptoolsInfo: initializing cached setuptools info...
+53500 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+53502 INFO: Setuptools: 'importlib_metadata' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.importlib_metadata'!
+53530 INFO: Processing standard module hook 'hook-setuptools.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+53583 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+53667 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+53669 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco'!
+53685 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+53686 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.more_itertools'!
+53880 INFO: Processing standard module hook 'hook-_osx_support.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+53927 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+54214 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+54216 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+54419 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+54423 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+55412 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+55414 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+56312 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+56315 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.wheel'!
+56452 INFO: Processing standard module hook 'hook-setuptools._vendor.importlib_metadata.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+56587 INFO: Processing pre-safe-import-module hook 'hook-zipp.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+56588 INFO: Setuptools: 'zipp' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.zipp'!
+59793 INFO: Processing standard module hook 'hook-pydantic.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+60545 INFO: Processing standard module hook 'hook-zoneinfo.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+61929 INFO: Processing standard module hook 'hook-certifi.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+61984 INFO: Processing standard module hook 'hook-anyio.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+63226 INFO: Processing standard module hook 'hook-pygments.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+64719 INFO: Processing standard module hook 'hook-PySide6.QtQml.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+68556 WARNING: QtLibraryInfo(PySide6): QML plugin binary 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PySide6\\qml\\Qt\\labs\\assetdownloader\\qmlassetdownloaderprivateplugin.dll' does not exist!
+92051 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+92507 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+93486 INFO: Processing module hooks (post-graph stage)...
+95031 INFO: Processing standard module hook 'hook-webbrowser.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+95187 INFO: Processing standard module hook 'hook-difflib.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+97131 WARNING: Hidden import "tzdata" not found!
+103100 INFO: Processing standard module hook 'hook-sqlalchemy.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+103504 WARNING: Hidden import "pysqlite2" not found!
+103504 WARNING: Hidden import "MySQLdb" not found!
+103504 WARNING: Hidden import "psycopg2" not found!
+104880 INFO: Processing standard module hook 'hook-sqlite3.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+105277 INFO: Performing binary vs. data reclassification (2714 entries)
+125346 INFO: Looking for ctypes DLLs
+125356 INFO: Analyzing run-time hooks ...
+125364 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+125380 INFO: Including run-time hook 'pyi_rth_cryptography_openssl.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+125392 INFO: Including run-time hook 'pyi_rth_setuptools.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+125406 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+125419 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+125435 INFO: Including run-time hook 'pyi_rth_pyside6.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+125450 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+125462 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'D:\\project\\empire\\.venv\\Lib\\site-packages\\PyInstaller\\hooks'
+125593 INFO: Creating base_library.zip...
+125608 INFO: Looking for dynamic libraries
+127130 INFO: Extra DLL search directories (AddDllDirectory): ['D:\\project\\empire\\.venv\\Lib\\site-packages\\shiboken6']
+127131 INFO: Extra DLL search directories (PATH): ['D:\\project\\empire\\.venv\\Lib\\site-packages\\PySide6']
+131790 INFO: Warnings written to D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\pyinstaller\Empire\warn-Empire.txt
+131879 INFO: Graph cross-reference written to D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\pyinstaller\Empire\xref-Empire.html
+132000 INFO: checking PYZ
+132001 INFO: Building PYZ because PYZ-00.toc is non existent
+132001 INFO: Building PYZ (ZlibArchive) D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\pyinstaller\Empire\PYZ-00.pyz
+132960 INFO: Building PYZ (ZlibArchive) D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\pyinstaller\Empire\PYZ-00.pyz completed successfully.
+132977 INFO: checking PKG
+132977 INFO: Building PKG because PKG-00.toc is non existent
+132977 INFO: Building PKG (CArchive) Empire.pkg
+133028 INFO: Building PKG (CArchive) Empire.pkg completed successfully.
+133028 INFO: Bootloader D:\project\empire\.venv\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+133028 INFO: checking EXE
+133028 INFO: Building EXE because EXE-00.toc is non existent
+133028 INFO: Building EXE from EXE-00.toc
+133028 INFO: Copying bootloader EXE to D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\pyinstaller\Empire\Empire.exe
+133146 INFO: Copying icon to EXE
+133207 INFO: Copying 0 resources to EXE
+133207 INFO: Embedding manifest in EXE
+133257 INFO: Appending PKG archive to EXE
+133371 INFO: Fixing EXE headers
+133736 INFO: Building EXE from EXE-00.toc completed successfully.
+133755 INFO: checking COLLECT
+133755 INFO: Building COLLECT because COLLECT-00.toc is non existent
+133756 INFO: Building COLLECT COLLECT-00.toc
+135618 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+135669 INFO: Build complete! The results are available in: D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\staging\‰∏≠Êñá Á©∫Ê†º
+Release step: D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\staging\÷–Œƒ ø’∏Ò\Empire\Empire.exe package-smoke --screenshot D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\release-smoke.png
+Release step: D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\staging\÷–Œƒ ø’∏Ò\Empire\Empire.exe check-config
+È¶ñÊ¨°ËøêË°åÈÖçÁΩÆÂ∑≤ÂàõÂª∫ÔºöD:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\staging\‰∏≠Êñá Á©∫Ê†º\Empire\config.toml„ÄÇËØ∑Â°´ÂÜô Redis/MySQL ËøûÊé•‰ø°ÊÅØÂêéÈáçÊñ∞ÊâìÂºÄ Empire„ÄÇ
+Release step: D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\staging\÷–Œƒ ø’∏Ò\Empire\Empire.exe check-config
+ÈÖçÁΩÆÊúâÊïàÔºöD:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\staging\‰∏≠Êñá Á©∫Ê†º\Empire\config.toml
+Release step: powershell.exe -NoProfile -NonInteractive -File D:\project\empire\scripts\release_shortcut.ps1 -Candidate D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\Empire.lnk -Existing D:\project\empire\Empire.lnk -Target D:\project\empire\dist\Empire\Empire.exe -WorkingDirectory D:\project\empire
+PASS release gate; committed evidence: D:\project\empire\build\releases\3892410b3e6a48858002a318bee648d5\publication.json
