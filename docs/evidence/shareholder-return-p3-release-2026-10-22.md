@@ -85,3 +85,46 @@ release `3892410b3e6a48858002a318bee648d5`，EXE SHA256 `cc767690af7b2feb4649faa
 私有13348在UUID/datadir/四系统库/无其他客户端核实后SQL SHUTDOWN，exit0，[关闭原件](shareholder-return-p3-release-2026-10-22/private-mysql-close.json)，监听已关闭。共享Redis、生产3307和其他项目未重启或终止，未删锁、业务或未处理错误。最终Empire保持打开。公开证据按明确文件白名单归档，不包含带配置staging/previous程序目录、ownership或私有连接文件；[摘要清单](shareholder-return-p3-release-2026-10-22/inventory.json)记录原件身份。
 
 结案说明同步后，显式generate/review、文档契约及五文件文档相关回归均exit0；契约420文档/3512链接/55表，63 passed/64.70秒，[命令与实际退出码](shareholder-return-p3-release-2026-10-22/closeout-checks.json)及[原始JUnit](shareholder-return-p3-release-2026-10-22/closeout-documentation-tests.xml)可核对。追加本段实测结果后再次显式审阅及契约核对；未修改产品或重做发布。结案提交仅为文档/原始证据，包仍绑定6808f85；远程main由提交推送后`ls-remote`与本地HEAD精确核实。
+
+## 跨批次独立验收（2026-10-22晚间）
+
+本节是当前P0/P1、P2、P3组合的重新核验，未启动O7/O8；不是转述上述旧测试或截图。开工main及远程均为`315cc6e3f85bab56e0ee9214c4dbc71758d7e1b5`、工作区干净。6808f85之后的提交为文档/研究证据；本轮修正文档，无产品Python、SQL、测试、构建或配置实现变化，不重打包。正式包仍为本账本P3 release `3892410b3e6a48858002a318bee648d5`，实现提交`6808f85188be0aae58c897b417e5819a9e6da529`。新[只读审计工具](shareholder-return-p3-release-2026-10-22/cross-batch/audit.py)、[初始现场](shareholder-return-p3-release-2026-10-22/cross-batch/before.json)及[当前查询](shareholder-return-p3-release-2026-10-22/cross-batch/current.json)记录实际时间、Git命令、EXE与整包树摘要，均匹配原发布journal；运行状态实际显示6808f85188be干净提交。文档提交HEAD不冒充新安装包。
+
+### 本轮执行范围与独立预期
+
+诊断只启动基础设施及正式查询，不启动第二采集器或归档器；全Engine SQL守卫拒绝SELECT/SHOW/START/ROLLBACK之外的命令，没有新增来源请求。正式桌面正常启动会按用户保存计划执行日常采集，不能称共享现场冻结或所有来源零请求。21:23的已有回购调度正常完成5592条，12代理请求；本轮没有手动重采。21:25第一次审计其他项目pending6，21:27及关开后pending0，没有清队操作。生产UUID仍为`77f9ba30-b666-11f1-81c5-380525361d4e`，共享服务没有重启。
+
+主算例固定000001.SZ /2026-01-01～2026-10-20，不换证券日期。独立oracle在一个只读事务内另取原始分红字段、正式日历及quote查询价格，没有调用事件资格、汇总或股息率计算函数生成预期；产品各自的一致快照另由正式路径执行，不宣称全报告跨系统原子。原始输入与[独立分数算术](shareholder-return-p3-release-2026-10-22/cross-batch/independent-oracle.json)、[复核脚本](shareholder-return-p3-release-2026-10-22/cross-batch/oracle.py)可复算：
+
+- 实施键`f01ac91aae58b442287c27341239a550c4dcc043a5a35ac03a67a18206aa28eb`，除息06-12，0.36元/股；`3ab54e7a1963d64c20e4a82008b1302da938e81ba7ca51e22ce25a9f69e9be02`，除息09-24，0.249元/股。完整单元仍28条，未删预案或历史。
+- 分子`609/1000`元/股、`609/100`元/10股。正式2026-10-20未复权价11.44元，来源时刻153833000，SQL观测2026-10-22 04:34:50.323266北京时间；盘后观测有效。结果精确分数`3045/572 %`，Decimal60位与正式输出一致，约5.3234265734%。分红实际证明时间UTC05:53:43.048873，不以本轮检查时间代替。
+
+| 项目／固定范围 | 本轮重新执行的证据与结果 | 结论及边界 |
+| --- | --- | --- |
+| P0/P1逐笔及汇总 | 当前正式query、独立原始字段复算；真实桌面准备详情及分红页均重新计算0.609/6.09、显示逐笔键 | 通过当前范围；名义含税每股派息不是到账现金 |
+| P2实际分母 | 当前正式日历、原始quote、来源时刻/盘后SQL证据及股数基准；桌面显示10-20/11.44/公式/190交易日基准 | 通过当前算例；不是年化、TTM或历史信号 |
+| P3组合准备 | 当前audit逐行重建规范内容及滚动摘要，5592条、invalid0，proof count/digest一致；观察UTC13:23:16.355555 | 不是沿用旧5588预期；当前必需fields/keys/coverage/quality/freshness通过，temporal限制保留 |
+| P3正式查询 | 000001全证券回购查询为空；600579方案15721累计1423100股/10089072元、统计10-20、公告10-22仍可查 | 当前完整集合支持前者无记录；后者不是期间支出或实际注销。本轮页面重新核对准备证明，600579细节本轮仅正式query，未重做其桌面明细 |
+| 日期边界 | 正式query截止06-11/06-12/09-23/09-24分别0/0.36/0.36/0.609；桌面独立操作06-11及06-12 | 完整证明空范围可为0；闭区间边界通过。与复权不同下界的原回归本轮重新执行 |
+| 非交易日 | 000001截止10-18正式结果明确分母10-16、价格11.50；不取不存在的10-18价 | 本轮正式query通过；非交易日桌面未重复操作 |
+| 证券切换及缺价格 | 600000同范围当前0.42/4.2及股息率4.3032786885…%，其旧缺价已不代表当前；仍用原固定002731验证缺价，未请求来源 | 002731完整单元11条、范围0派息可计算，股息率缺精确分母/基准快照阻断；两结果在真实桌面分别重算，未换样凑通过 |
+| 600938原历史失配 | 正式query两项均数据阻断；桌面重新算派息仍显示未证明单元、无数值 | 保持失败，不将未知空集填0 |
+| 历史信号 | 原范围两项正式query均来源受限；当前修订缺逐修订可用日 | 未提前使用修订；本轮未重做历史信号桌面 |
+| 页面与缓存 | 日期/证券修改后真实分红计算区立即撤销旧结果为未检查；重新计算出现新范围结果；准备页研究方向变更明确旧报告归属 | 真实页面通过；缓存过期、价格输入失效与重新检查的开发反例另见本轮JUnit，不篡改生产缓存制造失败 |
+| 回购失败的跨影响 | [合成组合诊断](shareholder-return-p3-release-2026-10-22/cross-batch/cross-effects.json)把主题回购设为失败，复用本轮真实独立产物，派息和股息率仍已计算，主题不就绪；未实现三项仍未实现 | 仅合成反例；未向生产注入故障。当前生产回购本来通过，不能冒称生产失败反例 |
+| Redis不可用、精确单元反例 | 本轮开发回归覆盖SQL新鲜/过期回退、同数异键/同键异内容/缺记录/缺证明、未知金额日期、歧义实施及预案排除 | 合成验证，不关闭共享Redis；原SQL证据时间不刷新 |
+| 正常重启 | 49264正常Alt+F4退出，随后57136由同EXE正常重开；零线程38160残留不算活动应用，未强杀或删锁 | 同包可见桌面、配置与偏好保留；研究草稿不承诺跨软件重启保存 |
+
+本轮真实窗口操作通过computer-use技能，原始[观察记录](shareholder-return-p3-release-2026-10-22/cross-batch/desktop/observations.json)和同目录截图有实际操作时间。截图与query分别为证，未把Python只读query称为EXE交互。正常关开后[核对](shareholder-return-p3-release-2026-10-22/cross-batch/reopened.json)exit0，两config字节、插件偏好及48项SQL设置digest均与开工相同，EXE/整包树仍匹配journal；可见[运行版本与连接](shareholder-return-p3-release-2026-10-22/cross-batch/desktop/reopened-runtime-version-connections-zero-isolation-0.png)显示待归档0、隔离项目无。CLI doctor的isolation无法跨进程取得，exit1/partial明确保留在[诊断](shareholder-return-p3-release-2026-10-22/cross-batch/repurchase-doctor.json)，其他段ok；不把CLI未知冒充通过，也不将其归为回购产品失败。
+
+### 本轮验证、发现与未核实边界
+
+命令均使用`.venv/Scripts/python.exe -X utf8`。`audit.py before/current/closed/reopened`四次均exit0，`oracle.py`及`cross_effect.py`exit0；实际命令范围、JUnit及原件摘要见同目录。第一组`pytest test_dividend_distribution/test_dividend_yield/test_distribution_cache/test_preparation_cache/test_distribution_ui/test_repurchases/test_repurchase_ui/test_repurchase_verification_tools`为82通过/1显式owned SQL opt-in跳过，exit0；第二组`test_capital_preparation/test_preparation_research/test_adjustment/test_adjustment_query/test_calendar_preparation`为90通过，exit0。不能把跳过的私有SQL集成视为本轮执行；本轮无实现修改，未重启私有13348、未重做故障注入归档集成、容量或全量发布门禁，原P3该类证据保持为旧轮次证据。
+
+发现并修正的是说明问题：股息率帮助仍无条件称回购阻断、误称P3未实现；现已改为本次检查失败时阻断主题，并区分已交付回购准备与未实现期间支出。当前能力、一个完整实例、补采/来源限制/未检查下一步集中更新原“数据准备”主题；页面关联已有覆盖不增重复入口。仓库权威正文和聚合物已生成、审阅；本轮未同步替换安装包资源，包内原有旧措辞仍存在，应以仓库当前指南和实际检查结果为准。这是文档交付，不能冒称新正式包已发布。
+
+另保留操作前提错误：第一次文档pytest命令误用不存在的`test_documentation_storage_help.py`，exit1且未执行测试；改为实际`test_storage_help.py`后五文件63通过/102.88秒、exit0。UIA点击离屏按钮被坐标守卫拒绝，重新滚至可见后正常进入，未绕过。没有发现可复现的新计算/完整证明产品缺陷，故不做产品修复和无意义打包。
+
+**本轮不结案**原B1/B2/B3/B4、600938、P2严格002731及旧5553成员不可恢复问题；B4原确切错误ID仍存在，未清理。没有新线索的来源不重试。本轮范围不是全市场/全部历史审计，也不重新宣称30股采集准入通过。持仓现金收益、期间回购支出、稀释计算未实现。O7状态为“可行性已证明，产品实施暂缓”：600590公告正例及300176/001228/601127缺口保留，不改写为无可靠来源；后续须明确接受新增公告范围并先通过更正身份、解析适用性和数据库设计准入。O8继续暂缓。
+
+最终文档generate/review/verify及实现无变化、diff检查均exit0；文档契约423文档/3572链接/55表。实际命令和退出码见[本轮检查记录](shareholder-return-p3-release-2026-10-22/cross-batch/close-checks.json)，证据字节见[清单](shareholder-return-p3-release-2026-10-22/cross-batch/inventory.json)。两次最终文档检查分别因尚未复制cross-effects.json、close-checks.json到证据目录而exit1，已补归档原件后重查通过，原失败记录与日志保留；没有放宽检查。本文新增链接后的最终契约结果以检查记录为准。正常重开后正式query再次通过固定正例并保留反例；本轮未重新在桌面逐一输入重开后的全部范围。最终Empire保持打开，配置、业务数据和原失败未清理。

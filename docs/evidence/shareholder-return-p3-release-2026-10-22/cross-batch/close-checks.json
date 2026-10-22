@@ -1,0 +1,72 @@
+[
+  {
+    "label": "generate",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_build.py",
+      "generate"
+    ],
+    "at": "2026-10-22T14:05:24.252605+00:00",
+    "seconds": 0.22567699989303946,
+    "exit_code": 0
+  },
+  {
+    "label": "review",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_contract.py",
+      "review",
+      "--note",
+      "跨批次独立验收：P0/P1、P2和P3当前正式记录独立复算、同包真实桌面及正常重启；更新数据准备集中指南，修正旧回购阻断/P3状态措辞；保留原失败，O7可行性已证明产品暂缓，O8暂缓；未修改产品实现或安装包。"
+    ],
+    "at": "2026-10-22T14:05:24.478720+00:00",
+    "seconds": 8.115125700016506,
+    "exit_code": 0
+  },
+  {
+    "label": "verify",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/verify_documentation.py"
+    ],
+    "at": "2026-10-22T14:05:32.593946+00:00",
+    "seconds": 8.982032499974594,
+    "exit_code": 0
+  },
+  {
+    "label": "implementation-unchanged",
+    "command": [
+      "git",
+      "diff",
+      "--exit-code",
+      "6808f85",
+      "--",
+      "src/**/*.py",
+      "scripts",
+      "tests",
+      "sql",
+      "Empire.spec",
+      "verify-release.ps1"
+    ],
+    "at": "2026-10-22T14:05:41.576625+00:00",
+    "seconds": 0.050769399967975914,
+    "exit_code": 0
+  },
+  {
+    "label": "whitespace",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "at": "2026-10-22T14:05:41.627779+00:00",
+    "seconds": 0.0642207000637427,
+    "exit_code": 0
+  }
+]

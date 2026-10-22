@@ -34,4 +34,4 @@
 
 本次用途范围专项：preparation.py只读核验现行SQL单元的精确业务键、内容和证明后投影日期；query.py接收既定PreparationScope。原全范围审计仍保留，完整历史失败不被局部范围覆盖。
 
-P2在既有dividends.query登记dividend_yield；完整分红、日历、未复权quote及分母日停复牌由调用方同一RR READ ONLY事务核验。共享收盘时刻规则在kaipanla.closing，停复牌连接内公开检查为suspensions.query.closing_price_evidence。逐交易日股数基准变化、送转或必需输入缺失即阻断；名义派息产物仍可独立使用。没有新业务表、写库或第二计算规则。P3/P4仍未实现，验收见[本批账本](../../../../docs/evidence/shareholder-return-p2-2026-10-22.md)。
+P2在既有dividends.query登记dividend_yield；完整分红、日历、未复权quote及分母日停复牌由调用方同一RR READ ONLY事务核验。共享收盘时刻规则在kaipanla.closing，停复牌连接内公开检查为suspensions.query.closing_price_evidence。逐交易日股数基准变化、送转或必需输入缺失即阻断；名义派息产物仍可独立使用。没有新业务表、写库或第二计算规则。P3回购证明修复已交付；期间回购支出未实现，O7可行性已证明、产品实施暂缓，O8继续暂缓。P2验收见[本批账本](../../../../docs/evidence/shareholder-return-p2-2026-10-22.md)。

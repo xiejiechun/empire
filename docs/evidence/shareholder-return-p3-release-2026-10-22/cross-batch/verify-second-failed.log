@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\project\empire\scripts\verify_documentation.py", line 159, in <module>
+    result = verify(project_root)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\empire\scripts\verify_documentation.py", line 120, in verify
+    raise RuntimeError("Documentation links are invalid:\n" + "\n".join(links))
+RuntimeError: Documentation links are invalid:
+docs\evidence\shareholder-return-p3-release-2026-10-22.md:130: missing link shareholder-return-p3-release-2026-10-22/cross-batch/close-checks.json

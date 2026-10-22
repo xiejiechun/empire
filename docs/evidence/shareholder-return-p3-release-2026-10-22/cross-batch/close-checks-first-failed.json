@@ -1,0 +1,42 @@
+[
+  {
+    "label": "generate",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_build.py",
+      "generate"
+    ],
+    "at": "2026-10-22T14:02:33.060262+00:00",
+    "seconds": 0.2384909000247717,
+    "exit_code": 0
+  },
+  {
+    "label": "review",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_contract.py",
+      "review",
+      "--note",
+      "跨批次独立验收：P0/P1、P2和P3当前正式记录独立复算、同包真实桌面及正常重启；更新数据准备集中指南，修正旧回购阻断/P3状态措辞；保留原失败，O7可行性已证明产品暂缓，O8暂缓；未修改产品实现或安装包。"
+    ],
+    "at": "2026-10-22T14:02:33.299880+00:00",
+    "seconds": 7.897675999905914,
+    "exit_code": 0
+  },
+  {
+    "label": "verify",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/verify_documentation.py"
+    ],
+    "at": "2026-10-22T14:02:41.198157+00:00",
+    "seconds": 0.5058919000439346,
+    "exit_code": 1
+  }
+]
