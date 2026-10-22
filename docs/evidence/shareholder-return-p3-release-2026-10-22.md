@@ -128,3 +128,26 @@ release `3892410b3e6a48858002a318bee648d5`，EXE SHA256 `cc767690af7b2feb4649faa
 **本轮不结案**原B1/B2/B3/B4、600938、P2严格002731及旧5553成员不可恢复问题；B4原确切错误ID仍存在，未清理。没有新线索的来源不重试。本轮范围不是全市场/全部历史审计，也不重新宣称30股采集准入通过。持仓现金收益、期间回购支出、稀释计算未实现。O7状态为“可行性已证明，产品实施暂缓”：600590公告正例及300176/001228/601127缺口保留，不改写为无可靠来源；后续须明确接受新增公告范围并先通过更正身份、解析适用性和数据库设计准入。O8继续暂缓。
 
 最终文档generate/review/verify及实现无变化、diff检查均exit0；文档契约423文档/3572链接/55表。实际命令和退出码见[本轮检查记录](shareholder-return-p3-release-2026-10-22/cross-batch/close-checks.json)，证据字节见[清单](shareholder-return-p3-release-2026-10-22/cross-batch/inventory.json)。两次最终文档检查分别因尚未复制cross-effects.json、close-checks.json到证据目录而exit1，已补归档原件后重查通过，原失败记录与日志保留；没有放宽检查。本文新增链接后的最终契约结果以检查记录为准。正常重开后正式query再次通过固定正例并保留反例；本轮未重新在桌面逐一输入重开后的全部范围。最终Empire保持打开，配置、业务数据和原失败未清理。
+
+## 说明资源同步（2026-10-22 22:20）
+
+本轮仅对照上一轮文档与当前安装包。开工本地/远程main均为`3e7a3ac1fd851f59e1d6f2f4b293dcf9eb2f7ad5`，工作区干净；安装树逐文件摘要与原P3发布journal一致。上述“包内旧措辞仍存在”是上一轮结束时的历史事实，本节同步后已不再适用于本机安装目录。实际对照见[原始差异](shareholder-return-p3-release-2026-10-22/help-sync/installed-versus-current.json)、[同步前身份](shareholder-return-p3-release-2026-10-22/help-sync/before.json)及[旧正文原件](shareholder-return-p3-release-2026-10-22/help-sync/previous-storage_reference.txt)。
+
+| 修改范围 | 用户影响及处理 |
+| --- | --- |
+| 数据准备主题 | 新增完整操作实例、页面间筛选不传递、状态下一步、数值口径及暂缓范围；影响操作和限制判断，本轮立即同步 |
+| 区间名义现金股息率主题 | 将无条件回购阻断改为检查失败时阻断，修正误称P3未交付；影响用途判断，本轮立即同步 |
+| 聚合说明资源 | 自动生成物，只有上述两主题不同，无其他主题增删；整份资源逐字同步，不另建帮助路径 |
+| 业务账本、方案、O7设计、开发README及验收原件 | 属于开发/验收记录，不是运行帮助资源；保留仓库入口，登记随下次正常整包发布采用当前源输入，不为这些记录重新打包 |
+
+依据[说明文档维护](../documentation-maintenance.md)“纯正文变更只需生成、文档契约和相关回归，可同步外置聚合资源并注明未重建”，本轮不执行产品打包门禁，不声称新的EXE发布。使用现有`ReleaseLock`取得全过程独占写入所有权，确认正常关闭且无活动Empire线程后，核对HEAD、来源和安装树未变，独占临时文件写入并原子替换唯一外置`_internal/empire/plugins/ui/storage_reference.md`。原发布journal及冻结工具未修改；[一次性核对/同步脚本](shareholder-return-p3-release-2026-10-22/help-sync/sync_help.py)只用于本次资源证据，不新增产品或采集入口。
+
+[资源更新记录](shareholder-return-p3-release-2026-10-22/help-sync/deployment.json)记录：原release仍为`3892410b3e6a48858002a318bee648d5`，实现提交仍`6808f85188be0aae58c897b417e5819a9e6da529`，EXE SHA256仍`cc767690af7b2feb4649faaf9352de70b99f532c2bf78a1529c24302b0bac0df`。指南内容采用`3e7a3ac`版，外置资源SHA256为`3e2f2fc1a755a90df3bac0149afa4f7eb9174b59b0a7cdd1fbe39a3899f06705`；当前安装树SHA256为`921cfbb8a14ce2dba0581e65141e2f9106005d262073765cca5a738e441eb068`。仅这一文件改变，不能继续把新树称为原journal的整包树；旧归档发布产物不重写，下次正常整包构建再纳入当前帮助。
+
+命令使用`.venv/Scripts/python.exe -X utf8`。`sync_help.py compare`、`sync_help.py sync`、`sync_help.py reopened`均最终exit0；`check_docs.py before`的generate、review、verify、产品实现无变化及diff检查均exit0，见[实测命令](shareholder-return-p3-release-2026-10-22/help-sync/before-checks.json)。五文件`pytest tests/test_documentation_build.py tests/test_documentation_review.py tests/test_documentation_contracts.py tests/test_documentation_sources.py tests/test_storage_help.py -q --junitxml=docs/evidence/shareholder-return-p3-release-2026-10-22/help-sync/documentation-tests.xml`为63 passed、135.49秒、exit0，见[原始JUnit](shareholder-return-p3-release-2026-10-22/help-sync/documentation-tests.xml)。最终账本更新后再次显式generate/review/verify，实际退出码见同目录final-checks.json；没有产品代码、SQL、测试断言、采集或性能工具修改。
+
+保留一次前提错误：首次`sync_help.py sync`exit1，PowerShell在仅余一个零线程残留对象时将JSON输出为单对象，诊断脚本按列表读取触发`TypeError: string indices must be integers, not 'str'`，发生于任何写入之前；[该次现场](shareholder-return-p3-release-2026-10-22/help-sync/first-sync-failed-closed.json)保留。纠正为显式数组输出后重新核对原安装树，才执行同步。首次失败后曾正常重开42336，随后再次正常关闭；未强杀、未删锁或绕过活动线程检查。
+
+同步成功后由同一`dist/Empire/Empire.exe`正常打开。通过computer-use实际进入说明文档，核实新版[数据准备完整实例](shareholder-return-p3-release-2026-10-22/help-sync/preparation-updated-0.png)、[股息率条件阻断](shareholder-return-p3-release-2026-10-22/help-sync/yield-updated-top-0.png)和[P3/O7/O8限制](shareholder-return-p3-release-2026-10-22/help-sync/yield-updated-p3-o7-0.png)，各截图同名JSON保存实际观察时间与窗口身份；不是离屏验证。[重开后字节核对](shareholder-return-p3-release-2026-10-22/help-sync/reopened.json)证明包内资源与仓库完全一致、EXE/其余树文件未变，两份config及插件偏好字节保持。未修改SQL保存设置，本轮不重复其业务核验；未发起手动实采，应用按既有计划正常运行。原B项、P2严格失败和O7/O8状态保持，未新增功能或重验计算。
+
+**当前使用版本**：使用本机安装目录“说明文档 → 数据准备 / 区间名义现金股息率”，或仓库上述权威主题的`3e7a3ac`正文；两处已同步。原始P3未同步副本仍可能保留旧帮助，不能仅凭相同EXE身份判断说明已更新，应核对本节资源摘要。归档时原统一diff的空白上下文触发Git空白检查，已将完整diff原文存为JSON字符串而保留语义及旧正文原字节；未放宽检查。忽略的实际命令日志按本目录白名单显式纳入Git，并核对索引字节。Empire最终保持打开。

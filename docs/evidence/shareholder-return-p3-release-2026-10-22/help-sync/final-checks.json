@@ -1,0 +1,72 @@
+[
+  {
+    "label": "generate",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_build.py",
+      "generate"
+    ],
+    "at": "2026-10-22T14:28:50.601606+00:00",
+    "seconds": 0.20976019999943674,
+    "exit_code": 0
+  },
+  {
+    "label": "review",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/documentation_contract.py",
+      "review",
+      "--note",
+      "仅说明资源同步：逐字对照确认仅数据准备、区间名义现金股息率两主题差异；修正P3状态及条件阻断，保留来源限制、O7/O8暂缓；按纯正文流程更新外置聚合物，未重建EXE或修改业务实现。"
+    ],
+    "at": "2026-10-22T14:28:50.811143+00:00",
+    "seconds": 7.866538000060245,
+    "exit_code": 0
+  },
+  {
+    "label": "verify",
+    "command": [
+      "D:\\project\\empire\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/verify_documentation.py"
+    ],
+    "at": "2026-10-22T14:28:58.678543+00:00",
+    "seconds": 8.497172400006093,
+    "exit_code": 0
+  },
+  {
+    "label": "implementation-unchanged",
+    "command": [
+      "git",
+      "diff",
+      "--exit-code",
+      "6808f85",
+      "--",
+      "src/**/*.py",
+      "scripts",
+      "tests",
+      "sql",
+      "Empire.spec",
+      "verify-release.ps1"
+    ],
+    "at": "2026-10-22T14:29:07.173881+00:00",
+    "seconds": 0.05191750009544194,
+    "exit_code": 0
+  },
+  {
+    "label": "whitespace",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "at": "2026-10-22T14:29:07.229147+00:00",
+    "seconds": 0.06873319996520877,
+    "exit_code": 0
+  }
+]
