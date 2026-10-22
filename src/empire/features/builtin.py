@@ -8,6 +8,7 @@ from empire.features.capital_actions.bundle import bundle as capital_actions_bun
 from empire.features.data_browser.bundle import bundle as data_browser_bundle
 from empire.features.financial_statements.bundle import bundle as financial_statements_bundle
 from empire.features.holders.bundle import bundle as holders_bundle
+from empire.features.hot_list.bundle import bundle as hot_list_bundle
 from empire.features.index_prices.bundle import bundle as index_prices_bundle
 from empire.features.indices.bundle import bundle as indices_bundle
 from empire.features.industries.bundle import bundle as industries_bundle
@@ -27,7 +28,7 @@ from empire.features.trading_rules.bundle import bundle as trading_rules_bundle
 from empire.features.unlock_industries.bundle import bundle as unlock_industries_bundle
 from empire.features.unlocks.bundle import bundle as unlocks_bundle
 
-FACTORIES = (news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, kaipanla_bundle, capital_actions_bundle, adjustment_bundle, ths_capital_bundle, listings_bundle, listing_status_bundle, security_aliases_bundle, name_changes_bundle, st_events_bundle, unlocks_bundle, unlock_industries_bundle, performance_bundle, repurchases_bundle, trading_rules_bundle)
+FACTORIES = (news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, kaipanla_bundle, capital_actions_bundle, adjustment_bundle, ths_capital_bundle, listings_bundle, listing_status_bundle, security_aliases_bundle, name_changes_bundle, st_events_bundle, unlocks_bundle, unlock_industries_bundle, performance_bundle, repurchases_bundle, trading_rules_bundle, hot_list_bundle)
 
 
 def builtin_bundles(cfg) -> tuple[FeatureBundle, ...]:

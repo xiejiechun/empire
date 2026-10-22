@@ -51,7 +51,10 @@
     "additional_issue": "tdx",
     "rights_issue": "tdx",
     "suspension_event": "tdx",
-    "trade_calendar": "cninfo"
+    "trade_calendar": "cninfo",
+    "hot_list_day": "tdx",
+    "hot_list_reason": "tdx",
+    "hot_list_seat": "tdx"
   },
   "tables": [
     "capital_funding",
@@ -105,6 +108,9 @@
     "rights_issue",
     "suspension_event",
     "trade_calendar",
+    "hot_list_day",
+    "hot_list_reason",
+    "hot_list_seat",
     "finance_news",
     "collection_state",
     "app_setting"
@@ -158,7 +164,8 @@
     "rights_issues.unit": "rights_issue",
     "calendar.month": "trade_calendar",
     "suspensions.period": "suspension_event",
-    "news.flash.page": "finance_news"
+    "news.flash.page": "finance_news",
+    "hot_list.tdx_unit": "hot_list_day"
   },
   "dataset_table_groups": {
     "ths.capital.security": [
@@ -337,6 +344,11 @@
     ],
     "news.flash.page": [
       "finance_news"
+    ],
+    "hot_list.tdx_unit": [
+      "hot_list_day",
+      "hot_list_reason",
+      "hot_list_seat"
     ]
   },
   "primary_keys": {
@@ -536,6 +548,20 @@
       "trade_date",
       "side",
       "level"
+    ],
+    "hot_list_day": [
+      "unified_code",
+      "list_date"
+    ],
+    "hot_list_reason": [
+      "unified_code",
+      "list_date",
+      "seq"
+    ],
+    "hot_list_seat": [
+      "unified_code",
+      "list_date",
+      "seq"
     ]
   },
   "source_overrides": {

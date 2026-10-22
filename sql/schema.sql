@@ -1002,3 +1002,56 @@ CREATE TABLE IF NOT EXISTS capital_release (
     CONSTRAINT ck_release_section CHECK (section IN ('pledge','freeze')),
     KEY idx_capital_release_parent (parent_key,record_key)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS hot_list_day (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    list_date DATE NOT NULL,
+    directory_listed BOOLEAN NOT NULL,
+    detail_status VARCHAR(20) NOT NULL,
+    reason_count INT NOT NULL,
+    seat_count INT NOT NULL,
+    auxiliary JSON NOT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    version_observed_at DATETIME(6) NULL,
+    PRIMARY KEY (unified_code,list_date),
+    KEY ix_date (list_date,unified_code),
+    CONSTRAINT ck_hot_list_listed CHECK (directory_listed IN (0,1)),
+    CONSTRAINT ck_hot_list_status CHECK (detail_status IN ('pending','present','partial','source_empty')),
+    CONSTRAINT ck_hot_list_counts CHECK (reason_count >= 0 AND reason_count <= 1000 AND seat_count >= 0 AND seat_count <= 10000)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS hot_list_reason (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    list_date DATE NOT NULL,
+    seq INT NOT NULL,
+    reason_code VARCHAR(32) NOT NULL,
+    reason VARCHAR(1000) NOT NULL,
+    volume DECIMAL(28,8) NULL,
+    turnover DECIMAL(28,8) NULL,
+    close_price DECIMAL(28,8) NULL,
+    change_pct DECIMAL(20,8) NULL,
+    PRIMARY KEY (unified_code,list_date,seq),
+    KEY ix_reason (reason_code,list_date,unified_code),
+    CONSTRAINT ck_hot_reason_seq CHECK (seq >= 1 AND seq <= 1000),
+    CONSTRAINT ck_hot_reason_positive CHECK ((volume IS NULL OR volume >= 0) AND (turnover IS NULL OR turnover >= 0) AND (close_price IS NULL OR close_price >= 0))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS hot_list_seat (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    list_date DATE NOT NULL,
+    seq INT NOT NULL,
+    reason_code VARCHAR(32) NOT NULL,
+    side CHAR(1) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    seat_rank INT NOT NULL,
+    seat_name VARCHAR(256) NOT NULL,
+    buy_amount DECIMAL(28,8) NULL,
+    sell_amount DECIMAL(28,8) NULL,
+    net_amount DECIMAL(28,8) NULL,
+    extension JSON NOT NULL,
+    PRIMARY KEY (unified_code,list_date,seq),
+    KEY ix_seat_name (seat_name,list_date,unified_code),
+    CONSTRAINT ck_hot_seat_seq CHECK (seq >= 1 AND seq <= 10000),
+    CONSTRAINT ck_hot_seat_rank CHECK (seat_rank >= 1 AND seat_rank <= 1000),
+    CONSTRAINT ck_hot_seat_side CHECK (side IN ('B','S')),
+    CONSTRAINT ck_hot_seat_positive CHECK ((buy_amount IS NULL OR buy_amount >= 0) AND (sell_amount IS NULL OR sell_amount >= 0))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;

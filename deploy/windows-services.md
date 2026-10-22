@@ -99,3 +99,5 @@
 ## 公司资本运作增量建表
 
 新增同花顺公司资本运作须正常关闭Empire，使用 `scripts/create_ths_capital_schema.py` 先核实、再显式 `--apply`；要求待归档为零，维护前后核对既有业务不变。新表为 `capital_funding`、`capital_project`、`capital_transaction`、`capital_equity_summary`、`capital_equity_position`、`capital_ipo`、`capital_encumbrance`、`capital_release`。启动不自动建表；任务默认每天18:30且停用，启用后全池逐证券核验。字段与限制见[专项说明](../docs/ths-capital.md)。
+
+龙虎榜三表 `hot_list_day`、`hot_list_reason`、`hot_list_seat` 属于固定tdx数据，备份恢复时连同 `collection_state` 核对；新增结构只通过显式维护入口执行。

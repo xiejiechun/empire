@@ -107,7 +107,9 @@ def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
     cards = json.loads((root/'docs/database-design-cards.json').read_text('utf-8'))
     evidence_path = cards['datasets']['kaipanla.trades.day']['capacity']['evidence']
     evidence = json.loads((root/evidence_path).read_text('utf-8'))
-    paths = {'sql/schema.sql', 'sql/schema-contract.json', 'sql/business-schema.json', 'docs/database-design-cards.json', evidence_path, *evidence['bindings']}
+    proof = json.loads((root/'docs/capacity-schema-additions.json').read_text('utf8'))
+    paths = {'sql/schema.sql', 'sql/schema-contract.json', 'sql/business-schema.json', 'docs/database-design-cards.json', evidence_path, *evidence['bindings'],
+             'docs/capacity-schema-additions.json', *proof['baselines'].values(), proof['design'], *proof['tests']}
     for card in cards['datasets'].values():
         paths.update([card['dictionary'], *card['tests']])
         if card['capacity']['status'] == 'measured':
@@ -118,7 +120,7 @@ def test_capacity_evidence_is_bound_and_enforced(tmp_path, failure):
         target = tmp_path/path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((root/path).read_bytes())
-    assert verify(tmp_path)['tables'] == 55
+    assert verify(tmp_path)['tables'] == 58
     if failure == 'stale':
         (tmp_path/'src/empire/features/kaipanla/trade_blocks.py').write_text('changed', encoding='utf-8')
         pattern = '证据已过期'

@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from empire.contracts.business_schema import read_business_schema
 from empire.features.builtin import dataset_contributions
 from empire.plugins.datasets.astock import DatasetPlugin
+from scripts.capacity_schema_additions import preserved_binding
 
 LEGACY_BASELINES = frozenset({
     'stock.universe.start', 'stock.universe.page', 'stock.universe.complete', 'industry.snapshot',
@@ -87,7 +88,8 @@ def verify(root):
                 verify_scoped_ddl(evidence, schema.decode(), card['tables'])
             for path, checksum in evidence['bindings'].items():
                 if hashlib.sha256((root/path).read_bytes()).hexdigest() != checksum:
-                    raise ValueError(f'{dataset} 容量证据已过期：{path}')
+                    if not preserved_binding(root, path, checksum):
+                        raise ValueError(f'{dataset} 容量证据已过期：{path}')
             for key, maximum in evidence['limits'].items():
                 if evidence['measurements'][key] > maximum:
                     raise ValueError(f'{dataset} 容量预算超限：{key}')

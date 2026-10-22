@@ -145,6 +145,10 @@
     "repurchases": {
       "kind": "business",
       "description": "股票回购"
+    },
+    "hot_list": {
+      "kind": "business",
+      "description": "通达信龙虎榜日期、原因与席位"
     }
   },
   "module_groups": [
@@ -969,9 +973,13 @@
     {
       "owner": "suspensions",
       "role": "query",
-      "public_symbols": ["closing_price_evidence"],
+      "public_symbols": [
+        "closing_price_evidence"
+      ],
       "reason": "调用方拥有同一只读事务的分母日覆盖及完整来源身份检查；不打开连接，不采集，不推断未知复牌为永久停牌",
-      "modules": ["empire.features.suspensions.query"]
+      "modules": [
+        "empire.features.suspensions.query"
+      ]
     },
     {
       "owner": "capital_actions",
@@ -1453,6 +1461,21 @@
         "dataset": "dataset",
         "query": "query",
         "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.hot_list",
+      "owner": "hot_list",
+      "reason": "证券日完整响应及原因席位业务，共享下载/入队/归档；独立汇总及席位准备",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "parser",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui",
+        "presentation": "ui"
       }
     }
   ],

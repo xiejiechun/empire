@@ -1281,7 +1281,7 @@
         "regression": "分页P95和容量实测",
         "budget": "表和索引<=256MiB，首次导入<=60秒，列表/详情<=100ms；重复业务DML=0",
         "status": "measured",
-          "evidence": "docs/evidence/shareholder-return-p3-release-2026-10-22/paired-current.json"
+        "evidence": "docs/evidence/shareholder-return-p3-release-2026-10-22/paired-current.json"
       },
       "integrity": [
         "唯一编号keyset和剩余统计",
@@ -1682,6 +1682,48 @@
         "tests/integration/test_ths_capital_archive.py",
         "tests/test_ths_capital_ui.py"
       ]
+    },
+    "hot_list.tdx_unit": {
+      "tables": [
+        "hot_list_day",
+        "hot_list_reason",
+        "hot_list_seat"
+      ],
+      "grain": "证券榜单日期日头、来源原因及方向排名席位，完整日期独立事务",
+      "identity": "固定tdx，unified_code/list_date，子表规范序号保留并列事实；原因码与席位名称非唯一",
+      "dictionary": "docs/tdx-hot-list.md",
+      "queries": [
+        "日期全市场游标200",
+        "证券日期范围",
+        "完整证券日详情1000原因/10000席位",
+        "20日期批读审计最多2000日期"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/tdx-hot-list-capacity-2026-10-23.json",
+        "sample": "隔离500证券5000日期及15000席位，实际30随机股全历史另列",
+        "growth": "每年2.5万日头、37.5万席位，五年12.5万日头/187.5万席位规划",
+        "page_limit": 200,
+        "response": "共享generic及512KiB消息；目录20000日，详情1000原因10000席位",
+        "budget": "5000日头导入<=60秒，列表/详情P95<=100ms，审计2000日期<=10秒，重复0业务DML"
+      },
+      "integrity": [
+        "Count与列契约",
+        "目录唯一集合及日期关联",
+        "同数异集",
+        "同名机构保留",
+        "冷热摘要与重复零DML",
+        "修订与旧响应",
+        "提交后重放成功清队"
+      ],
+      "lifecycle": "首次全历史，以后完整目录补缺及90日回查，fresh全查；中断目录摘要绑定，Redis丢失SQL补缺",
+      "delivery": "共享下载代理预取/入队/归档；显式create_hot_list_schema追加三表，正式发布及桌面分别验收",
+      "tests": [
+        "tests/test_tdx_hot_list.py",
+        "tests/test_hot_list_lifecycle.py",
+        "tests/integration/test_hot_list_archive.py",
+        "tests/test_hot_list_ui.py"
+      ]
     }
   },
   "json_roles": {
@@ -1744,6 +1786,16 @@
       "purpose": "有界来源扩展或关联证明",
       "limit": "16KiB",
       "policy": "明确白名单，不保存事实序列或成功响应"
+    },
+    "hot_list_day.auxiliary": {
+      "purpose": "查询时刻活动次数和关联标签",
+      "limit": "64KiB，counts/related各500",
+      "policy": "schema1，counts/institution_count/related白名单，不存完整响应"
+    },
+    "hot_list_seat.extension": {
+      "purpose": "可选来源标签与未公开语义标志",
+      "limit": "4KiB每席位",
+      "policy": "schema1，bq1～bq4/yxyz/gsd白名单，核心金额及身份不在JSON"
     }
   }
 }

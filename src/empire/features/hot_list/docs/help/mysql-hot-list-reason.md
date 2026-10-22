@@ -1,0 +1,41 @@
+<!-- topic:数据库参考|MySQL hot_list_reason -->
+<!-- summary:通达信龙虎榜证券日期的类型化事实、关联约束与归档恢复边界，核心字段独立可查。 -->
+<!-- group:MySQL -->
+# MySQL hot_list_reason
+
+## 用途与归属
+
+数据集hot_list.tdx_unit，固定来源tdx，任务tdx-hot-list；features/hot_list的contract、dataset、query分别拥有契约、唯一事务写入和正式查询。日头、原因与席位按完整证券日关联，不保存成功响应原文。
+
+## 结构与身份
+
+| 字段 | SQL声明 | 含义 |
+| --- | --- | --- |
+| `unified_code` | `VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 统一证券身份，来源请求使用六位代码；历史不随当前stock删除。 |
+| `list_date` | `DATE NOT NULL` | 来源目录榜单日期，非公布时刻或统计起点。 |
+| `seq` | `INT NOT NULL` | 完整证券日内规范排序序号；保留合法重复，不承诺跨修订稳定ID。 |
+| `reason_code` | `VARCHAR(32) NOT NULL` | 来源T004原因码，不能作为证券日内唯一原因。 |
+| `reason` | `VARCHAR(1000) NOT NULL` | 来源T012原因全文；保留单日与多日统计语义。 |
+| `volume` | `DECIMAL(28,8) NULL` | 来源cjl成交量，来源仅标万单位，NULL未知、0为零。 |
+| `turnover` | `DECIMAL(28,8) NULL` | 来源cje成交额，万元，NULL未知、0为零。 |
+| `close_price` | `DECIMAL(28,8) NULL` | 来源closepri收盘价，元，NULL未知。 |
+| `change_pct` | `DECIMAL(20,8) NULL` | 来源zdf涨跌幅，百分数，允许负值。 |
+
+- `PRIMARY KEY (unified_code,list_date,seq)`：业务身份、范围查询或完整单元值域约束。
+- `KEY ix_reason (reason_code,list_date,unified_code)`：业务身份、范围查询或完整单元值域约束。
+- `CONSTRAINT ck_hot_reason_seq CHECK (seq >= 1 AND seq <= 1000)`：业务身份、范围查询或完整单元值域约束。
+- `CONSTRAINT ck_hot_reason_positive CHECK ((volume IS NULL OR volume >= 0) AND (turnover IS NULL OR turnover >= 0) AND (close_price IS NULL OR close_price >= 0))`：业务身份、范围查询或完整单元值域约束。
+
+## 读写与关联
+
+证券/榜单日期是共同关联，原因与席位序号保留当前完整单元的多重集合。日头及受影响子行同事务提交；重复内容零业务DML，可信摘要命中免SQL。列表按日期/代码稳定游标最多200行；详情最多1000原因/10000席位；审计20日期一批，范围最多2000日期。无到当前股票表的级联删除。
+
+## 保留与恢复
+
+目录退出保留历史；来源明确无席位保留状态及已有历史参考。普通补缺及90日回查，强制初始化全历史重查。旧观测不覆盖当前版本；无来源版本，SQL观测上界限于最后内容变化，Redis摘要过期后不承诺其后的无变化核验上界。SQL提交后重放安全，归档成功即清队，失败留队；Redis丢失以SQL日头及重新目录恢复。
+
+## 维护与相关说明
+
+scripts/create_hot_list_schema.py显式新增三表；正常关闭程序，待归档为0，持实例及维护锁核对既有结构、数量和状态，不在启动执行DDL。人工改业务须先停止归档并失效相应摘要与证明；规范改变重建覆盖证据。
+
+[通达信个股龙虎榜](help:通达信个股龙虎榜)

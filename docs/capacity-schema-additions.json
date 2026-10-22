@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "baselines": {
+    "sql/business-schema.json": "docs/evidence/hot-list-before-business-schema.json",
+    "sql/schema.sql": "docs/evidence/hot-list-before-schema.sql",
+    "sql/schema-contract.json": "docs/evidence/hot-list-before-schema-contract.json"
+  },
+  "added_tables": [
+    "hot_list_day",
+    "hot_list_reason",
+    "hot_list_seat"
+  ],
+  "added_datasets": [
+    "hot_list.tdx_unit"
+  ],
+  "design": "docs/tdx-hot-list.md",
+  "tests": [
+    "tests/test_hot_list_registration.py",
+    "tests/test_hot_list_schema_additions.py"
+  ]
+}

@@ -4098,6 +4098,59 @@
       "source": "ths",
       "fingerprint_source": "ths",
       "scope": "当前stock沪深北股票池；范围以各栏目当前完整响应为准，不扩展全部退市证券。"
+    },
+    "tdx-hot-list": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_lhbd_ggxq",
+          "method": "POST",
+          "purpose": "证券完整日期目录或完整榜单日期",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "目录0、详情1",
+              "meaning": "同一接口两种完整响应"
+            },
+            {
+              "name": "Params[1]",
+              "value": "股票池六位代码",
+              "meaning": "来源证券代码"
+            },
+            {
+              "name": "Params[2]",
+              "value": "目录空串、详情YYYY-MM-DD",
+              "meaning": "目录日关联"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "hot_list_day",
+        "hot_list_reason",
+        "hot_list_seat"
+      ],
+      "start": "每证券完整目录最早可得日期，无统一起点",
+      "end": "本轮北京时间当日及以前的完整目录日期",
+      "initial": "全池逐证券目录一次、每个日期详情一次，完整校验后继续入队；整轮结束确认全部归档。",
+      "incremental": "每天19:30完整目录；补新日及待采/缺失，回看90自然日；不重叠。",
+      "limits": "来源早期席位可空；无公布时刻、明确多日开始日及完整历史版本。辅助活动次数为查询时刻口径，不能冒充历史信号。",
+      "recovery": "Redis仍在按证券索引、目录摘要和日期续采；目录改变须fresh；Redis丢失重新目录按SQL日头补缺，不保证未归档消息恢复。",
+      "fresh": "强制重查全部可得历史；已到等待归档则先确认原轮。保留退出目录旧历史。",
+      "job_key": "tdx-hot-list-v1",
+      "datasets": [
+        "hot_list.tdx_unit"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_hot_list_v1"
+      ],
+      "topics": [
+        "通达信个股龙虎榜",
+        "采集进度与运行记录"
+      ],
+      "source_file": "src/empire/features/hot_list/collector.py",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "scope": "当前A股stock及本业务已有历史代码，沪深北以来源支持范围为准。可显式指定证券及日期闭区间，沿同一execute入口。"
     }
   }
 }

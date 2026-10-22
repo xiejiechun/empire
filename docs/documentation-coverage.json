@@ -264,6 +264,9 @@
     ],
     "ths_capital": [
       "同花顺公司资本运作"
+    ],
+    "hot_list": [
+      "通达信个股龙虎榜"
     ]
   },
   "guides": [
@@ -481,6 +484,10 @@
     ],
     "ths-capital": [
       "同花顺公司资本运作",
+      "采集进度与运行记录"
+    ],
+    "tdx-hot-list": [
+      "通达信个股龙虎榜",
       "采集进度与运行记录"
     ]
   },
@@ -909,6 +916,30 @@
           "src/empire/features/ths_capital/contract.py",
           "src/empire/features/ths_capital/dataset.py",
           "src/empire/features/ths_capital/query.py"
+        ]
+      },
+      "hot_list_day": {
+        "topic": "MySQL hot_list_day",
+        "sources": [
+          "src/empire/features/hot_list/contract.py",
+          "src/empire/features/hot_list/dataset.py",
+          "src/empire/features/hot_list/query.py"
+        ]
+      },
+      "hot_list_reason": {
+        "topic": "MySQL hot_list_reason",
+        "sources": [
+          "src/empire/features/hot_list/contract.py",
+          "src/empire/features/hot_list/dataset.py",
+          "src/empire/features/hot_list/query.py"
+        ]
+      },
+      "hot_list_seat": {
+        "topic": "MySQL hot_list_seat",
+        "sources": [
+          "src/empire/features/hot_list/contract.py",
+          "src/empire/features/hot_list/dataset.py",
+          "src/empire/features/hot_list/query.py"
         ]
       }
     },

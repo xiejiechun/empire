@@ -4,10 +4,14 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import json
+import sys
 import tomllib
 from functools import partial
 from pathlib import Path
 from types import ModuleType
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 
 def plain(value):
@@ -101,6 +105,8 @@ def differences(before, after, prefix=''):
 def compare(baseline, current, migration, root: Path, features=None):
     if baseline.get('schema') != 1 or current.get('schema') != 1:
         raise ValueError('Unsupported assembly snapshot schema')
+    from scripts.assembly_additions import additions
+    baseline = additions(json.loads(json.dumps(baseline)), current, features or [], root)
     modules = migration.get('modules', {})
     test_paths = migration.get('test_paths', {})
     if set(migration) - {'modules', 'test_paths'}:
@@ -129,6 +135,8 @@ def compare(baseline, current, migration, root: Path, features=None):
             raise ValueError('Feature changes must be an explicit list')
         seen = set()
         for change in features:
+            if change.get('path', '').startswith('addition.'):
+                continue
             if not isinstance(change, dict) or set(change) != {'path', 'before', 'after', 'design', 'tests'}:
                 raise ValueError('Feature change requires exact before/after and independent design/tests')
             path = change['path']
@@ -229,10 +237,13 @@ def compare_order(baseline, current, features=None):
     added = {change['path'].removeprefix('semantic.preparation.') for change in features or []
              if change.get('before') is None and change.get('path', '').startswith('semantic.preparation.')
              and isinstance(change.get('after'), dict) and change['after'].get('output_version')}
-    # An exact new calculation may be inserted; every old identity stays in order.
+    from scripts.assembly_additions import order_additions
+    additions = order_additions(features)
+    additions['preparation'].update(added)
+    # Exact registered additions may be inserted; every old identity stays in order.
     return ['order.' + key for key in ORDER_FIELDS if baseline[key] !=
-            ([value for value in current[key] if value not in added]
-             if key == 'preparation' and added <= set(current[key]) and not added.intersection(baseline[key])
+            ([value for value in current[key] if value not in additions[key]]
+             if additions[key] <= set(current[key]) and not additions[key].intersection(baseline[key])
              else current[key])]
 
 

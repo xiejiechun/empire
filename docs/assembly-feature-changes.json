@@ -111,5 +111,212 @@
       "tests/test_dividend_yield.py",
       "tests/integration/test_dividend_yield_pipeline.py"
     ]
+  },
+  {
+    "path": "addition.hot_list",
+    "before": null,
+    "after": {
+      "semantic": {
+        "datasets": {
+          "tdx_hot_list_v1": {
+            "datasets": [
+              "hot_list.tdx_unit"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "tdx-hot-list-v1": "tdx-hot-list"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "hot_list": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "交易事件",
+            "database_tables": [
+              "hot_list_day",
+              "hot_list_reason",
+              "hot_list_seat"
+            ],
+            "description": "全部可得历史、原因与席位；来源缺失单独呈现",
+            "group": "数据浏览",
+            "id": "hot_list",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "tdx-hot-list",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 50,
+            "source": "通达信",
+            "title": "个股龙虎榜",
+            "top_level": false
+          }
+        },
+        "plugins": {
+          "collector.tdx_hot_list": {
+            "autostart": true,
+            "description": "全历史目录、近90日回查、每天19:30",
+            "id": "collector.tdx_hot_list",
+            "name": "个股龙虎榜采集",
+            "provides": [
+              "collector.tdx_hot_list"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "hot_list.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.hot_list": {
+            "autostart": true,
+            "description": "有界日期列表、原因席位与集合校验",
+            "id": "data.hot_list",
+            "name": "龙虎榜查询",
+            "provides": [
+              "hot_list.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.hot_list": {
+            "autostart": true,
+            "description": "按需创建日期与席位浏览",
+            "id": "ui.hot_list",
+            "name": "龙虎榜浏览",
+            "provides": [
+              "ui.pages.hot_list"
+            ],
+            "requires": []
+          }
+        },
+        "preparation": {
+          "data.hot_list:hot_list": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "hot_list.query",
+            "collector": "collector.tdx_hot_list",
+            "dataset": "hot_list.tdx_unit",
+            "job_key": "tdx-hot-list-v1",
+            "method": "check_hot_list",
+            "project_id": "tdx-hot-list",
+            "requirement": "hot_list",
+            "response_group": "hot_list.tdx_unit",
+            "scoped": true,
+            "source": "通达信"
+          },
+          "data.hot_list:hot_list_summary": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "hot_list.query",
+            "collector": "collector.tdx_hot_list",
+            "dataset": "hot_list.tdx_unit",
+            "job_key": "tdx-hot-list-v1",
+            "method": "check_hot_list_summary",
+            "project_id": "tdx-hot-list",
+            "requirement": "hot_list_summary",
+            "response_group": "hot_list.tdx_unit",
+            "scoped": true,
+            "source": "通达信"
+          }
+        },
+        "tasks": {
+          "tdx-hot-list": {
+            "capability": "collector.tdx_hot_list",
+            "category": "交易事件",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "19:30",
+              "description": "每天北京时间19:30执行一次；不重叠。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "首次全部历史；补缺及近90日回查；单日与多日榜分别保留",
+            "fresh_description": "强制重新核验全部证券、全部历史日期；保留已归档历史，接收有效来源修订。",
+            "id": "tdx-hot-list",
+            "interval_seconds": 86400,
+            "name": "个股龙虎榜（通达信）",
+            "parallel_downloads": true,
+            "rate_group": "tdx",
+            "source_name": "通达信",
+            "unit_name": "只股票"
+          }
+        }
+      },
+      "bindings": {
+        "datasets": {
+          "tdx_hot_list_v1": {
+            "module": "empire.features.hot_list.dataset",
+            "qualname": "HotListDataset"
+          }
+        },
+        "pages": {
+          "hot_list": {
+            "module": "empire.features.hot_list.ui",
+            "qualname": "HotListPage"
+          }
+        },
+        "plugins": {
+          "collector.tdx_hot_list": {
+            "module": "empire.features.hot_list.collector",
+            "qualname": "HotListCollector"
+          },
+          "data.hot_list": {
+            "module": "empire.features.hot_list.query",
+            "qualname": "HotListDataPlugin"
+          },
+          "ui.hot_list": {
+            "module": "empire.features.hot_list.ui",
+            "qualname": "HotListUiPlugin"
+          }
+        },
+        "tests": {
+          "data.hot_list:hot_list": {
+            "archive_tests": [
+              "tests/integration/test_hot_list_archive.py"
+            ],
+            "source_tests": [
+              "tests/test_tdx_hot_list.py",
+              "tests/test_hot_list_lifecycle.py"
+            ]
+          },
+          "data.hot_list:hot_list_summary": {
+            "archive_tests": [
+              "tests/integration/test_hot_list_archive.py"
+            ],
+            "source_tests": [
+              "tests/test_tdx_hot_list.py",
+              "tests/test_hot_list_lifecycle.py"
+            ]
+          }
+        }
+      }
+    },
+    "design": "docs/tdx-hot-list.md",
+    "tests": [
+      "tests/test_tdx_hot_list.py",
+      "tests/test_hot_list_lifecycle.py",
+      "tests/integration/test_hot_list_archive.py",
+      "tests/test_hot_list_ui.py"
+    ]
   }
 ]

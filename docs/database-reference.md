@@ -244,3 +244,7 @@ Redis 的两类 RouterProxy 键由外部生产者拥有，Empire 只读。其他
 - [capital_ipo](../src/empire/plugins/ui/storage_reference.md#mysql-capital_ipo)：6类结构化来源事实，见逐字段正式字典。
 - [capital_encumbrance](../src/empire/plugins/ui/storage_reference.md#mysql-capital_encumbrance)：7类结构化来源事实，见逐字段正式字典。
 - [capital_release](../src/empire/plugins/ui/storage_reference.md#mysql-capital_release)：8类结构化来源事实，见逐字段正式字典。
+
+## 龙虎榜对象
+
+新增固定tdx三表：hot_list_day证券日期与来源可用性；hot_list_reason原因/量额；hot_list_seat方向排名与金额。逐字段权威说明见features/hot_list/docs/help/mysql-*.md，方案见tdx-hot-list.md。
