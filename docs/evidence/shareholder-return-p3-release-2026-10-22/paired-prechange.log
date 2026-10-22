@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "D:\project\empire\build\returns-p3-release-20261022\paired_control.py", line 61, in <module>
+    raise SystemExit(asyncio.run(main()))
+                     ^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\Python3129\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "D:\Programs\Python3129\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Programs\Python3129\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\project\empire\build\returns-p3-release-20261022\paired_control.py", line 27, in main
+    output, report = verification.initial_report(SimpleNamespace(output=str(OUT/'paired-prechange.json')), 'capacity_control')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\empire\build\returns-p3-20261022\prechange\scripts\source_verification.py", line 157, in initial_report
+    require(output.is_relative_to(project_root() / 'build'), '��֤�������λ����Ŀ build Ŀ¼')
+  File "D:\project\empire\build\returns-p3-20261022\prechange\scripts\source_verification.py", line 38, in require
+    raise ValueError(message)
+ValueError: ��֤�������λ����Ŀ build Ŀ¼

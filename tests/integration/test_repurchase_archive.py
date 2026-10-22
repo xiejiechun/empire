@@ -239,3 +239,78 @@ async def test_incomplete_refresh_and_same_key_content_mismatch_do_not_pass(plan
                 dict(id='2', remark=changed['progress_remark'], hash=digest(changed)))
     audit = await q.mysql.read(q.audit)
     assert audit['count'] == 601 and audit['invalid'] == 0 and not audit['valid']
+
+
+@pytest.mark.parametrize('failure', ['sql', 'ack'])
+async def test_terminal_proof_failure_rolls_back_then_replay_clears_queue(plans, monkeypatch, failure):
+    """Only the coverage cache miss reaches SQL on the all-hot terminal page."""
+    from threading import Event
+
+    from empire.features.repurchases import dataset
+    from empire.plugins.infra import collection_state
+
+    m, c, q, store, source = plans
+    archive = m.registry.get('archive.worker')
+    source[:] = [source_row(str(i)) for i in range(1, 602)]
+    await collect(c)
+    old = await q.mysql.read(q.audit)
+    source[0]['REMARK2'] = '前页真实修订，末页仅证明需要SQL提交'
+    save, write = collection_state.save_state, dataset.write
+    acknowledge = archive.acknowledge
+    failed = Event()
+    terminal_inputs = []
+
+    def capture_write(conn, envelope, data):
+        if data.get('finished') and data.get('confirm_coverage'):
+            terminal_inputs.append(len(data['rows']))
+        return write(conn, envelope, data)
+
+    def fail_new_proof(conn, namespace, project, origin, name, payload, previous):
+        save(conn, namespace, project, origin, name, payload, previous)
+        if payload.get('coverage', {}).get('digest') != old['proof']['digest']:
+            failed.set()
+            raise RuntimeError('test terminal coverage transaction rollback')
+
+    async def fail_committed_ack(ids):
+        if (await q.mysql.read(q.audit))['proof']['digest'] != old['proof']['digest']:
+            failed.set()
+            raise RuntimeError('test terminal coverage committed before ACK interruption')
+        await acknowledge(ids)
+
+    monkeypatch.setattr(dataset, 'write', capture_write)
+    if failure == 'sql':
+        monkeypatch.setattr(collection_state, 'save_state', fail_new_proof)
+    else:
+        monkeypatch.setattr(archive, 'acknowledge', fail_committed_ack)
+    task = asyncio.create_task(collect(c))
+    try:
+        for _ in range(200):
+            if failed.is_set():
+                break
+            await asyncio.sleep(.02)
+        assert failed.is_set() and terminal_inputs and set(terminal_inputs) == {0}
+        async with archive.lock:
+            audit = await q.mysql.read(q.audit)
+            if failure == 'sql':
+                assert audit['proof'] == old['proof'] and not audit['valid']
+            else:
+                assert audit['proof']['digest'] != old['proof']['digest'] and audit['valid']
+            assert await store.client.xlen(store.stream) > 0
+            assert (await c.ingest.checkpoint(JOB))['cursor']['phase'] == 'awaiting_archive'
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+    finally:
+        monkeypatch.setattr(collection_state, 'save_state', save)
+        monkeypatch.setattr(archive, 'acknowledge', acknowledge)
+        if not task.done():
+            task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
+    calls = c.http.request.await_count
+    archive.request_flush()
+    await collect(c)
+    audit = await q.mysql.read(q.audit)
+    assert audit['valid'] and audit['proof']['digest'] != old['proof']['digest']
+    assert audit['count'] == 601 and await store.client.xlen(store.stream) == 0
+    assert c.http.request.await_count == calls
+    assert (await q.detail('1'))['progress_remark'] == source[0]['REMARK2']

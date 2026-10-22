@@ -1,0 +1,269 @@
+{
+  "run_id": "7dbee5738444483bbc5557146668f416",
+  "mode": "capacity_control",
+  "checked_at": "2026-10-22T04:55:39.702318+00:00",
+  "passed": false,
+  "pipeline_verified": false,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [
+    {
+      "stage": "control",
+      "message": "Prechange exceeds frozen thresholds"
+    }
+  ],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "control": "exact prechange e204cfb; unchanged measure API; same seed and service; no source request",
+  "source_sha256": "9eb4e6303e322f0a24ddeecea04db9f4552aefd554a49a0eca3aa61ada4e1c18",
+  "input_files": {
+    "D:\\project\\empire\\build\\architecture-evolution-20261019\\mysql-settings.json": "a27a2f509de259dc2d7aef6172c75110e2e72032fd56f5721dafe8f88aebd8a4",
+    "D:\\project\\empire\\config.toml": "5c1e32fdf651b948c387106d2a006ba390b7cb1001827fc537262deae832f92f",
+    "D:\\project\\empire\\build\\returns-p3-20261022\\private-source.json": "f5a59246e8703f6ba919dba1a7d4500db789496909b5dd88cfebada7608054da"
+  },
+  "storage": {
+    "database": "empire_verify_ths_7dbee5738444483bbc5557146668f416_test",
+    "namespace": "empire:test:verify_ths:7dbee5738444483bbc5557146668f416",
+    "run_id": "7dbee5738444483bbc5557146668f416",
+    "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
+    "owner_sha256": "d709312adeecf0de4c8bd56b196118786c333c220bd5e0c75395db977e141875"
+  },
+  "samples": {
+    "page": [
+      3.6652000853791833,
+      3.586099948734045,
+      3.6764999385923147,
+      3.3327999990433455,
+      3.1608999706804752,
+      3.4662000834941864,
+      3.589699976146221,
+      3.5865999525412917,
+      3.2869999995455146,
+      3.2288000220432878
+    ],
+    "security": [
+      2.050700015388429,
+      0.660700025036931,
+      0.6588000105693936,
+      0.6794999353587627,
+      0.6972999544814229,
+      0.7404000498354435,
+      0.674300012178719,
+      0.7772999815642834,
+      0.6433000089600682,
+      0.5624999757856131
+    ],
+    "progress": [
+      4.244099953211844,
+      3.757599974051118,
+      3.4410000080242753,
+      3.5173000069335103,
+      3.478800063021481,
+      3.442899906076491,
+      3.410200006328523,
+      3.4499000757932663,
+      3.9289999986067414,
+      3.3295999746769667
+    ],
+    "detail": [
+      0.7987000280991197,
+      0.4626000300049782,
+      0.38059998769313097,
+      0.32760004978626966,
+      0.42179995216429234,
+      0.3945999778807163,
+      0.43919996824115515,
+      0.72310003452003,
+      0.6105999927967787,
+      0.48859999515116215
+    ],
+    "coverage": [
+      761.1910999985412,
+      798.9257000153884,
+      836.7117999587208,
+      1168.750899960287,
+      828.5945999668911,
+      747.5355999777094,
+      880.2351999329403,
+      762.1556000085548,
+      726.0382999666035,
+      698.3322999440134
+    ]
+  },
+  "all_rows_verified": 50000,
+  "bindings": {
+    "src/empire/features/repurchases/contract.py": "770edbf7376fc77dacffcc9708b231fe9527716d9364a12b2f11101e77b922c0",
+    "src/empire/features/repurchases/dataset.py": "9888a1695a7ff8f0d0c1ce431b77440562a7767c0265bf9468e4d0619845e3b6",
+    "src/empire/features/repurchases/query.py": "1f04a7fb1ecbfaa43f5b6b739ddbbc952104efe17035637e671a01505bbb936f",
+    "scripts/measure_repurchases.py": "312e2b39ceee3d2ec1914e3a397857402952b2278a0ed3bcb9dbbe9b8a06b042",
+    "scripts/repurchase_capacity.py": "18f58faee1b3e26c338337dd05955fcf053046815baf788d0e1a64d9a98c80d8",
+    "scripts/repurchase_verification.py": "72b6aab8ec85dbb6ef06680bd12c2872493052107d5d71bf8c74fa7f1f544464",
+    "scripts/source_test_storage.py": "d83e0ce03410e54010d35278a0e3f2292b62a608611e10ecfbff58ecb257e074",
+    "scripts/source_verification.py": "b9c920c0baeddc31572a83dfc5e961c659007b82bc7903e870a030d452012547"
+  },
+  "ddl_scopes": {
+    "stock_repurchase_plan": "90495c60933b3dd6cbcb694168acf783dd4c43d167cfd09bfc43d6cfe6435f8a"
+  },
+  "measurements": {
+    "page_p95_ms": 3.6764999385923147,
+    "security_p95_ms": 2.050700015388429,
+    "progress_p95_ms": 4.244099953211844,
+    "detail_p95_ms": 0.7987000280991197,
+    "coverage_p95_ms": 1168.750899960287,
+    "import_seconds": 39.91221099998802,
+    "allocated_bytes": 159678464,
+    "repeated_business_dml": 0
+  },
+  "limits": {
+    "page_p95_ms": 100,
+    "security_p95_ms": 100,
+    "progress_p95_ms": 100,
+    "detail_p95_ms": 100,
+    "coverage_p95_ms": 1000,
+    "import_seconds": 60,
+    "allocated_bytes": 268435456,
+    "repeated_business_dml": 0
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 50000,
+    "source_sample": "normalized live first plan; 2100-byte synthetic remark; 5000 securities/10 dates",
+    "cache": "first unforced, nine hot repetitions; max of ten conservatively bounds P95",
+    "synthetic": true,
+    "independent_test_service": true
+  },
+  "reviewed_tradeoffs": "一次方案一行typed存储；索引对应范围/状态/证券查询，TEXT不进入列表。完整审计有界200行逐批读取，轻量头覆盖扫描与正文审计不同；5万行放大实验不是生产覆盖声明。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_plan_date",
+        "key_len": "25",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_security_date,ix_plan_date",
+        "key": "ix_security_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 10,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ],
+    "progress": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_progress_date",
+        "key": "ix_progress_date",
+        "key_len": "18",
+        "ref": "const",
+        "rows": 21459,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": null,
+        "rows": 42918,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 200,
+      "first_ms": 3.6652000853791833
+    },
+    "security": {
+      "returned": 10,
+      "read_bytes": 3455,
+      "estimated_scan_rows": 10,
+      "first_ms": 2.050700015388429
+    },
+    "progress": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 21459,
+      "first_ms": 4.244099953211844
+    },
+    "detail": {
+      "returned": 1,
+      "read_bytes": 2233,
+      "estimated_scan_rows": 1,
+      "first_ms": 0.7987000280991197
+    },
+    "coverage": {
+      "returned": 50000,
+      "read_bytes": 3938894,
+      "estimated_scan_rows": 42918,
+      "first_ms": 761.1910999985412
+    }
+  },
+  "python_peak_bytes": 6619928,
+  "initial_rows_written": 50000,
+  "revised_rows_written": 1,
+  "diagnostic_total": {
+    "cpu_seconds": 82.765625,
+    "wall_seconds": 95.64758029999211
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}
