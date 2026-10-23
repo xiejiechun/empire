@@ -172,7 +172,7 @@
         "plugins": {
           "collector.tdx_hot_list": {
             "autostart": true,
-            "description": "全历史目录、近90日回查、每天19:30",
+            "description": "全历史目录、分层轮转回查、每天19:30",
             "id": "collector.tdx_hot_list",
             "name": "个股龙虎榜采集",
             "provides": [
@@ -250,7 +250,7 @@
               "interval_seconds": 86400,
               "mode": "daily"
             },
-            "description": "首次全部历史；补缺及近90日回查；单日与多日榜分别保留",
+            "description": "首次全部历史；补缺及7/30日轮转回查；单日与多日榜分别保留",
             "fresh_description": "强制重新核验全部证券、全部历史日期；保留已归档历史，接收有效来源修订。",
             "id": "tdx-hot-list",
             "interval_seconds": 86400,

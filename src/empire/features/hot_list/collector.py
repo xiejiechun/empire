@@ -3,7 +3,7 @@
 import asyncio
 import hashlib
 import json
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from decimal import Decimal
 from functools import partial
 from uuid import uuid4
@@ -12,6 +12,7 @@ from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
 from empire.features.hot_list.contract import CONTRACT, DATASET, JOB, PROJECT, day, digest
+from empire.features.hot_list.review import REVIEW_POLICY, review_due
 from empire.features.hot_list.source import PAGE, URL, params, parse_detail, parse_directory
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
@@ -35,7 +36,7 @@ class HotListCollector:
             "collection.records",
         ),
         provides=("collector.tdx_hot_list",),
-        description="全历史目录、近90日回查、每天19:30",
+        description="全历史目录、分层轮转回查、每天19:30",
     )
 
     def __init__(self):
@@ -150,6 +151,10 @@ class HotListCollector:
                 scope = digest(pool)
                 if (fresh and not progressed) or cursor.get("phase") == "complete":
                     cursor = {}
+                if cursor and cursor.get("review_policy") != REVIEW_POLICY:
+                    raise ValueError(
+                        "龙虎榜回查策略与未完成断点不一致，须先完成旧轮次或显式重新采集"
+                    )
                 if cursor and (
                     cursor["scope_hash"] != scope
                     or cursor["start"] != (start or "")
@@ -160,6 +165,7 @@ class HotListCollector:
                     cursor = dict(
                         phase="fetch",
                         contract=CONTRACT,
+                        review_policy=REVIEW_POLICY,
                         batch_id=uuid4().hex,
                         index=0,
                         pages=0,
@@ -206,9 +212,6 @@ class HotListCollector:
                             observed,
                         )
                     existing = await self.query.day_heads(code)
-                    review_start = (
-                        datetime.fromisoformat(cursor["through"]).date() - timedelta(days=89)
-                    ).isoformat()
                     chosen = [
                         d
                         for d in dates
@@ -218,8 +221,9 @@ class HotListCollector:
                         and (
                             cursor["force"]
                             or bool(start or end)
-                            or d >= review_start
-                            or existing.get(d, {}).get("detail_status") != "present"
+                            or review_due(
+                                code, d, existing.get(d, {}).get("detail_status"), cursor["through"]
+                            )
                         )
                     ]
                     async with prefetch_units(

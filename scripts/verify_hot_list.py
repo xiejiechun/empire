@@ -172,6 +172,54 @@ async def verify_scope(manager, selection, args, report):
         store = manager.registry.get("redis.store")
         pending = await store.client.xlen(store.stream)
         require(pending == 0, "仍有待归档")
+        # Exercise the real incremental planner after initial SQL archival.
+        # The expectation below is independent of the collector's helper.
+        from datetime import date
+
+        before = {code: await query.day_heads(code) for code in codes}
+        initial_responses = len(result["responses"])
+        initial_details = len(details)
+        directories.clear()
+        details.clear()
+        normalized.clear()
+        cursor = await collector.execute(
+            codes=codes, baseline_revision=await collector.checkpoint_revision()
+        )
+        require(cursor["phase"] == "complete", "增量未完成")
+        current = date.fromisoformat(cursor["through"])
+        expected = set()
+        for code, dates in directories.items():
+            for stamp in dates:
+                status = before[code].get(stamp, {}).get("detail_status")
+                age = (current - date.fromisoformat(stamp)).days
+                if status not in {"present", "partial", "source_empty"} or age < 7:
+                    expected.add((code, stamp))
+                    continue
+                period = 7 if age < 90 else 30 if status != "present" else None
+                if period:
+                    value = hashlib.sha256((code + ":" + stamp).encode()).hexdigest()
+                    if int(value, 16) % period == current.toordinal() % period:
+                        expected.add((code, stamp))
+        require(set(directories) == set(codes), "增量证券目录集合不完整")
+        require(set(details) == set(normalized) == expected, "增量请求/入队集合与分层规则不符")
+        for (code, stamp), source in details.items():
+            actual = await query.detail(code, stamp)
+            require(actual["detail_status"] == source["status"], "增量来源状态不一致")
+            if source["status"] != "source_empty":
+                require(actual["reasons"] == source["reasons"], "增量原因内容不一致")
+                require(actual["seats"] == source["seats"], "增量席位内容不一致")
+        pending = await store.client.xlen(store.stream)
+        require(pending == 0, "增量仍有待归档")
+        result["incremental"] = dict(
+            passed=True,
+            through=cursor["through"],
+            directories=len(directories),
+            initial_details=initial_details,
+            selected_details=len(expected),
+            responses=len(result["responses"]) - initial_responses,
+            selected_keys_sha256=digest(sorted(expected)),
+            pending_stream=pending,
+        )
         result.update(
             pipeline_verified=True,
             pending_stream=pending,

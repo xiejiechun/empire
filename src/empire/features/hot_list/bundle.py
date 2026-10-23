@@ -29,7 +29,7 @@ def bundle(cfg):
                     "个股龙虎榜（通达信）",
                     "collector.tdx_hot_list",
                     "tdx",
-                    "首次全部历史；补缺及近90日回查；单日与多日榜分别保留",
+                    "首次全部历史；补缺及7/30日轮转回查；单日与多日榜分别保留",
                     category="交易事件",
                     source_name="通达信",
                     parallel_downloads=True,

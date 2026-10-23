@@ -108,14 +108,14 @@ async def test_directory_changed_after_interruption_requires_fresh(monkeypatch):
         await c.execute(baseline_revision=state["revision"])
 
 
-async def test_incremental_new_old_gap_and_ninety_day_boundary(monkeypatch):
+async def test_incremental_new_old_gap_and_rotating_review(monkeypatch):
     import json
     from datetime import datetime, timedelta
 
     from empire.core.time import CHINA
+    from empire.features.hot_list.review import review_due
 
-    # Directory is authoritative: an exposed old date and an old partial date
-    # must be fetched even when a newer date is already fully archived.
+    # Directory discovery remains immediate, whereas source quality gaps rotate.
     today = datetime.now(CHINA).date()
     dates = [(today - timedelta(days=n)).isoformat() for n in (0, 89, 90, 1000, 1001)]
     c, state, events = collector()
@@ -126,21 +126,65 @@ async def test_incremental_new_old_gap_and_ninety_day_boundary(monkeypatch):
         200, json=directory(dates) if json.loads(k["content"])["Params"][0] == "0" else detail()
     )
     monkeypatch.setattr("empire.features.hot_list.collector.wait_for_archive", AsyncMock())
-    await c.execute()
-    assert [e.raw_payload["date"] for e in events if e.raw_payload["mode"] == "detail"] == [
-        dates[i] for i in (0, 1, 3, 4)
+    expected = [
+        d
+        for d in dates
+        if review_due(
+            CODE, d, c.query.day_heads.return_value.get(d, {}).get("detail_status"), str(today)
+        )
     ]
+    await c.execute()
+    assert dates[-1] in expected and dates[0] in expected and dates[2] not in expected
+    assert [e.raw_payload["date"] for e in events if e.raw_payload["mode"] == "detail"] == expected
     # With a lost Redis cursor, SQL heads still supply the same gap plan.
     state.update(revision=0, cursor={})
     events.clear()
     await c.execute()
-    assert [e.raw_payload["date"] for e in events if e.raw_payload["mode"] == "detail"] == [
-        dates[i] for i in (0, 1, 3, 4)
-    ]
+    assert [e.raw_payload["date"] for e in events if e.raw_payload["mode"] == "detail"] == expected
     await c.execute(fresh=True, baseline_revision=state["revision"])
     assert [e.raw_payload["date"] for e in events if e.raw_payload["mode"] == "detail"][
         -5:
     ] == dates
+
+
+async def test_old_incomplete_policy_rejected_but_explicit_fresh_can_replace(monkeypatch):
+    c, state, events = collector()
+    c.query.day_heads.side_effect = asyncio.CancelledError
+    with pytest.raises(asyncio.CancelledError):
+        await c.execute()
+    state["cursor"].pop("review_policy")
+    c.query.day_heads.side_effect = None
+    with pytest.raises(ValueError, match="回查策略"):
+        await c.execute(baseline_revision=state["revision"])
+    monkeypatch.setattr("empire.features.hot_list.collector.wait_for_archive", AsyncMock())
+    assert (await c.execute(fresh=True, baseline_revision=state["revision"]))["phase"] == "complete"
+
+
+async def test_resume_uses_frozen_day_even_after_midnight(monkeypatch):
+    from datetime import datetime as RealDateTime
+
+    from empire.features.hot_list.review import review_due
+
+    c, state, events = collector()
+    c.query.day_heads.side_effect = asyncio.CancelledError
+    with pytest.raises(asyncio.CancelledError):
+        await c.execute()
+    frozen = state["cursor"]["through"]
+    c.query.day_heads.side_effect = None
+    c.query.day_heads.return_value = {DATE: {"detail_status": "partial"}}
+
+    class Later(RealDateTime):
+        @classmethod
+        def now(cls, tz=None):
+            return RealDateTime(2099, 1, 1, tzinfo=tz)
+
+    monkeypatch.setattr("empire.features.hot_list.collector.datetime", Later)
+    monkeypatch.setattr("empire.features.hot_list.collector.wait_for_archive", AsyncMock())
+    result = await c.execute(baseline_revision=state["revision"])
+    selected = [e.raw_payload["date"] for e in events if e.raw_payload["mode"] == "detail"]
+    assert result["through"] == frozen
+    assert (DATE in selected) == review_due(CODE, DATE, "partial", frozen)
+    assert "2009-12-25" in selected
 
 
 async def test_scoped_range_and_scope_conflict(monkeypatch):
