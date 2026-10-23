@@ -3,14 +3,15 @@ import hashlib
 import json
 import re
 from datetime import UTC, datetime, timedelta
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal, InvalidOperation, localcontext
 
 from empire.core.time import CHINA
 
 BEIJING = CHINA
 FIELDS = {'theme_id', 'name', 'parent_id', 'rank_no', 'display_order',
-          'hot_score', 'change_rate', 'limit_up_count'}
-IDENTITY = re.compile(r'[A-Za-z0-9_-]{1,32}\Z')
+          'hot_score', 'change_rate', 'limit_up_count', 'source_theme_id', 'concept_id', 'new_flag'}
+IDENTITY = re.compile(r'[0-9]{1,32}(?:_[0-9]{1,32})?\Z')
+SOURCE_ID = re.compile(r'[0-9]{1,32}\Z')
 
 
 class HistoryError(ValueError):
@@ -40,13 +41,15 @@ def decimal_text(value, scale, integral):
     if isinstance(value, bool) or not isinstance(value, (str, int, Decimal)):
         raise HistoryError('数值须为无损十进制文本/整数，不接受float或bool')
     try:
-        number = Decimal(value)
+        with localcontext() as context:
+            context.prec = 200
+            number = Decimal(value)
+            if not number.is_finite() or abs(number) >= Decimal(10) ** integral:
+                raise HistoryError('非有限数或数值超界')
+            if number != number.quantize(Decimal(10) ** -scale):
+                raise HistoryError('数值精度超界，不允许舍入')
     except InvalidOperation as exc:
         raise HistoryError('非法十进制数') from exc
-    if not number.is_finite() or abs(number) >= Decimal(10) ** integral:
-        raise HistoryError('非有限数或数值超界')
-    if number != number.quantize(Decimal(10) ** -scale):
-        raise HistoryError('数值精度超界，不允许舍入')
     if number == 0:
         return '0'
     formatted = format(number, 'f')
@@ -69,16 +72,30 @@ def directory(rows, max_rows=2000):
         parent = row['parent_id']
         if parent is not None and (not isinstance(parent, str) or not IDENTITY.fullmatch(parent)):
             raise HistoryError('父题材身份非法')
+        source, concept = row['source_theme_id'], row['concept_id']
+        if not isinstance(source, str) or not SOURCE_ID.fullmatch(source):
+            raise HistoryError('来源主题材ID非法')
+        if type(row['new_flag']) is not int or not 0 <= row['new_flag'] <= 0xFFFFFFFF:
+            raise HistoryError('来源新题材标记非法')
+        if parent is None:
+            if concept is not None or key != source or row['hot_score'] is None:
+                raise HistoryError('主题材身份或热度缺失')
+        elif (not isinstance(concept, str) or not SOURCE_ID.fullmatch(concept)
+              or parent != source or key != f'{source}_{concept}'
+              or row['hot_score'] is not None or row['rank_no'] is not None):
+            raise HistoryError('子题材须使用父ID与CID身份，且无独立热度和排名')
         for field in ('display_order', 'limit_up_count', 'rank_no'):
             value = row[field]
-            if field == 'rank_no' and value is None and parent is not None:
+            if field == 'rank_no' and value is None and (parent is not None or row['new_flag']):
                 continue
             if type(value) is not int or not 0 <= value <= 2147483647:
                 raise HistoryError(f'{field}缺失或非法')
-        row['hot_score'] = decimal_text(row['hot_score'], 6, 18)
-        if Decimal(row['hot_score']) < 0:
-            raise HistoryError('热度不得为负')
-        row['change_rate'] = decimal_text(row['change_rate'], 8, 12)
+        if row['hot_score'] is not None:
+            row['hot_score'] = decimal_text(row['hot_score'], 6, 18)
+            if Decimal(row['hot_score']) < 0:
+                raise HistoryError('热度不得为负')
+        # Source ratio is binary32. Its exact decimal expansion may have 149 places.
+        row['change_rate'] = decimal_text(row['change_rate'], 149, 12)
         result[key] = row
     for key in result:
         seen = {key}

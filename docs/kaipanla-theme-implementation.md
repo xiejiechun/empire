@@ -15,11 +15,21 @@
 3. C 正式接线：来源解析、共享下载/预取、统一入队/归档、SQL维护、恢复、准备检查、规则登记和可搜索数据页面。列表与详情两个独立任务，默认间隔180秒；首次详情按已校验目录补齐，之后变化/缺失优先，全天分摊核对全部详情。
 4. D 验收发布：完整目录及随机题材真实代理端到端核对，军工固定回归；缓存冷热/提交后重放/无DML成功清队；容量、完整门禁和真实桌面。题材是完整业务单位，30股票准入不直接套用：随机30题材（不足则全部）并核对每题材全部股票集合，不能称30股票插件验收。
 
-当前状态：A未完成；B已实现日内存储/按时回放内核，19项纯逻辑及6项真实Redis集成测试通过，尚未完成生产容量实测；C/D未实施。详见[首批实施记录](evidence/kaipanla-theme-stage-b-2026-10-23.md)。不得以B通过替代全功能交付。
+当前状态：A已核实应用目录protobuf字段及排名/子题材映射，严格解析与匿名详情请求已实现；游客Socket握手及完整目录仍未验证。B已实现日内存储/按时回放内核，并按来源修订身份、缺值与binary32精度；尚未完成生产容量实测。C仅详情共享HTTP路径已实现，正式任务/归档/SQL/页面未接通；D未实施。详见[首批实施记录](evidence/kaipanla-theme-stage-b-2026-10-23.md)及[来源实现记录](evidence/kaipanla-theme-source-2026-10-24.md)。不得以局部通过替代全功能交付。
+
+## 2026-10-24 来源契约修订
+
+用户确认保留全部子题材，子题材独立热度及排名显示“来源未提供”，不得填0或继承父题材指标。主题材按来源ID识别；子题材以(来源主题材ID,CID)识别，日内内核的theme_id键为`父ID_CID`，另存source_theme_id/concept_id，父键仍为来源主题材ID。数字ID之间用下划线分隔，避免不同父项下相同CID碰撞；不能用CID请求Theme.InfoGet，详情请求只使用来源主题材ID。
+
+应用channel3009使用空HQListReq请求、themeListResp返回。根字段1=codeSwitch、2=state、10=items；Item.hotVal是热度数值，isHot是独立标记；Concept只有CID/name/pinyin/ratio/ztNum，没有热度或排名。排名由应用按主题材顺序累计，isNew非0不增加名次；本系统对新题材不填排名，保留new_flag和display_order。state/codeSwitch的接收语义和游客权限尚未实测，不能据此发布完整列表。
+
+ratio在线路上是IEEE754 binary32，不能套用未经核实的8位十进制舍入。解析为精确Decimal，Redis规范文本保留其精确值（最小非零值最多149位小数）；现有历史保护仍限制绝对值小于10^12。计划SQL用FLOAT保存来源binary32，正式查询须恢复为同一binary32值参与规范比较并做往返专项验收；这是来源数值类型的例外，不推广为财务金额存储规则。显示位数与源数值分别处理，尚未实现显示层。
+
+详情通过共享HTTP的strip_credentials剥离Cookie及Authorization，随机DeviceID且不传UserID/Token，禁止重定向；使用共享代理/频控/重试/缓冲。仅核实的Level1/Level2结构进入规范化，分类股票和StockList.Tag按分类ID、股票代码、名称、理由完整对照，未知结构、掩码、重复或同数异集直接失败。证券先保留来源代码，正式SQL接线仍需公共证券映射，不能猜市场。当前未核实非空根Stocks布局，遇到时明确拒绝，不静默跳过。
 
 ## 日内业务契约
 
-一个完整单元是一轮全目录。每行以theme_id识别；父子关系独立于排名，子题材不编造全局排名。采样记录含带时区observed_at、稳定round_id、基准/前轮和内容摘要。时间是采集可用时间，不能当历史公布时间。
+一个完整单元是一轮全目录。每行以规范theme_id键识别（见来源契约修订）；父子关系独立于排名，子题材不编造全局排名。采样记录含带时区observed_at、稳定round_id、基准/前轮和内容摘要。时间是采集可用时间，不能当历史公布时间。
 
 每个自然日首次成功采样保存完整基准；后续只记added完整行、changed字段新值、removed ID。只记新值，通过前一状态还原旧值。相同业务仍保存有界的空差异采样标记，不写新完整列表。当前列表是专门查询缓存；历史不再存每轮全量。每日独立基准使旧日到期不影响后日。Redis丢失后当天重新建基准，起点前明确无记录，不回填虚构轨迹。
 
@@ -35,13 +45,13 @@
 
 | 对象及粒度 | 主键/主要字段与来源 | 正式索引/用途 |
 |---|---|---|
-| theme_daily，一日一个题材 | (business_date DATE, theme_id VARCHAR(32)); name VARCHAR(128), parent_id VARCHAR(32)可空, rank_no INT可空（子题材）, display_order INT, hot_score DECIMAL(24,6), change_rate DECIMAL(20,8), limit_up_count INT, observed_at DATETIME(6) | PK支持日期列表；(theme_id,business_date)支持题材日线；(business_date,rank_no,theme_id)支持按热度排序 |
+| theme_daily，一日一个主题材或子题材 | (business_date DATE, theme_id VARCHAR(65)); source_theme_id VARCHAR(32), concept_id VARCHAR(32)可空, name VARCHAR(128), parent_id VARCHAR(32)可空, new_flag INT UNSIGNED, rank_no INT可空（子题材/新题材）, display_order INT, hot_score BIGINT UNSIGNED可空（子题材）, change_rate FLOAT（来源binary32）, limit_up_count INT UNSIGNED, observed_at DATETIME(6) | PK支持日期列表；(theme_id,business_date)支持题材日线；(business_date,rank_no,theme_id)支持按热度排序 |
 | theme_detail，一个题材最新正文 | theme_id; name, brief TEXT, introduction MEDIUMTEXT, source_created_at/source_updated_at DATETIME(6)可空, observed_at, content_sha256 CHAR(64), in_current_catalog BOOL | PK点查；来源时间不是核验时间；正文不放JSON |
 | theme_category，一个题材内分类 | (theme_id,category_id); parent_category_id可空, name, display_order INT, plate_code可空 | (theme_id,parent_category_id,display_order)层级浏览 |
 | theme_stock，一个题材关联证券 | (theme_id,unified_code); source_stock_id VARCHAR(32), source_name VARCHAR(128) | (unified_code,theme_id)反查；证券身份通过公共解析，不能猜市场 |
 | theme_stock_reason，一分类一证券关联 | (theme_id,category_id,unified_code); reason TEXT, first_shelved_at/source_updated_at可空, is_new/is_hot等经过核实的标记 | 按题材/分类点查；同证券不同分类的理由分别保存 |
 
-精度是设计上限，需A阶段样本确认单位及最大scale；超限拒绝，不舍入。热度、涨停数量是否允许缺值由来源契约确定，未知不填0。父子ID有长度/字符约束；正文单元受正式HTTP通用响应与入队额度限制。计划上限单题材正文1MiB、分类5000、股票10000、关联50000，超限报错不截断，实测后才能定发布容量。
+数字类型按来源契约修订，正式SQL尚须实测往返及查询容量；超限拒绝，不舍入。子题材热度缺失为NULL；protobuf整数默认0是协议默认值，与根本没有定义该字段的子题材不同。父子ID有长度/字符约束；正文单元受正式HTTP通用响应与入队额度限制。计划上限单题材正文1MiB、分类5000、股票10000、关联50000，超限报错不截断，实测后才能定发布容量。
 
 列表SQL不是另一份当前表：同日版本合并更新，跨日长期保留。盘中计划每小时归档一次、首次当日成功及15:10后成功轮次确保最终结果；非交易日仍采样，不能依赖周末推断停采。收盘后来源继续变化时在后续小时更新，最终版本定义为当日最后实际成功归档版本，不承诺电脑离线也有收盘数据。精确触发与统一入队事务须C阶段回归。详情按题材独立事务，仅变更行写入；统一collection_state保存项目进度，不建立逐轮SQL运行表。
 

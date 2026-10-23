@@ -20,7 +20,8 @@ pytestmark = [pytest.mark.integration,
 
 def row(key='1', **changes):
     return dict(theme_id=key, name='题材' + key, parent_id=None, rank_no=1,
-                display_order=0, hot_score='100', change_rate='1.2', limit_up_count=2) | changes
+                display_order=0, hot_score='100', change_rate='1.2', limit_up_count=2,
+                source_theme_id=key, concept_id=None, new_flag=0) | changes
 
 
 @pytest_asyncio.fixture
@@ -44,6 +45,19 @@ async def store():
 async def append(history, now, number, rows=None):
     return await history.append(rows or [row()], observed_at=now + timedelta(seconds=number),
                                 round_id=str(number))
+
+
+@pytest.mark.asyncio
+async def test_child_missing_metrics_and_exact_ratio_survive_delta_replay(store):
+    history, now = store
+    child = row('1_7', source_theme_id='1', concept_id='7', parent_id='1',
+                hot_score=None, rank_no=None, change_rate='0.100000001490116119384765625')
+    await append(history, now, 0, [row(), child])
+    await append(history, now, 1, [row(), child | {'limit_up_count': 5}])
+    replay = await history.snapshot(now.date())
+    found = next(r for r in replay['rows'] if r['concept_id'] == '7')
+    assert found['hot_score'] is None and found['rank_no'] is None
+    assert found['change_rate'] == child['change_rate'] and found['limit_up_count'] == 5
 
 
 @pytest.mark.asyncio

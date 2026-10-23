@@ -18,7 +18,7 @@ from empire.features.themes.history_model import (
 def row(key='1', **overrides):
     return dict(theme_id=key, name='题材' + key, parent_id=None, rank_no=1,
                 display_order=0, hot_score='100', change_rate='1.2', limit_up_count=2,
-                **{}) | overrides
+                source_theme_id=key, concept_id=None, new_flag=0) | overrides
 
 
 def test_same_count_different_set_and_field_deltas_roundtrip():
@@ -44,7 +44,7 @@ def test_semantically_same_decimal_and_order_have_same_digest():
 @pytest.mark.parametrize('rows', [[], [row(), row()], [row(parent_id='missing')],
     [row(parent_id='2'), row('2', parent_id='1')], [row(limit_up_count=None)],
     [row(limit_up_count=True)], [row(change_rate='NaN')], [row(change_rate='Infinity')],
-    [row(change_rate='0.000000001')], [row(change_rate=1.2)], [row(hot_score='-1')],
+    [row(change_rate='1e-150')], [row(change_rate=1.2)], [row(hot_score='-1')],
     [row(name='')], [row(rank_no=None)], [row(theme_id='x:y')]])
 def test_bad_directory_is_not_a_successful_empty_snapshot(rows):
     with pytest.raises(HistoryError):
@@ -52,7 +52,8 @@ def test_bad_directory_is_not_a_successful_empty_snapshot(rows):
 
 
 def test_child_removal_requires_parent_relationship_consistency():
-    before = directory([row(), row('2', parent_id='1', rank_no=None)])
+    before = directory([row(), row('1_2', parent_id='1', source_theme_id='1',
+                                   concept_id='2', rank_no=None, hot_score=None)])
     with pytest.raises(HistoryError):
         apply_delta(before, {'added': {}, 'changed': {}, 'removed': ['1']})
 

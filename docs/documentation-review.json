@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-23T16:34:26.220489+00:00",
-  "note": "远航版日行情实施首批：新增P0只读协议清单工具及分阶段实施方案，核实四程序集和字段初始化参数，明确尚未打通真实来源及未发布采集功能。",
-  "unchanged_reason": "本批仅离线读取指定客户端程序集的开发诊断工具，不注册页面或任务，不连接来源或数据库，现有程序内用户操作和数据能力均未改变。",
+  "reviewed_at": "2026-10-23T16:52:39.028714+00:00",
+  "note": "题材第二批交付审阅：72项专项和57项文档回归通过；三个固定匿名代理样本仅证明详情解析，游客全目录及正式采集未完成",
+  "unchanged_reason": "",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -440,8 +440,12 @@
     "src/empire/features/suspensions/query.py": "f77b45a827c5eb2fd61b86c2a5968c1b55fdd9503b4d81ffbd7c1d36608c0609",
     "src/empire/features/suspensions/ui.py": "856fc04e23b3df96fb73f99de9e13eab635f0cf5f69cdf9a3b0c80b97792c54f",
     "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+    "src/empire/features/themes/catalog_mapping.py": "f22f522660db2dad78435dce8cc5b8b894f5215af3a2daf8b0fa0e89d65ca30c",
+    "src/empire/features/themes/catalog_protocol.py": "1c97fd3e7a6aa9eb7ed2c81ce58119ea401517bcd8510a8d8771c2deba03fcfd",
+    "src/empire/features/themes/detail_model.py": "02f4469a3ea850dcf8164bec7b78249c447d1223c46e0541fec6dcd62c2ac259",
+    "src/empire/features/themes/detail_source.py": "31ef9c966c6f37f6a6f145c7081747cacb4b20dfa02dd2302c4d9e3f6a373d6b",
     "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
-    "src/empire/features/themes/history_model.py": "be29399f214668dbcf5a6129167ad68cbdd96a539d0a6ca5a1233b51fdf9df13",
+    "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
     "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
     "src/empire/features/ths_capital/bundle.py": "c38517c630bba3f2336a7e11580f422b2a87f582bf0909eedc6f0faef60c39a3",
     "src/empire/features/ths_capital/collector.py": "6e02b60721ba41bc120fc8a31ce2b80f88e10952121b018f43f2fc9bc88965e8",
@@ -567,7 +571,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "640fb928bf12305f259de63088eabc51ff3b542167128be756d94e6622f70e93",
+  "content_sha256": "96496daa0cdfdc080c3240fabff65c4be69880d1f356bf9999dd61ee421e8546",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -6521,12 +6525,12 @@
     "redis:theme_history": {
       "sources": {
         "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
-        "src/empire/features/themes/history_model.py": "be29399f214668dbcf5a6129167ad68cbdd96a539d0a6ca5a1233b51fdf9df13",
+        "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a"
       },
-      "content_sha256": "f3e205070716679b1602a7482bfbffe781489137f1961e12f080e270f594b929",
+      "content_sha256": "d5159788ed775978fcbaff9caef4dfddc5dad680ee1998bb93580fc880b0e2ad",
       "documentation": {
         "Redis 题材七日日内历史": {
           "owner": "themes",
