@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-23T15:55:09.574247+00:00",
-  "note": "首批题材历史内核及实施记录核对：25项内核测试、57项文档测试；独占测试服务已关闭，匿名全目录和正式采集尚未完成",
-  "unchanged_reason": "",
+  "reviewed_at": "2026-10-23T16:34:26.220489+00:00",
+  "note": "远航版日行情实施首批：新增P0只读协议清单工具及分阶段实施方案，核实四程序集和字段初始化参数，明确尚未打通真实来源及未发布采集功能。",
+  "unchanged_reason": "本批仅离线读取指定客户端程序集的开发诊断工具，不注册页面或任务，不连接来源或数据库，现有程序内用户操作和数据能力均未改变。",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -47,6 +47,7 @@
     "scripts/holder_pending_schema.py": "2b6068d8576c7ac112d63d2d2e5b0384843960b07605230dcf79e2ac50718682",
     "scripts/import_bse_code_mapping.py": "51de306f7aeefced16632d186adceb8148c038e7604d458a47dfd74184a86576",
     "scripts/init_tdx_performance.py": "137daaec7ff24f70d212d1143bd69d7c8a43d740cec723708d16833f0d1f4cc9",
+    "scripts/inspect_yuanhang_protocol.py": "1b643377d6b9dd0df6c6066e4974396ff16042fb65eb86d96463c5d863c85e3d",
     "scripts/kaipanla_measure_support.py": "2a47ed7d37c43e053dd12f19d01bec483487eca178fddcaa270b5129073bf44d",
     "scripts/kaipanla_verification.py": "702e6c8edeaa6c1ff69b9b19fce78f5a40bfc779102733be7febcb2f9cc6bc8d",
     "scripts/market_migration.py": "50c85f6614767b196a76375c6feff12508898afcbe36f400f47cfc855cc43b4a",
