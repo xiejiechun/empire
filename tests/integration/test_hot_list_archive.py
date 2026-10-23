@@ -13,7 +13,7 @@ from sqlalchemy import event, text
 from empire.bootstrap import build_manager
 from empire.core.config import load_config
 from tests.prefetch_source import prefetch_http
-from tests.test_tdx_hot_list import CODE, DATE, detail, directory
+from tests.test_tdx_hot_list import CODE, DATE, detail, directory, variant_detail
 
 pytestmark = [
     pytest.mark.integration,
@@ -87,6 +87,26 @@ async def test_tied_source_rank_roundtrip_and_replay(pipeline):
     await collect(c, fresh=True)
     assert [r for r in (await q.detail(CODE, DATE))["seats"] if r["side"] == "S"] == sellers
     assert await store.client.xlen(store.stream) == 0
+
+
+async def test_reason_variants_roundtrip_and_replay(pipeline):
+    from empire.features.hot_list.source import parse_detail
+
+    _, c, q, store = pipeline
+    body = variant_detail()
+    expected = parse_detail(body)
+    c.http.request.side_effect = lambda *a, **k: httpx.Response(
+        200, json=directory() if json.loads(k["content"])["Params"][0] == "0" else body
+    )
+    for _ in range(2):
+        await collect(c, fresh=True)
+        value = await q.detail(CODE, DATE)
+        assert value["detail_status"] == expected["status"]
+        assert value["reasons"] == expected["reasons"]
+        assert value["seats"] == expected["seats"]
+        assert await store.client.xlen(store.stream) == 0
+        for result in body["ResultSets"][:2]:
+            result["Content"].reverse()
 
 
 async def test_cold_hot_revision_old_replay_and_source_empty(pipeline):

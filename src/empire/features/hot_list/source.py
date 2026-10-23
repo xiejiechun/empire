@@ -115,10 +115,11 @@ def parse_detail(body):
                 ),
             )
         )
-        # Repeated summary values in each seat must agree with its source reason.
+        # A reason code may have multiple source summary variants. Each seat
+        # must match one complete variant, without rounding or merging headers.
         matching = [h for h in headers if h["reason_code"] == r[1]]
-        if not matching or any(
-            h["turnover"] != number(r[8]) or h["volume"] != number(r[9]) or h["reason"] != r[6]
+        if not any(
+            h["turnover"] == number(r[8]) and h["volume"] == number(r[9]) and h["reason"] == r[6]
             for h in matching
         ):
             raise ValueError("龙虎榜席位与原因的成交信息不一致")

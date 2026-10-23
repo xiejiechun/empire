@@ -155,6 +155,46 @@ def test_old_repeated_reason_rows_without_seats_preserved():
     assert len(value["reasons"]) == 5 and value["status"] == "source_empty"
 
 
+def variant_detail():
+    # 600198.SH/2024-09-25: buy/sell rows match different exact summaries.
+    body = detail()
+    reasons, seats = body["ResultSets"][:2]
+    reasons["Content"][0][2:4] = [24732.9432, 223819.32]
+    variant = copy.deepcopy(reasons["Content"][0])
+    variant[3] = 223819.3174
+    reasons["Content"].append(variant)
+    reasons["Count"] = 2
+    for row, turnover in zip(seats["Content"], (223819.32, 223819.3174), strict=True):
+        row[8:10] = [turnover, 24732.9432]
+    return body
+
+
+def test_reason_variants_match_whole_summary_and_preserve_precision():
+    body = variant_detail()
+    value = parse_detail(body)
+    assert value["status"] == "partial"
+    assert {r["turnover"] for r in value["reasons"]} == {"223819.32", "223819.3174"}
+    assert len(value["seats"]) == 2
+    for result in body["ResultSets"][:2]:
+        result["Content"].reverse()
+    assert parse_detail(body) == value
+
+
+@pytest.mark.parametrize("field,value", [(8, 223819.3), (9, 24732.9), (6, "其他原因")])
+def test_reason_variant_seat_must_match_one_complete_header(field, value):
+    body = variant_detail()
+    body["ResultSets"][1]["Content"][0][field] = value
+    with pytest.raises(ValueError, match="席位与原因"):
+        parse_detail(body)
+
+
+def test_reason_variant_cannot_mix_fields_from_different_headers():
+    body = variant_detail()
+    body["ResultSets"][0]["Content"][1][2] = 999
+    with pytest.raises(ValueError, match="席位与原因"):
+        parse_detail(body)
+
+
 def test_000063_tied_sell_rank_preserves_both_seats_and_stable_order():
     # 2018-06-22: two different sellers each disclose 1498万元 at rank 1.
     body = detail()

@@ -32,12 +32,12 @@ def json_value(value):
     return json.loads(value) if isinstance(value, str) else value
 
 
-def read_details(conn, code, stamps):
+def read_details(conn, code, stamps, *, heads=None):
     """At most twenty complete dates in three queries, never per-date SQL."""
     if not stamps or len(stamps) > 20:
         raise ValueError("龙虎榜批量详情须为1～20个日期")
     params = dict(code=code, stamps=stamps)
-    heads = (
+    heads = heads if heads is not None else (
         conn.execute(
             text(
                 "SELECT * FROM hot_list_day WHERE unified_code=:code AND list_date IN :stamps"
@@ -251,7 +251,11 @@ class HotListDataset:
         elif mode == "detail":
             stamp = data["date"]
             # The enclosing shared state row is locked before this method.
-            old = read_detail(conn, code, stamp)
+            heads = conn.execute(
+                text("SELECT * FROM hot_list_day WHERE unified_code=:code AND list_date=:stamp"),
+                dict(code=code, stamp=stamp),
+            ).mappings().all()
+            old = dict(heads[0]) if heads else None
             timestamp = mysql_time(envelope.observed_at)
             if old and old["version_observed_at"] and old["version_observed_at"] > timestamp:
                 return outcome
@@ -259,6 +263,15 @@ class HotListDataset:
             if old and old["content_hash"] == checksum:
                 outcome["confirmed"] = [":".join((mode, code, data["date"]))]
                 return outcome
+            # Directory-created pending heads have no child facts. Complete
+            # details and their counts are committed atomically, so these reads
+            # cannot contribute previous content on a first detail import.
+            if old and old["detail_status"] == "pending" and not (
+                old["reason_count"] or old["seat_count"]
+            ):
+                old.update(reasons=[], seats=[])
+            elif old:
+                old = read_details(conn, code, [stamp], heads=heads)[stamp]
             keep_reference = value["status"] == "source_empty" and old and old["seats"]
             for table, kind, columns in (
                 (TABLES[1], "reasons", REASONS),

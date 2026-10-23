@@ -1,7 +1,7 @@
 {
-  "run_id": "6f32d3a5de0c4b56ab0623069f73978c",
+  "run_id": "b72a58a7570d452e9146d9605ee704fc",
   "subject": "preview",
-  "started_at": "2026-10-22T20:13:40.904046+00:00",
+  "started_at": "2026-10-23T02:21:18.355063+00:00",
   "passed": true,
   "measurements_complete": true,
   "errors": [],
@@ -15,15 +15,15 @@
   },
   "dataset": "hot_list.tdx_unit",
   "measurements": {
-    "import_seconds": 32.438013099948876,
-    "repeated_seconds": 8.779445699998178,
+    "import_seconds": 52.45785620005336,
+    "repeated_seconds": 12.307604899979196,
     "repeated_business_dml": 0,
     "day_heads": 5000,
-    "page_p95_ms": 3.2226000912487507,
-    "detail_p95_ms": 2.0871999440714717,
-    "audit_ms": 548.4315999783576,
-    "allocated_bytes": 35291136,
-    "peak_python_bytes": 1238358,
+    "page_p95_ms": 7.721800007857382,
+    "detail_p95_ms": 3.863500081934035,
+    "audit_ms": 1373.2566999970004,
+    "allocated_bytes": 35274752,
+    "peak_python_bytes": 1229912,
     "page_bytes": 29047,
     "detail_bytes": 1427
   },
@@ -49,7 +49,7 @@
     "allocation": [
       {
         "TABLE_NAME": "collection_state",
-        "DATA_LENGTH": 147456,
+        "DATA_LENGTH": 131072,
         "INDEX_LENGTH": 0
       },
       {
@@ -78,12 +78,12 @@
   },
   "bindings": {
     "src/empire/features/hot_list/contract.py": "581052c7cb0bc0fcf57dae611542545a0185345108bd29d9da0da659ed4f26c2",
-    "src/empire/features/hot_list/source.py": "a119f27a67f2a9c485b547f4511e586bad03e93352619d926643fa56e8336be2",
-    "src/empire/features/hot_list/dataset.py": "d085145a84d678338614e9afa4121709abeb270d2750d7d3b89f81babe8433dd",
+    "src/empire/features/hot_list/source.py": "d91116da1e9fec598d0bcf847b01e5c5b83fe7809eda077a0f97530f2acb8a35",
+    "src/empire/features/hot_list/dataset.py": "958204b040a00dbdab57aac16dd63712f86cd88bf5fe7140a076e49430a28d98",
     "src/empire/features/hot_list/query.py": "7eafab38548e1748b9fe806f6cec409cd427eaaf36335195aac173869a376147",
     "scripts/measure_hot_list.py": "d4b954b32357e7173076914a74c55698a5caa29259baf7fa6dcd4cf9c72da47e",
     "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
-    "tests/test_tdx_hot_list.py": "95c563526354b24dd9697451a377c4bd309cc29e84485a40f48159999ae10ff3"
+    "tests/test_tdx_hot_list.py": "3f6b26ea2a04797124c23a6b68cefb16d9d0f7ee3c9a4072922d68ecf0410d80"
   },
   "ddl_scopes": {
     "hot_list_day": "5da6d3ccf0f89df6ea645126618951f3619587a213a96f892acb619290914240",
@@ -102,7 +102,7 @@
         "key": null,
         "key_len": null,
         "ref": null,
-        "rows": 4894,
+        "rows": 5033,
         "filtered": 100.0,
         "Extra": "Using filesort"
       }
@@ -161,10 +161,10 @@
     "analysis_actual_rows": 1
   },
   "reviewed_tradeoffs": "三表避免核心事实JSON，auxiliary/extension白名单有界；审计最多2000日期、20日期批读。源无版本的SQL版本为最后内容变化观测，过期摘要后不能证明其后的无变化观察上界。",
-  "projected_five_year_bytes": 882278400,
+  "projected_five_year_bytes": 881868800,
   "input_identity_verified": true,
-  "checked_at": "2026-10-22T20:14:23.420793+00:00",
-  "database": "empire_capacity_6f32d3a5de0c4b56ab0623069f73978c_test",
+  "checked_at": "2026-10-23T02:22:25.348684+00:00",
+  "database": "empire_capacity_b72a58a7570d452e9146d9605ee704fc_test",
   "measurement_service": {
     "server_uuid": "a3e8a5eb-cb64-11f1-8ddf-380525361d4e",
     "server_port": 13348,
