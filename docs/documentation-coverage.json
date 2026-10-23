@@ -1104,6 +1104,20 @@
         "sources": [
           "src/empire/plugins/infra/proxy_pool.py"
         ]
+      },
+      "theme_history": {
+        "topic": "Redis 题材七日日内历史",
+        "patterns": [
+          "{prefix}:theme-history:current",
+          "{prefix}:theme-history:day:{date}:base",
+          "{prefix}:theme-history:day:{date}:meta",
+          "{prefix}:theme-history:day:{date}:events",
+          "{prefix}:theme-history:day:{date}:rounds"
+        ],
+        "sources": [
+          "src/empire/features/themes/history.py",
+          "src/empire/features/themes/history_model.py"
+        ]
       }
     },
     "redis_constructors": {
@@ -1232,6 +1246,11 @@
       "src/empire/features/capital_actions/preparation.py": {
         "f'{store.prefix}:checkpoint:{plugin.job_key}'": [
           "checkpoint"
+        ]
+      },
+      "src/empire/features/themes/history.py": {
+        "f'{self.prefix}:theme-history'": [
+          "theme_history"
         ]
       }
     }

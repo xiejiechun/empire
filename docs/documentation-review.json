@@ -1,7 +1,7 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-22T14:28:58.516242+00:00",
-  "note": "仅说明资源同步：逐字对照确认仅数据准备、区间名义现金股息率两主题差异；修正P3状态及条件阻断，保留来源限制、O7/O8暂缓；按纯正文流程更新外置聚合物，未重建EXE或修改业务实现。",
+  "reviewed_at": "2026-10-23T15:55:09.574247+00:00",
+  "note": "首批题材历史内核及实施记录核对：25项内核测试、57项文档测试；独占测试服务已关闭，匿名全目录和正式采集尚未完成",
   "unchanged_reason": "",
   "exceptions": {},
   "sources": {
@@ -10,7 +10,7 @@
     "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
     "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
     "scripts/architecture_contract.py": "9f1919d29f21a6f3bb29c5b3ed3d9416589fcf581ebe9bf58c608a86b132a91c",
-    "scripts/assembly_contract.py": "476e18136515f4ce862cb5f0cc4117aed7b50650a3e82ddc756ac9e462fdfb30",
+    "scripts/assembly_contract.py": "b29625d8e629302c51c9e8de3be9386f3e9eb005678b3a01e3d7212882fc5386",
     "scripts/audit_dependencies.py": "c9804426ecd17b020a44252722d6cb5a627a9bc274eddb5a1dbe35b8214bcc2f",
     "scripts/build_icon.py": "1f9fab6a7f0dbe95dad2bcfb56a28d58b3446c772be6a557849bc7dda4355ae3",
     "scripts/business_migration_engine.py": "c9a9704e856b9429557f01a98e399e19e35de3c02a5b18f90f34bdf20cdebda8",
@@ -113,7 +113,7 @@
     "scripts/unlock_verification.py": "1643e5abd08fe0d3877a9a04d4fa68ff1fa65398a0a61beba46292dcc1768d46",
     "scripts/verify_bse_code_mapping.py": "0e60f1f03d71d52fad1b6066f077c0357b671ecf9c944aa6d6ded691fb2c154e",
     "scripts/verify_capital_actions.py": "5bca07e5dda0d606a1f2def59e5828861592205d03a7cd092c531a752978f435",
-    "scripts/verify_database_design.py": "e5040e826cb7cb7bf1624edafdfef9d7524631727a713161bd31b2156ec783e7",
+    "scripts/verify_database_design.py": "28b69340d7f65da408ef4c13edf5528689825e6a932fd9787fe37054d2359fd2",
     "scripts/verify_documentation.py": "71dbfdd1365391be2dd5dacd76f6e86fcbac0fe34233cf1be84b4537b4d73d92",
     "scripts/verify_foundation_sources.py": "b1e4e2ad1e104fb3cb3ac36e04bdb19a70ca0dcfe49212f60f5f7eaf2572a3b7",
     "scripts/verify_foundation_ui.py": "01b177a5599cd5877527c34f2c19d43d2ad80b2f127b50ab5a739fdb7b795ebd",
@@ -189,7 +189,7 @@
     "src/empire/features/adjustment/inputs.py": "e84d1602391afced3d92bd50a86d308edf37eda09cb85c0ae7e53ba28562fbb1",
     "src/empire/features/adjustment/query.py": "03191cd55fa71d73ece37b4b4fb076b4ce36280de5093c34a477576a6ad60444",
     "src/empire/features/adjustment/ui.py": "c20376946f24565dd85cb683a6141c09b485d1b8c7edd5943e4e55c90e2b8af4",
-    "src/empire/features/builtin.py": "6106eef5f1d7d3664ba886b99ed0e04808a35a53b43da4fd09b62a05f6db89ab",
+    "src/empire/features/builtin.py": "cfd187d5b082d89e7464f108669b6ba6742a0c091653de38c0d98567f0b199f6",
     "src/empire/features/calendar/__init__.py": "18dc263c87a8af06b933250d82de9de35a00cf5d8c8de5eed34eb5cea055fcbe",
     "src/empire/features/calendar/api.py": "e1bec20831a31d5fb10a8c7f0ea33c839213a6bab24c173238902af1f2d52ba4",
     "src/empire/features/calendar/audit.py": "7d3be1edc862072ac88557473603eac4fbe0a73acf83dd8b1a95b60ec5e888ff",
@@ -438,6 +438,9 @@
     "src/empire/features/suspensions/preview.py": "47b65909381487372446567487998e3de5ee4261549528e07071eb3fe1498cfa",
     "src/empire/features/suspensions/query.py": "f77b45a827c5eb2fd61b86c2a5968c1b55fdd9503b4d81ffbd7c1d36608c0609",
     "src/empire/features/suspensions/ui.py": "856fc04e23b3df96fb73f99de9e13eab635f0cf5f69cdf9a3b0c80b97792c54f",
+    "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+    "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
+    "src/empire/features/themes/history_model.py": "be29399f214668dbcf5a6129167ad68cbdd96a539d0a6ca5a1233b51fdf9df13",
     "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
     "src/empire/features/ths_capital/bundle.py": "c38517c630bba3f2336a7e11580f422b2a87f582bf0909eedc6f0faef60c39a3",
     "src/empire/features/ths_capital/collector.py": "6e02b60721ba41bc120fc8a31ce2b80f88e10952121b018f43f2fc9bc88965e8",
@@ -563,7 +566,7 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "ca61cae1ddfcd204ecfe0722bc6335bbd1b2e2679f3f60ec1307a4886693cbcd",
+  "content_sha256": "640fb928bf12305f259de63088eabc51ff3b542167128be756d94e6622f70e93",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -6511,6 +6514,22 @@
         "Redis router-directory": {
           "owner": "shared",
           "path": "src/empire/documentation/topics/redis-router-directory.md"
+        }
+      }
+    },
+    "redis:theme_history": {
+      "sources": {
+        "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
+        "src/empire/features/themes/history_model.py": "be29399f214668dbcf5a6129167ad68cbdd96a539d0a6ca5a1233b51fdf9df13",
+        "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a"
+      },
+      "content_sha256": "f3e205070716679b1602a7482bfbffe781489137f1961e12f080e270f594b929",
+      "documentation": {
+        "Redis 题材七日日内历史": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/history-storage.md"
         }
       }
     }
