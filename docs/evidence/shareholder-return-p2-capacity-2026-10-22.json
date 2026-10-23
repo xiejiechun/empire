@@ -53650,8 +53650,6 @@
     "src/empire/features/capital_actions/words.py": "a6976df19f954d88cf0eb528d872aaae116aee08baef95f038c522c784a69cfd",
     "src/empire/features/capital_actions/yield_inputs.py": "b37b486700a3bb6cbede5f4a1a7193c3eb80973b43cd83f9fbcf8bd5b7151aed",
     "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
-    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
     "scripts/measure_dividend_capacity.py": "98de0974d2320f6b64657b050d31b5c8546af4b637131bc8dd1d8462d6936904",
     "scripts/dividend_capacity.py": "82143b451bf9f52388557d5fd875382773682f5a4e7a19547e128410297f46c2",
     "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
@@ -59275,5 +59273,115 @@
   "remaining": {
     "sql": false,
     "redis": false
+  },
+  "schema_objects": {
+    "dividend_plan": {
+      "ddl_sha256": "6cdb5cf668ebfb2e6030ca5a82762af4dc8224c8ac084659e2eac2d7eedd53d1",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "event_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "payload": {
+            "type": "json",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_event_date": {
+            "columns": [
+              "event_date",
+              "unified_code",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "event_date"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_order": {
+            "columns": [
+              "unified_code",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "unified_code"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "dividends.unit": {
+            "tables": [
+              "dividend_plan"
+            ],
+            "primary": "dividend_plan"
+          }
+        }
+      }
+    }
+  },
+  "ddl_scopes": {
+    "dividend_plan": "6cdb5cf668ebfb2e6030ca5a82762af4dc8224c8ac084659e2eac2d7eedd53d1"
+  },
+  "schema_scope_migration": {
+    "date": "2026-10-24",
+    "original_bindings": {
+      "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
+      "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d"
+    },
+    "original_commit": "1cfbe7265d1da7a4424eb53e16d5158e72d8f712",
+    "verification": "Original hash matched HEAD bytes or its CRLF checkout; every scoped DDL, shape and ownership exactly equals current. Original measurements retained, no remeasurement claimed."
   }
 }

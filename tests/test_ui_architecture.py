@@ -37,8 +37,14 @@ def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_pat
                "income", "balance", "cashflow", "industries", "indices", "index_prices", "names_company", "names_security", "st_implementation", "st_removal", "adjustment",
                *('kaipanla_' + k for k in ('trend','auction','volume','trades','entrust','large_order','quote'))}
     all_ids.update('rules_' + k for k in ('limit_rules', 'settlement_rules', 'lot_rules', 'tick_rules', 'sessions', 'stamp_duty', 'transfer_fee'))
+    all_ids.add('themes')
     runtime.start()
     try:
+        wait_pages(all_ids)
+        runtime.command('stop', 'ui.themes').result(timeout=5)
+        wait_pages(all_ids - {'themes'})
+        assert runtime.manager.entries['ui.news'].state == 'RUNNING'
+        runtime.command('start', 'ui.themes').result(timeout=5)
         wait_pages(all_ids)
         runtime.command('stop', 'ui.ths_capital').result(timeout=5)
         wait_pages(all_ids - {'ths_capital'})

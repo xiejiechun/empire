@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-23T16:52:39.028714+00:00",
-  "note": "题材第二批交付审阅：72项专项和57项文档回归通过；三个固定匿名代理样本仅证明详情解析，游客全目录及正式采集未完成",
-  "unchanged_reason": "",
+  "reviewed_at": "2026-10-23T19:54:04.077028+00:00",
+  "note": "题材180秒列表/32项详情、七日差异回放与最新正文、游客材料维护、精确旧代码核实、五表字典及实采容量已同步；既有业务表逐表核实DDL和物理形状不变，精确追加装配不重写历史基线。",
+  "unchanged_reason": "既有功能仅因新增题材装配、五表归属登记及共享流式入口产生依赖摘要变化；原HTTP分支、既有表和Redis键契约不变，逐项理由另记。",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -10,7 +10,8 @@
     "scripts/architecture_benchmark.py": "c606f9780d5124fd7d42c5bd54a91fec46a59dfd0757270708cca8b8ebfe8fa9",
     "scripts/architecture_benchmark_data.py": "6af5d75468d507c50968e399c2b5801b3fb3b99591805344b281ae99ebc8eedc",
     "scripts/architecture_contract.py": "9f1919d29f21a6f3bb29c5b3ed3d9416589fcf581ebe9bf58c608a86b132a91c",
-    "scripts/assembly_contract.py": "b29625d8e629302c51c9e8de3be9386f3e9eb005678b3a01e3d7212882fc5386",
+    "scripts/assembly_additions.py": "0b16b7f75690fd75c8c3c11349e430e6a775a74a6c082ce3009f5ddb9e25cbd8",
+    "scripts/assembly_contract.py": "f5b19e4c2c0b0a5ba1425013a8793f379eae0845e44750739e6165639d75e0a0",
     "scripts/audit_dependencies.py": "c9804426ecd17b020a44252722d6cb5a627a9bc274eddb5a1dbe35b8214bcc2f",
     "scripts/build_icon.py": "1f9fab6a7f0dbe95dad2bcfb56a28d58b3446c772be6a557849bc7dda4355ae3",
     "scripts/business_migration_engine.py": "c9a9704e856b9429557f01a98e399e19e35de3c02a5b18f90f34bdf20cdebda8",
@@ -34,6 +35,7 @@
     "scripts/create_security_alias_schema.py": "ed81ec12351989d8a4152a3c2b33564771bc3db454674c074c68466e7bb0a045",
     "scripts/create_shareholder_change_schema.py": "e334c33d79215ecaa7c502a3d5aa40d30cf4b1376f3d9b4ffdf94cb4f586a5f0",
     "scripts/create_st_event_schema.py": "4ce3745bc08babf7aa1cabaf629ea2197c603f1206006a0b8f31863fa4247e8b",
+    "scripts/create_theme_schema.py": "58a8e0be1c0d269ffe6f9c0a3a415456fbfc775cb92a29513333b6a3427ca7e2",
     "scripts/create_ths_capital_schema.py": "5e8d75c775aff93a5f647e93c12e3670382952d5a0bf7f9c5b24975020f62efc",
     "scripts/create_unlock_industry_schema.py": "b1ef8157576e929a70d3322732aae23a5350eab0b9c9f36b1399a7c9742d7c71",
     "scripts/create_unlock_schema.py": "4ea425c81b258f3c088644e7326782decf864bf70e7fe1bd370b149e94db804c",
@@ -46,8 +48,9 @@
     "scripts/foundation_verification.py": "06ecc5e55a7584113e547beb4869d68e504194e2ee0afdf2d54aab6d5fb64065",
     "scripts/holder_pending_schema.py": "2b6068d8576c7ac112d63d2d2e5b0384843960b07605230dcf79e2ac50718682",
     "scripts/import_bse_code_mapping.py": "51de306f7aeefced16632d186adceb8148c038e7604d458a47dfd74184a86576",
+    "scripts/import_theme_guest_material.py": "576909087c27c619747e5061891aee9b8b27dff39dedc17ea9f85896bdf00e2f",
     "scripts/init_tdx_performance.py": "137daaec7ff24f70d212d1143bd69d7c8a43d740cec723708d16833f0d1f4cc9",
-    "scripts/inspect_yuanhang_protocol.py": "1b643377d6b9dd0df6c6066e4974396ff16042fb65eb86d96463c5d863c85e3d",
+    "scripts/inspect_yuanhang_protocol.py": "692385fefbeb352435980c94d2eac987af69073505cb721aa4328d4e7bffb355",
     "scripts/kaipanla_measure_support.py": "2a47ed7d37c43e053dd12f19d01bec483487eca178fddcaa270b5129073bf44d",
     "scripts/kaipanla_verification.py": "702e6c8edeaa6c1ff69b9b19fce78f5a40bfc779102733be7febcb2f9cc6bc8d",
     "scripts/market_migration.py": "50c85f6614767b196a76375c6feff12508898afcbe36f400f47cfc855cc43b4a",
@@ -103,6 +106,7 @@
     "scripts/repurchase_capacity.py": "18f58faee1b3e26c338337dd05955fcf053046815baf788d0e1a64d9a98c80d8",
     "scripts/repurchase_verification.py": "1015b437da390122cae82de1bb84d6b088ba517b72dec92d4bc9cb7c10c87db9",
     "scripts/scan_preparation.py": "9f36428b983023db6fc5a20454fddf5866179745e8941a1f3eee96edabe6f4bb",
+    "scripts/schema_evidence_scope.py": "ff7c5d30f5c955c63d1093773c34d4f7e41059aa550c7196a1111d783d108335",
     "scripts/smoke_kaipanla_storage_sql.py": "50afb773fd8bf6c6e55224bec590af1f45387634755cf455e58beff5ca628ddc",
     "scripts/smoke_source_storage_sql.py": "9cc246a638f5c3ef27cc265476725b41bd6249248dbecbde3203f4fee2f80893",
     "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
@@ -114,8 +118,8 @@
     "scripts/unlock_verification.py": "1643e5abd08fe0d3877a9a04d4fa68ff1fa65398a0a61beba46292dcc1768d46",
     "scripts/verify_bse_code_mapping.py": "0e60f1f03d71d52fad1b6066f077c0357b671ecf9c944aa6d6ded691fb2c154e",
     "scripts/verify_capital_actions.py": "5bca07e5dda0d606a1f2def59e5828861592205d03a7cd092c531a752978f435",
-    "scripts/verify_database_design.py": "28b69340d7f65da408ef4c13edf5528689825e6a932fd9787fe37054d2359fd2",
-    "scripts/verify_documentation.py": "71dbfdd1365391be2dd5dacd76f6e86fcbac0fe34233cf1be84b4537b4d73d92",
+    "scripts/verify_database_design.py": "ba362fb6078c1e520d3456634833230aedc270c1d400a842021bed9eaf5fb7b5",
+    "scripts/verify_documentation.py": "138b4a9fb17959f4aecff518d9035192c88f2c1457c9025a52a044318dca7a13",
     "scripts/verify_foundation_sources.py": "b1e4e2ad1e104fb3cb3ac36e04bdb19a70ca0dcfe49212f60f5f7eaf2572a3b7",
     "scripts/verify_foundation_ui.py": "01b177a5599cd5877527c34f2c19d43d2ad80b2f127b50ab5a739fdb7b795ebd",
     "scripts/verify_index_prices.py": "07ea54c15ac688db2d6f3d0c0fd3be290db673e5177ab1c693af4fc01ae3b30e",
@@ -134,13 +138,15 @@
     "scripts/verify_ths_statements.py": "40ea848b5db2f713011512af63c66a12591c4d325a722618f4e9dd1436506c8a",
     "scripts/verify_unlock_industries.py": "69d0cf25010e78df5220051f1f584da5625b8b34d1e0764fc8bc8c340ecb738f",
     "scripts/verify_unlocks.py": "56c7d0939c9d08de1c2b0b5bde686d479125a398845481e4f24b61c2ccb45cd3",
-    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+    "scripts/yuanhang_guest.py": "7bd741c6f6055b8b42a6590f7b712469ceb82909e7352eb484e16dc462fd7774",
+    "scripts/yuanhang_wire.py": "539bd899b20be9bcfeb2b64fca65d197163e7c1d0246c48f66adcf02720d64ff",
+    "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
     "sql/changes/2026-10-06-listing-status.sql": "0b33cdb0ab6733fd1610518963f984021af46b83bd8c601d500c801fdb0eb97d",
     "sql/legacy/business-v1.sql": "2b052c6caf0e79ed0c6efe1c1f06dea5daee4f47dd086e6854fcf37d439d92a5",
     "sql/legacy/intraday-v2.sql": "c90e4b2c2716cf403bc0917a3621a4dc5f9d39bff8facc9bb7a933b8409637d2",
     "sql/legacy/market-day-v1.sql": "8c33fd5cdb741c850c0cf6d6ba5b1abae4341019ac98a80759938baf8112cd78",
-    "sql/schema-contract.json": "5a434101b373eb0dd9de99dd1ad0872229c3bf0f33d21658fe71d84cd0fdce1f",
-    "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
+    "sql/schema-contract.json": "dbd92e3736be86592174b7b00920ef8b145dd9e076305604c65248a77eb6a58e",
+    "sql/schema.sql": "740b39125f5f4bd4479eb2ea0142dfd2feaf7744a001c5a8d95689d31e7d00b1",
     "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
     "src/empire/__main__.py": "e9a9b0ea14bdba64102a8f3eb623b0e60e5c5aebdfeac60cc77dd856752ff64e",
     "src/empire/bootstrap.py": "8aae504d4fd65f4f11e9ba360e6a87c3528327c1ce1e80628ac22b7e77023d59",
@@ -190,7 +196,7 @@
     "src/empire/features/adjustment/inputs.py": "e84d1602391afced3d92bd50a86d308edf37eda09cb85c0ae7e53ba28562fbb1",
     "src/empire/features/adjustment/query.py": "03191cd55fa71d73ece37b4b4fb076b4ce36280de5093c34a477576a6ad60444",
     "src/empire/features/adjustment/ui.py": "c20376946f24565dd85cb683a6141c09b485d1b8c7edd5943e4e55c90e2b8af4",
-    "src/empire/features/builtin.py": "cfd187d5b082d89e7464f108669b6ba6742a0c091653de38c0d98567f0b199f6",
+    "src/empire/features/builtin.py": "1f6d5fb20b4c8af00c5190b6d4d32982a3b2f396e053a43df59c3018b9642c09",
     "src/empire/features/calendar/__init__.py": "18dc263c87a8af06b933250d82de9de35a00cf5d8c8de5eed34eb5cea055fcbe",
     "src/empire/features/calendar/api.py": "e1bec20831a31d5fb10a8c7f0ea33c839213a6bab24c173238902af1f2d52ba4",
     "src/empire/features/calendar/audit.py": "7d3be1edc862072ac88557473603eac4fbe0a73acf83dd8b1a95b60ec5e888ff",
@@ -440,12 +446,25 @@
     "src/empire/features/suspensions/query.py": "f77b45a827c5eb2fd61b86c2a5968c1b55fdd9503b4d81ffbd7c1d36608c0609",
     "src/empire/features/suspensions/ui.py": "856fc04e23b3df96fb73f99de9e13eab635f0cf5f69cdf9a3b0c80b97792c54f",
     "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+    "src/empire/features/themes/bundle.py": "326d8b8da1576ef984274b42bc1ddf44228d20212e117c482fd9eec109266656",
     "src/empire/features/themes/catalog_mapping.py": "f22f522660db2dad78435dce8cc5b8b894f5215af3a2daf8b0fa0e89d65ca30c",
     "src/empire/features/themes/catalog_protocol.py": "1c97fd3e7a6aa9eb7ed2c81ce58119ea401517bcd8510a8d8771c2deba03fcfd",
-    "src/empire/features/themes/detail_model.py": "02f4469a3ea850dcf8164bec7b78249c447d1223c46e0541fec6dcd62c2ac259",
-    "src/empire/features/themes/detail_source.py": "31ef9c966c6f37f6a6f145c7081747cacb4b20dfa02dd2302c4d9e3f6a373d6b",
+    "src/empire/features/themes/catalog_source.py": "be4ea7c47413be6bced561144aea0186602e9e5b4f0ac0e97509dadb301a3f2a",
+    "src/empire/features/themes/collector.py": "4cd9512a83b8deaf9316f06b684962a497837508c5ffb93928dd207e80644bfa",
+    "src/empire/features/themes/dataset.py": "b2e4acb25c65bfe5eb01cdc43c1c3e2decac5a65cfc79822ad0e1f8105bdc1d0",
+    "src/empire/features/themes/detail_model.py": "9e1d3149c1604809891fc875651d13e22418429e7cf1ebfb5a4f5d73d391fa45",
+    "src/empire/features/themes/detail_source.py": "b2f63318da3da7136cde7d651183a701890f4752a3cddb2d07d413ea0810f6c3",
+    "src/empire/features/themes/guest_crypto.py": "8388c52dd1f112e81a27969d23946daf32829a3c83d3f572a2c75a2059384112",
+    "src/empire/features/themes/guest_material.py": "4b30a270941ab6b588c9ee1d11f3c5aeff253c717ad8a2059f71a18a7305cfeb",
+    "src/empire/features/themes/guest_protocol.py": "87b7a4ba335b45ed804858c4a723399ee27f6b98162c1899f5add4f0e57e41cc",
     "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
     "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+    "src/empire/features/themes/identity_source.py": "0a8cbdd7045cedeaf37df0ab9f05a9946e4cb9bc9b725326230d4df60bd192d0",
+    "src/empire/features/themes/query.py": "6dba35663d295312993d6197139bd981116723204da2a1c1b5e6be318befad5f",
+    "src/empire/features/themes/repository.py": "ab1786d26d6c4c11cb4406eee0a19927b7de200cd29ffa516c4e6b630e768ac0",
+    "src/empire/features/themes/socket_frame.py": "36d560b20f007c2234b517ea9ed605981a5e3a625a63509054c2a7219cc1758f",
+    "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+    "src/empire/features/themes/ui.py": "6873a85a2a8edcb5f5ce0c702b06b517e13813eefd6c6def32ffe26de745179b",
     "src/empire/features/ths_capital/__init__.py": "4ff90cd1344f9425fce0ccd1250c1c537da6d4bd5ce40514db8ab856dbb255c6",
     "src/empire/features/ths_capital/bundle.py": "c38517c630bba3f2336a7e11580f422b2a87f582bf0909eedc6f0faef60c39a3",
     "src/empire/features/ths_capital/collector.py": "6e02b60721ba41bc120fc8a31ce2b80f88e10952121b018f43f2fc9bc88965e8",
@@ -492,8 +511,8 @@
     "src/empire/plugins/collection/progress.py": "a15c257c2543b6d6c1e3d07bbd1965154293da3951fa9b0da0968d7ef8f17186",
     "src/empire/plugins/collection/record_query.py": "7c1f1409c686f54968f8d78a5e3eb7c69fe73ce93a2277343c3a3dfd3f5fe85f",
     "src/empire/plugins/collection/records.py": "cc33a16e2bed3aee7e28ffbbf90656cd344ce6af6c8e146def26c9884b27f877",
-    "src/empire/plugins/collection/rules.json": "a5d789ce58ca2e500aec5cfe8a6e3d4cefbfd4451de03f8900a8a5575127ca42",
-    "src/empire/plugins/collection/rules.py": "d37390bf0803201540b963921285810a2bc7e7b3429cfa9044273217d27fd0e2",
+    "src/empire/plugins/collection/rules.json": "374c7bd8815e5f3f7344a9589d90080bba2dfb58e4b469dd0905938c40294f42",
+    "src/empire/plugins/collection/rules.py": "bdff0426c84e66913f602d889faf18d6d36654b1cbb52865414dbfc57f80c9f1",
     "src/empire/plugins/collection/unit_prefetch.py": "45b25930ff3f2447d7de9bfc24eec890d8004774334f81fec3891e187fe0fd71",
     "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
     "src/empire/plugins/collectors/resources/ths.js": "0163e41dfdcbd889755142f4179a83a8d9f575f5343a56413546cc7fc0262376",
@@ -510,18 +529,20 @@
     "src/empire/plugins/infra/collection_state_unit.py": "fd0c9d461c40f26c6387247dce3678566c6c22ca9e2f11008a4cb1fe33bc79fd",
     "src/empire/plugins/infra/download_settings.py": "ec9fa5d73131fe220397142684056155bd7f5935c8fe236483dffbe33280e66b",
     "src/empire/plugins/infra/download_storage.py": "36457d9432d97fe1b331ee17ff369a591b2931ae8c899c43b3032dd3fab1d41c",
-    "src/empire/plugins/infra/http.py": "f060eaee1f5007df92510f1f0308a437b936f5a457dff4936c1ece3260adcb85",
+    "src/empire/plugins/infra/http.py": "a4986adde6e274fcf2b27bb3e007e97ec24714194dd48df77d5a7ed9c621b3d2",
     "src/empire/plugins/infra/http_safety.py": "478f60a3eefe1ff0b1536874c05629e90703115fccbf68a4d0e50de6c174ee8b",
     "src/empire/plugins/infra/mysql_store.py": "ea551cf918d953f88ab51f631689b43a24c05bd23e2bb8929edd262e861b3a0e",
-    "src/empire/plugins/infra/proxy_pool.py": "c3ac0b94d61e2b0f2147c737b981c18d53a3f4be50399e91a052e36da52bd905",
+    "src/empire/plugins/infra/proxy_pool.py": "4a2c2a3908ccea057550b4b7495ff8a0b65f218f0b318fff66c80d818f61c5a4",
+    "src/empire/plugins/infra/proxy_tunnel.py": "9764eb18b405acce3e901aa4087740ab24740a64981bbf5526a2ee11756584ff",
     "src/empire/plugins/infra/redis_store.py": "403d15efdff316ab8808b3badb3609051ae3d4790b874ce3dabbd6183ad942b8",
     "src/empire/plugins/infra/request_activity.py": "fde0d4a922a65a5ec6741556059ce9266e54a6ace6fa62d5adfcde657ba0d335",
     "src/empire/plugins/infra/resources.py": "28783b029f95a548282c0c314652321dbeb07ebb0d77652274c86b72607398bb",
     "src/empire/plugins/infra/response_reader.py": "926a6511e8b1c3b7bfa46cf0d16b2d8c8d9df31bde98f7f6f883e819b82966a0",
-    "src/empire/plugins/infra/routing.py": "3ae0a8d4e87112800b42fdc12c7287eefc24ed075ef8c776139acc40a06c1e70",
+    "src/empire/plugins/infra/routing.py": "80224bf2df5ae5c26bef1b1af42aa50ecaed6ba2494ab7251cfbacf53add3bdb",
     "src/empire/plugins/infra/schema_manifest.py": "14de9d373240566bff7be1342463a9a1c14c56d4e3eb7b04aea4477c63258b53",
     "src/empire/plugins/infra/settings.py": "eddc4547166fd35904118b6a1ada727c910dacfd045fb3ea279274a29c81321d",
     "src/empire/plugins/infra/sql_lane.py": "15da4fae66b21c2739c87bbd36c2a139c3e56326c9621020bbc5272f61b1ef7a",
+    "src/empire/plugins/infra/stream_exchange.py": "ad20adae89c1edbf2eb64963719897fb8b3f7e350d081cf1bdf69a9d3ed2c405",
     "src/empire/plugins/pipeline/__init__.py": "5bc21e78444728cd50b6ddaf95ef5a50416f7ca8f0e1caf8bf84c939b96bb22b",
     "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
     "src/empire/plugins/pipeline/archive_queue.py": "0353214a6259ebaca511014b2808b8d6c336263728a06e2be8de7401f2440d86",
@@ -571,11 +592,11 @@
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
     "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
   },
-  "content_sha256": "96496daa0cdfdc080c3240fabff65c4be69880d1f356bf9999dd61ee421e8546",
+  "content_sha256": "2549735fa1c017f5a04e495b798c4ed12d0f75fff35c33e66bc672457f9da61f",
   "features": {
     "page:ths_capital": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -1429,7 +1450,7 @@
     },
     "page:kaipanla_trend": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -1477,7 +1498,7 @@
     },
     "page:kaipanla_auction": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -1525,7 +1546,7 @@
     },
     "page:kaipanla_volume": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -1573,7 +1594,7 @@
     },
     "page:kaipanla_trades": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -1621,7 +1642,7 @@
     },
     "page:kaipanla_entrust": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -1669,7 +1690,7 @@
     },
     "page:kaipanla_large_order": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -1717,7 +1738,7 @@
     },
     "page:kaipanla_quote": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -2597,6 +2618,39 @@
         }
       }
     },
+    "page:themes": {
+      "sources": {
+        "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+        "src/empire/features/themes/detail_model.py": "9e1d3149c1604809891fc875651d13e22418429e7cf1ebfb5a4f5d73d391fa45",
+        "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+        "src/empire/features/themes/repository.py": "ab1786d26d6c4c11cb4406eee0a19927b7de200cd29ffa516c4e6b630e768ac0",
+        "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+        "src/empire/features/themes/ui.py": "6873a85a2a8edcb5f5ce0c702b06b517e13813eefd6c6def32ffe26de745179b",
+        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
+        "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
+        "src/empire/plugins/ui/common.py": "9791faf505e67c8d14dc8c85f60fae09512eebae5912ef89dbd4814e578aef00",
+        "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
+        "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588"
+      },
+      "content_sha256": "ebfc7cfcee2843e4305b01c9bd8c82c1d1d7cf0527cd4cf11e0a9cdc731acf66",
+      "documentation": {
+        "开盘啦题材库": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/overview.md"
+        },
+        "Redis 题材七日日内历史": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/history-storage.md"
+        }
+      }
+    },
     "page:preparation": {
       "sources": {
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
@@ -2733,7 +2787,7 @@
     },
     "task:tdx-unlocks": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -2794,7 +2848,7 @@
     },
     "task:ths-capital": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -3371,7 +3425,7 @@
     },
     "task:kaipanla-trend": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -3419,7 +3473,7 @@
     },
     "task:kaipanla-auction": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -3467,7 +3521,7 @@
     },
     "task:kaipanla-volume": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -3515,7 +3569,7 @@
     },
     "task:kaipanla-trades": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -3563,7 +3617,7 @@
     },
     "task:kaipanla-entrust": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -3611,7 +3665,7 @@
     },
     "task:kaipanla-large-order": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -3659,7 +3713,7 @@
     },
     "task:kaipanla-quote": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -3736,7 +3790,7 @@
     },
     "task:ths-industries": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4020,7 +4074,7 @@
     },
     "task:ths-stocks": {
       "sources": {
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4172,11 +4226,81 @@
         }
       }
     },
+    "task:kaipanla-themes": {
+      "sources": {
+        "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
+        "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
+        "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+        "src/empire/features/themes/catalog_mapping.py": "f22f522660db2dad78435dce8cc5b8b894f5215af3a2daf8b0fa0e89d65ca30c",
+        "src/empire/features/themes/catalog_protocol.py": "1c97fd3e7a6aa9eb7ed2c81ce58119ea401517bcd8510a8d8771c2deba03fcfd",
+        "src/empire/features/themes/catalog_source.py": "be4ea7c47413be6bced561144aea0186602e9e5b4f0ac0e97509dadb301a3f2a",
+        "src/empire/features/themes/collector.py": "4cd9512a83b8deaf9316f06b684962a497837508c5ffb93928dd207e80644bfa",
+        "src/empire/features/themes/detail_model.py": "9e1d3149c1604809891fc875651d13e22418429e7cf1ebfb5a4f5d73d391fa45",
+        "src/empire/features/themes/detail_source.py": "b2f63318da3da7136cde7d651183a701890f4752a3cddb2d07d413ea0810f6c3",
+        "src/empire/features/themes/guest_crypto.py": "8388c52dd1f112e81a27969d23946daf32829a3c83d3f572a2c75a2059384112",
+        "src/empire/features/themes/guest_material.py": "4b30a270941ab6b588c9ee1d11f3c5aeff253c717ad8a2059f71a18a7305cfeb",
+        "src/empire/features/themes/guest_protocol.py": "87b7a4ba335b45ed804858c4a723399ee27f6b98162c1899f5add4f0e57e41cc",
+        "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+        "src/empire/features/themes/identity_source.py": "0a8cbdd7045cedeaf37df0ab9f05a9946e4cb9bc9b725326230d4df60bd192d0",
+        "src/empire/features/themes/socket_frame.py": "36d560b20f007c2234b517ea9ed605981a5e3a625a63509054c2a7219cc1758f",
+        "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
+        "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
+      },
+      "content_sha256": "f78139a39e2736214fbee43af6e5e0c20abb38a90662edf83ad146528a9b4fb1",
+      "documentation": {
+        "开盘啦题材库": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/overview.md"
+        }
+      }
+    },
+    "task:kaipanla-theme-details": {
+      "sources": {
+        "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
+        "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
+        "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+        "src/empire/features/themes/catalog_mapping.py": "f22f522660db2dad78435dce8cc5b8b894f5215af3a2daf8b0fa0e89d65ca30c",
+        "src/empire/features/themes/catalog_protocol.py": "1c97fd3e7a6aa9eb7ed2c81ce58119ea401517bcd8510a8d8771c2deba03fcfd",
+        "src/empire/features/themes/catalog_source.py": "be4ea7c47413be6bced561144aea0186602e9e5b4f0ac0e97509dadb301a3f2a",
+        "src/empire/features/themes/collector.py": "4cd9512a83b8deaf9316f06b684962a497837508c5ffb93928dd207e80644bfa",
+        "src/empire/features/themes/detail_model.py": "9e1d3149c1604809891fc875651d13e22418429e7cf1ebfb5a4f5d73d391fa45",
+        "src/empire/features/themes/detail_source.py": "b2f63318da3da7136cde7d651183a701890f4752a3cddb2d07d413ea0810f6c3",
+        "src/empire/features/themes/guest_crypto.py": "8388c52dd1f112e81a27969d23946daf32829a3c83d3f572a2c75a2059384112",
+        "src/empire/features/themes/guest_material.py": "4b30a270941ab6b588c9ee1d11f3c5aeff253c717ad8a2059f71a18a7305cfeb",
+        "src/empire/features/themes/guest_protocol.py": "87b7a4ba335b45ed804858c4a723399ee27f6b98162c1899f5add4f0e57e41cc",
+        "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+        "src/empire/features/themes/identity_source.py": "0a8cbdd7045cedeaf37df0ab9f05a9946e4cb9bc9b725326230d4df60bd192d0",
+        "src/empire/features/themes/socket_frame.py": "36d560b20f007c2234b517ea9ed605981a5e3a625a63509054c2a7219cc1758f",
+        "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
+        "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823"
+      },
+      "content_sha256": "6aee732326d0688337eb30b084c033087c437446622900a535b88b673ac61ee4",
+      "documentation": {
+        "开盘啦题材库": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/overview.md"
+        }
+      }
+    },
     "mysql:stock": {
       "sources": {
         "src/empire/features/stocks/dataset.py": "7d07c0f805cef4fb7e5fd600c1862b4f63c1b464f35829ee73d85fb5f5d17a99",
         "src/empire/features/stocks/query.py": "876fd4fe9b5794d485b586fbf512c9d85bea3d792b72e2fe42c1ffe12534a25f",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4212,7 +4336,7 @@
       "sources": {
         "src/empire/features/listings/dataset.py": "c6cd69120db1ffcf4da63706424774a0f2cbe2b9dc1f27cf8e606a22ee7137d6",
         "src/empire/features/listings/query.py": "07c82570e33286bab265c1b15086a7def63e2f899f41e901914d9ff8189dfcca",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4239,7 +4363,7 @@
       "sources": {
         "src/empire/features/listing_status/dataset.py": "aad79d06c42618f933176bfaddb738846cd76478a9b1e665017a33cdd6981453",
         "src/empire/features/listing_status/query.py": "ec02ef1e193993f68aba6a80ec1bc89d85ec9a4a0d4af89a782740f9e53f4bc1",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4289,7 +4413,7 @@
       "sources": {
         "src/empire/features/calendar/dataset.py": "a24e0830f05fb0b667f6c56bab27567ea603297c95a175e13102001ac335f988",
         "src/empire/features/calendar/query.py": "f0361bf0479c8fc55a8d99642bf2277fdc23cca1a3cd97c21ef716a65ea6484c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4319,7 +4443,7 @@
       "sources": {
         "src/empire/features/suspensions/dataset.py": "9fa0882d6b76eadefc8ab2477ea4a42c85a10ae8537affa250b9ca6a9f42e9b1",
         "src/empire/features/suspensions/query.py": "f77b45a827c5eb2fd61b86c2a5968c1b55fdd9503b4d81ffbd7c1d36608c0609",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4353,7 +4477,7 @@
       "sources": {
         "src/empire/features/suspensions/dataset.py": "9fa0882d6b76eadefc8ab2477ea4a42c85a10ae8537affa250b9ca6a9f42e9b1",
         "src/empire/features/suspensions/query.py": "f77b45a827c5eb2fd61b86c2a5968c1b55fdd9503b4d81ffbd7c1d36608c0609",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4387,7 +4511,7 @@
       "sources": {
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
         "src/empire/features/capital_actions/query.py": "7417d4bdbc8d9343d33f179b5dc7d532975b94749e48b507f25cedb50a86db5b",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4437,7 +4561,7 @@
       "sources": {
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
         "src/empire/features/capital_actions/query.py": "7417d4bdbc8d9343d33f179b5dc7d532975b94749e48b507f25cedb50a86db5b",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4487,7 +4611,7 @@
       "sources": {
         "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
         "src/empire/features/capital_actions/query.py": "7417d4bdbc8d9343d33f179b5dc7d532975b94749e48b507f25cedb50a86db5b",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4537,7 +4661,7 @@
       "sources": {
         "src/empire/features/name_changes/dataset.py": "1f64fc222121f20e0e1858f7f8885ead42e99a7aa739a9e35dc52870175e9c55",
         "src/empire/features/name_changes/query.py": "4ee3f7a9007c886c497319c0c7d10ed7be62745a66806859464129fba536aa74",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4564,7 +4688,7 @@
       "sources": {
         "src/empire/features/financial_statements/dataset.py": "c0909c5e32ba2d4917f17abc2f9539c49747e2036263556d0c93ff8ae2c7ae03",
         "src/empire/features/financial_statements/query.py": "2ff6887b79759256c299c27dc7a6d76b1fe01ff8836d862170da492a18615c7f",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4594,7 +4718,7 @@
       "sources": {
         "src/empire/features/financial_statements/dataset.py": "c0909c5e32ba2d4917f17abc2f9539c49747e2036263556d0c93ff8ae2c7ae03",
         "src/empire/features/financial_statements/query.py": "2ff6887b79759256c299c27dc7a6d76b1fe01ff8836d862170da492a18615c7f",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4624,7 +4748,7 @@
       "sources": {
         "src/empire/features/financial_statements/dataset.py": "c0909c5e32ba2d4917f17abc2f9539c49747e2036263556d0c93ff8ae2c7ae03",
         "src/empire/features/financial_statements/query.py": "2ff6887b79759256c299c27dc7a6d76b1fe01ff8836d862170da492a18615c7f",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4654,7 +4778,7 @@
       "sources": {
         "src/empire/features/industries/dataset.py": "7b410397dfc30fcacf947f2e7646c9f33ca1b3043551e5b3748a10e3392c92ca",
         "src/empire/features/industries/query.py": "f091d8218fb8dfbc9f1193ab12146888356be9d8eb8bba5f6365a8b4a9943031",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4681,7 +4805,7 @@
       "sources": {
         "src/empire/features/industries/dataset.py": "7b410397dfc30fcacf947f2e7646c9f33ca1b3043551e5b3748a10e3392c92ca",
         "src/empire/features/industries/query.py": "f091d8218fb8dfbc9f1193ab12146888356be9d8eb8bba5f6365a8b4a9943031",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4709,7 +4833,7 @@
         "src/empire/features/indices/dataset.py": "8c243f863ad20e1973d547049b119a88ea259d205eb02f780c402fdd4100be46",
         "src/empire/features/indices/query.py": "a79bcc92e1e1a3a0a74ca65bfce3e577e86417a8aacb5e52861f3ee4c7588fe9",
         "src/empire/features/index_prices/query.py": "22e50add3a15ac9cf1b8b183f87142217e15e16acd3df793baf4da6b1c5dcdd2",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4739,7 +4863,7 @@
       "sources": {
         "src/empire/features/indices/dataset.py": "8c243f863ad20e1973d547049b119a88ea259d205eb02f780c402fdd4100be46",
         "src/empire/features/indices/query.py": "a79bcc92e1e1a3a0a74ca65bfce3e577e86417a8aacb5e52861f3ee4c7588fe9",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4766,7 +4890,7 @@
       "sources": {
         "src/empire/features/kaipanla/repository.py": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b",
         "src/empire/features/kaipanla/query.py": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4818,7 +4942,7 @@
       "sources": {
         "src/empire/features/kaipanla/repository.py": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b",
         "src/empire/features/kaipanla/query.py": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4870,7 +4994,7 @@
       "sources": {
         "src/empire/features/kaipanla/repository.py": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b",
         "src/empire/features/kaipanla/query.py": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4922,7 +5046,7 @@
       "sources": {
         "src/empire/features/kaipanla/repository.py": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b",
         "src/empire/features/kaipanla/query.py": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -4974,7 +5098,7 @@
       "sources": {
         "src/empire/features/kaipanla/repository.py": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b",
         "src/empire/features/kaipanla/query.py": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5026,7 +5150,7 @@
       "sources": {
         "src/empire/features/kaipanla/repository.py": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b",
         "src/empire/features/kaipanla/query.py": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5078,7 +5202,7 @@
       "sources": {
         "src/empire/features/kaipanla/repository.py": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b",
         "src/empire/features/kaipanla/query.py": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5130,7 +5254,7 @@
       "sources": {
         "src/empire/features/kaipanla/repository.py": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b",
         "src/empire/features/kaipanla/query.py": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5182,7 +5306,7 @@
       "sources": {
         "src/empire/features/kaipanla/repository.py": "46a70c2e2834c8a3b79ec31ba8dfb6b26758e36976b2204ae7746181c5107a9b",
         "src/empire/features/kaipanla/query.py": "269df7c96e7061efdb2ea3e0b14c426f3365bc6e6be3ab698612a00849869894",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5260,7 +5384,7 @@
       "sources": {
         "src/empire/plugins/infra/settings.py": "eddc4547166fd35904118b6a1ada727c910dacfd045fb3ea279274a29c81321d",
         "src/empire/plugins/collection/control.py": "205e8be28050183e9671a8b65f7ea32f7cbc323b17438f5d8a8ac0c84ea91b45",
-        "src/empire/plugins/infra/http.py": "f060eaee1f5007df92510f1f0308a437b936f5a457dff4936c1ece3260adcb85",
+        "src/empire/plugins/infra/http.py": "a4986adde6e274fcf2b27bb3e007e97ec24714194dd48df77d5a7ed9c621b3d2",
         "src/empire/diagnostics/project.py": "b8c6b9f6778989836fd2a70d9a6ca47277d5b6c3b3a54369a6ecea7f17f31f7c",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -5290,7 +5414,7 @@
         "src/empire/features/security_aliases/dataset.py": "3906b26df3a431d39db2a9890009f65ef75d135bafab38da9a6b72e6cf451328",
         "scripts/import_bse_code_mapping.py": "51de306f7aeefced16632d186adceb8148c038e7604d458a47dfd74184a86576",
         "scripts/create_security_alias_schema.py": "ed81ec12351989d8a4152a3c2b33564771bc3db454674c074c68466e7bb0a045",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5313,7 +5437,7 @@
       "sources": {
         "src/empire/features/index_prices/dataset.py": "45c2a96cfd6cced0cbec62b9b7d14cea715a97234597b937f90038ecda399e84",
         "src/empire/features/index_prices/query.py": "22e50add3a15ac9cf1b8b183f87142217e15e16acd3df793baf4da6b1c5dcdd2",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5342,7 +5466,7 @@
       "sources": {
         "src/empire/features/index_prices/dataset.py": "45c2a96cfd6cced0cbec62b9b7d14cea715a97234597b937f90038ecda399e84",
         "src/empire/features/index_prices/query.py": "22e50add3a15ac9cf1b8b183f87142217e15e16acd3df793baf4da6b1c5dcdd2",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5372,7 +5496,7 @@
         "src/empire/features/st_events/contract.py": "75f54f4071005a3c37d0eb1d7ba2958d77df53eb6f52947ff674734e40740df9",
         "src/empire/features/st_events/dataset.py": "78dbbbed7d61a325ee7781b3df2844226ab399bef43645a8ae2f395bfccc04be",
         "src/empire/features/st_events/query.py": "d933dbf8cdad0ee6c4f747e8d78cf8e5fe43a3489eba4ba75a62ba5fb1b67048",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5451,7 +5575,7 @@
         "src/empire/features/repurchases/contract.py": "0121912be689c7757d8757684ac167dc35a2efbf11c1dee91bc4d53892f7a3a7",
         "src/empire/features/repurchases/dataset.py": "eed075714862df913c263fe3925fd2b0007104345a58919db5713ce5b5bb4fa8",
         "src/empire/features/repurchases/query.py": "d3ab68b978bbddaa6a9011c95c467b489c6bebcc440ba773f0235b765254cc87",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5478,7 +5602,7 @@
         "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/features/performance/dataset.py": "796a71a32c6420b7d31009ac16dacda9658da419e439d398bf3e3c377e84e0af",
         "src/empire/features/performance/query.py": "8c3430f57f0d7a9a98907bc8e511b287731eaec190a39c6320894ef82c25d167",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5505,7 +5629,7 @@
         "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/features/performance/dataset.py": "796a71a32c6420b7d31009ac16dacda9658da419e439d398bf3e3c377e84e0af",
         "src/empire/features/performance/query.py": "8c3430f57f0d7a9a98907bc8e511b287731eaec190a39c6320894ef82c25d167",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5532,7 +5656,7 @@
         "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/features/performance/dataset.py": "796a71a32c6420b7d31009ac16dacda9658da419e439d398bf3e3c377e84e0af",
         "src/empire/features/performance/query.py": "8c3430f57f0d7a9a98907bc8e511b287731eaec190a39c6320894ef82c25d167",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5559,7 +5683,7 @@
         "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/features/performance/dataset.py": "796a71a32c6420b7d31009ac16dacda9658da419e439d398bf3e3c377e84e0af",
         "src/empire/features/performance/query.py": "8c3430f57f0d7a9a98907bc8e511b287731eaec190a39c6320894ef82c25d167",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5586,7 +5710,7 @@
         "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
         "src/empire/features/performance/dataset.py": "796a71a32c6420b7d31009ac16dacda9658da419e439d398bf3e3c377e84e0af",
         "src/empire/features/performance/query.py": "8c3430f57f0d7a9a98907bc8e511b287731eaec190a39c6320894ef82c25d167",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5614,7 +5738,7 @@
         "src/empire/features/holders/query.py": "d5ba76980635ad4adc1f21ddde83c97689c40e7186e935245477257ddcab0993",
         "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
         "src/empire/features/holders/audit.py": "5f8a2294a3398f0a61a71a6218fc7823e4fbf341bf42d406476fa8ebb0e908c5",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5641,7 +5765,7 @@
         "src/empire/features/holders/query.py": "d5ba76980635ad4adc1f21ddde83c97689c40e7186e935245477257ddcab0993",
         "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
         "src/empire/features/holders/audit.py": "5f8a2294a3398f0a61a71a6218fc7823e4fbf341bf42d406476fa8ebb0e908c5",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5669,7 +5793,7 @@
         "src/empire/features/performance/source.py": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e",
         "src/empire/features/performance/dataset.py": "796a71a32c6420b7d31009ac16dacda9658da419e439d398bf3e3c377e84e0af",
         "src/empire/features/performance/query.py": "8c3430f57f0d7a9a98907bc8e511b287731eaec190a39c6320894ef82c25d167",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5704,7 +5828,7 @@
         "src/empire/features/unlocks/dataset.py": "9c1c7abbe65534931fd26544a99069e404bd820a619358daa3d6d1490cc49fdf",
         "src/empire/features/unlocks/query.py": "fd41f6b0b1b3ef34bc675573410e4899b210692933b349ed5e437b73989e588c",
         "src/empire/features/unlocks/ui.py": "ac56f36a59b221d5cc7dd6fe2840527640e72f99bfa782c0aae25222cfb6e377",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5747,7 +5871,7 @@
         "src/empire/features/unlocks/dataset.py": "9c1c7abbe65534931fd26544a99069e404bd820a619358daa3d6d1490cc49fdf",
         "src/empire/features/unlocks/query.py": "fd41f6b0b1b3ef34bc675573410e4899b210692933b349ed5e437b73989e588c",
         "src/empire/features/unlocks/ui.py": "ac56f36a59b221d5cc7dd6fe2840527640e72f99bfa782c0aae25222cfb6e377",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5790,7 +5914,7 @@
         "src/empire/features/unlock_industries/dataset.py": "85fd3747f7755d36c4104711f7b65786328152e4b95537a27b8325e7d0b250cf",
         "src/empire/features/unlock_industries/query.py": "47caff1e84ecb63f631062d20f175f0b40ddd625941862122ebdebf807702ee4",
         "src/empire/features/unlock_industries/ui.py": "6e06c6b52a1536333e4879574960e253531c483c3b20eeb9d8e2fa66d393126c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5832,7 +5956,7 @@
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6",
         "src/empire/features/ths_capital/dataset.py": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
         "src/empire/features/ths_capital/query.py": "658de67688552a51ec5224c35f0ed2adef0e40390569775a4d2680cf0f70bb0c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5859,7 +5983,7 @@
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6",
         "src/empire/features/ths_capital/dataset.py": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
         "src/empire/features/ths_capital/query.py": "658de67688552a51ec5224c35f0ed2adef0e40390569775a4d2680cf0f70bb0c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5886,7 +6010,7 @@
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6",
         "src/empire/features/ths_capital/dataset.py": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
         "src/empire/features/ths_capital/query.py": "658de67688552a51ec5224c35f0ed2adef0e40390569775a4d2680cf0f70bb0c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5913,7 +6037,7 @@
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6",
         "src/empire/features/ths_capital/dataset.py": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
         "src/empire/features/ths_capital/query.py": "658de67688552a51ec5224c35f0ed2adef0e40390569775a4d2680cf0f70bb0c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5940,7 +6064,7 @@
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6",
         "src/empire/features/ths_capital/dataset.py": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
         "src/empire/features/ths_capital/query.py": "658de67688552a51ec5224c35f0ed2adef0e40390569775a4d2680cf0f70bb0c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5967,7 +6091,7 @@
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6",
         "src/empire/features/ths_capital/dataset.py": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
         "src/empire/features/ths_capital/query.py": "658de67688552a51ec5224c35f0ed2adef0e40390569775a4d2680cf0f70bb0c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -5994,7 +6118,7 @@
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6",
         "src/empire/features/ths_capital/dataset.py": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
         "src/empire/features/ths_capital/query.py": "658de67688552a51ec5224c35f0ed2adef0e40390569775a4d2680cf0f70bb0c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -6021,7 +6145,7 @@
         "src/empire/features/ths_capital/contract.py": "328b2f9361dca8c2e621efd7db619d20ecce2f47edbbf73c92f1c813132ec5c6",
         "src/empire/features/ths_capital/dataset.py": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
         "src/empire/features/ths_capital/query.py": "658de67688552a51ec5224c35f0ed2adef0e40390569775a4d2680cf0f70bb0c",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -6040,6 +6164,261 @@
         "MySQL capital_release": {
           "owner": "ths_capital",
           "path": "src/empire/features/ths_capital/docs/help/mysql-capital-release.md"
+        }
+      }
+    },
+    "mysql:theme_daily": {
+      "sources": {
+        "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+        "src/empire/features/themes/repository.py": "ab1786d26d6c4c11cb4406eee0a19927b7de200cd29ffa516c4e6b630e768ac0",
+        "src/empire/features/themes/dataset.py": "b2e4acb25c65bfe5eb01cdc43c1c3e2decac5a65cfc79822ad0e1f8105bdc1d0",
+        "src/empire/features/themes/query.py": "6dba35663d295312993d6197139bd981116723204da2a1c1b5e6be318befad5f",
+        "src/empire/features/themes/collector.py": "4cd9512a83b8deaf9316f06b684962a497837508c5ffb93928dd207e80644bfa",
+        "src/empire/features/themes/ui.py": "6873a85a2a8edcb5f5ce0c702b06b517e13813eefd6c6def32ffe26de745179b",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
+        "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+        "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
+        "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
+        "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+        "src/empire/features/themes/catalog_mapping.py": "f22f522660db2dad78435dce8cc5b8b894f5215af3a2daf8b0fa0e89d65ca30c",
+        "src/empire/features/themes/catalog_protocol.py": "1c97fd3e7a6aa9eb7ed2c81ce58119ea401517bcd8510a8d8771c2deba03fcfd",
+        "src/empire/features/themes/catalog_source.py": "be4ea7c47413be6bced561144aea0186602e9e5b4f0ac0e97509dadb301a3f2a",
+        "src/empire/features/themes/detail_model.py": "9e1d3149c1604809891fc875651d13e22418429e7cf1ebfb5a4f5d73d391fa45",
+        "src/empire/features/themes/detail_source.py": "b2f63318da3da7136cde7d651183a701890f4752a3cddb2d07d413ea0810f6c3",
+        "src/empire/features/themes/guest_crypto.py": "8388c52dd1f112e81a27969d23946daf32829a3c83d3f572a2c75a2059384112",
+        "src/empire/features/themes/guest_material.py": "4b30a270941ab6b588c9ee1d11f3c5aeff253c717ad8a2059f71a18a7305cfeb",
+        "src/empire/features/themes/guest_protocol.py": "87b7a4ba335b45ed804858c4a723399ee27f6b98162c1899f5add4f0e57e41cc",
+        "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
+        "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+        "src/empire/features/themes/identity_source.py": "0a8cbdd7045cedeaf37df0ab9f05a9946e4cb9bc9b725326230d4df60bd192d0",
+        "src/empire/features/themes/socket_frame.py": "36d560b20f007c2234b517ea9ed605981a5e3a625a63509054c2a7219cc1758f",
+        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
+        "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
+        "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
+        "src/empire/plugins/ui/common.py": "9791faf505e67c8d14dc8c85f60fae09512eebae5912ef89dbd4814e578aef00",
+        "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
+        "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
+        "sql/schema.sql#theme_daily": "f0de3a621a21f8594e41e41c3591afea312edac2e514b8562cf5e5be3d986491",
+        "sql/business-schema.json#theme_daily": "4b764aab36f8fdb2fb8b7300331213d31f1b4af60f2ef41d004e85a73c6f4ad0"
+      },
+      "content_sha256": "f3349645ce5d8cac057d66f4a8d085df16c114e86ec0e802a20e8257fda94844",
+      "documentation": {
+        "MySQL theme_daily": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/mysql-theme-daily.md"
+        }
+      }
+    },
+    "mysql:theme_detail": {
+      "sources": {
+        "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+        "src/empire/features/themes/repository.py": "ab1786d26d6c4c11cb4406eee0a19927b7de200cd29ffa516c4e6b630e768ac0",
+        "src/empire/features/themes/dataset.py": "b2e4acb25c65bfe5eb01cdc43c1c3e2decac5a65cfc79822ad0e1f8105bdc1d0",
+        "src/empire/features/themes/query.py": "6dba35663d295312993d6197139bd981116723204da2a1c1b5e6be318befad5f",
+        "src/empire/features/themes/collector.py": "4cd9512a83b8deaf9316f06b684962a497837508c5ffb93928dd207e80644bfa",
+        "src/empire/features/themes/ui.py": "6873a85a2a8edcb5f5ce0c702b06b517e13813eefd6c6def32ffe26de745179b",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
+        "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+        "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
+        "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
+        "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+        "src/empire/features/themes/catalog_mapping.py": "f22f522660db2dad78435dce8cc5b8b894f5215af3a2daf8b0fa0e89d65ca30c",
+        "src/empire/features/themes/catalog_protocol.py": "1c97fd3e7a6aa9eb7ed2c81ce58119ea401517bcd8510a8d8771c2deba03fcfd",
+        "src/empire/features/themes/catalog_source.py": "be4ea7c47413be6bced561144aea0186602e9e5b4f0ac0e97509dadb301a3f2a",
+        "src/empire/features/themes/detail_model.py": "9e1d3149c1604809891fc875651d13e22418429e7cf1ebfb5a4f5d73d391fa45",
+        "src/empire/features/themes/detail_source.py": "b2f63318da3da7136cde7d651183a701890f4752a3cddb2d07d413ea0810f6c3",
+        "src/empire/features/themes/guest_crypto.py": "8388c52dd1f112e81a27969d23946daf32829a3c83d3f572a2c75a2059384112",
+        "src/empire/features/themes/guest_material.py": "4b30a270941ab6b588c9ee1d11f3c5aeff253c717ad8a2059f71a18a7305cfeb",
+        "src/empire/features/themes/guest_protocol.py": "87b7a4ba335b45ed804858c4a723399ee27f6b98162c1899f5add4f0e57e41cc",
+        "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
+        "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+        "src/empire/features/themes/identity_source.py": "0a8cbdd7045cedeaf37df0ab9f05a9946e4cb9bc9b725326230d4df60bd192d0",
+        "src/empire/features/themes/socket_frame.py": "36d560b20f007c2234b517ea9ed605981a5e3a625a63509054c2a7219cc1758f",
+        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
+        "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
+        "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
+        "src/empire/plugins/ui/common.py": "9791faf505e67c8d14dc8c85f60fae09512eebae5912ef89dbd4814e578aef00",
+        "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
+        "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
+        "sql/schema.sql#theme_detail": "9e38f22bdb53416dee2bc13f77f2e7e6ce7420c00ff8ece78efa62329597dd57",
+        "sql/business-schema.json#theme_detail": "2c88e939db2d839534a13dd6e8217b1dab7f1566696b7e49a2af285df4d60d58"
+      },
+      "content_sha256": "6641a4a9845219001c86cc4ca9802947b0ee1c75ceef0bf7ed2302145f072e53",
+      "documentation": {
+        "MySQL theme_detail": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/mysql-theme-detail.md"
+        }
+      }
+    },
+    "mysql:theme_category": {
+      "sources": {
+        "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+        "src/empire/features/themes/repository.py": "ab1786d26d6c4c11cb4406eee0a19927b7de200cd29ffa516c4e6b630e768ac0",
+        "src/empire/features/themes/dataset.py": "b2e4acb25c65bfe5eb01cdc43c1c3e2decac5a65cfc79822ad0e1f8105bdc1d0",
+        "src/empire/features/themes/query.py": "6dba35663d295312993d6197139bd981116723204da2a1c1b5e6be318befad5f",
+        "src/empire/features/themes/collector.py": "4cd9512a83b8deaf9316f06b684962a497837508c5ffb93928dd207e80644bfa",
+        "src/empire/features/themes/ui.py": "6873a85a2a8edcb5f5ce0c702b06b517e13813eefd6c6def32ffe26de745179b",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
+        "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+        "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
+        "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
+        "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+        "src/empire/features/themes/catalog_mapping.py": "f22f522660db2dad78435dce8cc5b8b894f5215af3a2daf8b0fa0e89d65ca30c",
+        "src/empire/features/themes/catalog_protocol.py": "1c97fd3e7a6aa9eb7ed2c81ce58119ea401517bcd8510a8d8771c2deba03fcfd",
+        "src/empire/features/themes/catalog_source.py": "be4ea7c47413be6bced561144aea0186602e9e5b4f0ac0e97509dadb301a3f2a",
+        "src/empire/features/themes/detail_model.py": "9e1d3149c1604809891fc875651d13e22418429e7cf1ebfb5a4f5d73d391fa45",
+        "src/empire/features/themes/detail_source.py": "b2f63318da3da7136cde7d651183a701890f4752a3cddb2d07d413ea0810f6c3",
+        "src/empire/features/themes/guest_crypto.py": "8388c52dd1f112e81a27969d23946daf32829a3c83d3f572a2c75a2059384112",
+        "src/empire/features/themes/guest_material.py": "4b30a270941ab6b588c9ee1d11f3c5aeff253c717ad8a2059f71a18a7305cfeb",
+        "src/empire/features/themes/guest_protocol.py": "87b7a4ba335b45ed804858c4a723399ee27f6b98162c1899f5add4f0e57e41cc",
+        "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
+        "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+        "src/empire/features/themes/identity_source.py": "0a8cbdd7045cedeaf37df0ab9f05a9946e4cb9bc9b725326230d4df60bd192d0",
+        "src/empire/features/themes/socket_frame.py": "36d560b20f007c2234b517ea9ed605981a5e3a625a63509054c2a7219cc1758f",
+        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
+        "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
+        "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
+        "src/empire/plugins/ui/common.py": "9791faf505e67c8d14dc8c85f60fae09512eebae5912ef89dbd4814e578aef00",
+        "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
+        "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
+        "sql/schema.sql#theme_category": "1710ec5602290af2ed4dbf2a1da4b25e8d765eaf740bf1cfed1d04c6f85fc1f3",
+        "sql/business-schema.json#theme_category": "e4ea34516313e24714fc95f3521db51690ddd27f1d23944021e323dfd57a53b2"
+      },
+      "content_sha256": "dd967d2ea9b8e6ef6967a02ba96d60ed43c062c46379f7246b034a23d433ecc8",
+      "documentation": {
+        "MySQL theme_category": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/mysql-theme-category.md"
+        }
+      }
+    },
+    "mysql:theme_stock": {
+      "sources": {
+        "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+        "src/empire/features/themes/repository.py": "ab1786d26d6c4c11cb4406eee0a19927b7de200cd29ffa516c4e6b630e768ac0",
+        "src/empire/features/themes/dataset.py": "b2e4acb25c65bfe5eb01cdc43c1c3e2decac5a65cfc79822ad0e1f8105bdc1d0",
+        "src/empire/features/themes/query.py": "6dba35663d295312993d6197139bd981116723204da2a1c1b5e6be318befad5f",
+        "src/empire/features/themes/collector.py": "4cd9512a83b8deaf9316f06b684962a497837508c5ffb93928dd207e80644bfa",
+        "src/empire/features/themes/ui.py": "6873a85a2a8edcb5f5ce0c702b06b517e13813eefd6c6def32ffe26de745179b",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
+        "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+        "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
+        "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
+        "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+        "src/empire/features/themes/catalog_mapping.py": "f22f522660db2dad78435dce8cc5b8b894f5215af3a2daf8b0fa0e89d65ca30c",
+        "src/empire/features/themes/catalog_protocol.py": "1c97fd3e7a6aa9eb7ed2c81ce58119ea401517bcd8510a8d8771c2deba03fcfd",
+        "src/empire/features/themes/catalog_source.py": "be4ea7c47413be6bced561144aea0186602e9e5b4f0ac0e97509dadb301a3f2a",
+        "src/empire/features/themes/detail_model.py": "9e1d3149c1604809891fc875651d13e22418429e7cf1ebfb5a4f5d73d391fa45",
+        "src/empire/features/themes/detail_source.py": "b2f63318da3da7136cde7d651183a701890f4752a3cddb2d07d413ea0810f6c3",
+        "src/empire/features/themes/guest_crypto.py": "8388c52dd1f112e81a27969d23946daf32829a3c83d3f572a2c75a2059384112",
+        "src/empire/features/themes/guest_material.py": "4b30a270941ab6b588c9ee1d11f3c5aeff253c717ad8a2059f71a18a7305cfeb",
+        "src/empire/features/themes/guest_protocol.py": "87b7a4ba335b45ed804858c4a723399ee27f6b98162c1899f5add4f0e57e41cc",
+        "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
+        "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+        "src/empire/features/themes/identity_source.py": "0a8cbdd7045cedeaf37df0ab9f05a9946e4cb9bc9b725326230d4df60bd192d0",
+        "src/empire/features/themes/socket_frame.py": "36d560b20f007c2234b517ea9ed605981a5e3a625a63509054c2a7219cc1758f",
+        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
+        "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
+        "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
+        "src/empire/plugins/ui/common.py": "9791faf505e67c8d14dc8c85f60fae09512eebae5912ef89dbd4814e578aef00",
+        "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
+        "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
+        "sql/schema.sql#theme_stock": "c350c060a651045b421e67974c646ad5590f42fc5e54db71a9b79e9e9af2568b",
+        "sql/business-schema.json#theme_stock": "c3ba56b66ad62a095005a8d4186007dee8f262a9f9047f74df3e420a52ff2de5"
+      },
+      "content_sha256": "eb75d17c4e9121139f568aad06f2651a9388b74991b42562e9b36bdc3fd38b23",
+      "documentation": {
+        "MySQL theme_stock": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/mysql-theme-stock.md"
+        }
+      }
+    },
+    "mysql:theme_stock_reason": {
+      "sources": {
+        "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+        "src/empire/features/themes/repository.py": "ab1786d26d6c4c11cb4406eee0a19927b7de200cd29ffa516c4e6b630e768ac0",
+        "src/empire/features/themes/dataset.py": "b2e4acb25c65bfe5eb01cdc43c1c3e2decac5a65cfc79822ad0e1f8105bdc1d0",
+        "src/empire/features/themes/query.py": "6dba35663d295312993d6197139bd981116723204da2a1c1b5e6be318befad5f",
+        "src/empire/features/themes/collector.py": "4cd9512a83b8deaf9316f06b684962a497837508c5ffb93928dd207e80644bfa",
+        "src/empire/features/themes/ui.py": "6873a85a2a8edcb5f5ce0c702b06b517e13813eefd6c6def32ffe26de745179b",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
+        "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
+        "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
+        "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
+        "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+        "src/empire/contracts/collector.py": "c3335d4195356ea3b1f048e8531e2cdb05f0dfaa704f968e7de3a43e514894b5",
+        "src/empire/contracts/data.py": "c4a5ce9eda6e1da02012944d9817122441328db78c5977849346c2bd17122465",
+        "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
+        "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+        "src/empire/contracts/ui.py": "e4ff772580f53eb0d94a213055853c90cc1b15605e33e4f5d5f5a96f946bf23f",
+        "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
+        "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
+        "src/empire/features/themes/catalog_mapping.py": "f22f522660db2dad78435dce8cc5b8b894f5215af3a2daf8b0fa0e89d65ca30c",
+        "src/empire/features/themes/catalog_protocol.py": "1c97fd3e7a6aa9eb7ed2c81ce58119ea401517bcd8510a8d8771c2deba03fcfd",
+        "src/empire/features/themes/catalog_source.py": "be4ea7c47413be6bced561144aea0186602e9e5b4f0ac0e97509dadb301a3f2a",
+        "src/empire/features/themes/detail_model.py": "9e1d3149c1604809891fc875651d13e22418429e7cf1ebfb5a4f5d73d391fa45",
+        "src/empire/features/themes/detail_source.py": "b2f63318da3da7136cde7d651183a701890f4752a3cddb2d07d413ea0810f6c3",
+        "src/empire/features/themes/guest_crypto.py": "8388c52dd1f112e81a27969d23946daf32829a3c83d3f572a2c75a2059384112",
+        "src/empire/features/themes/guest_material.py": "4b30a270941ab6b588c9ee1d11f3c5aeff253c717ad8a2059f71a18a7305cfeb",
+        "src/empire/features/themes/guest_protocol.py": "87b7a4ba335b45ed804858c4a723399ee27f6b98162c1899f5add4f0e57e41cc",
+        "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
+        "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+        "src/empire/features/themes/identity_source.py": "0a8cbdd7045cedeaf37df0ab9f05a9946e4cb9bc9b725326230d4df60bd192d0",
+        "src/empire/features/themes/socket_frame.py": "36d560b20f007c2234b517ea9ed605981a5e3a625a63509054c2a7219cc1758f",
+        "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
+        "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
+        "src/empire/plugins/collectors/support.py": "e9e798062648a0db32f112d36dc7fb3409966a2309dea21aa61573fa6e0df823",
+        "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
+        "src/empire/plugins/ui/common.py": "9791faf505e67c8d14dc8c85f60fae09512eebae5912ef89dbd4814e578aef00",
+        "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c",
+        "src/empire/plugins/ui/preview_cards.py": "e1dab6e31fc2e38e23f5c547055ebd7995f58145a52b53b7897d3e3f8d922dec",
+        "src/empire/plugins/ui/queries.py": "26b971103900a7a3485d233640e0f186ceef4586115c1fb05ef97d199aa95588",
+        "sql/schema.sql#theme_stock_reason": "830236e07d474f17873adf7b15a241b94bd2b7e344ce238f384c4a5958bc543a",
+        "sql/business-schema.json#theme_stock_reason": "e605467976ff95d279da8a805591e47c6a0a60c75cd83d93b1652d38d06cff09"
+      },
+      "content_sha256": "41fe109d8c9c60415d3afba0fa5858388492a1d5480694f51be6d4ad8145d2c8",
+      "documentation": {
+        "MySQL theme_stock_reason": {
+          "owner": "themes",
+          "path": "src/empire/features/themes/docs/help/mysql-theme-stock-reason.md"
         }
       }
     },
@@ -6074,7 +6453,7 @@
         "src/empire/features/capital_actions/query.py": "7417d4bdbc8d9343d33f179b5dc7d532975b94749e48b507f25cedb50a86db5b",
         "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
         "src/empire/features/capital_actions/preparation.py": "998d9a1547ba3a727188896b8f344f205a0d5b73ae2ef33a2b207278e6bb115d",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -6128,7 +6507,7 @@
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/features/capital_actions/preparation.py": "998d9a1547ba3a727188896b8f344f205a0d5b73ae2ef33a2b207278e6bb115d",
         "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -6163,7 +6542,7 @@
         "src/empire/plugins/pipeline/fingerprints.py": "80a671107f6588059708c9f742d42ecd368efdda6a641cf99c68d9520f7b8c82",
         "src/empire/features/capital_actions/preparation.py": "998d9a1547ba3a727188896b8f344f205a0d5b73ae2ef33a2b207278e6bb115d",
         "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -6196,7 +6575,7 @@
         "src/empire/features/stocks/dataset.py": "7d07c0f805cef4fb7e5fd600c1862b4f63c1b464f35829ee73d85fb5f5d17a99",
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/features/stocks/confirmation.py": "6bf02e3cc873cb3a4e09b729a1a1d0a75e19b20b1b3a272fa202d76aa0c7a268",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -6225,7 +6604,7 @@
         "src/empire/features/stocks/dataset.py": "7d07c0f805cef4fb7e5fd600c1862b4f63c1b464f35829ee73d85fb5f5d17a99",
         "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
         "src/empire/features/stocks/confirmation.py": "6bf02e3cc873cb3a4e09b729a1a1d0a75e19b20b1b3a272fa202d76aa0c7a268",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -6276,7 +6655,7 @@
         "src/empire/plugins/collection/control.py": "205e8be28050183e9671a8b65f7ea32f7cbc323b17438f5d8a8ac0c84ea91b45",
         "src/empire/features/financial_statements/query.py": "2ff6887b79759256c299c27dc7a6d76b1fe01ff8836d862170da492a18615c7f",
         "src/empire/diagnostics/redis_evidence.py": "471787ef0c3edeec73b168920dbe46144503715cfd4d7690ce74c1459270caba",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/archive_version.py": "e472a6abd410311590d5433f4ddec7b0170053dd96f103e45665adc90b71cf85",
@@ -6388,8 +6767,8 @@
     },
     "redis:rate-site": {
       "sources": {
-        "src/empire/plugins/infra/routing.py": "3ae0a8d4e87112800b42fdc12c7287eefc24ed075ef8c776139acc40a06c1e70",
-        "src/empire/plugins/infra/http.py": "f060eaee1f5007df92510f1f0308a437b936f5a457dff4936c1ece3260adcb85",
+        "src/empire/plugins/infra/routing.py": "80224bf2df5ae5c26bef1b1af42aa50ecaed6ba2494ab7251cfbacf53add3bdb",
+        "src/empire/plugins/infra/http.py": "a4986adde6e274fcf2b27bb3e007e97ec24714194dd48df77d5a7ed9c621b3d2",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/download.py": "e5d037c6e900e8cb67765f4bf8d6f6313bf84896cfaff715f83b031d9776af04",
@@ -6409,7 +6788,7 @@
     },
     "redis:rate-total": {
       "sources": {
-        "src/empire/plugins/infra/routing.py": "3ae0a8d4e87112800b42fdc12c7287eefc24ed075ef8c776139acc40a06c1e70",
+        "src/empire/plugins/infra/routing.py": "80224bf2df5ae5c26bef1b1af42aa50ecaed6ba2494ab7251cfbacf53add3bdb",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/download.py": "e5d037c6e900e8cb67765f4bf8d6f6313bf84896cfaff715f83b031d9776af04",
@@ -6427,7 +6806,7 @@
     },
     "redis:rate-proxy": {
       "sources": {
-        "src/empire/plugins/infra/routing.py": "3ae0a8d4e87112800b42fdc12c7287eefc24ed075ef8c776139acc40a06c1e70",
+        "src/empire/plugins/infra/routing.py": "80224bf2df5ae5c26bef1b1af42aa50ecaed6ba2494ab7251cfbacf53add3bdb",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/download.py": "e5d037c6e900e8cb67765f4bf8d6f6313bf84896cfaff715f83b031d9776af04",
@@ -6447,7 +6826,7 @@
       "sources": {
         "src/empire/features/preparation/cache.py": "9f3032bb978eb577a07674091e4c52766a05c8709aeac46b06239c70bdc8bbb8",
         "src/empire/features/preparation/query.py": "6b413df71c7e963209dc188b5206f033d9c0973ef1d06c2fd8acb5e007a20db5",
-        "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+        "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
@@ -6486,7 +6865,7 @@
     },
     "redis:router-mapping": {
       "sources": {
-        "src/empire/plugins/infra/proxy_pool.py": "c3ac0b94d61e2b0f2147c737b981c18d53a3f4be50399e91a052e36da52bd905",
+        "src/empire/plugins/infra/proxy_pool.py": "4a2c2a3908ccea057550b4b7495ff8a0b65f218f0b318fff66c80d818f61c5a4",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/download.py": "e5d037c6e900e8cb67765f4bf8d6f6313bf84896cfaff715f83b031d9776af04",
@@ -6505,7 +6884,7 @@
     },
     "redis:router-directory": {
       "sources": {
-        "src/empire/plugins/infra/proxy_pool.py": "c3ac0b94d61e2b0f2147c737b981c18d53a3f4be50399e91a052e36da52bd905",
+        "src/empire/plugins/infra/proxy_pool.py": "4a2c2a3908ccea057550b4b7495ff8a0b65f218f0b318fff66c80d818f61c5a4",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/download.py": "e5d037c6e900e8cb67765f4bf8d6f6313bf84896cfaff715f83b031d9776af04",
@@ -6530,7 +6909,7 @@
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a"
       },
-      "content_sha256": "d5159788ed775978fcbaff9caef4dfddc5dad680ee1998bb93580fc880b0e2ad",
+      "content_sha256": "2b30d904747ba49590d80c0567cf0d1ed846592fae454ab287482c6ecfed5466",
       "documentation": {
         "Redis 题材七日日内历史": {
           "owner": "themes",

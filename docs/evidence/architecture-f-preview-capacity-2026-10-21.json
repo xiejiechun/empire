@@ -66,13 +66,10 @@
     "src/empire/features/calendar/contract.py": "316ddc5998838b52185d9f38e69c9271ba9d689aa95a9dc305f8a1794332e382",
     "src/empire/features/suspensions/exclusions.py": "bca029fc7aaedec694c49c4b6e9d564d62297cae6a0e658c778d8ed16104d414",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
-    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
     "src/empire/plugins/infra/schema_manifest.py": "14de9d373240566bff7be1342463a9a1c14c56d4e3eb7b04aea4477c63258b53",
     "src/empire/plugins/infra/mysql_store.py": "ea551cf918d953f88ab51f631689b43a24c05bd23e2bb8929edd262e861b3a0e",
     "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
-    "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
-    "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
-    "sql/schema-contract.json": "5a434101b373eb0dd9de99dd1ad0872229c3bf0f33d21658fe71d84cd0fdce1f"
+    "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a"
   },
   "ddl_scopes": {
     "stock_market_day": "ce4bd05421c94973b0d6a25bf4521284f189229acfcb91594d332ca9a7cf0b10",
@@ -954,5 +951,1013 @@
     "sync_binlog": 1,
     "log_bin": 0,
     "client_port": 13348
+  },
+  "schema_objects": {
+    "stock_daily_quote": {
+      "ddl_sha256": "70f00dec7e5d2f1222d2fa3dfebd03603f60b84d6ed1996a976ff277f87e4e28",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "float_mask": {
+            "type": "bigint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "present_mask": {
+            "type": "bigint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "time": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "up_px": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "avg_px": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "low_px": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "down_px": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "high_px": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "last_px": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "open_px": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "pe_rate": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "jtPeRate": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "TTMPeRate": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "amount_in": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "amplitude": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "px_change": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "vol_ratio": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "amount_out": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "dyn_pb_rate": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "phcj_volume": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "entrust_rate": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "market_value": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "total_amount": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "total_shares": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "phcj_turnover": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "px_change_rate": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "total_turnover": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "turnover_ratio": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "circulation_value": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "circulation_amount": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "actualcirculation_value": {
+            "type": "decimal(30, 12)",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date"
+        ],
+        "indexes": {
+          "ix_quote_date": {
+            "columns": [
+              "trade_date",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_quote_mask": "((float_mask<288230376151711744)and(present_mask<536870912))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "kaipanla",
+        "primary_keys": [
+          "unified_code",
+          "trade_date"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "kaipanla.quote.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_daily_quote",
+              "stock_daily_quote_level"
+            ],
+            "primary": "stock_market_day"
+          }
+        }
+      }
+    },
+    "stock_daily_quote_level": {
+      "ddl_sha256": "61594723ca11609c1cc2104787b3a16a8285205ff381d91bcc56d255cef8fff4",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "side": {
+            "type": "char(1) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "level": {
+            "type": "tinyint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "price": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_volume": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "float_mask": {
+            "type": "tinyint",
+            "nullable": false,
+            "unsigned": true
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date",
+          "side",
+          "level"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_quote_level": "((sidein('b','s'))and(levelbetween1and10))",
+          "ck_quote_level_value": "((price>=0)and(source_volume>=0)and(float_mask<16))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "kaipanla",
+        "primary_keys": [
+          "unified_code",
+          "trade_date",
+          "side",
+          "level"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "kaipanla.quote.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_daily_quote",
+              "stock_daily_quote_level"
+            ],
+            "primary": "stock_market_day"
+          }
+        }
+      }
+    },
+    "stock_intraday_trade_block": {
+      "ddl_sha256": "b759b2121d27ede2e174dae8df92ebcb2bdb2256876c0ceddb1b4c81ce2d6354",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "block_seq": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_seq": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "last_seq": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_time": {
+            "type": "time",
+            "nullable": false,
+            "unsigned": false
+          },
+          "last_time": {
+            "type": "time",
+            "nullable": false,
+            "unsigned": false
+          },
+          "point_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "format_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "body": {
+            "type": "blob",
+            "nullable": false,
+            "unsigned": false
+          },
+          "block_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date",
+          "block_seq"
+        ],
+        "indexes": {
+          "ix_trade_time": {
+            "columns": [
+              "unified_code",
+              "trade_date",
+              "first_time",
+              "block_seq"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_trade_block": "((format_version=1)and(point_countbetween1and200)and(first_seq=(block_seq*200))and(last_seq=((first_seq+point_count)-1))and(last_time>=first_time)and(length(body)<=24576))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "kaipanla",
+        "primary_keys": [
+          "unified_code",
+          "trade_date",
+          "block_seq"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "kaipanla.trades.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_intraday_trade_block"
+            ],
+            "primary": "stock_market_day"
+          }
+        }
+      }
+    },
+    "stock_intraday_trend": {
+      "ddl_sha256": "9039bd793a695e15fcf3e7ebe5c11429c8a92d338b9130326ba09c165e6d320b",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "seq": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "source_time": {
+            "type": "time",
+            "nullable": false,
+            "unsigned": false
+          },
+          "float_mask": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "price": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "average_price": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_volume": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_flag": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date",
+          "source_time"
+        ],
+        "indexes": {
+          "ix_minute_date": {
+            "columns": [
+              "trade_date",
+              "source_time",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_trend_mask": "(float_mask<256)",
+          "ck_trend_seq": "(seq<241)"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "kaipanla",
+        "primary_keys": [
+          "unified_code",
+          "trade_date",
+          "source_time"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "kaipanla.trend.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_intraday_trend"
+            ],
+            "primary": "stock_market_day"
+          }
+        }
+      }
+    },
+    "stock_large_order_trend": {
+      "ddl_sha256": "1f84b310954f4a0824a2f6c9faa9bbfd90bbb614bb6ebaee96f2da4f3dae60c5",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "seq": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "source_time": {
+            "type": "time",
+            "nullable": false,
+            "unsigned": false
+          },
+          "float_mask": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "net_amount": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date",
+          "source_time"
+        ],
+        "indexes": {
+          "ix_minute_date": {
+            "columns": [
+              "trade_date",
+              "source_time",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_large_order_mask": "(float_mask<4)",
+          "ck_large_order_seq": "(seq<241)"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "kaipanla",
+        "primary_keys": [
+          "unified_code",
+          "trade_date",
+          "source_time"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "kaipanla.large_order.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_large_order_trend"
+            ],
+            "primary": "stock_market_day"
+          }
+        }
+      }
+    },
+    "stock_market_day": {
+      "ddl_sha256": "ce4bd05421c94973b0d6a25bf4521284f189229acfcb91594d332ca9a7cf0b10",
+      "shape": {
+        "columns": {
+          "kind": {
+            "type": "varchar(16) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_code": {
+            "type": "varchar(6) collate \"ascii_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "listing_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "listing_source": {
+            "type": "varchar(16) collate \"utf8mb4_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "market_start": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "identity_extra": {
+            "type": "json",
+            "nullable": false,
+            "unsigned": false
+          },
+          "product_extra": {
+            "type": "json",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_metadata": {
+            "type": "json",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "point_count": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "key_set_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "kind",
+          "unified_code",
+          "trade_date"
+        ],
+        "indexes": {
+          "ix_market_date": {
+            "columns": [
+              "kind",
+              "trade_date",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_market_contract": "(contract_version=2)",
+          "ck_market_count": "(point_countbetween1and100000)",
+          "ck_market_extra": "((json_storage_size(identity_extra)<=16384)and(json_storage_size(product_extra)<=16384)and(json_storage_size(source_metadata)<=16384))",
+          "ck_market_kind": "(kindin('trend','auction','volume','trades','entrust','large_order','quote'))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "kaipanla",
+        "primary_keys": [
+          "kind",
+          "unified_code",
+          "trade_date"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "kaipanla.trend.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_intraday_trend"
+            ],
+            "primary": "stock_market_day"
+          },
+          "kaipanla.auction.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_opening_auction"
+            ],
+            "primary": "stock_market_day"
+          },
+          "kaipanla.volume.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_minute_volume"
+            ],
+            "primary": "stock_market_day"
+          },
+          "kaipanla.trades.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_intraday_trade_block"
+            ],
+            "primary": "stock_market_day"
+          },
+          "kaipanla.entrust.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_minute_entrust"
+            ],
+            "primary": "stock_market_day"
+          },
+          "kaipanla.large_order.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_large_order_trend"
+            ],
+            "primary": "stock_market_day"
+          },
+          "kaipanla.quote.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_daily_quote",
+              "stock_daily_quote_level"
+            ],
+            "primary": "stock_market_day"
+          }
+        }
+      }
+    },
+    "stock_minute_entrust": {
+      "ddl_sha256": "a856adac3aa6e3306ff7b9ee26d9783b06b8a90196a6c5e5a6deebc013d69836",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "seq": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "source_time": {
+            "type": "time",
+            "nullable": false,
+            "unsigned": false
+          },
+          "float_mask": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "buy_volume": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "sell_volume": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "buy_turnover": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "sell_turnover": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date",
+          "source_time"
+        ],
+        "indexes": {
+          "ix_minute_date": {
+            "columns": [
+              "trade_date",
+              "source_time",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_entrust_mask": "(float_mask<256)",
+          "ck_entrust_seq": "(seq<241)"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "kaipanla",
+        "primary_keys": [
+          "unified_code",
+          "trade_date",
+          "source_time"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "kaipanla.entrust.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_minute_entrust"
+            ],
+            "primary": "stock_market_day"
+          }
+        }
+      }
+    },
+    "stock_minute_volume": {
+      "ddl_sha256": "b6d8ddfc0f8a446e954e06ce95e9b0fda307be3b12fb013f81cbf8862f1898c4",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "seq": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "source_time": {
+            "type": "time",
+            "nullable": false,
+            "unsigned": false
+          },
+          "float_mask": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "source_volume": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_turnover": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_flag": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date",
+          "source_time"
+        ],
+        "indexes": {
+          "ix_minute_date": {
+            "columns": [
+              "trade_date",
+              "source_time",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_volume_mask": "(float_mask<64)",
+          "ck_volume_seq": "(seq<241)"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "kaipanla",
+        "primary_keys": [
+          "unified_code",
+          "trade_date",
+          "source_time"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "kaipanla.volume.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_minute_volume"
+            ],
+            "primary": "stock_market_day"
+          }
+        }
+      }
+    },
+    "stock_opening_auction": {
+      "ddl_sha256": "79e2add0fa185e79753b0e6ac8272e97dc4dc552e13a2a2790149432ddfb47bc",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "seq": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "source_time": {
+            "type": "time",
+            "nullable": false,
+            "unsigned": false
+          },
+          "float_mask": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "price": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_flag": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_volume": {
+            "type": "decimal(30, 12)",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date",
+          "seq"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_auction_mask": "(float_mask<64)",
+          "ck_auction_seq": "(seq<100000)"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "kaipanla",
+        "primary_keys": [
+          "unified_code",
+          "trade_date",
+          "seq"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "kaipanla.auction.day": {
+            "tables": [
+              "stock_market_day",
+              "stock_opening_auction"
+            ],
+            "primary": "stock_market_day"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "date": "2026-10-24",
+    "original_bindings": {
+      "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
+      "sql/schema.sql": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
+      "sql/schema-contract.json": "5a434101b373eb0dd9de99dd1ad0872229c3bf0f33d21658fe71d84cd0fdce1f"
+    },
+    "original_commit": "1cfbe7265d1da7a4424eb53e16d5158e72d8f712",
+    "verification": "Original hash matched HEAD bytes or its CRLF checkout; every scoped DDL, shape and ownership exactly equals current. Original measurements retained, no remeasurement claimed."
   }
 }

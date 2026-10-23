@@ -4098,6 +4098,121 @@
       "source": "ths",
       "fingerprint_source": "ths",
       "scope": "当前stock沪深北股票池；范围以各栏目当前完整响应为准，不扩展全部退市证券。"
+    },
+    "kaipanla-themes": {
+      "start": "上线后的首个成功采样，不回补上线前历史",
+      "end": "当前来源完整目录",
+      "initial": "列表完整采样；详情每轮最多32题材，当前全部主题材详情归档才算初始化完成",
+      "incremental": "列表180秒采样；详情缺失/改名优先，已核验条目24小时后分摊复查",
+      "recovery": "Redis存活续已入队断点，整轮结束等归档；Redis丢失从SQL已归档详情规划，日内轨迹不能恢复",
+      "fresh": "保留历史与正文，列表重新采样；详情重新核验当前计划前32项",
+      "limits": "目录2000项、每日1024轮/128MiB；单轮详情32题材，单响应及消息受共享字节上限约束，超限不截断",
+      "job_key": "kaipanla-themes-v1",
+      "source_file": "src/empire/features/themes/collector.py",
+      "scope": "全主题材及子题材；子题材无独立热度/排名，详情归属父题材",
+      "source": "kaipanla",
+      "fingerprint_source": "kaipanla",
+      "datasets": [
+        "kaipanla.themes.day"
+      ],
+      "tables": [
+        "theme_daily"
+      ],
+      "topics": [
+        "开盘啦题材库"
+      ],
+      "fingerprint_namespaces": [
+        "kaipanla_themes_daily_v1"
+      ],
+      "requests": [
+        {
+          "method": "STREAM",
+          "url": "tls://hwsockapp.longhuvip.com:17000",
+          "purpose": "共享代理TLS游客认证后读取首个完整目录订阅帧",
+          "parameters": [
+            {
+              "name": "command",
+              "value": "260→610→3009",
+              "meaning": "挑战、游客应答、目录订阅"
+            },
+            {
+              "name": "UserID/Token",
+              "value": "0/不发送",
+              "meaning": "匿名游客身份"
+            },
+            {
+              "name": "SNI",
+              "value": "socket.kaipan.com",
+              "meaning": "校验服务器证书"
+            }
+          ]
+        }
+      ]
+    },
+    "kaipanla-theme-details": {
+      "start": "上线后的首个成功采样，不回补上线前历史",
+      "end": "当前来源完整目录",
+      "initial": "列表完整采样；详情每轮最多32题材，当前全部主题材详情归档才算初始化完成",
+      "incremental": "列表180秒采样；详情缺失/改名优先，已核验条目24小时后分摊复查",
+      "recovery": "Redis存活续已入队断点，整轮结束等归档；Redis丢失从SQL已归档详情规划，日内轨迹不能恢复",
+      "fresh": "保留历史与正文，列表重新采样；详情重新核验当前计划前32项",
+      "limits": "目录2000项、每日1024轮/128MiB；单轮详情32题材，单响应及消息受共享字节上限约束，超限不截断",
+      "job_key": "kaipanla-theme-details-v1",
+      "source_file": "src/empire/features/themes/collector.py",
+      "scope": "全主题材及子题材；子题材无独立热度/排名，详情归属父题材",
+      "source": "kaipanla",
+      "fingerprint_source": "kaipanla",
+      "datasets": [
+        "kaipanla.themes.detail"
+      ],
+      "tables": [
+        "theme_detail",
+        "theme_category",
+        "theme_stock",
+        "theme_stock_reason"
+      ],
+      "topics": [
+        "开盘啦题材库"
+      ],
+      "fingerprint_namespaces": [
+        "kaipanla_themes_detail_v1"
+      ],
+      "requests": [
+        {
+          "method": "POST",
+          "url": "https://applhb.longhuvip.com/w1/api/index.php",
+          "purpose": "每个计划题材一次完整详情",
+          "parameters": [
+            {
+              "name": "c/a",
+              "value": "Theme/InfoGet",
+              "meaning": "题材详情动作"
+            },
+            {
+              "name": "ID",
+              "value": "来源主题材ID",
+              "meaning": "子题材使用父ID"
+            },
+            {
+              "name": "DeviceID",
+              "value": "每次尝试随机UUID",
+              "meaning": "不继承登录设备身份"
+            }
+          ]
+        },
+        {
+          "method": "GET",
+          "url": "https://suggest3.sinajs.cn/suggest/",
+          "purpose": "仅缺少已核实市场身份时精确代码查询；不替换为关联新代码",
+          "parameters": [
+            {
+              "name": "key",
+              "value": "六位来源代码",
+              "meaning": "精确匹配返回证券代码和市场符号"
+            }
+          ]
+        }
+      ]
     }
   }
 }

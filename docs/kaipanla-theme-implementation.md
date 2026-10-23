@@ -15,7 +15,7 @@
 3. C 正式接线：来源解析、共享下载/预取、统一入队/归档、SQL维护、恢复、准备检查、规则登记和可搜索数据页面。列表与详情两个独立任务，默认间隔180秒；首次详情按已校验目录补齐，之后变化/缺失优先，全天分摊核对全部详情。
 4. D 验收发布：完整目录及随机题材真实代理端到端核对，军工固定回归；缓存冷热/提交后重放/无DML成功清队；容量、完整门禁和真实桌面。题材是完整业务单位，30股票准入不直接套用：随机30题材（不足则全部）并核对每题材全部股票集合，不能称30股票插件验收。
 
-当前状态：A已核实游客260→610认证、3009首次订阅整份目录及字段/父子身份；共享代理匿名取得251主题材和1子题材，现行来源模块实测通过。B日内内核已实现，真实目录两轮Redis回放一致，无变化第二轮仅150字节事件；尚非七日生产容量验收。C目录共享Socket及详情共享HTTP路径已实现，但本地协议材料维护入口、正式任务/归档/SQL/页面未接通；D未完成。详见[游客目录证据](evidence/kaipanla-theme-guest-catalog-2026-10-24.md)，不以局部通过替代全功能交付。
+当前状态：A/B来源与七日日内内核已完成；C已接入正式列表/详情任务、统一入队归档、五张结构化表、查询及页面，显式维护入口已实现。D已通过随机30题材加军工的代理全链路核对，252条目录集合与内容一致，待归档0；七日模拟容量和SQL隔离容量已测量。生产迁移、完整发布门禁与真实桌面验收仍待完成，不宣称已上线。
 
 ## 2026-10-24 来源契约修订
 
@@ -23,9 +23,9 @@
 
 应用channel3009使用空HQListReq请求、themeListResp返回。根字段1=codeSwitch、2=state、10=items；Item.hotVal是热度数值，isHot是独立标记；Concept只有CID/name/pinyin/ratio/ztNum，没有热度或排名。排名由应用按主题材顺序累计，isNew非0不增加名次；本系统对新题材不填排名，保留new_flag和display_order。已实测state=0、codeSwitch=0时返回整份目录；应用映射state到Power，Power不为1时只截取前20项展示，内部目录仍整份替换。现行来源仅接受已验证0/0状态，其他状态须重新核实，不猜权限或默认为空。首次kind4订阅回复按命令3009、序号、扩展订阅ID及完整帧/认证解密核对；不是按条数阈值或等到超时判完成。
 
-ratio在线路上是IEEE754 binary32，不能套用未经核实的8位十进制舍入。解析为精确Decimal，Redis规范文本保留其精确值（最小非零值最多149位小数）；现有历史保护仍限制绝对值小于10^12。计划SQL用FLOAT保存来源binary32，正式查询须恢复为同一binary32值参与规范比较并做往返专项验收；这是来源数值类型的例外，不推广为财务金额存储规则。显示位数与源数值分别处理，尚未实现显示层。
+ratio在线路上是IEEE754 binary32，不能套用未经核实的8位十进制舍入。解析为精确Decimal，Redis规范文本保留其精确值（最小非零值最多149位小数）；现有历史保护仍限制绝对值小于10^12。SQL用DOUBLE无损容纳来源binary32；真实MySQL FLOAT文本返回曾缩短有效位，已用实际往返反例证明并修正，正式查询恢复同一binary32值参与规范比较；这是来源数值类型的例外，不推广为财务金额存储规则。显示位数与源数值分别处理，尚未实现显示层。
 
-详情通过共享HTTP的strip_credentials剥离Cookie及Authorization，随机DeviceID且不传UserID/Token，禁止重定向；使用共享代理/频控/重试/缓冲。仅核实的Level1/Level2结构进入规范化，分类股票和StockList.Tag按分类ID、股票代码、名称、理由完整对照，未知结构、掩码、重复或同数异集直接失败。证券先保留来源代码，正式SQL接线仍需公共证券映射，不能猜市场。当前未核实非空根Stocks布局，遇到时明确拒绝，不静默跳过。
+详情通过共享HTTP的strip_credentials剥离Cookie及Authorization，随机DeviceID且不传UserID/Token，禁止重定向；使用共享代理/频控/重试/缓冲。已核实Level1/Level2和根Stocks结构；根Stocks直接关联题材，category_id为空，不编造分类。分类股票和StockList.Tag按分类ID、股票代码、名称、理由及重复次数完整对照；同分类同证券的不同理由分别保留，完全相同的关联以occurrences记录出现次数。未知结构、掩码、同数异集或重复次数不符直接失败。证券先保留来源代码，正式SQL接线仍需公共证券映射，不能猜市场。
 
 ## 日内业务契约
 
@@ -41,23 +41,31 @@ ratio在线路上是IEEE754 binary32，不能套用未经核实的8位十进制�
 
 ## 字段字典与物理存储设计卡
 
-下列SQL对象是计划，不是已建表；A通过后以完整DDL、schema-contract/business-schema/设计卡登记及显式维护落地，应用不自动迁移。
+下列SQL对象已形成DDL、物理契约与归属登记；已在独占测试库验证，生产只能通过显式维护落地，应用不自动迁移。
 
 | 对象及粒度 | 主键/主要字段与来源 | 正式索引/用途 |
 |---|---|---|
-| theme_daily，一日一个主题材或子题材 | (business_date DATE, theme_id VARCHAR(65)); source_theme_id VARCHAR(32), concept_id VARCHAR(32)可空, name VARCHAR(128), parent_id VARCHAR(32)可空, new_flag INT UNSIGNED, rank_no INT可空（子题材/新题材）, display_order INT, hot_score BIGINT UNSIGNED可空（子题材）, change_rate FLOAT（来源binary32）, limit_up_count INT UNSIGNED, observed_at DATETIME(6) | PK支持日期列表；(theme_id,business_date)支持题材日线；(business_date,rank_no,theme_id)支持按热度排序 |
-| theme_detail，一个题材最新正文 | theme_id; name, brief TEXT, introduction MEDIUMTEXT, source_created_at/source_updated_at DATETIME(6)可空, observed_at, content_sha256 CHAR(64), in_current_catalog BOOL | PK点查；来源时间不是核验时间；正文不放JSON |
+| theme_daily，一日一个主题材或子题材 | (business_date DATE, theme_id VARCHAR(65)); source_theme_id VARCHAR(32), concept_id VARCHAR(32)可空, name VARCHAR(128), parent_id VARCHAR(32)可空, new_flag INT UNSIGNED, rank_no INT可空（子题材/新题材）, display_order INT, hot_score BIGINT UNSIGNED可空（子题材）, change_rate DOUBLE（无损容纳来源binary32）, limit_up_count INT UNSIGNED, observed_at DATETIME(6) | PK支持日期列表；(theme_id,business_date)支持题材日线；(business_date,rank_no,theme_id)支持按热度排序 |
+| theme_detail，一个题材最新正文 | theme_id; name, brief TEXT, introduction MEDIUMTEXT, source_created_at/source_updated_at DATETIME(6)可空, observed_at, content_sha256 CHAR(64), 当前目录归属从实时目录判断，不重复写入详情头 | PK点查；来源时间不是核验时间；正文不放JSON |
 | theme_category，一个题材内分类 | (theme_id,category_id); parent_category_id可空, name, display_order INT, plate_code可空 | (theme_id,parent_category_id,display_order)层级浏览 |
 | theme_stock，一个题材关联证券 | (theme_id,unified_code); source_stock_id VARCHAR(32), source_name VARCHAR(128) | (unified_code,theme_id)反查；证券身份通过公共解析，不能猜市场 |
-| theme_stock_reason，一分类一证券关联 | (theme_id,category_id,unified_code); reason TEXT, first_shelved_at/source_updated_at可空, is_new/is_hot等经过核实的标记 | 按题材/分类点查；同证券不同分类的理由分别保存 |
+| theme_stock_reason，一条完整来源关联内容 | (theme_id,relation_id CHAR(64)); category_id可空、unified_code、reason MEDIUMTEXT、first_shelved_at/source_updated_at可空、is_new/is_hot/source_is_zz、occurrences INT UNSIGNED | relation_id为规范关联全部内容的SHA-256；同分类同证券不同理由/时间/标记分别保留，完全相同内容计次数；(theme_id,category_id,relation_id)按分类游标查询 |
 
 数字类型按来源契约修订，正式SQL尚须实测往返及查询容量；超限拒绝，不舍入。子题材热度缺失为NULL；protobuf整数默认0是协议默认值，与根本没有定义该字段的子题材不同。父子ID有长度/字符约束；正文单元受正式HTTP通用响应与入队额度限制。计划上限单题材正文1MiB、分类5000、股票10000、关联50000，超限报错不截断，实测后才能定发布容量。
 
-列表SQL不是另一份当前表：同日版本合并更新，跨日长期保留。盘中计划每小时归档一次、首次当日成功及15:10后成功轮次确保最终结果；非交易日仍采样，不能依赖周末推断停采。收盘后来源继续变化时在后续小时更新，最终版本定义为当日最后实际成功归档版本，不承诺电脑离线也有收盘数据。精确触发与统一入队事务须C阶段回归。详情按题材独立事务，仅变更行写入；统一collection_state保存项目进度，不建立逐轮SQL运行表。
+列表SQL不是另一份当前表：同日版本合并更新，跨日长期保留。盘中计划每小时归档一次、首次当日成功及15:10后成功轮次确保最终结果；非交易日仍采样，不能依赖周末推断停采。收盘后来源继续变化时在后续小时更新，最终版本定义为当日最后实际成功归档版本，不承诺电脑离线也有收盘数据。精确触发与统一入队沿用正式任务和公共入队事务。详情按题材独立事务，仅变更行写入；统一collection_state保存项目进度，不建立逐轮SQL运行表。
 
 正式查询：日列表 WHERE business_date=:day ORDER BY rank_no,theme_id LIMIT :limit（<=200）；日区间单题材 WHERE theme_id=:id AND business_date BETWEEN :a AND :b LIMIT 366；详情PK读取正文一次，分类/关联按题材分页<=200；每日完整性有界核对当日键集合与摘要，不扫全部历史正文。
 
 ## Redis对象与容量
+
+### 正式接线前字段补充（2026-10-24）
+
+详情类别还须结构化保存first_shelved_at、updated_at、is_new；股票名称存于theme_stock.name。所有来源秒时间转为北京时间DATETIME(6)，0为NULL，超过Python/MySQL共同日期范围拒绝；各标记为来源非负整数，不擅自转换为布尔。brief及reason按UTF-8字节最多65536，使用MEDIUMTEXT避免TEXT的65535字节边界；introduction最多1MiB。关联relation_id使用来源代码而非映射后代码计算，occurrences至少1且完整题材累计最多50000。证券映射优先读取当前股票目录及已归档题材的已核实身份；缺失时经共享下载器查询新浪精确代码返回符号，仅接受同代码的明确市场。歧义/没有精确命中仍失败，不用前缀猜市场、不按名称改代码或推断历史更名关系。正常已知身份不重复请求。
+
+详情修订在题材完整单元内比较头、分类、股票和关联的规范字段，只对新增/改变/移出的行做DML；正文与关联同事务，失败整题材回滚。旧版比较先使用题材UpdateTime（缺失为最早版本），再使用采样时间；同一来源版本的修订仍比较实际内容。collection_state仅保存有界题材确认摘要/版本与项目进度，不保存正文。列表版本按完整日期单元采样时间比较，归档时完整核对业务键集合，移出仅删除该日期的对应行，不删除其他日期。
+
+本地游客协议材料通过scripts/import_theme_guest_material.py --stdin显式写入程序config.toml的kaipanla_guest.protected_material_secret，材料使用Windows当前用户DPAPI保护；公共脱敏器按secret字段遮盖。已有节拒绝覆盖，包括带引号或行内TOML定义。正式运行仅加载受保护材料，不加载APK、模拟器、用户Token或研究脚本；复制到另一Windows用户须重新准备并显式导入材料。版本变化需重新验证协议，不能自动尝试登录账号。此维护不修改数据库。
 
 七日内核由调用方传入项目专属前缀，键族包含current及day:<YYYY-MM-DD>。当前缓存与日元信息、基准、rounds有序索引、events差异分别管理；索引仅保存轮次/时间，不复制正文。必须配置最大题材数、单轮变更大小、每日轮次数及序列化字节上限；达到上限拒绝整轮并报告，不静默提前淘汰承诺七天的数据。Redis noeviction全局背压仍须C接线。
 
@@ -74,5 +82,11 @@ MySQL估算N=2000时每日73万行/年、365万行/5年；按160字节行载荷�
 - 容量拒绝不改基准、当前、历史及轮次；损坏/缺事件拒绝回放。
 - 真实代理完整目录、全部动态字段和父子集合，不能用登录配置、ID扫描或截断protobuf补齐证明。
 - 统一归档冷热摘要、无变化零DML、SQL提交后重放、失败保留和成功清队；详情下载不逐题材等待归档。
-- 页面按需创建/QueryScope取消、稳定选择、滚轮防改值、最近7日时间选择/题材曲线/采样缺口及SQL归档时效分别展示。
+- 页面按需创建/QueryScope取消、稳定选择、滚轮防改值、最近7日按日期及时间回放列表，显示实际采样时间；当前未提供题材曲线，未采样时段不插值。
 - 更新说明、规则、存储字典、设计卡、独立维护与发布证据；正式发布前保留未完成项，不将内核单测当产品验收。
+
+## 2026-10-24 接线与实采修订
+
+详情单轮最多32题材，按缺失/改名优先，已确认超过24小时后分摊复查；初次全部题材覆盖需要多轮。断点保存这一小批计划、页数与批次，满足公共16KiB上限；不逐题材等待归档。七日日内缓存与SQL队列不是同一事务：完整验证后的缓存可先提交，只有共享入队器能原子提交业务消息和归档断点；入队失败显示归档失败，下一轮重新采样，不假称缓存已归档。
+
+证券300114的精确查询同时返回关联新代码302132和原代码300114，采用后者的sz300114市场证据，未替换来源代码；30题材固定种子20261024及军工回归全部通过，见[真实全链路证据](evidence/kaipanla-theme-formal-2026-10-24.json)。七日容量是模拟轨迹，不是生产已有七天。

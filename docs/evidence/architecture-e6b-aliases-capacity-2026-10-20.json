@@ -68,7 +68,6 @@
     "src/empire/features/security_aliases/dataset.py": "3906b26df3a431d39db2a9890009f65ef75d135bafab38da9a6b72e6cf451328",
     "src/empire/features/security_aliases/bundle.py": "1c17dd2a7002d43c225c80542eded9cfed85f6fd472ada9d83617a9d77ce6404",
     "scripts/import_bse_code_mapping.py": "51de306f7aeefced16632d186adceb8148c038e7604d458a47dfd74184a86576",
-    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
   },
   "ddl_scopes": {
@@ -168,5 +167,83 @@
   "remaining": {
     "sql": false,
     "redis": false
+  },
+  "schema_objects": {
+    "security_code_alias": {
+      "ddl_sha256": "17be3dc6ac49a1f081a698c5b8c676115f3bb9c93c41d3816205b796419e2d0f",
+      "shape": {
+        "columns": {
+          "legacy_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "listing_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "legacy_code"
+        ],
+        "indexes": {
+          "ux_alias_security": {
+            "columns": [
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": true
+          }
+        },
+        "checks": {
+          "ck_alias_current": "regexp_like(unified_code,'^920[0-9]{3}[.]bj$')",
+          "ck_alias_name": "(char_length(trim(name))between1and100)",
+          "ck_alias_old": "regexp_like(legacy_code,'^[48][0-9]{5}$')"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "bse",
+        "primary_keys": [
+          "legacy_code"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "bse.code_mapping.complete": {
+            "tables": [
+              "security_code_alias"
+            ],
+            "primary": "security_code_alias"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "date": "2026-10-24",
+    "original_bindings": {
+      "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d"
+    },
+    "original_commit": "1cfbe7265d1da7a4424eb53e16d5158e72d8f712",
+    "verification": "Original hash matched HEAD bytes or its CRLF checkout; every scoped DDL, shape and ownership exactly equals current. Original measurements retained, no remeasurement claimed."
   }
 }

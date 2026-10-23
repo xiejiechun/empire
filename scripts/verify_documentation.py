@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 EXPECTED_TABLES = {
+    'theme_daily', 'theme_detail', 'theme_category', 'theme_stock', 'theme_stock_reason',
     'capital_funding', 'capital_project', 'capital_transaction', 'capital_equity_summary',
     'capital_equity_position', 'capital_ipo', 'capital_encumbrance', 'capital_release',
     'restricted_share_unlock', 'restricted_share_unlock_detail', 'restricted_share_unlock_industry',

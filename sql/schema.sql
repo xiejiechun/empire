@@ -1002,3 +1002,76 @@ CREATE TABLE IF NOT EXISTS capital_release (
     CONSTRAINT ck_release_section CHECK (section IN ('pledge','freeze')),
     KEY idx_capital_release_parent (parent_key,record_key)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS theme_daily (
+    business_date DATE NOT NULL,
+    theme_id VARCHAR(65) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    source_theme_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    concept_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL,
+    name VARCHAR(128) NOT NULL,
+    parent_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL,
+    new_flag INT UNSIGNED NOT NULL,
+    rank_no INT NULL,
+    display_order INT NOT NULL,
+    hot_score BIGINT UNSIGNED NULL,
+    change_rate DOUBLE NOT NULL,
+    limit_up_count INT UNSIGNED NOT NULL,
+    observed_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (business_date,theme_id),
+    KEY idx_theme_daily_history (theme_id,business_date),
+    KEY idx_theme_daily_rank (business_date,rank_no,theme_id),
+    CONSTRAINT ck_theme_daily_child CHECK ((parent_id IS NULL AND concept_id IS NULL AND hot_score IS NOT NULL) OR (parent_id IS NOT NULL AND concept_id IS NOT NULL AND hot_score IS NULL AND rank_no IS NULL))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS theme_detail (
+    theme_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    name VARCHAR(128) NOT NULL,
+    brief MEDIUMTEXT NOT NULL,
+    introduction MEDIUMTEXT NOT NULL,
+    source_created_at DATETIME(6) NULL,
+    source_updated_at DATETIME(6) NULL,
+    observed_at DATETIME(6) NOT NULL,
+    content_sha256 CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    PRIMARY KEY (theme_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS theme_category (
+    theme_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    category_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    parent_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL,
+    name VARCHAR(128) NOT NULL,
+    `order` INT NOT NULL,
+    plate_code VARCHAR(32) NOT NULL,
+    first_shelved_at DATETIME(6) NULL,
+    updated_at DATETIME(6) NULL,
+    is_new BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (theme_id,category_id),
+    KEY idx_theme_category_parent (theme_id,parent_id,`order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS theme_stock (
+    theme_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    source_stock_id CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    name VARCHAR(128) NOT NULL,
+    PRIMARY KEY (theme_id,unified_code),
+    UNIQUE KEY uq_theme_stock_source (theme_id,source_stock_id),
+    KEY idx_theme_stock_security (unified_code,theme_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS theme_stock_reason (
+    theme_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    relation_id CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    category_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL,
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    reason MEDIUMTEXT NOT NULL,
+    first_shelved_at DATETIME(6) NULL,
+    updated_at DATETIME(6) NULL,
+    is_new BIGINT UNSIGNED NOT NULL,
+    is_hot BIGINT UNSIGNED NOT NULL,
+    source_is_zz BIGINT UNSIGNED NOT NULL,
+    occurrences INT UNSIGNED NOT NULL,
+    PRIMARY KEY (theme_id,relation_id),
+    KEY idx_theme_reason_category (theme_id,category_id,relation_id),
+    CONSTRAINT ck_theme_reason_occurrences CHECK (occurrences BETWEEN 1 AND 50000)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;

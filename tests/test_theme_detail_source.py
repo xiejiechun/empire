@@ -47,6 +47,44 @@ def test_same_stock_in_different_categories_preserves_both_reasons():
     assert result['categories'][1]['parent_id'] == '7'
 
 
+def test_uncategorized_stocks_preserve_reasons_without_inventing_category():
+    value = sample()
+    value['Stocks'] = value['Table'][0]['Level1']['Stocks']
+    value['Table'] = []
+    value['StockList'][0]['Tag'] = []
+    parsed = parse_detail(value, '148')
+    assert parsed['categories'] == []
+    assert parsed['relations'][0]['category_id'] is None
+    assert parsed['relations'][0]['reason'] == '来源说明'
+    assert len(parsed['stocks']) == 1
+
+
+def test_multiple_reasons_with_same_stock_and_category_preserved():
+    value = sample()
+    other = deepcopy(value['Table'][0]['Level1']['Stocks'][0])
+    other.update(Reason='不同来源理由', FirstShelveTime='1703489300')
+    value['Table'][0]['Level1']['Stocks'].append(other)
+    value['StockList'][0]['Tag'].append({'ID': '7', 'Name': '示例分类', 'Reason': '不同来源理由'})
+    parsed = parse_detail(value, '148')
+    assert {r['reason'] for r in parsed['relations']} == {'来源说明', '不同来源理由'}
+    assert len({r['relation_id'] for r in parsed['relations']}) == 2
+    before = parsed['relations']
+    value['Table'][0]['Level1']['Stocks'].reverse()
+    value['StockList'][0]['Tag'].reverse()
+    assert parse_detail(value, '148')['relations'] == before
+
+
+def test_repeated_identical_relation_preserves_multiplicity_and_checks_tag_count():
+    value = sample()
+    value['Table'][0]['Level1']['Stocks'] *= 2
+    value['StockList'][0]['Tag'] *= 2
+    parsed = parse_detail(value, '148')
+    assert len(parsed['relations']) == 1 and parsed['relations'][0]['occurrences'] == 2
+    value['StockList'][0]['Tag'].pop()
+    with pytest.raises(DetailError):
+        parse_detail(value, '148')
+
+
 @pytest.mark.parametrize('mutation', [
     lambda v: v.update(ID='229'),
     lambda v: v.update(errcode=True),

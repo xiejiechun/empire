@@ -58,7 +58,6 @@
     "scripts/measure_listing_status.py": "96486959ebc5eb7b37361cfdcbf9ae51ad3e69cb40e6c9afdbe662ea6f2c0088",
     "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
     "scripts/source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
-    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
   },
   "ddl_scopes": {
@@ -358,5 +357,107 @@
   "remaining": {
     "sql": false,
     "redis": false
+  },
+  "schema_objects": {
+    "security_listing_event": {
+      "ddl_sha256": "2c6132301c2a621f83f4dc445ffad262ab9852971194e11549f7b6fa0fed0b46",
+      "shape": {
+        "columns": {
+          "event_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "event_type": {
+            "type": "varchar(16) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "description": {
+            "type": "text collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "event_date",
+          "unified_code",
+          "event_type",
+          "record_key"
+        ],
+        "indexes": {
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "event_date",
+              "event_type",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_type_date": {
+            "columns": [
+              "event_type",
+              "event_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_listing_event_date": "(event_date>='1990-12-19')",
+          "ck_listing_event_description": "((descriptionisnull)or(char_length(description)<=2000))",
+          "ck_listing_event_type": "(event_typein('suspended','resumed','terminated'))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "event_date",
+          "unified_code",
+          "event_type",
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "listing_status.month": {
+            "tables": [
+              "security_listing_event"
+            ],
+            "primary": "security_listing_event"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "date": "2026-10-24",
+    "original_bindings": {
+      "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d"
+    },
+    "original_commit": "1cfbe7265d1da7a4424eb53e16d5158e72d8f712",
+    "verification": "Original hash matched HEAD bytes or its CRLF checkout; every scoped DDL, shape and ownership exactly equals current. Original measurements retained, no remeasurement claimed."
   }
 }

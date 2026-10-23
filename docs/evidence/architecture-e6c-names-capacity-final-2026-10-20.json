@@ -58,7 +58,6 @@
     "scripts/event_capacity.py": "0ec356f00c67816cd85ad7c2c240863fff4e9e3ac7bb64171f70f14cebd0a56d",
     "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
     "scripts/source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
-    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
   },
   "ddl_scopes": {
@@ -258,5 +257,125 @@
   "remaining": {
     "sql": false,
     "redis": false
+  },
+  "schema_objects": {
+    "security_name_change": {
+      "ddl_sha256": "9b6dde1312b4526d8a74970a977f79430567424afabb2c63d8e20028dcf8fb9d",
+      "shape": {
+        "columns": {
+          "name_kind": {
+            "type": "varchar(8) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "event_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "old_name": {
+            "type": "varchar(200) collate \"utf8mb4_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "new_name": {
+            "type": "varchar(200) collate \"utf8mb4_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "source_occurrences": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "csrc_industry": {
+            "type": "varchar(200) collate \"utf8mb4_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "tdx_industry": {
+            "type": "varchar(200) collate \"utf8mb4_bin\"",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "name_kind",
+          "record_key"
+        ],
+        "indexes": {
+          "ix_name_date": {
+            "columns": [
+              "name_kind",
+              "event_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_name_security": {
+            "columns": [
+              "name_kind",
+              "unified_code",
+              "event_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_name_kind": "(name_kindin('company','security'))",
+          "ck_name_new": "((new_nameisnull)or(char_length(trim(new_name))>0))",
+          "ck_name_occurrences": "(source_occurrencesbetween1and29999)",
+          "ck_name_old": "((old_nameisnull)or(char_length(trim(old_name))>0))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "name_kind",
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "names.company.market": {
+            "tables": [
+              "security_name_change"
+            ],
+            "primary": "security_name_change"
+          },
+          "names.security.market": {
+            "tables": [
+              "security_name_change"
+            ],
+            "primary": "security_name_change"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "date": "2026-10-24",
+    "original_bindings": {
+      "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d"
+    },
+    "original_commit": "1cfbe7265d1da7a4424eb53e16d5158e72d8f712",
+    "verification": "Original hash matched HEAD bytes or its CRLF checkout; every scoped DDL, shape and ownership exactly equals current. Original measurements retained, no remeasurement claimed."
   }
 }

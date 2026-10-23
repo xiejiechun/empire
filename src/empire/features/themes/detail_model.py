@@ -3,7 +3,10 @@
 Source stock codes remain source identities. Formal SQL integration must resolve
 them through the shared security mapping, never guess markets from prefixes here.
 """
+import hashlib
+import json
 import re
+from collections import Counter
 
 
 class DetailError(ValueError):
@@ -64,7 +67,7 @@ RELATION = {'StockID', 'prod_name', 'Reason', 'IsZz', 'IsHot', 'FirstShelveTime'
 
 
 def parse_detail(payload, requested_id):
-    """Known Level1/Level2 structure; new structures fail instead of losing rows.
+    """Root Stocks and Level1/Level2; new structures fail instead of losing rows.
 
     Cross-check StockList.Tag against Table associations by category/code/reason,
     not merely stock counts. Live whole-directory coverage is a separate proof.
@@ -75,15 +78,40 @@ def parse_detail(payload, requested_id):
         raise DetailError('详情接口未成功')
     if source_id(payload['ID']) != requested_id:
         raise DetailError('响应题材ID与请求不符')
-    if payload['Stocks'] != []:
-        raise DetailError('来源出现未核实的无分类Stocks，拒绝遗漏归档')
     result = {'theme_id': requested_id, 'name': _text(payload['Name'], required=True),
               'brief': _text(payload['BriefIntro'], limit=65536),
               'introduction': _text(payload['Introduction'], limit=1024 * 1024),
               'source_created_at': _number(payload['CreateTime']) or None,
               'source_updated_at': _number(payload['UpdateTime']) or None,
               'categories': [], 'stocks': [], 'relations': []}
-    categories, expected, names = {}, {}, {}
+    categories, expected, names = {}, Counter(), {}
+    relations = {}
+    relation_count = 0
+
+    def association(stock, cid):
+        nonlocal relation_count
+        _mapping(stock, RELATION, RELATION)
+        code = _stock_id(stock['StockID'])
+        name = _text(stock['prod_name'], required=True)
+        if code in names and names[code] != name:
+            raise DetailError('同一证券来源名称冲突')
+        names[code] = name
+        reason = _text(stock['Reason'], limit=65536, required=True)
+        if cid is not None:
+            expected[cid, code, reason] += 1
+        record = {'category_id': cid, 'source_stock_id': code,
+                  'reason': reason, 'first_shelved_at': _number(stock['FirstShelveTime']) or None,
+                  'updated_at': _number(stock['UpdateCacheTime']) or None,
+                  'is_new': _number(stock['IsNew']), 'is_hot': _number(stock['IsHot']),
+                  'source_is_zz': _number(stock['IsZz'])}
+        identity = hashlib.sha256(json.dumps(record, ensure_ascii=False, sort_keys=True,
+                                            separators=(',', ':')).encode()).hexdigest()
+        if identity not in relations:
+            relations[identity] = {**record, 'relation_id': identity, 'occurrences': 0}
+        relations[identity]['occurrences'] += 1
+        relation_count += 1
+        if relation_count > 50000:
+            raise DetailError('详情关联数量超限')
 
     def category(raw, parent):
         _mapping(raw, CATEGORY, CATEGORY)
@@ -100,24 +128,7 @@ def parse_detail(payload, requested_id):
         if len(categories) > 5000:
             raise DetailError('详情分类数量超限')
         for stock in _list(raw['Stocks'], 10000):
-            _mapping(stock, RELATION, RELATION)
-            code = _stock_id(stock['StockID'])
-            name = _text(stock['prod_name'], required=True)
-            if code in names and names[code] != name:
-                raise DetailError('同一证券来源名称冲突')
-            names[code] = name
-            identity = cid, code
-            if identity in expected:
-                raise DetailError('分类内证券关联重复')
-            reason = _text(stock['Reason'], limit=65536, required=True)
-            expected[identity] = reason
-            result['relations'].append({'category_id': cid, 'source_stock_id': code,
-                'reason': reason, 'first_shelved_at': _number(stock['FirstShelveTime']) or None,
-                'updated_at': _number(stock['UpdateCacheTime']) or None,
-                'is_new': _number(stock['IsNew']), 'is_hot': _number(stock['IsHot']),
-                'source_is_zz': _number(stock['IsZz'])})
-            if len(expected) > 50000:
-                raise DetailError('详情关联数量超限')
+            association(stock, cid)
         return cid
 
     for group in _list(payload['Table'], 5000):
@@ -125,7 +136,9 @@ def parse_detail(payload, requested_id):
         parent = category(group['Level1'], None)
         for child in _list(group.get('Level2', []), 5000):
             category(child, parent)
-    actual, codes = {}, set()
+    for stock in _list(payload['Stocks'], 10000):
+        association(stock, None)
+    actual, codes = Counter(), set()
     for stock in _list(payload['StockList'], 10000):
         _mapping(stock, {'StockID', 'prod_name', 'Tag'}, {'StockID', 'prod_name', 'Tag', 'HotNum'})
         code = _stock_id(stock['StockID'])
@@ -139,13 +152,14 @@ def parse_detail(payload, requested_id):
         for tag in _list(stock['Tag'], 5000):
             _mapping(tag, {'ID', 'Name', 'Reason'}, {'ID', 'Name', 'Reason'})
             cid = source_id(tag['ID'])
-            identity = cid, code
-            if identity in actual or cid not in categories:
-                raise DetailError('股票标签重复或分类身份未知')
+            if cid not in categories:
+                raise DetailError('股票标签分类身份未知')
             if _text(tag['Name'], required=True) != categories[cid]['name']:
                 raise DetailError('股票标签与分类名称不符')
-            actual[identity] = _text(tag['Reason'], limit=65536, required=True)
+            reason = _text(tag['Reason'], limit=65536, required=True)
+            actual[cid, code, reason] += 1
     if codes != set(names) or actual != expected:
         raise DetailError('股票总表标签与分类关联集合或理由不一致')
     result['categories'] = list(categories.values())
+    result['relations'] = sorted(relations.values(), key=lambda row: row['relation_id'])
     return result

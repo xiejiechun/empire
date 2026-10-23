@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "bfb4e401b3c09c1eb70323d6fdbab1ffb8e24ea827547b08aaeb3d0c665a9856",
+  "schema_sha256": "740b39125f5f4bd4479eb2ea0142dfd2feaf7744a001c5a8d95689d31e7d00b1",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -4464,6 +4464,339 @@
       "checks": {
         "ck_release_section": "(sectionin('pledge','freeze'))",
         "ck_release_window": "(in_windowin(0,1))"
+      }
+    },
+    "theme_daily": {
+      "columns": {
+        "business_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "theme_id": {
+          "type": "varchar(65) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_theme_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "concept_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "parent_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "new_flag": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "rank_no": {
+          "type": "integer",
+          "nullable": true,
+          "unsigned": false
+        },
+        "display_order": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        },
+        "hot_score": {
+          "type": "bigint",
+          "nullable": true,
+          "unsigned": true
+        },
+        "change_rate": {
+          "type": "double",
+          "nullable": false,
+          "unsigned": false
+        },
+        "limit_up_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "business_date",
+        "theme_id"
+      ],
+      "indexes": {
+        "idx_theme_daily_history": {
+          "columns": [
+            "theme_id",
+            "business_date"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "idx_theme_daily_rank": {
+          "columns": [
+            "business_date",
+            "rank_no",
+            "theme_id"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_theme_daily_child": "(((parent_idisnull)and(concept_idisnull)and(hot_scoreisnotnull))or((parent_idisnotnull)and(concept_idisnotnull)and(hot_scoreisnull)and(rank_noisnull)))"
+      }
+    },
+    "theme_detail": {
+      "columns": {
+        "theme_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "brief": {
+          "type": "mediumtext",
+          "nullable": false,
+          "unsigned": false
+        },
+        "introduction": {
+          "type": "mediumtext",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_created_at": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        },
+        "source_updated_at": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        },
+        "observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_sha256": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "theme_id"
+      ],
+      "indexes": {},
+      "checks": {}
+    },
+    "theme_category": {
+      "columns": {
+        "theme_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "category_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "parent_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "order": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        },
+        "plate_code": {
+          "type": "varchar(32) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "first_shelved_at": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        },
+        "updated_at": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        },
+        "is_new": {
+          "type": "bigint",
+          "nullable": false,
+          "unsigned": true
+        }
+      },
+      "primary": [
+        "theme_id",
+        "category_id"
+      ],
+      "indexes": {
+        "idx_theme_category_parent": {
+          "columns": [
+            "theme_id",
+            "parent_id",
+            "order"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {}
+    },
+    "theme_stock": {
+      "columns": {
+        "theme_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_stock_id": {
+          "type": "char(6) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "theme_id",
+        "unified_code"
+      ],
+      "indexes": {
+        "idx_theme_stock_security": {
+          "columns": [
+            "unified_code",
+            "theme_id"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "uq_theme_stock_source": {
+          "columns": [
+            "theme_id",
+            "source_stock_id"
+          ],
+          "expressions": null,
+          "unique": true
+        }
+      },
+      "checks": {}
+    },
+    "theme_stock_reason": {
+      "columns": {
+        "theme_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "relation_id": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "category_id": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "reason": {
+          "type": "mediumtext",
+          "nullable": false,
+          "unsigned": false
+        },
+        "first_shelved_at": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        },
+        "updated_at": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        },
+        "is_new": {
+          "type": "bigint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "is_hot": {
+          "type": "bigint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "source_is_zz": {
+          "type": "bigint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "occurrences": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        }
+      },
+      "primary": [
+        "theme_id",
+        "relation_id"
+      ],
+      "indexes": {
+        "idx_theme_reason_category": {
+          "columns": [
+            "theme_id",
+            "category_id",
+            "relation_id"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_theme_reason_occurrences": "(occurrencesbetween1and50000)"
       }
     }
   }

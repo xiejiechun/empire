@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from empire.contracts.business_schema import read_business_schema
 from empire.features.builtin import dataset_contributions
 from empire.plugins.datasets.astock import DatasetPlugin
+from scripts.schema_evidence_scope import verify as verify_schema_objects
 
 LEGACY_BASELINES = frozenset({
     'stock.universe.start', 'stock.universe.page', 'stock.universe.complete', 'industry.snapshot',
@@ -81,6 +82,8 @@ def verify(root):
             raise ValueError(f'{dataset} 新数据集不能冒充历史容量基线')
         if capacity['status'] == 'measured':
             evidence = json.loads((root/capacity['evidence']).read_text('utf-8'))
+            if 'schema_objects' in evidence:
+                verify_schema_objects(root, evidence, card['tables'])
             if 'sql/schema.sql' not in evidence['bindings']:
                 # Existing measurements may bind an archived DDL, but must still
                 # prove every table used by this dataset unchanged in current SQL.

@@ -27,8 +27,10 @@ def validate_rules(document):
             raise ValueError(f'{ident}: 缺少请求契约')
         for request in rule['requests']:
             url = urlsplit(request.get('url', ''))
-            if (url.scheme not in ('http', 'https') or not url.hostname or url.username or
-                    url.password or request.get('method') not in ('GET', 'POST') or
+            transport = (request.get('method') in ('GET', 'POST') and url.scheme in ('http', 'https')
+                         or request.get('method') == 'STREAM' and url.scheme == 'tls' and url.port is not None)
+            if (not transport or not url.hostname or url.username or
+                    url.password or
                     not request.get('purpose') or not isinstance(request.get('parameters'), list)):
                 raise ValueError(f'{ident}: 请求契约无效')
             names = []

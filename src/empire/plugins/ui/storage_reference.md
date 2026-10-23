@@ -5848,13 +5848,13 @@ scripts/create_unlock_schema.py显式新增两表；正常关闭Empire、队列0
 显式scripts/create_ths_capital_schema.py建表，启动不DDL。结构/契约变化须显式重建覆盖和摘要；手工改业务须停归档并失效ths_capital来源摘要。参见[业务使用说明](help:同花顺公司资本运作)。
 
 <!-- topic:数据库参考|Redis 题材七日日内历史 -->
-<!-- summary:开发中的题材日内历史内核使用每日基准和字段差异，按北京时间保留七个自然日，尚未接入正式采集任务。 -->
+<!-- summary:题材日内历史使用每日基准和字段差异，按北京时间保留七个自然日；归档队列成功清理不删除本缓存。 -->
 <!-- group:Redis -->
 # Redis 题材七日日内历史
 
 ## 用途与归属
 
-由 themes 业务包的 ThemeHistory 内核维护。当前只完成独立内核和专项验证，尚未登记正式采集任务、查询页面或生产调用方；这些键不是已部署数据覆盖的声明。未来接线须先通过匿名全目录及统一入队契约验收。
+由themes业务包的列表任务调用ThemeHistory维护，themes.query提供回放，页面入口为数据目录“开盘啦题材库”。这些键不代表对应采样已经归档SQL；归档状态由统一归档器单独确认。
 
 独立保存最近七个自然日的列表轨迹，不保存详情正文，不充当待归档队列。Redis不启用AOF/RDB；服务或电脑重启会丢失轨迹，只重启Empire且Redis存活时保留。
 
@@ -5872,7 +5872,7 @@ scripts/create_unlock_schema.py显式新增两表；正常关闭Empire、队列0
 
 完整列表键为规范题材身份：主题材用来源ID，子题材用`父ID_CID`；同时保存source_theme_id和concept_id，避免不同父项下相同CID冲突。字段还包含名称、父题材ID、排名、展示顺序、来源新题材标记、热度、涨跌幅和涨停数量。子题材热度及排名为空，表示来源未提供；新题材不计排名，不能直接用数组序号代替名次。
 
-数值以规范十进制文本保存，科学计数法和普通十进制的相同数值归一化为同一文本，不制造虚假变化；零与缺值不同。来源涨跌幅是binary32，协议解析先转为精确Decimal再入内核，保留最多149位小数，不按未知业务精度擅自舍入。直接传入Python float仍拒绝。界面显示精度及SQL往返尚待正式接线验收。
+数值以规范十进制文本保存，相同数值归一化为同一文本，不制造虚假变化；零与缺值不同。来源涨跌幅是binary32，解析为精确Decimal，保留最多149位小数；直接传入Python float仍拒绝。SQL以DOUBLE无损容纳来源binary32，界面显示两位小数；原始精度仍保留。
 
 ## 读写与关联
 
@@ -5886,13 +5886,13 @@ WATCH保护五个键；只读Lua一次取得前状态、当天元信息和事件
 
 D日基准、元信息、差异和索引统一在D+7日北京时间00:00到期；查询只允许今天及之前六日。每天独立基准，因此清理旧日不影响新日。current的期限随最新成功轮次所属日到期；不能用过期current重建已丢失历史。
 
-默认开发保护为2000题材、1024轮/日、128MiB/日序列化正文；字节计数包含事件及索引身份的估算，不代表Redis实际内存上限。达到保护值整轮拒绝，不修改原数据、不静默缩短七天。未来正式接线仍需全局noeviction背压和真实容量测量，当前不是七天生产容量验收。
+保护上限为2000题材、1024轮/日、128MiB/日序列化正文；字节计数不是Redis实际内存量。达到保护值整轮拒绝，不静默缩短七天。列表下载前执行共享背压。容量实测为252题材、每日480次、四项指标每次变化的七日模拟；不能由此推断2000题材最坏情况也有足够共享内存，亦不代表已有七天生产历史。
 
 Redis丢失后可从新成功轮次建立当天基准，不能恢复此前轨迹。日内历史与SQL每日版本分离；统一归档器的成功清队规则不因本缓存改变。
 
 ## 维护与相关说明
 
-内核当前不自动启动、不修改MySQL；测试使用独占UUID前缀，仅清理自有键。不得清空共享Redis或手工删除生产队列。来源、SQL、页面、规则登记及正式发布完成前，不宣称全题材采集或七天界面已经可用。
+测试使用独占UUID前缀，仅清理自有键。不得清空共享Redis或手工删除生产队列。Redis服务重启后当日从新采样建立基准，界面明确此前无记录；不读取SQL日列表冒充丢失的盘中轨迹。
 
 [数据库职责与查阅](help:数据库职责与查阅)
 
@@ -5901,4 +5901,288 @@ Redis丢失后可从新成功轮次建立当天基准，不能恢复此前轨迹
 
 目录使用独立Socket协议。来源模块经共享代理完成游客认证并读取首次完整订阅响应，使用随机设备标识、UserID=0且不带Token。TLS证书和密文认证均须通过；命令、序号及订阅ID必须匹配。服务器错误、截断、超限、未知扩展和异常目录状态均拒绝采样，不按最小条数或超时推断完整。
 
-已验证的匿名目录响应包含热度、排名所需顺序、涨跌幅和涨停数量。应用权限标记不足时会截取前20项展示，但对应接口仍返回完整列表；这不等于所有其他接口也无需登录。子题材缺少热度、排名仍显示来源未提供。源码已完成真实目录与独占Redis回放核对，尚无可启用任务或页面；协议材料维护、SQL归档及正式发布仍未完成。
+已验证的匿名目录响应包含热度、排名所需顺序、涨跌幅和涨停数量。应用权限标记不足时会截取前20项展示，但对应接口仍返回完整列表；这不等于所有其他接口也无需登录。子题材热度、排名显示来源未提供。游客材料经显式维护导入，Windows当前用户保护；不将账号会话或协议私钥打包为公共资源。
+
+<!-- topic:数据说明|开盘啦题材库 -->
+<!-- group:题材数据 -->
+<!-- summary:全题材列表每轮结束后等待180秒；七日内按采样时刻回放，详情仅保留最新。 -->
+# 开盘啦题材库
+
+## 如何查看
+
+进入“数据浏览”的可搜索目录，搜索“开盘啦题材库”。“当日最新采样”显示题材及子题材的热度、排名、涨跌幅和涨停数量；每30秒刷新可见页面，也可点击“查询 / 刷新”。正在编辑查询条件时不自动覆盖草稿。点击题材下“查看最新详情”可直接展开父题材详情。“七日日内回放”填写日期和北京时间，时间留空读取那一天最后成功采样。只支持今天及之前六个自然日，早于第一条采样的时段显示没有记录。
+
+“长期每日列表”查看已归档日期，按页浏览；它与日内采样是两个用途。“最新题材详情”输入列表中的详情主题材ID，例如军工148，再查询；子题材使用父题材ID。正文、企业、分类和题材理由只显示最新版本，不能将最新正文当作历史时点信息。企业关联超过200条使用下一页。同一企业不同分类或不同理由分别保留，完全相同来源关联显示出现次数。
+
+“管理采集任务”打开列表任务；另有“题材最新详情（开盘啦）”。两个任务默认每轮完成后等待180秒，同一任务不重叠。先运行列表，再运行详情；详情单轮最多32题材，缺失/改名优先，已覆盖题材按24小时核验间隔分摊复查。完整初始化是当前目录全部主题材详情已归档，不等于第一批32项完成。任务和站点设置正式保存于MySQL；用户已保存的网络与调度设置不被默认值覆盖。
+
+## 数据范围与更新
+
+匿名请求不使用用户账号、Token或模拟器会话；游客协议材料须在本机完成显式维护导入。子题材没有独立热度和排名，显示“来源未提供”；新题材可能无排名，不填零或继承父项。涨跌幅显示两位小数，存储保留来源binary32精度。来源列表没有独立总数，完整性依据首次完整目录响应和应用替换语义，不依靠固定条数。
+
+## 字段与日期
+
+来源企业代码优先使用当前股票目录及已有题材的已核实市场身份。目录缺失时额外执行一次新浪精确代码查询，只有返回同一个六位代码及明确市场符号才接受；不按名称或搜索关联的新代码替换旧代码。新市场、歧义和掩码都报错，不能丢掉企业凑齐题材。
+
+日内Redis每天一份基准，其余采样只保存字段差异和成功采样标记。保留期限按北京时间自然日；Redis或电脑重启会丢失日内轨迹，只重启Empire且Redis存活可以保留。MySQL每天一份列表，首次成功、每小时以及15:10后首个成功采样归档；相同业务内容不改业务表。列表日内采样成功与SQL归档成功分别判断，入队失败时已验证的日内采样仍可见，归档任务会显示失败。
+
+## 限制与排错
+
+没有记录时检查日期、任务错误和最后成功时间，离线时不会虚构缺口。详情提示缺少列表时先运行列表任务；证券身份核实失败保留失败状态，后续不能跳过该企业冒充完整。未知协议或证书失效须重新核实材料，不自动尝试登录。
+
+本地维护入口为`scripts/import_theme_guest_material.py --stdin`，默认写项目根目录config.toml，`--config`可明确选择程序同目录config.toml。材料由当前Windows用户DPAPI保护；已有材料节拒绝覆盖，复制到另一用户须重新准备导入。不把真实配置作为公开发布资源。数据库通过`scripts/create_theme_schema.py`显式预检，`--apply`在正常关闭Empire且待归档为0时增加五表；应用启动不执行迁移。
+
+## 相关说明
+
+每日列表为theme_daily；最新详情为theme_detail、theme_category、theme_stock、theme_stock_reason。统一归档器成功后删除对应待归档消息，七日日内缓存独立按期限保留。最大目录2000项、每日1024轮及128MiB序列化预算；超限拒绝整轮，不能提前淘汰七天内记录。详情单条消息还受共享入队大小限制，超限报错，不截断。
+
+[Redis 题材七日日内历史](help:Redis%20题材七日日内历史)
+
+<!-- topic:数据库参考|MySQL theme_daily -->
+<!-- group:MySQL -->
+<!-- summary:题材结构化业务表theme_daily；统一归档、重复零写入与旧版保护。 -->
+# MySQL theme_daily
+
+## 用途与归属
+
+固定来源kaipanla，属于themes业务包。repository是唯一SQL读写路径，dataset声明摘要及版本，query提供正式查询。
+
+## 结构与身份
+
+| 字段 | 类型 | 含义 |
+|---|---|---|
+| `business_date` | `DATE NOT NULL` | 北京时间采样自然日 |
+| `theme_id` | `VARCHAR(65) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 来源主题材ID；每日表子题材为父ID_CID |
+| `source_theme_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 来源主题材ID；请求详情使用本字段 |
+| `concept_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL` | 子题材CID；主题材NULL |
+| `name` | `VARCHAR(128) NOT NULL` | 来源名称 |
+| `parent_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL` | 父题材或父分类ID；根节点NULL |
+| `new_flag` | `INT UNSIGNED NOT NULL` | 来源新题材整数标记 |
+| `rank_no` | `INT NULL` | 来源顺序计算排名；子题材/新题材NULL |
+| `display_order` | `INT NOT NULL` | 完整目录展示顺序 |
+| `hot_score` | `BIGINT UNSIGNED NULL` | 来源整数热度；子题材NULL |
+| `change_rate` | `DOUBLE NOT NULL` | 来源binary32值以DOUBLE无损保存；显示百分比 |
+| `limit_up_count` | `INT UNSIGNED NOT NULL` | 来源涨停数量 |
+| `observed_at` | `DATETIME(6) NOT NULL` | 当前存储内容的采样时间，北京时间；不因重复内容刷新 |
+
+主键：`business_date,theme_id`。
+
+索引`idx_theme_daily_history`：`theme_id,business_date`，支持对应范围/身份查询。
+索引`idx_theme_daily_rank`：`business_date,rank_no,theme_id`，支持对应范围/身份查询。
+约束`ck_theme_daily_child`：`(((parent_idisnull)and(concept_idisnull)and(hot_scoreisnotnull))or((parent_idisnotnull)and(concept_idisnotnull)and(hot_scoreisnull)and(rank_noisnull)))`。
+
+## 读写与关联
+
+每日表按日期完整单元更新，保留跨日历史；详情四表按题材完整事务更新，只保留最新。正式页面单页最多200条，详情头最多1MiB正文。相同业务不做DML，可信摘要免SQL；旧版本不覆盖，失败保留待归档消息。
+来源完整集合校验后才允许删除完整单元内撤回记录。原始成功响应不长期保留，统一collection_state保存项目确认，不另建逐轮运行表。
+
+## 保留与恢复
+
+日列表跨日长期保留，详情仅保留最新；Redis丢失后新采样恢复，不能重建丢失日内轨迹。
+
+## 维护与相关说明
+
+`scripts/create_theme_schema.py`预检，正常关闭Empire且队列为0后使用`--apply`；启动不DDL。维护前后核对原业务，禁止清空共享Redis。
+
+[开盘啦题材库](help:开盘啦题材库)
+
+正式约束与索引：
+
+`PRIMARY KEY (business_date,theme_id)`
+
+`KEY idx_theme_daily_history (theme_id,business_date)`
+
+`KEY idx_theme_daily_rank (business_date,rank_no,theme_id)`
+
+`CONSTRAINT ck_theme_daily_child CHECK ((parent_id IS NULL AND concept_id IS NULL AND hot_score IS NOT NULL) OR (parent_id IS NOT NULL AND concept_id IS NOT NULL AND hot_score IS NULL AND rank_no IS NULL))`
+
+<!-- topic:数据库参考|MySQL theme_detail -->
+<!-- group:MySQL -->
+<!-- summary:题材结构化业务表theme_detail；统一归档、重复零写入与旧版保护。 -->
+# MySQL theme_detail
+
+## 用途与归属
+
+固定来源kaipanla，属于themes业务包。repository是唯一SQL读写路径，dataset声明摘要及版本，query提供正式查询。
+
+## 结构与身份
+
+| 字段 | 类型 | 含义 |
+|---|---|---|
+| `theme_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 来源主题材ID；每日表子题材为父ID_CID |
+| `name` | `VARCHAR(128) NOT NULL` | 来源名称 |
+| `brief` | `MEDIUMTEXT NOT NULL` | 最新简介，UTF-8最多65536字节 |
+| `introduction` | `MEDIUMTEXT NOT NULL` | 最新介绍正文，UTF-8最多1MiB |
+| `source_created_at` | `DATETIME(6) NULL` | 来源CreateTime秒转北京时间；0转NULL |
+| `source_updated_at` | `DATETIME(6) NULL` | 来源UpdateTime秒转北京时间；0转NULL |
+| `observed_at` | `DATETIME(6) NOT NULL` | 当前存储内容的采样时间，北京时间；不因重复内容刷新 |
+| `content_sha256` | `CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 完整规范题材内容SHA-256，包含关联集合及次数 |
+
+主键：`theme_id`。
+
+
+## 读写与关联
+
+每日表按日期完整单元更新，保留跨日历史；详情四表按题材完整事务更新，只保留最新。正式页面单页最多200条，详情头最多1MiB正文。相同业务不做DML，可信摘要免SQL；旧版本不覆盖，失败保留待归档消息。
+来源完整集合校验后才允许删除完整单元内撤回记录。原始成功响应不长期保留，统一collection_state保存项目确认，不另建逐轮运行表。
+
+## 保留与恢复
+
+日列表跨日长期保留，详情仅保留最新；Redis丢失后新采样恢复，不能重建丢失日内轨迹。
+
+## 维护与相关说明
+
+`scripts/create_theme_schema.py`预检，正常关闭Empire且队列为0后使用`--apply`；启动不DDL。维护前后核对原业务，禁止清空共享Redis。
+
+[开盘啦题材库](help:开盘啦题材库)
+
+正式约束与索引：
+
+`PRIMARY KEY (theme_id)`
+
+<!-- topic:数据库参考|MySQL theme_category -->
+<!-- group:MySQL -->
+<!-- summary:题材结构化业务表theme_category；统一归档、重复零写入与旧版保护。 -->
+# MySQL theme_category
+
+## 用途与归属
+
+固定来源kaipanla，属于themes业务包。repository是唯一SQL读写路径，dataset声明摘要及版本，query提供正式查询。
+
+## 结构与身份
+
+| 字段 | 类型 | 含义 |
+|---|---|---|
+| `theme_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 来源主题材ID；每日表子题材为父ID_CID |
+| `category_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 来源分类ID；直接关联股票时NULL |
+| `parent_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL` | 父题材或父分类ID；根节点NULL |
+| `name` | `VARCHAR(128) NOT NULL` | 来源名称 |
+| `order` | `INT NOT NULL` | 分类展示顺序 |
+| `plate_code` | `VARCHAR(32) NOT NULL` | 来源ZSCode原值，不猜对应指数 |
+| `first_shelved_at` | `DATETIME(6) NULL` | 来源FirstShelveTime秒转北京时间；0转NULL |
+| `updated_at` | `DATETIME(6) NULL` | 来源UpdateCacheTime秒转北京时间；0转NULL |
+| `is_new` | `BIGINT UNSIGNED NOT NULL` | 来源IsNew非负整数 |
+
+主键：`theme_id,category_id`。
+
+索引`idx_theme_category_parent`：`theme_id,parent_id,order`，支持对应范围/身份查询。
+
+## 读写与关联
+
+每日表按日期完整单元更新，保留跨日历史；详情四表按题材完整事务更新，只保留最新。正式页面单页最多200条，详情头最多1MiB正文。相同业务不做DML，可信摘要免SQL；旧版本不覆盖，失败保留待归档消息。
+来源完整集合校验后才允许删除完整单元内撤回记录。原始成功响应不长期保留，统一collection_state保存项目确认，不另建逐轮运行表。
+
+## 保留与恢复
+
+日列表跨日长期保留，详情仅保留最新；Redis丢失后新采样恢复，不能重建丢失日内轨迹。
+
+## 维护与相关说明
+
+`scripts/create_theme_schema.py`预检，正常关闭Empire且队列为0后使用`--apply`；启动不DDL。维护前后核对原业务，禁止清空共享Redis。
+
+[开盘啦题材库](help:开盘啦题材库)
+
+正式约束与索引：
+
+`PRIMARY KEY (theme_id,category_id)`
+
+`KEY idx_theme_category_parent (theme_id,parent_id,`order`)`
+
+<!-- topic:数据库参考|MySQL theme_stock -->
+<!-- group:MySQL -->
+<!-- summary:题材结构化业务表theme_stock；统一归档、重复零写入与旧版保护。 -->
+# MySQL theme_stock
+
+## 用途与归属
+
+固定来源kaipanla，属于themes业务包。repository是唯一SQL读写路径，dataset声明摘要及版本，query提供正式查询。
+
+## 结构与身份
+
+| 字段 | 类型 | 含义 |
+|---|---|---|
+| `theme_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 来源主题材ID；每日表子题材为父ID_CID |
+| `source_stock_id` | `CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 来源六位证券代码，保留前导零 |
+| `name` | `VARCHAR(128) NOT NULL` | 来源名称 |
+| `unified_code` | `VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 经核实的六位代码.市场，不按名称替换历史代码 |
+
+主键：`theme_id,unified_code`。
+
+索引`idx_theme_stock_security`：`unified_code,theme_id`，支持对应范围/身份查询。
+索引`uq_theme_stock_source`：`theme_id,source_stock_id`，唯一约束。
+
+## 读写与关联
+
+每日表按日期完整单元更新，保留跨日历史；详情四表按题材完整事务更新，只保留最新。正式页面单页最多200条，详情头最多1MiB正文。相同业务不做DML，可信摘要免SQL；旧版本不覆盖，失败保留待归档消息。
+来源完整集合校验后才允许删除完整单元内撤回记录。原始成功响应不长期保留，统一collection_state保存项目确认，不另建逐轮运行表。
+
+## 保留与恢复
+
+日列表跨日长期保留，详情仅保留最新；Redis丢失后新采样恢复，不能重建丢失日内轨迹。
+
+## 维护与相关说明
+
+`scripts/create_theme_schema.py`预检，正常关闭Empire且队列为0后使用`--apply`；启动不DDL。维护前后核对原业务，禁止清空共享Redis。
+
+[开盘啦题材库](help:开盘啦题材库)
+
+正式约束与索引：
+
+`PRIMARY KEY (theme_id,unified_code)`
+
+`UNIQUE KEY uq_theme_stock_source (theme_id,source_stock_id)`
+
+`KEY idx_theme_stock_security (unified_code,theme_id)`
+
+<!-- topic:数据库参考|MySQL theme_stock_reason -->
+<!-- group:MySQL -->
+<!-- summary:题材结构化业务表theme_stock_reason；统一归档、重复零写入与旧版保护。 -->
+# MySQL theme_stock_reason
+
+## 用途与归属
+
+固定来源kaipanla，属于themes业务包。repository是唯一SQL读写路径，dataset声明摘要及版本，query提供正式查询。
+
+## 结构与身份
+
+| 字段 | 类型 | 含义 |
+|---|---|---|
+| `theme_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 来源主题材ID；每日表子题材为父ID_CID |
+| `relation_id` | `CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 完整来源关联内容SHA-256；同证券多理由分别保留 |
+| `category_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL` | 来源分类ID；直接关联股票时NULL |
+| `unified_code` | `VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 经核实的六位代码.市场，不按名称替换历史代码 |
+| `reason` | `MEDIUMTEXT NOT NULL` | 来源理由，UTF-8最多65536字节 |
+| `first_shelved_at` | `DATETIME(6) NULL` | 来源FirstShelveTime秒转北京时间；0转NULL |
+| `updated_at` | `DATETIME(6) NULL` | 来源UpdateCacheTime秒转北京时间；0转NULL |
+| `is_new` | `BIGINT UNSIGNED NOT NULL` | 来源IsNew非负整数 |
+| `is_hot` | `BIGINT UNSIGNED NOT NULL` | 来源IsHot非负整数 |
+| `source_is_zz` | `BIGINT UNSIGNED NOT NULL` | 来源IsZz非负整数，不擅自解释为布尔 |
+| `occurrences` | `INT UNSIGNED NOT NULL` | 完全相同来源关联出现次数，1至50000 |
+
+主键：`theme_id,relation_id`。
+
+索引`idx_theme_reason_category`：`theme_id,category_id,relation_id`，支持对应范围/身份查询。
+约束`ck_theme_reason_occurrences`：`(occurrencesbetween1and50000)`。
+
+## 读写与关联
+
+每日表按日期完整单元更新，保留跨日历史；详情四表按题材完整事务更新，只保留最新。正式页面单页最多200条，详情头最多1MiB正文。相同业务不做DML，可信摘要免SQL；旧版本不覆盖，失败保留待归档消息。
+来源完整集合校验后才允许删除完整单元内撤回记录。原始成功响应不长期保留，统一collection_state保存项目确认，不另建逐轮运行表。
+
+## 保留与恢复
+
+日列表跨日长期保留，详情仅保留最新；Redis丢失后新采样恢复，不能重建丢失日内轨迹。
+
+## 维护与相关说明
+
+`scripts/create_theme_schema.py`预检，正常关闭Empire且队列为0后使用`--apply`；启动不DDL。维护前后核对原业务，禁止清空共享Redis。
+
+[开盘啦题材库](help:开盘啦题材库)
+
+正式约束与索引：
+
+`PRIMARY KEY (theme_id,relation_id)`
+
+`KEY idx_theme_reason_category (theme_id,category_id,relation_id)`
+
+`CONSTRAINT ck_theme_reason_occurrences CHECK (occurrences BETWEEN 1 AND 50000)`

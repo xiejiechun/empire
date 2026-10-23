@@ -264,6 +264,10 @@
     ],
     "ths_capital": [
       "同花顺公司资本运作"
+    ],
+    "themes": [
+      "开盘啦题材库",
+      "Redis 题材七日日内历史"
     ]
   },
   "guides": [
@@ -482,6 +486,12 @@
     "ths-capital": [
       "同花顺公司资本运作",
       "采集进度与运行记录"
+    ],
+    "kaipanla-themes": [
+      "开盘啦题材库"
+    ],
+    "kaipanla-theme-details": [
+      "开盘啦题材库"
     ]
   },
   "storage": {
@@ -909,6 +919,61 @@
           "src/empire/features/ths_capital/contract.py",
           "src/empire/features/ths_capital/dataset.py",
           "src/empire/features/ths_capital/query.py"
+        ]
+      },
+      "theme_daily": {
+        "topic": "MySQL theme_daily",
+        "sources": [
+          "src/empire/features/themes/storage_contract.py",
+          "src/empire/features/themes/repository.py",
+          "src/empire/features/themes/dataset.py",
+          "src/empire/features/themes/query.py",
+          "src/empire/features/themes/collector.py",
+          "src/empire/features/themes/ui.py"
+        ]
+      },
+      "theme_detail": {
+        "topic": "MySQL theme_detail",
+        "sources": [
+          "src/empire/features/themes/storage_contract.py",
+          "src/empire/features/themes/repository.py",
+          "src/empire/features/themes/dataset.py",
+          "src/empire/features/themes/query.py",
+          "src/empire/features/themes/collector.py",
+          "src/empire/features/themes/ui.py"
+        ]
+      },
+      "theme_category": {
+        "topic": "MySQL theme_category",
+        "sources": [
+          "src/empire/features/themes/storage_contract.py",
+          "src/empire/features/themes/repository.py",
+          "src/empire/features/themes/dataset.py",
+          "src/empire/features/themes/query.py",
+          "src/empire/features/themes/collector.py",
+          "src/empire/features/themes/ui.py"
+        ]
+      },
+      "theme_stock": {
+        "topic": "MySQL theme_stock",
+        "sources": [
+          "src/empire/features/themes/storage_contract.py",
+          "src/empire/features/themes/repository.py",
+          "src/empire/features/themes/dataset.py",
+          "src/empire/features/themes/query.py",
+          "src/empire/features/themes/collector.py",
+          "src/empire/features/themes/ui.py"
+        ]
+      },
+      "theme_stock_reason": {
+        "topic": "MySQL theme_stock_reason",
+        "sources": [
+          "src/empire/features/themes/storage_contract.py",
+          "src/empire/features/themes/repository.py",
+          "src/empire/features/themes/dataset.py",
+          "src/empire/features/themes/query.py",
+          "src/empire/features/themes/collector.py",
+          "src/empire/features/themes/ui.py"
         ]
       }
     },

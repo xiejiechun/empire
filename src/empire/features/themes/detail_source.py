@@ -14,7 +14,7 @@ def request_options(theme_id):
                      'PhoneOS': '1', 'PhoneOSNew': '1', 'DeviceID': str(uuid4())}}
 
 
-async def fetch_detail(http, theme_id, *, project_id, max_retries=1):
+async def fetch_detail(http, theme_id, *, project_id, max_retries=1, reservation=None):
     source_id(theme_id)
     if not project_id:
         raise ValueError('题材详情请求必须声明项目')
@@ -22,6 +22,7 @@ async def fetch_detail(http, theme_id, *, project_id, max_retries=1):
                                   max_redirects=0, project_id=project_id,
                                   policy=http.response_policy('generic'),
                                   max_retries=max_retries,
+                                  reservation=reservation,
                                   strip_credentials=True,
                                   attempt_options=lambda: request_options(theme_id))
     try:

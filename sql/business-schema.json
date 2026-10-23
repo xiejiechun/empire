@@ -51,7 +51,12 @@
     "additional_issue": "tdx",
     "rights_issue": "tdx",
     "suspension_event": "tdx",
-    "trade_calendar": "cninfo"
+    "trade_calendar": "cninfo",
+    "theme_daily": "kaipanla",
+    "theme_detail": "kaipanla",
+    "theme_category": "kaipanla",
+    "theme_stock": "kaipanla",
+    "theme_stock_reason": "kaipanla"
   },
   "tables": [
     "capital_funding",
@@ -107,7 +112,12 @@
     "trade_calendar",
     "finance_news",
     "collection_state",
-    "app_setting"
+    "app_setting",
+    "theme_daily",
+    "theme_detail",
+    "theme_category",
+    "theme_stock",
+    "theme_stock_reason"
   ],
   "dataset_tables": {
     "ths.capital.security": "capital_funding",
@@ -158,7 +168,9 @@
     "rights_issues.unit": "rights_issue",
     "calendar.month": "trade_calendar",
     "suspensions.period": "suspension_event",
-    "news.flash.page": "finance_news"
+    "news.flash.page": "finance_news",
+    "kaipanla.themes.day": "theme_daily",
+    "kaipanla.themes.detail": "theme_detail"
   },
   "dataset_table_groups": {
     "ths.capital.security": [
@@ -337,6 +349,15 @@
     ],
     "news.flash.page": [
       "finance_news"
+    ],
+    "kaipanla.themes.day": [
+      "theme_daily"
+    ],
+    "kaipanla.themes.detail": [
+      "theme_detail",
+      "theme_category",
+      "theme_stock",
+      "theme_stock_reason"
     ]
   },
   "primary_keys": {
@@ -536,6 +557,25 @@
       "trade_date",
       "side",
       "level"
+    ],
+    "theme_daily": [
+      "business_date",
+      "theme_id"
+    ],
+    "theme_detail": [
+      "theme_id"
+    ],
+    "theme_category": [
+      "theme_id",
+      "category_id"
+    ],
+    "theme_stock": [
+      "theme_id",
+      "unified_code"
+    ],
+    "theme_stock_reason": [
+      "theme_id",
+      "relation_id"
     ]
   },
   "source_overrides": {
@@ -553,6 +593,61 @@
     ],
     "rights_issue": [
       "unified_code"
+    ],
+    "theme_daily": [
+      "business_date",
+      "theme_id",
+      "source_theme_id",
+      "concept_id",
+      "name",
+      "parent_id",
+      "new_flag",
+      "rank_no",
+      "display_order",
+      "hot_score",
+      "change_rate",
+      "limit_up_count",
+      "observed_at"
+    ],
+    "theme_detail": [
+      "theme_id",
+      "name",
+      "brief",
+      "introduction",
+      "source_created_at",
+      "source_updated_at",
+      "observed_at",
+      "content_sha256"
+    ],
+    "theme_category": [
+      "theme_id",
+      "category_id",
+      "parent_id",
+      "name",
+      "order",
+      "plate_code",
+      "first_shelved_at",
+      "updated_at",
+      "is_new"
+    ],
+    "theme_stock": [
+      "theme_id",
+      "source_stock_id",
+      "name",
+      "unified_code"
+    ],
+    "theme_stock_reason": [
+      "theme_id",
+      "relation_id",
+      "category_id",
+      "unified_code",
+      "reason",
+      "first_shelved_at",
+      "updated_at",
+      "is_new",
+      "is_hot",
+      "source_is_zz",
+      "occurrences"
     ]
   },
   "primary_key_exemptions": [

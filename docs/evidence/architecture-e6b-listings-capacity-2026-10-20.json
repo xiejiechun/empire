@@ -56,7 +56,6 @@
     "scripts/measure_listings.py": "e777c7e1228232d7d24fbe993b891252f73ac9f485d4d0c5d2a27505822c5c71",
     "scripts/source_test_storage.py": "4daf125c866cea5a53592275dbb3d23f891cf16013f40371842c699b30bfccb2",
     "scripts/source_verification.py": "2b0829000a0b4d056e549d62305358ce5f8d3b2c2737c45fab12279fb1e01206",
-    "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
   },
   "ddl_scopes": {
@@ -206,5 +205,140 @@
   "remaining": {
     "sql": false,
     "redis": false
+  },
+  "schema_objects": {
+    "stock_listing": {
+      "ddl_sha256": "e15abb1412885c165061d610da69fd86abd49f60b7130a975f0ebf0481ac9d93",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "listing_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "establish_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "issuance_num": {
+            "type": "decimal(24, 4)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "issuance_price": {
+            "type": "decimal(24, 4)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "first_day_open_price": {
+            "type": "decimal(24, 4)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "estimated_raised": {
+            "type": "decimal(24, 4)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "actual_raised": {
+            "type": "decimal(24, 4)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "issuance_pe": {
+            "type": "decimal(20, 4)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "winning_rate": {
+            "type": "decimal(20, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "lead_underwriter": {
+            "type": "varchar(2048) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "sponsor": {
+            "type": "varchar(2048) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "history": {
+            "type": "mediumtext",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code"
+        ],
+        "indexes": {
+          "ix_listing_date": {
+            "columns": [
+              "listing_date",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_listing_contract": "(contract_versionin(1,2))",
+          "ck_listing_dates": "((listing_date>='1900-01-01')and((establish_dateisnull)or(establish_date>='1900-01-01')))",
+          "ck_listing_history": "((historyisnull)or(length(history)<=262144))",
+          "ck_listing_numbers": "(((issuance_numisnull)or(issuance_num>=0))and((issuance_priceisnull)or(issuance_price>=0))and((first_day_open_priceisnull)or(first_day_open_price>=0))and((estimated_raisedisnull)or(estimated_raised>=0))and((actual_raisedisnull)or(actual_raised>=0))and((winning_rateisnull)or(winning_ratebetween0and100)))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "unified_code"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "listing.detail": {
+            "tables": [
+              "stock_listing"
+            ],
+            "primary": "stock_listing"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "date": "2026-10-24",
+    "original_bindings": {
+      "sql/business-schema.json": "30d38c7b0702ab5d1eb16e650152d59a75cc7a9f00493d0e6b6608700406422d"
+    },
+    "original_commit": "1cfbe7265d1da7a4424eb53e16d5158e72d8f712",
+    "verification": "Original hash matched HEAD bytes or its CRLF checkout; every scoped DDL, shape and ownership exactly equals current. Original measurements retained, no remeasurement claimed."
   }
 }

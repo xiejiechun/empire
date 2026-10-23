@@ -111,5 +111,253 @@
       "tests/test_dividend_yield.py",
       "tests/integration/test_dividend_yield_pipeline.py"
     ]
+  },
+  {
+    "path": "additive.themes",
+    "before": null,
+    "after": {
+      "semantic": {
+        "datasets": {
+          "kaipanla_themes_daily_v1": {
+            "datasets": [
+              "kaipanla.themes.day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "kaipanla-themes-v1": "kaipanla-themes"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "kaipanla_themes_detail_v1": {
+            "datasets": [
+              "kaipanla.themes.detail"
+            ],
+            "fingerprint_version": {
+              "observed_index": 1,
+              "parts": [
+                "utc",
+                "utc"
+              ],
+              "source_indices": [
+                0
+              ]
+            },
+            "mode": "incremental",
+            "projects": {
+              "kaipanla-theme-details-v1": "kaipanla-theme-details"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "themes": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "题材数据",
+            "database_tables": [
+              "theme_daily",
+              "theme_detail",
+              "theme_category",
+              "theme_stock",
+              "theme_stock_reason"
+            ],
+            "description": "热度、排名、涨跌幅、涨停数量及七日日内变化",
+            "group": "数据浏览",
+            "id": "themes",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "kaipanla-themes",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 80,
+            "source": "开盘啦",
+            "title": "开盘啦题材库",
+            "top_level": false
+          }
+        },
+        "plugins": {
+          "collector.theme_detail": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.theme_detail",
+            "name": "开盘啦题材详情",
+            "provides": [
+              "collector.theme_detail"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "archive.confirmation",
+              "collection.records",
+              "themes.query"
+            ]
+          },
+          "collector.theme_list": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.theme_list",
+            "name": "开盘啦题材列表",
+            "provides": [
+              "collector.theme_list"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "archive.confirmation",
+              "collection.records",
+              "themes.query"
+            ]
+          },
+          "data.themes": {
+            "autostart": true,
+            "description": "",
+            "id": "data.themes",
+            "name": "题材查询",
+            "provides": [
+              "themes.query"
+            ],
+            "requires": [
+              "mysql.store",
+              "redis.store"
+            ]
+          },
+          "ui.themes": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.themes",
+            "name": "题材浏览界面",
+            "provides": [
+              "ui.pages.themes"
+            ],
+            "requires": []
+          }
+        },
+        "tasks": {
+          "kaipanla-theme-details": {
+            "capability": "collector.theme_detail",
+            "category": "题材数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每轮完成后等待180秒；同一任务不重叠。",
+              "interval_seconds": 180,
+              "mode": "interval"
+            },
+            "description": "补齐缺失题材，分批核验最新详情",
+            "fresh_description": "保留已有日内历史与每日列表；详情优先补齐，单轮最多32题材。",
+            "id": "kaipanla-theme-details",
+            "interval_seconds": 180,
+            "name": "题材最新详情（开盘啦）",
+            "parallel_downloads": true,
+            "rate_group": "kaipanla",
+            "source_name": "开盘啦",
+            "unit_name": "个题材"
+          },
+          "kaipanla-themes": {
+            "capability": "collector.theme_list",
+            "category": "题材数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每轮完成后等待180秒；同一任务不重叠。",
+              "interval_seconds": 180,
+              "mode": "interval"
+            },
+            "description": "匿名全目录；最近七个自然日日内差异",
+            "fresh_description": "保留已有日内历史与每日列表；详情优先补齐，单轮最多32题材。",
+            "id": "kaipanla-themes",
+            "interval_seconds": 180,
+            "name": "题材列表与日内变化（开盘啦）",
+            "parallel_downloads": false,
+            "rate_group": "kaipanla",
+            "source_name": "开盘啦",
+            "unit_name": "个题材"
+          }
+        }
+      },
+      "bindings": {
+        "datasets": {
+          "kaipanla_themes_daily_v1": {
+            "module": "empire.features.themes.dataset",
+            "qualname": "ThemeDailyDataset"
+          },
+          "kaipanla_themes_detail_v1": {
+            "module": "empire.features.themes.dataset",
+            "qualname": "ThemeDetailDataset"
+          }
+        },
+        "pages": {
+          "themes": {
+            "module": "empire.features.themes.ui",
+            "qualname": "ThemePage"
+          }
+        },
+        "plugins": {
+          "collector.theme_detail": {
+            "module": "empire.features.themes.collector",
+            "qualname": "ThemeCollector"
+          },
+          "collector.theme_list": {
+            "module": "empire.features.themes.collector",
+            "qualname": "ThemeCollector"
+          },
+          "data.themes": {
+            "module": "empire.features.themes.query",
+            "qualname": "ThemeDataPlugin"
+          },
+          "ui.themes": {
+            "module": "empire.features.themes.ui",
+            "qualname": "ThemeUiPlugin"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.themes",
+          "collector.theme_list",
+          "collector.theme_detail",
+          "ui.themes"
+        ],
+        "startup": [
+          "data.themes",
+          "collector.theme_list",
+          "collector.theme_detail",
+          "ui.themes"
+        ],
+        "tasks": [
+          "kaipanla-themes",
+          "kaipanla-theme-details"
+        ],
+        "datasets": [
+          "kaipanla_themes_daily_v1",
+          "kaipanla_themes_detail_v1"
+        ],
+        "pages": [
+          "themes"
+        ]
+      }
+    },
+    "design": "docs/kaipanla-theme-implementation.md",
+    "tests": [
+      "tests/test_theme_storage_contract.py",
+      "tests/integration/test_theme_archive.py"
+    ]
   }
 ]

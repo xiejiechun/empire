@@ -1281,7 +1281,7 @@
         "regression": "分页P95和容量实测",
         "budget": "表和索引<=256MiB，首次导入<=60秒，列表/详情<=100ms；重复业务DML=0",
         "status": "measured",
-          "evidence": "docs/evidence/shareholder-return-p3-release-2026-10-22/paired-current.json"
+        "evidence": "docs/evidence/shareholder-return-p3-release-2026-10-22/paired-current.json"
       },
       "integrity": [
         "唯一编号keyset和剩余统计",
@@ -1681,6 +1681,83 @@
         "tests/test_ths_capital_lifecycle.py",
         "tests/integration/test_ths_capital_archive.py",
         "tests/test_ths_capital_ui.py"
+      ]
+    },
+    "kaipanla.themes.day": {
+      "tables": [
+        "theme_daily"
+      ],
+      "grain": "每日全目录完整单元；详情以来源主题材完整关联集合为事务单位",
+      "identity": "固定kaipanla；日/题材、题材/分类、题材/统一证券、题材/完整关联摘要；相同关联次数保留",
+      "dictionary": "docs/kaipanla-theme-implementation.md",
+      "queries": [
+        "日列表200条游标分页",
+        "最新详情头和200条关联分页",
+        "按题材完整集合核对"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/kaipanla-theme-capacity-2026-10-24.json",
+        "sample": "30题材+军工真实全链路；60000日列表/30000合成理由及七日日内模拟",
+        "growth": "2000题材每日730000行/年；五年3650000行，约703MiB含索引线性估算",
+        "page_limit": 200,
+        "response": "共享generic响应与统一入队字节上限；超限拒绝完整单元",
+        "regression": "热查询P95<100ms、回放<2s",
+        "budget": "见带源码及DDL绑定的容量证据"
+      },
+      "integrity": [
+        "完整首次目录替换语义",
+        "关联集合与次数核对",
+        "旧版拒绝",
+        "重复零业务DML",
+        "共享成功清队"
+      ],
+      "lifecycle": "docs/kaipanla-theme-implementation.md：上线后采样；先列表后分批补详情；Redis丢失回SQL规划，不能恢复丢失日内轨迹。",
+      "delivery": "scripts/create_theme_schema.py显式新增五表；统一写入及正式查询；完整发布门禁与真桌面另行验收。",
+      "tests": [
+        "tests/test_theme_storage_contract.py",
+        "tests/integration/test_theme_typed_storage.py",
+        "tests/integration/test_theme_archive.py"
+      ]
+    },
+    "kaipanla.themes.detail": {
+      "tables": [
+        "theme_detail",
+        "theme_category",
+        "theme_stock",
+        "theme_stock_reason"
+      ],
+      "grain": "每日全目录完整单元；详情以来源主题材完整关联集合为事务单位",
+      "identity": "固定kaipanla；日/题材、题材/分类、题材/统一证券、题材/完整关联摘要；相同关联次数保留",
+      "dictionary": "docs/kaipanla-theme-implementation.md",
+      "queries": [
+        "日列表200条游标分页",
+        "最新详情头和200条关联分页",
+        "按题材完整集合核对"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/kaipanla-theme-capacity-2026-10-24.json",
+        "sample": "30题材+军工真实全链路；60000日列表/30000合成理由及七日日内模拟",
+        "growth": "2000题材每日730000行/年；五年3650000行，约703MiB含索引线性估算",
+        "page_limit": 200,
+        "response": "共享generic响应与统一入队字节上限；超限拒绝完整单元",
+        "regression": "热查询P95<100ms、回放<2s",
+        "budget": "见带源码及DDL绑定的容量证据"
+      },
+      "integrity": [
+        "完整首次目录替换语义",
+        "关联集合与次数核对",
+        "旧版拒绝",
+        "重复零业务DML",
+        "共享成功清队"
+      ],
+      "lifecycle": "docs/kaipanla-theme-implementation.md：上线后采样；先列表后分批补详情；Redis丢失回SQL规划，不能恢复丢失日内轨迹。",
+      "delivery": "scripts/create_theme_schema.py显式新增五表；统一写入及正式查询；完整发布门禁与真桌面另行验收。",
+      "tests": [
+        "tests/test_theme_storage_contract.py",
+        "tests/integration/test_theme_typed_storage.py",
+        "tests/integration/test_theme_archive.py"
       ]
     }
   },

@@ -36,7 +36,8 @@ def test_maintenance_inventory_and_child_table_keep_distinct_meaning():
     assert schema.dataset_tables('suspensions.period') == ('suspension_event', 'suspension_source_date')
     assert schema.PRIMARY_KEYS['suspension_source_date'] == [
         'source_date', 'unified_code', 'suspended_at', 'resume_key', 'record_key']
-    assert schema.TABLES[-3:] == ('finance_news', 'collection_state', 'app_setting')
+    assert schema.TABLES[-8:-5] == ('finance_news', 'collection_state', 'app_setting')
+    assert schema.TABLES[-5:] == ('theme_daily', 'theme_detail', 'theme_category', 'theme_stock', 'theme_stock_reason')
     assert metadata()['primary_key_exemptions'] == ['finance_news', 'collection_state', 'app_setting']
 
 
@@ -164,7 +165,7 @@ def test_design_gate_uses_explicit_root_and_keeps_full_physical_table_set(tmp_pa
     value = metadata()
     write_metadata(tmp_path, value)
     shapes = json.loads((ROOT / 'sql/schema-contract.json').read_text(encoding='utf-8'))['tables']
-    assert len(shapes) == 55 and len(value['tables']) == 54
+    assert len(shapes) == 60 and len(value['tables']) == 59
     assert verify_ownership(tmp_path, shapes, value['dataset_table_groups']) == value
 
 

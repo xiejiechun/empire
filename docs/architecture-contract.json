@@ -145,6 +145,10 @@
     "repurchases": {
       "kind": "business",
       "description": "股票回购"
+    },
+    "themes": {
+      "kind": "business",
+      "description": "开盘啦全题材与七日日内历史"
     }
   },
   "module_groups": [
@@ -539,6 +543,8 @@
         "empire.plugins.infra.http_safety",
         "empire.plugins.infra.mysql_store",
         "empire.plugins.infra.proxy_pool",
+        "empire.plugins.infra.proxy_tunnel",
+        "empire.plugins.infra.stream_exchange",
         "empire.plugins.infra.redis_store",
         "empire.plugins.infra.request_activity",
         "empire.plugins.infra.resources",
@@ -969,9 +975,13 @@
     {
       "owner": "suspensions",
       "role": "query",
-      "public_symbols": ["closing_price_evidence"],
+      "public_symbols": [
+        "closing_price_evidence"
+      ],
       "reason": "调用方拥有同一只读事务的分母日覆盖及完整来源身份检查；不打开连接，不采集，不推断未知复牌为永久停牌",
-      "modules": ["empire.features.suspensions.query"]
+      "modules": [
+        "empire.features.suspensions.query"
+      ]
     },
     {
       "owner": "capital_actions",
@@ -1453,6 +1463,33 @@
         "dataset": "dataset",
         "query": "query",
         "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.themes",
+      "owner": "themes",
+      "reason": "新增题材业务独立归属，来源、存储、查询和界面复用公共基础设施",
+      "roles": {
+        "__init__": "contract",
+        "history_model": "contract",
+        "storage_contract": "contract",
+        "detail_model": "contract",
+        "catalog_protocol": "contract",
+        "catalog_mapping": "contract",
+        "guest_protocol": "contract",
+        "guest_crypto": "contract",
+        "socket_frame": "contract",
+        "bundle": "composition",
+        "history": "query",
+        "collector": "collector",
+        "dataset": "dataset",
+        "repository": "query",
+        "query": "query",
+        "ui": "ui",
+        "guest_material": "source_adapter",
+        "detail_source": "source_adapter",
+        "catalog_source": "source_adapter",
+        "identity_source": "source_adapter"
       }
     }
   ],

@@ -1,17 +1,15 @@
-# 题材日内历史（开发中）
+# 开盘啦题材
 
-实施授权和完整设计见 [实施方案](../../../../docs/kaipanla-theme-implementation.md)。此包尚未加入 builtin 白名单，不启动采集、不写MySQL，不存在已上线任务或页面。
+本业务包拥有列表/详情两个180秒任务、七日日内历史、两项统一归档数据集、五张结构化业务表与可搜索数据页面。上线验收尚在进行，实际发布以发布报告为准。使用方式见[题材说明](docs/help/overview.md)，设计见[实施方案](../../../../docs/kaipanla-theme-implementation.md)。
 
-当前实现：history_model.py验证规范目录并计算字段差异；history.py提供独立Redis键族的原子提交和按时回放。存储内核不证明来源完整，调用前须由未来来源插件验证完整目录。
+来源经共享下载器、代理、频控及资源预算执行。目录用游客TLS协议首次完整订阅响应；详情用匿名HTTP并剥离继承凭据。本机材料通过scripts/import_theme_guest_material.py显式导入程序config.toml，DPAPI保护，不依赖运行中的模拟器。证券市场先用正式目录和已归档题材身份，缺失才用新浪精确代码查询，不用关联的新代码替换来源旧代码。
 
-2026-10-24新增catalog_protocol.py严格解码应用themeListResp，catalog_mapping.py映射来源主题材ID/CID、子题材空热度/排名和精确binary32涨跌幅；detail_source.py通过共享HTTP匿名读取，detail_model.py核对分类关联与股票标签集合/理由。详情调用剥离继承的Cookie/Authorization。真实军工、电力、AI硬件三题材通过来源解析，不代表完整目录或SQL归档验收。来源协议、实测范围与阻碍见[来源实施证据](../../../../docs/evidence/kaipanla-theme-source-2026-10-24.md)。
+日内每天一个基准，其余记录字段差异，保留今天及前六日；SQL首次/每小时/15:10后首轮归档日列表，详情只保留最新。主题材及子题材均保留，子题材热度/排名为NULL。根Stocks、同分类同证券多理由与相同关联出现次数全部保留。
 
-运行纯逻辑与来源专项测试：`.venv/Scripts/python.exe -m pytest tests/test_theme_history_model.py tests/test_theme_catalog_protocol.py tests/test_theme_detail_source.py -q`。
+初始化：先采列表，详情每轮最多32题材补齐，全部当前主题材已有完整详情才完成初始化。以后缺失/改名优先，超过24小时的详情分摊核验。下载和入队不逐题材等SQL，仅整轮入队后确认归档；Redis存活按断点恢复，Redis丢失依据SQL规划，丢失的日内轨迹不补造。
 
-真实Redis集成通过现有隔离框架：设置EMPIRE_INTEGRATION=1及具备测试建库权限的EMPIRE_TEST_MYSQL_SETTINGS后运行tests/integration/test_theme_history.py。每例完整初始化UUID测试SQL库，Redis仅使用自有UUID namespace；测试不会清理共享业务。
+维护入口scripts/create_theme_schema.py预检，正常停机且队列为0时--apply；不自动DDL。入口与字段字典随docs/help登记，运行说明由统一文档构建生成。
 
-当前catalog_source.py通过共享request_stream执行全新游客认证及首次目录订阅；guest_protocol.py严格处理挑战/请求，guest_crypto.py提供已对照原生运算的纯Python签名算法。每个连接使用随机设备ID、UserID=0且无Token，TLS与AES-GCM认证均必须通过。应用材料由GuestMaterial显式传入，未把APK、私钥、白盒表或AES密钥打包入项目；正式本地材料维护入口仍待实施，不依赖模拟器已登录会话。
+专项：tests/test_theme_*.py；隔离集成：tests/integration/test_theme_history.py、test_theme_typed_storage.py、test_theme_archive.py。启用EMPIRE_INTEGRATION且指定专用EMPIRE_TEST_MYSQL_SETTINGS，框架每例创建UUID数据库/Redis namespace，仅清理自有数据。
 
-2026-10-24实测匿名完整目录251主题材/1子题材，并经252条规范化→独占Redis两轮存储→按时回放集合和内容核对。见[游客目录证据](../../../../docs/evidence/kaipanla-theme-guest-catalog-2026-10-24.md)。本次数量不是固定目录总数。
-
-未完成：本地协议材料维护入口、统一入队/归档、SQL维护/查询、正式调度、数据准备、列表和曲线页面、随机题材端到端及七日容量/正式发布。此包仍未注册任务；来源成功不代表全功能已上线。
+随机种子20261024的30题材及军工通过真实代理全链路核对，252条目录SQL集合一致、待归档0，见[实采证据](../../../../docs/evidence/kaipanla-theme-formal-2026-10-24.json)。这是题材采样，不冒充30股票插件验收或全题材生产已采完。

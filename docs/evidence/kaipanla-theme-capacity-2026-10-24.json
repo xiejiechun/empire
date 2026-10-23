@@ -1,0 +1,136 @@
+{
+  "bindings": {
+    "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
+    "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+    "src/empire/features/themes/storage_contract.py": "9fa7c57ad72c1c3827fc2ef8cce6e0642530ddc04a08cf9e1bb48d716632fe80",
+    "src/empire/features/themes/repository.py": "ab1786d26d6c4c11cb4406eee0a19927b7de200cd29ffa516c4e6b630e768ac0",
+    "src/empire/features/themes/dataset.py": "b2e4acb25c65bfe5eb01cdc43c1c3e2decac5a65cfc79822ad0e1f8105bdc1d0",
+    "src/empire/features/themes/query.py": "6dba35663d295312993d6197139bd981116723204da2a1c1b5e6be318befad5f"
+  },
+  "ddl_scopes": {
+    "theme_daily": "458338d0a2e43b28f9d5dbb0cdc3ca24aac2fb1f34c07b1bba5359c8fe4d2af1",
+    "theme_detail": "f0c72cba191f59bf02f836ec150071b5a5175d2690a5688878f28f494d6996d4",
+    "theme_category": "fe93be49d88b57af32e4cb7712c4cf27ba82ab9f7f4039a37442913d7629e3d1",
+    "theme_stock": "833547cbfd5ad93057fe0a2461491483c9c7632a12ed76ca99d4b61a4403a52d",
+    "theme_stock_reason": "de1074ff5fe7043069c2a517d2e8e34bb265959b10e2b48781022c997f3f3518"
+  },
+  "limits": {
+    "redis_peak_owned_bytes": 134217728,
+    "append_p95_ms": 50,
+    "replay_max_ms": 2000,
+    "daily_query_p95_ms": 100,
+    "detail_query_p95_ms": 100,
+    "list_write_seconds": 20,
+    "detail_write_seconds": 20
+  },
+  "measurements": {
+    "rows": 252,
+    "rounds_per_day": 480,
+    "days": 7,
+    "redis_peak_owned_bytes": 71118055,
+    "append_p95_ms": 7.090599974617362,
+    "append_max_ms": 13.074300019070506,
+    "replay_max_ms": 1133.677100064233,
+    "elapsed_seconds": 27.244625699939206,
+    "daily_rows": 60000,
+    "detail_units": 30,
+    "relation_rows": 30000,
+    "list_write_seconds": 1.7658793999580666,
+    "detail_write_seconds": 1.498534300015308,
+    "unchanged_full_list_ms": 31.07080003246665,
+    "daily_query_p95_ms": 4.224400036036968,
+    "detail_query_p95_ms": 5.868999985978007
+  },
+  "conditions": {
+    "redis": "synthetic 252 roots, all four metrics change every sample; seven Beijing calendar days",
+    "sql": "synthetic typed SQL, 2000 themes ×30 dates; 30 latest details ×1000 reasons",
+    "platform": "Windows local dedicated MySQL 15327; warm queries; isolated UUID ownership"
+  },
+  "reviewed_tradeoffs": [
+    "Redis benchmark is 252 items, not a 2000-item worst-case guarantee; global shared capacity can refuse collection.",
+    "SQL 60000 daily rows allocated about 12MiB incl indexes; 2000/day one year ~141MiB, five years ~703MiB by linear extrapolation, not five-year test.",
+    "Last content observation does not update unchanged business rows; common fingerprint and collection_state track confirmation.",
+    "Only latest detail is retained; no historical body availability claim."
+  ],
+  "history": {
+    "scope": "synthetic 252 roots, all four metrics change every sample; seven Beijing calendar days",
+    "rows": 252,
+    "rounds_per_day": 480,
+    "days": 7,
+    "redis_peak_owned_bytes": 71118055,
+    "append_p95_ms": 7.090599974617362,
+    "append_max_ms": 13.074300019070506,
+    "replay_max_ms": 1133.677100064233,
+    "elapsed_seconds": 27.244625699939206,
+    "day_memory_bytes": [
+      10151684,
+      10152046,
+      10151950,
+      10151998,
+      10152094,
+      10151774,
+      10151950
+    ],
+    "limitations": "Synthetic capacity, not seven days of production source history; no 2000-theme throughput claim"
+  },
+  "sql": {
+    "scope": "synthetic typed SQL, 2000 themes ×30 dates; 30 latest details ×1000 reasons",
+    "daily_rows": 60000,
+    "detail_units": 30,
+    "relation_rows": 30000,
+    "list_write_seconds": 1.7658793999580666,
+    "detail_write_seconds": 1.498534300015308,
+    "unchanged_full_list_ms": 31.07080003246665,
+    "daily_query_p95_ms": 4.224400036036968,
+    "detail_query_p95_ms": 5.868999985978007,
+    "explain": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "theme_daily",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,idx_theme_daily_history,idx_theme_daily_rank",
+        "key": "PRIMARY",
+        "key_len": "70",
+        "ref": null,
+        "rows": 3530,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "allocation": [
+      {
+        "TABLE_NAME": "theme_category",
+        "TABLE_ROWS": 30,
+        "DATA_LENGTH": 16384,
+        "INDEX_LENGTH": 16384
+      },
+      {
+        "TABLE_NAME": "theme_daily",
+        "TABLE_ROWS": 57110,
+        "DATA_LENGTH": 6832128,
+        "INDEX_LENGTH": 5275648
+      },
+      {
+        "TABLE_NAME": "theme_detail",
+        "TABLE_ROWS": 30,
+        "DATA_LENGTH": 16384,
+        "INDEX_LENGTH": 0
+      },
+      {
+        "TABLE_NAME": "theme_stock",
+        "TABLE_ROWS": 30,
+        "DATA_LENGTH": 16384,
+        "INDEX_LENGTH": 32768
+      },
+      {
+        "TABLE_NAME": "theme_stock_reason",
+        "TABLE_ROWS": 28647,
+        "DATA_LENGTH": 14270464,
+        "INDEX_LENGTH": 2637824
+      }
+    ],
+    "limitations": "Warm local isolated MySQL; allocation TABLE_ROWS is engine estimate, not completeness proof; five-year size is extrapolation"
+  }
+}

@@ -9,6 +9,11 @@ from functools import partial
 from pathlib import Path
 from types import ModuleType
 
+if __package__:
+    from .assembly_additions import apply, ordered_additions
+else:
+    from assembly_additions import apply, ordered_additions
+
 
 def plain(value):
     if dataclasses.is_dataclass(value):
@@ -123,12 +128,16 @@ def compare(baseline, current, migration, root: Path, features=None):
             used_tests.update(path for path in paths if path in test_paths)
     if used_modules != set(modules) or used_tests != set(test_paths):
         raise ValueError('Migration includes unused mappings')
-    failures = differences(baseline['semantic'], current['semantic'], 'semantic')
+    expected_semantic = json.loads(json.dumps(baseline['semantic']))
+    apply(features, expected_semantic, expected, current, root)
+    failures = differences(expected_semantic, current['semantic'], 'semantic')
     if features is not None:
         if not isinstance(features, list):
             raise ValueError('Feature changes must be an explicit list')
         seen = set()
         for change in features:
+            if isinstance(change, dict) and str(change.get('path', '')).startswith('additive.'):
+                continue
             if not isinstance(change, dict) or set(change) != {'path', 'before', 'after', 'design', 'tests'}:
                 raise ValueError('Feature change requires exact before/after and independent design/tests')
             path = change['path']
@@ -230,10 +239,17 @@ def compare_order(baseline, current, features=None):
              if change.get('before') is None and change.get('path', '').startswith('semantic.preparation.')
              and isinstance(change.get('after'), dict) and change['after'].get('output_version')}
     # An exact new calculation may be inserted; every old identity stays in order.
-    return ['order.' + key for key in ORDER_FIELDS if baseline[key] !=
-            ([value for value in current[key] if value not in added]
-             if key == 'preparation' and added <= set(current[key]) and not added.intersection(baseline[key])
-             else current[key])]
+    failures = []
+    for key in ORDER_FIELDS:
+        new = ordered_additions(features, key)
+        if key == 'preparation':
+            new += [value for value in current[key] if value in added]
+        valid = (not set(new).intersection(baseline[key]) and set(new) <= set(current[key])
+                 and [value for value in current[key] if value in new] == new)
+        remaining = [value for value in current[key] if value not in new] if valid else current[key]
+        if not valid or baseline[key] != remaining:
+            failures.append('order.' + key)
+    return failures
 
 
 def validate_maintenance_entrypoints(root: Path, bundles):

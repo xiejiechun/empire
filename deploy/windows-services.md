@@ -1,5 +1,7 @@
 # Windows 服务接入
 
+题材数据新增`theme_daily`、`theme_detail`、`theme_category`、`theme_stock`、`theme_stock_reason`五张结构化表。现有部署通过`scripts/create_theme_schema.py`先预检，在正常关闭Empire且待归档为0后使用`--apply`显式增加；启动不迁移。日内轨迹保留在纯内存Redis七个自然日，最新详情与每日列表由统一归档器写MySQL。游客材料通过`scripts/import_theme_guest_material.py --stdin`显式导入程序同目录config.toml，当前Windows用户DPAPI保护，发布保留原配置；不得将含材料的真实配置公开分发。
+
 应用直接连接 Windows 可运行的 Redis 兼容服务和 MySQL，或用户已有实例。不使用 Docker Desktop / WSL2，不自动安装、升级或修改数据库服务的全局配置。
 
 ## 本次接入
