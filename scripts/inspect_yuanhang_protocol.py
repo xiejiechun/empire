@@ -11,13 +11,15 @@ import hashlib
 import json
 from datetime import UTC, datetime
 from pathlib import Path
+from xml.etree import ElementTree
 
 ASSEMBLIES = (
     "Hevo.Api.Quotes.dll", "Hevo.Core.Interfaces.dll",
     "Hevo.DataModel.Business.dll", "Hevo.Gms.Wrapper.dll",
+    "Hevo.Core.DataModel.dll", "Hevo.DataVisualization.Component.dll",
 )
 METHODS = {
-    "RequestCandleDataAsync", "RequestCandleV1", "QueryFinanceDataAsync",
+    "RequestCandleDataAsync", "RequestCandleV1", "RequestCandleV2", "QueryFinanceDataAsync",
     "RequestSecurityInfoListV2", "RequestInfoServerFileV2",
     "RequestDataV1Async", "RequestDataV2Async", "RequestDataV3Async",
     "RequestDataV4Async", "SetProxy", "SetAuthInfo", "CreateSession",
@@ -27,13 +29,43 @@ TYPES = {
     "ICandleParameterFactory", "ICandleQuoteParameters", "IBaseTimeRange",
     "IQueryFinanceDataProvider", "IFieldsHolder", "IAuthHandler", "IProxyHandler",
     "ProxySetting", "ProxyType", "ServerInfoModel", "GmsSetting",
+    "CandleBottomLine", "AuthTokenV1", "BinaryPackClient",
 }
 FIELDS = {
     "prev_close", "open", "high", "low", "close", "transaction_volume",
     "transaction_volume_shou", "transaction_amount", "turnover_rate",
     "real_turnover_rate", "outstanding_shares", "total_capital_stock",
     "FLOAT_CAP", "CAPITAL", "TOTALCAPITAL", "FinanceData",
+    "date_time", "QXSM", "DQLTG", "DQLTG2", "DQLTG3",
 }
+
+RESOURCE_FIELDS = {1, 6, 7, 8, 9, 11, 13, 19, 380, 402, 407, 454, 455,
+                   456, 460, 463, 471, 899, 900, 2480, 2561, 2988, 1968584, 2097453}
+
+
+def resource_dictionary(name: str, data: bytes) -> dict | None:
+    """Extract only public market/field definitions, never user configuration."""
+    kind = next((kind for kind in ("MarketData", "QuoteFieldData")
+                 if name == f"Hevo.Core.DataModel.Data.{kind}.xml"), None)
+    if kind is None:
+        return None
+    if not 0 < len(data) <= 1048576 or b"<!DOCTYPE" in data or b"<!ENTITY" in data:
+        raise ValueError("Invalid public dictionary resource")
+    rows = []
+    for element in ElementTree.fromstring(data):
+        identity = element.get("id", "")
+        if kind == "MarketData":
+            if identity not in {"USHA", "USZA", "USTA", "USTM"}:
+                continue
+            keys = ("id", "old_id", "ShareCountPerUnit", "DecimalDigits")
+        else:
+            if not identity.isdecimal() or int(identity) not in RESOURCE_FIELDS:
+                continue
+            keys = ("id", "data_type")
+        label = element.find("Name")
+        rows.append(dict(attributes={key: element.get(key) for key in keys},
+                         name_zh=label.get("zh-cn") if label is not None else None))
+    return dict(resource=name, sha256=hashlib.sha256(data).hexdigest(), entries=rows)
 
 
 def constant(instruction):
@@ -48,7 +80,7 @@ def constant(instruction):
 
 
 def initializers(pe, definition, body_reader) -> dict:
-    """Accept only two literal constants -> factory call -> static assignment.
+    """Accept literal factory arguments or QuoteField(id, empty, type, class).
 
     Do not execute code or guess values for a different initializer shape.
     """
@@ -58,7 +90,26 @@ def initializers(pe, definition, body_reader) -> dict:
             continue
         instructions = body_reader(method.row.Rva, 100000).instructions
         for index, instruction in enumerate(instructions):
-            if str(instruction.opcode) != "stsfld" or index < 3:
+            if str(instruction.opcode) != "stsfld" or index < 2:
+                continue
+            constructor = instructions[index - 1]
+            if (index >= 5 and str(constructor.opcode) == "newobj"
+                    and constructor.operand.value >> 24 == 10):
+                literal, name, datatype, tradeclass = instructions[index - 5:index - 1]
+                target = pe.net.mdtables.MemberRef.rows[(constructor.operand.value & 0xFFFFFF) - 1]
+                owner = target.Class.row
+                values = [constant(literal), constant(datatype), constant(tradeclass)]
+                if (str(getattr(owner, "TypeName", "")) == "QuoteField"
+                        and str(getattr(owner, "TypeNamespace", "")) == "Hevo.Core"
+                        and str(target.Name) == ".ctor" and None not in values
+                        and str(name.opcode) == "ldstr"
+                        and pe.net.user_strings.get(name.operand.value & 0xFFFFFF).value == ""):
+                    result[instruction.operand.value] = dict(
+                        constructor=f"{owner.TypeNamespace}.{owner.TypeName}::.ctor",
+                        constructor_arguments=[values[0], "", values[1], values[2]],
+                    )
+                continue
+            if index < 3:
                 continue
             a, b, call = instructions[index - 3:index]
             values = [constant(a), constant(b)]
@@ -129,8 +180,14 @@ def inventory(path: Path) -> dict:
         assembly = pe.net.mdtables.Assembly.rows[0]
         version = ".".join(str(getattr(assembly, key)) for key in
                            ("MajorVersion", "MinorVersion", "BuildNumber", "RevisionNumber"))
+        dictionaries = []
+        for resource in pe.net.resources:
+            public = resource_dictionary(str(resource.name), resource.data)
+            if public is not None:
+                dictionaries.append(public)
         return dict(file=path.name, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest(),
-                    assembly_version=version, methods=rows, quote_field_getters=field_getters)
+                    assembly_version=version, methods=rows, quote_field_getters=field_getters,
+                    public_dictionaries=dictionaries)
     finally:
         pe.close()
 

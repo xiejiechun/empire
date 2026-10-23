@@ -32,6 +32,7 @@ from empire.plugins.infra.response_reader import (
     read_response,
 )
 from empire.plugins.infra.routing import USE_PROXY, ProxyRouteError, routed_request, site_policy
+from empire.plugins.infra.sensitive_request import SensitiveRequestError, failure_fields
 from empire.plugins.infra.settings import SettingsStore
 
 COOLDOWN_LUA = """
@@ -132,8 +133,13 @@ class HttpService:
         self.inflight: set[asyncio.Task] = set()
         self.closed = False
 
-    async def _record_failure(self, project_id, method, url, error, response=None, attempt=1):
+    async def _record_failure(self, project_id, method, url, error, response=None, attempt=1, *, sensitive=False):
         if self.records is None or getattr(error, "diagnostic_recorded", False):
+            return
+        if sensitive:
+            await self.records.add_error(project_id, stage='http',
+                **failure_fields(method, url, error, response, attempt))
+            error.diagnostic_recorded = True
             return
         incomplete = isinstance(error, DownloadReadError)
         extra = {"raw_body_complete": False, "observed_bytes": error.observed_bytes} if incomplete else {}
@@ -148,6 +154,11 @@ class HttpService:
 
     async def _one(self, method: str, url: str, allowed: tuple[str, ...], **kwargs):
         return await routed_request(self, method, url, allowed, **kwargs)
+
+    async def request_stream(self, target, protocol, **kwargs):
+        from empire.plugins.infra.stream_exchange import request
+
+        return await request(self, target, protocol, **kwargs)
 
     async def transfer(self, client, method, url, *, key, stats, policy, **kwargs):
         async def headers(response):
@@ -204,7 +215,7 @@ class HttpService:
         self, method: str, url: str, *, allowed_domains: tuple[str, ...],
         max_retries: int = 2, max_redirects: int = 5, total_timeout: float | None = None,
         project_id: str | None = None, attempt_options=None, allow_not_found: bool = False,
-        retry_not_found: bool = False,
+        retry_not_found: bool = False, sensitive: bool = False,
         **kwargs,
     ) -> httpx.Response:
         if self.closed:
@@ -217,6 +228,8 @@ class HttpService:
             raise ValueError('allow_not_found must be boolean')
         if type(retry_not_found) is not bool or (retry_not_found and allow_not_found):
             raise ValueError('retry_not_found must be boolean and cannot allow missing responses')
+        if type(sensitive) is not bool or (sensitive and max_redirects != 0):
+            raise ValueError('Sensitive requests require an explicit no-redirect contract')
         if method.upper() not in ("GET", "HEAD", "POST"):
             raise ValueError("Unsupported collection request method")
         if self.records is not None and not project_id:
@@ -240,13 +253,13 @@ class HttpService:
                         response = await self._one(method, url, allowed_domains,
                                                    excluded_proxies=excluded_proxies, **options)
                     except ProxyRouteError as exc:
-                        await self._record_failure(project_id, method, url, exc, attempt=retries + 1)
+                        await self._record_failure(project_id, method, url, exc, attempt=retries + 1, sensitive=sensitive)
                         excluded_proxies.add(exc.code)
                         # Device switching is bounded by unique device IDs and the
                         # same total timeout; source/direct retries keep their budget.
                         continue
                     except (httpx.TransportError, DownloadIncompleteError) as exc:
-                        await self._record_failure(project_id, method, url, exc, attempt=retries + 1)
+                        await self._record_failure(project_id, method, url, exc, attempt=retries + 1, sensitive=sensitive)
                         if retries >= max_retries:
                             raise
                         retries += 1
@@ -273,7 +286,7 @@ class HttpService:
                         if response.status_code != 404 or not allow_not_found:
                             response.raise_for_status()
                     except httpx.HTTPStatusError as exc:
-                        await self._record_failure(project_id, method, url, exc, response, retries + 1)
+                        await self._record_failure(project_id, method, url, exc, response, retries + 1, sensitive=sensitive)
                         retryable = response.status_code in (429, 502, 503, 504) or (
                             response.status_code == 404 and retry_not_found
                         )
@@ -287,10 +300,12 @@ class HttpService:
         except BaseException as exc:
             try:
                 if isinstance(exc, Exception):
-                    await self._record_failure(project_id, method, url, exc, response, retries + 1)
+                    await self._record_failure(project_id, method, url, exc, response, retries + 1, sensitive=sensitive)
             finally:
                 if response is not None:
                     response.close()
+            if sensitive and isinstance(exc, Exception):
+                raise SensitiveRequestError(exc) from None
             raise
 
     async def cooldown(self, key, response, stats):

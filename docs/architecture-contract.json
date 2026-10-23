@@ -551,6 +551,7 @@
         "empire.plugins.infra.response_reader",
         "empire.plugins.infra.routing",
         "empire.plugins.infra.schema_manifest",
+        "empire.plugins.infra.sensitive_request",
         "empire.plugins.infra.settings",
         "empire.plugins.infra.sql_lane"
       ]
@@ -576,6 +577,7 @@
         "empire.contracts.dataset",
         "empire.contracts.download",
         "empire.contracts.download_settings",
+        "empire.contracts.native_stream",
         "empire.contracts.request_retry",
         "empire.contracts.security",
         "empire.contracts.ui"
@@ -935,9 +937,13 @@
     {
       "role": "source_adapter",
       "owner": "source_support",
-      "reason": "TDX解禁共有无I/O协议，两个业务独立解释",
+      "reason": "共有来源协议及正常认证适配；业务采集、归档、查询由各功能独立实现",
       "modules": [
-        "empire.sources.tdx_unlock"
+        "empire.sources.tdx_unlock",
+        "empire.sources.yuanhang_auth",
+        "empire.sources.yuanhang_history",
+        "empire.sources.yuanhang_identity",
+        "empire.sources.yuanhang_wire"
       ]
     },
     {

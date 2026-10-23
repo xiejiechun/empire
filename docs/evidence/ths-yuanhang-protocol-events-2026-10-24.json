@@ -1,0 +1,2578 @@
+{
+  "schema": 1,
+  "observed_at": "2026-10-23T16:57:16.029089+00:00",
+  "verification": "offline_metadata_only",
+  "source_request_verified": false,
+  "history_coverage_verified": false,
+  "proxy_acceptance_verified": false,
+  "production_mutated": false,
+  "assemblies": [
+    {
+      "file": "Hevo.Api.Quotes.dll",
+      "bytes": 1383656,
+      "sha256": "33a69a8c37779f1db3602c6ccd49c9be5e7c4d49cc87c61f7db1278ca7954625",
+      "assembly_version": "11.1.10.15",
+      "methods": [
+        {
+          "type": "a.Y",
+          "method": "RequestCandleDataAsync",
+          "token": "0x06000816",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "parameters"
+            }
+          ],
+          "signature_hex": "2001151280b9011285111282a1"
+        },
+        {
+          "type": "a.Y",
+          "method": "QueryFinanceDataAsync",
+          "token": "0x0600083a",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "parameters"
+            }
+          ],
+          "signature_hex": "300101151280b9011512833501128615128619"
+        },
+        {
+          "type": "Hevo.Core.DataCenter",
+          "method": "RequestDataV2Async",
+          "token": "0x06000f52",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "request_string"
+            },
+            {
+              "position": 2,
+              "name": "traceInfo"
+            }
+          ],
+          "signature_hex": "2002151280b9011292d80e12818d"
+        },
+        {
+          "type": "Hevo.Core.DataCenter",
+          "method": "RequestDataV1Async",
+          "token": "0x06000f5c",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "request_string"
+            },
+            {
+              "position": 2,
+              "name": "traceInfo"
+            }
+          ],
+          "signature_hex": "2002151280b9011292700e12818d"
+        },
+        {
+          "type": "Hevo.Core.DataCenter",
+          "method": "RequestDataV1Async",
+          "token": "0x06000f5d",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "request_string"
+            },
+            {
+              "position": 2,
+              "name": "ultiHead"
+            },
+            {
+              "position": 3,
+              "name": "traceInfo"
+            }
+          ],
+          "signature_hex": "2003151280b9011292700e11946412818d"
+        },
+        {
+          "type": "Hevo.Core.DataCenter",
+          "method": "RequestDataV3Async",
+          "token": "0x06000f5e",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "request_string"
+            },
+            {
+              "position": 2,
+              "name": "traceInfo"
+            }
+          ],
+          "signature_hex": "2002151280b9011293180e12818d"
+        },
+        {
+          "type": "Hevo.Core.DataCenter",
+          "method": "RequestDataV3Async",
+          "token": "0x06000f5f",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "requestString"
+            },
+            {
+              "position": 2,
+              "name": "jsonString"
+            },
+            {
+              "position": 3,
+              "name": "traceInfo"
+            }
+          ],
+          "signature_hex": "2003151280b9011293180e0e12818d"
+        },
+        {
+          "type": "Hevo.Core.DataCenter",
+          "method": "RequestDataV4Async",
+          "token": "0x06000f60",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "Key"
+            },
+            {
+              "position": 2,
+              "name": "requestId"
+            },
+            {
+              "position": 3,
+              "name": "requestString"
+            }
+          ],
+          "signature_hex": "2003151280b9011281f50e1183190e"
+        },
+        {
+          "type": "Hevo.Core.DataCenterExtension",
+          "method": "RequestInfoServerFileV2",
+          "token": "0x0600139b",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "data_center"
+            },
+            {
+              "position": 2,
+              "name": "path"
+            },
+            {
+              "position": 3,
+              "name": "pageId"
+            },
+            {
+              "position": 4,
+              "name": "businessSendTime"
+            }
+          ],
+          "signature_hex": "0004151280b9011292d8128c140e0e1511810d01118111"
+        },
+        {
+          "type": "Hevo.Core.DataCenterExtension",
+          "method": "RequestInfoServerFileV2",
+          "token": "0x0600139e",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "data_center"
+            },
+            {
+              "position": 2,
+              "name": "file_id"
+            },
+            {
+              "position": 3,
+              "name": "pageId"
+            },
+            {
+              "position": 4,
+              "name": "businessSendTime"
+            }
+          ],
+          "signature_hex": "0004151280b9011292d8128c14090e1511810d01118111"
+        },
+        {
+          "type": "Hevo.Core.DataCenterExtension",
+          "method": "RequestCandleV2",
+          "token": "0x060013d2",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "data_center"
+            },
+            {
+              "position": 2,
+              "name": "security"
+            },
+            {
+              "position": 3,
+              "name": "period"
+            },
+            {
+              "position": 4,
+              "name": "count"
+            },
+            {
+              "position": 5,
+              "name": "end_time"
+            },
+            {
+              "position": 6,
+              "name": "fields"
+            },
+            {
+              "position": 7,
+              "name": "rights_args"
+            },
+            {
+              "position": 8,
+              "name": "pageId"
+            },
+            {
+              "position": 9,
+              "name": "businessSendTime"
+            }
+          ],
+          "signature_hex": "0009151280b901151280f1011292d8128c141280d112820d0a0e151280f1011280c5128e8c0e1511810d01118111"
+        },
+        {
+          "type": "Hevo.Core.DataCenterExtension",
+          "method": "RequestCandleV2",
+          "token": "0x060013d3",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "data_center"
+            },
+            {
+              "position": 2,
+              "name": "security"
+            },
+            {
+              "position": 3,
+              "name": "period"
+            },
+            {
+              "position": 4,
+              "name": "start_time"
+            },
+            {
+              "position": 5,
+              "name": "end_time"
+            },
+            {
+              "position": 6,
+              "name": "fields"
+            },
+            {
+              "position": 7,
+              "name": "rights_args"
+            },
+            {
+              "position": 8,
+              "name": "pageId"
+            },
+            {
+              "position": 9,
+              "name": "businessSendTime"
+            }
+          ],
+          "signature_hex": "0009151280b901151280f1011292d8128c141280d112820d0e0e151280f1011280c5128e8c0e1511810d01118111"
+        },
+        {
+          "type": "Hevo.Core.DataCenterExtension",
+          "method": "RequestCandleV2",
+          "token": "0x060013d4",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "data_center"
+            },
+            {
+              "position": 2,
+              "name": "security"
+            },
+            {
+              "position": 3,
+              "name": "period"
+            },
+            {
+              "position": 4,
+              "name": "count"
+            },
+            {
+              "position": 5,
+              "name": "end_time"
+            },
+            {
+              "position": 6,
+              "name": "fields"
+            },
+            {
+              "position": 7,
+              "name": "Right"
+            },
+            {
+              "position": 8,
+              "name": "Rights_Opt"
+            },
+            {
+              "position": 9,
+              "name": "pageId"
+            },
+            {
+              "position": 10,
+              "name": "businessSendTime"
+            }
+          ],
+          "signature_hex": "000a151280b901151280f1011292d8128c141280d1090a0a151280f1011280c50e0e0e1511810d01118111"
+        },
+        {
+          "type": "Hevo.Core.DataCenterExtension",
+          "method": "RequestCandleV2",
+          "token": "0x060013d5",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "data_center"
+            },
+            {
+              "position": 2,
+              "name": "security"
+            },
+            {
+              "position": 3,
+              "name": "period"
+            },
+            {
+              "position": 4,
+              "name": "start_time"
+            },
+            {
+              "position": 5,
+              "name": "end_time"
+            },
+            {
+              "position": 6,
+              "name": "fields"
+            },
+            {
+              "position": 7,
+              "name": "Right"
+            },
+            {
+              "position": 8,
+              "name": "Rights_Opt"
+            },
+            {
+              "position": 9,
+              "name": "pageId"
+            },
+            {
+              "position": 10,
+              "name": "businessSendTime"
+            }
+          ],
+          "signature_hex": "000a151280b901151280f1011292d8128c141280d1090e0e151280f1011280c50e0e0e1511810d01118111"
+        },
+        {
+          "type": "Hevo.Core.DataCenterExtension",
+          "method": "RequestSecurityInfoListV2",
+          "token": "0x060013e0",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "data_center"
+            },
+            {
+              "position": 2,
+              "name": "security"
+            },
+            {
+              "position": 3,
+              "name": "info_field"
+            },
+            {
+              "position": 4,
+              "name": "pageId"
+            },
+            {
+              "position": 5,
+              "name": "businessSendTime"
+            }
+          ],
+          "signature_hex": "0005151280b9011292d8128c141280d11191380e1511810d01118111"
+        },
+        {
+          "type": "Hevo.Core.DataCenterExtension",
+          "method": "RequestSecurityInfoListV2",
+          "token": "0x060013e2",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "data_center"
+            },
+            {
+              "position": 2,
+              "name": "security"
+            },
+            {
+              "position": 3,
+              "name": "info_field"
+            },
+            {
+              "position": 4,
+              "name": "start"
+            },
+            {
+              "position": 5,
+              "name": "summary"
+            },
+            {
+              "position": 6,
+              "name": "pageId"
+            },
+            {
+              "position": 7,
+              "name": "businessSendTime"
+            }
+          ],
+          "signature_hex": "0007151280b9011292d8128c141280d1119138118111080e1511810d01118111"
+        },
+        {
+          "type": "Hevo.Core.DataCenterExtension",
+          "method": "RequestCandleV1",
+          "token": "0x06001424",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "data_center"
+            },
+            {
+              "position": 2,
+              "name": "security"
+            },
+            {
+              "position": 3,
+              "name": "fields"
+            },
+            {
+              "position": 4,
+              "name": "period"
+            },
+            {
+              "position": 5,
+              "name": "start_time"
+            },
+            {
+              "position": 6,
+              "name": "end_time"
+            },
+            {
+              "position": 7,
+              "name": "rights_args"
+            },
+            {
+              "position": 8,
+              "name": "pageId"
+            },
+            {
+              "position": 9,
+              "name": "businessSendTime"
+            }
+          ],
+          "signature_hex": "0009151280b901129270128c141280d1151280f1011280c512820d0a0a128e8c0e1511810d01118111"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "A",
+          "token": "0x06001665",
+          "parameters": [],
+          "signature_hex": "200002"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "A",
+          "token": "0x06001666",
+          "parameters": [],
+          "signature_hex": "20010102"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "a",
+          "token": "0x06001667",
+          "parameters": [],
+          "signature_hex": "2000151280bd020e129208"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "A",
+          "token": "0x06001668",
+          "parameters": [],
+          "signature_hex": "200101151280bd020e129208"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "get_AuthToken",
+          "token": "0x06001669",
+          "parameters": [],
+          "signature_hex": "20001281ad"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "set_AuthToken",
+          "token": "0x0600166a",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001011281ad"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "get_Sesseion",
+          "token": "0x0600166b",
+          "parameters": [],
+          "signature_hex": "2000129218"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "set_Sesseion",
+          "token": "0x0600166c",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101129218"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "B",
+          "token": "0x0600166d",
+          "parameters": [],
+          "signature_hex": "2000128911"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "ConnectAsync",
+          "token": "0x0600166e",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "host"
+            },
+            {
+              "position": 2,
+              "name": "port"
+            }
+          ],
+          "signature_hex": "2002151280b9011289150e08"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "get_IsConnected",
+          "token": "0x0600166f",
+          "parameters": [],
+          "signature_hex": "200002"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "b",
+          "token": "0x06001670",
+          "parameters": [],
+          "signature_hex": "200002"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "a",
+          "token": "0x06001671",
+          "parameters": [],
+          "signature_hex": "20010102"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "C",
+          "token": "0x06001672",
+          "parameters": [],
+          "signature_hex": "20001c"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "ForceDisconnect",
+          "token": "0x06001673",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "Disconnect",
+          "token": "0x06001674",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "c",
+          "token": "0x06001675",
+          "parameters": [],
+          "signature_hex": "20001269"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "A",
+          "token": "0x06001676",
+          "parameters": [],
+          "signature_hex": "20040812889d1d050808"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "D",
+          "token": "0x06001677",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "A",
+          "token": "0x06001678",
+          "parameters": [],
+          "signature_hex": "200101129178"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "a",
+          "token": "0x06001679",
+          "parameters": [],
+          "signature_hex": "200101129178"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "B",
+          "token": "0x0600167a",
+          "parameters": [],
+          "signature_hex": "200101129178"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "b",
+          "token": "0x0600167b",
+          "parameters": [],
+          "signature_hex": "200101129178"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "HandleDataReceived",
+          "token": "0x0600167c",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "prea"
+            }
+          ],
+          "signature_hex": "200101129178"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "C",
+          "token": "0x0600167d",
+          "parameters": [],
+          "signature_hex": "200101129178"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "get_CurrentEndPoint",
+          "token": "0x0600167e",
+          "parameters": [],
+          "signature_hex": "2000128811"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "set_CurrentEndPoint",
+          "token": "0x0600167f",
+          "parameters": [],
+          "signature_hex": "200101128811"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "d",
+          "token": "0x06001680",
+          "parameters": [],
+          "signature_hex": "20001269"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "A",
+          "token": "0x06001681",
+          "parameters": [],
+          "signature_hex": "2001011269"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "SendPackAsync",
+          "token": "0x06001682",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "pack"
+            }
+          ],
+          "signature_hex": "20011194e8128925"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "SendPackAsync",
+          "token": "0x06001683",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "request"
+            }
+          ],
+          "signature_hex": "20011194e81291f4"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "BindEvent",
+          "token": "0x06001684",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "type"
+            },
+            {
+              "position": 2,
+              "name": "handler"
+            }
+          ],
+          "signature_hex": "2002010e129208"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "Release",
+          "token": "0x06001685",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "E",
+          "token": "0x06001686",
+          "parameters": [],
+          "signature_hex": "2000128895"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "A",
+          "token": "0x06001687",
+          "parameters": [],
+          "signature_hex": "200101128895"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "add_Disconnected",
+          "token": "0x06001688",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101129180"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "remove_Disconnected",
+          "token": "0x06001689",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101129180"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "add_HeartBeatReceived",
+          "token": "0x0600168a",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010112917c"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "remove_HeartBeatReceived",
+          "token": "0x0600168b",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010112917c"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "add_DataPackReceived",
+          "token": "0x0600168c",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010112917c"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "remove_DataPackReceived",
+          "token": "0x0600168d",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010112917c"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": ".ctor",
+          "token": "0x0600168e",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.Core.Protocols.BinaryPackClient",
+          "method": "e",
+          "token": "0x0600168f",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "get_BranchID",
+          "token": "0x06001cea",
+          "parameters": [],
+          "signature_hex": "20000e"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "set_BranchID",
+          "token": "0x06001ceb",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001010e"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "get_AuthPublicKey",
+          "token": "0x06001cec",
+          "parameters": [],
+          "signature_hex": "200012884d"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "set_AuthPublicKey",
+          "token": "0x06001ced",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010112884d"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "get_Info",
+          "token": "0x06001cee",
+          "parameters": [],
+          "signature_hex": "2000128849"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "set_Info",
+          "token": "0x06001cef",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101128849"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "get_AuthPassport",
+          "token": "0x06001cf0",
+          "parameters": [],
+          "signature_hex": "2000128835"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "set_AuthPassport",
+          "token": "0x06001cf1",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101128835"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "get_ProductValue",
+          "token": "0x06001cf2",
+          "parameters": [],
+          "signature_hex": "20000e"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "set_ProductValue",
+          "token": "0x06001cf3",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001010e"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "get_UserId",
+          "token": "0x06001cf4",
+          "parameters": [],
+          "signature_hex": "20000e"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "get_IsGuest",
+          "token": "0x06001cf5",
+          "parameters": [],
+          "signature_hex": "200002"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "ClearAuthBytes",
+          "token": "0x06001cf6",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "A",
+          "token": "0x06001cf7",
+          "parameters": [],
+          "signature_hex": "20001d05"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "A",
+          "token": "0x06001cf8",
+          "parameters": [],
+          "signature_hex": "2001011d05"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "GetAuthPackBytes",
+          "token": "0x06001cf9",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "user_token"
+            }
+          ],
+          "signature_hex": "20011d051281ad"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": "A",
+          "token": "0x06001cfa",
+          "parameters": [],
+          "signature_hex": "20011d051281ad"
+        },
+        {
+          "type": "Hevo.Core.Auth.V1.AuthTokenV1",
+          "method": ".ctor",
+          "token": "0x06001cfb",
+          "parameters": [],
+          "signature_hex": "200001"
+        }
+      ],
+      "quote_field_getters": []
+    },
+    {
+      "file": "Hevo.Core.Interfaces.dll",
+      "bytes": 104168,
+      "sha256": "5fe8c13b7af5183d07e67c00d8e08953ab8d7973900511962d66f152fa358866",
+      "assembly_version": "10.1.10.99",
+      "methods": [
+        {
+          "type": "Hevo.Core.Interfaces.ICandleParameterFactory",
+          "method": "Create",
+          "token": "0x06000064",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "security"
+            },
+            {
+              "position": 2,
+              "name": "fields"
+            },
+            {
+              "position": 3,
+              "name": "status"
+            },
+            {
+              "position": 4,
+              "name": "period"
+            },
+            {
+              "position": 5,
+              "name": "beginTime"
+            },
+            {
+              "position": 6,
+              "name": "endTime"
+            }
+          ],
+          "signature_hex": "2006128130126915127901127d1180811280850a0a"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.ICandleParameterFactory",
+          "method": "Create",
+          "token": "0x06000065",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "security"
+            },
+            {
+              "position": 2,
+              "name": "fields"
+            },
+            {
+              "position": 3,
+              "name": "status"
+            },
+            {
+              "position": 4,
+              "name": "period"
+            },
+            {
+              "position": 5,
+              "name": "periodCount"
+            },
+            {
+              "position": 6,
+              "name": "endTime"
+            }
+          ],
+          "signature_hex": "2006128130126915127901127d118081128085091161"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.ICandleParameterFactory",
+          "method": "Create",
+          "token": "0x06000066",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "security"
+            },
+            {
+              "position": 2,
+              "name": "fields"
+            },
+            {
+              "position": 3,
+              "name": "status"
+            },
+            {
+              "position": 4,
+              "name": "period"
+            },
+            {
+              "position": 5,
+              "name": "beginTime"
+            },
+            {
+              "position": 6,
+              "name": "endTime"
+            }
+          ],
+          "signature_hex": "2006128130126915127901127d11808112808511611161"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.ICandleParameterFactory",
+          "method": "Create",
+          "token": "0x06000067",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "security"
+            },
+            {
+              "position": 2,
+              "name": "fields"
+            },
+            {
+              "position": 3,
+              "name": "status"
+            },
+            {
+              "position": 4,
+              "name": "period"
+            }
+          ],
+          "signature_hex": "2004128130126915127901127d118081128085"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.ICandleParameterFactory",
+          "method": "Create",
+          "token": "0x06000068",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "security"
+            },
+            {
+              "position": 2,
+              "name": "fields"
+            },
+            {
+              "position": 3,
+              "name": "status"
+            },
+            {
+              "position": 4,
+              "name": "period"
+            },
+            {
+              "position": 5,
+              "name": "timeRange"
+            }
+          ],
+          "signature_hex": "2005128130126915127901127d118081128085128124"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.ICandleParameterFactory",
+          "method": "CreateIndicator",
+          "token": "0x06000069",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "security"
+            },
+            {
+              "position": 2,
+              "name": "status"
+            },
+            {
+              "position": 3,
+              "name": "period"
+            },
+            {
+              "position": 4,
+              "name": "timeRange"
+            },
+            {
+              "position": 5,
+              "name": "fieldsClassArray"
+            }
+          ],
+          "signature_hex": "2005128134126911808112808512812415125101128138"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.DataCenter.IDataCenter",
+          "method": "RequestDataV4Async",
+          "token": "0x060000d5",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "Key"
+            },
+            {
+              "position": 2,
+              "name": "requestId"
+            },
+            {
+              "position": 3,
+              "name": "requestString"
+            }
+          ],
+          "signature_hex": "200315128095011280c40e1180a80e"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "get_BeginTime",
+          "token": "0x06000117",
+          "parameters": [],
+          "signature_hex": "20000a"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "set_BeginTime",
+          "token": "0x06000118",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001010a"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "get_EndTime",
+          "token": "0x06000119",
+          "parameters": [],
+          "signature_hex": "20000a"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "set_EndTime",
+          "token": "0x0600011a",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001010a"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "get_TradeDate",
+          "token": "0x0600011b",
+          "parameters": [],
+          "signature_hex": "200008"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "set_TradeDate",
+          "token": "0x0600011c",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010108"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "get_BeginTimeKind",
+          "token": "0x0600011d",
+          "parameters": [],
+          "signature_hex": "2000118128"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "set_BeginTimeKind",
+          "token": "0x0600011e",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101118128"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "get_EndTimeKind",
+          "token": "0x0600011f",
+          "parameters": [],
+          "signature_hex": "2000118128"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IBaseTimeRange",
+          "method": "set_EndTimeKind",
+          "token": "0x06000120",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101118128"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.ICandleQuoteParameters",
+          "method": "get_AdjustTtype",
+          "token": "0x06000121",
+          "parameters": [],
+          "signature_hex": "2000118081"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.ICandleQuoteParameters",
+          "method": "set_AdjustTtype",
+          "token": "0x06000122",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101118081"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.ICandleQuoteParameters",
+          "method": "get_IsExcludeAdjustVolume",
+          "token": "0x06000123",
+          "parameters": [],
+          "signature_hex": "200002"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.ICandleQuoteParameters",
+          "method": "set_IsExcludeAdjustVolume",
+          "token": "0x06000124",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010102"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IFieldsHolder",
+          "method": "get_Fields",
+          "token": "0x0600012c",
+          "parameters": [],
+          "signature_hex": "200015127901127d"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Model.IFieldsHolder",
+          "method": "set_Fields",
+          "token": "0x0600012d",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010115127901127d"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.DataAccess.DataProviders.IQueryFinanceDataProvider",
+          "method": "QueryFinanceData",
+          "token": "0x06000189",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "parameters"
+            }
+          ],
+          "signature_hex": "30010115128095011e00128200"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Interface.DataAccess.IDataAccessor",
+          "method": "RequestCandleDataAsync",
+          "token": "0x060003da",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "parameters"
+            }
+          ],
+          "signature_hex": "200115128095011283c4128130"
+        },
+        {
+          "type": "Hevo.Core.Interfaces.Interface.DataAccess.IDataAccessor",
+          "method": "QueryFinanceDataAsync",
+          "token": "0x060003fc",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "parameters"
+            }
+          ],
+          "signature_hex": "30010115128095011512832801128218128200"
+        }
+      ],
+      "quote_field_getters": []
+    },
+    {
+      "file": "Hevo.DataModel.Business.dll",
+      "bytes": 169704,
+      "sha256": "6cbcc287f5e11abf860f912da7a923b6141e0759416593fc5664576169d56db7",
+      "assembly_version": "10.1.10.13",
+      "methods": [],
+      "quote_field_getters": [
+        {
+          "field": "get_date_time",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_prev_close",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              6,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_open",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              7,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_high",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              8,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_low",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              9,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_close",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              11,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_transaction_volume",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              13,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_transaction_volume_shou",
+          "literals": [],
+          "integer_operands": []
+        },
+        {
+          "field": "get_transaction_amount",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              19,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_turnover_rate",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              1968584,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_real_turnover_rate",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              2561,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_outstanding_shares",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              407,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_total_capital_stock",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              402,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_CAPITAL",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              2480,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_TOTALCAPITAL",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              2479,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_QXSM",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              471,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_DQLTG",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              2097453,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_DQLTG2",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              899,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_DQLTG3",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "factory": "Hevo.Core.Data.DataModelConstants::GetQuoteField",
+            "factory_integer_arguments": [
+              900,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_FLOAT_CAP",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "constructor": "Hevo.Core.QuoteField::.ctor",
+            "constructor_arguments": [
+              900034,
+              "",
+              4,
+              1
+            ]
+          }
+        },
+        {
+          "field": "get_FinanceData",
+          "literals": [],
+          "integer_operands": [],
+          "static_initializer": {
+            "constructor": "Hevo.Core.QuoteField::.ctor",
+            "constructor_arguments": [
+              900119,
+              "",
+              4,
+              1
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "file": "Hevo.Gms.Wrapper.dll",
+      "bytes": 54384,
+      "sha256": "7178e777bdaddcff53e76b7bee0c66f84978b25523da2072b8c72422174530d2",
+      "assembly_version": "1.0.1.11",
+      "methods": [
+        {
+          "type": "CSharpGMS.GmsSetting",
+          "method": "get_GmsHxSdkPath",
+          "token": "0x06000012",
+          "parameters": [],
+          "signature_hex": "20000e"
+        },
+        {
+          "type": "CSharpGMS.GmsSetting",
+          "method": "set_GmsHxSdkPath",
+          "token": "0x06000013",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001010e"
+        },
+        {
+          "type": "CSharpGMS.GmsSetting",
+          "method": "get_AuthHandler",
+          "token": "0x06000014",
+          "parameters": [],
+          "signature_hex": "2000128090"
+        },
+        {
+          "type": "CSharpGMS.GmsSetting",
+          "method": "set_AuthHandler",
+          "token": "0x06000015",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101128090"
+        },
+        {
+          "type": "CSharpGMS.GmsSetting",
+          "method": "get_LoggerHandler",
+          "token": "0x06000016",
+          "parameters": [],
+          "signature_hex": "20001220"
+        },
+        {
+          "type": "CSharpGMS.GmsSetting",
+          "method": "set_LoggerHandler",
+          "token": "0x06000017",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001011220"
+        },
+        {
+          "type": "CSharpGMS.GmsSetting",
+          "method": "get_ProxyHandler",
+          "token": "0x06000018",
+          "parameters": [],
+          "signature_hex": "2000128094"
+        },
+        {
+          "type": "CSharpGMS.GmsSetting",
+          "method": "set_ProxyHandler",
+          "token": "0x06000019",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101128094"
+        },
+        {
+          "type": "CSharpGMS.GmsSetting",
+          "method": ".ctor",
+          "token": "0x0600001a",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "CSharpGMS.GmsPInvoke",
+          "method": "SetProxy",
+          "token": "0x0600003a",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "type"
+            },
+            {
+              "position": 2,
+              "name": "host"
+            },
+            {
+              "position": 3,
+              "name": "port"
+            },
+            {
+              "position": 4,
+              "name": "accountPtr"
+            },
+            {
+              "position": 5,
+              "name": "passwordPtr"
+            }
+          ],
+          "signature_hex": "0005010818071818"
+        },
+        {
+          "type": "CSharpGMS.GmsPInvoke",
+          "method": "SetAuthInfo",
+          "token": "0x0600003b",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "authInfo"
+            },
+            {
+              "position": 2,
+              "name": "len"
+            }
+          ],
+          "signature_hex": "0002011809"
+        },
+        {
+          "type": "CSharpGMS.GmsPInvoke",
+          "method": "CreateSession",
+          "token": "0x0600003c",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "serverInfo"
+            },
+            {
+              "position": 2,
+              "name": "eventCallback"
+            },
+            {
+              "position": 3,
+              "name": "serverPushCallback"
+            },
+            {
+              "position": 4,
+              "name": "errorCode"
+            }
+          ],
+          "signature_hex": "0004181818181008"
+        },
+        {
+          "type": "CSharpGMS.GmsPInvoke",
+          "method": "ConnectSessionAsync",
+          "token": "0x0600003e",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "hSession"
+            },
+            {
+              "position": 2,
+              "name": "authHead"
+            },
+            {
+              "position": 3,
+              "name": "len"
+            }
+          ],
+          "signature_hex": "000302181809"
+        },
+        {
+          "type": "CSharpGMS.GmsPInvoke",
+          "method": "DoRequestAsync",
+          "token": "0x06000044",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "hSession"
+            },
+            {
+              "position": 2,
+              "name": "pContent"
+            },
+            {
+              "position": 3,
+              "name": "responseCallback"
+            },
+            {
+              "position": 4,
+              "name": "timeoutSecond"
+            },
+            {
+              "position": 5,
+              "name": "serviceType"
+            },
+            {
+              "position": 6,
+              "name": "requestHeader"
+            },
+            {
+              "position": 7,
+              "name": "requestBody"
+            },
+            {
+              "position": 8,
+              "name": "requestBodyLength"
+            }
+          ],
+          "signature_hex": "0008021818180907181809"
+        },
+        {
+          "type": "CSharpGMS.GmsPInvoke",
+          "method": "ReleaseGmsSessionSdk",
+          "token": "0x06000046",
+          "parameters": [],
+          "signature_hex": "000001"
+        },
+        {
+          "type": "CSharpGMS.Business.Session.ServerInfoModel",
+          "method": "get_ServerList",
+          "token": "0x0600005b",
+          "parameters": [],
+          "signature_hex": "200015128081011248"
+        },
+        {
+          "type": "CSharpGMS.Business.Session.ServerInfoModel",
+          "method": "set_ServerList",
+          "token": "0x0600005c",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010115128081011248"
+        },
+        {
+          "type": "CSharpGMS.Business.Session.ServerInfoModel",
+          "method": "get_Sites",
+          "token": "0x0600005d",
+          "parameters": [],
+          "signature_hex": "20001512808101124c"
+        },
+        {
+          "type": "CSharpGMS.Business.Session.ServerInfoModel",
+          "method": "set_Sites",
+          "token": "0x0600005e",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001011512808101124c"
+        },
+        {
+          "type": "CSharpGMS.Business.Session.ServerInfoModel",
+          "method": ".ctor",
+          "token": "0x0600005f",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "get_ConnectProxyType",
+          "token": "0x0600008f",
+          "parameters": [],
+          "signature_hex": "20001130"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "set_ConnectProxyType",
+          "token": "0x06000090",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001011130"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "get_Host",
+          "token": "0x06000091",
+          "parameters": [],
+          "signature_hex": "20000e"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "set_Host",
+          "token": "0x06000092",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001010e"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "get_Port",
+          "token": "0x06000093",
+          "parameters": [],
+          "signature_hex": "200007"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "set_Port",
+          "token": "0x06000094",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010107"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "get_Account",
+          "token": "0x06000095",
+          "parameters": [],
+          "signature_hex": "20000e"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "set_Account",
+          "token": "0x06000096",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001010e"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "get_Password",
+          "token": "0x06000097",
+          "parameters": [],
+          "signature_hex": "20000e"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": "set_Password",
+          "token": "0x06000098",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001010e"
+        },
+        {
+          "type": "CSharpGMS.Business.Proxy.ProxySetting",
+          "method": ".ctor",
+          "token": "0x06000099",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "CSharpGMS.Business.Auth.IAuthHandler",
+          "method": "get_AuthInfo",
+          "token": "0x060000f3",
+          "parameters": [],
+          "signature_hex": "2000128080"
+        },
+        {
+          "type": "CSharpGMS.Business.Auth.IAuthHandler",
+          "method": "set_AuthInfo",
+          "token": "0x060000f4",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101128080"
+        },
+        {
+          "type": "CSharpGMS.Business.Auth.IProxyHandler",
+          "method": "get_ProxyInfo",
+          "token": "0x060000f5",
+          "parameters": [],
+          "signature_hex": "2000126c"
+        },
+        {
+          "type": "CSharpGMS.Business.Auth.IProxyHandler",
+          "method": "set_ProxyInfo",
+          "token": "0x060000f6",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101126c"
+        }
+      ],
+      "quote_field_getters": []
+    },
+    {
+      "file": "Hevo.Core.DataModel.dll",
+      "bytes": 474344,
+      "sha256": "5c64b1444f379c54067d0dc37c36cf019ed389b958e75665ae802b657ba17167",
+      "assembly_version": "10.1.10.52",
+      "methods": [],
+      "quote_field_getters": []
+    },
+    {
+      "file": "Hevo.DataVisualization.Component.dll",
+      "bytes": 1103592,
+      "sha256": "38d4f3784a25df8f4098e3a6e8864facf3dbc0772e7e8e9a8f75806e50fa924b",
+      "assembly_version": "12.0.0.0",
+      "methods": [
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "get_NeededEvents",
+          "token": "0x060000bf",
+          "parameters": [],
+          "signature_hex": "2000151271011175"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "set_NeededEvents",
+          "token": "0x060000c0",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101151271011175"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "add_NotifyHostEvent",
+          "token": "0x060000c1",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001011261"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "remove_NotifyHostEvent",
+          "token": "0x060000c2",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001011261"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "get_DataProvider",
+          "token": "0x060000c3",
+          "parameters": [],
+          "signature_hex": "20001269"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "set_DataProvider",
+          "token": "0x060000c4",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "2001011269"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": ".cctor",
+          "token": "0x060000c5",
+          "parameters": [],
+          "signature_hex": "000001"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": ".ctor",
+          "token": "0x060000c6",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "get_componentType",
+          "token": "0x060000c7",
+          "parameters": [],
+          "signature_hex": "20001165"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "get_trendDataCollection",
+          "token": "0x060000c8",
+          "parameters": [],
+          "signature_hex": "2000128181"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "set_trendDataCollection",
+          "token": "0x060000c9",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101128181"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "get_candleDataCollection",
+          "token": "0x060000ca",
+          "parameters": [],
+          "signature_hex": "2000128185"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "set_candleDataCollection",
+          "token": "0x060000cb",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101128185"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "get_tickDataCollection",
+          "token": "0x060000cc",
+          "parameters": [],
+          "signature_hex": "2000128189"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "set_tickDataCollection",
+          "token": "0x060000cd",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101128189"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "get_Containers",
+          "token": "0x060000ce",
+          "parameters": [],
+          "signature_hex": "2000126d"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "set_Containers",
+          "token": "0x060000cf",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "200101126d"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "get_IsNeedReverseNotify",
+          "token": "0x060000d0",
+          "parameters": [],
+          "signature_hex": "200002"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "set_IsNeedReverseNotify",
+          "token": "0x060000d1",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "value"
+            }
+          ],
+          "signature_hex": "20010102"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "DoEffect",
+          "token": "0x060000d2",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "Qresult"
+            },
+            {
+              "position": 2,
+              "name": "Lresult"
+            }
+          ],
+          "signature_hex": "20020115127d021181110e15127d021181111512817d021181110a"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "GetQToolTip",
+          "token": "0x060000d3",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "changed"
+            },
+            {
+              "position": 2,
+              "name": "lasttime"
+            }
+          ],
+          "signature_hex": "20020e0a118111"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "GetZhangBangCaiDataAsync",
+          "token": "0x060000d4",
+          "parameters": [],
+          "signature_hex": "2000151281910111845c"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "start_all_request",
+          "token": "0x060000d5",
+          "parameters": [],
+          "signature_hex": "2000128139"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "GetQuotes",
+          "token": "0x060000d6",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "isOnlySubQuotes"
+            }
+          ],
+          "signature_hex": "20011512710112808d02"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "RegistComponent",
+          "token": "0x060000d7",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "AddContent",
+          "token": "0x060000d8",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "dateTimes"
+            },
+            {
+              "position": 2,
+              "name": "zhang"
+            }
+          ],
+          "signature_hex": "2002011512813d01118111113c"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "InitDataGrid",
+          "token": "0x060000d9",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "datagrid"
+            },
+            {
+              "position": 2,
+              "name": "datatable"
+            },
+            {
+              "position": 3,
+              "name": "type"
+            }
+          ],
+          "signature_hex": "0003011281751281790e"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "Datagrid_IsVisibleChanged",
+          "token": "0x060000da",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "sender"
+            },
+            {
+              "position": 2,
+              "name": "e"
+            }
+          ],
+          "signature_hex": "0002011c118195"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "InitDataTable",
+          "token": "0x060000db",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "datatable"
+            },
+            {
+              "position": 2,
+              "name": "type"
+            }
+          ],
+          "signature_hex": "0002011281790e"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "FillQxzlDataToTable",
+          "token": "0x060000dc",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "result"
+            }
+          ],
+          "signature_hex": "2001011512813d010e"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "FillCaiDataToTable",
+          "token": "0x060000dd",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "result"
+            }
+          ],
+          "signature_hex": "20010115127d021181110e"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "PolylinePointToDrawingPoint",
+          "token": "0x060000de",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "dt"
+            }
+          ],
+          "signature_hex": "20010d118111"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "OnNotifyCustomizedEvent",
+          "token": "0x060000df",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "type"
+            },
+            {
+              "position": 2,
+              "name": "e"
+            }
+          ],
+          "signature_hex": "2002011175128091"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "RemoveComponent",
+          "token": "0x060000e0",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "<DoEffect>b__61_0",
+          "token": "0x060000e1",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "sender"
+            },
+            {
+              "position": 2,
+              "name": "e"
+            }
+          ],
+          "signature_hex": "2002011c12811d"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "<DoEffect>b__61_2",
+          "token": "0x060000e2",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "sender"
+            },
+            {
+              "position": 2,
+              "name": "e"
+            }
+          ],
+          "signature_hex": "2002011c12811d"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "<DoEffect>b__61_3",
+          "token": "0x060000e3",
+          "parameters": [
+            {
+              "position": 1,
+              "name": "sender"
+            },
+            {
+              "position": 2,
+              "name": "e"
+            }
+          ],
+          "signature_hex": "2002011c12811d"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "<GetZhangBangCaiDataAsync>b__64_0",
+          "token": "0x060000e4",
+          "parameters": [
+            {
+              "position": 0,
+              "name": ""
+            }
+          ],
+          "signature_hex": "2000151281910115127101118111"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "<GetZhangBangCaiDataAsync>b__64_1",
+          "token": "0x060000e5",
+          "parameters": [
+            {
+              "position": 0,
+              "name": ""
+            }
+          ],
+          "signature_hex": "2000151281910115127101118111"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "<GetZhangBangCaiDataAsync>b__64_2",
+          "token": "0x060000e6",
+          "parameters": [
+            {
+              "position": 0,
+              "name": ""
+            }
+          ],
+          "signature_hex": "2000151281910115127d021181110e"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "<OnNotifyCustomizedEvent>b__75_1",
+          "token": "0x060000e7",
+          "parameters": [],
+          "signature_hex": "200001"
+        },
+        {
+          "type": "Hevo.DataVisualization.Component.CandleBottomLine",
+          "method": "<OnNotifyCustomizedEvent>b__75_0",
+          "token": "0x060000e8",
+          "parameters": [],
+          "signature_hex": "200001"
+        }
+      ],
+      "quote_field_getters": []
+    }
+  ],
+  "unresolved": [
+    "wire handshake/session",
+    "daily paging and units",
+    "corporate-action request and identity",
+    "historical float semantics",
+    "shared transport/proxy integration",
+    "end-to-end archive verification"
+  ]
+}

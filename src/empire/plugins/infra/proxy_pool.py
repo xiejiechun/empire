@@ -167,6 +167,14 @@ class ProxyPool:
             limits=httpx.Limits(max_connections=MAX_PARALLEL_DOWNLOADS, max_keepalive_connections=1),
             follow_redirects=False, headers={"User-Agent": "EmpireResearch/0.1 personal-research"})
 
+    async def open_tunnel(self, entry, host, port, *, site):
+        """Connect only while the shared router owns this site's proxy lease."""
+        from empire.plugins.infra.proxy_tunnel import open_tunnel
+
+        if site not in entry.active_sites or self.closed:
+            raise RuntimeError("代理隧道必须持有当前网站许可")
+        return await open_tunnel(entry.url, host, port)
+
     async def refresh(self, *, waiting=False):
         async with self.lock:
             if self.closed:

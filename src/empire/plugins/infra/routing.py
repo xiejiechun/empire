@@ -58,7 +58,8 @@ def site_policy(value, existing=None):
         "scaling_mode", "max_rps")}
 
 
-async def routed_request(service, method, url, allowed, *, excluded_proxies=None, **kwargs):
+async def routed_request(service, method, url, allowed, *, excluded_proxies=None,
+                         exchange=None, **kwargs):
     """Every attempt/redirect obtains fresh total and egress permits."""
     while True:
         group = service.rules.resolve(url, allowed)
@@ -129,7 +130,8 @@ async def routed_request(service, method, url, allowed, *, excluded_proxies=None
                     entry.requests += 1
                 try:
                     client = entry.client if entry else service.client
-                    response = await service.transfer(client, method, url, key=key, stats=stats, **kwargs)
+                    response = (await exchange(entry) if exchange is not None else
+                                await service.transfer(client, method, url, key=key, stats=stats, **kwargs))
                 except httpx.TransportError as exc:
                     if entry:
                         service.pool.failed(entry)
@@ -137,9 +139,9 @@ async def routed_request(service, method, url, allowed, *, excluded_proxies=None
                             f"代理设备 {entry.code} 请求失败（{type(exc).__name__}），已临时隔离"
                         ) from None
                     raise
-                stats["last_status"] = response.status_code
+                stats["last_status"] = getattr(response, "status_code", None)
                 if entry:
-                    if response.status_code == 407:
+                    if getattr(response, "status_code", None) == 407:
                         service.pool.failed(entry)
                         response.close()
                         raise ProxyRouteError(entry.code, f"代理设备 {entry.code} 认证失败，已临时隔离")

@@ -1,9 +1,12 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-23T19:54:04.077028+00:00",
-  "note": "题材180秒列表/32项详情、七日差异回放与最新正文、游客材料维护、精确旧代码核实、五表字典及实采容量已同步；既有业务表逐表核实DDL和物理形状不变，精确追加装配不重写历史基线。",
-  "unchanged_reason": "既有功能仅因新增题材装配、五表归属登记及共享流式入口产生依赖摘要变化；原HTTP分支、既有表和Redis键契约不变，逐项理由另记。",
-  "exceptions": {},
+  "reviewed_at": "2026-10-23T20:58:56.473663+00:00",
+  "note": "远航版正常游客认证与原生历史规范化已实现，22次代理探针及368项专项结果已记入方案与证据；存储设计未部署，多节点身份与全量初始化保持未完成。敏感请求诊断正文已同步。",
+  "unchanged_reason": "来源模块尚未登记采集项目；共享敏感请求为显式可选契约，现有普通任务调用方式、数据范围与用户操作不变。",
+  "exceptions": {
+    "mysql:app_setting": "本次新增敏感响应诊断选项由请求显式传入，未改变app_setting结构、配置存储、保存方式或生效时机。",
+    "redis:rate-site": "原生及敏感请求仍复用现行站点许可，未改变rate-site键结构、冷却计算、频控配置或Redis恢复行为。"
+  },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "Empire.spec": "3302de5e1d316bdcd80fd7cae560bade24eec79bb08f352e8aebd5d4cf6b4557",
@@ -138,8 +141,6 @@
     "scripts/verify_ths_statements.py": "40ea848b5db2f713011512af63c66a12591c4d325a722618f4e9dd1436506c8a",
     "scripts/verify_unlock_industries.py": "69d0cf25010e78df5220051f1f584da5625b8b34d1e0764fc8bc8c340ecb738f",
     "scripts/verify_unlocks.py": "56c7d0939c9d08de1c2b0b5bde686d479125a398845481e4f24b61c2ccb45cd3",
-    "scripts/yuanhang_guest.py": "7bd741c6f6055b8b42a6590f7b712469ceb82909e7352eb484e16dc462fd7774",
-    "scripts/yuanhang_wire.py": "539bd899b20be9bcfeb2b64fca65d197163e7c1d0246c48f66adcf02720d64ff",
     "sql/business-schema.json": "c7ae6116ac008816dc22d71911fad1dc169faad754c0274885149e1da712891b",
     "sql/changes/2026-10-06-listing-status.sql": "0b33cdb0ab6733fd1610518963f984021af46b83bd8c601d500c801fdb0eb97d",
     "sql/legacy/business-v1.sql": "2b052c6caf0e79ed0c6efe1c1f06dea5daee4f47dd086e6854fcf37d439d92a5",
@@ -162,6 +163,7 @@
     "src/empire/contracts/dataset.py": "0e85f30d3e1092c5aa7ff606e0c6f8dee720cfaa270ba10d85d929ce00a0cb56",
     "src/empire/contracts/download.py": "e5d037c6e900e8cb67765f4bf8d6f6313bf84896cfaff715f83b031d9776af04",
     "src/empire/contracts/download_settings.py": "dbe540b7e276b51e0c1ec5a6f93e1d06c6996aa5372a9d1a8ceae449f047f024",
+    "src/empire/contracts/native_stream.py": "7c73a03d9ee2e84c86936f7d8193bfc5f0e52241efbd473b42124409fe753656",
     "src/empire/contracts/plugin.py": "1057f95a32c15ac1474e65453f5f2fac3ac19bac3421cb80aa94749f57ce274c",
     "src/empire/contracts/preparation.py": "c8ddc2082251547a04976f800fc5fcbc285607ff1116faaccf974e1ff5cac4b0",
     "src/empire/contracts/preparation_scope.py": "e2ac28262e5f9784c07438d77a6fddf286857fee7c8e41d209b8ec124dc8b35c",
@@ -529,7 +531,7 @@
     "src/empire/plugins/infra/collection_state_unit.py": "fd0c9d461c40f26c6387247dce3678566c6c22ca9e2f11008a4cb1fe33bc79fd",
     "src/empire/plugins/infra/download_settings.py": "ec9fa5d73131fe220397142684056155bd7f5935c8fe236483dffbe33280e66b",
     "src/empire/plugins/infra/download_storage.py": "36457d9432d97fe1b331ee17ff369a591b2931ae8c899c43b3032dd3fab1d41c",
-    "src/empire/plugins/infra/http.py": "a4986adde6e274fcf2b27bb3e007e97ec24714194dd48df77d5a7ed9c621b3d2",
+    "src/empire/plugins/infra/http.py": "21cdc10401b607fd7e42e5f2017a6ae62d25837d3ae80cd5d588b1a18a788ce3",
     "src/empire/plugins/infra/http_safety.py": "478f60a3eefe1ff0b1536874c05629e90703115fccbf68a4d0e50de6c174ee8b",
     "src/empire/plugins/infra/mysql_store.py": "ea551cf918d953f88ab51f631689b43a24c05bd23e2bb8929edd262e861b3a0e",
     "src/empire/plugins/infra/proxy_pool.py": "4a2c2a3908ccea057550b4b7495ff8a0b65f218f0b318fff66c80d818f61c5a4",
@@ -540,9 +542,10 @@
     "src/empire/plugins/infra/response_reader.py": "926a6511e8b1c3b7bfa46cf0d16b2d8c8d9df31bde98f7f6f883e819b82966a0",
     "src/empire/plugins/infra/routing.py": "80224bf2df5ae5c26bef1b1af42aa50ecaed6ba2494ab7251cfbacf53add3bdb",
     "src/empire/plugins/infra/schema_manifest.py": "14de9d373240566bff7be1342463a9a1c14c56d4e3eb7b04aea4477c63258b53",
+    "src/empire/plugins/infra/sensitive_request.py": "fbf170b601e3b0623a5b00d525b2841ce00d7c6efbb720571c525fc3f42b4c5d",
     "src/empire/plugins/infra/settings.py": "eddc4547166fd35904118b6a1ada727c910dacfd045fb3ea279274a29c81321d",
     "src/empire/plugins/infra/sql_lane.py": "15da4fae66b21c2739c87bbd36c2a139c3e56326c9621020bbc5272f61b1ef7a",
-    "src/empire/plugins/infra/stream_exchange.py": "ad20adae89c1edbf2eb64963719897fb8b3f7e350d081cf1bdf69a9d3ed2c405",
+    "src/empire/plugins/infra/stream_exchange.py": "e0b1b0ae9945be6803bc954140216c8354c245697f05ad196d8ebd91cdbd1f2e",
     "src/empire/plugins/pipeline/__init__.py": "5bc21e78444728cd50b6ddaf95ef5a50416f7ca8f0e1caf8bf84c939b96bb22b",
     "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
     "src/empire/plugins/pipeline/archive_queue.py": "0353214a6259ebaca511014b2808b8d6c336263728a06e2be8de7401f2440d86",
@@ -590,9 +593,13 @@
     "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
     "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926",
     "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
-    "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89"
+    "src/empire/sources/ths_catalog_html.py": "53db7913d36c2d850f0a416661a9706558f7ec3b248015699604004f4a7bae89",
+    "src/empire/sources/yuanhang_auth.py": "a5d7ac858f24e899e016fe7d03b93407e4425dab080087778cf77d0cf05e2fd7",
+    "src/empire/sources/yuanhang_history.py": "06cc9133d3634a1fe52637e20535987182cbbfec9a084af18c32561eb0a153b1",
+    "src/empire/sources/yuanhang_identity.py": "748de745f27bc5cff99a97640dd1b87bcf683717a75b30479638f1e06ddf4e79",
+    "src/empire/sources/yuanhang_wire.py": "7066a8b7093bd3bd9f2d840a60418c5cf44b556e5696450eb4bc50b9d7ea8d88"
   },
-  "content_sha256": "2549735fa1c017f5a04e495b798c4ed12d0f75fff35c33e66bc672457f9da61f",
+  "content_sha256": "a24f21a302aa178a6ce40c2a7e88e62520d9c2c2c8a91f8e2a0bc5fd2242cdcc",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -5384,7 +5391,7 @@
       "sources": {
         "src/empire/plugins/infra/settings.py": "eddc4547166fd35904118b6a1ada727c910dacfd045fb3ea279274a29c81321d",
         "src/empire/plugins/collection/control.py": "205e8be28050183e9671a8b65f7ea32f7cbc323b17438f5d8a8ac0c84ea91b45",
-        "src/empire/plugins/infra/http.py": "a4986adde6e274fcf2b27bb3e007e97ec24714194dd48df77d5a7ed9c621b3d2",
+        "src/empire/plugins/infra/http.py": "21cdc10401b607fd7e42e5f2017a6ae62d25837d3ae80cd5d588b1a18a788ce3",
         "src/empire/diagnostics/project.py": "b8c6b9f6778989836fd2a70d9a6ca47277d5b6c3b3a54369a6ecea7f17f31f7c",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -6768,7 +6775,7 @@
     "redis:rate-site": {
       "sources": {
         "src/empire/plugins/infra/routing.py": "80224bf2df5ae5c26bef1b1af42aa50ecaed6ba2494ab7251cfbacf53add3bdb",
-        "src/empire/plugins/infra/http.py": "a4986adde6e274fcf2b27bb3e007e97ec24714194dd48df77d5a7ed9c621b3d2",
+        "src/empire/plugins/infra/http.py": "21cdc10401b607fd7e42e5f2017a6ae62d25837d3ae80cd5d588b1a18a788ce3",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/download.py": "e5d037c6e900e8cb67765f4bf8d6f6313bf84896cfaff715f83b031d9776af04",

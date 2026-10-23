@@ -1,0 +1,639 @@
+{
+  "schema": 1,
+  "scope": "PC native protocol research only; no business archive or initialization acceptance",
+  "production_mutated": false,
+  "source": "ths-yuanhang-pc",
+  "runs": [
+    {
+      "routes": {
+        "proxy_requests": 8
+      },
+      "production_mutated": false,
+      "guest_code": 0,
+      "public_key_code": 0,
+      "login_code": 0,
+      "passport_code": 0,
+      "native_destination": {
+        "host": "hevozhuhq1.123ths.com",
+        "port": 9602
+      },
+      "native_verify_code": "0",
+      "units": {
+        "daily_history": [
+          {
+            "version": "hx1.2",
+            "row_count": 3664,
+            "row_size": 28,
+            "header_size": 78,
+            "extra_bytes": 36,
+            "fields": [
+              [
+                1,
+                4,
+                0,
+                4
+              ],
+              [
+                7,
+                2,
+                0,
+                4
+              ],
+              [
+                8,
+                2,
+                0,
+                4
+              ],
+              [
+                9,
+                2,
+                0,
+                4
+              ],
+              [
+                11,
+                2,
+                0,
+                4
+              ],
+              [
+                13,
+                2,
+                0,
+                4
+              ],
+              [
+                19,
+                2,
+                0,
+                4
+              ]
+            ],
+            "extra": {
+              "5": "USZA300176",
+              "32773": -65535
+            },
+            "decoded_bytes": 102706,
+            "first": 20110215,
+            "last": 20261023,
+            "date_digest": "e781222ccd972c0b8e0685aa372ab5c77ef45ff2ff5bbe0d890269d132150741",
+            "unique_dates": 3664
+          }
+        ],
+        "capital_actions": [
+          {
+            "version": "hx1.2",
+            "row_count": 11,
+            "row_size": 236,
+            "header_size": 78,
+            "extra_bytes": 36,
+            "fields": [
+              [
+                1,
+                4,
+                0,
+                4
+              ],
+              [
+                454,
+                3,
+                0,
+                8
+              ],
+              [
+                455,
+                3,
+                0,
+                8
+              ],
+              [
+                456,
+                3,
+                0,
+                8
+              ],
+              [
+                460,
+                3,
+                0,
+                8
+              ],
+              [
+                463,
+                3,
+                0,
+                8
+              ],
+              [
+                471,
+                1,
+                0,
+                192
+              ]
+            ],
+            "extra": {
+              "5": "USZA300176",
+              "32773": -65535
+            },
+            "decoded_bytes": 2710,
+            "first": 20120614,
+            "last": 20260821,
+            "date_digest": "a01715194be806d6b691c0fec7efb5868fbc752c58fad2eaccdd6a3a32aafb82",
+            "unique_dates": 11
+          }
+        ],
+        "capital_balances": [
+          {
+            "version": "hx1.2",
+            "row_count": 19,
+            "row_size": 20,
+            "header_size": 46,
+            "extra_bytes": 36,
+            "fields": [
+              [
+                1,
+                4,
+                0,
+                4
+              ],
+              [
+                402,
+                3,
+                0,
+                8
+              ],
+              [
+                407,
+                3,
+                0,
+                8
+              ]
+            ],
+            "extra": {
+              "5": "USZA300176",
+              "32773": -65520
+            },
+            "decoded_bytes": 462,
+            "first": 20110215,
+            "last": 20260902,
+            "date_digest": "3ba5851c7522fb75cf9bf6ba8ce193f4cab0d1ea7c4e66606ff62db3b3f0b69b",
+            "unique_dates": 19
+          },
+          {
+            "version": "hx1.2",
+            "row_count": 3458,
+            "row_size": 12,
+            "header_size": 38,
+            "extra_bytes": 36,
+            "fields": [
+              [
+                1,
+                4,
+                0,
+                4
+              ],
+              [
+                2097453,
+                3,
+                0,
+                8
+              ]
+            ],
+            "extra": {
+              "5": "USZA300176",
+              "32773": -65520
+            },
+            "decoded_bytes": 41570,
+            "first": 20110127,
+            "last": 20261023,
+            "date_digest": "ad49e2f66b8267873f1c2f249247f474e21d54f9f3dbc6980f3b45db07140074",
+            "unique_dates": 3458
+          }
+        ]
+      },
+      "unit_errors": {
+        "float_changes": {
+          "error_type": "ValueError",
+          "locations": [
+            {
+              "file": "probe_history_and_events.py",
+              "line": 95
+            },
+            {
+              "file": "http.py",
+              "line": 155
+            },
+            {
+              "file": "stream_exchange.py",
+              "line": 110
+            },
+            {
+              "file": "routing.py",
+              "line": 133
+            },
+            {
+              "file": "stream_exchange.py",
+              "line": 93
+            },
+            {
+              "file": "probe_history_and_events.py",
+              "line": 75
+            },
+            {
+              "file": "yuanhang_wire.py",
+              "line": 141
+            },
+            {
+              "file": "yuanhang_wire.py",
+              "line": 109
+            },
+            {
+              "file": "yuanhang_wire.py",
+              "line": 81
+            }
+          ]
+        }
+      },
+      "scope": "300176 daily history, corporate actions and capital balances"
+    },
+    {
+      "routes": {
+        "proxy_requests": 5
+      },
+      "production_mutated": false,
+      "guest_code": 0,
+      "public_key_code": 0,
+      "login_code": 0,
+      "passport_code": 0,
+      "native_destination": {
+        "host": "hevozhuhq1.123ths.com",
+        "port": 9602
+      },
+      "native_verify_code": "0",
+      "units": {
+        "float_changes": [
+          {
+            "version": "hx1.2",
+            "row_count": 24,
+            "row_size": 20,
+            "header_size": 46,
+            "extra_bytes": 36,
+            "fields": [
+              [
+                1,
+                4,
+                0,
+                4
+              ],
+              [
+                899,
+                4,
+                0,
+                8
+              ],
+              [
+                900,
+                3,
+                0,
+                8
+              ]
+            ],
+            "extra": {
+              "5": "USZA300176",
+              "32773": 131072
+            },
+            "decoded_bytes": 562,
+            "first": 20110127,
+            "last": 20260902,
+            "date_digest": "a6b7454d9f3fd71043d2c7f63bbd9df05f14797307a439ba1b8e330ed0cccc38",
+            "unique_dates": 24
+          }
+        ]
+      },
+      "scope": "300176 ordinary float changes"
+    },
+    {
+      "routes": {
+        "proxy_requests": 10
+      },
+      "production_mutated": false,
+      "guest_code": 0,
+      "public_key_code": 0,
+      "login_code": 0,
+      "passport_code": 0,
+      "native_destination": {
+        "host": "hevozhuhq1.123ths.com",
+        "port": 9602
+      },
+      "native_verify_code": "0",
+      "units": {
+        "old_daily": [
+          {
+            "version": "hx1.2",
+            "row_count": 8516,
+            "row_size": 28,
+            "header_size": 78,
+            "extra_bytes": 36,
+            "fields": [
+              [
+                1,
+                4,
+                0,
+                4
+              ],
+              [
+                7,
+                2,
+                0,
+                4
+              ],
+              [
+                8,
+                2,
+                0,
+                4
+              ],
+              [
+                9,
+                2,
+                0,
+                4
+              ],
+              [
+                11,
+                2,
+                0,
+                4
+              ],
+              [
+                13,
+                2,
+                0,
+                4
+              ],
+              [
+                19,
+                2,
+                0,
+                4
+              ]
+            ],
+            "extra": {
+              "5": "USZA000001",
+              "32773": -65534
+            },
+            "decoded_bytes": 238562,
+            "first": 19910403,
+            "last": 20261023,
+            "date_digest": "81456fffb9d524ed894ceb2afe53c530dd0cade917ef7e883fb345391fb99d6e",
+            "unique_dates": 8516
+          }
+        ],
+        "old_first_year": [
+          {
+            "version": "hx1.2",
+            "row_count": 218,
+            "row_size": 28,
+            "header_size": 78,
+            "extra_bytes": 36,
+            "fields": [
+              [
+                1,
+                4,
+                0,
+                4
+              ],
+              [
+                7,
+                2,
+                0,
+                4
+              ],
+              [
+                8,
+                2,
+                0,
+                4
+              ],
+              [
+                9,
+                2,
+                0,
+                4
+              ],
+              [
+                11,
+                2,
+                0,
+                4
+              ],
+              [
+                13,
+                2,
+                0,
+                4
+              ],
+              [
+                19,
+                2,
+                0,
+                4
+              ]
+            ],
+            "extra": {
+              "5": "USZA000001",
+              "32773": -65536
+            },
+            "decoded_bytes": 6218,
+            "first": 19910403,
+            "last": 19911231,
+            "date_digest": "5cf6648f18a9264a5de56377002a9bc2e6dde1c092bd6dab494f445292be865b",
+            "unique_dates": 218
+          }
+        ],
+        "sh_actions": [
+          {
+            "version": "hx1.2",
+            "row_count": 30,
+            "row_size": 236,
+            "header_size": 78,
+            "extra_bytes": 36,
+            "fields": [
+              [
+                1,
+                4,
+                0,
+                4
+              ],
+              [
+                454,
+                3,
+                0,
+                8
+              ],
+              [
+                455,
+                3,
+                0,
+                8
+              ],
+              [
+                456,
+                3,
+                0,
+                8
+              ],
+              [
+                460,
+                3,
+                0,
+                8
+              ],
+              [
+                463,
+                3,
+                0,
+                8
+              ],
+              [
+                471,
+                1,
+                0,
+                192
+              ]
+            ],
+            "extra": {
+              "5": "USHA600519",
+              "32773": -65522
+            },
+            "decoded_bytes": 7194,
+            "first": 20020725,
+            "last": 20260626,
+            "date_digest": "1ad31f9a61f02c176407cc2aa782a405e397888648c6b3cdb0f648b2ac63679a",
+            "unique_dates": 30
+          }
+        ],
+        "turnover_recent": [
+          {
+            "version": "hx1.0",
+            "row_count": 5,
+            "row_size": 12,
+            "header_size": 46,
+            "extra_bytes": 36,
+            "fields": [
+              [
+                1,
+                4,
+                0,
+                4
+              ],
+              [
+                1968584,
+                2,
+                0,
+                4
+              ],
+              [
+                2561,
+                2,
+                0,
+                4
+              ]
+            ],
+            "extra": {
+              "5": "USZA300176",
+              "32773": 65536
+            },
+            "decoded_bytes": 142,
+            "first": 20261019,
+            "last": 20261023,
+            "date_digest": "a3536c6d10ddba7f86b3c6f9b493179ccd4f77394651bc4c6861f8ecc00e25ec",
+            "unique_dates": 5
+          }
+        ]
+      },
+      "unit_errors": {
+        "before_listing": {
+          "error_type": "ValueError",
+          "protocol_error": "V2 response identity, format or extent mismatch",
+          "locations": [
+            {
+              "file": "probe_market_boundaries.py",
+              "line": 97
+            },
+            {
+              "file": "http.py",
+              "line": 155
+            },
+            {
+              "file": "stream_exchange.py",
+              "line": 110
+            },
+            {
+              "file": "routing.py",
+              "line": 133
+            },
+            {
+              "file": "stream_exchange.py",
+              "line": 93
+            },
+            {
+              "file": "probe_market_boundaries.py",
+              "line": 75
+            },
+            {
+              "file": "yuanhang_wire.py",
+              "line": 134
+            }
+          ]
+        },
+        "bj_daily": {
+          "error_type": "ValueError",
+          "protocol_error": "V2 response identity, format or extent mismatch",
+          "locations": [
+            {
+              "file": "probe_market_boundaries.py",
+              "line": 97
+            },
+            {
+              "file": "http.py",
+              "line": 155
+            },
+            {
+              "file": "stream_exchange.py",
+              "line": 110
+            },
+            {
+              "file": "routing.py",
+              "line": 133
+            },
+            {
+              "file": "stream_exchange.py",
+              "line": 93
+            },
+            {
+              "file": "probe_market_boundaries.py",
+              "line": 75
+            },
+            {
+              "file": "yuanhang_wire.py",
+              "line": 134
+            }
+          ]
+        }
+      },
+      "scope": "000001 long daily history, SH actions, invalid BJ mapping and empty-range probes"
+    },
+    {
+      "routes": {
+        "proxy_requests": 1
+      },
+      "production_mutated": false,
+      "guest_code": -2,
+      "rejection_chinese_text": "异常的注册，用户反复请求自动注册",
+      "error_type": "ValueError",
+      "scope": "repeated guest registration rejection"
+    }
+  ]
+}
