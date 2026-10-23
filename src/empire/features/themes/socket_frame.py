@@ -15,7 +15,7 @@ class Frame:
     kind: int
     command: int | None
     sequence: int | None
-    status: int
+    format_code: int
     encoding: int
     extensions: tuple[tuple[int, int | str], ...]
     topic: str | None
@@ -24,7 +24,7 @@ class Frame:
     def plaintext(self) -> bytes:
         if self.encoding != 0:
             raise FrameError("Encrypted or unknown encoding requires verified decoding")
-        if self.status != 0 or self.kind not in (2, 3):
+        if self.format_code != 0 or self.kind not in (2, 3):
             raise FrameError("Control or error frame is not a normal response")
         return self.body
 

@@ -10,4 +10,8 @@
 
 真实Redis集成通过现有隔离框架：设置EMPIRE_INTEGRATION=1及具备测试建库权限的EMPIRE_TEST_MYSQL_SETTINGS后运行tests/integration/test_theme_history.py。每例完整初始化UUID测试SQL库，Redis仅使用自有UUID namespace；测试不会清理共享业务。
 
-未完成：匿名全目录/动态字段与Socket结束边界、共享网络接线、统一入队/归档、SQL维护/查询、数据准备、列表和曲线页面、真实题材端到端及容量/正式发布。军工详情匿名可取不等于匿名全目录已经得到证明。
+当前catalog_source.py通过共享request_stream执行全新游客认证及首次目录订阅；guest_protocol.py严格处理挑战/请求，guest_crypto.py提供已对照原生运算的纯Python签名算法。每个连接使用随机设备ID、UserID=0且无Token，TLS与AES-GCM认证均必须通过。应用材料由GuestMaterial显式传入，未把APK、私钥、白盒表或AES密钥打包入项目；正式本地材料维护入口仍待实施，不依赖模拟器已登录会话。
+
+2026-10-24实测匿名完整目录251主题材/1子题材，并经252条规范化→独占Redis两轮存储→按时回放集合和内容核对。见[游客目录证据](../../../../docs/evidence/kaipanla-theme-guest-catalog-2026-10-24.md)。本次数量不是固定目录总数。
+
+未完成：本地协议材料维护入口、统一入队/归档、SQL维护/查询、正式调度、数据准备、列表和曲线页面、随机题材端到端及七日容量/正式发布。此包仍未注册任务；来源成功不代表全功能已上线。
