@@ -12,9 +12,11 @@ class View:
     mode: str = "cursor"
     fixed: dict = field(default_factory=dict)
     filters: tuple = ("code", "start", "end")
+    hidden: bool = False
+    parent: str = ""
 
 
-def views(task):
+def _views(task):
     simple = {
         "tdx-hot-list": ("hot_list.query", "browse"),
         "ths-listings": ("listings.query", "list_records"),
@@ -70,7 +72,7 @@ def views(task):
                 "stocks.query",
                 "list_stocks",
                 "offset",
-                filters=("search",),
+                filters=("search", "market"),
             )
         ]
     if task == "sina-news":
@@ -81,7 +83,7 @@ def views(task):
                 "news.query",
                 "list_news",
                 "news",
-                filters=("search", "start", "end"),
+                filters=("search", "start", "end", "important"),
             )
         ]
     if task == "cninfo-calendar":
@@ -96,12 +98,12 @@ def views(task):
                 "industries.query",
                 "list_members",
                 "offset",
-                filters=("search",),
+                filters=("search", "industry"),
             )
         ]
     if task == "ths-indices":
         return [
-            View(mode, title, "indices.query", "browse", fixed={"mode": mode}, filters=("search",))
+            View(mode, title, "indices.query", "browse", fixed={"mode": mode}, filters=("search", "selected_index"))
             for mode, title in [("indices", "指数目录"), ("members", "指数成分")]
         ]
     if task == "ths-holders":
@@ -151,7 +153,7 @@ def views(task):
                 )
             ]
     if task == "tdx-suspensions":
-        return [View("events", "停复牌事件", "suspensions.query", "list_events", "offset")]
+        return [View("events", "停复牌事件", "suspensions.query", "list_events", "offset", filters=("code", "market", "start", "end"))]
     for kind in ("dividends", "additional_issues", "rights_issues"):
         if task == "tdx-" + kind.replace("_", "-"):
             return [View(kind, "事件与方案", kind + ".query", "list_events", "list")]
@@ -239,3 +241,34 @@ def views(task):
             ),
         ]
     return []
+
+
+def views(task):
+    """Each drill-down is task-bound and runs only after the user selects a row."""
+    entries = _views(task)
+    if task == "ths-industries":
+        entries.insert(0, View("directory", "行业目录", "industries.query", "directory",
+                               "directory", filters=("search",)))
+    for entry in tuple(entries):
+        method, mode, filters, fixed = "", "detail", (), {}
+        if task == "tdx-hot-list":
+            method, filters = "detail", ("security", "day")
+        elif task == "ths-holders":
+            method, filters = "detail", ("record_key",)
+        elif task == "ths-capital":
+            method, filters = "detail", ("record_key",)
+            fixed = {"table": entry.fixed["table"]}
+        elif task.startswith("rules-"):
+            method, filters = "citation", ("record_key",)
+        elif task == "ths-listings":
+            method, filters = "detail", ("security",)
+        elif task == "tdx-unlocks":
+            method, filters = "details", ("record_key",)
+        elif task == "eastmoney-repurchases":
+            method, filters = "detail", ("plan_id",)
+        elif task in ("ths-income", "ths-balance", "ths-cashflow"):
+            method, mode, filters = "statement_history", "history", ("security",)
+        if method:
+            entries.append(View(entry.id + ":detail", entry.title + "详情", entry.capability,
+                                method, mode, fixed, filters, True, entry.id))
+    return entries

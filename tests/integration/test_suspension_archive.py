@@ -320,11 +320,15 @@ async def test_calendar_query_uses_source_day_and_late_dates_preserve_new_conten
     rows = await query.list_events(code='000411', start='2004-12-28', end='2004-12-28')
     assert len(rows) == 1 and rows[0]['resumed_at'] is not None
     assert rows[0]['suspended_at'].startswith('2004-12-27')
+    assert rows[0]['source_dates'] == ['2004-12-28']
     # An older observation on another source date must survive a newer cache proof.
     await publish([{**resumed, 'name': '迟到旧名称'}], start='2005-01-01', end='2005-01-01',
                   observed=earlier + timedelta(minutes=2))
     rows = await query.list_events(code='000411', start='2005-01-01', end='2005-01-01')
     assert len(rows) == 1 and rows[0]['name'] == '英特集团'
+    assert rows[0]['source_dates'] == ['2005-01-01']
+    selected = await query.list_events(code='000411', start='2004-12-28', end='2005-01-01')
+    assert selected[0]['source_dates'] == ['2004-12-28', '2005-01-01']
     assert len(await query.list_events(code='000411', start='2004-12-28', end='2004-12-28')) == 1
     store = manager.registry.get('redis.store')
     assert await store.client.xlen(store.stream) == 0

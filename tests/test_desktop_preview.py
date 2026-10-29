@@ -49,7 +49,7 @@ async def test_all_preview_adapters_match_formal_signatures():
         for v in views(task):
             fields = {
                 k: val
-                for k, val in {"security": "000001.SZ", "theme_id": "1"}.items()
+                for k, val in {"security": "000001.SZ", "theme_id": "1", "record_key": "a" * 64, "plan_id": "1", "day": "2026-10-29"}.items()
                 if k in v.filters
             }
             await read(registry, task, v.id, fields)

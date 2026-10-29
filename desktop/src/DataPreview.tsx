@@ -1,316 +1,79 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Descriptions,
-  Drawer,
-  Empty,
-  Input,
-  Select,
-  Space,
-  Table,
-  Tag,
-} from "antd";
+import { Alert, Button, Empty, Skeleton, Space, Tag } from "antd";
 import { Data, useQuery } from "./api";
 import { QueryNotice } from "./shared";
-const names: Record<string, string> = {
-  announcement_date: "公告日期",
-  period_basis: "期间口径",
-  basis: "来源口径",
-  source_time: "来源时刻",
-  price: "价格",
-  average_price: "均价",
-  source_volume: "来源成交量",
-  source_turnover: "来源成交额",
-  source_flag: "来源标记",
-  reason: "原因",
-  actor: "变动主体",
-  forecast_type: "预告类型",
-  forecast_text: "预告内容",
-  theme_id: "题材编号",
-  brief: "简介",
-  introduction: "介绍",
-  member_count: "成员数",
-  holding_count: "持股数",
-  rank: "排名",
-  shares: "股数",
-  holder_name: "股东名称",
-  security: "证券代码（含市场）",
-  code: "证券 / 指数代码",
-  industry: "行业代码",
-  market: "市场",
-  search: "关键词",
-  start: "开始日期",
-  end: "结束日期",
-  day: "查询日期",
-  month: "查询月份",
-  unified_code: "证券代码",
-  name: "名称",
-  report_date: "报告期",
-  trade_date: "交易日期",
-  published_at: "发布时间",
-  title: "标题",
-  content: "正文",
-  source: "来源",
-  open: "开盘价",
-  high: "最高价",
-  low: "最低价",
-  close: "收盘价",
-  volume_shares: "成交量（股）",
-  amount_yuan: "成交额（元）",
-  is_trade: "是否交易日",
-  updated_at: "更新时间",
-  observed_at: "核验时间",
-  stock_name: "证券名称",
-  industry_name: "行业名称",
-  index_name: "指数名称",
-  index_code: "指数代码",
-  pool_type: "池类型",
-  status: "状态",
-  availability: "数据可用性",
-  record_key: "业务记录键",
-  section: "栏目",
-  items: "科目明细",
-  rows: "数据明细",
-  members: "成员明细",
-  fields: "科目明细（元）",
-  values: "数据值",
-  amount: "金额",
-  quantity: "数量",
-  ratio: "比例",
-  holder: "股东",
-  currency: "币种",
-  description: "说明",
-  current_date: "当前日期",
-};
-function value(v: any): string {
-  return v == null
-    ? "—"
-    : typeof v === "boolean"
-      ? v
-        ? "是"
-        : "否"
-      : typeof v === "object"
-        ? "查看明细"
-        : ({source_report:"来源报表",year_to_date:"年初至今",instant:"期末时点",CNY:"人民币",SH:"沪市",SZ:"深市",BJ:"北交所"} as Record<string,string>)[String(v)] || String(v);
-}
-function ReadValue({ data }: { data: any }) {
-  if (data == null || typeof data !== "object")
-    return <span style={{ whiteSpace: "pre-wrap" }}>{value(data)}</span>;
-  if (Array.isArray(data))
-    return (
-      <div>
-        {data.length
-          ? data.map((r, i) => (
-              <div className="preview-detail-item" key={i}>
-                <ReadValue data={r} />
-              </div>
-            ))
-          : "无明细"}
-      </div>
-    );
-  return (
-    <Descriptions
-      size="small"
-      column={1}
-      bordered
-      items={Object.entries(data).map(([k, v]) => ({
-        key: k,
-        label: names[k] || k,
-        children: <ReadValue data={v} />,
-      }))}
-    />
-  );
-}
+import { PreviewContent } from "./preview/PreviewContent";
+import { PreviewFilters } from "./preview/Filters";
+import { usePreviewRead } from "./preview/usePreviewRead";
+import "./preview/workspace.css";
+
+type Selection = { view: string; filters: Data; draft: Data; cursors: any[]; revision: number };
+const selection = (spec: Data, filters = spec.defaults || {}): Selection => ({
+  view: spec.id, filters, draft: filters, cursors: [null], revision: 0,
+});
+
 export default function DataPreview({ project }: { project: string }) {
   const catalog = useQuery("preview.catalog", { ident: project }, 60000);
-  const [view, setView] = useState(""),
-    [draft, setDraft] = useState<Data>({}),
-    [filters, setFilters] = useState<Data>({}),
-    [stack, setStack] = useState<any[]>([null]),
-    [selected, setSelected] = useState<Data>();
-  const spec = (catalog.data || []).find((v: Data) => v.id === view);
+  if (catalog.error && !catalog.data) return <Alert showIcon type="error" title="预览目录读取失败" description={catalog.error} action={<Button onClick={catalog.refresh}>重试</Button>} />;
+  if (!catalog.data) return <div className="project-preview-loading"><QueryNotice query={catalog} /><Skeleton active paragraph={{ rows: 5 }} /></div>;
+  if (!catalog.data.length) return <Empty description="此采集项目尚未登记预览界面" />;
+  return <PreviewWorkspace key={project} project={project} catalog={catalog.data} />;
+}
+
+function PreviewWorkspace({ project, catalog }: { project: string; catalog: Data[] }) {
+  const visible = catalog.filter(v => !v.hidden);
+  const [current, setCurrent] = useState<Selection>(() => selection(visible[0]));
+  const [trail, setTrail] = useState<Selection[]>([]);
+  const [expanded, setExpanded] = useState(false);
   useEffect(() => {
-    if (catalog.data?.length && !view) {
-      setView(catalog.data[0].id);
-      setDraft(catalog.data[0].defaults || {});
-      setFilters(catalog.data[0].defaults || {});
-    }
-  }, [catalog.data]);
-  const query = useQuery(
-    "preview.read",
-    {
-      ident: project,
-      view,
-      filters,
-      cursor: JSON.stringify(stack[stack.length - 1]),
-    },
-    60000,
-    !!spec,
-  );
+    if (!expanded) return;
+    const exit = (event: KeyboardEvent) => { if (event.key === "Escape") setExpanded(false); };
+    window.addEventListener("keydown", exit);
+    return () => window.removeEventListener("keydown", exit);
+  }, [expanded]);
+  const spec = catalog.find(v => v.id === current.view)!;
+  const query = usePreviewRead(project, current.view, current.filters, current.cursors.at(-1), current.revision);
   const rows = query.data?.rows || [];
-  const keys = [...new Set<string>(rows.flatMap((r: Data) => Object.keys(r)))];
-  const ordered = [
-    ...[
-      "unified_code",
-      "code",
-      "name",
-      "report_date",
-      "trade_date",
-      "published_at",
-      "title",
-    ].filter((k) => keys.includes(k)),
-    ...keys.filter(
-      (k) =>
-        ![
-          "unified_code",
-          "code",
-          "name",
-          "report_date",
-          "trade_date",
-          "published_at",
-          "title",
-        ].includes(k),
-    ),
-  ];
-  return (
-    <div className="data-preview">
-      <QueryNotice query={catalog} />
-      <div className="preview-query">
-        <Select
-          aria-label="预览数据类型"
-          style={{ minWidth: 200 }}
-          value={view || undefined}
-          options={(catalog.data || []).map((v: Data) => ({
-            value: v.id,
-            label: v.title,
-          }))}
-          onChange={(v) => {
-            setView(v);
-            const defaults = catalog.data.find((item: Data) => item.id === v)?.defaults || {};
-            setDraft(defaults);
-            setFilters(defaults);
-            setStack([null]);
-            setSelected(undefined);
-          }}
-        />
-        {(spec?.filters || []).map((key: string) => (
-          <label key={key}>
-            <span>{names[key] || key}</span>
-            <Input
-              aria-label={names[key] || key}
-              type={
-                ["start", "end", "day"].includes(key)
-                  ? "date"
-                  : key === "month"
-                    ? "month"
-                    : "text"
-              }
-              value={draft[key] || ""}
-              placeholder={key === "security" ? "000001.SZ" : names[key]}
-              onChange={(e) => setDraft({ ...draft, [key]: e.target.value })}
-              onPressEnter={() => {
-                setFilters(draft);
-                setStack([null]);
-                query.refresh();
-              }}
-            />
-          </label>
-        ))}
-        <Button
-          type="primary"
-          onClick={() => {
-            setFilters(draft);
-            setStack([null]);
-            query.refresh();
-          }}
-        >
-          查询 / 刷新
-        </Button>
+  const nextCursor = query.data?.next;
+  const pendingDraft = JSON.stringify(current.draft) !== JSON.stringify(current.filters);
+  function submit(filters: Data) {
+    setCurrent(s => ({ ...s, filters, draft: filters, cursors: [null], revision: s.revision + 1 }));
+  }
+  function navigate(view: string, filters: Data) {
+    const target = catalog.find(v => v.id === view);
+    if (!target) return;
+    setTrail(t => [...t, current]);
+    setCurrent(selection(target, { ...target.defaults, ...filters }));
+  }
+  return <section className={`project-preview${expanded ? " is-expanded" : ""}`} data-testid="project-preview" data-project={project} data-view={spec.id}>
+    <header className="preview-workspace-heading">
+      <div><span className="preview-eyebrow">数据预览</span><h3>{spec.title}</h3><p>{spec.description}</p></div>
+      <Space wrap>
+        {trail.length > 0 && <Button aria-label="preview-back" onClick={() => { setCurrent(trail[trail.length - 1]); setTrail(trail.slice(0, -1)); }}>返回{catalog.find(v => v.id === trail[trail.length - 1].view)?.title}</Button>}
+        <Button onClick={() => setExpanded(!expanded)} aria-pressed={expanded}>{expanded ? "收起预览" : "展开预览"}</Button>
+      </Space>
+    </header>
+    {visible.length > 1 && !spec.hidden && <div className="preview-view-tabs" role="tablist" aria-label="数据栏目">{visible.map(v => <Button key={v.id} role="tab" aria-selected={current.view === v.id} type={current.view === v.id ? "primary" : "default"} onClick={() => {
+      setTrail([]); setCurrent(selection(v));
+    }}>{v.title}</Button>)}</div>}
+    {!spec.hidden && <PreviewFilters key={spec.id} spec={spec} draft={current.draft} onChange={draft => setCurrent(s => ({ ...s, draft }))} onSubmit={submit} loading={query.loading} />}
+    <div className="preview-result-context">
+      <div><Tag color={query.data?.storage?.includes("Redis") ? "orange" : "blue"}>{query.data?.storage || "只读查询"}</Tag>
+        {Object.entries(current.filters).filter(([k,v]) => v && !["record_key", "plan_id"].includes(k)).map(([k,v]) => <span className="preview-applied" key={k}>{spec.filter_specs?.find((f: Data) => f.key === k)?.label || "筛选条件"}：{String(v)}</span>)}
+        {pendingDraft && <Tag color="gold">筛选已修改，查询后生效</Tag>}
       </div>
-      <QueryNotice query={query} />
-      <div className="preview-caption">
-        <span>
-          {query.data?.message ||
-            "查看当前采集项对应的数据，读取不会启动采集。"}
-        </span>
-        <Tag>{query.data?.storage || "只读预览"}</Tag>
-      </div>
-      <Table<Data>
-        size="small"
-        rowKey={(_, i) => String(i)}
-        dataSource={rows}
-        pagination={false}
-        scroll={{ x: "max-content", y: "max(160px, calc(100vh - 570px))" }}
-        columns={[
-          ...ordered.slice(0, 10).map((k) => ({
-            title: names[k] || k,
-            dataIndex: k,
-            width: k === "title" ? 320 : 150,
-            ellipsis: true,
-            render: (v: any, r: Data) =>
-              typeof v === "object" && v != null ? (
-                <Button type="link" onClick={() => setSelected(r)}>
-                  查看明细
-                </Button>
-              ) : (
-                value(v)
-              ),
-          })),
-          {
-            title: "",
-            key: "detail",
-            width: 80,
-            fixed: "right" as const,
-            render: (_: any, r: Data) => (
-              <Button type="link" onClick={() => setSelected(r)}>
-                详情
-              </Button>
-            ),
-          },
-        ]}
-        locale={{
-          emptyText: (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={
-                query.data?.required
-                  ? query.data.message
-                  : query.error
-                    ? "查询未成功，请检查条件后重试"
-                    : "当前条件下没有记录；不代表该范围已采齐"
-              }
-            />
-          ),
-        }}
-      />
-      <div className="preview-footer">
-        <span className="muted">
-          {rows.length} 条 · 第 {stack.length} 页
-          {query.data?.total != null ? ` · 共 ${query.data.total} 条` : ""}
-        </span>
-        <Space>
-          <Button
-            disabled={stack.length === 1}
-            onClick={() => setStack(stack.slice(0, -1))}
-          >
-            上一页
-          </Button>
-          <Button
-            disabled={query.data?.next == null || !!query.error}
-            onClick={() => setStack([...stack, query.data.next])}
-          >
-            下一页
-          </Button>
-        </Space>
-      </div>
-      <Drawer
-        title="数据详情"
-        size={760}
-        open={!!selected}
-        onClose={() => setSelected(undefined)}
-      >
-        <ReadValue data={selected} />
-      </Drawer>
+      <span className="muted">{query.loading ? "正在读取…" : query.stamp ? `读取于 ${new Date(query.stamp).toLocaleTimeString("zh-CN", { hour12: false })}` : "等待查询"}</span>
     </div>
-  );
+    {query.error && <Alert showIcon type="error" title="本次查询未成功" description={query.error} action={<Button onClick={() => setCurrent(s => ({ ...s, revision: s.revision + 1 }))}>重试</Button>} />}
+    {query.data?.message && <Alert showIcon type="info" title={query.data.message} />}
+    <div className="preview-result-body" aria-busy={query.loading}>
+      {query.loading ? <Skeleton active paragraph={{ rows: 6 }} /> : query.error ? null : query.data?.required ? <Empty description={query.data.message} image={Empty.PRESENTED_IMAGE_SIMPLE} /> : <PreviewContent key={current.view + JSON.stringify(current.filters) + JSON.stringify(current.cursors)} spec={spec} rows={rows} context={{ ...query.data?.context, filters: current.filters }} onNavigate={navigate} />}
+    </div>
+    <footer className="preview-workspace-footer">
+      <span>{query.loading ? "读取中" : `本页 ${rows.length} 条`} · 第 {current.cursors.length} 页{query.data?.total != null && ` · 共 ${query.data.total} 条`}</span>
+      <Space><Button aria-label="preview-previous" disabled={query.loading || current.cursors.length === 1} onClick={() => setCurrent(s => ({ ...s, cursors: s.cursors.slice(0, -1) }))}>上一页</Button>
+        <Button aria-label="preview-next" disabled={query.loading || !!query.error || nextCursor == null} onClick={() => setCurrent(s => ({ ...s, cursors: [...s.cursors, nextCursor] }))}>下一页</Button></Space>
+    </footer>
+    <div className="preview-reading-notes">{(spec.notes || []).map((note: string) => <p key={note}>{note}</p>)}<p>{query.data?.notice || "查询只读取已有数据；无记录不代表该范围已完成采集。"}</p></div>
+  </section>;
 }

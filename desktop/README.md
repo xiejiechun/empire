@@ -33,7 +33,7 @@ npm.cmd --prefix desktop start
 - 共享资源显示当前生效/已保存/草稿；容量推荐只生成草稿，保存后须正常重启。站点三个间隔独立保留。
 - 身份页面只读刷新不认证；服务启停影响平台共享项目。读取失败会显示过期提示；凭据和代理连接串不传入界面。
 - 任务内错误页只清除明确已修复并验证的确切ID；未解决及并发新增记录保留。
-- 数据预览直接位于“采集管理 → 选择采集项 → 数据预览”，不再设置独立的数据浏览导航。按数据类型选择栏目及证券、日期等条件，支持翻页和完整记录详情；日期/月默认值直接显示。读取已有正式数据，不触发采集；盘中 Redis 快照与 MySQL 归档数据分别标识。空结果不代表已采齐，股票任务展示统一当前股票列表。
+- 数据预览直接位于“采集管理 → 选择采集项 → 数据预览”。各项目按业务提供专用布局：财报科目矩阵、日行情走势、交易月历、新闻正文、股东报告名单、龙虎榜原因与席位、行业/指数/题材成员、公司事件及规则条款。栏目标签切换数据，详情返回恢复原条件及页码；“展开预览”增大阅读区域。修改筛选后点击“查询数据”生效，失败不会保留旧条件结果。数字精确原值和缺值分别保留，图表只描述当前加载范围。读取已有正式数据，不触发采集；盘中快照与归档数据分别标识。空结果不代表已采齐，股票任务展示统一当前股票列表。
 
 ## 当前限制
 
@@ -47,9 +47,12 @@ npm.cmd --prefix desktop start
 .venv/Scripts/python.exe -m pytest tests/test_desktop_bridge.py tests/test_collection_control.py tests/test_collection_rules.py tests/test_download_settings.py -q
 npm.cmd --prefix desktop run test:transport
 node desktop/qa/interaction.cjs
+node desktop/qa/project-previews.cjs --mock
 ```
 
 qa/live-read.cjs会启动真实Runtime，须先正常退出旧客户端；脚本仅发起读请求，退出时正常关闭，不保存配置、不发手动采集命令。联调数据截图在本目录qa-output（忽略提交）。
+
+专用预览使用 `node desktop/qa/project-previews.cjs --live` 逐项验证真实查询与界面，必须与现有客户端、维护和发布串行。`--mock` 仅使用示例装配及隔离样本，验证全部项目布局、详情跳转、筛选竞态、空结果及窄窗口，不启动后端或访问数据库。完整发布状态见本次实施记录，不以本机启动器构建代替全部发布门禁。
 
 实施范围与后续：[实施文档](../docs/desktop-collection-integration-plan.md)。
 

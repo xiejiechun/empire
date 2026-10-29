@@ -30,6 +30,8 @@
 
 source_date 前缀用于日历日查询；ix_suspension_identity 用于查同一事件的所有实际出现日。与 suspension_event 用 unified_code/suspended_at/resume_key/record_key 全身份关联，不能只关联证券和停牌时间。
 
+正式事件列表在选定分页记录后，按完整身份批量读取当前筛选范围内的实际来源日，作为每条记录的 source_dates 返回给专用预览。范围筛选仍按来源日历日执行；不填日期时读取该记录全部已保存来源日。查询不写表，不从停复牌生效时间补造日期；过大范围明确要求缩小，不静默截断。
+
 与 suspension_event 同事务合并实际出现日，重复不写；没有证据须补采，不推断为无记录。
 
 股息率的分母日证据按source_date及unified_code、suspended_at、resume_key、record_key完整关联，只用record_key会误关联其他证券或时段。空日须另有collection_state连续范围和盘后确认，不能以无行代替覆盖证明；本用途只读。

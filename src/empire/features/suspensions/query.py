@@ -2,7 +2,7 @@
 import calendar
 from datetime import date, datetime, timedelta
 
-from sqlalchemy import text
+from sqlalchemy import bindparam, text
 
 from empire.contracts.business_schema import require_fixed_source, schema_contract
 from empire.contracts.plugin import PluginManifest
@@ -126,7 +126,7 @@ class SuspensionDataPlugin:
             params["code"] = code + "%"
         with self.mysql.read_engine.connect() as conn:
             rows = conn.execute(text(f"""
-                SELECT RIGHT(s.unified_code,2) AS market,LEFT(s.unified_code,6) AS code,name,suspended_at,resumed_at,suspension_type,source_note,reason
+                SELECT s.unified_code,s.resume_key,s.record_key,RIGHT(s.unified_code,2) AS market,LEFT(s.unified_code,6) AS code,name,suspended_at,resumed_at,suspension_type,source_note,reason
                 FROM suspension_event s JOIN (
                     SELECT DISTINCT unified_code,suspended_at,resume_key,record_key
                     FROM suspension_source_date FORCE INDEX(PRIMARY)
@@ -136,8 +136,26 @@ class SuspensionDataPlugin:
                 ORDER BY {sort_by} {direction},suspended_at DESC,market,code,resume_key,record_key
                 LIMIT :limit OFFSET :offset
             """), params).mappings().all()
-        return [{key: value.isoformat() if hasattr(value, "isoformat") else value
-                 for key, value in row.items()} for row in rows]
+            # Page first, then fetch the actual source days for only those identities.
+            # Never infer source dates from suspension/resumption effective times.
+            identities = [(r["unified_code"], r["suspended_at"], r["resume_key"], r["record_key"])
+                          for r in rows]
+            source_days = {identity: [] for identity in identities}
+            if identities:
+                dates = conn.execute(text("SELECT unified_code,suspended_at,resume_key,record_key,source_date "
+                    "FROM suspension_source_date WHERE (unified_code,suspended_at,resume_key,record_key) "
+                    "IN :identities AND source_date>=:start AND source_date<:end "
+                    "ORDER BY source_date LIMIT 100001").bindparams(bindparam("identities", expanding=True)),
+                    dict(identities=identities, start=start, end=end + timedelta(days=1))).mappings().all()
+                if len(dates) > 100000:
+                    raise ValueError("所选事件的来源日期超过100000项，请缩小来源日历日期范围")
+                for row in dates:
+                    identity = tuple(row[k] for k in ("unified_code", "suspended_at", "resume_key", "record_key"))
+                    source_days[identity].append(row["source_date"].isoformat())
+        return [{**{key: value.isoformat() if hasattr(value, "isoformat") else value
+                    for key, value in row.items() if key != "resume_key"},
+                 "source_dates": source_days[identity]}
+                for row, identity in zip(rows, identities, strict=True)]
 
     async def calendar_coverage(self):
         def read():

@@ -21,17 +21,13 @@ def wire(value):
 
 
 def catalog(ident):
+    from .preview_presentation import presentation
+
     now = datetime.now(CHINA)
     defaults = {"day": now.date().isoformat(), "month": now.strftime("%Y-%m")}
-    return [
-        dict(
-            id=v.id,
-            title=v.title,
-            filters=v.filters,
-            defaults={key: defaults[key] for key in v.filters if key in defaults},
-        )
-        for v in views(ident)
-    ]
+    return [dict(id=v.id, filters=v.filters,
+                 defaults={key: defaults[key] for key in v.filters if key in defaults},
+                 **presentation(ident, v)) for v in views(ident)]
 
 
 async def read(registry, ident, view, filters, cursor=None):
@@ -40,6 +36,8 @@ async def read(registry, ident, view, filters, cursor=None):
         raise ValueError("该任务未登记此数据预览")
     if set(filters) - set(spec.filters):
         raise ValueError("预览筛选字段不属于当前数据")
+    if any(not isinstance(v, str) or len(v) > 200 for v in filters.values()):
+        raise ValueError("预览筛选值必须是有界文本")
     q = {k: v.strip() for k, v in filters.items() if v.strip()}
     now = datetime.now(CHINA)
     for key in ("start", "end", "day"):
@@ -47,13 +45,13 @@ async def read(registry, ident, view, filters, cursor=None):
             date.fromisoformat(q[key])
     if q.get("start") and q.get("end") and q["start"] > q["end"]:
         raise ValueError("开始日期不能晚于结束日期")
-    required = set(spec.filters) & {"security", "theme_id"}
+    required = set(spec.filters) if spec.hidden else set(spec.filters) & {"security", "theme_id"}
     if required - set(q):
         return dict(
             rows=[],
             next=None,
             message="请填写"
-            + ("完整证券代码，例如 000001.SZ" if "security" in required else "题材编号"),
+            + ("完整证券代码，例如 000001.SZ" if "security" in required else "题材编号" if "theme_id" in required else "记录身份；请从列表选择记录"),
             required=True,
         )
     if "security" in q:
@@ -67,11 +65,29 @@ async def read(registry, ident, view, filters, cursor=None):
     if mode in ("offset", "list") and (type(offset) is not int or not 0 <= offset <= 100000):
         raise ValueError("分页位置无效")
     kwargs = {**q, **spec.fixed}
-    if mode == "cursor":
+    if mode == "detail":
+        if ident == "tdx-hot-list":
+            kwargs = dict(code=q["security"], stamp=q["day"])
+        elif ident == "ths-listings":
+            kwargs = dict(security=q["security"])
+        elif ident == "tdx-unlocks":
+            kwargs = dict(group=q["record_key"])
+        elif ident == "eastmoney-repurchases":
+            kwargs = dict(plan_id=q["plan_id"])
+        else:
+            kwargs = {**spec.fixed, "key": q["record_key"]}
+    elif mode == "history":
+        kwargs = dict(security=q["security"])
+    elif mode == "directory":
+        kwargs.update(after=cursor or "", limit=50)
+    elif mode == "cursor":
         kwargs.update(after=cursor, limit=50)
     elif mode in ("offset", "list"):
         kwargs.update(offset=offset, limit=50)
     elif mode == "news":
+        if q.get("important", "") not in ("", "true"):
+            raise ValueError("新闻重要性筛选值无效")
+        kwargs["important"] = q.get("important") == "true"
         kwargs.update(before=cursor, limit=50, include_total=False)
     elif mode == "month":
         kwargs = {"month": q.get("month", now.strftime("%Y-%m"))}
@@ -88,13 +104,27 @@ async def read(registry, ident, view, filters, cursor=None):
             filters=(3, spec.fixed["pool"], "", q.get("day", now.date().isoformat()), "", ""),
             after=cursor,
         )
+    if spec.hidden and cursor is not None:
+        raise ValueError("单条详情不接受分页游标")
     data = await method(**kwargs)
-    if mode == "reason":
+    if ident == "ths-capital" and spec.hidden and data:
+        parent = next(v for v in views(ident) if v.id == spec.parent)
+        if data.get("section") != parent.fixed["section"]:
+            raise ValueError("记录不属于当前资本运作栏目")
+    if mode in ("reason", "detail") and not isinstance(data, list):
         data = {"rows": [data] if data else []}
     if isinstance(data, list):
         data = {"rows": data}
     data = data or {"rows": []}
     rows = data.get("rows", data.get("points", []))
+    rows = [dict(row) for row in rows]
+    for row in rows:
+        if ident in ("tdx-dividends", "tdx-additional-issues", "tdx-rights-issues"):
+            row.update(row.get("data", {}))
+        if "unified_code" not in row and row.get("market") in ("SH", "SZ", "BJ") and row.get("code"):
+            row["unified_code"] = row["code"] + "." + row["market"]
+    context = {k: data[k] for k in ("head", "coverage", "month", "expected_count", "complete",
+                                   "industry_count", "publication", "snapshot", "at", "source_total", "unavailable_count", "incomplete_count") if k in data}
     next_cursor = data.get("next", data.get("next_cursor"))
     if mode in ("offset", "list"):
         next_cursor = (
@@ -105,6 +135,7 @@ async def read(registry, ident, view, filters, cursor=None):
     return wire(
         dict(
             rows=rows,
+            context=context,
             next=next_cursor,
             total=data.get("total"),
             message=data.get("message", ""),

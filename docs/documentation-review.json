@@ -1,9 +1,12 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-29T05:11:38.435337+00:00",
-  "note": "旧客户端源码退役收尾与真实桌面验证；旧二进制目录删除被自动审批拒绝，完整发布门禁未通过。",
-  "unchanged_reason": "退役旧Qt控件后仅整理源码末尾空行；来源、存储和新版客户端行为未改变。",
-  "exceptions": {},
+  "reviewed_at": "2026-10-29T05:47:02.671478+00:00",
+  "note": "逐项目重构任务内数据预览，更新查看结果、停复牌来源日期正式查询与字段说明；预览不修改采集和业务存储。",
+  "unchanged_reason": "",
+  "exceptions": {
+    "mysql:stock": "本次仅调用既有股票正式只读列表并按市场展示，没有改变股票表字段、写入或当前列表契约。",
+    "mysql:collection_state": "本次停复牌查询补读既有来源日期关联，不写统一状态，不改变断点、版本及归档状态契约。"
+  },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "desktop/package.json": "6baf14c100dcd857aeca65bb368dc1f0e79c5fb002795b42e2aae966012a5c19",
@@ -86,6 +89,7 @@
     "scripts/migrate_download_capacity.py": "0b64aaa170a5cd79c567d3a124dd880ac5e64719a2593f2e85d2b9c791d6d269",
     "scripts/migrate_download_settings.py": "235b9098c44d86770fff90997de484ad7462581f554fee568e7e3b1873107a1d",
     "scripts/migrate_holder_checkpoint.py": "599b658c16a9eb3f3ae5019830f153ed1f82d053c0321d8cce6dd2c01e6d1fde",
+    "scripts/migrate_holder_ratio.py": "57fcc2cf3744fc68fbd34529b3dabb8fd9040815b03c88aa3c640304af62d033",
     "scripts/migrate_holder_source_rows.py": "f25d6907fbd47f9c1fea94375436e4c8d45ba976a2329893a7dcce365d9cf55f",
     "scripts/migrate_holder_task.py": "2b2970a2d3173159c9259f7cf32deac0efd5a40f3c8b2a82b51e1ee6275c4a46",
     "scripts/migrate_holder_ties.py": "ff565c5fd0cbc387de8e576f6f4e58d09ef947761f88f95a635ec5cf7d6adb66",
@@ -155,8 +159,8 @@
     "sql/legacy/business-v1.sql": "2b052c6caf0e79ed0c6efe1c1f06dea5daee4f47dd086e6854fcf37d439d92a5",
     "sql/legacy/intraday-v2.sql": "c90e4b2c2716cf403bc0917a3621a4dc5f9d39bff8facc9bb7a933b8409637d2",
     "sql/legacy/market-day-v1.sql": "8c33fd5cdb741c850c0cf6d6ba5b1abae4341019ac98a80759938baf8112cd78",
-    "sql/schema-contract.json": "387e1a6933aae3220f646afd8dae582d6cc4d4541b8af0a086bd3c6f4eabdb5c",
-    "sql/schema.sql": "bf8a76a0da6a0dd16f7921e7ef58ff300652f256ba50af902e76376bbcb75d19",
+    "sql/schema-contract.json": "620bc55d10cb6360d3812bd4f15f1911757e4a5bae7882177a7e0a69a16dd263",
+    "sql/schema.sql": "1a9691532b6ea967ff1be2fb446c9f23566d018f6ba16a6aa5c67c1cb875fa5f",
     "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
     "src/empire/__main__.py": "66ad06d34fbd4a616b371d1e02c03ba664e41ce86cc9919ea8da65158a06a667",
     "src/empire/bootstrap.py": "738993b2ffaf746365d09f0ba8cee293a81afdebf15150ec7b6592b7c68597e2",
@@ -195,8 +199,10 @@
     "src/empire/desktop_bridge/__main__.py": "aff87b2bc6296380c54c52ed13a0467cc50efd2464794823706695ae4c565651",
     "src/empire/desktop_bridge/launch.py": "7212778ac7d6c0c040e9ec4aa2ecf218851eedf9b4c2bbc5a7759c4c176360c3",
     "src/empire/desktop_bridge/operations.py": "227b3d2b7d346307f6998fb59bc153b878805367f7f4bd87751ed55459b315b4",
-    "src/empire/desktop_bridge/preview.py": "3cb5971fb9478b7108baaf1cd2a33f14ab35d19289d1ef566f9f15fd7b778174",
-    "src/empire/desktop_bridge/preview_catalog.py": "ab2b27c9a08485136ddba6678eedb369279c505bdfb8d7223f42d736114eeb3e",
+    "src/empire/desktop_bridge/preview.py": "a9b130a8ab974a191952059a2bf4a543ad33f793af4020b3e964b2ba67f23f9d",
+    "src/empire/desktop_bridge/preview_catalog.py": "113209cb0dcc80eab31f9aaa50e283d7f3d45304af43e29a81472b8faf4b8f80",
+    "src/empire/desktop_bridge/preview_fields.py": "941a04829bbb1ac34c807a8a7f6b24bffb136d2fdf52b96c796d9724cfa22489",
+    "src/empire/desktop_bridge/preview_presentation.py": "cdca73f7947318f312f588b90c5f9ab5edc805110d5f5b9943ba4694234f1911",
     "src/empire/desktop_bridge/protocol.py": "e81200df2476cbfbec2ebe96d5d89f3a21fe2bba1fc0ed7b1a7db12a724f8aee",
     "src/empire/desktop_bridge/schemas.py": "efd49983e1190ae476372b84b1fc07c5f634306092ef673ba9590e7db06543df",
     "src/empire/desktop_bridge/server.py": "4d8e7afc746a62220eea5f64451a2126486d3ba167e519cba156cd964809bc5d",
@@ -271,11 +277,11 @@
     "src/empire/features/holders/audit.py": "5f8a2294a3398f0a61a71a6218fc7823e4fbf341bf42d406476fa8ebb0e908c5",
     "src/empire/features/holders/bundle.py": "84535f4ce8ce95a912f1990f6f5663e2ef0d84aa5b32b169c009f8a5048f0bbc",
     "src/empire/features/holders/collector.py": "c02173cf0ad01d6cf947ff21838a2b218b7e39a784abafc0fbd2e9088ce707ef",
-    "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+    "src/empire/features/holders/contract.py": "bc896bcc5b92d1fcea7edbcd52b3c85c6574cc5a9b5b293274d4e6bc6518a835",
     "src/empire/features/holders/dataset.py": "babc432c72bb6f8dd8b9644f519c6b5590eef2bf6518c16d3fe5bb8f0c44252b",
     "src/empire/features/holders/planning.py": "86307e1b792661c4fcb9ad7c90c5b0ad803ce1be52f5cd19c1af4c931724accf",
     "src/empire/features/holders/query.py": "d4d6e2e91dbc1ea0b5c3910c7936534aab2a17ee3f8fa861f7f6eddba781cd9c",
-    "src/empire/features/holders/source.py": "e68daa7c2efb048691e3c09e66d6d2b0e44a78aa88ee730575b422361476271a",
+    "src/empire/features/holders/source.py": "7ddfb39063fafa34ee5a4a1ae1be78c9ca0045479919fea42f35ea4df55cbd9c",
     "src/empire/features/holders/ui.py": "199d33f9e26c2620b0071dfeab65a7a9995bf024a0461b5c440d3cbd9d4de383",
     "src/empire/features/hot_list/__init__.py": "f1ef7aff61b93781c7b666e01f66909b8e19320cc4d3689f8cb694a12b32fd9e",
     "src/empire/features/hot_list/bundle.py": "25fe6bfb5d6a2cc3e466303bd6e197ea06dbe366014d45942579fdf88738c071",
@@ -419,7 +425,7 @@
     "src/empire/features/suspensions/coverage.py": "ca97243c66f07344d632f350c161d1641be76ad81ee6b0a2cf91de624ab68887",
     "src/empire/features/suspensions/dataset.py": "9fa0882d6b76eadefc8ab2477ea4a42c85a10ae8537affa250b9ca6a9f42e9b1",
     "src/empire/features/suspensions/exclusions.py": "bca029fc7aaedec694c49c4b6e9d564d62297cae6a0e658c778d8ed16104d414",
-    "src/empire/features/suspensions/query.py": "f77b45a827c5eb2fd61b86c2a5968c1b55fdd9503b4d81ffbd7c1d36608c0609",
+    "src/empire/features/suspensions/query.py": "f75b3535c00a3853d8679577ef5d58e8b12f231114bdb87066cc49c6d043942e",
     "src/empire/features/suspensions/ui.py": "3d291b630de6cbae848d693161dfc098caeec0e1f3b81d396d640b53a60d4824",
     "src/empire/features/themes/__init__.py": "2d68a4c2129f740440d02ac09d79990078b87862be1f096ec0fa32330886788a",
     "src/empire/features/themes/bundle.py": "99d740583cfe28e6aff2e727545ae65763b5a47170eeda38e9af4ec7774d7f17",
@@ -590,7 +596,7 @@
     "src/empire/sources/yuanhang_service.py": "0f92c0e015cb817b631a980d8e7bc0072b32d3f8874278ea5de2941072eafebf",
     "src/empire/sources/yuanhang_wire.py": "0a0fc2b08e63ab1044fa33d5a1794b0ab4a81819b8c64c3fe95a10fcfc79bcf5"
   },
-  "content_sha256": "7957c2f1224fa1195a695d4ddbe99036e7e65b1864749ba61017819d2ad6e1f6",
+  "content_sha256": "ac6616eb5bf28bb821c73d315b7a35534835e6b75bbacfd6a99edbfc7d35ddc1",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -626,13 +632,13 @@
         "src/empire/contracts/ui.py": "97ed2d32336f3bd0ae32e16dc0ddad585cf905febc44ed4641884e1c5a9d52d9",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
-        "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+        "src/empire/features/holders/contract.py": "bc896bcc5b92d1fcea7edbcd52b3c85c6574cc5a9b5b293274d4e6bc6518a835",
         "src/empire/features/holders/ui.py": "199d33f9e26c2620b0071dfeab65a7a9995bf024a0461b5c440d3cbd9d4de383",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c"
       },
-      "content_sha256": "a47adf020966974c9b10260140ec2ac5f657079b5c71facb54acbd36011abd5f",
+      "content_sha256": "a7cb1ef293fb6a35c5699e752a2df939606e76350f51ab2d2a1e626ed8df13cf",
       "documentation": {
         "同花顺前十大持有人": {
           "owner": "holders",
@@ -649,13 +655,13 @@
         "src/empire/contracts/ui.py": "97ed2d32336f3bd0ae32e16dc0ddad585cf905febc44ed4641884e1c5a9d52d9",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
-        "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+        "src/empire/features/holders/contract.py": "bc896bcc5b92d1fcea7edbcd52b3c85c6574cc5a9b5b293274d4e6bc6518a835",
         "src/empire/features/holders/ui.py": "199d33f9e26c2620b0071dfeab65a7a9995bf024a0461b5c440d3cbd9d4de383",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c"
       },
-      "content_sha256": "a47adf020966974c9b10260140ec2ac5f657079b5c71facb54acbd36011abd5f",
+      "content_sha256": "a7cb1ef293fb6a35c5699e752a2df939606e76350f51ab2d2a1e626ed8df13cf",
       "documentation": {
         "同花顺前十大持有人": {
           "owner": "holders",
@@ -672,13 +678,13 @@
         "src/empire/contracts/ui.py": "97ed2d32336f3bd0ae32e16dc0ddad585cf905febc44ed4641884e1c5a9d52d9",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
-        "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+        "src/empire/features/holders/contract.py": "bc896bcc5b92d1fcea7edbcd52b3c85c6574cc5a9b5b293274d4e6bc6518a835",
         "src/empire/features/holders/ui.py": "199d33f9e26c2620b0071dfeab65a7a9995bf024a0461b5c440d3cbd9d4de383",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c"
       },
-      "content_sha256": "a47adf020966974c9b10260140ec2ac5f657079b5c71facb54acbd36011abd5f",
+      "content_sha256": "a7cb1ef293fb6a35c5699e752a2df939606e76350f51ab2d2a1e626ed8df13cf",
       "documentation": {
         "同花顺前十大持有人": {
           "owner": "holders",
@@ -1808,7 +1814,7 @@
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c"
       },
-      "content_sha256": "9109718ca4b59f1ecc383cea4786c2feba80059e9049061078c42a9e97c6a3bc",
+      "content_sha256": "1f185fdd3965a0250f5a90c39d7a1a79bd54244efedd8d2257c6270cd3b7277f",
       "documentation": {
         "历史停复牌": {
           "owner": "suspensions",
@@ -2263,9 +2269,9 @@
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
         "src/empire/features/holders/collector.py": "c02173cf0ad01d6cf947ff21838a2b218b7e39a784abafc0fbd2e9088ce707ef",
-        "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+        "src/empire/features/holders/contract.py": "bc896bcc5b92d1fcea7edbcd52b3c85c6574cc5a9b5b293274d4e6bc6518a835",
         "src/empire/features/holders/planning.py": "86307e1b792661c4fcb9ad7c90c5b0ad803ce1be52f5cd19c1af4c931724accf",
-        "src/empire/features/holders/source.py": "e68daa7c2efb048691e3c09e66d6d2b0e44a78aa88ee730575b422361476271a",
+        "src/empire/features/holders/source.py": "7ddfb39063fafa34ee5a4a1ae1be78c9ca0045479919fea42f35ea4df55cbd9c",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "757214280a7c9f5751a64a777f2308c3e7c43efbd942c44737ab0bc750233207",
@@ -2273,7 +2279,7 @@
         "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
         "src/empire/sources/html.py": "45a22c1cb15fca0d0c92b8c0f1660be755c0db817120669011511e4d58e9a926"
       },
-      "content_sha256": "5ddb17818c793a0feee5886f0d502e41131dd18c3a637904a0fa2e26b7a369c6",
+      "content_sha256": "e48354f56a08801720851f45089c53ae6ad45e6e6026ab5f5af14c419fe0fbc1",
       "documentation": {
         "同花顺前十大持有人": {
           "owner": "holders",
@@ -3313,7 +3319,7 @@
         "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
         "src/empire/plugins/collectors/support.py": "757214280a7c9f5751a64a777f2308c3e7c43efbd942c44737ab0bc750233207"
       },
-      "content_sha256": "ffbb7a0a5a23f50d92e46ab22948bea2280934828bacd74a615a8691122752e1",
+      "content_sha256": "9d2d7b40aec3a9c0e9ab215bdef0b323b1bd5bbc1582409a0d2e153275cf6b48",
       "documentation": {
         "历史停复牌": {
           "owner": "suspensions",
@@ -3746,7 +3752,7 @@
         "src/empire/features/data_browser/__init__.py": "d0165a70e408c1f0f88eaa868983f8263e912635523fa811abcd693047874b86",
         "src/empire/features/data_browser/api.py": "e6c1d58ad01ff75877a43c7d9d252b5a6030bae73b24aa71f301f6bf21f94423",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
-        "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+        "src/empire/features/holders/contract.py": "bc896bcc5b92d1fcea7edbcd52b3c85c6574cc5a9b5b293274d4e6bc6518a835",
         "src/empire/features/preparation/__init__.py": "a0093fce6c943a79758701bfb6f45844a7d4eb3e9b4796f76ae7d4c5472111d4",
         "src/empire/features/preparation/evidence.py": "4c9679f0eab88571b8e025025d0387d0624cdc7780d18ea399b97f79f3716bba",
         "src/empire/features/stocks/__init__.py": "a39e81388cb9c3bd1d9e4bd95045cd7bea17e1230773d9ed48442ab7b36e330a",
@@ -3879,7 +3885,7 @@
     "mysql:suspension_event": {
       "sources": {
         "src/empire/features/suspensions/dataset.py": "9fa0882d6b76eadefc8ab2477ea4a42c85a10ae8537affa250b9ca6a9f42e9b1",
-        "src/empire/features/suspensions/query.py": "f77b45a827c5eb2fd61b86c2a5968c1b55fdd9503b4d81ffbd7c1d36608c0609",
+        "src/empire/features/suspensions/query.py": "f75b3535c00a3853d8679577ef5d58e8b12f231114bdb87066cc49c6d043942e",
         "sql/business-schema.json": "fb96071bde7be8a091d4c47eec28280b26e118ea426a56f0a4821548d0724fb3",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -3902,7 +3908,7 @@
         "sql/schema.sql#suspension_event": "24db5b9aa2bfc1c6ccef7b22944a52ca88a7af19a870ffce09512251598c0f8c",
         "sql/business-schema.json#suspension_event": "9a923f0f06443499d1402c0c4de373d1a083d44613c57e97c96f6fa820a7e00e"
       },
-      "content_sha256": "27a82fd31736b181e0ce7e03d7215cb2ceaaf6900ab873e69963fcd875e48a40",
+      "content_sha256": "0d78e437a7033c730db364f89faff9078ccc0c4b69eb92b7fe854f1ccf079715",
       "documentation": {
         "MySQL suspension_event": {
           "owner": "suspensions",
@@ -3913,7 +3919,7 @@
     "mysql:suspension_source_date": {
       "sources": {
         "src/empire/features/suspensions/dataset.py": "9fa0882d6b76eadefc8ab2477ea4a42c85a10ae8537affa250b9ca6a9f42e9b1",
-        "src/empire/features/suspensions/query.py": "f77b45a827c5eb2fd61b86c2a5968c1b55fdd9503b4d81ffbd7c1d36608c0609",
+        "src/empire/features/suspensions/query.py": "f75b3535c00a3853d8679577ef5d58e8b12f231114bdb87066cc49c6d043942e",
         "sql/business-schema.json": "fb96071bde7be8a091d4c47eec28280b26e118ea426a56f0a4821548d0724fb3",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
@@ -3936,7 +3942,7 @@
         "sql/schema.sql#suspension_source_date": "8dafd6e6036acbb46c47260eab628e4b713ae1b7a800c5f9ba976331e643c203",
         "sql/business-schema.json#suspension_source_date": "6aa213c11bdf8f84befd4f93ca75c765f3e2cc1800c483efc66873380a1a7c4b"
       },
-      "content_sha256": "b20c3fe2cb996586967aa490f00544e65bb14bf9a42b4a5458e6ec7fb130db01",
+      "content_sha256": "9f4096af206648214f3b17fd773ea370cf2764d04dd9b4729ae1b4d132313d4b",
       "documentation": {
         "MySQL suspension_source_date": {
           "owner": "suspensions",
@@ -4297,7 +4303,7 @@
         "src/empire/diagnostics/__init__.py": "8edec7a32d121934e527bc0d416cef14344fe0c32ad7a990b78e3a71829a14bc",
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
-        "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+        "src/empire/features/holders/contract.py": "bc896bcc5b92d1fcea7edbcd52b3c85c6574cc5a9b5b293274d4e6bc6518a835",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
         "src/empire/plugins/infra/__init__.py": "d4f739179fd85f1a5e60e2fbf0389cad2bb147f5b88a271ee9f6c809561eca72",
         "src/empire/plugins/pipeline/__init__.py": "5bc21e78444728cd50b6ddaf95ef5a50416f7ca8f0e1caf8bf84c939b96bb22b",
@@ -4681,7 +4687,7 @@
       "sources": {
         "src/empire/features/holders/dataset.py": "babc432c72bb6f8dd8b9644f519c6b5590eef2bf6518c16d3fe5bb8f0c44252b",
         "src/empire/features/holders/query.py": "d4d6e2e91dbc1ea0b5c3910c7936534aab2a17ee3f8fa861f7f6eddba781cd9c",
-        "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+        "src/empire/features/holders/contract.py": "bc896bcc5b92d1fcea7edbcd52b3c85c6574cc5a9b5b293274d4e6bc6518a835",
         "src/empire/features/holders/audit.py": "5f8a2294a3398f0a61a71a6218fc7823e4fbf341bf42d406476fa8ebb0e908c5",
         "sql/business-schema.json": "fb96071bde7be8a091d4c47eec28280b26e118ea426a56f0a4821548d0724fb3",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
@@ -4696,10 +4702,10 @@
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
         "src/empire/features/holders/planning.py": "86307e1b792661c4fcb9ad7c90c5b0ad803ce1be52f5cd19c1af4c931724accf",
-        "sql/schema.sql#holder_report": "f11bbbac5dbef0850627f5e5cf7787686adc25b6424a1275960ebbacafc62cd0",
+        "sql/schema.sql#holder_report": "98d9c003dfa91e423e19d81d2be48e332214a9ee222beb7a755d2ef72d9457f6",
         "sql/business-schema.json#holder_report": "87b0b970f07622422c39d287efae27c1dd812664ed667c292cfa0cb07662eaa5"
       },
-      "content_sha256": "2b5576662af5c32ef6b2ade80edcc6002302f9683feaa19f3e5626cd57133fd9",
+      "content_sha256": "38a7db9b2356aa4cf12ab1a00eaf0d83d8d38f1b33f956a64d8b62a857001d97",
       "documentation": {
         "MySQL holder_report": {
           "owner": "holders",
@@ -4711,7 +4717,7 @@
       "sources": {
         "src/empire/features/holders/dataset.py": "babc432c72bb6f8dd8b9644f519c6b5590eef2bf6518c16d3fe5bb8f0c44252b",
         "src/empire/features/holders/query.py": "d4d6e2e91dbc1ea0b5c3910c7936534aab2a17ee3f8fa861f7f6eddba781cd9c",
-        "src/empire/features/holders/contract.py": "12361976c7db0065bcbc705a8ed62bf74ae8ca52c14df22de258594ba8d354e3",
+        "src/empire/features/holders/contract.py": "bc896bcc5b92d1fcea7edbcd52b3c85c6574cc5a9b5b293274d4e6bc6518a835",
         "src/empire/features/holders/audit.py": "5f8a2294a3398f0a61a71a6218fc7823e4fbf341bf42d406476fa8ebb0e908c5",
         "sql/business-schema.json": "fb96071bde7be8a091d4c47eec28280b26e118ea426a56f0a4821548d0724fb3",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
@@ -4726,10 +4732,10 @@
         "src/empire/features/__init__.py": "f4151a88e7fa6bbf68bc81fa7a85af0ec340ae29f46b7a8ce1eacc640421f945",
         "src/empire/features/holders/__init__.py": "6384a9bf1d501ce44f6ecec3fe94417cef13f8f6a27feb3598dc7eaabb524415",
         "src/empire/features/holders/planning.py": "86307e1b792661c4fcb9ad7c90c5b0ad803ce1be52f5cd19c1af4c931724accf",
-        "sql/schema.sql#holder_member": "024ed60ddf75cafabd2fbb8be31b592cae6e3e60e0e1363d841c3a10be4c6d38",
+        "sql/schema.sql#holder_member": "93da7efa4c2966095b39d56188f2bcac91d1ea7921a7162303fbf9560154a620",
         "sql/business-schema.json#holder_member": "5b172ac6ba537bbf3d489ba1cb802758cebf6ac9bb72204be24d9f0e8cf6df64"
       },
-      "content_sha256": "8a6863f2cc04f9b93cf7fb924887b2af5bd46c6073ea15b86e7c2db74b531f49",
+      "content_sha256": "d29664433906cd64102fdf5f464720c998c62a5674a8c05bdd4faff18e170305",
       "documentation": {
         "MySQL holder_member": {
           "owner": "holders",
