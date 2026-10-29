@@ -310,6 +310,10 @@ async function main() {
     preview = await selectTask(calendar);
     await fillFilters(preview, calendar.views.find((v) => !v.hidden));
     await preview.locator('[data-preview-kind="calendar"]').waitFor();
+    await preview.getByRole("button", { name: "阅读说明", exact: true }).click();
+    await p.getByText("数据口径与阅读说明", { exact: true }).waitFor();
+    await preview.getByRole("button", { name: "阅读说明", exact: true }).click();
+    report.interactions.push("reading notes open on demand without occupying the data workspace");
     await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1050, 760));
     await p.waitForTimeout(200);
     const overflow = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);

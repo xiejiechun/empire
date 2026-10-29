@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Empty, Skeleton, Space, Tag } from "antd";
+import { Alert, Button, Empty, Popover, Skeleton, Space, Tag } from "antd";
 import { Data, useQuery } from "./api";
 import { QueryNotice } from "./shared";
 import { PreviewContent } from "./preview/PreviewContent";
@@ -47,8 +47,9 @@ function PreviewWorkspace({ project, catalog }: { project: string; catalog: Data
   }
   return <section className={`project-preview${expanded ? " is-expanded" : ""}`} data-testid="project-preview" data-project={project} data-view={spec.id}>
     <header className="preview-workspace-heading">
-      <div><span className="preview-eyebrow">数据预览</span><h3>{spec.title}</h3><p>{spec.description}</p></div>
+      <div><h3>{spec.title}</h3><p>{spec.description}</p></div>
       <Space wrap>
+        <Popover trigger="click" placement="bottomRight" title="数据口径与阅读说明" content={<div className="preview-reading-notes">{(spec.notes || []).map((note: string) => <p key={note}>{note}</p>)}<p>{query.data?.notice || "查询只读取已有数据；无记录不代表该范围已完成采集。"}</p></div>}><Button>阅读说明</Button></Popover>
         {trail.length > 0 && <Button aria-label="preview-back" onClick={() => { setCurrent(trail[trail.length - 1]); setTrail(trail.slice(0, -1)); }}>返回{catalog.find(v => v.id === trail[trail.length - 1].view)?.title}</Button>}
         <Button onClick={() => setExpanded(!expanded)} aria-pressed={expanded}>{expanded ? "收起预览" : "展开预览"}</Button>
       </Space>
@@ -74,6 +75,5 @@ function PreviewWorkspace({ project, catalog }: { project: string; catalog: Data
       <Space><Button aria-label="preview-previous" disabled={query.loading || current.cursors.length === 1} onClick={() => setCurrent(s => ({ ...s, cursors: s.cursors.slice(0, -1) }))}>上一页</Button>
         <Button aria-label="preview-next" disabled={query.loading || !!query.error || nextCursor == null} onClick={() => setCurrent(s => ({ ...s, cursors: [...s.cursors, nextCursor] }))}>下一页</Button></Space>
     </footer>
-    <div className="preview-reading-notes">{(spec.notes || []).map((note: string) => <p key={note}>{note}</p>)}<p>{query.data?.notice || "查询只读取已有数据；无记录不代表该范围已完成采集。"}</p></div>
   </section>;
 }

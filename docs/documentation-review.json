@@ -1,12 +1,9 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-29T05:47:02.671478+00:00",
-  "note": "逐项目重构任务内数据预览，更新查看结果、停复牌来源日期正式查询与字段说明；预览不修改采集和业务存储。",
+  "reviewed_at": "2026-10-29T06:08:41.923191+00:00",
+  "note": "预览视觉打磨：统一客户端主题、紧凑排版，阅读说明改为按需展开。",
   "unchanged_reason": "",
-  "exceptions": {
-    "mysql:stock": "本次仅调用既有股票正式只读列表并按市场展示，没有改变股票表字段、写入或当前列表契约。",
-    "mysql:collection_state": "本次停复牌查询补读既有来源日期关联，不写统一状态，不改变断点、版本及归档状态契约。"
-  },
+  "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "desktop/package.json": "6baf14c100dcd857aeca65bb368dc1f0e79c5fb002795b42e2aae966012a5c19",
@@ -596,7 +593,7 @@
     "src/empire/sources/yuanhang_service.py": "0f92c0e015cb817b631a980d8e7bc0072b32d3f8874278ea5de2941072eafebf",
     "src/empire/sources/yuanhang_wire.py": "0a0fc2b08e63ab1044fa33d5a1794b0ab4a81819b8c64c3fe95a10fcfc79bcf5"
   },
-  "content_sha256": "ac6616eb5bf28bb821c73d315b7a35534835e6b75bbacfd6a99edbfc7d35ddc1",
+  "content_sha256": "52ad5875ed311e6f14898461b219d097cebda14d1ad222a9266144f23dd538c6",
   "features": {
     "page:ths_capital": {
       "sources": {
