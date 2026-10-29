@@ -81,6 +81,8 @@ async def collect_history(c, *, force_history=False):
         units[key] = ordered(units[key])
         from empire.features.capital_actions.contract import validate_rows
         validate_rows('dividends', key, units[key])
-        if key in required and not required[key].issubset(row['record_key'] for row in units[key]):
-            raise ValueError('分红报告期列表未覆盖历史目录方案，禁止发布不完整证券')
+        missing = required.get(key, set()) - {row['record_key'] for row in units[key]}
+        if missing:
+            raise ValueError('分红报告期列表未覆盖历史目录方案，禁止发布不完整证券：'
+                             f'{key}，缺少{len(missing)}项，示例业务键{min(missing)}')
     return units, observed, digest([periods, stocks, units])

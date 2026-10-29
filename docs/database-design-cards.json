@@ -183,7 +183,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/shareholder-return-p2-capacity-2026-10-22.json"
+        "evidence": "docs/evidence/release-dividends-capacity-2026-10-30.json"
       },
       "integrity": [
         "完整报告期唯一键/元数据/容量校验",
@@ -328,7 +328,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6c-names-capacity-final-2026-10-20.json",
+        "evidence": "docs/evidence/release-names-capacity-2026-10-30.json",
         "sample": "原25000合成事件/5000证券/5日期；完整实采另验，不代表一次入队容量",
         "growth": "一年15000、五年25000；两类含行业字段分配预算128MiB",
         "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
@@ -361,7 +361,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6c-names-capacity-final-2026-10-20.json",
+        "evidence": "docs/evidence/release-names-capacity-2026-10-30.json",
         "sample": "原25000合成事件/5000证券/5日期；完整实采另验，不代表一次入队容量",
         "growth": "一年15000、五年25000；两类含行业字段分配预算128MiB",
         "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
@@ -395,7 +395,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6b-listings-capacity-2026-10-20.json",
+        "evidence": "docs/evidence/release-listings-capacity-2026-10-30.json",
         "sample": "15000行原分布：2049/105078/262144字节正文；750暂无、750缺日状态；正式查询与全量规范集合审计",
         "growth": "一年/五年每证券一行；最大正文256KiB；15000行5%实测长正文及单条上限容量实验，全部满额理论约3.75GiB",
         "budget": "列表/详情/范围P95<=100ms（统一状态质量提示，原50ms取舍见容量证据）、覆盖<=500ms、审计<=5秒、表索引<=1.5GiB、15000状态单元<=8MiB"
@@ -430,7 +430,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6b-status-capacity-2026-10-20.json",
+        "evidence": "docs/evidence/release-listing-status-capacity-2026-10-30.json",
         "sample": "真实三类日历事件；独立服务合成5万事件、120月份，正文32/160/2000字符",
         "growth": "预算每年2000事件、五年1万；实际增长以来源为准",
         "page_limit": 200,
@@ -547,7 +547,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6b-aliases-capacity-2026-10-20.json",
+        "evidence": "docs/evidence/release-bse-capacity-2026-10-30.json",
         "sample": "当前独立13348实例固定1000行合成完整容量；官方整表代理验证另记",
         "budget": "导入<=2秒，1000行读取<=100ms，数据和索引<=1MiB"
       },
@@ -648,7 +648,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6c-st-capacity-final-2026-10-20.json",
+        "evidence": "docs/evidence/release-st-capacity-2026-10-30.json",
         "sample": "原25000合成事件/5000证券/5日期；完整实采另验，不代表一次入队容量",
         "growth": "一年5000、五年10000；含原因字段，表含索引预算128MiB",
         "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
@@ -681,7 +681,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6c-st-capacity-final-2026-10-20.json",
+        "evidence": "docs/evidence/release-st-capacity-2026-10-30.json",
         "sample": "原25000合成事件/5000证券/5日期；完整实采另验，不代表一次入队容量",
         "growth": "一年5000、五年10000；含原因字段，表含索引预算128MiB",
         "budget": "列表P95<=50ms；完整覆盖<=500ms；导入<=10秒"
@@ -721,7 +721,7 @@
         "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
         "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6g-capacity-2026-10-21.json"
+        "evidence": "docs/evidence/release-rules-capacity-2026-10-30.json"
       },
       "integrity": [
         "已审核参数及引用精确集合",
@@ -760,7 +760,7 @@
         "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
         "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6g-capacity-2026-10-21.json"
+        "evidence": "docs/evidence/release-rules-capacity-2026-10-30.json"
       },
       "integrity": [
         "已审核参数及引用精确集合",
@@ -799,7 +799,7 @@
         "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
         "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6g-capacity-2026-10-21.json"
+        "evidence": "docs/evidence/release-rules-capacity-2026-10-30.json"
       },
       "integrity": [
         "已审核参数及引用精确集合",
@@ -838,7 +838,7 @@
         "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
         "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6g-capacity-2026-10-21.json"
+        "evidence": "docs/evidence/release-rules-capacity-2026-10-30.json"
       },
       "integrity": [
         "已审核参数及引用精确集合",
@@ -877,7 +877,7 @@
         "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
         "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6g-capacity-2026-10-21.json"
+        "evidence": "docs/evidence/release-rules-capacity-2026-10-30.json"
       },
       "integrity": [
         "已审核参数及引用精确集合",
@@ -916,7 +916,7 @@
         "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
         "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6g-capacity-2026-10-21.json"
+        "evidence": "docs/evidence/release-rules-capacity-2026-10-30.json"
       },
       "integrity": [
         "已审核参数及引用精确集合",
@@ -955,7 +955,7 @@
         "regression": "隔离MySQL正式映射重复零DML、热查询及索引压力",
         "budget": "页面及详情200ms、准备扫描500ms、正式样本导入5s、表及索引64MiB",
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6g-capacity-2026-10-21.json"
+        "evidence": "docs/evidence/release-rules-capacity-2026-10-30.json"
       },
       "integrity": [
         "已审核参数及引用精确集合",
@@ -993,7 +993,7 @@
         "regression": "分页P95和容量实测",
         "budget": "表和索引<=256MiB，首次导入<=60秒，列表/详情<=100ms；重复业务DML=0",
         "status": "measured",
-        "evidence": "docs/evidence/shareholder-return-p3-release-2026-10-22/paired-current.json"
+        "evidence": "docs/evidence/release-repurchase-capacity-2026-10-30.json"
       },
       "integrity": [
         "唯一编号keyset和剩余统计",
@@ -1023,7 +1023,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-performance-capacity-2026-10-30.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1059,7 +1059,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-performance-capacity-2026-10-30.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1095,7 +1095,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-performance-capacity-2026-10-30.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1131,7 +1131,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-performance-capacity-2026-10-30.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1167,7 +1167,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-performance-capacity-2026-10-30.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1210,7 +1210,7 @@
         "response": "详情1MiB；最多400成员；正文审计批读10报告/4000成员",
         "regression": "查询P95≤100ms，覆盖≤1000ms，导入≤180秒，Python峰值≤128MiB",
         "status": "measured",
-        "evidence": "docs/evidence/ths-holders-maintenance-capacity-2026-10-28.json"
+        "evidence": "docs/evidence/release-holders-capacity-2026-10-30.json"
       },
       "integrity": [
         "标签与正文集合匹配",
@@ -1249,7 +1249,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/tdx-performance-changes-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-changes-capacity-2026-10-30.json",
         "sample": "历史真实规范行作为明确fixture，5000证券×20合成月共100000事件；当前有限来源范围另见E6e实采报告",
         "growth": "一年20万、五年100万；来源实际容量另记",
         "page_limit": 200,
@@ -1289,7 +1289,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6d-unlocks-capacity-guard-fix-2026-10-20.json",
+        "evidence": "docs/evidence/release-unlocks-capacity-2026-10-30.json",
         "sample": "真实样本语义和隔离10万列表/20万明细放大",
         "growth": "一年2万列表与20万明细；五年10万/100万预测",
         "page_limit": 200,
@@ -1327,7 +1327,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6d-industries-capacity-guard-fix-2026-10-20.json",
+        "evidence": "docs/evidence/release-unlock-industries-capacity-2026-10-30.json",
         "sample": "原已审行业来源语义和隔离120月×100行业12000行；本轮实采24月703行另证",
         "growth": "五年6000行，来源窗口变化以目录为准",
         "page_limit": 200,
@@ -1488,7 +1488,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/ths-yuanhang-range-capacity-2026-10-26.json",
+        "evidence": "docs/evidence/release-yuanhang-capacity-2026-10-30.json",
         "sample": "100万日线/4000年度头/2000事件/30000股本/5578证券状态，独立MySQL",
         "growth": "2092万至3486万日线为线性规划，未实测全池；细节见实测证据和设计正文",
         "page_limit": 500,
@@ -1529,7 +1529,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/ths-yuanhang-range-capacity-2026-10-26.json",
+        "evidence": "docs/evidence/release-yuanhang-capacity-2026-10-30.json",
         "sample": "100万日线/4000年度头/2000事件/30000股本/5578证券状态，独立MySQL",
         "growth": "2092万至3486万日线为线性规划，未实测全池；细节见实测证据和设计正文",
         "page_limit": 500,
@@ -1571,7 +1571,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-yuanhang-limits-capacity-2026-10-30.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1613,7 +1613,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-yuanhang-limits-capacity-2026-10-30.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1655,7 +1655,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-yuanhang-limits-capacity-2026-10-30.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1697,7 +1697,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-yuanhang-limits-capacity-2026-10-30.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1739,7 +1739,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-yuanhang-limits-capacity-2026-10-30.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1780,7 +1780,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "evidence": "docs/evidence/release-yuanhang-limits-capacity-2026-10-30.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1822,7 +1822,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/tdx-hot-list-capacity-2026-10-23.json",
+        "evidence": "docs/evidence/release-hot-list-capacity-2026-10-30.json",
         "sample": "隔离500证券5000日期及15000席位，实际30随机股全历史另列",
         "growth": "每年2.5万日头、37.5万席位，五年12.5万日头/187.5万席位规划",
         "page_limit": 200,
@@ -1971,21 +1971,6 @@
       "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
       "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
       "policy": "现行契约基线，不授权新数据集整份payload兜底"
-    },
-    "stock_market_day.identity_extra": {
-      "purpose": "有界来源扩展或关联证明",
-      "limit": "16KiB",
-      "policy": "明确白名单，不保存事实序列或成功响应"
-    },
-    "stock_market_day.product_extra": {
-      "purpose": "有界来源扩展或关联证明",
-      "limit": "16KiB",
-      "policy": "明确白名单，不保存事实序列或成功响应"
-    },
-    "stock_market_day.source_metadata": {
-      "purpose": "有界来源扩展或关联证明",
-      "limit": "16KiB",
-      "policy": "明确白名单，不保存事实序列或成功响应"
     },
     "hot_list_day.auxiliary": {
       "purpose": "查询时刻活动次数和关联标签",

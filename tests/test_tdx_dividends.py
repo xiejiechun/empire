@@ -152,7 +152,7 @@ async def test_history_discovery_adds_nonquarter_and_requires_business_keys(monk
         return httpx.Response(200, json=body)
     c.http.request.side_effect = request
     if missing:
-        with pytest.raises(ValueError, match='未覆盖历史目录'):
+        with pytest.raises(ValueError, match='未覆盖历史目录.*SH:688110，缺少1项，示例业务键'):
             await collect_history(c)
     else:
         units, _, _ = await collect_history(c)

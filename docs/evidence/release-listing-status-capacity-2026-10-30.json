@@ -1,0 +1,362 @@
+{
+  "run_id": "2f9e48259ad942d1a617791ee3d674ca",
+  "mode": "verification",
+  "checked_at": "2026-10-29T18:40:56.191909+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\margin-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce",
+    "D:\\project\\empire\\src\\empire\\features\\listing_status\\contract.py": "e403764e544a3f9d84a5c78743d5a2b05303b653ec0830350f232c3bbef88245",
+    "D:\\project\\empire\\src\\empire\\features\\listing_status\\dataset.py": "aad79d06c42618f933176bfaddb738846cd76478a9b1e665017a33cdd6981453",
+    "D:\\project\\empire\\src\\empire\\features\\listing_status\\query.py": "ec02ef1e193993f68aba6a80ec1bc89d85ec9a4a0d4af89a782740f9e53f4bc1",
+    "D:\\project\\empire\\src\\empire\\features\\listing_status\\audit.py": "21007cf0251083d9c63bcc57b86a820fca4b6bd3b972aab637edf77f316a1c2b",
+    "D:\\project\\empire\\scripts\\measure_listing_status.py": "96486959ebc5eb7b37361cfdcbf9ae51ad3e69cb40e6c9afdbe662ea6f2c0088",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "D:\\project\\empire\\scripts\\source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "D:\\project\\empire\\sql\\business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
+    "D:\\project\\empire\\src\\empire\\contracts\\business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
+  },
+  "subject": "listing_status_capacity",
+  "source_sha256": "69d3124ade1b44ae7d5b34ea4ccb873324a80a554d2f6548ba9109f2a8fe652d",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "50000事件合成容量；不请求来源，不替代完整月份代理实采",
+  "storage": {
+    "database": "empire_verify_ths_2f9e48259ad942d1a617791ee3d674ca_test",
+    "namespace": "empire:test:verify_ths:2f9e48259ad942d1a617791ee3d674ca",
+    "run_id": "2f9e48259ad942d1a617791ee3d674ca",
+    "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+    "owner_sha256": "45cf06a450e8e2a28c997470a63476a162d99d7bb0a12f04296f990fb7c0bad4"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\margin-mysql-20261030-v2\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "bindings": {
+    "src/empire/features/listing_status/contract.py": "e403764e544a3f9d84a5c78743d5a2b05303b653ec0830350f232c3bbef88245",
+    "src/empire/features/listing_status/dataset.py": "aad79d06c42618f933176bfaddb738846cd76478a9b1e665017a33cdd6981453",
+    "src/empire/features/listing_status/query.py": "ec02ef1e193993f68aba6a80ec1bc89d85ec9a4a0d4af89a782740f9e53f4bc1",
+    "src/empire/features/listing_status/audit.py": "21007cf0251083d9c63bcc57b86a820fca4b6bd3b972aab637edf77f316a1c2b",
+    "scripts/measure_listing_status.py": "96486959ebc5eb7b37361cfdcbf9ae51ad3e69cb40e6c9afdbe662ea6f2c0088",
+    "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
+  },
+  "ddl_scopes": {
+    "security_listing_event": "2c6132301c2a621f83f4dc445ffad262ab9852971194e11549f7b6fa0fed0b46"
+  },
+  "measurements": {
+    "page_p95_ms": 2.022799977567047,
+    "security_p95_ms": 1.2058999855071306,
+    "page_after_p95_ms": 2.4491999647580087,
+    "type_p95_ms": 2.5037999730557203,
+    "detail_p95_ms": 1.0071000433526933,
+    "month_p95_ms": 3.431499993894249,
+    "import_seconds": 12.995528400002513,
+    "allocated_bytes": 48070656
+  },
+  "limits": {
+    "page_p95_ms": 50,
+    "page_after_p95_ms": 50,
+    "security_p95_ms": 50,
+    "type_p95_ms": 50,
+    "detail_p95_ms": 50,
+    "month_p95_ms": 100,
+    "import_seconds": 15,
+    "allocated_bytes": 134217728
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 50000,
+    "audited": 50000,
+    "months": 120,
+    "synthetic": true,
+    "formal_queries": true,
+    "cache": "unforced first; subsequent hot samples; no cold-cache reset",
+    "description_chars": [
+      32,
+      160,
+      2000
+    ]
+  },
+  "reviewed_tradeoffs": "正式列表不投影正文；详情点查；单月覆盖最多5000行。5万事件为独立服务容量实验，不是生产实采范围。首读未强制冷缓存，磁盘冷启动和全设备吞吐不作承诺。",
+  "first_query_ms": {
+    "page": 18.920400005299598,
+    "security": 1.214599993545562,
+    "page_after": 2.33510002726689,
+    "type": 2.5037999730557203,
+    "detail": 0.6675999611616135
+  },
+  "python_peak_bytes": 1756909,
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_listing_event",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "96",
+        "ref": null,
+        "rows": 201,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_listing_event",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_security_date",
+        "key": "ix_security_date",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 10,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "type": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_listing_event",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_type_date",
+        "key": "PRIMARY",
+        "key_len": "3",
+        "ref": null,
+        "rows": 25911,
+        "filtered": 50.0,
+        "Extra": "Using where"
+      }
+    ],
+    "month": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "security_listing_event",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "3",
+        "ref": null,
+        "rows": 774,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ]
+  },
+  "explain_analyze": {
+    "page": "-> Limit: 201 row(s)  (cost=2.05 rows=201) (actual time=0.0164..0.0823 rows=201 loops=1)\n    -> Index scan on security_listing_event using PRIMARY  (cost=2.05 rows=201) (actual time=0.0156..0.0728 rows=201 loops=1)\n",
+    "security": "-> Limit: 201 row(s)  (cost=3.5 rows=10) (actual time=0.0428..0.0448 rows=10 loops=1)\n    -> Index lookup on security_listing_event using ix_security_date (unified_code='000001.SZ')  (cost=3.5 rows=10) (actual time=0.042..0.0435 rows=10 loops=1)\n",
+    "type": "-> Limit: 201 row(s)  (cost=5201 rows=201) (actual time=0.145..0.489 rows=201 loops=1)\n    -> Filter: ((security_listing_event.event_type = 'terminated') and (security_listing_event.event_date between '2000-01-01' and '2009-12-31'))  (cost=5201 rows=12956) (actual time=0.144..0.475 rows=201 loops=1)\n        -> Index range scan on security_listing_event using PRIMARY over ('2000-01-01' <= event_date <= '2009-12-31')  (cost=5201 rows=25911) (actual time=0.139..0.38 rows=603 loops=1)\n",
+    "month": "-> Limit: 5001 row(s)  (cost=156 rows=774) (actual time=0.0062..0.221 rows=420 loops=1)\n    -> Filter: (security_listing_event.event_date between '2000-01-01' and '2000-01-31')  (cost=156 rows=774) (actual time=0.0058..0.203 rows=420 loops=1)\n        -> Index range scan on security_listing_event using PRIMARY over ('2000-01-01' <= event_date <= '2000-01-31')  (cost=156 rows=774) (actual time=0.0051..0.127 rows=420 loops=1)\n"
+  },
+  "queries": {
+    "page": {
+      "rows": 201,
+      "read_bytes": 25259
+    },
+    "security": {
+      "rows": 10,
+      "read_bytes": 1255
+    },
+    "type": {
+      "rows": 201,
+      "read_bytes": 25527
+    },
+    "month": {
+      "rows": 420,
+      "read_bytes": 253324
+    }
+  },
+  "imported": 50000,
+  "repeat": {
+    "status": "complete",
+    "row_count": 20,
+    "written_count": 0,
+    "confirmed": [
+      "2009-12"
+    ]
+  },
+  "revision": {
+    "status": "complete",
+    "row_count": 20,
+    "written_count": 1,
+    "confirmed": [
+      "2009-12"
+    ]
+  },
+  "samples": {
+    "page": [
+      18.920400005299598,
+      1.8358000088483095,
+      1.6411000397056341,
+      1.4719999744556844,
+      1.3487000251188874,
+      1.3899999903514981,
+      1.93500000750646,
+      1.2913999962620437,
+      1.3296999968588352,
+      1.8782999832183123,
+      2.022799977567047,
+      1.5878999838605523,
+      1.443799992557615,
+      1.5592999989166856,
+      1.8912000232376158,
+      1.433999976143241,
+      1.742499996908009,
+      2.0130000193603337,
+      1.9372999668121338,
+      1.4768000110052526
+    ],
+    "security": [
+      1.214599993545562,
+      0.7126000127755105,
+      0.9648000122979283,
+      1.2058999855071306,
+      0.7055000169202685,
+      0.48909999895840883,
+      0.826300005428493,
+      0.7933000451885164,
+      0.7531999726779759,
+      1.124700007494539,
+      0.7828999659977853,
+      1.187400019261986,
+      0.8795000030659139,
+      1.1168999481014907,
+      1.1566000175662339,
+      1.04010000359267,
+      0.7729000062681735,
+      0.8753000292927027,
+      0.692299974616617,
+      0.8590000215917826
+    ],
+    "page_after": [
+      2.33510002726689,
+      2.4491999647580087,
+      1.6796999843791127,
+      1.5965000493451953,
+      1.6611000173725188,
+      1.5179000329226255,
+      1.5427000471390784,
+      2.0007999846711755,
+      1.9631999894045293,
+      2.1902999724261463,
+      1.8396000377833843,
+      1.9348000059835613,
+      1.7586000030860305,
+      1.4918000088073313,
+      1.6347999917343259,
+      1.7857999773696065,
+      2.8251000330783427,
+      2.048900001682341,
+      1.8038000562228262,
+      2.196400018874556
+    ],
+    "type": [
+      2.5037999730557203,
+      1.7346999957226217,
+      1.465699984692037,
+      1.736300007905811,
+      1.9811000092886388,
+      1.6627999721094966,
+      3.003799996804446,
+      1.6967999981716275,
+      2.3910999880172312,
+      2.1945000044070184,
+      2.462300006300211,
+      1.6892999992705882,
+      2.3394000018015504,
+      1.9043000065721571,
+      1.8028999911621213,
+      2.411800029221922,
+      1.9590999581851065,
+      1.7675000126473606,
+      1.5165000222623348,
+      1.5015999670140445
+    ],
+    "detail": [
+      0.6675999611616135,
+      0.6402999861165881,
+      1.0071000433526933,
+      0.8289999677799642,
+      0.8874000050127506,
+      1.1081999982707202,
+      0.9949000086635351,
+      0.49459998263046145,
+      0.48129999777302146,
+      0.4564999835565686,
+      0.700299977324903,
+      0.6095000426284969,
+      0.8191999513655901,
+      0.40770001942291856,
+      0.35589997423812747,
+      0.7074000313878059,
+      0.5374999600462615,
+      0.8328999974764884,
+      0.4895000020042062,
+      0.5720999906770885
+    ],
+    "month": [
+      3.035200003068894,
+      2.93220003368333,
+      3.6226000520400703,
+      3.0101999873295426,
+      2.3766999947838485,
+      2.804799994919449,
+      2.3302999907173216,
+      3.185699984896928,
+      3.242800012230873,
+      3.0113999964669347,
+      2.9227000195533037,
+      2.446300000883639,
+      2.3536999942734838,
+      2.7765000122599304,
+      2.604799985419959,
+      2.335099969059229,
+      2.586200018413365,
+      2.37499998183921,
+      2.5371999945491552,
+      3.431499993894249
+    ]
+  },
+  "cleanup_protocol": "shared finish; final durable report after independent cleanup",
+  "correctness": {
+    "all_rows_equal": true,
+    "row_count": 50000,
+    "content_digest": "6bdeb74d390650f0703ebeaee340c6db168fbf08a198871b16d1543caf1c0825"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}
