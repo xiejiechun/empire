@@ -109,3 +109,5 @@
 新增 `yuanhang_limit_pool`、`yuanhang_limit_member`、`yuanhang_limit_reason` 三张固定来源结构化表。由 `scripts/create_yuanhang_limits_schema.py` 在正常关闭程序、核实共享待归档队列及已有业务后显式新增，启动不执行迁移；上线状态及实际历史覆盖见 [实施记录](../docs/ths-yuanhang-limits-implementation.md)。
 
 龙虎榜三表 `hot_list_day`、`hot_list_reason`、`hot_list_seat` 属于固定tdx数据，备份恢复时连同 `collection_state` 核对；新增结构只通过显式维护入口执行。
+
+个股融资融券的 `margin_security`、`margin_daily` 保存完整证券响应证明和结构化日数据，备份恢复时连同 `collection_state` 核对。现有部署正常关闭 Empire、确认待归档为0后，通过 `scripts/create_margin_schema.py --apply` 显式追加两表；启动不迁移。

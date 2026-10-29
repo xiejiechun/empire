@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.fixture(scope='module', params=['additive.themes', 'service.yuanhang_service', 'management.identities',
-                                      'computation.market_review'])
+                                      'computation.market_review', 'additive.margin'])
 def added(request):
     changes = json.loads((ROOT / 'docs/assembly-feature-changes.json').read_text('utf-8'))
     addition = next(c for c in changes if c['path'] == request.param)
@@ -92,6 +92,18 @@ def test_source_service_cannot_declare_business_or_non_source_plugins():
         wrong['after']['order'][group] = ['collector.disguised']
     with pytest.raises(ValueError, match='source plugin'):
         validate(wrong)
+
+
+@pytest.mark.parametrize('group', ['plugins', 'tasks', 'datasets'])
+def test_preview_only_collector_still_requires_business_groups(group):
+    from scripts.assembly_additions import validate
+    changes = json.loads((ROOT / 'docs/assembly-feature-changes.json').read_text('utf8'))
+    change = copy.deepcopy(next(c for c in changes if c['path'] == 'additive.margin'))
+    assert not change['after']['semantic']['pages']
+    validate(change)
+    change['after']['semantic'][group] = {}
+    with pytest.raises(ValueError, match='exact identities'):
+        validate(change)
 
 
 def test_all_additions_preserve_frozen_global_order_together():

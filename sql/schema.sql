@@ -1135,6 +1135,33 @@ CREATE TABLE IF NOT EXISTS yuanhang_limit_reason (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
+CREATE TABLE IF NOT EXISTS margin_security (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    row_count INT NOT NULL,
+    first_date DATE NULL,
+    last_date DATE NULL,
+    contract_version INT NOT NULL,
+    PRIMARY KEY (unified_code),
+    CONSTRAINT ck_margin_count CHECK (row_count >= 0 AND row_count <= 10000),
+    CONSTRAINT ck_margin_bounds CHECK ((row_count = 0 AND first_date IS NULL AND last_date IS NULL) OR (row_count > 0 AND first_date IS NOT NULL AND last_date IS NOT NULL AND first_date <= last_date))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS margin_daily (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    market_volume DECIMAL(28,8) NULL,
+    market_turnover DECIMAL(28,8) NULL,
+    close_price DECIMAL(28,8) NULL,
+    financing_balance DECIMAL(28,8) NOT NULL,
+    financing_buy DECIMAL(28,8) NOT NULL,
+    lending_balance DECIMAL(28,8) NOT NULL,
+    lending_sell DECIMAL(28,8) NOT NULL,
+    PRIMARY KEY (unified_code,trade_date),
+    KEY ix_margin_date (trade_date,unified_code),
+    CONSTRAINT ck_margin_values CHECK ((market_volume IS NULL OR market_volume >= 0) AND (market_turnover IS NULL OR market_turnover >= 0) AND (close_price IS NULL OR close_price >= 0) AND financing_balance >= 0 AND financing_buy >= 0 AND lending_balance >= 0 AND lending_sell >= 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
 CREATE TABLE IF NOT EXISTS hot_list_day (
     unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     list_date DATE NOT NULL,

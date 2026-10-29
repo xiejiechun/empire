@@ -31,7 +31,8 @@ def validate(change):
                     for g in ('tasks', 'datasets', 'pages'))):
         raise ValueError('Source service additions must contain only plugins')
     for group, items in value['semantic'].items():
-        if not isinstance(items, dict) or (not service and not management and not computation and not items):
+        if not isinstance(items, dict) or (not service and not management and not computation
+                                          and group != 'pages' and not items):
             raise ValueError('Additive feature groups must contain exact identities')
         ordered = value['order'][group]
         if (not isinstance(ordered, list) or len(ordered) != len(set(ordered)) or set(ordered) != set(items)):

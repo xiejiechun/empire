@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "codes": {
+    "688256.SH": {
+      "rows": 1521,
+      "digest": "726bc5caf836ac8af34e23810bb162dc6542ea92e89cb7853da2cdb6631c7389",
+      "first": "2020-07-20",
+      "last": "2026-10-28"
+    },
+    "000001.SZ": {
+      "rows": 4025,
+      "digest": "898b2307639affcd3036b86706cc9961c05fdfa4c96f39533a5f7d2f192cfc6c",
+      "first": "2010-03-31",
+      "last": "2026-10-28"
+    }
+  },
+  "routes": {
+    "proxy_requests": 2
+  },
+  "responses": [
+    {
+      "code": "688256.SH",
+      "bytes": 104678,
+      "sha256": "f24e14df40f9f1208a56f7b1c2fef30a78b15aca40de79b6f8b54cccfdcac82a"
+    },
+    {
+      "code": "000001.SZ",
+      "bytes": 280767,
+      "sha256": "df2177f202a871dc32f8517004e6a5473a993c99fbad11ed17d42d5322e59164"
+    }
+  ],
+  "pending": 0,
+  "schema": {
+    "applied": true,
+    "queue": 0,
+    "tables": [
+      "margin_security",
+      "margin_daily"
+    ],
+    "exists": {
+      "margin_security": true,
+      "margin_daily": true
+    },
+    "ddl_sha256": {
+      "margin_security": "db985a2b615c10f985fd74d6c5ff7baf89807698d9034a61d0877ffa382ba577",
+      "margin_daily": "8a5cc57c3013c496ef93276b975857e8178b6449d1d6f475793b5cd26433e23f"
+    },
+    "unchanged_existing_business": true
+  },
+  "existing_inventory_sha256": "8a6fdcba69699a674b0784ada5af070ebf0bf70e1bbb0121f07e561cebf763da",
+  "config_preserved": true,
+  "desktop_verified": false,
+  "desktop_reason": "User pressed Escape to stop Computer Use; no further UI actions",
+  "isolated_mysql_shutdown": true
+}

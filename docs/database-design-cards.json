@@ -1846,6 +1846,45 @@
         "tests/integration/test_hot_list_archive.py",
         "tests/test_headless_pages.py"
       ]
+    },
+    "margin.tdx_security": {
+      "tables": [
+        "margin_security",
+        "margin_daily"
+      ],
+      "grain": "完整证券响应头与证券交易日七项原始数值，单证券事务",
+      "identity": "固定tdx；unified_code/trade_date",
+      "dictionary": "docs/tdx-margin.md",
+      "queries": [
+        "单证券日期范围游标200",
+        "全市场日期索引游标200",
+        "证券完整历史审计10000",
+        "日期范围聚合"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/tdx-margin-capacity-2026-10-30.json",
+        "sample": "21证券20000行，其中一股10000完整历史，独立MySQL",
+        "growth": "6000证券250交易日/年；五年750万行",
+        "page_limit": 200,
+        "response": "单响应10000行及共享generic上限，规范正文4MiB，队列512KiB",
+        "budget": "完整证券初始化10秒，列表100ms、历史1秒、重复零业务DML"
+      },
+      "integrity": [
+        "来源Count/总数/页码/列定义",
+        "日期严格倒序唯一",
+        "同数异集",
+        "冷热摘要零业务DML",
+        "旧响应",
+        "SQL提交后重放清队"
+      ],
+      "lifecycle": "用户指定每股10000条完整历史每日核验；按已入队证券恢复，Redis丢失重新核验，失败不升级全池",
+      "delivery": "共享代理预取/入队/归档/查询；create_margin_schema显式追加两表，发布与桌面另列",
+      "tests": [
+        "tests/test_tdx_margin.py",
+        "tests/test_margin_lifecycle.py",
+        "tests/integration/test_margin_archive.py"
+      ]
     }
   },
   "json_roles": {

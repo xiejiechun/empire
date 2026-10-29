@@ -1,0 +1,2904 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-29T17:15:28.486615+00:00",
+  "source_sha256": "60a7558714719db4ea422429a4603fd6c1be3982c33b651c0d0e3656c2bacc46",
+  "report_sha256": "9b0137b62327cb1a334f8bbea64d5edb9deba8c1399d94c273353c3d150bcf0f",
+  "frozen_source_directory": "build/margin-frozen-20261030",
+  "runtime_bindings": {
+    "src/empire/features/margin/bundle.py": "85476e4cd636a7c7a03ed5e36eb3546c9b5eb656b3daffb9bede0a36f15cf5f0",
+    "src/empire/features/margin/collector.py": "c230cedb69431204cfeacb29582c9ea00249d293126d9f55422605a07f0b755c",
+    "src/empire/features/margin/contract.py": "63fd4e7ce66947e5ffeaac30565529f50b954646745f6bf71165e6dcae4c656a",
+    "src/empire/features/margin/dataset.py": "767a7bf7410ace672ca584d61292eb65e3269cc80eaf03eb1a9ebfba86b891da",
+    "src/empire/features/margin/query.py": "91d283e1fe386f72024c3cf00e7316792747dddc8a882f5619cb0c0e2479538b",
+    "src/empire/features/margin/source.py": "96a391f06a7baacf1c223cd238321a98fb17640963ca00daa33d53d3286ae67c",
+    "src/empire/features/margin/__init__.py": "a87695f78c23225d9187a486dc136e853c09e75de3efd9835861a81acfb11c99",
+    "src/empire/features/builtin.py": "cbf61c02641804feb0e013649297bb2a45da77849777d9bd52490367dd942a28",
+    "src/empire/desktop_bridge/preview_catalog.py": "70ac7b0afdb0ab0b1fbac550306e5e8474f8a3141785903f670d8b1cad6c6e46",
+    "src/empire/desktop_bridge/preview_fields.py": "ea48d05e430bb4c6640b0f657ef7a3c0ea5bc2f7f578116e1dee568ed1d716ee",
+    "src/empire/desktop_bridge/preview_presentation.py": "86d06da05fd6c3b55b85dd93082e8782fed33deb226b7b3b3a85b5ff5b84f040",
+    "sql/schema.sql": "ede0e0aa631b46f5aef7221de4226897a4780860eae90e33ab7cd9eb1672081e",
+    "sql/business-schema.json": "596861901ed5886c753bcb45e6d1941b38976dc1396f090a6581c4b1ad2ca2a1",
+    "sql/schema-contract.json": "0959412cbd1bf47ff3d5a1dd3412909cac371d213716cb19c2fc548aa4ba5043",
+    "scripts/verify_margin.py": "ab0b656e614f39cfe415f5e6b2b54653c46096871144e59d7f7d34a703f1da99"
+  },
+  "runtime_equal_to_workspace": true,
+  "pool_count": 5579,
+  "pool_digest": "401b4e0650dd9c79a84ca510e395f2af04ead1b3c19232dd46bdd66ae4c66e6d",
+  "seed": 20261030,
+  "algorithm": "fixed regressions first; random.Random(seed).sample sorted remainder to ceil(pool*0.05)",
+  "fixed": [
+    "688256.SH",
+    "000001.SZ"
+  ],
+  "sample_count": 279,
+  "actual_ratio": 0.05000896217960208,
+  "total_rows": 316238,
+  "logical_requests": 279,
+  "transferred_body_bytes": 19987737,
+  "routes": {
+    "proxy_requests": 279
+  },
+  "pending": 0,
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "errors": [],
+  "samples": [
+    {
+      "code": "000001.SZ",
+      "count": 4025,
+      "bytes": 280767,
+      "sha256": "df2177f202a871dc32f8517004e6a5473a993c99fbad11ed17d42d5322e59164",
+      "first": "2010-03-31",
+      "last": "2026-10-28",
+      "normalized_digest": "898b2307639affcd3036b86706cc9961c05fdfa4c96f39533a5f7d2f192cfc6c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000045.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000066.SZ",
+      "count": 1742,
+      "bytes": 122466,
+      "sha256": "b20b0bf934898ceabfe042c066e6b9751bb1790da0ea2e172bdcf081dbbbf09f",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "bbe10b72581c7a9833e9addb855caf23bf893d468077f2f215139995c13ea037",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000420.SZ",
+      "count": 973,
+      "bytes": 62026,
+      "sha256": "ea443fd160a985abe722100b4cc7c76283c03bb65f0b6b26720bb45f138849c3",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "8e0869ddb4049d4440b78e573afe67af6c94372ffac25854545ecda818beeb20",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000510.SZ",
+      "count": 72,
+      "bytes": 4636,
+      "sha256": "3df1ef0ff014730af909b9efb405b5221e4310b4cd7442f338efc581e2c5546b",
+      "first": "2026-07-13",
+      "last": "2026-10-28",
+      "normalized_digest": "81d6dc9e455b0fe6ace42740aeb56385d77cc9e8962c007106e9886eebb79630",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000524.SZ",
+      "count": 973,
+      "bytes": 60402,
+      "sha256": "eac96f8a669119a9090924da507875beb3ef3a57f3331266c7cd484e618d821d",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "5ed19090310b375983ac9f69ea6e2d0f1457029a5cad7600afedb5a2bd7a0387",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000534.SZ",
+      "count": 973,
+      "bytes": 60465,
+      "sha256": "d18fcc5ec187a24e19e9e57535fa7a5a96be858509b5058735f33b1442001d14",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "d6a10fe9fad4dfdac27146c92f68c1e3dcefe2a91842dc9bafaa4f7103bcd1c4",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000682.SZ",
+      "count": 973,
+      "bytes": 63890,
+      "sha256": "dc1b823a24f11a793bfc6c19c9b79edbbbd9855d58c3c9f201cc99e15e75fef9",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "70fc63b41bbd773b260765033e1dfb05503fcab2f872a56759832f6df50aaec7",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000692.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000815.SZ",
+      "count": 973,
+      "bytes": 60216,
+      "sha256": "ac88d84694a2c751a0222c4795ff082ca21c4eab70d69909e6dbcb3f593c21cf",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "6f121126e42335f6d8dd3134b0cc7e3ad67e1ba8fc38ac65b17c404043143f9c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000831.SZ",
+      "count": 1906,
+      "bytes": 130576,
+      "sha256": "ba96b06843b8e55be5107c84d650d6e9345ff5b90fb3a2523593e57823eb2e1f",
+      "first": "2013-09-16",
+      "last": "2026-10-28",
+      "normalized_digest": "e30c41586b955e3f7ec48d28dacbae7f505e0fe47539d0ea34fb387a3032f170",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000833.SZ",
+      "count": 128,
+      "bytes": 8775,
+      "sha256": "8667ce2da71dea7e3e6b9a7ca168735c797c740c6fc7fe31921a165ad699c543",
+      "first": "2026-04-20",
+      "last": "2026-10-28",
+      "normalized_digest": "4d266db07ef0424ac929dcc334e5d2c61fc6f695f6975101bdc07383c896127b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000837.SZ",
+      "count": 973,
+      "bytes": 64108,
+      "sha256": "9895e833f9b3cba68cca9d90340ab759a8b4f4f119b3efd93f21ca2a8f8d5639",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "287204435bb766ca1f204b393c7c1a25f754fad23706462edee33fe60c1cb63c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000860.SZ",
+      "count": 3334,
+      "bytes": 217245,
+      "sha256": "4f31c861881f48900b8000b0c71aaad71aa3048a0b0fea89c5f03c7e219becef",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "4f17979a335cae86bf041855089e6012ddf3be26bf3fd5ddc2172e17b0b26b5b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000880.SZ",
+      "count": 313,
+      "bytes": 20490,
+      "sha256": "6a46c955a5c0bcf3e29c8b222bb274a457367b9d03c39aaf9d4c65f1ebf805a1",
+      "first": "2025-07-14",
+      "last": "2026-10-28",
+      "normalized_digest": "2fa225c4ea1a47649c24bf813a51916ae7a2e3c166adb8db1a9fc4d7b26d9cef",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000901.SZ",
+      "count": 2938,
+      "bytes": 187443,
+      "sha256": "85fc556adc03e9d9fe260bbb97df342efe0919aae596b209f1a7f4c1aff7df43",
+      "first": "2014-09-22",
+      "last": "2026-10-28",
+      "normalized_digest": "16e1d398a10b34fe8461d9e556fc787bc085732991c192406bc78869f099b510",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000932.SZ",
+      "count": 2107,
+      "bytes": 141400,
+      "sha256": "0ef63c82f2b8b1a3c7ae63037f50314754b3d792d2896e398af21c1356424c6b",
+      "first": "2010-05-07",
+      "last": "2026-10-28",
+      "normalized_digest": "f7ce665ffe45dd0f84fac9fc13c5a9c25ab678b2bcc73a3e3be582d16ef36960",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000949.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000957.SZ",
+      "count": 2397,
+      "bytes": 151323,
+      "sha256": "2674e30b4ed03117fd77868f9bc22aac17839231fee08232d117ad66f26ccbe0",
+      "first": "2016-12-12",
+      "last": "2026-10-28",
+      "normalized_digest": "93e55e29491fda07ab937d569b8b616c9159da1d8d4b13bddac936cb9a98b53a",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000958.SZ",
+      "count": 1742,
+      "bytes": 109870,
+      "sha256": "1180dd06850a705d3f3daa7bd5887a967ac2fc3cb62f3999b1d1cc6f9f2e84a0",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "fc3faada0a9c7b18d580e531158cd7ab19c6779036e9c70f18c86181bf373f1c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000968.SZ",
+      "count": 2782,
+      "bytes": 171078,
+      "sha256": "ca87aa7a8b5448d1067f781625e40075af0cf70f850edabf96e03e71d38a36cb",
+      "first": "2011-12-05",
+      "last": "2026-10-28",
+      "normalized_digest": "ee9be852e37b97aaa897c3c7462345f33297d26ed8fdfc2d66eb3f2998ffa0c3",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000975.SZ",
+      "count": 3334,
+      "bytes": 214666,
+      "sha256": "1a0b2cfa3b2525cf8a1621c9283588e6376fecb0746f68e2506576cc293d6856",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "062f0768c36fa80f61c22439f305f42b719383b5398d9830f72392380894706d",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000978.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "000980.SZ",
+      "count": 764,
+      "bytes": 46190,
+      "sha256": "7d6d5112cd33b25aaad253aa55b2138cb9ea35d6480741ff887d5985726898a1",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "a3006ed6377d0c3860d7e2aedb04fbfa08fe946ecd6fdc5e3919d2b377e691d8",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "001205.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "001258.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "001330.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "001395.SZ",
+      "count": 422,
+      "bytes": 24789,
+      "sha256": "ddd2d4f0b33183da5afe100e2751903a32542afde3bc522cd050e9035b921805",
+      "first": "2025-01-27",
+      "last": "2026-10-28",
+      "normalized_digest": "2982999db93b6402aa5c27a21dbcc4ff1220534e8e34610f9a1f620aa37e779d",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002011.SZ",
+      "count": 3334,
+      "bytes": 208851,
+      "sha256": "8317eae8c35d10d52168d62a21afba8c2d32aa57e549c3d5b0f6649a618c4c43",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "81a0e7fe3254f7f87437d7ac20f91188d227211fefd08d4dedfa32297128618a",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002020.SZ",
+      "count": 1742,
+      "bytes": 112044,
+      "sha256": "4f0138f002011f0d8c0f8911fada3c1bcf7ce20d5ea0b94a08d8d2d6a1e76b60",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "6bbfbbda17f1a8a56ad4653f1dfe2b2f555f072b903e3eb988596d6d2e64d156",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002023.SZ",
+      "count": 2938,
+      "bytes": 190259,
+      "sha256": "69b4ee20b3e36649f84aef65085ac62fbb9cadddd8cb4d9b878964f78d1f8558",
+      "first": "2014-09-22",
+      "last": "2026-10-28",
+      "normalized_digest": "034d10c5a96d95e9873d5e9942f47640eab5a63e7134689151637e668af08a93",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002044.SZ",
+      "count": 1742,
+      "bytes": 118130,
+      "sha256": "4f0f5070c5d7bfd91b41285abc8dd5e8382889fe12a92d37e5c4aa707450540a",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "6d818c0932c3754f74fe95f466524b9df623718de024320962eee29654bfc1ee",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002060.SZ",
+      "count": 973,
+      "bytes": 61899,
+      "sha256": "198a2423bda81f01905603be521b929763364a5b9a4137267aa013541f04721c",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "d9b2aebf010112169b906344c6debcf2eabeb2c1cd4b6cb5e35699d047924710",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002067.SZ",
+      "count": 3334,
+      "bytes": 203889,
+      "sha256": "dd0683e725b3a538a269026480ac383da7e7a23386375fa146bf46e95c8f29aa",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "e0b9568fd44ce5987ff546e810c7f69b2bbfae927e5d0225f02a9c5cecfd5a3b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002079.SZ",
+      "count": 3185,
+      "bytes": 204540,
+      "sha256": "5029b622846665c02db5ec3511ee94f52dd38fe478e460912bfeecbb6a8409e4",
+      "first": "2013-09-16",
+      "last": "2026-10-28",
+      "normalized_digest": "44091b35e21d5d65ae8f3aa9fa7e485ebbb6af81b177620a6accb078260791be",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002146.SZ",
+      "count": 3616,
+      "bytes": 237760,
+      "sha256": "486d34a9a10f736c22450ea1b933d06c4d376bbe0ab524c76273b72664398591",
+      "first": "2011-12-05",
+      "last": "2026-10-28",
+      "normalized_digest": "e0aa1946d3f1eb667b9999836faed3ff6cec50e523a8a018cc353b33311f6404",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002158.SZ",
+      "count": 3334,
+      "bytes": 211492,
+      "sha256": "cb394b079c7bcd48ab0f4ae0b4681dae81a1ebfd00e23ac50ee409597140f611",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "733b1d2904bc7c9db01971d5cdf41783a72761603dd5c2efd67064ef752fda88",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002164.SZ",
+      "count": 973,
+      "bytes": 57294,
+      "sha256": "98924deb60f87494144869ea169477f5a788d306586294472bb6bc13aca7f9f5",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "413f128eac32aa2d1a2ff4236beb571acf364880403a5becb006a95985d03164",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002166.SZ",
+      "count": 1742,
+      "bytes": 105584,
+      "sha256": "a199cceded1046bffbc1ecfbb74698a4896a4d43b1532ceee3dbecb703b150a1",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "6e611353e683113cf749c00d812c520dc8d3d8dd47a5643b10a6614e18e7e872",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002175.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002179.SZ",
+      "count": 2938,
+      "bytes": 193367,
+      "sha256": "9cb9a72f9f3b80e3cb76aa21ba015dc1f182c914ed807f40681bee382cc5283f",
+      "first": "2014-09-22",
+      "last": "2026-10-28",
+      "normalized_digest": "20958e732f6b60645f1c55663f01c9c767ce67783a0f1733a90067e71dcae203",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002180.SZ",
+      "count": 1950,
+      "bytes": 127561,
+      "sha256": "120876a9166b707388b64e7d69c4e7dc57f6b51d5dfa3a7f467cd171f7602506",
+      "first": "2018-10-15",
+      "last": "2026-10-28",
+      "normalized_digest": "9ee23e186948d75335b7fba27c69ae6accb317e99a9dab84b509b6a8df97cd50",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002199.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002201.SZ",
+      "count": 973,
+      "bytes": 59858,
+      "sha256": "d850c8f973e5419c3ed3c62d4c6bfbce7f11836fc1585ad48bea96cb8c182989",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "a64cdc4b7125de158f3bdeea861edc0b6ed52a96941e116e6d1ed34ad926b8af",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002228.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002236.SZ",
+      "count": 3334,
+      "bytes": 228468,
+      "sha256": "b72b752e41b56eac2ea12fe1b80741f0b98d2a0314b75a413731bbe492e83617",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "f46649735e4a65548b585aaa78ce36bd2b3e20fda0716024ac14f282d5165c35",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002243.SZ",
+      "count": 1742,
+      "bytes": 109588,
+      "sha256": "4db60d0f0156c47641bbf7f0940b816e01edb8a8a0041a3c6cc9f46a3ea0c208",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "818c856801fc4f582945da48a6f3bc3fe9a387e0869e3670db79bd304ca95478",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002275.SZ",
+      "count": 3334,
+      "bytes": 205818,
+      "sha256": "3625dd9d95cedfd08232011ca4ce7c82f270a646f39e69450e2d5eb622c582b1",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "19674d25237b9d13856a6c242203b4a165e0c60078ceb455dfd32e6f16b9360d",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002307.SZ",
+      "count": 2938,
+      "bytes": 187338,
+      "sha256": "7a3233bba94c84d9d0ec0e1f2a454a3d59df504f14bf094a2c660df6dc3c0a00",
+      "first": "2014-09-22",
+      "last": "2026-10-28",
+      "normalized_digest": "be3b5768b8122e8f26773ff5839fea3d0becb3f431554da10c88bb59b2f2f822",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002310.SZ",
+      "count": 2730,
+      "bytes": 174504,
+      "sha256": "b4ae083f6ae43d5498437c93c059d98c949ce83da251870c349441ecbf82b44c",
+      "first": "2013-01-31",
+      "last": "2024-04-29",
+      "normalized_digest": "884c8b115d748645152f71991b87f21b19034e8d4935e03cd734b6f614f282ba",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002340.SZ",
+      "count": 3334,
+      "bytes": 226251,
+      "sha256": "cb7be920bacae063f1742cb4570ac57bca01783b4636c03be91cb23d1e43d6de",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "144a3aa238cc2c5bc359690184e01a0f61fbb36f0fbfaafb53aba7d50830626a",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002360.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002397.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002409.SZ",
+      "count": 1526,
+      "bytes": 102002,
+      "sha256": "c2f1fde7590b816ef23a8e149de6a7bbbab3419d71782440b3460d181cf3d049",
+      "first": "2020-07-13",
+      "last": "2026-10-28",
+      "normalized_digest": "3f0e8a62b8b941fcc9d5cc953a8712091168fd85accf05206d572776654d2c85",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002458.SZ",
+      "count": 1742,
+      "bytes": 114093,
+      "sha256": "0e38517ace99a2f4c6a3230788da669df8fbe2a8d2c7c8fbe933f00006d6a987",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "2493507ae6463c8b17967eb162bf7cd0164ba02b5687fd42f5d2433d517feca8",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002461.SZ",
+      "count": 2938,
+      "bytes": 180912,
+      "sha256": "f8297a4d6882068970ee7d206224cd6885f0ed56d0478f76ca9dce1a98916cd0",
+      "first": "2014-09-22",
+      "last": "2026-10-28",
+      "normalized_digest": "3a2c8d022acb0c6adb90300b55f9f321fceb52a142e986037cb1663e45f27b9b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002516.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002533.SZ",
+      "count": 973,
+      "bytes": 59643,
+      "sha256": "44654bc634d95d8005406067e79886ec30e5fab4605867eff9c5202c18c18b75",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "639ae8fbbadb7964633b3c459b14bd8d48843f87baf590eaedb1b7200b47a004",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002554.SZ",
+      "count": 973,
+      "bytes": 58708,
+      "sha256": "f56d36d40f9c8d1d2fb9c03ef8a14b939a6ea69d27f10e68c448a88cb4810827",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "fffcee3215225636a0f09c201903245b5f3d86cfc940b9088b9b863fd884cc55",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002559.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002566.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002592.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002596.SZ",
+      "count": 1742,
+      "bytes": 107067,
+      "sha256": "43cb378ae554ea3589aad7d3b5d668bc4d0197f6516c000bce3cf2ccb0f84006",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "b7336f67d50513d5b5e4163a52111221b104514dd7e0cc3722f70f8977e13dfe",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002606.SZ",
+      "count": 973,
+      "bytes": 58216,
+      "sha256": "844951c60510ada51016678cfc73767cc69f4fd440d7eb0d18bed81c94cd4c84",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "be64bec435a657d4051defa6f45b0c2e684acf9f9097a155a9436a3d59e63ca6",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002609.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002668.SZ",
+      "count": 559,
+      "bytes": 35610,
+      "sha256": "cdfe0102055295fdd59e52063bcf6a7a903894448a35290cb31cf4c5e6720203",
+      "first": "2024-07-08",
+      "last": "2026-10-28",
+      "normalized_digest": "3ccd83e011719a38908c3220d0dc13559b09eb8f716f4598a3d8a25e01e90bbc",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002673.SZ",
+      "count": 3334,
+      "bytes": 226870,
+      "sha256": "5e20b7cc9c6eda1404208cb53a0d6363a1a790f2ef8d0142982f9957a4786a5a",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "ac8f238b57cedc17208145f637cdbb440c391f16325aaf2947c8b10bc394127c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002688.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002690.SZ",
+      "count": 1742,
+      "bytes": 111243,
+      "sha256": "973d08d47a4778b831d22091a240a687ce8549f465b6614ae0c8957dfe1f83ac",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "593cf2c28bba65a6e837e6a5e02fb03438fbb61d3231a49c76070413cbccbcc2",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002733.SZ",
+      "count": 1742,
+      "bytes": 111975,
+      "sha256": "859503fd881b2dfe47fe08eb6e5a7e1d399ac03c24b2989d7b6f89cc410bb0cf",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "dfda8454abab998c3e64f06d1b6b5c363d1510b6839ead48ac8413956972b2e8",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002748.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002758.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002775.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002792.SZ",
+      "count": 1742,
+      "bytes": 110489,
+      "sha256": "87a4387f5417da6afe1fddb3b6448a3c9d455ae25bdb0d6cb3a2bc6786faee85",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "eb05124c7d69f7c809e0ba264509e05904c0174d8b4f37122ee567e0d0d99552",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002822.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002840.SZ",
+      "count": 973,
+      "bytes": 62761,
+      "sha256": "4fc6ec2345c6455e77e5ed73660ebc86c08ac843f08d47fffa4e1dd5f9979125",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "713d4920a8aff633a0e972686065b4028a7b69d6910888b923a6e7649ee821ba",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002845.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002849.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002870.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002884.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002899.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002966.SZ",
+      "count": 973,
+      "bytes": 65151,
+      "sha256": "63c8ce50a33f63d761a06192f9b01e7d2242aa694ce93038ed84cc49f9a9d349",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "14bfa2fac5a9147103a4a711ae2602ba59324a25616a3ce6c20f373ae2f82111",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002971.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "002990.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "003030.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300010.SZ",
+      "count": 2317,
+      "bytes": 145908,
+      "sha256": "2b849828de67f5efef987462eb93ab18de27a3a3f232dc0380b6712a83f14cf6",
+      "first": "2014-11-07",
+      "last": "2026-04-30",
+      "normalized_digest": "f88ad49eb71e47361232d9caaea0c721178c7476a00ef27cda24f9d411461b94",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300018.SZ",
+      "count": 1742,
+      "bytes": 102160,
+      "sha256": "7652103e012081524bd1ca2d60c2d356136a6f749e4a324978847546eb0be1e8",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "efc18ac9f140388e595774e01292ea8db35cd0ac397915cab87fbf575e2f381a",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300046.SZ",
+      "count": 491,
+      "bytes": 30502,
+      "sha256": "e19d11969733d15364d808ff858c9f8929c1bea35f65c3ccd999f9095841e043",
+      "first": "2024-10-21",
+      "last": "2026-10-28",
+      "normalized_digest": "09929e0e39fb223f94cbf2567a0c97c9e35bbf568a50d9790dee3a198bc054b6",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300047.SZ",
+      "count": 432,
+      "bytes": 27896,
+      "sha256": "509eb0879985b859e75308434a02b6e7894dfcd3789cc2eb9d5434ecbb5b7747",
+      "first": "2025-01-13",
+      "last": "2026-10-28",
+      "normalized_digest": "1c0269adc49ffc576da349ffca66197884eb69e1feb81d1973d3a23b098c4f3d",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300093.SZ",
+      "count": 1291,
+      "bytes": 73755,
+      "sha256": "6be80bb9a56364784d0cdff7cba9b3cdcf7262ce0aed4badf973f63981fb87eb",
+      "first": "2014-09-22",
+      "last": "2025-04-29",
+      "normalized_digest": "e053df18bf2b06ecabe4e46c70166e0c9997859c9562088aaa30e4e70a9fbca2",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300144.SZ",
+      "count": 1828,
+      "bytes": 122806,
+      "sha256": "9b26e68e02c9f9ec764e2548e3c83e62d1f238bf91ef011020aa83ba2f03f945",
+      "first": "2019-04-15",
+      "last": "2026-10-28",
+      "normalized_digest": "2e43bebe5286f0390fca25c2efcb5b1ab673eb6346a826101647e3635d4da29f",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300146.SZ",
+      "count": 3185,
+      "bytes": 206934,
+      "sha256": "a2ac85c77b6ea8b2540a7b7294a21f3c893957874a8d38793940342a9011b27b",
+      "first": "2013-09-16",
+      "last": "2026-10-28",
+      "normalized_digest": "2271735e90291d532d510d3fe9b6a403cb84cf273b2f26c6a5d7318cc09cc051",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300149.SZ",
+      "count": 973,
+      "bytes": 60902,
+      "sha256": "689abedd2bb7558002d70a8dea48befeda12edd5c9b9b234fc61dc04f4eb5f87",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "19f26db045163c3e93e5e13cb79de17ef46cf3f5be1918bc4c2b5b4890cd8833",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300170.SZ",
+      "count": 2938,
+      "bytes": 192020,
+      "sha256": "4008d685dec01bc9cd266ae834fd1ce768bf36b56d177a8ecb6d1e476f82c256",
+      "first": "2014-09-22",
+      "last": "2026-10-28",
+      "normalized_digest": "50cf50b0f592f7beabfe209dae409bfacf3a1d9129743453b5638b7f5f304b18",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300176.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300219.SZ",
+      "count": 973,
+      "bytes": 60296,
+      "sha256": "69d892bf3a5a1c3881eebe095db4c55fc7b36d2f1d836ba3f71195ff910fde24",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "fd657295fcb7db2936ddf4a4367a408993efe21443e5ca259697f425ef885074",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300239.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300303.SZ",
+      "count": 973,
+      "bytes": 64080,
+      "sha256": "bd7442620dc698f55a96dfcea47a8fc482b79bc56bac4994a98f35cdc3c1c861",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "c906c2c93331a8c54f0ebf4f02858081017a5fd7123211697d1ef24065400184",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300337.SZ",
+      "count": 973,
+      "bytes": 60243,
+      "sha256": "5b9cac5164631ac1da894e38fe35074a146a8adc411d16c06ede68dd26161fee",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "a63861c46468e351b398c5057e9cc8a4e095dfdb1a139b4dc5e590f6bd571665",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300360.SZ",
+      "count": 973,
+      "bytes": 61675,
+      "sha256": "127925dd0d2d70c003f2c054116ed9a2f3f39fb550182d0e388d9b218ceafe75",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "9ee1235d602847d4e4b9017df7ed12434ce662a09c8e0edca61d62fb351e6da4",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300363.SZ",
+      "count": 1283,
+      "bytes": 85111,
+      "sha256": "2ae1a6734ecb93dd32841b0e9b07ab9225fbb2b9bd39dcd43184707f476a5089",
+      "first": "2021-07-12",
+      "last": "2026-10-28",
+      "normalized_digest": "bddaba88852312a4c95926c1d29bdc4982c7fe4a7f15a08b1bba8b33e967163a",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300443.SZ",
+      "count": 973,
+      "bytes": 62977,
+      "sha256": "9ab978a8d2e8817fb086a2d96d3ac9b9f3811f44e45a48e9bbe62489ff64d2a3",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "8a0a63f8b264a2f77a9359af526c143689a7e00cb3b0454475e16058177a5d91",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300471.SZ",
+      "count": 1742,
+      "bytes": 106675,
+      "sha256": "9e7f0440ac64e30af6cc47aef8668e9b8ef3933a456de5fe7a1d22d7fc06e814",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "537dc87c0ffafb98d4e642a6a5b03101521ff147e4267fab7b7c6f64724f9dc7",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300478.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300513.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300515.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300519.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300534.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300561.SZ",
+      "count": 1376,
+      "bytes": 84832,
+      "sha256": "34588429621732cd70862be13e6327e5d97184f39c0b69ca13ae5e7962e3a9d0",
+      "first": "2019-08-19",
+      "last": "2025-04-23",
+      "normalized_digest": "1050196689f94f59c3e85dbc044836e9c577a0ad2171a6132cc7d0409c9a5759",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300563.SZ",
+      "count": 491,
+      "bytes": 30212,
+      "sha256": "547e035a01a8c2240d30b8889cb6a2e023b852df3c865c9d6912dcd0e765a2ac",
+      "first": "2024-10-21",
+      "last": "2026-10-28",
+      "normalized_digest": "9793f8fedfc8f806450a56e1a905e1ae87258a17226ece1f71dbf4c5f130ea18",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300572.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300587.SZ",
+      "count": 973,
+      "bytes": 62415,
+      "sha256": "afdfe47ca1a959105a084dd853fcf9838fbe42c1d3d827193aa84804f6243f47",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "e1ac4c9990ed863f925c85e1b3e71f6561c61847ed36a6e7c5c8bdfb2ee4ce06",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300599.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300621.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300626.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300647.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300699.SZ",
+      "count": 1742,
+      "bytes": 114958,
+      "sha256": "484bce8f3bd286278bfda95c13daae9a6e66ba0355e6fb06700f2120b4f692a0",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "a2e1f1fb08b10914a8a1bfb97d767351657c0088dfe52a043214f7aff93d8d20",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300723.SZ",
+      "count": 800,
+      "bytes": 51972,
+      "sha256": "4f7d977c8d88a51e95d2405381aa86ac1d238134d5b8cf4c5215ccf66dd820a8",
+      "first": "2023-07-10",
+      "last": "2026-10-28",
+      "normalized_digest": "9c3dddadfe4c205732ebf39f79624a0646e757d87a468be9b60de787f872c99b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300732.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300746.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300766.SZ",
+      "count": 313,
+      "bytes": 20234,
+      "sha256": "8f1766c899204df871fa81ad263110649fa15bd57e40e74373c1e24c2092b720",
+      "first": "2025-07-14",
+      "last": "2026-10-28",
+      "normalized_digest": "74e26f6f9cd0bf52f73c24ac5f4f59bbb15482e38c9e06a3ffadfb020fdd86bd",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300774.SZ",
+      "count": 1266,
+      "bytes": 72160,
+      "sha256": "0132ac182d06b31aca3f38a67d51bcf630cc09086d4c16231b706a2af73ca17b",
+      "first": "2021-08-04",
+      "last": "2026-10-28",
+      "normalized_digest": "334b9a773aafdc998cad96a4f5ec6ad1ed1260366ab97efb4971d9f519f1d43a",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300775.SZ",
+      "count": 973,
+      "bytes": 64750,
+      "sha256": "d50c8d914b62caa2f82f13348262c749e553ea9d29bab7e5ad3273ad8a83f80c",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "d2c7647d9b6a93bffd381048686c9dbc296ec810bc73fb4b8b4b1d01a3fe5948",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300782.SZ",
+      "count": 1526,
+      "bytes": 103668,
+      "sha256": "2b362aa08593155d16740f815b63a819cce6fbd59c0a98f3a25ccc0d132e3c1c",
+      "first": "2020-07-13",
+      "last": "2026-10-28",
+      "normalized_digest": "22908e5a90bee414dd47dcdaff24a96eff737d97be7d950856dabf6bcd16d31c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300783.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300802.SZ",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300879.SZ",
+      "count": 1490,
+      "bytes": 86604,
+      "sha256": "ca9b791d1e65debce7b536b41fd2d7217c5ad899bb0c0dfbd9e3e06a7f03e58d",
+      "first": "2020-09-01",
+      "last": "2026-10-28",
+      "normalized_digest": "78d0c9b9b5db97d717e7f05abf01429c9a5e14cd29fb7c331bf5dc0bd76394d6",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300885.SZ",
+      "count": 1483,
+      "bytes": 85093,
+      "sha256": "8da498ba8762c97a828a786d4aea61a0e09d3a86544081e0625fe5b06fc2ffd4",
+      "first": "2020-09-10",
+      "last": "2026-10-28",
+      "normalized_digest": "3ea8f231e386a5bfa98cf0d15dfa0905391c429df82e0ed08da2deee684472aa",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300893.SZ",
+      "count": 1473,
+      "bytes": 85767,
+      "sha256": "56ec4f0ccc144be3e6aba37681caf985348a87b5e5f7a4df18b4b4ed432deba4",
+      "first": "2020-09-24",
+      "last": "2026-10-28",
+      "normalized_digest": "535230e3d9bc3c94f7ef28078908d3a2fdb949512948e0e5eefa9b6fc58df906",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300916.SZ",
+      "count": 1430,
+      "bytes": 83166,
+      "sha256": "96a2e4881022b77fa0e739d44fccb023f0dab93c99b6244b3ae01c21cb9038a6",
+      "first": "2020-12-02",
+      "last": "2026-10-28",
+      "normalized_digest": "0bcf563cf1acd33e002cf182240a680047b46bd572bee6241a3267075811b2a9",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300921.SZ",
+      "count": 1416,
+      "bytes": 83880,
+      "sha256": "57b019770c8e640246c473f37e08f227a002e7e6a0ff53f3975bf788a3f23ef4",
+      "first": "2020-12-22",
+      "last": "2026-10-28",
+      "normalized_digest": "a769629816ff45ab98c72d09d48ab72f27d84b9761d3b26328a94cf790eac8b7",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300935.SZ",
+      "count": 1396,
+      "bytes": 77846,
+      "sha256": "6722c17f527911465820d67baa7b771fa4e9a07a9ab8d5a96cb2f757c5c891d2",
+      "first": "2021-01-20",
+      "last": "2026-10-28",
+      "normalized_digest": "496682c7ef820af481dbbb931f5915ffd11cd907e22b9c775f74d485feb6fc5f",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300938.SZ",
+      "count": 1391,
+      "bytes": 81740,
+      "sha256": "58274234c9ad2920c2277f36d39105a6c1eab220e26b28fbea67359979b1f86b",
+      "first": "2021-01-27",
+      "last": "2026-10-28",
+      "normalized_digest": "2f46b5adc4070265b4b5183ce6eb957a72f65b052cb55c7a1c87a1b72c372529",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300939.SZ",
+      "count": 1390,
+      "bytes": 82181,
+      "sha256": "aad1b4b68ef90f9b108c09d9f09b0afff2421197e7f80145ca85f67f2ee01e70",
+      "first": "2021-01-28",
+      "last": "2026-10-28",
+      "normalized_digest": "b51ee47652ab588f03c4056c9bbded0a246f7c242ed9ca05bcb658eafda70072",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300945.SZ",
+      "count": 1381,
+      "bytes": 81498,
+      "sha256": "306f26edeca853b27167429b85f95aa9b372b68c2cd28d17a3a93162bbe7d2aa",
+      "first": "2021-02-10",
+      "last": "2026-10-28",
+      "normalized_digest": "d019d670645299ce10518ef1abd7e1aa32876ebab46b8a656b074da039b2fb03",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300948.SZ",
+      "count": 1375,
+      "bytes": 77445,
+      "sha256": "2aa40d0ed1f9133724770cf28513c3b7bedd307da8215eb983467795fcadfdfb",
+      "first": "2021-02-25",
+      "last": "2026-10-28",
+      "normalized_digest": "406b0ac65a7f2172d8b5a1c75a9dc521df8fae492d5a12d671c4b382f950f249",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300953.SZ",
+      "count": 1360,
+      "bytes": 85989,
+      "sha256": "9d8e3ca73f4d458cd3f800a49a8a4d4a10034a64c8d9f47f153be847032e3a2c",
+      "first": "2021-03-18",
+      "last": "2026-10-28",
+      "normalized_digest": "1b92b79ebd42394f2a2ee7c833f5a9d99ee5b1a5bfbd33f7327fbd4ae526df30",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300956.SZ",
+      "count": 1354,
+      "bytes": 79838,
+      "sha256": "78ee0fa164eb799f339f08d2a498f1f44daa20606c814753919dc45819ffa0c7",
+      "first": "2021-03-26",
+      "last": "2026-10-28",
+      "normalized_digest": "fedefd31febbe0c1a7253de6469886d869aa4c9ecc450dfcf53884365beb12f5",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300957.SZ",
+      "count": 1355,
+      "bytes": 89313,
+      "sha256": "5ca12f0b8c3b70152b1463c46c68df85cef7bec958c6946d706118a7fe6d0518",
+      "first": "2021-03-25",
+      "last": "2026-10-28",
+      "normalized_digest": "502b752f6830cf27768f125ca330508106214e45e399b2ae4877f27ccc497bc7",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "300988.SZ",
+      "count": 1325,
+      "bytes": 77385,
+      "sha256": "4217228ac8a821dbf94dd4c84bd39469da89f899eedf7aeb17299dce75ef2609",
+      "first": "2021-05-12",
+      "last": "2026-10-28",
+      "normalized_digest": "f500f406bc93da32896f9d62bc92e0a910706105015c383c1eaa8b618c9400fe",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301012.SZ",
+      "count": 1297,
+      "bytes": 76941,
+      "sha256": "ac0eac15f19c29cd0ae0d7081ff6da32c02922f3b4cbd172ddc1e8ed2adb4136",
+      "first": "2021-06-22",
+      "last": "2026-10-28",
+      "normalized_digest": "d8f04aab73deeb0dc7e735d5d2a1cfe2b7054123b439a150654e79bc4462e6de",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301016.SZ",
+      "count": 1291,
+      "bytes": 73727,
+      "sha256": "6afacc66638f61c94b42e915a38a2ea8751f2d80604b5d77d0cf0698e78d05d0",
+      "first": "2021-06-30",
+      "last": "2026-10-28",
+      "normalized_digest": "eae4e17f54c8f83387315443b18a05fbbac04ae6ee422a312bd2d3f09ee9e47b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301055.SZ",
+      "count": 1243,
+      "bytes": 71415,
+      "sha256": "51e469a8e292969f6652fcb06b1d2ff0d1cf4ac0f02f007c644224db239a3e2d",
+      "first": "2021-09-06",
+      "last": "2026-10-28",
+      "normalized_digest": "29603c902e2fea97da4ccbddfce9bcf997b86c5866ef934d4e3a681e349da2fa",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301062.SZ",
+      "count": 1237,
+      "bytes": 72915,
+      "sha256": "a88422e74658dc3929cb1fa12a07c5499b9f2c6996a974a83abb6381ee1a5753",
+      "first": "2021-09-14",
+      "last": "2026-10-28",
+      "normalized_digest": "24371a271abd24c1a548199de9d3d133a6cd2f2e7453be5d9d48fcb45b57cf6d",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301082.SZ",
+      "count": 1213,
+      "bytes": 74179,
+      "sha256": "82db029f5d6f161cf2a880aab444abbf3108a8f6d6e1b80c01ff37acaad47722",
+      "first": "2021-10-27",
+      "last": "2026-10-28",
+      "normalized_digest": "6e174a3770168af7a59afd713b78bc8a4ee85131e9223322102ab65d6286a367",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301168.SZ",
+      "count": 1181,
+      "bytes": 68295,
+      "sha256": "88ea65c9a254283df65a0248e64f158fe5b5a9601793aa7bc1c66ba790772893",
+      "first": "2021-12-10",
+      "last": "2026-10-28",
+      "normalized_digest": "2e0e217a142cfd8b01a8b32f5fa110c3f5d8e4a83e827ce939128c4d8d538f88",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301198.SZ",
+      "count": 1187,
+      "bytes": 67952,
+      "sha256": "727380c999981e0e907a801cc9ba33b129fdbbeabd4a5ebe0f1f12c88b772eee",
+      "first": "2021-12-02",
+      "last": "2026-10-28",
+      "normalized_digest": "91bb6283b590045e9e2627ed764fb22d8444e06de2d7629999c24d45f690a641",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301213.SZ",
+      "count": 1185,
+      "bytes": 67646,
+      "sha256": "197803c72f6e72da08ad086ac8be15d2e5fd8ade131693dc8b8d35bf8f814976",
+      "first": "2021-12-06",
+      "last": "2026-10-28",
+      "normalized_digest": "760951e76b399e2ca35faeab47574cee1fd9081afce26f0a05ad72a89afdb92c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301233.SZ",
+      "count": 1045,
+      "bytes": 59652,
+      "sha256": "dd6631532c2a31a36f099a0d6e02c6437908ac6295fe2cbbcd7a03163a54d302",
+      "first": "2022-07-06",
+      "last": "2026-10-28",
+      "normalized_digest": "005812da5bc7d3a333ba276890ccae193de1eb4f1aaf8a5904cc4abc209a0b22",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301265.SZ",
+      "count": 934,
+      "bytes": 54652,
+      "sha256": "f165510f1c0dbd1c4d419966ee2e0471419f246e94746590965ec2c9ecf6e8fe",
+      "first": "2022-12-16",
+      "last": "2026-10-28",
+      "normalized_digest": "bcdd29f3596d8d2c08896f2b3a875b99832c0bb84ad4090919bc34c36d21a5a1",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301305.SZ",
+      "count": 832,
+      "bytes": 49153,
+      "sha256": "82ef1416360e4bdf0f09fe6908322680d82d961affef31747e0fe3f67e55d7af",
+      "first": "2023-05-23",
+      "last": "2026-10-28",
+      "normalized_digest": "5ca534eec93c98afdbed8ff78bb58108831dd967f875c6542e92763251968fca",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301360.SZ",
+      "count": 849,
+      "bytes": 49590,
+      "sha256": "08c586fe2241adab335c3670fb00c23f2ab8c42ef840f455b6ada245a6ada9e0",
+      "first": "2023-04-25",
+      "last": "2026-10-28",
+      "normalized_digest": "fd9c3271060360ca5ab3cea3e2b199c546b00006414bc224075b5450566b3590",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301363.SZ",
+      "count": 981,
+      "bytes": 61154,
+      "sha256": "ecc854fbc879b1e6245f7332038e9da8be1e9b4643d5b30c8d5b9cb178e23a9c",
+      "first": "2022-10-12",
+      "last": "2026-10-28",
+      "normalized_digest": "a0e5e8fa8be00b9a9e60a7ab5b6b397263000e9e0b358df9795e24e356244f5f",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301398.SZ",
+      "count": 935,
+      "bytes": 55979,
+      "sha256": "685263d4824e0329d3a4b543171e1b82e472f255625bfcf9167981122ca74afa",
+      "first": "2022-12-15",
+      "last": "2026-10-28",
+      "normalized_digest": "ce8822a06d940bbffddf68ea1e95c7be96cbfcaf755a686733ead70015648ba9",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301468.SZ",
+      "count": 790,
+      "bytes": 46060,
+      "sha256": "9a2ff37f42fd8b017bc2c012804159a163483605b07fb0ca9b1e8895b4af6898",
+      "first": "2023-07-24",
+      "last": "2026-10-28",
+      "normalized_digest": "7b6631f1213a94fb238502df4ddde88566ad74e36bca653ef5bd0f79f39df622",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301609.SZ",
+      "count": 306,
+      "bytes": 18059,
+      "sha256": "f9500e385f0f7168e1c91c4d86b46537ca4266287d711a2fd241bd98addd49b1",
+      "first": "2025-07-23",
+      "last": "2026-10-28",
+      "normalized_digest": "063923e03a80da70a6d4110fc62d259682e0a0e7fdc0ff168ddd84a6c48d7903",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301622.SZ",
+      "count": 459,
+      "bytes": 28599,
+      "sha256": "5d25d0b606c9aac7bdf4273c6789e3c8a5975a60f553ae84e8516505af1eede9",
+      "first": "2024-12-04",
+      "last": "2026-10-28",
+      "normalized_digest": "273693c4ac21c91a8efa983f5a87f86e88dba6c68c15fe5a4ccf369724b07d49",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301629.SZ",
+      "count": 388,
+      "bytes": 24146,
+      "sha256": "022b36a197885c8437fa6495dac621f1ca6c9aef1f748bb817c14e5171927529",
+      "first": "2025-03-24",
+      "last": "2026-10-28",
+      "normalized_digest": "e8b35a66b51f0e8c2b8dba3eb36afe5a75a991501ec71daff741d2f66443d604",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "301683.SZ",
+      "count": 140,
+      "bytes": 8472,
+      "sha256": "bb93f774a321bad16f6f917ae4319fcc71ab1bad45c8b28faae77c06dcc50a61",
+      "first": "2026-04-01",
+      "last": "2026-10-28",
+      "normalized_digest": "9d9d96ac46e424cf23d23f83fbf2139881ca6a5cbec991061f85d2e637f43721",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600057.SH",
+      "count": 1742,
+      "bytes": 110904,
+      "sha256": "eb72f9f30ca4c3a572c0108b894afd47e3f74e8c1dd54937e21b98340ded7204",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "2ee73eb33ed1d0ef1cb6e87ec3b8a46b8da18506ff2a162cc5c110f3353c7b93",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600075.SH",
+      "count": 1742,
+      "bytes": 109439,
+      "sha256": "7e2ae96b74e9e2ca8a548e3db9681adb058425d3ae0c83d918dd38428ba7f11a",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "44fc89f9ebde360a05dadadb65f50344a838e637e2a7d8d42c5a8c285575989b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600096.SH",
+      "count": 3616,
+      "bytes": 234765,
+      "sha256": "59d7c45124683f90e9e6100f97b2785668c97dd7bde0b2eb9031a4de233c2413",
+      "first": "2011-12-05",
+      "last": "2026-10-28",
+      "normalized_digest": "0bd29d0d9d8602cfdc7258cf613ba00a9c1a6c5a17873ed64d0a6ed3989d59f6",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600107.SH",
+      "count": 2973,
+      "bytes": 181479,
+      "sha256": "b68a85ddad29887099d5ff361ca4f0b1f1c76b5655dacddb96f376d18297a6da",
+      "first": "2013-01-31",
+      "last": "2025-04-30",
+      "normalized_digest": "d42e1b8abd365d4888752e10cd105c247967127db811ded18bd6d960a103e13b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600111.SH",
+      "count": 3616,
+      "bytes": 254067,
+      "sha256": "5bf0d2715c8dc3182ddf792b63f990e525bdd46cea078ebc9bee6def5e85348e",
+      "first": "2011-12-05",
+      "last": "2026-10-28",
+      "normalized_digest": "a9f386b2bd5b7707fadac59b78276b2bb463f0d3637cead988fd96a5c390cca5",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600114.SH",
+      "count": 973,
+      "bytes": 63812,
+      "sha256": "fc0aebfa93cc1de74be124b09796dbbea86944e2fa465ede0c96b02511f55652",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "47dae7dc7d78c3cffe475aa989d4a26e4fbe94c727f6ddf9e5bccd81de9ffc42",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600171.SH",
+      "count": 2938,
+      "bytes": 195751,
+      "sha256": "5158bc8e1bbfb14f16cc13c32d3a5c22df787f7d9a213a1d9e961215a4cb2d46",
+      "first": "2014-09-22",
+      "last": "2026-10-28",
+      "normalized_digest": "c189d25f57e8ffd420f6a9349862ee928115b19669358271841ed076e8082e19",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600191.SH",
+      "count": 412,
+      "bytes": 23752,
+      "sha256": "261a0abe6082a75ee8ec23feb4206f63a16dc26c3cf5035cfc707952ad490256",
+      "first": "2019-08-19",
+      "last": "2021-04-29",
+      "normalized_digest": "3a1bf5c3eba45afbdae948b66aeda58b862179ba29190c62e8d8c56d771d2c5d",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600201.SH",
+      "count": 2927,
+      "bytes": 191125,
+      "sha256": "68f410aa913a0de2249a00d3054c139a85fd78797150015a8b56942d67c58206",
+      "first": "2014-10-14",
+      "last": "2026-10-28",
+      "normalized_digest": "b57e94872c2cf81a4db0525460862709bae59f3f6cdf2275c9825ea627e9284c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600219.SH",
+      "count": 3616,
+      "bytes": 238581,
+      "sha256": "39a6a9741bb83b9b84d82c6b4efb7fb6ab7d4faf91d1df4f9713a9e6ae5767f7",
+      "first": "2011-12-05",
+      "last": "2026-10-28",
+      "normalized_digest": "f228eb262042f6c7b19d1508b1117ef1ec614ef103d8f064b365bff0456ee335",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600234.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600238.SH",
+      "count": 612,
+      "bytes": 38411,
+      "sha256": "76db101639cb060d347b03c41c5b162a432bad61bda51bc9f9854130adce7386",
+      "first": "2022-10-24",
+      "last": "2025-04-30",
+      "normalized_digest": "df212187c7c53251dae359f7080a1d2172c1c002caf0bdc34e0329cfe6e46487",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600266.SH",
+      "count": 3616,
+      "bytes": 235156,
+      "sha256": "0365d2ae0517dd69dcf2a5e614294be930a457a628380c60cb0debd83e0092b3",
+      "first": "2011-12-05",
+      "last": "2026-10-28",
+      "normalized_digest": "cae10ca1c2f00ba6d279b003c40c5bfb2016936abc0973c25d9a20fa90fc24ba",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600399.SH",
+      "count": 973,
+      "bytes": 64351,
+      "sha256": "07d0a40ff7045514b724476b032aa82f0aa228efaada1c07a4523450c1026a46",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "fd50c8c751ae93e84c0d2db285306ef8bc2856f4ed301afa64d2ddd936729b8f",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600428.SH",
+      "count": 1742,
+      "bytes": 112731,
+      "sha256": "923d5d826ba73867ae0a56686bae1e5f3f3dbdd586e8f1ea08f54ec8d9b26d8e",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "5093057a9065e80e04064b0a15ac044caa214dcbaeafe025855d1c6b342d53df",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600449.SH",
+      "count": 3334,
+      "bytes": 209037,
+      "sha256": "9eeef046f107ef0b0365cc84f8dac10d5dd4a21f610da7ef52d409c509af06e1",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "626ce38131c53999835a2e44692449996374ef89317956eae34ace6d02f4caac",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600456.SH",
+      "count": 3334,
+      "bytes": 214693,
+      "sha256": "bced9c155489fb456c32c9c1894798f9dd5a6a4f325485a2494b20c91d78b370",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "aefea112f218bfb0096566c104681e48e676a3caf8bbdd5d51e4a647d68c2d89",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600477.SH",
+      "count": 1742,
+      "bytes": 110556,
+      "sha256": "567da57c2c240a12cc64397856a4b118c369aad93f7b7f6d6f24ea0929c184e9",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "71b9bff3490efd3aba3abc40ec9a3b8eb63ec47b4736c4662425a1950cf74178",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600498.SH",
+      "count": 3334,
+      "bytes": 222729,
+      "sha256": "59356e2dbc6c7763b4aa8b8c5d40fc4b0dc28d42cbc339de001f9455498fc9f0",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "b77099e767a163c4fec62519f136554c7a5de151c2f7cf3f1eb93c6b5af4ae95",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600633.SH",
+      "count": 3185,
+      "bytes": 207289,
+      "sha256": "db19d6bfe54501c96c21d65ebc5afed6a5dd76b543b3d42d7ca9bcae3df1b5ca",
+      "first": "2013-09-16",
+      "last": "2026-10-28",
+      "normalized_digest": "f22f50ffbd17b9959ed16f28a0a342d24f97d06d4d13829ef970eaadc5e62e66",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600638.SH",
+      "count": 282,
+      "bytes": 16845,
+      "sha256": "713b845aa5974e0338bec038c57255851ef5b9c024ea3269c6398bff21fcd4bf",
+      "first": "2011-12-05",
+      "last": "2013-01-30",
+      "normalized_digest": "5c8aad3719f08d4622cefcd0a1101144105a7375a00e59a9c616f8ecee0ff1a6",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600641.SH",
+      "count": 2024,
+      "bytes": 131416,
+      "sha256": "b1e70bbf053948c7ebae546e297627b009efe2523f2103de193014c564c24c80",
+      "first": "2011-12-05",
+      "last": "2026-10-28",
+      "normalized_digest": "6d317f25818a56c999b08873b571f370d4c709d69af1116dc8fe29d8f02db023",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600665.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600683.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600690.SH",
+      "count": 3616,
+      "bytes": 243818,
+      "sha256": "7f19a3696abac5a2102792f56328c13d3c9b6396b0e4e5a0681f66a4f35cb2a7",
+      "first": "2011-12-05",
+      "last": "2026-10-28",
+      "normalized_digest": "c927bf804853a899b5e143673f1d93867d9c237b9300c982b925ff84113e7914",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600711.SH",
+      "count": 3042,
+      "bytes": 196888,
+      "sha256": "08b11facda9f68a647f537f0cc4b156e59d8c7becfaeaf3064d33a993e228b19",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "9d74b211cee30b3d5d9db81a6cd0e894acfbb9290e3436d382c314a11e4168c3",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600759.SH",
+      "count": 2716,
+      "bytes": 166283,
+      "sha256": "c6879ff203e2129db35969017cdba0a5dcb7a9b9954d3b9951594bd122c76c2c",
+      "first": "2011-12-05",
+      "last": "2026-04-28",
+      "normalized_digest": "920eb44b2c73e38444df50b614dd9518609bcf035825c0b552345226395d9cb1",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600769.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600794.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600858.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600955.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "600956.SH",
+      "count": 973,
+      "bytes": 59954,
+      "sha256": "05bd02d5f6d8642de326192aa35036ca3ed0774b1883c7c98aa0c310f77c5997",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "f1c8de596bd0ddfdfc6780b4d3c6c8597de0e2e64111eb22529cda7597165c6a",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "601068.SH",
+      "count": 973,
+      "bytes": 59971,
+      "sha256": "d5ffb901c69a51cb88cafa1abeae563d5c08d4802a196c517748e84225904fa1",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "648b8daf0295a2d6d2e1f37eb7ffac73a24d619774d03f54cae79f437382e875",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "601098.SH",
+      "count": 3185,
+      "bytes": 205972,
+      "sha256": "294701cf47fe834c34a3d6ee5d87707bf4de1e1ef7ec3128568ab5cb7370ec91",
+      "first": "2013-09-16",
+      "last": "2026-10-28",
+      "normalized_digest": "0f60d08f6c8928a2e8b9ecf55cbfea04021c2560f518e7d12e533dfea2c47802",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "601333.SH",
+      "count": 3334,
+      "bytes": 218517,
+      "sha256": "ee6dd34c1619af0ac1901fae9db7c3f5214c86e4857cf953d2fce9b6232564d0",
+      "first": "2013-01-31",
+      "last": "2026-10-28",
+      "normalized_digest": "246c2f80c6e2d55aa514029cb1d0b87e20f5e3a7eb355056f9828fc69ca8d67e",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "601360.SH",
+      "count": 1742,
+      "bytes": 120498,
+      "sha256": "e86b5c05bacd0dbff6c3ae8cbf8d3d45942a2e7237d141b3410e92002f7a0d1f",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "b5080996e0c1d9dedd098a36178c4f1ab72d9f157d29c0ac54cfe72112b8553c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "601678.SH",
+      "count": 2938,
+      "bytes": 189256,
+      "sha256": "8957a89000dd3028e5fb1e882c7be013446159486e87b50d419679aaec90954f",
+      "first": "2014-09-22",
+      "last": "2026-10-28",
+      "normalized_digest": "ed4fb4e11cd00377591808a7ff58b02f081283c2c1e0b75b1883117f99c0fbbd",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "601816.SH",
+      "count": 1526,
+      "bytes": 103371,
+      "sha256": "7184c220b27a4f35c2525b520c24f42a4e111c155f9c2c38d2d265fb0e100867",
+      "first": "2020-07-13",
+      "last": "2026-10-28",
+      "normalized_digest": "2cef113093db1087602545779b125479ff359adc393df6b8f8601908539d79b6",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "601828.SH",
+      "count": 1742,
+      "bytes": 110451,
+      "sha256": "4b08d78aaa56d329dcbaba660622619c7a5d85c43aab1a9a14ba030474bfb1c5",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "de093126f6b4e1f1ef44306d4c187a452a112985c094c2229c7d5b3691fe003c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "601860.SH",
+      "count": 1742,
+      "bytes": 114332,
+      "sha256": "90daabcf5250d1acb9d992029d39181c8b10c4807a8b4827b14ed1b927fda94b",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "e7b31534b8cd0bd1ca3ff8c09c6ea7cc2a5c7f89f5764ae20ed8689d8d120728",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "601952.SH",
+      "count": 1742,
+      "bytes": 111471,
+      "sha256": "bfaf3b274353a4b4b212696cfd7d7810dbc271a1ff1628e131065d3d8a2c2917",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "9f5a9fa663b3773c02d7ad8f53933d31a36c77b75dc51b6dcfbea0524be6b067",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603040.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603045.SH",
+      "count": 1742,
+      "bytes": 104830,
+      "sha256": "a05a266430700002914b69d09a864b371ca691241eaa4cf093c550e1baff2dfe",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "da087423b515e2b91e200d445a17c778e5eb4d1b733ccb60d1220aa90664931e",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603067.SH",
+      "count": 973,
+      "bytes": 61209,
+      "sha256": "ce6d70169b31b7d8fb9cd8abe0b016aa65c3b7ab78da128c52fed54a6cb7af45",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "e90eccdcd4e824d7e33961078558d35dc95f093d10ea935b57a91a8051ad99f8",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603070.SH",
+      "count": 973,
+      "bytes": 56130,
+      "sha256": "1118088b8440bfd448adb9993331dc976afb7e38386d68eed8e6aad32bf83daf",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "226489f1397ba4a32d482faccab0f0fbf927fbcc4f1c6128d26228ebf54840d9",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603087.SH",
+      "count": 973,
+      "bytes": 65082,
+      "sha256": "4862ceb1ce751ac1354302f9a479f45058441222c3b4d08ade22c98c13242d89",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "e6135c96e0f3e69bee28591f0dc22f8149e013b00c043bb68b5ec7d79d911de2",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603102.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603205.SH",
+      "count": 478,
+      "bytes": 28280,
+      "sha256": "cafb0ecd5ba94909d8a355ab52fb258573ecb8aaa95e7a94ea18d5d8b1ec03c8",
+      "first": "2024-11-07",
+      "last": "2026-10-28",
+      "normalized_digest": "616217e0b55aa07d19c675115709e22f2330f700f0bb8da4a8802091e31c21ba",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603209.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603213.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603222.SH",
+      "count": 1283,
+      "bytes": 79296,
+      "sha256": "be2d0c20ee07212020742b50d16516e4f07e384f4f6a4b0641208e11c8a579b4",
+      "first": "2021-07-12",
+      "last": "2026-10-28",
+      "normalized_digest": "421dd0200d13a04ce22477d560a6e9a4025472f935bf58d05684b86362dad28b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603226.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603231.SH",
+      "count": 692,
+      "bytes": 40919,
+      "sha256": "dc6ebd43e13e700de81505c24d54f6dc1943b731fcda28fbc1875daf7c5744f9",
+      "first": "2023-12-15",
+      "last": "2026-10-28",
+      "normalized_digest": "9dd270abe8f790c73c141f8f4852dd636b964017fa2d76ea3e467e1472cf71ef",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603270.SH",
+      "count": 761,
+      "bytes": 45739,
+      "sha256": "b4ce5818c416fdaa10a6ed3a1399d773dcaa923704ca3f43ef91295657ab406c",
+      "first": "2023-09-01",
+      "last": "2026-10-28",
+      "normalized_digest": "9110ec1e25e565bfe4bab64b5fc8129115af4e240986dcfb4cff00682689872b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603389.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603407.SH",
+      "count": 116,
+      "bytes": 7225,
+      "sha256": "eba714756d629d6a076133517220f1165d55526f27936c873a5f41a492bd0a37",
+      "first": "2026-05-11",
+      "last": "2026-10-28",
+      "normalized_digest": "1ffdac8438727b9884816f676339fabe365c9d4eb801e4b578e875cd7e889255",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603435.SH",
+      "count": 107,
+      "bytes": 6618,
+      "sha256": "cbb40a14c4e53a40cc1a149ce1533f21fa0b5ef1800431ab5c46643174c60d70",
+      "first": "2026-05-22",
+      "last": "2026-10-28",
+      "normalized_digest": "16b0201c791c6f93088326bae92513b923b09baee33ec400b6614d9d2acab508",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603518.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603602.SH",
+      "count": 1742,
+      "bytes": 106485,
+      "sha256": "ba8cca3f114524655bae269b586c930f1cf76fc0787ba079635bce1343240d00",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "4e6d952691c9c9fbb696ab3851d8f99859e8f63923b8f118434640e0d094ec99",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603611.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603617.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603650.SH",
+      "count": 973,
+      "bytes": 64785,
+      "sha256": "58627be89febfaaeeba73566f96faa8e9e158a014b35c0926937e5deaffbc6a3",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "b5a99874cfb1631180bb7cb137e3c084ce15a2ce31fccfc1c52f0dbdcba4604e",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603866.SH",
+      "count": 1742,
+      "bytes": 112352,
+      "sha256": "ef095b6b44001e7fb36215f79987de6b9380b1c4efc52c84a1e08491143244d3",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "787195e42afbbba2b9d0abe6e8134287579155c6f784a90d3bbe15a4459bf774",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603882.SH",
+      "count": 1742,
+      "bytes": 113063,
+      "sha256": "45a0245d23d9aa651530c58b9225b7d4f4de70d0b565d498fd22269b8cdc0f90",
+      "first": "2019-08-19",
+      "last": "2026-10-28",
+      "normalized_digest": "f4036dd6166a278cf4f73fb49470c2ef0779d2829696175f8c6ae7a0e9f17c3f",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603908.SH",
+      "count": 973,
+      "bytes": 56370,
+      "sha256": "00639963f8b2c8b68743d5b3863a37afafa33bbbe63a3ee3a45f1bc0f4dc6159",
+      "first": "2022-10-24",
+      "last": "2026-10-28",
+      "normalized_digest": "beb0ef83adb9403db5eae6faeeb2fd389d380d32813675ad73e81897895ed735",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603966.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603976.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "603993.SH",
+      "count": 2938,
+      "bytes": 203946,
+      "sha256": "cf099ebb623ed25fce03ed377d4c98c748024c3e9928532a524fab7957b7418b",
+      "first": "2014-09-22",
+      "last": "2026-10-28",
+      "normalized_digest": "c3f7af60f390e4baa85d404912acafb3e01f7100fcb288020e6563516ab44961",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "605122.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "605196.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "605398.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "605555.SH",
+      "count": 0,
+      "bytes": 343,
+      "sha256": "9255636fd74f4e5fd3226cca1cc1c30d74f1d94fdae49fdec7bfe72514791ef1",
+      "first": null,
+      "last": null,
+      "normalized_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688072.SH",
+      "count": 1096,
+      "bytes": 72821,
+      "sha256": "89518e3bc9666358092a09fe2432d83b3fabba13003e06dfdbe294483c6c4423",
+      "first": "2022-04-20",
+      "last": "2026-10-28",
+      "normalized_digest": "2601d72193267040be29a22745cef0eb238d2878c54a362affa6f0de01bb54f5",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688073.SH",
+      "count": 982,
+      "bytes": 58253,
+      "sha256": "4cbf6b3bb4c0099607c0f2dc8d6185db558e6d4e6caf4060c9899342c2a8770e",
+      "first": "2022-10-11",
+      "last": "2026-10-28",
+      "normalized_digest": "efb9085abb6d4131a354ee8c11111509b086f6a8a2cd58b03dbd750651ae21f5",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688082.SH",
+      "count": 1197,
+      "bytes": 78435,
+      "sha256": "6a7dc8295af3adf5ddc971a871a9f1af9fc6e1180f40901ff53486ac3b9b26c3",
+      "first": "2021-11-18",
+      "last": "2026-10-28",
+      "normalized_digest": "5be4b79fdfef38eedc8a22a1333179bfecc7acb2a22347b7f0d13ba8b773943d",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688089.SH",
+      "count": 1599,
+      "bytes": 97739,
+      "sha256": "33bf779d56190fa4d317d9632eb77c0ba3a0ae24a07437f5b6bcbf9ba85cec2e",
+      "first": "2019-12-19",
+      "last": "2026-07-27",
+      "normalized_digest": "1380125a9f2907bad4c7891e16a0eb6cce454d5309f5c7a22d62a8f70dbc7bc5",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688092.SH",
+      "count": 1359,
+      "bytes": 78650,
+      "sha256": "44303de4161b556232ffaac755f8fbc7243b5c9bb05a33ee4c97c11861f11f80",
+      "first": "2021-03-19",
+      "last": "2026-10-28",
+      "normalized_digest": "429cad145329be469b2f172daf5453b71c8e7e8d8075cf5cee8309e0c4ce5229",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688109.SH",
+      "count": 1352,
+      "bytes": 76484,
+      "sha256": "679d2f69eb77b53b0aace00f0159f143a93b772967e62a9d8ed731ceab7119ec",
+      "first": "2021-03-30",
+      "last": "2026-10-28",
+      "normalized_digest": "1f7acc75f58983fbde0dcadb584465479240a2ff8756d7e23f1813268723ffe5",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688176.SH",
+      "count": 1162,
+      "bytes": 70620,
+      "sha256": "0ca0ec946ec38b54a86ff4db958086b749c9046393d28510b9d908d6e74bc162",
+      "first": "2022-01-07",
+      "last": "2026-10-28",
+      "normalized_digest": "484c1d62520dc2cdc7afd0ea6e07a0bd83886d29ef4791041a7d7590853f4e89",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688212.SH",
+      "count": 1200,
+      "bytes": 73613,
+      "sha256": "6ddecabb5a4757083d70191d087f1c9f6d2a2da2932f509043747da974bfb39c",
+      "first": "2021-11-15",
+      "last": "2026-10-28",
+      "normalized_digest": "c81baaeb02b8698c0e751a9d47d7105ff823d08549607e7cd683122f3f2825fd",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688230.SH",
+      "count": 1188,
+      "bytes": 70942,
+      "sha256": "d628a16bccd3fdaf3c28a21575c3b69b3aae93f90496517fbaaf8fe7c23d9602",
+      "first": "2021-12-01",
+      "last": "2026-10-28",
+      "normalized_digest": "b349eae1184f8821c704ad2f640b5a49dfc88dad8bfe523c92e74656bd79866f",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688255.SH",
+      "count": 1215,
+      "bytes": 72834,
+      "sha256": "91ee80f0574584313e439468a79428b02405e55ba6466d19230dcb578c142709",
+      "first": "2021-10-25",
+      "last": "2026-10-28",
+      "normalized_digest": "52b33445de55085665012d203aaf065a637f8fa5c77fc99bf7945a8030f081a3",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688256.SH",
+      "count": 1521,
+      "bytes": 104678,
+      "sha256": "f24e14df40f9f1208a56f7b1c2fef30a78b15aca40de79b6f8b54cccfdcac82a",
+      "first": "2020-07-20",
+      "last": "2026-10-28",
+      "normalized_digest": "726bc5caf836ac8af34e23810bb162dc6542ea92e89cb7853da2cdb6631c7389",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688266.SH",
+      "count": 1636,
+      "bytes": 106002,
+      "sha256": "c9cd34f43088485b6388560f9757b083ec83b0324f64ff8e953298ac50dcb596",
+      "first": "2020-01-23",
+      "last": "2026-10-28",
+      "normalized_digest": "a846b2e58a5650f440671d28bb85e5a70a3ee26ae5de68026fd5eff68758c1d8",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688277.SH",
+      "count": 1530,
+      "bytes": 96855,
+      "sha256": "0056f1adcbffc400601a8ed3b1f8b2c520f01c98296b42c2bd911d91143b4f87",
+      "first": "2020-07-07",
+      "last": "2026-10-28",
+      "normalized_digest": "dd34d90c7be86d6417bc3e6da964a6de61d2215d6c4c457c1dd3ab16b1d43eb4",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688290.SH",
+      "count": 1089,
+      "bytes": 65879,
+      "sha256": "4bf999ea27915faedd3f9d16558a9367d5c6fec0146c25af040d1a2f235d2be2",
+      "first": "2022-04-29",
+      "last": "2026-10-28",
+      "normalized_digest": "4fc3bd2fd2eec3efe6a1247e4d3d4e4f447ed704dfd137605d7fdc2997cdbff4",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688316.SH",
+      "count": 1362,
+      "bytes": 80297,
+      "sha256": "ade74c78a2402ad82414ffe9298efcd4864f22b0173fdd057f1e08d9def2c238",
+      "first": "2021-03-16",
+      "last": "2026-10-28",
+      "normalized_digest": "5e5c2d0413abe7faed5486a0ec35e0991516a9799c241addd540ae3e2a4979b3",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688350.SH",
+      "count": 1390,
+      "bytes": 79975,
+      "sha256": "884125b099d7dfde16ae0c1fb0858f5f92dbe5e1f85e34af613bd65fb76bcec2",
+      "first": "2021-01-28",
+      "last": "2026-10-28",
+      "normalized_digest": "9b7e1387e657ba775af9c12ac4f15a81bd05a653e0eb34246b35c5fcefe09689",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688450.SH",
+      "count": 790,
+      "bytes": 44949,
+      "sha256": "cf6b763063be2ecadc5420caa2062fd680b19e9ea6666d16965f5048d68d24f7",
+      "first": "2023-07-24",
+      "last": "2026-10-28",
+      "normalized_digest": "2fdebd3c5a4950b151d5d1c9d0083fb969a68985b1ed401d67bcc5acc345ff32",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688539.SH",
+      "count": 854,
+      "bytes": 51383,
+      "sha256": "2d837205f399aaeea91f29db38fa60d712df5db8f878f96ab0f0113702fdd515",
+      "first": "2023-04-18",
+      "last": "2026-10-28",
+      "normalized_digest": "d8e58197b6b78b85ee3411ecb8c70b07d5842195293b6a73d4818d862eaf5e9f",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688543.SH",
+      "count": 811,
+      "bytes": 50618,
+      "sha256": "6797fc840b5fe75de564e15fa7d49f0d93ba58fd31ecffbf90e7def0a463e6d7",
+      "first": "2023-06-21",
+      "last": "2026-10-28",
+      "normalized_digest": "91abed3ae53ce745fcc97581dc818d88ad65f939c75b3e0bfa3de4e596ee2616",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688548.SH",
+      "count": 774,
+      "bytes": 50031,
+      "sha256": "7a7a207f485e153267e276050f6614bdbf86d472c5a09196da5f105df7ccc5a9",
+      "first": "2023-08-15",
+      "last": "2026-10-28",
+      "normalized_digest": "032118093d1f16e9895e7e68b041d0e53b4a7f50fa6dc4a5323705959046a10b",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688558.SH",
+      "count": 1535,
+      "bytes": 92008,
+      "sha256": "675706d5b2cd9ce452e1197e2bc48852e48964949c1f9650e4a42df894fd6b2b",
+      "first": "2020-06-30",
+      "last": "2026-10-28",
+      "normalized_digest": "16517563bed3865da16ebbaf6a85cafbc76660a5879a79f5140f0726f7ddd52e",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688563.SH",
+      "count": 793,
+      "bytes": 50035,
+      "sha256": "52d08c2dd761256365d8788c13ed1ccf56ab24dfeae530a84d5213b689b09bcf",
+      "first": "2023-07-19",
+      "last": "2026-10-28",
+      "normalized_digest": "d5089a7e39d88fea7e4be249db4b9b42dafb4788886b8e66662946059d54f88c",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688578.SH",
+      "count": 1430,
+      "bytes": 93605,
+      "sha256": "de13f183a96f20fc72cbed260c56394e3e978d6ca5134b0443473b237820d83f",
+      "first": "2020-12-02",
+      "last": "2026-10-28",
+      "normalized_digest": "ea5c5d152b862c08acbe8001383f6905fb80f75399ccc92a0aa16bdd4d80e4c3",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688591.SH",
+      "count": 766,
+      "bytes": 46631,
+      "sha256": "db369520e48adc86cf33d98cc106401043ac819e8645126273dd6386d5314076",
+      "first": "2023-08-25",
+      "last": "2026-10-28",
+      "normalized_digest": "034fc3dc34ba8cfda0d44691d94135ab1dda08ead3869f4adaf29759a9784a88",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688625.SH",
+      "count": 1307,
+      "bytes": 77149,
+      "sha256": "707b8a8a5b7139152982b7043ea02e73dfae53dd60def84d58560c8148d36942",
+      "first": "2021-06-07",
+      "last": "2026-10-28",
+      "normalized_digest": "b6fdafeb3bc53097bb6bf6bf2a7222123e32c10891c05f7a753e630c250cc987",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688652.SH",
+      "count": 704,
+      "bytes": 43356,
+      "sha256": "315c3fd01624c7004c9f80a716893303f6b71ca925ff6d6ed391f7b1fa7c0aa0",
+      "first": "2023-11-29",
+      "last": "2026-10-28",
+      "normalized_digest": "efc6f829623f3077da184d0d2250b45776f1f1e5164ba6dfc1b4aaaf434dfa4f",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688667.SH",
+      "count": 1364,
+      "bytes": 79936,
+      "sha256": "ad1a25b2c07534da70fdb7aa12c68c1b6db77d283a1791d38d3b3cd7755e1333",
+      "first": "2021-03-12",
+      "last": "2026-10-28",
+      "normalized_digest": "3dc46890580ced84b46712f5f99e4dc43dae04e992bcfeb6dcd2dd41ca86e0c1",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688702.SH",
+      "count": 752,
+      "bytes": 47371,
+      "sha256": "1fc059ea5b85ef0c2092711963f63517d7ed53bff2d8dc7359bc5a031ec7301b",
+      "first": "2023-09-14",
+      "last": "2026-10-28",
+      "normalized_digest": "a62669b77f4bf70a0159616b88ca6f7c18894db29c762d0e1c344981a92a41ce",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688757.SH",
+      "count": 387,
+      "bytes": 23560,
+      "sha256": "3a65ff9ef0baabd5126d75f8cbcf0faff86de890e6e0433743b041c56fbdf75c",
+      "first": "2025-03-25",
+      "last": "2026-10-28",
+      "normalized_digest": "94db8a9d151a4934291d3af851d4528fb0adc6af9c190c61cd3df254f8d29bb2",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688759.SH",
+      "count": 243,
+      "bytes": 14485,
+      "sha256": "7943454d2da7bd3c96c6e5a75f1d0912f4222bec5cd252f6d9ffeb5da34570da",
+      "first": "2025-10-28",
+      "last": "2026-10-28",
+      "normalized_digest": "4b46f169e1003266cfde09c1dc54bb5945be3ceae5cd5004ff02e694fe515f45",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "688799.SH",
+      "count": 1282,
+      "bytes": 77568,
+      "sha256": "0f56ef38a2798eeb3929e197693551746bfe38fee8fa84b7261c4c42ea913440",
+      "first": "2021-07-13",
+      "last": "2026-10-28",
+      "normalized_digest": "c5e0e11f05abbfe09ae9632eefe02b52498931f0d1b68f4648473c5a909a83e0",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920018.BJ",
+      "count": 286,
+      "bytes": 16255,
+      "sha256": "17d620ad3a95a5cd11b1034d9568c7bba4323d85c6a262a398030a6d52bc36bb",
+      "first": "2025-08-20",
+      "last": "2026-10-28",
+      "normalized_digest": "2c80158f44148958fbf2f8b872d89cde6016fda2678e71dbb7cacecbe640df11",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920076.BJ",
+      "count": 183,
+      "bytes": 10067,
+      "sha256": "44aefe0ff36b9d065c48255ccf0093426f114d70dfff0b64982f917c07b91abd",
+      "first": "2026-01-22",
+      "last": "2026-10-28",
+      "normalized_digest": "561155203c249ef3c2be950616735884621ddf5af0ae090bf024628822891e30",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920092.BJ",
+      "count": 891,
+      "bytes": 48220,
+      "sha256": "db85e2e1c6885cdfcec9d80473b0f734b683648d0a8fa3daa4235df418f6acb2",
+      "first": "2023-02-23",
+      "last": "2026-10-28",
+      "normalized_digest": "26e784a77dca4b93626f8b33b3199be5f97f4c6aa62479fcf6d60053e0ab2b58",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920108.BJ",
+      "count": 420,
+      "bytes": 23089,
+      "sha256": "ccfaa9dd4d9572e8d1709d192afb6885ebfc5e5dd3d630021e56f837090b2d51",
+      "first": "2025-02-06",
+      "last": "2026-10-28",
+      "normalized_digest": "3f5e058761965902a5c72cb842fabe4551e019db94929a501530ee87c5e5f772",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920126.BJ",
+      "count": 91,
+      "bytes": 5253,
+      "sha256": "950020f11d3d0bd47bd48a25ae7800cb4c81cd649897ce5770dcee873b13c6db",
+      "first": "2026-06-15",
+      "last": "2026-10-28",
+      "normalized_digest": "fd9004f6a8d499308c805fa56718f290bb7f9e69842e8d7812367027a89a903e",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920145.BJ",
+      "count": 709,
+      "bytes": 36292,
+      "sha256": "928928d621f98da644f33effe6a305ef0b9613256e6302d80bf29768a69d926b",
+      "first": "2023-11-22",
+      "last": "2026-10-28",
+      "normalized_digest": "9152b471018f9e2b3d5a5027673716dbdf8a64aaaa66888966bf392e57695f96",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920162.BJ",
+      "count": 10,
+      "bytes": 890,
+      "sha256": "60e0a70aefb190577622232c6b6d8f10eea293d76c391984001f29ee37097c25",
+      "first": "2026-10-15",
+      "last": "2026-10-28",
+      "normalized_digest": "c811a13058e628556c70bf14f1e8899e11e7852433a5a74c1394b32bf21cb1c0",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920167.BJ",
+      "count": 890,
+      "bytes": 48598,
+      "sha256": "410982cb41e54cbdecea4812437d98d88e741f0936c32478db53973e86cdf0c6",
+      "first": "2023-02-24",
+      "last": "2026-10-28",
+      "normalized_digest": "7578d71717b144159c03d60ce1f34220fbd1f1e54522f1ce083ad65ffb14c73d",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920184.BJ",
+      "count": 745,
+      "bytes": 40496,
+      "sha256": "886bf93822e45ea4ac5b286146f0db0f6d65b309e1acfc5282ced19000e9f2ad",
+      "first": "2023-09-25",
+      "last": "2026-10-28",
+      "normalized_digest": "b40b42a5e61baf20c0d786ee2f564400d7c201bc1bfb2f769f3a9a14329a93e3",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920212.BJ",
+      "count": 899,
+      "bytes": 47442,
+      "sha256": "94a32ca6c61c3064ddc3b463ea67cc3bfb1038b2af7ceb00320f5c7d062f6ad2",
+      "first": "2023-02-13",
+      "last": "2026-10-28",
+      "normalized_digest": "6b89829433ef5ad9ec074de75d16c0ca53493854a01043a6309719353115afc7",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920268.BJ",
+      "count": 30,
+      "bytes": 2000,
+      "sha256": "ed6b9f5a9985e21939ed99fc979bdb3ccf76150e038f4d6aac849bc5b2fa5e71",
+      "first": "2026-09-09",
+      "last": "2026-10-28",
+      "normalized_digest": "bdc2c3adcf805b9b547b2bf7db7ed562c8d4dcb964c9cff786344f29aec3b4c1",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920403.BJ",
+      "count": 669,
+      "bytes": 36915,
+      "sha256": "33b39a60bbbd73cf6ebddea3ef385a71ab6a64e5576932e9ae5a19df1ebb0c51",
+      "first": "2024-01-18",
+      "last": "2026-10-28",
+      "normalized_digest": "3c4fff2e55096d8c2d0ae0bd675d61d668633ba8de1c510cc027b05ea0408917",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920475.BJ",
+      "count": 710,
+      "bytes": 38063,
+      "sha256": "fc72c709182f12cddd6fbfeb7096ca074a57710fb0d01564afa0fe94bd580225",
+      "first": "2023-11-21",
+      "last": "2026-10-28",
+      "normalized_digest": "24b7c78787fbc8a335141e5d42b608b4a5bcae66d876912fa60674fd4744c8b5",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920496.BJ",
+      "count": 663,
+      "bytes": 36788,
+      "sha256": "10f7f0adf1fb40db6437447b016be8cf4ebeae8a379fe5f61ef8e3a0f86f96a3",
+      "first": "2024-01-26",
+      "last": "2026-10-28",
+      "normalized_digest": "db981194ca5a35ec9e66eabebfa6d14a60a014d472b7b513f594e268e37b3c88",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920599.BJ",
+      "count": 899,
+      "bytes": 50189,
+      "sha256": "601d29990e98400665d1d2d3e0494c00ba0b662ba88fe9ce20103c87949aae6a",
+      "first": "2023-02-13",
+      "last": "2026-10-28",
+      "normalized_digest": "0930484cf49619f43f84daf93b3ac820bd88c35ce4d0be91538e2393a23269ec",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920751.BJ",
+      "count": 754,
+      "bytes": 41150,
+      "sha256": "7fad34f796250eda9215de94a2488360b1ad98840d7dc73b3e9d22d70e23bb48",
+      "first": "2023-09-12",
+      "last": "2026-10-28",
+      "normalized_digest": "43ecbeb7f94c2c23f68b3b374689a1c3f227f7e25340a3cb5740b8a5f04d3cc7",
+      "check_set": "checks_1"
+    },
+    {
+      "code": "920770.BJ",
+      "count": 886,
+      "bytes": 48416,
+      "sha256": "f2076348f6cd73e8c25620c7ad5c0c0e0b1d39772fb3cac44e306d6f7de90072",
+      "first": "2023-02-28",
+      "last": "2026-10-28",
+      "normalized_digest": "7f2a4f8118530bc485d458cb773dacbd354e80e960448f83ab9cfe05d8f48615",
+      "check_set": "checks_1"
+    }
+  ],
+  "limitations": [
+    "Only selected complete securities verified; no whole-market claim",
+    "No publication timestamp or historical version replay; temporal failure nonblocking only for analysis",
+    "First run invalidated by concurrent source additions; retained in build/margin-source-20261030-v2.json"
+  ],
+  "check_sets": {
+    "checks_1": {
+      "financing": [
+        {
+          "criterion": "fields",
+          "status": "pass"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail"
+        }
+      ],
+      "short_lending": [
+        {
+          "criterion": "fields",
+          "status": "pass"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass"
+        },
+        {
+          "criterion": "temporal",
+          "status": "fail"
+        }
+      ]
+    }
+  }
+}

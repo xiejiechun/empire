@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "1a9691532b6ea967ff1be2fb446c9f23566d018f6ba16a6aa5c67c1cb875fa5f",
+  "schema_sha256": "ede0e0aa631b46f5aef7221de4226897a4780860eae90e33ab7cd9eb1672081e",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -4927,6 +4927,114 @@
         "ck_hot_seat_rank": "((seat_rank>=1)and(seat_rank<=1000))",
         "ck_hot_seat_seq": "((seq>=1)and(seq<=10000))",
         "ck_hot_seat_side": "(sidein('b','s'))"
+      }
+    },
+    "margin_security": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "row_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        },
+        "first_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "last_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "contract_version": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_margin_bounds": "(((row_count=0)and(first_dateisnull)and(last_dateisnull))or((row_count>0)and(first_dateisnotnull)and(last_dateisnotnull)and(first_date<=last_date)))",
+        "ck_margin_count": "((row_count>=0)and(row_count<=10000))"
+      }
+    },
+    "margin_daily": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "trade_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "market_volume": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "market_turnover": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "close_price": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "financing_balance": {
+          "type": "decimal(28, 8)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "financing_buy": {
+          "type": "decimal(28, 8)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "lending_balance": {
+          "type": "decimal(28, 8)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "lending_sell": {
+          "type": "decimal(28, 8)",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code",
+        "trade_date"
+      ],
+      "indexes": {
+        "ix_margin_date": {
+          "columns": [
+            "trade_date",
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_margin_values": "(((market_volumeisnull)or(market_volume>=0))and((market_turnoverisnull)or(market_turnover>=0))and((close_priceisnull)or(close_price>=0))and(financing_balance>=0)and(financing_buy>=0)and(lending_balance>=0)and(lending_sell>=0))"
       }
     }
   }

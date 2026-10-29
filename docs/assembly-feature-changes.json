@@ -438,6 +438,129 @@
     ]
   },
   {
+    "path": "additive.margin",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "collector.tdx_margin": {
+            "autostart": true,
+            "description": "每股一次10000条完整历史响应",
+            "id": "collector.tdx_margin",
+            "name": "个股融资融券采集",
+            "provides": [
+              "collector.tdx_margin"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "margin.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.margin": {
+            "autostart": true,
+            "description": "按日期和证券查询结构化来源事实",
+            "id": "data.margin",
+            "name": "个股融资融券查询",
+            "provides": [
+              "margin.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          }
+        },
+        "tasks": {
+          "tdx-margin": {
+            "capability": "collector.tdx_margin",
+            "category": "融资融券",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "19:30",
+              "description": "每天北京时间19:30完整核验，每股一个响应；不重叠。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "每股一次10000条完整历史；融资、融券与页面派生指标",
+            "fresh_description": "重新从第一只证券核验全部历史；未完成入队轮次先确认归档。",
+            "id": "tdx-margin",
+            "interval_seconds": 86400,
+            "name": "个股融资融券（通达信）",
+            "parallel_downloads": true,
+            "rate_group": "tdx",
+            "source_name": "通达信",
+            "unit_name": "只股票"
+          }
+        },
+        "datasets": {
+          "tdx_margin_v1": {
+            "datasets": [
+              "margin.tdx_security"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "tdx-margin-v1": "tdx-margin"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {}
+      },
+      "bindings": {
+        "plugins": {
+          "collector.tdx_margin": {
+            "module": "empire.features.margin.collector",
+            "qualname": "MarginCollector"
+          },
+          "data.margin": {
+            "module": "empire.features.margin.query",
+            "qualname": "MarginDataPlugin"
+          }
+        },
+        "datasets": {
+          "tdx_margin_v1": {
+            "module": "empire.features.margin.dataset",
+            "qualname": "MarginDataset"
+          }
+        },
+        "pages": {}
+      },
+      "order": {
+        "plugins": [
+          "data.margin",
+          "collector.tdx_margin"
+        ],
+        "startup": [
+          "data.margin",
+          "collector.tdx_margin"
+        ],
+        "tasks": [
+          "tdx-margin"
+        ],
+        "datasets": [
+          "tdx_margin_v1"
+        ],
+        "pages": []
+      }
+    },
+    "design": "docs/tdx-margin.md",
+    "tests": [
+      "tests/test_tdx_margin.py",
+      "tests/test_margin_lifecycle.py",
+      "tests/integration/test_margin_archive.py"
+    ]
+  },
+  {
     "path": "additive.themes",
     "before": null,
     "after": {
@@ -1292,6 +1415,8 @@
       "data.hot_list",
       "collector.tdx_hot_list",
       "ui.hot_list",
+      "data.margin",
+      "collector.tdx_margin",
       "data.themes",
       "collector.theme_list",
       "collector.theme_detail",
@@ -3356,6 +3481,64 @@
       "tests/test_tdx_hot_list.py",
       "tests/test_hot_list_lifecycle.py",
       "tests/integration/test_hot_list_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.margin:financing",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "margin.query",
+      "collector": "collector.tdx_margin",
+      "dataset": "margin.tdx_security",
+      "job_key": "tdx-margin-v1",
+      "method": "check_financing",
+      "project_id": "tdx-margin",
+      "requirement": "financing",
+      "response_group": "margin.tdx_security",
+      "scoped": true,
+      "source": "通达信",
+      "archive_tests": [
+        "tests/integration/test_margin_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_tdx_margin.py"
+      ]
+    },
+    "design": "docs/tdx-margin.md",
+    "tests": [
+      "tests/test_tdx_margin.py",
+      "tests/integration/test_margin_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.margin:short_lending",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "margin.query",
+      "collector": "collector.tdx_margin",
+      "dataset": "margin.tdx_security",
+      "job_key": "tdx-margin-v1",
+      "method": "check_short_lending",
+      "project_id": "tdx-margin",
+      "requirement": "short_lending",
+      "response_group": "margin.tdx_security",
+      "scoped": true,
+      "source": "通达信",
+      "archive_tests": [
+        "tests/integration/test_margin_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_tdx_margin.py"
+      ]
+    },
+    "design": "docs/tdx-margin.md",
+    "tests": [
+      "tests/test_tdx_margin.py",
+      "tests/integration/test_margin_archive.py"
     ]
   }
 ]

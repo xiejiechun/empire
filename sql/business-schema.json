@@ -58,7 +58,9 @@
     "yuanhang_limit_reason": "ths_yuanhang",
     "hot_list_day": "tdx",
     "hot_list_reason": "tdx",
-    "hot_list_seat": "tdx"
+    "hot_list_seat": "tdx",
+    "margin_security": "tdx",
+    "margin_daily": "tdx"
   },
   "tables": [
     "capital_funding",
@@ -121,7 +123,9 @@
     "yuanhang_limit_reason",
     "hot_list_day",
     "hot_list_reason",
-    "hot_list_seat"
+    "hot_list_seat",
+    "margin_security",
+    "margin_daily"
   ],
   "dataset_tables": {
     "ths.capital.security": "capital_funding",
@@ -176,7 +180,8 @@
     "yuanhang.limits.open_limit_up_pool": "yuanhang_limit_pool",
     "yuanhang.limits.limit_down_pool": "yuanhang_limit_pool",
     "yuanhang.limits.reason": "yuanhang_limit_reason",
-    "hot_list.tdx_unit": "hot_list_day"
+    "hot_list.tdx_unit": "hot_list_day",
+    "margin.tdx_security": "margin_security"
   },
   "dataset_table_groups": {
     "ths.capital.security": [
@@ -372,6 +377,10 @@
       "hot_list_day",
       "hot_list_reason",
       "hot_list_seat"
+    ],
+    "margin.tdx_security": [
+      "margin_security",
+      "margin_daily"
     ]
   },
   "primary_keys": {
@@ -594,6 +603,13 @@
       "unified_code",
       "list_date",
       "seq"
+    ],
+    "margin_security": [
+      "unified_code"
+    ],
+    "margin_daily": [
+      "unified_code",
+      "trade_date"
     ]
   },
   "source_overrides": {

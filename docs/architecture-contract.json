@@ -165,6 +165,10 @@
     "hot_list": {
       "kind": "business",
       "description": "通达信龙虎榜日期、原因与席位"
+    },
+    "margin": {
+      "kind": "business",
+      "description": "个股融资融券完整证券历史"
     }
   },
   "module_groups": [
@@ -1090,7 +1094,9 @@
       "role": "composition",
       "reason": "静态桌面预览贡献装配表，声明已登记业务查询的显式入口",
       "modules": [
-        "empire.desktop_bridge.preview_catalog"
+        "empire.desktop_bridge.preview_catalog",
+        "empire.desktop_bridge.preview_fields",
+        "empire.desktop_bridge.preview_presentation"
       ]
     }
   ],
@@ -1663,6 +1669,20 @@
         "ui": "ui",
         "presentation": "ui",
         "review": "collector_support"
+      }
+    },
+    {
+      "prefix": "empire.features.margin",
+      "owner": "margin",
+      "reason": "单证券完整历史，正式结构化存储与共享采集归档",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "parser",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
       }
     }
   ],

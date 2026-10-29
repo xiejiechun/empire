@@ -24,6 +24,8 @@
 
 | 对象（点击打开正式条目） | 职责 |
 | --- | --- |
+| [margin_security](../src/empire/plugins/ui/storage_reference.md#mysql-margin_security) | 通达信个股融资融券完整证券历史的集合证明。 |
+| [margin_daily](../src/empire/plugins/ui/storage_reference.md#mysql-margin_daily) | 证券交易日期的融资余额/买入、融券余量/卖出及可空行情上下文。 |
 | [stock](../src/empire/plugins/ui/storage_reference.md#mysql-stock) | 当前股票目录，一证券一行；同花顺主目录与新浪备用发布同一份表。 |
 | [stock_listing](../src/empire/plugins/ui/storage_reference.md#mysql-stock_listing) | 同花顺首次上市与发行资料，一证券一行。 |
 | [security_listing_event](../src/empire/plugins/ui/storage_reference.md#mysql-security_listing_event) | 通达信暂停、恢复、终止上市来源事件。 |

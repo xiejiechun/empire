@@ -8,6 +8,7 @@ from .preview_fields import (
     EVENTS,
     HOLDERS,
     HOTLIST,
+    MARGIN,
     ISSUE_DETAILS,
     LISTINGS,
     MEMBERS,
@@ -79,7 +80,7 @@ def _filter(task, view, key):
             "tdx-unlock-industries": "解禁月份", "eastmoney-repurchases": "方案日期",
             "tdx-holder-count": "统计日期", "tdx-shareholder-changes": "变动结束日",
             "ths-listings": "上市日期", "ths-index-prices": "交易日期", "ths-yuanhang-prices": "交易日期",
-            "sina-news": "发布日期", "tdx-hot-list": "上榜日期", "ths-capital": "公告日/报告期",
+            "sina-news": "发布日期", "tdx-hot-list": "上榜日期", "tdx-margin": "交易日期", "ths-capital": "公告日/报告期",
             "tdx-dividends": "事件日期（除权日优先）", "tdx-additional-issues": "事件日期（发行日优先）",
             "tdx-rights-issues": "除权日",
         }.get(task, "报告期" if task.startswith("tdx-earnings-") else "事件日期")
@@ -163,6 +164,8 @@ def _identity(task, view):
 
 
 def _content(task, view):
+    if task == "tdx-margin":
+        return "directory", "个股融资融券历史", "每股完整历史；偿还与占比按页面公式计算。最早记录以零前值计算并标记；交易日期不是公布时间。", MARGIN
     if task.startswith("rules-"):
         from empire.features.trading_rules.contract import KINDS
         title = KINDS[task[6:].replace("-", "_")]

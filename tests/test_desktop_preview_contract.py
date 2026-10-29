@@ -31,7 +31,7 @@ def test_every_installed_project_has_business_presentation_and_resolvable_naviga
             if spec["hidden"]:
                 assert spec["parent"] in specs
                 assert all(f["required"] for f in spec["filter_specs"])
-    assert len(projects) == 49
+    assert len(projects) == 50
     assert {"statement", "calendar", "hotlist", "holdings", "pool", "rules", "news"} <= renderers
 
 
@@ -44,6 +44,9 @@ def test_date_filters_and_amount_units_follow_business_meaning():
         assert next(f for f in spec["filter_specs"] if f["key"] == "start")["label"] == label + "从"
     holder = {c["key"]: c for c in catalog("tdx-holder-count")[0]["columns"]}
     assert holder["average_float"]["unit"] == "股/户"
+    margin = {c["key"]: c for c in catalog("tdx-margin")[0]["columns"]}
+    assert margin["financing_balance"]["unit"] == "万元"
+    assert margin["lending_balance"]["unit"] == "万股"
     assert "statement_layouts" in catalog("ths-income")[0]
     assert any(c["key"] == "source_dates" for c in catalog("tdx-suspensions")[0]["columns"])
 

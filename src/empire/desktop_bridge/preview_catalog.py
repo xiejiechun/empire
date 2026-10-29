@@ -18,6 +18,7 @@ class View:
 
 def _views(task):
     simple = {
+        "tdx-margin": ("margin.query", "browse"),
         "tdx-hot-list": ("hot_list.query", "browse"),
         "ths-listings": ("listings.query", "list_records"),
         "tdx-listing-status": ("listing_status.query", "list_events"),

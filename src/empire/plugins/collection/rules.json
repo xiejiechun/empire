@@ -3530,6 +3530,73 @@
       "source": "tdx",
       "fingerprint_source": "tdx",
       "scope": "当前A股stock及本业务已有历史代码，沪深北以来源支持范围为准。可显式指定证券及日期闭区间，沿同一execute入口。"
+    },
+    "tdx-margin": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_rzrq_gg",
+          "method": "POST",
+          "purpose": "每股一次完整融资融券历史",
+          "parameters": [
+            {
+              "name": "Params[0:2]",
+              "value": "2,1",
+              "meaning": "页面个股明细模式固定值"
+            },
+            {
+              "name": "Params[2]",
+              "value": "股票池六位证券代码",
+              "meaning": "完整证券响应"
+            },
+            {
+              "name": "Params[3]",
+              "value": "空字符串",
+              "meaning": "页面默认筛选，不限制历史日期"
+            },
+            {
+              "name": "Params[4]",
+              "value": "1",
+              "meaning": "首次请求携带总数结果集"
+            },
+            {
+              "name": "Params[5]",
+              "value": "1",
+              "meaning": "第一页，校验响应页码为1"
+            },
+            {
+              "name": "Params[6]",
+              "value": "10000",
+              "meaning": "用户指定每页10000条；总数超限拒绝冒充完整"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "margin_security",
+        "margin_daily"
+      ],
+      "start": "每证券来源最早可得日期，无统一起点",
+      "end": "本轮北京时间日期以内的来源全部记录",
+      "initial": "每股一个完整历史响应，校验后原子入队，整轮成功归档清队才完成。",
+      "incremental": "每天19:30每股完整历史核验，差异入库；不是来源增量。相同业务零DML，热摘要免SQL。",
+      "recovery": "按已入队证券索引继续，失败不跳过；Redis丢失后新一轮完整核验，SQL保留已归档内容。",
+      "fresh": "从第一只证券重新核验；已经等待归档时先完成原轮。",
+      "limits": "每股10000条与共享响应上限同时约束；不推断未返回日期为零，无公布时间或历史版本。最早偿还值按页面零前值计算并标注。",
+      "job_key": "tdx-margin-v1",
+      "source_file": "src/empire/features/margin/collector.py",
+      "scope": "当前A股及已有历史证券；可显式指定完整证券，不截断分页集合。",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "datasets": [
+        "margin.tdx_security"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_margin_v1"
+      ],
+      "topics": [
+        "通达信个股融资融券",
+        "采集进度与运行记录"
+      ]
     }
   }
 }

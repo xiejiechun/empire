@@ -1,0 +1,147 @@
+{
+  "run_id": "7158d8f65d6d4d83a97adb64cbc26da0",
+  "subject": "preview",
+  "started_at": "2026-10-29T16:58:15.658132+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "dataset": "margin.tdx_security",
+  "measurements": {
+    "import_seconds": 1.42806439998094,
+    "max_unit_seconds": 0.699385899992194,
+    "repeated_business_dml": 0,
+    "page_p95_ms": 36.683899990748614,
+    "history_p95_ms": 437.2240999946371,
+    "allocated_bytes": 4210688,
+    "peak_python_bytes": 4753126,
+    "page_bytes": 135647,
+    "history_bytes": 930000
+  },
+  "limits": {
+    "import_seconds": 60,
+    "max_unit_seconds": 10,
+    "repeated_business_dml": 0,
+    "page_p95_ms": 100,
+    "history_p95_ms": 1000,
+    "allocated_bytes": 33554432,
+    "peak_python_bytes": 134217728,
+    "page_bytes": 262144,
+    "history_bytes": 4194304
+  },
+  "bindings": {
+    "src/empire/features/margin/contract.py": "63fd4e7ce66947e5ffeaac30565529f50b954646745f6bf71165e6dcae4c656a",
+    "src/empire/features/margin/source.py": "96a391f06a7baacf1c223cd238321a98fb17640963ca00daa33d53d3286ae67c",
+    "src/empire/features/margin/dataset.py": "767a7bf7410ace672ca584d61292eb65e3269cc80eaf03eb1a9ebfba86b891da",
+    "src/empire/features/margin/query.py": "91d283e1fe386f72024c3cf00e7316792747dddc8a882f5619cb0c0e2479538b",
+    "scripts/measure_margin.py": "4f1118552e2e64da58f32e988edb6abb0b1538199da8326e467334194a78a99b"
+  },
+  "ddl_scopes": {
+    "margin_security": "751dda90dc2660266c2d0b416a282030a42d9ff9e2d7ad1956713aefd9a76049",
+    "margin_daily": "fff24599b2c9a6b50150495d123432a3eadc915e7361e79910de174dbc4f5273"
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "margin_daily",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_margin_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "page_actual_rows": 200,
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "margin_daily",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 10000,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security_actual_rows": 10000,
+    "analysis": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "margin_daily",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_margin_date",
+        "key": "ix_margin_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 588,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ],
+    "analysis_actual_rows": 28
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": {
+      "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+      "server_port": 13348,
+      "version": "8.4.9",
+      "innodb_flush_log_at_trx_commit": 2,
+      "sync_binlog": 1,
+      "log_bin": 0,
+      "client_port": 13348
+    },
+    "synthetic": true,
+    "securities": 21,
+    "rows": 20000,
+    "allocation": [
+      {
+        "TABLE_NAME": "margin_daily",
+        "DATA_LENGTH": 3686400,
+        "INDEX_LENGTH": 507904
+      },
+      {
+        "TABLE_NAME": "margin_security",
+        "DATA_LENGTH": 16384,
+        "INDEX_LENGTH": 0
+      }
+    ],
+    "cache": "first query not forced cold; remaining nine warm; maximum bounds P95",
+    "actual_sample": "5% source verification recorded separately",
+    "peak": "tracemalloc allocations, not RSS"
+  },
+  "projected_five_year_bytes": 1579008000,
+  "reviewed_tradeoffs": "Core values typed; one complete-security snapshot, comparison bounded to10000 rows. Derived fields computed at query; indexed predecessor bounded to201 records. No JSON business payload.",
+  "input_identity_verified": true,
+  "checked_at": "2026-10-29T16:58:22.034605+00:00",
+  "database": "empire_capacity_7158d8f65d6d4d83a97adb64cbc26da0_test",
+  "measurement_service": {
+    "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

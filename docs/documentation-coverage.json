@@ -479,6 +479,10 @@
     "tdx-hot-list": [
       "通达信个股龙虎榜",
       "采集进度与运行记录"
+    ],
+    "tdx-margin": [
+      "通达信个股融资融券",
+      "采集进度与运行记录"
     ]
   },
   "storage": {
@@ -1012,6 +1016,22 @@
           "src/empire/features/hot_list/contract.py",
           "src/empire/features/hot_list/dataset.py",
           "src/empire/features/hot_list/query.py"
+        ]
+      },
+      "margin_security": {
+        "topic": "MySQL margin_security",
+        "sources": [
+          "src/empire/features/margin/contract.py",
+          "src/empire/features/margin/dataset.py",
+          "src/empire/features/margin/query.py"
+        ]
+      },
+      "margin_daily": {
+        "topic": "MySQL margin_daily",
+        "sources": [
+          "src/empire/features/margin/contract.py",
+          "src/empire/features/margin/dataset.py",
+          "src/empire/features/margin/query.py"
         ]
       }
     },
