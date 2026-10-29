@@ -260,6 +260,184 @@
     ]
   },
   {
+    "path": "additive.hot_list",
+    "before": null,
+    "after": {
+      "semantic": {
+        "datasets": {
+          "tdx_hot_list_v1": {
+            "datasets": [
+              "hot_list.tdx_unit"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "tdx-hot-list-v1": "tdx-hot-list"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "hot_list": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "交易事件",
+            "database_tables": [
+              "hot_list_day",
+              "hot_list_reason",
+              "hot_list_seat"
+            ],
+            "description": "全部可得历史、原因与席位；来源缺失单独呈现",
+            "group": "数据浏览",
+            "id": "hot_list",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "tdx-hot-list",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 50,
+            "source": "通达信",
+            "title": "个股龙虎榜",
+            "top_level": false
+          }
+        },
+        "plugins": {
+          "collector.tdx_hot_list": {
+            "autostart": true,
+            "description": "全历史目录、分层轮转回查、每天19:30",
+            "id": "collector.tdx_hot_list",
+            "name": "个股龙虎榜采集",
+            "provides": [
+              "collector.tdx_hot_list"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "hot_list.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.hot_list": {
+            "autostart": true,
+            "description": "有界日期列表、原因席位与集合校验",
+            "id": "data.hot_list",
+            "name": "龙虎榜查询",
+            "provides": [
+              "hot_list.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.hot_list": {
+            "autostart": true,
+            "description": "按需创建日期与席位浏览",
+            "id": "ui.hot_list",
+            "name": "龙虎榜浏览",
+            "provides": [
+              "ui.pages.hot_list"
+            ],
+            "requires": []
+          }
+        },
+        "tasks": {
+          "tdx-hot-list": {
+            "capability": "collector.tdx_hot_list",
+            "category": "交易事件",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "19:30",
+              "description": "每天北京时间19:30执行一次；不重叠。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "首次全部历史；补缺及7/30日轮转回查；单日与多日榜分别保留",
+            "fresh_description": "强制重新核验全部证券、全部历史日期；保留已归档历史，接收有效来源修订。",
+            "id": "tdx-hot-list",
+            "interval_seconds": 86400,
+            "name": "个股龙虎榜（通达信）",
+            "parallel_downloads": true,
+            "rate_group": "tdx",
+            "source_name": "通达信",
+            "unit_name": "只股票"
+          }
+        }
+      },
+      "bindings": {
+        "datasets": {
+          "tdx_hot_list_v1": {
+            "module": "empire.features.hot_list.dataset",
+            "qualname": "HotListDataset"
+          }
+        },
+        "pages": {
+          "hot_list": {
+            "module": "empire.features.hot_list.ui",
+            "qualname": "HotListPage"
+          }
+        },
+        "plugins": {
+          "collector.tdx_hot_list": {
+            "module": "empire.features.hot_list.collector",
+            "qualname": "HotListCollector"
+          },
+          "data.hot_list": {
+            "module": "empire.features.hot_list.query",
+            "qualname": "HotListDataPlugin"
+          },
+          "ui.hot_list": {
+            "module": "empire.features.hot_list.ui",
+            "qualname": "HotListUiPlugin"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.hot_list",
+          "collector.tdx_hot_list",
+          "ui.hot_list"
+        ],
+        "tasks": [
+          "tdx-hot-list"
+        ],
+        "datasets": [
+          "tdx_hot_list_v1"
+        ],
+        "pages": [
+          "hot_list"
+        ],
+        "startup": [
+          "data.hot_list",
+          "collector.tdx_hot_list",
+          "ui.hot_list"
+        ]
+      }
+    },
+    "design": "docs/tdx-hot-list.md",
+    "tests": [
+      "tests/test_tdx_hot_list.py",
+      "tests/test_hot_list_lifecycle.py",
+      "tests/integration/test_hot_list_archive.py",
+      "tests/test_hot_list_ui.py"
+    ]
+  },
+  {
     "path": "additive.themes",
     "before": null,
     "after": {
@@ -1070,27 +1248,6 @@
       "collector.tdx_st_removal",
       "ui.st_implementation",
       "ui.st_removal",
-      "data.kaipanla_trend",
-      "data.kaipanla_auction",
-      "data.kaipanla_volume",
-      "data.kaipanla_trades",
-      "data.kaipanla_entrust",
-      "data.kaipanla_large_order",
-      "data.kaipanla_quote",
-      "collector.kaipanla_trend",
-      "collector.kaipanla_auction",
-      "collector.kaipanla_volume",
-      "collector.kaipanla_trades",
-      "collector.kaipanla_entrust",
-      "collector.kaipanla_large_order",
-      "collector.kaipanla_quote",
-      "ui.kaipanla_trend",
-      "ui.kaipanla_auction",
-      "ui.kaipanla_volume",
-      "ui.kaipanla_trades",
-      "ui.kaipanla_entrust",
-      "ui.kaipanla_large_order",
-      "ui.kaipanla_quote",
       "data.yuanhang",
       "data.adjustment",
       "ui.adjustment",
@@ -1132,6 +1289,9 @@
       "ui.proxies",
       "ui.downloads",
       "ui.identities",
+      "data.hot_list",
+      "collector.tdx_hot_list",
+      "ui.hot_list",
       "data.themes",
       "collector.theme_list",
       "collector.theme_detail",
@@ -3134,6 +3294,68 @@
     "design": "docs/kaipanla-market-retirement.md",
     "tests": [
       "tests/test_kaipanla_retirement.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.hot_list:hot_list",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "hot_list.query",
+      "collector": "collector.tdx_hot_list",
+      "dataset": "hot_list.tdx_unit",
+      "job_key": "tdx-hot-list-v1",
+      "method": "check_hot_list",
+      "project_id": "tdx-hot-list",
+      "requirement": "hot_list",
+      "response_group": "hot_list.tdx_unit",
+      "scoped": true,
+      "source": "通达信",
+      "archive_tests": [
+        "tests/integration/test_hot_list_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_tdx_hot_list.py",
+        "tests/test_hot_list_lifecycle.py"
+      ]
+    },
+    "design": "docs/tdx-hot-list.md",
+    "tests": [
+      "tests/test_tdx_hot_list.py",
+      "tests/test_hot_list_lifecycle.py",
+      "tests/integration/test_hot_list_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.hot_list:hot_list_summary",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "hot_list.query",
+      "collector": "collector.tdx_hot_list",
+      "dataset": "hot_list.tdx_unit",
+      "job_key": "tdx-hot-list-v1",
+      "method": "check_hot_list_summary",
+      "project_id": "tdx-hot-list",
+      "requirement": "hot_list_summary",
+      "response_group": "hot_list.tdx_unit",
+      "scoped": true,
+      "source": "通达信",
+      "archive_tests": [
+        "tests/integration/test_hot_list_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_tdx_hot_list.py",
+        "tests/test_hot_list_lifecycle.py"
+      ]
+    },
+    "design": "docs/tdx-hot-list.md",
+    "tests": [
+      "tests/test_tdx_hot_list.py",
+      "tests/test_hot_list_lifecycle.py",
+      "tests/integration/test_hot_list_archive.py"
     ]
   }
 ]

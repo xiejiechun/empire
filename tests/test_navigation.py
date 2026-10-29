@@ -257,6 +257,8 @@ async def test_workspace_direct_help_and_collection_grouping():
         'themes': 'kaipanla-themes',
         'yuanhang': 'ths-yuanhang-prices',
         'yuanhang_limits': 'ths-yuanhang-limit-up-pool',
+
+        'hot_list': 'tdx-hot-list',
         'ths_capital': 'ths-capital',
         **{k: 'ths-holders' for k in ('top_holders', 'float_holders', 'bond_holders')},
         **{k: 'tdx-' + k.replace('_', '-') for k in ('earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report', 'holder_count', 'shareholder_changes')},

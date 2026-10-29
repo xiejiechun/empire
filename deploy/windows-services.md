@@ -107,3 +107,5 @@
 ## 远航涨跌停分析新增表维护
 
 新增 `yuanhang_limit_pool`、`yuanhang_limit_member`、`yuanhang_limit_reason` 三张固定来源结构化表。由 `scripts/create_yuanhang_limits_schema.py` 在正常关闭程序、核实共享待归档队列及已有业务后显式新增，启动不执行迁移；上线状态及实际历史覆盖见 [实施记录](../docs/ths-yuanhang-limits-implementation.md)。
+
+龙虎榜三表 `hot_list_day`、`hot_list_reason`、`hot_list_seat` 属于固定tdx数据，备份恢复时连同 `collection_state` 核对；新增结构只通过显式维护入口执行。

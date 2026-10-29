@@ -117,3 +117,7 @@ mysql.exe --host=127.0.0.1 --port=3307 --user=<维护用户名> --password `
 升级唯一入口为 scripts/migrate_business_schema.py。preflight 只读观察；migrate 正常停机、确认 Stream 为零后，流式核对业务键/规范内容/版本/来源日期，复制影子表并原子切换；resume 使用同一 journal 续跑；verify 核对迁移基线；status 查看阶段；rollback 仅在切换后内容未变时恢复旧表。旧表保留为 empire_v1_* 本机恢复副本，不供运行时读取，不包含 router_*。恢复业务写入后禁止直接回退旧快照。默认日志 build/mysql-upgrade-final/migration.json，显式 --journal 可覆盖。
 
 操作顺序：关闭 Empire → preflight → migrate → verify → 配套新程序启动及正式查询验收。失败保持停机，根据日志阶段 resume；不可删除日志后覆盖已有影子表。程序目录 config.toml 必须保留。旧新增表脚本不作为本次升级入口，新空库仍使用 init-db。
+
+## 龙虎榜存储
+
+恢复集合包含hot_list_day、hot_list_reason、hot_list_seat及collection_state。显式scripts/create_hot_list_schema.py仅追加缺失结构，不恢复业务；Redis丢失需重新目录按SQL补缺。来源可得历史和实际恢复范围分别核验。

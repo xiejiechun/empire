@@ -33,7 +33,7 @@ def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_pat
         raise AssertionError(f"Missing pages: {expected - actual}; unexpected pages: {actual - expected}")
 
     performance_ids = {'earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report', 'holder_count', 'shareholder_changes'}
-    all_ids = {*performance_ids, "ths_capital", "unlock_industries", "unlocks", "top_holders", "float_holders", "bond_holders", "repurchases", "listing_status", "listings", "dividends", "additional_issues", "rights_issues", "home", "catalog", "stocks", "news", "calendar", "collection", "history",
+    all_ids = {*performance_ids, "hot_list", "ths_capital", "unlock_industries", "unlocks", "top_holders", "float_holders", "bond_holders", "repurchases", "listing_status", "listings", "dividends", "additional_issues", "rights_issues", "home", "catalog", "stocks", "news", "calendar", "collection", "history",
                "archived_tasks", "sites", "system", "plugins", "help", "proxies", "downloads", "preparation", "suspensions",
                "income", "balance", "cashflow", "industries", "indices", "index_prices", "names_company", "names_security", "st_implementation", "st_removal", "adjustment"}
     all_ids.update('rules_' + k for k in ('limit_rules', 'settlement_rules', 'lot_rules', 'tick_rules', 'sessions', 'stamp_duty', 'transfer_fee'))

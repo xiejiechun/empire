@@ -113,7 +113,7 @@ def test_database_directory_and_direct_object_lookup():
         database = page.index.topLevelItem(CATEGORIES.index('数据库参考'))
         groups = {database.child(i).text(0): database.child(i) for i in range(database.childCount())}
         assert set(groups) == {'总览', 'MySQL', 'Redis'}
-        assert groups['MySQL'].childCount() == 59
+        assert groups['MySQL'].childCount() == 62
         mysql_titles = {groups['MySQL'].child(i).text(0) for i in range(groups['MySQL'].childCount())}
         assert {'MySQL yuanhang_daily_price', 'MySQL yuanhang_price_year',
                 'MySQL yuanhang_corporate_action', 'MySQL yuanhang_capital',

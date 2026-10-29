@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "eaf07a62b0f0a662248040aa00fca325b0d7618349eb1619f104b60b307a5d67",
+  "schema_sha256": "bf8a76a0da6a0dd16f7921e7ef58ff300652f256ba50af902e76376bbcb75d19",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -4709,6 +4709,224 @@
       },
       "checks": {
         "ck_yuanhang_limit_reason_availability": "(availabilityin('available','no_content'))"
+      }
+    },
+    "hot_list_day": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "list_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "directory_listed": {
+          "type": "tinyint",
+          "nullable": false,
+          "unsigned": false
+        },
+        "detail_status": {
+          "type": "varchar(20) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "reason_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        },
+        "seat_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        },
+        "auxiliary": {
+          "type": "json",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code",
+        "list_date"
+      ],
+      "indexes": {
+        "ix_date": {
+          "columns": [
+            "list_date",
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_hot_list_counts": "((reason_count>=0)and(reason_count<=1000)and(seat_count>=0)and(seat_count<=10000))",
+        "ck_hot_list_listed": "(directory_listedin(0,1))",
+        "ck_hot_list_status": "(detail_statusin('pending','present','partial','source_empty'))"
+      }
+    },
+    "hot_list_reason": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "list_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "seq": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        },
+        "reason_code": {
+          "type": "varchar(32) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "reason": {
+          "type": "varchar(1000) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "volume": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "turnover": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "close_price": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "change_pct": {
+          "type": "decimal(20, 8)",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code",
+        "list_date",
+        "seq"
+      ],
+      "indexes": {
+        "ix_reason": {
+          "columns": [
+            "reason_code",
+            "list_date",
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_hot_reason_positive": "(((volumeisnull)or(volume>=0))and((turnoverisnull)or(turnover>=0))and((close_priceisnull)or(close_price>=0)))",
+        "ck_hot_reason_seq": "((seq>=1)and(seq<=1000))"
+      }
+    },
+    "hot_list_seat": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "list_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "seq": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        },
+        "reason_code": {
+          "type": "varchar(32) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "side": {
+          "type": "char(1) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "seat_rank": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        },
+        "seat_name": {
+          "type": "varchar(256) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "buy_amount": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "sell_amount": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "net_amount": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "extension": {
+          "type": "json",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code",
+        "list_date",
+        "seq"
+      ],
+      "indexes": {
+        "ix_seat_name": {
+          "columns": [
+            "seat_name",
+            "list_date",
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_hot_seat_positive": "(((buy_amountisnull)or(buy_amount>=0))and((sell_amountisnull)or(sell_amount>=0)))",
+        "ck_hot_seat_rank": "((seat_rank>=1)and(seat_rank<=1000))",
+        "ck_hot_seat_seq": "((seq>=1)and(seq<=10000))",
+        "ck_hot_seat_side": "(sidein('b','s'))"
       }
     }
   }

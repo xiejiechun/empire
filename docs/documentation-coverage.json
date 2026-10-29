@@ -241,6 +241,9 @@
     ],
     "market_review": [
       "市场复盘"
+    ],
+    "hot_list": [
+      "通达信个股龙虎榜"
     ]
   },
   "guides": [
@@ -471,6 +474,10 @@
     ],
     "ths-yuanhang-reason": [
       "远航版涨跌停分析",
+      "采集进度与运行记录"
+    ],
+    "tdx-hot-list": [
+      "通达信个股龙虎榜",
       "采集进度与运行记录"
     ]
   },
@@ -981,6 +988,30 @@
           "src/empire/features/yuanhang_limits/dataset.py",
           "src/empire/features/yuanhang_limits/query.py",
           "scripts/create_yuanhang_limits_schema.py"
+        ]
+      },
+      "hot_list_day": {
+        "topic": "MySQL hot_list_day",
+        "sources": [
+          "src/empire/features/hot_list/contract.py",
+          "src/empire/features/hot_list/dataset.py",
+          "src/empire/features/hot_list/query.py"
+        ]
+      },
+      "hot_list_reason": {
+        "topic": "MySQL hot_list_reason",
+        "sources": [
+          "src/empire/features/hot_list/contract.py",
+          "src/empire/features/hot_list/dataset.py",
+          "src/empire/features/hot_list/query.py"
+        ]
+      },
+      "hot_list_seat": {
+        "topic": "MySQL hot_list_seat",
+        "sources": [
+          "src/empire/features/hot_list/contract.py",
+          "src/empire/features/hot_list/dataset.py",
+          "src/empire/features/hot_list/query.py"
         ]
       }
     },

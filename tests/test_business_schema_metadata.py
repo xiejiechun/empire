@@ -36,11 +36,11 @@ def test_maintenance_inventory_and_child_table_keep_distinct_meaning():
     assert schema.dataset_tables('suspensions.period') == ('suspension_event', 'suspension_source_date')
     assert schema.PRIMARY_KEYS['suspension_source_date'] == [
         'source_date', 'unified_code', 'suspended_at', 'resume_key', 'record_key']
-    assert schema.TABLES[-16:-13] == ('finance_news', 'collection_state', 'app_setting')
-    assert schema.TABLES[-13:-8] == ('theme_daily', 'theme_detail', 'theme_category', 'theme_stock', 'theme_stock_reason')
-    assert schema.TABLES[-8:-3] == ('yuanhang_daily_price', 'yuanhang_price_year',
+    assert schema.TABLES[-19:-16] == ('finance_news', 'collection_state', 'app_setting')
+    assert schema.TABLES[-16:-11] == ('theme_daily', 'theme_detail', 'theme_category', 'theme_stock', 'theme_stock_reason')
+    assert schema.TABLES[-11:-6] == ('yuanhang_daily_price', 'yuanhang_price_year',
                                  'yuanhang_corporate_action', 'yuanhang_capital', 'yuanhang_series_proof')
-    assert schema.TABLES[-3:] == ('yuanhang_limit_pool', 'yuanhang_limit_member', 'yuanhang_limit_reason')
+    assert schema.TABLES[-6:-3] == ('yuanhang_limit_pool', 'yuanhang_limit_member', 'yuanhang_limit_reason')
     assert metadata()['primary_key_exemptions'] == ['finance_news', 'collection_state', 'app_setting']
 
 
@@ -168,7 +168,7 @@ def test_design_gate_uses_explicit_root_and_keeps_full_physical_table_set(tmp_pa
     value = metadata()
     write_metadata(tmp_path, value)
     shapes = json.loads((ROOT / 'sql/schema-contract.json').read_text(encoding='utf-8'))['tables']
-    assert len(shapes) == 59 and len(value['tables']) == 58
+    assert len(shapes) == 62 and len(value['tables']) == 61
     assert verify_ownership(tmp_path, shapes, value['dataset_table_groups']) == value
 
 

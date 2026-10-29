@@ -12,6 +12,8 @@ EXPECTED_TABLES = {
     'yuanhang_capital', 'yuanhang_series_proof',
     'yuanhang_limit_pool', 'yuanhang_limit_member', 'yuanhang_limit_reason',
     'theme_daily', 'theme_detail', 'theme_category', 'theme_stock', 'theme_stock_reason',
+
+    "hot_list_day", "hot_list_reason", "hot_list_seat",
     'capital_funding', 'capital_project', 'capital_transaction', 'capital_equity_summary',
     'capital_equity_position', 'capital_ipo', 'capital_encumbrance', 'capital_release',
     'restricted_share_unlock', 'restricted_share_unlock_detail', 'restricted_share_unlock_industry',

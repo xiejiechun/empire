@@ -55,7 +55,10 @@
     "yuanhang_series_proof": "ths_yuanhang",
     "yuanhang_limit_pool": "ths_yuanhang",
     "yuanhang_limit_member": "ths_yuanhang",
-    "yuanhang_limit_reason": "ths_yuanhang"
+    "yuanhang_limit_reason": "ths_yuanhang",
+    "hot_list_day": "tdx",
+    "hot_list_reason": "tdx",
+    "hot_list_seat": "tdx"
   },
   "tables": [
     "capital_funding",
@@ -115,7 +118,10 @@
     "yuanhang_series_proof",
     "yuanhang_limit_pool",
     "yuanhang_limit_member",
-    "yuanhang_limit_reason"
+    "yuanhang_limit_reason",
+    "hot_list_day",
+    "hot_list_reason",
+    "hot_list_seat"
   ],
   "dataset_tables": {
     "ths.capital.security": "capital_funding",
@@ -169,7 +175,8 @@
     "yuanhang.limits.connect_broad_pool": "yuanhang_limit_pool",
     "yuanhang.limits.open_limit_up_pool": "yuanhang_limit_pool",
     "yuanhang.limits.limit_down_pool": "yuanhang_limit_pool",
-    "yuanhang.limits.reason": "yuanhang_limit_reason"
+    "yuanhang.limits.reason": "yuanhang_limit_reason",
+    "hot_list.tdx_unit": "hot_list_day"
   },
   "dataset_table_groups": {
     "ths.capital.security": [
@@ -360,6 +367,11 @@
     ],
     "yuanhang.limits.reason": [
       "yuanhang_limit_reason"
+    ],
+    "hot_list.tdx_unit": [
+      "hot_list_day",
+      "hot_list_reason",
+      "hot_list_seat"
     ]
   },
   "primary_keys": {
@@ -568,6 +580,20 @@
     "yuanhang_limit_reason": [
       "trade_date",
       "unified_code"
+    ],
+    "hot_list_day": [
+      "unified_code",
+      "list_date"
+    ],
+    "hot_list_reason": [
+      "unified_code",
+      "list_date",
+      "seq"
+    ],
+    "hot_list_seat": [
+      "unified_code",
+      "list_date",
+      "seq"
     ]
   },
   "source_overrides": {

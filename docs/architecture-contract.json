@@ -161,6 +161,10 @@
     "market_review": {
       "kind": "business",
       "description": "只读市场复盘计算与图表"
+    },
+    "hot_list": {
+      "kind": "business",
+      "description": "通达信龙虎榜日期、原因与席位"
     }
   },
   "module_groups": [
@@ -1642,6 +1646,22 @@
         "query": "query",
         "ui": "ui",
         "views": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.hot_list",
+      "owner": "hot_list",
+      "reason": "证券日完整响应及原因席位业务，共享下载/入队/归档；独立汇总及席位准备",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "parser",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui",
+        "presentation": "ui",
+        "review": "collector_support"
       }
     }
   ],
