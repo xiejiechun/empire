@@ -6,6 +6,7 @@ from decimal import Decimal
 from empire.features.holders.contract import (
     KINDS,
     digest,
+    holding_ratio,
     number,
     quality_flags,
     quantity,
@@ -99,7 +100,7 @@ def parse_table(kind, security, name, period, table, *, today=None):
         report['members'].append(dict(member_group=group, seq=counters[group],
             source_rank=int(cs[0].text()) if bond else None,
             holder_name=holder.text(), holder_id=linked[0] if linked else None, quantity=q[0],
-            quantity_scale=q[1], quantity_decimals=q[2], ratio=None if cs[3].text() in missing else number(cs[3].text().rstrip('%'), ratio=True),
+            quantity_scale=q[1], quantity_decimals=q[2], ratio=None if cs[3].text() in missing else holding_ratio(cs[3].text().rstrip('%')),
             change_quantity=amount, change_label=label,
             actual_change=cs[indexes[expected[4]]].text() or None if not bond else None,
             share_type=cs[indexes['股份类型']].text() or None if not bond else None,

@@ -38,7 +38,7 @@ MEMBER_FIELDS = ('member_group', 'seq', 'source_rank', 'holder_name', 'holder_id
 
 QUALITY = {1: '当期持有比例未知', 2: '前十大数量合计与来源汇总不符',
            4: '前十大比例合计与来源汇总不符', 8: '来源数量汇总未知', 16: '来源比例汇总未知',
-           32: '当期持有数量未知', 64: '退出持有数量未知', 128: '来源报告期晚于采集观察日'}
+           32: '当期持有数量未知', 64: '退出持有数量未知', 128: '来源报告期晚于采集观察日', 256: '来源成员持有比例超过100%'}
 
 
 def quality_details(report: RawReport, *, today: date | None = None) -> list[DetailedQualityIssue]:
@@ -58,6 +58,10 @@ def quality_details(report: RawReport, *, today: date | None = None) -> list[Det
     unknown = sum(m['ratio'] is None for m in current)
     if unknown:
         issues.append(dict(flag=1, reason=QUALITY[1], unknown_members=unknown))
+    excessive = sum(m['ratio'] is not None and Decimal(m['ratio']) > 100 for m in report['members'])
+    if excessive:
+        issues.append(dict(flag=256, reason=QUALITY[256],
+                           detail=f'{excessive}位当期或退出持有人比例超过100%；保留来源原值，不作为有效比例'))
     if report['report_type'] == 'change_notice':
         return issues
     for field, flag, missing in (('quantity', 2, 8), ('ratio', 4, 16)):
@@ -103,6 +107,14 @@ def number(value: str, *, ratio: bool = False, signed: bool = False, total: bool
     if (not signed and parsed < 0) or abs(parsed) >= (Decimal('100.1501') if total else Decimal('100.0001') if ratio else Decimal(10)**20):
         raise ValueError('持有人数值超出范围')
     return format(parsed.normalize(), 'f')
+
+
+def holding_ratio(value: str) -> str:
+    """Preserve representable source facts; economic validity is a quality issue."""
+    result = number(value)
+    if Decimal(result) >= Decimal(100000):
+        raise ValueError('持有人来源比例超出存储范围')
+    return result
 
 
 def quantity(text: str, *, scale: int = 1, unit: str | None = None) -> tuple[str, int, int]:
@@ -209,7 +221,7 @@ def validate(kind: str, security: str, reports: list[RawReport], *,
             elif member['quantity_scale'] is not None or member['quantity_decimals'] is not None:
                 raise ValueError('未知持有数量不得伪造精度')
             if member['ratio'] is not None:
-                number(member['ratio'], ratio=True)
+                holding_ratio(member['ratio'])
             rank = member['source_rank']
             if kind == 'bond_holders':
                 if type(rank) is not int or not 1 <= rank <= 9999:

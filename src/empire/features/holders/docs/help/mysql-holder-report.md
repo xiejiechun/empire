@@ -11,7 +11,7 @@
 
 ## 结构与身份
 
-变动公告当期最多200人，退出名单最多200人，报告最多400成员；公告汇总未知，来源当期/退出比例及数量横线允许NULL；未来报告期保留原日期并按观察日标记质量限制，历史读取不自动清标；空名债券仍属身份缺口，未识别报告不入业务表，同证券其他可识别报告正常保存。定期来源汇总横线与数量/比例矛盾保留原值，由quality_flags区分质量异常。定期汇总比例受100.15及成员人数×0.005的舍入上界双重限制，个人比例仍不超过100。股票定期前十栏目可能超过十人，最多200人，按来源顺序完整展示并核验全部身份、数量及比例汇总。000065可含并列成员；000430的2026-03-31流通股东列11人且末两人数量不同，全部11人参与来源汇总。不推断扩展原因，不截取十行；重复身份或超过上限仍拒绝；汇总矛盾保留来源原值并标记质量异常。
+变动公告当期最多200人，退出名单最多200人，报告最多400成员；公告汇总未知，来源当期/退出比例及数量横线允许NULL；未来报告期保留原日期并按观察日标记质量限制，历史读取不自动清标；空名债券仍属身份缺口，未识别报告不入业务表，同证券其他可识别报告正常保存。定期来源汇总横线与数量/比例矛盾保留原值，由quality_flags区分质量异常。定期汇总比例受100.15及成员人数×0.005的舍入上界双重限制，成员比例超过100时保留可精确存储的原值并标记256，不当作有效投资比例。股票定期前十栏目可能超过十人，最多200人，按来源顺序完整展示并核验全部身份、数量及比例汇总。000065可含并列成员；000430的2026-03-31流通股东列11人且末两人数量不同，全部11人参与来源汇总。不推断扩展原因，不截取十行；重复身份或超过上限仍拒绝；汇总矛盾保留来源原值并标记质量异常。
 
 报告身份为kind、unified_code、instrument_key、report_date、report_type；成员身份为报告键、分组和序号。姓名/来源ID/股份类型校验重复业务成员，不以行数相等替代集合证明。
 
@@ -29,7 +29,7 @@
 | `total_quantity_decimals` | `SMALLINT NULL` | 来源汇总显示小数位0至4；汇总未知时与数量、倍率同时NULL。 |
 | `total_ratio` | `DECIMAL(9,4) NULL` | 来源累计比例（%）；变动公告或来源横线为NULL，不以已知明细比例之和替代。 |
 | `ratio_basis` | `VARCHAR(64) NOT NULL` | 比例分母的来源文字口径。 |
-| `quality_flags` | `SMALLINT NOT NULL` | 来源质量位：1当期比例未知、2数量汇总矛盾、4比例汇总矛盾、8数量汇总未知、16比例汇总未知、32当期数量未知、64退出数量未知、128报告期晚于采集观察日；0未发现这些异常。归档重算并参与摘要，不证明页面业务前十完整。 |
+| `quality_flags` | `SMALLINT NOT NULL` | 来源质量位：1当期比例未知、2数量汇总矛盾、4比例汇总矛盾、8数量汇总未知、16比例汇总未知、32当期数量未知、64退出数量未知、128报告期晚于采集观察日、256成员持有比例超过100%；0未发现这些异常。归档重算并参与摘要，不证明页面业务前十完整。 |
 | `member_count` | `SMALLINT NOT NULL` | 当前实际人数：定期股票1至200、债券1至10、公告1至200。 |
 | `exit_count` | `SMALLINT NOT NULL` | 退出名单实际行数0至200。 |
 | `content_hash` | `CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 报告规范内容SHA256，排除观测时刻。 |
@@ -42,7 +42,7 @@
 - `KEY ix_date (kind,report_date,unified_code,report_key)`
 - `CONSTRAINT ck_holder_report_kind CHECK (kind IN ('top_holders','float_holders','bond_holders'))`
 - `CONSTRAINT ck_holder_report_type CHECK ((report_type='periodic' AND ((total_quantity IS NULL AND total_quantity_scale IS NULL AND total_quantity_decimals IS NULL) OR (total_quantity IS NOT NULL AND total_quantity_scale IS NOT NULL AND total_quantity_decimals IS NOT NULL))) OR (report_type='change_notice' AND total_quantity IS NULL AND total_ratio IS NULL AND total_quantity_scale IS NULL AND total_quantity_decimals IS NULL))`
-- `CONSTRAINT ck_holder_totals CHECK (quality_flags BETWEEN 0 AND 255 AND (total_quantity IS NULL OR total_quantity>=0) AND (total_ratio IS NULL OR total_ratio BETWEEN 0 AND 100.15))`
+- `CONSTRAINT ck_holder_totals CHECK (quality_flags BETWEEN 0 AND 511 AND (total_quantity IS NULL OR total_quantity>=0) AND (total_ratio IS NULL OR total_ratio BETWEEN 0 AND 100.15))`
 - `CONSTRAINT ck_holder_counts CHECK (member_count BETWEEN 1 AND 200 AND (kind IN ('top_holders','float_holders') OR member_count<=10) AND exit_count BETWEEN 0 AND 200)`
 - `CONSTRAINT ck_holder_precision CHECK (total_quantity_scale IN (1,10000,100000000) AND total_quantity_decimals BETWEEN 0 AND 4)`
 

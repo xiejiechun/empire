@@ -575,7 +575,7 @@ CREATE TABLE IF NOT EXISTS holder_report (
   KEY ix_date (kind,report_date,unified_code,report_key),
   CONSTRAINT ck_holder_report_kind CHECK (kind IN ('top_holders','float_holders','bond_holders')),
   CONSTRAINT ck_holder_report_type CHECK ((report_type='periodic' AND ((total_quantity IS NULL AND total_quantity_scale IS NULL AND total_quantity_decimals IS NULL) OR (total_quantity IS NOT NULL AND total_quantity_scale IS NOT NULL AND total_quantity_decimals IS NOT NULL))) OR (report_type='change_notice' AND total_quantity IS NULL AND total_ratio IS NULL AND total_quantity_scale IS NULL AND total_quantity_decimals IS NULL)),
-  CONSTRAINT ck_holder_totals CHECK (quality_flags BETWEEN 0 AND 255 AND (total_quantity IS NULL OR total_quantity>=0) AND (total_ratio IS NULL OR total_ratio BETWEEN 0 AND 100.15)),
+  CONSTRAINT ck_holder_totals CHECK (quality_flags BETWEEN 0 AND 511 AND (total_quantity IS NULL OR total_quantity>=0) AND (total_ratio IS NULL OR total_ratio BETWEEN 0 AND 100.15)),
   CONSTRAINT ck_holder_counts CHECK (member_count BETWEEN 1 AND 200 AND (kind IN ('top_holders','float_holders') OR member_count<=10) AND exit_count BETWEEN 0 AND 200),
   CONSTRAINT ck_holder_precision CHECK (total_quantity_scale IN (1,10000,100000000) AND total_quantity_decimals BETWEEN 0 AND 4)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -600,7 +600,7 @@ CREATE TABLE IF NOT EXISTS holder_member (
   PRIMARY KEY (report_key,member_group,seq),
   CONSTRAINT fk_holder_report FOREIGN KEY (report_key) REFERENCES holder_report(report_key),
   CONSTRAINT ck_holder_member_group CHECK (member_group IN ('current','exited') AND seq BETWEEN 1 AND 200 AND (source_rank IS NULL OR source_rank BETWEEN 1 AND 9999)),
-  CONSTRAINT ck_holder_member_values CHECK (quantity>=0 AND (ratio IS NULL OR ratio BETWEEN 0 AND 100) AND (pledge_ratio IS NULL OR pledge_ratio BETWEEN 0 AND 100)),
+  CONSTRAINT ck_holder_member_values CHECK (quantity>=0 AND (ratio IS NULL OR ratio BETWEEN 0 AND 99999.9999) AND (pledge_ratio IS NULL OR pledge_ratio BETWEEN 0 AND 100)),
   CONSTRAINT ck_holder_member_precision CHECK ((quantity IS NULL AND quantity_scale IS NULL AND quantity_decimals IS NULL) OR (quantity IS NOT NULL AND quantity_scale IS NOT NULL AND quantity_decimals IS NOT NULL AND quantity_scale IN (1,10000,100000000) AND quantity_decimals BETWEEN 0 AND 4))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 

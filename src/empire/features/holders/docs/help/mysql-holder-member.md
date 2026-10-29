@@ -39,7 +39,7 @@ schema5隔离的未识别债券不生成本表成员；可识别报告仍逐成�
 - `PRIMARY KEY (report_key,member_group,seq)`
 - `CONSTRAINT fk_holder_report FOREIGN KEY (report_key) REFERENCES holder_report(report_key)`
 - `CONSTRAINT ck_holder_member_group CHECK (member_group IN ('current','exited') AND seq BETWEEN 1 AND 200 AND (source_rank IS NULL OR source_rank BETWEEN 1 AND 9999))`
-- `CONSTRAINT ck_holder_member_values CHECK (quantity>=0 AND (ratio IS NULL OR ratio BETWEEN 0 AND 100) AND (pledge_ratio IS NULL OR pledge_ratio BETWEEN 0 AND 100))`
+- `CONSTRAINT ck_holder_member_values CHECK (quantity>=0 AND (ratio IS NULL OR ratio BETWEEN 0 AND 99999.9999) AND (pledge_ratio IS NULL OR pledge_ratio BETWEEN 0 AND 100))`
 - `CONSTRAINT ck_holder_member_precision CHECK ((quantity IS NULL AND quantity_scale IS NULL AND quantity_decimals IS NULL) OR (quantity IS NOT NULL AND quantity_scale IS NOT NULL AND quantity_decimals IS NOT NULL AND quantity_scale IN (1,10000,100000000) AND quantity_decimals BETWEEN 0 AND 4))`
 
 ## 读写与关联
@@ -71,3 +71,5 @@ scripts/migrate_holder_source_rows.py显式升级来源行契约4：数量与显
 
 
 集合/摘要完整与来源数量/比例质量分别核验；源值不相互推导替代。来源质量异常不删除已有业务，修订正常清标；未知当期/退出数量与显示精度同时NULL，分别提示数量限制；未来报告期保留源日期并按请求观察日标记，历史读取不自动清标，新请求可确认修订。结构或日期格式错误仍失败；仅债券名称为空的报告按来源缺口隔离，其他可识别报告继续归档。
+
+成员持有比例 ratio 保留来源可表示原值，大于100%不截断，报告增加质量位256；不作为有效百分比，质押比例仍按0～100校验。

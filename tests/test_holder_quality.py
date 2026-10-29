@@ -19,6 +19,8 @@ def quality_source(kind, shape):
     bond = kind == 'bond_holders'
     if shape == 'missing_ratio':
         block = block.replace('<td>1.00' + ('' if bond else '%') + '</td>', '<td>--</td>')
+    elif shape == 'excessive_ratio':
+        block = block.replace('<td>1.00' + ('' if bond else '%') + '</td>', '<td>105.47%</td>')
     elif shape == 'missing_quantity':
         block = block.replace('<td>' + ('10.00' if bond else '10.00万') + '</td>', '<td>--</td>')
     elif shape == 'missing_exit_quantity':
@@ -145,3 +147,33 @@ def test_quality_does_not_admit_required_field_or_structure_failure(damage):
     assert error.value.holder_metadata['kind'] == 'bond_holders'
     if damage == 'bond_name':
         assert error.value.holder_metadata['report_date']
+
+
+@pytest.mark.parametrize('kind', KINDS)
+def test_source_ratio_above_100_is_exactly_preserved_and_flagged(kind):
+    row = parse(quality_source(kind, 'excessive_ratio'), kind, STOCK)[0]
+    assert row['members'][0]['ratio'] == '105.47'
+    assert row['quality_flags'] == 260
+    assert {i['flag'] for i in quality_details(row)} == {4, 256}
+    bad = copy.deepcopy(row)
+    bad['quality_flags'] = 4
+    with pytest.raises(ValueError, match='质量标记'):
+        validate(kind, STOCK['unified_code'], [bad])
+    row['members'] = [m for m in row['members'] if m['member_group'] == 'exited'] + row['members']
+    with pytest.raises(ValueError):
+        validate(kind, STOCK['unified_code'], [row])
+
+
+@pytest.mark.parametrize('value', ['-1', '100000', 'NaN', 'inf', '105.47001', '1e2'])
+def test_source_ratio_still_rejects_negative_nonfinite_or_unrepresentable(value):
+    from empire.features.holders.contract import holding_ratio
+    with pytest.raises(ValueError):
+        holding_ratio(value)
+
+
+def test_exit_only_excess_ratio_is_not_mistaken_for_current_holding():
+    row = parse(source(), 'float_holders', STOCK)[0]
+    next(m for m in row['members'] if m['member_group'] == 'exited')['ratio'] = '105.47'
+    row['quality_flags'] = quality_flags(row)
+    assert row['quality_flags'] == 256
+    validate('float_holders', STOCK['unified_code'], [row])

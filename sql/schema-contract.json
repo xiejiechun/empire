@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "bf8a76a0da6a0dd16f7921e7ef58ff300652f256ba50af902e76376bbcb75d19",
+  "schema_sha256": "1a9691532b6ea967ff1be2fb446c9f23566d018f6ba16a6aa5c67c1cb875fa5f",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -2332,7 +2332,7 @@
         "ck_holder_precision": "((total_quantity_scalein(1,10000,100000000))and(total_quantity_decimalsbetween0and4))",
         "ck_holder_report_kind": "(kindin('top_holders','float_holders','bond_holders'))",
         "ck_holder_report_type": "(((report_type='periodic')and(((total_quantityisnull)and(total_quantity_scaleisnull)and(total_quantity_decimalsisnull))or((total_quantityisnotnull)and(total_quantity_scaleisnotnull)and(total_quantity_decimalsisnotnull))))or((report_type='change_notice')and(total_quantityisnull)and(total_ratioisnull)and(total_quantity_scaleisnull)and(total_quantity_decimalsisnull)))",
-        "ck_holder_totals": "((quality_flagsbetween0and255)and((total_quantityisnull)or(total_quantity>=0))and((total_ratioisnull)or(total_ratiobetween0and100.15)))"
+        "ck_holder_totals": "((quality_flagsbetween0and511)and((total_quantityisnull)or(total_quantity>=0))and((total_ratioisnull)or(total_ratiobetween0and100.15)))"
       }
     },
     "holder_member": {
@@ -2427,7 +2427,7 @@
       "checks": {
         "ck_holder_member_group": "((member_groupin('current','exited'))and(seqbetween1and200)and((source_rankisnull)or(source_rankbetween1and9999)))",
         "ck_holder_member_precision": "(((quantityisnull)and(quantity_scaleisnull)and(quantity_decimalsisnull))or((quantityisnotnull)and(quantity_scaleisnotnull)and(quantity_decimalsisnotnull)and(quantity_scalein(1,10000,100000000))and(quantity_decimalsbetween0and4)))",
-        "ck_holder_member_values": "((quantity>=0)and((ratioisnull)or(ratiobetween0and100))and((pledge_ratioisnull)or(pledge_ratiobetween0and100)))"
+        "ck_holder_member_values": "((quantity>=0)and((ratioisnull)or(ratiobetween0and99999.9999))and((pledge_ratioisnull)or(pledge_ratiobetween0and100)))"
       }
     },
     "shareholder_change": {

@@ -28,7 +28,7 @@
 
 一个任务统一归档三种持有人报告实体，采用`holder_report`父表与`holder_member`明细，kind区分总股东/流通股东/债券持有人；固定来源ths。没有业务JSON。证券统一unified_code；历史不外键到当前stock。债券页面未提供稳定债券代码，采用页面债券名称的SHA-256作为instrument_key并保留名称，名称变更形成另一个来源身份，不猜测合并。
 
-父头身份为kind、发行人统一代码、instrument_key、报告期、报告类型的SHA-256 report_key。同日变动公告不会覆盖定期报告。字段：kind VARCHAR(24)、unified_code CHAR(9)、instrument_key CHAR(64)、instrument_name VARCHAR(200)、report_date DATE、report_type VARCHAR(16)、total_quantity DECIMAL(24,4)、total_quantity_scale BIGINT、total_quantity_decimals SMALLINT、total_ratio DECIMAL(9,4)可空（当期/退出比例允许来源未知，源质量与集合完整分别核验）、ratio_basis VARCHAR(64)、member_count/exit_count SMALLINT、content_hash CHAR(64)、version_observed_at DATETIME(6)。quality_flags SMALLINT NOT NULL为0至255的来源质量位，位1当期比例未知、2数量汇总矛盾、4比例汇总矛盾、8数量汇总未知、16比例汇总未知、32当期数量未知、64退出数量未知、128来源报告期晚于采集观察日；归档重算标记且参与摘要。report_type为periodic或change_notice；变动公告汇总四字段NULL，比例基数按来源文字保存。正文唯一存明细；摘要和计数是同事务完整报告证明。
+父头身份为kind、发行人统一代码、instrument_key、报告期、报告类型的SHA-256 report_key。同日变动公告不会覆盖定期报告。字段：kind VARCHAR(24)、unified_code CHAR(9)、instrument_key CHAR(64)、instrument_name VARCHAR(200)、report_date DATE、report_type VARCHAR(16)、total_quantity DECIMAL(24,4)、total_quantity_scale BIGINT、total_quantity_decimals SMALLINT、total_ratio DECIMAL(9,4)可空（当期/退出比例允许来源未知，源质量与集合完整分别核验）、ratio_basis VARCHAR(64)、member_count/exit_count SMALLINT、content_hash CHAR(64)、version_observed_at DATETIME(6)。quality_flags SMALLINT NOT NULL为0至511的来源质量位，位1当期比例未知、2数量汇总矛盾、4比例汇总矛盾、8数量汇总未知、16比例汇总未知、32当期数量未知、64退出数量未知、128来源报告期晚于采集观察日、256来源成员持有比例超过100%；归档重算标记且参与摘要。report_type为periodic或change_notice；变动公告汇总四字段NULL，比例基数按来源文字保存。正文唯一存明细；摘要和计数是同事务完整报告证明。
 
 明细身份为report_key、member_group(current/exited)、seq（组内规范行位置），source_rank SMALLINT可空（债券原始排名，可并列或缺口；股票为NULL）。字段holder_name VARCHAR(512)、holder_id VARCHAR(80)可空、quantity DECIMAL(24,4)可空、quantity_scale BIGINT可空、quantity_decimals SMALLINT可空（三者同时NULL或同时非NULL）、ratio DECIMAL(9,4)可空（当期/退出比例允许来源未知，源质量与集合完整分别核验）、change_quantity DECIMAL(24,4)可空、change_label VARCHAR(16)可空、actual_change VARCHAR(128)可空、share_type VARCHAR(128)可空、pledge_ratio DECIMAL(9,4)可空、pledge_status VARCHAR(64)可空。数量换算为股或张；行内及汇总单位须与业务类型一致，显式基本单位按自身倍率换算，不能重复套用表头倍率；scale及decimals保留来源显示精度，页面舍入值不能冒充精确整数。NULL是未知/不提供，零仅为来源明确零或不变。退出名单保存来源上期数值，不能当本期持仓。所有名单按组内页面行位置规范排序；债券另保存来源排名，退出名单排名代表上期，当期排名降序仍失败。未知列、超界、精度增加拒绝，不截断。
 
@@ -108,3 +108,5 @@
 功能验收单列maintenance_verified（缺陷隔离与同周期零请求），原严格acceptance_complete仍受任一来源缺口限制，不把功能修复等同债券数据完整。设计及预算见[本次设计](evidence/ths-holders-source-defects-design-2026-10-28.md)。
 
 旧游标维护同时仅失效ths_holders/ths的统一指纹及到期索引，使下次必要页面更新回SQL确认并自然保存fingerprint_hash；不为补该字段提前请求、不删除业务数据或缺口，不影响其他来源缓存。否则旧证明缺绑定字段时，长期热缓存会使SQL确认日期持续落后，导致重复计划。
+
+2026-10-29：成员比例超过100%但可由DECIMAL(9,4)精确表达时保留来源值并标记256，不再阻止完整证券归档；负数、非数、超精度仍拒绝。仅显式调整两个CHECK，见[修复记录](ths-holders-ratio-repair.md)。

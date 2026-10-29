@@ -66,7 +66,7 @@ async def dashboard(q, request):
     return next(r for r in (await preparation.report(request))['rows'] if r['id'] == q.kind)
 
 
-@pytest.mark.parametrize('shape', ['missing_ratio', 'quantity_mismatch', 'ratio_mismatch',
+@pytest.mark.parametrize('shape', ['excessive_ratio', 'missing_ratio', 'quantity_mismatch', 'ratio_mismatch',
                                   'missing_quantity_summary', 'missing_ratio_summary', 'missing_quantity', 'missing_exit_quantity', 'future_date'])
 async def test_source_quality_roundtrip_hot_cold_recovery_and_old_version(holders, shape):
     from tests.test_holder_quality import quality_source

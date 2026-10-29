@@ -4497,6 +4497,8 @@ scripts/init_tdx_performance.py显式新增五表，正常关闭、单实例锁�
 
 查询列表中“来源质量异常”标记可定位报告，详情显示异常字段、来源汇总、已知明细合计及未知比例人数。来源后续修订恢复时，重新采集会按原值计算并清除对应质量标记；不要手工填零或改写汇总。
 
+当期或退出成员的来源比例超过100%时，保留原值并提示“来源成员持有比例超过100%”，不能作为有效投资比例；不会因此丢弃完整报告或阻止任务结束。
+
 表格解析按最近一层table界定行与单元格；嵌套详情不会关闭外层来源行，后续报告/事件仍参与完整集合核对。
 
 ## 采集百分比
@@ -4516,7 +4518,7 @@ scripts/init_tdx_performance.py显式新增五表，正常关闭、单实例锁�
 
 ## 结构与身份
 
-变动公告当期最多200人，退出名单最多200人，报告最多400成员；公告汇总未知，来源当期/退出比例及数量横线允许NULL；未来报告期保留原日期并按观察日标记质量限制，历史读取不自动清标；空名债券仍属身份缺口，未识别报告不入业务表，同证券其他可识别报告正常保存。定期来源汇总横线与数量/比例矛盾保留原值，由quality_flags区分质量异常。定期汇总比例受100.15及成员人数×0.005的舍入上界双重限制，个人比例仍不超过100。股票定期前十栏目可能超过十人，最多200人，按来源顺序完整展示并核验全部身份、数量及比例汇总。000065可含并列成员；000430的2026-03-31流通股东列11人且末两人数量不同，全部11人参与来源汇总。不推断扩展原因，不截取十行；重复身份或超过上限仍拒绝；汇总矛盾保留来源原值并标记质量异常。
+变动公告当期最多200人，退出名单最多200人，报告最多400成员；公告汇总未知，来源当期/退出比例及数量横线允许NULL；未来报告期保留原日期并按观察日标记质量限制，历史读取不自动清标；空名债券仍属身份缺口，未识别报告不入业务表，同证券其他可识别报告正常保存。定期来源汇总横线与数量/比例矛盾保留原值，由quality_flags区分质量异常。定期汇总比例受100.15及成员人数×0.005的舍入上界双重限制，成员比例超过100时保留可精确存储的原值并标记256，不当作有效投资比例。股票定期前十栏目可能超过十人，最多200人，按来源顺序完整展示并核验全部身份、数量及比例汇总。000065可含并列成员；000430的2026-03-31流通股东列11人且末两人数量不同，全部11人参与来源汇总。不推断扩展原因，不截取十行；重复身份或超过上限仍拒绝；汇总矛盾保留来源原值并标记质量异常。
 
 报告身份为kind、unified_code、instrument_key、report_date、report_type；成员身份为报告键、分组和序号。姓名/来源ID/股份类型校验重复业务成员，不以行数相等替代集合证明。
 
@@ -4534,7 +4536,7 @@ scripts/init_tdx_performance.py显式新增五表，正常关闭、单实例锁�
 | `total_quantity_decimals` | `SMALLINT NULL` | 来源汇总显示小数位0至4；汇总未知时与数量、倍率同时NULL。 |
 | `total_ratio` | `DECIMAL(9,4) NULL` | 来源累计比例（%）；变动公告或来源横线为NULL，不以已知明细比例之和替代。 |
 | `ratio_basis` | `VARCHAR(64) NOT NULL` | 比例分母的来源文字口径。 |
-| `quality_flags` | `SMALLINT NOT NULL` | 来源质量位：1当期比例未知、2数量汇总矛盾、4比例汇总矛盾、8数量汇总未知、16比例汇总未知、32当期数量未知、64退出数量未知、128报告期晚于采集观察日；0未发现这些异常。归档重算并参与摘要，不证明页面业务前十完整。 |
+| `quality_flags` | `SMALLINT NOT NULL` | 来源质量位：1当期比例未知、2数量汇总矛盾、4比例汇总矛盾、8数量汇总未知、16比例汇总未知、32当期数量未知、64退出数量未知、128报告期晚于采集观察日、256成员持有比例超过100%；0未发现这些异常。归档重算并参与摘要，不证明页面业务前十完整。 |
 | `member_count` | `SMALLINT NOT NULL` | 当前实际人数：定期股票1至200、债券1至10、公告1至200。 |
 | `exit_count` | `SMALLINT NOT NULL` | 退出名单实际行数0至200。 |
 | `content_hash` | `CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 报告规范内容SHA256，排除观测时刻。 |
@@ -4547,7 +4549,7 @@ scripts/init_tdx_performance.py显式新增五表，正常关闭、单实例锁�
 - `KEY ix_date (kind,report_date,unified_code,report_key)`
 - `CONSTRAINT ck_holder_report_kind CHECK (kind IN ('top_holders','float_holders','bond_holders'))`
 - `CONSTRAINT ck_holder_report_type CHECK ((report_type='periodic' AND ((total_quantity IS NULL AND total_quantity_scale IS NULL AND total_quantity_decimals IS NULL) OR (total_quantity IS NOT NULL AND total_quantity_scale IS NOT NULL AND total_quantity_decimals IS NOT NULL))) OR (report_type='change_notice' AND total_quantity IS NULL AND total_ratio IS NULL AND total_quantity_scale IS NULL AND total_quantity_decimals IS NULL))`
-- `CONSTRAINT ck_holder_totals CHECK (quality_flags BETWEEN 0 AND 255 AND (total_quantity IS NULL OR total_quantity>=0) AND (total_ratio IS NULL OR total_ratio BETWEEN 0 AND 100.15))`
+- `CONSTRAINT ck_holder_totals CHECK (quality_flags BETWEEN 0 AND 511 AND (total_quantity IS NULL OR total_quantity>=0) AND (total_ratio IS NULL OR total_ratio BETWEEN 0 AND 100.15))`
 - `CONSTRAINT ck_holder_counts CHECK (member_count BETWEEN 1 AND 200 AND (kind IN ('top_holders','float_holders') OR member_count<=10) AND exit_count BETWEEN 0 AND 200)`
 - `CONSTRAINT ck_holder_precision CHECK (total_quantity_scale IN (1,10000,100000000) AND total_quantity_decimals BETWEEN 0 AND 4)`
 
@@ -4617,7 +4619,7 @@ schema5隔离的未识别债券不生成本表成员；可识别报告仍逐成�
 - `PRIMARY KEY (report_key,member_group,seq)`
 - `CONSTRAINT fk_holder_report FOREIGN KEY (report_key) REFERENCES holder_report(report_key)`
 - `CONSTRAINT ck_holder_member_group CHECK (member_group IN ('current','exited') AND seq BETWEEN 1 AND 200 AND (source_rank IS NULL OR source_rank BETWEEN 1 AND 9999))`
-- `CONSTRAINT ck_holder_member_values CHECK (quantity>=0 AND (ratio IS NULL OR ratio BETWEEN 0 AND 100) AND (pledge_ratio IS NULL OR pledge_ratio BETWEEN 0 AND 100))`
+- `CONSTRAINT ck_holder_member_values CHECK (quantity>=0 AND (ratio IS NULL OR ratio BETWEEN 0 AND 99999.9999) AND (pledge_ratio IS NULL OR pledge_ratio BETWEEN 0 AND 100))`
 - `CONSTRAINT ck_holder_member_precision CHECK ((quantity IS NULL AND quantity_scale IS NULL AND quantity_decimals IS NULL) OR (quantity IS NOT NULL AND quantity_scale IS NOT NULL AND quantity_decimals IS NOT NULL AND quantity_scale IN (1,10000,100000000) AND quantity_decimals BETWEEN 0 AND 4))`
 
 ## 读写与关联
@@ -4649,6 +4651,8 @@ scripts/migrate_holder_source_rows.py显式升级来源行契约4：数量与显
 
 
 集合/摘要完整与来源数量/比例质量分别核验；源值不相互推导替代。来源质量异常不删除已有业务，修订正常清标；未知当期/退出数量与显示精度同时NULL，分别提示数量限制；未来报告期保留源日期并按请求观察日标记，历史读取不自动清标，新请求可确认修订。结构或日期格式错误仍失败；仅债券名称为空的报告按来源缺口隔离，其他可识别报告继续归档。
+
+成员持有比例 ratio 保留来源可表示原值，大于100%不截断，报告增加质量位256；不作为有效百分比，质押比例仍按0～100校验。
 
 <!-- topic:数据说明|通达信重要股东持股变动 -->
 <!-- summary:按指定变动月份一次请求10000条，补齐页面目录以外历史并保留来源重复事实。 -->
