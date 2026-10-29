@@ -63,10 +63,10 @@ def test_verification_requires_all_checks_and_stops_on_failure(tmp_path, failed)
         for step in ('verify_release_environment.py', 'audit_dependencies.py', 'documentation_build.py', 'verify_documentation.py',
                      'verify_database_design.py', 'architecture_contract.py', 'assembly_contract.py',
                      '-m ruff check', '-m mypy', '-m pip check', 'diff --check', '-m pytest',
-                     'measure_capacity.py', 'verify_foundation_ui.py'):
+                     'measure_capacity.py', 'run build', 'test:transport'):
             assert any(step in call for call in calls), step
-        assert calls[-1].endswith(' package')
-        assert sum('verify_foundation_ui.py' in call for call in calls) == 4
+        assert calls[-1].endswith('test:transport')
+        assert not any('verify_foundation_ui.py' in call for call in calls)
 
 
 def test_retained_outputs_survive_later_generated_file_replacement(tmp_path):

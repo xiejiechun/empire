@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import sys
 import uuid
+from contextlib import nullcontext
 from pathlib import Path
 
 if __package__ in {None, ''}:
@@ -15,8 +16,8 @@ from scripts.release_identity import owned, sha256, write_json
 from scripts.release_lock import ReleaseLock
 
 
-def build(root, source):
-    with ReleaseLock(root) as lock:
+def build(root, source, *, lock=None):
+    with (ReleaseLock(root) if lock is None else nullcontext(lock)) as lock:
         require_stopped(lock, root)
         destination = owned(root, root / 'dist/EmpireDesktop')
         destination.mkdir(parents=True, exist_ok=True)
@@ -52,12 +53,12 @@ def build(root, source):
         write_json(stage / 'report.json', dict(kind='local-development-launcher', inputs=before,
                    executable_sha256=sha256(destination / 'Empire.exe'),
                    configuration_copied_equal=config.read_bytes() == source.read_bytes(),
-                   portable=False, original_executable_replaced=False))
+                   portable=False, legacy_client_retired=True))
         print('Local double-click launcher: ' + str(destination / 'Empire.exe'))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config-source', required=True)
+    parser.add_argument('--config-source', default=str(Path(__file__).resolve().parents[1] / 'dist/EmpireDesktop/config.toml'))
     args = parser.parse_args()
     build(Path(__file__).resolve().parents[1], Path(args.config_source).resolve())

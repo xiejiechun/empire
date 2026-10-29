@@ -1,16 +1,13 @@
 """Input proof boundaries and registration of computations, without fake collectors."""
-from concurrent.futures import Future
 from datetime import UTC, datetime
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
 import pytest
-from PySide6.QtWidgets import QApplication
 
 from empire.bootstrap import build_manager
 from empire.contracts.preparation import ComputationContribution
 from empire.features.adjustment.query import AdjustmentDataPlugin, resolve_security
-from empire.features.adjustment.ui import AdjustmentPage
 from empire.features.capital_actions.event_rules import ActionError
 from empire.features.preparation.catalog import BY_ID
 
@@ -52,26 +49,6 @@ async def test_preparation_missing_scope_does_not_scan_all_history():
     q.mysql.read.assert_not_called()
 
 
-def test_factor_page_has_independent_draft_and_discards_stale_query():
-    app = QApplication.instance() or QApplication([])
-    pending = Future()
-    runtime = SimpleNamespace(invoke=lambda *a: pending)
-    page = AdjustmentPage(SimpleNamespace(runtime=runtime, cfg={}))
-    try:
-        page.find()
-        original = page.save_ui_state()
-        page.code.setText('000001')
-        pending.set_result({'rows': []})
-        page.tick()
-        assert page.result is None and '条件已改变' in page.status.text()
-        page.restore_ui_state(original)
-        assert page.code.text() == original['code']
-        page.scope.close()
-        assert page.scope.closed
-    finally:
-        page.timer.stop()
-        page.deleteLater()
-        app.processEvents()
 
 
 async def test_computation_readiness_does_not_claim_source_version_history():

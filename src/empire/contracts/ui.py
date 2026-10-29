@@ -1,7 +1,6 @@
-from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import date
-from typing import Any, Literal
+from typing import Literal
 
 
 @dataclass(frozen=True)
@@ -51,7 +50,6 @@ class NavigationTarget:
 class PageContribution:
     id: str
     title: str
-    factory: Callable[[Any], Any]
     group: str = "工作台"
     order: int = 0
     description: str = ""

@@ -13,7 +13,7 @@
 | 损坏缓存不能误删有效待归档数据 | 三数据集声明严格版本结构和比较契约；非法日期、时区、精度、维数、股票 ID、异常有效期及深层损坏 JSON 均回 SQL。股票 committed 不授权清队；损坏 checkpoint 不授权放弃旧页，损坏显示/完成标记安全回源 | `tests/test_fingerprint_versions.py`、`tests/integration/test_cache_trust.py` 及三数据集归档测试 |
 | 特殊字符凭据不泄漏、不破坏快照 | 公共脱敏器统一处理凭据及其转义形式、URL、诊断和结构化值；结构化快照先脱敏再序列化，不对完整 JSON 粗暴替换 | `tests/test_redaction.py`、`tests/test_records.py`、桌面运行时/记录页测试 |
 | 单响应和预取字节预算；大文件不受小 JSON 上限误伤 | 插件声明内存/文件响应契约；统一传输/有界解压、全局预留和按序消费；文件流式写入、磁盘配额、校验后独占发布、不覆盖已有文件 | `tests/test_download_resources.py`、`tests/test_download_storage.py`、`tests/test_prefetch_budget.py`、HTTP/并行采集测试；[资源说明](download-resources.md) |
-| 刷新后仍选中同一股票 | 查询返回来源，列表用 `(source, unified_code)` 恢复选中与焦点；不存在于当前结果的对象清除选择，不将原行号套到另一只股票 | `tests/test_stock_ui.py`、公共表格相关测试 |
+| 刷新后仍选中同一股票 | 查询返回来源，列表用 `(source, unified_code)` 恢复选中与焦点；不存在于当前结果的对象清除选择，不将原行号套到另一只股票 | `tests/test_headless_pages.py`、公共表格相关测试 |
 
 ## 关键边界
 

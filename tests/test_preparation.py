@@ -1,4 +1,3 @@
-import os
 from dataclasses import replace
 from datetime import datetime
 from types import SimpleNamespace
@@ -167,59 +166,13 @@ def test_old_sql_upper_bound_and_future_timestamp_are_not_fresh():
     assert freshness(None, now, 'SQL').status == 'unknown'
 
 
-async def test_ui_filters_detail_selection_and_lifecycle():
-    os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
-    from PySide6.QtWidgets import QApplication
-
-    from empire.desktop.page_lifecycle import activate_page, deactivate_page
-    from empire.features.preparation.ui import PreparationUiPlugin
-    app = QApplication.instance() or QApplication([])
-    plugin = PreparationPlugin([])
-    await plugin.start(SimpleNamespace(optional=lambda cap: None))
-    report = await plugin.report()
-    page = PreparationUiPlugin().create_pages()[0].factory(SimpleNamespace(cfg={}, shutting_down=False))
-    activate_page(page)
-    page.render(report)
-    assert page.table.rowCount() == len(REQUIREMENTS)
-    page.kind.setCurrentIndex(page.kind.findData('采集'))
-    assert page.table.rowCount() == sum(r.kind == '采集' for r in REQUIREMENTS)
-    page.kind.setCurrentIndex(0)
-    assert page.table.rowCount() == len(REQUIREMENTS)
-    page.table.selectRow(1)
-    page.render(report)
-    assert page.table.currentRow() == 1
-    assert '交易日历' in page.detail.specification.toPlainText()
-    assert page.detail.table.rowCount() == 12
-    page.search.setText('分红送转')
-    assert page.table.rowCount() == 1
-    page.search.setText('历史停复牌')
-    assert page.table.rowCount() == 1
-    description = page.detail.specification.toPlainText()
-    assert '必需信息' in description and '可选信息（缺少不影响本项通过）' in description
-    assert '不要求多个网站相互印证' in description
-    assert '公告' not in BY_ID['suspensions'].fields
-    assert '公告' in BY_ID['suspensions'].optional_fields
-    for removed in ('退市整理期', '每日涨停价和跌停价', '总股本和流通股本记录', '来源公布的自由流通股本',
-                    '财经新闻', 'ETF', '逐笔委托'):
-        page.search.setText(removed)
-        assert page.table.rowCount() == 0
-    for retained in ('股东户数', '个股融资交易和余额'):
-        page.search.setText(retained)
-        assert page.table.rowCount() == 1
-    page.search.setText('NO-SUCH-DATA')
-    assert page.table.rowCount() == 0 and not page.detail.entry
-    page.search.clear()
-    assert page.table.rowCount() == len(REQUIREMENTS)
-    deactivate_page(page)
-    assert not page.timer.isActive()
-    page.deleteLater()
-    app.processEvents()
 
 def test_changed_source_or_corrupt_artifact_cannot_pass(tmp_path):
     import json
 
     from empire.core.preparation_release import load_evidence, source_digest
-    for name in ('requirements.lock', 'pyproject.toml', 'Empire.spec', 'build.ps1', 'verify-release.ps1'):
+    for name in ('requirements.lock', 'pyproject.toml', 'desktop/package.json', 'build.ps1', 'verify-release.ps1'):
+        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
         (tmp_path / name).write_text('original', encoding='utf-8')
     source = tmp_path / 'src/example.py'
     source.parent.mkdir()
@@ -343,39 +296,6 @@ def test_independent_projects_require_independent_collector_plugins(same_capabil
     PreparationPlugin([first, second], providers)
 
 
-async def test_independent_company_actions_and_catalog_visible_in_ui(monkeypatch):
-    plugin = PreparationPlugin([])
-    await plugin.start(SimpleNamespace(optional=lambda cap: None))
-    async def synthetic(requirement, c, artifact, error):
-        return dict(source='test', running=False, project='', checks=[dict(
-            id='temporal', phase='数据', title='日期', expected='日期', action='检查',
-            status='pass' if requirement.id == 'dividends' else 'unknown', measured='检查')])
-    monkeypatch.setattr(plugin, 'provider_report', synthetic)
-    report = await plugin.report()
-    result = {r['id']: r for r in report['rows']}
-    assert result['dividends']['complete']
-    assert not result['additional_issues']['complete'] and not result['rights_issues']['complete']
-    for ident in ('financing', 'market_financing', 'short_lending', 'market_short_lending',
-                  'hot_list', 'hot_list_summary', 'holder_count'):
-        assert ident in result and not result[ident]['blockers']
-    os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
-    from PySide6.QtWidgets import QApplication
-
-    from empire.features.preparation.ui import PreparationPage
-    app = QApplication.instance() or QApplication([])
-    page = PreparationPage(SimpleNamespace(cfg={}, shutting_down=False))
-    page.render(report)
-    for name in ('分红送转', '增发', '配股'):
-        page.search.setText(name)
-        assert page.table.rowCount() == 1
-        assert name in page.detail.specification.toPlainText()
-    page.search.setText('分红送转')
-    text = page.detail.specification.toPlainText()
-    assert '含税' in text and '除权除息日作为现金支付/记账日' in text
-    assert '独立现金到账日期' in BY_ID['dividends'].optional_fields
-    page.timer.stop()
-    page.deleteLater()
-    app.processEvents()
 
 
 @pytest.mark.parametrize('value', [dict(codes=['bad']), dict(start='2025-1-1'), dict(start='2025-12-31', end='2025-01-01'), dict(purpose='guess')])

@@ -234,7 +234,7 @@
         "pages": {
           "identities": {
             "module": "empire.plugins.ui.identities",
-            "qualname": "IdentityPage"
+            "qualname": "IdentityUiPlugin"
           }
         }
       },
@@ -389,7 +389,7 @@
         "pages": {
           "hot_list": {
             "module": "empire.features.hot_list.ui",
-            "qualname": "HotListPage"
+            "qualname": "HotListUiPlugin"
           }
         },
         "plugins": {
@@ -434,7 +434,7 @@
       "tests/test_tdx_hot_list.py",
       "tests/test_hot_list_lifecycle.py",
       "tests/integration/test_hot_list_archive.py",
-      "tests/test_hot_list_ui.py"
+      "tests/test_headless_pages.py"
     ]
   },
   {
@@ -631,7 +631,7 @@
         "pages": {
           "themes": {
             "module": "empire.features.themes.ui",
-            "qualname": "ThemePage"
+            "qualname": "ThemeUiPlugin"
           }
         },
         "plugins": {
@@ -858,7 +858,7 @@
         "pages": {
           "yuanhang": {
             "module": "empire.features.yuanhang.ui",
-            "qualname": "YuanhangPage"
+            "qualname": "YuanhangUiPlugin"
           }
         },
         "plugins": {
@@ -1774,7 +1774,7 @@
         "pages": {
           "yuanhang_limits": {
             "module": "empire.features.yuanhang_limits.ui",
-            "qualname": "LimitsPage"
+            "qualname": "LimitsUiPlugin"
           }
         }
       },
@@ -2082,7 +2082,7 @@
         "pages": {
           "market_review": {
             "module": "empire.features.market_review.ui",
-            "qualname": "ReviewPage"
+            "qualname": "ReviewUi"
           }
         }
       },
@@ -2105,7 +2105,7 @@
     "design": "docs/market-review.md",
     "tests": [
       "tests/test_market_review.py",
-      "tests/test_market_review_ui.py"
+      "tests/test_headless_pages.py"
     ]
   },
   {

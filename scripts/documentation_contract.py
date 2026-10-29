@@ -26,7 +26,7 @@ def product_sources(root: Path) -> dict[str, str]:
     files.update((root / "scripts").glob("*.py"))
     files.update((root / "sql").rglob("*.sql"))
     files.update((root / "sql").rglob("*.json"))
-    files.update(root / item for item in ("config/app.example.toml", "Empire.spec"))
+    files.update(root / item for item in ("config/app.example.toml", "desktop/package.json"))
     return {path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in sorted(files)}
 

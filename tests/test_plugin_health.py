@@ -2,8 +2,6 @@
 import asyncio
 import json
 import logging
-import os
-from types import SimpleNamespace
 
 import pytest
 
@@ -189,36 +187,3 @@ async def test_unhandled_one_shot_error_is_visible_but_does_not_fail_resident_ow
     assert manager.entries["worker"].state == "RUNNING"
     assert worker.context.critical_failures == 0
     await manager.shutdown()
-
-
-def test_system_pages_show_task_failure_and_require_normal_stop_before_restart():
-    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-    from PySide6.QtWidgets import QApplication
-
-    from empire.plugins.ui.system import PluginsPage, SystemStatusPage
-
-    app = QApplication.instance() or QApplication([])
-    data = {"plugins": [{"id": "pipeline.archive", "name": "归档", "state": "FAILED",
-                         "can_start": False, "enabled": True, "error": "后台任务意外退出",
-                         "health": {}, "requires": []}]}
-    shell = SimpleNamespace(runtime=SimpleNamespace(snapshot=lambda: data), cfg={},
-                            command=lambda *args: None, navigate=lambda *args: None)
-    plugins, system = PluginsPage(shell), SystemStatusPage(shell)
-    try:
-        assert plugins.table.item(0, 2).text() == "运行失败"
-        assert not plugins.buttons["start"].isEnabled()
-        assert plugins.buttons["stop"].isEnabled()
-        assert "先正常停用" in plugins.description.text()
-        assert system.values["archive"].text() == "运行失败"
-        assert "意外退出" in system.issues.text()
-        data["plugins"][0].update(state="DEGRADED", error="依赖服务异常")
-        plugins.tick()
-        system.tick()
-        assert plugins.table.item(0, 2).text() == "运行异常"
-        assert system.values["archive"].text() == "运行异常"
-    finally:
-        for page in (plugins, system):
-            page.timer.stop()
-            page.close()
-            page.deleteLater()
-        app.processEvents()

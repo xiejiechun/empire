@@ -1,12 +1,10 @@
+"""Headless page metadata; rendered widgets belong to the Electron frontend."""
 from empire.contracts.plugin import PluginManifest
 from empire.plugins.ui.plugin import UiPlugin
 
 
 class WorkspaceUiPlugin(UiPlugin):
-    manifest = PluginManifest(
-        "ui.workspace", "工作台与数据目录", provides=("ui.pages.workspace",), autostart=True,
-        description="工作台与数据目录的独立页面贡献",
-    )
+    manifest = PluginManifest('ui.workspace', '工作台与数据目录', provides=('ui.pages.workspace',), autostart=True, description='工作台与数据目录的独立页面贡献')
 
     def __init__(self, page_factory):
         super().__init__()

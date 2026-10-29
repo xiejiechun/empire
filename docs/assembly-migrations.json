@@ -91,5 +91,631 @@
     "empire.plugins.data.trading_rules": "empire.features.trading_rules.query",
     "empire.plugins.ui.trading_rules": "empire.features.trading_rules.ui"
   },
-  "test_paths": {}
+  "test_paths": {},
+  "page_bindings": {
+    "additional_issues": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "additional_issues"
+        },
+        "module": "empire.features.capital_actions.ui",
+        "qualname": "CapitalPage"
+      },
+      "after": {
+        "module": "empire.features.capital_actions.ui",
+        "qualname": "CapitalUiPlugin"
+      }
+    },
+    "adjustment": {
+      "before": {
+        "module": "empire.features.adjustment.ui",
+        "qualname": "AdjustmentPage"
+      },
+      "after": {
+        "module": "empire.features.adjustment.ui",
+        "qualname": "AdjustmentUiPlugin"
+      }
+    },
+    "archived_tasks": {
+      "before": {
+        "module": "empire.plugins.ui.collection_views.archived",
+        "qualname": "ArchivedTasksPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.collection",
+        "qualname": "CollectionUiPlugin"
+      }
+    },
+    "balance": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "balance"
+        },
+        "module": "empire.features.financial_statements.ui",
+        "qualname": "StatementPage"
+      },
+      "after": {
+        "module": "empire.features.financial_statements.ui",
+        "qualname": "FinancialUiPlugin"
+      }
+    },
+    "bond_holders": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "bond_holders"
+        },
+        "module": "empire.features.holders.ui",
+        "qualname": "HolderPage"
+      },
+      "after": {
+        "module": "empire.features.holders.ui",
+        "qualname": "HolderUiPlugin"
+      }
+    },
+    "calendar": {
+      "before": {
+        "module": "empire.features.calendar.ui",
+        "qualname": "TradeCalendarPage"
+      },
+      "after": {
+        "module": "empire.features.calendar.ui",
+        "qualname": "CalendarUiPlugin"
+      }
+    },
+    "cashflow": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "cashflow"
+        },
+        "module": "empire.features.financial_statements.ui",
+        "qualname": "StatementPage"
+      },
+      "after": {
+        "module": "empire.features.financial_statements.ui",
+        "qualname": "FinancialUiPlugin"
+      }
+    },
+    "catalog": {
+      "before": {
+        "module": "empire.features.data_browser.catalog",
+        "qualname": "DataCatalogPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.workspace",
+        "qualname": "WorkspaceUiPlugin"
+      }
+    },
+    "collection": {
+      "before": {
+        "module": "empire.plugins.ui.collection_views.tasks",
+        "qualname": "TasksPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.collection",
+        "qualname": "CollectionUiPlugin"
+      }
+    },
+    "dividends": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "dividends"
+        },
+        "module": "empire.features.capital_actions.ui",
+        "qualname": "CapitalPage"
+      },
+      "after": {
+        "module": "empire.features.capital_actions.ui",
+        "qualname": "CapitalUiPlugin"
+      }
+    },
+    "downloads": {
+      "before": {
+        "module": "empire.plugins.ui.downloads",
+        "qualname": "DownloadSettingsPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.downloads",
+        "qualname": "DownloadSettingsUiPlugin"
+      }
+    },
+    "earnings_disclosure": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "earnings_disclosure"
+        },
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformancePage"
+      },
+      "after": {
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformanceUiPlugin"
+      }
+    },
+    "earnings_forecast": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "earnings_forecast"
+        },
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformancePage"
+      },
+      "after": {
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformanceUiPlugin"
+      }
+    },
+    "earnings_quick": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "earnings_quick"
+        },
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformancePage"
+      },
+      "after": {
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformanceUiPlugin"
+      }
+    },
+    "earnings_report": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "earnings_report"
+        },
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformancePage"
+      },
+      "after": {
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformanceUiPlugin"
+      }
+    },
+    "float_holders": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "float_holders"
+        },
+        "module": "empire.features.holders.ui",
+        "qualname": "HolderPage"
+      },
+      "after": {
+        "module": "empire.features.holders.ui",
+        "qualname": "HolderUiPlugin"
+      }
+    },
+    "help": {
+      "before": {
+        "module": "empire.plugins.ui.help",
+        "qualname": "StorageHelpPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.help",
+        "qualname": "HelpUiPlugin"
+      }
+    },
+    "history": {
+      "before": {
+        "module": "empire.plugins.ui.collection_views.history",
+        "qualname": "HistoryPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.collection",
+        "qualname": "CollectionUiPlugin"
+      }
+    },
+    "holder_count": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "holder_count"
+        },
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformancePage"
+      },
+      "after": {
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformanceUiPlugin"
+      }
+    },
+    "home": {
+      "before": {
+        "module": "empire.plugins.ui.home",
+        "qualname": "HomePage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.workspace",
+        "qualname": "WorkspaceUiPlugin"
+      }
+    },
+    "income": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "income"
+        },
+        "module": "empire.features.financial_statements.ui",
+        "qualname": "StatementPage"
+      },
+      "after": {
+        "module": "empire.features.financial_statements.ui",
+        "qualname": "FinancialUiPlugin"
+      }
+    },
+    "index_prices": {
+      "before": {
+        "module": "empire.features.index_prices.ui",
+        "qualname": "IndexPricePage"
+      },
+      "after": {
+        "module": "empire.features.index_prices.ui",
+        "qualname": "IndexPriceUiPlugin"
+      }
+    },
+    "indices": {
+      "before": {
+        "module": "empire.features.indices.ui",
+        "qualname": "IndexPage"
+      },
+      "after": {
+        "module": "empire.features.indices.ui",
+        "qualname": "IndexUiPlugin"
+      }
+    },
+    "industries": {
+      "before": {
+        "module": "empire.features.industries.ui",
+        "qualname": "IndustryPage"
+      },
+      "after": {
+        "module": "empire.features.industries.ui",
+        "qualname": "IndustryUiPlugin"
+      }
+    },
+    "listing_status": {
+      "before": {
+        "module": "empire.features.listing_status.ui",
+        "qualname": "ListingStatusPage"
+      },
+      "after": {
+        "module": "empire.features.listing_status.ui",
+        "qualname": "ListingStatusUiPlugin"
+      }
+    },
+    "listings": {
+      "before": {
+        "module": "empire.features.listings.ui",
+        "qualname": "ListingPage"
+      },
+      "after": {
+        "module": "empire.features.listings.ui",
+        "qualname": "ListingUiPlugin"
+      }
+    },
+    "names_company": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "company"
+        },
+        "module": "empire.features.name_changes.ui",
+        "qualname": "NamePage"
+      },
+      "after": {
+        "module": "empire.features.name_changes.ui",
+        "qualname": "NameUiPlugin"
+      }
+    },
+    "names_security": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "security"
+        },
+        "module": "empire.features.name_changes.ui",
+        "qualname": "NamePage"
+      },
+      "after": {
+        "module": "empire.features.name_changes.ui",
+        "qualname": "NameUiPlugin"
+      }
+    },
+    "news": {
+      "before": {
+        "module": "empire.features.news.ui",
+        "qualname": "NewsPage"
+      },
+      "after": {
+        "module": "empire.features.news.ui",
+        "qualname": "NewsUiPlugin"
+      }
+    },
+    "plugins": {
+      "before": {
+        "module": "empire.plugins.ui.system",
+        "qualname": "PluginsPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.system",
+        "qualname": "SystemUiPlugin"
+      }
+    },
+    "preparation": {
+      "before": {
+        "module": "empire.features.preparation.ui",
+        "qualname": "PreparationPage"
+      },
+      "after": {
+        "module": "empire.features.preparation.ui",
+        "qualname": "PreparationUiPlugin"
+      }
+    },
+    "proxies": {
+      "before": {
+        "module": "empire.plugins.ui.proxies",
+        "qualname": "ProxyPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.proxies",
+        "qualname": "ProxyUiPlugin"
+      }
+    },
+    "repurchases": {
+      "before": {
+        "module": "empire.features.repurchases.ui",
+        "qualname": "RepurchasePage"
+      },
+      "after": {
+        "module": "empire.features.repurchases.ui",
+        "qualname": "RepurchaseUiPlugin"
+      }
+    },
+    "rights_issues": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "rights_issues"
+        },
+        "module": "empire.features.capital_actions.ui",
+        "qualname": "CapitalPage"
+      },
+      "after": {
+        "module": "empire.features.capital_actions.ui",
+        "qualname": "CapitalUiPlugin"
+      }
+    },
+    "rules_limit_rules": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "limit_rules"
+        },
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RulePage"
+      },
+      "after": {
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RuleUiPlugin"
+      }
+    },
+    "rules_lot_rules": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "lot_rules"
+        },
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RulePage"
+      },
+      "after": {
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RuleUiPlugin"
+      }
+    },
+    "rules_sessions": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "sessions"
+        },
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RulePage"
+      },
+      "after": {
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RuleUiPlugin"
+      }
+    },
+    "rules_settlement_rules": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "settlement_rules"
+        },
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RulePage"
+      },
+      "after": {
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RuleUiPlugin"
+      }
+    },
+    "rules_stamp_duty": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "stamp_duty"
+        },
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RulePage"
+      },
+      "after": {
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RuleUiPlugin"
+      }
+    },
+    "rules_tick_rules": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "tick_rules"
+        },
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RulePage"
+      },
+      "after": {
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RuleUiPlugin"
+      }
+    },
+    "rules_transfer_fee": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "transfer_fee"
+        },
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RulePage"
+      },
+      "after": {
+        "module": "empire.features.trading_rules.ui",
+        "qualname": "RuleUiPlugin"
+      }
+    },
+    "shareholder_changes": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "shareholder_changes"
+        },
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformancePage"
+      },
+      "after": {
+        "module": "empire.features.performance.ui",
+        "qualname": "PerformanceUiPlugin"
+      }
+    },
+    "sites": {
+      "before": {
+        "module": "empire.plugins.ui.collection_views.sites",
+        "qualname": "SitesPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.collection",
+        "qualname": "CollectionUiPlugin"
+      }
+    },
+    "st_implementation": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "implementation"
+        },
+        "module": "empire.features.st_events.ui",
+        "qualname": "StPage"
+      },
+      "after": {
+        "module": "empire.features.st_events.ui",
+        "qualname": "StUiPlugin"
+      }
+    },
+    "st_removal": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "removal"
+        },
+        "module": "empire.features.st_events.ui",
+        "qualname": "StPage"
+      },
+      "after": {
+        "module": "empire.features.st_events.ui",
+        "qualname": "StUiPlugin"
+      }
+    },
+    "stocks": {
+      "before": {
+        "module": "empire.features.stocks.ui",
+        "qualname": "StockListPage"
+      },
+      "after": {
+        "module": "empire.features.stocks.ui",
+        "qualname": "StockUiPlugin"
+      }
+    },
+    "suspensions": {
+      "before": {
+        "module": "empire.features.suspensions.ui",
+        "qualname": "SuspensionsPage"
+      },
+      "after": {
+        "module": "empire.features.suspensions.ui",
+        "qualname": "SuspensionsUiPlugin"
+      }
+    },
+    "system": {
+      "before": {
+        "module": "empire.plugins.ui.system",
+        "qualname": "SystemStatusPage"
+      },
+      "after": {
+        "module": "empire.plugins.ui.system",
+        "qualname": "SystemUiPlugin"
+      }
+    },
+    "ths_capital": {
+      "before": {
+        "module": "empire.features.ths_capital.ui",
+        "qualname": "CapitalPage"
+      },
+      "after": {
+        "module": "empire.features.ths_capital.ui",
+        "qualname": "CapitalPageUiPlugin"
+      }
+    },
+    "top_holders": {
+      "before": {
+        "args": [],
+        "kwargs": {
+          "kind": "top_holders"
+        },
+        "module": "empire.features.holders.ui",
+        "qualname": "HolderPage"
+      },
+      "after": {
+        "module": "empire.features.holders.ui",
+        "qualname": "HolderUiPlugin"
+      }
+    },
+    "unlock_industries": {
+      "before": {
+        "module": "empire.features.unlock_industries.ui",
+        "qualname": "UnlockIndustryPage"
+      },
+      "after": {
+        "module": "empire.features.unlock_industries.ui",
+        "qualname": "UnlockIndustryUiPlugin"
+      }
+    },
+    "unlocks": {
+      "before": {
+        "module": "empire.features.unlocks.ui",
+        "qualname": "UnlockPage"
+      },
+      "after": {
+        "module": "empire.features.unlocks.ui",
+        "qualname": "UnlockUiPlugin"
+      }
+    }
+  }
 }

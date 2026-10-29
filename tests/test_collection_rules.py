@@ -5,7 +5,6 @@ from pathlib import Path
 import pytest
 
 from empire.plugins.collection.rules import collection_rules, validate_rules, verify_registry
-from empire.plugins.ui.collection_views.task_rules import rule_markdown
 from scripts.documentation_contract import declarations
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,16 +43,6 @@ def test_request_contracts_match_real_source_parameters():
                 assert p['value'] == value
 
 
-def test_render_uses_current_namespace_without_exposing_credentials():
-    text = rule_markdown(dict(id='sina-news', name='财经新闻'), dict(
-        redis=dict(namespace='isolated:rules', password='REDIS_SECRET'),
-        mysql=dict(database='rules_db', password='MYSQL_SECRET')))
-    assert 'isolated:rules:ingest' in text
-    assert 'isolated:rules:checkpoint:sina-news-v1' in text
-    assert 'rules_db' in text and 'finance_news' in text
-    assert 'SECRET' not in text
-    assert '| 参数/位置 | 取值与设置方式 | 含义 |\n| ---' in text
-    assert '当前第一页' in text and '上轮已归档ID' in text
 
 
 def test_same_count_wrong_dataset_is_rejected():
@@ -71,37 +60,6 @@ def test_same_count_wrong_dataset_is_rejected():
         contribution.mapping.DATASETS = original
 
 
-def test_all_rules_render_without_network_and_keep_parameter_tables(monkeypatch):
-    import os
-    os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
-    from PySide6.QtGui import QFont, QFontDatabase, QTextTable
-    from PySide6.QtWidgets import QApplication
-
-    from empire.desktop.theme import STYLE
-    from empire.plugins.ui.collection_views.task_rules import TaskRules
-    app = QApplication.instance() or QApplication([])
-    QFontDatabase.addApplicationFont('C:/Windows/Fonts/msyh.ttc')
-    QFontDatabase.addApplicationFont('C:/Windows/Fonts/segoeui.ttf')
-    pane = TaskRules()
-    pane.setFont(QFont('Microsoft YaHei', 10))
-    pane.setStyleSheet(STYLE)
-    pane.resize(520, 600)
-    pane.show()
-    try:
-        for ident, rule in collection_rules().items():
-            pane.show_job(dict(id=ident, name=ident), {})
-            app.processEvents()
-            text = pane.browser.toPlainText()
-            assert rule['job_key'] in text
-            assert all(table in text for table in rule['tables'])
-            assert pane.chapters.count() >= 12
-            if any(r['parameters'] for r in rule['requests']):
-                assert any(isinstance(f, QTextTable) for f in pane.browser.document().rootFrame().childFrames())
-        pane.show_job(dict(id='tdx-unlocks', name='大小非解禁'), {})
-        app.processEvents()
-        pane.grab().save(str(ROOT / 'build/collection-rules-narrow.png'))
-    finally:
-        pane.close()
 
 
 def test_rule_storage_addresses_follow_config_without_leaking_credentials():

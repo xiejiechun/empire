@@ -110,19 +110,3 @@ async def test_real_injected_stock_handler_propagates_storage_failure(store, fai
     with pytest.raises(type(failure)) as caught:
         await provider.stock_status('sina', 'job', 'project', 'snapshot')
     assert caught.value is failure
-
-
-def test_real_workspace_contributions_remain_lazy_with_exact_page_metadata(monkeypatch):
-    from PySide6.QtWidgets import QWidget
-
-    from empire.features.data_browser.bundle import bundle
-    def forbidden(*args, **kwargs):
-        raise AssertionError('page created while collecting declarations')
-    monkeypatch.setattr(QWidget, '__init__', forbidden)
-    contribution = bundle(CFG).plugins[0]
-    assert contribution.ordinal == 14800
-    pages = contribution.value.create_pages()
-    assert [(p.id, p.title, p.group, p.order, p.cache_policy, p.top_level) for p in pages] == [
-        ('home', '总览', '工作台', 0, 'lru', True),
-        ('catalog', '数据目录', '数据浏览', -1, 'lru', False)]
-

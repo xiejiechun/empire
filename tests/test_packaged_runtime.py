@@ -1,14 +1,10 @@
 import json
-import shutil
 from pathlib import Path
-from types import SimpleNamespace
 
 import pytest
 
 from empire import build_info
 from empire.core import config
-from scripts import release_steps
-from scripts.release_identity import sha256
 
 
 def manifest_value():
@@ -59,68 +55,6 @@ def test_build_manifest_is_strict_and_identifies_dirty_artifacts(tmp_path, monke
     assert "干净提交" in build_info.build_summary()[0]
 
 
-@pytest.mark.parametrize(("release_id", "help_damage"), [
-    ("e" * 32, None), ("not-a-canonical-release-id", None),
-    ("e" * 32, "missing"), ("e" * 32, "changed"),
-], ids=("current-writer-contract", "invalid-identity-before-pyinstaller",
-        "missing-help-resource", "changed-help-resource"))
-def test_package_validates_writer_identity_before_running_packager(
-        tmp_path, monkeypatch, release_id, help_damage):
-    root = tmp_path / "workspace"
-    generated = root / "build/generated"
-    generated.mkdir(parents=True)
-    (root / "requirements.lock").write_text("sample==1.0\n", encoding="utf-8")
-    (generated / "preparation-release.json").write_text("{}", encoding="utf-8")
-    dependency = root / "build/dependency-report.json"
-    dependency.write_text(json.dumps({"requirements_sha256": sha256(root / "requirements.lock"),
-                                      "component_count": 41}), encoding="utf-8")
-    run = root / "build/releases" / release_id
-    stage = run / "portable/Empire"
-    reference = root / "src/empire/plugins/ui/storage_reference.md"
-    reference.parent.mkdir(parents=True)
-    reference.write_bytes(b"checked help bytes\n")
-    commands = []
-
-    def fake_package_command(args, *, env):
-        commands.append(args)
-        assert "PyInstaller" in args
-        stage.mkdir(parents=True)
-        (stage / "Empire.exe").write_bytes(b"test package output")
-        internal = stage / "_internal/empire"
-        internal.mkdir(parents=True)
-        for name in ("build_manifest.json", "preparation-release.json", "dependency-report.json"):
-            shutil.copyfile(dependency if name == dependency.name else generated / name, internal / name)
-        if help_damage != "missing":
-            bundled_help = internal / "plugins/ui/storage_reference.md"
-            bundled_help.parent.mkdir(parents=True)
-            bundled_help.write_bytes(b"changed" if help_damage else reference.read_bytes())
-
-    runner = SimpleNamespace(root=root, run_directory=run, python=root / "python.exe",
-                             inputs={"sha256": "d" * 64}, commit="a" * 40, dirty=False,
-                             evidence={}, command=fake_package_command)
-    monkeypatch.setattr(release_steps.platform, "python_version", lambda: "3.12.9")
-    monkeypatch.setattr(release_steps.importlib.metadata, "version", lambda name: "6.22.3")
-    if release_id == "not-a-canonical-release-id":
-        with pytest.raises(ValueError, match="Invalid Empire build manifest identity"):
-            release_steps.package(runner, SimpleNamespace(stage=stage), dependency)
-        written = json.loads((generated / "build_manifest.json").read_text(encoding="utf-8"))
-        assert written["release_id"] == release_id
-        assert commands == [] and runner.evidence == {}
-        assert not stage.exists()
-        return
-    if help_damage:
-        with pytest.raises(RuntimeError, match="Packaged offline help differs"):
-            release_steps.package(runner, SimpleNamespace(stage=stage), dependency)
-        assert len(commands) == 1
-        return
-    value = release_steps.package(runner, SimpleNamespace(stage=stage), dependency)
-    assert len(commands) == 1
-    assert value["source_sha256"] == runner.inputs["sha256"]
-    assert value["release_id"] == run.name
-    assert runner.evidence[reference.relative_to(root).as_posix()] == sha256(reference)
-    assert sha256(stage / '_internal/empire/plugins/ui/storage_reference.md') == sha256(reference)
-    embedded = stage / "_internal/empire/build_manifest.json"
-    assert build_info.load_build_info(embedded) == {**value, "packaged": True}
 
 
 @pytest.mark.parametrize("missing", tuple(manifest_value()))
@@ -177,11 +111,3 @@ def test_packaged_runtime_cannot_fall_back_to_development_without_manifest(tmp_p
     monkeypatch.setattr(build_info.sys, "frozen", True, raising=False)
     with pytest.raises(ValueError, match="Missing Empire build manifest"):
         build_info.load_build_info(tmp_path / "missing-build-manifest.json")
-
-
-def test_package_contains_all_runtime_owned_resources() -> None:
-    spec = (Path(__file__).resolve().parents[1] / "Empire.spec").read_text(encoding="utf-8")
-    assert '"config" / "app.example.toml"' in spec
-    assert '"sql" / "schema.sql"' in spec
-    assert '"sql" / "business-schema.json"' in spec
-    assert '"dependency-report.json"' in spec

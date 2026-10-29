@@ -2,6 +2,7 @@
 
 from types import SimpleNamespace
 from unittest.mock import Mock
+
 from empire.features.capital_actions.dividend_yield import calculate_yield
 
 

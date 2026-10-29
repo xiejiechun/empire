@@ -187,7 +187,7 @@ def test_feature_documentation_reachability_includes_sql_resource(tmp_path):
 
 
 def test_sql_json_change_invalidates_global_documentation_identity(tmp_path):
-    for name in ('src/empire/plugins/collection/rules.json', 'config/app.example.toml', 'Empire.spec'):
+    for name in ('src/empire/plugins/collection/rules.json', 'config/app.example.toml', 'desktop/package.json'):
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text('', encoding='utf-8')

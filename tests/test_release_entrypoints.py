@@ -80,7 +80,8 @@ def test_package_evidence_is_fail_closed_with_real_script_execution(tmp_path, da
     script = tmp_path / 'scripts/preparation_evidence.py'
     script.parent.mkdir()
     shutil.copyfile(root / 'scripts/preparation_evidence.py', script)
-    for name in ('requirements.lock', 'pyproject.toml', 'Empire.spec', 'build.ps1', 'verify-release.ps1'):
+    for name in ('requirements.lock', 'pyproject.toml', 'desktop/package.json', 'build.ps1', 'verify-release.ps1'):
+        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
         (tmp_path / name).write_text('fixture', encoding='utf-8')
     target = tmp_path / 'build/generated/preparation-release.json'
     target.parent.mkdir(parents=True)
@@ -102,7 +103,8 @@ def test_package_evidence_is_fail_closed_with_real_script_execution(tmp_path, da
 
 
 def test_preparation_digest_covers_runtime_resources_not_development_notes_or_credentials(tmp_path):
-    for name in ('requirements.lock', 'pyproject.toml', 'Empire.spec', 'build.ps1', 'verify-release.ps1'):
+    for name in ('requirements.lock', 'pyproject.toml', 'desktop/package.json', 'build.ps1', 'verify-release.ps1'):
+        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
         (tmp_path / name).write_text('fixture', encoding='utf-8')
     baseline = source_digest(tmp_path)
     (tmp_path / 'docs').mkdir()

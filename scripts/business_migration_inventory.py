@@ -7,6 +7,7 @@ from pathlib import Path
 from sqlalchemy import inspect, text
 
 from empire.contracts.business_schema import FIXED_SOURCES
+
 MARKET_TABLES = ('stock_daily_quote', 'stock_daily_quote_level', 'stock_intraday_trade_block', 'stock_intraday_trend', 'stock_large_order_trend', 'stock_market_day', 'stock_minute_entrust', 'stock_minute_volume', 'stock_opening_auction')
 
 ROOT = Path(__file__).resolve().parents[1]

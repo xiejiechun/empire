@@ -64,7 +64,7 @@ def snapshot(root: Path):
                     field.name: plain(getattr(page, field.name))
                     for field in dataclasses.fields(page) if field.name != 'factory'
                 }
-                bindings['pages'][page.id] = symbol(page.factory)
+                bindings['pages'][page.id] = symbol(plugin)
         for contribution in getattr(plugin, 'preparation', ()):
             key = ident + ':' + contribution.requirement
             if key in semantic['preparation']:
@@ -113,7 +113,7 @@ def compare(baseline, current, migration, root: Path, features=None):
         raise ValueError('Unsupported assembly snapshot schema')
     modules = migration.get('modules', {})
     test_paths = migration.get('test_paths', {})
-    if set(migration) - {'modules', 'test_paths'}:
+    if set(migration) - {'modules', 'test_paths', 'page_bindings'}:
         raise ValueError('Only explicit module and test path mappings are allowed')
     for mapping in (modules, test_paths):
         if not isinstance(mapping, dict) or any(not isinstance(k, str) or not isinstance(v, str)
@@ -133,6 +133,12 @@ def compare(baseline, current, migration, root: Path, features=None):
             used_tests.update(path for path in paths if path in test_paths)
     if used_modules != set(modules) or used_tests != set(test_paths):
         raise ValueError('Migration includes unused mappings')
+    for ident, change in migration.get('page_bindings', {}).items():
+        if set(change) != {'before', 'after'} or expected['pages'].get(ident) != change['before']:
+            raise ValueError('Page metadata migration must match its exact old binding')
+        if current['bindings']['pages'].get(ident) != change['after']:
+            raise ValueError('Page metadata migration differs from current provider')
+        expected['pages'][ident] = change['after']
     expected_semantic = json.loads(json.dumps(baseline['semantic']))
     apply(features, expected_semantic, expected, current, root)
     failures = differences(expected_semantic, current['semantic'], 'semantic')

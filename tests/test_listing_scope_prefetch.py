@@ -39,7 +39,6 @@ async def test_announced_listing_attaches_without_requesting_prelisting_days(mon
         return
     stock = stocks[0]
     assert stock['listing_date'] == tomorrow.isoformat()
-    calendar = sorted({today, tomorrow})
 
 
 @pytest.mark.parametrize('state,delta,symbol', [('0', 1, '920157.BJ'), ('9', -1, '920157.BJ'),

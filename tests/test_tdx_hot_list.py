@@ -6,7 +6,6 @@ from decimal import Decimal
 import pytest
 
 from empire.features.hot_list.contract import number, validate_dates
-from empire.features.hot_list.presentation import render, summary
 from empire.features.hot_list.source import (
     DETAIL_COLUMNS,
     DIRECTORY_COLUMNS,
@@ -218,17 +217,6 @@ def test_000063_tied_sell_rank_preserves_both_seats_and_stable_order():
         parse_detail(body)
 
 
-def test_display_cross_list_total_does_not_drop_distinct_institutions():
-    value = parse_detail(detail(shenzhen=True))
-    assert summary(value, "070001") == (Decimal(22), Decimal(19))
-    value.update(
-        unified_code=CODE,
-        list_date=DATE,
-        detail_status=value.pop("status"),
-        version_observed_at="2026-03-03 19:30:00",
-    )
-    output = render(value)
-    assert "机构专用" in output and "查询时刻" in output and "来源缺" not in output
 
 
 def test_daily_default():
@@ -237,16 +225,3 @@ def test_daily_default():
     task = bundle({"redis": {}}).tasks[0].value
     assert task.default_schedule.mode == "daily" and task.default_schedule.daily_time == "19:30"
     assert task.parallel_downloads
-
-
-def test_identical_same_direction_institutions_are_not_collapsed():
-    value = parse_detail(detail(shenzhen=True))
-    row = copy.deepcopy(value["seats"][-1])
-    row["seat_rank"] += 1
-    value["seats"].append(row)
-    before = summary(dict(seats=value["seats"][:-1]), "070001")
-    after = summary(value, "070001")
-    assert after == (
-        before[0] + Decimal(row["buy_amount"] or "0"),
-        before[1] + Decimal(row["sell_amount"] or "0"),
-    )

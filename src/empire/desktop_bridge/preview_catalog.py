@@ -16,6 +16,7 @@ class View:
 
 def views(task):
     simple = {
+        "tdx-hot-list": ("hot_list.query", "browse"),
         "ths-listings": ("listings.query", "list_records"),
         "tdx-listing-status": ("listing_status.query", "list_events"),
         "tdx-unlocks": ("unlocks.tdx_query", "list_records"),

@@ -1,14 +1,12 @@
 # 新版采集管理桌面 · 接入开发版
 
-本目录已接入原有Python服务，任务与命令不是模拟数据。当前为源码接入版本，尚未替换dist/Empire正式程序，也未完成新版EXE发布门禁。原有设计预览仍在work/desktop-redesign-react，未删除或改为生产入口。
+本目录是当前唯一客户端，使用 React + Ant Design + Electron，接入现有 Python 服务。旧 Qt 窗口、页面控件和专属打包入口已移除。设计预览仍保留在 work/desktop-redesign-react。
 
 ## 双击启动（本机）
 
-双击 `dist/EmpireDesktop/Empire.exe`。这是Windows无控制台启动器，打开本项目新版Electron界面，依赖项目中的desktop、.venv和已安装Electron；不是可单独复制到另一电脑的完整安装包。
+双击 `dist/EmpireDesktop/Empire.exe` 或根目录 Empire 快捷方式。配置为启动器同目录 config.toml。当前启动器依赖仓库、.venv 和 desktop/node_modules，不能单独搬移。
 
-配置固定为该启动器同目录的config.toml，首次从原dist/Empire/config.toml原样复制，以显式--config传给后端；现有不同配置拒绝覆盖。启动工作目录不会改变配置位置。旧客户端与新版共用业务锁，请先正常退出旧客户端。原dist/Empire/Empire.exe及设计预览继续保留。
-
-重建本机启动器使用 `python scripts/build_desktop_launcher.py --config-source dist/Empire/config.toml`，持有共享构建锁、检查原程序已退出、构建前端并执行启动参数与协议测试。此入口仅生成本机开发启动器，不替代完整独立程序的正式发布门禁。
+重建：`python scripts/build_desktop_launcher.py`。默认使用已有 dist/EmpireDesktop/config.toml；显式 --config-source 只用于首次复制，拒绝覆盖不同配置。构建前正常关闭客户端。
 
 ## 启动与退出
 
@@ -23,7 +21,7 @@ npm.cmd --prefix desktop start
 
 源码后端使用项目`.venv/Scripts/python.exe`及项目根目录`config.toml`，启动会运行原有服务和已经保存的计划，不是只读诊断模式。Redis/MySQL密码不进入前端。真实验证前须正常退出旧Empire；若旧窗口或维护任务占用原业务锁，新后端明确报错，不能删锁重试。
 
-通过窗口关闭或“正常退出”等待采集、归档和连接收尾。关闭中不再接受新命令，已接收写命令不会因切页取消；数据库故障可能让收尾等待，不强杀。恢复原客户端时先确认新版后端退出，再启动原EXE。现有预览无需关闭，因为它不连接生产后端。
+通过窗口关闭或“正常退出”等待采集、归档和连接收尾。关闭中不再接受新命令，已接收写命令不会因切页取消；数据库故障可能让收尾等待，不强杀。旧客户端已移除，不再提供旧窗口恢复入口。现有预览无需关闭，因为它不连接生产后端。
 
 ## 日常操作
 
@@ -39,7 +37,7 @@ npm.cmd --prefix desktop start
 
 ## 当前限制
 
-仍复用原bootstrap（含Qt页面声明导入），尚未完成纯元数据UI装配及插件动态可见性迁移。55 个采集项目已接入任务内数据预览，其他研究分析页面尚未迁移；未退役设计预览或旧客户端页面。正式前后端联合构建身份、完整结果schema、发布打包、恢复包及全量端到端发布验收仍待后续阶段。
+后台 bootstrap 已改为无控件的页面元数据装配，49 个采集项目有任务内数据预览；其他研究分析页面尚未迁移，设计预览保留。正式前后端联合构建身份、完整结果schema、发布打包、恢复包及全量端到端发布验收仍待后续阶段。
 
 本轮未对真实任务执行手动重采、修改保存计划或清理错误；命令路径、去重、草稿竞争通过隔离测试，真实环境完成读取、互斥和正常关闭验证。正常启动原Runtime会恢复已保存计划，不能把整个启动过程称为“绝无业务写入”。
 

@@ -15,7 +15,7 @@ def documented_project(tmp_path):
     fragment_names = [item["path"] for item in index["sources"]]
     for name in (SOURCE_INDEX, *fragment_names, "config/app.example.toml",
                  "src/empire/plugins/collection/rules.json",
-                 "Empire.spec", "docs/documentation-coverage.json",
+                 "desktop/package.json", "docs/documentation-coverage.json",
                  "src/empire/features/stocks/ui.py"):
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)

@@ -80,7 +80,7 @@
 
 ### P1-02　序列化后字符串脱敏存在漏脱敏与破坏 JSON 的边界
 
-**问题/证据（已复现）**：[runtime.py:69](../src/empire/core/runtime.py#L69) 对整个 JSON 字符串做替换后再解析；[config.py:58](../src/empire/core/config.py#L58) 只识别原始及 URL 编码密码。模拟带引号密码在 JSON 转义后可漏匹配；单个引号密码可破坏 JSON 并触发异常。[system.py:194](../src/empire/plugins/ui/system.py#L194) 也存在先序列化后脱敏。后台异常退出路径未统一执行插件 shutdown。
+**问题/证据（已复现）**：[runtime.py:69](../src/empire/core/runtime.py#L69) 对整个 JSON 字符串做替换后再解析；[config.py:58](../src/empire/core/config.py#L58) 只识别原始及 URL 编码密码。模拟带引号密码在 JSON 转义后可漏匹配；单个引号密码可破坏 JSON 并触发异常。system.py:194（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/plugins/ui/system.py#L194`） 也存在先序列化后脱敏。后台异常退出路径未统一执行插件 shutdown。
 
 **优化价值**：统一凭据保护，避免安全处理本身终止后台。这里只使用模拟凭据，未认定真实密码已经泄漏。
 
@@ -192,7 +192,7 @@
 
 ### P2-13　错误记录页反复传输全部原文，容量有界但开销仍大
 
-**问题/证据（源码确认、上界估算）**：[records.py:208](../src/empire/plugins/collection/records.py#L208) 一次返回最多300条完整错误；[UI records.py:106](../src/empire/plugins/ui/records.py#L106) 可见页面按1.5秒节奏刷新。仅300×64KiB正文理论上限即18.75MiB，不含JSON和元数据；并不是每次实际都有这么大。
+**问题/证据（源码确认、上界估算）**：[records.py:208](../src/empire/plugins/collection/records.py#L208) 一次返回最多300条完整错误；UI records.py:106（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/plugins/ui/records.py#L106`） 可见页面按1.5秒节奏刷新。仅300×64KiB正文理论上限即18.75MiB，不含JSON和元数据；并不是每次实际都有这么大。
 
 **优化价值**：减少Redis传输、JSON解析和UI更新，对正常归档让出资源。
 
@@ -242,7 +242,7 @@
 
 ### P2-18　异步读状态处理仍不一致
 
-**问题/证据（离屏已复现及源码确认）**：[stocks.py:215](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/stocks.py#L215) 未捕获invoke同步异常，模拟服务在快照后消失，tick直接抛RuntimeError；其他页面已有try/except。[records.py:125](../src/empire/plugins/ui/records.py#L125) 切项目丢弃旧查询引用却不立即取消；[window.py:149](../src/empire/desktop/window.py#L149) 页面工厂缺少局部异常边界。UI普遍分别处理loading/error/旧数据，尚无一致的过期显示契约。
+**问题/证据（离屏已复现及源码确认）**：[stocks.py:215](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/stocks.py#L215) 未捕获invoke同步异常，模拟服务在快照后消失，tick直接抛RuntimeError；其他页面已有try/except。records.py:125（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/plugins/ui/records.py#L125`） 切项目丢弃旧查询引用却不立即取消；window.py:149（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/desktop/window.py#L149`） 页面工厂缺少局部异常边界。UI普遍分别处理loading/error/旧数据，尚无一致的过期显示契约。
 
 **优化价值**：服务启停、后台关闭和切页竞争时，界面能恢复而非停留在“读取中”。
 
@@ -252,7 +252,7 @@
 
 ### P2-19　小屏主要依赖长页面滚动，缺少按可用空间重排
 
-**问题/证据（新截图确认）**：880×560逻辑窗口下任务页外层纵向范围444px、站点/历史386px、新闻148px；任务配置/保存和新闻正文经常不在首屏。代理表还需横向滚动。外壳滚动有效，不能写成“全部控件被遮挡不能操作”。[window.py:44](../src/empire/desktop/window.py#L44) 固定最小窗口880×560；小物理屏幕高缩放时可用逻辑区域可能低于此值。站点保存栏仍位于内层编辑滚动区，见[sites.py:59](../src/empire/plugins/ui/collection_views/sites.py#L59)。
+**问题/证据（新截图确认）**：880×560逻辑窗口下任务页外层纵向范围444px、站点/历史386px、新闻148px；任务配置/保存和新闻正文经常不在首屏。代理表还需横向滚动。外壳滚动有效，不能写成“全部控件被遮挡不能操作”。window.py:44（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/desktop/window.py#L44`） 固定最小窗口880×560；小物理屏幕高缩放时可用逻辑区域可能低于此值。站点保存栏仍位于内层编辑滚动区，见sites.py:59（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/plugins/ui/collection_views/sites.py#L59`）。
 
 **优化价值**：让高频动作更容易发现，减少列表内滚动叠加整页滚动。
 
@@ -262,7 +262,7 @@
 
 ### P2-20　部分筛选控件没有可访问名称，键盘焦点体系不完整
 
-**问题/证据（QAccessible 实测/源码确认）**：目录筛选、股票/新闻/帮助搜索框、日历年月等控件的Name为空；placeholder不能替代稳定的读屏名称。[theme.py:25](../src/empire/desktop/theme.py#L25) 列表与表格使用outline:none，未为这些控件统一补显著焦点。并非所有控件都无焦点，按钮和输入框已有focus样式。
+**问题/证据（QAccessible 实测/源码确认）**：目录筛选、股票/新闻/帮助搜索框、日历年月等控件的Name为空；placeholder不能替代稳定的读屏名称。theme.py:25（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/desktop/theme.py#L25`） 列表与表格使用outline:none，未为这些控件统一补显著焦点。并非所有控件都无焦点，按钮和输入框已有focus样式。
 
 **优化价值**：改善键盘、读屏和精细操作用户的可用性，不只是满足形式指标。
 
@@ -272,7 +272,7 @@
 
 ### P2-21　非文本控件边界和系统高对比度适配需补齐
 
-**问题/证据（主题确认）**：[theme.py:14](../src/empire/desktop/theme.py#L14) 固定白底和字体，输入框边界为浅灰、滚动条也较浅。正文主色和品牌蓝总体一致，没有发现必须推翻品牌视觉的依据；但目前不具备完整高对比度/系统文本缩放验收证据。
+**问题/证据（主题确认）**：theme.py:14（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/desktop/theme.py#L14`） 固定白底和字体，输入框边界为浅灰、滚动条也较浅。正文主色和品牌蓝总体一致，没有发现必须推翻品牌视觉的依据；但目前不具备完整高对比度/系统文本缩放验收证据。
 
 按主题色计算：灰正文/白底约4.97:1、主按钮白字约6.11:1；输入边框/白底约1.38:1、未选复选框边框约2.10:1、滚动条滑块/轨道约1.47:1。后面三项低于常用3:1非文本基准，应结合它们是否承担必要辨识功能整改，不能由此断言所有文字对比度不达标。主按钮还需显式focus态，避免ID样式覆盖普通按钮焦点边框。
 
@@ -284,7 +284,7 @@
 
 ### P2-22　“处理条数”“实际写库条数”和“队列消息数”混用
 
-**问题/证据（源码确认）**：[archive.py:285](../src/empire/plugins/pipeline/archive.py#L285) row_count包括缓存命中/无写入确认；[UI records.py:67](../src/empire/plugins/ui/records.py#L67) 却显示“入库条数”。[home.py:37](../src/empire/plugins/ui/home.py#L37) “待入库数据”实际来自Stream消息数，一条可以是一整页，不等于一条股票/新闻。
+**问题/证据（源码确认）**：[archive.py:285](../src/empire/plugins/pipeline/archive.py#L285) row_count包括缓存命中/无写入确认；UI records.py:67（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/plugins/ui/records.py#L67`） 却显示“入库条数”。home.py:37（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/plugins/ui/home.py#L37`） “待入库数据”实际来自Stream消息数，一条可以是一整页，不等于一条股票/新闻。
 
 **优化价值**：消除“明明没写库却显示入库很多条”“采集为何还在等待”的误解。
 
@@ -332,7 +332,7 @@
 
 ### P2-26　已访问页面永久缓存，隐藏页刷新缺少统一生命周期
 
-**问题/证据（源码确认、规模风险）**：[window.py:148](../src/empire/desktop/window.py#L148) 保留所有访问过的页面，通常只有插件贡献移除才销毁；[system.py:84](../src/empire/plugins/ui/system.py#L84) 与:167的系统页面隐藏后仍周期性取快照并更新表格。多数业务页已抑制隐藏查询，但没有统一的激活/停用和缓存预算。
+**问题/证据（源码确认、规模风险）**：window.py:148（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/desktop/window.py#L148`） 保留所有访问过的页面，通常只有插件贡献移除才销毁；system.py:84（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/plugins/ui/system.py#L84`） 与:167的系统页面隐藏后仍周期性取快照并更新表格。多数业务页已抑制隐藏查询，但没有统一的激活/停用和缓存预算。
 
 **优化价值**：后续几十/几百数据页面下限制控件、定时器、内存与无效渲染。当前是确定的缓存策略和扩展风险，不是已经证明的不可回收泄漏。
 
@@ -380,7 +380,7 @@
 
 ### P3-30　跨页面导航未保留完整业务上下文
 
-**问题/证据（源码确认）**：[stocks.py:54](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/stocks.py#L54)、[news.py:43](../src/empire/features/news/ui.py#L43)、[trade_calendar.py:44](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/trade_calendar.py#L44) 的管理入口跳到通用任务页而不定位对应任务；[catalog.py:87](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/catalog.py#L87) 目录重绘默认选择首项。页面还各自维护部分分页/筛选交互。
+**问题/证据（源码确认）**：[stocks.py:54](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/stocks.py#L54)、news.py:43（旧 Qt 实现，已于 2026-10-29 退役；原位置 `../src/empire/features/news/ui.py#L43`）、[trade_calendar.py:44](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/trade_calendar.py#L44) 的管理入口跳到通用任务页而不定位对应任务；[catalog.py:87](https://github.com/xiejiechun/empire/blob/b8d732d4f44420c5711c3fdfa8ba6a46e418c9f7/src/empire/plugins/ui/catalog.py#L87) 目录重绘默认选择首项。页面还各自维护部分分页/筛选交互。
 
 **优化价值**：项目增多后无需在跳转后再次找任务，减少重复操作和学习成本。
 

@@ -73,28 +73,3 @@ def test_structured_redaction_bounds_cycles_without_changing_mapping_keys():
     assert result["nested"]["Authorization"] == REDACTED
     assert set(result) == set(value)
     assert "depth limited" in json.dumps(result)
-
-
-def test_plugin_diagnostics_serialize_only_after_redacting_values():
-    import os
-    from types import SimpleNamespace
-
-    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-    from PySide6.QtWidgets import QApplication
-
-    from empire.plugins.ui.system import PluginsPage
-
-    app = QApplication.instance() or QApplication([])
-    runtime = SimpleNamespace(snapshot=lambda: {"plugins": [
-        {"id": "infra.mysql", "name": "MySQL", "state": "RUNNING", "requires": [],
-         "health": {'quoted"key': 'failed "', "password": '"'}}]})
-    page = PluginsPage(SimpleNamespace(runtime=runtime, cfg={"mysql": {"password": '"'}}))
-    try:
-        page.timer.stop()
-        diagnostic = json.loads(page.diagnostics.toPlainText())
-        assert diagnostic["标识"] == "infra.mysql"
-        assert diagnostic["运行状态"]['quoted"key'] == "failed [REDACTED]"
-        assert diagnostic["运行状态"]["password"] == "[REDACTED]"
-    finally:
-        page.deleteLater()
-        app.processEvents()

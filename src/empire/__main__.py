@@ -42,17 +42,6 @@ def acquire_instance_lock():
     return lock
 
 
-def show_startup_error(message: str) -> None:
-    """Show packaged GUI startup failures that would otherwise be hidden without a console."""
-    from PySide6.QtWidgets import QApplication, QMessageBox
-
-    owns_app = QApplication.instance() is None
-    app = QApplication.instance() or QApplication(sys.argv[:1])
-    box = QMessageBox(QMessageBox.Icon.Critical, "Empire 无法启动", message)
-    box.setInformativeText("默认配置为 Empire.exe 同目录的 config.toml；源码运行使用项目根目录。")
-    box.exec()
-    if owns_app:
-        app.quit()
 
 
 async def doctor(cfg: dict) -> dict:
@@ -108,122 +97,10 @@ async def doctor(cfg: dict) -> dict:
     return result
 
 
-def run_gui(cfg: dict, screenshot: str | None = None, smoke_seconds: int = 0) -> int:
-    from PySide6.QtCore import QTimer
-    from PySide6.QtGui import QFontDatabase
-    from PySide6.QtWidgets import QApplication
-
-    from empire.bootstrap import build_manager
-    from empire.core.runtime import Runtime
-    from empire.desktop.icon import application_icon
-    from empire.desktop.interaction import install_input_rules
-    from empire.desktop.window import MainWindow
-
-    app = QApplication(sys.argv[:1])
-    for name in ("msyh.ttc", "msyhbd.ttc", "segoeui.ttf"):
-        font = Path("C:/Windows/Fonts") / name
-        if font.is_file():
-            QFontDatabase.addApplicationFont(str(font))
-    app.setApplicationName("Empire")
-    app.setOrganizationName("EmpireResearch")
-    app.setWindowIcon(application_icon())
-    install_input_rules(app)
-    lock = acquire_instance_lock()
-    runtime = Runtime(lambda: build_manager(cfg), cfg)
-    try:
-        runtime.start()
-        window = MainWindow(runtime, cfg)
-        window.show()
-        if smoke_seconds:
-            def finish():
-                if screenshot:
-                    target = Path(screenshot).resolve()
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    window.grab().save(str(target))
-                window.close()
-            QTimer.singleShot(smoke_seconds * 1000, finish)
-        return app.exec()
-    finally:
-        if runtime.loop is not None and not runtime.closed.is_set():
-            runtime.command("shutdown").result(timeout=60)
-        if runtime.thread.ident is not None:
-            runtime.thread.join(timeout=60)
-        lock.unlock()
 
 
-def package_declarations():
-    """Exercise real packaged constructors without starting services or pages."""
-    import tomllib
-
-    from empire.bootstrap import build_manager
-    from empire.build_info import build_summary
-    from empire.core.config import resource_root
-
-    build_summary()
-    cfg = tomllib.loads((resource_root() / 'config/app.example.toml').read_text(encoding='utf-8'))
-    manager = build_manager(cfg)
-    if manager.registry.values or any(entry.context or entry.state != 'STOPPED'
-                                      for entry in manager.entries.values()):
-        raise RuntimeError('Packaged declaration check unexpectedly started services')
-    return manager
 
 
-def package_smoke(screenshot: str | None = None) -> int:
-    """Exercise the packaged Qt shell without connecting to Redis or MySQL."""
-    package_declarations()
-    import threading
-    from concurrent.futures import Future
-
-    from PySide6.QtCore import QTimer
-    from PySide6.QtGui import QFontDatabase
-    from PySide6.QtWidgets import QApplication
-
-    from empire.desktop.icon import application_icon
-    from empire.desktop.interaction import install_input_rules
-    from empire.desktop.window import MainWindow
-
-    class SmokeRuntime:
-        def __init__(self):
-            self.closed = threading.Event()
-
-        def snapshot(self):
-            return {"plugins": []}
-
-        def page_contributions(self):
-            return []
-
-        def command(self, *args):
-            result = Future()
-            result.set_result(None)
-            return result
-
-    app = QApplication(sys.argv[:1])
-    for name in ("msyh.ttc", "msyhbd.ttc", "segoeui.ttf"):
-        font = Path("C:/Windows/Fonts") / name
-        if font.is_file():
-            QFontDatabase.addApplicationFont(str(font))
-    app.setApplicationName("Empire package smoke")
-    app.setWindowIcon(application_icon())
-    install_input_rules(app)
-    runtime = SmokeRuntime()
-    window = MainWindow(runtime, {})
-    window.timer.stop()
-    window.show()
-
-    def finish():
-        if screenshot:
-            target = Path(screenshot).resolve()
-            target.parent.mkdir(parents=True, exist_ok=True)
-            if not window.grab().save(str(target)):
-                app.exit(2)
-                return
-        runtime.closed.set()
-        window.can_close = True
-        window.close()
-        app.quit()
-
-    QTimer.singleShot(500, finish)
-    return app.exec()
 
 
 def main() -> int:
@@ -250,18 +127,11 @@ def main() -> int:
     suspensions.add_argument("--fresh", action="store_true", help="从 2004-12-27 重新核验至今，保留已归档事件")
     industries = commands.add_parser('collect-industries', help='刷新同花顺当前行业及全部成员，归档后退出')
     industries.add_argument('--fresh', action='store_true', help='完整刷新当前分类，不保存变化历史')
-    smoke = commands.add_parser("smoke", help="启动桌面并在指定秒数后安全退出")
-    smoke.add_argument("--seconds", type=int, default=8)
-    smoke.add_argument("--screenshot")
-    package = commands.add_parser("package-smoke", help="隔离验证打包界面，不连接业务服务")
-    package.add_argument("--screenshot")
     args = parser.parse_args()
     if args.command == 'doctor' and not args.project and (
             args.error_id or args.security or args.date or args.output):
         parser.error('--error-id / --security / --date / --output 必须与 --project 一起使用')
     try:
-        if args.command == "package-smoke":
-            return package_smoke(args.screenshot)
         if args.command == 'doctor' and args.project:
             from empire.core.config import default_config_path
             from empire.diagnostics.project import diagnose_project, render_report
@@ -338,14 +208,11 @@ def main() -> int:
                 lock.unlock()
                 del qt_app
             return 0
-        if args.command == "smoke":
-            return run_gui(cfg, args.screenshot, args.seconds)
-        return run_gui(cfg)
+        from empire.desktop_bridge.launch import launch
+        return launch(cfg["_path"])
     except Exception as exc:
         message = redact(exc, locals().get("cfg", {}))
         print(message, file=sys.stderr)
-        if getattr(sys, "frozen", False) and args.command in (None, "run"):
-            show_startup_error(message)
         return 1
 
 

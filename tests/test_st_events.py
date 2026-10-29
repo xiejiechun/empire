@@ -133,42 +133,6 @@ def test_scoped_capacity_binding_does_not_ignore_business_ddl_changes():
         verify_scoped_ddl({}, measured, ['events'])
 
 
-def test_ui_lazy_independence_draft_and_missing_name_display(monkeypatch):
-    import concurrent.futures
-
-    from PySide6.QtWidgets import QApplication
-
-    from empire.features.st_events.ui import StPage, StUiPlugin
-    app = QApplication.instance() or QApplication([])
-    queries = []
-    future = concurrent.futures.Future()
-    future.set_result(dict(rows=[dict(record_key='a' * 64, unified_code='000001.SZ',
-        event_date='2020-01-01', old_name=None, new_name='新名', source_occurrences=1, csrc_industry='批发业', tdx_industry='其他电子', reason='实施其他风险警示')], next=None))
-    runtime = SimpleNamespace(invoke=lambda *args: queries.append(args) or future)
-    shell = SimpleNamespace(runtime=runtime, cfg={}, shutting_down=False)
-    ui = StUiPlugin('removal')
-    pages = ui.create_pages()
-    assert pages[0].id == 'st_removal' and not queries
-    page = StPage(shell, 'removal')
-    page.show()
-    app.processEvents()
-    page.tick()
-    page.code.setText('600000')  # An unsubmitted edit must survive refresh completion.
-    page.tick()
-    assert page.code.text() == '600000' and page.table.item(0, 2).text() == ''
-    assert queries[0][0] == 'st.removal.query'
-    page.next_cursor = ['2020-01-01', '000001.SZ', 'a' * 64]
-    page.next.setEnabled(True)
-    page.find()
-    assert page.next_cursor is None and not page.next.isEnabled() and not page.previous.isEnabled()
-    state = page.save_ui_state()
-    page.close()
-    other = StPage(shell, 'implementation')
-    other.restore_ui_state(state)
-    assert other.code.text() == '600000' and other.kind == 'implementation'
-    other.close()
-    page.deleteLater()
-    other.deleteLater()
 
 
 def test_midnight_beijing_request_scope_and_empty_markets():

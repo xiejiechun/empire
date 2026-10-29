@@ -1,5 +1,4 @@
 import asyncio
-from concurrent.futures import Future
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
@@ -60,38 +59,3 @@ async def test_cancelled_report_releases_owner_and_never_marks_pending_data_read
     snapshot = await plugin.snapshot()
     assert not snapshot['checking'] and not snapshot['rows'][0]['complete']
     await plugin.stop()
-
-
-async def test_ui_renders_partial_catalog_while_full_query_is_pending():
-    from PySide6.QtWidgets import QApplication
-
-    from empire.features.preparation.ui import PreparationPage
-    app = QApplication.instance() or QApplication([])
-    plugin = PreparationPlugin([])
-    await plugin.start(SimpleNamespace(optional=lambda cap: None))
-    report = await plugin.report({'codes': ['601139'], 'purpose': 'analysis'})
-    report.update(checking=True, checked_requirements=2, current_requirement='利润表')
-    full = Future()
-    calls = []
-    class Runtime:
-        def invoke(self, capability, method, *args):
-            calls.append(method)
-            if method == 'report':
-                return full
-            value = Future()
-            value.set_result(report)
-            return value
-    page = PreparationPage(SimpleNamespace(cfg={}, shutting_down=False, runtime=Runtime()))
-    page.timer.stop()
-    page.show()
-    app.processEvents()
-    page.reload()
-    page.tick()
-    page.tick()
-    assert not full.done() and page.table.rowCount() > 0
-    assert '已检查 2' in page.summary.text() and '利润表' in page.summary.text()
-    assert not page.refresh_button.isEnabled()
-    assert calls.count('report') == 1
-    page.query_scope.close()
-    page.deleteLater()
-    app.processEvents()

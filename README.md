@@ -1,6 +1,6 @@
 # Empire
 
-市场复盘首期入口：主菜单→市场复盘。已归档涨跌停统计、连续板梯队与高度演变、题材轮动和覆盖提示；模型口径及限制见[市场复盘](docs/market-review.md)。
+市场复盘后端能力保留；新版尚未迁移独立研究页面。已归档涨跌停统计、连续板梯队与高度演变、题材轮动和覆盖提示；模型口径及限制见[市场复盘](docs/market-review.md)。
 
 面向个人的 A 股投资研究桌面系统，使用 Python，优先支持本地 Windows。
 
@@ -39,35 +39,13 @@ Windows 环境直接连接本机运行或已有的 Redis / MySQL 服务，不使
 
 动态代理采集已接入：在采集任务中按项目设置，在网站频控设置各出口和总上限，代理池页面查看在线设备及直连回退。公共策略缺省为代理优先、允许直连回退；用户已保存的选择优先，配置下一轮生效；详见 [动态代理采集](docs/proxy-collection.md)。
 
-当前机器直接双击项目根目录的 `Empire` 快捷方式即可打开，不需要先执行命令。快捷方式启动无控制台窗口的打包程序：
+当前机器双击项目根目录 `Empire` 快捷方式，或 `dist/EmpireDesktop/Empire.exe` 打开 React + Ant Design 桌面。配置固定为该 EXE 同目录 `config.toml`。这是依赖当前项目、Python 环境和 Electron 的本机启动版，不能单独复制到其他电脑。
 
-```text
-dist/Empire/Empire.exe
-```
+旧 Qt 客户端、窗口代码和 PyInstaller 专属打包入口已退役；设计预览保留。源码启动使用 `start.ps1` 或 `python -m empire run`，均进入 Electron。重建本机启动器使用 `python scripts/build_desktop_launcher.py`，默认保留 `dist/EmpireDesktop/config.toml`。
 
-`dist/Empire` 是完整可搬移程序目录，可整体复制到带中文或空格的可写目录后直接双击其中的 `Empire.exe`。配置固定为 EXE 同目录的 `config.toml`；源码运行使用项目根目录。首次缺配置会生成空白模板并提示填写，不会自动连接或修改数据库。复制带配置的目录会同时复制密码，请勿把真实配置对外分发；打包重建会保留已有本机配置。
+`build.ps1` 与 `verify-release.ps1` 保留统一验证入口，检查后构建新版本机启动器，不再生成旧 Qt 程序；独立安装包尚未实现。旧容量证据失效等门禁失败须如实处理，不能当作发布成功。退役范围与验证见 [旧客户端移除记录](docs/legacy-client-retirement.md)。
 
-开发时也可在项目目录执行：
-
-```powershell
-.\start.ps1
-```
-
-也可直接运行：
-
-```powershell
-.\.venv\Scripts\python.exe -X utf8 -m empire run
-```
-
-代码或依赖更新后，关闭 Empire，通过正式发布门禁执行环境核对、完整测试、四档离屏布局、打包及隔离 EXE smoke；成功后同时更新根目录快捷方式：
-
-```powershell
-.\verify-release.ps1
-```
-
-`build.ps1` 与 `verify-release.ps1` 进入同一完整门禁，共享全过程独占锁；直接打包也不能跳过验证。它严格要求 Python 3.12、PyInstaller 6.22.3、一致依赖和当前锁对应的依赖报告，不自动安装构建依赖。测试、打包和 smoke 在本次拥有的暂存目录完成后才切换正式程序，失败保留原包与程序配置。构建身份在“系统设置 → 运行状态”查看；`build/release-report.json` 和 `build/releases/<本次标识>/publication.json` 绑定源码输入、提交、测试与依赖证据和产物摘要。中断恢复使用 `verify-release.ps1 -Recover`，正常关闭程序后执行，不删除锁文件。详见 [发布门禁](docs/release-gate-review.md)。容量报告只使用虚拟目录和模拟响应，不访问真实代理或公开源站，详见 [隔离容量与资源稳定性验收](docs/capacity-evidence-review.md)。
-
-桌面默认打开“工作台”，左侧一级菜单为工作台、数据浏览、采集管理、系统设置、说明文档；工作台与说明文档直接打开，其他分类通过二级菜单切换页面。采集任务管理手动执行、固定间隔、每日定时与请求重试；运行记录和网站频控分别有独立页面。任务默认按插件的推荐计划配置，已保存设置优先；自动任务在程序运行且计划到期时执行。
+当前桌面以采集管理为主，数据预览和运行记录在对应任务内查看。使用说明见 [客户端说明](desktop/README.md)。
 
 “采集管理 → 下载资源”支持按 100、200 至 1000 台规划出口设备一键生成容量推荐，默认 100 档为 128 下载窗口和 512 MiB 共享缓冲；也可分别设置单响应/文件大小、磁盘配额及文件并发。推荐只填容量草稿，不修改网站每 IP 频控或任务代理开关；保存到 MySQL 后正常重启软件生效，不中断当前采集。设备数不等于独立出口 IP 数，实际并发随在线出口、网站规则、预算和页数变化。详见 [下载资源边界](docs/download-resources.md) 与 [出口容量验收](docs/exit-capacity-review.md)。
 

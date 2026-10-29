@@ -183,63 +183,7 @@ def measure_queries(manager, engine, rows, protocol, runner):
 
 
 def measure_ui(manager, results, protocol, output):
-    from PySide6.QtCore import QEvent
-    from PySide6.QtGui import QFontDatabase, QFontMetrics, QImage
-    from PySide6.QtWidgets import QApplication, QWidget
-
-    from empire.desktop.theme import desktop_style
-
-    app = QApplication.instance() or QApplication([])
-    for path in FONT_FILES:
-        if QFontDatabase.addApplicationFont(str(path)) < 0:
-            raise RuntimeError('The production desktop font could not be loaded: ' + path.name)
-    app.setStyleSheet(desktop_style())
-    pages = {page.id: page for entry in manager.entries.values()
-             if hasattr(entry.plugin, 'create_pages') for page in entry.plugin.create_pages()}
-
-    def no_background(*args):
-        raise RuntimeError('UI benchmark attempted an asynchronous service request')
-
-    shell = SimpleNamespace(cfg={}, shutting_down=False,
-                            runtime=SimpleNamespace(invoke=no_background, config={}))
-    seen = set()
-
-    def render(ident, payload):
-        page = pages[ident].factory(shell)
-        page.timer.stop()
-        try:
-            page.resize(protocol['ui']['width'], protocol['ui']['height'])
-            page.show()
-            page.timer.stop()
-            if not all(QFontMetrics(page.font()).inFontUcs4(ord(char)) for char in '财经123'):
-                raise RuntimeError('UI benchmark font cannot render Chinese and numeric text')
-            page.render(payload)
-            app.processEvents()
-            image = QImage(page.size(), QImage.Format.Format_ARGB32_Premultiplied)
-            image.fill(0)
-            QWidget.render(page, image)
-            content = (page.detail.toPlainText() + page.feed.toPlainText() if ident == 'news'
-                       else page.reader.toPlainText())
-            if not content or image.isNull():
-                raise RuntimeError('Formal page failed to render its fixed result')
-            if ident not in seen:
-                # First images are produced during the uncounted warmup.
-                image.save(str(output.parent / (ident + '-benchmark.png')))
-                seen.add(ident)
-            return dict(page=ident, text_sha256=digest(content), width=image.width(), height=image.height())
-        finally:
-            page.close()
-            page.deleteLater()
-            app.sendPostedEvents(None, QEvent.Type.DeferredDelete)
-            app.processEvents()
-
-    operations = dict(news_ui=lambda: render('news', results['news_first']),
-                      holders_ui=lambda: [render(kind, row) for kind, row in zip(
-                          protocol['fixture']['holder_kinds'], results['holders_detail'], strict=True)])
-    metrics, correctness = {}, {}
-    for name, action in operations.items():
-        metrics[name], correctness[name] = sample(action, protocol['warm'])
-    return metrics, correctness
+    raise RuntimeError("旧 Qt 渲染基准已退役；Electron 性能须使用新的前端协议验收")
 
 
 def validate_report(report, protocol, protocol_hash=None):

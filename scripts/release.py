@@ -1,12 +1,10 @@
 """One release owner verifies, stages, smokes and safely publishes Empire."""
 import argparse
 import codecs
-import json
 import os
 import subprocess
 import sys
 import uuid
-from datetime import UTC, datetime
 from pathlib import Path
 
 if __package__ in {None, ''}:
@@ -21,8 +19,7 @@ from scripts.release_identity import (
     write_json,
 )
 from scripts.release_lock import ReleaseLock
-from scripts.release_publish import Publication, recover_pending
-from scripts.release_steps import package, portable_smoke, prepare_shortcut, retain_evidence, verify
+from scripts.release_steps import retain_evidence, verify
 
 OUTPUT_CHUNK_BYTES = 64 * 1024
 
@@ -166,7 +163,10 @@ def require_stopped(lock, root):
     # An absent named process still makes Get-Process set PowerShell's error
     # status; explicitly return success after the active-process rejection.
     script = ("$p = Get-Process Empire -ErrorAction SilentlyContinue | "
-              "Where-Object { $_.Threads.Count -gt 0 }; if ($p) { exit 3 }; exit 0")
+              "Where-Object { $_.Threads.Count -gt 0 }; if ($p) { exit 3 }; "
+              "$backend = Get-CimInstance Win32_Process -Filter \"Name = 'python.exe'\" | "
+              "Where-Object { $_.CommandLine -match '-m\\s+empire[.]desktop_bridge' }; "
+              "if ($backend) { exit 3 }; exit 0")
     result = subprocess.run(['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', script],
                             cwd=root, **lock.child_options())
     if result.returncode != 0:
@@ -174,53 +174,32 @@ def require_stopped(lock, root):
 
 
 def release(root, *, recover_only=False, test_plan=None):
+    """Verify and build the repository-dependent Electron launcher."""
+    from scripts.build_desktop_launcher import build
+
     root = Path(root).resolve()
+    if recover_only:
+        raise ValueError('旧 Qt 目录切换已退役；当前客户端使用本机构建入口')
     with ReleaseLock(root) as lock:
         require_stopped(lock, root)
-        recover_pending(root)
-        if recover_only:
-            print('PASS publication recovery; existing bundles and configuration retained.')
-            return
         run = owned(root, root / 'build' / 'releases' / uuid.uuid4().hex)
         run.mkdir(parents=True)
         runner = Runner(root, lock, run)
         runner.test_plan = test_plan
-        publication = Publication(root, run)
         try:
             dependency, capacity = verify(runner)
-            manifest = package(runner, publication, dependency)
-            smoke = portable_smoke(runner, publication)
-            prepare_shortcut(runner)
-            outputs = retain_evidence(runner)
-            require_stopped(lock, root)
             runner.check()
-            report = dict(verified_at_utc=datetime.now(UTC).isoformat(), manifest=manifest,
-                          source_sha256=runner.inputs['sha256'], inputs=str(run / 'inputs.json'),
-                          generated_outputs=outputs,
-                          executable_sha256=sha256(publication.stage / 'Empire.exe'),
-                          capacity_report=str(capacity), dependency_report=str(dependency),
-                          portable_distribution=smoke,
-                          configuration='preserved locally; excluded from portable artifacts',
-                          actual_desktop='not verified by this gate')
-            if test_plan:
-                report['test_scope'] = json.loads((run / 'test-scope.json').read_text(encoding='utf-8'))
-            committed = publication.publish(report, runner.check,
-                                             expected_package=smoke['package']['sha256'])
+            build(root, root / 'dist/EmpireDesktop/config.toml', lock=lock)
+            runner.check()
+            outputs = retain_evidence(runner)
+            write_json(run / 'report.json', dict(generated_outputs=outputs, passed=True, kind='local-development-launcher',
+                portable=False, source_sha256=runner.inputs['sha256'],
+                dependency_report=str(dependency), capacity_report=str(capacity),
+                actual_desktop='not verified by this gate'))
         except BaseException:
-            committed = publication.committed()
-            if committed:
-                print('Publication was committed before interruption; retaining the committed result.')
-            else:
-                write_json(run / 'failure.json', dict(passed=False, run_id=run.name,
-                           recorded_at_utc=datetime.now(UTC).isoformat(),
-                           detail='Release failed or interrupted; inspect command output and publication journal'))
-                raise
-        # The durable committed journal remains authoritative if a summary copy fails.
-        try:
-            write_json(root / 'build/release-report.json', committed)
-        except OSError:
-            print('Release committed; summary unavailable. Evidence: ' + str(publication.journal))
-        print('PASS release gate; committed evidence: ' + str(publication.journal))
+            write_json(run / 'failure.json', dict(passed=False, run_id=run.name))
+            raise
+        print('PASS local Electron launcher gate: ' + str(run / 'report.json'))
 
 
 def main():

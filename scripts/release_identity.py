@@ -6,7 +6,7 @@ import struct
 from functools import lru_cache
 from pathlib import Path
 
-INPUT_DIRECTORIES = ('src', 'tests', 'scripts', 'sql', 'config', 'docs')
+INPUT_DIRECTORIES = ('src', 'tests', 'scripts', 'sql', 'config', 'docs', 'desktop/src', 'desktop/electron', 'desktop/launcher')
 ROOT_SUFFIXES = {'.md', '.toml', '.lock', '.ps1', '.spec', '.json', '.yml', '.yaml', '.txt', '.py', '.js'}
 EXCLUDED_PARTS = {'__pycache__', '.pytest_cache', '.ruff_cache'}
 PRIVATE_INPUTS = {'config.toml', 'config/local.toml'}
@@ -153,6 +153,7 @@ def mapping_digest(value):
 def input_inventory(root):
     root = Path(root).resolve()
     paths = [p for folder in INPUT_DIRECTORIES for p in files(root / folder)]
+    paths.extend(p for p in (root / 'desktop').glob('*') if p.is_file())
     paths.extend(p for p in root.iterdir() if p.is_file()
                  and (p.suffix in ROOT_SUFFIXES or p.name in {'.gitignore', '.gitattributes'})
                  and p.name not in {'.build.lock', 'config.toml'})

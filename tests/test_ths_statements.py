@@ -131,30 +131,6 @@ def test_real_balance_contradiction_is_preserved_and_explained():
     assert issue['criterion'] == 'quality' and '285000000' in issue['message']
 
 
-def test_statement_page_explains_missing_source_amount(monkeypatch):
-    monkeypatch.setenv('QT_QPA_PLATFORM', 'offscreen')
-    from PySide6.QtWidgets import QApplication
-
-    from empire.features.financial_statements.ui import StatementPage
-    app = QApplication.instance() or QApplication([])
-    page = StatementPage(SimpleNamespace(shutting_down=False), 'income')
-    try:
-        body = source('income')
-        matrix = json.loads(body['flashData'])
-        matrix['report'][1][0] = False
-        body['flashData'] = json.dumps(matrix)
-        page.records = parse('income', body, STOCK)
-        page.render_matrix()
-        index = next(i for i, entry in enumerate(page.matrix.entries) if entry[0] == '*营业总收入')
-        page.matrix.values.setCurrentCell(index, 0)
-        page.show_detail()
-        assert '来源未提供核心金额' in page.detail.toPlainText()
-        assert page.matrix.subjects.horizontalHeaderItem(0).text() == '科目 / 年度'
-        assert page.matrix.values.item(index, 0).text() == '—'
-    finally:
-        page.close()
-        page.deleteLater()
-        app.processEvents()
 
 
 @pytest.mark.parametrize('kind', KINDS)
@@ -230,40 +206,3 @@ def test_statement_arithmetic_retained_but_flagged(kind, field):
     from empire.features.financial_statements.quality import quality_issues
     rows = parse(kind, body, STOCK)
     assert any(i['criterion'] == 'quality' for i in quality_issues(kind, rows[0]))
-
-
-def test_statement_matrix_preserves_union_and_source_sections(monkeypatch):
-    monkeypatch.setenv('QT_QPA_PLATFORM', 'offscreen')
-    from PySide6.QtWidgets import QApplication
-
-    from empire.features.financial_statements.statement_matrix import (
-        StatementMatrix,
-        subject_layout,
-    )
-    app = QApplication.instance() or QApplication([])
-    records = parse('income', source('income'), STOCK)
-    records[0]['fields']['未知新增科目'] = {'value': '-1234567.89', 'resolution': '0.01'}
-    records[0]['report_date'] = '2025-12-31'
-    records[1]['report_date'] = '2025-06-30'
-    records[1]['fields']['*营业总收入'] = None
-    layout = subject_layout('income', records)
-    assert {x[0] for x in layout if x[3]} == set().union(*(r['fields'] for r in records))
-    assert any(x[0] == '报表核心指标' and not x[3] for x in layout)
-    widget = StatementMatrix()
-    try:
-        widget.render('income', records)
-        assert len(widget.reports) == 2
-        row = next(i for i, x in enumerate(widget.entries) if x[0] == '未知新增科目')
-        assert widget.values.item(row, 0).text() == '-123.46'
-        assert widget.values.item(row, 1).text() == '—'
-        assert '-1234567.89' in widget.values.item(row, 0).toolTip()
-        widget.values.setCurrentCell(row, 0)
-        widget.render('income', records, annual=True, divisor=1)
-        assert [r['report_date'] for r in widget.reports] == ['2025-12-31']
-        assert widget.values.item(row, 0).text() == '-1,234,567.89'
-        widget.render('income', [])
-        assert widget.values.rowCount() == 0 and widget.values.columnCount() == 0
-    finally:
-        widget.close()
-        widget.deleteLater()
-        app.processEvents()

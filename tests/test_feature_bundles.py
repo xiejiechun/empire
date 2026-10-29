@@ -75,31 +75,6 @@ def test_bundles_keep_individual_positions_even_if_allowlist_is_reversed(monkeyp
     assert not left.registry.values
 
 
-def test_real_bundle_construction_reads_no_files_and_creates_no_widgets(monkeypatch):
-    import builtins
-    import io
-    from pathlib import Path
-
-    from PySide6.QtWidgets import QWidget
-
-    # Complete normal module loading first; this guards declaration construction,
-    # not Python's loader reading source files.
-    expected = build_manager(CFG)
-
-    def forbidden(*args, **kwargs):
-        raise AssertionError('Declaration construction performed external I/O or created a page')
-
-    with monkeypatch.context() as guard:
-        guard.setattr(builtins, 'open', forbidden)
-        guard.setattr(io, 'open', forbidden)
-        guard.setattr(Path, 'read_text', forbidden)
-        guard.setattr(Path, 'read_bytes', forbidden)
-        guard.setattr(QWidget, '__init__', forbidden)
-        actual = build_manager(CFG)
-    assert list(actual.entries) == list(expected.entries)
-    assert actual.order == expected.order
-    assert all(entry.context is None and entry.state == 'STOPPED' for entry in actual.entries.values())
-    assert not actual.registry.values
 
 
 @pytest.mark.parametrize('domain', ('plugins', 'tasks', 'datasets'))

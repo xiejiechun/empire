@@ -7,11 +7,11 @@ from pathlib import Path
 
 def source_digest(root):
     paths = []
-    for folder in ('src', 'tests', 'scripts', 'sql', 'config'):
+    for folder in ('src', 'tests', 'scripts', 'sql', 'config', 'desktop/src', 'desktop/electron', 'desktop/launcher'):
         paths.extend(p for p in (root / folder).rglob('*') if p.is_file()
-                     and p.suffix in {'.py', '.sql', '.toml', '.js', '.json', '.md', '.png', '.ico', '.svg'}
+                     and p.suffix in {'.py', '.sql', '.toml', '.js', '.json', '.md', '.png', '.ico', '.svg', '.tsx', '.ts', '.cjs', '.css', '.cs'}
                      and '__pycache__' not in p.parts and p.name != 'local.toml')
-    paths.extend(root / name for name in ('requirements.lock', 'pyproject.toml', 'Empire.spec',
+    paths.extend(root / name for name in ('requirements.lock', 'pyproject.toml', 'desktop/package.json',
                                          'build.ps1', 'verify-release.ps1'))
     if (root / '.gitattributes').is_file():
         paths.append(root / '.gitattributes')
