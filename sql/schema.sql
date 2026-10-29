@@ -1214,3 +1214,26 @@ CREATE TABLE IF NOT EXISTS hot_list_seat (
     CONSTRAINT ck_hot_seat_side CHECK (side IN ('B','S')),
     CONSTRAINT ck_hot_seat_positive CHECK ((buy_amount IS NULL OR buy_amount >= 0) AND (sell_amount IS NULL OR sell_amount >= 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS industry_margin_day (
+    trade_date DATE NOT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    row_count INT UNSIGNED NOT NULL,
+    contract_version INT UNSIGNED NOT NULL,
+    PRIMARY KEY (trade_date),
+    CONSTRAINT ck_industry_margin_count CHECK (row_count <= 256)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS industry_margin_daily (
+    trade_date DATE NOT NULL,
+    industry_name VARCHAR(64) COLLATE utf8mb4_bin NOT NULL,
+    lending_balance DECIMAL(28,8) NULL,
+    financing_balance DECIMAL(28,8) NULL,
+    financing_buy DECIMAL(28,8) NULL,
+    financing_repay DECIMAL(28,8) NULL,
+    lending_sell DECIMAL(28,8) NULL,
+    lending_repay DECIMAL(28,8) NULL,
+    lending_volume DECIMAL(28,8) NULL,
+    PRIMARY KEY (trade_date, industry_name),
+    KEY ix_industry_margin_name_date (industry_name, trade_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

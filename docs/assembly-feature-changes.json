@@ -561,6 +561,181 @@
     ]
   },
   {
+    "path": "additive.industry_margin",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "collector.tdx_industry_margin": {
+            "autostart": true,
+            "description": "2016年起完整日期补缺及分层修订回查",
+            "id": "collector.tdx_industry_margin",
+            "name": "行业融资融券采集",
+            "provides": [
+              "collector.tdx_industry_margin"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "industry_margin.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.industry_margin": {
+            "autostart": true,
+            "description": "按日期和来源行业名称浏览",
+            "id": "data.industry_margin",
+            "name": "行业融资融券查询",
+            "provides": [
+              "industry_margin.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.industry_margin": {
+            "autostart": true,
+            "description": "按日期和来源行业名称浏览",
+            "id": "ui.industry_margin",
+            "name": "行业融资融券浏览",
+            "provides": [
+              "ui.pages.industry_margin"
+            ],
+            "requires": []
+          }
+        },
+        "tasks": {
+          "tdx-industry-margin": {
+            "capability": "collector.tdx_industry_margin",
+            "category": "融资融券",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "19:30",
+              "description": "每天北京时间19:30补缺和修订回看；不重叠。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "2016年起完整日期补缺；近7日回看及90日轮转历史核验",
+            "fresh_description": "重新核验2016年起所有完整日期，整轮入队后统一等待归档。",
+            "id": "tdx-industry-margin",
+            "interval_seconds": 86400,
+            "name": "行业融资融券（通达信）",
+            "parallel_downloads": true,
+            "rate_group": "tdx",
+            "source_name": "通达信",
+            "unit_name": "个日期"
+          }
+        },
+        "datasets": {
+          "tdx_industry_margin_v1": {
+            "datasets": [
+              "industry_margin.tdx_day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "tdx-industry-margin-v1": "tdx-industry-margin"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "industry_margin": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "融资融券",
+            "database_tables": [
+              "industry_margin_day",
+              "industry_margin_daily"
+            ],
+            "description": "2016年起来源完整行业日期集合；融资亿元、融券万元与万股",
+            "group": "数据浏览",
+            "id": "industry_margin",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "tdx-industry-margin",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 52,
+            "source": "通达信",
+            "title": "行业融资融券",
+            "top_level": false
+          }
+        }
+      },
+      "bindings": {
+        "plugins": {
+          "collector.tdx_industry_margin": {
+            "module": "empire.features.industry_margin.collector",
+            "qualname": "IndustryMarginCollector"
+          },
+          "data.industry_margin": {
+            "module": "empire.features.industry_margin.query",
+            "qualname": "IndustryMarginDataPlugin"
+          },
+          "ui.industry_margin": {
+            "module": "empire.features.industry_margin.ui",
+            "qualname": "IndustryMarginUiPlugin"
+          }
+        },
+        "datasets": {
+          "tdx_industry_margin_v1": {
+            "module": "empire.features.industry_margin.dataset",
+            "qualname": "IndustryMarginDataset"
+          }
+        },
+        "pages": {
+          "industry_margin": {
+            "module": "empire.features.industry_margin.ui",
+            "qualname": "IndustryMarginUiPlugin"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.industry_margin",
+          "collector.tdx_industry_margin",
+          "ui.industry_margin"
+        ],
+        "startup": [
+          "data.industry_margin",
+          "collector.tdx_industry_margin",
+          "ui.industry_margin"
+        ],
+        "tasks": [
+          "tdx-industry-margin"
+        ],
+        "datasets": [
+          "tdx_industry_margin_v1"
+        ],
+        "pages": [
+          "industry_margin"
+        ]
+      }
+    },
+    "design": "docs/tdx-industry-margin.md",
+    "tests": [
+      "tests/test_industry_margin.py",
+      "tests/integration/test_industry_margin_archive.py"
+    ]
+  },
+  {
     "path": "additive.themes",
     "before": null,
     "after": {
@@ -1417,6 +1592,9 @@
       "ui.hot_list",
       "data.margin",
       "collector.tdx_margin",
+      "data.industry_margin",
+      "collector.tdx_industry_margin",
+      "ui.industry_margin",
       "data.themes",
       "collector.theme_list",
       "collector.theme_detail",
@@ -3539,6 +3717,35 @@
     "tests": [
       "tests/test_tdx_margin.py",
       "tests/integration/test_margin_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.industry_margin:industry_margin",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "industry_margin.query",
+      "collector": "collector.tdx_industry_margin",
+      "dataset": "industry_margin.tdx_day",
+      "job_key": "tdx-industry-margin-v1",
+      "method": "preparation_check",
+      "project_id": "tdx-industry-margin",
+      "requirement": "industry_margin",
+      "response_group": "",
+      "scoped": true,
+      "source": "通达信",
+      "archive_tests": [
+        "tests/integration/test_industry_margin_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_industry_margin.py"
+      ]
+    },
+    "design": "docs/tdx-industry-margin.md",
+    "tests": [
+      "tests/test_industry_margin.py",
+      "tests/integration/test_industry_margin_archive.py"
     ]
   }
 ]

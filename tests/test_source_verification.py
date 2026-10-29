@@ -4,7 +4,7 @@ import json
 import sys
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, MagicMock, Mock
 
 import pytest
 
@@ -31,6 +31,22 @@ def test_aliases_cannot_disguise_same_mysql_server(storage_module):
     with pytest.raises(ValueError, match='server_uuid'):
         storage_module.ensure_separate_server('ABC-server', 'abc-server')
     storage_module.ensure_separate_server('production-uuid', 'test-uuid')
+
+
+def test_non_stock_snapshot_never_requires_or_reads_stock_pool(storage_module, monkeypatch):
+    conn, engine = MagicMock(), MagicMock()
+    engine.connect.return_value.__enter__.return_value = conn
+    conn.execute.return_value.scalar_one.return_value = 'production-uuid'
+    conn.execute.return_value.mappings.return_value = []
+    monkeypatch.setattr(storage_module, 'make_engine', lambda _: engine)
+    result = storage_module.read_pool(dict(mysql={}, redis={'namespace':'owned'}), require_stocks=False)
+    assert result == dict(server_uuid='production-uuid', stocks=[], settings=[])
+    assert not any('FROM stock' in str(call.args[0]) for call in conn.execute.call_args_list)
+    conn.exec_driver_sql.assert_called_once_with('START TRANSACTION READ ONLY')
+    conn.rollback.assert_called_once()
+    engine.dispose.assert_called_once()
+    with pytest.raises(ValueError, match='股票池'):
+        storage_module.read_pool(dict(mysql={}, redis={'namespace':'owned'}))
 
 
 def test_same_server_refused_before_any_ddl(storage_module, monkeypatch):
@@ -275,7 +291,7 @@ def full_run(verifier, tmp_path, monkeypatch):
     config = dict(mysql=dict(password='prod-p4ss'), redis=dict(password='redis-p4ss', namespace='empire'))
     monkeypatch.setattr(verifier, 'project_root', lambda: tmp_path)
     monkeypatch.setattr(verifier, 'load_config', lambda path: config)
-    monkeypatch.setattr(verifier, 'read_pool', lambda cfg: dict(server_uuid='production', stocks=pool(), settings=[]))
+    monkeypatch.setattr(verifier, 'read_pool', lambda cfg, **kwargs: dict(server_uuid='production', stocks=pool(), settings=[]))
     monkeypatch.setattr(verifier, 'source_digest', lambda root: 'a' * 64)
     lock = SimpleNamespace(unlock=lambda: events.append('unlock'), isLocked=lambda: False)
     monkeypatch.setattr(verifier, 'acquire_instance_lock', lambda: lock)

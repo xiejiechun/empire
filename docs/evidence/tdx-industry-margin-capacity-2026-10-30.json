@@ -1,0 +1,147 @@
+{
+  "run_id": "3f32bb1c5aa34b7abbd86b2708f2b09c",
+  "subject": "preview",
+  "started_at": "2026-10-29T17:46:15.900613+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "dataset": "industry_margin.tdx_day",
+  "measurements": {
+    "import_seconds": 1.702442899986636,
+    "max_unit_seconds": 0.04015700001036748,
+    "repeated_business_dml": 0,
+    "page_p95_ms": 2.8938999748788774,
+    "history_p95_ms": 6.8029999965801835,
+    "allocated_bytes": 3096576,
+    "peak_python_bytes": 361916,
+    "page_bytes": 67250,
+    "history_bytes": 26112
+  },
+  "limits": {
+    "import_seconds": 60,
+    "max_unit_seconds": 1,
+    "repeated_business_dml": 0,
+    "page_p95_ms": 100,
+    "history_p95_ms": 1000,
+    "allocated_bytes": 33554432,
+    "peak_python_bytes": 134217728,
+    "page_bytes": 262144,
+    "history_bytes": 262144
+  },
+  "bindings": {
+    "src/empire/features/industry_margin/contract.py": "7698ac401b13faf71fbc08b31e19068c923044a0fe421d7d2b0a0c3adf3271ba",
+    "src/empire/features/industry_margin/source.py": "b9e6add67b5ef63b8fdd8aabeb0661aa7162940236f7685e4040eee6afdf139c",
+    "src/empire/features/industry_margin/dataset.py": "13fab2d4800de3ce699352a07c220a393877f30770917ef425a508f599acdef3",
+    "src/empire/features/industry_margin/query.py": "b4c3d8726487f8abfee121ec044b32318b60cfee2bd4fe8f765fbbf1f2cc0fa5",
+    "scripts/measure_industry_margin.py": "2099d0ea7d14fe1ea6241d6fae2f3f76edb584a6eee2b74c712ab509dcd95798"
+  },
+  "ddl_scopes": {
+    "industry_margin_day": "06b34d830a547f7feffa448e825e2c3c2f42ac52203a79011ce78288a3ecc5d7",
+    "industry_margin_daily": "b93b26918fc2e353ce6d31c3a56a0af6d5643a16df58dfcad491d76af0dab50f"
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "industry_margin_daily",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "261",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "page_actual_rows": 200,
+    "industry": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "industry_margin_daily",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_industry_margin_name_date",
+        "key": "ix_industry_margin_name_date",
+        "key_len": "258",
+        "ref": "const",
+        "rows": 400,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "industry_actual_rows": 200,
+    "analysis": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "industry_margin_daily",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_industry_margin_name_date",
+        "key": "PRIMARY",
+        "key_len": "3",
+        "ref": null,
+        "rows": 2078,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "analysis_actual_rows": 31
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": {
+      "server_uuid": "58714dc8-d3be-11f1-920a-380525361d4e",
+      "server_port": 13348,
+      "version": "8.4.9",
+      "innodb_flush_log_at_trx_commit": 2,
+      "sync_binlog": 1,
+      "log_bin": 0,
+      "client_port": 13348
+    },
+    "synthetic": true,
+    "dates": 400,
+    "rows": 12226,
+    "allocation": [
+      {
+        "TABLE_NAME": "industry_margin_daily",
+        "DATA_LENGTH": 2637824,
+        "INDEX_LENGTH": 393216
+      },
+      {
+        "TABLE_NAME": "industry_margin_day",
+        "DATA_LENGTH": 65536,
+        "INDEX_LENGTH": 0
+      }
+    ],
+    "cache": "first query not forced cold; nine subsequent warm; maximum bounds P95",
+    "actual_sample": "5% source verification recorded separately",
+    "peak": "tracemalloc not RSS"
+  },
+  "projected_five_year_bytes": 13930286,
+  "reviewed_tradeoffs": "Typed daily source facts; complete-date aggregate proof; no business JSON; 31-day bounded audit batches.",
+  "input_identity_verified": true,
+  "checked_at": "2026-10-29T17:46:18.623424+00:00",
+  "database": "empire_capacity_3f32bb1c5aa34b7abbd86b2708f2b09c_test",
+  "measurement_service": {
+    "server_uuid": "58714dc8-d3be-11f1-920a-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

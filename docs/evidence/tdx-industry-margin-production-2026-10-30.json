@@ -1,0 +1,52 @@
+{
+  "covered_days": 3954,
+  "first": "2016-01-01",
+  "last": "2026-10-28",
+  "rows": 78780,
+  "prefix_missing": [],
+  "checked_at": "2026-10-29T18:06:02.384046+00:00",
+  "target_days": 3954,
+  "cursor": {
+    "phase": "complete",
+    "last_date": "2026-10-28",
+    "pages": 3954,
+    "collected": 78780,
+    "start": "2016-01-01",
+    "end": "2026-10-28"
+  },
+  "status": "complete",
+  "active": null,
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true,
+    "daily_time": "19:30"
+  },
+  "pending_global": 0,
+  "prefix_checks": [
+    {
+      "criterion": "coverage",
+      "status": "pass"
+    },
+    {
+      "criterion": "keys",
+      "status": "pass"
+    },
+    {
+      "criterion": "fields",
+      "status": "pass"
+    },
+    {
+      "criterion": "quality",
+      "status": "fail"
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass"
+    },
+    {
+      "criterion": "temporal",
+      "status": "fail"
+    }
+  ],
+  "independent_reads_not_atomic": true
+}

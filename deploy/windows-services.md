@@ -111,3 +111,5 @@
 龙虎榜三表 `hot_list_day`、`hot_list_reason`、`hot_list_seat` 属于固定tdx数据，备份恢复时连同 `collection_state` 核对；新增结构只通过显式维护入口执行。
 
 个股融资融券的 `margin_security`、`margin_daily` 保存完整证券响应证明和结构化日数据，备份恢复时连同 `collection_state` 核对。现有部署正常关闭 Empire、确认待归档为0后，通过 `scripts/create_margin_schema.py --apply` 显式追加两表；启动不迁移。
+
+行业融资融券的 `industry_margin_day`、`industry_margin_daily` 保存完整日期证明及日期×行业的原始数值，包含有效空日和带质量异常的来源负值。停机且队列为空时通过 `scripts/create_industry_margin_schema.py --apply` 显式追加；备份恢复须连同统一 `collection_state`，程序启动不建表。

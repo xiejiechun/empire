@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_backend_assembly_does_not_import_widget_runtime():
-    code = "from empire.bootstrap import build_manager; import sys; m=build_manager(dict(redis={},mysql={},archive={},ingest={},rate_groups={})); assert len(m.entries['collection.control'].plugin.definitions)==49; assert not any(k.startswith('PySide6.QtWidgets') for k in sys.modules)"
+    code = "from empire.bootstrap import build_manager; import sys; m=build_manager(dict(redis={},mysql={},archive={},ingest={},rate_groups={})); assert len(m.entries['collection.control'].plugin.definitions)==51; assert not any(k.startswith('PySide6.QtWidgets') for k in sys.modules)"
     subprocess.run([sys.executable, '-c', code], cwd=ROOT, check=True)
 
 

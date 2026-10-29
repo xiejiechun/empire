@@ -24,6 +24,8 @@
 
 | 对象（点击打开正式条目） | 职责 |
 | --- | --- |
+| [industry_margin_day](../src/empire/plugins/ui/storage_reference.md#mysql-industry_margin_day) | 行业融资融券完整自然日集合证明，含有效空日。 |
+| [industry_margin_daily](../src/empire/plugins/ui/storage_reference.md#mysql-industry_margin_daily) | 日期×来源行业的七项融资融券原值，负值保留并另行质量检查。 |
 | [margin_security](../src/empire/plugins/ui/storage_reference.md#mysql-margin_security) | 通达信个股融资融券完整证券历史的集合证明。 |
 | [margin_daily](../src/empire/plugins/ui/storage_reference.md#mysql-margin_daily) | 证券交易日期的融资余额/买入、融券余量/卖出及可空行情上下文。 |
 | [stock](../src/empire/plugins/ui/storage_reference.md#mysql-stock) | 当前股票目录，一证券一行；同花顺主目录与新浪备用发布同一份表。 |

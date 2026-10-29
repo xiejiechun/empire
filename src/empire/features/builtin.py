@@ -12,10 +12,11 @@ from empire.features.hot_list.bundle import bundle as hot_list_bundle
 from empire.features.index_prices.bundle import bundle as index_prices_bundle
 from empire.features.indices.bundle import bundle as indices_bundle
 from empire.features.industries.bundle import bundle as industries_bundle
+from empire.features.industry_margin.bundle import bundle as industry_margin_bundle
 from empire.features.listing_status.bundle import bundle as listing_status_bundle
 from empire.features.listings.bundle import bundle as listings_bundle
-from empire.features.market_review.bundle import bundle as market_review_bundle
 from empire.features.margin.bundle import bundle as margin_bundle
+from empire.features.market_review.bundle import bundle as market_review_bundle
 from empire.features.name_changes.bundle import bundle as name_changes_bundle
 from empire.features.news.bundle import bundle as news_bundle
 from empire.features.performance.bundle import bundle as performance_bundle
@@ -36,7 +37,7 @@ FACTORIES = (news_bundle, holders_bundle, financial_statements_bundle, indices_b
 
 
 def builtin_bundles(cfg) -> tuple[FeatureBundle, ...]:
-    result = tuple(factory(cfg) for factory in (*FACTORIES, market_review_bundle, margin_bundle))
+    result = tuple(factory(cfg) for factory in (*FACTORIES, industry_margin_bundle, market_review_bundle, margin_bundle))
     seen = set()
     for bundle in result:
         if bundle.id in seen:

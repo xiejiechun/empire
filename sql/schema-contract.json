@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "ede0e0aa631b46f5aef7221de4226897a4780860eae90e33ab7cd9eb1672081e",
+  "schema_sha256": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -5036,6 +5036,101 @@
       "checks": {
         "ck_margin_values": "(((market_volumeisnull)or(market_volume>=0))and((market_turnoverisnull)or(market_turnover>=0))and((close_priceisnull)or(close_price>=0))and(financing_balance>=0)and(financing_buy>=0)and(lending_balance>=0)and(lending_sell>=0))"
       }
+    },
+    "industry_margin_day": {
+      "columns": {
+        "trade_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "row_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "contract_version": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        }
+      },
+      "primary": [
+        "trade_date"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_industry_margin_count": "(row_count<=256)"
+      }
+    },
+    "industry_margin_daily": {
+      "columns": {
+        "trade_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "industry_name": {
+          "type": "varchar(64) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "lending_balance": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "financing_balance": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "financing_buy": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "financing_repay": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "lending_sell": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "lending_repay": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "lending_volume": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "trade_date",
+        "industry_name"
+      ],
+      "indexes": {
+        "ix_industry_margin_name_date": {
+          "columns": [
+            "industry_name",
+            "trade_date"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {}
     }
   }
 }

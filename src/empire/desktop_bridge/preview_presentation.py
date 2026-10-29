@@ -127,6 +127,8 @@ def _navigation(task, view, result):
 
 
 def _identity(task, view):
+    if task == "tdx-industry-margin":
+        return ["trade_date", "industry_name"]
     if task == "ths-holders":
         return ["report_key"]
     if task.removeprefix("tdx-").replace("-", "_") in PERFORMANCE:
@@ -164,6 +166,8 @@ def _identity(task, view):
 
 
 def _content(task, view):
+    if task == "tdx-industry-margin":
+        return "directory", "行业融资融券", "2016年起来源完整日期集合；搜索需填写完整行业名称。日期不是公布时间，来源未给历史分类版本。", "trade_date:统计日期:date|industry_name:行业名称|financing_balance:融资余额:decimal:亿元|financing_buy:融资买入额:decimal:亿元|financing_repay:融资偿还额:decimal:亿元|lending_balance:融券余额:decimal:万元|lending_volume:融券余量:decimal:万股|lending_sell:融券卖出量:decimal:万股|lending_repay:融券偿还量:decimal:万股|margin_difference:融资融券差值:decimal:亿元"
     if task == "tdx-margin":
         return "directory", "个股融资融券历史", "每股完整历史；偿还与占比按页面公式计算。最早记录以零前值计算并标记；交易日期不是公布时间。", MARGIN
     if task.startswith("rules-"):

@@ -1885,6 +1885,45 @@
         "tests/test_margin_lifecycle.py",
         "tests/integration/test_margin_archive.py"
       ]
+    },
+    "industry_margin.tdx_day": {
+      "tables": [
+        "industry_margin_day",
+        "industry_margin_daily"
+      ],
+      "grain": "完整日期行业集合头和日期×行业的七项原始数值，同事务提交",
+      "identity": "固定tdx；trade_date/industry_name",
+      "dictionary": "docs/tdx-industry-margin.md",
+      "queries": [
+        "日期全行业稳定游标200",
+        "单行业日期索引游标200",
+        "31日批量集合审计",
+        "日期范围聚合"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/tdx-industry-margin-capacity-2026-10-30.json",
+        "sample": "400日期12226明细，含256行业最大完整单元，独立MySQL",
+        "growth": "每年约1.1万行业行，五年约5.5万",
+        "page_limit": 200,
+        "response": "每日最多256行业及共享generic上限",
+        "budget": "完整日初始化1秒，列表100ms，完整日审计1秒，重复零业务DML"
+      },
+      "integrity": [
+        "来源Count/列定义",
+        "行业名称唯一集合",
+        "同数异集",
+        "冷热摘要零DML",
+        "旧响应",
+        "SQL提交后重放清队",
+        "有效空日不覆盖旧非空集合"
+      ],
+      "lifecycle": "2016起按日补缺；近7日与90桶历史轮查；已入队断点续采，Redis丢失SQL日期集合恢复",
+      "delivery": "共享代理预取入队归档查询，create_industry_margin_schema显式建表，正式发布及桌面另验",
+      "tests": [
+        "tests/test_industry_margin.py",
+        "tests/integration/test_industry_margin_archive.py"
+      ]
     }
   },
   "json_roles": {

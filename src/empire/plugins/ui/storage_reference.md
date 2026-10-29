@@ -6976,3 +6976,117 @@ features/margin/dataset为唯一业务写入路径，证券完整历史同事务
 [执行采集与计划](help:执行采集与计划)
 [MySQL margin_security](help:MySQL%20margin_security)
 [MySQL margin_daily](help:MySQL%20margin_daily)
+
+<!-- topic:数据库参考|MySQL industry_margin_daily -->
+<!-- summary:行业融资融券的日期与行业原始事实，明确亿元、万元和万股，正式查询按键稳定分页。 -->
+<!-- group:MySQL -->
+# MySQL industry_margin_daily
+
+## 用途与归属
+
+固定来源tdx，数据集industry_margin.tdx_day，任务tdx-industry-margin。每行是一个日期与来源行业名称的七项原始数值，不用个股计算值替代来源统计，不存完整业务JSON。
+
+## 结构与身份
+
+| 字段 | SQL声明 | 含义 |
+| --- | --- | --- |
+| `trade_date` | `DATE NOT NULL` | 来源请求日期，不是公布时间 |
+| `industry_name` | `VARCHAR(64) COLLATE utf8mb4_bin NOT NULL` | hy，唯一来源身份；无行业代码或历史分类版本 |
+| `lending_balance` | `DECIMAL(28,8) NULL` | rqye，融券余额，万元 |
+| `financing_balance` | `DECIMAL(28,8) NULL` | T003，融资余额，亿元 |
+| `financing_buy` | `DECIMAL(28,8) NULL` | T004，融资买入额，亿元 |
+| `financing_repay` | `DECIMAL(28,8) NULL` | T005，融资偿还额，亿元 |
+| `lending_sell` | `DECIMAL(28,8) NULL` | T007，融券卖出量，万股 |
+| `lending_repay` | `DECIMAL(28,8) NULL` | T008，融券偿还量，万股 |
+| `lending_volume` | `DECIMAL(28,8) NULL` | T006，融券余量，万股 |
+
+- `PRIMARY KEY (trade_date, industry_name)`：一天一个行业来源记录，支撑日期全行业查询。
+- `KEY ix_industry_margin_name_date (industry_name, trade_date)`：单行业日期范围查询。
+
+## 读写与关联
+
+features/industry_margin/dataset是唯一写入路径，与industry_margin_day同事务比较完整日期集合。只写变化行；有效修订仅替换该日期，旧观测不能覆盖新版本。query提供日期/完整行业名称筛选及最多200行稳定游标；审计每批31日期、每日期最多256行业。融资融券差值查询时计算，亿元减万元/10000，不重复存储。
+
+## 保留与恢复
+
+不依赖当前股票或行业目录，不因成员或名单改变删除历史。来源名称变化作为新的来源身份，不能擅自映射历史分类。空响应不能自动删除旧非空集合。Redis摘要丢失回SQL比较；提交后重放安全。归档成功清业务队列，失败保留；摘要、断点及有界记录继续由共享框架管理。
+
+## 维护与相关说明
+
+scripts/create_industry_margin_schema.py显式创建。人工修订必须停归档、失效摘要并重建日期头，修改后核对日期×行业键及内容，不能只看条数。
+
+[通达信行业融资融券](help:通达信行业融资融券)
+[MySQL industry_margin_day](help:MySQL%20industry_margin_day)
+
+来源负值保留，不改成零；数据准备检查会标记来源质量失败，使用前须排除或明确处理。
+
+<!-- topic:数据库参考|MySQL industry_margin_day -->
+<!-- summary:行业日期完整响应的聚合证明，同事务关联行业明细，区分有效空集合与缺失日期。 -->
+<!-- group:MySQL -->
+# MySQL industry_margin_day
+
+## 用途与归属
+
+固定来源tdx，数据集industry_margin.tdx_day，任务tdx-industry-margin。每行是一个来源日期完整行业快照的聚合头；不是采集运行日志。来源有效空集合保存row_count=0及空集合摘要，未采集日期无头。
+
+## 结构与身份
+
+| 字段 | SQL声明 | 含义 |
+| --- | --- | --- |
+| `trade_date` | `DATE NOT NULL` | 请求关联的来源统计日期；来源正文不回显日期 |
+| `content_hash` | `CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 行业名称及七项规范事实的SHA256 |
+| `row_count` | `INT UNSIGNED NOT NULL` | 完整行业条数，空集合为0 |
+| `contract_version` | `INT UNSIGNED NOT NULL` | 规范契约及集合证明版本 |
+
+- `PRIMARY KEY (trade_date)`：一天一份完整集合证明。
+- `CONSTRAINT ck_industry_margin_count CHECK (row_count <= 256)`：完整日期容量上限。
+
+## 读写与关联
+
+features/industry_margin/dataset为唯一业务写入路径，日期头与industry_margin_daily在同一事务提交。无变化不更新业务表，不能为刷新观察时间重复写头。正式query按范围读取日期集合，审计以最多31天一批比较行业键、正文摘要及契约版本；缺头不解释为休市。
+
+## 保留与恢复
+
+保留2016年起来源返回的日期事实。SQL collection_state每项目一行，记录SQL确认版本与来源最新日期；Redis可信摘要命中免SQL。Redis丢失后依据日期头补缺，详细审计仍核对明细，不把最大日期当完整覆盖。SQL提交后重放不重复写，成功处理的业务消息由统一归档器删除。
+
+## 维护与相关说明
+
+scripts/create_industry_margin_schema.py为显式建表入口；停机持锁、队列归零并核对原业务，启动不建表。直接修改业务前停止归档、失效对应摘要并重建日期证明。
+
+[通达信行业融资融券](help:通达信行业融资融券)
+[MySQL industry_margin_daily](help:MySQL%20industry_margin_daily)
+
+<!-- topic:数据说明|通达信行业融资融券 -->
+<!-- summary:按日期查看来源完整行业融资融券，2016年起补缺，保留单位、历史修订与行业分类限制。 -->
+<!-- group:融资融券 -->
+# 通达信行业融资融券
+
+## 如何查看
+
+在采集管理搜索“行业融资融券（通达信）”，保存计划后执行。任务数据预览可按日期和完整行业名称查询，每页最多200行；空日没有行业明细，完整性检查会区分已核实为空与尚未采集。
+
+## 数据范围与更新
+
+默认从2016-01-01补齐至来源公布的最新日期，每个自然日取得完整行业集合。每天北京时间19:30补缺，并回看来源最新日期之前7天；较老历史分90组逐日轮转，持续运行90天核验一遍。停机期间不保证历史修订发现时效。“从头采集”会重新核验全范围；已保存的执行计划和网络选择优先。
+
+日期之间共享有界并行预取，按序校验入队。全部入队后才等待整轮归档，不逐日等待。失败从最后已入队日期后继续；仅重启程序且Redis仍运行时保留断点，Redis丢失后按SQL已归档日期补缺，不重新下载全部历史。
+
+## 字段与日期
+
+融资余额、买入额和偿还额为亿元；融券余额为万元，余量、卖出量和偿还量为万股。数值来自行业接口，未用个股求和代替。融资融券差值按融资余额减融券余额/10000计算，单位为亿元；空值保留未知。
+
+日期是请求的来源统计日期，不是公布时间。来源只返回行业名称，没有行业代码、成员名单或历史分类版本，不能据此重建历史行业成分。名称变化按来源身份保留，不擅自合并。
+
+## 限制与排错
+
+有效空集合仅说明来源该日期无行业记录，不能据此判定休市。错误、缺列、重复行业、数值超界或集合数量不符不推进断点。空响应不能自动清掉已有非空行业集合；需核实来源后处理。归档失败留队，写入、相同确认或旧响应确认成功后由统一归档器清队。
+
+来源无公布时刻及完整旧版本，普通研究可按声明范围使用，严格历史信号回放需另外验证。开发抽样不代表2016年以来全部日期已经归档，实际补历史进度以任务详情与范围检查为准。
+
+来源历史存在负数，例如2016-06-23非银金融融券偿还量为-1.6449万股。程序保留来源原值，并将对应范围的数据准备质量检查标记失败；不能直接作为正常偿还量用于分析，也不自动改零或丢弃整个日期。
+
+## 相关说明
+
+[执行采集与计划](help:执行采集与计划)
+[MySQL industry_margin_day](help:MySQL%20industry_margin_day)
+[MySQL industry_margin_daily](help:MySQL%20industry_margin_daily)

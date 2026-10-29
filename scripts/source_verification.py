@@ -280,7 +280,7 @@ async def verify(args, verify_scope, *, subject='source', fixed_codes=(), minimu
         redactor = Redactor([cfg['mysql'].get('password'), cfg['redis'].get('password'), raw_test.get('password')])
         test = test_settings(raw_test)
         lock = acquire_instance_lock()
-        snapshot = read_pool(cfg)
+        snapshot = read_pool(cfg, require_stocks=non_stock_scope is None)
         fixed = list(dict.fromkeys((*fixed_codes, *args.codes)))
         selection = (select_stocks(snapshot['stocks'], args.random_count, args.seed, fixed)
                      if non_stock_scope is None else dict(selected=[], random=[], fixed=[], random_count=0,

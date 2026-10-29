@@ -17,6 +17,8 @@ class View:
 
 
 def _views(task):
+    if task == "tdx-industry-margin":
+        return [View("records", "已归档数据", "industry_margin.query", "browse", filters=("search", "start", "end"))]
     simple = {
         "tdx-margin": ("margin.query", "browse"),
         "tdx-hot-list": ("hot_list.query", "browse"),

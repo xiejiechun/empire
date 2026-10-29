@@ -169,6 +169,10 @@
     "margin": {
       "kind": "business",
       "description": "个股融资融券完整证券历史"
+    },
+    "industry_margin": {
+      "kind": "business",
+      "description": "完整日期行业融资融券"
     }
   },
   "module_groups": [
@@ -1675,6 +1679,20 @@
       "prefix": "empire.features.margin",
       "owner": "margin",
       "reason": "单证券完整历史，正式结构化存储与共享采集归档",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "parser",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.industry_margin",
+      "owner": "industry_margin",
+      "reason": "独立来源完整日期集合",
       "roles": {
         "bundle": "composition",
         "contract": "contract",

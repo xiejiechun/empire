@@ -244,6 +244,9 @@
     ],
     "hot_list": [
       "通达信个股龙虎榜"
+    ],
+    "industry_margin": [
+      "通达信行业融资融券"
     ]
   },
   "guides": [
@@ -482,6 +485,10 @@
     ],
     "tdx-margin": [
       "通达信个股融资融券",
+      "采集进度与运行记录"
+    ],
+    "tdx-industry-margin": [
+      "通达信行业融资融券",
       "采集进度与运行记录"
     ]
   },
@@ -1032,6 +1039,22 @@
           "src/empire/features/margin/contract.py",
           "src/empire/features/margin/dataset.py",
           "src/empire/features/margin/query.py"
+        ]
+      },
+      "industry_margin_day": {
+        "topic": "MySQL industry_margin_day",
+        "sources": [
+          "src/empire/features/industry_margin/contract.py",
+          "src/empire/features/industry_margin/dataset.py",
+          "src/empire/features/industry_margin/query.py"
+        ]
+      },
+      "industry_margin_daily": {
+        "topic": "MySQL industry_margin_daily",
+        "sources": [
+          "src/empire/features/industry_margin/contract.py",
+          "src/empire/features/industry_margin/dataset.py",
+          "src/empire/features/industry_margin/query.py"
         ]
       }
     },

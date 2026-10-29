@@ -58,7 +58,7 @@ def read_server_uuid(settings: dict) -> str:
         engine.dispose()
 
 
-def read_pool(config: dict) -> dict:
+def read_pool(config: dict, *, require_stocks: bool = True) -> dict:
     """All production SQL is confined to one read-only transaction, closed here."""
     engine = make_engine(config['mysql'])
     try:
@@ -66,9 +66,10 @@ def read_pool(config: dict) -> dict:
             conn.exec_driver_sql('START TRANSACTION READ ONLY')
             try:
                 server = str(conn.execute(text('SELECT @@server_uuid')).scalar_one())
-                stocks = [dict(row) for row in conn.execute(text(
+                stocks = ([dict(row) for row in conn.execute(text(
                     'SELECT unified_code,name FROM stock ORDER BY unified_code LIMIT 15001')).mappings()]
-                if not stocks or len(stocks) > 15000:
+                    if require_stocks else [])
+                if require_stocks and (not stocks or len(stocks) > 15000):
                     raise ValueError('正式股票池为空或超限')
                 identities = [row['unified_code'] for row in stocks]
                 if len(identities) != len(set(identities)):

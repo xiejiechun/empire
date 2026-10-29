@@ -1,0 +1,225 @@
+{
+  "counts": {
+    "empty_days": 1328,
+    "negative_rows": 20
+  },
+  "negative_examples": [
+    {
+      "trade_date": "2016-04-12",
+      "industry_name": "机械设备"
+    },
+    {
+      "trade_date": "2016-05-03",
+      "industry_name": "传媒"
+    },
+    {
+      "trade_date": "2016-05-06",
+      "industry_name": "轻工制造"
+    },
+    {
+      "trade_date": "2016-05-12",
+      "industry_name": "化工"
+    },
+    {
+      "trade_date": "2016-05-16",
+      "industry_name": "环保"
+    },
+    {
+      "trade_date": "2016-05-20",
+      "industry_name": "传媒"
+    },
+    {
+      "trade_date": "2016-05-26",
+      "industry_name": "环保"
+    },
+    {
+      "trade_date": "2016-05-31",
+      "industry_name": "计算机"
+    },
+    {
+      "trade_date": "2016-06-23",
+      "industry_name": "非银金融"
+    },
+    {
+      "trade_date": "2016-06-28",
+      "industry_name": "农林牧渔"
+    },
+    {
+      "trade_date": "2016-08-10",
+      "industry_name": "化工"
+    },
+    {
+      "trade_date": "2019-06-05",
+      "industry_name": "纺织服饰"
+    },
+    {
+      "trade_date": "2020-10-22",
+      "industry_name": "建材"
+    },
+    {
+      "trade_date": "2021-04-21",
+      "industry_name": "综合"
+    },
+    {
+      "trade_date": "2021-05-20",
+      "industry_name": "农林牧渔"
+    },
+    {
+      "trade_date": "2021-06-03",
+      "industry_name": "农林牧渔"
+    },
+    {
+      "trade_date": "2021-06-10",
+      "industry_name": "医药医疗"
+    },
+    {
+      "trade_date": "2021-12-21",
+      "industry_name": "纺织服饰"
+    },
+    {
+      "trade_date": "2022-04-22",
+      "industry_name": "食品饮料"
+    },
+    {
+      "trade_date": "2023-05-08",
+      "industry_name": "电子"
+    }
+  ],
+  "head_digest": "f58ca9caadfb2faf4d0e852f573be6bb27cde9a89ae14f109c1955983b01acac",
+  "history": [
+    {
+      "run_id": "50b1e06db5fa403bb561c3eae00c8dbe",
+      "task_id": "tdx-industry-margin",
+      "started_at": 1793297238.3582675,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 3955,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 51
+      },
+      "finished_at": 1793297243.1301222,
+      "status": "complete",
+      "error": "",
+      "notice": "",
+      "result": {
+        "collected": 1020,
+        "completed_units": 50,
+        "total_units": 50,
+        "pages": 50,
+        "phase": "complete",
+        "contract": 1,
+        "scope_hash": "f5d52ec036b9080721429d645fb1ae742bc8f8ecf947a90e7861e55e72b5073b",
+        "batch_id": "bc6391d829134174bbe10fbb70ab2b65",
+        "start": "2016-01-01",
+        "end": "2026-10-28",
+        "through": "2026-10-30",
+        "source_latest": "2026-10-28",
+        "last_date": "2026-10-28",
+        "force": false
+      }
+    },
+    {
+      "run_id": "ce64e95e7c994289899131022fd0167d",
+      "task_id": "tdx-industry-margin",
+      "started_at": 1793296883.1547775,
+      "origin": "manual",
+      "fresh": false,
+      "baseline_revision": 0,
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "network": {
+        "proxy_requests": 3956
+      },
+      "finished_at": 1793297159.3003018,
+      "status": "complete",
+      "error": "",
+      "notice": "",
+      "result": {
+        "collected": 78780,
+        "completed_units": 3954,
+        "total_units": 3954,
+        "pages": 3954,
+        "phase": "complete",
+        "contract": 1,
+        "scope_hash": "f5d52ec036b9080721429d645fb1ae742bc8f8ecf947a90e7861e55e72b5073b",
+        "batch_id": "d51a937106a3445d846881011688fd5f",
+        "start": "2016-01-01",
+        "end": "2026-10-28",
+        "through": "2026-10-30",
+        "source_latest": "2026-10-28",
+        "last_date": "2026-10-28",
+        "force": false
+      }
+    }
+  ],
+  "errors": [
+    {
+      "id": "1d8548007c57414ea624c46445f826b4",
+      "stage": "http",
+      "error": "代理设备 node021 请求失败（ProxyError），已临时隔离",
+      "created_at": "2026-10-29T18:02:21.532050+00:00"
+    }
+  ],
+  "maintenance_verification": {
+    "complete_units": 50,
+    "requests": {
+      "proxy_requests": 51
+    },
+    "written_count": 0,
+    "head_digest_unchanged": true
+  },
+  "coverage": {
+    "covered_days": 3954,
+    "first": "2016-01-01",
+    "last": "2026-10-28",
+    "rows": 78780,
+    "prefix_missing": [],
+    "checked_at": "2026-10-29T18:07:40.480762+00:00",
+    "target_days": 3954,
+    "cursor": {
+      "phase": "complete",
+      "last_date": "2026-10-28",
+      "pages": 50,
+      "collected": 1020,
+      "start": "2016-01-01",
+      "end": "2026-10-28"
+    },
+    "status": "complete",
+    "active": null,
+    "policy": {
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "daily_time": "19:30"
+    },
+    "pending_global": 0,
+    "prefix_checks": [
+      {
+        "criterion": "coverage",
+        "status": "pass"
+      },
+      {
+        "criterion": "keys",
+        "status": "pass"
+      },
+      {
+        "criterion": "fields",
+        "status": "pass"
+      },
+      {
+        "criterion": "quality",
+        "status": "fail"
+      },
+      {
+        "criterion": "freshness",
+        "status": "pass"
+      },
+      {
+        "criterion": "temporal",
+        "status": "fail"
+      }
+    ],
+    "independent_reads_not_atomic": true
+  }
+}

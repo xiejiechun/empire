@@ -3597,6 +3597,53 @@
         "通达信个股融资融券",
         "采集进度与运行记录"
       ]
+    },
+    "tdx-industry-margin": {
+      "requests": [
+        {
+          "url": "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_rzrq_hy",
+          "method": "POST",
+          "purpose": "最新来源日期或完整日期行业集合",
+          "parameters": [
+            {
+              "name": "Params[0]",
+              "value": "0或1",
+              "meaning": "0查询最新日期，1查询完整行业日期"
+            },
+            {
+              "name": "Params[1]",
+              "value": "空字符串或YYYYMMDD",
+              "meaning": "0模式为空，1模式指定完整日期"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "industry_margin_day",
+        "industry_margin_daily"
+      ],
+      "start": "2016-01-01",
+      "end": "来源公布的最新日期",
+      "initial": "每天一个完整行业响应，含有效空日期；顺序原子入队，整轮归档清队后完成。",
+      "incremental": "SQL日期集合补缺，来源最近7日回看，较老历史90个日期桶逐日轮查；范围去重。",
+      "recovery": "Redis存活从最后已入队日期后继续；丢失按SQL日期头补缺及普通维护，不全历史重采。",
+      "fresh": "重新核验2016年起全部日期；已等待归档的轮次先完成。",
+      "limits": "无行业代码/历史分类版本/公布时刻；空日不等于休市，空响应不清除已有非空集合。历史存在负数，保留原值并在数据准备标记来源质量失败，不直接当正常值分析。",
+      "job_key": "tdx-industry-margin-v1",
+      "source_file": "src/empire/features/industry_margin/collector.py",
+      "scope": "完整自然日行业集合，不截断行业；2016年起历史补齐。",
+      "source": "tdx",
+      "fingerprint_source": "tdx",
+      "datasets": [
+        "industry_margin.tdx_day"
+      ],
+      "fingerprint_namespaces": [
+        "tdx_industry_margin_v1"
+      ],
+      "topics": [
+        "通达信行业融资融券",
+        "采集进度与运行记录"
+      ]
     }
   }
 }
