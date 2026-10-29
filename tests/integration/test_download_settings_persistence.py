@@ -107,10 +107,9 @@ async def test_saved_limits_survive_runtime_restart_and_loss_of_test_redis_state
     http = second.registry.get("http.fetch")
     assert await reloaded.snapshot() == {"saved": values, "active": values, "pending_restart": False}
     assert http.buffer_budget.limit == 128 * MiB
-    assert http.response_policy("stocks").max_body_bytes == 3 * MiB
-    assert http.response_policy("news").max_body_bytes == 6 * MiB
-    assert http.response_policy("calendar").max_body_bytes == MiB
-    assert http.response_policy("generic").max_body_bytes == 4 * MiB
+    for profile in ('stocks', 'news', 'calendar', 'generic'):
+        assert http.response_policy(profile).max_body_bytes == (128 * MiB - 256 * 1024) // 3
+        assert http.response_policy(profile).reservation_bytes == 256 * 1024
     assert http.file_policy(filename="test.pdf").max_body_bytes == 64 * MiB
     assert http.storage.quota == 512 * MiB
     assert http.storage.min_free == 32 * MiB and http.storage.concurrency == 2

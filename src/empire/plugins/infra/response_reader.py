@@ -5,7 +5,7 @@ import zlib
 
 import httpx
 
-from empire.contracts.download import CHUNK_BYTES, FilePolicy
+from empire.contracts.download import CHUNK_BYTES, BufferedPolicy, FilePolicy
 from empire.plugins.infra.http_safety import SENSITIVE_HEADERS
 
 
@@ -82,7 +82,7 @@ async def disk_call(operation, *args, finish_on_cancel=False, cancel_cleanup=Non
 
 
 async def read_response(client, method, url, *, policy, storage, on_headers,
-                        strip_credentials=False, **kwargs):
+                        strip_credentials=False, buffer_lease=None, **kwargs):
     # httpx's automatic decompressor can allocate before aiter_bytes chunks output.
     # Read encoded bytes instead and bound each decompressor output allocation.
     headers = dict(kwargs.pop("headers", {}) or {})
@@ -137,7 +137,11 @@ async def read_response(client, method, url, *, policy, storage, on_headers,
             body_count += len(chunk)
             prefix.extend(chunk[:max(0, CHUNK_BYTES - len(prefix))])
             if body_count > body_limit:
-                raise DownloadLimitError("响应正文超过插件声明的字节上限")
+                raise DownloadLimitError('响应正文无法容纳于共享下载缓冲' if isinstance(policy, BufferedPolicy)
+                                         else '响应正文超过插件声明的字节上限')
+            if isinstance(policy, BufferedPolicy):
+                if buffer_lease is None or not buffer_lease.grow_to(3 * body_count + 4 * CHUNK_BYTES):
+                    raise DownloadLimitError('共享下载缓冲不足；降低同时下载数或提高缓冲上限后按原进度重试')
             sha.update(chunk)
             if sink:
                 await disk_call(sink.write, chunk)

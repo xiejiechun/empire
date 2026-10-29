@@ -6,6 +6,17 @@ class Reservation:
     def __init__(self, budget, size):
         self.budget, self.size, self.released = budget, size, False
 
+    def grow_to(self, size):
+        if self.released or type(size) is not int or size < 0:
+            raise ValueError('下载缓冲租约无效')
+        extra = max(0, size - self.size)
+        if self.budget.used + extra > self.budget.limit:
+            return False
+        self.budget.used += extra
+        self.size += extra
+        self.budget.peak = max(self.budget.peak, self.budget.used)
+        return True
+
     def release(self):
         if not self.released:
             self.released = True

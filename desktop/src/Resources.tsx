@@ -5,7 +5,7 @@ import { QueryNotice } from "./shared";
 
 const labels: Record<string, string> = {
   max_parallel_downloads: "同时下载数",
-  buffer_budget_bytes: "下载缓冲上限",
+  buffer_budget_bytes: "下载临时内存上限",
 };
 const mib = (value: number) => (value / 1048576).toLocaleString("zh-CN", { maximumFractionDigits: 1 });
 
@@ -42,7 +42,7 @@ export default function Resources() {
     <p role="status">{live
       ? `正在下载 ${live.active_requests} 个 · 缓冲预留 ${mib(live.buffer_reserved_bytes)} / ${mib(live.buffer_limit_bytes)} MiB · ${live.waiting ? `${live.waiting} 个正在等待下载资源` : "无下载资源排队"}`
       : "下载运行状态暂不可用"}</p>
-    <p className="muted">缓冲显示下载器预留额度，并非程序总内存；网站限速和出口等待在任务运行详情查看。单次响应和文件保护限制继续沿用。</p>
+    <p className="muted">按实际响应大小申请额度，不是 Redis 或程序总内存。多个大响应耗尽预算时会明确报错，可降低并发后恢复；网站限速和出口等待在任务详情查看。</p>
     <Space wrap>
       <span>{dirty ? "有未保存修改" : "无未保存修改"}</span>
       <Button disabled={busy || !q.data} onClick={() => {

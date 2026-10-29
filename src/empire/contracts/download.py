@@ -23,6 +23,20 @@ class ResponsePolicy:
 
 
 @dataclass(frozen=True)
+class BufferedPolicy(ResponsePolicy):
+    """HTTP memory responses grow within the one shared budget, not a profile cap."""
+
+    def __post_init__(self):
+        for value in (self.max_body_bytes, self.max_wire_bytes):
+            if type(value) is not int or not 1 <= value <= 4096 * MiB:
+                raise ValueError('共享下载缓冲派生上限无效')
+
+    @property
+    def reservation_bytes(self):
+        return 4 * CHUNK_BYTES
+
+
+@dataclass(frozen=True)
 class FilePolicy(ResponsePolicy):
     max_body_bytes: int = 256 * MiB
     max_wire_bytes: int = 256 * MiB

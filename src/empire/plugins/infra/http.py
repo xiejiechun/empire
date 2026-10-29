@@ -7,7 +7,7 @@ from urllib.parse import urljoin, urlsplit
 
 import httpx
 
-from empire.contracts.download import FilePolicy, ResponsePolicy
+from empire.contracts.download import CHUNK_BYTES, BufferedPolicy, FilePolicy
 from empire.contracts.download_settings import (
     DEFAULTS,
     MAX_PARALLEL_DOWNLOADS,
@@ -169,8 +169,10 @@ class HttpService:
                                    storage=self.storage, on_headers=headers, **kwargs)
 
     def response_policy(self, profile="generic"):
-        size = self.resource_values[PROFILE_FIELDS[profile]]
-        return ResponsePolicy(max_body_bytes=size, max_wire_bytes=size)
+        if profile not in PROFILE_FIELDS:
+            raise ValueError('未知响应类别')
+        size = max(1, (self.buffer_budget.limit - 4 * CHUNK_BYTES) // 3)
+        return BufferedPolicy(max_body_bytes=size, max_wire_bytes=self.buffer_budget.limit)
 
     def file_policy(self, *, filename, signature=b"", expected_sha256=None):
         size = self.resource_values["file_response_bytes"]
@@ -194,12 +196,14 @@ class HttpService:
                 file_slot = True
             if reservation is not None:
                 if (reservation.budget is not self.buffer_budget or reservation.released
-                        or reservation.size != policy.reservation_bytes):
+                        or (reservation.size < policy.reservation_bytes if isinstance(policy, BufferedPolicy)
+                            else reservation.size != policy.reservation_bytes)):
                     raise ValueError("响应缓冲预留与请求策略不一致")
                 lease = reservation
             else:
                 lease = await self.buffer_budget.reserve(policy.reservation_bytes)
-            response = await self._request(method, url, policy=policy, **kwargs)
+            response = await self._request(method, url, policy=policy,
+                                           buffer_lease=lease if isinstance(policy, BufferedPolicy) else None, **kwargs)
             if response.artifact is None:
                 response.reservation, lease = lease, None
                 self.responses.add(response)

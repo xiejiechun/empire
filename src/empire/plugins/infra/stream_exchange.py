@@ -9,6 +9,7 @@ import asyncio
 
 import httpx
 
+from empire.contracts.download import CHUNK_BYTES, BufferedPolicy
 from empire.contracts.native_stream import StreamTarget as StreamTarget
 from empire.contracts.request_retry import MAX_REQUEST_RETRIES, request_timeout, retry_delay
 from empire.plugins.infra.proxy_tunnel import close_writer
@@ -18,14 +19,17 @@ ATTEMPT_TIMEOUT_SECONDS = 30
 
 
 class BoundedChannel:
-    def __init__(self, reader, writer, policy):
-        self.reader, self.writer, self.policy = reader, writer, policy
+    def __init__(self, reader, writer, policy, lease=None):
+        self.reader, self.writer, self.policy, self.lease = reader, writer, policy, lease
         self.received = self.sent = 0
 
     async def readexactly(self, length):
         if (type(length) is not int or length < 0
                 or self.received + length > self.policy.max_wire_bytes):
             raise ValueError("Native response exceeds wire limit")
+        if isinstance(self.policy, BufferedPolicy) and (self.lease is None or not self.lease.grow_to(
+                3 * (self.received + length) + 4 * CHUNK_BYTES)):
+            raise ValueError('共享下载缓冲不足，原生响应未完整读取')
         data = await self.reader.readexactly(length)
         self.received += len(data)
         return data
@@ -41,6 +45,15 @@ class BoundedChannel:
 class StreamResponse:
     def __init__(self, content, lease, owner):
         self.content, self.reservation, self.owner = content, lease, owner
+        self.decoded_bytes = 0
+
+    def reserve_decoded(self, size):
+        if type(size) is not int or size < 0 or self.reservation is None:
+            raise ValueError('原生解码预留无效')
+        needed = 3 * (len(self.content) + self.decoded_bytes + size) + 4 * CHUNK_BYTES
+        if not self.reservation.grow_to(needed):
+            raise ValueError('共享下载缓冲不足，原生解压未开始')
+        self.decoded_bytes += size
 
     def close(self):
         self.content = b""
@@ -79,10 +92,12 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
                     reader, writer = await service.pool.open_tunnel(
                         entry, target.host, target.port, site=group.name,
                     )
-                channel = BoundedChannel(reader, writer, policy)
+                channel = BoundedChannel(reader, writer, policy, lease)
                 content = await protocol(channel)
             if not isinstance(content, bytes) or len(content) > policy.max_body_bytes:
                 raise ValueError("Native decoded response exceeds body limit")
+            if isinstance(policy, BufferedPolicy) and not lease.grow_to(3 * len(content) + 4 * CHUNK_BYTES):
+                raise ValueError('共享下载缓冲不足，原生响应无法保留')
             return StreamResponse(content, None, service)
         except TimeoutError:
             raise httpx.ReadTimeout('Native exchange timed out') from None
@@ -96,7 +111,8 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
         async with asyncio.timeout(timeout):
             if reservation is not None:
                 if (reservation.budget is not service.buffer_budget or reservation.released
-                        or reservation.size != policy.reservation_bytes):
+                        or (reservation.size < policy.reservation_bytes if isinstance(policy, BufferedPolicy)
+                            else reservation.size != policy.reservation_bytes)):
                     raise ValueError('响应缓冲预留与请求策略不一致')
                 lease = reservation
             else:

@@ -119,7 +119,7 @@ async def _fetch_market(http, session, *, unified_code, dataset, start, end, ins
     try:
         tables = decode_response(response.content, instance=instance,
                                  request_id=210 if dataset == 'daily' else 211,
-                                 limit=policy.max_body_bytes)
+                                 limit=policy.max_body_bytes, reserve=response.reserve_decoded)
         normalizer = {'daily': normalize_daily, 'financial': normalize_financial}[dataset]
         data = normalizer(tables, unified_code=unified_code, start=start, end=end, native_market=native_market)
         return DecodedHistory(data, len(response.content), sum(t['decoded_bytes'] for t in tables))

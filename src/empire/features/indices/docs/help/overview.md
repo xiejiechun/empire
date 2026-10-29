@@ -29,3 +29,5 @@
 
 
 存储查阅：[MySQL stock_index](help:MySQL%20stock_index)、[MySQL stock_index_member](help:MySQL%20stock_index_member)。
+
+下载沿用共享临时内存的按实际正文增长策略，保留指数来源自身的结构边界；额外收紧来源策略不改变预取额度的持有和释放方式。资源不足保留采集断点，不发布截断成员集合。

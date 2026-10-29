@@ -18,6 +18,13 @@ class BorrowedReservation:
     def release(self):
         pass  # ordered_prefetch releases the owner after consumption/drain.
 
+    def grow_to(self, size):
+        extra = max(0, size - self.size)
+        if not self.owner.grow_to(self.owner.size + extra):
+            return False
+        self.size += extra
+        return True
+
 
 class DeferredResponse:
     """Keep source validation in the ordered consumer, with its diagnostic body."""

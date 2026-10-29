@@ -19,7 +19,7 @@ from empire.plugins.infra import download_settings as settings_module
 from empire.plugins.infra import http as http_module
 from empire.plugins.infra.download_settings import DownloadSettingsPlugin
 from empire.plugins.infra.http import HttpPlugin, HttpService
-from empire.plugins.infra.response_reader import DownloadLimitError, ManagedResponse
+from empire.plugins.infra.response_reader import ManagedResponse
 
 
 class Permits:
@@ -39,7 +39,7 @@ async def test_simple_limits_preserve_guards_and_active_owner(stored_context):
     assert result['saved'] == {**original, 'max_parallel_downloads': 64, 'buffer_budget_bytes': 256 * MiB}
     before = copy.deepcopy(result)
     with pytest.raises(ValueError):
-        await plugin.save_limits({'max_parallel_downloads': 64, 'buffer_budget_bytes': MiB})
+        await plugin.save_limits({'max_parallel_downloads': 64, 'buffer_budget_bytes': 0})
     with pytest.raises(ValueError):
         await plugin.save_limits({**original, 'file_concurrency': 1})
     assert await plugin.snapshot() == before
@@ -79,14 +79,13 @@ def stored_context(monkeypatch):
     return database, services, SimpleNamespace(get=services.__getitem__)
 
 
-def test_valid_defaults_are_copied_and_buffer_formula_is_enforced():
+def test_valid_defaults_are_copied_and_old_profile_caps_do_not_set_budget_floor():
     values = validate_settings(DEFAULTS)
     assert values == DEFAULTS and values is not DEFAULTS
     values["buffer_budget_bytes"] = 13 * MiB
     assert validate_settings(values) == values
     values["buffer_budget_bytes"] = 12 * MiB
-    with pytest.raises(ValueError, match="共享缓冲至少需要 13 MiB"):
-        validate_settings(values)
+    assert validate_settings(values) == values
 
 
 @pytest.mark.parametrize("values", [None, [], {}, {**DEFAULTS, "unexpected": 1},
@@ -205,12 +204,12 @@ async def test_http_keeps_inflight_budget_until_normal_restart(stored_context, t
         assert service.buffer_budget is original_budget and service.storage is original_storage
         assert service.buffer_budget.used == reserved > 0
         assert service.buffer_budget.limit == DEFAULTS["buffer_budget_bytes"]
-        assert service.response_policy("stocks").max_body_bytes == MiB
+        assert service.response_policy("stocks").max_body_bytes == (original_budget.limit - 256 * 1024) // 3
         assert service.resource_values["max_parallel_downloads"] == 128
         assert (await settings.snapshot())["pending_restart"] is True
         release.set()
         response = await task
-        assert response.content == b"{}" and service.buffer_budget.used == reserved
+        assert response.content == b"{}" and service.buffer_budget.used == reserved + 6
         await plugin.stop()
         assert service.closed and service.buffer_budget.used == 0
         assert (await settings.snapshot())["active"] is None
@@ -222,8 +221,8 @@ async def test_http_keeps_inflight_budget_until_normal_restart(stored_context, t
         assert restarted.resource_values["planned_exit_devices"] == 300
         assert restarted.resource_values["max_parallel_downloads"] == 384
         for profile, key in PROFILE_FIELDS.items():
-            assert restarted.response_policy(profile).max_body_bytes == changed[key]
-            assert restarted.response_policy(profile).max_wire_bytes == changed[key]
+            assert restarted.response_policy(profile).max_body_bytes == (96 * MiB - 256 * 1024) // 3
+            assert restarted.response_policy(profile).max_wire_bytes == 96 * MiB
         assert restarted.file_policy(filename="report.pdf").max_body_bytes == 128 * MiB
         assert (await settings.snapshot())["pending_restart"] is False
     finally:
@@ -258,12 +257,13 @@ async def test_active_values_are_retained_until_http_closure_succeeds(stored_con
     await settings.stop()
 
 
-async def test_configured_generic_limit_applies_without_explicit_policy():
+async def test_old_generic_value_does_not_limit_shared_buffer_response():
     service = HttpService(Permits(), "test", {}, resources={"generic_response_bytes": 1024},
         transport=httpx.MockTransport(lambda request: httpx.Response(200, content=b"x" * 1025)))
     try:
-        with pytest.raises(DownloadLimitError):
-            await service.request("GET", "https://example.test/", allowed_domains=("example.test",))
+        response = await service.request("GET", "https://example.test/", allowed_domains=("example.test",))
+        assert response.content == b"x" * 1025
+        response.close()
         assert service.buffer_budget.used == 0
     finally:
         await service.close()

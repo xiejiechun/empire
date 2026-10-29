@@ -1,12 +1,12 @@
 """One catalogue request and one complete member request per index, ordered publication."""
 import asyncio
 import hashlib
+from dataclasses import replace
 from datetime import UTC, datetime
 from functools import partial
 from uuid import uuid4
 
 from empire.contracts.data import make_envelope
-from empire.contracts.download import ResponsePolicy
 from empire.contracts.plugin import PluginManifest
 from empire.features.indices.contract import BASE, JOB, MAX_RESPONSE_BYTES, PROJECT, members_url
 from empire.features.indices.source import parse_catalog, parse_members
@@ -43,7 +43,7 @@ class ThsIndexCollector:
     async def fetch(self, url, parser, *, reservation=None, defer=False):
         await wait_for_capacity(self.ingest, self.stats)
         policy = self.http.response_policy('generic')
-        policy = ResponsePolicy(max_body_bytes=min(policy.max_body_bytes, MAX_RESPONSE_BYTES),
+        policy = replace(policy, max_body_bytes=min(policy.max_body_bytes, MAX_RESPONSE_BYTES),
                                 max_wire_bytes=min(policy.max_wire_bytes, MAX_RESPONSE_BYTES))
         response = await self.http.request('GET', url, headers=self.session.headers(BASE),
             allowed_domains=('10jqka.com.cn',), project_id=self.project_id,

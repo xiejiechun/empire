@@ -60,7 +60,7 @@ async def test_native_validation_context_preserves_availability_types_and_closes
     from empire.sources.yuanhang_history import IncompleteFinancialHistory
     error = {'empty': EmptyHistoryResponse(1, 211), 'incomplete': IncompleteFinancialHistory(),
              'invalid': ValueError('Nonfinite HX double; field=407, date=20261028')}[special]
-    response = SimpleNamespace(content=b'fixture', close=Mock())
+    response = SimpleNamespace(content=b'fixture', close=Mock(), reserve_decoded=Mock())
     http = SimpleNamespace(response_policy=lambda _: SimpleNamespace(max_body_bytes=1048576),
                            request_stream=AsyncMock(return_value=response))
     monkeypatch.setattr(client, 'decode_response', Mock(side_effect=error))

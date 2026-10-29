@@ -66,11 +66,6 @@ def validate_settings(values):
             raise ValueError(f"{field.title}须为 {field.minimum // field.scale}～"
                              f"{field.maximum // field.scale} {field.unit} 的整数")
     validate_device_count(values["planned_exit_devices"])
-    largest = max(values[key] for key in PROFILE_FIELDS.values())
-    needed = ResponsePolicy(max_body_bytes=largest).reservation_bytes
-    if values["buffer_budget_bytes"] < needed:
-        raise ValueError(f"共享缓冲至少需要 {(needed + MiB - 1) // MiB} MiB"
-                         "（最大单响应的 3 倍 + 256 KiB 工作区）")
     if values["file_response_bytes"] > values["download_quota_bytes"]:
         raise ValueError("下载目录总配额不能小于单文件大小上限")
     return dict(values)

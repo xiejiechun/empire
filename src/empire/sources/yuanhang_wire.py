@@ -13,7 +13,7 @@ class EmptyHistoryResponse(ValueError):
         self.instance, self.request_id = instance, request_id
 
 
-def snappy_block(data: bytes, limit: int) -> bytes:
+def snappy_block(data: bytes, limit: int, reserve=None) -> bytes:
     """Decode raw Snappy, checking the advertised size before allocating output."""
     if type(limit) is not int or limit < 0:
         raise ValueError('Invalid Snappy input budget')
@@ -29,6 +29,8 @@ def snappy_block(data: bytes, limit: int) -> bytes:
         shift += 7
     if size > limit:
         raise ValueError('Snappy expansion exceeds limit')
+    if reserve is not None:
+        reserve(size)
     out = bytearray()
     while pos < len(data) and len(out) < size:
         tag = data[pos]
@@ -94,14 +96,18 @@ def scalar(cell, kind):
     raise ValueError(f'Unsupported HX field encoding kind={kind} width={len(cell)}')
 
 
-def decode_table(data: bytes, limit: int):
+def decode_table(data: bytes, limit: int, reserve=None):
     if type(limit) is not int or not 22 <= len(data) <= limit:
         raise ValueError('Truncated HX table')
     version = data[:6]
     if version in (b'hx1.2\0', b'hx1.3\0'):
-        data = version + snappy_block(data[6:], limit - 6)
+        if reserve is not None:
+            reserve(6)
+        data = version + snappy_block(data[6:], limit - 6, reserve)
     elif version != b'hx1.0\0':
         raise ValueError('Unsupported HX table version')
+    elif reserve is not None:
+        reserve(len(data))
     if len(data) > limit or len(data) < 22:
         raise ValueError('HX table exceeds bounds')
     rows, header_size, row_size, columns, stamp = struct.unpack_from('<iIHHI', data, 6)
@@ -143,7 +149,7 @@ def decode_table(data: bytes, limit: int):
                 extra=extra, decoded_bytes=len(data))
 
 
-def decode_response(body: bytes, *, instance: int, request_id: int, limit=1048576):
+def decode_response(body: bytes, *, instance: int, request_id: int, limit=1048576, reserve=None):
     if type(limit) is not int or not 17 <= len(body) <= limit:
         raise ValueError('V2 response length invalid')
     head_size, actual_instance, actual_id, flags, payload_size, blocks = struct.unpack_from('<HiIHiB', body)
@@ -161,7 +167,7 @@ def decode_response(body: bytes, *, instance: int, request_id: int, limit=104857
         offset += 4
         if size < 22 or offset + size > len(body):
             raise ValueError('V2 block extent mismatch')
-        table = decode_table(body[offset:offset + size], remaining)
+        table = decode_table(body[offset:offset + size], remaining, reserve)
         remaining -= table['decoded_bytes']
         result.append(table)
         offset += size
