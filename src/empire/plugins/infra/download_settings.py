@@ -39,6 +39,17 @@ class DownloadSettingsPlugin:
     def activate(self, values):
         self.active = dict(values)
 
+    async def save_limits(self, values):
+        if not isinstance(values, dict) or set(values) != {'max_parallel_downloads', 'buffer_budget_bytes'}:
+            raise ValueError('仅允许修改同时下载数和下载缓冲上限')
+        async with self.lock:
+            merged = validate_settings({**self.saved, **values})
+            if self.store is None:
+                raise RuntimeError('下载配置服务未运行')
+            await self.store.save('download', 'global', merged)
+            self.saved = merged
+            return await self.snapshot()
+
     def deactivate(self):
         self.active = None
 

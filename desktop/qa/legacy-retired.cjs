@@ -16,7 +16,7 @@ const path=require('node:path'),fs=require('node:fs'),assert=require('node:asser
    const resources=await window.empire.read('resources.read');
    return {tasks:tasks.length,previews:previews.length,hotListRows:hot.rows.length,resources:resources.fields.length};
   });
-  assert.equal(result.tasks,49);assert.equal(result.previews,49);assert.ok(result.resources>=11);
+  assert.equal(result.tasks,49);assert.equal(result.previews,49);assert.equal(result.resources,2);
   assert.deepEqual(errors,[]);fs.mkdirSync(path.join(root,'qa-output'),{recursive:true});
   await p.screenshot({path:path.join(root,'qa-output/legacy-retired.png')});
   fs.writeFileSync(path.join(root,'qa-output/legacy-retired.json'),JSON.stringify({...result,errors},null,2));console.log(JSON.stringify(result));

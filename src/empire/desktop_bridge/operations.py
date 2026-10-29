@@ -1,7 +1,7 @@
 """Explicit adapters; no renderer-selected Python method names."""
 from dataclasses import asdict
 
-from empire.contracts.download_settings import FIELDS, recommended_settings, validate_settings
+from empire.contracts.download_settings import FIELDS
 from empire.plugins.collection.management_query import event_page, record_page, task_page
 from empire.plugins.collection.rules import rule_details
 
@@ -19,10 +19,20 @@ async def execute(runtime, operation, params):
     if operation.startswith('resources.'):
         service = registry.get('download.settings')
         if operation == 'resources.read':
-            return {**await service.snapshot(), 'fields': [asdict(f) for f in FIELDS]}
-        if operation == 'resources.recommend':
-            return recommended_settings(params['devices'], validate_settings(params['values']))
-        return await service.save(validate_settings(params['values']))
+            http = registry.optional('http.fetch')
+            live = None if http is None else {
+                'active_requests': http.global_active,
+                'buffer_reserved_bytes': http.buffer_budget.used,
+                'buffer_limit_bytes': http.buffer_budget.limit,
+                'waiting': http.buffer_budget.waiting + sum(
+                    row.get('waiting_reasons', {}).get('global', 0) for row in http.stats.values()),
+            }
+            return {**await service.snapshot(), 'live': live,
+                    'fields': [asdict(f) for f in FIELDS if f.key in
+                               {'max_parallel_downloads', 'buffer_budget_bytes'}]}
+        if operation == 'resources.save':
+            return await service.save_limits(params['values'])
+        raise ValueError('未知下载资源操作')
     if operation.startswith('identities.') or operation == 'identity.service':
         service = registry.get('identities.query')
         if operation == 'identities.catalog':

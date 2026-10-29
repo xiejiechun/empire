@@ -24,7 +24,6 @@ const reads = new Set([
   "sites.list",
   "exits.read",
   "resources.read",
-  "resources.recommend",
   "identities.catalog",
   "identities.read",
 ]);

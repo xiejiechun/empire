@@ -110,10 +110,6 @@ class ResourceSave(Model):
     values: dict[str, int]
 
 
-class Recommend(ResourceSave):
-    devices: int = Field(ge=100, le=1000)
-
-
 class Identity(Page):
     platform: Identifier
 
@@ -132,7 +128,7 @@ READS = {
     'session.handshake': Empty, 'health.read': Empty, 'tasks.list': Tasks, 'run.events': Events,
     'task.read': Task, 'collection.rules.read': Task, 'records.list': Records,
     'error.read': ErrorDetail, 'sites.list': Page, 'exits.read': Empty,
-    'resources.read': Empty, 'resources.recommend': Recommend,
+    'resources.read': Empty,
     'identities.catalog': Empty, 'identities.read': Identity,
 }
 WRITES = {

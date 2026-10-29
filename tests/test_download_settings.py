@@ -27,6 +27,28 @@ class Permits:
         return 0
 
 
+async def test_simple_limits_preserve_guards_and_active_owner(stored_context):
+    database, _, context = stored_context
+    plugin = DownloadSettingsPlugin()
+    await plugin.start(context)
+    original = {**DEFAULTS, 'generic_response_bytes': 8 * MiB, 'file_concurrency': 10}
+    await plugin.save(original)
+    plugin.activate(original)
+    result = await plugin.save_limits({'max_parallel_downloads': 64, 'buffer_budget_bytes': 256 * MiB})
+    assert result['pending_restart'] and result['active'] == original
+    assert result['saved'] == {**original, 'max_parallel_downloads': 64, 'buffer_budget_bytes': 256 * MiB}
+    before = copy.deepcopy(result)
+    with pytest.raises(ValueError):
+        await plugin.save_limits({'max_parallel_downloads': 64, 'buffer_budget_bytes': MiB})
+    with pytest.raises(ValueError):
+        await plugin.save_limits({**original, 'file_concurrency': 1})
+    assert await plugin.snapshot() == before
+    database.failure = RuntimeError('SQL unavailable')
+    with pytest.raises(RuntimeError, match='SQL unavailable'):
+        await plugin.save_limits({'max_parallel_downloads': 32, 'buffer_budget_bytes': 256 * MiB})
+    assert await plugin.snapshot() == before
+
+
 @pytest.fixture
 def stored_context(monkeypatch):
     database = SimpleNamespace(payloads={}, writes=0, failure=None, entered=None, release=None)

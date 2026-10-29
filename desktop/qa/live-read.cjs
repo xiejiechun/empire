@@ -64,7 +64,7 @@ const root = path.resolve(__dirname, "..");
       };
     });
     assert.ok(serviceChecks.sites > 0);
-    assert.ok(serviceChecks.resourceFields >= 11);
+    assert.equal(serviceChecks.resourceFields, 2);
     assert.ok(names.length > 24);
     assert.ok(names.includes("ths-income"));
     assert.ok(!names.includes("income"));

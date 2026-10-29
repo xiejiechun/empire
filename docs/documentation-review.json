@@ -1,7 +1,7 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-29T06:08:41.923191+00:00",
-  "note": "预览视觉打磨：统一客户端主题、紧凑排版，阅读说明改为按需展开。",
+  "reviewed_at": "2026-10-29T06:19:37.405762+00:00",
+  "note": "共享下载资源两项设置和实际运行状态已验证，后台保留保护参数，旧桌面推荐接口退役；刷新和保存竞态、重启生效及真实只读验证通过。",
   "unchanged_reason": "",
   "exceptions": {},
   "sources": {
@@ -195,13 +195,13 @@
     "src/empire/desktop_bridge/__init__.py": "4afb8da63955717aa887778d641155310be9b103d58c607b0b0e2a727b394e27",
     "src/empire/desktop_bridge/__main__.py": "aff87b2bc6296380c54c52ed13a0467cc50efd2464794823706695ae4c565651",
     "src/empire/desktop_bridge/launch.py": "7212778ac7d6c0c040e9ec4aa2ecf218851eedf9b4c2bbc5a7759c4c176360c3",
-    "src/empire/desktop_bridge/operations.py": "227b3d2b7d346307f6998fb59bc153b878805367f7f4bd87751ed55459b315b4",
+    "src/empire/desktop_bridge/operations.py": "57325ca1f9be42d3db4dfbf066c613a5487db266ea737dff922eb4a085de9b8a",
     "src/empire/desktop_bridge/preview.py": "a9b130a8ab974a191952059a2bf4a543ad33f793af4020b3e964b2ba67f23f9d",
     "src/empire/desktop_bridge/preview_catalog.py": "113209cb0dcc80eab31f9aaa50e283d7f3d45304af43e29a81472b8faf4b8f80",
     "src/empire/desktop_bridge/preview_fields.py": "941a04829bbb1ac34c807a8a7f6b24bffb136d2fdf52b96c796d9724cfa22489",
     "src/empire/desktop_bridge/preview_presentation.py": "cdca73f7947318f312f588b90c5f9ab5edc805110d5f5b9943ba4694234f1911",
     "src/empire/desktop_bridge/protocol.py": "e81200df2476cbfbec2ebe96d5d89f3a21fe2bba1fc0ed7b1a7db12a724f8aee",
-    "src/empire/desktop_bridge/schemas.py": "efd49983e1190ae476372b84b1fc07c5f634306092ef673ba9590e7db06543df",
+    "src/empire/desktop_bridge/schemas.py": "7e0bbe7dba003c1f0a8da386de6256d2a8b2742afbe64554724c8c0756e53a36",
     "src/empire/desktop_bridge/server.py": "4d8e7afc746a62220eea5f64451a2126486d3ba167e519cba156cd964809bc5d",
     "src/empire/diagnostics/__init__.py": "8edec7a32d121934e527bc0d416cef14344fe0c32ad7a990b78e3a71829a14bc",
     "src/empire/diagnostics/declarations.py": "229cebb146f7976be1e7b46772784489271995841c142beb095c68e8cc34fb73",
@@ -539,7 +539,7 @@
     "src/empire/plugins/infra/capacity.py": "ce5c25c1386ed00d7d11b0e355935cf8aa9992fa35f9ddef3ac060edcb052438",
     "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
     "src/empire/plugins/infra/collection_state_unit.py": "fd0c9d461c40f26c6387247dce3678566c6c22ca9e2f11008a4cb1fe33bc79fd",
-    "src/empire/plugins/infra/download_settings.py": "ec9fa5d73131fe220397142684056155bd7f5935c8fe236483dffbe33280e66b",
+    "src/empire/plugins/infra/download_settings.py": "a97bcd048f1211a5e3ef70964a131f2880b95af6c82e411f04ddec3466a4a242",
     "src/empire/plugins/infra/download_storage.py": "36457d9432d97fe1b331ee17ff369a591b2931ae8c899c43b3032dd3fab1d41c",
     "src/empire/plugins/infra/http.py": "3c8db241ff6686ae2872e25dc8fdb07ebca6922521a35d5736acf4de32cdc126",
     "src/empire/plugins/infra/http_safety.py": "478f60a3eefe1ff0b1536874c05629e90703115fccbf68a4d0e50de6c174ee8b",
@@ -593,7 +593,7 @@
     "src/empire/sources/yuanhang_service.py": "0f92c0e015cb817b631a980d8e7bc0072b32d3f8874278ea5de2941072eafebf",
     "src/empire/sources/yuanhang_wire.py": "0a0fc2b08e63ab1044fa33d5a1794b0ab4a81819b8c64c3fe95a10fcfc79bcf5"
   },
-  "content_sha256": "52ad5875ed311e6f14898461b219d097cebda14d1ad222a9266144f23dd538c6",
+  "content_sha256": "9e9b3394c404871e48d3325e7d50d9f3dc4b8142f44d2e1a470fe064473d6a5d",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -1955,7 +1955,7 @@
         "src/empire/plugins/ui/downloads.py": "b988d525cff1638c4fea4a89ce32ef7b8c4100ec7385d805ac02ad7c24ae2939",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c"
       },
-      "content_sha256": "7139b1f5ca1ef453074f89f5dc2343a859fff51204ea79d372323487e1d0dd9e",
+      "content_sha256": "5c4ed265fe00beb27baa48f439bc37071f2968fe0902d366684773b5f690c5e0",
       "documentation": {
         "下载资源与生效时间": {
           "owner": "shared",
