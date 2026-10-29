@@ -41,7 +41,11 @@ ipcMain.handle("read", (_e, op, p) => {
       last_status: active ? "running" : "complete",
       unit_name: "只证券",
       progress: { completed_units: process.env.EMPIRE_QA_PROGRESS ? 29 : 2, total_units: process.env.EMPIRE_QA_PROGRESS ? 100 : 10 },
-      latest_run: null,
+      latest_run: process.env.EMPIRE_QA_LONG_RUN ? {
+        run_id: "scroll-fixture", status: "complete", started_at: 1793232000,
+        ...Object.fromEntries(Array.from({length: 60}, (_, i) => [`diagnostic_${i}`, `运行信息 ${i}`])),
+        final_detail: "运行详情底部标记",
+      } : null,
     };
   if (op === "records.list") return { rows: [], total: 0 };
   if (op === "run.events") return { rows: [], total: 0, unlinked_count: 0 };

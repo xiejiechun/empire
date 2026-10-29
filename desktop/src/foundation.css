@@ -644,7 +644,8 @@ button:focus-visible {
   padding: 7px 0 !important;
   font-size: 12px !important;
 }
-.detail-tabs .ant-tabs-content-holder {
+.detail-tabs > .ant-tabs-body-holder {
+  flex: 1;
   overflow: auto;
   min-height: 0;
   scrollbar-width: thin;
