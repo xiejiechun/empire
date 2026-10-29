@@ -1,9 +1,12 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-29T12:12:06.272304+00:00",
-  "note": "最终核对五项来源修复、有限代理实采、11条精确清理、真实桌面续采与既有容量门禁限制；不将开发验收等同全市场完成",
+  "reviewed_at": "2026-10-29T16:40:57.567325+00:00",
+  "note": "历史原因暂时业务失败共用网络重试预算；核对生命周期、正常单请求与失败不推进断点",
   "unchanged_reason": "",
-  "exceptions": {},
+  "exceptions": {
+    "mysql:app_setting": "重试复用现有任务预算，不新增设置字段或SQL读写路径，已核对原配置说明仍准确。",
+    "redis:rate-site": "业务响应重试复用既有网站许可及退避，不改变限速键结构、期限或清理归属。"
+  },
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
     "desktop/package.json": "6baf14c100dcd857aeca65bb368dc1f0e79c5fb002795b42e2aae966012a5c19",
@@ -508,7 +511,7 @@
     "src/empire/features/yuanhang_limits/query.py": "628430eb684ea5c1c52526a577719bf08be47730a46b98da45b4e10feb5f444f",
     "src/empire/features/yuanhang_limits/reason_planning.py": "207fe00e6f0632a5e0a0e0d284b87133755a9ad8f0ed545faf2bfbce9b9d7c29",
     "src/empire/features/yuanhang_limits/repository.py": "c312fdb6657dae9a5a52778aefadf89c4e3c3880ac66748becf6d76574c22e5f",
-    "src/empire/features/yuanhang_limits/source.py": "7ff72b6a4937cf34c64846dd10b9dbc8eaff0ff9dff175f82810f1d8093fc0f4",
+    "src/empire/features/yuanhang_limits/source.py": "9f7d3c80646ceec953e449ca608a7dcd38271b3fc2b055100cc3e29d569acfb5",
     "src/empire/features/yuanhang_limits/storage.py": "38a4cef08e0b620ad519791e6175a37fc5cae06ac0f2c5f90d725e72a3e42c49",
     "src/empire/features/yuanhang_limits/ui.py": "1aeb2a206bd766d68d87ed90d32a8a4d9dc2889c82ac0a8855d0ca25f9d16e30",
     "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
@@ -523,7 +526,7 @@
     "src/empire/plugins/collection/progress.py": "7ec038232777a946074d29b7658ce6bbfbdd9e248e3c117656acfc064cfe9d93",
     "src/empire/plugins/collection/record_query.py": "7c1f1409c686f54968f8d78a5e3eb7c69fe73ce93a2277343c3a3dfd3f5fe85f",
     "src/empire/plugins/collection/records.py": "1aadd5e7b62b3fe67f66297e0fba2f1ba6e643722be1f3c337bc1155cc538183",
-    "src/empire/plugins/collection/rules.json": "8ae3e69be9ba32decb9d734655a0de6fbe64a0cdce646d69c180c73d00cf0c91",
+    "src/empire/plugins/collection/rules.json": "f4fcae106accf93f4c778244dfb818919baf8d897c81ea22c2b09af6353fe5eb",
     "src/empire/plugins/collection/rules.py": "7fe2cc7c8253225e068b4e20b433dc98be819cc303035b6bed46b988e995c4d7",
     "src/empire/plugins/collection/unit_prefetch.py": "75575d23ded064018f9af0bc6db8f2fc7557e8d09cb9e632702debdbfab85f69",
     "src/empire/plugins/collectors/__init__.py": "249c0d98093ec80f9ee9d10cac378721c750d17a81d35c1a33223d4d43885476",
@@ -541,7 +544,7 @@
     "src/empire/plugins/infra/collection_state_unit.py": "fd0c9d461c40f26c6387247dce3678566c6c22ca9e2f11008a4cb1fe33bc79fd",
     "src/empire/plugins/infra/download_settings.py": "a97bcd048f1211a5e3ef70964a131f2880b95af6c82e411f04ddec3466a4a242",
     "src/empire/plugins/infra/download_storage.py": "36457d9432d97fe1b331ee17ff369a591b2931ae8c899c43b3032dd3fab1d41c",
-    "src/empire/plugins/infra/http.py": "0d534b41eae9317f8abde3916333a8c5430eb3f633f73a1b425bb8a5dcf0a447",
+    "src/empire/plugins/infra/http.py": "423e2ea26d0f61ee91e5b1410841749b84ae05272e76c1141ca491447bcb8b66",
     "src/empire/plugins/infra/http_safety.py": "478f60a3eefe1ff0b1536874c05629e90703115fccbf68a4d0e50de6c174ee8b",
     "src/empire/plugins/infra/mysql_store.py": "ea551cf918d953f88ab51f631689b43a24c05bd23e2bb8929edd262e861b3a0e",
     "src/empire/plugins/infra/proxy_pool.py": "acee9c7ebbaabca5fbd9c60f4fb3a357afa66269fcbf9168feaf810829130460",
@@ -593,7 +596,7 @@
     "src/empire/sources/yuanhang_service.py": "0f92c0e015cb817b631a980d8e7bc0072b32d3f8874278ea5de2941072eafebf",
     "src/empire/sources/yuanhang_wire.py": "a936cfd1c8e7a0e6c917934ed043e26686296ff43e41f3e6f21d0a63c47fde1b"
   },
-  "content_sha256": "344ab06e1a1954adeadbae6692855b357aabdf70af7c410b71fbc9ddf51423b2",
+  "content_sha256": "6813ff5d8a6ce62c22a59d9b322d5529c2b1a3430d4c0a4b4a86d023462da219",
   "features": {
     "page:ths_capital": {
       "sources": {
@@ -2082,7 +2085,7 @@
         "src/empire/plugins/ui/__init__.py": "dbb894718e586e4895b85bce9df1199d7fe36c57df45390946d124645f037294",
         "src/empire/plugins/ui/plugin.py": "b73c31933425523490d1afbd42b83a3206e721fbc384162603f7be166922e94c"
       },
-      "content_sha256": "799205c06f1bf894b6c4c04b60b2adec54627ced9eb41bb27953721964007c0b",
+      "content_sha256": "1e2e241acab8edf36ed2045deade1c9cc6f4c37ff0867eab2a99ce845a734fc6",
       "documentation": {
         "远航版涨跌停分析": {
           "owner": "yuanhang_limits",
@@ -3528,7 +3531,7 @@
         "src/empire/features/yuanhang_limits/intraday.py": "f05a2356bbcb24d2cc07f766c95832f9cf992929eb95d2d508f5e9a1f7b1df72",
         "src/empire/features/yuanhang_limits/intraday_store.py": "7c146b4d51abb6074d568244942c710da6d7208919544811a6fc972d290183a9",
         "src/empire/features/yuanhang_limits/model.py": "e8ea8e2018017c6a2b4474b20cc6b75f1a4374ba7bd723bb3441b939fdaf90ac",
-        "src/empire/features/yuanhang_limits/source.py": "7ff72b6a4937cf34c64846dd10b9dbc8eaff0ff9dff175f82810f1d8093fc0f4",
+        "src/empire/features/yuanhang_limits/source.py": "9f7d3c80646ceec953e449ca608a7dcd38271b3fc2b055100cc3e29d569acfb5",
         "src/empire/features/yuanhang_limits/storage.py": "38a4cef08e0b620ad519791e6175a37fc5cae06ac0f2c5f90d725e72a3e42c49",
         "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
@@ -3537,7 +3540,7 @@
         "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
         "src/empire/sources/security_identity.py": "9e6d5b95edfc63d81e69a6de34ca29074063f30697d4fd00bb8eec636f8646c8"
       },
-      "content_sha256": "b8cb9fca6bd1ee3f7e717c87ef24a89b5bd91cc8f876f068c3cd123bd4e722ed",
+      "content_sha256": "0041bd25d215f80c775d7cb543fce8a24b853fb7ebfc70100620bdcde8eb4ae9",
       "documentation": {
         "远航版涨跌停分析": {
           "owner": "yuanhang_limits",
@@ -3564,7 +3567,7 @@
         "src/empire/features/yuanhang_limits/intraday.py": "f05a2356bbcb24d2cc07f766c95832f9cf992929eb95d2d508f5e9a1f7b1df72",
         "src/empire/features/yuanhang_limits/intraday_store.py": "7c146b4d51abb6074d568244942c710da6d7208919544811a6fc972d290183a9",
         "src/empire/features/yuanhang_limits/model.py": "e8ea8e2018017c6a2b4474b20cc6b75f1a4374ba7bd723bb3441b939fdaf90ac",
-        "src/empire/features/yuanhang_limits/source.py": "7ff72b6a4937cf34c64846dd10b9dbc8eaff0ff9dff175f82810f1d8093fc0f4",
+        "src/empire/features/yuanhang_limits/source.py": "9f7d3c80646ceec953e449ca608a7dcd38271b3fc2b055100cc3e29d569acfb5",
         "src/empire/features/yuanhang_limits/storage.py": "38a4cef08e0b620ad519791e6175a37fc5cae06ac0f2c5f90d725e72a3e42c49",
         "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
@@ -3573,7 +3576,7 @@
         "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
         "src/empire/sources/security_identity.py": "9e6d5b95edfc63d81e69a6de34ca29074063f30697d4fd00bb8eec636f8646c8"
       },
-      "content_sha256": "24df4f4939cd45d57578fd4f40d95451e188e2aac14565e31c1ef125d9f65136",
+      "content_sha256": "79fb1cd303c57d4cbc9b373ee29529adb551874d66c4e765082e868e856bbf06",
       "documentation": {
         "远航版涨跌停分析": {
           "owner": "yuanhang_limits",
@@ -3600,7 +3603,7 @@
         "src/empire/features/yuanhang_limits/intraday.py": "f05a2356bbcb24d2cc07f766c95832f9cf992929eb95d2d508f5e9a1f7b1df72",
         "src/empire/features/yuanhang_limits/intraday_store.py": "7c146b4d51abb6074d568244942c710da6d7208919544811a6fc972d290183a9",
         "src/empire/features/yuanhang_limits/model.py": "e8ea8e2018017c6a2b4474b20cc6b75f1a4374ba7bd723bb3441b939fdaf90ac",
-        "src/empire/features/yuanhang_limits/source.py": "7ff72b6a4937cf34c64846dd10b9dbc8eaff0ff9dff175f82810f1d8093fc0f4",
+        "src/empire/features/yuanhang_limits/source.py": "9f7d3c80646ceec953e449ca608a7dcd38271b3fc2b055100cc3e29d569acfb5",
         "src/empire/features/yuanhang_limits/storage.py": "38a4cef08e0b620ad519791e6175a37fc5cae06ac0f2c5f90d725e72a3e42c49",
         "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
@@ -3609,7 +3612,7 @@
         "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
         "src/empire/sources/security_identity.py": "9e6d5b95edfc63d81e69a6de34ca29074063f30697d4fd00bb8eec636f8646c8"
       },
-      "content_sha256": "86cbc74e247871a7f9e3363ef10b4e1817ed89c6d67c45ba184708fe65236d1e",
+      "content_sha256": "7a3736427b53d7fb12b74fd855ccf135db788a7fc4f99773239dffe994dc214d",
       "documentation": {
         "远航版涨跌停分析": {
           "owner": "yuanhang_limits",
@@ -3636,7 +3639,7 @@
         "src/empire/features/yuanhang_limits/intraday.py": "f05a2356bbcb24d2cc07f766c95832f9cf992929eb95d2d508f5e9a1f7b1df72",
         "src/empire/features/yuanhang_limits/intraday_store.py": "7c146b4d51abb6074d568244942c710da6d7208919544811a6fc972d290183a9",
         "src/empire/features/yuanhang_limits/model.py": "e8ea8e2018017c6a2b4474b20cc6b75f1a4374ba7bd723bb3441b939fdaf90ac",
-        "src/empire/features/yuanhang_limits/source.py": "7ff72b6a4937cf34c64846dd10b9dbc8eaff0ff9dff175f82810f1d8093fc0f4",
+        "src/empire/features/yuanhang_limits/source.py": "9f7d3c80646ceec953e449ca608a7dcd38271b3fc2b055100cc3e29d569acfb5",
         "src/empire/features/yuanhang_limits/storage.py": "38a4cef08e0b620ad519791e6175a37fc5cae06ac0f2c5f90d725e72a3e42c49",
         "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
@@ -3645,7 +3648,7 @@
         "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
         "src/empire/sources/security_identity.py": "9e6d5b95edfc63d81e69a6de34ca29074063f30697d4fd00bb8eec636f8646c8"
       },
-      "content_sha256": "801159bd003fa2cb4ca93b7e90ee706779c61662043905d89f4b2145f438e1af",
+      "content_sha256": "49b57a30b1040bdd35a6e4acba4110aaeb744e6083f0be9e7b94f50329017d0f",
       "documentation": {
         "远航版涨跌停分析": {
           "owner": "yuanhang_limits",
@@ -3672,7 +3675,7 @@
         "src/empire/features/yuanhang_limits/intraday.py": "f05a2356bbcb24d2cc07f766c95832f9cf992929eb95d2d508f5e9a1f7b1df72",
         "src/empire/features/yuanhang_limits/intraday_store.py": "7c146b4d51abb6074d568244942c710da6d7208919544811a6fc972d290183a9",
         "src/empire/features/yuanhang_limits/model.py": "e8ea8e2018017c6a2b4474b20cc6b75f1a4374ba7bd723bb3441b939fdaf90ac",
-        "src/empire/features/yuanhang_limits/source.py": "7ff72b6a4937cf34c64846dd10b9dbc8eaff0ff9dff175f82810f1d8093fc0f4",
+        "src/empire/features/yuanhang_limits/source.py": "9f7d3c80646ceec953e449ca608a7dcd38271b3fc2b055100cc3e29d569acfb5",
         "src/empire/features/yuanhang_limits/storage.py": "38a4cef08e0b620ad519791e6175a37fc5cae06ac0f2c5f90d725e72a3e42c49",
         "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
@@ -3681,7 +3684,7 @@
         "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
         "src/empire/sources/security_identity.py": "9e6d5b95edfc63d81e69a6de34ca29074063f30697d4fd00bb8eec636f8646c8"
       },
-      "content_sha256": "ddc679776d6a563f2c2139796692b441cdbd13827b8c895d59ac8a1f67f6645e",
+      "content_sha256": "05a429e21c7361d62714f61eb9bd810421c274c61da590a7fdf760034cdeda9a",
       "documentation": {
         "远航版涨跌停分析": {
           "owner": "yuanhang_limits",
@@ -3708,7 +3711,7 @@
         "src/empire/features/yuanhang_limits/intraday.py": "f05a2356bbcb24d2cc07f766c95832f9cf992929eb95d2d508f5e9a1f7b1df72",
         "src/empire/features/yuanhang_limits/intraday_store.py": "7c146b4d51abb6074d568244942c710da6d7208919544811a6fc972d290183a9",
         "src/empire/features/yuanhang_limits/model.py": "e8ea8e2018017c6a2b4474b20cc6b75f1a4374ba7bd723bb3441b939fdaf90ac",
-        "src/empire/features/yuanhang_limits/source.py": "7ff72b6a4937cf34c64846dd10b9dbc8eaff0ff9dff175f82810f1d8093fc0f4",
+        "src/empire/features/yuanhang_limits/source.py": "9f7d3c80646ceec953e449ca608a7dcd38271b3fc2b055100cc3e29d569acfb5",
         "src/empire/features/yuanhang_limits/storage.py": "38a4cef08e0b620ad519791e6175a37fc5cae06ac0f2c5f90d725e72a3e42c49",
         "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
         "src/empire/plugins/__init__.py": "2c6bbb1ccf7e0d05cf2da60326fd24cfb135e798007b6101e0652d9bb7bec65e",
@@ -3717,7 +3720,7 @@
         "src/empire/sources/__init__.py": "0b5d8ac7c7f3b2423a003040476e948fd5d02ea64d18ee62c9c525270969d95e",
         "src/empire/sources/security_identity.py": "9e6d5b95edfc63d81e69a6de34ca29074063f30697d4fd00bb8eec636f8646c8"
       },
-      "content_sha256": "550ed6e3edd4749862833db4c968cf728b47a68abeb671ff14c0d8d80a48d426",
+      "content_sha256": "279727bfa4b57d16f51e814f8604e0fb100ac59d8062050ae0a2545c035ee0d9",
       "documentation": {
         "远航版涨跌停分析": {
           "owner": "yuanhang_limits",
@@ -4321,7 +4324,7 @@
         "src/empire/sources/yuanhang_service.py": "0f92c0e015cb817b631a980d8e7bc0072b32d3f8874278ea5de2941072eafebf",
         "src/empire/core/protected_values.py": "e74902113902ab8b37fe928f2b462bdff8cceed892ad5ea0bd28241714740e4a",
         "src/empire/plugins/collection/control.py": "19dadc33e66c01ee2e108021f8ca39aa95d98059a464c2c3a7db389bf49b9a11",
-        "src/empire/plugins/infra/http.py": "0d534b41eae9317f8abde3916333a8c5430eb3f633f73a1b425bb8a5dcf0a447",
+        "src/empire/plugins/infra/http.py": "423e2ea26d0f61ee91e5b1410841749b84ae05272e76c1141ca491447bcb8b66",
         "src/empire/diagnostics/project.py": "b8c6b9f6778989836fd2a70d9a6ca47277d5b6c3b3a54369a6ecea7f17f31f7c",
         "src/empire/sources/yuanhang_recipe.py": "f328104ac0c90ea8e483b4bd51e3537b162fe6653179126aed54d4d84e3fed05",
         "src/empire/sources/yuanhang_management.py": "1601dda8e1b84662b89a8c5f8c60019648394dfc78fb7f0058a926230d80cfcc",
@@ -6092,7 +6095,7 @@
     "redis:rate-site": {
       "sources": {
         "src/empire/plugins/infra/routing.py": "0aa1503cf446e4581914330c6048715a763694c27220a564eff5c925f89aea93",
-        "src/empire/plugins/infra/http.py": "0d534b41eae9317f8abde3916333a8c5430eb3f633f73a1b425bb8a5dcf0a447",
+        "src/empire/plugins/infra/http.py": "423e2ea26d0f61ee91e5b1410841749b84ae05272e76c1141ca491447bcb8b66",
         "src/empire/__init__.py": "cafa6e3847ffac5da82b061cacaa5587667f7e3b9bdad2b90811631fcf745cd5",
         "src/empire/contracts/__init__.py": "71a9a59f1471664b4bfee9643e851115b795123191500539784c4e76fe727e38",
         "src/empire/contracts/download.py": "31b6820a5429d5c9be2f23d3a35bcd7ed801fe198fec03b83ce4cb66b11a8e53",

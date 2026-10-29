@@ -269,3 +269,35 @@ async def test_empty_200_retry_is_opt_in_and_shares_budget(monkeypatch, enabled,
         assert all(r.is_closed for r in responses)
     finally:
         await service.close()
+
+
+@pytest.mark.parametrize('sequence,budget,attempts', [
+    ([200], 2, 1), ([200, 200], 2, 2), ([503, 200, 200], 2, 3),
+    ([503, 200, 200], 1, 2), ([200, 200, 200, 200], 2, 3),
+])
+async def test_source_retry_shares_transport_budget_and_closes(monkeypatch, sequence, budget, attempts):
+    from empire.features.yuanhang_limits.source import transient_reason_failure
+    service = HttpService(MemoryPermits(), 'test', groups(1), records=ErrorRecorder())
+    responses = []
+    async def one(method, url, domains, **kwargs):
+        index = len(responses)
+        body = {'status_code': 0, 'data': {}} if index == len(sequence)-1 else {
+            'status_code': -1, 'status_msg': 'fail',
+            'data': {'reasonrevealedList': None, 'reasonKindList': []}}
+        response = httpx.Response(sequence[index], request=httpx.Request(method,url), json=body)
+        responses.append(response)
+        return response
+    async def sleep(delay):
+        pass
+    monkeypatch.setattr(service, '_one', one)
+    monkeypatch.setattr(asyncio, 'sleep', sleep)
+    try:
+        result = await service._request('GET', 'https://sina.com.cn/',
+            allowed_domains=('sina.com.cn',), project_id='test', max_retries=budget,
+            retry_response=transient_reason_failure)
+        assert len(responses) == attempts
+        assert result.json()['status_code'] == (0 if attempts == len(sequence) else -1)
+        result.close()
+        assert all(r.is_closed for r in responses)
+    finally:
+        await service.close()

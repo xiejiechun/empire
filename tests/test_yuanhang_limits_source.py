@@ -222,3 +222,25 @@ async def test_reason_failure_keeps_source_identity_body_and_business_status():
     assert caught.value.source_metadata == dict(business_status=-17, unified_code='300010.SZ', trade_date='2020-03-23')
     assert caught.value.source_diagnostic['raw_body'] == response.content
     assert response.is_closed
+
+
+@pytest.mark.parametrize('body,expected', [
+    ({'status_code': -1, 'status_msg': 'fail', 'data': {'reasonrevealedList': None, 'reasonKindList': []}}, True),
+    ({'status_code': -1, 'status_msg': 'fail', 'data': {'reasonrevealedList': None, 'reasonKindList': None}}, True),
+    ({'status_code': 0, 'status_msg': 'ok', 'data': {'reasonrevealedList': None, 'reasonKindList': None}}, False),
+    ({'status_code': -2, 'status_msg': 'fail', 'data': {'reasonrevealedList': None, 'reasonKindList': None}}, False),
+    ({'status_code': -1, 'status_msg': 'fail', 'data': {'reasonrevealedList': None}}, False),
+    ({'status_code': -1, 'status_msg': 'fail', 'data': {'reasonrevealedList': [{'valueList': []}], 'reasonKindList': None}}, False),
+    ([], False),
+])
+def test_reason_retry_only_matches_observed_failure(body, expected):
+    from empire.features.yuanhang_limits.source import transient_reason_failure
+    assert transient_reason_failure(SimpleNamespace(content=json.dumps(body).encode())) is expected
+    if expected:
+        with pytest.raises(ValueError, match='业务响应失败'):
+            parse_reason(body, '002231.SZ', '2024-10-08')
+
+
+def test_reason_retry_does_not_hide_invalid_json():
+    from empire.features.yuanhang_limits.source import transient_reason_failure
+    assert not transient_reason_failure(SimpleNamespace(content=b'{broken'))

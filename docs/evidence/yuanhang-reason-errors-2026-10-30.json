@@ -1,0 +1,334 @@
+{
+  "project": "ths-yuanhang-reason",
+  "registered_ids": [
+    "44f151e9cfc243dd86c0783a08cd89a1",
+    "8afc7060661c4729a8b350fdad2eca29",
+    "6be09460ae46448199e8c94536b1eea7",
+    "dc10c525709746df87d1a71dabf0b3c7",
+    "18a3133ee0d342cc8262712a514d3dfb",
+    "9678d4299f2a4ef1b9620dcc68cf2c13",
+    "45cf1794fe334f1189f87951d1aea92a",
+    "14cf11e5b07b40d495191ab54f9c7cf9",
+    "5d1705541b94497e952dea11e94f0590",
+    "fd009e84a5ab43f49a26f3c8c8ff4bb5",
+    "18452d995f7c49eaa9ed7b9e1302f874",
+    "18fef8e104fd492c80a43313ff4d8957",
+    "e75b17e77ab746cebef7b87cb7b2b5ed",
+    "3a862d6746854bfbad062cf07c9531df",
+    "12c8849ebc964e0bb53d6e2b815e3295",
+    "1e9076e131a24da8abc99872c028d1a3",
+    "00001826aa8449938c678553ac1b3cb4",
+    "05f05cdb3f284a4388857c9299989d00",
+    "927c589b6a82424ebf2a4390428b4f28",
+    "6a5f528022c74b5aaacffc8213a2f463",
+    "665ac5298afb4bae9cabb6b21e296587",
+    "dbcc5413e93643038c4b38a6d7f0371f",
+    "4235eac07b9e49c98498ecb2f9d51deb",
+    "6d695355d73149bb93914a94e1727a19",
+    "385e1e83e4ff4f9e9080036d65af6de9",
+    "039669817133406183339f3f331d8c13",
+    "dc0009ee293440e88c575f815bc3507a"
+  ],
+  "target_errors": [
+    {
+      "id": "44f151e9cfc243dd86c0783a08cd89a1",
+      "project_id": "ths-yuanhang-reason",
+      "created_at": "2026-10-29T15:25:24.779652+00:00",
+      "version": "0.1.0 (development+dirty)",
+      "stage": "yuanhang_limits",
+      "error": "远航涨停分析业务响应失败",
+      "request_url": "http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=002231.SZ&startTime=20241008&endTime=20241008",
+      "status_code": 200,
+      "metadata": {
+        "business_status": -1,
+        "unified_code": "002231.SZ",
+        "trade_date": "2024-10-08"
+      },
+      "body": "{\"status_code\": -1, \"data\": {\"reasonrevealedList\": null, \"reasonKindList\": []}, \"status_msg\": \"fail\"}",
+      "body_truncated": false,
+      "body_complete": true,
+      "observed_bytes": 93,
+      "original_bytes": 93,
+      "original_sha256": "2b1cadc2d008b5a34c72b0256e0fac95816501142d2e9ac946160156c23d6c49",
+      "sample_sha256": "841f5dc873799b0ea39f618ed39e013960c3fd5edb8610ce74a28df144f151b1"
+    },
+    {
+      "id": "dc10c525709746df87d1a71dabf0b3c7",
+      "project_id": "ths-yuanhang-reason",
+      "created_at": "2026-10-29T12:16:51.297526+00:00",
+      "version": "0.1.0 (development+dirty)",
+      "stage": "yuanhang_limits",
+      "error": "远航涨停分析业务响应失败",
+      "request_url": "http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=300933.SZ&startTime=20210318&endTime=20210318",
+      "status_code": 200,
+      "metadata": {
+        "business_status": -1,
+        "unified_code": "300933.SZ",
+        "trade_date": "2021-03-18"
+      },
+      "body": "{\"status_code\": -1, \"data\": {\"reasonrevealedList\": null, \"reasonKindList\": null}, \"status_msg\": \"fail\"}",
+      "body_truncated": false,
+      "body_complete": true,
+      "observed_bytes": 95,
+      "original_bytes": 95,
+      "original_sha256": "f5d8e0d465c65adde772d4e749869f4721473c5fc439969d080c3539749d1112",
+      "sample_sha256": "45441afd4b2ae26f2449f3a1f491a670210095adab36c26610a1bc3b7547975c"
+    }
+  ],
+  "checkpoint": {
+    "contract": 1,
+    "phase": "fetch",
+    "batch_id": "9ee8d1f8743349729086cbf8c970eef3",
+    "page": 5597,
+    "index": 221,
+    "cutoff": "2026-10-29",
+    "remaining": null,
+    "force": false,
+    "scan_after": [
+      1,
+      "2024-10-08",
+      "002362.SZ"
+    ],
+    "plan_length": 256,
+    "next_units": [
+      [
+        "2024-10-08",
+        "002231.SZ"
+      ],
+      [
+        "2024-10-08",
+        "002232.SZ"
+      ],
+      [
+        "2024-10-08",
+        "002235.SZ"
+      ]
+    ]
+  },
+  "initial_total": 27,
+  "cleanup": {
+    "removed_ids": [
+      "44f151e9cfc243dd86c0783a08cd89a1",
+      "dc10c525709746df87d1a71dabf0b3c7"
+    ],
+    "removed_count": 2,
+    "remaining_count": 25,
+    "status": "verified exact IDs only; older unknown and network failures preserved",
+    "checked_at": "2026-10-29T16:49:30.148200+00:00"
+  },
+  "probe": {
+    "units": [
+      [
+        "2024-10-08",
+        "002231.SZ"
+      ],
+      [
+        "2021-03-18",
+        "300933.SZ"
+      ]
+    ],
+    "proxy_requests": 2,
+    "direct_requests": 0,
+    "result": "both recovered to status 0 and no_content; source transient failures, never accept status -1 as empty"
+  },
+  "acceptance": {
+    "run_id": "7b54a982c8e74f61b3fe1521ce3d2c32",
+    "passed": true,
+    "source_sha256": "d5a622d83cd7e5da443b69b38d7c8beb9fbad2748160cf3b248d38d8b648d8f8",
+    "routing_policy": {
+      "use_proxy": true,
+      "proxy_fallback": false
+    },
+    "storage": {
+      "database": "empire_verify_ths_7b54a982c8e74f61b3fe1521ce3d2c32_test",
+      "namespace": "empire:test:verify_ths:7b54a982c8e74f61b3fe1521ce3d2c32",
+      "run_id": "7b54a982c8e74f61b3fe1521ce3d2c32",
+      "server_uuid": "d846c66d-d38d-11f1-85e1-380525361d4e",
+      "owner_sha256": "dab24d4c26ebe05908b45147de563d08f3de7ba29e9cd1a896331112e4f9ac18"
+    },
+    "cleanup": {
+      "shutdown": true,
+      "sql": true,
+      "redis": true,
+      "sql_lock": true,
+      "connections": true,
+      "instance_lock": true
+    },
+    "results": {
+      "reason": {
+        "pipeline_verified": true,
+        "acceptance_complete": true,
+        "strict_proxy_verified": true,
+        "routes": {
+          "proxy_requests": 4
+        },
+        "proofs": [
+          {
+            "day": "2021-03-18",
+            "code": "300933.SZ",
+            "digest": "66d10d17ba2a550f1f8a5d0443f2aeadbbc5f0ccd14fb7fbd6d0dd465f652138",
+            "availability": "no_content"
+          },
+          {
+            "day": "2026-07-15",
+            "code": "688192.SH",
+            "digest": "f9c87b048aaa9c10c2d4c966f7767b65bf2a575df7840f36e2809984ba649f02",
+            "availability": "available"
+          },
+          {
+            "day": "2024-10-08",
+            "code": "002231.SZ",
+            "digest": "c830a4ee67803e82995899080e78d7befd9480eaa19efae682ab77f09114bde9",
+            "availability": "no_content"
+          },
+          {
+            "day": "2020-08-03",
+            "code": "300114.SZ",
+            "digest": "b5d21a07fc8d5e7f511d25204c0ee4f702fa9251fd12e9550ec2f65c8fc2f128",
+            "availability": "available"
+          }
+        ],
+        "pending": 0,
+        "cursor": {
+          "contract": 1,
+          "phase": "complete",
+          "batch_id": "478a621d1d074de0aec06d3918b38ea1",
+          "page": 4,
+          "index": 4,
+          "plan": [
+            [
+              "2024-10-08",
+              "002231.SZ"
+            ],
+            [
+              "2021-03-18",
+              "300933.SZ"
+            ],
+            [
+              "2020-08-03",
+              "300114.SZ"
+            ],
+            [
+              "2026-07-15",
+              "688192.SH"
+            ]
+          ],
+          "cutoff": "2026-10-29",
+          "remaining": 0,
+          "force": false,
+          "scan_after": null
+        },
+        "stats": {
+          "status": "stopped",
+          "collected": 4,
+          "requests": 4,
+          "response_bytes": 1791,
+          "record_name": "条成员",
+          "unit_name": "个完整单元",
+          "completed_units": 4,
+          "total_units": 4,
+          "error": "",
+          "wire_bytes": 1324,
+          "queued_bytes": 4436,
+          "queued_messages": 4,
+          "storage": "mysql_archive",
+          "notice": "",
+          "download_item_name": "涨停分析完整单元",
+          "download_window_limit": 17,
+          "download_buffer_capacity": 9362,
+          "download_concurrency": 0,
+          "download_pending_pages": 0,
+          "download_ready_pages": 0,
+          "download_failed_pages": 0,
+          "download_buffer_limited": false,
+          "download_wait_reason": "idle",
+          "remaining_units": 0
+        }
+      }
+    }
+  },
+  "sampling": {
+    "method": "fixed complete security-days: both diagnostic failures plus historical identity and populated-content boundaries",
+    "random_seed": null,
+    "sample_units": 4,
+    "exception": "existing smaller sufficient fixed counterexamples; no expansion to 5% of all historical security-days",
+    "universe": "five-pool security-day union; current stock table cannot filter historical identities",
+    "harness_note": "stock selection 300010.SZ is bootstrap only; actual four security-days are in results.reason.proofs; first harness rejected delisted 002231 before source requests; corrected bootstrap without replacing any real sample"
+  },
+  "tests": {
+    "source_and_isolated": "87 passed in 78.75s; test_http + yuanhang_limits source/collector/planning/wire + integration archive/plans",
+    "documentation": "verify_documentation passed:493 documents,3705 links,62 schema tables",
+    "shared_http": "103 passed in 106.43s; HTTP response safety/incomplete responses/prefetch budgets plus isolated HTTP fault and prefetch pipeline"
+  },
+  "design": {
+    "lifecycle": "unchanged: initialization over five-pool union; new/gap plus recent5 and 20-trade-day historical rotation; resume original unit and SQL recovery",
+    "request_budget": "1 logical request per unit; transient business and source/direct failures share max_retries R and timeout; bounded proxy device switching unchanged",
+    "bytes": "at most source attempts times configured response bound; actual acceptance 1791 decoded/1324 wire bytes",
+    "ingest": "one message per successful complete unit; failure zero; unchanged fingerprint zero business DML",
+    "storage_migration": "not applicable: no schema/business identity/version changes"
+  },
+  "production_resume": {
+    "state": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793354400.0,
+      "active": {
+        "run_id": "ec2a288be70c41c3ba30cadda98f0f95",
+        "task_id": "ths-yuanhang-reason",
+        "started_at": 1793292525.0452592,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 196340
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    },
+    "cursor": {
+      "contract": 1,
+      "phase": "fetch",
+      "batch_id": "9ee8d1f8743349729086cbf8c970eef3",
+      "page": 5970,
+      "index": 82,
+      "cutoff": "2026-10-29",
+      "remaining": null,
+      "force": false,
+      "scan_after": [
+        1,
+        "2024-10-08",
+        "300667.SZ"
+      ],
+      "next_units": [
+        [
+          "2024-10-08",
+          "300279.SZ"
+        ],
+        [
+          "2024-10-08",
+          "300280.SZ"
+        ]
+      ]
+    },
+    "entry": "dist/EmpireDesktop/Empire.exe; source-backed existing launcher restarted normally",
+    "config_preserved_sha256": "c0a143ecda599fb761d57441ddf361bb285b7186f9a37de4ec9df66847720afc"
+  },
+  "release": {
+    "run_id": "815f9eff244645138c60ca32d6fe6001",
+    "passed": false,
+    "reason": "concurrent margin development changed src/empire/desktop_bridge/preview_catalog.py and src/empire/features/builtin.py during gate; no full release claimed",
+    "completed_steps": [
+      "locked environment",
+      "dependency inventory",
+      "generated help check"
+    ]
+  },
+  "owned_test_server": "13348 UUID verified, no other connections, SHUTDOWN accepted; client close raised expected lost connection; process59792 confirmed absent"
+}

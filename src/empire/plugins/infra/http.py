@@ -221,6 +221,7 @@ class HttpService:
         max_retries: int = 2, max_redirects: int = 5, total_timeout: float | None = None,
         project_id: str | None = None, attempt_options=None, allow_not_found: bool = False,
         retry_not_found: bool = False, retry_empty_body: bool = False, sensitive: bool = False,
+        retry_response=None,
         **kwargs,
     ) -> httpx.Response:
         if self.closed:
@@ -231,6 +232,8 @@ class HttpService:
             total_timeout = request_timeout(max_retries)
         if type(allow_not_found) is not bool:
             raise ValueError('allow_not_found must be boolean')
+        if retry_response is not None and not callable(retry_response):
+            raise ValueError('retry_response must be a source response predicate')
         if type(retry_empty_body) is not bool or (retry_empty_body and method.upper() == 'HEAD'):
             raise ValueError('retry_empty_body requires a boolean and a body-bearing request')
         if type(retry_not_found) is not bool or (retry_not_found and allow_not_found):
@@ -308,6 +311,18 @@ class HttpService:
                         await self._record_failure(project_id, method, url, exc, response, retries + 1, sensitive=sensitive)
                         if retries >= max_retries:
                             raise exc
+                        retries += 1
+                        response.close()
+                        await asyncio.sleep(retry_delay(retries))
+                        continue
+                    # Source-declared transient business failures use the same
+                    # transport budget, timeout, routing and backoff. Exhaustion
+                    # returns the last response for the source's strict parser.
+                    if (retry_response is not None and response.status_code == 200
+                            and retry_response(response) and retries < max_retries):
+                        exc = ValueError('来源声明的暂时业务失败，按共享请求预算重试')
+                        await self._record_failure(project_id, method, url, exc, response,
+                                                   retries + 1, sensitive=sensitive)
                         retries += 1
                         response.close()
                         await asyncio.sleep(retry_delay(retries))

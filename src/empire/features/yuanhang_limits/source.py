@@ -74,6 +74,19 @@ async def fetch_pool(http, pool, day, *, project_id, max_retries=1, reservation=
                 if wire_bytes is not None and auxiliary['wire_bytes'] is not None else None}
 
 
+def transient_reason_failure(response):
+    """Only the observed -1/fail empty-column failure is retryable, never valid data."""
+    try:
+        obj = json.loads(response.content)
+    except (ValueError, UnicodeError):
+        return False
+    return (isinstance(obj, dict) and type(obj.get('status_code')) is int
+            and obj['status_code'] == -1 and obj.get('status_msg') == 'fail'
+            and isinstance(obj.get('data'), dict)
+            and set(obj['data']) == {'reasonrevealedList', 'reasonKindList'}
+            and all(value is None or value == [] for value in obj['data'].values()))
+
+
 async def fetch_reason(http, code, day, *, project_id, max_retries=1, reservation=None):
     from empire.contracts.security import split_unified_code
     split_unified_code(code)
@@ -83,7 +96,7 @@ async def fetch_reason(http, code, day, *, project_id, max_retries=1, reservatio
         allowed_domains=(DOMAIN,), project_id=project_id, max_redirects=0,
         headers={'Referer': 'PC_Hevo_FocusLimitUp_IndividualStockAnalysisWidget'},
         policy=http.response_policy('generic'), reservation=reservation,
-        max_retries=max_retries, strip_credentials=True)
+        max_retries=max_retries, strip_credentials=True, retry_response=transient_reason_failure)
     try:
         result = parse_reason(json.loads(response.content), code, day)
         return {**result, 'requests': 1, 'response_bytes': len(response.content),
