@@ -33,11 +33,11 @@ from empire.features.unlocks.bundle import bundle as unlocks_bundle
 from empire.features.yuanhang.bundle import bundle as yuanhang_bundle
 from empire.features.yuanhang_limits.bundle import bundle as yuanhang_limits_bundle
 
-FACTORIES = (news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, capital_actions_bundle, adjustment_bundle, ths_capital_bundle, listings_bundle, listing_status_bundle, security_aliases_bundle, name_changes_bundle, st_events_bundle, unlocks_bundle, unlock_industries_bundle, performance_bundle, repurchases_bundle, trading_rules_bundle, themes_bundle, yuanhang_bundle, yuanhang_limits_bundle, hot_list_bundle)
+FACTORIES = (news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, capital_actions_bundle, adjustment_bundle, ths_capital_bundle, listings_bundle, listing_status_bundle, security_aliases_bundle, name_changes_bundle, st_events_bundle, unlocks_bundle, unlock_industries_bundle, performance_bundle, repurchases_bundle, trading_rules_bundle, themes_bundle, yuanhang_bundle, yuanhang_limits_bundle, hot_list_bundle, industry_margin_bundle, market_review_bundle, margin_bundle)
 
 
 def builtin_bundles(cfg) -> tuple[FeatureBundle, ...]:
-    result = tuple(factory(cfg) for factory in (*FACTORIES, industry_margin_bundle, market_review_bundle, margin_bundle))
+    result = tuple(factory(cfg) for factory in FACTORIES)
     seen = set()
     for bundle in result:
         if bundle.id in seen:

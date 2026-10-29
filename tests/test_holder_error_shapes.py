@@ -81,7 +81,7 @@ def test_total_rounding_does_not_relax_member_ratio_or_summary_equality():
         validate('bond_holders', STOCK['unified_code'], [bad])
     bad = copy.deepcopy(row)
     bad['members'][0]['ratio'] = '100.01'
-    with pytest.raises(ValueError, match='超出范围'):
+    with pytest.raises(ValueError, match='来源成员持有比例超过100%；质量标记与来源原值不符'):
         validate('bond_holders', STOCK['unified_code'], [bad])
     bad = copy.deepcopy(row)
     bad['total_quantity'] = '2000000'

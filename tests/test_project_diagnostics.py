@@ -478,7 +478,8 @@ def test_cli_project_diagnostic_is_read_only_and_output_refuses_overwrite(monkey
         return {'status': 'partial', 'read_only': True, 'sections': {}}
     monkeypatch.setattr(cli, 'load_config', lambda path: CFG)
     monkeypatch.setattr(cli, 'configure_logging', forbidden)
-    monkeypatch.setattr(cli, 'run_gui', forbidden)
+    import empire.desktop_bridge.launch as launcher
+    monkeypatch.setattr(launcher, 'launch', forbidden)
     monkeypatch.setattr(diagnostic, 'diagnose_project', diagnose)
     monkeypatch.setattr(sys, 'argv', ['empire', 'doctor', '--project', PROJECT, '--output', str(output)])
     assert cli.main() == 2

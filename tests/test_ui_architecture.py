@@ -37,7 +37,7 @@ def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_pat
                "archived_tasks", "sites", "system", "plugins", "help", "proxies", "downloads", "preparation", "suspensions",
                "income", "balance", "cashflow", "industries", "indices", "index_prices", "names_company", "names_security", "st_implementation", "st_removal", "adjustment"}
     all_ids.update('rules_' + k for k in ('limit_rules', 'settlement_rules', 'lot_rules', 'tick_rules', 'sessions', 'stamp_duty', 'transfer_fee'))
-    all_ids.update({'themes', 'identities', 'yuanhang', 'yuanhang_limits', 'market_review'})
+    all_ids.update({'themes', 'identities', 'yuanhang', 'yuanhang_limits', 'market_review', 'industry_margin'})
     runtime.start()
     try:
         wait_pages(all_ids)

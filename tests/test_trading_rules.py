@@ -180,10 +180,22 @@ def test_beijing_old_resumption_directory_is_not_current():
         bj_directory(body)
 
 
-def test_percentage_display_preserves_magnitude():
-    from empire.features.trading_rules.ui import display_value
-    for raw, expected in [('0.10', '10'), ('0.20', '20'), ('0.0005', '0.05'), ('0.00001', '0.001'), ('0', '0'), ('1', '100')]:
-        assert display_value(dict(number_value=raw, unit='ratio'), 'number_value') == expected
+async def test_desktop_preview_preserves_raw_ratio_and_explicit_unit():
+    from types import SimpleNamespace
+    from unittest.mock import AsyncMock
+
+    from empire.desktop_bridge.preview import catalog, read
+
+    raw = ['0.10', '0.20', '0.0005', '0.00001', '0', '1']
+    rows = [dict(number_value=value, unit='ratio') for value in raw]
+    query = SimpleNamespace(list_rules=AsyncMock(return_value={'rows': rows, 'next': None}))
+    registry = SimpleNamespace(get=lambda _: query)
+    spec = next(v for v in catalog('rules-limit-rules') if not v['hidden'])
+    columns = {c['key']: c for c in spec['columns']}
+    assert columns['number_value'].get('unit') != '%'
+    assert 'unit' in columns
+    result = await read(registry, 'rules-limit-rules', spec['id'], {})
+    assert result['rows'] == rows
 
 
 def test_replaced_sse_attachments_cannot_pass_notice_contract():

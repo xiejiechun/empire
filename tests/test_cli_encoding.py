@@ -46,27 +46,28 @@ def test_cli_initializes_actual_pipe_encoding_before_help_config_and_errors(
 
 
 @pytest.mark.parametrize('startup_failure', [False, True])
-def test_frozen_gui_without_stdio_retains_startup_and_dialog_behavior(monkeypatch, startup_failure):
-    shown = []
-    monkeypatch.setattr(cli, 'load_config', lambda path: {})
+def test_desktop_launcher_without_stdio_preserves_exit_status(monkeypatch, startup_failure):
+    import empire.desktop_bridge.launch as launcher
+    calls = []
+    monkeypatch.setattr(cli, 'load_config', lambda path: {'_path': 'selected.toml'})
     monkeypatch.setattr(cli, 'configure_logging', lambda cfg: None)
-    monkeypatch.setattr(cli, 'show_startup_error', shown.append)
 
-    def run(cfg):
+    def run(path):
+        calls.append(path)
         if startup_failure:
             raise ValueError('中文启动错误🙂')
         return 0
 
-    monkeypatch.setattr(cli, 'run_gui', run)
+    monkeypatch.setattr(launcher, 'launch', run)
     with monkeypatch.context() as streams:
-        streams.setattr(sys, 'argv', ['Empire.exe'])
-        streams.setattr(sys, 'frozen', True, raising=False)
+        streams.setattr(sys, 'argv', ['empire'])
         streams.setattr(sys, 'stdout', None)
         streams.setattr(sys, 'stderr', None)
         result = cli.main()
         unchanged = sys.stdout is None and sys.stderr is None
     assert unchanged and result == int(startup_failure)
-    assert shown == (['中文启动错误🙂'] if startup_failure else [])
+    assert calls == ['selected.toml']
+    assert not hasattr(cli, 'run_gui') and not hasattr(cli, 'show_startup_error')
 
 
 def test_text_only_captures_are_not_replaced_or_closed(monkeypatch):

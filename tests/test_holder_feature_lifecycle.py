@@ -11,7 +11,7 @@ async def test_holder_pages_remain_independent_without_starting_data_or_collecto
 
     monkeypatch.setattr(socket.socket, 'connect', forbidden)
     monkeypatch.setattr(socket, 'create_connection', forbidden)
-    monkeypatch.setattr(ui, 'HolderPage', forbidden)
+    assert not hasattr(ui, 'HolderPage')  # Widgets are owned by the Electron frontend.
     manager = build_manager({'redis': {}, 'mysql': {}, 'archive': {}, 'ingest': {}, 'rate_groups': {}})
     try:
         await manager.start('ui.top_holders')
