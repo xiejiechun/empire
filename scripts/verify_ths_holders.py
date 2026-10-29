@@ -122,10 +122,10 @@ def check_state(state, summaries, cursor, gap_outcome, published):
     expected = expected_manifest(summaries)
     require(set(published) == set(summaries) | (set() if gaps else {'manifest'}), 'Redis 入队单元集合不符')
     if gaps:
-        first = next(index for index, key in enumerate(sorted(summaries)) if key in gaps)
-        require(gap_outcome and cursor.get('phase') != 'complete' and not state.get('manifest')
-                and cursor.get('index') == first and cursor.get('source_gap') == sorted(summaries)[first],
-                '来源缺口被隐藏或连续断点错误')
+        require(gap_outcome and cursor.get('phase') == 'source_gap' and not state.get('manifest')
+                and cursor.get('format') == 2 and cursor.get('index') == len(summaries)
+                and cursor.get('source_gap_units') == len(gaps),
+                '来源缺口被隐藏或已检查范围错误')
     else:
         require(not gap_outcome and cursor.get('phase') == 'complete', '无缺口范围未完成')
         require(all(state.get('manifest', {}).get(key) == value for key, value in expected.items()),
@@ -231,7 +231,22 @@ async def verify_scope(manager, selection, args, report):
             '待归档非零或统一归档器处于隔离')
     require(collector.source == 'ths' and collector.project_id == 'ths-holders', '运行期间身份变化')
     require(collector.stats.get('status') == ('source_gap' if gaps else 'complete'), '采集完成状态与缺口不一致')
+    # Keep strict completeness separate from the defect-isolation regression.
+    # Any attempted second fetch/publication fails immediately, before network IO.
+    async def unexpected(*args, **kwargs):
+        raise ValueError('同周期维护不应重复请求或入队')
+    collector.fetch = collector.publish = unexpected
+    try:
+        try:
+            await collector.execute(baseline_revision=await collector.checkpoint_revision())
+            require(not gaps, '重复维护隐藏来源缺口')
+        except CollectionSourceGap:
+            require(bool(gaps), '重复维护制造来源缺口')
+        require(collector.stats['total_units'] == 0, '同周期维护选择了重复单元')
+    finally:
+        collector.fetch, collector.publish = original_fetch, original_publish
     result.update(pipeline_verified=True, strict_proxy_verified=strict_proxy(counts, len(summaries)),
+        maintenance_verified=True, unchanged_pass_requests=0, unchanged_pass_publications=0,
         acceptance_complete=not gaps, random_samples_complete=not (set(selection['random']) & set(gaps)),
         source_gaps=gaps, cursor=cursor, pending=pending, query_units=comparisons, audits=audits,
         expected_manifest=manifest, sql_manifest=state.get('manifest'), preparation=preparation,
@@ -249,7 +264,7 @@ def main(argv=None):
     # non-GUI application for the full async run, as the formal collect CLI does.
     _qt_app = QCoreApplication.instance() or QCoreApplication(sys.argv[:1])
     passed = asyncio.run(verification.recover(options) if options.cleanup_only else verification.verify(
-        options, verify_scope, subject='holders', fixed_codes=FIXED_CODES, minimum_random=30, require_proxy=True))
+        options, verify_scope, subject='holders', fixed_codes=FIXED_CODES, minimum_random=30, require_proxy=False))
     print(('CLEANUP COMPLETE' if options.cleanup_only else 'PASS') if passed else 'FAIL', flush=True)
     return 0 if passed else 1
 

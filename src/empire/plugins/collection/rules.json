@@ -1110,1169 +1110,6 @@
       "fingerprint_source": "tdx",
       "scope": "按来源证券身份分沪、深、北市场；来源不支持的证券/历史不推断为空，详见专项说明。"
     },
-    "kaipanla-trend": {
-      "requests": [
-        {
-          "url": "https://apphis.longhuvip.com/w1/api/index.php",
-          "method": "POST",
-          "purpose": "业务数据",
-          "parameters": [
-            {
-              "name": "c",
-              "value": "StockL2History",
-              "meaning": "历史L2栏目"
-            },
-            {
-              "name": "a",
-              "value": "GetStockTrend",
-              "meaning": "本任务产品接口"
-            },
-            {
-              "name": "StockID",
-              "value": "六位证券代码",
-              "meaning": "冻结股票池中的证券，使用已核实代码映射"
-            },
-            {
-              "name": "Day",
-              "value": "YYYY-MM-DD",
-              "meaning": "证券交易日期"
-            },
-            {
-              "name": "apiv",
-              "value": "w44",
-              "meaning": "来源API协议版本"
-            },
-            {
-              "name": "PhoneOSNew",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "PhoneOS",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "DeviceID",
-              "value": "每次请求随机UUID",
-              "meaning": "匿名请求设备标识，不是用户账户"
-            },
-            {
-              "name": "VerSion",
-              "value": "5.23.0.4",
-              "meaning": "客户端版本声明"
-            }
-          ]
-        },
-        {
-          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
-          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
-          "method": "GET",
-          "parameters": [
-            {
-              "name": "reportName",
-              "value": "RPT_F10_ORG_BASICINFO",
-              "meaning": "上市基本资料报表"
-            },
-            {
-              "name": "columns",
-              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
-              "meaning": "证券身份、上市日期与上市状态"
-            },
-            {
-              "name": "filter",
-              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
-              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
-            },
-            {
-              "name": "pageSize",
-              "value": "500",
-              "meaning": "每页容量"
-            },
-            {
-              "name": "pageNumber",
-              "value": "从1递增",
-              "meaning": "完整目录页码"
-            },
-            {
-              "name": "sortColumns",
-              "value": "SECUCODE",
-              "meaning": "统一证券代码排序"
-            },
-            {
-              "name": "sortTypes",
-              "value": "1",
-              "meaning": "升序"
-            }
-          ]
-        },
-        {
-          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
-          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
-          "method": "POST",
-          "parameters": [
-            {
-              "name": "callback",
-              "value": "securityMasterCallback",
-              "meaning": "JSONP回调名称，查询参数"
-            },
-            {
-              "name": "page",
-              "value": "0",
-              "meaning": "来源首页"
-            },
-            {
-              "name": "typejb",
-              "value": "T",
-              "meaning": "来源公司类别固定标志"
-            },
-            {
-              "name": "xxfcbj[]",
-              "value": "2",
-              "meaning": "来源证券目录固定分类"
-            },
-            {
-              "name": "xxzqdm",
-              "value": "旧证券代码",
-              "meaning": "精确查询待核实代码"
-            },
-            {
-              "name": "sortfield",
-              "value": "xxzqdm",
-              "meaning": "按证券代码排序"
-            },
-            {
-              "name": "sorttype",
-              "value": "asc",
-              "meaning": "升序"
-            }
-          ]
-        }
-      ],
-      "tables": [
-        "stock_market_day",
-        "stock_intraday_trend"
-      ],
-      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
-      "end": "本轮已结束交易日；当天须北京时间15:30之后",
-      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
-      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
-      "limits": "价格、均价、来源量与标记；不代表分钟 OHLC；计划范围不等于全历史已归档。",
-      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
-      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
-      "job_key": "kaipanla-trend-v1",
-      "datasets": [
-        "kaipanla.trend.day"
-      ],
-      "fingerprint_namespaces": [
-        "kaipanla_trend_v1"
-      ],
-      "topics": [
-        "开盘啦分时及竞价",
-        "采集进度与运行记录"
-      ],
-      "source_file": "src/empire/features/kaipanla/collector.py",
-      "source": "kaipanla",
-      "fingerprint_source": "kaipanla",
-      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
-    },
-    "kaipanla-auction": {
-      "requests": [
-        {
-          "url": "https://apphis.longhuvip.com/w1/api/index.php",
-          "method": "POST",
-          "purpose": "业务数据",
-          "parameters": [
-            {
-              "name": "c",
-              "value": "StockL2History",
-              "meaning": "历史L2栏目"
-            },
-            {
-              "name": "a",
-              "value": "GetStockBid",
-              "meaning": "本任务产品接口"
-            },
-            {
-              "name": "StockID",
-              "value": "六位证券代码",
-              "meaning": "冻结股票池中的证券，使用已核实代码映射"
-            },
-            {
-              "name": "Day",
-              "value": "YYYY-MM-DD",
-              "meaning": "证券交易日期"
-            },
-            {
-              "name": "apiv",
-              "value": "w44",
-              "meaning": "来源API协议版本"
-            },
-            {
-              "name": "PhoneOSNew",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "PhoneOS",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "DeviceID",
-              "value": "每次请求随机UUID",
-              "meaning": "匿名请求设备标识，不是用户账户"
-            },
-            {
-              "name": "VerSion",
-              "value": "5.23.0.4",
-              "meaning": "客户端版本声明"
-            }
-          ]
-        },
-        {
-          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
-          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
-          "method": "GET",
-          "parameters": [
-            {
-              "name": "reportName",
-              "value": "RPT_F10_ORG_BASICINFO",
-              "meaning": "上市基本资料报表"
-            },
-            {
-              "name": "columns",
-              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
-              "meaning": "证券身份、上市日期与上市状态"
-            },
-            {
-              "name": "filter",
-              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
-              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
-            },
-            {
-              "name": "pageSize",
-              "value": "500",
-              "meaning": "每页容量"
-            },
-            {
-              "name": "pageNumber",
-              "value": "从1递增",
-              "meaning": "完整目录页码"
-            },
-            {
-              "name": "sortColumns",
-              "value": "SECUCODE",
-              "meaning": "统一证券代码排序"
-            },
-            {
-              "name": "sortTypes",
-              "value": "1",
-              "meaning": "升序"
-            }
-          ]
-        },
-        {
-          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
-          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
-          "method": "POST",
-          "parameters": [
-            {
-              "name": "callback",
-              "value": "securityMasterCallback",
-              "meaning": "JSONP回调名称，查询参数"
-            },
-            {
-              "name": "page",
-              "value": "0",
-              "meaning": "来源首页"
-            },
-            {
-              "name": "typejb",
-              "value": "T",
-              "meaning": "来源公司类别固定标志"
-            },
-            {
-              "name": "xxfcbj[]",
-              "value": "2",
-              "meaning": "来源证券目录固定分类"
-            },
-            {
-              "name": "xxzqdm",
-              "value": "旧证券代码",
-              "meaning": "精确查询待核实代码"
-            },
-            {
-              "name": "sortfield",
-              "value": "xxzqdm",
-              "meaning": "按证券代码排序"
-            },
-            {
-              "name": "sorttype",
-              "value": "asc",
-              "meaning": "升序"
-            }
-          ]
-        }
-      ],
-      "tables": [
-        "stock_market_day",
-        "stock_opening_auction"
-      ],
-      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
-      "end": "本轮已结束交易日；当天须北京时间15:30之后",
-      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
-      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
-      "limits": "完整来源点序列；同分钟多点保留，源端无总点数；计划范围不等于全历史已归档。",
-      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
-      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
-      "job_key": "kaipanla-auction-v1",
-      "datasets": [
-        "kaipanla.auction.day"
-      ],
-      "fingerprint_namespaces": [
-        "kaipanla_auction_v1"
-      ],
-      "topics": [
-        "开盘啦分时及竞价",
-        "采集进度与运行记录"
-      ],
-      "source_file": "src/empire/features/kaipanla/collector.py",
-      "source": "kaipanla",
-      "fingerprint_source": "kaipanla",
-      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
-    },
-    "kaipanla-volume": {
-      "requests": [
-        {
-          "url": "https://apphis.longhuvip.com/w1/api/index.php",
-          "method": "POST",
-          "purpose": "业务数据",
-          "parameters": [
-            {
-              "name": "c",
-              "value": "StockL2History",
-              "meaning": "历史L2栏目"
-            },
-            {
-              "name": "a",
-              "value": "GetStockVolTur",
-              "meaning": "本任务产品接口"
-            },
-            {
-              "name": "StockID",
-              "value": "六位证券代码",
-              "meaning": "冻结股票池中的证券，使用已核实代码映射"
-            },
-            {
-              "name": "Day",
-              "value": "YYYY-MM-DD",
-              "meaning": "证券交易日期"
-            },
-            {
-              "name": "apiv",
-              "value": "w44",
-              "meaning": "来源API协议版本"
-            },
-            {
-              "name": "PhoneOSNew",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "PhoneOS",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "DeviceID",
-              "value": "每次请求随机UUID",
-              "meaning": "匿名请求设备标识，不是用户账户"
-            },
-            {
-              "name": "VerSion",
-              "value": "5.23.0.4",
-              "meaning": "客户端版本声明"
-            }
-          ]
-        },
-        {
-          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
-          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
-          "method": "GET",
-          "parameters": [
-            {
-              "name": "reportName",
-              "value": "RPT_F10_ORG_BASICINFO",
-              "meaning": "上市基本资料报表"
-            },
-            {
-              "name": "columns",
-              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
-              "meaning": "证券身份、上市日期与上市状态"
-            },
-            {
-              "name": "filter",
-              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
-              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
-            },
-            {
-              "name": "pageSize",
-              "value": "500",
-              "meaning": "每页容量"
-            },
-            {
-              "name": "pageNumber",
-              "value": "从1递增",
-              "meaning": "完整目录页码"
-            },
-            {
-              "name": "sortColumns",
-              "value": "SECUCODE",
-              "meaning": "统一证券代码排序"
-            },
-            {
-              "name": "sortTypes",
-              "value": "1",
-              "meaning": "升序"
-            }
-          ]
-        },
-        {
-          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
-          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
-          "method": "POST",
-          "parameters": [
-            {
-              "name": "callback",
-              "value": "securityMasterCallback",
-              "meaning": "JSONP回调名称，查询参数"
-            },
-            {
-              "name": "page",
-              "value": "0",
-              "meaning": "来源首页"
-            },
-            {
-              "name": "typejb",
-              "value": "T",
-              "meaning": "来源公司类别固定标志"
-            },
-            {
-              "name": "xxfcbj[]",
-              "value": "2",
-              "meaning": "来源证券目录固定分类"
-            },
-            {
-              "name": "xxzqdm",
-              "value": "旧证券代码",
-              "meaning": "精确查询待核实代码"
-            },
-            {
-              "name": "sortfield",
-              "value": "xxzqdm",
-              "meaning": "按证券代码排序"
-            },
-            {
-              "name": "sorttype",
-              "value": "asc",
-              "meaning": "升序"
-            }
-          ]
-        }
-      ],
-      "tables": [
-        "stock_market_day",
-        "stock_minute_volume"
-      ],
-      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
-      "end": "本轮已结束交易日；当天须北京时间15:30之后",
-      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
-      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
-      "limits": "来源分钟量额与标记；不提供每分钟 OHLC；计划范围不等于全历史已归档。",
-      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
-      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
-      "job_key": "kaipanla-volume-v1",
-      "datasets": [
-        "kaipanla.volume.day"
-      ],
-      "fingerprint_namespaces": [
-        "kaipanla_volume_v1"
-      ],
-      "topics": [
-        "开盘啦分时及竞价",
-        "采集进度与运行记录"
-      ],
-      "source_file": "src/empire/features/kaipanla/collector.py",
-      "source": "kaipanla",
-      "fingerprint_source": "kaipanla",
-      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
-    },
-    "kaipanla-trades": {
-      "requests": [
-        {
-          "url": "https://apphis.longhuvip.com/w1/api/index.php",
-          "method": "POST",
-          "purpose": "业务数据",
-          "parameters": [
-            {
-              "name": "c",
-              "value": "StockL2History",
-              "meaning": "历史L2栏目"
-            },
-            {
-              "name": "a",
-              "value": "GetStockFenBi2",
-              "meaning": "本任务产品接口"
-            },
-            {
-              "name": "StockID",
-              "value": "六位证券代码",
-              "meaning": "冻结股票池中的证券，使用已核实代码映射"
-            },
-            {
-              "name": "Day",
-              "value": "YYYY-MM-DD",
-              "meaning": "证券交易日期"
-            },
-            {
-              "name": "apiv",
-              "value": "w44",
-              "meaning": "来源API协议版本"
-            },
-            {
-              "name": "PhoneOSNew",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "PhoneOS",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "DeviceID",
-              "value": "每次请求随机UUID",
-              "meaning": "匿名请求设备标识，不是用户账户"
-            },
-            {
-              "name": "VerSion",
-              "value": "5.23.0.4",
-              "meaning": "客户端版本声明"
-            }
-          ]
-        },
-        {
-          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
-          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
-          "method": "GET",
-          "parameters": [
-            {
-              "name": "reportName",
-              "value": "RPT_F10_ORG_BASICINFO",
-              "meaning": "上市基本资料报表"
-            },
-            {
-              "name": "columns",
-              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
-              "meaning": "证券身份、上市日期与上市状态"
-            },
-            {
-              "name": "filter",
-              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
-              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
-            },
-            {
-              "name": "pageSize",
-              "value": "500",
-              "meaning": "每页容量"
-            },
-            {
-              "name": "pageNumber",
-              "value": "从1递增",
-              "meaning": "完整目录页码"
-            },
-            {
-              "name": "sortColumns",
-              "value": "SECUCODE",
-              "meaning": "统一证券代码排序"
-            },
-            {
-              "name": "sortTypes",
-              "value": "1",
-              "meaning": "升序"
-            }
-          ]
-        },
-        {
-          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
-          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
-          "method": "POST",
-          "parameters": [
-            {
-              "name": "callback",
-              "value": "securityMasterCallback",
-              "meaning": "JSONP回调名称，查询参数"
-            },
-            {
-              "name": "page",
-              "value": "0",
-              "meaning": "来源首页"
-            },
-            {
-              "name": "typejb",
-              "value": "T",
-              "meaning": "来源公司类别固定标志"
-            },
-            {
-              "name": "xxfcbj[]",
-              "value": "2",
-              "meaning": "来源证券目录固定分类"
-            },
-            {
-              "name": "xxzqdm",
-              "value": "旧证券代码",
-              "meaning": "精确查询待核实代码"
-            },
-            {
-              "name": "sortfield",
-              "value": "xxzqdm",
-              "meaning": "按证券代码排序"
-            },
-            {
-              "name": "sorttype",
-              "value": "asc",
-              "meaning": "升序"
-            }
-          ]
-        }
-      ],
-      "tables": [
-        "stock_market_day",
-        "stock_intraday_trade_block"
-      ],
-      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
-      "end": "本轮已结束交易日；当天须北京时间15:30之后",
-      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
-      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
-      "limits": "完整分笔数组及来源总数；不冒充交易所逐笔事件流；计划范围不等于全历史已归档。",
-      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
-      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
-      "job_key": "kaipanla-trades-v1",
-      "datasets": [
-        "kaipanla.trades.day"
-      ],
-      "fingerprint_namespaces": [
-        "kaipanla_trades_v1"
-      ],
-      "topics": [
-        "开盘啦分时及竞价",
-        "采集进度与运行记录"
-      ],
-      "source_file": "src/empire/features/kaipanla/collector.py",
-      "source": "kaipanla",
-      "fingerprint_source": "kaipanla",
-      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
-    },
-    "kaipanla-entrust": {
-      "requests": [
-        {
-          "url": "https://apphis.longhuvip.com/w1/api/index.php",
-          "method": "POST",
-          "purpose": "业务数据",
-          "parameters": [
-            {
-              "name": "c",
-              "value": "StockL2History",
-              "meaning": "历史L2栏目"
-            },
-            {
-              "name": "a",
-              "value": "GetStockBsvolume",
-              "meaning": "本任务产品接口"
-            },
-            {
-              "name": "StockID",
-              "value": "六位证券代码",
-              "meaning": "冻结股票池中的证券，使用已核实代码映射"
-            },
-            {
-              "name": "Day",
-              "value": "YYYY-MM-DD",
-              "meaning": "证券交易日期"
-            },
-            {
-              "name": "apiv",
-              "value": "w44",
-              "meaning": "来源API协议版本"
-            },
-            {
-              "name": "PhoneOSNew",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "PhoneOS",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "DeviceID",
-              "value": "每次请求随机UUID",
-              "meaning": "匿名请求设备标识，不是用户账户"
-            },
-            {
-              "name": "VerSion",
-              "value": "5.23.0.4",
-              "meaning": "客户端版本声明"
-            }
-          ]
-        },
-        {
-          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
-          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
-          "method": "GET",
-          "parameters": [
-            {
-              "name": "reportName",
-              "value": "RPT_F10_ORG_BASICINFO",
-              "meaning": "上市基本资料报表"
-            },
-            {
-              "name": "columns",
-              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
-              "meaning": "证券身份、上市日期与上市状态"
-            },
-            {
-              "name": "filter",
-              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
-              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
-            },
-            {
-              "name": "pageSize",
-              "value": "500",
-              "meaning": "每页容量"
-            },
-            {
-              "name": "pageNumber",
-              "value": "从1递增",
-              "meaning": "完整目录页码"
-            },
-            {
-              "name": "sortColumns",
-              "value": "SECUCODE",
-              "meaning": "统一证券代码排序"
-            },
-            {
-              "name": "sortTypes",
-              "value": "1",
-              "meaning": "升序"
-            }
-          ]
-        },
-        {
-          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
-          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
-          "method": "POST",
-          "parameters": [
-            {
-              "name": "callback",
-              "value": "securityMasterCallback",
-              "meaning": "JSONP回调名称，查询参数"
-            },
-            {
-              "name": "page",
-              "value": "0",
-              "meaning": "来源首页"
-            },
-            {
-              "name": "typejb",
-              "value": "T",
-              "meaning": "来源公司类别固定标志"
-            },
-            {
-              "name": "xxfcbj[]",
-              "value": "2",
-              "meaning": "来源证券目录固定分类"
-            },
-            {
-              "name": "xxzqdm",
-              "value": "旧证券代码",
-              "meaning": "精确查询待核实代码"
-            },
-            {
-              "name": "sortfield",
-              "value": "xxzqdm",
-              "meaning": "按证券代码排序"
-            },
-            {
-              "name": "sorttype",
-              "value": "asc",
-              "meaning": "升序"
-            }
-          ]
-        }
-      ],
-      "tables": [
-        "stock_market_day",
-        "stock_minute_entrust"
-      ],
-      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
-      "end": "本轮已结束交易日；当天须北京时间15:30之后",
-      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
-      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
-      "limits": "分钟买卖委托量额汇总；不含券商席位身份或逐笔委托撤单；计划范围不等于全历史已归档。",
-      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
-      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
-      "job_key": "kaipanla-entrust-v1",
-      "datasets": [
-        "kaipanla.entrust.day"
-      ],
-      "fingerprint_namespaces": [
-        "kaipanla_entrust_v1"
-      ],
-      "topics": [
-        "开盘啦分时及竞价",
-        "采集进度与运行记录"
-      ],
-      "source_file": "src/empire/features/kaipanla/collector.py",
-      "source": "kaipanla",
-      "fingerprint_source": "kaipanla",
-      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
-    },
-    "kaipanla-large-order": {
-      "requests": [
-        {
-          "url": "https://apphis.longhuvip.com/w1/api/index.php",
-          "method": "POST",
-          "purpose": "业务数据",
-          "parameters": [
-            {
-              "name": "c",
-              "value": "StockL2History",
-              "meaning": "历史L2栏目"
-            },
-            {
-              "name": "a",
-              "value": "GetStockDaDanTrend",
-              "meaning": "本任务产品接口"
-            },
-            {
-              "name": "StockID",
-              "value": "六位证券代码",
-              "meaning": "冻结股票池中的证券，使用已核实代码映射"
-            },
-            {
-              "name": "Day",
-              "value": "YYYY-MM-DD",
-              "meaning": "证券交易日期"
-            },
-            {
-              "name": "apiv",
-              "value": "w44",
-              "meaning": "来源API协议版本"
-            },
-            {
-              "name": "PhoneOSNew",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "PhoneOS",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "DeviceID",
-              "value": "每次请求随机UUID",
-              "meaning": "匿名请求设备标识，不是用户账户"
-            },
-            {
-              "name": "VerSion",
-              "value": "5.23.0.4",
-              "meaning": "客户端版本声明"
-            }
-          ]
-        },
-        {
-          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
-          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
-          "method": "GET",
-          "parameters": [
-            {
-              "name": "reportName",
-              "value": "RPT_F10_ORG_BASICINFO",
-              "meaning": "上市基本资料报表"
-            },
-            {
-              "name": "columns",
-              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
-              "meaning": "证券身份、上市日期与上市状态"
-            },
-            {
-              "name": "filter",
-              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
-              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
-            },
-            {
-              "name": "pageSize",
-              "value": "500",
-              "meaning": "每页容量"
-            },
-            {
-              "name": "pageNumber",
-              "value": "从1递增",
-              "meaning": "完整目录页码"
-            },
-            {
-              "name": "sortColumns",
-              "value": "SECUCODE",
-              "meaning": "统一证券代码排序"
-            },
-            {
-              "name": "sortTypes",
-              "value": "1",
-              "meaning": "升序"
-            }
-          ]
-        },
-        {
-          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
-          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
-          "method": "POST",
-          "parameters": [
-            {
-              "name": "callback",
-              "value": "securityMasterCallback",
-              "meaning": "JSONP回调名称，查询参数"
-            },
-            {
-              "name": "page",
-              "value": "0",
-              "meaning": "来源首页"
-            },
-            {
-              "name": "typejb",
-              "value": "T",
-              "meaning": "来源公司类别固定标志"
-            },
-            {
-              "name": "xxfcbj[]",
-              "value": "2",
-              "meaning": "来源证券目录固定分类"
-            },
-            {
-              "name": "xxzqdm",
-              "value": "旧证券代码",
-              "meaning": "精确查询待核实代码"
-            },
-            {
-              "name": "sortfield",
-              "value": "xxzqdm",
-              "meaning": "按证券代码排序"
-            },
-            {
-              "name": "sorttype",
-              "value": "asc",
-              "meaning": "升序"
-            }
-          ]
-        }
-      ],
-      "tables": [
-        "stock_market_day",
-        "stock_large_order_trend"
-      ],
-      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
-      "end": "本轮已结束交易日；当天须北京时间15:30之后",
-      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
-      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
-      "limits": "来源大单净额可为负；不包含独立大单明细筛选；计划范围不等于全历史已归档。",
-      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
-      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
-      "job_key": "kaipanla-large-order-v1",
-      "datasets": [
-        "kaipanla.large_order.day"
-      ],
-      "fingerprint_namespaces": [
-        "kaipanla_large_order_v1"
-      ],
-      "topics": [
-        "开盘啦分时及竞价",
-        "采集进度与运行记录"
-      ],
-      "source_file": "src/empire/features/kaipanla/collector.py",
-      "source": "kaipanla",
-      "fingerprint_source": "kaipanla",
-      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。"
-    },
-    "kaipanla-quote": {
-      "requests": [
-        {
-          "url": "https://apphis.longhuvip.com/w1/api/index.php",
-          "method": "POST",
-          "purpose": "业务数据",
-          "parameters": [
-            {
-              "name": "c",
-              "value": "StockL2History",
-              "meaning": "历史L2栏目"
-            },
-            {
-              "name": "a",
-              "value": "GetStockPanKou",
-              "meaning": "本任务产品接口"
-            },
-            {
-              "name": "StockID",
-              "value": "六位证券代码",
-              "meaning": "冻结股票池中的证券，使用已核实代码映射"
-            },
-            {
-              "name": "Day",
-              "value": "YYYY-MM-DD",
-              "meaning": "证券交易日期"
-            },
-            {
-              "name": "apiv",
-              "value": "w44",
-              "meaning": "来源API协议版本"
-            },
-            {
-              "name": "PhoneOSNew",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "PhoneOS",
-              "value": "1",
-              "meaning": "来源客户端系统标志"
-            },
-            {
-              "name": "DeviceID",
-              "value": "每次请求随机UUID",
-              "meaning": "匿名请求设备标识，不是用户账户"
-            },
-            {
-              "name": "VerSion",
-              "value": "5.23.0.4",
-              "meaning": "客户端版本声明"
-            }
-          ]
-        },
-        {
-          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
-          "purpose": "冻结证券上市范围（每轮目录；缺证券时精确补查）",
-          "method": "GET",
-          "parameters": [
-            {
-              "name": "reportName",
-              "value": "RPT_F10_ORG_BASICINFO",
-              "meaning": "上市基本资料报表"
-            },
-            {
-              "name": "columns",
-              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
-              "meaning": "证券身份、上市日期与上市状态"
-            },
-            {
-              "name": "filter",
-              "value": "(LISTING_STATE=\"0\")(SECURITY_TYPE_CODE=\"058001001\")",
-              "meaning": "当前已上市A股；缺失证券时改为(SECUCODE=\"证券统一代码\")"
-            },
-            {
-              "name": "pageSize",
-              "value": "500",
-              "meaning": "每页容量"
-            },
-            {
-              "name": "pageNumber",
-              "value": "从1递增",
-              "meaning": "完整目录页码"
-            },
-            {
-              "name": "sortColumns",
-              "value": "SECUCODE",
-              "meaning": "统一证券代码排序"
-            },
-            {
-              "name": "sortTypes",
-              "value": "1",
-              "meaning": "升序"
-            }
-          ]
-        },
-        {
-          "url": "https://www.bse.cn/nqxxController/nqxxCnzq.do",
-          "purpose": "来源返回北交所旧代码时核实映射，已核实映射可复用",
-          "method": "POST",
-          "parameters": [
-            {
-              "name": "callback",
-              "value": "securityMasterCallback",
-              "meaning": "JSONP回调名称，查询参数"
-            },
-            {
-              "name": "page",
-              "value": "0",
-              "meaning": "来源首页"
-            },
-            {
-              "name": "typejb",
-              "value": "T",
-              "meaning": "来源公司类别固定标志"
-            },
-            {
-              "name": "xxfcbj[]",
-              "value": "2",
-              "meaning": "来源证券目录固定分类"
-            },
-            {
-              "name": "xxzqdm",
-              "value": "旧证券代码",
-              "meaning": "精确查询待核实代码"
-            },
-            {
-              "name": "sortfield",
-              "value": "xxzqdm",
-              "meaning": "按证券代码排序"
-            },
-            {
-              "name": "sorttype",
-              "value": "asc",
-              "meaning": "升序"
-            }
-          ]
-        }
-      ],
-      "tables": [
-        "stock_market_day",
-        "stock_daily_quote",
-        "stock_daily_quote_level"
-      ],
-      "start": "2021-01-01与证券上市日期取较晚者，按正式交易日历",
-      "end": "本轮已结束交易日；当天须北京时间15:30之后",
-      "initial": "按当前股票池逐证券交易日补齐本项；七项分别入队与验收。",
-      "incremental": "普通采集补新增日和缺口，每周回看最近五个交易日；fresh重查声明历史。",
-      "limits": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放；计划范围不等于全历史已归档。",
-      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
-      "fresh": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
-      "job_key": "kaipanla-quote-v1",
-      "datasets": [
-        "kaipanla.quote.day"
-      ],
-      "fingerprint_namespaces": [
-        "kaipanla_quote_v1"
-      ],
-      "topics": [
-        "历史盘口与日行情摘要",
-        "采集进度与运行记录"
-      ],
-      "source_file": "src/empire/features/kaipanla/collector.py",
-      "source": "kaipanla",
-      "fingerprint_source": "kaipanla",
-      "scope": "当前A股股票池（沪、深、北），依赖SQL股票与正式交易日历；北交所不早于2021-11-15，未上市无日期证券不伪造历史。 可显式限定本轮1～50个市场证券和最多3660日闭区间；不改日常策略，范围绑定原任务断点，待归档先恢复原范围。"
-    },
     "ths-income": {
       "requests": [
         {
@@ -2433,9 +1270,9 @@
       "start": "各证券页面当前可见最早报告期；不保证全部历史",
       "end": "各证券页面当前可见最新报告期",
       "initial": "一次解析全部可见报告期和前十大股东、流通股东、债券持有人，全部校验后同事务归档。",
-      "incremental": "每轮重查当前页面窗口，更新修订，保留已存历史；没有出现在新窗口中的旧期不删除。",
-      "limits": "不提供公告日期；空名债券按报告隔离，确认有效报告归档后显示已结束（来源缺口），保留首缺口补采断点及债券准备限制。结构或归档失败仍报错；并列和空组按专项契约处理。",
-      "recovery": "下载或校验失败不推进对应断点；Redis仍在时按本任务断点恢复，已入队数据由统一归档器重放。Redis重启后丢失未归档消息与临时断点，按下列专项说明从SQL证据或来源重新建立范围，不能把丢失状态当作完成。",
+      "incremental": "按已保存计划复查到期证券当前窗口；同周期已确认跳过、新证券单独补采；来源仅支持整份HTML，窗口外历史修订无法发现。",
+      "limits": "不提供公告日期；空名债券作为持续来源缺陷独立保留，扫描不冻结；随该证券下一次必要更新复查，债券准备仍报真实缺口。结构或归档失败仍报错。",
+      "recovery": "按本轮开始时间和逐证券确认仅补未确认单元；Redis丢失按SQL确认时间恢复缺失或到期证券。旧游标须通过scripts/migrate_holder_checkpoint.py显式维护，不在启动转换。",
       "fresh": "重建当前股票池和页面报告窗口；保留历史；待归档阶段先确认原轮次。",
       "job_key": "ths-holders-v1",
       "datasets": [
@@ -4212,6 +3049,433 @@
             }
           ]
         }
+      ]
+    },
+    "ths-yuanhang-prices": {
+      "requests": [
+        {
+          "url": "tls://10jqka.com.cn:443",
+          "method": "STREAM",
+          "purpose": "远航登录返回的原生行情目录服务器；此处为站点契约示意，不作为固定行情地址",
+          "parameters": [
+            {
+              "name": "id",
+              "value": "210",
+              "meaning": "日线历史"
+            },
+            {
+              "name": "market/code",
+              "value": "实际原生板块及六位代码",
+              "meaning": "精确来源证券身份"
+            },
+            {
+              "name": "start/end",
+              "value": "初始化19000101；维护按已证明覆盖回看5交易日及补缺，截止已结束交易日",
+              "meaning": "经验证的日期区间，完整历史核验替代同证券短请求"
+            }
+          ]
+        },
+        {
+          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+          "method": "GET",
+          "purpose": "仅在原生空响应后查询精确证券上市状态；不采集外部量价、权息或股本",
+          "parameters": [
+            {
+              "name": "reportName",
+              "value": "RPT_F10_ORG_BASICINFO",
+              "meaning": "证券上市范围资料"
+            },
+            {
+              "name": "columns",
+              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
+              "meaning": "精确身份、上市日和上市状态"
+            },
+            {
+              "name": "filter",
+              "value": "(SECUCODE=\"本证券统一代码\")",
+              "meaning": "只查询空响应证券"
+            },
+            {
+              "name": "pageSize/pageNumber",
+              "value": "500/1",
+              "meaning": "完整响应必须恰好一条精确身份记录"
+            },
+            {
+              "name": "sortColumns/sortTypes",
+              "value": "SECUCODE/1",
+              "meaning": "明确按证券排序"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "yuanhang_daily_price",
+        "yuanhang_price_year"
+      ],
+      "start": "1900-01-01支持下界；实际从来源首条开始，不补造历史",
+      "end": "本轮交易日历给出的最新已结束交易日",
+      "initial": "当前沪深北A股固定集合，每证券完整响应校验后统一入队并等待整轮归档。",
+      "incremental": "按SQL连续覆盖补遗漏范围并回看5交易日；包含最后成交日锚点。20交易日稳定分组轮转完整核验，替代短请求。同截止无缺口或到期核验时0行情请求；新证券单独初始化。",
+      "recovery": "Redis存活续未入队位置；Redis丢失按SQL日期覆盖补未确认范围，纯缓存核验上界可能保守重查。股票池变化重建计划，已归档历史保留。",
+      "fresh": "重新核实当前池历史，不删除已有事实；已有入队消息仍由统一归档重放。 每轮重新检查延期证券，不生成空历史业务行、不删除既存历史。",
+      "limits": "固定节点身份仅支持代理，不自动借用账号或直连；按公共任务request_retries预算执行传输重试（默认2），源拒绝及冷却不换身份绕过。 原生空响应或严格验证的单点总股本/流通股本不完整响应（无权息、缺自由流通股，407可为明确NULL），只在辅助元数据明确未上市/上市日晚于截止日且正式库无历史时延期；未知、失败或矛盾不推进。 规范5仅合并完整日线字段表的相邻同日精确重复，先验证完整帧声明行数和字节边界；同日冲突、部分字段重复和日期倒序仍失败。年度点数按独立交易日计算，正常仍一次完整响应，规则升级显式完整重核。 区间契约6只替换已证明日期，完整年度仍按契约5校验；日期级版本拒绝旧覆盖且允许不相交旧区间。批量历史、长连接复用尚未验证；短区间减少正文和入队，并非必然减少每股请求数。",
+      "job_key": "ths-yuanhang-prices-v1",
+      "source_file": "src/empire/features/yuanhang/collector.py",
+      "scope": "当前股票池沪深北A股；退出池保留历史，不宣称历史退市池已覆盖。",
+      "source": "ths_yuanhang",
+      "fingerprint_source": "ths_yuanhang",
+      "datasets": [
+        "yuanhang.price.year",
+        "yuanhang.financial"
+      ],
+      "fingerprint_namespaces": [
+        "ths_yuanhang_history_v2"
+      ],
+      "topics": [
+        "远航版历史行情",
+        "采集进度与运行记录"
+      ]
+    },
+    "ths-yuanhang-financial": {
+      "requests": [
+        {
+          "url": "tls://10jqka.com.cn:443",
+          "method": "STREAM",
+          "purpose": "远航登录返回的原生行情目录服务器；此处为站点契约示意，不作为固定行情地址",
+          "parameters": [
+            {
+              "name": "id",
+              "value": "211",
+              "meaning": "联合金融历史"
+            },
+            {
+              "name": "market/code",
+              "value": "实际原生板块及六位代码",
+              "meaning": "精确来源证券身份"
+            },
+            {
+              "name": "start/end",
+              "value": "0/0",
+              "meaning": "完整来源请求范围"
+            }
+          ]
+        },
+        {
+          "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+          "method": "GET",
+          "purpose": "仅在原生空响应后查询精确证券上市状态；不采集外部量价、权息或股本",
+          "parameters": [
+            {
+              "name": "reportName",
+              "value": "RPT_F10_ORG_BASICINFO",
+              "meaning": "证券上市范围资料"
+            },
+            {
+              "name": "columns",
+              "value": "SECUCODE,SECURITY_CODE,LISTING_DATE,LISTING_STATE",
+              "meaning": "精确身份、上市日和上市状态"
+            },
+            {
+              "name": "filter",
+              "value": "(SECUCODE=\"本证券统一代码\")",
+              "meaning": "只查询空响应证券"
+            },
+            {
+              "name": "pageSize/pageNumber",
+              "value": "500/1",
+              "meaning": "完整响应必须恰好一条精确身份记录"
+            },
+            {
+              "name": "sortColumns/sortTypes",
+              "value": "SECUCODE/1",
+              "meaning": "明确按证券排序"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "yuanhang_corporate_action",
+        "yuanhang_capital",
+        "yuanhang_series_proof"
+      ],
+      "start": "1900-01-01支持下界；实际从来源首条开始，不补造历史",
+      "end": "金融保留至2100-12-31的生效点",
+      "initial": "当前沪深北A股固定集合，每证券完整响应校验后统一入队并等待整轮归档。",
+      "incremental": "每日一次每证券211联合全序列；同日同截止同股票池完成后不重复请求，用户从头采集仍明确重核。金融时效独立于日线，不由价格变动猜测事件。",
+      "recovery": "Redis存活从未入队位置继续；响应改变重发该证券，Redis丢失重新核实全池，不凭最大日期完成。",
+      "fresh": "重新核实当前池历史，不删除已有事实；已有入队消息仍由统一归档重放。 每轮重新检查延期证券，不生成空历史业务行、不删除既存历史。",
+      "limits": "固定节点身份仅支持代理，不自动借用账号或直连；按公共任务request_retries预算执行传输重试（默认2），源拒绝及冷却不换身份绕过。 原生空响应或严格验证的单点总股本/流通股本不完整响应（无权息、缺自由流通股，407可为明确NULL），只在辅助元数据明确未上市/上市日晚于截止日且正式库无历史时延期；未知、失败或矛盾不推进。 规范5沿用同日不同分量事件，纯缩股负比例仅接受其余分量全0；普通流通股明确NULL保留日期，另外两口径仍须正数。事件按日期及event_key双键分页；同日多事件不可裁定时阻断复权，不合并或任选。",
+      "job_key": "ths-yuanhang-financial-v1",
+      "source_file": "src/empire/features/yuanhang/collector.py",
+      "scope": "当前股票池沪深北A股；退出池保留历史，不宣称历史退市池已覆盖。",
+      "source": "ths_yuanhang",
+      "fingerprint_source": "ths_yuanhang:financial",
+      "datasets": [
+        "yuanhang.price.year",
+        "yuanhang.financial"
+      ],
+      "fingerprint_namespaces": [
+        "ths_yuanhang_history_v2"
+      ],
+      "topics": [
+        "远航版历史行情",
+        "采集进度与运行记录"
+      ]
+    },
+    "ths-yuanhang-limit-up-pool": {
+      "requests": [
+        {
+          "url": "http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/change-table",
+          "method": "GET",
+          "purpose": "完整日期池有序分页",
+          "parameters": [
+            {
+              "name": "date/strategy/filter/limit/page/orderField/orderType",
+              "value": "YYYYMMDD/limit_up_pool/HS,GEM2STAR/100/从1/code/1",
+              "meaning": "逐页收齐源总数并校验业务键集合"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "start": "正式A股日历1990-12-19；空响应不证明源最早边界",
+      "end": "盘中当天Redis采样；15:30后核验最近已结束交易日",
+      "initial": "完整日历范围逐池补缺；原因按五池证券日并集消重。",
+      "incremental": "盘中固定间隔仅采当天，变化快照只存Redis；日终新增/缺口、近期5日与20交易日轮转。",
+      "recovery": "Redis盘中回放丢失后只从当前时刻采样；日终SQL集合证明恢复补缺。",
+      "fresh": "有界批次重核，不删除已有业务。",
+      "limits": "单响应100成员；完整池最多10000成员及8MiB规范正文、480KiB压缩消息。原因无可靠公布时刻。",
+      "job_key": "ths-yuanhang-limit-up-pool-v1",
+      "source_file": "src/empire/features/yuanhang_limits/collector.py",
+      "scope": "HS,GEM2STAR源口径，保留历史证券，不按当前股票表过滤。",
+      "source": "ths_yuanhang",
+      "fingerprint_source": "ths_yuanhang",
+      "datasets": [
+        "yuanhang.limits.limit_up_pool"
+      ],
+      "fingerprint_namespaces": [
+        "yuanhang_limits_limit_up_pool_v1"
+      ],
+      "topics": [
+        "远航版涨跌停分析",
+        "采集进度与运行记录"
+      ],
+      "intraday_pool": "limit_up_pool"
+    },
+    "ths-yuanhang-sprint-limit-up": {
+      "requests": [
+        {
+          "url": "http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/change-table",
+          "method": "GET",
+          "purpose": "完整日期池有序分页",
+          "parameters": [
+            {
+              "name": "date/strategy/filter/limit/page/orderField/orderType",
+              "value": "YYYYMMDD/sprint_limit_up/HS,GEM2STAR/100/从1/code/1",
+              "meaning": "逐页收齐源总数并校验业务键集合"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "start": "正式A股日历1990-12-19；空响应不证明源最早边界",
+      "end": "盘中当天Redis采样；15:30后核验最近已结束交易日",
+      "initial": "完整日历范围逐池补缺；原因按五池证券日并集消重。",
+      "incremental": "盘中固定间隔仅采当天，变化快照只存Redis；日终新增/缺口、近期5日与20交易日轮转。",
+      "recovery": "Redis盘中回放丢失后只从当前时刻采样；日终SQL集合证明恢复补缺。",
+      "fresh": "有界批次重核，不删除已有业务。",
+      "limits": "单响应100成员；完整池最多10000成员及8MiB规范正文、480KiB压缩消息。原因无可靠公布时刻。",
+      "job_key": "ths-yuanhang-sprint-limit-up-v1",
+      "source_file": "src/empire/features/yuanhang_limits/collector.py",
+      "scope": "HS,GEM2STAR源口径，保留历史证券，不按当前股票表过滤。",
+      "source": "ths_yuanhang",
+      "fingerprint_source": "ths_yuanhang",
+      "datasets": [
+        "yuanhang.limits.sprint_limit_up"
+      ],
+      "fingerprint_namespaces": [
+        "yuanhang_limits_sprint_limit_up_v1"
+      ],
+      "topics": [
+        "远航版涨跌停分析",
+        "采集进度与运行记录"
+      ],
+      "intraday_pool": "sprint_limit_up"
+    },
+    "ths-yuanhang-connect-broad-pool": {
+      "requests": [
+        {
+          "url": "http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/change-table",
+          "method": "GET",
+          "purpose": "完整日期池有序分页",
+          "parameters": [
+            {
+              "name": "date/strategy/filter/limit/page/orderField/orderType",
+              "value": "YYYYMMDD/connect_broad_pool/HS,GEM2STAR/100/从1/code/1",
+              "meaning": "逐页收齐源总数并校验业务键集合"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "start": "正式A股日历1990-12-19；空响应不证明源最早边界",
+      "end": "盘中当天Redis采样；15:30后核验最近已结束交易日",
+      "initial": "完整日历范围逐池补缺；原因按五池证券日并集消重。",
+      "incremental": "盘中固定间隔仅采当天，变化快照只存Redis；日终新增/缺口、近期5日与20交易日轮转。",
+      "recovery": "Redis盘中回放丢失后只从当前时刻采样；日终SQL集合证明恢复补缺。",
+      "fresh": "有界批次重核，不删除已有业务。",
+      "limits": "单响应100成员；完整池最多10000成员及8MiB规范正文、480KiB压缩消息。原因无可靠公布时刻。",
+      "job_key": "ths-yuanhang-connect-broad-pool-v1",
+      "source_file": "src/empire/features/yuanhang_limits/collector.py",
+      "scope": "HS,GEM2STAR源口径，保留历史证券，不按当前股票表过滤。",
+      "source": "ths_yuanhang",
+      "fingerprint_source": "ths_yuanhang",
+      "datasets": [
+        "yuanhang.limits.connect_broad_pool"
+      ],
+      "fingerprint_namespaces": [
+        "yuanhang_limits_connect_broad_pool_v1"
+      ],
+      "topics": [
+        "远航版涨跌停分析",
+        "采集进度与运行记录"
+      ],
+      "intraday_pool": "connect_broad_pool"
+    },
+    "ths-yuanhang-open-limit-up-pool": {
+      "requests": [
+        {
+          "url": "http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/change-table",
+          "method": "GET",
+          "purpose": "完整日期池有序分页",
+          "parameters": [
+            {
+              "name": "date/strategy/filter/limit/page/orderField/orderType",
+              "value": "YYYYMMDD/open_limit_up_pool/HS,GEM2STAR/100/从1/code/1",
+              "meaning": "逐页收齐源总数并校验业务键集合"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "start": "正式A股日历1990-12-19；空响应不证明源最早边界",
+      "end": "盘中当天Redis采样；15:30后核验最近已结束交易日",
+      "initial": "完整日历范围逐池补缺；原因按五池证券日并集消重。",
+      "incremental": "盘中固定间隔仅采当天，变化快照只存Redis；日终新增/缺口、近期5日与20交易日轮转。",
+      "recovery": "Redis盘中回放丢失后只从当前时刻采样；日终SQL集合证明恢复补缺。",
+      "fresh": "有界批次重核，不删除已有业务。",
+      "limits": "单响应100成员；完整池最多10000成员及8MiB规范正文、480KiB压缩消息。原因无可靠公布时刻。",
+      "job_key": "ths-yuanhang-open-limit-up-pool-v1",
+      "source_file": "src/empire/features/yuanhang_limits/collector.py",
+      "scope": "HS,GEM2STAR源口径，保留历史证券，不按当前股票表过滤。",
+      "source": "ths_yuanhang",
+      "fingerprint_source": "ths_yuanhang",
+      "datasets": [
+        "yuanhang.limits.open_limit_up_pool"
+      ],
+      "fingerprint_namespaces": [
+        "yuanhang_limits_open_limit_up_pool_v1"
+      ],
+      "topics": [
+        "远航版涨跌停分析",
+        "采集进度与运行记录"
+      ],
+      "intraday_pool": "open_limit_up_pool"
+    },
+    "ths-yuanhang-limit-down-pool": {
+      "requests": [
+        {
+          "url": "http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/change-table",
+          "method": "GET",
+          "purpose": "完整日期池有序分页",
+          "parameters": [
+            {
+              "name": "date/strategy/filter/limit/page/orderField/orderType",
+              "value": "YYYYMMDD/limit_down_pool/HS,GEM2STAR/100/从1/code/1",
+              "meaning": "逐页收齐源总数并校验业务键集合"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "start": "正式A股日历1990-12-19；空响应不证明源最早边界",
+      "end": "盘中当天Redis采样；15:30后核验最近已结束交易日",
+      "initial": "完整日历范围逐池补缺；原因按五池证券日并集消重。",
+      "incremental": "盘中固定间隔仅采当天，变化快照只存Redis；日终新增/缺口、近期5日与20交易日轮转。",
+      "recovery": "Redis盘中回放丢失后只从当前时刻采样；日终SQL集合证明恢复补缺。",
+      "fresh": "有界批次重核，不删除已有业务。",
+      "limits": "单响应100成员；完整池最多10000成员及8MiB规范正文、480KiB压缩消息。原因无可靠公布时刻。",
+      "job_key": "ths-yuanhang-limit-down-pool-v1",
+      "source_file": "src/empire/features/yuanhang_limits/collector.py",
+      "scope": "HS,GEM2STAR源口径，保留历史证券，不按当前股票表过滤。",
+      "source": "ths_yuanhang",
+      "fingerprint_source": "ths_yuanhang",
+      "datasets": [
+        "yuanhang.limits.limit_down_pool"
+      ],
+      "fingerprint_namespaces": [
+        "yuanhang_limits_limit_down_pool_v1"
+      ],
+      "topics": [
+        "远航版涨跌停分析",
+        "采集进度与运行记录"
+      ],
+      "intraday_pool": "limit_down_pool"
+    },
+    "ths-yuanhang-reason": {
+      "requests": [
+        {
+          "url": "http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis",
+          "method": "GET",
+          "purpose": "单证券日原因",
+          "parameters": [
+            {
+              "name": "indexCode/startTime/endTime",
+              "value": "统一证券代码/同一YYYYMMDD/同一YYYYMMDD",
+              "meaning": "范围日期不得合并"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "yuanhang_limit_reason"
+      ],
+      "start": "正式A股日历1990-12-19；空响应不证明源最早边界",
+      "end": "本轮最近已结束交易日",
+      "initial": "完整日历范围逐池补缺；原因按五池证券日并集消重。",
+      "incremental": "新增/缺口、近期5交易日与20交易日轮转范围合并，未到期不请求。",
+      "recovery": "SQL集合证明恢复已归档范围；Redis未归档消息丢失后重采受影响单元。",
+      "fresh": "有界批次重核，不删除已有业务。",
+      "limits": "单响应100成员；完整池最多10000成员及8MiB规范正文、480KiB压缩消息。原因无可靠公布时刻。",
+      "job_key": "ths-yuanhang-reason-v1",
+      "source_file": "src/empire/features/yuanhang_limits/collector.py",
+      "scope": "HS,GEM2STAR源口径，保留历史证券，不按当前股票表过滤。",
+      "source": "ths_yuanhang",
+      "fingerprint_source": "ths_yuanhang",
+      "datasets": [
+        "yuanhang.limits.reason"
+      ],
+      "fingerprint_namespaces": [
+        "yuanhang_limits_reason_v1"
+      ],
+      "topics": [
+        "远航版涨跌停分析",
+        "采集进度与运行记录"
       ]
     }
   }

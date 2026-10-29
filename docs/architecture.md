@@ -67,7 +67,7 @@ flowchart TB
 
 业务按 `features/<业务>` 收拢；新闻是首个样板，入口见 [新闻包](../src/empire/features/news/README.md)。`contracts/task.py` 拥有任务与默认策略类型，`contracts/bundle.py` 拥有纯贡献结构和顺序声明。`features/builtin.py` 明确列出包工厂，`bootstrap.py` 只合并公共服务与包声明、校验归属及现有插件依赖；构造声明不启动服务、不创建页面、不读取外部配置。
 
-开盘啦七项归入[开盘啦业务包](../src/empire/features/kaipanla/README.md)，保留独立产品任务与页面、同一公共下载/入队/归档。其纯协议、解析、规范、SQL映射、查询与页面按职责组织；跨业务行情输入通过`ValidatedDayReader.iter_validated_days`公开契约，并在复权已有SQL连接内惰性读取。公共schema读取器只接受业务显式给出的表集合，不导入开盘啦表组。普通产品页仍按需创建，quote分支才加载盘口控件。
+开盘啦七项归入[开盘啦业务包](kaipanla-market-retirement.md)，保留独立产品任务与页面、同一公共下载/入队/归档。其纯协议、解析、规范、SQL映射、查询与页面按职责组织；跨业务行情输入通过`ValidatedDayReader.iter_validated_days`公开契约，并在复权已有SQL连接内惰性读取。公共schema读取器只接受业务显式给出的表集合，不导入开盘啦表组。普通产品页仍按需创建，quote分支才加载盘口控件。
 
 股东复杂样板集中在 [features/holders](../src/empire/features/holders/README.md)：`contract.py` 是纯业务契约，`query.py`/`audit.py` 是正式查询与证明核查入口，`ui.py` 贡献三个独立页面，`source.py`/`collector.py`/`dataset.py` 分别拥有来源语义、采集生命周期和统一归档映射。一个包仍可贡献多个独立插件；中央白名单只收集包声明，不把它合并为一个运行时开关。持有人插件与资本运作的原交错顺序按稳定槽保留。
 
@@ -286,9 +286,9 @@ collector.ths_industries 复用共享 HTTP、代理与频控，本地固定版�
 
 财报及分红、增发、配股数据集通过 state_unit 显式声明当前证券单元或 manifest。统一归档器仍锁定 collection_state 的项目行，但只投影 contract_version、progress、manifest 和当前 units 单元；JSON_SET 只提交变化路径，保留其他证券。全状态审计读取继续用于范围证明核验。完成等待的 SQL 回源只读取 progress，不传输整个财报状态。业务写入和局部状态更新处于原事务，缓存可信命中仍免 SQL。
 
-## 2026-10-05 开盘啦七项拆分
+## 2026-10-29 开盘啦行情退役
 
-分时走势与开盘竞价拆为独立项目，并新增分钟量额、分笔、分钟委托汇总、大单净额、历史盘口摘要，共七项采集/查询/UI 插件。共享 `stock_market_day` 的类型、证券、日期业务键，沿统一 Redis 入队与归档；重复内容及仅元数据时间变化不写业务表。新增任务默认停用，开发与重启不会启动全历史采集。旧合并任务由显式维护入口迁移，启动不自动转换。日常操作、生命周期和限制见 [开盘啦七项历史数据](kaipanla-intraday.md)。
+开盘啦仅保留题材相关功能，七项行情的采集、预览及运行配置已移除。历史数据尚待用户选择保留或删除。见 [退役记录](kaipanla-market-retirement.md)。
 
 ## 开盘啦类型化存储与公共契约
 

@@ -1,0 +1,387 @@
+[
+  {
+    "id": "tdx-unlock-industries",
+    "name": "大小非解禁行业（通达信）",
+    "basis": "来源月份目录；完成月份数",
+    "result": "补齐/修正",
+    "module": "unlock_industries"
+  },
+  {
+    "id": "tdx-unlocks",
+    "name": "大小非解禁个股与明细（通达信）",
+    "basis": "本轮月份计划；完成月份数",
+    "result": "补齐/修正",
+    "module": "unlocks"
+  },
+  {
+    "id": "ths-holders",
+    "name": "股东研究（同花顺）",
+    "basis": "本轮待核验股票；成功股票数，排除失败尝试",
+    "result": "补齐/修正",
+    "module": "holders"
+  },
+  {
+    "id": "ths-capital",
+    "name": "公司资本运作（同花顺）",
+    "basis": "本轮股票名单；成功入队股票数",
+    "result": "补齐/修正",
+    "module": "ths_capital"
+  },
+  {
+    "id": "tdx-earnings-forecast",
+    "name": "业绩预告（通达信）",
+    "basis": "报告期/日期/证券完整响应计划；完成响应数",
+    "result": "补齐/修正",
+    "module": "performance"
+  },
+  {
+    "id": "tdx-earnings-quick",
+    "name": "业绩快报（通达信）",
+    "basis": "报告期/日期/证券完整响应计划；完成响应数",
+    "result": "补齐/修正",
+    "module": "performance"
+  },
+  {
+    "id": "tdx-earnings-disclosure",
+    "name": "业绩披露时间（通达信）",
+    "basis": "报告期/日期/证券完整响应计划；完成响应数",
+    "result": "补齐/修正",
+    "module": "performance"
+  },
+  {
+    "id": "tdx-earnings-report",
+    "name": "业绩报告（通达信）",
+    "basis": "报告期/日期/证券完整响应计划；完成响应数",
+    "result": "补齐/修正",
+    "module": "performance"
+  },
+  {
+    "id": "tdx-holder-count",
+    "name": "股东户数（通达信）",
+    "basis": "报告期/日期/证券完整响应计划；完成响应数",
+    "result": "补齐/修正",
+    "module": "performance"
+  },
+  {
+    "id": "tdx-shareholder-changes",
+    "name": "重要股东持股变动（通达信）",
+    "basis": "报告期/日期/证券完整响应计划；完成响应数",
+    "result": "补齐/修正",
+    "module": "performance"
+  },
+  {
+    "id": "eastmoney-repurchases",
+    "name": "股票回购（东方财富）",
+    "basis": "来源方案总数；成功入队方案数",
+    "result": "补齐/修正",
+    "module": "repurchases"
+  },
+  {
+    "id": "rules-limit-rules",
+    "name": "涨跌幅规则记录",
+    "basis": "1组完整官方规则；校验并入队后1/1",
+    "result": "已有准确进度，保留",
+    "module": "trading_rules"
+  },
+  {
+    "id": "rules-settlement-rules",
+    "name": "买入后何时能卖的规则",
+    "basis": "1组完整官方规则；校验并入队后1/1",
+    "result": "已有准确进度，保留",
+    "module": "trading_rules"
+  },
+  {
+    "id": "rules-lot-rules",
+    "name": "最小买卖数量规则",
+    "basis": "1组完整官方规则；校验并入队后1/1",
+    "result": "已有准确进度，保留",
+    "module": "trading_rules"
+  },
+  {
+    "id": "rules-tick-rules",
+    "name": "最小价格变动规则",
+    "basis": "1组完整官方规则；校验并入队后1/1",
+    "result": "已有准确进度，保留",
+    "module": "trading_rules"
+  },
+  {
+    "id": "rules-sessions",
+    "name": "交易时段规则",
+    "basis": "1组完整官方规则；校验并入队后1/1",
+    "result": "已有准确进度，保留",
+    "module": "trading_rules"
+  },
+  {
+    "id": "rules-stamp-duty",
+    "name": "印花税税率记录",
+    "basis": "1组完整官方规则；校验并入队后1/1",
+    "result": "已有准确进度，保留",
+    "module": "trading_rules"
+  },
+  {
+    "id": "rules-transfer-fee",
+    "name": "过户费收费记录",
+    "basis": "1组完整官方规则；校验并入队后1/1",
+    "result": "已有准确进度，保留",
+    "module": "trading_rules"
+  },
+  {
+    "id": "tdx-listing-status",
+    "name": "暂停恢复终止上市（通达信）",
+    "basis": "本轮已入队及待补月份；成功入队月份数",
+    "result": "补齐/修正",
+    "module": "listing_status"
+  },
+  {
+    "id": "ths-index-prices",
+    "name": "同花顺指数历史日行情",
+    "basis": "本轮指数代码；已完成指数数",
+    "result": "已有准确进度，保留",
+    "module": "index_prices"
+  },
+  {
+    "id": "tdx-st-implementation",
+    "name": "实施ST（通达信）",
+    "basis": "1份完整来源响应；校验并入队后1/1",
+    "result": "已有准确进度，保留",
+    "module": "st_events"
+  },
+  {
+    "id": "tdx-st-removal",
+    "name": "撤销ST（通达信）",
+    "basis": "1份完整来源响应；校验并入队后1/1",
+    "result": "已有准确进度，保留",
+    "module": "st_events"
+  },
+  {
+    "id": "tdx-company-renames",
+    "name": "公司更名（通达信）",
+    "basis": "1份完整来源响应；校验并入队后1/1",
+    "result": "补齐/修正",
+    "module": "name_changes"
+  },
+  {
+    "id": "tdx-security-renames",
+    "name": "股票更名（通达信）",
+    "basis": "1份完整来源响应；校验并入队后1/1",
+    "result": "补齐/修正",
+    "module": "name_changes"
+  },
+  {
+    "id": "kaipanla-trend",
+    "name": "开盘啦分时走势",
+    "basis": "上市与停牌过滤后的证券×日期单元；成功单元数",
+    "result": "补齐/修正",
+    "module": "kaipanla"
+  },
+  {
+    "id": "kaipanla-auction",
+    "name": "开盘啦开盘竞价",
+    "basis": "上市与停牌过滤后的证券×日期单元；成功单元数",
+    "result": "补齐/修正",
+    "module": "kaipanla"
+  },
+  {
+    "id": "kaipanla-volume",
+    "name": "开盘啦分钟成交量与成交额",
+    "basis": "上市与停牌过滤后的证券×日期单元；成功单元数",
+    "result": "补齐/修正",
+    "module": "kaipanla"
+  },
+  {
+    "id": "kaipanla-trades",
+    "name": "开盘啦分时成交明细",
+    "basis": "上市与停牌过滤后的证券×日期单元；成功单元数",
+    "result": "补齐/修正",
+    "module": "kaipanla"
+  },
+  {
+    "id": "kaipanla-entrust",
+    "name": "开盘啦分钟买卖委托汇总",
+    "basis": "上市与停牌过滤后的证券×日期单元；成功单元数",
+    "result": "补齐/修正",
+    "module": "kaipanla"
+  },
+  {
+    "id": "kaipanla-large-order",
+    "name": "开盘啦大单净额走势",
+    "basis": "上市与停牌过滤后的证券×日期单元；成功单元数",
+    "result": "补齐/修正",
+    "module": "kaipanla"
+  },
+  {
+    "id": "kaipanla-quote",
+    "name": "开盘啦历史盘口与日行情摘要",
+    "basis": "上市与停牌过滤后的证券×日期单元；成功单元数",
+    "result": "补齐/修正",
+    "module": "kaipanla"
+  },
+  {
+    "id": "ths-listings",
+    "name": "股票上市与发行资料（同花顺）",
+    "basis": "本轮股票范围；已核验/已有可信记录股票数",
+    "result": "补齐/修正",
+    "module": "listings"
+  },
+  {
+    "id": "ths-industries",
+    "name": "同花顺当前行业",
+    "basis": "已验证行业目录；已解析行业成员集合数，最终整份校验和归档另确认",
+    "result": "补齐/修正",
+    "module": "industries"
+  },
+  {
+    "id": "ths-indices",
+    "name": "同花顺当前指数及成分",
+    "basis": "已验证指数目录；已入队指数数",
+    "result": "已有准确进度，保留",
+    "module": "indices"
+  },
+  {
+    "id": "ths-income",
+    "name": "利润表（同花顺）",
+    "basis": "本轮股票名单；成功入队股票数",
+    "result": "已有准确进度，保留",
+    "module": "financial_statements"
+  },
+  {
+    "id": "ths-balance",
+    "name": "资产负债表（同花顺）",
+    "basis": "本轮股票名单；成功入队股票数",
+    "result": "已有准确进度，保留",
+    "module": "financial_statements"
+  },
+  {
+    "id": "ths-cashflow",
+    "name": "现金流量表（同花顺）",
+    "basis": "本轮股票名单；成功入队股票数",
+    "result": "已有准确进度，保留",
+    "module": "financial_statements"
+  },
+  {
+    "id": "tdx-dividends",
+    "name": "分红送转（通达信）",
+    "basis": "来源分组证券；成功入队证券数；分红发现/报告期核验分别展示阶段进度",
+    "result": "补齐/修正",
+    "module": "capital_actions"
+  },
+  {
+    "id": "tdx-additional-issues",
+    "name": "增发（通达信）",
+    "basis": "来源分组证券；成功入队证券数；分红发现/报告期核验分别展示阶段进度",
+    "result": "补齐/修正",
+    "module": "capital_actions"
+  },
+  {
+    "id": "tdx-rights-issues",
+    "name": "配股（通达信）",
+    "basis": "来源分组证券；成功入队证券数；分红发现/报告期核验分别展示阶段进度",
+    "result": "补齐/修正",
+    "module": "capital_actions"
+  },
+  {
+    "id": "ths-stocks",
+    "name": "同花顺 A 股股票列表",
+    "basis": "来源股票总数；成功入队股票数",
+    "result": "补齐/修正",
+    "module": "stocks"
+  },
+  {
+    "id": "sina-stocks",
+    "name": "新浪 A 股股票列表",
+    "basis": "来源股票总数；成功入队股票数",
+    "result": "补齐/修正",
+    "module": "stocks"
+  },
+  {
+    "id": "sina-news",
+    "name": "新浪 7×24 小时全球实时财经新闻直播",
+    "basis": "首次/重新采集固定1页；增量需读至上轮上界，总页数未知时显示已读页数，终点确定后才100%",
+    "result": "补齐/修正",
+    "module": "news"
+  },
+  {
+    "id": "cninfo-calendar",
+    "name": "大 A 交易日期（巨潮资讯）",
+    "basis": "本轮完整月份计划；成功入队月份数",
+    "result": "补齐/修正",
+    "module": "calendar"
+  },
+  {
+    "id": "tdx-suspensions",
+    "name": "沪深 A 股历史停复牌（通达信）",
+    "basis": "本轮起止日期；成功入队来源日期数",
+    "result": "补齐/修正",
+    "module": "suspensions"
+  },
+  {
+    "id": "kaipanla-themes",
+    "name": "题材列表与日内变化（开盘啦）",
+    "basis": "列表1份完整快照；详情按当前待处理题材计划",
+    "result": "补齐/修正",
+    "module": "themes"
+  },
+  {
+    "id": "kaipanla-theme-details",
+    "name": "题材最新详情（开盘啦）",
+    "basis": "列表1份完整快照；详情按当前待处理题材计划",
+    "result": "补齐/修正",
+    "module": "themes"
+  },
+  {
+    "id": "ths-yuanhang-prices",
+    "name": "远航版完整历史日线",
+    "basis": "本轮证券范围；已采集或可信覆盖跳过的证券数",
+    "result": "补齐/修正",
+    "module": "yuanhang"
+  },
+  {
+    "id": "ths-yuanhang-financial",
+    "name": "远航版权息与股本历史",
+    "basis": "本轮证券范围；已采集或可信覆盖跳过的证券数",
+    "result": "补齐/修正",
+    "module": "yuanhang"
+  },
+  {
+    "id": "ths-yuanhang-limit-up-pool",
+    "name": "远航版涨停板",
+    "basis": "日终：已入队+计划剩余+未入计划总数；盘中：1份快照；原因剩余未知时仅当前批百分比",
+    "result": "补齐/修正",
+    "module": "yuanhang_limits"
+  },
+  {
+    "id": "ths-yuanhang-sprint-limit-up",
+    "name": "远航版涨停冲刺",
+    "basis": "日终：已入队+计划剩余+未入计划总数；盘中：1份快照；原因剩余未知时仅当前批百分比",
+    "result": "补齐/修正",
+    "module": "yuanhang_limits"
+  },
+  {
+    "id": "ths-yuanhang-connect-broad-pool",
+    "name": "远航版连板池",
+    "basis": "日终：已入队+计划剩余+未入计划总数；盘中：1份快照；原因剩余未知时仅当前批百分比",
+    "result": "补齐/修正",
+    "module": "yuanhang_limits"
+  },
+  {
+    "id": "ths-yuanhang-open-limit-up-pool",
+    "name": "远航版炸板池",
+    "basis": "日终：已入队+计划剩余+未入计划总数；盘中：1份快照；原因剩余未知时仅当前批百分比",
+    "result": "补齐/修正",
+    "module": "yuanhang_limits"
+  },
+  {
+    "id": "ths-yuanhang-limit-down-pool",
+    "name": "远航版跌停板",
+    "basis": "日终：已入队+计划剩余+未入计划总数；盘中：1份快照；原因剩余未知时仅当前批百分比",
+    "result": "补齐/修正",
+    "module": "yuanhang_limits"
+  },
+  {
+    "id": "ths-yuanhang-reason",
+    "name": "远航版历史涨跌停原因",
+    "basis": "日终：已入队+计划剩余+未入计划总数；盘中：1份快照；原因剩余未知时仅当前批百分比",
+    "result": "补齐/修正",
+    "module": "yuanhang_limits"
+  }
+]

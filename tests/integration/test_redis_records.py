@@ -84,6 +84,22 @@ async def test_error_redaction_and_idempotent_retry_are_persisted(records):
     assert not (await records.list_error_summaries("stocks"))["total"]
 
 
+async def test_identity_history_is_platform_scoped_bounded_and_replaces_same_operation(records):
+    for platform in ('ths-yuanhang-identity', 'fixture-platform'):
+        for index in range(105):
+            await records.add_identity_run(platform, dict(id=str(index), code='node', operation='login',
+                status='running', message='safe'))
+        await records.add_identity_run(platform, dict(id='104', code='node', operation='login',
+            status='failed', error_code=-2, message='safe'))
+        values = await records.list_identity_runs(platform)
+        assert len(values) == 100 and values[0]['id'] == '104' and values[-1]['id'] == '5'
+        assert values[0]['status'] == 'failed'
+    await records.add_identity_run('fixture-platform', dict(id='new', code='another', operation='application',
+                                                          status='success'))
+    assert (await records.list_identity_runs('ths-yuanhang-identity'))[0]['id'] == '104'
+    assert await records.redis.client.xlen(records.redis.prefix + ':ingest') == 0
+
+
 @pytest.mark.parametrize('kind', ['errors', 'archives'])
 async def test_all_projects_history_is_paginated_and_revision_sensitive(records, kind):
     for index in range(55):
@@ -160,3 +176,19 @@ async def test_clear_logs_scope_revision_and_future_records(records, kind):
         await records.clear_logs('ingest', '*')
     with pytest.raises(ValueError):
         await records.clear_logs(kind, 'bad:*')
+
+async def test_exception_without_message_survives_redis_diagnostic_roundtrip(records):
+    from empire.plugins.collectors.support import record_error_safely
+    from empire.plugins.infra.http import HttpService
+
+    saved = await records.add_error('empty-exception-test', stage='source_validation', error=TimeoutError())
+    loaded = await records.get_error('empty-exception-test', saved['id'])
+    assert loaded['error'] == 'TimeoutError'
+    assert loaded['body'] == ''
+    assert (await records.list_error_summaries('empty-exception-test'))['rows'][0]['error'] == 'TimeoutError'
+    assert await record_error_safely(records, {}, 'collector-empty', TimeoutError(),
+        stage='source_validation', unavailable_message='unavailable')
+    assert (await records.list_error_summaries('collector-empty'))['rows'][0]['error'] == 'TimeoutError'
+    await HttpService._record_failure(SimpleNamespace(records=records),
+        'http-empty', 'GET', 'https://example.test/', TimeoutError())
+    assert (await records.list_error_summaries('http-empty'))['rows'][0]['error'] == 'TimeoutError'

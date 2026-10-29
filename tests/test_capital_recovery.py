@@ -43,6 +43,7 @@ async def test_failed_first_security_does_not_hide_later_data_or_publish_manifes
     assert c.stats['collected'] == 1 and c.stats['queued_records'] == 1
     assert c.stats['continuous_collected'] == 0
     assert c.stats['processed_units'] == 2 and c.stats['failed_units'] == 1
+    assert c.stats['completed_units'] == 1 and c.stats['total_units'] == 2
     c.confirmation.page_status.assert_not_awaited()
     # Recovery repairs the frontier and rebuilds an ordered full proof.
     if c.kind == 'dividends':

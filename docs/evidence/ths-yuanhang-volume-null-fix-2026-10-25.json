@@ -1,0 +1,44 @@
+{
+  "project_id": "ths-yuanhang-prices",
+  "handled_error_ids": [
+    "4ca67bc82be4441bab3252d2d4a17262"
+  ],
+  "source_case": "002042.SZ/2006-12-06 explicit native volume and amount NULL",
+  "formal_verification": "docs/evidence/ths-yuanhang-native-formal-2026-10-25.json",
+  "migration": "build/yuanhang-nullable-volume-production-migration-20261025.json",
+  "initialization_complete": false,
+  "before": {
+    "id": "4ca67bc82be4441bab3252d2d4a17262",
+    "project_id": "ths-yuanhang-prices",
+    "stage": "source_validation",
+    "error": "002042.SZ: Yuanhang missing or invalid 13",
+    "created_at": "2026-10-24T19:33:11.728274+00:00"
+  },
+  "removed": 1,
+  "remaining": {
+    "revision": "8",
+    "total": 2,
+    "changed": true,
+    "offset": 0,
+    "limit": 50,
+    "rows": [
+      {
+        "status_code": null,
+        "error": "Sensitive request failed (ProxyError)",
+        "id": "d5bdb7467a6840c7928f8f311863f78f",
+        "project_id": "ths-yuanhang-prices",
+        "created_at": "2026-10-24T18:20:08.417346+00:00",
+        "stage": "http"
+      },
+      {
+        "status_code": null,
+        "error": "Sensitive request failed (ProxyRouteError)",
+        "id": "ba5f35477c154d5ba2a165be76d776db",
+        "project_id": "ths-yuanhang-prices",
+        "created_at": "2026-10-24T18:20:08.415388+00:00",
+        "stage": "http"
+      }
+    ]
+  },
+  "checked_at": "2026-10-24T19:56:50.353586+00:00"
+}

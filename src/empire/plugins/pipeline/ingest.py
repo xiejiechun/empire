@@ -201,6 +201,20 @@ class IngestPlugin:
         async with self.capacity_lock:
             await self._ensure_capacity_locked(incoming, reservation)
 
+    async def publish_volatile(self, project_id, commit):
+        """Admit explicitly volatile business snapshots without an archive message.
+
+        The owner supplies one bounded atomic Redis operation, no SQL or waits.
+        Shared capacity and isolation apply immediately before dispatch, exactly
+        as for archive publication. A committed result remains a true success.
+        """
+        if not any(project_id in item.projects.values() for item in self.catalog.contributions):
+            raise ValueError('内存快照发布者未登记')
+        async with self.capacity_lock:
+            await self._ensure_capacity_locked(1, None)
+            self._check_archive_admission({project_id})
+            return await commit()
+
     async def publish_page(
         self, envelopes: list[Envelope], *, job_key: str, expected_revision: int, cursor: dict,
         reservation: BatchReservation | None = None,

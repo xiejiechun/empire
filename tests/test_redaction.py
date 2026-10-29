@@ -7,6 +7,17 @@ import pytest
 from empire.core.redaction import REDACTED, RedactingFormatter, Redactor, redact
 
 
+@pytest.mark.parametrize("error", [TimeoutError(), ConnectionError(), ValueError(" \n")])
+def test_empty_exception_retains_type_in_shared_diagnostics(error):
+    from empire.plugins.collection.records import RecordsPlugin
+
+    records = RecordsPlugin({})
+    assert records.sanitize_text(error) == type(error).__name__
+    assert Redactor().value({"error": error}) == {"error": type(error).__name__}
+    assert records.sanitize_text("") == ""
+    assert records.sanitize_text(ValueError("password=secret")) == "password=[REDACTED]"
+
+
 @pytest.mark.parametrize("password", ['"', "'", "\\", 'quote"slash\\中文@+/#?:%', "\n\t"])
 def test_structured_redaction_preserves_json_keys_and_structure(password):
     original = {"plugins": [{"id": "infra.mysql", "health": {"message": f"failure {password}",

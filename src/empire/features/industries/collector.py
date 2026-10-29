@@ -71,6 +71,7 @@ class ThsIndustryCollector:
         return await consume()
 
     async def execute(self, *, fresh=False, baseline_revision=0):
+        self.stats.update(completed_units=0, total_units=None)
         stage = 'source_validation'
         try:
             state = await self.ingest.checkpoint(self.job_key)
@@ -82,7 +83,7 @@ class ThsIndustryCollector:
                 observed, batch = datetime.now(UTC), uuid4().hex
                 self.stats.update(status='collecting', collected=0, pages=0, error='')
                 industries = await self.fetch(BASE, parse_catalog)
-                self.stats['total_units'] = len(industries)
+                self.stats.update(total_units=len(industries), completed_units=0, unit_name='个行业')
                 count, requests = 0, 1
                 async def download(industry, *, reservation):
                     return await self.fetch(members_url(industry['code']),
@@ -110,6 +111,7 @@ class ThsIndustryCollector:
                 state = await publish_with_capacity(self.ingest, self.stats, [envelope], job_key=self.job_key,
                     expected_revision=state['revision'], cursor=cursor)
                 cursor = state['cursor']
+            self.stats.update(completed_units=cursor.get('industries'), total_units=cursor.get('industries'), unit_name='个行业')
             stage = 'archive_confirmation'
             self.stats.update(status='awaiting_archive', collected=cursor['collected'])
             await wait_for_archive(partial(self.confirmation.page_status, self.source, self.job_key,

@@ -54,7 +54,7 @@ async def holders(request):
 
 
 async def collect(c):
-    return await asyncio.wait_for(c.execute(baseline_revision=await c.checkpoint_revision()), 20)
+    return await asyncio.wait_for(c.execute(fresh=True, baseline_revision=await c.checkpoint_revision()), 20)
 
 
 async def dashboard(q, request):
@@ -182,7 +182,9 @@ async def test_source_gap_archives_later_security_without_complete_proof_then_re
     assert await q.detail(report_key(expected)) == expected
     assert await store.client.xlen(store.stream) == 0
     cursor = (await c.ingest.checkpoint(c.job_key))['cursor']
-    assert cursor['index'] == 0 and cursor['collected'] == 0 and cursor['phase'] == 'fetch'
+    assert cursor['index'] == (2 if failure == 'empty_bond' else 0)
+    assert cursor['collected'] == (5 if failure == 'empty_bond' else 3)
+    assert cursor['phase'] == ('source_gap' if failure == 'empty_bond' else 'fetch')
     audit = await q.mysql.read(q.audit, PreparationScope(codes=(STOCK['code'], second['code'])))
     missing = failure == 'identity' or q.kind == 'bond_holders'
     assert audit['complete'] == (not missing) and audit['missing'] == int(missing)

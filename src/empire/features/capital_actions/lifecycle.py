@@ -23,6 +23,7 @@ from empire.plugins.collectors.support import (
 
 async def collect_units(collector, *, fresh=False, baseline_revision=0):
     c = collector
+    c.stats.update(completed_units=0, total_units=None, unit_name='只证券')
     stage = 'plan'
     try:
         state = await c.ingest.checkpoint(c.job_key)
@@ -85,6 +86,7 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
                     today = datetime.now(CHINA).date().isoformat()
                     cursor['detail_refresh_day'] = today
                     cursor['detail_refresh_recent'] = previous_refresh != today
+            c.stats.update(completed_units=cursor['index'], total_units=len(keys), unit_name='只证券')
             reusable, previous = {}, {}
             if c.kind == 'additional_issues':
                 from empire.features.capital_actions.issue_source import (
@@ -161,6 +163,7 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
                         state = await publish(c, state, next_cursor, unit, rows, None, unit_observed)
                     cursor = state['cursor']
                     queued_records += len(rows)
+                    c.stats['completed_units'] = index + 1 - len(failures)
                     c.stats.update(collected=queued_records, queued_records=queued_records,
                                    continuous_collected=cursor['collected'], processed_units=index + 1)
             if failures:
@@ -171,6 +174,7 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
             next_cursor = {**cursor, 'pages': cursor['pages'] + 1, 'phase': 'awaiting_archive'}
             state = await publish(c, state, next_cursor, 'manifest', [], manifest, datetime.now(UTC))
             cursor = state['cursor']
+        c.stats.update(completed_units=cursor['index'], total_units=cursor['units'])
         stage = 'archive_confirmation'
         c.stats.update(status='awaiting_archive', pages=cursor['pages'], collected=cursor['collected'])
         await wait_for_archive(partial(c.confirmation.page_status, c.source, c.job_key,

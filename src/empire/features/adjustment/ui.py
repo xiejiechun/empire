@@ -51,7 +51,7 @@ class AdjustmentPage(QWidget):
         self.code = QLineEdit()
         self.code.setMaxLength(6)
         accessible(self.code, '复权证券代码')
-        self.candidates = CandidateSearch(self, self.code, shell, 'kaipanla_quote',
+        self.candidates = CandidateSearch(self, self.code, shell, 'stock',
             lambda r: self.market.setCurrentIndex(self.market.findData(r['unified_code'][-2:])))
         today = datetime.now(CHINA).date()
         self.start = QLineEdit((today-timedelta(days=365)).isoformat())
@@ -173,9 +173,9 @@ class AdjustmentPage(QWidget):
             for key in row['events']:
                 kind = self.result.get('event_plans', {}).get(key)
                 if kind:
-                    button = QPushButton(row['date'] + ' · 查看' + ('分红送转' if kind == 'dividends' else '配股') + '方案与输入')
-                    button.clicked.connect(lambda _=False, k=key, p=kind: self.shell.navigate(p,
-                        NavigationContext(unified_code=self.result['security'], event_key=k)))
+                    button = QPushButton(row['date'] + ' · 查看远航版除权输入')
+                    button.clicked.connect(lambda _=False, k=key: self.shell.navigate('yuanhang',
+                        NavigationContext(unified_code=self.result['security'], start=k, end=k, event_key=k)))
                     self.event_bar.addWidget(button)
 
     def render(self):

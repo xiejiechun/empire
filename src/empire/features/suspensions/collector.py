@@ -188,12 +188,14 @@ class TdxSuspensionCollector:
         return DeferredResponse(read, consume)
 
     async def execute(self, *, fresh=False, baseline_revision=0) -> SuspensionRunResult:
+        self.stats.update(completed_units=0, total_units=None)
         stage, current_date, current_period = "checkpoint", None, None
         try:
             state = await self.ingest.checkpoint(self.job_key)
             cursor = state["cursor"]
             progressed = state["revision"] > baseline_revision
             if progressed and cursor.get("phase") == "complete":
+                self.stats.update(completed_units=cursor["dates_checked"], total_units=(datetime.fromisoformat(cursor["end_date"]) - datetime.fromisoformat(cursor["start_date"])).days + 1, unit_name="个日期")
                 return self._result(cursor)
             if not cursor or (fresh and not progressed) or cursor.get("phase") == "complete":
                 plan = await self.query.plan(self.today(), fresh=fresh)
@@ -203,6 +205,8 @@ class TdxSuspensionCollector:
                           "started_at": datetime.now(UTC).isoformat()}
             periods = periods_between(datetime.fromisoformat(cursor["start_date"]).date(),
                                       datetime.fromisoformat(cursor["end_date"]).date())
+            self.stats.update(completed_units=cursor["dates_checked"],
+                total_units=(datetime.fromisoformat(cursor["end_date"]) - datetime.fromisoformat(cursor["start_date"])).days + 1, unit_name="个日期")
             while cursor["phase"] == "fetch":
                 current_period = periods[cursor["period_index"]]
                 start = datetime.fromisoformat(current_period["start_date"]).date()
@@ -244,6 +248,7 @@ class TdxSuspensionCollector:
                         expected_revision=state['revision'], cursor=updated,
                     )
                     cursor = state['cursor']
+                    self.stats['completed_units'] = cursor['dates_checked']
             stage = "archive_confirmation"
             self.stats.update(status="awaiting_archive", collected=cursor["collected"], pages=cursor["pages"])
             await self._confirm(cursor)

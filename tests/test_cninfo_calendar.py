@@ -108,6 +108,7 @@ async def test_collects_months_and_finishes_only_after_archive_confirmation():
     item = collector()
     result = await item.execute()
     assert result["collected"] == 61 and result["pages"] == 2
+    assert item.health()["completed_units"] == item.health()["total_units"] == 2
     assert [call.kwargs["params"]["month"] for call in item.http.request.call_args_list] == ["2026-09", "2026-10"]
     item.confirmation.page_status.assert_awaited_with(
         "cninfo", "cninfo-calendar-v1", "cninfo-calendar", result["batch_id"], 2)
@@ -123,6 +124,7 @@ async def test_month_failure_keeps_progress_and_resumes_exact_failed_month():
     with pytest.raises(ValueError, match="为空"):
         await item.execute()
     assert item.ingest.state["cursor"]["pages"] == 1
+    assert item.health()["completed_units"] == 1 and item.health()["total_units"] == 2
     assert len(item.ingest.events) == 1
     assert item.records.add_error.call_args.kwargs["metadata"] == {"month": "2026-10"}
     item.http.request.side_effect = [response("2026-10")]

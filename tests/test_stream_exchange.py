@@ -1,9 +1,11 @@
 import asyncio
 
+import httpx
 import pytest
 
 from empire.contracts.download import ResponsePolicy
 from empire.contracts.native_stream import StreamTarget
+from empire.plugins.collection.unit_prefetch import BorrowedReservation
 from empire.plugins.infra.http import HttpService
 from empire.plugins.infra.proxy_pool import Endpoint, ProxyPool
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
@@ -212,6 +214,64 @@ async def test_socks_route_uses_remote_destination_and_shared_lease():
         ROUTE_COUNTS.reset(tokens[2])
         PROXY_FALLBACK.reset(tokens[1])
         USE_PROXY.reset(tokens[0])
+        await http.close()
+        server.close()
+        await server.wait_closed()
+
+
+@pytest.mark.parametrize('fail', [False, True])
+async def test_prefetched_native_response_does_not_double_reserve_or_release_owner(fail):
+    server = await asyncio.start_server(echo, '127.0.0.1', 0)
+    http, policy = service(), ResponsePolicy(4, 4)
+    owner = await http.buffer_budget.reserve(policy.reservation_bytes)
+    async def protocol(channel):
+        await channel.write(b'test')
+        if fail:
+            raise ValueError('source validation')
+        assert http.buffer_budget.used == policy.reservation_bytes
+        return await channel.readexactly(4)
+    try:
+        if fail:
+            with pytest.raises(ValueError, match='source validation'):
+                await http.request_stream(target(server.sockets[0].getsockname()[1]), protocol,
+                                          policy=policy, reservation=BorrowedReservation(owner))
+        else:
+            response = await http.request_stream(target(server.sockets[0].getsockname()[1]), protocol,
+                                                 policy=policy, reservation=BorrowedReservation(owner))
+            response.close()
+        assert not owner.released and http.buffer_budget.used == policy.reservation_bytes
+        assert http.global_active == 0 and not http.inflight
+    finally:
+        owner.release()
+        await http.close()
+        server.close()
+        await server.wait_closed()
+
+
+async def test_stalled_native_peer_uses_bounded_transport_retry_and_cleans_up(monkeypatch):
+    from empire.plugins.infra import stream_exchange
+    monkeypatch.setattr(stream_exchange, 'ATTEMPT_TIMEOUT_SECONDS', .03)
+    monkeypatch.setattr(stream_exchange, 'retry_delay', lambda n: 0)
+    clients = []
+    async def hold(reader, writer):
+        try:
+            clients.append(writer)
+            await reader.read()
+        finally:
+            writer.close()
+            await writer.wait_closed()
+    async def protocol(channel):
+        return await channel.readexactly(4)
+    server = await asyncio.start_server(hold, '127.0.0.1', 0)
+    http = service()
+    try:
+        with pytest.raises(httpx.ReadTimeout, match='Native exchange'):
+            await http.request_stream(target(server.sockets[0].getsockname()[1]), protocol,
+                                      max_retries=1, total_timeout=2)
+        assert len(clients) == 2 and len(http.redis.calls) == 2
+        assert http.buffer_budget.used == http.global_active == 0
+        assert not http.inflight and not http.responses
+    finally:
         await http.close()
         server.close()
         await server.wait_closed()

@@ -150,21 +150,44 @@ async def test_commit_ack_failure_keeps_message_and_replay_has_no_business_dml(t
 
 async def test_all_detail_units_enqueue_while_archiver_is_stopped(themes):
     manager, c, q, row = themes
-    await manager.registry.get('archive.worker').stop()
-    manager.registry.get('archive.worker').stop_event.clear()
-    rows = [row, {**row, 'theme_id': '149', 'source_theme_id': '149', 'name': '另一题材',
-                  'rank_no': 2, 'display_order': 1}]
+    archive = manager.registry.get('archive.worker')
+    await archive.stop()
+    archive.stop_event.clear()
+    rows = [{**row, 'theme_id': str(148+i), 'source_theme_id': str(148+i), 'name': '题材'+str(i),
+             'rank_no': i+1, 'display_order': i} for i in range(33)]
     from datetime import timedelta
     await q.history.append(rows, observed_at=datetime.now(UTC) + timedelta(seconds=1), round_id='two')
-    values = [sample(), {**sample(), 'ID': '149', 'Name': '另一题材'}]
+    values = [{**sample(), 'ID': r['theme_id'], 'Name': r['name']} for r in rows]
     c.http.request.side_effect = [httpx.Response(200, json=value) for value in values]
     state = await c.ingest.checkpoint(c.job_key)
     _, cursor = await asyncio.wait_for(c.collect_details(state, {}, fresh=False), 10)
-    assert cursor['page'] == 2 and cursor['phase'] == 'awaiting_archive'
+    assert cursor['page'] == 33 and cursor['phase'] == 'awaiting_archive'
     store = manager.registry.get('redis.store')
-    assert await store.client.xlen(store.stream) == 2
+    assert await store.client.xlen(store.stream) == 33
     assert not (await q.detail('148'))
-    await manager.registry.get('archive.worker').flush()
+    # flush is a bounded scheduling turn; the resident loop continues on wake.
+    # Emulate those turns while keeping the worker stopped during collection.
+    await archive.flush()
+    assert await store.client.xlen(store.stream) > 0
+    assert archive.wake_event.is_set()
+    async def drain():
+        while await store.client.xlen(store.stream):
+            await archive.flush()
+    await asyncio.wait_for(drain(), 25)
     assert await store.client.xlen(store.stream) == 0
     for value in values:
         assert (await q.detail(value['ID']))['detail'] == map_detail(parse_detail(value, value['ID']), ['600001.SH'])
+
+
+async def test_source_empty_reason_survives_queue_archive_and_query(themes):
+    manager, c, q, _ = themes
+    value = sample()
+    value['Table'][0]['Level1']['Stocks'][0]['Reason'] = ''
+    value['StockList'][0]['Tag'][0]['Reason'] = ''
+    c.http.request.return_value = httpx.Response(200, json=value)
+    await collect(c)
+    detail = (await q.detail('148'))['detail']
+    assert detail['relations'][0]['reason'] == ''
+    assert len(detail['stocks']) == 1
+    store = manager.registry.get('redis.store')
+    assert await store.client.xlen(store.stream) == 0

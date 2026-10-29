@@ -1,0 +1,262 @@
+{
+  "project": "ths-holders",
+  "issue": "持续空名债券导致后半股票池反复补采",
+  "source_runs": [
+    "07c300f79cd046ba9751b07aff01d72c",
+    "46a7ee88b6ff4f509044f24503f880d4"
+  ],
+  "checked_at": "2026-10-28T04:12:37.509868+00:00",
+  "real_report_sha256": "8bea9e62bb4e881335ec6ea08297c3adc5066114ed76faacfaedb565a6983565",
+  "source_sha256": "5902a31d948362b322415bec698d24e0ee3c4d544cc65449d34ffaecdb4df8bc",
+  "scope": {
+    "population": 5578,
+    "selected": [
+      "920162.BJ",
+      "920230.BJ",
+      "920296.BJ",
+      "600519.SH",
+      "600586.SH",
+      "601139.SH",
+      "601318.SH",
+      "601456.SH",
+      "601512.SH",
+      "601515.SH",
+      "601686.SH",
+      "603261.SH",
+      "603890.SH",
+      "605007.SH",
+      "605333.SH",
+      "688152.SH",
+      "688201.SH",
+      "688212.SH",
+      "688213.SH",
+      "688315.SH",
+      "688323.SH",
+      "688386.SH",
+      "688588.SH",
+      "000001.SZ",
+      "000017.SZ",
+      "000065.SZ",
+      "000166.SZ",
+      "000430.SZ",
+      "000788.SZ",
+      "000833.SZ",
+      "000912.SZ",
+      "000937.SZ",
+      "002184.SZ",
+      "002673.SZ",
+      "002902.SZ",
+      "300194.SZ",
+      "300232.SZ",
+      "300264.SZ",
+      "300270.SZ",
+      "300288.SZ",
+      "300304.SZ",
+      "300398.SZ",
+      "300456.SZ",
+      "300707.SZ",
+      "300750.SZ",
+      "301569.SZ",
+      "301680.SZ",
+      "301699.SZ"
+    ],
+    "seed": 20261028,
+    "random": [
+      "688588.SH",
+      "605333.SH",
+      "688201.SH",
+      "000937.SZ",
+      "688152.SH",
+      "300264.SZ",
+      "000833.SZ",
+      "603261.SH",
+      "603890.SH",
+      "002673.SZ",
+      "300707.SZ",
+      "000166.SZ",
+      "601512.SH",
+      "300456.SZ",
+      "688323.SH",
+      "300304.SZ",
+      "688212.SH",
+      "920230.BJ",
+      "000788.SZ",
+      "688213.SH",
+      "000017.SZ",
+      "300270.SZ",
+      "601456.SH",
+      "600586.SH",
+      "301680.SZ",
+      "920296.BJ",
+      "300194.SZ",
+      "300288.SZ",
+      "601686.SH",
+      "002184.SZ"
+    ],
+    "fixed": [
+      "300398.SZ",
+      "601515.SH",
+      "000912.SZ",
+      "000430.SZ",
+      "000065.SZ",
+      "300232.SZ",
+      "301699.SZ",
+      "688315.SH",
+      "002902.SZ",
+      "301569.SZ",
+      "605007.SH",
+      "688386.SH",
+      "920162.BJ",
+      "601139.SH",
+      "000001.SZ",
+      "601318.SH",
+      "600519.SH",
+      "300750.SZ"
+    ],
+    "reason": "沿用已有较小充分样本，未为凑5%扩大范围"
+  },
+  "results": {
+    "pipeline_verified": true,
+    "maintenance_verified": true,
+    "acceptance_complete": false,
+    "source_gaps": {
+      "300398.SZ": [
+        {
+          "kind": "bond_holders",
+          "report_date": "2023-12-31",
+          "source_panel": "b0her_1",
+          "reason": "instrument_name_missing"
+        }
+      ],
+      "601515.SH": [
+        {
+          "kind": "bond_holders",
+          "report_date": "2024-06-30",
+          "source_panel": "b0her_1",
+          "reason": "instrument_name_missing"
+        }
+      ]
+    },
+    "routes": {
+      "proxy_requests": 48
+    },
+    "pending": 0,
+    "unchanged_pass_requests": 0,
+    "unchanged_pass_publications": 0,
+    "data_usability": {
+      "top_holders": {
+        "analysis_usable": true
+      },
+      "float_holders": {
+        "analysis_usable": true
+      },
+      "bond_holders": {
+        "analysis_usable": false
+      }
+    }
+  },
+  "routing_policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "errors": [],
+  "tests": {
+    "archive_integration": 78,
+    "control_integration": 3,
+    "checkpoint_migration": 1,
+    "latest_related_unit_ui": 109
+  },
+  "costs": {
+    "initial_logical_requests": 48,
+    "initial_publications": 48,
+    "unchanged_requests": 0,
+    "unchanged_publications": 0,
+    "observed_wire_bytes": null,
+    "byte_limitation": "本次工具未记录真实传输字节，不宣称实测字节降幅；请求与入队数有完整证据"
+  },
+  "error_cleanup": {
+    "deleted_ids": [],
+    "reason": "本次依据来源缺口运行记录修复；8条既有网络错误不是该类型，不清除，保留并发新增与历史运行"
+  },
+  "release": {
+    "id": "18eef7af6074406f9af12311f237eb81",
+    "source_sha256": "99244bb185b2e7687f508c12302a28de69b25fb44fc52638b1a8973eaad71386",
+    "test_scope": {
+      "mode": "explicit_sample",
+      "files": [
+        "tests/integration/test_holder_archive.py",
+        "tests/integration/test_holder_checkpoint.py",
+        "tests/integration/test_holder_run_outcome.py",
+        "tests/integration/test_holder_source_migration.py",
+        "tests/test_holder_combined.py",
+        "tests/test_holder_error_shapes.py",
+        "tests/test_holder_feature_lifecycle.py",
+        "tests/test_holder_identity_gaps.py",
+        "tests/test_holder_maintenance.py",
+        "tests/test_holder_quality.py",
+        "tests/test_holder_ui.py",
+        "tests/test_ingest_reservations.py",
+        "tests/test_release_gate.py",
+        "tests/test_release_steps.py",
+        "tests/test_release_test_plan.py",
+        "tests/test_ths_holders.py",
+        "tests/test_verify_ths_holders.py"
+      ],
+      "total_count": 4743,
+      "selected_count": 237,
+      "fraction": 0.04996837444655281,
+      "whole_files": true,
+      "untested_count": 4506
+    },
+    "tests_passed": 237,
+    "full_suite": "按用户最新要求中止，不宣称全量通过",
+    "published": true
+  },
+  "desktop": {
+    "opened": true,
+    "holders_button": "检查更新",
+    "saved_daily_time": "20:00",
+    "historical_run_preserved": true,
+    "production_holders_collection_started": false,
+    "mysql_connected": true,
+    "redis_connected": true,
+    "other_feature_issue": "市场复盘查询缺health方法，已反馈原任务，未解决",
+    "market_review": {
+      "primary_menu": true,
+      "query_range": "2026-07-31~2026-10-28",
+      "selected_20261027": {
+        "up": 40,
+        "opened": 29,
+        "down": 18,
+        "highest": 5
+      },
+      "selected_20261028": "待采集；指标显示未知",
+      "health_error": "ReviewQuery missing health; handed back to owning task"
+    }
+  },
+  "migration": {
+    "job": "ths-holders-v1",
+    "applied": true,
+    "changed": true,
+    "previous_phase": "fetch",
+    "pending": 0,
+    "business_dml": 0,
+    "fingerprint_invalidation": true,
+    "recovery": "confirmed SQL security proofs; optional matching Redis fingerprints"
+  },
+  "production_preservation": {
+    "holder_report": 62788,
+    "holder_member": 713845,
+    "sql_state_sha256": "0ba246e40a4f873c46f8d0c2540239ecc44eedc76d9ac1c2f4795f2002483f42",
+    "unchanged": true,
+    "configuration_preserved": true
+  }
+}

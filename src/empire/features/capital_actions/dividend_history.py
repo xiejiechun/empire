@@ -62,7 +62,8 @@ async def collect_history(c, *, force_history=False):
     size, count = 0, 0
     async def download(period, *, reservation):
         return await complete_response(c, 'dividends', period, reservation=reservation, defer=True)
-    c.stats.update(total_report_periods=len(periods), downloaded_report_periods=0)
+    c.stats.update(total_report_periods=len(periods), downloaded_report_periods=0,
+                   total_units=len(periods), completed_units=0, unit_name='个报告期（来源核验）')
     async with prefetch_units(c, periods, download, url=PAGE_URL, domains=('tdx.com.cn',), item_name='报告期') as reads:
         async for index, read in reads:
             rows, _ = await read.resolve()
@@ -75,7 +76,7 @@ async def collect_history(c, *, force_history=False):
                 if key in units:
                     row['name'] = stocks[key]['name']  # Same SQL stock-pool identity as the former detail path.
                     units[key].append(row)
-            c.stats.update(downloaded_report_periods=index + 1, current_report_period=periods[index])
+            c.stats.update(downloaded_report_periods=index + 1, current_report_period=periods[index], completed_units=index + 1)
     for key in units:
         units[key] = ordered(units[key])
         from empire.features.capital_actions.contract import validate_rows

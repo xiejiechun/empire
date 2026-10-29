@@ -1,0 +1,422 @@
+{
+  "started_at": "2026-10-24T23:14:35.802379+00:00",
+  "finished_at": "2026-10-25T03:23:39.222949+00:00",
+  "stock_count": 5578,
+  "scope_hash": "15c02f8b05dd3be3c833b3c825771c31fd22eab5ab3f11aa48eb719c473bd85f",
+  "through": "2026-10-23",
+  "audit_contract": 5,
+  "target": {
+    "database_name": "empire",
+    "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+    "namespace": "empire:dev"
+  },
+  "routes": {
+    "proxy_requests": 13197
+  },
+  "source_units_received": {
+    "ths-yuanhang-prices": 5578,
+    "ths-yuanhang-financial": 5578
+  },
+  "input_identity_verified": true,
+  "schema": 1,
+  "initialization_complete": true,
+  "released": false,
+  "report": {
+    "path": "build/yuanhang-full-initialization-20261025-e.json",
+    "sha256": "dfbebcc5f313c1d6c68708c0ac27b415cf7cd876a130ed4c3c4ad3c025683d68"
+  },
+  "input_sha256": "90a8d6246ceab4ce16891e3ad82917d0f900fae3432cf7fa6aa3c76a015e60dd",
+  "implementation_sha256": "f8a2d68a43f1b6f092a5fe4ba7bb9b456d5908284d5ffd94a26b4f9bc7605974",
+  "scope": "当前沪深北A股；每证券远航原生协议完整可得历史，不代表全部历史退市证券。",
+  "auxiliary_source": "东方财富仅判断上市状态，不提供行情/权息/股本事实",
+  "datasets": {
+    "ths-yuanhang-prices": {
+      "audited": 5578,
+      "business_securities": 5575,
+      "rows": 17005355,
+      "first": "1990-12-19",
+      "last": "2026-10-23",
+      "pending": 0,
+      "problems": 0,
+      "outcome": {
+        "phase": "complete",
+        "scope_hash": "15c02f8b05dd3be3c833b3c825771c31fd22eab5ab3f11aa48eb719c473bd85f",
+        "through": "2026-10-23",
+        "next_index": 5578,
+        "next_year": 1900,
+        "snapshot_hash": "",
+        "pages": 75986,
+        "collected": 17005355,
+        "batch_id": "4d4ff66610b44cc99f06f1e50992dfc2",
+        "deferred": {
+          "001381.SZ": {
+            "status": "deferred_prelisting",
+            "metadata_source": "eastmoney_listing_scope",
+            "code": "001381.SZ",
+            "listing_date": null,
+            "through": "2026-10-23",
+            "native_status": "empty_history"
+          },
+          "688827.SH": {
+            "status": "deferred_prelisting",
+            "metadata_source": "eastmoney_listing_scope",
+            "code": "688827.SH",
+            "listing_date": null,
+            "through": "2026-10-23",
+            "native_status": "empty_history"
+          },
+          "920306.BJ": {
+            "status": "deferred_prelisting",
+            "metadata_source": "eastmoney_listing_scope",
+            "code": "920306.BJ",
+            "listing_date": null,
+            "through": "2026-10-23",
+            "native_status": "empty_history"
+          }
+        }
+      },
+      "deferred": [
+        {
+          "units": 0,
+          "rows": 0,
+          "status": "deferred_prelisting",
+          "metadata_source": "eastmoney_listing_scope",
+          "code": "001381.SZ",
+          "listing_date": null,
+          "through": "2026-10-23",
+          "native_status": "empty_history",
+          "problems": []
+        },
+        {
+          "units": 0,
+          "rows": 0,
+          "status": "deferred_prelisting",
+          "metadata_source": "eastmoney_listing_scope",
+          "code": "688827.SH",
+          "listing_date": null,
+          "through": "2026-10-23",
+          "native_status": "empty_history",
+          "problems": []
+        },
+        {
+          "units": 0,
+          "rows": 0,
+          "status": "deferred_prelisting",
+          "metadata_source": "eastmoney_listing_scope",
+          "code": "920306.BJ",
+          "listing_date": null,
+          "through": "2026-10-23",
+          "native_status": "empty_history",
+          "problems": []
+        }
+      ]
+    },
+    "ths-yuanhang-financial": {
+      "audited": 5578,
+      "business_securities": 5575,
+      "rows": 816142,
+      "first": "1990-12-19",
+      "last": "2026-10-23",
+      "pending": 0,
+      "problems": 0,
+      "outcome": {
+        "phase": "complete",
+        "scope_hash": "15c02f8b05dd3be3c833b3c825771c31fd22eab5ab3f11aa48eb719c473bd85f",
+        "through": "2026-10-23",
+        "next_index": 5578,
+        "next_year": 1900,
+        "snapshot_hash": "",
+        "pages": 5575,
+        "collected": 816142,
+        "batch_id": "07c9beb245f048b6ba0a9d5a8ab37e1b",
+        "deferred": {
+          "001381.SZ": {
+            "status": "deferred_prelisting",
+            "metadata_source": "eastmoney_listing_scope",
+            "code": "001381.SZ",
+            "listing_date": null,
+            "through": "2026-10-23",
+            "native_status": "empty_history"
+          },
+          "688827.SH": {
+            "status": "deferred_prelisting",
+            "metadata_source": "eastmoney_listing_scope",
+            "code": "688827.SH",
+            "listing_date": null,
+            "through": "2026-10-23",
+            "native_status": "partial_total_circulating"
+          },
+          "920306.BJ": {
+            "status": "deferred_prelisting",
+            "metadata_source": "eastmoney_listing_scope",
+            "code": "920306.BJ",
+            "listing_date": null,
+            "through": "2026-10-23",
+            "native_status": "empty_history"
+          }
+        }
+      },
+      "deferred": [
+        {
+          "units": 0,
+          "rows": 0,
+          "status": "deferred_prelisting",
+          "metadata_source": "eastmoney_listing_scope",
+          "code": "001381.SZ",
+          "listing_date": null,
+          "through": "2026-10-23",
+          "native_status": "empty_history",
+          "problems": []
+        },
+        {
+          "units": 0,
+          "rows": 0,
+          "status": "deferred_prelisting",
+          "metadata_source": "eastmoney_listing_scope",
+          "code": "688827.SH",
+          "listing_date": null,
+          "through": "2026-10-23",
+          "native_status": "partial_total_circulating",
+          "problems": []
+        },
+        {
+          "units": 0,
+          "rows": 0,
+          "status": "deferred_prelisting",
+          "metadata_source": "eastmoney_listing_scope",
+          "code": "920306.BJ",
+          "listing_date": null,
+          "through": "2026-10-23",
+          "native_status": "empty_history",
+          "problems": []
+        }
+      ]
+    }
+  },
+  "production": {
+    "totals": {
+      "yuanhang_daily_price": 17005355,
+      "yuanhang_price_year": 75986,
+      "yuanhang_corporate_action": 57650,
+      "yuanhang_capital": 758492,
+      "yuanhang_series_proof": 11150
+    },
+    "capital": [
+      {
+        "capital_kind": "circulating",
+        "rows_count": 190316,
+        "first_date": "1990-12-19",
+        "last_date": "2026-10-23",
+        "missing": "24"
+      },
+      {
+        "capital_kind": "free_float",
+        "rows_count": 377860,
+        "first_date": "1990-12-19",
+        "last_date": "2026-10-23",
+        "missing": "0"
+      },
+      {
+        "capital_kind": "total",
+        "rows_count": 190316,
+        "first_date": "1990-12-19",
+        "last_date": "2026-10-23",
+        "missing": "0"
+      }
+    ],
+    "ohlc_anomalies": [
+      {
+        "unified_code": "000529.SZ",
+        "trade_date": "2000-10-16",
+        "open": "7.6500000000",
+        "high": "7.8200000000",
+        "low": "7.6500000000",
+        "close": "7.8300000000"
+      },
+      {
+        "unified_code": "000672.SZ",
+        "trade_date": "2000-09-05",
+        "open": "27.0000000000",
+        "high": "27.5000000000",
+        "low": "26.6000000000",
+        "close": "26.5100000000"
+      },
+      {
+        "unified_code": "000672.SZ",
+        "trade_date": "2000-09-21",
+        "open": "26.0500000000",
+        "high": "26.2900000000",
+        "low": "25.7000000000",
+        "close": "26.4600000000"
+      },
+      {
+        "unified_code": "000688.SZ",
+        "trade_date": "2000-09-20",
+        "open": "18.5000000000",
+        "high": "19.0600000000",
+        "low": "18.2400000000",
+        "close": "19.0800000000"
+      }
+    ],
+    "pending": 0
+  },
+  "quality_limits": {
+    "missing_volume_securities": 1,
+    "missing_volume_rows": 1,
+    "missing_amount_securities": 845,
+    "missing_amount_rows": 845,
+    "ohlc_anomaly_securities": 3,
+    "ohlc_anomaly_rows": 4,
+    "missing_circulating_securities": 21,
+    "missing_circulating_rows": 24,
+    "ambiguous_action_securities": 3,
+    "policy": "明确源NULL保留未知；OHLC异常与同日多事件歧义阻断受影响区间复权，原始历史仍保留。"
+  },
+  "previous_preflight": {
+    "daily_rows": 17005356,
+    "current_audited_rows": 17005355,
+    "interpretation": "旧预检仅总数，无逐证券证明，不能定位一条差异或推断固定来源原因；本轮逐证券来源集合/内容与SQL完全一致。"
+  },
+  "remaining": [
+    "正式发布门禁",
+    "同包真实连接、查询与桌面验收"
+  ],
+  "financial_quality": [
+    {
+      "code": "000601.SZ",
+      "missing_circulating": 0,
+      "ambiguous_action_dates": [
+        "1997-11-03"
+      ]
+    },
+    {
+      "code": "000812.SZ",
+      "missing_circulating": 0,
+      "ambiguous_action_dates": [
+        "1998-09-22"
+      ]
+    },
+    {
+      "code": "601091.SH",
+      "missing_circulating": 2,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "601123.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "603293.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "603407.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "603435.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "603448.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "603459.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "603468.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "603883.SH",
+      "missing_circulating": 0,
+      "ambiguous_action_dates": [
+        "2024-06-27"
+      ]
+    },
+    {
+      "code": "688635.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688797.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688801.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688806.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688808.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688811.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688820.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688825.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688826.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688828.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688835.SH",
+      "missing_circulating": 3,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688836.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    },
+    {
+      "code": "688837.SH",
+      "missing_circulating": 1,
+      "ambiguous_action_dates": []
+    }
+  ],
+  "post_initialization_review": {
+    "data_pipeline_unchanged": true,
+    "compared_files": 630,
+    "runtime_changes": [
+      "src/empire/features/yuanhang/ui.py",
+      "src/empire/features/yuanhang/docs/help/yuanhang.md",
+      "src/empire/plugins/ui/storage_reference.md"
+    ],
+    "reason": "仅修正UI注册、独立启停及帮助分组；来源解析、下载、入队、归档、查询、SQL和维护脚本逐文件与全池初始化一致。新70股正式代理链路和容量另行重验。"
+  }
+}

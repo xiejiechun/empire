@@ -295,7 +295,10 @@ class ProxyPool:
             if candidate.egress_identity == entry.egress_identity:
                 candidate.ready_at[site] = max(candidate.ready_at.get(site, 0), ready)
 
-    async def acquire(self, *, fallback=False, site="", excluded=None):
+    async def acquire(self, *, fallback=False, site="", excluded=None, device_code=None):
+        if device_code is not None and (not isinstance(device_code, str)
+                or not re.fullmatch(r'[A-Za-z0-9_.-]{1,100}', device_code)):
+            raise ValueError('固定代理设备编号无效')
         excluded = excluded or set()
         self.waiting += 1
         try:
@@ -307,6 +310,7 @@ class ProxyPool:
                 now = monotonic()
                 eligible = [e for e in self.entries.values()
                             if len(excluded) < 1000 and e.code not in excluded
+                            and (device_code is None or e.code == device_code)
                             and e.expires > now and e.cooldown <= now]
                 busy_egresses = {e.egress_identity for e in [*self.entries.values(), *self.retired]
                                   if site in e.active_sites}
@@ -337,6 +341,8 @@ class ProxyPool:
                         raise RuntimeError("代理客户端初始化失败，请检查代理协议支持") from None
                     return entry
                 if not eligible:
+                    if device_code is not None:
+                        raise httpx.ProxyError('绑定的代理设备当前不可用，不更换设备或退回直连')
                     if fallback:
                         return None
                     if excluded:

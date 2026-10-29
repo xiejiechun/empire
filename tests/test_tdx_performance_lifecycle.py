@@ -9,6 +9,7 @@ import pytest
 
 from empire.features.performance.collector import PerformanceCollector
 from empire.features.performance.contract import KINDS
+from empire.features.performance.dataset import PerformanceDataset
 from tests.prefetch_source import prefetch_http
 from tests.test_tdx_performance import PERIOD, directory, source
 
@@ -104,3 +105,44 @@ async def test_awaiting_resume_never_downloads(monkeypatch):
     c.confirmation.page_status.side_effect = None
     await c.execute(fresh=True, baseline_revision=state['revision'])
     assert c.http.request.await_count == requests
+
+
+@pytest.mark.parametrize('changed', ['holders', 'average_float', 'name'])
+async def test_holder_detail_wins_as_whole_record_without_second_read(monkeypatch, changed):
+    c, state = collector('holder_count', monkeypatch)
+    original = c.http.request.side_effect
+    def divergent(*args, **kw):
+        response = original(*args, **kw)
+        if json.loads(kw['content'])['Params'][1] == '000001':
+            body = response.json()
+            field = {'holders': 'T003', 'average_float': 'T004', 'name': 'name'}[changed]
+            body['ResultSets'][0]['Content'][0][body['ResultSets'][0]['ColName'].index(field)] = (
+                123 if changed == 'holders' else '12.5' if changed == 'average_float' else '历史名称')
+            return httpx.Response(200, json=body)
+        return response
+    c.http.request.side_effect = divergent
+    await c.execute()
+    events = [call.args[0][0] for call in c.ingest.publish_page.call_args_list]
+    rows = PerformanceDataset(c.kind).normalize(events[0])['rows']
+    assert rows[0][changed] == (123 if changed == 'holders' else '12.5' if changed == 'average_float' else '历史名称')
+    assert c.stats['directory_differences'] == 1
+    assert c.http.request.await_count == 3
+    assert state['cursor']['phase'] == 'complete'
+
+
+async def test_holder_missing_latest_date_is_added_without_erasing_history(monkeypatch):
+    c, _ = collector('holder_count', monkeypatch)
+    original = c.http.request.side_effect
+    def newer_directory(*args, **kw):
+        response = original(*args, **kw)
+        if not json.loads(kw['content'])['Params'][1]:
+            body = response.json()
+            column = body['ResultSets'][0]['ColName'].index('sT002')
+            for row in body['ResultSets'][0]['Content']:
+                row[column] = '2026-07-01'
+            return httpx.Response(200, json=body)
+        return response
+    c.http.request.side_effect = newer_directory
+    result = await c.execute()
+    assert result['collected'] == 4
+    assert c.http.request.await_count == 3

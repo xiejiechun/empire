@@ -12,6 +12,7 @@ from empire.contracts.plugin import PluginContext, PluginManifest
 from empire.core.identity import safe_project_id
 from empire.core.time import mysql_time
 from empire.plugins.infra.collection_state import CollectionState
+from empire.plugins.pipeline.archive_metrics import ArchiveMetrics
 from empire.plugins.pipeline.archive_queue import (
     SCAN_WINDOW,
     TAIL_ID,
@@ -47,11 +48,13 @@ class ArchivePlugin:
         self.isolated = {}
         self.isolation_retry = 0
         self.stats = {"status": "stopped", "archived": 0, "errors": 0}
+        self.metrics = ArchiveMetrics()
 
     async def start(self, context: PluginContext) -> dict:
         self.redis = context.get("redis.store")
         self.mysql = context.get("mysql.store")
         self.catalog = context.get("dataset.catalog")
+        self.metrics.reset({p for c in self.catalog.contributions for p in c.projects.values()})
         self.records = context.get("collection.records")
         self.fingerprints = FingerprintCache(self.redis, self.settings, self.catalog.fingerprint_version)
         self.states = CollectionState(self.mysql, self.redis.prefix)
@@ -416,6 +419,7 @@ class ArchivePlugin:
         version_contract = self.catalog.fingerprint_version(namespace)
         fingerprint_source = self.catalog.fingerprint_source(envelope)
         cached = await self.fingerprints.get(namespace, fingerprint_source, list(plan))
+        project = self.catalog.project_id(envelope)
         pending, confirmed = set(), {}
         stale = 0
         for ident, (content, version) in plan.items():
@@ -428,13 +432,18 @@ class ArchivePlugin:
             else:
                 pending.add(ident)
         count = data.get("row_count", data.get("expected_count", 0))
+        self.metrics.add(project, checked=len(plan), equal=len(confirmed), stale=stale,
+                         missing=len(set(plan) - cached.keys()),
+                         changed=len(pending & cached.keys()))
         outcome = {"status": self.catalog.stale_outcome(envelope) if stale else "complete",
                    "row_count": count, "written_count": 0}
         if pending or not plan:
+            self.metrics.add(project, sql_attempts=1)
             subset = self.catalog.fingerprint_subset(envelope, data, pending)
             outcome = (await self.mysql.archive([{
                 "envelope": envelope, "normalized": subset, "writer": self.states.writer(self.catalog, data),
             }]))[0]
+            self.metrics.add(project, sql_successes=1, written=outcome.get('written_count', 0) or 0)
             # Rejected old SQL versions must never be cached as the current content.
             accepted = outcome["confirmed"]
             if accepted and outcome.get('reset_fingerprints') is True:

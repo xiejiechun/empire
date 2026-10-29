@@ -32,3 +32,5 @@ Empire Redis 采用纯内存模式。Redis 服务或电脑重启丢失本库内�
 [Redis fingerprints](help:Redis%20fingerprints)、[数据库职责与查阅](help:数据库职责与查阅)
 
 资本与停复牌准备读取现有有效期索引核验可信摘要；不会续期或重建证明，索引过期或Redis不可用使用SQL证据。
+
+2026-10-29：远航财务摘要使用独立 `ths_yuanhang:financial` 来源桶，行情继续使用原桶。每桶独立容量，过期规则不变；显式迁移保留原索引到期时间，不刷新证明有效期。

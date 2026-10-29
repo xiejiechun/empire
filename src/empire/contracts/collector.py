@@ -3,16 +3,23 @@
 from __future__ import annotations
 
 from collections.abc import Awaitable, Callable
+from contextvars import ContextVar
 from typing import Any, Literal, NotRequired, Protocol, TypedDict
 
 from empire.contracts.data import Envelope
+
+# The shared runner supplies its saved schedule without collectors reading or
+# overwriting task settings. A missing/manual schedule uses source defaults.
+NEXT_MAINTENANCE_DUE: ContextVar[Callable[[float], float | None] | None] = ContextVar(
+    'empire_next_maintenance_due', default=None)
 
 
 class CollectionSourceGap(Exception):
     """Round ended and valid data confirmed; identified source gaps remain.
 
     Collectors may raise this only after all queued messages are confirmed.
-    It does not certify complete coverage or authorize advancing past a gap.
+    It does not certify complete coverage. Isolated source defects must remain
+    explicit even when their valid sibling reports have been processed.
     """
 
 

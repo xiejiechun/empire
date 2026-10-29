@@ -30,15 +30,6 @@
     "stock_index_member": "ths",
     "security_listing_event": "tdx",
     "stock_listing": "ths",
-    "stock_market_day": "kaipanla",
-    "stock_intraday_trend": "kaipanla",
-    "stock_opening_auction": "kaipanla",
-    "stock_minute_volume": "kaipanla",
-    "stock_intraday_trade_block": "kaipanla",
-    "stock_minute_entrust": "kaipanla",
-    "stock_large_order_trend": "kaipanla",
-    "stock_daily_quote": "kaipanla",
-    "stock_daily_quote_level": "kaipanla",
     "stock": "sina",
     "industry": "ths",
     "industry_member": "ths",
@@ -56,7 +47,15 @@
     "theme_detail": "kaipanla",
     "theme_category": "kaipanla",
     "theme_stock": "kaipanla",
-    "theme_stock_reason": "kaipanla"
+    "theme_stock_reason": "kaipanla",
+    "yuanhang_daily_price": "ths_yuanhang",
+    "yuanhang_price_year": "ths_yuanhang",
+    "yuanhang_corporate_action": "ths_yuanhang",
+    "yuanhang_capital": "ths_yuanhang",
+    "yuanhang_series_proof": "ths_yuanhang",
+    "yuanhang_limit_pool": "ths_yuanhang",
+    "yuanhang_limit_member": "ths_yuanhang",
+    "yuanhang_limit_reason": "ths_yuanhang"
   },
   "tables": [
     "capital_funding",
@@ -88,15 +87,6 @@
     "stock_index_member",
     "security_listing_event",
     "stock_listing",
-    "stock_market_day",
-    "stock_intraday_trend",
-    "stock_opening_auction",
-    "stock_minute_volume",
-    "stock_intraday_trade_block",
-    "stock_minute_entrust",
-    "stock_large_order_trend",
-    "stock_daily_quote",
-    "stock_daily_quote_level",
     "stock",
     "industry",
     "industry_member",
@@ -117,7 +107,15 @@
     "theme_detail",
     "theme_category",
     "theme_stock",
-    "theme_stock_reason"
+    "theme_stock_reason",
+    "yuanhang_daily_price",
+    "yuanhang_price_year",
+    "yuanhang_corporate_action",
+    "yuanhang_capital",
+    "yuanhang_series_proof",
+    "yuanhang_limit_pool",
+    "yuanhang_limit_member",
+    "yuanhang_limit_reason"
   ],
   "dataset_tables": {
     "ths.capital.security": "capital_funding",
@@ -149,13 +147,6 @@
     "st.removal.market": "security_st_event",
     "names.company.market": "security_name_change",
     "names.security.market": "security_name_change",
-    "kaipanla.trend.day": "stock_market_day",
-    "kaipanla.auction.day": "stock_market_day",
-    "kaipanla.volume.day": "stock_market_day",
-    "kaipanla.trades.day": "stock_market_day",
-    "kaipanla.entrust.day": "stock_market_day",
-    "kaipanla.large_order.day": "stock_market_day",
-    "kaipanla.quote.day": "stock_market_day",
     "stock.universe.start": "stock",
     "stock.universe.page": "stock",
     "stock.universe.complete": "stock",
@@ -170,7 +161,15 @@
     "suspensions.period": "suspension_event",
     "news.flash.page": "finance_news",
     "kaipanla.themes.day": "theme_daily",
-    "kaipanla.themes.detail": "theme_detail"
+    "kaipanla.themes.detail": "theme_detail",
+    "yuanhang.price.year": "yuanhang_daily_price",
+    "yuanhang.financial": "yuanhang_corporate_action",
+    "yuanhang.limits.limit_up_pool": "yuanhang_limit_pool",
+    "yuanhang.limits.sprint_limit_up": "yuanhang_limit_pool",
+    "yuanhang.limits.connect_broad_pool": "yuanhang_limit_pool",
+    "yuanhang.limits.open_limit_up_pool": "yuanhang_limit_pool",
+    "yuanhang.limits.limit_down_pool": "yuanhang_limit_pool",
+    "yuanhang.limits.reason": "yuanhang_limit_reason"
   },
   "dataset_table_groups": {
     "ths.capital.security": [
@@ -280,35 +279,6 @@
     "names.security.market": [
       "security_name_change"
     ],
-    "kaipanla.trend.day": [
-      "stock_market_day",
-      "stock_intraday_trend"
-    ],
-    "kaipanla.auction.day": [
-      "stock_market_day",
-      "stock_opening_auction"
-    ],
-    "kaipanla.volume.day": [
-      "stock_market_day",
-      "stock_minute_volume"
-    ],
-    "kaipanla.trades.day": [
-      "stock_market_day",
-      "stock_intraday_trade_block"
-    ],
-    "kaipanla.entrust.day": [
-      "stock_market_day",
-      "stock_minute_entrust"
-    ],
-    "kaipanla.large_order.day": [
-      "stock_market_day",
-      "stock_large_order_trend"
-    ],
-    "kaipanla.quote.day": [
-      "stock_market_day",
-      "stock_daily_quote",
-      "stock_daily_quote_level"
-    ],
     "stock.universe.start": [
       "stock"
     ],
@@ -358,6 +328,38 @@
       "theme_category",
       "theme_stock",
       "theme_stock_reason"
+    ],
+    "yuanhang.price.year": [
+      "yuanhang_daily_price",
+      "yuanhang_price_year"
+    ],
+    "yuanhang.financial": [
+      "yuanhang_corporate_action",
+      "yuanhang_capital",
+      "yuanhang_series_proof"
+    ],
+    "yuanhang.limits.limit_up_pool": [
+      "yuanhang_limit_pool",
+      "yuanhang_limit_member"
+    ],
+    "yuanhang.limits.sprint_limit_up": [
+      "yuanhang_limit_pool",
+      "yuanhang_limit_member"
+    ],
+    "yuanhang.limits.connect_broad_pool": [
+      "yuanhang_limit_pool",
+      "yuanhang_limit_member"
+    ],
+    "yuanhang.limits.open_limit_up_pool": [
+      "yuanhang_limit_pool",
+      "yuanhang_limit_member"
+    ],
+    "yuanhang.limits.limit_down_pool": [
+      "yuanhang_limit_pool",
+      "yuanhang_limit_member"
+    ],
+    "yuanhang.limits.reason": [
+      "yuanhang_limit_reason"
     ]
   },
   "primary_keys": {
@@ -513,51 +515,6 @@
       "unified_code",
       "report_date"
     ],
-    "stock_market_day": [
-      "kind",
-      "unified_code",
-      "trade_date"
-    ],
-    "stock_intraday_trend": [
-      "unified_code",
-      "trade_date",
-      "source_time"
-    ],
-    "stock_opening_auction": [
-      "unified_code",
-      "trade_date",
-      "seq"
-    ],
-    "stock_minute_volume": [
-      "unified_code",
-      "trade_date",
-      "source_time"
-    ],
-    "stock_intraday_trade_block": [
-      "unified_code",
-      "trade_date",
-      "block_seq"
-    ],
-    "stock_minute_entrust": [
-      "unified_code",
-      "trade_date",
-      "source_time"
-    ],
-    "stock_large_order_trend": [
-      "unified_code",
-      "trade_date",
-      "source_time"
-    ],
-    "stock_daily_quote": [
-      "unified_code",
-      "trade_date"
-    ],
-    "stock_daily_quote_level": [
-      "unified_code",
-      "trade_date",
-      "side",
-      "level"
-    ],
     "theme_daily": [
       "business_date",
       "theme_id"
@@ -576,6 +533,41 @@
     "theme_stock_reason": [
       "theme_id",
       "relation_id"
+    ],
+    "yuanhang_daily_price": [
+      "unified_code",
+      "trade_date"
+    ],
+    "yuanhang_price_year": [
+      "unified_code",
+      "quote_year"
+    ],
+    "yuanhang_corporate_action": [
+      "unified_code",
+      "ex_date",
+      "event_key"
+    ],
+    "yuanhang_capital": [
+      "unified_code",
+      "capital_kind",
+      "effective_date"
+    ],
+    "yuanhang_series_proof": [
+      "unified_code",
+      "series_kind"
+    ],
+    "yuanhang_limit_pool": [
+      "trade_date",
+      "pool_type"
+    ],
+    "yuanhang_limit_member": [
+      "trade_date",
+      "pool_type",
+      "unified_code"
+    ],
+    "yuanhang_limit_reason": [
+      "trade_date",
+      "unified_code"
     ]
   },
   "source_overrides": {
@@ -648,6 +640,116 @@
       "is_hot",
       "source_is_zz",
       "occurrences"
+    ],
+    "yuanhang_daily_price": [
+      "unified_code",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume_shares",
+      "amount_yuan"
+    ],
+    "yuanhang_price_year": [
+      "unified_code",
+      "quote_year",
+      "native_market",
+      "source_count",
+      "row_count",
+      "first_date",
+      "last_date",
+      "key_hash",
+      "content_hash",
+      "contract_version",
+      "verified_through",
+      "version_observed_at"
+    ],
+    "yuanhang_corporate_action": [
+      "unified_code",
+      "ex_date",
+      "event_key",
+      "bonus_ratio",
+      "transfer_ratio",
+      "rights_ratio",
+      "rights_price",
+      "cash_per_share"
+    ],
+    "yuanhang_capital": [
+      "unified_code",
+      "capital_kind",
+      "effective_date",
+      "shares"
+    ],
+    "yuanhang_series_proof": [
+      "unified_code",
+      "series_kind",
+      "native_market",
+      "source_count",
+      "row_count",
+      "first_date",
+      "last_date",
+      "key_hash",
+      "content_hash",
+      "contract_version",
+      "response_group",
+      "total_count",
+      "circulating_count",
+      "free_float_count",
+      "version_observed_at"
+    ],
+    "yuanhang_limit_pool": [
+      "trade_date",
+      "pool_type",
+      "source_total",
+      "filter_text",
+      "key_sha256",
+      "content_sha256",
+      "contract_version",
+      "observed_at"
+    ],
+    "yuanhang_limit_member": [
+      "trade_date",
+      "pool_type",
+      "unified_code",
+      "source_market_id",
+      "identity_basis",
+      "change_rate",
+      "latest",
+      "turnover_rate",
+      "currency_value",
+      "sum_market_value",
+      "rise_rate",
+      "turnover",
+      "order_amount",
+      "order_volume",
+      "limit_up_suc_rate",
+      "open_num",
+      "high_days_value",
+      "is_new",
+      "is_again_limit",
+      "name",
+      "market_type",
+      "reason_type",
+      "limit_up_type",
+      "limit_down_type",
+      "high_days",
+      "change_tag",
+      "top_concept",
+      "first_limit_up_time",
+      "last_limit_up_time",
+      "first_limit_down_time",
+      "last_limit_down_time"
+    ],
+    "yuanhang_limit_reason": [
+      "trade_date",
+      "unified_code",
+      "name",
+      "reason_text",
+      "reason_kind",
+      "availability",
+      "content_sha256",
+      "observed_at"
     ]
   },
   "primary_key_exemptions": [

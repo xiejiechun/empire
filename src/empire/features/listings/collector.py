@@ -86,12 +86,14 @@ class ThsListingCollector:
                                           expected_revision=state['revision'], cursor=cursor)
 
     async def execute(self, *, fresh=False, baseline_revision=0):
+        self.stats.update(completed_units=0, total_units=None, unit_name='只股票')
         stage = 'plan'
         try:
             state = await self.ingest.checkpoint(JOB)
             cursor = state['cursor']
             progressed = state['revision'] > baseline_revision
             if progressed and cursor.get('phase') == 'complete':
+                self.stats.update(completed_units=cursor['index'], total_units=cursor['units'])
                 return cursor
             if cursor.get('phase') != 'awaiting_archive':
                 stocks, existing, proof = await self.query.plan()
@@ -112,6 +114,7 @@ class ThsListingCollector:
                     cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0, collected=0,
                         units=len(keys), scope_hash=scope, full_refresh=full,
                         refresh_started_at=now.isoformat() if full else stamp)
+                self.stats.update(completed_units=cursor['index'], total_units=len(keys))
                 selected = [(i, stocks[i]) for i in range(cursor['index'], len(stocks))
                          if cursor['full_refresh'] or keys[i] not in existing]
                 async def download(item, *, reservation):
@@ -131,10 +134,12 @@ class ThsListingCollector:
                         stage = 'queue_publish'
                         state = await self.publish(state, following, keys[index], row, None, observed, request_url)
                         cursor = state['cursor']
+                        self.stats['completed_units'] = cursor['index']
                 following = {**cursor, 'phase': 'awaiting_archive', 'index': len(keys), 'pages': cursor['pages'] + 1}
                 manifest = {k: cursor[k] for k in ('scope_hash', 'units', 'refresh_started_at')}
                 state = await self.publish(state, following, 'manifest', None, manifest, datetime.now(UTC), None)
                 cursor = state['cursor']
+            self.stats.update(completed_units=cursor['index'], total_units=cursor['units'])
             stage = 'archive_confirmation'
             self.stats.update(status='awaiting_archive', pages=cursor['pages'], collected=cursor['collected'])
             await wait_for_archive(partial(self.confirmation.page_status, 'ths', JOB, PROJECT,

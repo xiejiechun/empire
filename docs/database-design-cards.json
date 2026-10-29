@@ -1,293 +1,5 @@
 {
   "datasets": {
-    "kaipanla.trend.day": {
-      "tables": [
-        "stock_market_day",
-        "stock_intraday_trend"
-      ],
-      "grain": "独立类型证券日父头及来源事实",
-      "identity": "见schema-contract.json主键；固定来源由数据集校验",
-      "dictionary": "docs/kaipanla-field-dictionary.md",
-      "queries": [
-        "单证券范围",
-        "指定日期截面",
-        "有界详情/分页",
-        "轻量覆盖"
-      ],
-      "capacity": {
-        "sample": "50证券3交易日1016单元",
-        "growth": "5000证券250交易日；分笔以200点块计量",
-        "page_limit": 200,
-        "response": "公共下载预算",
-        "regression": "详情P95/吞吐需同机对照",
-        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
-        "status": "measured",
-        "evidence": "docs/evidence/architecture-f-preview-capacity-2026-10-21.json"
-      },
-      "integrity": [
-        "现行来源集合验证",
-        "规范摘要",
-        "旧响应",
-        "同事务关联",
-        "显式迁移"
-      ],
-      "tests": [
-        "tests/test_kaipanla_products.py",
-        "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py",
-        "tests/test_market_suspension_days.py",
-        "tests/integration/test_kaipanla_suspension_scope.py"
-      ],
-      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
-      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
-    },
-    "kaipanla.auction.day": {
-      "tables": [
-        "stock_market_day",
-        "stock_opening_auction"
-      ],
-      "grain": "独立类型证券日父头及来源事实",
-      "identity": "见schema-contract.json主键；固定来源由数据集校验",
-      "dictionary": "docs/kaipanla-field-dictionary.md",
-      "queries": [
-        "单证券范围",
-        "指定日期截面",
-        "有界详情/分页",
-        "轻量覆盖"
-      ],
-      "capacity": {
-        "sample": "50证券3交易日1016单元",
-        "growth": "5000证券250交易日；分笔以200点块计量",
-        "page_limit": 200,
-        "response": "公共下载预算",
-        "regression": "详情P95/吞吐需同机对照",
-        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
-        "status": "measured",
-        "evidence": "docs/evidence/architecture-f-preview-capacity-2026-10-21.json"
-      },
-      "integrity": [
-        "现行来源集合验证",
-        "规范摘要",
-        "旧响应",
-        "同事务关联",
-        "显式迁移"
-      ],
-      "tests": [
-        "tests/test_kaipanla_products.py",
-        "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py",
-        "tests/test_market_suspension_days.py",
-        "tests/integration/test_kaipanla_suspension_scope.py"
-      ],
-      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
-      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
-    },
-    "kaipanla.volume.day": {
-      "tables": [
-        "stock_market_day",
-        "stock_minute_volume"
-      ],
-      "grain": "独立类型证券日父头及来源事实",
-      "identity": "见schema-contract.json主键；固定来源由数据集校验",
-      "dictionary": "docs/kaipanla-field-dictionary.md",
-      "queries": [
-        "单证券范围",
-        "指定日期截面",
-        "有界详情/分页",
-        "轻量覆盖"
-      ],
-      "capacity": {
-        "sample": "50证券3交易日1016单元",
-        "growth": "5000证券250交易日；分笔以200点块计量",
-        "page_limit": 200,
-        "response": "公共下载预算",
-        "regression": "详情P95/吞吐需同机对照",
-        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
-        "status": "measured",
-        "evidence": "docs/evidence/architecture-f-preview-capacity-2026-10-21.json"
-      },
-      "integrity": [
-        "现行来源集合验证",
-        "规范摘要",
-        "旧响应",
-        "同事务关联",
-        "显式迁移"
-      ],
-      "tests": [
-        "tests/test_kaipanla_products.py",
-        "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py",
-        "tests/test_market_suspension_days.py",
-        "tests/integration/test_kaipanla_suspension_scope.py"
-      ],
-      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
-      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
-    },
-    "kaipanla.trades.day": {
-      "tables": [
-        "stock_market_day",
-        "stock_intraday_trade_block"
-      ],
-      "grain": "独立类型证券日父头及来源事实",
-      "identity": "见schema-contract.json主键；固定来源由数据集校验",
-      "dictionary": "docs/kaipanla-field-dictionary.md",
-      "queries": [
-        "单证券范围",
-        "指定日期截面",
-        "有界详情/分页",
-        "轻量覆盖"
-      ],
-      "capacity": {
-        "sample": "50证券3交易日1016单元",
-        "growth": "5000证券250交易日；分笔以200点块计量",
-        "page_limit": 200,
-        "response": "公共下载预算",
-        "regression": "详情P95/吞吐需同机对照",
-        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
-        "status": "measured",
-        "evidence": "docs/evidence/architecture-f-preview-capacity-2026-10-21.json"
-      },
-      "integrity": [
-        "现行来源集合验证",
-        "规范摘要",
-        "旧响应",
-        "同事务关联",
-        "显式迁移"
-      ],
-      "tests": [
-        "tests/test_kaipanla_products.py",
-        "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py",
-        "tests/test_market_suspension_days.py",
-        "tests/integration/test_kaipanla_suspension_scope.py"
-      ],
-      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
-      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
-    },
-    "kaipanla.entrust.day": {
-      "tables": [
-        "stock_market_day",
-        "stock_minute_entrust"
-      ],
-      "grain": "独立类型证券日父头及来源事实",
-      "identity": "见schema-contract.json主键；固定来源由数据集校验",
-      "dictionary": "docs/kaipanla-field-dictionary.md",
-      "queries": [
-        "单证券范围",
-        "指定日期截面",
-        "有界详情/分页",
-        "轻量覆盖"
-      ],
-      "capacity": {
-        "sample": "50证券3交易日1016单元",
-        "growth": "5000证券250交易日；分笔以200点块计量",
-        "page_limit": 200,
-        "response": "公共下载预算",
-        "regression": "详情P95/吞吐需同机对照",
-        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
-        "status": "measured",
-        "evidence": "docs/evidence/architecture-f-preview-capacity-2026-10-21.json"
-      },
-      "integrity": [
-        "现行来源集合验证",
-        "规范摘要",
-        "旧响应",
-        "同事务关联",
-        "显式迁移"
-      ],
-      "tests": [
-        "tests/test_kaipanla_products.py",
-        "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py",
-        "tests/test_market_suspension_days.py",
-        "tests/integration/test_kaipanla_suspension_scope.py"
-      ],
-      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
-      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
-    },
-    "kaipanla.large_order.day": {
-      "tables": [
-        "stock_market_day",
-        "stock_large_order_trend"
-      ],
-      "grain": "独立类型证券日父头及来源事实",
-      "identity": "见schema-contract.json主键；固定来源由数据集校验",
-      "dictionary": "docs/kaipanla-field-dictionary.md",
-      "queries": [
-        "单证券范围",
-        "指定日期截面",
-        "有界详情/分页",
-        "轻量覆盖"
-      ],
-      "capacity": {
-        "sample": "50证券3交易日1016单元",
-        "growth": "5000证券250交易日；分笔以200点块计量",
-        "page_limit": 200,
-        "response": "公共下载预算",
-        "regression": "详情P95/吞吐需同机对照",
-        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
-        "status": "measured",
-        "evidence": "docs/evidence/architecture-f-preview-capacity-2026-10-21.json"
-      },
-      "integrity": [
-        "现行来源集合验证",
-        "规范摘要",
-        "旧响应",
-        "同事务关联",
-        "显式迁移"
-      ],
-      "tests": [
-        "tests/test_kaipanla_products.py",
-        "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py",
-        "tests/test_market_suspension_days.py",
-        "tests/integration/test_kaipanla_suspension_scope.py"
-      ],
-      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
-      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
-    },
-    "kaipanla.quote.day": {
-      "tables": [
-        "stock_market_day",
-        "stock_daily_quote",
-        "stock_daily_quote_level"
-      ],
-      "grain": "独立类型证券日父头及来源事实",
-      "identity": "见schema-contract.json主键；固定来源由数据集校验",
-      "dictionary": "docs/kaipanla-field-dictionary.md",
-      "queries": [
-        "单证券范围",
-        "指定日期截面",
-        "有界详情/分页",
-        "轻量覆盖"
-      ],
-      "capacity": {
-        "sample": "50证券3交易日1016单元",
-        "growth": "5000证券250交易日；分笔以200点块计量",
-        "page_limit": 200,
-        "response": "公共下载预算",
-        "regression": "详情P95/吞吐需同机对照",
-        "budget": "500证券60日专属实验；200点分页P95<=5ms，最大日<=100000点、每块<=12400字节；整日<=45ms与样本1016单位导入<=12秒为评审目标，原相对门槛超限须记录原因；不授权全市场多年部署。",
-        "status": "measured",
-        "evidence": "docs/evidence/architecture-f-preview-capacity-2026-10-21.json"
-      },
-      "integrity": [
-        "现行来源集合验证",
-        "规范摘要",
-        "旧响应",
-        "同事务关联",
-        "显式迁移"
-      ],
-      "tests": [
-        "tests/test_kaipanla_products.py",
-        "tests/integration/test_kaipanla_products_archive.py",
-        "tests/integration/test_market_storage.py",
-        "tests/test_market_suspension_days.py",
-        "tests/integration/test_kaipanla_suspension_scope.py"
-      ],
-      "lifecycle": "docs/kaipanla-intraday.md：初始化2021/上市/市场起点至已结束交易日；SQL轻量父头补缺，每周复核最近五个已结束交易日；整轮归档成功才推进复核标记；Redis丢失回SQL，中断保留正式队列；完整日归档后确认。",
-      "delivery": "单一typed读写路径；scripts/migrate_market_storage.py显式影子迁移/验证/受限回退；docs/evidence/kaipanla-storage-optimization-2026-10-05.md记录容量、发布及桌面。"
-    },
     "stock.universe.start": {
       "tables": [
         "stock"
@@ -1311,7 +1023,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6e-performance-capacity-2026-10-21.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1347,7 +1059,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6e-performance-capacity-2026-10-21.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1383,7 +1095,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6e-performance-capacity-2026-10-21.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1419,7 +1131,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6e-performance-capacity-2026-10-21.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1455,7 +1167,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6e-performance-capacity-2026-10-21.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-10-27.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1498,7 +1210,7 @@
         "response": "详情1MiB；最多400成员；正文审计批读10报告/4000成员",
         "regression": "查询P95≤100ms，覆盖≤1000ms，导入≤180秒，Python峰值≤128MiB",
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e2-holders-capacity-2026-10-20-1.json"
+        "evidence": "docs/evidence/ths-holders-maintenance-capacity-2026-10-28.json"
       },
       "integrity": [
         "标签与正文集合匹配",
@@ -1508,7 +1220,7 @@
         "事务后重放及成功清队",
         "三栏结构校验后原子入队同事务归档；空名债券报告隔离为有摘要来源缺口，可识别报告保存，失败不推进连续断点"
       ],
-      "lifecycle": "docs/ths-holders.md：初始化当前股票池可见窗口，每日复核；整轮末等归档；池变化重建，Redis丢失重读，历史保留。",
+      "lifecycle": "docs/ths-holders.md：初始化当前股票池可见窗口；按保存计划到期复核，同周期跳过确认单元；来源缺陷独立、只补真正未确认单元，Redis丢失按SQL恢复，整轮末等归档，历史保留。",
       "delivery": "显式scripts/migrate_holder_source_rows.py升级contract/schema4，数量及精度三列同时可空、未来报告期按观察日标记、quality_flags普通列与可空来源比例/汇总；保留原事实和观测版本，失效证明/指纹/断点后重采；启动不迁移；schema5新增有界gaps状态，无DDL，现有完整证明保留，空名报告缺口独立，准备缓存revision4",
       "tests": [
         "tests/test_ths_holders.py",
@@ -1517,7 +1229,8 @@
         "tests/test_holder_error_shapes.py",
         "tests/integration/test_holder_source_migration.py",
         "tests/test_holder_quality.py",
-        "tests/test_holder_identity_gaps.py"
+        "tests/test_holder_identity_gaps.py",
+        "tests/test_holder_maintenance.py"
       ]
     },
     "shareholder_changes.tdx_unit": {
@@ -1536,7 +1249,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/architecture-e6e-changes-capacity-2026-10-21.json",
+        "evidence": "docs/evidence/tdx-performance-changes-capacity-2026-10-27.json",
         "sample": "历史真实规范行作为明确fixture，5000证券×20合成月共100000事件；当前有限来源范围另见E6e实采报告",
         "growth": "一年20万、五年100万；来源实际容量另记",
         "page_limit": 200,
@@ -1697,7 +1410,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/kaipanla-theme-capacity-2026-10-24.json",
+        "evidence": "docs/evidence/tdx-errors-theme-capacity-2026-10-27.json",
         "sample": "30题材+军工真实全链路；60000日列表/30000合成理由及七日日内模拟",
         "growth": "2000题材每日730000行/年；五年3650000行，约703MiB含索引线性估算",
         "page_limit": 200,
@@ -1737,7 +1450,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/kaipanla-theme-capacity-2026-10-24.json",
+        "evidence": "docs/evidence/tdx-errors-theme-capacity-2026-10-27.json",
         "sample": "30题材+军工真实全链路；60000日列表/30000合成理由及七日日内模拟",
         "growth": "2000题材每日730000行/年；五年3650000行，约703MiB含索引线性估算",
         "page_limit": 200,
@@ -1758,6 +1471,338 @@
         "tests/test_theme_storage_contract.py",
         "tests/integration/test_theme_typed_storage.py",
         "tests/integration/test_theme_archive.py"
+      ]
+    },
+    "yuanhang.price.year": {
+      "tables": [
+        "yuanhang_daily_price",
+        "yuanhang_price_year"
+      ],
+      "grain": "证券/交易日事实，证券/年完整来源单元",
+      "identity": "固定ths_yuanhang，unified_code+trade_date；证明unified_code+quote_year",
+      "dictionary": "docs/ths-yuanhang-storage-design.md",
+      "queries": [
+        "证券日期游标500条；PK",
+        "单日截面证券游标500条；idx_yuanhang_price_date",
+        "年度<=366点集合与内容审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/ths-yuanhang-range-capacity-2026-10-26.json",
+        "sample": "100万日线/4000年度头/2000事件/30000股本/5578证券状态，独立MySQL",
+        "growth": "2092万至3486万日线为线性规划，未实测全池；细节见实测证据和设计正文",
+        "page_limit": 500,
+        "response": "共享stocks响应预算；每年<=366点，金融<=2000事件+30000股本，超限拒绝",
+        "regression": "证券页P95<=200ms；截面<=300ms；年度审计<=1s；年度归档及单证券SQL状态<=2s；重复零业务DML",
+        "budget": "绑定当前仓储/消息/证明源码和五表DDL，实测不是生产初始化"
+      },
+      "integrity": [
+        "完整源序列先校验后拆年",
+        "所有年度含合法空年连续入队；金融联合证明",
+        "业务键/必需字段/内容审计",
+        "重复零业务DML、旧版拒绝、提交后重放成功清队",
+        "逐证券归档前不等待"
+      ],
+      "lifecycle": "docs/ths-yuanhang-range-storage.md：初始化完整历史；5交易日回看、20交易日轮转、缺口补采；Redis丢失从SQL日期覆盖恢复；退出当前池保留历史",
+      "delivery": "五表已建且全池初始化于2026-10-25验收；日期增量通过显式状态转换上线，事实及年度证明保持，正式发布证据单列。",
+      "tests": [
+        "tests/test_yuanhang_payload.py",
+        "tests/test_yuanhang_coverage.py",
+        "tests/test_yuanhang_collector.py",
+        "tests/integration/test_yuanhang_typed_storage.py",
+        "tests/integration/test_yuanhang_archive.py"
+      ]
+    },
+    "yuanhang.financial": {
+      "tables": [
+        "yuanhang_corporate_action",
+        "yuanhang_capital",
+        "yuanhang_series_proof"
+      ],
+      "grain": "证券/除权日/完整分量事件；证券/股本口径/生效日余额，联合响应事务",
+      "identity": "固定ths_yuanhang；事件证券+ex_date+event_key(规范五分量SHA-256)；股本证券+capital_kind+effective_date；证明证券+series_kind",
+      "dictionary": "docs/ths-yuanhang-storage-design.md",
+      "queries": [
+        "事件按证券日期及event_key双键游标500条；PK",
+        "股本按证券口径日期游标及截至日取值；PK",
+        "联合来源两类正文/三口径计数与response_group审计"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/ths-yuanhang-range-capacity-2026-10-26.json",
+        "sample": "100万日线/4000年度头/2000事件/30000股本/5578证券状态，独立MySQL",
+        "growth": "2092万至3486万日线为线性规划，未实测全池；细节见实测证据和设计正文",
+        "page_limit": 500,
+        "response": "共享stocks响应预算；每年<=366点，金融<=2000事件+30000股本，超限拒绝",
+        "regression": "证券页P95<=200ms；截面<=300ms；年度审计<=1s；年度归档及单证券SQL状态<=2s；重复零业务DML",
+        "budget": "绑定当前仓储/消息/证明源码和五表DDL，实测不是生产初始化"
+      },
+      "integrity": [
+        "完整源序列先校验后拆年",
+        "所有年度含合法空年连续入队；金融联合证明",
+        "业务键/必需字段/内容审计",
+        "重复零业务DML、旧版拒绝、提交后重放成功清队",
+        "逐证券归档前不等待"
+      ],
+      "lifecycle": "每日完整联合核验权息与三种股本；同日同截止已完成时跳过；Redis丢失重新核实来源；退出当前池保留历史",
+      "delivery": "五表已建且全池初始化于2026-10-25验收；日期增量通过显式状态转换上线，事实及年度证明保持，正式发布证据单列。",
+      "tests": [
+        "tests/test_yuanhang_payload.py",
+        "tests/test_yuanhang_coverage.py",
+        "tests/test_yuanhang_collector.py",
+        "tests/integration/test_yuanhang_typed_storage.py",
+        "tests/integration/test_yuanhang_archive.py"
+      ]
+    },
+    "yuanhang.limits.limit_up_pool": {
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "grain": "完整日期池及其证券成员",
+      "identity": "固定ths_yuanhang；证券使用unified_code，日期池以trade_date,pool_type为头，成员加unified_code；原因以trade_date,unified_code唯一",
+      "dictionary": "docs/ths-yuanhang-limits-implementation.md",
+      "queries": [
+        "日池200条稳定键分页",
+        "证券历史500条稳定键分页",
+        "证券日原因点查",
+        "池头覆盖及成员内容审计",
+        "原因按日期及证券游标规划"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
+        "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
+        "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
+      },
+      "integrity": [
+        "源总数与键集合/规范内容证明",
+        "同事务池头成员及统一状态",
+        "热/冷摘要重复零业务DML",
+        "旧版本防覆盖",
+        "SQL提交后重放",
+        "事务失败不残留业务",
+        "来源空池不推断最早边界"
+      ],
+      "lifecycle": "docs/ths-yuanhang-limits-implementation.md：完整日历1990-12-19至固定已结束交易日，新增/缺口∪近期5日∪20交易日轮转；连续有界计划后统一等待归档；Redis丢失从SQL恢复。",
+      "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
+      "tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py",
+        "tests/test_yuanhang_limits_collector.py",
+        "tests/test_yuanhang_limits_wire.py",
+        "tests/integration/test_yuanhang_limits_archive.py",
+        "tests/integration/test_yuanhang_limits_plans.py"
+      ]
+    },
+    "yuanhang.limits.sprint_limit_up": {
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "grain": "完整日期池及其证券成员",
+      "identity": "固定ths_yuanhang；证券使用unified_code，日期池以trade_date,pool_type为头，成员加unified_code；原因以trade_date,unified_code唯一",
+      "dictionary": "docs/ths-yuanhang-limits-implementation.md",
+      "queries": [
+        "日池200条稳定键分页",
+        "证券历史500条稳定键分页",
+        "证券日原因点查",
+        "池头覆盖及成员内容审计",
+        "原因按日期及证券游标规划"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
+        "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
+        "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
+      },
+      "integrity": [
+        "源总数与键集合/规范内容证明",
+        "同事务池头成员及统一状态",
+        "热/冷摘要重复零业务DML",
+        "旧版本防覆盖",
+        "SQL提交后重放",
+        "事务失败不残留业务",
+        "来源空池不推断最早边界"
+      ],
+      "lifecycle": "docs/ths-yuanhang-limits-implementation.md：完整日历1990-12-19至固定已结束交易日，新增/缺口∪近期5日∪20交易日轮转；连续有界计划后统一等待归档；Redis丢失从SQL恢复。",
+      "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
+      "tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py",
+        "tests/test_yuanhang_limits_collector.py",
+        "tests/test_yuanhang_limits_wire.py",
+        "tests/integration/test_yuanhang_limits_archive.py",
+        "tests/integration/test_yuanhang_limits_plans.py"
+      ]
+    },
+    "yuanhang.limits.connect_broad_pool": {
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "grain": "完整日期池及其证券成员",
+      "identity": "固定ths_yuanhang；证券使用unified_code，日期池以trade_date,pool_type为头，成员加unified_code；原因以trade_date,unified_code唯一",
+      "dictionary": "docs/ths-yuanhang-limits-implementation.md",
+      "queries": [
+        "日池200条稳定键分页",
+        "证券历史500条稳定键分页",
+        "证券日原因点查",
+        "池头覆盖及成员内容审计",
+        "原因按日期及证券游标规划"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
+        "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
+        "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
+      },
+      "integrity": [
+        "源总数与键集合/规范内容证明",
+        "同事务池头成员及统一状态",
+        "热/冷摘要重复零业务DML",
+        "旧版本防覆盖",
+        "SQL提交后重放",
+        "事务失败不残留业务",
+        "来源空池不推断最早边界"
+      ],
+      "lifecycle": "docs/ths-yuanhang-limits-implementation.md：完整日历1990-12-19至固定已结束交易日，新增/缺口∪近期5日∪20交易日轮转；连续有界计划后统一等待归档；Redis丢失从SQL恢复。",
+      "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
+      "tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py",
+        "tests/test_yuanhang_limits_collector.py",
+        "tests/test_yuanhang_limits_wire.py",
+        "tests/integration/test_yuanhang_limits_archive.py",
+        "tests/integration/test_yuanhang_limits_plans.py"
+      ]
+    },
+    "yuanhang.limits.open_limit_up_pool": {
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "grain": "完整日期池及其证券成员",
+      "identity": "固定ths_yuanhang；证券使用unified_code，日期池以trade_date,pool_type为头，成员加unified_code；原因以trade_date,unified_code唯一",
+      "dictionary": "docs/ths-yuanhang-limits-implementation.md",
+      "queries": [
+        "日池200条稳定键分页",
+        "证券历史500条稳定键分页",
+        "证券日原因点查",
+        "池头覆盖及成员内容审计",
+        "原因按日期及证券游标规划"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
+        "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
+        "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
+      },
+      "integrity": [
+        "源总数与键集合/规范内容证明",
+        "同事务池头成员及统一状态",
+        "热/冷摘要重复零业务DML",
+        "旧版本防覆盖",
+        "SQL提交后重放",
+        "事务失败不残留业务",
+        "来源空池不推断最早边界"
+      ],
+      "lifecycle": "docs/ths-yuanhang-limits-implementation.md：完整日历1990-12-19至固定已结束交易日，新增/缺口∪近期5日∪20交易日轮转；连续有界计划后统一等待归档；Redis丢失从SQL恢复。",
+      "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
+      "tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py",
+        "tests/test_yuanhang_limits_collector.py",
+        "tests/test_yuanhang_limits_wire.py",
+        "tests/integration/test_yuanhang_limits_archive.py",
+        "tests/integration/test_yuanhang_limits_plans.py"
+      ]
+    },
+    "yuanhang.limits.limit_down_pool": {
+      "tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member"
+      ],
+      "grain": "完整日期池及其证券成员",
+      "identity": "固定ths_yuanhang；证券使用unified_code，日期池以trade_date,pool_type为头，成员加unified_code；原因以trade_date,unified_code唯一",
+      "dictionary": "docs/ths-yuanhang-limits-implementation.md",
+      "queries": [
+        "日池200条稳定键分页",
+        "证券历史500条稳定键分页",
+        "证券日原因点查",
+        "池头覆盖及成员内容审计",
+        "原因按日期及证券游标规划"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
+        "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
+        "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
+      },
+      "integrity": [
+        "源总数与键集合/规范内容证明",
+        "同事务池头成员及统一状态",
+        "热/冷摘要重复零业务DML",
+        "旧版本防覆盖",
+        "SQL提交后重放",
+        "事务失败不残留业务",
+        "来源空池不推断最早边界"
+      ],
+      "lifecycle": "docs/ths-yuanhang-limits-implementation.md：完整日历1990-12-19至固定已结束交易日，新增/缺口∪近期5日∪20交易日轮转；连续有界计划后统一等待归档；Redis丢失从SQL恢复。",
+      "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
+      "tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py",
+        "tests/test_yuanhang_limits_collector.py",
+        "tests/test_yuanhang_limits_wire.py",
+        "tests/integration/test_yuanhang_limits_archive.py",
+        "tests/integration/test_yuanhang_limits_plans.py"
+      ]
+    },
+    "yuanhang.limits.reason": {
+      "tables": [
+        "yuanhang_limit_reason"
+      ],
+      "grain": "证券日原因，跨池消重",
+      "identity": "固定ths_yuanhang；证券使用unified_code，日期池以trade_date,pool_type为头，成员加unified_code；原因以trade_date,unified_code唯一",
+      "dictionary": "docs/ths-yuanhang-limits-implementation.md",
+      "queries": [
+        "日池200条稳定键分页",
+        "证券历史500条稳定键分页",
+        "证券日原因点查",
+        "池头覆盖及成员内容审计",
+        "原因按日期及证券游标规划"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-limits-intraday-capacity-2026-10-27.json",
+        "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
+        "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
+        "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
+      },
+      "integrity": [
+        "源总数与键集合/规范内容证明",
+        "同事务池头成员及统一状态",
+        "热/冷摘要重复零业务DML",
+        "旧版本防覆盖",
+        "SQL提交后重放",
+        "事务失败不残留业务",
+        "来源空池不推断最早边界"
+      ],
+      "lifecycle": "docs/ths-yuanhang-limits-implementation.md：完整日历1990-12-19至固定已结束交易日，新增/缺口∪近期5日∪20交易日轮转；连续有界计划后统一等待归档；Redis丢失从SQL恢复。",
+      "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
+      "tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py",
+        "tests/test_yuanhang_limits_collector.py",
+        "tests/test_yuanhang_limits_wire.py",
+        "tests/integration/test_yuanhang_limits_archive.py",
+        "tests/integration/test_yuanhang_limits_plans.py"
       ]
     }
   },

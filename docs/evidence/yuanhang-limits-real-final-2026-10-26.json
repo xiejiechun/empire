@@ -1,0 +1,304 @@
+{
+  "day": "2024-10-08",
+  "seed": 20261026,
+  "routes": {
+    "proxy_requests": 93
+  },
+  "pool_results": {
+    "limit_up_pool": {
+      "count": 716,
+      "content_sha256": "8bfa76747aeb0af6150c82effabefd5a468ac8fdccc2ac0158438c33e8902d12",
+      "requests": 9,
+      "response_bytes": 488502,
+      "wire_bytes": 75511,
+      "queued_bytes": 81120
+    },
+    "sprint_limit_up": {
+      "count": 508,
+      "content_sha256": "cfce6195cba4be8fb51395992f8f08f3c52bd21d0efb7f471f8d456ed9a8fe09",
+      "requests": 7,
+      "response_bytes": 302561,
+      "wire_bytes": 32346,
+      "queued_bytes": 35532
+    },
+    "connect_broad_pool": {
+      "count": 362,
+      "content_sha256": "3b4027171006da85cd36bc78372a8e76791e9952f1a61923a3810b6fc27633e8",
+      "requests": 5,
+      "response_bytes": 246554,
+      "wire_bytes": 38929,
+      "queued_bytes": 43390
+    },
+    "open_limit_up_pool": {
+      "count": 627,
+      "content_sha256": "514ba270a2260118ce3f15b20118311e4921a861605c57513deaa466891288a5",
+      "requests": 8,
+      "response_bytes": 388264,
+      "wire_bytes": 49851,
+      "queued_bytes": 53374
+    },
+    "limit_down_pool": {
+      "count": 0,
+      "content_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "requests": 32,
+      "response_bytes": 1835030,
+      "wire_bytes": 212748,
+      "queued_bytes": 232552
+    }
+  },
+  "earliest_probe": {
+    "limit_up_pool": {
+      "day": "1990-12-19",
+      "count": 0,
+      "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "sprint_limit_up": {
+      "day": "1990-12-19",
+      "count": 0,
+      "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "connect_broad_pool": {
+      "day": "1990-12-19",
+      "count": 0,
+      "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "open_limit_up_pool": {
+      "day": "1990-12-19",
+      "count": 0,
+      "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "limit_down_pool": {
+      "day": "1990-12-19",
+      "count": 0,
+      "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "network_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false
+  },
+  "pending": 0,
+  "passed": true,
+  "fixed_large_history": {
+    "day": "2020-02-03",
+    "pool": "limit_down_pool",
+    "count": 2983,
+    "digest": "27e9dedc23b61dbb3c244e33cf527fec1d1dc958362b0efad9baca6932eb7596"
+  },
+  "sample_pool_size": 1757,
+  "sample_pool_sha256": "6348a827db161b25fa139402b8711a2fa0d0c0df3ca2530eb1a80a29feee907a",
+  "sample": [
+    "002303.SZ",
+    "688401.SH",
+    "300015.SZ",
+    "603655.SH",
+    "002423.SZ",
+    "688562.SH",
+    "600151.SH",
+    "300851.SZ",
+    "600690.SH",
+    "002167.SZ",
+    "000301.SZ",
+    "688608.SH",
+    "300820.SZ",
+    "601162.SH",
+    "300601.SZ",
+    "300473.SZ",
+    "300534.SZ",
+    "002819.SZ",
+    "603317.SH",
+    "603002.SH",
+    "300226.SZ",
+    "600249.SH",
+    "603876.SH",
+    "603712.SH",
+    "300677.SZ",
+    "000988.SZ",
+    "002993.SZ",
+    "300681.SZ",
+    "600223.SH",
+    "603082.SH"
+  ],
+  "reason_results": [
+    {
+      "code": "002303.SZ",
+      "availability": "no_content",
+      "content_sha256": "1a4196f4d6948280aafdc14348f846422201e47953109bed7c5d35eaed02a4f9"
+    },
+    {
+      "code": "688401.SH",
+      "availability": "no_content",
+      "content_sha256": "98a3ebba3baee2f3c2696ca9338544a062e3b4d11adbf71c662d32f18330326a"
+    },
+    {
+      "code": "300015.SZ",
+      "availability": "available",
+      "content_sha256": "926356786d1fcd5c2798aa67df280310b4f4c4f5dbf58fc15a55d7a09f2a7974"
+    },
+    {
+      "code": "603655.SH",
+      "availability": "no_content",
+      "content_sha256": "29eb660b1abcc75ab9c5e517f795419da4e74f2bb6a37d0a0ed227986a91056f"
+    },
+    {
+      "code": "002423.SZ",
+      "availability": "available",
+      "content_sha256": "063c06cf71312c65a8e4feddce2d2f8f7d578414b36587840fa539e87474f6db"
+    },
+    {
+      "code": "688562.SH",
+      "availability": "no_content",
+      "content_sha256": "04684962f5d97cdc50c0b75ee5f777958e5911f11398aecd04c5ead268ce40e4"
+    },
+    {
+      "code": "600151.SH",
+      "availability": "no_content",
+      "content_sha256": "65a2aa58cfa9315e66519a196a41573070eb0480bc45286a33d48fb1bdb48042"
+    },
+    {
+      "code": "300851.SZ",
+      "availability": "no_content",
+      "content_sha256": "e492db032b50f5225dd5780a6564e9fde2d2c1cb9144fa75ebf1ca5444bf21b4"
+    },
+    {
+      "code": "600690.SH",
+      "availability": "no_content",
+      "content_sha256": "7c0291b5ed1051e33c951af1d47262aa91e6038c626d5b40b7dd6e82e591a8f7"
+    },
+    {
+      "code": "002167.SZ",
+      "availability": "available",
+      "content_sha256": "604714ccdf3e418f5239510d0d0a0dc473192a143cc75c2e86c66ff8964b927e"
+    },
+    {
+      "code": "000301.SZ",
+      "availability": "no_content",
+      "content_sha256": "4f449fc226cd34cfd58dda1aa2c43e0ecfa85d428d0ce27034284a313a254d2e"
+    },
+    {
+      "code": "688608.SH",
+      "availability": "available",
+      "content_sha256": "d3a0790b99c9900b47c4f7a72139f40f4c4eeffec73894f200817b0f77cac34b"
+    },
+    {
+      "code": "300820.SZ",
+      "availability": "no_content",
+      "content_sha256": "5001b7bffb76671bd1984ee167a61fda7013a07fddce6fbb56dc523c16ff68fd"
+    },
+    {
+      "code": "601162.SH",
+      "availability": "available",
+      "content_sha256": "7893cd98fac410cb4c5f82af60a1bb17883317ee3cfabd063e58c1cab5a6a074"
+    },
+    {
+      "code": "300601.SZ",
+      "availability": "no_content",
+      "content_sha256": "e3468eaefcb23f25febad3aa8e5ceb41c4b7bcc0a93fa0835cd64b03d2646c4e"
+    },
+    {
+      "code": "300473.SZ",
+      "availability": "no_content",
+      "content_sha256": "72f7eaf4b2bb52efe2a3eb7c3e4297debdaf9e36a84114e65d937bded3cccf0d"
+    },
+    {
+      "code": "300534.SZ",
+      "availability": "available",
+      "content_sha256": "386d594f29f454738f27234d910601e14dff04dc3de9a1751a7caef5fe16a9a3"
+    },
+    {
+      "code": "002819.SZ",
+      "availability": "available",
+      "content_sha256": "e2d05d96802b100223633b9fe909c46df5f83a71291dd4b3abe9c87ebb2ef806"
+    },
+    {
+      "code": "603317.SH",
+      "availability": "no_content",
+      "content_sha256": "13c53972be35e1ebaf21d04ac97df0e38e2bc4f2008d4ec187fbf0327c7e6e8b"
+    },
+    {
+      "code": "603002.SH",
+      "availability": "available",
+      "content_sha256": "7452c91b760fc3044e81273819356c0df305e4c31ad3e7e95b4990ce41c67823"
+    },
+    {
+      "code": "300226.SZ",
+      "availability": "available",
+      "content_sha256": "7f5cb7f03129b5b1efff9b309cca2a30cd43a16de1c8dc5fa3c9f57f083ffd46"
+    },
+    {
+      "code": "600249.SH",
+      "availability": "no_content",
+      "content_sha256": "e0cfa94cee083bba4d5ad05d8f964281bef5f9257d40cdac4495f60a4347868e"
+    },
+    {
+      "code": "603876.SH",
+      "availability": "no_content",
+      "content_sha256": "f8337d4a4d49b94bc2bdfaab1bbfe41f90167240790198b91cf29202bd3c6c48"
+    },
+    {
+      "code": "603712.SH",
+      "availability": "no_content",
+      "content_sha256": "0366003d5b8c6762820947bf5e680f19753b9b7874ab667d956a13b80521bfb4"
+    },
+    {
+      "code": "300677.SZ",
+      "availability": "no_content",
+      "content_sha256": "e4215a26fa3d0261f694c62b8e2c8b8acf0dddc3d6b760e321eb62bade50f023"
+    },
+    {
+      "code": "000988.SZ",
+      "availability": "no_content",
+      "content_sha256": "8f18249d66518f200ea34b80bbd2dc254d35225d34c0d068653bc53d1286d3a1"
+    },
+    {
+      "code": "002993.SZ",
+      "availability": "no_content",
+      "content_sha256": "e19fca58ee9647be6e6eb55632e47f9f2652cd9257dc28fbebba6b04e38d8ad0"
+    },
+    {
+      "code": "300681.SZ",
+      "availability": "no_content",
+      "content_sha256": "9005882c9f00291aa0697d4014e3bfaf448206624d5a337ba553b3bcb2105ee2"
+    },
+    {
+      "code": "600223.SH",
+      "availability": "no_content",
+      "content_sha256": "eaebad1e4d125e89be4d843033e1e269febcf1632ad04e0fdc061208c0294f6e"
+    },
+    {
+      "code": "603082.SH",
+      "availability": "no_content",
+      "content_sha256": "c6e746cde8b6cb73ab3158f5eae6989c863bda70c6a9bf9a98d89540ca075847"
+    }
+  ],
+  "reason_requests": 32,
+  "reason_response_bytes": 9235,
+  "reason_wire_bytes": 7097,
+  "fixed_reasons": [
+    [
+      "2026-07-15",
+      "688192.SH"
+    ],
+    [
+      "2026-07-13",
+      "688192.SH"
+    ]
+  ],
+  "bindings": {
+    "src/empire/features/yuanhang_limits/bundle.py": "3b71b45085c7a6c4802e78435c72314c0408a2e850945e416704ed9bb3e3394a",
+    "src/empire/features/yuanhang_limits/collector.py": "74a5aaffb73973e2133914f230bf68f93ce1efcfbc7f2efe1ad83e99df19ddad",
+    "src/empire/features/yuanhang_limits/contract.py": "c96714f31fd685a84eecef57649d9ee6f273f28e543a65d2d946af3786bfd2c6",
+    "src/empire/features/yuanhang_limits/dataset.py": "c3fb3420ce6ca5557a1c981d7c6889de5d3db6a0aeebce6deaf80b0db06423da",
+    "src/empire/features/yuanhang_limits/model.py": "018c5d2821bc75aeb4218ada8ac1a88e859e1ebcde76a0eec29e7cc54ec3dad6",
+    "src/empire/features/yuanhang_limits/planning.py": "e391df844b2b42d31f346a8b36fd9b69b27845d2bb17671a14250adf1f76b7a3",
+    "src/empire/features/yuanhang_limits/preparation.py": "dc8786dfcc182f77ea7cc3547caeea2a0fe09fbca295debf7b8697435f7ed2e5",
+    "src/empire/features/yuanhang_limits/query.py": "8710e41be8c438119d1e2275c2c92d7fa25c20b88cc6417a7c1e927d07dd0a05",
+    "src/empire/features/yuanhang_limits/reason_planning.py": "207fe00e6f0632a5e0a0e0d284b87133755a9ad8f0ed545faf2bfbce9b9d7c29",
+    "src/empire/features/yuanhang_limits/repository.py": "c312fdb6657dae9a5a52778aefadf89c4e3c3880ac66748becf6d76574c22e5f",
+    "src/empire/features/yuanhang_limits/source.py": "622b2407816bb758d0d43e6336e5dae2ca53a8f5410e0e6670b9b22b291d88f1",
+    "src/empire/features/yuanhang_limits/storage.py": "2af3eb810cec9ee1eadb13559c5c61d9d08e4556ddbed954e04b2272e8ef0e38",
+    "src/empire/features/yuanhang_limits/ui.py": "b6f6464d6d898852fe0ab4578d999aff7dae5c11b74e42b08dc6bf487508dd37",
+    "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
+    "src/empire/features/yuanhang_limits/__init__.py": "e3006b7256a8badc401baf585ab8f0122a6af5b9c351277e05f2d47d56760bdf"
+  }
+}

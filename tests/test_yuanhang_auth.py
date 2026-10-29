@@ -54,7 +54,7 @@ async def test_existing_guest_login_never_registers_or_logs_and_closes_responses
     key, http = authentication
     identity = GuestIdentity('thsguest_fixture', 'fixture-secret')
     device = ClientDevice('02-00-00-00-00-01')
-    session = await login_guest(http, identity, device, project_id='test-yuanhang')
+    session = await login_guest(http, identity, device, project_id='test-yuanhang', proxy_code='node1')
     assert len(http.requests) == 3 and all(r.closed for r in http.responses)
     assert http.requests[0][1].endswith('?reqtype=do_rsa&type=get_pubkey')
     body = parse_qs(http.requests[1][2]['content'].decode())
@@ -68,8 +68,10 @@ async def test_existing_guest_login_never_registers_or_logs_and_closes_responses
     for method, url, options in http.requests:
         assert options['sensitive'] and options['max_redirects'] == options['max_retries'] == 0
         assert options['project_id'] == 'test-yuanhang'
+        assert options['proxy_code'] == 'node1'
         assert 'auto_register' not in url and b'auto_register' not in options.get('content', b'')
     assert session.servers[0].host == 'hevozhuhq1.123ths.com' and session.servers[0].port == 9602
+    assert session.proxy_code == 'node1'
     raw = base64.b64decode(session.passport64)
     assert raw[:5] == struct.pack('<hBh', len(raw), 6, 2)
     assert raw[5:7] == b'\x10\x32'  # Source uses low nibble first.

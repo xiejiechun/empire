@@ -70,18 +70,21 @@ class RepurchaseCollector:
         return DeferredResponse(response, consume)
 
     async def execute(self, *, fresh=False, baseline_revision=0):
+        self.stats.update(completed_units=0, total_units=None)
         stage = 'checkpoint'
         try:
             state = await self.ingest.checkpoint(JOB)
             cursor = state['cursor']
             progressed = state['revision'] > baseline_revision
             if progressed and cursor.get('phase') == 'complete':
+                self.stats.update(completed_units=cursor['collected'], total_units=cursor['total'])
                 return cursor
             if cursor and cursor.get('contract') != 1:
                 raise ValueError('回购旧断点契约需显式维护')
             if not cursor or cursor.get('phase') == 'complete' or (fresh and not progressed and cursor.get('phase') == 'fetch'):
                 cursor = dict(phase='fetch', batch_id=uuid4().hex, pages=0, collected=0,
                               total=None, after='', digest='0'*64, contract=1)
+            self.stats.update(completed_units=cursor['collected'], total_units=cursor['total'], unit_name='条回购方案')
             while cursor['phase'] == 'fetch':
                 self.stats.update(status='collecting', error='')
                 async with prefetch_units(self, [dict(cursor)], self.download, url=URL,

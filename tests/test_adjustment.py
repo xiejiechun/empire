@@ -1,4 +1,4 @@
-"""Economic counterexamples for independently calculated multiplicative factors."""
+"""Native-source economic counterexamples for theoretical adjustment."""
 from copy import deepcopy
 from decimal import Decimal
 
@@ -12,23 +12,18 @@ def price(day, value='10'):
     return dict(date=day, **dict.fromkeys(('open', 'high', 'low', 'close'), value))
 
 
-def dividend(day='2026-09-02', cash='1', shares='0', key='one', status='实施方案'):
-    return dict(record_key=key, data=dict(ex_date=day, cash_per_share=cash, total_bonus_per_share=shares,
-                                        tax_basis='含税', status=status))
-
-
-def rights(day='2026-09-02', ratio='0.5', value='4', key='rights'):
-    return dict(record_key=key, data=dict(ex_date=day, rights_per_share=ratio, rights_price=value))
+def action(day='2026-09-02', cash='1', bonus='0', transfer='0', ratio='0', rp='0'):
+    return [day, bonus, transfer, ratio, rp, cash]
 
 
 def approx(value, expected):
     assert abs(Decimal(value)-Decimal(expected)) < Decimal('1e-45')
 
 
-def test_cash_dividend_removes_mechanical_drop_and_keeps_raw_price():
+def test_cash_dividend_keeps_original_and_normalizes_end():
     raw = [price('2026-09-01'), price('2026-09-02', '9')]
     original = deepcopy(raw)
-    rows = calculate(raw, [dividend()], [])
+    rows = calculate(raw, [action()])
     assert rows[0]['factor'] == '1' and rows[-1]['forward_multiplier'] == '1'
     approx(rows[0]['forward_close'], '9')
     approx(rows[1]['backward_close'], '10')
@@ -36,106 +31,57 @@ def test_cash_dividend_removes_mechanical_drop_and_keeps_raw_price():
     assert rows[-1]['reference'] == '9'
 
 
-@pytest.mark.parametrize(('cash', 'shares', 'r', 'rp', 'expected'), [
+@pytest.mark.parametrize(('cash', 'shares', 'ratio', 'rp', 'expected'), [
     ('0', '1', '0', '0', '5'), ('0', '0', '0.5', '4', '8'),
     ('1', '0.5', '0.5', '4', '5.5'), ('0', '0', '1', '20', '15'),
 ])
-def test_theoretical_reference_for_send_transfer_rights_and_combined(cash, shares, r, rp, expected):
-    assert ex_reference('10', cash, shares, r, rp) == Decimal(expected)
+def test_theoretical_reference(cash, shares, ratio, rp, expected):
+    assert ex_reference('10', cash, shares, ratio, rp) == Decimal(expected)
 
 
-def test_combined_same_day_and_multiple_events_compound():
+def test_bonus_and_transfer_used_once_with_rights_and_multiple_dates():
     raw = [price('2026-09-01'), price('2026-09-02', '5.5'), price('2026-09-03', '5')]
-    rows = calculate(raw, [dividend(cash='1', shares='0.5'), dividend('2026-09-03', cash='0.5', key='two')], [rights()])
+    events = [action(bonus='0.2', transfer='0.3', ratio='0.5', rp='4'),
+              action('2026-09-03', cash='0.5')]
+    rows = calculate(raw, events)
     approx(rows[-1]['factor'], '2')
     approx(rows[0]['forward_close'], '5')
-    approx(rows[-1]['backward_close'], '10')
-    assert rows[1]['events'] == ['one', 'rights']
+    assert rows[1]['events'] == ['2026-09-02']
 
 
-@pytest.mark.parametrize('status', ['董事会预案', '股东大会预案', '公司预案', '取消分红', '终止'])
-def test_non_implemented_plans_never_affect_factors(status):
-    raw = [price('2026-09-01'), price('2026-09-02')]
-    assert [r['factor'] for r in calculate(raw, [dividend(cash=None, status=status)], [])] == ['1', '1']
-
-
-def test_first_date_is_relative_base_and_future_events_do_not_leak():
-    raw = [price('2026-09-01'), price('2026-09-02')]
-    plans = [dividend('2026-09-01', cash=None), dividend('2026-09-03', cash=None, key='future')]
-    assert [r['factor'] for r in calculate(raw, plans, [])] == ['1', '1']
-
-
-@pytest.mark.parametrize('changes', [dict(cash_per_share=None), dict(total_bonus_per_share=None),
-    dict(ex_date=None), dict(status='未知'), dict(tax_basis='税后')])
-def test_required_components_and_date_are_not_inferred(changes):
-    plan = dividend()
-    plan['data'].update(changes)
-    with pytest.raises(ActionError):
-        calculate([price('2026-09-01'), price('2026-09-02')], [plan], [])
-
-
-def test_send_total_is_authoritative_even_when_source_components_are_null():
-    rows = calculate([price('2026-09-01'), price('2026-09-02', '5')], [dividend(cash='0', shares='1')], [])
-    assert rows[-1]['factor'] == '2'
-
-
-@pytest.mark.parametrize('kind', ['dividends', 'rights'])
-def test_parallel_same_day_events_are_not_summed_or_selected(kind):
-    divs = [dividend(), dividend(cash='2', key='other')] if kind == 'dividends' else []
-    rs = [rights(), rights(key='other')] if kind == 'rights' else []
-    with pytest.raises(ActionError, match='同日并列'):
-        calculate([price('2026-09-01'), price('2026-09-02')], divs, rs)
-
-
-def test_duplicate_identity_is_error_even_when_counts_match():
-    with pytest.raises(ActionError, match='业务键重复'):
-        calculate([price('2026-09-01'), price('2026-09-02')], [dividend(), dividend()], [])
-
-
-def test_proposal_and_implementation_are_preserved_but_only_implementation_counts():
-    proposal = dividend(cash='0.8', key='proposal', status='董事会预案')
-    implementation = dividend(cash='1', key='implementation')
-    for row in (proposal, implementation):
-        row['data']['report_date'] = '2025-12-31'
-    original = deepcopy([proposal, implementation])
-    result = calculate([price('2026-09-01'), price('2026-09-02','9')], [proposal, implementation], [])
-    assert result[-1]['events'] == ['implementation']
-    assert [proposal, implementation] == original
-
-
-def test_same_report_different_implementation_dates_require_event_link_contract():
-    rows = [dividend(key='first'), dividend('2026-09-03', key='revised')]
-    for row in rows:
-        row['data']['report_date'] = '2025-12-31'
-    with pytest.raises(ActionError, match='缺事件关联'):
-        calculate([price('2026-09-01'),price('2026-09-02'),price('2026-09-03')],rows,[])
-    with pytest.raises(ActionError, match='缺事件关联'):
-        calculate([price('2026-09-02'),price('2026-09-03')],rows,[])
-
-
-def test_event_on_absent_or_suspended_day_is_not_moved_to_later_date():
-    with pytest.raises(ActionError, match='2026-09-02'):
-        calculate([price('2026-09-01'), price('2026-09-03')], [dividend()], [])
+def test_first_date_is_base_and_future_events_do_not_leak():
+    rows = calculate([price('2026-09-01'), price('2026-09-02')],
+                     [action('2026-09-01'), action('2026-09-03')])
+    assert [r['factor'] for r in rows] == ['1', '1']
 
 
 @pytest.mark.parametrize('value', [None, True, 'nan', 'inf', '-1', '1e25'])
-def test_invalid_values_rejected(value):
+def test_unknown_or_invalid_numeric_is_not_zero(value):
     with pytest.raises(ActionError):
-        ex_reference('10', value, '0', '0', '0')
+        calculate([price('2026-09-01'), price('2026-09-02')], [action(cash=value)])
 
 
-def test_invalid_ohlc_order_and_cash_over_price_rejected():
+def test_duplicate_event_date_or_missing_event_day_is_rejected():
+    raw = [price('2026-09-01'), price('2026-09-03')]
+    with pytest.raises(ActionError, match='缺少'):
+        calculate(raw, [action()])
+    with pytest.raises(ActionError, match='同日'):
+        calculate(raw, [action(), action(cash='2')])
+
+
+def test_rights_requires_price_and_invalid_ohlc_or_cash_over_price_fails():
     raw = [price('2026-09-01'), price('2026-09-02')]
+    with pytest.raises(ActionError, match='配股'):
+        calculate(raw, [action(ratio='0.4')])
+    with pytest.raises(ActionError, match='现金分红'):
+        calculate(raw, [action(cash='10')])
     raw[0]['high'] = '9'
     with pytest.raises(ActionError, match='高低价'):
-        calculate(raw, [], [])
-    with pytest.raises(ActionError, match='现金分红'):
-        calculate([price('2026-09-01'), price('2026-09-02')], [dividend(cash='10')], [])
+        calculate(raw, [])
 
 
-def test_repeat_and_revision_recompute_and_fixed_anchor():
-    raw = [price('2026-09-01'), price('2026-09-02', '9')]
-    first = calculate(raw, [dividend()], [])
-    assert calculate(raw, [dividend()], []) == first
-    assert calculate(raw, [dividend(cash='0.5')], []) != first
-    assert calculate(raw[:1], [dividend()], [])[0]['forward_close'] == '10'
+def test_full_listing_history_exceeds_old_ten_year_limit_and_repeat_is_stable():
+    raw = [price('1991-04-03'), price('2026-09-02')]
+    first = calculate(raw, [action()])
+    assert first == calculate(raw, [action()])
+    assert first != calculate(raw, [action(cash='0.5')])

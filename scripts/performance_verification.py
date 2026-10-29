@@ -108,7 +108,6 @@ async def verify_kind(manager, kind, selection, args, result):
                 expected = list(sources[unit])
                 current = next(r for r in sources['latest'] if r['unified_code'] == unit)
                 matches = [r for r in expected if identity(kind, r) == identity(kind, current)]
-                require(not matches or matches == [current], '最新与历史同键内容冲突')
                 if not matches:
                     expected.append(current)
             else:

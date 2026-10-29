@@ -135,6 +135,34 @@ async def test_source_declared_future_notice_not_historical_signal(performance):
     assert checks['temporal'].status == 'fail' and checks['temporal'].blocking
 
 
+async def test_holder_snapshot_difference_and_tomorrow_disclosure_end_to_end(performance):
+    _, c, q, store = performance
+    if c.kind not in ('holder_count', 'earnings_disclosure'):
+        return
+    tomorrow = (datetime.now().date() + timedelta(days=1)).isoformat()
+    def response(*args, **kw):
+        params = json.loads(kw['content'])['Params']
+        if 'cache' in args[1]:
+            return httpx.Response(200, json=directory(c.kind))
+        body = source(c.kind, security=params[1] if c.kind == 'holder_count' else '')
+        first = body['ResultSets'][0]
+        field = 'T003' if c.kind == 'holder_count' else 'T007'
+        for row in first['Content']:
+            if c.kind == 'earnings_disclosure' or params[1]:
+                row[first['ColName'].index(field)] = 123 if c.kind == 'holder_count' else tomorrow
+        return httpx.Response(200, json=body)
+    c.http.request.side_effect = response
+    await collect(c)
+    rows = (await q.list_records())['rows']
+    assert {row['holders' if c.kind == 'holder_count' else 'actual_date'] for row in rows} == (
+        {123} if c.kind == 'holder_count' else {tomorrow})
+    assert await store.client.xlen(store.stream) == 0
+    if c.kind == 'earnings_disclosure':
+        checks = {v.criterion: v for v in await q.preparation_check({'purpose': 'historical_signal'})}
+        assert checks['coverage'].status == 'pass'
+        assert checks['temporal'].status == 'fail' and '2条' in checks['temporal'].measured
+
+
 async def test_hot_cold_repeat_revision_old_response_and_replay(performance):
     manager, c, q, store = performance
     await collect(c)

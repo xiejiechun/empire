@@ -3,12 +3,13 @@ import re
 
 
 def additions(features):
-    return [c for c in features or [] if isinstance(c, dict) and str(c.get('path', '')).startswith('additive.')]
+    return [c for c in features or [] if isinstance(c, dict)
+            and str(c.get('path', '')).startswith(('additive.', 'service.', 'management.', 'computation.'))]
 
 
 def validate(change):
     if (set(change) != {'path', 'before', 'after', 'design', 'tests'} or change['before'] is not None
-            or not re.fullmatch(r'additive\.[a-z][a-z0-9_]*', change['path'])
+            or not re.fullmatch(r'(additive|service|management|computation)\.[a-z][a-z0-9_]*', change['path'])
             or not isinstance(change['after'], dict) or set(change['after']) != {'semantic', 'bindings', 'order'}):
         raise ValueError('Invalid exact additive feature declaration')
     value = change['after']
@@ -17,8 +18,20 @@ def validate(change):
             or set(value['order']) != {'plugins', 'startup', 'tasks', 'datasets', 'pages'}):
         raise ValueError('Additive feature groups must be explicit')
     owner = change['path'].split('.')[1]
+    service = change['path'].startswith('service.')
+    management = change['path'].startswith('management.')
+    computation = change['path'].startswith('computation.')
+    if computation and (not value['semantic']['plugins'] or not value['semantic']['pages']
+                        or any(value['semantic'][g] for g in ('tasks', 'datasets'))):
+        raise ValueError('Computation additions require query/UI plugins and pages only')
+    if management and (not value['semantic']['plugins'] or not value['semantic']['pages']
+                       or any(value['semantic'][g] for g in ('tasks', 'datasets'))):
+        raise ValueError('Management additions require plugins/pages only')
+    if service and (not value['semantic']['plugins'] or any(value['semantic'][g]
+                    for g in ('tasks', 'datasets', 'pages'))):
+        raise ValueError('Source service additions must contain only plugins')
     for group, items in value['semantic'].items():
-        if not isinstance(items, dict) or not items:
+        if not isinstance(items, dict) or (not service and not management and not computation and not items):
             raise ValueError('Additive feature groups must contain exact identities')
         ordered = value['order'][group]
         if (not isinstance(ordered, list) or len(ordered) != len(set(ordered)) or set(ordered) != set(items)):
@@ -29,8 +42,22 @@ def validate(change):
         if set(items) != set(value['semantic'][group]):
             raise ValueError('Additive implementation bindings are incomplete')
         for binding in items.values():
-            if not binding['module'].startswith('empire.features.' + owner + '.'):
+            if management:
+                allowed = {'empire.plugins.collection.' + owner, 'empire.plugins.ui.' + owner}
+                if binding['module'] not in allowed or (group == 'pages' and
+                        binding['module'] != 'empire.plugins.ui.' + owner):
+                    raise ValueError('Management binding belongs to another owner')
+                continue
+            if (binding['module'] != 'empire.sources.' + owner if service else
+                    not binding['module'].startswith('empire.features.' + owner + '.')):
                 raise ValueError('Additive feature binding belongs to another owner')
+    if service and any(not ident.startswith('source.') for ident in value['semantic']['plugins']):
+        raise ValueError('Source service additions require source plugin identities')
+    if management and any(ident not in {'collection.' + owner, 'ui.' + owner}
+                          for ident in value['semantic']['plugins']):
+        raise ValueError('Management additions require exact management plugin identities')
+    if computation and set(value['semantic']['plugins']) != {'data.' + owner, 'ui.' + owner}:
+        raise ValueError('Computation additions require exact query/UI identities')
     return value
 
 

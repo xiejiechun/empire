@@ -71,6 +71,7 @@ class TdxListingStatusCollector:
         return await consume()
 
     async def execute(self, *, fresh=False, baseline_revision=0):
+        self.stats.update(completed_units=0, total_units=None)
         stage = 'planning'
         try:
             state = await self.ingest.checkpoint(JOB)
@@ -87,6 +88,7 @@ class TdxListingStatusCollector:
             through = date.fromisoformat(cursor['through'])
             if cursor['phase'] == 'fetch':
                 plan = [m for m in await self.query.plan(through, cursor['fresh']) if m >= cursor['next_month']]
+                self.stats.update(completed_units=cursor['pages'], total_units=cursor['pages'] + len(plan), unit_name='个月')
                 for month in plan:
                     start, end = bounds(month, through)
                     day, rows, counts = start, [], []
@@ -118,8 +120,10 @@ class TdxListingStatusCollector:
                     state = await publish_with_capacity(self.ingest, self.stats, [envelope], job_key=JOB,
                         expected_revision=state['revision'], cursor=updated)
                     cursor = state['cursor']
+                    self.stats['completed_units'] = cursor['pages']
                 cursor = {**cursor, 'phase': 'awaiting_archive'}
                 state = await self.ingest.advance_checkpoint(job_key=JOB, expected_revision=state['revision'], cursor=cursor)
+            self.stats.update(completed_units=cursor['pages'], total_units=cursor['pages'], unit_name='个月')
             stage = 'archive_confirmation'
             self.stats.update(status='awaiting_archive', collected=cursor['collected'], pages=cursor['pages'])
             if cursor['pages']:

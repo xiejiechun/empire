@@ -203,7 +203,7 @@ async def test_ui_filters_detail_selection_and_lifecycle():
                     '财经新闻', 'ETF', '逐笔委托'):
         page.search.setText(removed)
         assert page.table.rowCount() == 0
-    for retained in ('股东户数', '个股融资交易和余额', '大单净额走势'):
+    for retained in ('股东户数', '个股融资交易和余额'):
         page.search.setText(retained)
         assert page.table.rowCount() == 1
     page.search.setText('NO-SUCH-DATA')
@@ -300,7 +300,7 @@ def test_backtest_valuation_scope_keeps_strategy_factors_and_dependencies():
                   'announcement_files announcement_text gdp cpi ppi pmi money_supply credit credit_stock '
                   'etf_catalog etf_nav etf_shares etf_pcf fx tick_trades tick_orders'.split())
     assert removed.isdisjoint(BY_ID)
-    assert {'top_holders', 'float_holders', 'holder_count', 'large_order_trend', 'minute_entrust',
+    assert {'top_holders', 'float_holders', 'holder_count',
             'financing', 'short_lending', 'market_financing', 'market_short_lending', 'margin_targets',
             'connect_holdings', 'connect_trades', 'block_trades', 'hot_list', 'hot_list_summary',
             'rates', 'historical_quote', 'index_prices', 'index_members', 'index_weights'} <= BY_ID.keys()
@@ -356,7 +356,7 @@ async def test_independent_company_actions_and_catalog_visible_in_ui(monkeypatch
     assert result['dividends']['complete']
     assert not result['additional_issues']['complete'] and not result['rights_issues']['complete']
     for ident in ('financing', 'market_financing', 'short_lending', 'market_short_lending',
-                  'hot_list', 'hot_list_summary', 'large_order_trend', 'holder_count'):
+                  'hot_list', 'hot_list_summary', 'holder_count'):
         assert ident in result and not result[ident]['blockers']
     os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
     from PySide6.QtWidgets import QApplication

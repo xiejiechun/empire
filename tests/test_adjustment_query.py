@@ -1,6 +1,6 @@
 """Input proof boundaries and registration of computations, without fake collectors."""
 from concurrent.futures import Future
-from datetime import UTC, date, datetime, timedelta
+from datetime import UTC, datetime
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
@@ -9,10 +9,8 @@ from PySide6.QtWidgets import QApplication
 
 from empire.bootstrap import build_manager
 from empire.contracts.preparation import ComputationContribution
-from empire.features.adjustment.inputs import close_prices, proof_time, verify_unit
 from empire.features.adjustment.query import AdjustmentDataPlugin, resolve_security
 from empire.features.adjustment.ui import AdjustmentPage
-from empire.features.capital_actions.contract import digest
 from empire.features.capital_actions.event_rules import ActionError
 from empire.features.preparation.catalog import BY_ID
 
@@ -39,48 +37,11 @@ def test_calculation_registration_is_not_a_collector_or_archive():
     assert 'security_types' not in BY_ID
     assert 'adjustment' not in manager.entries['collection.control'].plugin.definitions
     for c in q.preparation:
-        assert c.cache_revision == 2  # Old successful checks cannot bypass new ambiguity rejection.
+        assert c.cache_revision == 3  # Old successful checks cannot bypass new ambiguity rejection.
         checks = prep.development(c, {}, '尚未运行测试', '计算')
         assert all(x['status'] == 'pass' for x in checks[:3])
         assert all(x['status'] == 'unknown' for x in checks[3:5])
     assert not any('adjustment' in dataset for dataset in manager.entries['dataset.astock'].plugin.datasets)
-
-
-def test_complete_empty_input_requires_proof_and_same_count_different_set_fails():
-    state = dict(contract_version=3, units={'SZ:000001': dict(count=0, digest=digest([]),
-                                                           observed_at=datetime.now(UTC).isoformat())})
-    assert verify_unit('dividends', 'SZ:000001', [], state)
-    state['units']['SZ:000001']['digest'] = digest(['not-the-empty-set'])
-    with pytest.raises(ActionError, match='同数异集'):
-        verify_unit('dividends', 'SZ:000001', [], state)
-    with pytest.raises(ActionError):
-        verify_unit('dividends', 'SZ:000001', [], {})
-
-
-@pytest.mark.parametrize('value', [None, 'invalid', '2026-09-01T00:00:00', (datetime.now(UTC)+timedelta(days=1)).isoformat()])
-def test_future_or_unzoned_proof_rejected(value):
-    with pytest.raises(ActionError):
-        proof_time(value)
-
-
-def test_intraday_latest_quote_is_not_accepted_as_close():
-    row = dict(trade_date='2026-09-01', lifecycle={'listing_date': '1991-01-01'},
-               data=dict(real=dict(time=145900000, open_px=10, high_px=10, low_px=10, last_px=10)))
-    query = SimpleNamespace(iter_validated_days=lambda *args: iter([row]))
-    with pytest.raises(ActionError, match='收盘后'):
-        close_prices(None, query, 'SZ', '000001', date(2026, 9, 1), date(2026, 9, 1))
-
-
-@pytest.mark.parametrize('clock', [150000000, 150300870, 153759000])
-def test_historical_close_clock_is_distinct_from_today_query_cutoff(clock, monkeypatch):
-    day = date(2021, 1, 4)
-    row = dict(trade_date=day.isoformat(), lifecycle={'listing_date': '1991-01-01'},
-               data=dict(real=dict(time=clock, open_px=5.21, high_px=5.22, low_px=5.16, last_px=5.2)))
-    query = SimpleNamespace(iter_validated_days=lambda *args: iter([row]))
-    result = SimpleNamespace(mappings=lambda: SimpleNamespace(all=lambda: [dict(trade_date=day, is_trade=1)]))
-    conn = SimpleNamespace(execute=lambda *args: result)
-    monkeypatch.setattr('empire.features.adjustment.inputs.suspended', lambda *args: set())
-    assert close_prices(conn, query, 'SH', '600016', day, day)[0]['close'] == '5.2'
 
 
 async def test_preparation_missing_scope_does_not_scan_all_history():

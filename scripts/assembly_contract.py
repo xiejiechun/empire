@@ -104,6 +104,11 @@ def differences(before, after, prefix=''):
 
 
 def compare(baseline, current, migration, root: Path, features=None):
+    if __package__:
+        from .assembly_retirements import semantic_baseline
+    else:
+        from assembly_retirements import semantic_baseline
+    baseline = semantic_baseline(baseline, current, features, root)
     if baseline.get('schema') != 1 or current.get('schema') != 1:
         raise ValueError('Unsupported assembly snapshot schema')
     modules = migration.get('modules', {})
@@ -136,31 +141,45 @@ def compare(baseline, current, migration, root: Path, features=None):
             raise ValueError('Feature changes must be an explicit list')
         seen = set()
         for change in features:
-            if isinstance(change, dict) and str(change.get('path', '')).startswith('additive.'):
+            if isinstance(change, dict) and str(change.get('path', '')).startswith(('additive.', 'service.', 'management.', 'computation.', 'retirement.')):
                 continue
             if not isinstance(change, dict) or set(change) != {'path', 'before', 'after', 'design', 'tests'}:
                 raise ValueError('Feature change requires exact before/after and independent design/tests')
             path = change['path']
+            if path == 'order.startup':
+                # Checked against the immutable order baseline below. Old
+                # identities must keep their relative order.
+                if (not isinstance(change['tests'], list) or not change['tests'] or
+                        any(not isinstance(p, str) or not (root / p).resolve().is_relative_to(root.resolve())
+                            or not (root / p).is_file() for p in [change['design'], *change['tests']])):
+                    raise ValueError('Feature change design and tests must exist inside the repository')
+                continue
             parts = path.split('.')
             if len(parts) == 4 and parts[:2] == ['semantic', 'preparation']:
                 identity = '.'.join(parts[2:])
-                from empire.contracts.preparation import ComputationContribution
+                from empire.contracts.preparation import (
+                    ComputationContribution,
+                    PreparationContribution,
+                )
                 after = change['after']
-                fields = {f.name for f in dataclasses.fields(ComputationContribution)}
+                computation = isinstance(after, dict) and 'output_version' in after
+                contribution = ComputationContribution if computation else PreparationContribution
+                fields = {f.name for f in dataclasses.fields(contribution)}
+                test_keys = ('rule_tests', 'integration_tests') if computation else ('source_tests', 'archive_tests')
                 if (path in seen or change['before'] is not None or not isinstance(after, dict)
                         or set(after) != fields or identity in baseline['semantic']['preparation']):
-                    raise ValueError('Only exact additive computation declarations are supported')
+                    raise ValueError('Only exact additive preparation declarations are supported')
                 seen.add(path)
-                declaration = {k: v for k, v in after.items() if k not in ('rule_tests', 'integration_tests')}
-                tests = {k: after[k] for k in ('rule_tests', 'integration_tests')}
+                declaration = {k: v for k, v in after.items() if k not in test_keys}
+                tests = {k: after[k] for k in test_keys}
                 plugin_id = identity.rsplit(':', 1)[0]
-                provider = baseline['semantic']['plugins'].get(plugin_id, {})
+                provider = expected_semantic['plugins'].get(plugin_id, {})
                 if (current['semantic']['preparation'].get(identity) != declaration
                         or current['bindings']['tests'].get(identity) != tests
                         or after['capability'] not in provider.get('provides', [])
                         or identity.rsplit(':', 1)[1] != after['requirement']
-                        or not after['output_version'] or not all(tests.values())
-                        or change['tests'] != tests['rule_tests'] + tests['integration_tests']):
+                        or computation and not after['output_version'] or not all(tests.values())
+                        or change['tests'] != tests[test_keys[0]] + tests[test_keys[1]]):
                     raise ValueError('Additive computation differs from exact provider, declaration or tests')
                 if any(not isinstance(p, str) or not (root / p).resolve().is_relative_to(root.resolve())
                        or not (root / p).is_file() for p in [change['design'], *change['tests']]):
@@ -168,13 +187,21 @@ def compare(baseline, current, migration, root: Path, features=None):
                 failures.remove(path)
                 expected['tests'][identity] = tests
                 continue
-            if (len(parts) != 5 or parts[:2] != ['semantic', 'preparation']
-                    or parts[-1] not in ('scoped', 'cache_revision') or path in seen):
-                raise ValueError('Only explicit preparation scope/cache feature changes are supported')
+            prep_change = (len(parts) == 5 and parts[:2] == ['semantic', 'preparation']
+                           and parts[-1] in ('scoped', 'cache_revision', 'source', 'output_version'))
+            plugin_change = (len(parts) == 5 and parts[:2] == ['semantic', 'plugins']
+                             and parts[-1] in ('requires', 'description'))
+            if not (prep_change or plugin_change) or path in seen:
+                raise ValueError('Only explicit preparation or plugin dependency/description changes are supported')
             seen.add(path)
             identity = '.'.join(parts[2:-1])
-            old = baseline['semantic']['preparation'][identity][parts[-1]]
-            new = current['semantic']['preparation'][identity][parts[-1]]
+            group = parts[1]
+            old = baseline['semantic'][group][identity][parts[-1]]
+            new = current['semantic'][group][identity][parts[-1]]
+            if parts[-1] == 'requires':
+                provided = {p for v in current['semantic']['plugins'].values() for p in v['provides']}
+                if (not isinstance(new, list) or len(new) != len(set(new)) or set(new) - provided):
+                    raise ValueError('Plugin dependency change refers to missing or duplicate capabilities')
             if (type(old) is not type(change['before']) or type(new) is not type(change['after'])
                     or old != change['before'] or new != change['after'] or old == new):
                 raise ValueError('Feature change is stale or does not match the exact semantic difference')
@@ -228,6 +255,11 @@ def order_snapshot(root: Path):
 
 
 def compare_order(baseline, current, features=None):
+    if __package__:
+        from .assembly_retirements import order_inputs
+    else:
+        from assembly_retirements import order_inputs
+    baseline, features = order_inputs(baseline, features)
     for value in (baseline, current):
         if (value.get('schema') != 1
                 or set(value) - {'schema', 'origin_commit', *ORDER_FIELDS}
@@ -237,11 +269,26 @@ def compare_order(baseline, current, features=None):
             raise ValueError('Invalid ordered assembly snapshot')
     added = {change['path'].removeprefix('semantic.preparation.') for change in features or []
              if change.get('before') is None and change.get('path', '').startswith('semantic.preparation.')
-             and isinstance(change.get('after'), dict) and change['after'].get('output_version')}
+             and isinstance(change.get('after'), dict)
+             and (change['after'].get('output_version') or change['after'].get('collector'))}
     # An exact new calculation may be inserted; every old identity stays in order.
     failures = []
+    startups = [c for c in features or [] if c.get('path') == 'order.startup']
+    if len(startups) > 1:
+        raise ValueError('Duplicate exact startup order change')
     for key in ORDER_FIELDS:
         new = ordered_additions(features, key)
+        if key == 'startup' and startups:
+            change = startups[0]
+            reviewed = change['after']
+            if (change['before'] != baseline[key] or not isinstance(reviewed, list)
+                    or len(reviewed) != len(set(reviewed))
+                    or set(reviewed) != set(baseline[key]) | set(new)
+                    or [v for v in reviewed if v not in new] != baseline[key]):
+                raise ValueError('Exact startup change must preserve every old identity and its order')
+            if current[key] != reviewed:
+                failures.append('order.' + key)
+            continue
         if key == 'preparation':
             new += [value for value in current[key] if value in added]
         valid = (not set(new).intersection(baseline[key]) and set(new) <= set(current[key])

@@ -16,6 +16,7 @@ from empire.contracts.collector import (
     QueueReservation,
 )
 from empire.contracts.data import BackpressureError, BatchReservationError, Envelope
+from empire.core.redaction import exception_text
 
 
 async def wait_for_capacity(
@@ -103,7 +104,7 @@ async def record_error_safely(
         await records.add_error(
             project_id,
             stage=stage,
-            error=str(error),
+            error=exception_text(error),
             **(fields or {}),
         )
         stats.pop("diagnostic_error", None)

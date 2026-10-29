@@ -57,15 +57,6 @@ MySQL 保存正式业务、每项目一条已确认状态和用户配置；Redis
 - [MySQL industry_member](help:MySQL%20industry_member)：同花顺当前行业与证券关联，一行业/证券一行。
 - [MySQL stock_index](help:MySQL%20stock_index)：同花顺当前指数目录和成员可用性，一来源指数一行。
 - [MySQL stock_index_member](help:MySQL%20stock_index_member)：同花顺当前指数成分，一指数/来源证券编号一行。
-- [MySQL stock_market_day](help:MySQL%20stock_market_day)：开盘啦七种独立证券日业务头，一类型/证券/交易日一行。
-- [MySQL stock_intraday_trend](help:MySQL%20stock_intraday_trend)：开盘啦来源分钟分时事实，一证券/交易日/来源分钟一行。
-- [MySQL stock_opening_auction](help:MySQL%20stock_opening_auction)：开盘啦竞价序列事实，一证券/交易日/来源序号一行。
-- [MySQL stock_minute_volume](help:MySQL%20stock_minute_volume)：开盘啦分钟成交量额事实，一证券/交易日/来源分钟一行。
-- [MySQL stock_intraday_trade_block](help:MySQL%20stock_intraday_trade_block)：开盘啦分笔类型化压缩块，一证券/交易日/块序号一行。
-- [MySQL stock_minute_entrust](help:MySQL%20stock_minute_entrust)：开盘啦分钟委买委卖量额事实。
-- [MySQL stock_large_order_trend](help:MySQL%20stock_large_order_trend)：开盘啦大单净额分钟事实。
-- [MySQL stock_daily_quote](help:MySQL%20stock_daily_quote)：开盘啦历史日行情指标，一证券/交易日一行。
-- [MySQL stock_daily_quote_level](help:MySQL%20stock_daily_quote_level)：开盘啦历史日盘口买卖十档，一证券/日期/买卖方/档位一行。
 - [MySQL collection_state](help:MySQL%20collection_state)：统一 SQL 已确认采集状态，每 namespace/project_id 一行。
 - [MySQL app_setting](help:MySQL%20app_setting)：用户正式保存的任务、网站频控、下载资源配置。
 

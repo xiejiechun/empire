@@ -158,7 +158,8 @@ def _child_values(row):
         if key in ('name', 'reason', 'plate_code'):
             cap = {'name': 128, 'reason': 65536, 'plate_code': 32}[key]
             if (not isinstance(value, str) or len(value.encode()) > cap or '\x00' in value
-                    or key != 'plate_code' and (not value.strip() or '***' in value)):
+                    or key == 'name' and not value.strip()
+                    or key != 'plate_code' and '***' in value):
                 raise DetailError('正式关联文本无效')
 
 

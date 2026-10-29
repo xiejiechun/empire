@@ -77,13 +77,13 @@ async def test_partial_security_published_then_later_security_and_retry():
     assert all(first['reports'][k] for k in KINDS)
     assert first['gaps'][0]['source_panel'] == 'unknown_1'
     assert all(e.raw_payload['manifest'] is None for e in c.ingest.events)
-    assert (await c.ingest.checkpoint(c.job_key))['cursor']['index'] == 0
+    assert (await c.ingest.checkpoint(c.job_key))['cursor']['index'] == 2
     assert c.health()['status'] == 'source_gap'
     assert c.health()['failed_units'] == 0 and c.health()['source_gap_units'] == 1
     c.records.add_error.assert_not_awaited()
     c.http.request.side_effect = lambda method, url, **kw: httpx.Response(
         200, content=source(url.split('/')[-2]).encode('gb18030'))
-    await c.execute(baseline_revision=await c.checkpoint_revision())
+    await c.execute(fresh=True, baseline_revision=await c.checkpoint_revision())
     assert c.ingest.events[-1].raw_payload['manifest'] is not None
     assert c.stats['source_identity_gaps'] == 0
 
@@ -103,7 +103,7 @@ async def test_source_gap_does_not_mask_real_failure(failure):
     assert not isinstance(caught.value, CollectionSourceGap)
     assert c.health()['status'] == 'error'
     assert c.http.request.await_count == 2
-    assert (await c.ingest.checkpoint(c.job_key))['cursor']['index'] == 0
+    assert (await c.ingest.checkpoint(c.job_key))['cursor']['index'] == (1 if failure == 'source' else 2)
 
 
 async def test_source_gap_waits_for_whole_round_confirmation():

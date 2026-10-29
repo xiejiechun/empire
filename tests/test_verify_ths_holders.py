@@ -139,7 +139,7 @@ async def evidence(verifier, with_gap):
     manifest = verifier.expected_manifest(summaries)
     state = dict(contract_version=4, units=units)
     publications = {key: {} for key in summaries}
-    cursor = dict(phase='fetch', index=0, source_gap='300398.SZ')
+    cursor = dict(format=2, phase='source_gap', index=2, source_gap_units=1)
     if not with_gap:
         state['manifest'] = manifest
         publications['manifest'] = dict(manifest=manifest)

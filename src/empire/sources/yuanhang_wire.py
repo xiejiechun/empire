@@ -122,7 +122,11 @@ def decode_table(data: bytes, limit: int):
         for field, kind, flags, width in descriptors:
             cell = data[offset:offset + width]
             offset += width
-            point[field] = scalar(cell, kind)
+            try:
+                point[field] = scalar(cell, kind)
+            except ValueError as exc:
+                raise ValueError(f'{exc}; field={field}, row={row}, date={point.get(1)}, '
+                                 f'encoding={kind}, cell={cell[:8].hex()}') from exc
         result.append(point)
     extra, offset = {}, start + rows * row_size
     while offset < len(data):
@@ -167,7 +171,7 @@ def decode_response(body: bytes, *, instance: int, request_id: int, limit=104857
 
 
 def validate_history_tables(tables, *, security: str, required_fields: set[int],
-                            start: int, end: int):
+                            start: int, end: int, repeatable_fields=frozenset(), identical_fields=frozenset()):
     """Validate separate date grids without positional joins or silent omissions.
 
     Empty source responses still need a separately verified source contract;
@@ -185,7 +189,7 @@ def validate_history_tables(tables, *, security: str, required_fields: set[int],
         if 1 not in fields or (present & fields) - {1}:
             raise ValueError('History date field missing or duplicate field tables')
         present.update(fields)
-        previous = None
+        previous, previous_row = None, None
         for row in table['rows']:
             day = row.get(1)
             if type(day) is not int or not start <= day <= end:
@@ -194,10 +198,11 @@ def validate_history_tables(tables, *, security: str, required_fields: set[int],
                 datetime.strptime(str(day), '%Y%m%d')
             except ValueError:
                 raise ValueError('Invalid history calendar date') from None
-            if previous is not None and day <= previous:
-                raise ValueError('History duplicate or unordered date')
             if set(row) != fields:
                 raise ValueError('History row field set mismatch')
-            previous = day
+            if previous is not None and (day < previous or day == previous
+                    and fields != repeatable_fields and not (fields == identical_fields and row == previous_row)):
+                raise ValueError('History duplicate or unordered date')
+            previous, previous_row = day, row
     if not required_fields <= present:
         raise ValueError('History required fields omitted by source')

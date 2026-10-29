@@ -27,6 +27,15 @@ def _text(value, *, limit=128, required=False):
     return value
 
 
+def _reason(value):
+    # Theme 201 / 000157 has an empty reason in both source association views.
+    # Keep that source absence; a masked reason remains invalid.
+    value = _text(value, limit=65536)
+    if '***' in value:
+        raise DetailError('详情理由被掩码')
+    return value
+
+
 def _number(value):
     if type(value) is int:
         number = value
@@ -96,7 +105,7 @@ def parse_detail(payload, requested_id):
         if code in names and names[code] != name:
             raise DetailError('同一证券来源名称冲突')
         names[code] = name
-        reason = _text(stock['Reason'], limit=65536, required=True)
+        reason = _reason(stock['Reason'])
         if cid is not None:
             expected[cid, code, reason] += 1
         record = {'category_id': cid, 'source_stock_id': code,
@@ -156,7 +165,7 @@ def parse_detail(payload, requested_id):
                 raise DetailError('股票标签分类身份未知')
             if _text(tag['Name'], required=True) != categories[cid]['name']:
                 raise DetailError('股票标签与分类名称不符')
-            reason = _text(tag['Reason'], limit=65536, required=True)
+            reason = _reason(tag['Reason'])
             actual[cid, code, reason] += 1
     if codes != set(names) or actual != expected:
         raise DetailError('股票总表标签与分类关联集合或理由不一致')

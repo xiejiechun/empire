@@ -17,6 +17,7 @@ from empire.contracts.download_settings import (
 from empire.contracts.plugin import PluginContext, PluginManifest
 from empire.contracts.request_retry import MAX_REQUEST_RETRIES, request_timeout, retry_delay
 from empire.core.config import user_data_dir
+from empire.core.redaction import exception_text
 from empire.plugins.infra.capacity import capacity
 from empire.plugins.infra.download_storage import DownloadStorage
 from empire.plugins.infra.http_safety import (
@@ -144,7 +145,7 @@ class HttpService:
         incomplete = isinstance(error, DownloadReadError)
         extra = {"raw_body_complete": False, "observed_bytes": error.observed_bytes} if incomplete else {}
         await self.records.add_error(
-            project_id, stage="http", error=str(error),
+            project_id, stage="http", error=exception_text(error),
             raw_body=error.sample if incomplete else response.content if response is not None else None,
             request_url=str(response.url) if response is not None else str(url),
             status_code=error.status_code if incomplete else response.status_code if response is not None else None,

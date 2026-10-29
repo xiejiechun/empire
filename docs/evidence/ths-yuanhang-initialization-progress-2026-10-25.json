@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "observed_at": "2026-10-24T18:37:42.032728+00:00",
+  "initialization_complete": false,
+  "released": false,
+  "project": "ths-yuanhang-prices",
+  "error_id": "7d302b3fc5d64b53a68e44b52d932f18",
+  "error_cleared": false,
+  "failed_security": "001381.SZ",
+  "name": "皇冠新材",
+  "diagnosis": {
+    "native_daily": "strict empty frame; retained as failure",
+    "native_financial": "strict empty frame; retained as failure",
+    "native_listing_field": {
+      "request_id": 200,
+      "field": 1603,
+      "security": "USZA001381",
+      "listing_date": null,
+      "sufficient_absence_evidence": false
+    },
+    "desktop_observation": "远航版目录存在001381皇冠新材；日线及盘口无内容，发行价16.98。未以界面空白推断采集完整。",
+    "auxiliary_research_only": {
+      "url": "https://datacenter.eastmoney.com/api/data/v1/get",
+      "report": "RPT_F10_ORG_BASICINFO",
+      "security": "001381.SZ",
+      "listing_state": "9",
+      "listing_date": null,
+      "proxy_requests": 1,
+      "direct_requests": 0,
+      "formal_scope_changed": false
+    },
+    "decision_pending": "是否允许仅以辅助上市资料识别未上市证券；所有日线/权息/股本事实仍来自远航PC原生协议。未经确认未排除证券、未伪造有效空历史。"
+  },
+  "production_snapshot": {
+    "observed_at": "2026-10-24T18:37:42.032728+00:00",
+    "read_only": true,
+    "initialization_complete": false,
+    "formal_tables": {
+      "yuanhang_daily_price": 2896010,
+      "yuanhang_price_year": 12877,
+      "yuanhang_corporate_action": 0,
+      "yuanhang_capital": 0,
+      "yuanhang_series_proof": 0
+    },
+    "daily_securities": 515,
+    "pending": 0
+  },
+  "drain": {
+    "collectors_started": false,
+    "validated_messages": 3399,
+    "archived": 3399,
+    "errors": 0,
+    "pending": 0,
+    "completed": true
+  },
+  "remaining": [
+    "上市前范围处理确认及实现",
+    "全池两个数据集初始化及来源到SQL逐证券集合内容核对",
+    "正式发布门禁及新版本可见桌面验收"
+  ],
+  "network_errors": "既有网络错误保留；本次没有按一次请求成功宣称程序修复，也未清空错误列表。"
+}

@@ -1,0 +1,349 @@
+{
+  "registered_tasks": 48,
+  "intraday_exceptions": 5,
+  "checks": [
+    {
+      "id": "eastmoney-repurchases",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-capital",
+      "tables": 8,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-income",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-stocks",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-indices",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-industries",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-index-prices",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-cashflow",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-holders",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-listings",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-balance",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-yuanhang-reason",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-yuanhang-prices",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-yuanhang-financial",
+      "tables": 3,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "ths-yuanhang-sprint-limit-up",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": true
+    },
+    {
+      "id": "ths-yuanhang-limit-up-pool",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": true
+    },
+    {
+      "id": "ths-yuanhang-open-limit-up-pool",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": true
+    },
+    {
+      "id": "ths-yuanhang-limit-down-pool",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": true
+    },
+    {
+      "id": "ths-yuanhang-connect-broad-pool",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": true
+    },
+    {
+      "id": "rules-transfer-fee",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "rules-settlement-rules",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "rules-sessions",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "rules-lot-rules",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "rules-tick-rules",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "rules-limit-rules",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "rules-stamp-duty",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "cninfo-calendar",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "kaipanla-themes",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "kaipanla-theme-details",
+      "tables": 4,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "sina-news",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-earnings-quick",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-earnings-report",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-earnings-disclosure",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-earnings-forecast",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-company-renames",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-dividends",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-additional-issues",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-unlocks",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-unlock-industries",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-st-implementation",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-st-removal",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-listing-status",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-suspensions",
+      "tables": 2,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-holder-count",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-security-renames",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-rights-issues",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "tdx-shareholder-changes",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    },
+    {
+      "id": "sina-stocks",
+      "tables": 1,
+      "queue": true,
+      "checkpoint": true,
+      "intraday": false
+    }
+  ],
+  "real_desktop": true,
+  "collapsed_default": true,
+  "copy_controls": true,
+  "screenshot": "build/collection-rules-live.png",
+  "unit_tests_passed": 23,
+  "formal_release": false,
+  "formal_release_blocker": "existing dividends.unit capacity evidence stale"
+}

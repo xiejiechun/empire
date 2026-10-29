@@ -1,0 +1,39 @@
+{
+  "project": "kaipanla-theme-details",
+  "at": "2026-10-25T06:18:42.615084+00:00",
+  "handled_ids": [
+    "7b57b85ba5d34401bfec4511dfdaf957",
+    "4fcbe602d19746a3a55b5661f1faf3a0",
+    "d918dd3aed0f47628b80172a06c01d26",
+    "9c4637fbf64044fda9ce484c3a1fb41f",
+    "f7372e323c48486d93e31bf3c18ca56e",
+    "0ed1bdddfc9347f5b8fc70ccbc205f7b",
+    "fcfc6d12c0244cea8a66ce47481425f2",
+    "6d706db08aca4afa96f149ac14ed880a",
+    "daf4c39309a74c1aa42275a1177b9c9f",
+    "ded9ea9e63c04016aa46c0a84b4fec68",
+    "58590feb517f47599cc498809c50c21c",
+    "be3ab31782754f568332ca843dfb0b3c",
+    "6867a2346c484e4aab7bb71ac0ad7c57",
+    "6be13dce56f6431082673d973185931b",
+    "c1256b82b62a4184b4ab7f026a536120",
+    "e9a1ba2f6441487eb4374d1f5c369972",
+    "582cc2ec3da24f2f9101a13a96cd1776",
+    "b18c7cb8c22b4b40a1bc86b3ff3bd7a6",
+    "32bfda6245754d3dba6365a32e27e419",
+    "8b62f8281adb42a6a918b7926739e94b",
+    "1554e3db747a4853b542f359ed55f87d",
+    "8389cd6c6051425692bd1c87b551c53e"
+  ],
+  "root_causes": [
+    "000016 stock/index exact-code ambiguity",
+    "201/000157 empty reason in both source views"
+  ],
+  "verification": "251 themes source -> normalization -> Redis -> shared archive -> official query; queue zero; 53 unit and 16 integration/UI tests passed",
+  "full_scope_evidence": "docs/evidence/kaipanla-theme-rollout-2026-10-25.json",
+  "unknown_source_names_fail": true,
+  "masked_reasons_fail": true,
+  "removed_exact_ids": 22,
+  "remaining_errors": 126,
+  "unresolved_errors_preserved": true
+}

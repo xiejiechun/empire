@@ -6,7 +6,6 @@ from datetime import datetime
 
 from empire.core.time import CHINA
 from empire.diagnostics.readonly import DiagnosticLimit
-from empire.features.kaipanla.storage_contract import SERIES
 from empire.features.preparation.catalog import BY_ID
 
 
@@ -51,15 +50,6 @@ def query_preview(plugin, security='', day=''):
     day = day or datetime.now(CHINA).date().isoformat()
     if hasattr(plugin, 'month'):
         return 'month', {'month': day[:7]}
-    if hasattr(plugin, 'archived_date'):
-        if not security:
-            raise DiagnosticLimit('证券日查询需要 --security 证券身份；未执行全历史扫描')
-        kwargs = {'market': security[-2:], 'code': security[:6], 'trade_date': day}
-        if getattr(plugin, 'kind', None) in SERIES and hasattr(plugin, 'page'):
-            return 'page', {**kwargs, 'limit': 20}
-        if getattr(plugin, 'kind', None) == 'quote' and hasattr(plugin, 'day'):
-            return 'day', kwargs
-        raise DiagnosticLimit('该正式预览没有可用的定日 reader；未改查最新日期，请使用对应数据页面')
     methods = ('browse', 'list_records', 'list_events', 'list_plans', 'list_rules',
                'list_news', 'list_statement_securities', 'directory', 'candidates')
     for name in methods:

@@ -1,0 +1,82 @@
+{
+  "project_id": "ths-yuanhang-prices",
+  "handled_error_ids": [
+    "f9e54d632206445a9b5d8d60f65455e9"
+  ],
+  "classification": "verified_program_source_contract_fix",
+  "reason": "仅合并完整字段相邻同日精确重复，冲突/倒序/部分字段重复仍失败；301110独立键与正文复核和正式归档查询通过。",
+  "code_by_error": {
+    "f9e54d632206445a9b5d8d60f65455e9": "301110.SZ"
+  },
+  "formal_verification": "docs/evidence/ths-yuanhang-native-formal-2026-10-25.json",
+  "formal_build_report": "build/yuanhang-native-formal-20261025-p.json",
+  "formal_sha256": "0337c471beb4166a41981a9970858f35bb52d5b544cfd38ab367f0bbd8c719df",
+  "unit_tests": "241 passed",
+  "sql_tests": "27 passed",
+  "target": {
+    "database_name": "empire",
+    "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e"
+  },
+  "initialization_complete": false,
+  "before": {
+    "revision": "9",
+    "total": 3,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": [
+      {
+        "status_code": null,
+        "error": "301110.SZ: History duplicate or unordered date",
+        "id": "f9e54d632206445a9b5d8d60f65455e9",
+        "project_id": "ths-yuanhang-prices",
+        "created_at": "2026-10-24T22:49:33.723931+00:00",
+        "stage": "source_validation"
+      },
+      {
+        "status_code": null,
+        "error": "Sensitive request failed (ProxyError)",
+        "id": "d5bdb7467a6840c7928f8f311863f78f",
+        "project_id": "ths-yuanhang-prices",
+        "created_at": "2026-10-24T18:20:08.417346+00:00",
+        "stage": "http"
+      },
+      {
+        "status_code": null,
+        "error": "Sensitive request failed (ProxyRouteError)",
+        "id": "ba5f35477c154d5ba2a165be76d776db",
+        "project_id": "ths-yuanhang-prices",
+        "created_at": "2026-10-24T18:20:08.415388+00:00",
+        "stage": "http"
+      }
+    ]
+  },
+  "removed": 1,
+  "remaining": {
+    "revision": "10",
+    "total": 2,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": [
+      {
+        "status_code": null,
+        "error": "Sensitive request failed (ProxyError)",
+        "id": "d5bdb7467a6840c7928f8f311863f78f",
+        "project_id": "ths-yuanhang-prices",
+        "created_at": "2026-10-24T18:20:08.417346+00:00",
+        "stage": "http"
+      },
+      {
+        "status_code": null,
+        "error": "Sensitive request failed (ProxyRouteError)",
+        "id": "ba5f35477c154d5ba2a165be76d776db",
+        "project_id": "ths-yuanhang-prices",
+        "created_at": "2026-10-24T18:20:08.415388+00:00",
+        "stage": "http"
+      }
+    ]
+  },
+  "checked_at": "2026-10-24T23:13:35.073903+00:00",
+  "diagnosis": "build/yuanhang-daily-order-diagnosis-20261025-c.json"
+}

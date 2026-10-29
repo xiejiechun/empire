@@ -21,6 +21,24 @@ class SettingsStore:
     async def save(self, kind, key, value):
         await self.mysql.control(self._save, kind, key, value)
 
+    async def mutate(self, kind, key, transform):
+        """Serialize a bounded configuration update with its existing SQL row.
+
+        The callback is synchronous and must not perform I/O. Failed transactions
+        expose no allocated identity to the caller; callers can safely retry.
+        """
+        return await self.mysql.control(self._mutate, kind, key, transform)
+
+    def _mutate(self, kind, key, transform):
+        with self.mysql.engine.begin() as conn:
+            old = conn.execute(text('SELECT payload FROM app_setting WHERE namespace=:namespace '
+                'AND kind=:kind AND setting_key=:key FOR UPDATE'),
+                dict(namespace=self.namespace, kind=kind, key=key)).scalar_one_or_none()
+            old = json.loads(old) if isinstance(old, str) else old
+            updated = transform(old)
+            self.save_in_transaction(conn, kind, key, updated)
+            return updated
+
     def _save(self, kind, key, value):
         with self.mysql.engine.begin() as conn:
             self.save_in_transaction(conn, kind, key, value)

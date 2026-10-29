@@ -49,6 +49,29 @@ def collection_rules():
     return validate_rules(json.loads(RESOURCE.read_text(encoding='utf-8')))
 
 
+def rule_details(ident, cfg):
+    """Project storage addresses from the active configuration, without I/O or secrets."""
+    rule = collection_rules().get(ident)
+    if rule is None:
+        return None
+    ns = cfg['redis']['namespace']
+    storage = dict(namespace=ns, database=cfg['mysql']['database'],
+        queue=f'{ns}:ingest', checkpoint=f"{ns}:checkpoint:{rule['job_key']}",
+        progress=f"{ns}:archive:progress:{rule['job_key']}",
+        fingerprints=[f"{ns}:archive:fingerprints:v1:{bucket}:{rule['fingerprint_source']}"
+                      for bucket in rule['fingerprint_namespaces']],
+        errors=f'{ns}:collection:errors:{ident}', archives=f'{ns}:collection:archives:{ident}',
+        control=f'{ns}:collection:control:v1', tables=rule['tables'],
+        state_table='collection_state', state_project=ident,
+        settings_table='app_setting', intraday=None)
+    if pool := rule.get('intraday_pool'):
+        prefix = f'{ns}:yuanhang:intraday:{pool}'
+        storage['intraday'] = dict(body=prefix + ':snapshots:<version>',
+            keys=[prefix + suffix for suffix in (':snapshots', ':times', ':meta')],
+            note='盘中快照只存 Redis，最多 72 小时且受容量限制；不入归档队列、不写 MySQL。日终数据按下列路径归档。')
+    return {**rule, 'storage': storage}
+
+
 def verify_registry(manager, tasks, tables, topics, *, rules=None):
     """Release-time exact ownership check; no live config or database access."""
     rules = collection_rules() if rules is None else rules
@@ -58,13 +81,23 @@ def verify_registry(manager, tasks, tables, topics, *, rules=None):
     for ident, rule in rules.items():
         spec = tasks[ident]
         plugin = manager.entries[manager.providers[spec.capability]].plugin
+        if rule.get('intraday_pool') != (getattr(plugin, 'pool', None)
+                                       if getattr(plugin, 'intraday', False) else None):
+            raise ValueError(f'{ident}: 盘中存储声明不一致')
         bound = [c for c in contributions if ident in c.projects.values()]
         if (rule['job_key'] != plugin.job_key or
                 set(rule['datasets']) != {d for c in bound for d in c.datasets} or
                 set(rule['fingerprint_namespaces']) != {c.namespace for c in bound}):
             raise ValueError(f'{ident}: 规则与正式入队/归档登记不一致')
-        if any(getattr(c.mapping, 'FINGERPRINT_SOURCE', rule['source']) != rule['fingerprint_source']
-               for c in bound):
+        from types import SimpleNamespace
+        def declared_source(contribution):
+            resolver = getattr(contribution.mapping, 'fingerprint_source', None)
+            if resolver:
+                envelope = SimpleNamespace(source=rule['source'], dataset=plugin.dataset,
+                                           job_key=plugin.job_key)
+                return resolver(envelope)
+            return getattr(contribution.mapping, 'FINGERPRINT_SOURCE', rule['source'])
+        if any(declared_source(c) != rule['fingerprint_source'] for c in bound):
             raise ValueError(f'{ident}: 摘要来源不一致')
         if not set(rule['tables']) <= set(tables) or not set(rule['topics']) <= set(topics):
             raise ValueError(f'{ident}: 规则表或说明主题不存在')

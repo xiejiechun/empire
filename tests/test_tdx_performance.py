@@ -151,7 +151,7 @@ def test_independent_registration_and_payload_roundtrip():
 
 
 @pytest.mark.parametrize('kind', KINDS)
-def test_future_actual_date_rejected_but_future_scheduled_allowed(kind):
+def test_source_tomorrow_disclosure_allowed_but_future_count_rejected(kind):
     from datetime import UTC, datetime
 
     from empire.contracts.data import make_envelope
@@ -165,7 +165,7 @@ def test_future_actual_date_rejected_but_future_scheduled_allowed(kind):
     env = make_envelope(source='tdx', dataset=kind+'.tdx_unit', business_key=unit,
                         job_key=project(kind)+'-v1', run_id='test', batch_id='test', payload=payload)
     env = env.model_copy(update={'observed_at': datetime(2026, 10, 12, 15, tzinfo=UTC)})
-    if kind in ('earnings_forecast', 'earnings_quick', 'earnings_report'):
+    if kind in ('earnings_forecast', 'earnings_quick', 'earnings_report', 'earnings_disclosure'):
         # All three endpoints publish rows with tomorrow's declared notice date.
         assert PerformanceDataset(kind).normalize(env)['row_count'] == 1
     else:
@@ -176,6 +176,20 @@ def test_future_actual_date_rejected_but_future_scheduled_allowed(kind):
         row['changed_3'] = '2027-01-01'
     env = env.model_copy(update={'raw_payload': dict(payload, rows=pack(kind, [row]))})
     assert PerformanceDataset(kind).normalize(env)['row_count'] == 1
+
+
+def test_disclosure_rejects_dates_beyond_verified_one_day_lead():
+    from datetime import UTC, datetime
+
+    from empire.features.performance.collector import PerformanceCollector
+
+    c = PerformanceCollector('earnings_disclosure')
+    rows, _ = parse(c.kind, source(c.kind), PERIOD)
+    row = next(r for r in rows if r['unified_code'] == '000001.SZ')
+    row['actual_date'] = '2026-10-14'
+    env = c.envelope(PERIOD + '|SZ', [row], 1, 'future-limit', datetime(2026, 10, 12, 15, tzinfo=UTC))
+    with pytest.raises(ValueError, match='超过采集时点'):
+        PerformanceDataset(c.kind).normalize(env)
 
 
 def test_quick_compression_preserves_rows_and_rejects_broken_or_unbounded_stream():

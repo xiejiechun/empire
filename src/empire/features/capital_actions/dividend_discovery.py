@@ -32,6 +32,7 @@ async def discover(c, stocks):
         return DeferredResponse(response, consume)
     dates, keys, count = set(), {}, 0
     securities = sorted(stocks)
+    c.stats.update(completed_units=0, total_units=len(securities), unit_name='只股票（历史目录核验）')
     async with prefetch_units(c, securities, download, url=PAGE_URL,
                               domains=('tdx.com.cn',), item_name='历史日期发现') as reads:
         async for index, read in reads:
@@ -41,4 +42,5 @@ async def discover(c, stocks):
                 raise ValueError('分红历史目录集合超过100000方案或1000期')
             dates.update(periods)
             keys[securities[index]] = identities
+            c.stats['completed_units'] = index + 1
     return dates, keys

@@ -1,0 +1,572 @@
+{
+  "applied": true,
+  "queue": 0,
+  "tables": [
+    "yuanhang_limit_pool",
+    "yuanhang_limit_member",
+    "yuanhang_limit_reason"
+  ],
+  "database": "empire",
+  "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "exists": {
+    "yuanhang_limit_pool": false,
+    "yuanhang_limit_member": false,
+    "yuanhang_limit_reason": false
+  },
+  "ddl_sha256": {
+    "yuanhang_limit_pool": "6aadf7a79cc306c7984c536805cab20fe12c72bc0fd233898b34cf94b53bea23",
+    "yuanhang_limit_member": "813d46cb9332cbd94f321434a092652b9a9f6fff8990b93c2e2e4e844734d055",
+    "yuanhang_limit_reason": "44f2ffbe4fa694ae571d5d481efef6350ceb9a2c21421675d6ba0f34b5152031"
+  },
+  "before": {
+    "additional_issue": {
+      "rows": 6562,
+      "ddl_hash": "986d7ee4fd18f31a0d9dacf5264de13d243fc00086ea60b5877b4cee9c61b990"
+    },
+    "app_setting": {
+      "rows": 56,
+      "ddl_hash": "2c7cb3d39d4c6d42fd77e348afe5d37ab8bf5a5f21093b1d36b38fd9cccff221"
+    },
+    "balance_statement": {
+      "rows": 320682,
+      "ddl_hash": "69760f99b6fff48acdc2764493eff28fadc7c2a657373d588695e475cd5dcd6e"
+    },
+    "capital_encumbrance": {
+      "rows": 99124,
+      "ddl_hash": "6fe8507da1d67db3d5fc9a3fcf48c5998e6db761231218017443bfd9853f4cf2"
+    },
+    "capital_equity_position": {
+      "rows": 21916,
+      "ddl_hash": "54714c08630ef22200829cee97d5342f3c2ddd9a7ae2cbb5a41f4775c7169e9b"
+    },
+    "capital_equity_summary": {
+      "rows": 19996,
+      "ddl_hash": "39b5fcb9fd6e6da2ac7e9c2916558d161a7a90c5a461594a5570c965fd6cb8ac"
+    },
+    "capital_funding": {
+      "rows": 14214,
+      "ddl_hash": "6c5935debfd3bec8067868a1e8bbda56fc73cdf794ff9c2e332f5f5b14830b24"
+    },
+    "capital_ipo": {
+      "rows": 123,
+      "ddl_hash": "0d37d130d1e722b17e77b30fcc27497bf2c5a3e1381a42bdc9989a9772cf5778"
+    },
+    "capital_project": {
+      "rows": 63423,
+      "ddl_hash": "88f6f5b89b5dae66b943e8d7c813e9121b08f6be6326b2756776639cb3a04964"
+    },
+    "capital_release": {
+      "rows": 80569,
+      "ddl_hash": "c27d0fe9e59cb44edd450219751ebe011cb1429a6463ccfae898ceff2b613578"
+    },
+    "capital_transaction": {
+      "rows": 253404,
+      "ddl_hash": "1827f75dc8898169f2ba344b37565712f095abb4a4c84ff29910633e976096ee"
+    },
+    "cashflow_statement": {
+      "rows": 321691,
+      "ddl_hash": "a325f5c1589e94f25f40d252090d9e89078c7a3567b90d0007af8a2128bb27a5"
+    },
+    "collection_state": {
+      "rows": 51,
+      "ddl_hash": "86266a413b333eefb1e5caaf02ed51afcb3b4fdc5b17a44d3d32cc1dd57cd814"
+    },
+    "dividend_plan": {
+      "rows": 56192,
+      "ddl_hash": "00079ad50a5cb6958b6f2b327dbe0ea3e1895cff9e40f95cec17561e7b67ccee"
+    },
+    "earnings_disclosure": {
+      "rows": 264813,
+      "ddl_hash": "efa3b054828eca97c75e928e5b83c980de11ec45f5d0be798d68507a5eacb9f1"
+    },
+    "earnings_forecast": {
+      "rows": 109193,
+      "ddl_hash": "f51d8997e1dbff7db78ca25b15045b573001bfb1e10db8647232438e5f69b0cd"
+    },
+    "earnings_quick": {
+      "rows": 53822,
+      "ddl_hash": "d1e61fd9fd7bd36ae78c96da00610fe454aaff5203ab7e9c6e13ec5ba7bd013a"
+    },
+    "earnings_report": {
+      "rows": 304405,
+      "ddl_hash": "d3edb9e5d334ba41b1adfff98679e6036bea1bf928f889d23e6cc9b043961d10"
+    },
+    "finance_news": {
+      "rows": 48480,
+      "ddl_hash": "037b27a51f73652613eca805710488b6c1bb52f86ac66c9edc9719cbea61e7d9"
+    },
+    "holder_member": {
+      "rows": 680870,
+      "ddl_hash": "7eb6e8b863951ae69b72286d5d74411ea971706e2ad62e8d86e4cd3f1f88b7a3"
+    },
+    "holder_report": {
+      "rows": 60036,
+      "ddl_hash": "c57d7e4739642b329cddaf93dd2077d4935050f9727ae81450c879843b37b428"
+    },
+    "hot_list_day": {
+      "rows": 208849,
+      "ddl_hash": "007ec56b22ad383d4dc145d264f569401f5583069a8565bce2ea055c20969291"
+    },
+    "hot_list_reason": {
+      "rows": 269981,
+      "ddl_hash": "29bd7433b3a92b8915d0525172568bc95d5eb5d288fa229f01b008720a80e3aa"
+    },
+    "hot_list_seat": {
+      "rows": 2332233,
+      "ddl_hash": "cc0e7e1be78597396d87c2aa869fb0f42123dbb6eddab907a1d13d1b6f1269b7"
+    },
+    "income_statement": {
+      "rows": 331306,
+      "ddl_hash": "d38085a57748217608dc27f3d616cebbf7233150c085a9a8618b573b28114d01"
+    },
+    "index_daily_price": {
+      "rows": 2243259,
+      "ddl_hash": "6d4c54a9710f7cae1da19913f686894da0531b599cac5113d52cff4a09d1f8c4"
+    },
+    "index_price_year": {
+      "rows": 9598,
+      "ddl_hash": "04b508b43abe5db502abad59c20b4948343aaf0b8ff58e2c43872e8647d8111a"
+    },
+    "industry": {
+      "rows": 90,
+      "ddl_hash": "87c50d7135f2744a2be3277b2fec18822570fe44b537b9c666868a03a391c7e9"
+    },
+    "industry_member": {
+      "rows": 5577,
+      "ddl_hash": "a7a110b66f2ebf4ff7b6451bbdb70605623e76b6a6e88c56b5301bf5ea5c7f9e"
+    },
+    "restricted_share_unlock": {
+      "rows": 37340,
+      "ddl_hash": "5e3a285e77cebfd782ef3cb445605231de7fedc5bf93041475f8b7f7c190c7c4"
+    },
+    "restricted_share_unlock_detail": {
+      "rows": 364753,
+      "ddl_hash": "c7e4a600ad443201c6231cd9c73a159858120f6691a637a00d052890aebf3be4"
+    },
+    "restricted_share_unlock_industry": {
+      "rows": 703,
+      "ddl_hash": "6db8d74caae1db434d9c8e22a53712a7e9f811c15bafa093237bc8723a1dda38"
+    },
+    "rights_issue": {
+      "rows": 1191,
+      "ddl_hash": "43d579323bdf1557b3b371106bd4f0ddabfcf606a217f6d5c6d880400d8266e2"
+    },
+    "security_code_alias": {
+      "rows": 248,
+      "ddl_hash": "fb2e19174ee98eb4bb372c8f4050f1a2d878ae95f7713ea96da4cbbba05600a6"
+    },
+    "security_listing_event": {
+      "rows": 555,
+      "ddl_hash": "02d37d257d2a6ff54de7787b70b19790cced6a96c95a96acc22618e5338e6e54"
+    },
+    "security_name_change": {
+      "rows": 11919,
+      "ddl_hash": "87b83a97e4f206dfe39f9b338060a69eb8868c65b71cca9a00298d7a625aa724"
+    },
+    "security_st_event": {
+      "rows": 3952,
+      "ddl_hash": "29f23bda92332babc479c8e611d71a333f525bc1ba59a7033fdfc057eb49820f"
+    },
+    "shareholder_change": {
+      "rows": 326655,
+      "ddl_hash": "8cd3295dca1c4883bbf96860fed1e89a35f401951ede0d71f5e0fde6fa807ca4"
+    },
+    "shareholder_count": {
+      "rows": 227946,
+      "ddl_hash": "84dec3873ce6337e8efa2fd5569df801d4cb890c97cf1a7cb7a06fed91a9135a"
+    },
+    "stock": {
+      "rows": 5578,
+      "ddl_hash": "1bec7704a918f050d6da549ff65787602fb0e93676ff4f93a69522d60feeefce"
+    },
+    "stock_daily_quote": {
+      "rows": 2986483,
+      "ddl_hash": "765add00a52c8ffcb5d53c671dc79c36e3f5772d4c0a1cbd22123955fde5336e"
+    },
+    "stock_daily_quote_level": {
+      "rows": 59729660,
+      "ddl_hash": "88a6a70c5a53ac30760a1098ed825a34c98252012e20c15c612c74f55c281785"
+    },
+    "stock_index": {
+      "rows": 573,
+      "ddl_hash": "88b26f912ccf209625aa77d9d70ce17b1e1b561735c264e4c7df319d57ec590a"
+    },
+    "stock_index_member": {
+      "rows": 99525,
+      "ddl_hash": "deb5c9d186bb6ba46ea4a3f4999fe75d325dbd2e7b81a1cb7149c653532bdc02"
+    },
+    "stock_intraday_trade_block": {
+      "rows": 2001,
+      "ddl_hash": "96af3efa7a94e763016800242bb274ef375fa6aa6d84a24e52f3be61926e201b"
+    },
+    "stock_intraday_trend": {
+      "rows": 35427,
+      "ddl_hash": "77e8b3c56e566f71c70635eb5478d30e74ddfc63cf853255fefb79c6ab839356"
+    },
+    "stock_large_order_trend": {
+      "rows": 33258,
+      "ddl_hash": "d7a32eb218982a66260a5444fd882edabdf2842083534c9e21b816fbfd581d6f"
+    },
+    "stock_listing": {
+      "rows": 5498,
+      "ddl_hash": "745f6303baf2c1fea157259b733153ab380b24de6120e4102beb89bc48d571f0"
+    },
+    "stock_market_day": {
+      "rows": 2987352,
+      "ddl_hash": "fbb9936ad12bb31f404c3f5f6ef54a103607e5470c95c1f2c1acfeb04dcef65d"
+    },
+    "stock_minute_entrust": {
+      "rows": 35186,
+      "ddl_hash": "c6e09a588231cacfef821d196542cd406dfdc56285914ddb0fead945a38b75e3"
+    },
+    "stock_minute_volume": {
+      "rows": 35427,
+      "ddl_hash": "26c94303eac87f82a2f1734d31ed46cd73bc9d450564bbd748e6d6cb2138a37a"
+    },
+    "stock_opening_auction": {
+      "rows": 5758,
+      "ddl_hash": "a7be9be04f51ced72651169028c7f8c481cfa5cf607e130c274898f930c5838b"
+    },
+    "stock_repurchase_plan": {
+      "rows": 5600,
+      "ddl_hash": "bca2e60d12d640299889c055472c700952d8e2941de96df4bc56802a322e845f"
+    },
+    "suspension_event": {
+      "rows": 104759,
+      "ddl_hash": "cd040d397cac18467e11bf98491fa6b84aad6fb520e9b70c1c2d7cf40ca92b37"
+    },
+    "suspension_source_date": {
+      "rows": 145387,
+      "ddl_hash": "ebfc531b6a67aab8c899c8b5140b4a652876cf15012ac76c3844366aabfdddae"
+    },
+    "theme_category": {
+      "rows": 3003,
+      "ddl_hash": "649fa25060ab11197407e43469354dee43c370b29b8a2e31a87c8a251ff0766c"
+    },
+    "theme_daily": {
+      "rows": 505,
+      "ddl_hash": "4dc231ac101e796109839f4d6be6745d6f9a646185d653627e6c81491474c816"
+    },
+    "theme_detail": {
+      "rows": 251,
+      "ddl_hash": "2caf2a9b3dc3e33c670ff7aa0e3973b776b638a45526c48ca7613b790e3564e7"
+    },
+    "theme_stock": {
+      "rows": 13584,
+      "ddl_hash": "2bbd298ad2d0ae13b5deb1a86bb4edd7398619ab6464245d29aeb5626d7c4152"
+    },
+    "theme_stock_reason": {
+      "rows": 15741,
+      "ddl_hash": "ff57ce89c03d56aff32cfb05525071e5a85c981fc272f21d4b16fd2a4143cdcc"
+    },
+    "trade_calendar": {
+      "rows": 13527,
+      "ddl_hash": "5fbd41886474cce60f5bd3f54d304a4e560658844eef5032a4df773867b82961"
+    },
+    "trading_rule_citation": {
+      "rows": 30,
+      "ddl_hash": "8e346c238cf2a04c03960ef351a14428bf3b61b9f6888b42de668a90521db2b5"
+    },
+    "trading_rule_value": {
+      "rows": 77,
+      "ddl_hash": "5ab3aa96092f90f2a529c27f2165c598338921eb8a1eb5acc03ebf504ae871ea"
+    },
+    "yuanhang_capital": {
+      "rows": 758748,
+      "ddl_hash": "cbb8e6d3b7045f80d2e62c332d2865078ca2e6a82601748ad95174caa63d9c39"
+    },
+    "yuanhang_corporate_action": {
+      "rows": 57654,
+      "ddl_hash": "70fb0694fbd3bfdef766009d3afcda6119bf82d254ffc59da7b6401df55ca6e4"
+    },
+    "yuanhang_daily_price": {
+      "rows": 17005358,
+      "ddl_hash": "f41c49255b6e3fc22b24bc9eda8e839b3f9a8ae54c0453bfe18f99a3712625f0"
+    },
+    "yuanhang_price_year": {
+      "rows": 75986,
+      "ddl_hash": "0846ca4ff6ba19edb9283b8b8df6baa675af26b95383921b56648fda4d1f6a17"
+    },
+    "yuanhang_series_proof": {
+      "rows": 11150,
+      "ddl_hash": "22c9f7679133b1f55487924897750f660a67871562a2261d08f0badc531f11e7"
+    },
+    "state_digest": "f9ff4ce060b4a752a3a1089c9b6a1f72c421bcbce6bdd85735f62aae44922786"
+  },
+  "after": {
+    "additional_issue": {
+      "rows": 6562,
+      "ddl_hash": "986d7ee4fd18f31a0d9dacf5264de13d243fc00086ea60b5877b4cee9c61b990"
+    },
+    "app_setting": {
+      "rows": 56,
+      "ddl_hash": "2c7cb3d39d4c6d42fd77e348afe5d37ab8bf5a5f21093b1d36b38fd9cccff221"
+    },
+    "balance_statement": {
+      "rows": 320682,
+      "ddl_hash": "69760f99b6fff48acdc2764493eff28fadc7c2a657373d588695e475cd5dcd6e"
+    },
+    "capital_encumbrance": {
+      "rows": 99124,
+      "ddl_hash": "6fe8507da1d67db3d5fc9a3fcf48c5998e6db761231218017443bfd9853f4cf2"
+    },
+    "capital_equity_position": {
+      "rows": 21916,
+      "ddl_hash": "54714c08630ef22200829cee97d5342f3c2ddd9a7ae2cbb5a41f4775c7169e9b"
+    },
+    "capital_equity_summary": {
+      "rows": 19996,
+      "ddl_hash": "39b5fcb9fd6e6da2ac7e9c2916558d161a7a90c5a461594a5570c965fd6cb8ac"
+    },
+    "capital_funding": {
+      "rows": 14214,
+      "ddl_hash": "6c5935debfd3bec8067868a1e8bbda56fc73cdf794ff9c2e332f5f5b14830b24"
+    },
+    "capital_ipo": {
+      "rows": 123,
+      "ddl_hash": "0d37d130d1e722b17e77b30fcc27497bf2c5a3e1381a42bdc9989a9772cf5778"
+    },
+    "capital_project": {
+      "rows": 63423,
+      "ddl_hash": "88f6f5b89b5dae66b943e8d7c813e9121b08f6be6326b2756776639cb3a04964"
+    },
+    "capital_release": {
+      "rows": 80569,
+      "ddl_hash": "c27d0fe9e59cb44edd450219751ebe011cb1429a6463ccfae898ceff2b613578"
+    },
+    "capital_transaction": {
+      "rows": 253404,
+      "ddl_hash": "1827f75dc8898169f2ba344b37565712f095abb4a4c84ff29910633e976096ee"
+    },
+    "cashflow_statement": {
+      "rows": 321691,
+      "ddl_hash": "a325f5c1589e94f25f40d252090d9e89078c7a3567b90d0007af8a2128bb27a5"
+    },
+    "collection_state": {
+      "rows": 51,
+      "ddl_hash": "86266a413b333eefb1e5caaf02ed51afcb3b4fdc5b17a44d3d32cc1dd57cd814"
+    },
+    "dividend_plan": {
+      "rows": 56192,
+      "ddl_hash": "00079ad50a5cb6958b6f2b327dbe0ea3e1895cff9e40f95cec17561e7b67ccee"
+    },
+    "earnings_disclosure": {
+      "rows": 264813,
+      "ddl_hash": "efa3b054828eca97c75e928e5b83c980de11ec45f5d0be798d68507a5eacb9f1"
+    },
+    "earnings_forecast": {
+      "rows": 109193,
+      "ddl_hash": "f51d8997e1dbff7db78ca25b15045b573001bfb1e10db8647232438e5f69b0cd"
+    },
+    "earnings_quick": {
+      "rows": 53822,
+      "ddl_hash": "d1e61fd9fd7bd36ae78c96da00610fe454aaff5203ab7e9c6e13ec5ba7bd013a"
+    },
+    "earnings_report": {
+      "rows": 304405,
+      "ddl_hash": "d3edb9e5d334ba41b1adfff98679e6036bea1bf928f889d23e6cc9b043961d10"
+    },
+    "finance_news": {
+      "rows": 48480,
+      "ddl_hash": "037b27a51f73652613eca805710488b6c1bb52f86ac66c9edc9719cbea61e7d9"
+    },
+    "holder_member": {
+      "rows": 680870,
+      "ddl_hash": "7eb6e8b863951ae69b72286d5d74411ea971706e2ad62e8d86e4cd3f1f88b7a3"
+    },
+    "holder_report": {
+      "rows": 60036,
+      "ddl_hash": "c57d7e4739642b329cddaf93dd2077d4935050f9727ae81450c879843b37b428"
+    },
+    "hot_list_day": {
+      "rows": 208849,
+      "ddl_hash": "007ec56b22ad383d4dc145d264f569401f5583069a8565bce2ea055c20969291"
+    },
+    "hot_list_reason": {
+      "rows": 269981,
+      "ddl_hash": "29bd7433b3a92b8915d0525172568bc95d5eb5d288fa229f01b008720a80e3aa"
+    },
+    "hot_list_seat": {
+      "rows": 2332233,
+      "ddl_hash": "cc0e7e1be78597396d87c2aa869fb0f42123dbb6eddab907a1d13d1b6f1269b7"
+    },
+    "income_statement": {
+      "rows": 331306,
+      "ddl_hash": "d38085a57748217608dc27f3d616cebbf7233150c085a9a8618b573b28114d01"
+    },
+    "index_daily_price": {
+      "rows": 2243259,
+      "ddl_hash": "6d4c54a9710f7cae1da19913f686894da0531b599cac5113d52cff4a09d1f8c4"
+    },
+    "index_price_year": {
+      "rows": 9598,
+      "ddl_hash": "04b508b43abe5db502abad59c20b4948343aaf0b8ff58e2c43872e8647d8111a"
+    },
+    "industry": {
+      "rows": 90,
+      "ddl_hash": "87c50d7135f2744a2be3277b2fec18822570fe44b537b9c666868a03a391c7e9"
+    },
+    "industry_member": {
+      "rows": 5577,
+      "ddl_hash": "a7a110b66f2ebf4ff7b6451bbdb70605623e76b6a6e88c56b5301bf5ea5c7f9e"
+    },
+    "restricted_share_unlock": {
+      "rows": 37340,
+      "ddl_hash": "5e3a285e77cebfd782ef3cb445605231de7fedc5bf93041475f8b7f7c190c7c4"
+    },
+    "restricted_share_unlock_detail": {
+      "rows": 364753,
+      "ddl_hash": "c7e4a600ad443201c6231cd9c73a159858120f6691a637a00d052890aebf3be4"
+    },
+    "restricted_share_unlock_industry": {
+      "rows": 703,
+      "ddl_hash": "6db8d74caae1db434d9c8e22a53712a7e9f811c15bafa093237bc8723a1dda38"
+    },
+    "rights_issue": {
+      "rows": 1191,
+      "ddl_hash": "43d579323bdf1557b3b371106bd4f0ddabfcf606a217f6d5c6d880400d8266e2"
+    },
+    "security_code_alias": {
+      "rows": 248,
+      "ddl_hash": "fb2e19174ee98eb4bb372c8f4050f1a2d878ae95f7713ea96da4cbbba05600a6"
+    },
+    "security_listing_event": {
+      "rows": 555,
+      "ddl_hash": "02d37d257d2a6ff54de7787b70b19790cced6a96c95a96acc22618e5338e6e54"
+    },
+    "security_name_change": {
+      "rows": 11919,
+      "ddl_hash": "87b83a97e4f206dfe39f9b338060a69eb8868c65b71cca9a00298d7a625aa724"
+    },
+    "security_st_event": {
+      "rows": 3952,
+      "ddl_hash": "29f23bda92332babc479c8e611d71a333f525bc1ba59a7033fdfc057eb49820f"
+    },
+    "shareholder_change": {
+      "rows": 326655,
+      "ddl_hash": "8cd3295dca1c4883bbf96860fed1e89a35f401951ede0d71f5e0fde6fa807ca4"
+    },
+    "shareholder_count": {
+      "rows": 227946,
+      "ddl_hash": "84dec3873ce6337e8efa2fd5569df801d4cb890c97cf1a7cb7a06fed91a9135a"
+    },
+    "stock": {
+      "rows": 5578,
+      "ddl_hash": "1bec7704a918f050d6da549ff65787602fb0e93676ff4f93a69522d60feeefce"
+    },
+    "stock_daily_quote": {
+      "rows": 2986483,
+      "ddl_hash": "765add00a52c8ffcb5d53c671dc79c36e3f5772d4c0a1cbd22123955fde5336e"
+    },
+    "stock_daily_quote_level": {
+      "rows": 59729660,
+      "ddl_hash": "88a6a70c5a53ac30760a1098ed825a34c98252012e20c15c612c74f55c281785"
+    },
+    "stock_index": {
+      "rows": 573,
+      "ddl_hash": "88b26f912ccf209625aa77d9d70ce17b1e1b561735c264e4c7df319d57ec590a"
+    },
+    "stock_index_member": {
+      "rows": 99525,
+      "ddl_hash": "deb5c9d186bb6ba46ea4a3f4999fe75d325dbd2e7b81a1cb7149c653532bdc02"
+    },
+    "stock_intraday_trade_block": {
+      "rows": 2001,
+      "ddl_hash": "96af3efa7a94e763016800242bb274ef375fa6aa6d84a24e52f3be61926e201b"
+    },
+    "stock_intraday_trend": {
+      "rows": 35427,
+      "ddl_hash": "77e8b3c56e566f71c70635eb5478d30e74ddfc63cf853255fefb79c6ab839356"
+    },
+    "stock_large_order_trend": {
+      "rows": 33258,
+      "ddl_hash": "d7a32eb218982a66260a5444fd882edabdf2842083534c9e21b816fbfd581d6f"
+    },
+    "stock_listing": {
+      "rows": 5498,
+      "ddl_hash": "745f6303baf2c1fea157259b733153ab380b24de6120e4102beb89bc48d571f0"
+    },
+    "stock_market_day": {
+      "rows": 2987352,
+      "ddl_hash": "fbb9936ad12bb31f404c3f5f6ef54a103607e5470c95c1f2c1acfeb04dcef65d"
+    },
+    "stock_minute_entrust": {
+      "rows": 35186,
+      "ddl_hash": "c6e09a588231cacfef821d196542cd406dfdc56285914ddb0fead945a38b75e3"
+    },
+    "stock_minute_volume": {
+      "rows": 35427,
+      "ddl_hash": "26c94303eac87f82a2f1734d31ed46cd73bc9d450564bbd748e6d6cb2138a37a"
+    },
+    "stock_opening_auction": {
+      "rows": 5758,
+      "ddl_hash": "a7be9be04f51ced72651169028c7f8c481cfa5cf607e130c274898f930c5838b"
+    },
+    "stock_repurchase_plan": {
+      "rows": 5600,
+      "ddl_hash": "bca2e60d12d640299889c055472c700952d8e2941de96df4bc56802a322e845f"
+    },
+    "suspension_event": {
+      "rows": 104759,
+      "ddl_hash": "cd040d397cac18467e11bf98491fa6b84aad6fb520e9b70c1c2d7cf40ca92b37"
+    },
+    "suspension_source_date": {
+      "rows": 145387,
+      "ddl_hash": "ebfc531b6a67aab8c899c8b5140b4a652876cf15012ac76c3844366aabfdddae"
+    },
+    "theme_category": {
+      "rows": 3003,
+      "ddl_hash": "649fa25060ab11197407e43469354dee43c370b29b8a2e31a87c8a251ff0766c"
+    },
+    "theme_daily": {
+      "rows": 505,
+      "ddl_hash": "4dc231ac101e796109839f4d6be6745d6f9a646185d653627e6c81491474c816"
+    },
+    "theme_detail": {
+      "rows": 251,
+      "ddl_hash": "2caf2a9b3dc3e33c670ff7aa0e3973b776b638a45526c48ca7613b790e3564e7"
+    },
+    "theme_stock": {
+      "rows": 13584,
+      "ddl_hash": "2bbd298ad2d0ae13b5deb1a86bb4edd7398619ab6464245d29aeb5626d7c4152"
+    },
+    "theme_stock_reason": {
+      "rows": 15741,
+      "ddl_hash": "ff57ce89c03d56aff32cfb05525071e5a85c981fc272f21d4b16fd2a4143cdcc"
+    },
+    "trade_calendar": {
+      "rows": 13527,
+      "ddl_hash": "5fbd41886474cce60f5bd3f54d304a4e560658844eef5032a4df773867b82961"
+    },
+    "trading_rule_citation": {
+      "rows": 30,
+      "ddl_hash": "8e346c238cf2a04c03960ef351a14428bf3b61b9f6888b42de668a90521db2b5"
+    },
+    "trading_rule_value": {
+      "rows": 77,
+      "ddl_hash": "5ab3aa96092f90f2a529c27f2165c598338921eb8a1eb5acc03ebf504ae871ea"
+    },
+    "yuanhang_capital": {
+      "rows": 758748,
+      "ddl_hash": "cbb8e6d3b7045f80d2e62c332d2865078ca2e6a82601748ad95174caa63d9c39"
+    },
+    "yuanhang_corporate_action": {
+      "rows": 57654,
+      "ddl_hash": "70fb0694fbd3bfdef766009d3afcda6119bf82d254ffc59da7b6401df55ca6e4"
+    },
+    "yuanhang_daily_price": {
+      "rows": 17005358,
+      "ddl_hash": "f41c49255b6e3fc22b24bc9eda8e839b3f9a8ae54c0453bfe18f99a3712625f0"
+    },
+    "yuanhang_price_year": {
+      "rows": 75986,
+      "ddl_hash": "0846ca4ff6ba19edb9283b8b8df6baa675af26b95383921b56648fda4d1f6a17"
+    },
+    "yuanhang_series_proof": {
+      "rows": 11150,
+      "ddl_hash": "22c9f7679133b1f55487924897750f660a67871562a2261d08f0badc531f11e7"
+    },
+    "state_digest": "f9ff4ce060b4a752a3a1089c9b6a1f72c421bcbce6bdd85735f62aae44922786"
+  },
+  "unchanged_existing_business": true
+}

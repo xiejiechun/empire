@@ -123,6 +123,7 @@ class UnlockIndustryCollector:
                 cursor = {**cursor, 'phase': 'awaiting_archive', 'page': cursor['page'] + 1}
                 state = await publish_with_capacity(self.ingest, self.stats, [event], job_key=JOB,
                     expected_revision=state['revision'], cursor=cursor)
+            self.stats.update(completed_units=cursor['index'], total_units=len(cursor['months']))
             stage = 'archive_confirmation'
             self.stats.update(status='awaiting_archive', collected=cursor['collected'], pages=cursor['page'])
             await wait_for_archive(partial(self.confirmation.page_status, 'tdx', JOB, PROJECT,

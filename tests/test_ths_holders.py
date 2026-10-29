@@ -12,9 +12,15 @@ from empire.features.holders.collector import HolderCollector
 from empire.features.holders.contract import KINDS, digest, validate
 from empire.features.holders.source import parse
 from tests.prefetch_source import prefetch_http
-from tests.test_capital_lifecycle import Publisher
+from tests.test_capital_lifecycle import Publisher as BasePublisher
 
 STOCK = dict(code='601139', market='SH', unified_code='601139.SH', name='深圳燃气')
+
+
+class Publisher(BasePublisher):
+    async def advance_checkpoint(self, **kwargs):
+        await super().advance_checkpoint(**kwargs)
+        return copy.deepcopy(self.state)
 
 
 def source(code='601139', *, bond=True, pledge=False, malformed=False, count=10, name='股东', exit_order=False, tied=False, expanded=False):
@@ -224,6 +230,11 @@ def configured(stocks=None):
     c = HolderCollector()
     c.ingest = Publisher()
     c.query = SimpleNamespace(securities=AsyncMock(return_value=stocks or [STOCK]))
+    async def confirmed(now):
+        return {e.raw_payload['unit']: dict(stamp=e.observed_at, gap_count=len(e.raw_payload['gaps']),
+                count=sum(map(len, e.raw_payload['reports'].values())), digest=digest(e.raw_payload['reports']))
+                for e in c.ingest.events if e.raw_payload['unit'] != 'manifest'}
+    c.query.collection_units = AsyncMock(side_effect=confirmed)
     c.confirmation = SimpleNamespace(page_status=AsyncMock(return_value={'status': 'complete'}))
     c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
     c.session = SimpleNamespace(headers=lambda _: {})
@@ -319,8 +330,9 @@ async def test_source_gap_continues_to_end_confirms_once_and_resumes_first_gap()
     with pytest.raises(ValueError, match='1只证券来源校验失败'):
         await c.execute()
     cursor = (await c.ingest.checkpoint(c.job_key))['cursor']
-    assert cursor['index'] == 1 and cursor['collected'] == 3 and cursor['pages'] == 3
+    assert cursor['index'] == 1 and cursor['collected'] == 9 and cursor['pages'] == 3
     assert c.stats['processed_units'] == 4 and c.stats['failed_units'] == 1
+    assert c.stats['completed_units'] == 3 and c.stats['total_units'] == 4
     assert c.stats['continuous_collected'] == 3 and c.stats['collected'] == 9
     assert c.records.add_error.await_count == 1 and c.confirmation.page_status.await_count == 1
     previous_batch = cursor['batch_id']
@@ -328,10 +340,11 @@ async def test_source_gap_continues_to_end_confirms_once_and_resumes_first_gap()
     c.http.request.side_effect = lambda method, url, **kw: httpx.Response(200,
         content=source(url.split('/')[-2]).encode('gb18030'))
     result = await c.execute(baseline_revision=await c.checkpoint_revision())
-    assert result['phase'] == 'complete' and result['index'] == 4
-    assert result['batch_id'] != previous_batch and result['pages'] == 4
-    assert result['collected'] == 12 and c.http.request.await_count == 7
-    assert c.ingest.events[-1].raw_payload['manifest']['securities'] == [s['unified_code'] for s in stocks]
+    assert result['phase'] == 'complete' and result['index'] == 1
+    assert result['batch_id'] != previous_batch and result['pages'] == 1
+    assert result['collected'] == 3 and c.http.request.await_count == 5
+    assert c.ingest.events[-1].raw_payload['manifest'] is None
+    assert c.ingest.events[-1].raw_payload['unit'] == '601140.SH'
 
 
 async def test_scope_change_restarts_download_and_cancel_keeps_enqueued_boundary():
@@ -348,7 +361,7 @@ async def test_scope_change_restarts_download_and_cancel_keeps_enqueued_boundary
     c.ingest.publish_page = original
     c.query.securities.return_value = stocks + [{**STOCK, 'code': '601141', 'unified_code': '601141.SH'}]
     await c.execute(baseline_revision=c.ingest.state['revision'])
-    assert c.stats['scope_changed'] and c.http.request.await_count == 4
+    assert c.stats['scope_changed'] and c.http.request.await_count == 3
     assert c.http.buffer_budget.used == 0
 
 
@@ -362,10 +375,10 @@ async def test_multiple_source_gaps_repeat_with_bounded_pages_and_no_manifest():
         with pytest.raises(ValueError, match='2只证券来源校验失败'):
             await c.execute(baseline_revision=await c.checkpoint_revision())
         cursor = (await c.ingest.checkpoint(c.job_key))['cursor']
-        assert cursor['index'] == 0 and cursor['collected'] == 0 and cursor['pages'] == 1
+        assert cursor['index'] == 0 and cursor['collected'] == 3 and cursor['pages'] == 1
         batches.add(cursor['batch_id'])
-        assert c.stats['processed_units'] == 3 and c.stats['failed_units'] == 2
-    assert len(batches) == 3 and c.http.request.await_count == 9
+        assert c.stats['processed_units'] == (3 if _ == 0 else 2) and c.stats['failed_units'] == 2
+    assert len(batches) == 1 and c.http.request.await_count == 7
     assert all(e.raw_payload['manifest'] is None for e in c.ingest.events)
 
 

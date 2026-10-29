@@ -5,7 +5,7 @@ DISPLAY_FIELDS = (
     'completed_units', 'processed_units', 'total_units', 'total_months', 'pages',
     'source_pages', 'current_security', 'current_date', 'current_month',
     'continuous_collected', 'failed_units', 'details_unavailable', 'unavailable',
-    'unlisted_without_date', 'source_gap_units', 'source_identity_gaps',
+    'unlisted_without_date', 'source_gap_units', 'source_identity_gaps', 'storage',
 )
 
 

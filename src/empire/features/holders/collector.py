@@ -10,6 +10,7 @@ from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
 from empire.features.holders.contract import KINDS, digest, project
+from empire.features.holders.planning import choose, gap_notice, manifest_for
 from empire.features.holders.source import parse
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
@@ -77,114 +78,104 @@ class HolderCollector:
         return await publish_with_capacity(self.ingest, self.stats, [envelope], job_key=self.job_key,
                                           expected_revision=state['revision'], cursor=cursor)
 
+    async def finish_round(self, state):
+        cursor = state['cursor']
+        self.stats.update(status='awaiting_archive', pages=cursor['pages'], collected=cursor['collected'])
+        if cursor['pages']:
+            await wait_for_archive(partial(self.confirmation.page_status, 'ths', self.job_key,
+                self.project_id, cursor['batch_id'], cursor['pages']), retry_seconds=1)
+        phase = 'source_gap' if cursor.get('source_gap_units') else 'complete'
+        cursor = {**cursor, 'phase': phase}
+        await self.ingest.advance_checkpoint(job_key=self.job_key, expected_revision=state['revision'], cursor=cursor)
+        self.stats.update(status=phase, failed_units=0, error='', processed_units=cursor['units'],
+            total_units=cursor['units'], source_gap_units=cursor.get('source_gap_units', 0),
+            source_identity_gaps=cursor.get('source_identity_gaps', 0), notice=cursor.get('notice', ''))
+        if phase == 'source_gap':
+            raise CollectionSourceGap(cursor['notice'])
+        self.stats['completed_units'] = cursor['units']
+        return cursor
+
     async def execute(self, *, fresh=False, baseline_revision=0):
         stage = 'plan'
         try:
             state = await self.ingest.checkpoint(self.job_key)
-            cursor = state['cursor']
+            previous = state['cursor']
+            if previous and previous.get('format') != 2:
+                raise ValueError('持有人旧续采游标须先运行 scripts/migrate_holder_checkpoint.py 显式维护')
+            if previous.get('phase') == 'awaiting_archive':
+                return await self.finish_round(state)
             progressed = state['revision'] > baseline_revision
-            if progressed and cursor.get('phase') == 'complete':
-                return cursor
-            if cursor.get('phase') != 'awaiting_archive':
-                if (fresh and not progressed) or cursor.get('phase') == 'complete':
-                    cursor = {}
-                stocks = await self.query.securities()
-                keys = [s['unified_code'] for s in stocks]
-                scope = digest(keys)
-                if cursor and cursor.get('scope_hash') != scope:
-                    self.stats['scope_changed'] = True
-                    cursor = {}
-                if cursor.get('source_gap'):
-                    # A new attempt gets a bounded queue page sequence while
-                    # retaining the verified prefix and its first missing index.
-                    cursor = {k: v for k, v in cursor.items() if k != 'source_gap'}
-                    cursor.update(batch_id=uuid4().hex, pages=0)
-                if not cursor:
-                    cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0,
-                        collected=0, units=len(keys), scope_hash=scope, rolling=digest([]), unavailable=0,
-                        kinds={kind: dict(count=0, digest=digest([])) for kind in KINDS})
-                selected = list(enumerate(stocks))[cursor['index']:]
-                failures, rejected, gap_securities = [], [], []
-                queued = cursor['collected']
-                self.stats.pop('completed_units', None)
-                self.stats.update(failed_units=0, source_gap_units=0, source_identity_gaps=0, notice='', error='',
-                                  processed_units=cursor['index'],
-                                  continuous_collected=cursor['collected'])
-                async def download(item, *, reservation):
-                    return await self.fetch(item[1], reservation=reservation, defer=True)
-                async with prefetch_units(self, selected, download, url='https://basic.10jqka.com.cn/',
-                        domains=('10jqka.com.cn',), item_name='股票') as reads:
-                    async for number, read in reads:
-                        index = selected[number][0]
-                        self.stats.update(status='collecting', current_security=keys[index],
-                            processed_units=index, total_units=len(keys), pages=cursor['pages'], collected=queued)
-                        stage = 'source_validation'
-                        try:
-                            reports, observed, url, gaps = await read.resolve()
-                        except (ValueError, TypeError, KeyError, UnicodeError) as exc:
-                            if not hasattr(exc, 'diagnostic_recorded'):
-                                raise  # Local configuration/resource errors must still stop.
-                            failures.append(keys[index])
-                            rejected.append(keys[index])
-                            self.stats.update(failed_units=len(rejected), processed_units=index + 1)
-                            continue
-                        if gaps:
-                            failures.append(keys[index])
-                            gap_securities.append(keys[index])
-                            self.stats.update(source_gap_units=len(gap_securities),
-                                source_identity_gaps=self.stats.get('source_identity_gaps', 0) + len(gaps))
-                        following = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
-                            'collected': cursor['collected'] + sum(map(len, reports.values())),
-                            'unavailable': cursor['unavailable'] + int(not reports['bond_holders']),
-                            'rolling': digest([cursor['rolling'], keys[index], digest(reports), sum(map(len, reports.values()))]),
-                            'kinds': {kind: dict(count=cursor['kinds'][kind]['count'] + len(rows),
-                                digest=digest([cursor['kinds'][kind]['digest'], keys[index], digest(rows), len(rows)]))
-                                for kind, rows in reports.items()}}
-                        if failures:
-                            # Queue valid independent securities, retaining the first
-                            # failed security as the continuous restart frontier.
-                            # Pages count queue messages, not verified securities.
-                            following = {**cursor, 'pages': cursor['pages'] + 1,
-                                         'source_gap': failures[0]}
-                        stage = 'queue_publish'
-                        state = await self.publish(state, following, keys[index], reports, None, observed, url, gaps)
-                        cursor = state['cursor']
-                        queued += sum(map(len, reports.values()))
-                        self.stats.update(collected=queued, processed_units=index + 1, pages=cursor['pages'],
-                                          continuous_collected=cursor['collected'])
-                if failures:
-                    stage = 'archive_confirmation'
-                    if cursor['pages']:
-                        self.stats['status'] = 'awaiting_archive'
-                        await wait_for_archive(partial(self.confirmation.page_status, 'ths', self.job_key,
-                            self.project_id, cursor['batch_id'], cursor['pages']), retry_seconds=1)
-                    if not rejected:
-                        notice = (f"本轮已检查至末尾，可识别报告已确认归档；{len(gap_securities)}只证券共"
-                            f"{self.stats['source_identity_gaps']}份债券报告名称为空，已登记来源缺口："
-                            + '、'.join(gap_securities[:5]) + ('等' if len(gap_securities) > 5 else '')
-                            + f"。连续断点保留在{failures[0]}，下次继续补采；债券缺口仍限制数据准备。")
-                        self.stats.update(status='source_gap', notice=notice, error='')
-                        raise CollectionSourceGap(notice)
-                    error = ValueError(f"本轮已检查至末尾，{len(failures)}只证券来源校验失败；"
-                        f"已入队有效报告已确认归档，连续断点保留在{failures[0]}，下次继续补采。失败证券："
-                        + '、'.join(failures[:5]) + ('等' if len(failures) > 5 else '') +
-                        ('；空名债券已隔离为来源缺口，可识别报告已保存，债券身份补齐后重采恢复。'
-                         if self.stats.get('source_identity_gaps') else ''))
-                    error.diagnostic_recorded = True
-                    raise error
-                following = {**cursor, 'phase': 'awaiting_archive', 'pages': cursor['pages'] + 1}
-                manifest = dict(units=cursor['units'], count=cursor['collected'], scope_hash=scope,
-                                digest=cursor['rolling'], securities=keys, kinds=cursor['kinds'])
-                state = await self.publish(state, following, 'manifest', {kind: [] for kind in KINDS}, manifest, datetime.now(UTC), None)
-                cursor = state['cursor']
+            if progressed and previous.get('phase') == 'complete':
+                return previous
+            now = datetime.now(UTC)
+            stocks = await self.query.securities()
+            keys = [stock['unified_code'] for stock in stocks]
+            key_set = set(keys)
+            units = {key: value for key, value in (await self.query.collection_units(now)).items() if key in key_set}
+            started = (datetime.fromisoformat(previous['started_at'])
+                       if previous.get('phase') == 'fetch' and not (fresh and not progressed) else None)
+            selected = choose(stocks, units, now, fresh=fresh and not progressed, started=started)
+            cursor = dict(format=2, phase='fetch', batch_id=uuid4().hex, pages=0, index=0,
+                collected=0, units=len(selected), scope_hash=digest(keys), scope_units=len(keys),
+                started_at=(started or now).isoformat(timespec='microseconds'))
+            if previous and previous.get('scope_hash') != cursor['scope_hash']:
+                self.stats['scope_changed'] = True
+            rejected, summaries = [], {}
+            self.stats.pop('completed_units', None)
+            self.stats.update(failed_units=0, source_gap_units=0, source_identity_gaps=0, notice='', error='',
+                processed_units=0, completed_units=0, total_units=len(selected), continuous_collected=0, collected=0, pages=0)
+            async def download(stock, *, reservation):
+                return await self.fetch(stock, reservation=reservation, defer=True)
+            async with prefetch_units(self, selected, download, url='https://basic.10jqka.com.cn/',
+                    domains=('10jqka.com.cn',), item_name='股票') as reads:
+                async for index, read in reads:
+                    key = selected[index]['unified_code']
+                    self.stats.update(status='collecting', current_security=key, processed_units=index)
+                    stage = 'source_validation'
+                    try:
+                        reports, observed, url, gaps = await read.resolve()
+                    except (ValueError, TypeError, KeyError, UnicodeError) as exc:
+                        if not hasattr(exc, 'diagnostic_recorded'):
+                            raise
+                        rejected.append(key)
+                        self.stats.update(failed_units=len(rejected), processed_units=index + 1)
+                        continue
+                    count = sum(map(len, reports.values()))
+                    following = {**cursor, 'pages': cursor['pages'] + 1,
+                        'collected': cursor['collected'] + count,
+                        'index': cursor['index'] if rejected else index + 1}
+                    stage = 'queue_publish'
+                    state = await self.publish(state, following, key, reports, None, observed, url, gaps)
+                    cursor = state['cursor']
+                    units[key] = dict(stamp=observed, gap_count=len(gaps), count=count, digest=digest(reports))
+                    summaries[key] = {**units[key], 'kinds': {
+                        kind: dict(count=len(rows), digest=digest(rows)) for kind, rows in reports.items()}}
+                    self.stats.update(collected=cursor['collected'], processed_units=index + 1, completed_units=index + 1 - len(rejected),
+                        pages=cursor['pages'], continuous_collected=cursor['collected'] if not rejected else
+                        self.stats['continuous_collected'])
             stage = 'archive_confirmation'
-            self.stats.update(status='awaiting_archive', pages=cursor['pages'], collected=cursor['collected'])
-            await wait_for_archive(partial(self.confirmation.page_status, 'ths', self.job_key,
-                self.project_id, cursor['batch_id'], cursor['pages']), retry_seconds=1)
-            cursor = {**cursor, 'phase': 'complete'}
-            await self.ingest.advance_checkpoint(job_key=self.job_key, expected_revision=state['revision'], cursor=cursor)
-            self.stats.update(status='complete', completed_units=cursor['units'], unavailable=cursor['unavailable'], error='')
-            return cursor
+            if rejected:
+                if cursor['pages']:
+                    self.stats['status'] = 'awaiting_archive'
+                    await wait_for_archive(partial(self.confirmation.page_status, 'ths', self.job_key,
+                        self.project_id, cursor['batch_id'], cursor['pages']), retry_seconds=1)
+                error = ValueError(f'本轮已检查至末尾，{len(rejected)}只证券来源校验失败；'
+                    '已入队有效报告已确认归档，下次只补查未确认证券：' + '、'.join(rejected[:5]))
+                error.diagnostic_recorded = True
+                raise error
+            notice, gap_units, gap_count = gap_notice(units, len(selected))
+            following = {**cursor, 'phase': 'awaiting_archive', 'notice': notice,
+                         'source_gap_units': gap_units, 'source_identity_gaps': gap_count}
+            # A partial maintenance pass cannot publish a whole-pool manifest.
+            # Formal preparation already verifies each selected security proof.
+            if keys and set(summaries) == set(keys) and not gap_units:
+                following['pages'] += 1
+                state = await self.publish(state, following, 'manifest', {kind: [] for kind in KINDS},
+                    manifest_for(keys, summaries), now, None)
+            else:
+                state = await self.ingest.advance_checkpoint(job_key=self.job_key,
+                    expected_revision=state['revision'], cursor=following)
+            return await self.finish_round(state)
         except asyncio.CancelledError:
             self.stats['status'] = 'paused'
             raise

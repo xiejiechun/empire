@@ -1,0 +1,1133 @@
+{
+  "schema": 1,
+  "scope": "原生协议来源解析验证；不包含Redis业务入队、MySQL行情归档或全池初始化",
+  "pool_count": 5578,
+  "pool_sha256": "ff7c5b9cd37401fa787cbfb377c73d1f2888ff175b2440b68608e62efd195dc5",
+  "seed": 20261024,
+  "sample": [
+    "688251.SH",
+    "002992.SZ",
+    "002080.SZ",
+    "301103.SZ",
+    "920136.BJ",
+    "000592.SZ",
+    "300081.SZ",
+    "603666.SH",
+    "001360.SZ",
+    "920200.BJ",
+    "605336.SH",
+    "002189.SZ",
+    "301439.SZ",
+    "603395.SH",
+    "920168.BJ",
+    "603301.SH",
+    "688535.SH",
+    "301584.SZ",
+    "600500.SH",
+    "603298.SH",
+    "002843.SZ",
+    "002973.SZ",
+    "601996.SH",
+    "600863.SH",
+    "603124.SH",
+    "688196.SH",
+    "300747.SZ",
+    "300633.SZ",
+    "600161.SH",
+    "301377.SZ"
+  ],
+  "fixed": [
+    "000001.SZ",
+    "600601.SH",
+    "600519.SH",
+    "300176.SZ",
+    "920000.BJ",
+    "301718.SZ"
+  ],
+  "original_proxy_requests": 75,
+  "recheck_proxy_requests": 11,
+  "registration_requests": 0,
+  "business_rows_written": 0,
+  "units": [
+    {
+      "security": "000001.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 8516,
+        "first": "1991-04-03",
+        "last": "2026-10-23",
+        "sha256": "4d37460e109db131272924ddd64b959a02a83b31f93abcf3bd64a46e9e0f252e",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "000001.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 32,
+        "first": "1991-05-02",
+        "last": "2026-09-24",
+        "sha256": "7bf40e7786240b9a53af6395e75717510f8b1866833b8b8248a0f90166a04142"
+      },
+      "capital": {
+        "count": 343,
+        "first": "1991-04-03",
+        "last": "2026-09-30",
+        "sha256": "95ef50fa033a9a06b0f3be7a5b19aa06d63b3b5253ad25f6a329d0d41716b0ca"
+      }
+    },
+    {
+      "security": "000592.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 6670,
+        "first": "1996-03-27",
+        "last": "2026-10-23",
+        "sha256": "36f31dbbbea4ec5ec2c5fbbdc394ad14c18df669d6445a23f924ceeee39140be",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "000592.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 7,
+        "first": "1996-12-19",
+        "last": "2016-06-13",
+        "sha256": "a82d104d4ff10bd12614b16143bf0cf74bfbd810b411494681b169f2dcbcdfdc"
+      },
+      "capital": {
+        "count": 292,
+        "first": "1996-03-27",
+        "last": "2026-06-30",
+        "sha256": "7deaf19492bb3edef7d288c283ddce71ed951cba56c5b581b4228f7db3630fe5"
+      }
+    },
+    {
+      "security": "001360.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 857,
+        "first": "2023-04-10",
+        "last": "2026-10-23",
+        "sha256": "c68d7a5deb9b110742d7e0f89ee72b90875cd82ceb67efd2bcbc718e61900d07",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "001360.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 3,
+        "first": "2024-05-21",
+        "last": "2026-06-23",
+        "sha256": "8733fbf19bf80833c6330501477fd11f80fb373d11b75ae35981d355a46585e7"
+      },
+      "capital": {
+        "count": 34,
+        "first": "2023-04-10",
+        "last": "2026-09-30",
+        "sha256": "2ae379f0388eb16456084584ac6be49659d7704a44196a36232d6152842e27c4"
+      }
+    },
+    {
+      "security": "002080.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 4682,
+        "first": "2006-11-20",
+        "last": "2026-10-23",
+        "sha256": "0ff0390e616c48d067b2c877f676925da335d3c6267f48c197cc3a1116fd66f3",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "002080.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 20,
+        "first": "2007-06-13",
+        "last": "2026-05-29",
+        "sha256": "ac6fd218eda797b2c96f2cd80a482b77c5be143664bd7699f8b7eda052f3a562"
+      },
+      "capital": {
+        "count": 140,
+        "first": "2006-11-20",
+        "last": "2026-10-21",
+        "sha256": "15ce6d3a3a224417323756e9a8bb5fb30518c31a98d714257f386c64833a61ce"
+      }
+    },
+    {
+      "security": "002189.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 4388,
+        "first": "2007-12-03",
+        "last": "2026-10-23",
+        "sha256": "b2542201b096ba3849ceb5b10e84c4773fe81ad01e24b5da15119695c5c2cc21",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "002189.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 13,
+        "first": "2008-05-09",
+        "last": "2022-07-13",
+        "sha256": "efb50757a82bbce926f3948e1fc9c48dd23cc2618f92fc02b771a705550ef3b6"
+      },
+      "capital": {
+        "count": 192,
+        "first": "2007-12-03",
+        "last": "2026-06-30",
+        "sha256": "c3ac4f2a832006516dea05502782be60ad7da1794f68bb4362f1cc3e2f3ed417"
+      }
+    },
+    {
+      "security": "002843.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 2366,
+        "first": "2017-01-20",
+        "last": "2026-10-23",
+        "sha256": "fbbec9734c3895714e5ef8adbf1c0dc663bbe16a8e296f2c025b4787fbb8fb66",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "002843.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 8,
+        "first": "2017-05-23",
+        "last": "2025-06-27",
+        "sha256": "a8dae98af8d1da70b96c2468db3e20e8097a68af34d5d3d3f10ac4b24b91984e"
+      },
+      "capital": {
+        "count": 112,
+        "first": "2017-01-20",
+        "last": "2026-09-30",
+        "sha256": "4ccea8d739f207258006c386b0b0e3550655c6cee17ee5d17f2feaab67598cc2"
+      }
+    },
+    {
+      "security": "002973.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 1646,
+        "first": "2020-01-06",
+        "last": "2026-10-23",
+        "sha256": "890d93c463bff27fdf7b8bebfb97114593fb413aaa4a8efe0599fbb2973915ca",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "002973.SZ",
+      "dataset": "financial",
+      "native_market": "USZA",
+      "status": "normalized",
+      "actions": {
+        "count": 7,
+        "first": "2020-07-03",
+        "last": "2026-07-15",
+        "sha256": "9a21e84400255225124a0b3036e2e0df280a3b6d92852ce21d804c09b3a937aa"
+      },
+      "capital": {
+        "count": 104,
+        "first": "2020-01-06",
+        "last": "2026-09-30",
+        "sha256": "9c169297f5279be03342525fb8b79efe5c2a72f68ca7e440ad8f89361e4f223a"
+      }
+    },
+    {
+      "security": "002992.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 1508,
+        "first": "2020-08-03",
+        "last": "2026-10-23",
+        "sha256": "bda8db507df7937afbfec2013a360ac1660fe49bf30ea8ca8032be376d8efdaa",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "002992.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 1,
+        "first": "2021-05-28",
+        "last": "2021-05-28",
+        "sha256": "8a28c9fbf6d0ac077cce82459356b0012124828dc4e09896c1d5babfd67a3290"
+      },
+      "capital": {
+        "count": 78,
+        "first": "2020-08-03",
+        "last": "2026-06-30",
+        "sha256": "db40acc45ea4916c5429af450c1b68c42856205969b842442150c753fb26f971"
+      }
+    },
+    {
+      "security": "300081.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 3785,
+        "first": "2010-05-20",
+        "last": "2026-10-23",
+        "sha256": "01d4fd1f764e68f1c157392a337abb3bc91ceb95dd37c76c85377fc2f700469f",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "300081.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 4,
+        "first": "2013-05-09",
+        "last": "2018-06-07",
+        "sha256": "2bdcd165b5fb64c928255b8d3d5ce6afe9913aa28bf9fd3423f504c3d9c39848"
+      },
+      "capital": {
+        "count": 211,
+        "first": "2010-05-20",
+        "last": "2026-09-21",
+        "sha256": "2ebe7dbb8ec768abd0b23501ddb1564311e6ff47185510eec0830408764482ef"
+      }
+    },
+    {
+      "security": "300176.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 3664,
+        "first": "2011-02-15",
+        "last": "2026-10-23",
+        "sha256": "176f2ed91024a24d985a69a6dbc76d01a3180e0cdb02134df50826e7ea8d6c2f",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "300176.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 11,
+        "first": "2012-06-14",
+        "last": "2026-08-21",
+        "sha256": "88e87b538748dd82afb9aab33cd38fcfc228e480bdaa4ca0f5f5c51698e99c27"
+      },
+      "capital": {
+        "count": 113,
+        "first": "2011-02-15",
+        "last": "2026-09-02",
+        "sha256": "5c77df61009a054d1e8de7a75ad5a5e9a8661c5726d5f37bc489c6a3c3e011db"
+      }
+    },
+    {
+      "security": "300633.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 2319,
+        "first": "2017-04-06",
+        "last": "2026-10-23",
+        "sha256": "41d40c21892ad09d95d8366d91b7fa2826a7f1ad782fc06b091ce647386968d4",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "300633.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 9,
+        "first": "2017-06-22",
+        "last": "2026-06-05",
+        "sha256": "d318e31ae1e1c5ce996421f0f0a6f593f06bdd1590a72ba5ff91a2797720915c"
+      },
+      "capital": {
+        "count": 87,
+        "first": "2017-04-06",
+        "last": "2026-06-30",
+        "sha256": "e6d593070432695678b10a7c331518a7b30ba1aeae43e802c7a713598ddd9e9f"
+      }
+    },
+    {
+      "security": "300747.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 2021,
+        "first": "2018-06-25",
+        "last": "2026-10-23",
+        "sha256": "e50ff43b7be12b916ab43868794c70c214064561a6b7ac3f6e278c0b5e941053",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "300747.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 10,
+        "first": "2019-08-15",
+        "last": "2026-05-29",
+        "sha256": "9d0d8139b46a07f95a980f7bd766b11efa868eaa87825c7bcadd9a8524b3b5c1"
+      },
+      "capital": {
+        "count": 116,
+        "first": "2018-06-25",
+        "last": "2026-09-30",
+        "sha256": "8b0722adadea6e64ac926c0e0b970f5aa517cda2edf7cbb02558bed14600fd0f"
+      }
+    },
+    {
+      "security": "301103.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 1112,
+        "first": "2022-03-22",
+        "last": "2026-10-23",
+        "sha256": "8b8b472745357381471d9179cae83081d2ef83f5f4aed101ca686cb370f87911",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "301103.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 5,
+        "first": "2022-06-01",
+        "last": "2026-05-29",
+        "sha256": "bcc557d7f78110b70ea3a59fdc70c17d37b9a3ba49840d0ac579b9eaf88b98ee"
+      },
+      "capital": {
+        "count": 43,
+        "first": "2022-03-22",
+        "last": "2026-06-30",
+        "sha256": "822fca8f0b2b63a93dc77710d2f45ec828127b4ee7e7acaf98a2672b2a176c41"
+      }
+    },
+    {
+      "security": "301377.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 949,
+        "first": "2022-11-22",
+        "last": "2026-10-23",
+        "sha256": "b327a61ec35d5a97c7eb0552c188ed8fa1aa0db716ba2714ae03654d4372535f",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "301377.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 7,
+        "first": "2023-06-15",
+        "last": "2026-09-24",
+        "sha256": "346ffca93e14228096121a39571d7eaeb665b3513b3b8b9f720a406e677e52e6"
+      },
+      "capital": {
+        "count": 43,
+        "first": "2022-11-22",
+        "last": "2026-10-13",
+        "sha256": "049c8e6032dbbeb1f60f5fad16694577bb8c06cb064eeccd9e234f5e957a9b10"
+      }
+    },
+    {
+      "security": "301439.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 872,
+        "first": "2023-03-17",
+        "last": "2026-10-23",
+        "sha256": "d2e19736df91cf0204805809796f573c1f313eb348806e852b63a688242dab1b",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "301439.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 5,
+        "first": "2023-06-16",
+        "last": "2026-05-29",
+        "sha256": "731c8ed25a8662687672f83335b63eede60f2a2a41835ec81c7addad46f6e99d"
+      },
+      "capital": {
+        "count": 29,
+        "first": "2023-03-17",
+        "last": "2026-08-18",
+        "sha256": "f20ba585f2b807837824c868c6d31dea84fb5ac4f5675fbca7e811ae859173fa"
+      }
+    },
+    {
+      "security": "301584.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 257,
+        "first": "2025-09-25",
+        "last": "2026-10-23",
+        "sha256": "8aedd262b7fdc4d649e73ee10bdf37c38d49d7bb3557d60f502229b41fb80b49",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "301584.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 2,
+        "first": "2026-06-01",
+        "last": "2026-09-22",
+        "sha256": "735eda5ab5cd65d4508439d662914cd4646c07f029586e494b427481d81215b7"
+      },
+      "capital": {
+        "count": 17,
+        "first": "2025-09-25",
+        "last": "2026-09-30",
+        "sha256": "8507a24ed95140867a3c6102c670e47b0cb520f51e6e4f3bbf65a24bb392cded"
+      }
+    },
+    {
+      "security": "301718.SZ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 2,
+        "first": "2026-10-22",
+        "last": "2026-10-23",
+        "sha256": "ba152b9ea5af042adea4db79f541857938a3166ea1fea894935a45677fc062c9",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "301718.SZ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 0,
+        "first": null,
+        "last": null,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "capital": {
+        "count": 3,
+        "first": "2026-10-22",
+        "last": "2026-10-22",
+        "sha256": "2b424ef102d348bd5aae6b5d2ea10432b44cd97206805fa6e9020dea71af6b9b"
+      }
+    },
+    {
+      "security": "600161.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 6640,
+        "first": "1998-06-16",
+        "last": "2026-10-23",
+        "sha256": "e484deac0e7aaf52c8d895e4be0eed7ad6a5a26112f2dceeaf9a7104ddbbc23d",
+        "source_missing_amount_dates": [
+          "2005-01-05"
+        ]
+      }
+    },
+    {
+      "security": "600161.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 28,
+        "first": "1999-06-11",
+        "last": "2026-09-23",
+        "sha256": "e38609137dac621c556c35d241977300d2780ca91c89ada630cd316d766369b3"
+      },
+      "capital": {
+        "count": 216,
+        "first": "1998-06-16",
+        "last": "2026-06-30",
+        "sha256": "860753bcd2ad8c9350ccb0c45976dd4b711f1cbbf3e9f1ae96d072cc8ad07bd7"
+      }
+    },
+    {
+      "security": "600500.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 6366,
+        "first": "2000-03-01",
+        "last": "2026-10-23",
+        "sha256": "d32cf233a376c2590e6d5e17cd372be661fba1448ea21f93a573d383fd57ecf1",
+        "source_missing_amount_dates": [
+          "2005-01-05"
+        ]
+      }
+    },
+    {
+      "security": "600500.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 26,
+        "first": "2000-07-31",
+        "last": "2023-07-07",
+        "sha256": "19bb6d18709242e8901b7fea6cc95238f6ef63ae6b944cbbbba83f1e4697e743"
+      },
+      "capital": {
+        "count": 246,
+        "first": "2000-03-01",
+        "last": "2026-06-30",
+        "sha256": "891586f7cfbca6a13fdb88ece12f275d9e267416fc9a377e4b02dcbe2fb87b0a"
+      }
+    },
+    {
+      "security": "600519.SH",
+      "dataset": "daily",
+      "native_market": "USHA",
+      "status": "normalized",
+      "daily": {
+        "count": 6027,
+        "first": "2001-08-27",
+        "last": "2026-10-23",
+        "sha256": "c29eed2281b2cc9a48cc426e36e9dbb378e75cee23bf8d3642b0f38060615a3e",
+        "source_missing_amount_dates": [
+          "2005-01-05"
+        ]
+      }
+    },
+    {
+      "security": "600519.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 30,
+        "first": "2002-07-25",
+        "last": "2026-06-26",
+        "sha256": "900830139d26abb6745391750adcf32003b4883b87789a7aba58fb1c4c802159"
+      },
+      "capital": {
+        "count": 191,
+        "first": "2001-08-27",
+        "last": "2026-06-30",
+        "sha256": "8714d03828b83da7eac8364e93e17c4b00f02e258aae288045e5edfa260761dd"
+      }
+    },
+    {
+      "security": "600601.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 8672,
+        "first": "1990-12-19",
+        "last": "2026-10-23",
+        "sha256": "2e68b4caf1de8022fdc9e88e0572853af618679795b86c994a1a3fdb8a1830f3",
+        "source_missing_amount_dates": [
+          "2005-01-05"
+        ]
+      }
+    },
+    {
+      "security": "600601.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 29,
+        "first": "1991-03-11",
+        "last": "2022-12-23",
+        "sha256": "7b1e84a983506d27ba88c151ab62e5649d2cdff34d21e2100574fa0d9fc3c6aa"
+      },
+      "capital": {
+        "count": 284,
+        "first": "1990-12-19",
+        "last": "2026-09-23",
+        "sha256": "396d94cecfac6da31b2aaf65cd5c6b9419e01cca15d508a8f8e443c3fd570946"
+      }
+    },
+    {
+      "security": "600863.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 7753,
+        "first": "1994-05-20",
+        "last": "2026-10-23",
+        "sha256": "9765f85baa6cb75d09f0d8b2dab2c2cf606865f7371ea46f98897df1a85bd43f",
+        "source_missing_amount_dates": [
+          "2005-01-05"
+        ]
+      }
+    },
+    {
+      "security": "600863.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 31,
+        "first": "1995-06-07",
+        "last": "2026-07-28",
+        "sha256": "6c9ac193ddec4078e91f7857c31ef6802130b076a078de479c3e0534d50c04b0"
+      },
+      "capital": {
+        "count": 286,
+        "first": "1994-05-20",
+        "last": "2026-08-14",
+        "sha256": "c6efdd0d4ee450f53c8fcc82725d56867a1711253c11c09e3d9e1f52aaa7c014"
+      }
+    },
+    {
+      "security": "601996.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 3554,
+        "first": "2011-09-29",
+        "last": "2026-10-23",
+        "sha256": "0bd2a924bceb4034cc7ff45511ae37da7cabbea28ddbac67228557f92f46a6c4",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "601996.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 12,
+        "first": "2012-05-16",
+        "last": "2024-06-07",
+        "sha256": "04c8fd5c407b7b0b73e8843cdcee27815d33b3abdb3a6957558477129a222b14"
+      },
+      "capital": {
+        "count": 116,
+        "first": "2011-09-29",
+        "last": "2026-09-30",
+        "sha256": "c730887e105a436f90682c336e574668116b90d8ccbb558e51f39d4d813a2071"
+      }
+    },
+    {
+      "security": "603124.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 387,
+        "first": "2025-03-20",
+        "last": "2026-10-23",
+        "sha256": "fc3d64b9956d5516ccf41770dd9e91185848e8da699a7dcff8a5bb5666ad7efc",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "603124.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 2,
+        "first": "2025-06-17",
+        "last": "2026-06-03",
+        "sha256": "a3de9096af1c3368be45276afe55dd729333142d36d9d969f776d181b2c42830"
+      },
+      "capital": {
+        "count": 15,
+        "first": "2025-03-20",
+        "last": "2026-06-30",
+        "sha256": "c7b69da8ed9f30d82a00fa0ca14271bac1d8f65f21743fb3bb0cfc4ed9c253d8"
+      }
+    },
+    {
+      "security": "603298.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 2383,
+        "first": "2016-12-27",
+        "last": "2026-10-23",
+        "sha256": "2d52054eb89f5cecfb939c283d88a8945531394905f779b16aafc234af43583f",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "603298.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 11,
+        "first": "2017-05-26",
+        "last": "2026-05-29",
+        "sha256": "534d0a1e87cd9740defe5e61e2d0ff92386029cf925c605dc1ccc58100078eda"
+      },
+      "capital": {
+        "count": 79,
+        "first": "2016-12-27",
+        "last": "2026-06-30",
+        "sha256": "7d3e7f90605810ba0ce8dd6a7da640f34e5685ac507a643355ce5ee2474d23c7"
+      }
+    },
+    {
+      "security": "603301.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 2070,
+        "first": "2018-04-12",
+        "last": "2026-10-23",
+        "sha256": "720904acf69e67569df91fe790474ad13bbf91cb59eec87b8207a5d5299abc1a",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "603301.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 9,
+        "first": "2019-05-24",
+        "last": "2026-06-18",
+        "sha256": "c71446c3bc060aa73c8b290e24265d7edf885700ea3b27d23ce29d2d0bd5c80e"
+      },
+      "capital": {
+        "count": 78,
+        "first": "2018-04-12",
+        "last": "2026-06-30",
+        "sha256": "883c3a6800c3e13f92cc6ee34a7bb5963c6288acf4d9facd9924d031cd18cb44"
+      }
+    },
+    {
+      "security": "603395.SH",
+      "dataset": "daily",
+      "native_market": "USHA",
+      "status": "normalized",
+      "daily": {
+        "count": 462,
+        "first": "2024-11-26",
+        "last": "2026-10-23",
+        "sha256": "f88ae29b85796b0a1b41cb273fa86ee1c51d7c8ec96026d161e998c714fb6c08",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "603395.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 2,
+        "first": "2025-06-12",
+        "last": "2026-06-10",
+        "sha256": "ecf4351c5abcc589a8b9904037446bdd437329e7237558873a084530994a9463"
+      },
+      "capital": {
+        "count": 23,
+        "first": "2024-11-26",
+        "last": "2026-06-30",
+        "sha256": "3ce1ae1512e73984eafea7445a9f64a5598ebf14727f055166f0c9b0ce605088"
+      }
+    },
+    {
+      "security": "603666.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 2029,
+        "first": "2018-06-12",
+        "last": "2026-10-23",
+        "sha256": "a921f290dfaa9ef8012e45c833cdba0a9f9186daaa5f6c2334dced2223ad2414",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "603666.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 5,
+        "first": "2018-11-02",
+        "last": "2022-07-12",
+        "sha256": "a5f881fa190cde70e6af436998a538fbba07f7bee17c49b2a3d8830ce50604f0"
+      },
+      "capital": {
+        "count": 96,
+        "first": "2018-06-12",
+        "last": "2026-06-30",
+        "sha256": "777da3201d83d0b8365d76530351b2d25faf39bf5ec6548123073dddc3658259"
+      }
+    },
+    {
+      "security": "605336.SH",
+      "dataset": "daily",
+      "native_market": "USHT",
+      "status": "normalized",
+      "daily": {
+        "count": 1458,
+        "first": "2020-10-19",
+        "last": "2026-10-23",
+        "sha256": "5ef2faec18941e8f96e886084dabbcb7ecbd0c05f3bc1bfad1faadbd0ee68767",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "605336.SH",
+      "dataset": "financial",
+      "native_market": "USHT",
+      "status": "normalized",
+      "actions": {
+        "count": 5,
+        "first": "2021-05-31",
+        "last": "2025-06-26",
+        "sha256": "8c471d1b33eac75d411e6241eb054b8f8f8de3563d51a12e859810acfd7b834f"
+      },
+      "capital": {
+        "count": 64,
+        "first": "2020-10-19",
+        "last": "2026-06-30",
+        "sha256": "18cdba441eca9b39119368ee6f7066f579b439961feb96a439a6e6e6aafc62da"
+      }
+    },
+    {
+      "security": "688196.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 1677,
+        "first": "2019-11-21",
+        "last": "2026-10-23",
+        "sha256": "fcf703c5efad53f60d80d99434efcff83534afd5597be1c2fbd2222d99410b3e",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "688196.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 7,
+        "first": "2020-05-19",
+        "last": "2026-06-25",
+        "sha256": "9287b77af61fe808fabf910686d2fe7f9a6819f834e2a0d532db767d67e3fd1c"
+      },
+      "capital": {
+        "count": 48,
+        "first": "2019-11-21",
+        "last": "2026-06-30",
+        "sha256": "e28d8b2f42474849c9d550a1da456b3f58268f7e3e5c383e963c6da8a37430f6"
+      }
+    },
+    {
+      "security": "688251.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 1064,
+        "first": "2022-06-06",
+        "last": "2026-10-23",
+        "sha256": "98767da97e35b1e5bfea96d103633a5be8c1bbc30bec0f9f9be360e2b9f0370f",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "688251.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 5,
+        "first": "2023-06-26",
+        "last": "2026-07-07",
+        "sha256": "5185c4065f750e6c9fdb0402258793717fb3b8032e7a7a8f9215b037e8800cec"
+      },
+      "capital": {
+        "count": 56,
+        "first": "2022-06-06",
+        "last": "2026-10-22",
+        "sha256": "d5d239c3675daf55dde7d569aa1b75115a1e09a71e7e705ff01c5ff546db69df"
+      }
+    },
+    {
+      "security": "688535.SH",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 850,
+        "first": "2023-04-04",
+        "last": "2026-10-23",
+        "sha256": "a4ac5eb185de7223fbece19c7aa08dad6d35d533b71bd8af4af47bfefb2157eb",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "688535.SH",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 5,
+        "first": "2023-07-10",
+        "last": "2026-04-30",
+        "sha256": "85404b372033c9479e7ca6501a87c0d1bd819d6884280c465a1b23713c90e0e0"
+      },
+      "capital": {
+        "count": 56,
+        "first": "2023-04-04",
+        "last": "2026-10-15",
+        "sha256": "6dd74f22da49b48b372fb906110b2f3e33817e2969468e8b9222d188315c153b"
+      }
+    },
+    {
+      "security": "920000.BJ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 1412,
+        "first": "2020-12-23",
+        "last": "2026-10-23",
+        "sha256": "fba0dd5cd1c40eaeee7de10c2c7b3049868ea0760556859e92cb6d4751063929",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "920000.BJ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 9,
+        "first": "2021-06-17",
+        "last": "2026-09-30",
+        "sha256": "e1753120ce0b208ca2a40342506dc7d1422ce557c1c61924e12a05fe25529976"
+      },
+      "capital": {
+        "count": 119,
+        "first": "2015-10-27",
+        "last": "2026-09-04",
+        "sha256": "b70e14e3751078ad8d7f73a072d4c3168fe53ddd26d261c31716161d55b7d9bb"
+      }
+    },
+    {
+      "security": "920136.BJ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 71,
+        "first": "2026-07-09",
+        "last": "2026-10-23",
+        "sha256": "9c88977ec9df11ebc0ec6ad027f20cfe4422c50c4353b70889ffdd12e1b67622",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "920136.BJ",
+      "dataset": "financial",
+      "native_market": "USTM",
+      "status": "normalized",
+      "actions": {
+        "count": 0,
+        "first": null,
+        "last": null,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "capital": {
+        "count": 4,
+        "first": "2026-06-30",
+        "last": "2026-07-09",
+        "sha256": "1502d6efa52f46d4dc6e780c1999b7e62590a1fcb395d8543a742e00cc6d25c2"
+      }
+    },
+    {
+      "security": "920168.BJ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 161,
+        "first": "2026-02-26",
+        "last": "2026-10-23",
+        "sha256": "d0a07b37e5de89700554942d33011d3a54b28d6cffce4580120fb57ab7f681c2",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "920168.BJ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 1,
+        "first": "2026-06-08",
+        "last": "2026-06-08",
+        "sha256": "7918df628a152ba5a47e0e26fe6ba18f234ed770a4d87314dc12a6e2b58aa796"
+      },
+      "capital": {
+        "count": 7,
+        "first": "2026-02-26",
+        "last": "2026-09-21",
+        "sha256": "78753595ba57ae66c9cd8a9beddc2dcf0b2422f1b40e8e7f22ec18f98fd1c3aa"
+      }
+    },
+    {
+      "security": "920200.BJ",
+      "dataset": "daily",
+      "status": "normalized",
+      "daily": {
+        "count": 115,
+        "first": "2026-05-07",
+        "last": "2026-10-23",
+        "sha256": "05f101512e27c1a2f31703ef5103c6e6c16011a284687fe308b6c431f1e8b551",
+        "source_missing_amount_dates": []
+      }
+    },
+    {
+      "security": "920200.BJ",
+      "dataset": "financial",
+      "status": "normalized",
+      "actions": {
+        "count": 0,
+        "first": null,
+        "last": null,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "capital": {
+        "count": 7,
+        "first": "2026-05-07",
+        "last": "2026-06-30",
+        "sha256": "85be2189549a74d86f8beb08e4c226556af06148b55bdb7d2d376d4060ba746f"
+      }
+    }
+  ],
+  "unresolved": [],
+  "evidence_files": [
+    "build/ths-yuanhang-research/bound-history-boundaries-20261024.json",
+    "build/ths-yuanhang-research/history-anomalies-20261024.json",
+    "build/ths-yuanhang-research/history-consistency-20261024.json",
+    "build/ths-yuanhang-research/random-history-20261024.json",
+    "build/ths-yuanhang-research/random-history-recheck-20261024.json",
+    "build/ths-yuanhang-research/risk-market-node003-20261024.json"
+  ],
+  "limitations": [
+    "920000同范围早先1411条、后续1412条；后续三次集合内容一致，早先未保留逐日集合，无法归因差异；不宣称识别所有服务端缓存回退",
+    "部分沪市2005-01-05成交额源缺值，保留NULL",
+    "自由流通股首次日期可能晚于日线，不提前回填",
+    "本次30随机股仅来源解析，尚未达到30股入队归档正式查询验收"
+  ],
+  "source_sha256": {
+    "src/empire/plugins/infra/stream_exchange.py": "4795892d506a5080ca90801b2e612905ba40f09fb150b37aae47b6a3543fde11",
+    "src/empire/sources/yuanhang_client.py": "1e57a874dc97496dfe531a72365b192a16f1b8cd3546d90f0bf50147483665a1",
+    "src/empire/sources/yuanhang_history.py": "3f09e54ef995ba8a3cc0853476071ba1956d51da5a5a3dc57858909100070ba3"
+  }
+}

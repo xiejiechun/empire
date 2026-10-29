@@ -20,7 +20,7 @@ from empire.core.redaction import redact
 from empire.desktop.page_lifecycle import PageRegistry
 from empire.desktop.theme import SIDEBAR_WIDTH, desktop_style
 
-GROUP_ORDER = {"工作台": 0, "数据准备": 1, "数据浏览": 2, "采集管理": 3, "系统设置": 4, "说明文档": 5}
+GROUP_ORDER = {"工作台": 0, "市场复盘": 1, "数据准备": 2, "数据浏览": 3, "采集管理": 4, "系统设置": 5, "说明文档": 6}
 ACTION_NAMES = {"start": "启用插件", "stop": "停用插件", "cascade": "停止插件及依赖功能",
                 "flush": "立即归档", "shutdown": "退出应用", "restore_ui": "恢复界面插件"}
 

@@ -25,7 +25,7 @@ async def test_source_gap_run_persisted_after_archive_and_recovery(holders):
         use_proxy=True, proxy_fallback=True))
     collector.http.request.side_effect = lambda *a, **kw: httpx.Response(
         200, content=mixed_bonds().encode('gb18030'))
-    await control.run(collector.project_id)
+    await control.run(collector.project_id, fresh=True)
     await asyncio.wait_for(control.tasks[collector.project_id], 20)
     saved = json.loads(await store.client.get(control.key))
     row = saved['history'][0]
@@ -36,12 +36,20 @@ async def test_source_gap_run_persisted_after_archive_and_recovery(holders):
     assert await store.client.xlen(store.stream) == 0
     expected = parse(source(), query.kind, STOCK)[0]
     assert await query.detail(report_key(expected)) == expected
+    calls = collector.http.request.await_count
+    await control.run(collector.project_id)
+    await asyncio.wait_for(control.tasks[collector.project_id], 20)
+    unchanged = json.loads(await store.client.get(control.key))
+    assert unchanged['history'][0]['status'] == 'source_gap'
+    assert collector.http.request.await_count == calls
+    assert unchanged['history'][0]['result']['total_units'] == 0
+    assert await store.client.xlen(store.stream) == 0
     collector.http.request.side_effect = lambda *a, **kw: httpx.Response(
         200, content=source().encode('gb18030'))
-    await control.run(collector.project_id)
+    await control.run(collector.project_id, fresh=True)
     await asyncio.wait_for(control.tasks[collector.project_id], 20)
     saved = json.loads(await store.client.get(control.key))
     assert saved['history'][0]['status'] == 'complete'
     assert not saved['jobs'][collector.project_id]['notice']
-    assert saved['history'][1] == row
+    assert saved['history'][2] == row
     assert await store.client.xlen(store.stream) == 0

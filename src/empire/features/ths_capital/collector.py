@@ -75,12 +75,14 @@ class CapitalPageCollector:
                                           expected_revision=state['revision'], cursor=cursor)
 
     async def execute(self, *, fresh=False, baseline_revision=0):
+        self.stats.update(completed_units=0, total_units=None, unit_name='只股票')
         stage = 'plan'
         try:
             state = await self.ingest.checkpoint(JOB)
             cursor = state['cursor']
             progressed = state['revision'] > baseline_revision
             if progressed and cursor.get('phase') == 'complete':
+                self.stats.update(completed_units=cursor['index'], total_units=cursor['units'])
                 return cursor
             if cursor.get('phase') != 'awaiting_archive':
                 if (fresh and not progressed) or cursor.get('phase') == 'complete':
@@ -93,6 +95,7 @@ class CapitalPageCollector:
                 if not cursor:
                     cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0, collected=0,
                                   units=len(keys), scope_hash=digest(keys), rolling=digest([]))
+                self.stats.update(completed_units=cursor['index'], total_units=len(keys))
                 selected = stocks[cursor['index']:]
                 first = cursor['index']
                 async def download(stock, *, reservation):
@@ -112,12 +115,14 @@ class CapitalPageCollector:
                         stage = 'queue_publish'
                         state = await self.publish(state, following, keys[index], value, None, observed, url)
                         cursor = state['cursor']
+                        self.stats['completed_units'] = cursor['index']
                 following = {**cursor, 'phase': 'awaiting_archive', 'pages': cursor['pages'] + 1}
                 manifest = dict(units=len(keys), count=cursor['collected'], securities=keys,
                                 scope_hash=digest(keys), digest=cursor['rolling'])
                 state = await self.publish(state, following, 'manifest', dict(rows={t: [] for t in TABLES},
                     availability={}), manifest, datetime.now(UTC), None)
                 cursor = state['cursor']
+            self.stats.update(completed_units=cursor['index'], total_units=cursor['units'])
             stage = 'archive_confirmation'
             self.stats.update(status='awaiting_archive', pages=cursor['pages'], collected=cursor['collected'])
             await wait_for_archive(partial(self.confirmation.page_status, 'ths', JOB, PROJECT,

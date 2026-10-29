@@ -23,11 +23,11 @@ PRESENTATIONS = {'calendar': '月历', 'news': '阅读流', 'listings': '公司�
     'income': '报表矩阵', 'balance': '报表矩阵', 'cashflow': '报表矩阵',
     'industries': '行业与成分', 'indices': '指数与成分', 'index_prices': 'K线与量额',
     'adjustment': '复权K线', 'stocks': '证券目录', 'suspensions': '来源日历与事件',
-    'kaipanla_trades': '时间窗明细', 'kaipanla_quote': '盘口与摘要'}
+     }
 
 
 def presentation(ident):
-    return PRESENTATIONS.get(ident, '走势图' if ident.startswith('kaipanla_') else '事件与方案')
+    return PRESENTATIONS.get(ident, '事件与方案')
 
 
 class DataCatalogPage(QWidget):

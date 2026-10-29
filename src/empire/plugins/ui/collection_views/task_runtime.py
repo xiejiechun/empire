@@ -64,7 +64,7 @@ class TaskRuntime(QWidget):
                 owner.progress = QProgressBar()
                 owner.progress.setTextVisible(False)
                 owner.progress.setFixedHeight(8)
-                owner.progress.setToolTip('采集或入队比例；整轮归档确认后才显示已完成。')
+                owner.progress.setToolTip('采集或入队比例；落盘任务等待归档，明确声明的内存任务只确认Redis保存。')
                 form.addRow(owner.progress)
             self.groups.append(group)
         self.columns = 0
@@ -95,13 +95,26 @@ def build_runtime(owner):
     return owner.runtime_view
 
 
+def archive_label(state, result):
+    if result.get('storage') == 'redis_only':
+        return 'Redis快照已保存；未归档MySQL' if state == 'complete' else '盘中采样只写Redis，不归档MySQL'
+    if result.get('storage') == 'none':
+        return '本轮无需采样，没有新增归档'
+    return ('等待本轮归档确认' if state == 'awaiting_archive' else
+            '整轮已确认，可查询' if state == 'complete' else
+            '有效报告已确认归档；来源缺口仍待补齐' if state == 'source_gap' else
+            '尚未确认本轮完成；已归档部分可查询')
+
+
 def render_runtime(owner, job):
     progress = job.get('progress', {}) if job['active'] else {}
     latest = next((h for h in owner.data['history'] if h['task_id'] == job['id']), None)
     result = progress if job['active'] else (latest or {}).get('result', {})
     state = progress.get('status', 'running') if job['active'] else job['last_status']
-    owner.run_button.setText('继续采集' if state in ('paused', 'error', 'source_gap') else '立即采集')
+    owner.run_button.setText('检查更新' if state == 'source_gap' else
+                             '继续采集' if state in ('paused', 'error') else '立即采集')
     owner.run_button.setToolTip('先启用任务并保存执行计划。' if not job['policy']['enabled']
+                               else '按已保存计划检查到期证券；持续来源缺陷等待来源补齐，同周期无需重复执行。' if state == 'source_gap'
                                else '有未完成批次时从断点继续，否则开始新的采集。')
     collected = result.get('queued_records', result.get('collected'))
     expected = result.get('expected_count', 0)
@@ -122,6 +135,12 @@ def render_runtime(owner, job):
         units = f"本轮范围 {result['total_months']:,} 个月；完成数未提供"
     if result.get('unlisted_without_date'):
         units += f"；来源明确待上市且未定日期 {result['unlisted_without_date']:,} 只，本轮不要求行情"
+    cost = ''
+    if 'planned_requests' in result:
+        cost = (f"\n行情计划 {result['planned_requests']:,} 次 · 已完成逻辑响应 "
+                f"{result.get('logical_history_requests', 0):,} 次 · 跳过 {result.get('skipped_units', 0):,} 只"
+                f"\n成功行情正文 {result.get('response_bytes', 0):,} 字节 · 解压后 "
+                f"{result.get('decoded_bytes', 0):,} 字节（不含认证、失败帧及包头）")
     active = job.get('active')
     started = active.get('started_at') if isinstance(active, dict) else None
     error = redact(job.get('error') or (latest or {}).get('error') or '', owner.shell.cfg)
@@ -137,10 +156,7 @@ def render_runtime(owner, job):
     if categories:
         failure_summary += '；' + '，'.join(f'{category_labels.get(k, k)} {v}'
                                            for k, v in categories.items() if v)
-    archive = ('等待本轮归档确认' if state == 'awaiting_archive' else
-               '整轮已确认，可查询' if state == 'complete' else
-               '有效报告已确认归档；来源缺口仍待补齐' if state == 'source_gap' else
-               '尚未确认本轮完成；已归档部分可查询')
+    archive = archive_label(state, result)
     values = dict(status=STATUS.get(state, state), count=count, units=units,
                   pages=(f"{result['pages']:,} 页 / 批次（不等于业务对象数）" if 'pages' in result else '—'),
                   current=result.get('current_security') or result.get('current_date') or result.get('current_month') or '—',
@@ -153,7 +169,7 @@ def render_runtime(owner, job):
                         '本轮结束后安排' if job['active'] else stamp(job.get('next_due'))),
                   start=stamp(started or (latest or {}).get('started_at')),
                   finish='本轮运行中' if job['active'] else stamp((latest or {}).get('finished_at')),
-                  network=network_summary(job), error=error or '暂无运行错误；来源质量请到数据准备查看。')
+                  network=network_summary(job) + cost, error=error or '暂无运行错误；来源质量请到数据准备查看。')
     for key, value in values.items():
         owner.runtime_fields[key].setText(str(value))
     for key, field in [('frontier', 'continuous_collected'), ('failed', 'failed_units'),

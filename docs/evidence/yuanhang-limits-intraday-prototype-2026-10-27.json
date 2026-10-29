@@ -1,0 +1,97 @@
+{
+  "day": "2026-10-27",
+  "finished": "2026-10-27T10:52:47.382613+08:00",
+  "pools": [
+    {
+      "pool": "limit_up_pool",
+      "total": 44,
+      "ordered_unique": true,
+      "redis_equal": true,
+      "digest": "1cda7e1b0aa6a9971bcb1c05f8cf7ceab478da51683aff3effd10f8f38c2a68c",
+      "requests": 1,
+      "response_bytes": 30264,
+      "wire_bytes": 5992
+    },
+    {
+      "pool": "sprint_limit_up",
+      "total": 12,
+      "ordered_unique": true,
+      "redis_equal": true,
+      "digest": "5a4e414957ce7151efd476b3062cb909a85e1b5fc18d021173698e8c6760eb38",
+      "requests": 1,
+      "response_bytes": 7264,
+      "wire_bytes": 1217
+    },
+    {
+      "pool": "connect_broad_pool",
+      "total": 16,
+      "ordered_unique": true,
+      "redis_equal": true,
+      "digest": "869d14cf6ae319f4da60babb3f3f0e8aeb886bd1514050e01085f5a7ff473f0f",
+      "requests": 1,
+      "response_bytes": 11072,
+      "wire_bytes": 2564
+    },
+    {
+      "pool": "open_limit_up_pool",
+      "total": 13,
+      "ordered_unique": true,
+      "redis_equal": true,
+      "digest": "9c0ee64bcc7c891a3ec32795d2406886a54d7412e504f3c6f71b0e3ac20de231",
+      "requests": 1,
+      "response_bytes": 8190,
+      "wire_bytes": 1539
+    },
+    {
+      "pool": "limit_down_pool",
+      "total": 3,
+      "ordered_unique": true,
+      "redis_equal": true,
+      "digest": "465ef6d0a9ddd131220f0b44f4ba04e98d3192de1d0fd0586e8b8993828f2c8d",
+      "requests": 1,
+      "response_bytes": 1979,
+      "wire_bytes": 624
+    }
+  ],
+  "routes": {
+    "proxy_requests": 5
+  },
+  "seed": 20261027,
+  "sample_pool": 70,
+  "sample": [
+    "002376.SZ",
+    "001318.SZ",
+    "002222.SZ",
+    "002703.SZ",
+    "603758.SH",
+    "601566.SH",
+    "002181.SZ",
+    "002196.SZ",
+    "000678.SZ",
+    "603390.SH",
+    "002929.SZ",
+    "002724.SZ",
+    "603337.SH",
+    "300539.SZ",
+    "603669.SH",
+    "000888.SZ",
+    "001311.SZ",
+    "600617.SH",
+    "002741.SZ",
+    "603528.SH",
+    "600828.SH",
+    "603370.SH",
+    "600715.SH",
+    "600558.SH",
+    "002187.SZ",
+    "603813.SH",
+    "603677.SH",
+    "002093.SZ",
+    "603565.SH",
+    "600826.SH"
+  ],
+  "redis_sample_verified": true,
+  "sql_business_writes": 0,
+  "archive_messages": 0,
+  "scope": "source/shared prefetch -> isolated Redis store -> read; public volatile admission separately tested; production not deployed"
+}

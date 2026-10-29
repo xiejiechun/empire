@@ -68,24 +68,21 @@ def run():
             window.navigate(entry.id)
             page = window.page_widgets[entry.id]
             wait(1)
-            if entry.id.startswith('kaipanla_'):
-                candidates = runtime.invoke('stocks.query', 'candidates', '', entry.id, 1).result(10)
-                if candidates:
-                    page.apply_navigation_context(NavigationContext(unified_code=candidates[0]['unified_code']))
-                    wait(1)
-            elif entry.id == 'index_prices':
+            if entry.id == 'index_prices':
                 indices = runtime.invoke('indices.query', 'browse', 'indices', '', None, 1).result(10)
                 if indices['rows']:
                     page.apply_navigation_context(NavigationContext(index_code=indices['rows'][0]['index_code'], source='ths'))
                     wait(1)
             elif entry.id == 'adjustment':
-                candidates = runtime.invoke('stocks.query', 'candidates', '', 'kaipanla_quote', 1).result(10)
+                candidates = runtime.invoke('stocks.query', 'candidates', '', 'stock', 1).result(10)
                 if candidates:
-                    end = runtime.invoke('kaipanla_quote.query', 'archived_date', candidates[0]['unified_code'][-2:],
-                        candidates[0]['unified_code'][:6], datetime.now(CHINA).date().isoformat(), 0).result(10)
-                    if end:
+                    code = candidates[0]['unified_code']
+                    heads = runtime.invoke('yuanhang.history.query', 'year_heads', code).result(10)
+                    dates = [str(h['last_date']) for h in heads.values() if h.get('last_date')]
+                    if dates:
+                        end = max(dates)
                         start = (datetime.fromisoformat(end).date()-timedelta(days=30)).isoformat()
-                        page.apply_navigation_context(NavigationContext(unified_code=candidates[0]['unified_code'], start=start, end=end))
+                        page.apply_navigation_context(NavigationContext(unified_code=code, start=start, end=end))
                         wait(1)
             elif entry.id == 'suspensions':
                 page.all_dates.setChecked(True)

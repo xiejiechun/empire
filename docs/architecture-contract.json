@@ -149,6 +149,18 @@
     "themes": {
       "kind": "business",
       "description": "开盘啦全题材与七日日内历史"
+    },
+    "yuanhang": {
+      "kind": "business",
+      "description": "远航PC原生日线、权息与股本"
+    },
+    "yuanhang_limits": {
+      "kind": "business",
+      "description": "远航涨跌停日期池与历史原因"
+    },
+    "market_review": {
+      "kind": "business",
+      "description": "只读市场复盘计算与图表"
     }
   },
   "module_groups": [
@@ -256,7 +268,8 @@
         "empire.plugins.ui.proxies",
         "empire.plugins.ui.record_detail",
         "empire.plugins.ui.record_table",
-        "empire.plugins.ui.records"
+        "empire.plugins.ui.records",
+        "empire.plugins.ui.identities"
       ]
     },
     {
@@ -271,7 +284,10 @@
         "empire.plugins.collection.record_query",
         "empire.plugins.collection.records",
         "empire.plugins.collection.rules",
-        "empire.plugins.collection.unit_prefetch"
+        "empire.plugins.collection.unit_prefetch",
+        "empire.plugins.collection.identity_runs",
+        "empire.plugins.collection.identities",
+        "empire.plugins.collection.management_query"
       ]
     },
     {
@@ -580,7 +596,8 @@
         "empire.contracts.native_stream",
         "empire.contracts.request_retry",
         "empire.contracts.security",
-        "empire.contracts.ui"
+        "empire.contracts.ui",
+        "empire.contracts.listing_scope"
       ]
     },
     {
@@ -592,6 +609,7 @@
         "empire.core.identity",
         "empire.core.manager",
         "empire.core.preparation_release",
+        "empire.core.protected_values",
         "empire.core.redaction",
         "empire.core.runtime",
         "empire.core.time"
@@ -637,7 +655,8 @@
         "empire.plugins.pipeline.archive",
         "empire.plugins.pipeline.archive_queue",
         "empire.plugins.pipeline.fingerprints",
-        "empire.plugins.pipeline.ingest"
+        "empire.plugins.pipeline.ingest",
+        "empire.plugins.pipeline.archive_metrics"
       ]
     },
     {
@@ -754,6 +773,7 @@
       "role": "query",
       "modules": [
         "empire.features.holders.audit",
+        "empire.features.holders.planning",
         "empire.features.holders.query"
       ]
     },
@@ -940,10 +960,15 @@
       "reason": "共有来源协议及正常认证适配；业务采集、归档、查询由各功能独立实现",
       "modules": [
         "empire.sources.tdx_unlock",
+        "empire.sources.security_identity",
         "empire.sources.yuanhang_auth",
-        "empire.sources.yuanhang_history",
+        "empire.sources.yuanhang_client",
         "empire.sources.yuanhang_identity",
-        "empire.sources.yuanhang_wire"
+        "empire.sources.yuanhang_profiles",
+        "empire.sources.yuanhang_service",
+        "empire.sources.yuanhang_wire",
+        "empire.sources.yuanhang_recipe",
+        "empire.sources.yuanhang_management"
       ]
     },
     {
@@ -995,6 +1020,72 @@
       "reason": "按用途与范围核验已有SQL完整证券单元证明；不执行采集",
       "modules": [
         "empire.features.capital_actions.preparation"
+      ]
+    },
+    {
+      "owner": "source_support",
+      "role": "parser",
+      "reason": "无I/O的原生历史规范化、消息校验与内容证明；不执行认证、下载或采集",
+      "modules": [
+        "empire.sources.yuanhang_history",
+        "empire.sources.yuanhang_payload",
+        "empire.sources.yuanhang_coverage"
+      ]
+    },
+    {
+      "owner": "source_support",
+      "role": "source_adapter",
+      "reason": "上市范围元数据共用一个共享下载与预取实现，仅用于来源范围判定",
+      "modules": [
+        "empire.sources.listing_scope"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航增量日期计划、覆盖及唯一归档职责",
+      "role": "parser",
+      "modules": [
+        "empire.features.yuanhang.planning",
+        "empire.sources.yuanhang_ranges",
+        "empire.sources.yuanhang_range_payload"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航增量日期计划、覆盖及唯一归档职责",
+      "role": "query",
+      "modules": [
+        "empire.features.yuanhang.plan_query"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航增量日期计划、覆盖及唯一归档职责",
+      "role": "dataset",
+      "modules": [
+        "empire.features.yuanhang.range_archive"
+      ]
+    },
+    {
+      "owner": "desktop",
+      "role": "shared_ui",
+      "reason": "桌面客户端装配及显式能力路由，不是可被业务反向复用的共享控件",
+      "modules": [
+        "empire.desktop_bridge.operations",
+        "empire.desktop_bridge.preview",
+        "empire.desktop_bridge.protocol",
+        "empire.desktop_bridge.schemas",
+        "empire.desktop_bridge.server",
+        "empire.desktop_bridge",
+        "empire.desktop_bridge.__main__"
+      ]
+    },
+    {
+      "owner": "application",
+      "role": "composition",
+      "reason": "静态桌面预览贡献装配表，声明已登记业务查询的显式入口",
+      "modules": [
+        "empire.desktop_bridge.preview_catalog"
       ]
     }
   ],
@@ -1217,7 +1308,8 @@
         "ui_words": "ui",
         "evidence": "contract",
         "composition": "composition",
-        "products": "query"
+        "products": "query",
+        "yuanhang_limits": "contract"
       }
     },
     {
@@ -1494,8 +1586,62 @@
         "ui": "ui",
         "guest_material": "source_adapter",
         "detail_source": "source_adapter",
-        "catalog_source": "source_adapter",
-        "identity_source": "source_adapter"
+        "catalog_source": "source_adapter"
+      }
+    },
+    {
+      "prefix": "empire.features.yuanhang",
+      "owner": "yuanhang",
+      "reason": "原生PC历史业务独立归属，共享代理、入队与归档",
+      "roles": {
+        "__init__": "contract",
+        "contract": "contract",
+        "repository": "query",
+        "dataset": "dataset",
+        "query": "query",
+        "collector": "collector",
+        "ui": "ui",
+        "bundle": "composition",
+        "api": "api",
+        "availability": "source_adapter"
+      }
+    },
+    {
+      "prefix": "empire.features.yuanhang_limits",
+      "owner": "yuanhang_limits",
+      "reason": "独立日期池业务；共享下载、入队、归档和资源预算",
+      "roles": {
+        "__init__": "contract",
+        "contract": "contract",
+        "model": "parser",
+        "storage": "contract",
+        "wire": "contract",
+        "planning": "contract",
+        "reason_planning": "query",
+        "source": "source_adapter",
+        "repository": "query",
+        "dataset": "dataset",
+        "collector": "collector",
+        "query": "query",
+        "preparation": "contract",
+        "ui": "ui",
+        "bundle": "composition",
+        "intraday": "collector",
+        "intraday_store": "query",
+        "intraday_query": "query"
+      }
+    },
+    {
+      "prefix": "empire.features.market_review",
+      "owner": "market_review",
+      "reason": "只读复盘查询与纯计算，不包含采集或持久化",
+      "roles": {
+        "__init__": "contract",
+        "bundle": "composition",
+        "model": "contract",
+        "query": "query",
+        "ui": "ui",
+        "views": "ui"
       }
     }
   ],

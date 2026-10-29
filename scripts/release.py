@@ -1,6 +1,7 @@
 """One release owner verifies, stages, smokes and safely publishes Empire."""
 import argparse
 import codecs
+import json
 import os
 import subprocess
 import sys
@@ -172,7 +173,7 @@ def require_stopped(lock, root):
         raise RuntimeError('Close Empire normally before release or recovery; no process was killed')
 
 
-def release(root, *, recover_only=False):
+def release(root, *, recover_only=False, test_plan=None):
     root = Path(root).resolve()
     with ReleaseLock(root) as lock:
         require_stopped(lock, root)
@@ -183,6 +184,7 @@ def release(root, *, recover_only=False):
         run = owned(root, root / 'build' / 'releases' / uuid.uuid4().hex)
         run.mkdir(parents=True)
         runner = Runner(root, lock, run)
+        runner.test_plan = test_plan
         publication = Publication(root, run)
         try:
             dependency, capacity = verify(runner)
@@ -200,6 +202,8 @@ def release(root, *, recover_only=False):
                           portable_distribution=smoke,
                           configuration='preserved locally; excluded from portable artifacts',
                           actual_desktop='not verified by this gate')
+            if test_plan:
+                report['test_scope'] = json.loads((run / 'test-scope.json').read_text(encoding='utf-8'))
             committed = publication.publish(report, runner.check,
                                              expected_package=smoke['package']['sha256'])
         except BaseException:
@@ -222,9 +226,10 @@ def release(root, *, recover_only=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--recover', action='store_true', help='Restore an interrupted directory switch only')
+    parser.add_argument('--test-plan', help='Explicit user-authorized JSON list of complete test files')
     args = parser.parse_args()
     try:
-        release(Path(__file__).resolve().parents[1], recover_only=args.recover)
+        release(Path(__file__).resolve().parents[1], recover_only=args.recover, test_plan=args.test_plan)
     except (OSError, RuntimeError, ValueError, KeyError, subprocess.SubprocessError) as exc:
         print(str(exc), file=sys.stderr)
         return 1

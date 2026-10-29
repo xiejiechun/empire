@@ -45,7 +45,7 @@ class PerformancePage(QWidget):
         layout.addWidget(title)
         note = ('数据日期按变动截止月份；公告日期单独保存，页面目录不代表全部历史。' if kind == 'shareholder_changes' else
                 '统计日不是公布日；来源历史范围有限；原始股数以股展示。' if kind == 'holder_count' else
-                '预约和实际披露分开；空日期保持未知。' if kind == 'earnings_disclosure' else
+                '预约与来源实际披露日分开；来源可能提前声明明日日期，不代表信号已可用；空日期未知。' if kind == 'earnings_disclosure' else
                 '来源预计范围原文；不能把预告当实际利润。' if kind == 'earnings_forecast' else
                 '快报同比口径并列保存；来源可能提前声明公告日，未来日期不表示信号已可用。' if kind == 'earnings_quick' else
                 '金额以元展示；同比口径并列保存；不替代完整财务报表。')

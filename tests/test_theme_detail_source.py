@@ -85,6 +85,19 @@ def test_repeated_identical_relation_preserves_multiplicity_and_checks_tag_count
         parse_detail(value, '148')
 
 
+def test_source_empty_reason_preserved_only_when_both_views_agree():
+    value = sample()
+    value['Table'][0]['Level1']['Stocks'][0]['Reason'] = ''
+    value['StockList'][0]['Tag'][0]['Reason'] = ''
+    parsed = parse_detail(value, '148')
+    assert parsed['relations'][0]['reason'] == ''
+    from empire.features.themes.storage_contract import map_detail, validate_detail
+    assert validate_detail(map_detail(parsed, ['600001.SH']))['relations'][0]['reason'] == ''
+    value['StockList'][0]['Tag'][0]['Reason'] = '***'
+    with pytest.raises(DetailError):
+        parse_detail(value, '148')
+
+
 @pytest.mark.parametrize('mutation', [
     lambda v: v.update(ID='229'),
     lambda v: v.update(errcode=True),

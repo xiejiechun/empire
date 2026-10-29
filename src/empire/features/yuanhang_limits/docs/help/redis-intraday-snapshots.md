@@ -1,0 +1,24 @@
+<!-- topic:数据库参考|Redis yuanhang-intraday-snapshots -->
+<!-- summary:远航五池盘中Redis变化快照的snapshots，不进入MySQL。 -->
+<!-- group:Redis -->
+# Redis yuanhang-intraday-snapshots
+
+## 用途与归属
+
+远航五池盘中采样与回放；由IntradayStore唯一读写，采集经公共容量和隔离准入，日终仍使用统一归档器。
+
+## 结构与身份
+
+键模板：`<namespace>:yuanhang:intraday:<pool_type>:snapshots:<version>`。类型String，pool_type仅五池固定策略值。每个观察版本单独一键，value为schema=1、started/finished带时区时刻、consistency（single_response或paged_interval）及unit_zlib规范压缩池；不保存成功HTTP原文。单份480KiB压缩单元，解压8MiB。
+
+## 读写与关联
+
+同一池快照正文键、times、meta由Lua原子比较、插入和淘汰；相同内容不新增快照，较旧观察不覆盖新状态。读取时绑定快照版本，过期/缺失明确返回无保留快照，不以MySQL日终结果替代。
+
+## 保留与恢复
+
+每池2048份/32MiB正文上限，五池160MiB另加有界索引；72小时保留，写入时裁掉过期和超限最早项，查询也限制72小时；快照正文使用独立String键，按该份采样完成时间设置绝对72小时到期，不因后续写入续期；索引与元信息TTL为72小时，过期成员索引在下次采样时清理，查询过滤已过期时间。Redis纯内存，服务重启丢失，不能补采过去变化。日终成功归档不删除仍在保留范围内的盘中回放；盘中数据不进入待归档队列。成功归档即清队规则仍适用于独立的日终消息。
+
+## 维护与相关说明
+
+不需要SQL迁移或清共享Redis；正常任务从当前时刻恢复采样。字段单位和来源限制见[远航版涨跌停分析](help:远航版涨跌停分析)。

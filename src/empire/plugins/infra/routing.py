@@ -1,5 +1,6 @@
 """Per-run routing context and atomic site/egress request permits."""
 import hashlib
+import re
 from contextvars import ContextVar
 
 import httpx
@@ -59,8 +60,13 @@ def site_policy(value, existing=None):
 
 
 async def routed_request(service, method, url, allowed, *, excluded_proxies=None,
-                         exchange=None, **kwargs):
+                         exchange=None, proxy_code=None, **kwargs):
     """Every attempt/redirect obtains fresh total and egress permits."""
+    if proxy_code is not None:
+        if not isinstance(proxy_code, str) or not re.fullmatch(r'[A-Za-z0-9_.-]{1,100}', proxy_code):
+            raise ValueError('固定代理设备编号无效')
+        if not USE_PROXY.get() or service.pool is None:
+            raise RuntimeError('绑定身份的请求必须使用指定代理设备，不能直连')
     while True:
         group = service.rules.resolve(url, allowed)
         stats = service.stats.setdefault(group.name, {"requests": 0, "waiting": 0,
@@ -82,8 +88,13 @@ async def routed_request(service, method, url, allowed, *, excluded_proxies=None
                 waits = stats.setdefault("waiting_reasons", {})
                 waits["egress"] = waits.get("egress", 0) + 1
                 try:
+                    binding = {'device_code': proxy_code} if proxy_code is not None else {}
                     entry = await service.pool.acquire(fallback=PROXY_FALLBACK.get(), site=group.name,
-                                                       excluded=excluded_proxies)
+                                                       excluded=excluded_proxies, **binding)
+                    if proxy_code is not None and (entry is None or entry.code != proxy_code):
+                        if entry is not None:
+                            await service.pool.release(entry, site=group.name)
+                        raise RuntimeError('代理分配与绑定身份不一致，请求未发送')
                 finally:
                     waits["egress"] -= 1
         group = service.rules.resolve(url, allowed)

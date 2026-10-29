@@ -35,3 +35,7 @@
 
 
 存储查阅：[MySQL suspension_event](help:MySQL%20suspension_event)、[MySQL suspension_source_date](help:MySQL%20suspension_source_date)。
+
+## 采集百分比
+
+本轮起止日期；成功入队来源日期数。使用本轮实际计划和已成功处理数量计算；准备范围期间不猜总量，空计划表示无需处理。百分比达到100%不替代完整集合校验或本轮归档确认；失败仍按实际结果显示。

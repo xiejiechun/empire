@@ -88,7 +88,7 @@ def test_grouped_directory_and_ranked_offline_search():
         assert not page.index.topLevelItem(CATEGORIES.index('数据库参考')).isExpanded()
         data = page.index.topLevelItem(2)
         assert [data.child(i).text(0) for i in range(data.childCount())] == [
-            "证券基础", "交易与行情", "公司事件", "财务报表", "行业与指数", "资讯", "财务数据", "股东数据", "公司行动", "题材数据"]
+            "证券基础", "交易与行情", "公司事件", "财务报表", "行业与指数", "资讯", "财务数据", "股东数据", "公司行动", "题材数据", "行情与交易"]
         page.search.setText("复权")
         assert page.index.topLevelItem(0).text(0) == "自算复权因子与行情"
         assert "全部分类" in page.scope.text()
@@ -113,8 +113,16 @@ def test_database_directory_and_direct_object_lookup():
         database = page.index.topLevelItem(CATEGORIES.index('数据库参考'))
         groups = {database.child(i).text(0): database.child(i) for i in range(database.childCount())}
         assert set(groups) == {'总览', 'MySQL', 'Redis'}
-        assert groups['MySQL'].childCount() == 60
-        assert groups['Redis'].childCount() == 19
+        assert groups['MySQL'].childCount() == 59
+        mysql_titles = {groups['MySQL'].child(i).text(0) for i in range(groups['MySQL'].childCount())}
+        assert {'MySQL yuanhang_daily_price', 'MySQL yuanhang_price_year',
+                'MySQL yuanhang_corporate_action', 'MySQL yuanhang_capital',
+                'MySQL yuanhang_series_proof'} <= mysql_titles
+        assert groups['Redis'].childCount() == 24
+        redis_titles = {groups['Redis'].child(i).text(0) for i in range(groups['Redis'].childCount())}
+        assert {'Redis identity-runs', 'Redis identity-runs-revision',
+                'Redis yuanhang-intraday-snapshots', 'Redis yuanhang-intraday-times',
+                'Redis yuanhang-intraday-meta'} <= redis_titles
         page.search.setText('MySQL suspension_source_date')
         assert page.index.topLevelItem(0).text(0) == 'MySQL suspension_source_date'
         assert 'source_date' in page.browser.toPlainText()

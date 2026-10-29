@@ -65,6 +65,7 @@ class CninfoCalendarCollector:
         await wait_for_capacity(self.ingest, self.stats)
 
     async def execute(self, *, fresh=False, baseline_revision=0) -> CalendarRunResult:
+        self.stats.update(completed_units=0, total_units=None)
         response = None
         stage = "checkpoint"
         month = None
@@ -73,11 +74,13 @@ class CninfoCalendarCollector:
             cursor = state["cursor"]
             progressed = state["revision"] > baseline_revision
             if progressed and cursor.get("phase") == "complete":
+                self.stats.update(completed_units=cursor["pages"], total_units=len(cursor["months"]), unit_name="个月")
                 return self._result(cursor)
             if not cursor or (fresh and not progressed) or cursor.get("phase") == "complete":
                 plan = await self.query.plan(self.today(), fresh=fresh)
                 cursor = {**plan, "batch_id": uuid4().hex, "phase": "fetch", "pages": 0,
                           "collected": 0, "started_at": datetime.now(UTC).isoformat()}
+            self.stats.update(completed_units=cursor["pages"], total_units=len(cursor["months"]), unit_name="个月")
             if cursor["phase"] == "fetch":
                 async with prefetch_units(self, cursor["months"], self.download, url=API_URL,
                         domains=("cninfo.com.cn",), profile="calendar", first=cursor["pages"], item_name='月') as reads:
@@ -103,6 +106,7 @@ class CninfoCalendarCollector:
                             expected_revision=state["revision"], cursor=updated,
                         )
                         cursor = state["cursor"]
+                        self.stats["completed_units"] = cursor["pages"]
             stage = "archive_confirmation"
             self.stats.update(status="awaiting_archive", collected=cursor["collected"],
                               pages=cursor["pages"], expected_count=cursor["expected_count"])

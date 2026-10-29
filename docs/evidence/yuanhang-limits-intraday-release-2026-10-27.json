@@ -1,0 +1,750 @@
+{
+  "passed": true,
+  "at": "2026-10-27T14:25:18.052938+08:00",
+  "release_id": "94ac8e927e594d569a3833fd5020e2df",
+  "executable_sha256": "e44bc794079b26401d9872144e0503a0126deeb11762c5bc3242ad13d291ea9f",
+  "configuration_preserved": true,
+  "different_working_directory": "C:/Windows/Temp",
+  "tests": {
+    "passed": 4688,
+    "skipped": 7,
+    "failed": 0
+  },
+  "pools": {
+    "limit_up_pool": {
+      "policy": {
+        "mode": "interval",
+        "enabled": true,
+        "archived": false,
+        "use_proxy": true,
+        "daily_time": "18:00",
+        "proxy_fallback": true,
+        "request_retries": 2,
+        "interval_seconds": 60
+      },
+      "verified_scheduled_runs": [
+        {
+          "run_id": "9a5aabcd1e4147f1b902987af10e509e",
+          "task_id": "ths-yuanhang-limit-up-pool",
+          "started_at": 1793081789.4023292,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 20,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081789.8798718,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 46,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "57944727dd0b49ca93871bd5e4224c3f",
+          "task_id": "ths-yuanhang-limit-up-pool",
+          "started_at": 1793081850.4942398,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 20,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081850.758825,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 44,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "cc7572e94ad34c59b460822f07edcbbb",
+          "task_id": "ths-yuanhang-limit-up-pool",
+          "started_at": 1793081911.7499492,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 20,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081912.170065,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 45,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "0d04d1878cb44c7b979eb0d9a20a1afb",
+          "task_id": "ths-yuanhang-limit-up-pool",
+          "started_at": 1793081972.897104,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 20,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081973.3080337,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 45,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        }
+      ],
+      "end_to_next_start_seconds": [
+        60.614367961883545,
+        60.99112415313721,
+        60.727039098739624
+      ],
+      "sql_today_rows": 0
+    },
+    "sprint_limit_up": {
+      "policy": {
+        "mode": "interval",
+        "enabled": true,
+        "archived": false,
+        "use_proxy": true,
+        "daily_time": "18:00",
+        "proxy_fallback": true,
+        "request_retries": 2,
+        "interval_seconds": 60
+      },
+      "verified_scheduled_runs": [
+        {
+          "run_id": "5670ac2c2d5b41b2bb8be7cd5f00a384",
+          "task_id": "ths-yuanhang-sprint-limit-up",
+          "started_at": 1793081789.4053323,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 2359,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081790.0759397,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 11,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "a7cb69baaa1c4ca6ab4da79a52ef678d",
+          "task_id": "ths-yuanhang-sprint-limit-up",
+          "started_at": 1793081850.4967327,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 2359,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081850.8257952,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 12,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "39f282c814a74f4284ecb7ba853f9b29",
+          "task_id": "ths-yuanhang-sprint-limit-up",
+          "started_at": 1793081911.7519736,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 2359,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081912.2731307,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 11,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "2eaf381378b44eb7a9eda71eebe36c9e",
+          "task_id": "ths-yuanhang-sprint-limit-up",
+          "started_at": 1793081972.899085,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 2359,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081973.4222345,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 10,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        }
+      ],
+      "end_to_next_start_seconds": [
+        60.42079305648804,
+        60.92617845535278,
+        60.625954389572144
+      ],
+      "sql_today_rows": 0
+    },
+    "connect_broad_pool": {
+      "policy": {
+        "mode": "interval",
+        "enabled": true,
+        "archived": false,
+        "use_proxy": true,
+        "daily_time": "18:00",
+        "proxy_fallback": true,
+        "request_retries": 2,
+        "interval_seconds": 60
+      },
+      "verified_scheduled_runs": [
+        {
+          "run_id": "1e1210bfbd60427e9a27376d24bf712e",
+          "task_id": "ths-yuanhang-connect-broad-pool",
+          "started_at": 1793081789.4063156,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081789.874277,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 18,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "87e3fbd0108040778e480d7609dc9174",
+          "task_id": "ths-yuanhang-connect-broad-pool",
+          "started_at": 1793081850.4987476,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081850.927205,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 17,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "798a97e8503349dd99a1fea4c5d563a1",
+          "task_id": "ths-yuanhang-connect-broad-pool",
+          "started_at": 1793081911.7549129,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081912.3708026,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 18,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "7aaa29cc4a944659ad57aff7c3d833aa",
+          "task_id": "ths-yuanhang-connect-broad-pool",
+          "started_at": 1793081972.901126,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081973.360201,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 17,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        }
+      ],
+      "end_to_next_start_seconds": [
+        60.624470472335815,
+        60.82770776748657,
+        60.53032326698303
+      ],
+      "sql_today_rows": 0
+    },
+    "open_limit_up_pool": {
+      "policy": {
+        "mode": "interval",
+        "enabled": true,
+        "archived": false,
+        "use_proxy": true,
+        "daily_time": "18:00",
+        "proxy_fallback": true,
+        "request_retries": 2,
+        "interval_seconds": 60
+      },
+      "verified_scheduled_runs": [
+        {
+          "run_id": "9c81667ca5414085909be84a549dd5cd",
+          "task_id": "ths-yuanhang-open-limit-up-pool",
+          "started_at": 1793081789.4202654,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081789.9015198,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 20,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "b1540ae075f7435b93423cd46965357b",
+          "task_id": "ths-yuanhang-open-limit-up-pool",
+          "started_at": 1793081850.5006952,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081850.9576387,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 22,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "3bea421b7a0845c68a5a0a1f52f4aeb5",
+          "task_id": "ths-yuanhang-open-limit-up-pool",
+          "started_at": 1793081911.7570536,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081912.1850557,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 21,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "acdaad8579ad453aad10d4aa04cc78b2",
+          "task_id": "ths-yuanhang-open-limit-up-pool",
+          "started_at": 1793081972.9021013,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081973.4039705,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 21,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        }
+      ],
+      "end_to_next_start_seconds": [
+        60.599175453186035,
+        60.79941487312317,
+        60.717045545578
+      ],
+      "sql_today_rows": 0
+    },
+    "limit_down_pool": {
+      "policy": {
+        "mode": "interval",
+        "enabled": true,
+        "archived": false,
+        "use_proxy": true,
+        "daily_time": "18:00",
+        "proxy_fallback": true,
+        "request_retries": 2,
+        "interval_seconds": 60
+      },
+      "verified_scheduled_runs": [
+        {
+          "run_id": "7cca32680b1c4232b44dc99aabb99133",
+          "task_id": "ths-yuanhang-limit-down-pool",
+          "started_at": 1793081789.422322,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081790.0242484,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 13,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "1d99eb12b0494b34a9015e2d4ffd86c5",
+          "task_id": "ths-yuanhang-limit-down-pool",
+          "started_at": 1793081850.5027094,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081851.050048,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 13,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "1c93d9ed7f194b4f929dbbe1d35557eb",
+          "task_id": "ths-yuanhang-limit-down-pool",
+          "started_at": 1793081911.7660725,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081912.103309,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 14,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        },
+        {
+          "run_id": "106de2c2947d4aca8a70594b99051704",
+          "task_id": "ths-yuanhang-limit-down-pool",
+          "started_at": 1793081972.904622,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 19,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1793081973.4772394,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 15,
+            "record_name": "条成员",
+            "unit_name": "个单元",
+            "storage": "redis_only",
+            "phase": "complete",
+            "cutoff": "2026-10-27",
+            "changed": true,
+            "stale": false,
+            "queued_messages": 0
+          }
+        }
+      ],
+      "end_to_next_start_seconds": [
+        60.478461027145386,
+        60.71602439880371,
+        60.801313161849976
+      ],
+      "sql_today_rows": 0
+    }
+  },
+  "production_retention": {
+    "at": "2026-10-27T14:25:18.052938+08:00",
+    "pools": {
+      "limit_up_pool": {
+        "snapshots": 9,
+        "packed_bytes": 66590,
+        "redis_memory_bytes": 68339,
+        "first_version": "1793081789424362",
+        "first_ttl_ms": 258671821,
+        "absolute_expiry_verified": true
+      },
+      "sprint_limit_up": {
+        "snapshots": 9,
+        "packed_bytes": 14898,
+        "redis_memory_bytes": 16659,
+        "first_version": "1793081789431721",
+        "first_ttl_ms": 258672016,
+        "absolute_expiry_verified": true
+      },
+      "connect_broad_pool": {
+        "snapshots": 9,
+        "packed_bytes": 31238,
+        "redis_memory_bytes": 33032,
+        "first_version": "1793081789427823",
+        "first_ttl_ms": 258671813,
+        "absolute_expiry_verified": true
+      },
+      "open_limit_up_pool": {
+        "snapshots": 9,
+        "packed_bytes": 25922,
+        "redis_memory_bytes": 27716,
+        "first_version": "1793081789430186",
+        "first_ttl_ms": 258671839,
+        "absolute_expiry_verified": true
+      },
+      "limit_down_pool": {
+        "snapshots": 9,
+        "packed_bytes": 18702,
+        "redis_memory_bytes": 20463,
+        "first_version": "1793081789432939",
+        "first_ttl_ms": 258671958,
+        "absolute_expiry_verified": true
+      }
+    },
+    "today_sql_rows": {
+      "yuanhang_limit_pool": 0,
+      "yuanhang_limit_member": 0,
+      "yuanhang_limit_reason": 0
+    },
+    "passed": true
+  },
+  "desktop": {
+    "visible": true,
+    "window_id": 463512,
+    "timeline_query": true,
+    "double_click_replay": {
+      "at": "14:16:29.877387",
+      "rows": 46
+    },
+    "latest_query": {
+      "at": "14:21:35",
+      "rows": 44
+    },
+    "left_open": true,
+    "note": "Timeline/member mode switch retains a wide first column; horizontal scrolling exposes names and prices."
+  },
+  "eod_scope": "Current-code historical proxy->Redis->archive->MySQL acceptance passed; today before15:30, actual today close not yet observed.",
+  "sampling_policy": "User revised live data acceptance to at most5% (round up to whole units); existing historical sample30/1757=1.71%, fixed regressions recorded separately; current five full-pool responses are indivisible minimum units. No full-history wait.",
+  "test_mysql_shutdown": true,
+  "unrelated_shared_pending": 6769,
+  "source_evidence": [
+    "yuanhang-limits-intraday-real-2026-10-27.json",
+    "yuanhang-limits-intraday-eod-real-2026-10-27.json",
+    "yuanhang-limits-intraday-capacity-2026-10-27.json"
+  ]
+}

@@ -7,7 +7,7 @@ import time
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from empire.contracts.collector import CollectionSourceGap
+from empire.contracts.collector import NEXT_MAINTENANCE_DUE, CollectionSourceGap
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.request_retry import MAX_REQUEST_RETRIES
 from empire.core.identity import safe_project_id
@@ -225,6 +225,8 @@ class CollectionControl:
         fallback_token = PROXY_FALLBACK.set(True if priority else job["policy"].get("proxy_fallback", True))
         network_counts = {}
         counts_token = ROUTE_COUNTS.set(network_counts)
+        run_policy = copy.deepcopy(job['policy'])
+        maintenance_token = NEXT_MAINTENANCE_DUE.set(lambda stamp: next_due(run_policy, stamp))
         active["use_proxy"] = USE_PROXY.get()
         active["proxy_fallback"] = PROXY_FALLBACK.get()
         try:
@@ -242,6 +244,7 @@ class CollectionControl:
             USE_PROXY.reset(proxy_token)
             PROXY_FALLBACK.reset(fallback_token)
             ROUTE_COUNTS.reset(counts_token)
+            NEXT_MAINTENANCE_DUE.reset(maintenance_token)
         active["network"] = network_counts
         result = {**display_snapshot(collector.health()), **result}
         async with self.lock:

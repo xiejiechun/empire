@@ -1,5 +1,7 @@
 # Windows 服务接入
 
+远航版原生历史使用 `yuanhang_daily_price`、`yuanhang_price_year`、`yuanhang_corporate_action`、`yuanhang_capital`、`yuanhang_series_proof` 五张表，分别保存不复权日线、年度完整证明、除权事件、三种股本和联合响应证明。已有部署先正常关闭 Empire、确认待归档为 0，再用 `scripts/create_yuanhang_schema.py --apply --report <新报告路径>` 显式增加；启动不建表。`scripts/initialize_yuanhang_history.py --apply --report <新报告路径>` 冻结当前股票池及已结束交易日，通过固定节点身份和共享代理完成全历史采集，整轮归档后逐证券核对集合与内容；失败保留已有事实和断点，不以请求结束或总条数判断完成。详见[远航版实施说明](../docs/ths-yuanhang-implementation.md)。
+
 题材数据新增`theme_daily`、`theme_detail`、`theme_category`、`theme_stock`、`theme_stock_reason`五张结构化表。现有部署通过`scripts/create_theme_schema.py`先预检，在正常关闭Empire且待归档为0后使用`--apply`显式增加；启动不迁移。日内轨迹保留在纯内存Redis七个自然日，最新详情与每日列表由统一归档器写MySQL。游客材料通过`scripts/import_theme_guest_material.py --stdin`显式导入程序同目录config.toml，当前Windows用户DPAPI保护，发布保留原配置；不得将含材料的真实配置公开分发。
 
 应用直接连接 Windows 可运行的 Redis 兼容服务和 MySQL，或用户已有实例。不使用 Docker Desktop / WSL2，不自动安装、升级或修改数据库服务的全局配置。
@@ -101,3 +103,7 @@
 ## 公司资本运作增量建表
 
 新增同花顺公司资本运作须正常关闭Empire，使用 `scripts/create_ths_capital_schema.py` 先核实、再显式 `--apply`；要求待归档为零，维护前后核对既有业务不变。新表为 `capital_funding`、`capital_project`、`capital_transaction`、`capital_equity_summary`、`capital_equity_position`、`capital_ipo`、`capital_encumbrance`、`capital_release`。启动不自动建表；任务默认每天18:30且停用，启用后全池逐证券核验。字段与限制见[专项说明](../docs/ths-capital.md)。
+
+## 远航涨跌停分析新增表维护
+
+新增 `yuanhang_limit_pool`、`yuanhang_limit_member`、`yuanhang_limit_reason` 三张固定来源结构化表。由 `scripts/create_yuanhang_limits_schema.py` 在正常关闭程序、核实共享待归档队列及已有业务后显式新增，启动不执行迁移；上线状态及实际历史覆盖见 [实施记录](../docs/ths-yuanhang-limits-implementation.md)。

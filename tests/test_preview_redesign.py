@@ -14,14 +14,11 @@ from empire.desktop.page_lifecycle import activate_page, deactivate_page  # noqa
 from empire.features.capital_actions.preview import per_ten, plan_profile  # noqa: E402
 from empire.features.financial_statements.ui import StatementPage  # noqa: E402
 from empire.features.index_prices.chart import IndexPriceChart  # noqa: E402
-from empire.features.kaipanla.contract import PRODUCTS
-from empire.features.kaipanla.product_page import ProductPage
 from empire.features.news.ui import NewsPage  # noqa: E402
 from empire.features.suspensions.ui import SuspensionsPage
 from empire.plugins.ui.month_grid import MonthGrid  # noqa: E402
 from empire.plugins.ui.preview_cards import text  # noqa: E402
 from empire.plugins.ui.series_chart import SeriesCanvas, clock_value, numeric  # noqa: E402
-from tests.test_kaipanla_products import business_row  # noqa: E402
 from tests.test_news_ui import result  # noqa: E402
 
 
@@ -46,41 +43,8 @@ def dispose(page, app):
     app.processEvents()
 
 
-@pytest.mark.parametrize('kind', ['trend', 'volume', 'entrust', 'large_order'])
-def test_whole_day_contains_afternoon_and_inspection_follows_original_point(app, kind):
-    host, calls = shell()
-    page = ProductPage(host, kind)
-    page.timer.stop()
-    try:
-        page.show()
-        page.code.setText('000001')
-        page.find()
-        page.tick()
-        value = business_row(kind)
-        assert len(value['data'][PRODUCTS[kind].field]) == 241
-        calls[-1][1].set_result(dict(data=value, observed_at=None))
-        page.tick()
-        assert page.total == 241 and len(page.chart.canvases[0].points) == 241
-        page.inspect_point(240)
-        assert page.table.item(40, 0).text() == '241'
-        assert page.points[-1][0] == '15:00'
-        assert len(calls) == 1  # Detail page uses the finite day already loaded.
-        page.table.selectRow(40)
-        page.copy_selected()
-        assert QApplication.clipboard().text().startswith('241\t15:00')
-    finally:
-        dispose(page, app)
 
 
-def test_sequence_axis_keeps_same_minute_auction_without_inventing_seconds(app):
-    canvas = SeriesCanvas('竞价', [(1, '来源价格')], sequence=True)
-    points = business_row('auction')['data']['bid']
-    canvas.set_series(points)
-    assert canvas.domain() == list(range(5))
-    assert len({r[0] for r in points}) < len(points)
-    canvas.inspect(4)
-    assert '来源序号 5' in canvas.accessibleDescription()
-    canvas.deleteLater()
 
 
 def test_real_time_domain_preserves_lunch_gap_and_null_zero(app):
@@ -149,23 +113,6 @@ def test_news_notification_does_not_replace_reader_and_latest_returns_first_page
         dispose(page, app)
 
 
-def test_child_candidate_scope_cancelled_on_leave_then_reusable(app):
-    host, calls = shell()
-    page = ProductPage(host, 'trend')
-    page.timer.stop()
-    try:
-        page.show()
-        activate_page(page)
-        page.candidates.search()
-        future = calls[-1][1]
-        assert page.candidates.future is future
-        deactivate_page(page)
-        assert future.cancelled() and page.candidates.future is None
-        assert not page.candidates.poll.isActive()
-        activate_page(page)
-        assert page.candidates.poll.isActive()
-    finally:
-        dispose(page, app)
 
 
 def test_anomalous_ohlc_is_gap_but_valid_close_remains_available(app):

@@ -1,0 +1,299 @@
+{
+  "project_id": "ths-yuanhang-financial",
+  "handled_error_ids": [
+    "bc7c894a9cf94a37b14595a47a6cd972",
+    "4d4a317386314d4b989f72d8a5880a33",
+    "0e6c95cf364f4b85ad97c6a1d3191d50",
+    "d0cd067645104760b06abc19e9b7d020",
+    "3cdfdf1446034ba29a0d436d462a7677",
+    "b0cd6aff300d469f855a9b6b83f1b85f",
+    "bb06a9a88a3d4363872e74f9f34b7ec0",
+    "50e0d558811b421e8a1f243946011f57",
+    "1c72aef1cd26471183bd30e02e928e88",
+    "b46c9e929a3a4532b7161de70a425b23",
+    "f50452038b9b420f9af2f7662c6b85dc",
+    "b0644b0116dd4f84b655005b28ef9bbf",
+    "7ace0f12bf574cc7b95ab11da90e60d3",
+    "547e1973d4494db7b74569ea019f7230",
+    "14a2c32b2a584ff693db9a03d5a0411d",
+    "303c717e7cb94fc694c75637f4649b39",
+    "e2406a7bcfbf41999060eaa6d045d778",
+    "7f246a94bb8e44e9bca19c4568280aa7",
+    "20aac0b3b53749219f7ccdca76753e51",
+    "250068f5e8aa4e6eb2c5a74f606b5a54",
+    "747b02ce77d7497f9233041029d5513a",
+    "5b350bdce8e0420298d6236b64f71cae",
+    "062979bdfad54964aae8a1637f56bb0e",
+    "d0739070729f48de98bd04cf063ceedb",
+    "a0d024f21b4748e3b5bd3cb48f29f6f3",
+    "de7a9429bcbb49f19de14aa490f9e087"
+  ],
+  "classification": "verified_program_source_contract_fix",
+  "reason": "完整同日事件保留、纯缩股和明确NULL流通股；显式保值结构迁移及全部26反例真实代理归档查询通过。",
+  "code_by_error": {
+    "bc7c894a9cf94a37b14595a47a6cd972": "000601.SZ",
+    "4d4a317386314d4b989f72d8a5880a33": "000812.SZ",
+    "0e6c95cf364f4b85ad97c6a1d3191d50": "000887.SZ",
+    "d0cd067645104760b06abc19e9b7d020": "600381.SH",
+    "3cdfdf1446034ba29a0d436d462a7677": "601091.SH",
+    "b0cd6aff300d469f855a9b6b83f1b85f": "601123.SH",
+    "bb06a9a88a3d4363872e74f9f34b7ec0": "603293.SH",
+    "50e0d558811b421e8a1f243946011f57": "603407.SH",
+    "1c72aef1cd26471183bd30e02e928e88": "603435.SH",
+    "b46c9e929a3a4532b7161de70a425b23": "603448.SH",
+    "f50452038b9b420f9af2f7662c6b85dc": "603459.SH",
+    "b0644b0116dd4f84b655005b28ef9bbf": "603468.SH",
+    "7ace0f12bf574cc7b95ab11da90e60d3": "603883.SH",
+    "547e1973d4494db7b74569ea019f7230": "688635.SH",
+    "14a2c32b2a584ff693db9a03d5a0411d": "688797.SH",
+    "303c717e7cb94fc694c75637f4649b39": "688801.SH",
+    "e2406a7bcfbf41999060eaa6d045d778": "688806.SH",
+    "7f246a94bb8e44e9bca19c4568280aa7": "688808.SH",
+    "20aac0b3b53749219f7ccdca76753e51": "688811.SH",
+    "250068f5e8aa4e6eb2c5a74f606b5a54": "688820.SH",
+    "747b02ce77d7497f9233041029d5513a": "688825.SH",
+    "5b350bdce8e0420298d6236b64f71cae": "688826.SH",
+    "062979bdfad54964aae8a1637f56bb0e": "688828.SH",
+    "d0739070729f48de98bd04cf063ceedb": "688835.SH",
+    "a0d024f21b4748e3b5bd3cb48f29f6f3": "688836.SH",
+    "de7a9429bcbb49f19de14aa490f9e087": "688837.SH"
+  },
+  "formal_verification": "docs/evidence/ths-yuanhang-native-formal-2026-10-25.json",
+  "formal_build_report": "build/yuanhang-native-formal-20261025-p.json",
+  "formal_sha256": "0337c471beb4166a41981a9970858f35bb52d5b544cfd38ab367f0bbd8c719df",
+  "unit_tests": "241 passed",
+  "sql_tests": "27 passed",
+  "target": {
+    "database_name": "empire",
+    "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e"
+  },
+  "initialization_complete": false,
+  "before": {
+    "revision": "26",
+    "total": 26,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": [
+      {
+        "status_code": null,
+        "error": "688837.SH: Yuanhang missing or invalid 407",
+        "id": "de7a9429bcbb49f19de14aa490f9e087",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:40:47.634714+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688836.SH: Yuanhang missing or invalid 407",
+        "id": "a0d024f21b4748e3b5bd3cb48f29f6f3",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:40:02.486568+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688835.SH: Yuanhang missing or invalid 407",
+        "id": "d0739070729f48de98bd04cf063ceedb",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:40:02.485535+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688828.SH: Yuanhang missing or invalid 407",
+        "id": "062979bdfad54964aae8a1637f56bb0e",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:40:02.484403+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688826.SH: Yuanhang missing or invalid 407",
+        "id": "5b350bdce8e0420298d6236b64f71cae",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:40:02.482898+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688825.SH: Yuanhang missing or invalid 407",
+        "id": "747b02ce77d7497f9233041029d5513a",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:40:02.481891+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688820.SH: Yuanhang missing or invalid 407",
+        "id": "250068f5e8aa4e6eb2c5a74f606b5a54",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:40:02.481891+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688811.SH: Yuanhang missing or invalid 407",
+        "id": "20aac0b3b53749219f7ccdca76753e51",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:40:02.480373+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688808.SH: Yuanhang missing or invalid 407",
+        "id": "7f246a94bb8e44e9bca19c4568280aa7",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:39:59.736955+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688806.SH: Yuanhang missing or invalid 407",
+        "id": "e2406a7bcfbf41999060eaa6d045d778",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:39:59.734878+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688801.SH: Yuanhang missing or invalid 407",
+        "id": "303c717e7cb94fc694c75637f4649b39",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:39:59.734345+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688797.SH: Yuanhang missing or invalid 407",
+        "id": "14a2c32b2a584ff693db9a03d5a0411d",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:39:49.888265+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "688635.SH: Yuanhang missing or invalid 407",
+        "id": "547e1973d4494db7b74569ea019f7230",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:37:44.771840+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "603883.SH: History duplicate or unordered date",
+        "id": "7ace0f12bf574cc7b95ab11da90e60d3",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:30:05.291792+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "603468.SH: Yuanhang missing or invalid 407",
+        "id": "b0644b0116dd4f84b655005b28ef9bbf",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:28:38.429495+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "603459.SH: Yuanhang missing or invalid 407",
+        "id": "f50452038b9b420f9af2f7662c6b85dc",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:28:38.428521+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "603448.SH: Yuanhang missing or invalid 407",
+        "id": "b46c9e929a3a4532b7161de70a425b23",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:28:37.415334+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "603435.SH: Yuanhang missing or invalid 407",
+        "id": "1c72aef1cd26471183bd30e02e928e88",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:28:37.415334+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "603407.SH: Yuanhang missing or invalid 407",
+        "id": "50e0d558811b421e8a1f243946011f57",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:28:37.414350+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "603293.SH: Yuanhang missing or invalid 407",
+        "id": "bb06a9a88a3d4363872e74f9f34b7ec0",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:27:26.321628+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "601123.SH: Yuanhang missing or invalid 407",
+        "id": "b0cd6aff300d469f855a9b6b83f1b85f",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:24:36.048549+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "601091.SH: Yuanhang missing or invalid 407",
+        "id": "3cdfdf1446034ba29a0d436d462a7677",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:24:04.769870+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "600381.SH: Yuanhang 454 exceeds numeric contract",
+        "id": "d0cd067645104760b06abc19e9b7d020",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T21:20:32.888171+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "000887.SZ: Yuanhang 454 exceeds numeric contract",
+        "id": "0e6c95cf364f4b85ad97c6a1d3191d50",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T20:57:55.625736+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "000812.SZ: History duplicate or unordered date",
+        "id": "4d4a317386314d4b989f72d8a5880a33",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T20:57:52.529766+00:00",
+        "stage": "source_preflight"
+      },
+      {
+        "status_code": null,
+        "error": "000601.SZ: History duplicate or unordered date",
+        "id": "bc7c894a9cf94a37b14595a47a6cd972",
+        "project_id": "ths-yuanhang-financial",
+        "created_at": "2026-10-24T20:57:07.516073+00:00",
+        "stage": "source_preflight"
+      }
+    ]
+  },
+  "removed": 26,
+  "remaining": {
+    "revision": "27",
+    "total": 0,
+    "changed": true,
+    "offset": 0,
+    "limit": 100,
+    "rows": []
+  },
+  "checked_at": "2026-10-24T23:13:35.071914+00:00",
+  "migration": "build/yuanhang-financial-production-migration-20261025.json"
+}

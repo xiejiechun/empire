@@ -29,3 +29,7 @@
 
 
 存储查阅：[MySQL industry](help:MySQL%20industry)、[MySQL industry_member](help:MySQL%20industry_member)。
+
+## 采集百分比
+
+已验证行业目录；已解析行业成员集合数，最终整份校验和归档另确认。使用本轮实际计划和已成功处理数量计算；准备范围期间不猜总量，空计划表示无需处理。百分比达到100%不替代完整集合校验或本轮归档确认；失败仍按实际结果显示。

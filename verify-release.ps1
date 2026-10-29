@@ -1,4 +1,4 @@
-param([switch]$Recover)
+param([switch]$Recover, [string]$TestPlan)
 $ErrorActionPreference = 'Stop'
 $projectRoot = $PSScriptRoot
 $python = Join-Path $projectRoot '.venv\Scripts\python.exe'
@@ -7,5 +7,6 @@ if (-not (Test-Path -LiteralPath $python)) {
 }
 $arguments = @((Join-Path $projectRoot 'scripts\release.py'))
 if ($Recover) { $arguments += '--recover' }
+if ($TestPlan) { $arguments += @('--test-plan', $TestPlan) }
 & $python @arguments
 if ($LASTEXITCODE -ne 0) { throw 'Release gate failed; the publication journal describes any required recovery.' }

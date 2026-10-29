@@ -55,3 +55,5 @@
 `KEY idx_theme_daily_rank (business_date,rank_no,theme_id)`
 
 `CONSTRAINT ck_theme_daily_child CHECK ((parent_id IS NULL AND concept_id IS NULL AND hot_score IS NOT NULL) OR (parent_id IS NOT NULL AND concept_id IS NOT NULL AND hot_score IS NULL AND rank_no IS NULL))`
+
+市场复盘只读本表的日期范围数据，用于日历、涨跌停统计或题材轮动；不增加业务写入或缓存副本。参见[市场复盘](help:市场复盘)。

@@ -7,8 +7,7 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from empire.features.kaipanla import listings_source as scope
-from empire.features.kaipanla.dates import required_days
+from empire.sources import listing_scope as scope
 from tests.prefetch_source import prefetch_http
 
 
@@ -29,7 +28,7 @@ async def test_announced_listing_attaches_without_requesting_prelisting_days(mon
                  LISTING_DATE=tomorrow.isoformat()+' 00:00:00' if announced_date else None, LISTING_STATE='9')])))
 
     collector = SimpleNamespace(http=prefetch_http(request=request), stats={},
-        project_id='kaipanla-quote', request_retries=0,
+        project_id='test-listing-scope', request_retries=0,
         ingest=SimpleNamespace(admission_wait=AsyncMock()))
     monkeypatch.setattr(scope, 'wait_for_capacity', AsyncMock())
     stocks = await scope.attach_listing_dates(collector, [dict(code='920157', market='BJ')])
@@ -40,9 +39,7 @@ async def test_announced_listing_attaches_without_requesting_prelisting_days(mon
         return
     stock = stocks[0]
     assert stock['listing_date'] == tomorrow.isoformat()
-    assert required_days(stock, [date(2021, 1, 4), today - timedelta(days=1)], set()) == []
     calendar = sorted({today, tomorrow})
-    assert required_days(stock, calendar, set()) == [tomorrow]
 
 
 @pytest.mark.parametrize('state,delta,symbol', [('0', 1, '920157.BJ'), ('9', -1, '920157.BJ'),
@@ -72,7 +69,7 @@ async def test_supplement_requires_exact_source_identity_and_trading_status(mode
             payload = dict(success=False, result=None, code=9201)
         return httpx.Response(200, json=payload)
     c = SimpleNamespace(http=prefetch_http(request=request), stats={},
-        project_id='kaipanla-quote', request_retries=0, ingest=SimpleNamespace())
+        project_id='test-listing-scope', request_retries=0, ingest=SimpleNamespace())
     monkeypatch.setattr(scope, 'wait_for_capacity', AsyncMock())
     response = await scope.download_listing_page(c, 1, supplemental_symbol='689009.SH')
     try:

@@ -454,42 +454,8 @@ def test_formal_preview_preserves_security_identity_and_explicit_split_contract(
     assert kwargs['code'] == '000001'
 
 
-@pytest.mark.parametrize('kind', ('trend', 'auction', 'volume', 'trades', 'entrust', 'large_order', 'quote'))
-def test_market_preview_uses_bounded_reader_for_requested_day(kind):
-    from empire.features.kaipanla.query import KaipanlaProductDataPlugin
-    method, kwargs = query_preview(KaipanlaProductDataPlugin(kind), '000001.SZ', '2020-01-01')
-    assert method == ('day' if kind == 'quote' else 'page')
-    assert kwargs == {'market': 'SZ', 'code': '000001', 'trade_date': '2020-01-01',
-                      **({} if kind == 'quote' else {'limit': 20})}
-    with pytest.raises(DiagnosticLimit, match='未改查最新日期'):
-        query_preview(SimpleNamespace(archived_date=lambda: None), '000001.SZ', '2020-01-01')
 
 
-async def test_market_preview_reads_requested_old_day_when_a_newer_day_exists(database):
-    from empire.features.kaipanla.query import KaipanlaProductDataPlugin
-    engine, _ = database
-    with engine.begin() as conn:
-        conn.exec_driver_sql('CREATE TABLE stock_market_day(kind TEXT,unified_code TEXT,trade_date TEXT,'
-                             'content_hash TEXT,point_count INTEGER,version_observed_at TEXT)')
-        conn.exec_driver_sql('CREATE TABLE stock_intraday_trend(unified_code TEXT,trade_date TEXT,seq INTEGER,'
-                             'source_time TEXT,price INTEGER,average_price INTEGER,source_volume INTEGER,'
-                             'source_flag INTEGER,float_mask INTEGER)')
-        for day, price in (('2020-01-01', 10), ('2026-10-19', 20)):
-            conn.execute(text("INSERT INTO stock_market_day VALUES('trend','000001.SZ',:day,'hash',1,:day)"),
-                         {'day': day})
-            conn.execute(text("INSERT INTO stock_intraday_trend VALUES('000001.SZ',:day,0,'09:30',:price,1,1,1,0)"),
-                         {'day': day, 'price': price})
-    mysql = ReadOnlyMySQL({}, Budget(Limits()), engine=engine)
-    plugin = KaipanlaProductDataPlugin('trend')
-    plugin.mysql = mysql
-    try:
-        method, kwargs = query_preview(plugin, '000001.SZ', '2020-01-01')
-        result = await getattr(plugin, method)(**kwargs)
-        assert result['points'] == [['09:30', 10, 1, 1, 1]]
-        assert result['observed_at'] == '2020-01-01'
-        assert mysql.budget.used['sql'] == 2
-    finally:
-        mysql.close()
 
 
 def test_report_cap_retains_status_times_and_marks_dropped_evidence():

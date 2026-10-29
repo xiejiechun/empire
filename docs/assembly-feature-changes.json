@@ -68,21 +68,23 @@
   {
     "path": "semantic.preparation.data.adjustment:adjustment_factors.cache_revision",
     "before": 1,
-    "after": 2,
-    "design": "docs/data-usability-scope.md",
+    "after": 3,
+    "design": "docs/ths-yuanhang-storage-design.md",
     "tests": [
       "tests/test_adjustment.py",
-      "tests/test_adjustment_query.py"
+      "tests/test_adjustment_query.py",
+      "tests/integration/test_adjustment_pipeline.py"
     ]
   },
   {
     "path": "semantic.preparation.data.adjustment:adjusted_prices.cache_revision",
     "before": 1,
-    "after": 2,
-    "design": "docs/data-usability-scope.md",
+    "after": 3,
+    "design": "docs/ths-yuanhang-storage-design.md",
     "tests": [
       "tests/test_adjustment.py",
-      "tests/test_adjustment_query.py"
+      "tests/test_adjustment_query.py",
+      "tests/integration/test_adjustment_pipeline.py"
     ]
   },
   {
@@ -98,7 +100,7 @@
       "project_id": "empire-dividend-yield",
       "requirement": "dividend_yield",
       "scoped": true,
-      "source": "通达信分红 / 巨潮日历 / 开盘啦未复权收盘价",
+      "source": "区间现金股息率（缺少价格及股本输入）",
       "integration_tests": [
         "tests/integration/test_dividend_yield_pipeline.py"
       ],
@@ -110,6 +112,151 @@
     "tests": [
       "tests/test_dividend_yield.py",
       "tests/integration/test_dividend_yield_pipeline.py"
+    ]
+  },
+  {
+    "path": "service.yuanhang_service",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "source.yuanhang_identity": {
+            "autostart": true,
+            "description": "自动发现代理节点、持久建档、首次申请及固定账号复用；异常不重新注册",
+            "id": "source.yuanhang_identity",
+            "name": "远航节点身份",
+            "provides": [
+              "yuanhang.identity"
+            ],
+            "requires": [
+              "mysql.store",
+              "redis.store",
+              "proxy.pool",
+              "http.fetch",
+              "collection.records"
+            ]
+          }
+        },
+        "tasks": {},
+        "datasets": {},
+        "pages": {}
+      },
+      "bindings": {
+        "plugins": {
+          "source.yuanhang_identity": {
+            "module": "empire.sources.yuanhang_service",
+            "qualname": "YuanhangIdentityPlugin"
+          }
+        },
+        "datasets": {},
+        "pages": {}
+      },
+      "order": {
+        "plugins": [
+          "source.yuanhang_identity"
+        ],
+        "startup": [
+          "source.yuanhang_identity"
+        ],
+        "tasks": [],
+        "datasets": [],
+        "pages": []
+      }
+    },
+    "design": "docs/ths-yuanhang-implementation.md",
+    "tests": [
+      "tests/test_yuanhang_service.py",
+      "tests/test_yuanhang_profiles.py"
+    ]
+  },
+  {
+    "path": "management.identities",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "collection.identities": {
+            "autostart": true,
+            "description": "按平台读取身份参数和最近运行结果；查询不申请或登录账号",
+            "id": "collection.identities",
+            "name": "平台身份查询",
+            "provides": [
+              "identities.query"
+            ],
+            "requires": [
+              "mysql.store",
+              "redis.store",
+              "collection.records"
+            ]
+          },
+          "ui.identities": {
+            "autostart": true,
+            "description": "平台身份、固定申请参数与上轮结果",
+            "id": "ui.identities",
+            "name": "身份管理界面",
+            "provides": [
+              "ui.pages.identities"
+            ],
+            "requires": []
+          }
+        },
+        "tasks": {},
+        "datasets": {},
+        "pages": {
+          "identities": {
+            "cache_policy": "lru",
+            "catalogued": false,
+            "category": "其他",
+            "database_tables": [],
+            "description": "按平台管理节点身份，查看申请参数及上次结果",
+            "group": "采集管理",
+            "id": "identities",
+            "management": null,
+            "order": 5,
+            "source": "",
+            "title": "身份管理",
+            "top_level": false
+          }
+        }
+      },
+      "bindings": {
+        "plugins": {
+          "collection.identities": {
+            "module": "empire.plugins.collection.identities",
+            "qualname": "IdentityQueryPlugin"
+          },
+          "ui.identities": {
+            "module": "empire.plugins.ui.identities",
+            "qualname": "IdentityUiPlugin"
+          }
+        },
+        "datasets": {},
+        "pages": {
+          "identities": {
+            "module": "empire.plugins.ui.identities",
+            "qualname": "IdentityPage"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "collection.identities",
+          "ui.identities"
+        ],
+        "startup": [
+          "collection.identities",
+          "ui.identities"
+        ],
+        "tasks": [],
+        "datasets": [],
+        "pages": [
+          "identities"
+        ]
+      }
+    },
+    "design": "docs/identity-management-design.md",
+    "tests": [
+      "tests/test_identity_management.py"
     ]
   },
   {
@@ -255,15 +402,15 @@
             "category": "题材数据",
             "default_enabled": true,
             "default_schedule": {
-              "daily_time": "18:00",
-              "description": "每轮完成后等待180秒；同一任务不重叠。",
-              "interval_seconds": 180,
-              "mode": "interval"
+              "daily_time": "18:10",
+              "description": "每天收盘后维护；先列表后详情，同一任务不重叠。",
+              "interval_seconds": 86400,
+              "mode": "daily"
             },
-            "description": "补齐缺失题材，分批核验最新详情",
-            "fresh_description": "保留已有日内历史与每日列表；详情优先补齐，单轮最多32题材。",
+            "description": "收盘后补缺并核验全部到期题材详情",
+            "fresh_description": "保留已有历史；详情按共享窗口完成当轮题材，最多2000项。",
             "id": "kaipanla-theme-details",
-            "interval_seconds": 180,
+            "interval_seconds": 86400,
             "name": "题材最新详情（开盘啦）",
             "parallel_downloads": true,
             "rate_group": "kaipanla",
@@ -276,14 +423,14 @@
             "default_enabled": true,
             "default_schedule": {
               "daily_time": "18:00",
-              "description": "每轮完成后等待180秒；同一任务不重叠。",
-              "interval_seconds": 180,
-              "mode": "interval"
+              "description": "每天收盘后维护；先列表后详情，同一任务不重叠。",
+              "interval_seconds": 86400,
+              "mode": "daily"
             },
-            "description": "匿名全目录；最近七个自然日日内差异",
-            "fresh_description": "保留已有日内历史与每日列表；详情优先补齐，单轮最多32题材。",
+            "description": "收盘后匿名完整目录；保留每日列表",
+            "fresh_description": "保留已有历史；详情按共享窗口完成当轮题材，最多2000项。",
             "id": "kaipanla-themes",
-            "interval_seconds": 180,
+            "interval_seconds": 86400,
             "name": "题材列表与日内变化（开盘啦）",
             "parallel_downloads": false,
             "rate_group": "kaipanla",
@@ -357,7 +504,2636 @@
     "design": "docs/kaipanla-theme-implementation.md",
     "tests": [
       "tests/test_theme_storage_contract.py",
-      "tests/integration/test_theme_archive.py"
+      "tests/integration/test_theme_archive.py",
+      "tests/test_theme_daily_schedule.py"
+    ]
+  },
+  {
+    "path": "additive.yuanhang",
+    "before": null,
+    "after": {
+      "semantic": {
+        "datasets": {
+          "ths_yuanhang_history_v2": {
+            "datasets": [
+              "yuanhang.financial",
+              "yuanhang.price.year"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-financial-v1": "ths-yuanhang-financial",
+              "ths-yuanhang-prices-v1": "ths-yuanhang-prices"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "yuanhang": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "行情数据",
+            "database_tables": [
+              "yuanhang_daily_price",
+              "yuanhang_price_year",
+              "yuanhang_corporate_action",
+              "yuanhang_capital",
+              "yuanhang_series_proof"
+            ],
+            "description": "不复权日线、分红送转配股及历史股本",
+            "group": "数据浏览",
+            "id": "yuanhang",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-yuanhang-prices",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 60,
+            "source": "同花顺远航版",
+            "title": "远航历史行情",
+            "top_level": false
+          }
+        },
+        "plugins": {
+          "collector.yuanhang_financial": {
+            "autostart": true,
+            "description": "固定节点身份、完整原生响应、共享预取及统一归档",
+            "id": "collector.yuanhang_financial",
+            "name": "远航权息与股本",
+            "provides": [
+              "collector.yuanhang_financial"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "yuanhang.history.query",
+              "yuanhang.identity",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.yuanhang_prices": {
+            "autostart": true,
+            "description": "固定节点身份、完整原生响应、共享预取及统一归档",
+            "id": "collector.yuanhang_prices",
+            "name": "远航完整历史日线",
+            "provides": [
+              "collector.yuanhang_prices"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "yuanhang.history.query",
+              "yuanhang.identity",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.yuanhang": {
+            "autostart": true,
+            "description": "不复权日线、权息及股本的有界正式查询",
+            "id": "data.yuanhang",
+            "name": "远航历史行情查询",
+            "provides": [
+              "yuanhang.history.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.yuanhang": {
+            "autostart": true,
+            "description": "按需创建日线、权息与三种股本浏览页面",
+            "id": "ui.yuanhang",
+            "name": "远航历史行情页面",
+            "provides": [
+              "ui.pages.yuanhang"
+            ],
+            "requires": []
+          }
+        },
+        "tasks": {
+          "ths-yuanhang-financial": {
+            "capability": "collector.yuanhang_financial",
+            "category": "行情数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每天北京时间18:00维护；日线按覆盖增量及轮转核验，金融联合核验；计划可编辑。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "每证券一次联合响应；分红、送转、配股及三种股本",
+            "fresh_description": "重新核实当前股票池完整来源历史；保留已有事实，按完整单元更新修订。",
+            "id": "ths-yuanhang-financial",
+            "interval_seconds": 86400,
+            "name": "远航版权息与股本历史",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "只股票"
+          },
+          "ths-yuanhang-prices": {
+            "capability": "collector.yuanhang_prices",
+            "category": "行情数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每天北京时间18:00维护；日线按覆盖增量及轮转核验，金融联合核验；计划可编辑。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "上市至今不复权日线；初始化后按日期增量，5交易日回看及20交易日历史轮转",
+            "fresh_description": "重新核实当前股票池完整来源历史；保留已有事实，按完整单元更新修订。",
+            "id": "ths-yuanhang-prices",
+            "interval_seconds": 86400,
+            "name": "远航版完整历史日线",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "只股票"
+          }
+        }
+      },
+      "bindings": {
+        "datasets": {
+          "ths_yuanhang_history_v2": {
+            "module": "empire.features.yuanhang.dataset",
+            "qualname": ""
+          }
+        },
+        "pages": {
+          "yuanhang": {
+            "module": "empire.features.yuanhang.ui",
+            "qualname": "YuanhangPage"
+          }
+        },
+        "plugins": {
+          "collector.yuanhang_financial": {
+            "module": "empire.features.yuanhang.collector",
+            "qualname": "YuanhangCollector"
+          },
+          "collector.yuanhang_prices": {
+            "module": "empire.features.yuanhang.collector",
+            "qualname": "YuanhangCollector"
+          },
+          "data.yuanhang": {
+            "module": "empire.features.yuanhang.query",
+            "qualname": "YuanhangDataPlugin"
+          },
+          "ui.yuanhang": {
+            "module": "empire.features.yuanhang.ui",
+            "qualname": "YuanhangUiPlugin"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.yuanhang",
+          "collector.yuanhang_prices",
+          "collector.yuanhang_financial",
+          "ui.yuanhang"
+        ],
+        "startup": [
+          "data.yuanhang",
+          "collector.yuanhang_prices",
+          "collector.yuanhang_financial",
+          "ui.yuanhang"
+        ],
+        "tasks": [
+          "ths-yuanhang-prices",
+          "ths-yuanhang-financial"
+        ],
+        "datasets": [
+          "ths_yuanhang_history_v2"
+        ],
+        "pages": [
+          "yuanhang"
+        ]
+      }
+    },
+    "design": "docs/ths-yuanhang-range-storage.md",
+    "tests": [
+      "tests/test_yuanhang_storage.py",
+      "tests/integration/test_yuanhang_archive.py",
+      "tests/test_yuanhang_planning.py",
+      "tests/integration/test_yuanhang_range_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.plugins.data.adjustment.requires",
+    "before": [
+      "mysql.store",
+      "kaipanla_quote.query"
+    ],
+    "after": [
+      "mysql.store",
+      "yuanhang.history.query"
+    ],
+    "design": "docs/ths-yuanhang-storage-design.md",
+    "tests": [
+      "tests/test_adjustment.py",
+      "tests/test_adjustment_query.py",
+      "tests/integration/test_adjustment_pipeline.py"
+    ]
+  },
+  {
+    "path": "semantic.plugins.data.adjustment.description",
+    "before": "只读已归档分红送转、配股及收盘价；缺输入和方案歧义不生成因子",
+    "after": "只读远航版完整日线与除权事件；缺输入不生成因子",
+    "design": "docs/ths-yuanhang-storage-design.md",
+    "tests": [
+      "tests/test_adjustment.py",
+      "tests/test_adjustment_query.py",
+      "tests/integration/test_adjustment_pipeline.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.adjustment:adjustment_factors.source",
+    "before": "自算：通达信事件 / 开盘啦价格",
+    "after": "自算：远航版日线及除权事件",
+    "design": "docs/ths-yuanhang-storage-design.md",
+    "tests": [
+      "tests/test_adjustment.py",
+      "tests/test_adjustment_query.py",
+      "tests/integration/test_adjustment_pipeline.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.adjustment:adjustment_factors.output_version",
+    "before": "empire-ex-rights-v1",
+    "after": "empire-yuanhang-ex-rights-v3",
+    "design": "docs/ths-yuanhang-storage-design.md",
+    "tests": [
+      "tests/test_adjustment.py",
+      "tests/test_adjustment_query.py",
+      "tests/integration/test_adjustment_pipeline.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.adjustment:adjusted_prices.source",
+    "before": "自算：通达信事件 / 开盘啦价格",
+    "after": "自算：远航版日线及除权事件",
+    "design": "docs/ths-yuanhang-storage-design.md",
+    "tests": [
+      "tests/test_adjustment.py",
+      "tests/test_adjustment_query.py",
+      "tests/integration/test_adjustment_pipeline.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.adjustment:adjusted_prices.output_version",
+    "before": "empire-ex-rights-v1",
+    "after": "empire-yuanhang-ex-rights-v3",
+    "design": "docs/ths-yuanhang-storage-design.md",
+    "tests": [
+      "tests/test_adjustment.py",
+      "tests/test_adjustment_query.py",
+      "tests/integration/test_adjustment_pipeline.py"
+    ]
+  },
+  {
+    "path": "order.startup",
+    "before": [
+      "infra.mysql",
+      "data.top_holders",
+      "data.float_holders",
+      "data.bond_holders",
+      "infra.redis",
+      "collection.records",
+      "infra.proxy_pool",
+      "infra.download_settings",
+      "infra.http",
+      "dataset.astock",
+      "pipeline.archive",
+      "pipeline.ingest",
+      "infra.archive_confirmation",
+      "collector.ths_holders",
+      "data.ths_capital",
+      "collector.ths_capital",
+      "ui.ths_capital",
+      "ui.top_holders",
+      "ui.float_holders",
+      "ui.bond_holders",
+      "data.tdx_earnings_forecast",
+      "data.tdx_earnings_quick",
+      "data.tdx_earnings_disclosure",
+      "data.tdx_earnings_report",
+      "data.tdx_holder_count",
+      "data.tdx_shareholder_changes",
+      "collector.tdx_earnings_forecast",
+      "collector.tdx_earnings_quick",
+      "collector.tdx_earnings_disclosure",
+      "collector.tdx_earnings_report",
+      "collector.tdx_holder_count",
+      "collector.tdx_shareholder_changes",
+      "ui.tdx_earnings_forecast",
+      "ui.tdx_earnings_quick",
+      "ui.tdx_earnings_disclosure",
+      "ui.tdx_earnings_report",
+      "ui.tdx_holder_count",
+      "ui.tdx_shareholder_changes",
+      "data.tdx_unlock_industries",
+      "collector.tdx_unlock_industries",
+      "ui.tdx_unlock_industries",
+      "data.tdx_unlocks",
+      "collector.tdx_unlocks",
+      "ui.tdx_unlocks",
+      "data.repurchases",
+      "collector.eastmoney_repurchase",
+      "ui.repurchases",
+      "collector.rule_sources",
+      "data.rules_limit_rules",
+      "data.rules_settlement_rules",
+      "data.rules_lot_rules",
+      "data.rules_tick_rules",
+      "data.rules_sessions",
+      "data.rules_stamp_duty",
+      "data.rules_transfer_fee",
+      "collector.rules_limit_rules",
+      "collector.rules_settlement_rules",
+      "collector.rules_lot_rules",
+      "collector.rules_tick_rules",
+      "collector.rules_sessions",
+      "collector.rules_stamp_duty",
+      "collector.rules_transfer_fee",
+      "ui.rules_limit_rules",
+      "ui.rules_settlement_rules",
+      "ui.rules_lot_rules",
+      "ui.rules_tick_rules",
+      "ui.rules_sessions",
+      "ui.rules_stamp_duty",
+      "ui.rules_transfer_fee",
+      "data.index_prices",
+      "collector.ths_index_prices",
+      "ui.index_prices",
+      "data.stocks",
+      "data.listings",
+      "collector.ths_listings",
+      "ui.listings",
+      "data.listing_status",
+      "collector.tdx_listing_status",
+      "ui.listing_status",
+      "data.industries",
+      "collector.ths_industries",
+      "ui.industries",
+      "data.indices",
+      "collector.ths_indices",
+      "ui.indices",
+      "data.names_company",
+      "data.names_security",
+      "collector.tdx_company_renames",
+      "collector.tdx_security_renames",
+      "ui.names_company",
+      "ui.names_security",
+      "data.st_implementation",
+      "data.st_removal",
+      "collector.tdx_st_implementation",
+      "collector.tdx_st_removal",
+      "ui.st_implementation",
+      "ui.st_removal",
+      "data.kaipanla_trend",
+      "data.kaipanla_auction",
+      "data.kaipanla_volume",
+      "data.kaipanla_trades",
+      "data.kaipanla_entrust",
+      "data.kaipanla_large_order",
+      "data.kaipanla_quote",
+      "collector.kaipanla_trend",
+      "collector.kaipanla_auction",
+      "collector.kaipanla_volume",
+      "collector.kaipanla_trades",
+      "collector.kaipanla_entrust",
+      "collector.kaipanla_large_order",
+      "collector.kaipanla_quote",
+      "ui.kaipanla_trend",
+      "ui.kaipanla_auction",
+      "ui.kaipanla_volume",
+      "ui.kaipanla_trades",
+      "ui.kaipanla_entrust",
+      "ui.kaipanla_large_order",
+      "ui.kaipanla_quote",
+      "data.adjustment",
+      "ui.adjustment",
+      "collector.sina_universe",
+      "collector.ths_universe",
+      "data.news",
+      "collector.sina_news",
+      "data.trade_calendar",
+      "collector.cninfo_calendar",
+      "data.suspensions",
+      "collector.tdx_suspensions",
+      "data.dividends",
+      "data.additional_issues",
+      "data.rights_issues",
+      "collector.tdx_dividends",
+      "collector.tdx_additional_issues",
+      "collector.tdx_rights_issues",
+      "ui.dividends",
+      "ui.additional_issues",
+      "ui.rights_issues",
+      "data.income",
+      "data.balance",
+      "data.cashflow",
+      "collector.ths_income",
+      "collector.ths_balance",
+      "collector.ths_cashflow",
+      "ui.income",
+      "ui.balance",
+      "ui.cashflow",
+      "collection.control",
+      "ui.workspace",
+      "ui.collection",
+      "ui.stocks",
+      "ui.news",
+      "ui.calendar",
+      "ui.suspensions",
+      "ui.system",
+      "ui.help",
+      "ui.proxies",
+      "ui.downloads",
+      "data.preparation",
+      "ui.preparation"
+    ],
+    "after": [
+      "infra.mysql",
+      "data.top_holders",
+      "data.float_holders",
+      "data.bond_holders",
+      "infra.redis",
+      "collection.records",
+      "infra.proxy_pool",
+      "infra.download_settings",
+      "infra.http",
+      "dataset.astock",
+      "pipeline.archive",
+      "pipeline.ingest",
+      "infra.archive_confirmation",
+      "collector.ths_holders",
+      "data.ths_capital",
+      "collector.ths_capital",
+      "ui.ths_capital",
+      "ui.top_holders",
+      "ui.float_holders",
+      "ui.bond_holders",
+      "data.tdx_earnings_forecast",
+      "data.tdx_earnings_quick",
+      "data.tdx_earnings_disclosure",
+      "data.tdx_earnings_report",
+      "data.tdx_holder_count",
+      "data.tdx_shareholder_changes",
+      "collector.tdx_earnings_forecast",
+      "collector.tdx_earnings_quick",
+      "collector.tdx_earnings_disclosure",
+      "collector.tdx_earnings_report",
+      "collector.tdx_holder_count",
+      "collector.tdx_shareholder_changes",
+      "ui.tdx_earnings_forecast",
+      "ui.tdx_earnings_quick",
+      "ui.tdx_earnings_disclosure",
+      "ui.tdx_earnings_report",
+      "ui.tdx_holder_count",
+      "ui.tdx_shareholder_changes",
+      "data.tdx_unlock_industries",
+      "collector.tdx_unlock_industries",
+      "ui.tdx_unlock_industries",
+      "data.tdx_unlocks",
+      "collector.tdx_unlocks",
+      "ui.tdx_unlocks",
+      "data.repurchases",
+      "collector.eastmoney_repurchase",
+      "ui.repurchases",
+      "collector.rule_sources",
+      "data.rules_limit_rules",
+      "data.rules_settlement_rules",
+      "data.rules_lot_rules",
+      "data.rules_tick_rules",
+      "data.rules_sessions",
+      "data.rules_stamp_duty",
+      "data.rules_transfer_fee",
+      "collector.rules_limit_rules",
+      "collector.rules_settlement_rules",
+      "collector.rules_lot_rules",
+      "collector.rules_tick_rules",
+      "collector.rules_sessions",
+      "collector.rules_stamp_duty",
+      "collector.rules_transfer_fee",
+      "ui.rules_limit_rules",
+      "ui.rules_settlement_rules",
+      "ui.rules_lot_rules",
+      "ui.rules_tick_rules",
+      "ui.rules_sessions",
+      "ui.rules_stamp_duty",
+      "ui.rules_transfer_fee",
+      "data.index_prices",
+      "collector.ths_index_prices",
+      "ui.index_prices",
+      "source.yuanhang_identity",
+      "collection.identities",
+      "data.stocks",
+      "data.listings",
+      "collector.ths_listings",
+      "ui.listings",
+      "data.listing_status",
+      "collector.tdx_listing_status",
+      "ui.listing_status",
+      "data.industries",
+      "collector.ths_industries",
+      "ui.industries",
+      "data.indices",
+      "collector.ths_indices",
+      "ui.indices",
+      "data.names_company",
+      "data.names_security",
+      "collector.tdx_company_renames",
+      "collector.tdx_security_renames",
+      "ui.names_company",
+      "ui.names_security",
+      "data.st_implementation",
+      "data.st_removal",
+      "collector.tdx_st_implementation",
+      "collector.tdx_st_removal",
+      "ui.st_implementation",
+      "ui.st_removal",
+      "data.kaipanla_trend",
+      "data.kaipanla_auction",
+      "data.kaipanla_volume",
+      "data.kaipanla_trades",
+      "data.kaipanla_entrust",
+      "data.kaipanla_large_order",
+      "data.kaipanla_quote",
+      "collector.kaipanla_trend",
+      "collector.kaipanla_auction",
+      "collector.kaipanla_volume",
+      "collector.kaipanla_trades",
+      "collector.kaipanla_entrust",
+      "collector.kaipanla_large_order",
+      "collector.kaipanla_quote",
+      "ui.kaipanla_trend",
+      "ui.kaipanla_auction",
+      "ui.kaipanla_volume",
+      "ui.kaipanla_trades",
+      "ui.kaipanla_entrust",
+      "ui.kaipanla_large_order",
+      "ui.kaipanla_quote",
+      "data.yuanhang",
+      "data.adjustment",
+      "ui.adjustment",
+      "collector.sina_universe",
+      "collector.ths_universe",
+      "data.news",
+      "collector.sina_news",
+      "data.trade_calendar",
+      "collector.cninfo_calendar",
+      "data.suspensions",
+      "collector.tdx_suspensions",
+      "data.dividends",
+      "data.additional_issues",
+      "data.rights_issues",
+      "collector.tdx_dividends",
+      "collector.tdx_additional_issues",
+      "collector.tdx_rights_issues",
+      "ui.dividends",
+      "ui.additional_issues",
+      "ui.rights_issues",
+      "data.income",
+      "data.balance",
+      "data.cashflow",
+      "collector.ths_income",
+      "collector.ths_balance",
+      "collector.ths_cashflow",
+      "ui.income",
+      "ui.balance",
+      "ui.cashflow",
+      "collection.control",
+      "ui.workspace",
+      "ui.collection",
+      "ui.stocks",
+      "ui.news",
+      "ui.calendar",
+      "ui.suspensions",
+      "ui.system",
+      "ui.help",
+      "ui.proxies",
+      "ui.downloads",
+      "ui.identities",
+      "data.themes",
+      "collector.theme_list",
+      "collector.theme_detail",
+      "ui.themes",
+      "collector.yuanhang_prices",
+      "collector.yuanhang_financial",
+      "ui.yuanhang",
+      "data.yuanhang_limits",
+      "collector.yuanhang_limits_limit_up_pool",
+      "collector.yuanhang_limits_sprint_limit_up",
+      "collector.yuanhang_limits_connect_broad_pool",
+      "collector.yuanhang_limits_open_limit_up_pool",
+      "collector.yuanhang_limits_limit_down_pool",
+      "collector.yuanhang_limits_reason",
+      "ui.yuanhang_limits",
+      "data.market_review",
+      "ui.market_review",
+      "data.preparation",
+      "ui.preparation"
+    ],
+    "design": "docs/ths-yuanhang-storage-design.md",
+    "tests": [
+      "tests/test_assembly_contract.py",
+      "tests/test_adjustment.py",
+      "tests/test_adjustment_query.py",
+      "tests/integration/test_adjustment_pipeline.py"
+    ]
+  },
+  {
+    "path": "additive.yuanhang_limits",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "collector.yuanhang_limits_connect_broad_pool": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_limits_connect_broad_pool",
+            "name": "远航涨停分析 connect_broad_pool",
+            "provides": [
+              "collector.yuanhang_limits_connect_broad_pool"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "archive.confirmation",
+              "collection.records",
+              "yuanhang.limits.query"
+            ]
+          },
+          "collector.yuanhang_limits_limit_down_pool": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_limits_limit_down_pool",
+            "name": "远航涨停分析 limit_down_pool",
+            "provides": [
+              "collector.yuanhang_limits_limit_down_pool"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "archive.confirmation",
+              "collection.records",
+              "yuanhang.limits.query"
+            ]
+          },
+          "collector.yuanhang_limits_limit_up_pool": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_limits_limit_up_pool",
+            "name": "远航涨停分析 limit_up_pool",
+            "provides": [
+              "collector.yuanhang_limits_limit_up_pool"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "archive.confirmation",
+              "collection.records",
+              "yuanhang.limits.query"
+            ]
+          },
+          "collector.yuanhang_limits_open_limit_up_pool": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_limits_open_limit_up_pool",
+            "name": "远航涨停分析 open_limit_up_pool",
+            "provides": [
+              "collector.yuanhang_limits_open_limit_up_pool"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "archive.confirmation",
+              "collection.records",
+              "yuanhang.limits.query"
+            ]
+          },
+          "collector.yuanhang_limits_reason": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_limits_reason",
+            "name": "远航涨停分析 reason",
+            "provides": [
+              "collector.yuanhang_limits_reason"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "archive.confirmation",
+              "collection.records",
+              "yuanhang.limits.query"
+            ]
+          },
+          "collector.yuanhang_limits_sprint_limit_up": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_limits_sprint_limit_up",
+            "name": "远航涨停分析 sprint_limit_up",
+            "provides": [
+              "collector.yuanhang_limits_sprint_limit_up"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "archive.confirmation",
+              "collection.records",
+              "yuanhang.limits.query"
+            ]
+          },
+          "data.yuanhang_limits": {
+            "autostart": true,
+            "description": "",
+            "id": "data.yuanhang_limits",
+            "name": "远航涨停分析查询",
+            "provides": [
+              "yuanhang.limits.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.yuanhang_limits": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.yuanhang_limits",
+            "name": "远航涨跌停分析页面",
+            "provides": [
+              "ui.pages.yuanhang_limits"
+            ],
+            "requires": []
+          }
+        },
+        "datasets": {
+          "yuanhang_limits_connect_broad_pool_v1": {
+            "datasets": [
+              "yuanhang.limits.connect_broad_pool"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-connect-broad-pool-v1": "ths-yuanhang-connect-broad-pool"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "yuanhang_limits_limit_down_pool_v1": {
+            "datasets": [
+              "yuanhang.limits.limit_down_pool"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-limit-down-pool-v1": "ths-yuanhang-limit-down-pool"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "yuanhang_limits_limit_up_pool_v1": {
+            "datasets": [
+              "yuanhang.limits.limit_up_pool"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-limit-up-pool-v1": "ths-yuanhang-limit-up-pool"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "yuanhang_limits_open_limit_up_pool_v1": {
+            "datasets": [
+              "yuanhang.limits.open_limit_up_pool"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-open-limit-up-pool-v1": "ths-yuanhang-open-limit-up-pool"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "yuanhang_limits_reason_v1": {
+            "datasets": [
+              "yuanhang.limits.reason"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-reason-v1": "ths-yuanhang-reason"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "yuanhang_limits_sprint_limit_up_v1": {
+            "datasets": [
+              "yuanhang.limits.sprint_limit_up"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-sprint-limit-up-v1": "ths-yuanhang-sprint-limit-up"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "yuanhang_limits": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "涨跌停分析",
+            "database_tables": [
+              "yuanhang_limit_pool",
+              "yuanhang_limit_member",
+              "yuanhang_limit_reason"
+            ],
+            "description": "涨停板、涨停冲刺、连板池、炸板池、跌停板及原因",
+            "group": "数据浏览",
+            "id": "yuanhang_limits",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-yuanhang-limit-up-pool",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 61,
+            "source": "同花顺远航版",
+            "title": "远航涨跌停分析",
+            "top_level": false
+          }
+        },
+        "tasks": {
+          "ths-yuanhang-limit-up-pool": {
+            "capability": "collector.yuanhang_limits_limit_up_pool",
+            "category": "涨跌停分析",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "盘中每轮结束60秒后采样，仅Redis变化快照；15:30后核验日终并归档。",
+              "interval_seconds": 60,
+              "mode": "interval"
+            },
+            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
+            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "id": "ths-yuanhang-limit-up-pool",
+            "interval_seconds": 86400,
+            "name": "远航版涨停板",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "个单元"
+          },
+          "ths-yuanhang-sprint-limit-up": {
+            "capability": "collector.yuanhang_limits_sprint_limit_up",
+            "category": "涨跌停分析",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "盘中每轮结束60秒后采样，仅Redis变化快照；15:30后核验日终并归档。",
+              "interval_seconds": 60,
+              "mode": "interval"
+            },
+            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
+            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "id": "ths-yuanhang-sprint-limit-up",
+            "interval_seconds": 86400,
+            "name": "远航版涨停冲刺",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "个单元"
+          },
+          "ths-yuanhang-connect-broad-pool": {
+            "capability": "collector.yuanhang_limits_connect_broad_pool",
+            "category": "涨跌停分析",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "盘中每轮结束60秒后采样，仅Redis变化快照；15:30后核验日终并归档。",
+              "interval_seconds": 60,
+              "mode": "interval"
+            },
+            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
+            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "id": "ths-yuanhang-connect-broad-pool",
+            "interval_seconds": 86400,
+            "name": "远航版连板池",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "个单元"
+          },
+          "ths-yuanhang-open-limit-up-pool": {
+            "capability": "collector.yuanhang_limits_open_limit_up_pool",
+            "category": "涨跌停分析",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "盘中每轮结束60秒后采样，仅Redis变化快照；15:30后核验日终并归档。",
+              "interval_seconds": 60,
+              "mode": "interval"
+            },
+            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
+            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "id": "ths-yuanhang-open-limit-up-pool",
+            "interval_seconds": 86400,
+            "name": "远航版炸板池",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "个单元"
+          },
+          "ths-yuanhang-limit-down-pool": {
+            "capability": "collector.yuanhang_limits_limit_down_pool",
+            "category": "涨跌停分析",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "盘中每轮结束60秒后采样，仅Redis变化快照；15:30后核验日终并归档。",
+              "interval_seconds": 60,
+              "mode": "interval"
+            },
+            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
+            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "id": "ths-yuanhang-limit-down-pool",
+            "interval_seconds": 86400,
+            "name": "远航版跌停板",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "个单元"
+          },
+          "ths-yuanhang-reason": {
+            "capability": "collector.yuanhang_limits_reason",
+            "category": "涨跌停分析",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每日北京时间18:00；近期5交易日和20交易日历史轮转。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
+            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "id": "ths-yuanhang-reason",
+            "interval_seconds": 86400,
+            "name": "远航版历史涨跌停原因",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "个单元"
+          }
+        }
+      },
+      "bindings": {
+        "plugins": {
+          "collector.yuanhang_limits_connect_broad_pool": {
+            "module": "empire.features.yuanhang_limits.collector",
+            "qualname": "LimitCollector"
+          },
+          "collector.yuanhang_limits_limit_down_pool": {
+            "module": "empire.features.yuanhang_limits.collector",
+            "qualname": "LimitCollector"
+          },
+          "collector.yuanhang_limits_limit_up_pool": {
+            "module": "empire.features.yuanhang_limits.collector",
+            "qualname": "LimitCollector"
+          },
+          "collector.yuanhang_limits_open_limit_up_pool": {
+            "module": "empire.features.yuanhang_limits.collector",
+            "qualname": "LimitCollector"
+          },
+          "collector.yuanhang_limits_reason": {
+            "module": "empire.features.yuanhang_limits.collector",
+            "qualname": "LimitCollector"
+          },
+          "collector.yuanhang_limits_sprint_limit_up": {
+            "module": "empire.features.yuanhang_limits.collector",
+            "qualname": "LimitCollector"
+          },
+          "data.yuanhang_limits": {
+            "module": "empire.features.yuanhang_limits.query",
+            "qualname": "LimitQuery"
+          },
+          "ui.yuanhang_limits": {
+            "module": "empire.features.yuanhang_limits.ui",
+            "qualname": "LimitsUiPlugin"
+          }
+        },
+        "datasets": {
+          "yuanhang_limits_connect_broad_pool_v1": {
+            "module": "empire.features.yuanhang_limits.dataset",
+            "qualname": "LimitDataset"
+          },
+          "yuanhang_limits_limit_down_pool_v1": {
+            "module": "empire.features.yuanhang_limits.dataset",
+            "qualname": "LimitDataset"
+          },
+          "yuanhang_limits_limit_up_pool_v1": {
+            "module": "empire.features.yuanhang_limits.dataset",
+            "qualname": "LimitDataset"
+          },
+          "yuanhang_limits_open_limit_up_pool_v1": {
+            "module": "empire.features.yuanhang_limits.dataset",
+            "qualname": "LimitDataset"
+          },
+          "yuanhang_limits_reason_v1": {
+            "module": "empire.features.yuanhang_limits.dataset",
+            "qualname": "LimitDataset"
+          },
+          "yuanhang_limits_sprint_limit_up_v1": {
+            "module": "empire.features.yuanhang_limits.dataset",
+            "qualname": "LimitDataset"
+          }
+        },
+        "pages": {
+          "yuanhang_limits": {
+            "module": "empire.features.yuanhang_limits.ui",
+            "qualname": "LimitsPage"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.yuanhang_limits",
+          "collector.yuanhang_limits_limit_up_pool",
+          "collector.yuanhang_limits_sprint_limit_up",
+          "collector.yuanhang_limits_connect_broad_pool",
+          "collector.yuanhang_limits_open_limit_up_pool",
+          "collector.yuanhang_limits_limit_down_pool",
+          "collector.yuanhang_limits_reason",
+          "ui.yuanhang_limits"
+        ],
+        "startup": [
+          "data.yuanhang_limits",
+          "collector.yuanhang_limits_limit_up_pool",
+          "collector.yuanhang_limits_sprint_limit_up",
+          "collector.yuanhang_limits_connect_broad_pool",
+          "collector.yuanhang_limits_open_limit_up_pool",
+          "collector.yuanhang_limits_limit_down_pool",
+          "collector.yuanhang_limits_reason",
+          "ui.yuanhang_limits"
+        ],
+        "tasks": [
+          "ths-yuanhang-limit-up-pool",
+          "ths-yuanhang-sprint-limit-up",
+          "ths-yuanhang-connect-broad-pool",
+          "ths-yuanhang-open-limit-up-pool",
+          "ths-yuanhang-limit-down-pool",
+          "ths-yuanhang-reason"
+        ],
+        "datasets": [
+          "yuanhang_limits_limit_up_pool_v1",
+          "yuanhang_limits_sprint_limit_up_v1",
+          "yuanhang_limits_connect_broad_pool_v1",
+          "yuanhang_limits_open_limit_up_pool_v1",
+          "yuanhang_limits_limit_down_pool_v1",
+          "yuanhang_limits_reason_v1"
+        ],
+        "pages": [
+          "yuanhang_limits"
+        ]
+      }
+    },
+    "design": "docs/ths-yuanhang-limits-intraday.md",
+    "tests": [
+      "tests/test_yuanhang_limits_source.py",
+      "tests/integration/test_yuanhang_limits_archive.py",
+      "tests/test_yuanhang_limits_intraday.py",
+      "tests/integration/test_yuanhang_limits_intraday_real.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_limits:yuanhang_connect_broad_pool",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "yuanhang.limits.query",
+      "collector": "collector.yuanhang_limits_connect_broad_pool",
+      "dataset": "yuanhang.limits.connect_broad_pool",
+      "job_key": "ths-yuanhang-connect-broad-pool-v1",
+      "method": "check_connect_broad_pool",
+      "project_id": "ths-yuanhang-connect-broad-pool",
+      "requirement": "yuanhang_connect_broad_pool",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_limits_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-limits-implementation.md",
+    "tests": [
+      "tests/test_yuanhang_limits_source.py",
+      "tests/test_yuanhang_limits_planning.py",
+      "tests/integration/test_yuanhang_limits_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_limits:yuanhang_limit_down_pool",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "yuanhang.limits.query",
+      "collector": "collector.yuanhang_limits_limit_down_pool",
+      "dataset": "yuanhang.limits.limit_down_pool",
+      "job_key": "ths-yuanhang-limit-down-pool-v1",
+      "method": "check_limit_down_pool",
+      "project_id": "ths-yuanhang-limit-down-pool",
+      "requirement": "yuanhang_limit_down_pool",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_limits_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-limits-implementation.md",
+    "tests": [
+      "tests/test_yuanhang_limits_source.py",
+      "tests/test_yuanhang_limits_planning.py",
+      "tests/integration/test_yuanhang_limits_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_limits:yuanhang_limit_up_pool",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "yuanhang.limits.query",
+      "collector": "collector.yuanhang_limits_limit_up_pool",
+      "dataset": "yuanhang.limits.limit_up_pool",
+      "job_key": "ths-yuanhang-limit-up-pool-v1",
+      "method": "check_limit_up_pool",
+      "project_id": "ths-yuanhang-limit-up-pool",
+      "requirement": "yuanhang_limit_up_pool",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_limits_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-limits-implementation.md",
+    "tests": [
+      "tests/test_yuanhang_limits_source.py",
+      "tests/test_yuanhang_limits_planning.py",
+      "tests/integration/test_yuanhang_limits_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_limits:yuanhang_open_limit_up_pool",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "yuanhang.limits.query",
+      "collector": "collector.yuanhang_limits_open_limit_up_pool",
+      "dataset": "yuanhang.limits.open_limit_up_pool",
+      "job_key": "ths-yuanhang-open-limit-up-pool-v1",
+      "method": "check_open_limit_up_pool",
+      "project_id": "ths-yuanhang-open-limit-up-pool",
+      "requirement": "yuanhang_open_limit_up_pool",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_limits_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-limits-implementation.md",
+    "tests": [
+      "tests/test_yuanhang_limits_source.py",
+      "tests/test_yuanhang_limits_planning.py",
+      "tests/integration/test_yuanhang_limits_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_limits:yuanhang_reason",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "yuanhang.limits.query",
+      "collector": "collector.yuanhang_limits_reason",
+      "dataset": "yuanhang.limits.reason",
+      "job_key": "ths-yuanhang-reason-v1",
+      "method": "check_reason",
+      "project_id": "ths-yuanhang-reason",
+      "requirement": "yuanhang_reason",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_limits_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-limits-implementation.md",
+    "tests": [
+      "tests/test_yuanhang_limits_source.py",
+      "tests/test_yuanhang_limits_planning.py",
+      "tests/integration/test_yuanhang_limits_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_limits:yuanhang_sprint_limit_up",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "yuanhang.limits.query",
+      "collector": "collector.yuanhang_limits_sprint_limit_up",
+      "dataset": "yuanhang.limits.sprint_limit_up",
+      "job_key": "ths-yuanhang-sprint-limit-up-v1",
+      "method": "check_sprint_limit_up",
+      "project_id": "ths-yuanhang-sprint-limit-up",
+      "requirement": "yuanhang_sprint_limit_up",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_limits_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_limits_source.py",
+        "tests/test_yuanhang_limits_planning.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-limits-implementation.md",
+    "tests": [
+      "tests/test_yuanhang_limits_source.py",
+      "tests/test_yuanhang_limits_planning.py",
+      "tests/integration/test_yuanhang_limits_archive.py"
+    ]
+  },
+  {
+    "path": "computation.market_review",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "data.market_review": {
+            "autostart": true,
+            "description": "",
+            "id": "data.market_review",
+            "name": "市场复盘查询",
+            "provides": [
+              "market.review.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.market_review": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.market_review",
+            "name": "市场复盘页面",
+            "provides": [
+              "ui.pages.market_review"
+            ],
+            "requires": []
+          }
+        },
+        "pages": {
+          "market_review": {
+            "cache_policy": "lru",
+            "catalogued": false,
+            "category": "市场复盘",
+            "database_tables": [
+              "trade_calendar",
+              "yuanhang_limit_pool",
+              "yuanhang_limit_member",
+              "theme_daily"
+            ],
+            "description": "涨停炸板、封板率、连板梯队、最高板演变、题材轮动与热度",
+            "group": "市场复盘",
+            "id": "market_review",
+            "management": null,
+            "order": 62,
+            "source": "远航 / 开盘啦",
+            "title": "市场复盘",
+            "top_level": true
+          }
+        },
+        "tasks": {},
+        "datasets": {}
+      },
+      "bindings": {
+        "plugins": {
+          "data.market_review": {
+            "module": "empire.features.market_review.query",
+            "qualname": "ReviewQuery"
+          },
+          "ui.market_review": {
+            "module": "empire.features.market_review.ui",
+            "qualname": "ReviewUi"
+          }
+        },
+        "datasets": {},
+        "pages": {
+          "market_review": {
+            "module": "empire.features.market_review.ui",
+            "qualname": "ReviewPage"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.market_review",
+          "ui.market_review"
+        ],
+        "startup": [
+          "data.market_review",
+          "ui.market_review"
+        ],
+        "tasks": [],
+        "datasets": [],
+        "pages": [
+          "market_review"
+        ]
+      }
+    },
+    "design": "docs/market-review.md",
+    "tests": [
+      "tests/test_market_review.py",
+      "tests/test_market_review_ui.py"
+    ]
+  },
+  {
+    "path": "retirement.kaipanla_market",
+    "before": {
+      "semantic": {
+        "datasets": {
+          "kaipanla_auction_v1": {
+            "datasets": [
+              "kaipanla.auction.day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "kaipanla-auction-v1": "kaipanla-auction"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "kaipanla_entrust_v1": {
+            "datasets": [
+              "kaipanla.entrust.day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "kaipanla-entrust-v1": "kaipanla-entrust"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "kaipanla_large_order_v1": {
+            "datasets": [
+              "kaipanla.large_order.day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "kaipanla-large-order-v1": "kaipanla-large-order"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "kaipanla_quote_v1": {
+            "datasets": [
+              "kaipanla.quote.day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "kaipanla-quote-v1": "kaipanla-quote"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "kaipanla_trades_v1": {
+            "datasets": [
+              "kaipanla.trades.day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "kaipanla-trades-v1": "kaipanla-trades"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "kaipanla_trend_v1": {
+            "datasets": [
+              "kaipanla.trend.day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "kaipanla-trend-v1": "kaipanla-trend"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "kaipanla_volume_v1": {
+            "datasets": [
+              "kaipanla.volume.day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "kaipanla-volume-v1": "kaipanla-volume"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "kaipanla_auction": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "高频行情",
+            "database_tables": [
+              "stock_market_day",
+              "stock_opening_auction"
+            ],
+            "description": "完整来源点序列；同分钟多点保留，源端无总点数",
+            "group": "数据浏览",
+            "id": "kaipanla_auction",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "kaipanla-auction",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 11,
+            "source": "开盘啦",
+            "title": "开盘啦开盘竞价",
+            "top_level": false
+          },
+          "kaipanla_entrust": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "高频行情",
+            "database_tables": [
+              "stock_market_day",
+              "stock_minute_entrust"
+            ],
+            "description": "分钟买卖委托量额汇总；不含券商席位身份或逐笔委托撤单",
+            "group": "数据浏览",
+            "id": "kaipanla_entrust",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "kaipanla-entrust",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 11,
+            "source": "开盘啦",
+            "title": "开盘啦分钟买卖委托汇总",
+            "top_level": false
+          },
+          "kaipanla_large_order": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "高频行情",
+            "database_tables": [
+              "stock_market_day",
+              "stock_large_order_trend"
+            ],
+            "description": "来源大单净额可为负；不包含独立大单明细筛选",
+            "group": "数据浏览",
+            "id": "kaipanla_large_order",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "kaipanla-large-order",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 11,
+            "source": "开盘啦",
+            "title": "开盘啦大单净额走势",
+            "top_level": false
+          },
+          "kaipanla_quote": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "高频行情",
+            "database_tables": [
+              "stock_market_day",
+              "stock_daily_quote",
+              "stock_daily_quote_level"
+            ],
+            "description": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放",
+            "group": "数据浏览",
+            "id": "kaipanla_quote",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "kaipanla-quote",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 11,
+            "source": "开盘啦",
+            "title": "开盘啦历史盘口与日行情摘要",
+            "top_level": false
+          },
+          "kaipanla_trades": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "高频行情",
+            "database_tables": [
+              "stock_market_day",
+              "stock_intraday_trade_block"
+            ],
+            "description": "完整分笔数组及来源总数；不冒充交易所逐笔事件流",
+            "group": "数据浏览",
+            "id": "kaipanla_trades",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "kaipanla-trades",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 11,
+            "source": "开盘啦",
+            "title": "开盘啦分时成交明细",
+            "top_level": false
+          },
+          "kaipanla_trend": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "高频行情",
+            "database_tables": [
+              "stock_market_day",
+              "stock_intraday_trend"
+            ],
+            "description": "价格、均价、来源量与标记；不代表分钟 OHLC",
+            "group": "数据浏览",
+            "id": "kaipanla_trend",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "kaipanla-trend",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 11,
+            "source": "开盘啦",
+            "title": "开盘啦分时走势",
+            "top_level": false
+          },
+          "kaipanla_volume": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "高频行情",
+            "database_tables": [
+              "stock_market_day",
+              "stock_minute_volume"
+            ],
+            "description": "来源分钟量额与标记；不提供每分钟 OHLC",
+            "group": "数据浏览",
+            "id": "kaipanla_volume",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "kaipanla-volume",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 11,
+            "source": "开盘啦",
+            "title": "开盘啦分钟成交量与成交额",
+            "top_level": false
+          }
+        },
+        "plugins": {
+          "collector.kaipanla_auction": {
+            "autostart": true,
+            "description": "完整来源点序列；同分钟多点保留，源端无总点数",
+            "id": "collector.kaipanla_auction",
+            "name": "开盘啦开盘竞价",
+            "provides": [
+              "collector.kaipanla_auction"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "kaipanla_auction.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.kaipanla_entrust": {
+            "autostart": true,
+            "description": "分钟买卖委托量额汇总；不含券商席位身份或逐笔委托撤单",
+            "id": "collector.kaipanla_entrust",
+            "name": "开盘啦分钟买卖委托汇总",
+            "provides": [
+              "collector.kaipanla_entrust"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "kaipanla_entrust.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.kaipanla_large_order": {
+            "autostart": true,
+            "description": "来源大单净额可为负；不包含独立大单明细筛选",
+            "id": "collector.kaipanla_large_order",
+            "name": "开盘啦大单净额走势",
+            "provides": [
+              "collector.kaipanla_large_order"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "kaipanla_large_order.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.kaipanla_quote": {
+            "autostart": true,
+            "description": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放",
+            "id": "collector.kaipanla_quote",
+            "name": "开盘啦历史盘口与日行情摘要",
+            "provides": [
+              "collector.kaipanla_quote"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "kaipanla_quote.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.kaipanla_trades": {
+            "autostart": true,
+            "description": "完整分笔数组及来源总数；不冒充交易所逐笔事件流",
+            "id": "collector.kaipanla_trades",
+            "name": "开盘啦分时成交明细",
+            "provides": [
+              "collector.kaipanla_trades"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "kaipanla_trades.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.kaipanla_trend": {
+            "autostart": true,
+            "description": "价格、均价、来源量与标记；不代表分钟 OHLC",
+            "id": "collector.kaipanla_trend",
+            "name": "开盘啦分时走势",
+            "provides": [
+              "collector.kaipanla_trend"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "kaipanla_trend.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.kaipanla_volume": {
+            "autostart": true,
+            "description": "来源分钟量额与标记；不提供每分钟 OHLC",
+            "id": "collector.kaipanla_volume",
+            "name": "开盘啦分钟成交量与成交额",
+            "provides": [
+              "collector.kaipanla_volume"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "kaipanla_volume.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.kaipanla_auction": {
+            "autostart": true,
+            "description": "完整来源点序列；同分钟多点保留，源端无总点数",
+            "id": "data.kaipanla_auction",
+            "name": "开盘啦开盘竞价查询",
+            "provides": [
+              "kaipanla_auction.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "data.kaipanla_entrust": {
+            "autostart": true,
+            "description": "分钟买卖委托量额汇总；不含券商席位身份或逐笔委托撤单",
+            "id": "data.kaipanla_entrust",
+            "name": "开盘啦分钟买卖委托汇总查询",
+            "provides": [
+              "kaipanla_entrust.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "data.kaipanla_large_order": {
+            "autostart": true,
+            "description": "来源大单净额可为负；不包含独立大单明细筛选",
+            "id": "data.kaipanla_large_order",
+            "name": "开盘啦大单净额走势查询",
+            "provides": [
+              "kaipanla_large_order.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "data.kaipanla_quote": {
+            "autostart": true,
+            "description": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放",
+            "id": "data.kaipanla_quote",
+            "name": "开盘啦历史盘口与日行情摘要查询",
+            "provides": [
+              "kaipanla_quote.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "data.kaipanla_trades": {
+            "autostart": true,
+            "description": "完整分笔数组及来源总数；不冒充交易所逐笔事件流",
+            "id": "data.kaipanla_trades",
+            "name": "开盘啦分时成交明细查询",
+            "provides": [
+              "kaipanla_trades.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "data.kaipanla_trend": {
+            "autostart": true,
+            "description": "价格、均价、来源量与标记；不代表分钟 OHLC",
+            "id": "data.kaipanla_trend",
+            "name": "开盘啦分时走势查询",
+            "provides": [
+              "kaipanla_trend.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "data.kaipanla_volume": {
+            "autostart": true,
+            "description": "来源分钟量额与标记；不提供每分钟 OHLC",
+            "id": "data.kaipanla_volume",
+            "name": "开盘啦分钟成交量与成交额查询",
+            "provides": [
+              "kaipanla_volume.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.kaipanla_auction": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.kaipanla_auction",
+            "name": "开盘竞价界面",
+            "provides": [
+              "ui.pages.kaipanla_auction"
+            ],
+            "requires": []
+          },
+          "ui.kaipanla_entrust": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.kaipanla_entrust",
+            "name": "分钟买卖委托汇总界面",
+            "provides": [
+              "ui.pages.kaipanla_entrust"
+            ],
+            "requires": []
+          },
+          "ui.kaipanla_large_order": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.kaipanla_large_order",
+            "name": "大单净额走势界面",
+            "provides": [
+              "ui.pages.kaipanla_large_order"
+            ],
+            "requires": []
+          },
+          "ui.kaipanla_quote": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.kaipanla_quote",
+            "name": "历史盘口与日行情摘要界面",
+            "provides": [
+              "ui.pages.kaipanla_quote"
+            ],
+            "requires": []
+          },
+          "ui.kaipanla_trades": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.kaipanla_trades",
+            "name": "分时成交明细界面",
+            "provides": [
+              "ui.pages.kaipanla_trades"
+            ],
+            "requires": []
+          },
+          "ui.kaipanla_trend": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.kaipanla_trend",
+            "name": "分时走势界面",
+            "provides": [
+              "ui.pages.kaipanla_trend"
+            ],
+            "requires": []
+          },
+          "ui.kaipanla_volume": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.kaipanla_volume",
+            "name": "分钟成交量与成交额界面",
+            "provides": [
+              "ui.pages.kaipanla_volume"
+            ],
+            "requires": []
+          }
+        },
+        "preparation": {
+          "data.kaipanla_auction:opening_auction": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "kaipanla_auction.query",
+            "collector": "collector.kaipanla_auction",
+            "dataset": "kaipanla.auction.day",
+            "job_key": "kaipanla-auction-v1",
+            "method": "preparation_check",
+            "project_id": "kaipanla-auction",
+            "requirement": "opening_auction",
+            "response_group": "",
+            "scoped": true,
+            "source": "开盘啦"
+          },
+          "data.kaipanla_entrust:minute_entrust": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "kaipanla_entrust.query",
+            "collector": "collector.kaipanla_entrust",
+            "dataset": "kaipanla.entrust.day",
+            "job_key": "kaipanla-entrust-v1",
+            "method": "preparation_check",
+            "project_id": "kaipanla-entrust",
+            "requirement": "minute_entrust",
+            "response_group": "",
+            "scoped": true,
+            "source": "开盘啦"
+          },
+          "data.kaipanla_large_order:large_order_trend": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "kaipanla_large_order.query",
+            "collector": "collector.kaipanla_large_order",
+            "dataset": "kaipanla.large_order.day",
+            "job_key": "kaipanla-large-order-v1",
+            "method": "preparation_check",
+            "project_id": "kaipanla-large-order",
+            "requirement": "large_order_trend",
+            "response_group": "",
+            "scoped": true,
+            "source": "开盘啦"
+          },
+          "data.kaipanla_quote:historical_quote": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "kaipanla_quote.query",
+            "collector": "collector.kaipanla_quote",
+            "dataset": "kaipanla.quote.day",
+            "job_key": "kaipanla-quote-v1",
+            "method": "preparation_check",
+            "project_id": "kaipanla-quote",
+            "requirement": "historical_quote",
+            "response_group": "",
+            "scoped": true,
+            "source": "开盘啦"
+          },
+          "data.kaipanla_trades:intraday_trades": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "kaipanla_trades.query",
+            "collector": "collector.kaipanla_trades",
+            "dataset": "kaipanla.trades.day",
+            "job_key": "kaipanla-trades-v1",
+            "method": "preparation_check",
+            "project_id": "kaipanla-trades",
+            "requirement": "intraday_trades",
+            "response_group": "",
+            "scoped": true,
+            "source": "开盘啦"
+          },
+          "data.kaipanla_trend:intraday": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "kaipanla_trend.query",
+            "collector": "collector.kaipanla_trend",
+            "dataset": "kaipanla.trend.day",
+            "job_key": "kaipanla-trend-v1",
+            "method": "preparation_check",
+            "project_id": "kaipanla-trend",
+            "requirement": "intraday",
+            "response_group": "",
+            "scoped": true,
+            "source": "开盘啦"
+          },
+          "data.kaipanla_volume:minute_volume": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "kaipanla_volume.query",
+            "collector": "collector.kaipanla_volume",
+            "dataset": "kaipanla.volume.day",
+            "job_key": "kaipanla-volume-v1",
+            "method": "preparation_check",
+            "project_id": "kaipanla-volume",
+            "requirement": "minute_volume",
+            "response_group": "",
+            "scoped": true,
+            "source": "开盘啦"
+          }
+        },
+        "tasks": {
+          "kaipanla-auction": {
+            "capability": "collector.kaipanla_auction",
+            "category": "高频行情",
+            "default_enabled": false,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "建议默认计划：每天北京时间 18:00。首次补历史，以后补新增日及缺口，每周复核最近五个交易日；可按需修改执行方式和时间。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "完整来源点序列；同分钟多点保留，源端无总点数",
+            "fresh_description": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+            "id": "kaipanla-auction",
+            "interval_seconds": 86400,
+            "name": "开盘啦开盘竞价",
+            "parallel_downloads": true,
+            "rate_group": "kaipanla",
+            "source_name": "开盘啦",
+            "unit_name": "股票日"
+          },
+          "kaipanla-entrust": {
+            "capability": "collector.kaipanla_entrust",
+            "category": "高频行情",
+            "default_enabled": false,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "建议默认计划：每天北京时间 18:00。首次补历史，以后补新增日及缺口，每周复核最近五个交易日；可按需修改执行方式和时间。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "分钟买卖委托量额汇总；不含券商席位身份或逐笔委托撤单",
+            "fresh_description": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+            "id": "kaipanla-entrust",
+            "interval_seconds": 86400,
+            "name": "开盘啦分钟买卖委托汇总",
+            "parallel_downloads": true,
+            "rate_group": "kaipanla",
+            "source_name": "开盘啦",
+            "unit_name": "股票日"
+          },
+          "kaipanla-large-order": {
+            "capability": "collector.kaipanla_large_order",
+            "category": "高频行情",
+            "default_enabled": false,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "建议默认计划：每天北京时间 18:00。首次补历史，以后补新增日及缺口，每周复核最近五个交易日；可按需修改执行方式和时间。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "来源大单净额可为负；不包含独立大单明细筛选",
+            "fresh_description": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+            "id": "kaipanla-large-order",
+            "interval_seconds": 86400,
+            "name": "开盘啦大单净额走势",
+            "parallel_downloads": true,
+            "rate_group": "kaipanla",
+            "source_name": "开盘啦",
+            "unit_name": "股票日"
+          },
+          "kaipanla-quote": {
+            "capability": "collector.kaipanla_quote",
+            "category": "高频行情",
+            "default_enabled": false,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "建议默认计划：每天北京时间 18:00。首次补历史，以后补新增日及缺口，每周复核最近五个交易日；可按需修改执行方式和时间。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放",
+            "fresh_description": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+            "id": "kaipanla-quote",
+            "interval_seconds": 86400,
+            "name": "开盘啦历史盘口与日行情摘要",
+            "parallel_downloads": true,
+            "rate_group": "kaipanla",
+            "source_name": "开盘啦",
+            "unit_name": "股票日"
+          },
+          "kaipanla-trades": {
+            "capability": "collector.kaipanla_trades",
+            "category": "高频行情",
+            "default_enabled": false,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "建议默认计划：每天北京时间 18:00。首次补历史，以后补新增日及缺口，每周复核最近五个交易日；可按需修改执行方式和时间。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "完整分笔数组及来源总数；不冒充交易所逐笔事件流",
+            "fresh_description": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+            "id": "kaipanla-trades",
+            "interval_seconds": 86400,
+            "name": "开盘啦分时成交明细",
+            "parallel_downloads": true,
+            "rate_group": "kaipanla",
+            "source_name": "开盘啦",
+            "unit_name": "股票日"
+          },
+          "kaipanla-trend": {
+            "capability": "collector.kaipanla_trend",
+            "category": "高频行情",
+            "default_enabled": false,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "建议默认计划：每天北京时间 18:00。首次补历史，以后补新增日及缺口，每周复核最近五个交易日；可按需修改执行方式和时间。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "价格、均价、来源量与标记；不代表分钟 OHLC",
+            "fresh_description": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+            "id": "kaipanla-trend",
+            "interval_seconds": 86400,
+            "name": "开盘啦分时走势",
+            "parallel_downloads": true,
+            "rate_group": "kaipanla",
+            "source_name": "开盘啦",
+            "unit_name": "股票日"
+          },
+          "kaipanla-volume": {
+            "capability": "collector.kaipanla_volume",
+            "category": "高频行情",
+            "default_enabled": false,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "建议默认计划：每天北京时间 18:00。首次补历史，以后补新增日及缺口，每周复核最近五个交易日；可按需修改执行方式和时间。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "来源分钟量额与标记；不提供每分钟 OHLC",
+            "fresh_description": "从 2021 年起逐证券日重新核验本项，保留已归档历史；普通采集补缺，每周回看最近五个交易日。",
+            "id": "kaipanla-volume",
+            "interval_seconds": 86400,
+            "name": "开盘啦分钟成交量与成交额",
+            "parallel_downloads": true,
+            "rate_group": "kaipanla",
+            "source_name": "开盘啦",
+            "unit_name": "股票日"
+          }
+        }
+      },
+      "bindings": {
+        "datasets": {
+          "kaipanla_auction_v1": {
+            "module": "empire.plugins.datasets.kaipanla_products",
+            "qualname": "ProductDataset"
+          },
+          "kaipanla_entrust_v1": {
+            "module": "empire.plugins.datasets.kaipanla_products",
+            "qualname": "ProductDataset"
+          },
+          "kaipanla_large_order_v1": {
+            "module": "empire.plugins.datasets.kaipanla_products",
+            "qualname": "ProductDataset"
+          },
+          "kaipanla_quote_v1": {
+            "module": "empire.plugins.datasets.kaipanla_products",
+            "qualname": "ProductDataset"
+          },
+          "kaipanla_trades_v1": {
+            "module": "empire.plugins.datasets.kaipanla_products",
+            "qualname": "ProductDataset"
+          },
+          "kaipanla_trend_v1": {
+            "module": "empire.plugins.datasets.kaipanla_products",
+            "qualname": "ProductDataset"
+          },
+          "kaipanla_volume_v1": {
+            "module": "empire.plugins.datasets.kaipanla_products",
+            "qualname": "ProductDataset"
+          }
+        },
+        "pages": {
+          "kaipanla_auction": {
+            "args": [],
+            "kwargs": {
+              "kind": "auction"
+            },
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "create_product_page"
+          },
+          "kaipanla_entrust": {
+            "args": [],
+            "kwargs": {
+              "kind": "entrust"
+            },
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "create_product_page"
+          },
+          "kaipanla_large_order": {
+            "args": [],
+            "kwargs": {
+              "kind": "large_order"
+            },
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "create_product_page"
+          },
+          "kaipanla_quote": {
+            "args": [],
+            "kwargs": {
+              "kind": "quote"
+            },
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "create_product_page"
+          },
+          "kaipanla_trades": {
+            "args": [],
+            "kwargs": {
+              "kind": "trades"
+            },
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "create_product_page"
+          },
+          "kaipanla_trend": {
+            "args": [],
+            "kwargs": {
+              "kind": "trend"
+            },
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "create_product_page"
+          },
+          "kaipanla_volume": {
+            "args": [],
+            "kwargs": {
+              "kind": "volume"
+            },
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "create_product_page"
+          }
+        },
+        "plugins": {
+          "collector.kaipanla_auction": {
+            "module": "empire.plugins.collectors.kaipanla_products",
+            "qualname": "KaipanlaProductCollector"
+          },
+          "collector.kaipanla_entrust": {
+            "module": "empire.plugins.collectors.kaipanla_products",
+            "qualname": "KaipanlaProductCollector"
+          },
+          "collector.kaipanla_large_order": {
+            "module": "empire.plugins.collectors.kaipanla_products",
+            "qualname": "KaipanlaProductCollector"
+          },
+          "collector.kaipanla_quote": {
+            "module": "empire.plugins.collectors.kaipanla_products",
+            "qualname": "KaipanlaProductCollector"
+          },
+          "collector.kaipanla_trades": {
+            "module": "empire.plugins.collectors.kaipanla_products",
+            "qualname": "KaipanlaProductCollector"
+          },
+          "collector.kaipanla_trend": {
+            "module": "empire.plugins.collectors.kaipanla_products",
+            "qualname": "KaipanlaProductCollector"
+          },
+          "collector.kaipanla_volume": {
+            "module": "empire.plugins.collectors.kaipanla_products",
+            "qualname": "KaipanlaProductCollector"
+          },
+          "data.kaipanla_auction": {
+            "module": "empire.plugins.data.kaipanla_products",
+            "qualname": "KaipanlaProductDataPlugin"
+          },
+          "data.kaipanla_entrust": {
+            "module": "empire.plugins.data.kaipanla_products",
+            "qualname": "KaipanlaProductDataPlugin"
+          },
+          "data.kaipanla_large_order": {
+            "module": "empire.plugins.data.kaipanla_products",
+            "qualname": "KaipanlaProductDataPlugin"
+          },
+          "data.kaipanla_quote": {
+            "module": "empire.plugins.data.kaipanla_products",
+            "qualname": "KaipanlaProductDataPlugin"
+          },
+          "data.kaipanla_trades": {
+            "module": "empire.plugins.data.kaipanla_products",
+            "qualname": "KaipanlaProductDataPlugin"
+          },
+          "data.kaipanla_trend": {
+            "module": "empire.plugins.data.kaipanla_products",
+            "qualname": "KaipanlaProductDataPlugin"
+          },
+          "data.kaipanla_volume": {
+            "module": "empire.plugins.data.kaipanla_products",
+            "qualname": "KaipanlaProductDataPlugin"
+          },
+          "ui.kaipanla_auction": {
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "KaipanlaProductUiPlugin"
+          },
+          "ui.kaipanla_entrust": {
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "KaipanlaProductUiPlugin"
+          },
+          "ui.kaipanla_large_order": {
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "KaipanlaProductUiPlugin"
+          },
+          "ui.kaipanla_quote": {
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "KaipanlaProductUiPlugin"
+          },
+          "ui.kaipanla_trades": {
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "KaipanlaProductUiPlugin"
+          },
+          "ui.kaipanla_trend": {
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "KaipanlaProductUiPlugin"
+          },
+          "ui.kaipanla_volume": {
+            "module": "empire.plugins.ui.kaipanla_products",
+            "qualname": "KaipanlaProductUiPlugin"
+          }
+        },
+        "tests": {
+          "data.kaipanla_auction:opening_auction": {
+            "archive_tests": [
+              "tests/integration/test_kaipanla_products_archive.py",
+              "tests/integration/test_kaipanla_suspension_scope.py"
+            ],
+            "source_tests": [
+              "tests/test_kaipanla_products.py",
+              "tests/test_market_suspension_days.py"
+            ]
+          },
+          "data.kaipanla_entrust:minute_entrust": {
+            "archive_tests": [
+              "tests/integration/test_kaipanla_products_archive.py",
+              "tests/integration/test_kaipanla_suspension_scope.py"
+            ],
+            "source_tests": [
+              "tests/test_kaipanla_products.py",
+              "tests/test_market_suspension_days.py"
+            ]
+          },
+          "data.kaipanla_large_order:large_order_trend": {
+            "archive_tests": [
+              "tests/integration/test_kaipanla_products_archive.py",
+              "tests/integration/test_kaipanla_suspension_scope.py"
+            ],
+            "source_tests": [
+              "tests/test_kaipanla_products.py",
+              "tests/test_market_suspension_days.py"
+            ]
+          },
+          "data.kaipanla_quote:historical_quote": {
+            "archive_tests": [
+              "tests/integration/test_kaipanla_products_archive.py",
+              "tests/integration/test_kaipanla_suspension_scope.py"
+            ],
+            "source_tests": [
+              "tests/test_kaipanla_products.py",
+              "tests/test_market_suspension_days.py"
+            ]
+          },
+          "data.kaipanla_trades:intraday_trades": {
+            "archive_tests": [
+              "tests/integration/test_kaipanla_products_archive.py",
+              "tests/integration/test_kaipanla_suspension_scope.py"
+            ],
+            "source_tests": [
+              "tests/test_kaipanla_products.py",
+              "tests/test_market_suspension_days.py"
+            ]
+          },
+          "data.kaipanla_trend:intraday": {
+            "archive_tests": [
+              "tests/integration/test_kaipanla_products_archive.py",
+              "tests/integration/test_kaipanla_suspension_scope.py"
+            ],
+            "source_tests": [
+              "tests/test_kaipanla_products.py",
+              "tests/test_market_suspension_days.py"
+            ]
+          },
+          "data.kaipanla_volume:minute_volume": {
+            "archive_tests": [
+              "tests/integration/test_kaipanla_products_archive.py",
+              "tests/integration/test_kaipanla_suspension_scope.py"
+            ],
+            "source_tests": [
+              "tests/test_kaipanla_products.py",
+              "tests/test_market_suspension_days.py"
+            ]
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.kaipanla_trend",
+          "data.kaipanla_auction",
+          "data.kaipanla_volume",
+          "data.kaipanla_trades",
+          "data.kaipanla_entrust",
+          "data.kaipanla_large_order",
+          "data.kaipanla_quote",
+          "collector.kaipanla_trend",
+          "collector.kaipanla_auction",
+          "collector.kaipanla_volume",
+          "collector.kaipanla_trades",
+          "collector.kaipanla_entrust",
+          "collector.kaipanla_large_order",
+          "collector.kaipanla_quote",
+          "ui.kaipanla_trend",
+          "ui.kaipanla_auction",
+          "ui.kaipanla_volume",
+          "ui.kaipanla_trades",
+          "ui.kaipanla_entrust",
+          "ui.kaipanla_large_order",
+          "ui.kaipanla_quote"
+        ],
+        "startup": [
+          "data.kaipanla_trend",
+          "data.kaipanla_auction",
+          "data.kaipanla_volume",
+          "data.kaipanla_trades",
+          "data.kaipanla_entrust",
+          "data.kaipanla_large_order",
+          "data.kaipanla_quote",
+          "collector.kaipanla_trend",
+          "collector.kaipanla_auction",
+          "collector.kaipanla_volume",
+          "collector.kaipanla_trades",
+          "collector.kaipanla_entrust",
+          "collector.kaipanla_large_order",
+          "collector.kaipanla_quote",
+          "ui.kaipanla_trend",
+          "ui.kaipanla_auction",
+          "ui.kaipanla_volume",
+          "ui.kaipanla_trades",
+          "ui.kaipanla_entrust",
+          "ui.kaipanla_large_order",
+          "ui.kaipanla_quote"
+        ],
+        "tasks": [
+          "kaipanla-trend",
+          "kaipanla-auction",
+          "kaipanla-volume",
+          "kaipanla-trades",
+          "kaipanla-entrust",
+          "kaipanla-large-order",
+          "kaipanla-quote"
+        ],
+        "datasets": [
+          "kaipanla_trend_v1",
+          "kaipanla_auction_v1",
+          "kaipanla_volume_v1",
+          "kaipanla_trades_v1",
+          "kaipanla_entrust_v1",
+          "kaipanla_large_order_v1",
+          "kaipanla_quote_v1"
+        ],
+        "pages": [
+          "kaipanla_trend",
+          "kaipanla_auction",
+          "kaipanla_volume",
+          "kaipanla_trades",
+          "kaipanla_entrust",
+          "kaipanla_large_order",
+          "kaipanla_quote"
+        ],
+        "preparation": [
+          "data.kaipanla_trend:intraday",
+          "data.kaipanla_auction:opening_auction",
+          "data.kaipanla_volume:minute_volume",
+          "data.kaipanla_trades:intraday_trades",
+          "data.kaipanla_entrust:minute_entrust",
+          "data.kaipanla_large_order:large_order_trend",
+          "data.kaipanla_quote:historical_quote"
+        ]
+      }
+    },
+    "after": null,
+    "design": "docs/kaipanla-market-retirement.md",
+    "tests": [
+      "tests/test_kaipanla_retirement.py"
     ]
   }
 ]

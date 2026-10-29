@@ -1,0 +1,39 @@
+{
+  "scope": "startup dependency fix, one complete response per affected collector; not full-market acceptance",
+  "security": "000001.SZ",
+  "routing": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "results": [
+    {
+      "collector": "collector.ths_capital",
+      "pool_size": 5579,
+      "sample_size": 1,
+      "sample_reason": "shared startup failure occurs before the first request; fixed failing first security is sufficient for this runtime-only repair",
+      "success": true,
+      "sections": [
+        "rows",
+        "availability"
+      ],
+      "routes": {
+        "proxy_requests": 1
+      }
+    },
+    {
+      "collector": "collector.ths_holders",
+      "pool_size": 5579,
+      "sample_size": 1,
+      "sample_reason": "shared startup failure occurs before the first request; fixed failing first security is sufficient for this runtime-only repair",
+      "success": true,
+      "sections": [
+        "top_holders",
+        "float_holders",
+        "bond_holders"
+      ],
+      "routes": {
+        "proxy_requests": 1
+      }
+    }
+  ]
+}

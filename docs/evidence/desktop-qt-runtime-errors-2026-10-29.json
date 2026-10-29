@@ -1,0 +1,67 @@
+{
+  "issue": "desktop bridge lacks QCoreApplication initialization",
+  "errors": [
+    {
+      "id": "1beeb7b020fb4149851e5f3752babe72",
+      "project_id": "ths-holders",
+      "created_at": "2026-10-28T20:14:35.195522+00:00",
+      "stage": "source_validation",
+      "error": "同花顺请求校验需要已初始化的 Qt 应用"
+    },
+    {
+      "id": "22e79276622c47b89ace7c0f4ab04ba6",
+      "project_id": "ths-capital",
+      "created_at": "2026-10-28T20:15:50.810791+00:00",
+      "stage": "source_validation",
+      "error": "同花顺请求校验需要已初始化的 Qt 应用"
+    },
+    {
+      "id": "8f6821a215b1410fbe79b4f19c8b115f",
+      "project_id": "ths-capital",
+      "created_at": "2026-10-28T20:15:10.383669+00:00",
+      "stage": "source_validation",
+      "error": "同花顺请求校验需要已初始化的 Qt 应用"
+    }
+  ],
+  "runs": [
+    {
+      "task_id": "ths-capital",
+      "run_id": "b75d0a2f34fe46c9b7bd23aa6505219d",
+      "status": "error",
+      "error": "同花顺请求校验需要已初始化的 Qt 应用"
+    },
+    {
+      "task_id": "ths-capital",
+      "run_id": "7975e52502ac4b9e9c62ab4b26027da9",
+      "status": "error",
+      "error": "同花顺请求校验需要已初始化的 Qt 应用"
+    },
+    {
+      "task_id": "ths-holders",
+      "run_id": "c544c556aa7141e7becd6a6e3f29cc7f",
+      "status": "error",
+      "error": "同花顺请求校验需要已初始化的 Qt 应用"
+    }
+  ],
+  "cleanup": [
+    {
+      "project": "ths-holders",
+      "id": "1beeb7b020fb4149851e5f3752babe72",
+      "removed": 1,
+      "verified_absent": true
+    },
+    {
+      "project": "ths-capital",
+      "id": "22e79276622c47b89ace7c0f4ab04ba6",
+      "removed": 1,
+      "verified_absent": true
+    },
+    {
+      "project": "ths-capital",
+      "id": "8f6821a215b1410fbe79b4f19c8b115f",
+      "removed": 1,
+      "verified_absent": true
+    }
+  ],
+  "fix": "Initialize and retain QCoreApplication in desktop bridge before Runtime.start; startup subprocess and two shared-proxy responses passed. Historical run records retained."
+}

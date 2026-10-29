@@ -30,6 +30,11 @@ def clip_text(value: str, limit: int | None) -> str:
     return value if limit is None else value.encode("utf-8")[:limit].decode("utf-8", errors="ignore")
 
 
+def exception_text(error: BaseException) -> str:
+    text = str(error)
+    return text if text.strip() else type(error).__name__
+
+
 class Redactor:
     def __init__(self, secrets=()):
         variants = set()
@@ -61,7 +66,7 @@ class Redactor:
             return "[invalid URL]"
 
     def text(self, value, limit: int | None = None) -> str:
-        text = str(value)
+        text = exception_text(value) if isinstance(value, BaseException) else str(value)
         text = URL_PATTERN.sub(lambda match: self._url(match.group()), text)
         text = HEADER_PATTERN.sub(lambda match: match.group(1) + ": " + REDACTED, text)
         text = ASSIGNMENT_PATTERN.sub(lambda match: match.group(1) + REDACTED, text)

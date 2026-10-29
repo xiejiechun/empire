@@ -15,7 +15,7 @@
 | `relation_id` | `CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 完整来源关联内容SHA-256；同证券多理由分别保留 |
 | `category_id` | `VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NULL` | 来源分类ID；直接关联股票时NULL |
 | `unified_code` | `VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 经核实的六位代码.市场，不按名称替换历史代码 |
-| `reason` | `MEDIUMTEXT NOT NULL` | 来源理由，UTF-8最多65536字节 |
+| `reason` | `MEDIUMTEXT NOT NULL` | 来源理由，UTF-8最多65536字节；两组来源均为空时保留空字符串，掩码拒绝 |
 | `first_shelved_at` | `DATETIME(6) NULL` | 来源FirstShelveTime秒转北京时间；0转NULL |
 | `updated_at` | `DATETIME(6) NULL` | 来源UpdateCacheTime秒转北京时间；0转NULL |
 | `is_new` | `BIGINT UNSIGNED NOT NULL` | 来源IsNew非负整数 |

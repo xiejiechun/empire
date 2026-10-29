@@ -11,7 +11,6 @@ from empire.features.themes.catalog_mapping import history_rows
 from empire.features.themes.catalog_source import fetch_catalog
 from empire.features.themes.detail_source import DOMAIN, URL, fetch_detail
 from empire.features.themes.guest_material import load_material
-from empire.features.themes.identity_source import resolve_identity
 from empire.features.themes.storage_contract import (
     DETAIL_DATASET,
     DETAIL_JOB,
@@ -28,6 +27,7 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
+from empire.sources.security_identity import resolve_identity
 
 
 class ThemeCollector:
@@ -74,11 +74,13 @@ class ThemeCollector:
                 async with self.identity_lock:
                     if code not in self.identities:
                         self.identities[code] = await resolve_identity(self.http, code, project_id=self.project_id,
+                                                                       source_name=stock['name'],
                                                                        reservation=reservation)
                         self.stats['requests'] += 1
         return map_detail(result, self.identities.values())
 
     async def execute(self, *, fresh=False, baseline_revision=0):
+        self.stats.update(completed_units=0, total_units=None)
         try:
             state = await self.ingest.checkpoint(self.job_key)
             cursor = state['cursor']
@@ -93,6 +95,8 @@ class ThemeCollector:
                 else:
                     state, cursor = await self.collect_details(state, cursor, fresh=fresh)
             if cursor.get('phase') == 'awaiting_archive':
+                self.stats.update(completed_units=cursor['page'],
+                    total_units=len(cursor['plan']) if self.kind != 'list' else 1)
                 self.stats['status'] = 'awaiting_archive'
                 await wait_for_archive(partial(self.confirmation.page_status, 'kaipanla', self.job_key,
                     self.project_id, cursor['batch_id'], cursor['page']), retry_seconds=1)
@@ -111,6 +115,7 @@ class ThemeCollector:
             raise
 
     async def collect_list(self, state, previous):
+        self.stats.update(total_units=1, completed_units=0, unit_name='份完整题材列表')
         await wait_for_capacity(self.ingest, self.stats)
         if self.material is None:
             self.material = load_material(self.material_settings)
@@ -124,7 +129,7 @@ class ThemeCollector:
         await self.query.history.append(rows, observed_at=observed, round_id=batch)
         cursor = dict(contract=1, phase='complete', batch_id=batch, page=0,
                       collected=len(rows), last_slot=previous.get('last_slot'))
-        self.stats['collected'] = len(rows)
+        self.stats.update(collected=len(rows), completed_units=1)
         if cursor['last_slot'] == slot:
             state = await self.ingest.advance_checkpoint(job_key=self.job_key,
                 expected_revision=state['revision'], cursor=cursor)
@@ -141,12 +146,13 @@ class ThemeCollector:
             current = await self.query.current()
             if current is None:
                 raise ValueError('请先完成当日题材列表采样，再采集详情')
-            plan = (await self.query.detail_plan(current['rows'], fresh=fresh))[:32]
+            plan = await self.query.detail_plan(current['rows'], fresh=fresh)
             cursor = dict(contract=1, phase='fetch', plan=plan, page=0, collected=0, batch_id=uuid4().hex)
         plan = cursor['plan']
-        if (not isinstance(plan, list) or len(plan) > 32 or len(set(plan)) != len(plan)
+        if (not isinstance(plan, list) or len(plan) > 2000 or len(set(plan)) != len(plan)
                 or type(cursor['page']) is not int or not 0 <= cursor['page'] <= len(plan)):
             raise ValueError('题材详情断点计划损坏')
+        self.stats.update(completed_units=cursor['page'], total_units=len(plan), unit_name='个题材')
         self.identities = await self.query.identities()
         async with prefetch_units(self, plan[cursor['page']:], self.fetch,
                 url=URL, domains=(DOMAIN,), item_name='题材详情') as reads:

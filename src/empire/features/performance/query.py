@@ -130,6 +130,9 @@ class PerformanceDataPlugin:
                             temporal_bad += (not row.get('announcement_date') or
                                 self.kind == 'earnings_report' and row['announcement_date'] <= row['report_date'] or
                                 row['announcement_date'] > record['version_observed_at'].date().isoformat())
+                        elif self.kind == 'earnings_disclosure':
+                            temporal_bad += (not row['actual_date'] or
+                                row['actual_date'] > record['version_observed_at'].date().isoformat())
                 if key in selected_set:
                     validate_rows(self.kind, key, rows)
                     proof = proofs.get(key, {})

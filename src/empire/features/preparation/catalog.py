@@ -5,8 +5,9 @@ from empire.features.preparation.existing import ITEMS as EXISTING
 from empire.features.preparation.foundation import ITEMS as FOUNDATION
 from empire.features.preparation.markets import ITEMS as MARKETS
 from empire.features.preparation.processing import ITEMS as PROCESSING
+from empire.features.preparation.yuanhang_limits import ITEMS as YUANHANG_LIMITS
 
-REQUIREMENTS = (*EXISTING, *FOUNDATION, *EVENTS, *CAPITAL_PAGE, *MARKETS, *PROCESSING)
+REQUIREMENTS = (*EXISTING, *FOUNDATION, *EVENTS, *CAPITAL_PAGE, *MARKETS, *YUANHANG_LIMITS, *PROCESSING)
 BY_ID = {item.id: item for item in REQUIREMENTS}
 if len(BY_ID) != len(REQUIREMENTS):
     raise ValueError('数据准备项目 ID 重复')

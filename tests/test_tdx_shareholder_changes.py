@@ -180,3 +180,70 @@ async def test_invalid_month_bound_rejected_before_download_or_publish(monkeypat
     with pytest.raises(ValueError,match='月份第一天'):
         await c.execute(end_month='2025-08-15')
     assert c.http.request.await_count==0 and state['revision']==0
+
+async def test_changed_partial_month_replays_all_markets_without_double_count(monkeypatch):
+    c, state = setup_collector(monkeypatch)
+    original = c.ingest.publish_page.side_effect
+    async def fail(events, **kw):
+        if kw['cursor']['page'] == 2:
+            raise asyncio.CancelledError()
+        return await original(events, **kw)
+    c.ingest.publish_page.side_effect = fail
+    with pytest.raises(asyncio.CancelledError):
+        await c.execute()
+    assert state['cursor']['unit_base'] == {'collected': 0, 'rolling': ''}
+    c.ingest.publish_page.side_effect = original
+    c.http.request.return_value = httpx.Response(200, json=source(revised=True))
+    result = await c.execute(baseline_revision=state['revision'])
+    assert result['phase'] == 'complete' and result['collected'] == 2
+    assert result['page'] == 5  # original SH + replacement SH/SZ/BJ + manifest
+    events = [call.args[0][0] for call in c.ingest.publish_page.call_args_list]
+    assert [e.raw_payload['unit'] for e in events[-4:]] == [
+        PERIOD + '|SH', PERIOD + '|SZ', PERIOD + '|BJ', 'manifest']
+    from empire.features.performance.contract import digest
+    rows, _ = parse(KIND, source(revised=True), PERIOD)
+    rolling = ''
+    for market in ('SH', 'SZ', 'BJ'):
+        values = [r for r in rows if r['unified_code'].endswith(market)]
+        rolling = digest([rolling, PERIOD + '|' + market, digest(values), len(values)])
+    assert result['rolling'] == rolling
+    assert c.http.request.await_count == 2
+
+
+async def test_changed_partial_month_budget_failure_keeps_checkpoint(monkeypatch):
+    c, state = setup_collector(monkeypatch)
+    original = c.ingest.publish_page.side_effect
+    async def fail(events, **kw):
+        if kw['cursor']['page'] == 2:
+            raise asyncio.CancelledError()
+        return await original(events, **kw)
+    c.ingest.publish_page.side_effect = fail
+    with pytest.raises(asyncio.CancelledError):
+        await c.execute()
+    before = copy.deepcopy(state)
+    c.ingest.publish_page.side_effect = original
+    c.http.request.return_value = httpx.Response(200, json=source(revised=True))
+    c.ingest.settings = {'max_page_bytes': 100}
+    with pytest.raises(ValueError, match='容量'):
+        await c.execute(baseline_revision=state['revision'])
+    assert state == before
+
+def test_legacy_month_base_requires_exact_archived_chain():
+    from empire.features.performance.contract import digest
+    from scripts.repair_shareholder_checkpoint import month_base
+    periods = monthly_plan('1990-02-01')
+    units = [p + '|' + m for p in periods for m in ('SH', 'SZ', 'BJ')]
+    proofs = {u: {'count': i, 'digest': digest([i]), 'contract': 1} for i, u in enumerate(units)}
+    rolling, total, base = '', 0, None
+    for i, u in enumerate(units[:5]):
+        if i == 3:
+            base = {'collected': total, 'rolling': rolling}
+        p = proofs[u]
+        total += p['count']
+        rolling = digest([rolling, u, p['digest'], p['count']])
+    cursor = dict(latest='1990-02-01', scope_hash=digest(units), phase='fetch', index=1,
+                  market_index=2, collected=total, rolling=rolling)
+    assert month_base(cursor, proofs) == base
+    proofs[units[0]]['digest'] = digest(['same count, different content'])
+    with pytest.raises(ValueError, match='chain differs'):
+        month_base(cursor, proofs)

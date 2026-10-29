@@ -1,0 +1,26 @@
+{
+  "scope": "platform identity UI, immutable creation recipes, bounded operation history",
+  "profiles_migrated": 13,
+  "identity_preservation": [
+    "code set",
+    "profile_id",
+    "protected credentials",
+    "registration",
+    "logical MAC and IMEI"
+  ],
+  "second_migration_changed": false,
+  "registration_requests": 0,
+  "live_verification": {
+    "node": "node002",
+    "proxy_requests": 3,
+    "direct_requests": 0,
+    "login": true
+  },
+  "tests": {
+    "unit": 40,
+    "integration": 11
+  },
+  "initial_integration_issue": "Private test MySQL rejected --skip-binlog; corrected to --skip-log-bin, verified private UUID/port, reran all 11 successfully",
+  "market_initialization": "not implemented in this identity management task",
+  "publication": "See build release evidence; separate from this pre-release test record"
+}

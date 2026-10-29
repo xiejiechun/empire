@@ -217,6 +217,18 @@ class RecordsPlugin:
             self._key("archives", project_id), 0, ARCHIVE_LIMIT - 1,
         )]
 
+    async def add_identity_run(self, platform_id, record):
+        """Shared bounded operational store; an operation keeps its ID on completion."""
+        allowed = {'id', 'code', 'operation', 'status', 'started_at', 'finished_at', 'stage', 'error_code', 'message'}
+        if set(record) - allowed or not {'id', 'code', 'status', 'operation'} <= record.keys():
+            raise ValueError('Invalid identity operation record')
+        safe = self._bounded_metadata(record)
+        return await self._append('identity-runs', platform_id, safe, 100)
+
+    async def list_identity_runs(self, platform_id):
+        return [json.loads(raw) for raw in await self.redis.client.lrange(
+            self._key('identity-runs', platform_id), 0, 99)]
+
     async def list_all_records(self, kind, offset=0, limit=50, known_revision=None):
         from empire.plugins.collection.record_query import all_records
         return await all_records(self, kind, offset, limit, known_revision)

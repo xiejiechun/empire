@@ -1,0 +1,209 @@
+{
+  "schema": 1,
+  "accepted_at": "2026-10-25T05:46:11.338703+00:00",
+  "scope": "当前沪深北A股5578只固定集合，远航PC协议完整可得历史，截止2026-10-23；不代表全部历史退市证券。",
+  "accepted": true,
+  "initialization_complete": true,
+  "released": true,
+  "real_desktop_verified": true,
+  "source_policy": "日线、权息、股本仅远航PC原生协议；东方财富仅用于上市状态判断。",
+  "release": {
+    "id": "e2a35bdbaffa4da28a71565475c018c4",
+    "state": "committed",
+    "tests_passed": 4551,
+    "existing_opt_in_skipped": 5,
+    "warnings": 20,
+    "source_sha256": "f72dd07c036b5e63b6de6e9f54bbb2e7d5db65b47cb76b77898835857d56ee85",
+    "manifest": {
+      "version": "0.1.0",
+      "commit": "f5dfe343262bccf4f3c7d379b9f9e026983b6c92",
+      "dirty": true,
+      "source_sha256": "f72dd07c036b5e63b6de6e9f54bbb2e7d5db65b47cb76b77898835857d56ee85",
+      "release_id": "e2a35bdbaffa4da28a71565475c018c4",
+      "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+      "dependency_count": 42,
+      "dependency_report_sha256": "4a7f04fbf9069107bbf233999cfc3e9efe430899bb10066c88fd4a6d1ecd73e7",
+      "built_at_utc": "2026-10-25T05:24:17.128131+00:00",
+      "python": "3.12.9",
+      "pyinstaller": "6.22.3"
+    },
+    "publication": {
+      "path": "build/releases/e2a35bdbaffa4da28a71565475c018c4/publication.json",
+      "sha256": "41bf656a38a10e5ee8a692e2c4d3fb14db175bfcfed38eb8d5b42e22c36911eb"
+    }
+  },
+  "initialization": {
+    "securities": 5578,
+    "with_history": 5575,
+    "deferred_prelisting": [
+      "001381.SZ",
+      "688827.SH",
+      "920306.BJ"
+    ],
+    "first": "1990-12-19",
+    "through": "2026-10-23",
+    "totals": {
+      "yuanhang_daily_price": 17005355,
+      "yuanhang_price_year": 75986,
+      "yuanhang_corporate_action": 57650,
+      "yuanhang_capital": 758492,
+      "yuanhang_series_proof": 11150
+    },
+    "proxy_requests": 13197,
+    "direct_requests": 0,
+    "per_security_source_keys_and_content_match_sql": true,
+    "pending": 0,
+    "evidence": {
+      "path": "docs/evidence/ths-yuanhang-full-initialization-2026-10-25.json",
+      "sha256": "fd6639fb126be596a8334dfe48f0ee183643a128bd6709600b0b108143d50879"
+    }
+  },
+  "latest_real_sample": {
+    "securities": 70,
+    "units": 140,
+    "proxy_requests": 235,
+    "direct_requests": 0,
+    "registrations": 0,
+    "pending": 0,
+    "evidence": {
+      "path": "docs/evidence/ths-yuanhang-native-formal-2026-10-25.json",
+      "sha256": "69dd506950cf420480aa9e829e2bf740ae32b3eeeb7d1164d6d75ac0e9ed4cfb"
+    }
+  },
+  "capacity": {
+    "passed": true,
+    "evidence": {
+      "path": "docs/evidence/ths-yuanhang-capacity-2026-10-25.json",
+      "sha256": "5887bd3e5d3a8219d571b705c0da5eff3516f2abd7f0c72f57d907443db260d1"
+    }
+  },
+  "desktop": {
+    "application": "D:/project/empire/dist/Empire/Empire.exe",
+    "method": "actual visible Windows UI via computer-use skill",
+    "checks": [
+      "数据目录搜索远航并打开远航历史行情。000001.SZ首日1991-04-03，OHLC49，量100股，额4900元，与正式SQL一致。",
+      "日线200条分页，第二页首日1991-12-11，上一页/下一页可用。",
+      "300176.SZ权息11条；2018-05-29转增0.9/原股、现金1.1元/原股；2026-08-21配股0.4/原股、配股价3.36元。",
+      "300176.SZ三口径股本分开查询；2026-09-02总股本及普通流通股531453919股，自由流通股395376669股，与正式SQL一致。",
+      "300176.SZ自算复权2018-05-28至30原始K线3日、前复权切换正常；明细前复权首日收盘73.95263158、5月29日因子1.91487439及后复权收盘142.04538197，匹配正式查询。",
+      "采集管理→身份管理按平台展示同花顺远航版，保留15个节点；node002显示账号就绪、上一轮复用登录成功、只读首次申请配方与逻辑设备参数。未通过界面发起注册或登录。",
+      "通过标题栏正常关闭，等窗口退出后重新打开；最终窗口32378732可见，重新进入远航页面实际查询000001.SZ成功。"
+    ],
+    "final_window_id": 32378732,
+    "normal_close_and_reopen": true,
+    "unrelated_existing_issue": "既有开盘啦题材详情的唯一市场证据错误保留；不宣称全程序无异常。"
+  },
+  "runtime": {
+    "observed_at": "2026-10-25T05:44:33.737501+00:00",
+    "read_only": true,
+    "collectors_started": false,
+    "target": {
+      "database_name": "empire",
+      "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+      "port": 3307
+    },
+    "first_price": {
+      "trade_date": "1991-04-03",
+      "close": "49.0000000000"
+    },
+    "namespace": "empire:dev",
+    "pending_at_observation": 0,
+    "hashes": {
+      "config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+      "dist/Empire/config.toml": "c0a143ecda599fb761d57441ddf361bb285b7186f9a37de4ec9df66847720afc",
+      "dist/Empire/Empire.exe": "73773228d0df795f675ea4bba41cfe94605fff3c17cd9a014ebc0dc8cadf9e6c"
+    }
+  },
+  "packaged_doctor": {
+    "path": "build/yuanhang-packaged-doctor-20261025-b.json",
+    "sha256": "0656521e6e684c196cd584e759bec2ebc4165f0081c3e18b92f49b756db6c8c1"
+  },
+  "formal_query_baseline": {
+    "path": "build/yuanhang-distribution-config-query-baseline-20261025.json",
+    "sha256": "ed577bcaddfcac0df2fc29234bf7a6871ff2fc8149f3cba1356e0d6ac46f3f92"
+  },
+  "quality_limits": {
+    "missing_volume_securities": 1,
+    "missing_volume_rows": 1,
+    "missing_amount_securities": 845,
+    "missing_amount_rows": 845,
+    "ohlc_anomaly_securities": 3,
+    "ohlc_anomaly_rows": 4,
+    "missing_circulating_securities": 21,
+    "missing_circulating_rows": 24,
+    "ambiguous_action_securities": 3,
+    "policy": "明确源NULL保留未知；OHLC异常与同日多事件歧义阻断受影响区间复权，原始历史仍保留。"
+  },
+  "lifecycle": {
+    "initialization": "固定股票池及截止日，逐证券完整来源证明、年度日线和联合权息股本全部归档核对，待归档0才完成。",
+    "maintenance": "每轮重新核实每证券完整原生历史，日线按年度归档并发现旧年份修订，权息和三口径股本按完整序列比较；未上市证券逐轮复查。默认每日北京时间18:00，执行以用户保存的计划为准。",
+    "recovery": "失败不推进断点；仅重启Empire且Redis仍在可续跑；Redis丢失后重新核实当前池完整历史，SQL最大日期不能证明完成，无法承诺Redis服务重启后未归档数据保留。"
+  },
+  "contract_evidence": {
+    "business_design": "docs/ths-yuanhang-storage-design.md",
+    "implementation": "docs/ths-yuanhang-implementation.md",
+    "five_integrity_requirements": "生命周期、集合/正文核对、失败不推进、正式端到端、开发和实采分开验收，见相应专项及报告。",
+    "not_applicable": "本轮不采分时、竞价和盘口，不承诺完整历史退市目录、当时可知版本或合并换股等其他公司事件。"
+  },
+  "error_cleanup": {
+    "exact_ids_only": true,
+    "fixed_errors_cleared": 27,
+    "evidence": [
+      "docs/evidence/ths-yuanhang-financial-fix-2026-10-25.json",
+      "docs/evidence/ths-yuanhang-daily-repeat-fix-2026-10-25.json"
+    ],
+    "unresolved_old_network_error_ids": [
+      "d5bdb7467a6840c7928f8f311863f78f",
+      "ba5f35477c154d5ba2a165be76d776db"
+    ]
+  },
+  "private_mysql": {
+    "at": "2026-10-25T05:43:06.041334+00:00",
+    "operation": "normal SQL SHUTDOWN of owned private MySQL only",
+    "identity": {
+      "server_uuid": "ccdc0965-cf77-11f1-88a6-380525361d4d",
+      "port": 13348,
+      "datadir": "D:\\project\\empire\\build\\yuanhang-node-mysql-20261024\\data\\",
+      "connection_id": 5965
+    },
+    "databases": [
+      "empire_2f442f3657ff48f9854f6fa2921988bf_test",
+      "information_schema",
+      "mysql",
+      "performance_schema",
+      "sys"
+    ],
+    "other_clients": 0,
+    "retained_test_database": "empire_2f442f3657ff48f9854f6fa2921988bf_test",
+    "retention_note": "Private instance UUID/datadir verified; remaining test database preserved on disk without deletion.",
+    "closed": true
+  },
+  "post_release_changes": "仅本验收记录、开发实施/状态文档及显式文档审阅后记；业务源码、包内正文及正式EXE未改变。",
+  "git": {
+    "committed": false,
+    "existing_index_lock_preserved": true,
+    "lock_length": 0,
+    "lock_last_write_local": "2026-10-24 14:30:54",
+    "unrelated_preexisting_change_preserved": "src/empire/features/preparation/markets.py"
+  },
+  "remaining_in_scope": [],
+  "post_release_validation": {
+    "documentation_contract": {
+      "passed": true,
+      "documents": 449,
+      "links": 3688,
+      "schema_tables": 65
+    },
+    "documentation_regression": {
+      "passed": 5
+    },
+    "release_input_comparison": {
+      "all_runtime_scripts_sql_tests_and_packaged_resources_unchanged": true,
+      "changed_existing_inputs": [
+        "docs/documentation-review.json",
+        "docs/implementation-status.md",
+        "docs/ths-yuanhang-implementation.md"
+      ]
+    }
+  }
+}

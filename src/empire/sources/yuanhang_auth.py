@@ -1,7 +1,7 @@
 """Normal existing-guest authentication on the shared downloader.
 
-No registration or synthetic device generation. Callers supply the actual
-client device and an existing identity; neither is inferred from a proxy IP/code.
+Callers supply an explicit client protocol identifier and an existing identity.
+Logical node profiles are managed separately; identifiers are never inferred from an IP.
 Sessions live only in memory and contain no guessed persistence/expiry contract.
 """
 import base64
@@ -53,6 +53,7 @@ class GuestSession:
     passport64: str = field(repr=False)
     mac64: str = field(repr=False)
     servers: tuple[StreamTarget, ...]
+    proxy_code: str | None = None
 
 
 def _token(value, maximum=4096):
@@ -84,10 +85,10 @@ def _item(body: bytes, stage: str):
         raise AuthenticationError(stage) from None
 
 
-async def _request_item(http, project_id, stage, params=None):
+async def _request_item(http, project_id, stage, params=None, *, proxy_code=None):
     options = dict(allowed_domains=('10jqka.com.cn',), policy=AUTH_POLICY,
                    max_retries=0, max_redirects=0, total_timeout=30,
-                   project_id=project_id, sensitive=True)
+                   project_id=project_id, sensitive=True, proxy_code=proxy_code)
     if params is None:
         response = await http.request('GET', AUTH_URL + '?reqtype=do_rsa&type=get_pubkey', **options)
     else:
@@ -100,7 +101,7 @@ async def _request_item(http, project_id, stage, params=None):
         response.close()
 
 
-def _passport(item, user_id, device):
+def _passport(item, user_id, device, proxy_code=None):
     try:
         text = _token(item.get('passport'), 65536)
         signature = _token(item.get('signature'), 8192)
@@ -130,12 +131,13 @@ def _passport(item, user_id, device):
                 raise ValueError
             servers.append(StreamTarget(fields[0], int(fields[1]), 'https://10jqka.com.cn/',
                                          ('10jqka.com.cn', '123ths.com')))
-        return GuestSession(user_id, passport64, device.mac64, tuple(dict.fromkeys(servers)))
+        return GuestSession(user_id, passport64, device.mac64, tuple(dict.fromkeys(servers)), proxy_code)
     except (ValueError, UnicodeError, struct.error):
         raise AuthenticationError('passport-format') from None
 
 
-async def login_guest(http, identity: GuestIdentity, device: ClientDevice, *, project_id: str) -> GuestSession:
+async def login_guest(http, identity: GuestIdentity, device: ClientDevice, *, project_id: str,
+                      proxy_code: str | None = None) -> GuestSession:
     """Reuse one normal guest. A source rejection never triggers auto_register."""
     if not isinstance(identity, GuestIdentity) or not isinstance(device, ClientDevice) or not project_id:
         raise ValueError('Yuanhang login requires explicit identity, device and project')
@@ -145,7 +147,7 @@ async def login_guest(http, identity: GuestIdentity, device: ClientDevice, *, pr
         _token(identity.password, 512)
     except ValueError:
         raise AuthenticationError('identity') from None
-    public = await _request_item(http, project_id, 'public-key')
+    public = await _request_item(http, project_id, 'public-key', proxy_code=proxy_code)
     try:
         modulus = public.get('modulus', '')
         exponent = public.get('publicExponent', '')
@@ -158,15 +160,15 @@ async def login_guest(http, identity: GuestIdentity, device: ClientDevice, *, pr
     except (ValueError, UnicodeError):
         raise AuthenticationError('public-key-format') from None
     session = await _request_item(http, project_id, 'login', dict(
-        reqtype='unified_login', **credentials, rsa_version=version, ta_appid='2022021120720687'))
+        reqtype='unified_login', **credentials, rsa_version=version, ta_appid='2022021120720687'), proxy_code=proxy_code)
     try:
         user_id, session_id = _token(session.get('userid'), 128), _token(session.get('sessionid'))
     except ValueError:
         raise AuthenticationError('session-format') from None
     passport = await _request_item(http, project_id, 'passport', dict(
         reqtype='verify', product='S01', imei=device.imei, userid=user_id, sessionid=session_id,
-        qsid='800', version=VERSION, sdsn='', securities='同花顺远航版', nohqlist='0', newwgflag='3'))
-    return _passport(passport, user_id, device)
+        qsid='800', version=VERSION, sdsn='', securities='同花顺远航版', nohqlist='0', newwgflag='3'), proxy_code=proxy_code)
+    return _passport(passport, user_id, device, proxy_code)
 
 
 async def exchange_frame(channel, payload: bytes) -> bytes:

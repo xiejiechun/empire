@@ -105,3 +105,11 @@ def test_capital_tables_keep_distinct_source_date_grids():
 def test_invalid_source_sets_cannot_become_complete_history(tables, reason):
     with pytest.raises(ValueError, match=reason):
         validate(tables)
+
+def test_nonfinite_double_still_rejected_with_field_and_date():
+    from empire.sources.yuanhang_wire import decode_table
+    descriptors = struct.pack('<IBBH', 1, 4, 0, 4) + struct.pack('<IBBH', 407, 3, 0, 8)
+    body = b'hx1.0\0' + struct.pack('<iIHHI', 1, 38, 12, 2, 0) + descriptors
+    body += struct.pack('<id', 20261028, float('nan'))
+    with pytest.raises(ValueError, match=r'Nonfinite HX double; field=407, row=0, date=20261028'):
+        decode_table(body, 1024)

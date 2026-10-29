@@ -91,6 +91,7 @@ class SinaUniverseCollector(StockPages):
         return self.records.sanitize_text(error)
 
     async def execute(self, *, fresh=False, baseline_revision=0) -> StockRunResult:
+        self.stats.update(collected=0, expected_count=None)
         download_started = monotonic()
         try:
             state = await self.ingest.checkpoint(self.job_key)
@@ -276,4 +277,5 @@ class SinaUniverseCollector(StockPages):
         self.stats["status"] = "stopped"
 
     def health(self):
-        return dict(self.stats)
+        return {**self.stats, 'completed_units': self.stats.get('collected'),
+                'total_units': self.stats.get('expected_count'), 'unit_name': '只股票'}

@@ -1,0 +1,191 @@
+{
+  "at": "2026-10-25T18:51:15.407299+00:00",
+  "status": "released",
+  "release_id": "c840384a2be5433c8a02310637546d90",
+  "executable_sha256": "8bebc5b610b277db64b4a19cc028a818c04c67ec825653e57f7f89cd94fe1843",
+  "source_sha256": "34d2b1bea65a7c9db3f448394be398b2fd4a7c40f818d47970260582937e96df",
+  "publication": "D:\\project\\empire\\build\\releases\\c840384a2be5433c8a02310637546d90\\publication.json",
+  "tests": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "5",
+    "tests": "4591",
+    "time": "2902.237",
+    "timestamp": "2026-10-26T01:53:24.856684+08:00",
+    "hostname": "xiejiechun"
+  },
+  "config_preserved": true,
+  "migration": {
+    "applied": true,
+    "changed": true,
+    "prices": 17005358,
+    "annual_proofs": 75986,
+    "proof_digest": "dff4ffb31db1bec5f7c32804672e0f8f9449a829f70816b9cdec6e7d1b2ab927",
+    "securities": 5575,
+    "serialized_state_bytes": 9542240,
+    "business_dml": 0
+  },
+  "legacy_checkpoint_retirement": {
+    "before": {
+      "revision": 236311,
+      "cursor": {
+        "phase": "collecting",
+        "scope_hash": "15c02f8b05dd3be3c833b3c825771c31fd22eab5ab3f11aa48eb719c473bd85f",
+        "through": "2026-10-23",
+        "next_index": 5539,
+        "next_year": 1900,
+        "snapshot_hash": "",
+        "pages": 75787,
+        "collected": 16964940,
+        "batch_id": "97d6df95c83e4fc2b413cf5c9e5b0493",
+        "deferred": {
+          "001381.SZ": {
+            "status": "deferred_prelisting",
+            "metadata_source": "eastmoney_listing_scope",
+            "code": "001381.SZ",
+            "listing_date": null,
+            "through": "2026-10-23",
+            "native_status": "empty_history"
+          },
+          "688827.SH": {
+            "status": "deferred_prelisting",
+            "metadata_source": "eastmoney_listing_scope",
+            "code": "688827.SH",
+            "listing_date": null,
+            "through": "2026-10-23",
+            "native_status": "empty_history"
+          },
+          "920306.BJ": {
+            "status": "deferred_prelisting",
+            "metadata_source": "eastmoney_listing_scope",
+            "code": "920306.BJ",
+            "listing_date": null,
+            "through": "2026-10-23",
+            "native_status": "empty_history"
+          }
+        }
+      }
+    },
+    "reason": "Explicit rollout: queue empty and SQL date coverage migrated; replan from durable coverage",
+    "after": {
+      "revision": 236312,
+      "cursor": {}
+    },
+    "pending": 0,
+    "passed": true
+  },
+  "production_plan": {
+    "through": "2026-10-23",
+    "securities": 5578,
+    "modes": {
+      "skip": 5575,
+      "full": 3
+    },
+    "requested": [
+      {
+        "code": "001381.SZ",
+        "mode": "full",
+        "start": "1900-01-01",
+        "end": "2026-10-23",
+        "native_market": null,
+        "reason": "missing_initial_coverage"
+      },
+      {
+        "code": "688827.SH",
+        "mode": "full",
+        "start": "1900-01-01",
+        "end": "2026-10-23",
+        "native_market": null,
+        "reason": "missing_initial_coverage"
+      },
+      {
+        "code": "920306.BJ",
+        "mode": "full",
+        "start": "1900-01-01",
+        "end": "2026-10-23",
+        "native_market": null,
+        "reason": "missing_initial_coverage"
+      }
+    ]
+  },
+  "real_sample": {
+    "passed": true,
+    "routes": {
+      "proxy_requests": 239
+    },
+    "pending": 0,
+    "incremental": {
+      "initial_through": "2026-10-22",
+      "through": "2026-10-23",
+      "stats": {
+        "status": "complete",
+        "collected": 213,
+        "logical_history_requests": 37,
+        "response_bytes": 10091,
+        "decoded_bytes": 10182,
+        "planned_requests": 37,
+        "skipped_units": 0,
+        "full_units": 0,
+        "range_units": 37,
+        "total_units": 37,
+        "completed_units": 37,
+        "deferred_units": 0,
+        "error": "",
+        "download_item_name": "只股票",
+        "download_window_limit": 12,
+        "download_buffer_capacity": 157,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "current_security": "920200.BJ",
+        "pages": 37,
+        "node_transport_retries": 1
+      },
+      "pages": 37,
+      "routes": {
+        "proxy_requests": 73
+      },
+      "repeat_pages": 0,
+      "repeat_source_requests": 0,
+      "sql_restored_skip_count": 37
+    }
+  },
+  "pending_at_final_check": 0,
+  "doctor": {
+    "exit_code": 0,
+    "cwd": "C:\\Users\\52948",
+    "redis_connected": true,
+    "mysql_connected": true,
+    "mysql_port": 3307
+  },
+  "desktop": {
+    "visible": true,
+    "process": "D:\\project\\empire\\dist\\Empire\\Empire.exe",
+    "window_id": 228397282,
+    "actions": [
+      "正常启动正式新版",
+      "数据目录搜索远航并打开历史行情",
+      "查询000001.SZ日线，200条历史记录",
+      "显示增量覆盖2026-10-23及完整历史核验时间",
+      "采集管理日线详情显示5交易日回看与20交易日轮转说明",
+      "回到日线结果页并保持窗口打开"
+    ],
+    "cost_counters": "专项实采与回归验证；本次正式桌面未再启动全池任务"
+  },
+  "private_mysql": {
+    "port": 13348,
+    "uuid": "ccdc0965-cf77-11f1-88a6-380525361d4d",
+    "shutdown": "SQL SHUTDOWN accepted; connection exit rollback raised expected lost-connection; process and listener absent afterwards"
+  },
+  "limitations": [
+    "短区间减少正文与入队，不代表原生单股请求已合并；多证券批量和长连接未确认",
+    "回看外旧修订在20交易日轮转中发现，失败或离线会延迟",
+    "保留既有来源缺值/OHLC异常/同日事件歧义用途限制",
+    "已有.git/index.lock未删除，本次未提交或推送Git；共享既存变更保留",
+    "最终生产规划只读核实5575 skip及3未上市复查；不是新一轮全池来源实采"
+  ]
+}

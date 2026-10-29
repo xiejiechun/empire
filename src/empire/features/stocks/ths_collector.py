@@ -58,6 +58,7 @@ class ThsUniverseCollector:
             response.close()
 
     async def execute(self, *, fresh=False, baseline_revision=0):
+        self.stats.update(collected=0, expected_count=None)
         reservation = None
         try:
             self.stats.update(status='running', error='')
@@ -116,4 +117,5 @@ class ThsUniverseCollector:
         self.stats['status'] = 'stopped'
 
     def health(self):
-        return dict(self.stats)
+        return {**self.stats, 'completed_units': self.stats.get('collected'),
+                'total_units': self.stats.get('expected_count'), 'unit_name': '只股票'}

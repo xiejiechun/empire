@@ -10,7 +10,11 @@ from empire.contracts.preparation import CheckEvidence
 from empire.features.capital_actions.distribution import nominal_rows, summarize_distribution
 from empire.features.capital_actions.event_rules import ActionError, actions
 from empire.features.preparation.products import attach_products
-from tests.test_adjustment import dividend
+
+
+def dividend(day='2026-09-02', cash='1', shares='0', key='one', status='实施方案'):
+    return dict(record_key=key, data=dict(ex_date=day, cash_per_share=cash, total_bonus_per_share=shares,
+                                        tax_basis='含税', status=status))
 
 
 def records():

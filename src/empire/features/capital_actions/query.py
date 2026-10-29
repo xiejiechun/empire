@@ -47,7 +47,7 @@ class CapitalDataPlugin:
             scoped=True, cache_revision=2),)
         if kind == 'dividends':
             self.preparation += (ComputationContribution('dividend_yield', 'dividends.query',
-                '通达信分红 / 巨潮日历 / 开盘啦未复权收盘价', 'empire-dividend-yield',
+                '区间现金股息率（缺少价格及股本输入）', 'empire-dividend-yield',
                 ('tests/test_dividend_yield.py',), ('tests/integration/test_dividend_yield_pipeline.py',),
                 self.output_version, page_id='dividends', execute_method='dividend_yield',
                 method='yield_preparation_check', cache_revision=1),)

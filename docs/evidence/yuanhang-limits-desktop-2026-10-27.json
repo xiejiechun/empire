@@ -1,0 +1,49 @@
+{
+  "at": "2026-10-26T16:51:01.367454+00:00",
+  "release_id": "dd376da553224ee9aa03ce3a80c36770",
+  "exe_sha256": "c61c5922d6d4a47f0b7de7c20b515b8d7bb7e7df7b2abbe8295b41f2da6084bb",
+  "actual_desktop": true,
+  "launch_working_directory": "C:/Windows/Temp",
+  "configuration_preserved": true,
+  "checks": [
+    {
+      "check": "catalogue",
+      "result": "远航涨跌停分析可搜索并打开，五池菜单完整"
+    },
+    {
+      "check": "limit_up_2024-10-08",
+      "source_total": 716,
+      "page_size": 200,
+      "first_page_first": "000004.SZ",
+      "second_page_first": "300130.SZ"
+    },
+    {
+      "check": "rush_2024-10-08",
+      "source_total": 508,
+      "page_size": 200
+    },
+    {
+      "check": "historical_identity",
+      "code": "871478.BJ",
+      "date": "2023-11-03",
+      "name": "巨能股份",
+      "rows": 1
+    },
+    {
+      "check": "source_zero_time",
+      "code": "000428.SZ",
+      "date": "2022-09-20",
+      "display": "未知（来源0）",
+      "fields": [
+        "首次涨停",
+        "最后涨停"
+      ]
+    }
+  ],
+  "limitations": [
+    "桌面逐项查询抽查涨停板、涨停冲刺及证券历史；五池全部集合另由SQL/来源验收证明。",
+    "金额与小数当前显示保留SQL精度，尾零较长；后续可独立改善显示，不改变存储精度。"
+  ],
+  "shutdown": "Alt+F4 normal exit before exclusive history initialization",
+  "reason_backfill": "started; not complete"
+}

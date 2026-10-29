@@ -1,0 +1,55 @@
+<!-- topic:数据库参考|MySQL yuanhang_daily_price -->
+<!-- summary:远航版原生历史结构化存储；来源固定ths_yuanhang。 -->
+<!-- group:MySQL -->
+# MySQL yuanhang_daily_price
+
+## 用途与归属
+
+远航版PC原生协议的结构化事实或完整内容证明。日线归属ths-yuanhang-prices，权息与股本归属ths-yuanhang-financial；统一归档写入，历史查询读取。不是运行日志。
+
+## 结构与身份
+
+| 字段 | SQL声明 | 含义 |
+| --- | --- | --- |
+| `unified_code` | `VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 统一证券键，六位代码加SH/SZ/BJ后缀；不随原生板块变化。 |
+| `trade_date` | `DATE NOT NULL` | 来源交易日，停牌缺日不自行补齐。 |
+| `open` | `DECIMAL(28,10) NOT NULL` | 不复权开盘价，元。 |
+| `high` | `DECIMAL(28,10) NOT NULL` | 不复权最高价，元。 |
+| `low` | `DECIMAL(28,10) NOT NULL` | 不复权最低价，元。 |
+| `close` | `DECIMAL(28,10) NOT NULL` | 不复权收盘价，元。 |
+| `volume_shares` | `DECIMAL(28,10) NULL` | 来源成交量，股；可用值非负，来源明确缺值为NULL。 |
+| `amount_yuan` | `DECIMAL(28,10) NULL` | 成交额，元；来源缺值保留NULL，与零区分。 |
+
+### 主键、索引与完整性约束
+
+- `PRIMARY KEY (unified_code,trade_date)`
+- `KEY idx_yuanhang_price_date (trade_date,unified_code)`
+- `CONSTRAINT ck_yuanhang_price_values CHECK (open > 0 AND high > 0 AND low > 0 AND close > 0 AND volume_shares >= 0 AND (amount_yuan IS NULL OR amount_yuan >= 0))`
+
+## 读写与关联
+
+与其他远航表按unified_code和年度/生效日期关联；没有到当前股票表的删除级联。正式查询每页最多500条，年度单元最多366条；事件最多2000点，三种股本合计最多30000点，超限失败不截断。数值DECIMAL(28,10)，超出精度明确失败，不舍入。
+
+来源OHLC关系矛盾仍保存原值，`quality_flags` 为正式查询即时推导字段，不另存重复状态：0表示关系通过，1表示最低价大于开/收盘或最高价小于开/收盘。页面显示“OHLC异常”；该范围不能通过复权计算。成交量和成交额缺值独立保留NULL，不能填0；成交量缺值不妨碍纯价格复权，但不满足依赖成交量的分析。此处完整入库不代表所有行适合回测。
+
+规范5仅合并完整日线字段表中所有值完全相同的相邻重复日期，空值也须一致；同日不同值不任选，部分字段重复不拼接，日期倒序不排序掩盖。原生帧声明行数和字节边界先独立校验，年度条数按独立交易日计算。
+
+## 保留与恢复
+
+保留已归档历史，证券离开当前池不删除。完整单元修订只写实际变化，旧观察版本不覆盖更新确认。SQL事实、证明及该项目collection_state同事务。成功后公共归档器删除对应Redis消息，SQL失败保留重放。Redis丢失从SQL日期覆盖恢复，只补未确认范围；不能承诺恢复未归档事实。
+
+## 维护与相关说明
+
+scripts/create_yuanhang_schema.py为显式新增入口；正常关闭程序、确认待归档为0后执行。维护前后核对已有业务及统一状态。应用启动只校验结构。直接维护SQL前须停止归档并失效对应可信摘要和覆盖证明。日常入口及数据语义见“远航版历史行情”。
+
+已知旧严格OHLC约束仅可通过该入口的`--source-quality --apply`显式调整；核对精确旧结构、所有原业务行数及统一状态，保留全部值。规范版本5须完整重核受影响年度证明，旧版本证明不能使计算通过；不在启动时调整约束。
+
+原生空帧或严格校验的单点部分股本，须额外核实明确上市前状态；允许该形态407明确NULL但不填零，不完整响应不作为有效股本归档。上市前延期证券不向本表写入假空历史或零值；范围证据仅进入既有Redis断点与任务结果，每轮复查。原生已有历史与辅助上市状态矛盾时失败，已有事实保留。详见[远航版历史行情](help:远航版历史行情)。
+
+已知旧成交量NOT NULL结构仅可通过`--nullable-volume --apply`显式维护为NULL；仅接受精确旧形态，要求待归档0并核对前后业务数量、统一状态和其他表结构。正式查询price_quality另列missing_volume统计，不与OHLC关系异常混淆。
+
+## 区间更新与版本
+
+日线事实及年度主键不变。短区间只替换已验证日期，年度头按完整年现存正文重算，不删区间外历史。source_count为合并后完整年度独立交易日数。日期覆盖与各段观察版本保存在项目唯一collection_state的证券单元中；相邻同版本合并，至多366段/年、150年/证券，不保存行情正文。年度头的verified_through仍是最后业务内容变化时记录的连续核验上界，当前恢复覆盖须读取项目状态。旧状态通过scripts/migrate_yuanhang_ranges.py显式转换，事实与年度内容证明保持；应用启动不迁移。
+
+迟到的不相交日期区间仍可补入，但不能降低年度证明的观察时间或覆盖较新原生市场。覆盖段决定各日期的写入权限，年度头不用于整年拒绝有效的局部补缺。

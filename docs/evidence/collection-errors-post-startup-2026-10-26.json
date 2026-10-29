@@ -1,0 +1,457 @@
+{
+  "at": "2026-10-25T16:24:04.622276+00:00",
+  "release_id": "5d3b0e0dd3054b4fb09c4c79de3b24a9",
+  "network": {
+    "proxy_requests": 1
+  },
+  "desktop_window_verified": true,
+  "private_test_server_shutdown": true,
+  "cleanup_performed": false,
+  "cleared_ids": [],
+  "disclosure_sql_audit": {
+    "scope": "2026-09-30, all securities",
+    "complete": false,
+    "fresh": true,
+    "rows": 5578,
+    "missing": 0,
+    "temporal_bad": 0,
+    "manifest": {
+      "count": 264664,
+      "units": 561,
+      "digest": "b556e4fb51b88b7981f19a053f81ae9ea19a2d9e1892fc6b4eecf9a5d331eb2e",
+      "latest": "2026-09-30",
+      "scope_hash": "c99c706363c6c74fc055b7ae235406ca79d704cec04392401b7998eb1816e4c0",
+      "observed_at": "2026-10-25T16:19:29.383025+00:00"
+    }
+  },
+  "current_source_comparison": {
+    "source_count": 5575,
+    "sql_count": 5578,
+    "source_keys_digest": "827b01c1bdd882b7df55a2135df2b374a00e2fb69b68a5c608a3b85aa5566502",
+    "missing_keys": [],
+    "changed_content_keys": [],
+    "retained_history": [
+      {
+        "unified_code": "601059.SH",
+        "name": "信达证券",
+        "report_date": "2026-09-30",
+        "first_scheduled": "2026-10-31",
+        "changed_1": "2026-10-19",
+        "changed_2": null,
+        "changed_3": null,
+        "actual_date": null
+      },
+      {
+        "unified_code": "000016.SZ",
+        "name": "*ST康佳A",
+        "report_date": "2026-09-30",
+        "first_scheduled": "2026-10-30",
+        "changed_1": null,
+        "changed_2": null,
+        "changed_3": null,
+        "actual_date": null
+      },
+      {
+        "unified_code": "601198.SH",
+        "name": "东兴证券",
+        "report_date": "2026-09-30",
+        "first_scheduled": "2026-10-31",
+        "changed_1": "2026-10-19",
+        "changed_2": null,
+        "changed_3": null,
+        "actual_date": null
+      }
+    ]
+  },
+  "source_unit_proofs": {
+    "2026-09-30|SH": {
+      "source_count": 2318,
+      "proof_count": 2318,
+      "matches": true
+    },
+    "2026-09-30|SZ": {
+      "source_count": 2905,
+      "proof_count": 2905,
+      "matches": true
+    },
+    "2026-09-30|BJ": {
+      "source_count": 352,
+      "proof_count": 352,
+      "matches": true
+    }
+  },
+  "known_future_date_securities": {
+    "603626": [
+      {
+        "unified_code": "603626.SH",
+        "name": "科森科技",
+        "report_date": "2026-09-30",
+        "first_scheduled": "2026-10-26",
+        "changed_1": null,
+        "changed_2": null,
+        "changed_3": null,
+        "actual_date": "2026-10-26"
+      }
+    ],
+    "688383": [
+      {
+        "unified_code": "688383.SH",
+        "name": "新益昌",
+        "report_date": "2026-09-30",
+        "first_scheduled": "2026-10-26",
+        "changed_1": null,
+        "changed_2": null,
+        "changed_3": null,
+        "actual_date": "2026-10-26"
+      }
+    ],
+    "688353": [
+      {
+        "unified_code": "688353.SH",
+        "name": "华盛锂电",
+        "report_date": "2026-09-30",
+        "first_scheduled": "2026-10-26",
+        "changed_1": null,
+        "changed_2": null,
+        "changed_3": null,
+        "actual_date": "2026-10-26"
+      }
+    ],
+    "600573": [
+      {
+        "unified_code": "600573.SH",
+        "name": "惠泉啤酒",
+        "report_date": "2026-09-30",
+        "first_scheduled": "2026-10-26",
+        "changed_1": null,
+        "changed_2": null,
+        "changed_3": null,
+        "actual_date": "2026-10-26"
+      }
+    ],
+    "603136": [
+      {
+        "unified_code": "603136.SH",
+        "name": "天目湖",
+        "report_date": "2026-09-30",
+        "first_scheduled": "2026-10-26",
+        "changed_1": null,
+        "changed_2": null,
+        "changed_3": null,
+        "actual_date": "2026-10-26"
+      }
+    ],
+    "600025": [
+      {
+        "unified_code": "600025.SH",
+        "name": "华能水电",
+        "report_date": "2026-09-30",
+        "first_scheduled": "2026-10-30",
+        "changed_1": "2026-10-26",
+        "changed_2": null,
+        "changed_3": null,
+        "actual_date": "2026-10-26"
+      }
+    ]
+  },
+  "disclosure_run": {
+    "run_id": "aa3b9bc588854e3daadb587ac4d0ce2b",
+    "task_id": "tdx-earnings-disclosure",
+    "started_at": 1792945167.706667,
+    "origin": "manual",
+    "fresh": false,
+    "baseline_revision": 3936,
+    "use_proxy": true,
+    "proxy_fallback": true,
+    "network": {
+      "proxy_requests": 2
+    },
+    "finished_at": 1792945171.560501,
+    "status": "complete",
+    "error": "",
+    "notice": "",
+    "result": {
+      "collected": 264664,
+      "record_name": "条来源记录",
+      "unit_name": "个完整响应",
+      "completed_units": 187,
+      "total_units": 187,
+      "pages": 562,
+      "phase": "complete",
+      "batch_id": "6de9504d409a4fd685c4e3a75da846f4",
+      "index": 187,
+      "market_index": 0,
+      "response_hash": "",
+      "page": 562,
+      "rolling": "b556e4fb51b88b7981f19a053f81ae9ea19a2d9e1892fc6b4eecf9a5d331eb2e",
+      "scope_hash": "c99c706363c6c74fc055b7ae235406ca79d704cec04392401b7998eb1816e4c0",
+      "units": 561,
+      "latest": "2026-09-30",
+      "started_at": "2026-10-25T11:52:48.889342+00:00",
+      "contract": 1
+    }
+  },
+  "restored_jobs": {
+    "ths-income": {
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 43200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1792983763.7218761,
+      "active": {
+        "run_id": "dc0d9ed22cbd49e499ba75106452d8f9",
+        "task_id": "ths-income",
+        "started_at": 1792944997.7439115,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 5583
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    },
+    "ths-balance": {
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 43200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1792988517.4619882,
+      "active": null,
+      "last_status": "complete",
+      "error": "",
+      "notice": ""
+    },
+    "ths-cashflow": {
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 43200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1792983763.7445812,
+      "active": {
+        "run_id": "d96df9f7f0b749f5821cbad627957b19",
+        "task_id": "ths-cashflow",
+        "started_at": 1792945048.8758297,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 67925
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    },
+    "ths-yuanhang-prices": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793008800.0,
+      "active": {
+        "run_id": "09cbe610482e4871968cf61c3084bf9b",
+        "task_id": "ths-yuanhang-prices",
+        "started_at": 1792945074.8591452,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 190362
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    },
+    "ths-yuanhang-financial": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793008800.0,
+      "active": {
+        "run_id": "5cfb3fb533b346218c60e4674f158d0a",
+        "task_id": "ths-yuanhang-financial",
+        "started_at": 1792945096.67457,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 19633
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    }
+  },
+  "pending_stream": 27,
+  "error_jobs": {
+    "kaipanla-quote": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": false,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": true
+      },
+      "next_due": null,
+      "active": null,
+      "last_status": "error",
+      "error": "上市日期证券身份或当前上市状态无效",
+      "notice": ""
+    }
+  },
+  "final_state_at": "2026-10-25T16:27:17.224612+00:00",
+  "final_pending_stream": 0,
+  "restored_jobs_final": {
+    "ths-income": {
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 43200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1792983763.7218761,
+      "active": {
+        "run_id": "dc0d9ed22cbd49e499ba75106452d8f9",
+        "task_id": "ths-income",
+        "started_at": 1792944997.7439115,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 5583
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    },
+    "ths-balance": {
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 43200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1792988517.4619882,
+      "active": null,
+      "last_status": "complete",
+      "error": "",
+      "notice": ""
+    },
+    "ths-cashflow": {
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 43200,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1792988739.970477,
+      "active": null,
+      "last_status": "complete",
+      "error": "",
+      "notice": ""
+    },
+    "ths-yuanhang-prices": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793008800.0,
+      "active": {
+        "run_id": "09cbe610482e4871968cf61c3084bf9b",
+        "task_id": "ths-yuanhang-prices",
+        "started_at": 1792945074.8591452,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 190362
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    },
+    "ths-yuanhang-financial": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793008800.0,
+      "active": {
+        "run_id": "5cfb3fb533b346218c60e4674f158d0a",
+        "task_id": "ths-yuanhang-financial",
+        "started_at": 1792945096.67457,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 19633
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    }
+  },
+  "active_error_projects": [],
+  "archived_error_projects": [
+    "kaipanla-quote"
+  ],
+  "different_cwd_doctor": {
+    "working_directory": "C:/Users/52948",
+    "exit_code": 0,
+    "redis_connected": true,
+    "mysql_connected": true,
+    "mysql_port": 3307
+  },
+  "ui_checks": [
+    "Visible official desktop opened",
+    "Repurchase formal query returned 200 rows on first page",
+    "Five interrupted manual jobs resumed through Continue with fresh=false",
+    "Help troubleshooting topic opened",
+    "Task page showed zero failed active tasks and one source gap"
+  ]
+}

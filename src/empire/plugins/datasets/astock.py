@@ -117,7 +117,9 @@ class DatasetPlugin:
         return self.mapping(envelope).mapping.fingerprint_plan(envelope, data)
 
     def fingerprint_source(self, envelope):
-        return getattr(self.mapping(envelope).mapping, 'FINGERPRINT_SOURCE', envelope.source)
+        mapping = self.mapping(envelope).mapping
+        bucket = getattr(mapping, 'fingerprint_source', None)
+        return bucket(envelope) if bucket else getattr(mapping, 'FINGERPRINT_SOURCE', envelope.source)
 
     def fingerprint_version(self, namespace):
         contribution = self.namespaces.get(namespace)

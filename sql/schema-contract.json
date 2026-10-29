@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "740b39125f5f4bd4479eb2ea0142dfd2feaf7744a001c5a8d95689d31e7d00b1",
+  "schema_sha256": "eaf07a62b0f0a662248040aa00fca325b0d7618349eb1619f104b60b307a5d67",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -584,732 +584,6 @@
       ],
       "indexes": {},
       "checks": {}
-    },
-    "stock_daily_quote": {
-      "columns": {
-        "unified_code": {
-          "type": "varchar(9) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "trade_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "float_mask": {
-          "type": "bigint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "present_mask": {
-          "type": "bigint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "time": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "up_px": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "avg_px": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "low_px": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "down_px": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "high_px": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "last_px": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "open_px": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "pe_rate": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "jtPeRate": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "TTMPeRate": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "amount_in": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "amplitude": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "px_change": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "vol_ratio": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "amount_out": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "dyn_pb_rate": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "phcj_volume": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "entrust_rate": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "market_value": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "total_amount": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "total_shares": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "phcj_turnover": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "px_change_rate": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "total_turnover": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "turnover_ratio": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "circulation_value": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "circulation_amount": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        },
-        "actualcirculation_value": {
-          "type": "decimal(30, 12)",
-          "nullable": true,
-          "unsigned": false
-        }
-      },
-      "primary": [
-        "unified_code",
-        "trade_date"
-      ],
-      "indexes": {
-        "ix_quote_date": {
-          "columns": [
-            "trade_date",
-            "unified_code"
-          ],
-          "expressions": null,
-          "unique": false
-        }
-      },
-      "checks": {
-        "ck_quote_mask": "((float_mask<288230376151711744)and(present_mask<536870912))"
-      }
-    },
-    "stock_daily_quote_level": {
-      "columns": {
-        "unified_code": {
-          "type": "varchar(9) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "trade_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "side": {
-          "type": "char(1) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "level": {
-          "type": "tinyint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "price": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "source_volume": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "float_mask": {
-          "type": "tinyint",
-          "nullable": false,
-          "unsigned": true
-        }
-      },
-      "primary": [
-        "unified_code",
-        "trade_date",
-        "side",
-        "level"
-      ],
-      "indexes": {},
-      "checks": {
-        "ck_quote_level": "((sidein('b','s'))and(levelbetween1and10))",
-        "ck_quote_level_value": "((price>=0)and(source_volume>=0)and(float_mask<16))"
-      }
-    },
-    "stock_intraday_trade_block": {
-      "columns": {
-        "unified_code": {
-          "type": "varchar(9) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "trade_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "block_seq": {
-          "type": "integer",
-          "nullable": false,
-          "unsigned": true
-        },
-        "first_seq": {
-          "type": "integer",
-          "nullable": false,
-          "unsigned": true
-        },
-        "last_seq": {
-          "type": "integer",
-          "nullable": false,
-          "unsigned": true
-        },
-        "first_time": {
-          "type": "time",
-          "nullable": false,
-          "unsigned": false
-        },
-        "last_time": {
-          "type": "time",
-          "nullable": false,
-          "unsigned": false
-        },
-        "point_count": {
-          "type": "smallint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "format_version": {
-          "type": "smallint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "body": {
-          "type": "blob",
-          "nullable": false,
-          "unsigned": false
-        },
-        "block_hash": {
-          "type": "char(64) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        }
-      },
-      "primary": [
-        "unified_code",
-        "trade_date",
-        "block_seq"
-      ],
-      "indexes": {
-        "ix_trade_time": {
-          "columns": [
-            "unified_code",
-            "trade_date",
-            "first_time",
-            "block_seq"
-          ],
-          "expressions": null,
-          "unique": false
-        }
-      },
-      "checks": {
-        "ck_trade_block": "((format_version=1)and(point_countbetween1and200)and(first_seq=(block_seq*200))and(last_seq=((first_seq+point_count)-1))and(last_time>=first_time)and(length(body)<=24576))"
-      }
-    },
-    "stock_intraday_trend": {
-      "columns": {
-        "unified_code": {
-          "type": "varchar(9) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "trade_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "seq": {
-          "type": "integer",
-          "nullable": false,
-          "unsigned": true
-        },
-        "source_time": {
-          "type": "time",
-          "nullable": false,
-          "unsigned": false
-        },
-        "float_mask": {
-          "type": "smallint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "price": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "average_price": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "source_volume": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "source_flag": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        }
-      },
-      "primary": [
-        "unified_code",
-        "trade_date",
-        "source_time"
-      ],
-      "indexes": {
-        "ix_minute_date": {
-          "columns": [
-            "trade_date",
-            "source_time",
-            "unified_code"
-          ],
-          "expressions": null,
-          "unique": false
-        }
-      },
-      "checks": {
-        "ck_trend_mask": "(float_mask<256)",
-        "ck_trend_seq": "(seq<241)"
-      }
-    },
-    "stock_large_order_trend": {
-      "columns": {
-        "unified_code": {
-          "type": "varchar(9) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "trade_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "seq": {
-          "type": "integer",
-          "nullable": false,
-          "unsigned": true
-        },
-        "source_time": {
-          "type": "time",
-          "nullable": false,
-          "unsigned": false
-        },
-        "float_mask": {
-          "type": "smallint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "net_amount": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        }
-      },
-      "primary": [
-        "unified_code",
-        "trade_date",
-        "source_time"
-      ],
-      "indexes": {
-        "ix_minute_date": {
-          "columns": [
-            "trade_date",
-            "source_time",
-            "unified_code"
-          ],
-          "expressions": null,
-          "unique": false
-        }
-      },
-      "checks": {
-        "ck_large_order_mask": "(float_mask<4)",
-        "ck_large_order_seq": "(seq<241)"
-      }
-    },
-    "stock_market_day": {
-      "columns": {
-        "kind": {
-          "type": "varchar(16) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "unified_code": {
-          "type": "varchar(9) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "trade_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "source_code": {
-          "type": "varchar(6) collate \"ascii_bin\"",
-          "nullable": true,
-          "unsigned": false
-        },
-        "listing_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "listing_source": {
-          "type": "varchar(16) collate \"utf8mb4_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "market_start": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "identity_extra": {
-          "type": "json",
-          "nullable": false,
-          "unsigned": false
-        },
-        "product_extra": {
-          "type": "json",
-          "nullable": false,
-          "unsigned": false
-        },
-        "source_metadata": {
-          "type": "json",
-          "nullable": false,
-          "unsigned": false
-        },
-        "content_hash": {
-          "type": "char(64) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "version_observed_at": {
-          "type": "datetime",
-          "nullable": false,
-          "unsigned": false
-        },
-        "contract_version": {
-          "type": "smallint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "point_count": {
-          "type": "integer",
-          "nullable": false,
-          "unsigned": true
-        },
-        "key_set_hash": {
-          "type": "char(64) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        }
-      },
-      "primary": [
-        "kind",
-        "unified_code",
-        "trade_date"
-      ],
-      "indexes": {
-        "ix_market_date": {
-          "columns": [
-            "kind",
-            "trade_date",
-            "unified_code"
-          ],
-          "expressions": null,
-          "unique": false
-        }
-      },
-      "checks": {
-        "ck_market_contract": "(contract_version=2)",
-        "ck_market_count": "(point_countbetween1and100000)",
-        "ck_market_extra": "((json_storage_size(identity_extra)<=16384)and(json_storage_size(product_extra)<=16384)and(json_storage_size(source_metadata)<=16384))",
-        "ck_market_kind": "(kindin('trend','auction','volume','trades','entrust','large_order','quote'))"
-      }
-    },
-    "stock_minute_entrust": {
-      "columns": {
-        "unified_code": {
-          "type": "varchar(9) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "trade_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "seq": {
-          "type": "integer",
-          "nullable": false,
-          "unsigned": true
-        },
-        "source_time": {
-          "type": "time",
-          "nullable": false,
-          "unsigned": false
-        },
-        "float_mask": {
-          "type": "smallint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "buy_volume": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "sell_volume": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "buy_turnover": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "sell_turnover": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        }
-      },
-      "primary": [
-        "unified_code",
-        "trade_date",
-        "source_time"
-      ],
-      "indexes": {
-        "ix_minute_date": {
-          "columns": [
-            "trade_date",
-            "source_time",
-            "unified_code"
-          ],
-          "expressions": null,
-          "unique": false
-        }
-      },
-      "checks": {
-        "ck_entrust_mask": "(float_mask<256)",
-        "ck_entrust_seq": "(seq<241)"
-      }
-    },
-    "stock_minute_volume": {
-      "columns": {
-        "unified_code": {
-          "type": "varchar(9) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "trade_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "seq": {
-          "type": "integer",
-          "nullable": false,
-          "unsigned": true
-        },
-        "source_time": {
-          "type": "time",
-          "nullable": false,
-          "unsigned": false
-        },
-        "float_mask": {
-          "type": "smallint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "source_volume": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "source_turnover": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "source_flag": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        }
-      },
-      "primary": [
-        "unified_code",
-        "trade_date",
-        "source_time"
-      ],
-      "indexes": {
-        "ix_minute_date": {
-          "columns": [
-            "trade_date",
-            "source_time",
-            "unified_code"
-          ],
-          "expressions": null,
-          "unique": false
-        }
-      },
-      "checks": {
-        "ck_volume_mask": "(float_mask<64)",
-        "ck_volume_seq": "(seq<241)"
-      }
-    },
-    "stock_opening_auction": {
-      "columns": {
-        "unified_code": {
-          "type": "varchar(9) collate \"ascii_bin\"",
-          "nullable": false,
-          "unsigned": false
-        },
-        "trade_date": {
-          "type": "date",
-          "nullable": false,
-          "unsigned": false
-        },
-        "seq": {
-          "type": "integer",
-          "nullable": false,
-          "unsigned": true
-        },
-        "source_time": {
-          "type": "time",
-          "nullable": false,
-          "unsigned": false
-        },
-        "float_mask": {
-          "type": "smallint",
-          "nullable": false,
-          "unsigned": true
-        },
-        "price": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "source_flag": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        },
-        "source_volume": {
-          "type": "decimal(30, 12)",
-          "nullable": false,
-          "unsigned": false
-        }
-      },
-      "primary": [
-        "unified_code",
-        "trade_date",
-        "seq"
-      ],
-      "indexes": {},
-      "checks": {
-        "ck_auction_mask": "(float_mask<64)",
-        "ck_auction_seq": "(seq<100000)"
-      }
     },
     "suspension_event": {
       "columns": {
@@ -4797,6 +4071,644 @@
       },
       "checks": {
         "ck_theme_reason_occurrences": "(occurrencesbetween1and50000)"
+      }
+    },
+    "yuanhang_daily_price": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "trade_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "open": {
+          "type": "decimal(28, 10)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "high": {
+          "type": "decimal(28, 10)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "low": {
+          "type": "decimal(28, 10)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "close": {
+          "type": "decimal(28, 10)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "volume_shares": {
+          "type": "decimal(28, 10)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "amount_yuan": {
+          "type": "decimal(28, 10)",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code",
+        "trade_date"
+      ],
+      "indexes": {
+        "idx_yuanhang_price_date": {
+          "columns": [
+            "trade_date",
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_yuanhang_price_values": "((open>0)and(high>0)and(low>0)and(close>0)and(volume_shares>=0)and((amount_yuanisnull)or(amount_yuan>=0)))"
+      }
+    },
+    "yuanhang_price_year": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "quote_year": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "native_market": {
+          "type": "char(4) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "row_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "first_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "last_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "key_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "contract_version": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "verified_through": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code",
+        "quote_year"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_yuanhang_year_count": "((quote_yearbetween1900and2100)and(source_count=row_count)and(row_count<=366))",
+        "ck_yuanhang_year_dates": "(((row_count=0)and(first_dateisnull)and(last_dateisnull))or((row_count>0)and(first_dateisnotnull)and(last_dateisnotnull)and(first_date<=last_date)and(year(first_date)=quote_year)and(year(last_date)=quote_year)))"
+      }
+    },
+    "yuanhang_corporate_action": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "ex_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "event_key": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "bonus_ratio": {
+          "type": "decimal(28, 10)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "transfer_ratio": {
+          "type": "decimal(28, 10)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "rights_ratio": {
+          "type": "decimal(28, 10)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "rights_price": {
+          "type": "decimal(28, 10)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "cash_per_share": {
+          "type": "decimal(28, 10)",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code",
+        "ex_date",
+        "event_key"
+      ],
+      "indexes": {
+        "idx_yuanhang_action_date": {
+          "columns": [
+            "ex_date",
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_yuanhang_action_values": "(((bonus_ratio>=0)or((bonus_ratio>-(1))and(transfer_ratio=0)and(rights_ratio=0)and(rights_price=0)and(cash_per_share=0)))and(transfer_ratio>=0)and(rights_ratio>=0)and(rights_price>=0)and(cash_per_share>=0)and((rights_ratio=0)or(rights_price>0)))"
+      }
+    },
+    "yuanhang_capital": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "capital_kind": {
+          "type": "varchar(11) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "effective_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "shares": {
+          "type": "decimal(28, 10)",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code",
+        "capital_kind",
+        "effective_date"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_yuanhang_capital_kind": "(capital_kindin('total','circulating','free_float'))",
+        "ck_yuanhang_capital_shares": "(((sharesisnotnull)and(shares>0))or((sharesisnull)and(capital_kind='circulating')))"
+      }
+    },
+    "yuanhang_series_proof": {
+      "columns": {
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "series_kind": {
+          "type": "varchar(7) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "native_market": {
+          "type": "char(4) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "row_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "first_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "last_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "key_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "contract_version": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "response_group": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "total_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "circulating_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "free_float_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "version_observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "unified_code",
+        "series_kind"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_yuanhang_series_count": "((source_count=row_count)and(((series_kind='actions')and(row_count<=2000)and(total_count=0)and(circulating_count=0)and(free_float_count=0))or((series_kind='capital')and(row_count<=30000)and(total_count>0)and(circulating_count>0)and(free_float_count>0)and(((total_count+circulating_count)+free_float_count)=row_count))))",
+        "ck_yuanhang_series_dates": "(((row_count=0)and(first_dateisnull)and(last_dateisnull))or((row_count>0)and(first_dateisnotnull)and(last_dateisnotnull)and(first_date<=last_date)))",
+        "ck_yuanhang_series_kind": "(series_kindin('actions','capital'))"
+      }
+    },
+    "yuanhang_limit_pool": {
+      "columns": {
+        "trade_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "pool_type": {
+          "type": "varchar(24) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_total": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "filter_text": {
+          "type": "varchar(32) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "key_sha256": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_sha256": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "contract_version": {
+          "type": "smallint",
+          "nullable": false,
+          "unsigned": true
+        },
+        "observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "trade_date",
+        "pool_type"
+      ],
+      "indexes": {
+        "idx_yuanhang_limit_pool_kind": {
+          "columns": [
+            "pool_type",
+            "trade_date"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_yuanhang_limit_pool_count": "(source_total<=10000)",
+        "ck_yuanhang_limit_pool_filter": "(filter_text='hs,gem2star')"
+      }
+    },
+    "yuanhang_limit_member": {
+      "columns": {
+        "trade_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "pool_type": {
+          "type": "varchar(24) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "source_market_id": {
+          "type": "smallint",
+          "nullable": true,
+          "unsigned": true
+        },
+        "identity_basis": {
+          "type": "varchar(12) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "change_rate": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "latest": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "turnover_rate": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "currency_value": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "sum_market_value": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "rise_rate": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "turnover": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "order_amount": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "order_volume": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "limit_up_suc_rate": {
+          "type": "decimal(48, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "open_num": {
+          "type": "integer",
+          "nullable": true,
+          "unsigned": true
+        },
+        "high_days_value": {
+          "type": "integer",
+          "nullable": true,
+          "unsigned": true
+        },
+        "is_new": {
+          "type": "integer",
+          "nullable": true,
+          "unsigned": true
+        },
+        "is_again_limit": {
+          "type": "integer",
+          "nullable": true,
+          "unsigned": true
+        },
+        "name": {
+          "type": "varchar(80) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "market_type": {
+          "type": "varchar(32) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "reason_type": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "limit_up_type": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "limit_down_type": {
+          "type": "varchar(128) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "high_days": {
+          "type": "varchar(80) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "change_tag": {
+          "type": "varchar(80) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "top_concept": {
+          "type": "varchar(1024) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "first_limit_up_time": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        },
+        "last_limit_up_time": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        },
+        "first_limit_down_time": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        },
+        "last_limit_down_time": {
+          "type": "datetime",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "trade_date",
+        "pool_type",
+        "unified_code"
+      ],
+      "indexes": {
+        "idx_yuanhang_limit_member_security": {
+          "columns": [
+            "unified_code",
+            "trade_date",
+            "pool_type"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_yuanhang_member_date_code": {
+          "columns": [
+            "trade_date",
+            "unified_code"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_yuanhang_limit_member_probability": "((limit_up_suc_rateisnull)or(limit_up_suc_ratebetween0and1))"
+      }
+    },
+    "yuanhang_limit_reason": {
+      "columns": {
+        "trade_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "unified_code": {
+          "type": "varchar(9) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "name": {
+          "type": "varchar(80) collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "reason_text": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "reason_kind": {
+          "type": "text collate \"utf8mb4_bin\"",
+          "nullable": true,
+          "unsigned": false
+        },
+        "availability": {
+          "type": "varchar(12) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_sha256": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "observed_at": {
+          "type": "datetime",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "trade_date",
+        "unified_code"
+      ],
+      "indexes": {
+        "idx_yuanhang_limit_reason_security": {
+          "columns": [
+            "unified_code",
+            "trade_date"
+          ],
+          "expressions": null,
+          "unique": false
+        },
+        "ix_yuanhang_reason_planning": {
+          "columns": [
+            "trade_date",
+            "unified_code",
+            "observed_at",
+            "content_sha256"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {
+        "ck_yuanhang_limit_reason_availability": "(availabilityin('available','no_content'))"
       }
     }
   }

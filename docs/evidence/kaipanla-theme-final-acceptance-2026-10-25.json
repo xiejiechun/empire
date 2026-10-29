@@ -1,0 +1,345 @@
+{
+  "schema": 1,
+  "at": "2026-10-25T08:30:45.099763+00:00",
+  "acceptance_complete": true,
+  "release": {
+    "id": "a2ce0329aae54af38c9cbe3c82a8e7da",
+    "state": "committed",
+    "passed": true,
+    "manifest": {
+      "version": "0.1.0",
+      "commit": "f5dfe343262bccf4f3c7d379b9f9e026983b6c92",
+      "dirty": true,
+      "source_sha256": "8cc226c7855d38feb77620302ed7643233bdb4f75af39b6314ac428ed40a2fc7",
+      "release_id": "a2ce0329aae54af38c9cbe3c82a8e7da",
+      "requirements_sha256": "acc6e5f83a56d2c964c2b190297dd3043d770208023205f17aecbe08bb3f564c",
+      "dependency_count": 42,
+      "dependency_report_sha256": "cce03b7468353291e0c52424680b22eb80db657f360f6f73cdb94488a2b3991a",
+      "built_at_utc": "2026-10-25T08:15:59.479179+00:00",
+      "python": "3.12.9",
+      "pyinstaller": "6.22.3"
+    },
+    "full_tests": {
+      "passed": 4555,
+      "skipped": 5,
+      "failures": 0,
+      "warnings": 20,
+      "seconds": 3055.36
+    },
+    "local_journal": "D:\\project\\empire\\build\\releases\\a2ce0329aae54af38c9cbe3c82a8e7da\\publication.json",
+    "capacity_and_four_scale_layout": true,
+    "portable_smoke": true
+  },
+  "business": {
+    "anonymous": true,
+    "account_login": false,
+    "root_themes": 251,
+    "list_items": 252,
+    "child_themes": 1,
+    "table_counts": {
+      "theme_daily": 252,
+      "theme_detail": 251,
+      "theme_category": 3003,
+      "theme_stock": 13584,
+      "theme_stock_reason": 15741
+    },
+    "military": {
+      "name": "军工",
+      "stocks": 177,
+      "relations": 253,
+      "digest": "6573b6b52f5e6f68b3d312eb42e8d4584b708b5f402dee942a5b365e882e47c6"
+    },
+    "proxy_requests": 253,
+    "direct_requests": 0,
+    "full_scope_evidence": "docs/evidence/kaipanla-theme-rollout-2026-10-25.json",
+    "sample_boundary": "Full directory plus random 30 themes, seed 20261025; theme-unit collection, not a 30-stock collector claim"
+  },
+  "desktop": {
+    "executable": "dist/Empire/Empire.exe",
+    "visible": true,
+    "data_catalog_search": "开盘啦题材库",
+    "current_items": 252,
+    "child_missing_heat_rank": "来源未提供",
+    "military_pages": [
+      200,
+      53
+    ],
+    "daily_pages": [
+      200,
+      52
+    ],
+    "replay_bj": "2026-10-25 14:16:37",
+    "replay_returned_at": "2026-10-25T06:16:36.752421+00:00",
+    "replay_items": 252,
+    "missing_day": "2026-10-24",
+    "missing_day_message": "暂无记录；检查采集任务和所选日期。",
+    "final_page": "当日最新采样",
+    "local_screenshot": "build/theme-desktop-final-20261025.png"
+  },
+  "schedule": {
+    "kaipanla-themes": {
+      "wait_seconds": 180,
+      "observed_wait_before_next_start": 180.73035144805908,
+      "no_overlap": true,
+      "recent_runs": [
+        {
+          "run_id": "94dc9437d0c74e72a8a40dd8ede51441",
+          "task_id": "kaipanla-themes",
+          "started_at": 1792916624.332056,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 31,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1792916625.3792608,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 252,
+            "record_name": "条题材",
+            "unit_name": "个题材",
+            "contract": 1,
+            "phase": "complete",
+            "batch_id": "12ae6441cb9943da977c688e59f4da0b",
+            "page": 0,
+            "last_slot": "2026-10-25T16"
+          }
+        },
+        {
+          "run_id": "11ef35767ffc47088990e582e744ec79",
+          "task_id": "kaipanla-themes",
+          "started_at": 1792916442.1995037,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 29,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {
+            "proxy_requests": 1
+          },
+          "finished_at": 1792916443.6017046,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 252,
+            "record_name": "条题材",
+            "unit_name": "个题材",
+            "contract": 1,
+            "phase": "complete",
+            "batch_id": "cf6374de5ec14b3e919b470562a46cde",
+            "page": 1,
+            "last_slot": "2026-10-25T16"
+          }
+        }
+      ],
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 180,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      }
+    },
+    "kaipanla-theme-details": {
+      "wait_seconds": 180,
+      "observed_wait_before_next_start": 180.9841115474701,
+      "no_overlap": true,
+      "recent_runs": [
+        {
+          "run_id": "86c0a54f37eb4063b423e6b84d4f6cc7",
+          "task_id": "kaipanla-theme-details",
+          "started_at": 1792916623.3255,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 609,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {},
+          "finished_at": 1792916623.363499,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 0,
+            "record_name": "条题材",
+            "unit_name": "个题材",
+            "contract": 1,
+            "phase": "complete",
+            "plan": [],
+            "page": 0,
+            "batch_id": "f1975cc79f784410b2c21dbe60bceed1"
+          }
+        },
+        {
+          "run_id": "02253f1283674c56b2e3aaea7b1f4393",
+          "task_id": "kaipanla-theme-details",
+          "started_at": 1792916442.2049618,
+          "origin": "schedule",
+          "fresh": false,
+          "baseline_revision": 608,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "network": {},
+          "finished_at": 1792916442.3413885,
+          "status": "complete",
+          "error": "",
+          "notice": "",
+          "result": {
+            "collected": 0,
+            "record_name": "条题材",
+            "unit_name": "个题材",
+            "contract": 1,
+            "phase": "complete",
+            "plan": [],
+            "page": 0,
+            "batch_id": "e2b2617c00cc4032a8fd1a027848d38d"
+          }
+        }
+      ],
+      "policy": {
+        "mode": "interval",
+        "interval_seconds": 180,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      }
+    }
+  },
+  "runtime_checked_at": "2026-10-25T08:24:41.785756+00:00",
+  "pending": 0,
+  "history": {
+    "calendar_days": [
+      {
+        "day": "2026-10-19",
+        "available": false,
+        "rows": 0,
+        "sampled_at": null,
+        "first_at": null
+      },
+      {
+        "day": "2026-10-20",
+        "available": false,
+        "rows": 0,
+        "sampled_at": null,
+        "first_at": null
+      },
+      {
+        "day": "2026-10-21",
+        "available": false,
+        "rows": 0,
+        "sampled_at": null,
+        "first_at": null
+      },
+      {
+        "day": "2026-10-22",
+        "available": false,
+        "rows": 0,
+        "sampled_at": null,
+        "first_at": null
+      },
+      {
+        "day": "2026-10-23",
+        "available": false,
+        "rows": 0,
+        "sampled_at": null,
+        "first_at": null
+      },
+      {
+        "day": "2026-10-24",
+        "available": false,
+        "rows": 0,
+        "sampled_at": null,
+        "first_at": null
+      },
+      {
+        "day": "2026-10-25",
+        "available": true,
+        "rows": 252,
+        "sampled_at": "2026-10-25T08:23:45.371766+00:00",
+        "first_at": "2026-10-24T18:39:00.340156+00:00",
+        "expiry": "2026-11-01T00:00:00+08:00",
+        "rounds": 26,
+        "bytes": 282322
+      }
+    ],
+    "retention": "Today and previous six Asia/Shanghai calendar days",
+    "storage": "Daily baseline plus field deltas and bounded unchanged markers; no per-round full historical list",
+    "limitations": "Only 2026-10-25 has actual samples; no fabricated older/offline samples; Redis restart loses intraday history"
+  },
+  "capacity_regression": {
+    "previous_release": "b7e9289a2e8f409282390418f35cf18a",
+    "previous_read_ms": 193.35329998284578,
+    "limit_ms": 100,
+    "serial_read_ms": 9.731399943120778,
+    "full_gate_read_ms": 4.268700024113059,
+    "limits_unchanged": true
+  },
+  "fixes": {
+    "project": "kaipanla-theme-details",
+    "at": "2026-10-25T06:18:42.615084+00:00",
+    "handled_ids": [
+      "7b57b85ba5d34401bfec4511dfdaf957",
+      "4fcbe602d19746a3a55b5661f1faf3a0",
+      "d918dd3aed0f47628b80172a06c01d26",
+      "9c4637fbf64044fda9ce484c3a1fb41f",
+      "f7372e323c48486d93e31bf3c18ca56e",
+      "0ed1bdddfc9347f5b8fc70ccbc205f7b",
+      "fcfc6d12c0244cea8a66ce47481425f2",
+      "6d706db08aca4afa96f149ac14ed880a",
+      "daf4c39309a74c1aa42275a1177b9c9f",
+      "ded9ea9e63c04016aa46c0a84b4fec68",
+      "58590feb517f47599cc498809c50c21c",
+      "be3ab31782754f568332ca843dfb0b3c",
+      "6867a2346c484e4aab7bb71ac0ad7c57",
+      "6be13dce56f6431082673d973185931b",
+      "c1256b82b62a4184b4ab7f026a536120",
+      "e9a1ba2f6441487eb4374d1f5c369972",
+      "582cc2ec3da24f2f9101a13a96cd1776",
+      "b18c7cb8c22b4b40a1bc86b3ff3bd7a6",
+      "32bfda6245754d3dba6365a32e27e419",
+      "8b62f8281adb42a6a918b7926739e94b",
+      "1554e3db747a4853b542f359ed55f87d",
+      "8389cd6c6051425692bd1c87b551c53e"
+    ],
+    "root_causes": [
+      "000016 stock/index exact-code ambiguity",
+      "201/000157 empty reason in both source views"
+    ],
+    "verification": "251 themes source -> normalization -> Redis -> shared archive -> official query; queue zero; 53 unit and 16 integration/UI tests passed",
+    "full_scope_evidence": "docs/evidence/kaipanla-theme-rollout-2026-10-25.json",
+    "unknown_source_names_fail": true,
+    "masked_reasons_fail": true,
+    "removed_exact_ids": 22,
+    "remaining_errors": 126,
+    "unresolved_errors_preserved": true
+  },
+  "preservation": {
+    "program_configs": true,
+    "redis_persistence": {
+      "appendonly": "no",
+      "save": ""
+    },
+    "mysql_logs": {
+      "log_bin": 0,
+      "general_log": 0,
+      "slow_query_log": 0
+    },
+    "shared_services_unchanged": true,
+    "private_mysql_closed_normally": true,
+    "old_private_test_database_retained": true,
+    "git_index_lock_retained": true,
+    "committed": false
+  },
+  "post_release_note": "Only development docs and this evidence updated after publication; published runtime code and embedded help unchanged"
+}

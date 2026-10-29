@@ -168,7 +168,10 @@ class PerformanceCollector:
                             if current:
                                 matches = [r for r in rows if identity(self.kind, r) == identity(self.kind, current)]
                                 if matches and matches != [current]:
-                                    raise ValueError('股东户数最新列表与历史同键内容冲突，不能确认本轮')
+                                    # The directory is an earlier cached latest snapshot.
+                                    # Keep the complete per-security history row as a whole;
+                                    # never blend fields from two independently refreshed views.
+                                    self.stats['directory_differences'] = self.stats.get('directory_differences', 0) + 1
                                 if not matches:
                                     rows = sorted([*rows, current], key=lambda r: identity(self.kind, r))
                             groups = [(requested, rows)]
@@ -176,8 +179,17 @@ class PerformanceCollector:
                             groups = [(requested + '|' + market, [r for r in rows if r['unified_code'].endswith(market)])
                                       for market in ('SH', 'SZ', 'BJ')]
                         source_hash = digest(groups)
+                        if not cursor.get('market_index'):
+                            cursor = {**cursor, 'unit_base': {
+                                'collected': cursor['collected'], 'rolling': cursor['rolling']}}
                         if cursor.get('market_index') and cursor['response_hash'] != source_hash:
-                            raise ValueError('中断单期的来源内容已变化；请重新采集以重建完整范围，旧数据保留')
+                            if 'unit_base' not in cursor:
+                                raise ValueError('旧中断断点缺少单期起点，须显式核对归档证明后补齐；保留已采数据')
+                            # Revalidate and replay only this complete response. Keep page
+                            # numbers monotonic so earlier messages remain in the round's
+                            # archive confirmation; never wait between markets/months.
+                            cursor = {**cursor, **cursor['unit_base'], 'market_index': 0,
+                                      'response_hash': ''}
                         for unit, values in groups:
                             probe = self.envelope(unit, values, cursor['page'] + 1, cursor['batch_id'], observed)
                             if len(probe.model_dump_json().encode()) > getattr(self.ingest, 'settings', {}).get('max_page_bytes', 524288):
@@ -208,6 +220,7 @@ class PerformanceCollector:
                 cursor = {**cursor, 'phase': 'awaiting_archive', 'page': page}
                 state = await publish_with_capacity(self.ingest, self.stats, [event], job_key=self.job_key,
                     expected_revision=state['revision'], cursor=cursor)
+            self.stats.update(completed_units=cursor['index'], total_units=cursor['index'])
             stage = 'archive_confirmation'
             self.stats.update(status='awaiting_archive', collected=cursor['collected'], pages=cursor['page'])
             await wait_for_archive(partial(self.confirmation.page_status, 'tdx', self.job_key,

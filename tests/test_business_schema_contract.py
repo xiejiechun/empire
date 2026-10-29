@@ -9,8 +9,6 @@ from empire.features.calendar import dataset as trade_calendar
 from empire.features.capital_actions.dataset import CapitalDataset
 from empire.features.financial_statements.dataset import FinancialDataset
 from empire.features.industries import dataset as industries
-from empire.features.kaipanla.contract import PRODUCTS
-from empire.features.kaipanla.dataset import ProductDataset
 from empire.features.stocks import dataset as stocks
 from empire.features.suspensions import dataset as suspensions
 
@@ -23,7 +21,6 @@ def test_wrong_source_cannot_enter_fixed_dataset(dataset,table):
 
 
 @pytest.mark.parametrize('mapping', [stocks,industries,suspensions,trade_calendar,
-                                    *(ProductDataset(kind) for kind in PRODUCTS),
                                     CapitalDataset('dividends'),FinancialDataset('income')])
 def test_direct_sql_writer_rejects_wrong_source_before_sql(mapping):
     conn=MagicMock()

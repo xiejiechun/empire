@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "date": "2026-10-24",
+  "scope": "automatic node-code guest identity lifecycle; no market archival",
+  "automatic_runtime": {
+    "online_nodes": [
+      "node002",
+      "node003",
+      "node004",
+      "node005",
+      "node006",
+      "node007",
+      "node010",
+      "node012",
+      "node013",
+      "node014",
+      "node015",
+      "node016",
+      "node021"
+    ],
+    "identity_service": {
+      "status": "ok",
+      "profiles": 13,
+      "online": 13,
+      "states": {
+        "ready": 13
+      },
+      "applying": null,
+      "blocked_nodes": {},
+      "automatic_application_paused": false,
+      "error": ""
+    },
+    "registration_requests": 0,
+    "routes": {},
+    "node_request_counts": {},
+    "business_rows_written": 0
+  },
+  "on_demand_reuse": {
+    "target_node": "node002",
+    "login_verified": true,
+    "native_verification": {
+      "code": "301718.SZ",
+      "count": 2,
+      "first": "2026-10-22",
+      "last": "2026-10-23"
+    },
+    "registration_requests": 0,
+    "routes": {
+      "proxy_requests": 4
+    },
+    "node_request_counts": {
+      "node002": 4
+    },
+    "business_rows_written": 0
+  },
+  "validation": {
+    "related_regressions_passed": 248,
+    "final_service_assembly_and_isolated_sql_passed": 23,
+    "ruff": "passed",
+    "mypy": "13 files passed",
+    "architecture": "451 modules,1607 imports,no new debt",
+    "documentation": "439 documents,3636 links,60 tables passed"
+  },
+  "limitations": [
+    "No genuinely new production node arrived during automatic watch; dynamic-arrival tests use simulated directory and source.",
+    "13 source-issued guests already verified in node-binding evidence.",
+    "Random 30-stock archival and full market initialization remain unimplemented.",
+    "Release and desktop results must be checked separately; first attempt was stopped because Empire remained running."
+  ],
+  "code_sha256": {
+    "src/empire/sources/yuanhang_service.py": "8db0a94cfa07253113683ecddbb006eebfb8fca638bedb11f039f601e22daef6",
+    "src/empire/sources/yuanhang_profiles.py": "fcd534790b2c6b6b4dffc766bdf6372ae587fbaed2b86287695275dd78cd481a",
+    "src/empire/sources/yuanhang_client.py": "f4353e223135a45e10a7f82b971daa5f3475478415cb281f8da705dbcf12c9e3",
+    "src/empire/bootstrap.py": "db9f41f559f024738d98e4450ce2335c0eaa0bc4e7e6abc1bb35db1b5af92947",
+    "scripts/yuanhang_node_profiles.py": "053ca8c664aba2c520023dfc3433b6530d713728db4dcbf71f01df9d9be6217f",
+    "scripts/assembly_additions.py": "3d3f71d41b9015bbc4f80e2ae319fc493ed538503d6849cba85ff0959bb45277",
+    "scripts/assembly_contract.py": "00d8dffc38e98403bad92704d905eb7208cbbaefc96561adf92537e5e04dae4b",
+    "tests/test_yuanhang_service.py": "f9865e61721137a9aad2ba8a591ad0982946943cbdd67343a3c4166df84eec29",
+    "tests/integration/test_yuanhang_profile_persistence.py": "8b3b5ef613f29c8c0ce33f5c79a35ca9a97d17156444a1049b3494b3b2b697e2",
+    "tests/test_assembly_additions.py": "54e2e66c10ea024ebb684c8fdb7b49336c4bc7efc627b81fdebc6938ce700053"
+  },
+  "release_first_full_attempt": {
+    "run_id": "4264fbd38a12496ebfb3747a113e1430",
+    "passed": 4383,
+    "failed": 14,
+    "skipped": 5,
+    "cause": "14 private-storage tests rejected test port 63132; project requires dedicated port 13348. No business assertion failed in these cases.",
+    "failed_cases_recheck": "14 passed,686 deselected after fixing private test endpoint; no source or test gate relaxed",
+    "skips": "5 existing state-unit isolated drills require separate opt-in"
+  },
+  "private_test_environment": {
+    "port": 13348,
+    "server_uuid": "ccdc0965-cf77-11f1-88a6-380525361d4d",
+    "innodb_flush_log_at_trx_commit": 2,
+    "innodb_redo_log_capacity": 536870912,
+    "production_untouched": true,
+    "notes": "Owned temporary instance; flush=2 follows prior private integration environment. Redo retained and enlarged; no crash-durability claim."
+  },
+  "release": {
+    "id": "7af5e1defd854ac4abed519b2f96f6ad",
+    "gate_passed": true,
+    "tests_passed": 4397,
+    "tests_skipped": 5,
+    "configuration_byte_preserved": true,
+    "different_working_directory_real_connections": {
+      "mysql": true,
+      "redis": true
+    },
+    "actual_desktop_verified": false,
+    "desktop_launch_outcome": "User pressed physical Escape during Computer Use launch; no further UI actions performed",
+    "isolated_mysql_normal_shutdown_requested": true
+  }
+}

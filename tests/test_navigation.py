@@ -255,6 +255,8 @@ async def test_workspace_direct_help_and_collection_grouping():
     management = {page.id: page.management for page in pages if page.management is not None}
     assert {key: value.context.task_id for key, value in management.items()} == {
         'themes': 'kaipanla-themes',
+        'yuanhang': 'ths-yuanhang-prices',
+        'yuanhang_limits': 'ths-yuanhang-limit-up-pool',
         'ths_capital': 'ths-capital',
         **{k: 'ths-holders' for k in ('top_holders', 'float_holders', 'bond_holders')},
         **{k: 'tdx-' + k.replace('_', '-') for k in ('earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report', 'holder_count', 'shareholder_changes')},
@@ -269,8 +271,6 @@ async def test_workspace_direct_help_and_collection_grouping():
         'index_prices': 'ths-index-prices',
         'st_implementation': 'tdx-st-implementation', 'st_removal': 'tdx-st-removal',
         'names_company': 'tdx-company-renames', 'names_security': 'tdx-security-renames',
-        **{'kaipanla_' + k: 'kaipanla-' + k.replace('_', '-') for k in
-           ('trend','auction','volume','trades','entrust','large_order','quote')},
         "stocks": "ths-stocks", "news": "sina-news", "calendar": "cninfo-calendar",
         "suspensions": "tdx-suspensions", "dividends": "tdx-dividends",
         "additional_issues": "tdx-additional-issues", "rights_issues": "tdx-rights-issues",
@@ -282,10 +282,14 @@ async def test_workspace_direct_help_and_collection_grouping():
     window.timer.stop()
     try:
         assert [window.nav.item(i).text() for i in range(window.nav.count())] == [
-            "工作台", "数据准备", "数据浏览", "采集管理", "系统设置", "说明文档"]
+            "工作台", "市场复盘", "数据准备", "数据浏览", "采集管理", "系统设置", "说明文档"]
         assert window.current_page_id == "home"
         assert window.subnav.isHidden()
-        window.nav.setCurrentRow(5)
+        window.nav.setCurrentRow(1)
+        assert window.current_page_id == 'market_review'
+        assert window.breadcrumb.text() == '市场复盘'
+        assert window.subnav.isHidden()
+        window.nav.setCurrentRow(6)
         assert window.current_page_id == "help"
         assert window.breadcrumb.text() == "说明文档"
         assert window.subnav.isHidden()
@@ -293,9 +297,9 @@ async def test_workspace_direct_help_and_collection_grouping():
         assert window.nav.currentItem().text() == "采集管理"
         assert not window.subnav.isHidden()
         assert [window.subnav.item(i).text() for i in range(window.subnav.count())] == [
-            "采集任务", "归档任务", "运行记录", "站点访问规则", "采集出口", "下载资源"]
-        window.nav.setCurrentRow(5)
-        window.nav.setCurrentRow(3)
+            "采集任务", "归档任务", "运行记录", "站点访问规则", "采集出口", "下载资源", "身份管理"]
+        window.nav.setCurrentRow(6)
+        window.nav.setCurrentRow(4)
         assert window.current_page_id == "sites"
         assert window.navigate("system")
         assert [window.subnav.item(i).text() for i in range(window.subnav.count())] == [

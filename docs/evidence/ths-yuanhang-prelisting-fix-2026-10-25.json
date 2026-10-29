@@ -1,0 +1,44 @@
+{
+  "project_id": "ths-yuanhang-prices",
+  "handled_error_ids": [
+    "7d302b3fc5d64b53a68e44b52d932f18"
+  ],
+  "verification": "docs/evidence/ths-yuanhang-native-formal-2026-10-25.json",
+  "scope": "fixed random30 +10 / 40 securities, 80 units, 174 proxy requests; pending0",
+  "full_initialization_complete": false,
+  "before": {
+    "id": "7d302b3fc5d64b53a68e44b52d932f18",
+    "project_id": "ths-yuanhang-prices",
+    "stage": "source_validation",
+    "error": "001381.SZ: Yuanhang empty response needs separate security and absence evidence",
+    "created_at": "2026-10-24T18:22:46.480039+00:00"
+  },
+  "removed": 1,
+  "remaining": {
+    "revision": "6",
+    "total": 2,
+    "changed": true,
+    "offset": 0,
+    "limit": 50,
+    "rows": [
+      {
+        "status_code": null,
+        "error": "Sensitive request failed (ProxyError)",
+        "id": "d5bdb7467a6840c7928f8f311863f78f",
+        "project_id": "ths-yuanhang-prices",
+        "created_at": "2026-10-24T18:20:08.417346+00:00",
+        "stage": "http"
+      },
+      {
+        "status_code": null,
+        "error": "Sensitive request failed (ProxyRouteError)",
+        "id": "ba5f35477c154d5ba2a165be76d776db",
+        "project_id": "ths-yuanhang-prices",
+        "created_at": "2026-10-24T18:20:08.415388+00:00",
+        "stage": "http"
+      }
+    ]
+  },
+  "fixed": "Explicit listing-scope evidence after native empty/strict partial replies; no fabricated financial facts; next-round recheck.",
+  "checked_at": "2026-10-24T19:23:05.011740+00:00"
+}

@@ -1,0 +1,1100 @@
+{
+  "recorded_at": "2026-10-27T00:36:05.908822+00:00",
+  "scope": {
+    "first": "1990-12-19",
+    "through": "2026-10-23"
+  },
+  "final_report": "build\\yuanhang-limits-history-reasons-20261027-recovery-alias-006.json",
+  "final_sha256": "24b194625662aac5faf88eac7e45a2e59f0482304f170f41e24dee8d0f4693db",
+  "sql": {
+    "identity": {
+      "database_name": "empire",
+      "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e"
+    },
+    "reasons": {
+      "total": 179681,
+      "available": "120159",
+      "no_content": "59522",
+      "text_present": "102510",
+      "kind_present": "96906",
+      "first_date": "2020-01-23",
+      "last_date": "2026-10-23"
+    },
+    "membership": {
+      "expected": 179681,
+      "missing": "0"
+    }
+  },
+  "routed_request_totals": {
+    "proxy_requests": 223936
+  },
+  "initialization_runs": [
+    {
+      "file": "yuanhang-limits-history-20261026-a.json",
+      "sha256": "15c947c4b1d1871c532dabc964de3ee0266b31a584a71ac632020178fbb256a7",
+      "started_at": "2026-10-26T06:20:48.573529+00:00",
+      "finished_at": "2026-10-26T07:14:27.599572+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 39838
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 6823,
+          "wire_bytes": 730844,
+          "response_bytes": 922217,
+          "queued_bytes": 5689534,
+          "queued_messages": 6817
+        },
+        "sprint_limit_up": {
+          "requests": 8773,
+          "wire_bytes": 2761050,
+          "response_bytes": 13470979,
+          "queued_bytes": 9584381,
+          "queued_messages": 8748
+        },
+        "connect_broad_pool": {
+          "requests": 8754,
+          "wire_bytes": 5280290,
+          "response_bytes": 21760948,
+          "queued_bytes": 12700009,
+          "queued_messages": 8748
+        },
+        "open_limit_up_pool": {
+          "requests": 7631,
+          "wire_bytes": 1862211,
+          "response_bytes": 7633140,
+          "queued_bytes": 7757553,
+          "queued_messages": 7624
+        },
+        "limit_down_pool": {
+          "requests": 7347,
+          "wire_bytes": 1213858,
+          "response_bytes": 4225977,
+          "queued_bytes": 6624452,
+          "queued_messages": 7301
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-limit-up-pool",
+          "error": "涨停分析返回未验证的市场身份"
+        },
+        {
+          "project": "ths-yuanhang-open-limit-up-pool",
+          "error": "first_limit_up_time：来源时刻跨出查询交易日"
+        },
+        {
+          "project": "ths-yuanhang-limit-down-pool",
+          "error": "涨停分析返回未验证的市场身份"
+        },
+        {
+          "error": "运行期间来源实现或结构改变，当前报告不能作为最终验收"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-20261026-b.json",
+      "sha256": "1d719fad8720093ed171a7801367da0465998d8b4df637d4c0a1ee65ff302359",
+      "started_at": "2026-10-26T07:27:43.166479+00:00",
+      "finished_at": "2026-10-26T07:33:02.710789+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 3438
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 751,
+          "wire_bytes": 5301161,
+          "response_bytes": 28946016,
+          "queued_bytes": 6601757,
+          "queued_messages": 685
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 992,
+          "wire_bytes": 2317185,
+          "response_bytes": 14000843,
+          "queued_bytes": 3460264,
+          "queued_messages": 984
+        },
+        "limit_down_pool": {
+          "requests": 1470,
+          "wire_bytes": 2211215,
+          "response_bytes": 13708996,
+          "queued_bytes": 3585520,
+          "queued_messages": 1392
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-limit-up-pool",
+          "error": "涨停分析返回未验证的市场身份"
+        },
+        {
+          "error": "运行期间来源实现或结构改变，当前报告不能作为最终验收"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-20261026-c-pools.json",
+      "sha256": "2c8f209b6189ac8d0dbc83235f93afd327ec568d77deb0b64b2711b892a35ada",
+      "started_at": "2026-10-26T07:34:55.391154+00:00",
+      "finished_at": "2026-10-26T07:37:16.233266+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 814
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 813,
+          "wire_bytes": 6310343,
+          "response_bytes": 32562158,
+          "queued_bytes": 7889566,
+          "queued_messages": 714
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        }
+      },
+      "counters_complete": false,
+      "errors": []
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-a.json",
+      "sha256": "550d890f199adb139e85b8d25ec7b51adaba0ab5584bbf44b7774f78f5a06f66",
+      "started_at": "2026-10-26T16:50:30.466191+00:00",
+      "finished_at": "2026-10-26T16:51:24.835405+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 42
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "原因详情单证券行数异常"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-b.json",
+      "sha256": "9e1ba1df4e03fe11def9490ed8356e984390c0717a1d152d712a859f1c59a8d0",
+      "started_at": "2026-10-26T16:53:40.692523+00:00",
+      "finished_at": "2026-10-26T16:54:31.902178+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 14
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "原因详情单证券行数异常"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-c.json",
+      "sha256": "cec446169918ac69fe392a95758284655644c91117077ba6673994893b708a90",
+      "started_at": "2026-10-26T16:56:15.683294+00:00",
+      "finished_at": "2026-10-26T16:57:03.736281+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 30
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "原因详情单证券行数异常"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-d.json",
+      "sha256": "b50cec0467f27df260fe60f905432ed51b031ac07d374838d6178aa332a63ef1",
+      "started_at": "2026-10-26T17:01:42.880350+00:00",
+      "finished_at": "2026-10-26T17:03:01.750348+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 503
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 443,
+          "wire_bytes": 236598,
+          "response_bytes": 332068,
+          "queued_bytes": 605562,
+          "queued_messages": 442
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-e.json",
+      "sha256": "b3add154c941dfab7494bb7e670deec94e437fe69463bd555439f2df7c8db7c6",
+      "started_at": "2026-10-26T17:04:49.514303+00:00",
+      "finished_at": "2026-10-26T17:09:02.134455+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 2735
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 2392,
+          "wire_bytes": 224534,
+          "response_bytes": 224478,
+          "queued_bytes": 1953342,
+          "queued_messages": 2392
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-000.json",
+      "sha256": "c3059460a258c5b60ac34ff4ff48cba2fd07acb7b43a00a0b210368682c09992",
+      "started_at": "2026-10-26T17:12:52.877470+00:00",
+      "finished_at": "2026-10-26T17:14:19.060041+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 630
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 441,
+          "wire_bytes": 42839,
+          "response_bytes": 42817,
+          "queued_bytes": 357992,
+          "queued_messages": 436
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-001.json",
+      "sha256": "68326d8028c7ab06f3a5aaac2de98f5c58434f8f7253d432f46d6781894f9ced",
+      "started_at": "2026-10-26T17:14:50.471304+00:00",
+      "finished_at": "2026-10-26T17:20:03.360325+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 3952
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 3535,
+          "wire_bytes": 445460,
+          "response_bytes": 445623,
+          "queued_bytes": 2957273,
+          "queued_messages": 3535
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-002.json",
+      "sha256": "6b8347f25e1b599a8dede856d25ad32e4cd375c350e9aa55e46ab02f624d27e3",
+      "started_at": "2026-10-26T17:20:34.972364+00:00",
+      "finished_at": "2026-10-26T17:34:14.097353+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 11105
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 10788,
+          "wire_bytes": 1355152,
+          "response_bytes": 1355404,
+          "queued_bytes": 9039634,
+          "queued_messages": 10788
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "原因详情身份或日期槽不唯一"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-alias-000.json",
+      "sha256": "b9a7ef2ba5d2600397ab92c6ec6777a09e5fb3cacb9081dd6b81fdb9d9f3c0fa",
+      "started_at": "2026-10-26T17:47:59.552626+00:00",
+      "finished_at": "2026-10-26T18:14:52.103215+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 22590
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 22487,
+          "wire_bytes": 5788209,
+          "response_bytes": 7109102,
+          "queued_bytes": 22645216,
+          "queued_messages": 22486
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-alias-001.json",
+      "sha256": "3910d0c8612687728e0a5b85ce30c3f023d6ded0626ba75beb2e03896fa7500c",
+      "started_at": "2026-10-26T18:15:23.653666+00:00",
+      "finished_at": "2026-10-26T18:21:06.778439+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 4310
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 3962,
+          "wire_bytes": 1134701,
+          "response_bytes": 1455306,
+          "queued_bytes": 4135816,
+          "queued_messages": 3959
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-alias-002.json",
+      "sha256": "16c63d96b29a9dd80cd470c1ce096384f69cf185ffbb000ab05277f8eaf48339",
+      "started_at": "2026-10-26T18:21:47.885183+00:00",
+      "finished_at": "2026-10-26T18:33:36.640719+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 9087
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 8794,
+          "wire_bytes": 2704300,
+          "response_bytes": 3551361,
+          "queued_bytes": 9433800,
+          "queued_messages": 8794
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-alias-003.json",
+      "sha256": "ec9b4676ad3d57f49a7476e5e1e8d7ab4c07be12751296ca8c45dbf76da04c68",
+      "started_at": "2026-10-26T18:34:08.237536+00:00",
+      "finished_at": "2026-10-26T19:30:03.882337+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 39002
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 38744,
+          "wire_bytes": 14679057,
+          "response_bytes": 20428216,
+          "queued_bytes": 45281624,
+          "queued_messages": 38733
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-alias-004.json",
+      "sha256": "5906fa0a4452f93b9a69df75afa25ebe505f9beb6013e73e9b3cee8918ea2cc0",
+      "started_at": "2026-10-26T19:30:35.424239+00:00",
+      "finished_at": "2026-10-26T21:20:40.585291+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 43027
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 42921,
+          "wire_bytes": 18564785,
+          "response_bytes": 26194331,
+          "queued_bytes": 53250083,
+          "queued_messages": 42908
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-alias-005.json",
+      "sha256": "c5c8096acc6b523c3d2ed7f91cc56627e49aeb961aee192ba09bbc224c59f942",
+      "started_at": "2026-10-26T21:21:12.088402+00:00",
+      "finished_at": "2026-10-26T23:00:07.054189+00:00",
+      "complete": false,
+      "routes": {
+        "proxy_requests": 29394
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 29362,
+          "wire_bytes": 16333367,
+          "response_bytes": 23272583,
+          "queued_bytes": 41154472,
+          "queued_messages": 29348
+        }
+      },
+      "counters_complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ]
+    },
+    {
+      "file": "yuanhang-limits-history-reasons-20261027-recovery-alias-006.json",
+      "sha256": "24b194625662aac5faf88eac7e45a2e59f0482304f170f41e24dee8d0f4693db",
+      "started_at": "2026-10-26T23:00:38.551349+00:00",
+      "finished_at": "2026-10-27T00:34:57.245493+00:00",
+      "complete": true,
+      "routes": {
+        "proxy_requests": 13425
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "sprint_limit_up": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "connect_broad_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "open_limit_up_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "limit_down_pool": {
+          "requests": 0,
+          "wire_bytes": 0,
+          "response_bytes": 0,
+          "queued_bytes": 0,
+          "queued_messages": 0
+        },
+        "reason": {
+          "requests": 13423,
+          "wire_bytes": 7644213,
+          "response_bytes": 10894058,
+          "queued_bytes": 19046787,
+          "queued_messages": 13423
+        }
+      },
+      "counters_complete": true,
+      "errors": []
+    }
+  ],
+  "limitations": [
+    "Failed-run periodic counters can omit the final interval; bytes and enqueue counters are lower bounds.",
+    "Route counters include cancelled prefetch attempts; they are not native authentication-message counts.",
+    "Counts are initialization runs only; separate diagnostic, capacity and real-source tests are excluded.",
+    "Row totals are stored facts, not a cumulative business-DML counter.",
+    "Source no_content and historical empty pools do not prove that no historical event existed."
+  ]
+}

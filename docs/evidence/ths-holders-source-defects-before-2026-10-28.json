@@ -1,0 +1,632 @@
+{
+  "schema": 1,
+  "project_id": "ths-holders",
+  "started_at": "2026-10-28T11:51:55.817076+08:00",
+  "read_only": true,
+  "status": "partial",
+  "sections": {
+    "declaration": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.818056+08:00",
+      "acquired_at": "2026-10-28T11:51:55.818056+08:00",
+      "reason": "",
+      "data": {
+        "project_id": "ths-holders",
+        "task": {
+          "id": "ths-holders",
+          "name": "股东研究（同花顺）",
+          "capability": "collector.ths_holders",
+          "rate_group": "ths",
+          "description": "一次HTML采集前十大股东、流通股东和债券持有人；历史保留，无公告日期",
+          "interval_seconds": 86400,
+          "category": "股东数据",
+          "source_name": "同花顺",
+          "parallel_downloads": true,
+          "default_enabled": false,
+          "fresh_description": "重建当前股票池和页面报告窗口；保留历史；待归档阶段先确认原轮次。",
+          "default_schedule": {
+            "mode": "daily",
+            "interval_seconds": 86400,
+            "daily_time": "18:00",
+            "description": "每天北京时间18:00核验当前报告窗口及修订；可编辑计划。"
+          },
+          "unit_name": "只股票"
+        },
+        "job_keys": [
+          "ths-holders-v1"
+        ],
+        "datasets": [
+          "holders.reports"
+        ],
+        "declared_scope": [
+          {
+            "id": "top_holders",
+            "title": "前十大股东",
+            "category": "股东数据",
+            "priority": "研究",
+            "purpose": "查看主要持股人",
+            "grain": "一份报告中的一名股东",
+            "fields": "股票编号、报告期、持有人身份、来源顺序、数量及精度、比例口径、股份类型、当期与退出分组",
+            "key": "报告身份 + 分组 + 来源顺序",
+            "coverage": "同花顺页面当前可见窗口全部报告，保留已存窗口外历史",
+            "cadence": "每日18:00核验窗口；3天内完整确认",
+            "dependencies": [],
+            "criteria": [
+              {
+                "id": "fields",
+                "title": "字段与单位",
+                "expected": "股票编号、报告期、持有人身份、来源顺序、数量及精度、比例口径、股份类型、当期与退出分组",
+                "action": "检查必需字段和单位；可选字段未提供不影响本项通过"
+              },
+              {
+                "id": "keys",
+                "title": "唯一键与重复",
+                "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+                "action": "明确业务键，清查重复与版本冲突"
+              },
+              {
+                "id": "coverage",
+                "title": "历史与对象覆盖",
+                "expected": "同花顺页面当前可见窗口全部报告，保留已存窗口外历史",
+                "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明"
+              },
+              {
+                "id": "quality",
+                "title": "业务质量",
+                "expected": "比例及精度合法，重复身份拒绝，汇总和名单集合核对",
+                "action": "修复数据或解析规则，并补充业务语义回归"
+              },
+              {
+                "id": "freshness",
+                "title": "更新与时效",
+                "expected": "每日18:00核验窗口；3天内完整确认",
+                "action": "验证最新成功核验时间与数据水位，恢复更新计划"
+              },
+              {
+                "id": "temporal",
+                "title": "日期与使用范围",
+                "expected": "来源无公告日期，不能用报告期提前作为信号",
+                "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史"
+              }
+            ],
+            "kind": "采集",
+            "boundary": "只做前十大股东；包括页面H股及退出参考，不包含前十大流通股东或股东户数，不承诺上市以来历史。",
+            "related": [],
+            "optional_fields": "公告日期、来源未提供的质押比例和持有人ID",
+            "capability": "top_holders.query",
+            "dataset": "holders.reports"
+          },
+          {
+            "id": "float_holders",
+            "title": "前十大流通股东",
+            "category": "股东数据",
+            "priority": "研究",
+            "purpose": "查看主要流通股持有人",
+            "grain": "一份流通股东报告中的一名股东",
+            "fields": "股票编号、报告期、持有人身份、来源顺序、流通持股数量及精度、比例口径、股份类型、退出分组",
+            "key": "报告身份 + 分组 + 来源顺序",
+            "coverage": "同花顺页面当前可见窗口全部报告，保留已存历史",
+            "cadence": "每日18:00核验窗口；3天内完整确认",
+            "dependencies": [],
+            "criteria": [
+              {
+                "id": "fields",
+                "title": "字段与单位",
+                "expected": "股票编号、报告期、持有人身份、来源顺序、流通持股数量及精度、比例口径、股份类型、退出分组",
+                "action": "检查必需字段和单位；可选字段未提供不影响本项通过"
+              },
+              {
+                "id": "keys",
+                "title": "唯一键与重复",
+                "expected": "报告身份 + 分组 + 来源顺序；重复键为 0",
+                "action": "明确业务键，清查重复与版本冲突"
+              },
+              {
+                "id": "coverage",
+                "title": "历史与对象覆盖",
+                "expected": "同花顺页面当前可见窗口全部报告，保留已存历史",
+                "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明"
+              },
+              {
+                "id": "quality",
+                "title": "业务质量",
+                "expected": "流通/总股本及A/H口径分清，重复身份拒绝，汇总核对",
+                "action": "修复数据或解析规则，并补充业务语义回归"
+              },
+              {
+                "id": "freshness",
+                "title": "更新与时效",
+                "expected": "每日18:00核验窗口；3天内完整确认",
+                "action": "验证最新成功核验时间与数据水位，恢复更新计划"
+              },
+              {
+                "id": "temporal",
+                "title": "日期与使用范围",
+                "expected": "来源无公告日期，不提前用报告期",
+                "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史"
+              }
+            ],
+            "kind": "采集",
+            "boundary": "本项只负责：前十大流通股东。其他项目各自检查、各自计进度。",
+            "related": [],
+            "optional_fields": "公告日期、来源未提供的质押比例和持有人ID",
+            "capability": "float_holders.query",
+            "dataset": "holders.reports"
+          },
+          {
+            "id": "bond_holders",
+            "title": "十大债券持有人",
+            "category": "股东数据",
+            "priority": "研究",
+            "purpose": "查看股票发行人债券主要持有人",
+            "grain": "债券的一份报告中的持有人",
+            "fields": "发行人统一代码、债券名称、报告期、当期或退出、来源序号、持有人名称、张数及精度、持有比例",
+            "key": "发行人 + 债券名称来源身份 + 报告期 + 分组 + 序号",
+            "coverage": "同花顺股东页面可见债券报告；栏目未提供单独标识，不能推断无债券",
+            "cadence": "每日18:00核验当前窗口；3天内完整确认",
+            "dependencies": [],
+            "criteria": [
+              {
+                "id": "fields",
+                "title": "字段与单位",
+                "expected": "发行人统一代码、债券名称、报告期、当期或退出、来源序号、持有人名称、张数及精度、持有比例",
+                "action": "检查必需字段和单位；可选字段未提供不影响本项通过"
+              },
+              {
+                "id": "keys",
+                "title": "唯一键与重复",
+                "expected": "发行人 + 债券名称来源身份 + 报告期 + 分组 + 序号；重复键为 0",
+                "action": "明确业务键，清查重复与版本冲突"
+              },
+              {
+                "id": "coverage",
+                "title": "历史与对象覆盖",
+                "expected": "同花顺股东页面可见债券报告；栏目未提供单独标识，不能推断无债券",
+                "action": "补采声明范围内的漏采；来源不支持部分列为范围限制，无需另找网站证明"
+              },
+              {
+                "id": "quality",
+                "title": "业务质量",
+                "expected": "万张转张，序号及集合完整；多债券不混合",
+                "action": "修复数据或解析规则，并补充业务语义回归"
+              },
+              {
+                "id": "freshness",
+                "title": "更新与时效",
+                "expected": "每日18:00核验当前窗口；3天内完整确认",
+                "action": "验证最新成功核验时间与数据水位，恢复更新计划"
+              },
+              {
+                "id": "temporal",
+                "title": "日期与使用范围",
+                "expected": "无公告日期，不用报告期提前使用",
+                "action": "检查本用途必要的日期，写明精度和使用限制；不强制完整修订历史"
+              }
+            ],
+            "kind": "采集",
+            "boundary": "债券持有人，不是股票股东户数；不承诺债券全生命周期历史。",
+            "related": [],
+            "optional_fields": "来源未提供的债券代码与公告日期",
+            "capability": "bond_holders.query",
+            "dataset": "holders.reports"
+          }
+        ]
+      }
+    },
+    "isolation": {
+      "status": "unknown",
+      "started_at": "2026-10-28T11:51:55.818056+08:00",
+      "acquired_at": "2026-10-28T11:51:55.818056+08:00",
+      "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离",
+      "data": {
+        "status": "unknown",
+        "reason": "隔离集合仅在运行中归档器内存；CLI 无进程间快照，历史错误不能证明当前隔离"
+      }
+    },
+    "errors": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.818056+08:00",
+      "acquired_at": "2026-10-28T11:51:55.820590+08:00",
+      "reason": "",
+      "data": {
+        "revision": "8",
+        "total": 8,
+        "rows": [
+          {
+            "status_code": null,
+            "error": "代理设备 node023 请求失败（RemoteProtocolError），已临时隔离",
+            "id": "7e7352fa4be1402caa876a4c5e0927ac",
+            "project_id": "ths-holders",
+            "created_at": "2026-10-27T17:41:31.561834+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node021 请求失败（RemoteProtocolError），已临时隔离",
+            "id": "6e38fdb2ed8145ed92a0ba3f8d305c00",
+            "project_id": "ths-holders",
+            "created_at": "2026-10-27T12:23:25.488553+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node021 请求失败（RemoteProtocolError），已临时隔离",
+            "id": "525dce09efa646038bc073771213665f",
+            "project_id": "ths-holders",
+            "created_at": "2026-10-27T12:06:10.242736+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node026 请求失败（ProxyError），已临时隔离",
+            "id": "71437a7589a14906b23f4f7408529afe",
+            "project_id": "ths-holders",
+            "created_at": "2026-10-27T10:13:13.338214+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node026 请求失败（ProxyError），已临时隔离",
+            "id": "bb700ba8f0e343978661f0f3ac69dd93",
+            "project_id": "ths-holders",
+            "created_at": "2026-10-27T10:12:53.042824+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": null,
+            "error": "代理设备 node021 请求失败（RemoteProtocolError），已临时隔离",
+            "id": "9d2209e3f8e94d41809276eb11aec965",
+            "project_id": "ths-holders",
+            "created_at": "2026-10-27T02:49:09.207006+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": 200,
+            "error": "压缩响应未完整结束",
+            "id": "62671ab055de420294b5c723bdaaa283",
+            "project_id": "ths-holders",
+            "created_at": "2026-10-27T02:26:16.801303+00:00",
+            "stage": "http"
+          },
+          {
+            "status_code": 200,
+            "error": "压缩响应未完整结束",
+            "id": "9256d379b15d41589a951749969afd85",
+            "project_id": "ths-holders",
+            "created_at": "2026-10-27T02:26:15.425611+00:00",
+            "stage": "http"
+          }
+        ],
+        "truncated": false,
+        "body_included": false
+      }
+    },
+    "task_state": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.820590+08:00",
+      "acquired_at": "2026-10-28T11:51:55.827360+08:00",
+      "reason": "",
+      "data": {
+        "history": [
+          {
+            "network": {
+              "proxy_requests": 3725
+            },
+            "origin": "manual",
+            "notice": "本轮已检查至末尾，可识别报告已确认归档；2只证券共2份债券报告名称为空，已登记来源缺口：300398.SZ、601515.SH。连续断点保留在300398.SZ，下次继续补采；债券缺口仍限制数据准备。",
+            "result": {
+              "total_units": 5578,
+              "failed_units": 0,
+              "source_gap_units": 2,
+              "current_security": "920992.BJ",
+              "source_identity_gaps": 2,
+              "processed_units": 5578,
+              "collected": 57986,
+              "pages": 3725,
+              "continuous_collected": 19335
+            },
+            "task_id": "ths-holders",
+            "fresh": false,
+            "finished_at": 1793126926.544,
+            "status": "source_gap",
+            "started_at": 1793126111.6505,
+            "proxy_fallback": true,
+            "run_id": "07c300f79cd046ba9751b07aff01d72c",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 14331
+          },
+          {
+            "network": {
+              "proxy_requests": 3726
+            },
+            "origin": "manual",
+            "notice": "本轮已检查至末尾，可识别报告已确认归档；2只证券共2份债券报告名称为空，已登记来源缺口：300398.SZ、601515.SH。连续断点保留在300398.SZ，下次继续补采；债券缺口仍限制数据准备。",
+            "result": {
+              "total_units": 5578,
+              "failed_units": 0,
+              "source_gap_units": 2,
+              "current_security": "920992.BJ",
+              "source_identity_gaps": 2,
+              "processed_units": 5578,
+              "collected": 57986,
+              "pages": 3725,
+              "continuous_collected": 19335
+            },
+            "task_id": "ths-holders",
+            "fresh": false,
+            "finished_at": 1793123022.9299,
+            "status": "source_gap",
+            "started_at": 1793122269.7731,
+            "proxy_fallback": true,
+            "run_id": "46a7ee88b6ff4f509044f24503f880d4",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 10606
+          },
+          {
+            "network": {
+              "proxy_requests": 2399
+            },
+            "origin": "manual",
+            "notice": "",
+            "result": {
+              "total_units": 5578,
+              "failed_units": 0,
+              "source_gap_units": 2,
+              "current_security": "603520.SH",
+              "source_identity_gaps": 2,
+              "processed_units": 4237,
+              "collected": 44207,
+              "pages": 2384,
+              "continuous_collected": 19335
+            },
+            "task_id": "ths-holders",
+            "fresh": false,
+            "finished_at": 1793104188.4921,
+            "status": "paused",
+            "started_at": 1793103783.9509,
+            "proxy_fallback": true,
+            "run_id": "ba87141e384c49769cd1f96c2acc1c98",
+            "use_proxy": true,
+            "error": "",
+            "baseline_revision": 8222
+          }
+        ],
+        "job": {
+          "last_status": "source_gap",
+          "next_due": 1793188800,
+          "active": null,
+          "notice": "本轮已检查至末尾，可识别报告已确认归档；2只证券共2份债券报告名称为空，已登记来源缺口：300398.SZ、601515.SH。连续断点保留在300398.SZ，下次继续补采；债券缺口仍限制数据准备。",
+          "policy": {
+            "enabled": true,
+            "request_retries": 30,
+            "daily_time": "20:00",
+            "proxy_fallback": true,
+            "archived": false,
+            "interval_seconds": 86400,
+            "use_proxy": true,
+            "mode": "daily"
+          },
+          "error": ""
+        }
+      }
+    },
+    "checkpoint:ths-holders-v1": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.827360+08:00",
+      "acquired_at": "2026-10-28T11:51:55.829388+08:00",
+      "reason": "",
+      "data": {
+        "cursor": {
+          "phase": "fetch",
+          "batch_id": "9a036b6042d84bcda18b4202731607fa",
+          "index": 1853,
+          "pages": 3725,
+          "collected": 19335,
+          "units": 5578,
+          "scope_hash": "15c02f8b05dd3be3c833b3c825771c31fd22eab5ab3f11aa48eb719c473bd85f",
+          "rolling": "332e48d3c5f839ba51b70cdcf64316df9d837d796788e56f96f174ae5364d1a2",
+          "unavailable": 1564,
+          "kinds": {
+            "top_holders": {
+              "count": 9262,
+              "digest": "e75a662c43fb41081b28aae6b17c52b3df03cdae4f6dc6e7363da3bec8b12d91"
+            },
+            "float_holders": {
+              "count": 9216,
+              "digest": "c61d3693eee36dd623fcd54c274edf529f3f3da673a9451c5eeaa661e014e5f0"
+            },
+            "bond_holders": {
+              "count": 857,
+              "digest": "b5f6ddeb8804e080c6a3729133f44e1d9528b4bee851867069cae0abfca6c62f"
+            }
+          },
+          "source_gap": "300398.SZ"
+        },
+        "revision": "18056"
+      }
+    },
+    "archive_progress:ths-holders-v1": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.829388+08:00",
+      "acquired_at": "2026-10-28T11:51:55.829388+08:00",
+      "reason": "",
+      "data": {
+        "batch_id": "9a036b6042d84bcda18b4202731607fa",
+        "page": 3725,
+        "status": "complete",
+        "row_count": 99,
+        "error_text": "",
+        "observed_at": "2026-10-27T18:48:17.068901+00:00"
+      }
+    },
+    "queue": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.829388+08:00",
+      "acquired_at": "2026-10-28T11:51:55.829388+08:00",
+      "reason": "",
+      "data": {
+        "stream_total": 0,
+        "unreadable": 0,
+        "truncated": false,
+        "exact": true,
+        "fetched_envelope_bytes": 0,
+        "scanned": 0,
+        "stream_ids": {},
+        "project_lower_bound": 0
+      }
+    },
+    "sql_state": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.882213+08:00",
+      "acquired_at": "2026-10-28T11:51:55.939324+08:00",
+      "reason": "",
+      "data": {
+        "source": "ths",
+        "dataset": "ths_holders",
+        "updated_at": "2026-10-28 02:48:44.907671",
+        "state_bytes": 9289222,
+        "progress": "{\"page\": 3671, \"status\": \"complete\", \"batch_id\": \"9a036b6042d84bcda18b4202731607fa\", \"row_count\": 87, \"error_text\": \"\", \"observed_at\": \"2026-10-27T18:48:06.385213+00:00\"}",
+        "progress_truncated": 0,
+        "coverage": null,
+        "coverage_truncated": 0,
+        "contract_version": "4",
+        "truncated": false,
+        "projection_only": true
+      }
+    },
+    "saved_policy": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.939324+08:00",
+      "acquired_at": "2026-10-28T11:51:55.940841+08:00",
+      "reason": "",
+      "data": {
+        "updated_at": "2026-10-17 11:18:42.615171",
+        "bytes": 169,
+        "policy": "{\"mode\": \"daily\", \"enabled\": true, \"archived\": false, \"use_proxy\": true, \"daily_time\": \"20:00\", \"proxy_fallback\": true, \"request_retries\": 30, \"interval_seconds\": 86400}",
+        "truncated": false
+      }
+    },
+    "query:top_holders.query": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.940841+08:00",
+      "acquired_at": "2026-10-28T11:51:55.943329+08:00",
+      "reason": "",
+      "data": {
+        "capability": "top_holders.query",
+        "method": "browse",
+        "arguments": {
+          "limit": 20,
+          "start": "2026-10-28",
+          "end": "2026-10-28"
+        },
+        "result": {
+          "rows": [
+            {
+              "kind": "top_holders",
+              "unified_code": "603836.SH",
+              "instrument_key": "e53fae0e59f28f18242a4fbb5127fdf841ae1ae3ca2788f821828efa2e445150",
+              "instrument_name": "603836.SH",
+              "report_date": "2026-10-28",
+              "report_type": "change_notice",
+              "total_quantity": null,
+              "total_quantity_scale": null,
+              "total_quantity_decimals": null,
+              "total_ratio": null,
+              "ratio_basis": "占总股本比例",
+              "quality_flags": 0,
+              "report_key": "7fa672139d8415003936e51ad5e0553371000ea368162f132644c77f056c79d9",
+              "member_count": 2,
+              "exit_count": 0
+            },
+            {
+              "kind": "top_holders",
+              "unified_code": "300467.SZ",
+              "instrument_key": "85e7483e96e5f18079ffc01e10b518ca3899c4a8bb21c3d23418f08f854aa46c",
+              "instrument_name": "300467.SZ",
+              "report_date": "2026-10-28",
+              "report_type": "change_notice",
+              "total_quantity": null,
+              "total_quantity_scale": null,
+              "total_quantity_decimals": null,
+              "total_ratio": null,
+              "ratio_basis": "占总股本比例",
+              "quality_flags": 0,
+              "report_key": "74cfe394b4b72036f207f3e5136277a8227dbb96c283db5871e2da4660c63393",
+              "member_count": 1,
+              "exit_count": 0
+            }
+          ],
+          "next": null
+        },
+        "scope": "正式有界预览，非完整性验收"
+      }
+    },
+    "query:float_holders.query": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.943329+08:00",
+      "acquired_at": "2026-10-28T11:51:55.945369+08:00",
+      "reason": "",
+      "data": {
+        "capability": "float_holders.query",
+        "method": "browse",
+        "arguments": {
+          "limit": 20,
+          "start": "2026-10-28",
+          "end": "2026-10-28"
+        },
+        "result": {
+          "rows": [],
+          "next": null
+        },
+        "scope": "正式有界预览，非完整性验收"
+      }
+    },
+    "query:bond_holders.query": {
+      "status": "ok",
+      "started_at": "2026-10-28T11:51:55.945369+08:00",
+      "acquired_at": "2026-10-28T11:51:55.946416+08:00",
+      "reason": "",
+      "data": {
+        "capability": "bond_holders.query",
+        "method": "browse",
+        "arguments": {
+          "limit": 20,
+          "start": "2026-10-28",
+          "end": "2026-10-28"
+        },
+        "result": {
+          "rows": [],
+          "next": null
+        },
+        "scope": "正式有界预览，非完整性验收"
+      }
+    }
+  },
+  "note": "各项分时读取，非 Redis/SQL 原子快照。任务阶段与 next_due 来自临时记录；正式预览不证明来源完整、时效或全部待归档为零。",
+  "limits_note": "队列最多逐条读取 5 个现有 Envelope；累计达到 256 KiB 后不取下一条，最后一条可超过此阈值，超过 256 KiB 的正文不解析。错误详情最多查现有保留的 300 条；控制状态读取上限 8 MiB，断点/归档进度各 128 KiB。报告上限不等同 Redis 服务总内存上限。",
+  "sql_cleanup": {
+    "closed_to_new_sql": true,
+    "outstanding_workers": 0,
+    "complete": true
+  },
+  "finished_at": "2026-10-28T11:51:55.946971+08:00",
+  "budget": {
+    "limits": {
+      "sql": 10,
+      "redis": 20,
+      "io_seconds": 5,
+      "total_seconds": 30,
+      "report_bytes": 1048576,
+      "errors": 50,
+      "body_bytes": 65536
+    },
+    "used": {
+      "sql": 10,
+      "redis": 15
+    },
+    "elapsed_seconds": 0.89,
+    "counting": "SQL 包含受守卫 SELECT 及每个物理连接五次驱动只读探测的保守预留；连接协议、SET 会话初始化及事务清理不计为业务查询。Redis 按脚本内 redis.call 读取命令的最大次数预留，包含返回前未使用预留。"
+  }
+}

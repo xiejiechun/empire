@@ -19,6 +19,7 @@ from empire.features.holders.contract import (
     validate_gaps,
 )
 from empire.plugins.infra.collection_state import confirmed_page
+from empire.plugins.pipeline.fingerprints import digest as fingerprint_digest
 
 NUMBERS = {'total_quantity', 'total_ratio', 'quantity', 'ratio', 'change_quantity', 'pledge_ratio'}
 
@@ -168,6 +169,7 @@ class HolderDataset:
             result['manifest'] = {**data['manifest'], 'observed_at': observed}
         else:
             proof = dict(observed_at=observed, count=sum(map(len, data['reports'].values())),
+                         fingerprint_hash=fingerprint_digest(self.fingerprint_plan(envelope, data)[1][data['unit']][0]),
                          digest=digest(data['reports']), contract=4, source_gaps=data['gaps'],
                          source_gaps_digest=digest(data['gaps']),
                          kinds={kind: dict(observed_at=observed, count=len(rows), digest=digest(rows),

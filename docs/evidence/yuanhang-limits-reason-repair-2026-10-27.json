@@ -1,0 +1,31 @@
+{
+  "project": "ths-yuanhang-reason",
+  "errors": [
+    {
+      "id": "145fe16f769f4a5aa5f355489c402d6f",
+      "created_at": "2026-10-26T16:57:03.710500+00:00",
+      "error": "原因详情单证券行数异常"
+    },
+    {
+      "id": "039669817133406183339f3f331d8c13",
+      "created_at": "2026-10-26T16:54:31.887325+00:00",
+      "error": "原因详情单证券行数异常"
+    },
+    {
+      "id": "dc0009ee293440e88c575f815bc3507a",
+      "created_at": "2026-10-26T16:51:24.820418+00:00",
+      "error": "原因详情单证券行数异常"
+    }
+  ],
+  "root_cause": "reasonKindList can be an empty array while reasonrevealedList contains one matching security row",
+  "status": "confirmed empty-array failure repaired; two earlier unsampled failures retained; revised executable pending",
+  "cleared": 1,
+  "cleared_ids": [
+    "145fe16f769f4a5aa5f355489c402d6f"
+  ],
+  "preserved_ids": [
+    "039669817133406183339f3f331d8c13",
+    "dc0009ee293440e88c575f815bc3507a"
+  ],
+  "validation": "24 parser tests; 12 SQL/live tests; 102 proxy requests, no direct fallback, pending0"
+}

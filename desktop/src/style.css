@@ -1,0 +1,132 @@
+.connection-notice {
+  margin: 8px 16px 0;
+}
+.muted {
+  color: var(--muted);
+}
+.global-navigation button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.directory-tools .ant-select {
+  width: 100%;
+}
+.task-tree-title > span:first-child {
+  flex: 1;
+}
+.task-tree-title .ant-badge {
+  flex: none;
+}
+.round-picker button {
+  cursor: pointer;
+}
+.round-picker button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+.journal-filters {
+  flex-wrap: wrap;
+}
+.journal-summary .ant-progress {
+  min-width: 110px;
+}
+.journal-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 10px 0;
+}
+.json-detail {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 400px;
+  overflow: auto;
+  margin: 0;
+  font:
+    12px Consolas,
+    monospace;
+}
+.manager {
+  padding: 20px;
+  overflow: auto;
+}
+.manager .ant-table {
+  margin-top: 16px;
+}
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 24px 0;
+}
+.resource-grid .ant-form-item {
+  margin-bottom: 4px;
+}
+.resource-grid .ant-input-number {
+  width: 100%;
+}
+.command-message {
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.heading h1 {
+  font-size: 20px;
+}
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.record-embedded {
+  margin-top: 15px;
+}
+.comfortable .directory-tree .ant-tree-node-content-wrapper {
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+}
+.focused-task-heading {
+  flex-wrap: wrap;
+}
+.task-context-drawer .page-stack {
+  flex: 1;
+  min-height: 0;
+}
+.journal-events .ant-pagination {
+  margin-top: 12px;
+}
+@media (max-width: 1300px) {
+  .resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.data-preview{padding:18px 0}.preview-query{display:flex;align-items:flex-end;flex-wrap:wrap;gap:10px;margin-bottom:14px}.preview-query label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);width:160px}.preview-caption,.preview-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:12px 0;color:var(--muted);font-size:12px}.preview-detail-item{margin-bottom:10px}
+
+.journal-redesign .run-context,.run-overview-top,.run-progress-caption,.history-context{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.journal-redesign .run-context{margin:8px 0 18px;flex-wrap:wrap}
+.run-context>div:first-child,.run-event-heading{display:flex;gap:12px;align-items:center}
+.run-context .muted,.run-event-heading .muted{font-size:12px}
+.run-overview{padding:20px 22px;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
+.run-overview h3{font-size:15px;font-weight:500;margin:10px 0;line-height:1.6;overflow-wrap:anywhere}
+.run-percent{display:flex;flex-direction:column;align-items:flex-end;min-width:88px;flex-shrink:0}
+.run-percent strong{font-size:32px;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums;color:var(--accent,#1677ff)}
+.run-percent span,.run-progress-caption{font-size:12px;color:var(--muted)}
+.run-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.run-facts>div{display:flex;flex-direction:column;gap:8px;min-width:0}
+.run-facts span{font-size:12px;color:var(--muted)}
+.run-facts strong{font-size:12px;font-weight:500;overflow-wrap:anywhere}
+.run-event-heading{margin:24px 0 12px;flex-wrap:wrap}
+.history-context{padding:10px 14px;background:var(--surface);border-left:3px solid #faad14;margin-bottom:12px;font-size:12px}
+.compact-task-progress{font-variant-numeric:tabular-nums;white-space:nowrap;min-width:30px;text-align:right;color:var(--muted)}
+@media(max-width:1100px){.run-context>div:first-child{flex-wrap:wrap}.run-facts{gap:10px}.run-progress-caption{align-items:flex-start;flex-direction:column;gap:4px}}

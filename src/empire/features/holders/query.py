@@ -49,6 +49,10 @@ class HolderDataPlugin:
                 return rows
         return await self.mysql.read(read)
 
+    async def collection_units(self, now):
+        from empire.features.holders.planning import confirmed_units
+        return await confirmed_units(self, now)
+
     async def browse(self, code='', start='', end='', after=None, limit=20):
         if not isinstance(code, str) or not re.fullmatch(r'(?:\d{0,6}|\d{6}\.(SH|SZ|BJ))', code) or type(limit) is not int or not 1 <= limit <= 100:
             raise ValueError('持有人查询范围无效')

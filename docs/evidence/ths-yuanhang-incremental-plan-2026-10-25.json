@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-25",
+  "scope": "远航增量优化方案与后续采集开发准入，仅文档交付",
+  "plan": "docs/ths-yuanhang-incremental-plan.md",
+  "runtime_implemented": false,
+  "automatic_request_budget_gate_implemented": false,
+  "production_settings_changed": false,
+  "business_data_changed": false,
+  "source_requests_made": 0,
+  "documents_changed": [
+    "AGENTS.md",
+    "docs/collector-development-guide.md",
+    "docs/development-workflow.md",
+    "docs/collection-rules-standard.md",
+    "docs/ths-yuanhang-implementation.md",
+    "docs/ths-yuanhang-incremental-plan.md"
+  ],
+  "manual_review": [
+    "区分来源增量与差异入库；次数、字节、入队和写库成本分别验收。",
+    "5交易日回看和20交易日轮转是建议默认值，未实施且不承诺即时发现窗口外修订。",
+    "批量协议与长期连接复用待验证；不因存在参数或客户端能力名称宣称可用。",
+    "金融保持每日联合完整小响应，避免为省请求默认损失复权输入时效。",
+    "局部行情必须扩展现有归档和证明契约，不能进入整年替换；继续执行共享路径和旧版保护。",
+    "后续开发验收初始化后的无变化轮次、新增单元、缺口和恢复，不以首次全量通过替代。"
+  ],
+  "validation": {
+    "all_repository_markdown_links": "passed",
+    "git_diff_check_selected_documents": "passed; existing CRLF conversion warnings only",
+    "initial_documentation_contract_check": "passed before this round of edits",
+    "explicit_documentation_review": "attempted; blocked before recording by stale help aggregate",
+    "documentation_regression": {
+      "passed": 4,
+      "failed": 1,
+      "failure": "test_current_documentation_contracts: Offline help aggregate is stale"
+    },
+    "blocking_topic": "任务失败与数据未更新",
+    "blocking_source": "src/empire/documentation/topics/troubleshooting.md",
+    "aggregate": "src/empire/plugins/ui/storage_reference.md",
+    "handling": "本轮未修改该帮助正文或聚合资源，保留共享工作区变更；未刷新全局审阅或冒充文档门禁通过。后续共享输入稳定并生成聚合后须重做显式review与文档回归。"
+  },
+  "not_applicable": {
+    "random30_live_collection": "仅方案与规范，无采集逻辑修改或来源请求",
+    "database_migration": "没有结构或业务数据修改；后续实施前另补设计卡",
+    "packaging_and_desktop_release": "纯开发文档交付，不重建或重启程序"
+  }
+}

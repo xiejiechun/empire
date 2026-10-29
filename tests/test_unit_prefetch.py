@@ -91,3 +91,47 @@ async def test_dependent_page_contract_never_asks_for_parallel_width():
         assert http.buffer_budget.used == 0
     finally:
         await http.close()
+
+
+@pytest.mark.parametrize('cancel', [False, True])
+async def test_retained_result_budget_is_owned_until_consumption_or_cancellation(cancel):
+    http, size = service()
+    retained = 1024
+    total = size + 3 * retained
+    http.buffer_budget = ByteBudget(2 * total)
+    c = SimpleNamespace(http=http, stats={})
+    started = asyncio.Event()
+    reservations = []
+
+    async def fetch(unit, *, reservation):
+        reservations.append(reservation)
+        assert reservation.size == size
+        assert reservation.owner.size == total
+        reservation.release()
+        assert not reservation.released
+        started.set()
+        if cancel:
+            await asyncio.Event().wait()
+        return unit
+
+    async def run():
+        async with prefetch_units(c, [0, 1, 2], fetch, url='https://example.com/',
+                                  domains=('example.com',), retained_bytes=retained) as reads:
+            async for index, read in reads:
+                assert await read.resolve() == index
+                assert http.buffer_budget.used >= total
+
+    try:
+        task = asyncio.create_task(run())
+        await asyncio.wait_for(started.wait(), 2)
+        if cancel:
+            task.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await task
+        else:
+            await asyncio.wait_for(task, 2)
+        assert http.buffer_budget.peak == 2 * total
+        assert http.buffer_budget.used == 0
+        assert all(r.released for r in reservations)
+    finally:
+        await http.close()

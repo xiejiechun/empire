@@ -61,6 +61,8 @@ class SinaNewsCollector:
                           "high_watermark": 0 if fresh else cursor.get("high_watermark", 0),
                           "upper_id": 0, "pages": 0, "collected": 0, "covered": False,
                           "started_at": datetime.now(UTC).isoformat()}
+            self.stats.update(completed_units=cursor['pages'],
+                              total_units=1 if not cursor['high_watermark'] else None, unit_name='页新闻')
             while cursor["phase"] == "fetch":
                 response = None
                 await self._capacity()
@@ -103,9 +105,11 @@ class SinaNewsCollector:
                             expected_revision=state["revision"], cursor=updated,
                         )
                         cursor = state["cursor"]
+                        self.stats['completed_units'] = cursor['pages']
                         self.stats.update(status=cursor["phase"] if finished else "collecting", error="",
                                           collected=cursor["collected"], pages=cursor["pages"])
             stage = "archive_confirmation"
+            self.stats.update(completed_units=cursor['pages'], total_units=cursor['pages'])
             self.stats.update(status="awaiting_archive", error="", collected=cursor["collected"], pages=cursor["pages"])
             await wait_for_archive(partial(
                 self.confirmation.page_status,

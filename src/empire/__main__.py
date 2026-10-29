@@ -250,13 +250,6 @@ def main() -> int:
     suspensions.add_argument("--fresh", action="store_true", help="从 2004-12-27 重新核验至今，保留已归档事件")
     industries = commands.add_parser('collect-industries', help='刷新同花顺当前行业及全部成员，归档后退出')
     industries.add_argument('--fresh', action='store_true', help='完整刷新当前分类，不保存变化历史')
-    intraday = commands.add_parser('collect-intraday', help='回补一个开盘啦独立项目，归档后退出')
-    intraday.add_argument('--kind', choices=('trend','auction','volume','trades','entrust','large_order','quote'), default='trend')
-    intraday.add_argument('--fresh', action='store_true', help='重新核验声明范围，保留已归档历史')
-    intraday.add_argument('--securities', nargs='+', help='本次有限范围：1～50个000001.SZ形式的证券')
-    intraday.add_argument('--start', help='本次闭区间起日YYYY-MM-DD，须与证券及end同时给出')
-    intraday.add_argument('--end', help='本次闭区间止日YYYY-MM-DD')
-    intraday.add_argument('--proxy-priority', action='store_true', help='仅本次优先共享代理、允许回退；不保存任务策略')
     smoke = commands.add_parser("smoke", help="启动桌面并在指定秒数后安全退出")
     smoke.add_argument("--seconds", type=int, default=8)
     smoke.add_argument("--screenshot")
@@ -302,7 +295,7 @@ def main() -> int:
             finally:
                 lock.unlock()
             return 0
-        if args.command in ("collect-stocks", "collect-news", "collect-calendar", "collect-suspensions", 'collect-industries', 'collect-intraday'):
+        if args.command in ("collect-stocks", "collect-news", "collect-calendar", "collect-suspensions", 'collect-industries'):
             from PySide6.QtCore import QCoreApplication
 
             from empire.bootstrap import build_manager
@@ -313,8 +306,7 @@ def main() -> int:
                 manager = build_manager(cfg)
                 task_id = {"collect-news": "sina-news", "collect-stocks": "sina-stocks",
                            "collect-calendar": "cninfo-calendar",
-                           "collect-suspensions": "tdx-suspensions", 'collect-industries': 'ths-industries',
-                           'collect-intraday': 'kaipanla-' + getattr(args, 'kind', 'trend').replace('_', '-')}[args.command]
+                           "collect-suspensions": "tdx-suspensions", 'collect-industries': 'ths-industries'}[args.command]
                 try:
                     await manager.start("collection.control")
                     await manager.start("pipeline.archive")
@@ -322,13 +314,6 @@ def main() -> int:
                     definition = control.definitions[task_id]
                     await manager.start(manager.providers[definition.capability])
                     options = {}
-                    if args.command == 'collect-intraday':
-                        fields = [args.securities, args.start, args.end]
-                        if any(fields) or args.proxy_priority:
-                            if not all(fields):
-                                raise ValueError('有限采集须同时提供--securities、--start、--end')
-                            options['request'] = dict(securities=args.securities, start=args.start,
-                                end=args.end, proxy_priority=args.proxy_priority)
                     run_id = await control.run(task_id, fresh=args.fresh, **options)
                     waiter = control.tasks[task_id]
                     while not waiter.done():

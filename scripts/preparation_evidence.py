@@ -10,6 +10,7 @@ from empire.core.preparation_release import load_evidence, source_digest
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('action', choices=('begin', 'finish', 'package'))
+parser.add_argument('--test-scope')
 args = parser.parse_args()
 folder = root / 'build/generated'
 folder.mkdir(parents=True, exist_ok=True)
@@ -31,7 +32,10 @@ elif args.action == 'finish':
         cases.append({'module': case.attrib['classname'], 'name': case.attrib['name'], 'status': status})
     if not cases or any(c['status'] in ('failure', 'error') for c in cases):
         raise RuntimeError('Cannot attest failing or empty test suite')
-    target.write_text(json.dumps({'schema': 1, 'passed': True, 'source_sha256': digest,
+    scope = json.loads(Path(args.test_scope).read_text(encoding='utf-8')) if args.test_scope else {'mode': 'full'}
+    if args.test_scope and len(cases) != scope['selected_count']:
+        raise RuntimeError('Executed test count differs from the explicit sample')
+    target.write_text(json.dumps({'schema': 1, 'passed': True, 'source_sha256': digest, 'test_scope': scope,
         'checked_at': datetime.now(UTC).isoformat(), 'cases': cases}, ensure_ascii=False), encoding='utf-8')
 else:
     value, error = load_evidence(root)

@@ -101,3 +101,27 @@ def test_exact_new_computation_requires_existing_provider_and_all_bindings(decla
     changed = copy.deepcopy(declared)
     changed['semantic']['tasks']['sina-news']['interval_seconds'] = 99
     assert compare(before,changed,{},ROOT,[change]) == ['semantic.tasks.sina-news.interval_seconds']
+
+
+def test_source_dependency_replacement_is_exact_and_cannot_change_plugin_identity(declared):
+    before = copy.deepcopy(declared)
+    before['semantic']['plugins']['data.adjustment']['requires'] = ['mysql.store', 'kaipanla_quote.query']
+    change = dict(path='semantic.plugins.data.adjustment.requires',
+        before=['mysql.store', 'kaipanla_quote.query'], after=['mysql.store', 'yuanhang.history.query'],
+        design='docs/ths-yuanhang-storage-design.md', tests=['tests/test_adjustment_query.py'])
+    assert not compare(before,declared,{},ROOT,[change])
+    with pytest.raises(ValueError, match='stale'):
+        compare(before,declared,{},ROOT,[{**change, 'before': []}])
+    wrong = copy.deepcopy(declared)
+    wrong['semantic']['plugins']['data.adjustment']['provides'] = ['other.query']
+    assert compare(before,wrong,{},ROOT,[change]) == ['semantic.plugins.data.adjustment.provides']
+
+
+def test_reviewed_startup_interleave_cannot_reorder_old_plugins():
+    from scripts.assembly_contract import ORDER_FIELDS, compare_order
+    before = dict(schema=1, **{k:['first','second'] for k in ORDER_FIELDS})
+    current = copy.deepcopy(before)
+    change = dict(path='order.startup', before=['first','second'], after=['second','first'])
+    current['startup'] = change['after']
+    with pytest.raises(ValueError, match='preserve every old'):
+        compare_order(before,current,[change])

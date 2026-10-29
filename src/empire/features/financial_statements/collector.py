@@ -78,11 +78,15 @@ class ThsStatementCollector:
 
     async def execute(self, *, fresh=False, baseline_revision=0):
         stage = 'plan'
+        self.stats = {'status': 'planning', 'collected': 0, 'completed_units': 0,
+                      'unit_name': '只股票'}
         try:
             state = await self.ingest.checkpoint(self.job_key)
             cursor = state['cursor']
             progressed = state['revision'] > baseline_revision
             if progressed and cursor.get('phase') == 'complete':
+                self.stats.update(status='complete', completed_units=cursor['index'],
+                                  total_units=cursor['units'], collected=cursor['collected'])
                 return cursor
             if (fresh and not progressed) or cursor.get('phase') == 'complete':
                 cursor = {}
@@ -99,6 +103,8 @@ class ThsStatementCollector:
                     cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0, collected=0,
                                   units=len(keys), scope_hash=scope, rolling=digest([]))
                 selected = list(enumerate(stocks))[cursor['index']:]
+                self.stats.update(completed_units=cursor['index'], total_units=len(keys),
+                                  collected=cursor['collected'])
                 async def download(item, *, reservation):
                     return await self.fetch(item[1], reservation=reservation, defer=True)
                 async with prefetch_units(self, selected, download,
@@ -115,13 +121,16 @@ class ThsStatementCollector:
                         stage = 'queue_publish'
                         state = await self.publish(state, following, keys[index], rows, None, observed, url)
                         cursor = state['cursor']
+                        self.stats.update(completed_units=cursor['index'],
+                                          collected=cursor['collected'], pages=cursor['pages'])
                 manifest = dict(units=cursor['units'], count=cursor['collected'],
                                 scope_hash=scope, digest=cursor['rolling'])
                 following = {**cursor, 'phase': 'awaiting_archive', 'pages': cursor['pages'] + 1}
                 state = await self.publish(state, following, 'manifest', [], manifest, datetime.now(UTC), None)
                 cursor = state['cursor']
             stage = 'archive_confirmation'
-            self.stats.update(status='awaiting_archive', collected=cursor['collected'], pages=cursor['pages'])
+            self.stats.update(status='awaiting_archive', collected=cursor['collected'], pages=cursor['pages'],
+                              completed_units=cursor['index'], total_units=cursor['units'])
             await wait_for_archive(partial(self.confirmation.page_status, self.source, self.job_key,
                                           self.project_id, cursor['batch_id'], cursor['pages']), retry_seconds=1)
             cursor = {**cursor, 'phase': 'complete'}

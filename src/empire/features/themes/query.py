@@ -1,7 +1,6 @@
 """Bounded theme queries; source history and archived daily lists stay distinct."""
 import json
-import math
-from datetime import UTC, date, datetime, timedelta
+from datetime import UTC, date, datetime, time
 
 from sqlalchemy import text
 
@@ -15,6 +14,12 @@ from empire.features.themes.repository import TABLE_COLUMNS, read_detail
 from empire.features.themes.storage_contract import DAILY_FIELDS, decode_daily, security_map
 from empire.plugins.infra.schema_manifest import schema_contract
 from empire.plugins.pipeline.fingerprints import FingerprintCache
+
+
+def daily_review_due(observed, now):
+    local_now, local_observed = now.astimezone(CHINA), observed.astimezone(CHINA)
+    cutoff = datetime.combine(local_now.date(), time(15, 30), CHINA)
+    return local_observed.date() < local_now.date() or local_now >= cutoff > local_observed
 
 
 class ThemeDataPlugin:
@@ -125,10 +130,10 @@ class ThemeDataPlugin:
             proof = proofs.get(key)
             if proof:
                 observed = max(observed, datetime.fromisoformat(proof['version'][1]))
-            if now - observed >= timedelta(days=1) and key not in urgent:
+            if daily_review_due(observed, now) and key not in urgent:
                 due.append((observed, key))
-        # Missing/renamed first; daily rechecks spread across the 180s schedule.
-        return urgent + [key for _, key in sorted(due)[:max(1, math.ceil(len(roots) / 400))]]
+        # Complete the due set in one bounded daily round; no multi-round slicing.
+        return urgent + [key for _, key in sorted(due)]
 
     async def stop(self):
         self.mysql = None

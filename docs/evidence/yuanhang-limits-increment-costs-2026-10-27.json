@@ -1,0 +1,129 @@
+{
+  "recorded_at": "2026-10-27T00:42:54.869068+00:00",
+  "scope": {
+    "first": "1990-12-19",
+    "through": "2026-10-26"
+  },
+  "final_report": "build\\yuanhang-limits-history-increment-20261027.json",
+  "final_sha256": "b6ae07e9a2b39e075a70864a751ffe3174bc9c1bfdd639a21388686e7100f285",
+  "sql": {
+    "identity": {
+      "database_name": "empire",
+      "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e"
+    },
+    "reasons": {
+      "total": 179792,
+      "available": "120239",
+      "no_content": "59553",
+      "text_present": "102590",
+      "kind_present": "96961",
+      "first_date": "2020-01-23",
+      "last_date": "2026-10-26"
+    },
+    "membership": {
+      "expected": 179792,
+      "missing": "0"
+    }
+  },
+  "cold_sql_plans": {
+    "limit_up_pool": {
+      "units": [],
+      "cutoff": "2026-10-26",
+      "remaining": 0
+    },
+    "sprint_limit_up": {
+      "units": [],
+      "cutoff": "2026-10-26",
+      "remaining": 0
+    },
+    "connect_broad_pool": {
+      "units": [],
+      "cutoff": "2026-10-26",
+      "remaining": 0
+    },
+    "open_limit_up_pool": {
+      "units": [],
+      "cutoff": "2026-10-26",
+      "remaining": 0
+    },
+    "limit_down_pool": {
+      "units": [],
+      "cutoff": "2026-10-26",
+      "remaining": 0
+    },
+    "reason": {
+      "units": [],
+      "cutoff": "2026-10-26",
+      "remaining": 0
+    }
+  },
+  "cold_sql_scope": "Redis plugin was not started; shared Redis was not modified or restarted.",
+  "routed_request_totals": {
+    "proxy_requests": 116
+  },
+  "initialization_runs": [
+    {
+      "file": "yuanhang-limits-history-increment-20261027.json",
+      "sha256": "b6ae07e9a2b39e075a70864a751ffe3174bc9c1bfdd639a21388686e7100f285",
+      "started_at": "2026-10-27T00:39:10.576468+00:00",
+      "finished_at": "2026-10-27T00:41:31.986659+00:00",
+      "complete": true,
+      "routes": {
+        "proxy_requests": 116
+      },
+      "counters": {
+        "limit_up_pool": {
+          "requests": 1,
+          "wire_bytes": 7319,
+          "response_bytes": 37532,
+          "queued_bytes": 9390,
+          "queued_messages": 1
+        },
+        "sprint_limit_up": {
+          "requests": 1,
+          "wire_bytes": 1252,
+          "response_bytes": 7277,
+          "queued_bytes": 2252,
+          "queued_messages": 1
+        },
+        "connect_broad_pool": {
+          "requests": 1,
+          "wire_bytes": 2746,
+          "response_bytes": 11807,
+          "queued_bytes": 4013,
+          "queued_messages": 1
+        },
+        "open_limit_up_pool": {
+          "requests": 1,
+          "wire_bytes": 2371,
+          "response_bytes": 14387,
+          "queued_bytes": 3593,
+          "queued_messages": 1
+        },
+        "limit_down_pool": {
+          "requests": 1,
+          "wire_bytes": 2408,
+          "response_bytes": 15854,
+          "queued_bytes": 3600,
+          "queued_messages": 1
+        },
+        "reason": {
+          "requests": 111,
+          "wire_bytes": 54934,
+          "response_bytes": 74836,
+          "queued_bytes": 146110,
+          "queued_messages": 111
+        }
+      },
+      "counters_complete": true,
+      "errors": []
+    }
+  ],
+  "limitations": [
+    "Failed-run periodic counters can omit the final interval; bytes and enqueue counters are lower bounds.",
+    "Route counters include cancelled prefetch attempts; they are not native authentication-message counts.",
+    "Counts are initialization runs only; separate diagnostic, capacity and real-source tests are excluded.",
+    "Row totals are stored facts, not a cumulative business-DML counter.",
+    "Source no_content and historical empty pools do not prove that no historical event existed."
+  ]
+}

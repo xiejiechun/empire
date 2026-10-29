@@ -1,0 +1,1382 @@
+{
+  "checked_at": "2026-10-28T22:01:01.519761+00:00",
+  "tasks": 55,
+  "code_registered": 55,
+  "missing_cache_tasks": [
+    "kaipanla-trend",
+    "kaipanla-auction",
+    "kaipanla-volume",
+    "kaipanla-trades",
+    "kaipanla-entrust",
+    "kaipanla-large-order",
+    "kaipanla-quote"
+  ],
+  "capped_tasks": [
+    "ths-yuanhang-prices",
+    "ths-yuanhang-financial",
+    "ths-yuanhang-reason"
+  ],
+  "offline_tests_passed": 88,
+  "integration_setup_errors": 57,
+  "integration_completed": 0,
+  "rows": [
+    {
+      "id": "tdx-unlock-industries",
+      "name": "大小非解禁行业（通达信）",
+      "family": "unlock_industries",
+      "granularity": "月份、基准日期＋范围证明",
+      "namespaces": [
+        "tdx_unlock_industries_v1"
+      ],
+      "datasets": [
+        "unlocks.tdx_industry_month"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/unlock_industries/dataset.py"
+      ],
+      "cache_entries": 25,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-unlocks",
+      "name": "大小非解禁个股与明细（通达信）",
+      "family": "unlocks",
+      "granularity": "月份市场父子业务集合＋范围证明",
+      "namespaces": [
+        "tdx_unlocks_v1"
+      ],
+      "datasets": [
+        "unlocks.tdx_month"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/unlocks/dataset.py"
+      ],
+      "cache_entries": 32,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-holders",
+      "name": "股东研究（同花顺）",
+      "family": "holders",
+      "granularity": "证券完整股东报告、来源缺口＋范围证明",
+      "namespaces": [
+        "ths_holders"
+      ],
+      "datasets": [
+        "holders.reports"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/holders/dataset.py"
+      ],
+      "cache_entries": 5578,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-capital",
+      "name": "公司资本运作（同花顺）",
+      "family": "ths_capital",
+      "granularity": "单证券资本运作完整内容、可用性＋范围证明",
+      "namespaces": [
+        "ths_capital"
+      ],
+      "datasets": [
+        "ths.capital.security"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/ths_capital/dataset.py"
+      ],
+      "cache_entries": 5580,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-earnings-forecast",
+      "name": "业绩预告（通达信）",
+      "family": "performance",
+      "granularity": "证券/报告期/日期×市场完整单元＋范围证明",
+      "namespaces": [
+        "tdx_earnings_forecast"
+      ],
+      "datasets": [
+        "earnings_forecast.tdx_unit"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/performance/dataset.py"
+      ],
+      "cache_entries": 565,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-earnings-quick",
+      "name": "业绩快报（通达信）",
+      "family": "performance",
+      "granularity": "证券/报告期/日期×市场完整单元＋范围证明",
+      "namespaces": [
+        "tdx_earnings_quick"
+      ],
+      "datasets": [
+        "earnings_quick.tdx_unit"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/performance/dataset.py"
+      ],
+      "cache_entries": 562,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-earnings-disclosure",
+      "name": "业绩披露时间（通达信）",
+      "family": "performance",
+      "granularity": "证券/报告期/日期×市场完整单元＋范围证明",
+      "namespaces": [
+        "tdx_earnings_disclosure"
+      ],
+      "datasets": [
+        "earnings_disclosure.tdx_unit"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/performance/dataset.py"
+      ],
+      "cache_entries": 562,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-earnings-report",
+      "name": "业绩报告（通达信）",
+      "family": "performance",
+      "granularity": "证券/报告期/日期×市场完整单元＋范围证明",
+      "namespaces": [
+        "tdx_earnings_report"
+      ],
+      "datasets": [
+        "earnings_report.tdx_unit"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/performance/dataset.py"
+      ],
+      "cache_entries": 562,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-holder-count",
+      "name": "股东户数（通达信）",
+      "family": "performance",
+      "granularity": "证券/报告期/日期×市场完整单元＋范围证明",
+      "namespaces": [
+        "tdx_holder_count"
+      ],
+      "datasets": [
+        "holder_count.tdx_unit"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/performance/dataset.py"
+      ],
+      "cache_entries": 5581,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-shareholder-changes",
+      "name": "重要股东持股变动（通达信）",
+      "family": "performance",
+      "granularity": "证券/报告期/日期×市场完整单元＋范围证明",
+      "namespaces": [
+        "tdx_shareholder_changes"
+      ],
+      "datasets": [
+        "shareholder_changes.tdx_unit"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/performance/dataset.py"
+      ],
+      "cache_entries": 1327,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "eastmoney-repurchases",
+      "name": "股票回购（东方财富）",
+      "family": "repurchases",
+      "granularity": "方案ID＋最终覆盖证明",
+      "namespaces": [
+        "eastmoney_repurchase_v1"
+      ],
+      "datasets": [
+        "repurchases.page"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/repurchases/dataset.py"
+      ],
+      "cache_entries": 5635,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "rules-limit-rules",
+      "name": "涨跌幅规则记录",
+      "family": "trading_rules",
+      "granularity": "单组官方规则与引用",
+      "namespaces": [
+        "trading_limit_rules_v1"
+      ],
+      "datasets": [
+        "rules.limit_rules.complete"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/trading_rules/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "rules-settlement-rules",
+      "name": "买入后何时能卖的规则",
+      "family": "trading_rules",
+      "granularity": "单组官方规则与引用",
+      "namespaces": [
+        "trading_settlement_rules_v1"
+      ],
+      "datasets": [
+        "rules.settlement_rules.complete"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/trading_rules/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "rules-lot-rules",
+      "name": "最小买卖数量规则",
+      "family": "trading_rules",
+      "granularity": "单组官方规则与引用",
+      "namespaces": [
+        "trading_lot_rules_v1"
+      ],
+      "datasets": [
+        "rules.lot_rules.complete"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/trading_rules/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "rules-tick-rules",
+      "name": "最小价格变动规则",
+      "family": "trading_rules",
+      "granularity": "单组官方规则与引用",
+      "namespaces": [
+        "trading_tick_rules_v1"
+      ],
+      "datasets": [
+        "rules.tick_rules.complete"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/trading_rules/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "rules-sessions",
+      "name": "交易时段规则",
+      "family": "trading_rules",
+      "granularity": "单组官方规则与引用",
+      "namespaces": [
+        "trading_sessions_v1"
+      ],
+      "datasets": [
+        "rules.sessions.complete"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/trading_rules/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "rules-stamp-duty",
+      "name": "印花税税率记录",
+      "family": "trading_rules",
+      "granularity": "单组官方规则与引用",
+      "namespaces": [
+        "trading_stamp_duty_v1"
+      ],
+      "datasets": [
+        "rules.stamp_duty.complete"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/trading_rules/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "rules-transfer-fee",
+      "name": "过户费收费记录",
+      "family": "trading_rules",
+      "granularity": "单组官方规则与引用",
+      "namespaces": [
+        "trading_transfer_fee_v1"
+      ],
+      "datasets": [
+        "rules.transfer_fee.complete"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/trading_rules/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-listing-status",
+      "name": "暂停恢复终止上市（通达信）",
+      "family": "listing_status",
+      "granularity": "月份＋来源日期覆盖",
+      "namespaces": [
+        "tdx_listing_status_v1"
+      ],
+      "datasets": [
+        "listing_status.month"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/listing_status/dataset.py"
+      ],
+      "cache_entries": 2,
+      "cache_buckets": 1,
+      "sampled": 2,
+      "valid": 2,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-index-prices",
+      "name": "同花顺指数历史日行情",
+      "family": "index_prices",
+      "granularity": "指数年份或覆盖单元",
+      "namespaces": [
+        "ths_index_prices_v1"
+      ],
+      "datasets": [
+        "index.price.status",
+        "index.price.year"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/index_prices/dataset.py"
+      ],
+      "cache_entries": 1146,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-st-implementation",
+      "name": "实施ST（通达信）",
+      "family": "st_events",
+      "granularity": "市场完整ST事件集合",
+      "namespaces": [
+        "tdx_st_implementation_v1"
+      ],
+      "datasets": [
+        "st.implementation.market"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/st_events/dataset.py"
+      ],
+      "cache_entries": 3,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-st-removal",
+      "name": "撤销ST（通达信）",
+      "family": "st_events",
+      "granularity": "市场完整ST事件集合",
+      "namespaces": [
+        "tdx_st_removal_v1"
+      ],
+      "datasets": [
+        "st.removal.market"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/st_events/dataset.py"
+      ],
+      "cache_entries": 3,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-company-renames",
+      "name": "公司更名（通达信）",
+      "family": "name_changes",
+      "granularity": "市场完整更名集合",
+      "namespaces": [
+        "tdx_names_company_v2"
+      ],
+      "datasets": [
+        "names.company.market"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/name_changes/dataset.py"
+      ],
+      "cache_entries": 3,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-security-renames",
+      "name": "股票更名（通达信）",
+      "family": "name_changes",
+      "granularity": "市场完整更名集合",
+      "namespaces": [
+        "tdx_names_security_v2"
+      ],
+      "datasets": [
+        "names.security.market"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/name_changes/dataset.py"
+      ],
+      "cache_entries": 3,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "kaipanla-trend",
+      "name": "开盘啦分时走势",
+      "family": "kaipanla",
+      "granularity": "证券＋交易日（独立产品）",
+      "namespaces": [
+        "kaipanla_trend_v1"
+      ],
+      "datasets": [
+        "kaipanla.trend.day"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/kaipanla/dataset.py"
+      ],
+      "cache_entries": 0,
+      "cache_buckets": 0,
+      "sampled": 0,
+      "valid": 0,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "当前无对应摘要缓存；首次或冷缓存归档需SQL，热缓存实测未完成"
+    },
+    {
+      "id": "kaipanla-auction",
+      "name": "开盘啦开盘竞价",
+      "family": "kaipanla",
+      "granularity": "证券＋交易日（独立产品）",
+      "namespaces": [
+        "kaipanla_auction_v1"
+      ],
+      "datasets": [
+        "kaipanla.auction.day"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/kaipanla/dataset.py"
+      ],
+      "cache_entries": 0,
+      "cache_buckets": 0,
+      "sampled": 0,
+      "valid": 0,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "当前无对应摘要缓存；首次或冷缓存归档需SQL，热缓存实测未完成"
+    },
+    {
+      "id": "kaipanla-volume",
+      "name": "开盘啦分钟成交量与成交额",
+      "family": "kaipanla",
+      "granularity": "证券＋交易日（独立产品）",
+      "namespaces": [
+        "kaipanla_volume_v1"
+      ],
+      "datasets": [
+        "kaipanla.volume.day"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/kaipanla/dataset.py"
+      ],
+      "cache_entries": 0,
+      "cache_buckets": 0,
+      "sampled": 0,
+      "valid": 0,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "当前无对应摘要缓存；首次或冷缓存归档需SQL，热缓存实测未完成"
+    },
+    {
+      "id": "kaipanla-trades",
+      "name": "开盘啦分时成交明细",
+      "family": "kaipanla",
+      "granularity": "证券＋交易日（独立产品）",
+      "namespaces": [
+        "kaipanla_trades_v1"
+      ],
+      "datasets": [
+        "kaipanla.trades.day"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/kaipanla/dataset.py"
+      ],
+      "cache_entries": 0,
+      "cache_buckets": 0,
+      "sampled": 0,
+      "valid": 0,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "当前无对应摘要缓存；首次或冷缓存归档需SQL，热缓存实测未完成"
+    },
+    {
+      "id": "kaipanla-entrust",
+      "name": "开盘啦分钟买卖委托汇总",
+      "family": "kaipanla",
+      "granularity": "证券＋交易日（独立产品）",
+      "namespaces": [
+        "kaipanla_entrust_v1"
+      ],
+      "datasets": [
+        "kaipanla.entrust.day"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/kaipanla/dataset.py"
+      ],
+      "cache_entries": 0,
+      "cache_buckets": 0,
+      "sampled": 0,
+      "valid": 0,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "当前无对应摘要缓存；首次或冷缓存归档需SQL，热缓存实测未完成"
+    },
+    {
+      "id": "kaipanla-large-order",
+      "name": "开盘啦大单净额走势",
+      "family": "kaipanla",
+      "granularity": "证券＋交易日（独立产品）",
+      "namespaces": [
+        "kaipanla_large_order_v1"
+      ],
+      "datasets": [
+        "kaipanla.large_order.day"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/kaipanla/dataset.py"
+      ],
+      "cache_entries": 0,
+      "cache_buckets": 0,
+      "sampled": 0,
+      "valid": 0,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "当前无对应摘要缓存；首次或冷缓存归档需SQL，热缓存实测未完成"
+    },
+    {
+      "id": "kaipanla-quote",
+      "name": "开盘啦历史盘口与日行情摘要",
+      "family": "kaipanla",
+      "granularity": "证券＋交易日（独立产品）",
+      "namespaces": [
+        "kaipanla_quote_v1"
+      ],
+      "datasets": [
+        "kaipanla.quote.day"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/kaipanla/dataset.py"
+      ],
+      "cache_entries": 0,
+      "cache_buckets": 0,
+      "sampled": 0,
+      "valid": 0,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "当前无对应摘要缓存；首次或冷缓存归档需SQL，热缓存实测未完成"
+    },
+    {
+      "id": "ths-listings",
+      "name": "股票上市与发行资料（同花顺）",
+      "family": "listings",
+      "granularity": "单证券上市资料＋范围证明",
+      "namespaces": [
+        "ths_listings_v3"
+      ],
+      "datasets": [
+        "listing.detail"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/listings/dataset.py"
+      ],
+      "cache_entries": 86,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-industries",
+      "name": "同花顺当前行业",
+      "family": "industries",
+      "granularity": "完整当前行业目录",
+      "namespaces": [
+        "ths_industries_v2"
+      ],
+      "datasets": [
+        "industry.snapshot"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/industries/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-indices",
+      "name": "同花顺当前指数及成分",
+      "family": "indices",
+      "granularity": "指数目录及单指数成员",
+      "namespaces": [
+        "ths_indices_v1"
+      ],
+      "datasets": [
+        "index.catalog",
+        "index.members"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/indices/dataset.py"
+      ],
+      "cache_entries": 574,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-income",
+      "name": "利润表（同花顺）",
+      "family": "financial_statements",
+      "granularity": "证券完整报表＋整轮范围证明",
+      "namespaces": [
+        "ths_income"
+      ],
+      "datasets": [
+        "income.statement"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/financial_statements/dataset.py"
+      ],
+      "cache_entries": 5580,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-balance",
+      "name": "资产负债表（同花顺）",
+      "family": "financial_statements",
+      "granularity": "证券完整报表＋整轮范围证明",
+      "namespaces": [
+        "ths_balance"
+      ],
+      "datasets": [
+        "balance.statement"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/financial_statements/dataset.py"
+      ],
+      "cache_entries": 5580,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-cashflow",
+      "name": "现金流量表（同花顺）",
+      "family": "financial_statements",
+      "granularity": "证券完整报表＋整轮范围证明",
+      "namespaces": [
+        "ths_cashflow"
+      ],
+      "datasets": [
+        "cashflow.statement"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/financial_statements/dataset.py"
+      ],
+      "cache_entries": 5580,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-dividends",
+      "name": "分红送转（通达信）",
+      "family": "capital_actions",
+      "granularity": "证券完整单元＋整轮范围证明",
+      "namespaces": [
+        "dividends"
+      ],
+      "datasets": [
+        "dividends.unit"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/capital_actions/dataset.py"
+      ],
+      "cache_entries": 5580,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-additional-issues",
+      "name": "增发（通达信）",
+      "family": "capital_actions",
+      "granularity": "证券完整单元＋整轮范围证明",
+      "namespaces": [
+        "additional_issues"
+      ],
+      "datasets": [
+        "additional_issues.unit"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/capital_actions/dataset.py"
+      ],
+      "cache_entries": 3036,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-rights-issues",
+      "name": "配股（通达信）",
+      "family": "capital_actions",
+      "granularity": "证券完整单元＋整轮范围证明",
+      "namespaces": [
+        "rights_issues"
+      ],
+      "datasets": [
+        "rights_issues.unit"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/capital_actions/dataset.py"
+      ],
+      "cache_entries": 767,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-stocks",
+      "name": "同花顺 A 股股票列表",
+      "family": "stocks",
+      "granularity": "统一当前股票完整列表（两来源共享current）",
+      "namespaces": [
+        "stocks"
+      ],
+      "datasets": [
+        "stock.universe.complete",
+        "stock.universe.page",
+        "stock.universe.start"
+      ],
+      "mode": [
+        "aggregate"
+      ],
+      "mapping_files": [
+        "src/empire/features/stocks/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "sina-stocks",
+      "name": "新浪 A 股股票列表",
+      "family": "stocks",
+      "granularity": "统一当前股票完整列表（两来源共享current）",
+      "namespaces": [
+        "stocks"
+      ],
+      "datasets": [
+        "stock.universe.complete",
+        "stock.universe.page",
+        "stock.universe.start"
+      ],
+      "mode": [
+        "aggregate"
+      ],
+      "mapping_files": [
+        "src/empire/features/stocks/dataset.py"
+      ],
+      "cache_entries": 1,
+      "cache_buckets": 1,
+      "sampled": 1,
+      "valid": 1,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "sina-news",
+      "name": "新浪 7×24 小时全球实时财经新闻直播",
+      "family": "news",
+      "granularity": "来源新闻ID，包含来源修订版本",
+      "namespaces": [
+        "news"
+      ],
+      "datasets": [
+        "news.flash.page"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/news/dataset.py"
+      ],
+      "cache_entries": 5656,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "cninfo-calendar",
+      "name": "大 A 交易日期（巨潮资讯）",
+      "family": "calendar",
+      "granularity": "月份完整日历",
+      "namespaces": [
+        "calendar"
+      ],
+      "datasets": [
+        "calendar.month"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/calendar/dataset.py"
+      ],
+      "cache_entries": 15,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "tdx-suspensions",
+      "name": "沪深 A 股历史停复牌（通达信）",
+      "family": "suspensions",
+      "granularity": "完整来源记录身份＋日期覆盖证明",
+      "namespaces": [
+        "suspensions"
+      ],
+      "datasets": [
+        "suspensions.period"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/suspensions/dataset.py"
+      ],
+      "cache_entries": 15,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "kaipanla-themes",
+      "name": "题材列表与日内变化（开盘啦）",
+      "family": "themes",
+      "granularity": "日期题材列表 / 单题材详情与来源版本",
+      "namespaces": [
+        "kaipanla_themes_daily_v1"
+      ],
+      "datasets": [
+        "kaipanla.themes.day"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/themes/dataset.py"
+      ],
+      "cache_entries": 3,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入；采样保存在Redis，归档采样仍受当前摘要规则约束"
+    },
+    {
+      "id": "kaipanla-theme-details",
+      "name": "题材最新详情（开盘啦）",
+      "family": "themes",
+      "granularity": "日期题材列表 / 单题材详情与来源版本",
+      "namespaces": [
+        "kaipanla_themes_detail_v1"
+      ],
+      "datasets": [
+        "kaipanla.themes.detail"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/themes/dataset.py"
+      ],
+      "cache_entries": 250,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入"
+    },
+    {
+      "id": "ths-yuanhang-prices",
+      "name": "远航版完整历史日线",
+      "family": "yuanhang",
+      "granularity": "日线按证券×覆盖日期；权息股本按证券完整响应（共用摘要命名空间）",
+      "namespaces": [
+        "ths_yuanhang_history_v2"
+      ],
+      "datasets": [
+        "yuanhang.financial",
+        "yuanhang.price.year"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/yuanhang/dataset.py"
+      ],
+      "cache_entries": 10000,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "缓存已达10000键上限；旧键淘汰后需SQL；当前命中率未测"
+    },
+    {
+      "id": "ths-yuanhang-financial",
+      "name": "远航版权息与股本历史",
+      "family": "yuanhang",
+      "granularity": "日线按证券×覆盖日期；权息股本按证券完整响应（共用摘要命名空间）",
+      "namespaces": [
+        "ths_yuanhang_history_v2"
+      ],
+      "datasets": [
+        "yuanhang.financial",
+        "yuanhang.price.year"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/yuanhang/dataset.py"
+      ],
+      "cache_entries": 10000,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "缓存已达10000键上限；旧键淘汰后需SQL；当前命中率未测"
+    },
+    {
+      "id": "ths-yuanhang-limit-up-pool",
+      "name": "远航版涨停板",
+      "family": "yuanhang_limits",
+      "granularity": "完整日期池 / 日期＋证券原因；盘中快照另走Redis-only路径",
+      "namespaces": [
+        "yuanhang_limits_limit_up_pool_v1"
+      ],
+      "datasets": [
+        "yuanhang.limits.limit_up_pool"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/yuanhang_limits/dataset.py"
+      ],
+      "cache_entries": 880,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入；盘中有效快照保存Redis，不进MySQL业务归档"
+    },
+    {
+      "id": "ths-yuanhang-sprint-limit-up",
+      "name": "远航版涨停冲刺",
+      "family": "yuanhang_limits",
+      "granularity": "完整日期池 / 日期＋证券原因；盘中快照另走Redis-only路径",
+      "namespaces": [
+        "yuanhang_limits_sprint_limit_up_v1"
+      ],
+      "datasets": [
+        "yuanhang.limits.sprint_limit_up"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/yuanhang_limits/dataset.py"
+      ],
+      "cache_entries": 8751,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入；盘中有效快照保存Redis，不进MySQL业务归档"
+    },
+    {
+      "id": "ths-yuanhang-connect-broad-pool",
+      "name": "远航版连板池",
+      "family": "yuanhang_limits",
+      "granularity": "完整日期池 / 日期＋证券原因；盘中快照另走Redis-only路径",
+      "namespaces": [
+        "yuanhang_limits_connect_broad_pool_v1"
+      ],
+      "datasets": [
+        "yuanhang.limits.connect_broad_pool"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/yuanhang_limits/dataset.py"
+      ],
+      "cache_entries": 8751,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入；盘中有效快照保存Redis，不进MySQL业务归档"
+    },
+    {
+      "id": "ths-yuanhang-open-limit-up-pool",
+      "name": "远航版炸板池",
+      "family": "yuanhang_limits",
+      "granularity": "完整日期池 / 日期＋证券原因；盘中快照另走Redis-only路径",
+      "namespaces": [
+        "yuanhang_limits_open_limit_up_pool_v1"
+      ],
+      "datasets": [
+        "yuanhang.limits.open_limit_up_pool"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/yuanhang_limits/dataset.py"
+      ],
+      "cache_entries": 880,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入；盘中有效快照保存Redis，不进MySQL业务归档"
+    },
+    {
+      "id": "ths-yuanhang-limit-down-pool",
+      "name": "远航版跌停板",
+      "family": "yuanhang_limits",
+      "granularity": "完整日期池 / 日期＋证券原因；盘中快照另走Redis-only路径",
+      "namespaces": [
+        "yuanhang_limits_limit_down_pool_v1"
+      ],
+      "datasets": [
+        "yuanhang.limits.limit_down_pool"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/yuanhang_limits/dataset.py"
+      ],
+      "cache_entries": 880,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "可信命中免归档SQL；缺失/过期/变更回源；业务无变化不等于元数据无写入；盘中有效快照保存Redis，不进MySQL业务归档"
+    },
+    {
+      "id": "ths-yuanhang-reason",
+      "name": "远航版历史涨跌停原因",
+      "family": "yuanhang_limits",
+      "granularity": "完整日期池 / 日期＋证券原因；盘中快照另走Redis-only路径",
+      "namespaces": [
+        "yuanhang_limits_reason_v1"
+      ],
+      "datasets": [
+        "yuanhang.limits.reason"
+      ],
+      "mode": [
+        "incremental"
+      ],
+      "mapping_files": [
+        "src/empire/features/yuanhang_limits/dataset.py"
+      ],
+      "cache_entries": 10000,
+      "cache_buckets": 1,
+      "sampled": 3,
+      "valid": 3,
+      "conclusion": "代码路径条件符合；真实SQL回归受权限限制",
+      "note": "缓存已达10000键上限；旧键淘汰后需SQL；当前命中率未测"
+    }
+  ],
+  "source_sha256": {
+    "src/empire/features/calendar/dataset.py": "a24e0830f05fb0b667f6c56bab27567ea603297c95a175e13102001ac335f988",
+    "src/empire/features/capital_actions/dataset.py": "289c0c8b134fa27b0f86ac7827e75663759287744437fdf0a45b71008c04b9c5",
+    "src/empire/features/financial_statements/dataset.py": "c0909c5e32ba2d4917f17abc2f9539c49747e2036263556d0c93ff8ae2c7ae03",
+    "src/empire/features/holders/dataset.py": "babc432c72bb6f8dd8b9644f519c6b5590eef2bf6518c16d3fe5bb8f0c44252b",
+    "src/empire/features/index_prices/dataset.py": "45c2a96cfd6cced0cbec62b9b7d14cea715a97234597b937f90038ecda399e84",
+    "src/empire/features/indices/dataset.py": "8c243f863ad20e1973d547049b119a88ea259d205eb02f780c402fdd4100be46",
+    "src/empire/features/industries/dataset.py": "7b410397dfc30fcacf947f2e7646c9f33ca1b3043551e5b3748a10e3392c92ca",
+    "src/empire/features/kaipanla/dataset.py": "395dfa8df12ce3fe6a82285dc9eed66bf6d8274f1c8ce04a5a4b5cd5c16ac656",
+    "src/empire/features/listing_status/dataset.py": "aad79d06c42618f933176bfaddb738846cd76478a9b1e665017a33cdd6981453",
+    "src/empire/features/listings/dataset.py": "c6cd69120db1ffcf4da63706424774a0f2cbe2b9dc1f27cf8e606a22ee7137d6",
+    "src/empire/features/name_changes/dataset.py": "1f64fc222121f20e0e1858f7f8885ead42e99a7aa739a9e35dc52870175e9c55",
+    "src/empire/features/news/dataset.py": "5276f1a333bf90c315d71f3e506561eb277db539b50563360da740d9cca35f72",
+    "src/empire/features/performance/dataset.py": "5f28042c43308692ee72b78b3452238e396eb92af91a560da44bc6b937911784",
+    "src/empire/features/repurchases/dataset.py": "eed075714862df913c263fe3925fd2b0007104345a58919db5713ce5b5bb4fa8",
+    "src/empire/features/st_events/dataset.py": "78dbbbed7d61a325ee7781b3df2844226ab399bef43645a8ae2f395bfccc04be",
+    "src/empire/features/stocks/dataset.py": "7d07c0f805cef4fb7e5fd600c1862b4f63c1b464f35829ee73d85fb5f5d17a99",
+    "src/empire/features/suspensions/dataset.py": "9fa0882d6b76eadefc8ab2477ea4a42c85a10ae8537affa250b9ca6a9f42e9b1",
+    "src/empire/features/themes/dataset.py": "b2e4acb25c65bfe5eb01cdc43c1c3e2decac5a65cfc79822ad0e1f8105bdc1d0",
+    "src/empire/features/ths_capital/dataset.py": "b2ba54537f3ac511e06853cca0d906f499a141250c59f6ff5f852e6dc78be83b",
+    "src/empire/features/trading_rules/dataset.py": "1b2b5853a50ac1442a0ee42f3a0063df98b0e4e00b033123389902540f5f1841",
+    "src/empire/features/unlock_industries/dataset.py": "85fd3747f7755d36c4104711f7b65786328152e4b95537a27b8325e7d0b250cf",
+    "src/empire/features/unlocks/dataset.py": "9c1c7abbe65534931fd26544a99069e404bd820a619358daa3d6d1490cc49fdf",
+    "src/empire/features/yuanhang/dataset.py": "4d8edc376e5ae7b35b697557f1ee261e55d5c0f9a25bd43eb17d23d1952b5398",
+    "src/empire/features/yuanhang_limits/dataset.py": "dfd92f4dc51be835dc43b4803f20b345f70997d605e9205eae2ddbbcb44f2e95",
+    "src/empire/plugins/datasets/astock.py": "2dffcf398c3b92b49ef0e98ac62096bb7d9025f341dd110242d2f0af4323ec3f",
+    "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
+    "src/empire/plugins/pipeline/archive.py": "3568d7674635a8d14a7d6278c29c4da0ec6963c3f24db1802a791d312727a773",
+    "src/empire/plugins/pipeline/fingerprints.py": "80a671107f6588059708c9f742d42ecd368efdda6a641cf99c68d9520f7b8c82"
+  }
+}

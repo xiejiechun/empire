@@ -32,12 +32,21 @@ def verify(runner):
     runner.command([py, '-m', 'mypy'])
     runner.command([py, '-m', 'pip', 'check'])
     runner.command(['git', '-C', root, '-c', 'core.whitespace=cr-at-eol', 'diff', '--check'])
+    test_files, scope_args = [], []
+    if getattr(runner, 'test_plan', None):
+        plan = Path(runner.test_plan).resolve()
+        runner.evidence[plan.relative_to(root).as_posix()] = sha256(plan)
+        scope = run / 'test-scope.json'
+        runner.command([py, root / 'scripts/release_test_plan.py', '--plan', plan, '--output', scope])
+        runner.evidence[scope.relative_to(root).as_posix()] = sha256(scope)
+        test_files = json.loads(scope.read_text(encoding='utf-8'))['files']
+        scope_args = ['--test-scope', scope]
     runner.command([py, root / 'scripts/preparation_evidence.py', 'begin'])
-    runner.command([py, '-m', 'pytest', '-q', '--tb=short', '-rs',
+    runner.command([py, '-m', 'pytest', *test_files, '-q', '--tb=short', '-rs',
                     '--basetemp', run / 'pytest', '--junitxml', root / 'build/release-tests.xml'],
                    env={'EMPIRE_INTEGRATION': '1'})
     runner.evidence['build/release-tests.xml'] = sha256(root / 'build/release-tests.xml')
-    runner.command([py, root / 'scripts/preparation_evidence.py', 'finish'])
+    runner.command([py, root / 'scripts/preparation_evidence.py', 'finish', *scope_args])
     runner.evidence['build/generated/preparation-release.json'] = sha256(
         root / 'build/generated/preparation-release.json')
     capacity = run / 'capacity-report.json'

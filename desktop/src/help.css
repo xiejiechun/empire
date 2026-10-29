@@ -1,0 +1,14 @@
+.help-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 24px; height: calc(100vh - 120px); }
+.help-index, .help-reader { overflow: auto; min-width: 0; }
+.help-index { padding-right: 12px; border-right: 1px solid var(--border); }
+.help-index summary { cursor: pointer; font-weight: 600; padding: 10px 0; }
+.help-index button { display: block; width: 100%; text-align: left; padding: 9px; border: 0; background: transparent; color: var(--text); cursor: pointer; border-radius: 6px; }
+.help-index button:hover, .help-index button[aria-current] { background: var(--selected); }
+.help-reader { line-height: 1.85; overflow-wrap: anywhere; padding-right: 16px; }
+.help-reader h2 { margin-top: 28px; scroll-margin-top: 12px; }
+.help-reader table { border-collapse: collapse; display: block; overflow: auto; max-width: 100%; }
+.help-reader th, .help-reader td { border: 1px solid var(--border); padding: 8px 12px; }
+.help-reader pre { overflow: auto; background: var(--hover); padding: 12px; }
+.help-link, .help-sections button { border: 0; background: transparent; color: var(--blue); cursor: pointer; font: inherit; text-align: left; }
+.help-sections { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 12px; background: var(--hover); }
+@media (max-width: 760px) { .help-layout { grid-template-columns: 1fr; height: auto; } .help-index { max-height: 240px; border-right: 0; } .help-reader { max-height: 65vh; } }

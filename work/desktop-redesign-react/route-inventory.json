@@ -1,0 +1,1638 @@
+{
+  "status": "migration_inventory_not_implementation",
+  "source": "scripts.assembly_contract.snapshot using config/app.example.toml",
+  "count": 64,
+  "catalogued_count": 50,
+  "pages": {
+    "additional_issues": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "增发送配",
+      "database_tables": [
+        "additional_issue"
+      ],
+      "description": "通达信历史方案与证券关联",
+      "group": "数据浏览",
+      "id": "additional_issues",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-additional-issues",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 5,
+      "source": "通达信",
+      "title": "增发",
+      "top_level": false
+    },
+    "adjustment": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "股票行情",
+      "database_tables": [
+        "stock_daily_quote",
+        "dividend_plan",
+        "rights_issue"
+      ],
+      "description": "完整查询范围的日K线、均线及前后复权；缺少复权输入时提示原因",
+      "group": "数据浏览",
+      "id": "adjustment",
+      "management": null,
+      "order": 30,
+      "source": "自算",
+      "title": "自算复权因子与行情",
+      "top_level": false
+    },
+    "archived_tasks": {
+      "cache_policy": "persistent",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "选择归档任务并还原",
+      "group": "采集管理",
+      "id": "archived_tasks",
+      "management": null,
+      "order": 1,
+      "source": "",
+      "title": "归档任务",
+      "top_level": false
+    },
+    "balance": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "基本面",
+      "database_tables": [
+        "balance_statement"
+      ],
+      "description": "来源历史财报与金额精度",
+      "group": "数据浏览",
+      "id": "balance",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-balance",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 21,
+      "source": "同花顺",
+      "title": "资产负债表",
+      "top_level": false
+    },
+    "bond_holders": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "股东数据",
+      "database_tables": [
+        "holder_report",
+        "holder_member"
+      ],
+      "description": "当前报告期前十及退出名单；来源舍入、无公告日期",
+      "group": "数据浏览",
+      "id": "bond_holders",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-holders",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "同花顺",
+      "title": "十大债券持有人",
+      "top_level": false
+    },
+    "calendar": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "基础数据",
+      "database_tables": [
+        "trade_calendar"
+      ],
+      "description": "巨潮 A 股交易日、休市日与月份完整性",
+      "group": "数据浏览",
+      "id": "calendar",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "cninfo-calendar",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 2,
+      "source": "巨潮资讯",
+      "title": "交易日历",
+      "top_level": false
+    },
+    "cashflow": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "基本面",
+      "database_tables": [
+        "cashflow_statement"
+      ],
+      "description": "来源历史财报与金额精度",
+      "group": "数据浏览",
+      "id": "cashflow",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-cashflow",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 22,
+      "source": "同花顺",
+      "title": "现金流量表",
+      "top_level": false
+    },
+    "catalog": {
+      "cache_policy": "lru",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "按业务分类与来源查找数据",
+      "group": "数据浏览",
+      "id": "catalog",
+      "management": null,
+      "order": -1,
+      "source": "",
+      "title": "数据目录",
+      "top_level": false
+    },
+    "collection": {
+      "cache_policy": "persistent",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "执行采集、管理更新计划 · Alt+3",
+      "group": "采集管理",
+      "id": "collection",
+      "management": null,
+      "order": 0,
+      "source": "",
+      "title": "采集任务",
+      "top_level": false
+    },
+    "dividends": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "增发送配",
+      "database_tables": [
+        "dividend_plan"
+      ],
+      "description": "通达信历史方案与证券关联",
+      "group": "数据浏览",
+      "id": "dividends",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-dividends",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 4,
+      "source": "通达信",
+      "title": "分红送转",
+      "top_level": false
+    },
+    "downloads": {
+      "cache_policy": "persistent",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "管理下载大小、内存缓冲和磁盘配额",
+      "group": "采集管理",
+      "id": "downloads",
+      "management": null,
+      "order": 5,
+      "source": "",
+      "title": "下载资源",
+      "top_level": false
+    },
+    "earnings_disclosure": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "财务数据",
+      "database_tables": [
+        "earnings_disclosure"
+      ],
+      "description": "通达信财报解读；源端缺值与日期限制保持原值",
+      "group": "数据浏览",
+      "id": "earnings_disclosure",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-earnings-disclosure",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "通达信",
+      "title": "业绩披露时间",
+      "top_level": false
+    },
+    "earnings_forecast": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "财务数据",
+      "database_tables": [
+        "earnings_forecast"
+      ],
+      "description": "通达信财报解读；源端缺值与日期限制保持原值",
+      "group": "数据浏览",
+      "id": "earnings_forecast",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-earnings-forecast",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "通达信",
+      "title": "业绩预告",
+      "top_level": false
+    },
+    "earnings_quick": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "财务数据",
+      "database_tables": [
+        "earnings_quick"
+      ],
+      "description": "通达信财报解读；源端缺值与日期限制保持原值",
+      "group": "数据浏览",
+      "id": "earnings_quick",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-earnings-quick",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "通达信",
+      "title": "业绩快报",
+      "top_level": false
+    },
+    "earnings_report": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "财务数据",
+      "database_tables": [
+        "earnings_report"
+      ],
+      "description": "通达信财报解读；源端缺值与日期限制保持原值",
+      "group": "数据浏览",
+      "id": "earnings_report",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-earnings-report",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "通达信",
+      "title": "业绩报告",
+      "top_level": false
+    },
+    "float_holders": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "股东数据",
+      "database_tables": [
+        "holder_report",
+        "holder_member"
+      ],
+      "description": "当前报告期前十及退出名单；来源舍入、无公告日期",
+      "group": "数据浏览",
+      "id": "float_holders",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-holders",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "同花顺",
+      "title": "前十大流通股东",
+      "top_level": false
+    },
+    "help": {
+      "cache_policy": "lru",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "操作指引、分类数据手册、故障处理与维护参考 · F1",
+      "group": "说明文档",
+      "id": "help",
+      "management": null,
+      "order": 0,
+      "source": "",
+      "title": "说明文档",
+      "top_level": true
+    },
+    "history": {
+      "cache_policy": "persistent",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "查看完成记录和失败原因",
+      "group": "采集管理",
+      "id": "history",
+      "management": null,
+      "order": 2,
+      "source": "",
+      "title": "运行记录",
+      "top_level": false
+    },
+    "holder_count": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "股东数据",
+      "database_tables": [
+        "shareholder_count"
+      ],
+      "description": "通达信财报解读；源端缺值与日期限制保持原值",
+      "group": "数据浏览",
+      "id": "holder_count",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-holder-count",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "通达信",
+      "title": "股东户数",
+      "top_level": false
+    },
+    "home": {
+      "cache_policy": "lru",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "数据更新与常用操作 · Alt+1",
+      "group": "工作台",
+      "id": "home",
+      "management": null,
+      "order": 0,
+      "source": "",
+      "title": "总览",
+      "top_level": true
+    },
+    "identities": {
+      "cache_policy": "lru",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "按平台管理节点身份，查看申请参数及上次结果",
+      "group": "采集管理",
+      "id": "identities",
+      "management": null,
+      "order": 5,
+      "source": "",
+      "title": "身份管理",
+      "top_level": false
+    },
+    "income": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "基本面",
+      "database_tables": [
+        "income_statement"
+      ],
+      "description": "来源历史财报与金额精度",
+      "group": "数据浏览",
+      "id": "income",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-income",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "同花顺",
+      "title": "利润表",
+      "top_level": false
+    },
+    "index_prices": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "指数数据",
+      "database_tables": [
+        "index_daily_price",
+        "index_price_year"
+      ],
+      "description": "历史开高低收及来源量额；逐年补缺、近期修订",
+      "group": "数据浏览",
+      "id": "index_prices",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-index-prices",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 12,
+      "source": "同花顺",
+      "title": "同花顺指数历史日行情",
+      "top_level": false
+    },
+    "indices": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "指数数据",
+      "database_tables": [
+        "stock_index",
+        "stock_index_member"
+      ],
+      "description": "当前目录及成分；允许交叉归属，来源暂无单独标注",
+      "group": "数据浏览",
+      "id": "indices",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-indices",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 11,
+      "source": "同花顺",
+      "title": "同花顺当前指数及成分",
+      "top_level": false
+    },
+    "industries": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "证券基础",
+      "database_tables": [
+        "industry",
+        "industry_member"
+      ],
+      "description": "最新行业名单与成分股票，不保存变化历史",
+      "group": "数据浏览",
+      "id": "industries",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-industries",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 10,
+      "source": "同花顺",
+      "title": "同花顺当前行业",
+      "top_level": false
+    },
+    "kaipanla_auction": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "高频行情",
+      "database_tables": [
+        "stock_market_day",
+        "stock_opening_auction"
+      ],
+      "description": "完整来源点序列；同分钟多点保留，源端无总点数",
+      "group": "数据浏览",
+      "id": "kaipanla_auction",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "kaipanla-auction",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 11,
+      "source": "开盘啦",
+      "title": "开盘啦开盘竞价",
+      "top_level": false
+    },
+    "kaipanla_entrust": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "高频行情",
+      "database_tables": [
+        "stock_market_day",
+        "stock_minute_entrust"
+      ],
+      "description": "分钟买卖委托量额汇总；不含券商席位身份或逐笔委托撤单",
+      "group": "数据浏览",
+      "id": "kaipanla_entrust",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "kaipanla-entrust",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 11,
+      "source": "开盘啦",
+      "title": "开盘啦分钟买卖委托汇总",
+      "top_level": false
+    },
+    "kaipanla_large_order": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "高频行情",
+      "database_tables": [
+        "stock_market_day",
+        "stock_large_order_trend"
+      ],
+      "description": "来源大单净额可为负；不包含独立大单明细筛选",
+      "group": "数据浏览",
+      "id": "kaipanla_large_order",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "kaipanla-large-order",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 11,
+      "source": "开盘啦",
+      "title": "开盘啦大单净额走势",
+      "top_level": false
+    },
+    "kaipanla_quote": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "高频行情",
+      "database_tables": [
+        "stock_market_day",
+        "stock_daily_quote",
+        "stock_daily_quote_level"
+      ],
+      "description": "来源证券日盘口档位、行情、估值与股本摘要；不是全天秒级盘口回放",
+      "group": "数据浏览",
+      "id": "kaipanla_quote",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "kaipanla-quote",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 11,
+      "source": "开盘啦",
+      "title": "开盘啦历史盘口与日行情摘要",
+      "top_level": false
+    },
+    "kaipanla_trades": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "高频行情",
+      "database_tables": [
+        "stock_market_day",
+        "stock_intraday_trade_block"
+      ],
+      "description": "完整分笔数组及来源总数；不冒充交易所逐笔事件流",
+      "group": "数据浏览",
+      "id": "kaipanla_trades",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "kaipanla-trades",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 11,
+      "source": "开盘啦",
+      "title": "开盘啦分时成交明细",
+      "top_level": false
+    },
+    "kaipanla_trend": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "高频行情",
+      "database_tables": [
+        "stock_market_day",
+        "stock_intraday_trend"
+      ],
+      "description": "价格、均价、来源量与标记；不代表分钟 OHLC",
+      "group": "数据浏览",
+      "id": "kaipanla_trend",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "kaipanla-trend",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 11,
+      "source": "开盘啦",
+      "title": "开盘啦分时走势",
+      "top_level": false
+    },
+    "kaipanla_volume": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "高频行情",
+      "database_tables": [
+        "stock_market_day",
+        "stock_minute_volume"
+      ],
+      "description": "来源分钟量额与标记；不提供每分钟 OHLC",
+      "group": "数据浏览",
+      "id": "kaipanla_volume",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "kaipanla-volume",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 11,
+      "source": "开盘啦",
+      "title": "开盘啦分钟成交量与成交额",
+      "top_level": false
+    },
+    "listing_status": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "证券基础",
+      "database_tables": [
+        "security_listing_event"
+      ],
+      "description": "沪深A股来源事件、日期及说明",
+      "group": "数据浏览",
+      "id": "listing_status",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-listing-status",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "通达信",
+      "title": "暂停恢复终止上市",
+      "top_level": false
+    },
+    "listings": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "证券基础",
+      "database_tables": [
+        "stock_listing"
+      ],
+      "description": "首次上市日期、发行价格、募资及历史沿革",
+      "group": "数据浏览",
+      "id": "listings",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-listings",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "同花顺",
+      "title": "上市与发行资料",
+      "top_level": false
+    },
+    "market_review": {
+      "cache_policy": "lru",
+      "catalogued": false,
+      "category": "市场复盘",
+      "database_tables": [
+        "trade_calendar",
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member",
+        "theme_daily"
+      ],
+      "description": "涨停炸板、封板率、连板梯队、最高板演变、题材轮动与热度",
+      "group": "市场复盘",
+      "id": "market_review",
+      "management": null,
+      "order": 62,
+      "source": "远航 / 开盘啦",
+      "title": "市场复盘",
+      "top_level": true
+    },
+    "names_company": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "证券基础",
+      "database_tables": [
+        "security_name_change"
+      ],
+      "description": "来源历史更名事件与缺名记录",
+      "group": "数据浏览",
+      "id": "names_company",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-company-renames",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "通达信",
+      "title": "公司更名",
+      "top_level": false
+    },
+    "names_security": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "证券基础",
+      "database_tables": [
+        "security_name_change"
+      ],
+      "description": "来源历史更名事件与缺名记录",
+      "group": "数据浏览",
+      "id": "names_security",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-security-renames",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "通达信",
+      "title": "股票更名",
+      "top_level": false
+    },
+    "news": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "资讯",
+      "database_tables": [
+        "finance_news"
+      ],
+      "description": "新浪 7×24 新闻、搜索与重点筛选",
+      "group": "数据浏览",
+      "id": "news",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "sina-news",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 1,
+      "source": "新浪财经",
+      "title": "财经快讯",
+      "top_level": false
+    },
+    "plugins": {
+      "cache_policy": "lru",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "按功能分类维护内部插件",
+      "group": "系统设置",
+      "id": "plugins",
+      "management": null,
+      "order": 1,
+      "source": "",
+      "title": "插件管理",
+      "top_level": false
+    },
+    "preparation": {
+      "cache_policy": "lru",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "",
+      "group": "数据准备",
+      "id": "preparation",
+      "management": null,
+      "order": 0,
+      "source": "",
+      "title": "数据准备",
+      "top_level": true
+    },
+    "proxies": {
+      "cache_policy": "lru",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "代理出口状态和代理/直连请求统计",
+      "group": "采集管理",
+      "id": "proxies",
+      "management": null,
+      "order": 4,
+      "source": "",
+      "title": "采集出口",
+      "top_level": false
+    },
+    "repurchases": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "公司行动",
+      "database_tables": [
+        "stock_repurchase_plan"
+      ],
+      "description": "计划与累计回购；不推断股份注销",
+      "group": "数据浏览",
+      "id": "repurchases",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "eastmoney-repurchases",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 30,
+      "source": "东方财富",
+      "title": "股票回购",
+      "top_level": false
+    },
+    "rights_issues": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "增发送配",
+      "database_tables": [
+        "rights_issue"
+      ],
+      "description": "通达信历史方案与证券关联",
+      "group": "数据浏览",
+      "id": "rights_issues",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-rights-issues",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 6,
+      "source": "通达信",
+      "title": "配股",
+      "top_level": false
+    },
+    "rules_limit_rules": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易规则",
+      "database_tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "description": "规则生效段、数值及官方依据",
+      "group": "数据浏览",
+      "id": "rules_limit_rules",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "rules-limit-rules",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "官方规则",
+      "title": "涨跌幅规则记录",
+      "top_level": false
+    },
+    "rules_lot_rules": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易规则",
+      "database_tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "description": "规则生效段、数值及官方依据",
+      "group": "数据浏览",
+      "id": "rules_lot_rules",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "rules-lot-rules",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "官方规则",
+      "title": "最小买卖数量规则",
+      "top_level": false
+    },
+    "rules_sessions": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易规则",
+      "database_tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "description": "规则生效段、数值及官方依据",
+      "group": "数据浏览",
+      "id": "rules_sessions",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "rules-sessions",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "官方规则",
+      "title": "交易时段规则",
+      "top_level": false
+    },
+    "rules_settlement_rules": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易规则",
+      "database_tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "description": "规则生效段、数值及官方依据",
+      "group": "数据浏览",
+      "id": "rules_settlement_rules",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "rules-settlement-rules",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "官方规则",
+      "title": "买入后何时能卖的规则",
+      "top_level": false
+    },
+    "rules_stamp_duty": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易费用",
+      "database_tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "description": "规则生效段、数值及官方依据",
+      "group": "数据浏览",
+      "id": "rules_stamp_duty",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "rules-stamp-duty",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "官方规则",
+      "title": "印花税税率记录",
+      "top_level": false
+    },
+    "rules_tick_rules": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易规则",
+      "database_tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "description": "规则生效段、数值及官方依据",
+      "group": "数据浏览",
+      "id": "rules_tick_rules",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "rules-tick-rules",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "官方规则",
+      "title": "最小价格变动规则",
+      "top_level": false
+    },
+    "rules_transfer_fee": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易费用",
+      "database_tables": [
+        "trading_rule_value",
+        "trading_rule_citation"
+      ],
+      "description": "规则生效段、数值及官方依据",
+      "group": "数据浏览",
+      "id": "rules_transfer_fee",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "rules-transfer-fee",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "官方规则",
+      "title": "过户费收费记录",
+      "top_level": false
+    },
+    "shareholder_changes": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "股东数据",
+      "database_tables": [
+        "shareholder_change"
+      ],
+      "description": "通达信财报解读；源端缺值与日期限制保持原值",
+      "group": "数据浏览",
+      "id": "shareholder_changes",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-shareholder-changes",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "通达信",
+      "title": "重要股东持股变动",
+      "top_level": false
+    },
+    "sites": {
+      "cache_policy": "persistent",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "按出口 IP 管理同站点访问节奏",
+      "group": "采集管理",
+      "id": "sites",
+      "management": null,
+      "order": 3,
+      "source": "",
+      "title": "站点访问规则",
+      "top_level": false
+    },
+    "st_implementation": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易状态",
+      "database_tables": [
+        "security_st_event"
+      ],
+      "description": "来源历史ST事件与缺名记录",
+      "group": "数据浏览",
+      "id": "st_implementation",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-st-implementation",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "通达信",
+      "title": "实施ST",
+      "top_level": false
+    },
+    "st_removal": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易状态",
+      "database_tables": [
+        "security_st_event"
+      ],
+      "description": "来源历史ST事件与缺名记录",
+      "group": "数据浏览",
+      "id": "st_removal",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-st-removal",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 20,
+      "source": "通达信",
+      "title": "撤销ST",
+      "top_level": false
+    },
+    "stocks": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "基础数据",
+      "database_tables": [
+        "stock"
+      ],
+      "description": "查找股票、筛选市场、复制数据 · Alt+2",
+      "group": "数据浏览",
+      "id": "stocks",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-stocks",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 0,
+      "source": "同花顺 / 新浪财经",
+      "title": "股票列表",
+      "top_level": false
+    },
+    "suspensions": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "交易可实现性",
+      "database_tables": [
+        "suspension_event"
+      ],
+      "description": "通达信沪深 A 股停复牌时间、来源说明及原因",
+      "group": "数据浏览",
+      "id": "suspensions",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-suspensions",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 3,
+      "source": "通达信",
+      "title": "历史停复牌",
+      "top_level": false
+    },
+    "system": {
+      "cache_policy": "lru",
+      "catalogued": false,
+      "category": "其他",
+      "database_tables": [],
+      "description": "服务连接与归档状态",
+      "group": "系统设置",
+      "id": "system",
+      "management": null,
+      "order": 0,
+      "source": "",
+      "title": "运行状态",
+      "top_level": false
+    },
+    "themes": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "题材数据",
+      "database_tables": [
+        "theme_daily",
+        "theme_detail",
+        "theme_category",
+        "theme_stock",
+        "theme_stock_reason"
+      ],
+      "description": "热度、排名、涨跌幅、涨停数量及七日日内变化",
+      "group": "数据浏览",
+      "id": "themes",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "kaipanla-themes",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 80,
+      "source": "开盘啦",
+      "title": "开盘啦题材库",
+      "top_level": false
+    },
+    "ths_capital": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "公司行动",
+      "database_tables": [
+        "capital_funding",
+        "capital_project",
+        "capital_transaction",
+        "capital_equity_summary",
+        "capital_equity_position",
+        "capital_ipo",
+        "capital_encumbrance",
+        "capital_release"
+      ],
+      "description": "融资、募投、收购、投资、参股IPO、转让、关联交易及质押解冻",
+      "group": "数据浏览",
+      "id": "ths_capital",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-capital",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 51,
+      "source": "同花顺",
+      "title": "公司资本运作",
+      "top_level": false
+    },
+    "top_holders": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "股东数据",
+      "database_tables": [
+        "holder_report",
+        "holder_member"
+      ],
+      "description": "当前报告期前十及退出名单；来源舍入、无公告日期",
+      "group": "数据浏览",
+      "id": "top_holders",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-holders",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "同花顺",
+      "title": "前十大股东",
+      "top_level": false
+    },
+    "unlock_industries": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "股东数据",
+      "database_tables": [
+        "restricted_share_unlock_industry"
+      ],
+      "description": "按解禁月份、行业查看数量、市值及比例",
+      "group": "数据浏览",
+      "id": "unlock_industries",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-unlock-industries",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 51,
+      "source": "通达信",
+      "title": "大小非解禁行业",
+      "top_level": false
+    },
+    "unlocks": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "股东数据",
+      "database_tables": [
+        "restricted_share_unlock",
+        "restricted_share_unlock_detail"
+      ],
+      "description": "按证券、解禁日期查询列表事实及共享股东明细",
+      "group": "数据浏览",
+      "id": "unlocks",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "tdx-unlocks",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 50,
+      "source": "通达信",
+      "title": "大小非解禁个股与明细",
+      "top_level": false
+    },
+    "yuanhang": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "行情数据",
+      "database_tables": [
+        "yuanhang_daily_price",
+        "yuanhang_price_year",
+        "yuanhang_corporate_action",
+        "yuanhang_capital",
+        "yuanhang_series_proof"
+      ],
+      "description": "不复权日线、分红送转配股及历史股本",
+      "group": "数据浏览",
+      "id": "yuanhang",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-yuanhang-prices",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 60,
+      "source": "同花顺远航版",
+      "title": "远航历史行情",
+      "top_level": false
+    },
+    "yuanhang_limits": {
+      "cache_policy": "lru",
+      "catalogued": true,
+      "category": "涨跌停分析",
+      "database_tables": [
+        "yuanhang_limit_pool",
+        "yuanhang_limit_member",
+        "yuanhang_limit_reason"
+      ],
+      "description": "涨停板、涨停冲刺、连板池、炸板池、跌停板及原因",
+      "group": "数据浏览",
+      "id": "yuanhang_limits",
+      "management": {
+        "context": {
+          "day": "",
+          "end": "",
+          "event_key": "",
+          "index_code": "",
+          "source": "",
+          "start": "",
+          "task_id": "ths-yuanhang-limit-up-pool",
+          "unified_code": ""
+        },
+        "page_id": "collection"
+      },
+      "order": 61,
+      "source": "同花顺远航版",
+      "title": "远航涨跌停分析",
+      "top_level": false
+    }
+  }
+}

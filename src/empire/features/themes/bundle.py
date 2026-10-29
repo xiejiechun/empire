@@ -17,10 +17,11 @@ def bundle(cfg):
         OrderedContribution(30020, ThemeUiPlugin()),
     ), tasks=tuple(OrderedContribution(30000 + i, TaskContribution(
         c.project_id, '题材' + ('列表与日内变化' if i == 0 else '最新详情') + '（开盘啦）', c.capability,
-        'kaipanla', '匿名全目录；最近七个自然日日内差异' if i == 0 else '补齐缺失题材，分批核验最新详情',
-        interval_seconds=180, category='题材数据', source_name='开盘啦', parallel_downloads=i == 1,
-        default_schedule=TaskDefaults('interval', 180, description='每轮完成后等待180秒；同一任务不重叠。'),
-        fresh_description='保留已有日内历史与每日列表；详情优先补齐，单轮最多32题材。', unit_name='个题材'))
+        'kaipanla', '收盘后匿名完整目录；保留每日列表' if i == 0 else '收盘后补缺并核验全部到期题材详情',
+        interval_seconds=86400, category='题材数据', source_name='开盘啦', parallel_downloads=i == 1,
+        default_schedule=TaskDefaults('daily', 86400, daily_time='18:00' if i == 0 else '18:10',
+                                     description='每天收盘后维护；先列表后详情，同一任务不重叠。'),
+        fresh_description='保留已有历史；详情按共享窗口完成当轮题材，最多2000项。', unit_name='个题材'))
         for i, c in enumerate(collectors)), datasets=tuple(
             OrderedContribution(30000 + i, DatasetContribution(m, 'incremental', {m.JOB: m.PROJECT}))
             for i, m in enumerate(mappings)))

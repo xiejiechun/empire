@@ -1,6 +1,6 @@
 """Typed business writes; complete source-unit proofs share collection_state."""
 import re
-from datetime import UTC
+from datetime import UTC, timedelta
 
 from sqlalchemy import text
 
@@ -89,12 +89,17 @@ class PerformanceDataset:
         else:
             rows = unpack(self.kind, p['rows'])
             validate_rows(self.kind, p['unit'], rows)
-            today = envelope.observed_at.astimezone(CHINA).date().isoformat()
+            observed_day = envelope.observed_at.astimezone(CHINA).date()
+            today = observed_day.isoformat()
             for row in rows:
                 # Notice dates in forecast/quick/report are source declarations:
                 # all three endpoints really expose tomorrow's notice today.
                 for key in ('actual_date', 'statistics_date'):
-                    if row.get(key) and row[key] > today:
+                    # T007 is also a source declaration: after-close responses
+                    # really expose tomorrow's disclosure date. Retain that day,
+                    # but do not accept arbitrary future dates or future counts.
+                    upper = (observed_day + timedelta(days=1)).isoformat() if key == 'actual_date' else today
+                    if row.get(key) and row[key] > upper:
                         raise ValueError('实际披露或统计日期超过采集时点')
             if p['manifest'] is not None:
                 raise ValueError('业务单元不得伪装最终范围证明')

@@ -531,7 +531,7 @@ def test_source_gap_history_and_runtime_never_claim_complete(page_factory):
     assert '来源缺口' in task.runtime_fields['status'].text()
     assert task.runtime_fields['gaps'].text() == '2 只证券 / 2 份报告'
     assert notice == task.runtime_fields['error'].text()
-    assert task.run_button.text() == '继续采集'
+    assert task.run_button.text() == '检查更新'
     assert '有效报告已确认归档' in task.runtime_fields['archive'].text()
 
 

@@ -90,3 +90,11 @@ async def test_diagnostic_failure_never_hides_original_error():
         unavailable_message="diagnostic unavailable",
     )
     assert records.add_error.await_count == 1
+
+
+async def test_empty_exception_is_not_lost_before_recording():
+    records = SimpleNamespace(add_error=AsyncMock())
+    assert await record_error_safely(records, {}, 'project', TimeoutError(),
+        stage='source_validation', unavailable_message='unavailable')
+    records.add_error.assert_awaited_once_with(
+        'project', stage='source_validation', error='TimeoutError')

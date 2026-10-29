@@ -128,7 +128,7 @@ class ThemePage(QWidget):
             html = card(head['name'], fields([('简介', head['brief']), ('正文', head['introduction']),
                 ('归档内容观测时间', str(head['observed_at']))]), '最新详情；不是历史时点正文')
             html += ''.join(card(r['stock_name'] + ' · ' + r['unified_code'], fields([
-                ('分类', r['category_name'] or '未分类'), ('题材理由', r['reason']),
+                ('分类', r['category_name'] or '未分类'), ('题材理由', r['reason'] or '来源未提供'),
                 ('相同来源关联次数', r['occurrences'])]), '') for r in result['rows'])
             self.reader.present(html, identity=self.spec())
             self.status.setText(f'本页{len(result["rows"])}条企业关联；不同理由分别保留。')

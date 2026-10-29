@@ -14,6 +14,8 @@ from empire.contracts.request_retry import MAX_REQUEST_RETRIES, request_timeout,
 from empire.plugins.infra.proxy_tunnel import close_writer
 from empire.plugins.infra.routing import ProxyRouteError, routed_request
 
+ATTEMPT_TIMEOUT_SECONDS = 30
+
 
 class BoundedChannel:
     def __init__(self, reader, writer, policy):
@@ -48,7 +50,8 @@ class StreamResponse:
         self.owner.responses.discard(self)
 
 
-async def request(service, target, protocol, *, policy=None, max_retries=2, total_timeout=None):
+async def request(service, target, protocol, *, policy=None, max_retries=2, total_timeout=None,
+                  proxy_code=None, reservation=None):
     """Protocol/auth failures do not retry; transport failures use bounded failover.
 
     Authentication data is never sent to error-record storage by this layer.
@@ -67,17 +70,22 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
     async def exchange(entry):
         writer = None
         try:
-            if entry is None:
-                reader, writer = await asyncio.open_connection(target.host, target.port, limit=16384)
-            else:
-                reader, writer = await service.pool.open_tunnel(
-                    entry, target.host, target.port, site=group.name,
-                )
-            channel = BoundedChannel(reader, writer, policy)
-            content = await protocol(channel)
+            # Bound an inactive native peer like HTTP. A source protocol or
+            # authentication error remains non-retryable; only transport times out.
+            async with asyncio.timeout(ATTEMPT_TIMEOUT_SECONDS):
+                if entry is None:
+                    reader, writer = await asyncio.open_connection(target.host, target.port, limit=16384)
+                else:
+                    reader, writer = await service.pool.open_tunnel(
+                        entry, target.host, target.port, site=group.name,
+                    )
+                channel = BoundedChannel(reader, writer, policy)
+                content = await protocol(channel)
             if not isinstance(content, bytes) or len(content) > policy.max_body_bytes:
                 raise ValueError("Native decoded response exceeds body limit")
             return StreamResponse(content, None, service)
+        except TimeoutError:
+            raise httpx.ReadTimeout('Native exchange timed out') from None
         except (OSError, asyncio.IncompleteReadError, asyncio.LimitOverrunError) as exc:
             raise httpx.ConnectError(f"Native transport failure ({type(exc).__name__})") from None
         finally:
@@ -86,16 +94,28 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
 
     try:
         async with asyncio.timeout(timeout):
-            lease = await service.buffer_budget.reserve(policy.reservation_bytes)
-            excluded, retries = set(), 0
+            if reservation is not None:
+                if (reservation.budget is not service.buffer_budget or reservation.released
+                        or reservation.size != policy.reservation_bytes):
+                    raise ValueError('响应缓冲预留与请求策略不一致')
+                lease = reservation
+            else:
+                lease = await service.buffer_budget.reserve(policy.reservation_bytes)
+            excluded: set[str] = set()
+            retries = 0
             while True:
                 try:
                     response = await routed_request(service, "STREAM", target.site_url,
-                        target.allowed_domains, excluded_proxies=excluded, exchange=exchange)
+                        target.allowed_domains, excluded_proxies=excluded, exchange=exchange,
+                        proxy_code=proxy_code)
                     response.reservation, lease = lease, None
                     service.responses.add(response)
                     return response
                 except ProxyRouteError as exc:
+                    if proxy_code is not None:
+                        # A node-bound session cannot move to another account or
+                        # wait on its own excluded node; the session owner decides.
+                        raise
                     excluded.add(exc.code)
                 except httpx.TransportError:
                     if retries >= max_retries:
@@ -103,6 +123,6 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
                     retries += 1
                     await asyncio.sleep(retry_delay(retries))
     finally:
-        if lease is not None:
+        if lease is not None and reservation is None:
             lease.release()
         service.inflight.discard(task)

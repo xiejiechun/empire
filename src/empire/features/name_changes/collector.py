@@ -67,6 +67,7 @@ class NameChangeCollector:
         return await consume()
 
     async def execute(self, *, fresh=False, baseline_revision=0):
+        self.stats.update(total_units=1, completed_units=0, unit_name='次完整响应')
         stage = 'source_validation'
         try:
             state = await self.ingest.checkpoint(self.job_key)
@@ -104,6 +105,7 @@ class NameChangeCollector:
                 state = await publish_with_capacity(self.ingest, self.stats, envelopes,
                     job_key=self.job_key, expected_revision=state['revision'], cursor=cursor)
             stage = 'archive_confirmation'
+            self.stats['completed_units'] = 1
             self.stats.update(status='awaiting_archive', collected=cursor['collected'],
                               source_count=cursor['source_count'], pages=3)
             await wait_for_archive(partial(self.confirmation.page_status, 'tdx', self.job_key,

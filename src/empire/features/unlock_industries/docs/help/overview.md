@@ -17,3 +17,7 @@
 
 ## 相关说明
 [执行采集与计划](help:执行采集与计划) · [MySQL restricted_share_unlock_industry](help:MySQL%20restricted_share_unlock_industry)
+
+## 采集百分比
+
+来源月份目录；完成月份数。使用本轮实际计划和已成功处理数量计算；准备范围期间不猜总量，空计划表示无需处理。百分比达到100%不替代完整集合校验或本轮归档确认；失败仍按实际结果显示。

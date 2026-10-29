@@ -11,6 +11,7 @@ from empire.features.builtin import (
 )
 from empire.features.preparation.composition import plugins_for
 from empire.plugins.collection.control import CollectionControl
+from empire.plugins.collection.identities import IdentityQueryPlugin
 from empire.plugins.collection.records import RecordsPlugin
 from empire.plugins.datasets.astock import DatasetPlugin
 from empire.plugins.infra.archive_confirmation import ArchiveConfirmationPlugin
@@ -24,8 +25,11 @@ from empire.plugins.pipeline.ingest import IngestPlugin
 from empire.plugins.ui.collection import CollectionUiPlugin
 from empire.plugins.ui.downloads import DownloadSettingsUiPlugin
 from empire.plugins.ui.help import HelpUiPlugin
+from empire.plugins.ui.identities import IdentityUiPlugin
 from empire.plugins.ui.proxies import ProxyUiPlugin
 from empire.plugins.ui.system import SystemUiPlugin
+from empire.sources.yuanhang_management import YuanhangManagement
+from empire.sources.yuanhang_service import YuanhangIdentityPlugin
 
 
 def build_manager(cfg: dict) -> PluginManager:
@@ -50,6 +54,8 @@ def build_manager(cfg: dict) -> PluginManager:
         OrderedContribution(6700, ProxyPoolPlugin()),
         OrderedContribution(6800, DownloadSettingsPlugin()),
         OrderedContribution(6900, HttpPlugin(rate_groups, cfg.get("http", {}))),
+        OrderedContribution(6950, YuanhangIdentityPlugin()),
+        OrderedContribution(6960, IdentityQueryPlugin((YuanhangManagement,))),
         OrderedContribution(7000, ArchivePlugin(cfg["archive"])),
         OrderedContribution(7100, IngestPlugin(cfg["ingest"])),
         OrderedContribution(7200, ArchiveConfirmationPlugin(handlers)),
@@ -59,6 +65,7 @@ def build_manager(cfg: dict) -> PluginManager:
         OrderedContribution(15500, HelpUiPlugin()),
         OrderedContribution(15600, ProxyUiPlugin()),
         OrderedContribution(15700, DownloadSettingsUiPlugin()),
+        OrderedContribution(15800, IdentityUiPlugin()),
     )
     positioned_plugins = [('platform', contribution) for contribution in platform]
     positioned_plugins.extend((bundle.id, contribution) for bundle in bundles for contribution in bundle.plugins)

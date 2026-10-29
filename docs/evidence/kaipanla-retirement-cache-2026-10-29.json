@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-28T22:49:38.094212+00:00",
+  "tasks": 48,
+  "retired_tasks": 7,
+  "kept_kaipanla_tasks": [
+    "kaipanla-themes",
+    "kaipanla-theme-details"
+  ],
+  "configuration_rows_deleted": 7,
+  "retired_pending_messages": 0,
+  "retired_redis_keys": 0,
+  "historical_business_tables_deleted": false,
+  "historical_data_decision": "pending user response",
+  "proofs_migrated": 2092,
+  "expiry_extended": false,
+  "offline": {
+    "passed": 3921,
+    "skipped": 17,
+    "log": "build/retirement-confirmed-tests.txt"
+  },
+  "final_blocked_render_and_bridge_tests": {
+    "passed": 50,
+    "log": "build/retirement-render-tests.txt"
+  },
+  "live_preview": {
+    "passed_views": 72,
+    "archive_rows_visible": 15,
+    "log": "build/retirement-live-preview.txt"
+  },
+  "formal_release": {
+    "passed": false,
+    "reason": "Existing dividends.unit capacity evidence stale for dividend_discovery.py",
+    "log": "build/retirement-release-gate.txt"
+  },
+  "mysql_isolated_tests": "not rerun: known account lacks CREATE DATABASE; production isolation not bypassed",
+  "cleanup_remainder": "Old module directory contains bytecode/empty docs only; recursive removal rejected by automatic policy, not retried",
+  "launcher": "dist/EmpireDesktop/Empire.exe",
+  "launcher_kind": "repository-dependent local desktop launcher, not portable release",
+  "hashes": {
+    "src/empire/features/builtin.py": "bcec03499c348c2fd6aeca133d4272b8e87464f87cab7965c0aba399b8da5d16",
+    "src/empire/plugins/pipeline/archive.py": "be2effa7f1ed0d7eba6adaf89d7b90d2f5130c4cda32cf9a477d7dc37bbf95f9",
+    "src/empire/plugins/pipeline/archive_metrics.py": "520851906fee2c37c10c8f6eebef8e87dcf3f7a0fb9fdd2a76387f53524634f2",
+    "src/empire/plugins/datasets/astock.py": "27038310218e18abdbd88ca0d924b14441361ec5c0a2a98963e85f9a97acb4ac",
+    "src/empire/features/yuanhang/dataset.py": "8ee9a9ddfb7152d43e0ede288a8197d76733e97f42ad770073554df21343c50b",
+    "src/empire/desktop_bridge/operations.py": "6a7f199e3f0de7f764403f2985aa2f4f57181af1050d514ada0ddd27241e09da",
+    "desktop/src/RunJournal.tsx": "418ba952f2afd1cdb7bf49ef376ca7668648ee9365417804e556a3176160698f",
+    "scripts/retire_kaipanla_market.py": "b63f96e964332d5ef17cfdfbad3052241b843eba243cd04a3e7bb968449c31ba",
+    "scripts/split_yuanhang_fingerprint_cache.py": "d4288d1af9ad26119560055cac79fbe08744a0fb47fca7f324acee16336629e6"
+  }
+}

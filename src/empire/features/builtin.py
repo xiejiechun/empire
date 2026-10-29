@@ -11,9 +11,9 @@ from empire.features.holders.bundle import bundle as holders_bundle
 from empire.features.index_prices.bundle import bundle as index_prices_bundle
 from empire.features.indices.bundle import bundle as indices_bundle
 from empire.features.industries.bundle import bundle as industries_bundle
-from empire.features.kaipanla.bundle import bundle as kaipanla_bundle
 from empire.features.listing_status.bundle import bundle as listing_status_bundle
 from empire.features.listings.bundle import bundle as listings_bundle
+from empire.features.market_review.bundle import bundle as market_review_bundle
 from empire.features.name_changes.bundle import bundle as name_changes_bundle
 from empire.features.news.bundle import bundle as news_bundle
 from empire.features.performance.bundle import bundle as performance_bundle
@@ -27,12 +27,14 @@ from empire.features.ths_capital.bundle import bundle as ths_capital_bundle
 from empire.features.trading_rules.bundle import bundle as trading_rules_bundle
 from empire.features.unlock_industries.bundle import bundle as unlock_industries_bundle
 from empire.features.unlocks.bundle import bundle as unlocks_bundle
+from empire.features.yuanhang.bundle import bundle as yuanhang_bundle
+from empire.features.yuanhang_limits.bundle import bundle as yuanhang_limits_bundle
 
-FACTORIES = (news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, kaipanla_bundle, capital_actions_bundle, adjustment_bundle, ths_capital_bundle, listings_bundle, listing_status_bundle, security_aliases_bundle, name_changes_bundle, st_events_bundle, unlocks_bundle, unlock_industries_bundle, performance_bundle, repurchases_bundle, trading_rules_bundle, themes_bundle)
+FACTORIES = (news_bundle, holders_bundle, financial_statements_bundle, indices_bundle, industries_bundle, index_prices_bundle, stocks_bundle, calendar_bundle, suspensions_bundle, data_browser_bundle, capital_actions_bundle, adjustment_bundle, ths_capital_bundle, listings_bundle, listing_status_bundle, security_aliases_bundle, name_changes_bundle, st_events_bundle, unlocks_bundle, unlock_industries_bundle, performance_bundle, repurchases_bundle, trading_rules_bundle, themes_bundle, yuanhang_bundle, yuanhang_limits_bundle)
 
 
 def builtin_bundles(cfg) -> tuple[FeatureBundle, ...]:
-    result = tuple(factory(cfg) for factory in FACTORIES)
+    result = tuple(factory(cfg) for factory in (*FACTORIES, market_review_bundle))
     seen = set()
     for bundle in result:
         if bundle.id in seen:

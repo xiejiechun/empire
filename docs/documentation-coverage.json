@@ -56,10 +56,8 @@
     ],
     "preparation": [
       "数据准备",
-      "历史盘口与日行情摘要",
       "同花顺三大报表",
       "同花顺当前行业",
-      "开盘啦分时及竞价",
       "公司与股票更名",
       "上市与发行资料",
       "暂停恢复终止上市",
@@ -124,43 +122,6 @@
     "industries": [
       "同花顺当前行业",
       "查找与浏览数据"
-    ],
-    "kaipanla_trend": [
-      "开盘啦分时及竞价",
-      "数据准备",
-      "查找与浏览数据"
-    ],
-    "kaipanla_auction": [
-      "开盘啦分时及竞价",
-      "数据准备",
-      "查找与浏览数据"
-    ],
-    "kaipanla_volume": [
-      "开盘啦分时及竞价",
-      "数据准备",
-      "查找与浏览数据"
-    ],
-    "kaipanla_trades": [
-      "开盘啦分时及竞价",
-      "数据准备",
-      "查找与浏览数据"
-    ],
-    "kaipanla_entrust": [
-      "开盘啦分时及竞价",
-      "数据准备",
-      "查找与浏览数据"
-    ],
-    "kaipanla_large_order": [
-      "开盘啦分时及竞价",
-      "数据准备",
-      "查找与浏览数据"
-    ],
-    "kaipanla_quote": [
-      "历史盘口与日行情摘要",
-      "开盘啦分时及竞价",
-      "数据准备",
-      "查找与浏览数据",
-      "区间名义现金股息率"
     ],
     "names_company": [
       "公司与股票更名",
@@ -268,6 +229,18 @@
     "themes": [
       "开盘啦题材库",
       "Redis 题材七日日内历史"
+    ],
+    "identities": [
+      "平台身份管理"
+    ],
+    "yuanhang": [
+      "远航版历史行情"
+    ],
+    "yuanhang_limits": [
+      "远航版涨跌停分析"
+    ],
+    "market_review": [
+      "市场复盘"
     ]
   },
   "guides": [
@@ -315,7 +288,8 @@
     "src/empire/features/capital_actions/README.md",
     "src/empire/features/adjustment/README.md",
     "src/empire/documentation/README.md",
-    "docs/data-usability-scope.md"
+    "docs/data-usability-scope.md",
+    "docs/identity-management-design.md"
   ],
   "tasks": {
     "tdx-listing-status": [
@@ -386,34 +360,6 @@
     ],
     "tdx-suspensions": [
       "历史停复牌",
-      "采集进度与运行记录"
-    ],
-    "kaipanla-trend": [
-      "开盘啦分时及竞价",
-      "采集进度与运行记录"
-    ],
-    "kaipanla-auction": [
-      "开盘啦分时及竞价",
-      "采集进度与运行记录"
-    ],
-    "kaipanla-volume": [
-      "开盘啦分时及竞价",
-      "采集进度与运行记录"
-    ],
-    "kaipanla-trades": [
-      "开盘啦分时及竞价",
-      "采集进度与运行记录"
-    ],
-    "kaipanla-entrust": [
-      "开盘啦分时及竞价",
-      "采集进度与运行记录"
-    ],
-    "kaipanla-large-order": [
-      "开盘啦分时及竞价",
-      "采集进度与运行记录"
-    ],
-    "kaipanla-quote": [
-      "历史盘口与日行情摘要",
       "采集进度与运行记录"
     ],
     "ths-index-prices": [
@@ -494,6 +440,38 @@
     ],
     "kaipanla-theme-details": [
       "开盘啦题材库"
+    ],
+    "ths-yuanhang-prices": [
+      "远航版历史行情",
+      "采集进度与运行记录"
+    ],
+    "ths-yuanhang-financial": [
+      "远航版历史行情",
+      "采集进度与运行记录"
+    ],
+    "ths-yuanhang-limit-up-pool": [
+      "远航版涨跌停分析",
+      "采集进度与运行记录"
+    ],
+    "ths-yuanhang-sprint-limit-up": [
+      "远航版涨跌停分析",
+      "采集进度与运行记录"
+    ],
+    "ths-yuanhang-connect-broad-pool": [
+      "远航版涨跌停分析",
+      "采集进度与运行记录"
+    ],
+    "ths-yuanhang-open-limit-up-pool": [
+      "远航版涨跌停分析",
+      "采集进度与运行记录"
+    ],
+    "ths-yuanhang-limit-down-pool": [
+      "远航版涨跌停分析",
+      "采集进度与运行记录"
+    ],
+    "ths-yuanhang-reason": [
+      "远航版涨跌停分析",
+      "采集进度与运行记录"
     ]
   },
   "storage": {
@@ -502,7 +480,8 @@
         "topic": "MySQL stock",
         "sources": [
           "src/empire/features/stocks/dataset.py",
-          "src/empire/features/stocks/query.py"
+          "src/empire/features/stocks/query.py",
+          "src/empire/features/holders/planning.py"
         ]
       },
       "stock_listing": {
@@ -530,7 +509,8 @@
         "topic": "MySQL trade_calendar",
         "sources": [
           "src/empire/features/calendar/dataset.py",
-          "src/empire/features/calendar/query.py"
+          "src/empire/features/calendar/query.py",
+          "src/empire/features/market_review/query.py"
         ]
       },
       "suspension_event": {
@@ -625,85 +605,28 @@
           "src/empire/features/indices/query.py"
         ]
       },
-      "stock_market_day": {
-        "topic": "MySQL stock_market_day",
-        "sources": [
-          "src/empire/features/kaipanla/repository.py",
-          "src/empire/features/kaipanla/query.py"
-        ]
-      },
-      "stock_intraday_trend": {
-        "topic": "MySQL stock_intraday_trend",
-        "sources": [
-          "src/empire/features/kaipanla/repository.py",
-          "src/empire/features/kaipanla/query.py"
-        ]
-      },
-      "stock_opening_auction": {
-        "topic": "MySQL stock_opening_auction",
-        "sources": [
-          "src/empire/features/kaipanla/repository.py",
-          "src/empire/features/kaipanla/query.py"
-        ]
-      },
-      "stock_minute_volume": {
-        "topic": "MySQL stock_minute_volume",
-        "sources": [
-          "src/empire/features/kaipanla/repository.py",
-          "src/empire/features/kaipanla/query.py"
-        ]
-      },
-      "stock_intraday_trade_block": {
-        "topic": "MySQL stock_intraday_trade_block",
-        "sources": [
-          "src/empire/features/kaipanla/repository.py",
-          "src/empire/features/kaipanla/query.py"
-        ]
-      },
-      "stock_minute_entrust": {
-        "topic": "MySQL stock_minute_entrust",
-        "sources": [
-          "src/empire/features/kaipanla/repository.py",
-          "src/empire/features/kaipanla/query.py"
-        ]
-      },
-      "stock_large_order_trend": {
-        "topic": "MySQL stock_large_order_trend",
-        "sources": [
-          "src/empire/features/kaipanla/repository.py",
-          "src/empire/features/kaipanla/query.py"
-        ]
-      },
-      "stock_daily_quote": {
-        "topic": "MySQL stock_daily_quote",
-        "sources": [
-          "src/empire/features/kaipanla/repository.py",
-          "src/empire/features/kaipanla/query.py"
-        ]
-      },
-      "stock_daily_quote_level": {
-        "topic": "MySQL stock_daily_quote_level",
-        "sources": [
-          "src/empire/features/kaipanla/repository.py",
-          "src/empire/features/kaipanla/query.py"
-        ]
-      },
       "collection_state": {
         "topic": "MySQL collection_state",
         "sources": [
           "src/empire/plugins/infra/collection_state.py",
           "src/empire/plugins/infra/collection_state_unit.py",
           "src/empire/plugins/pipeline/archive.py",
-          "src/empire/diagnostics/project.py"
+          "src/empire/diagnostics/project.py",
+          "src/empire/features/holders/planning.py"
         ]
       },
       "app_setting": {
         "topic": "MySQL app_setting",
         "sources": [
           "src/empire/plugins/infra/settings.py",
+          "src/empire/sources/yuanhang_profiles.py",
+          "src/empire/sources/yuanhang_service.py",
+          "src/empire/core/protected_values.py",
           "src/empire/plugins/collection/control.py",
           "src/empire/plugins/infra/http.py",
-          "src/empire/diagnostics/project.py"
+          "src/empire/diagnostics/project.py",
+          "src/empire/sources/yuanhang_recipe.py",
+          "src/empire/sources/yuanhang_management.py"
         ]
       },
       "security_code_alias": {
@@ -931,7 +854,8 @@
           "src/empire/features/themes/dataset.py",
           "src/empire/features/themes/query.py",
           "src/empire/features/themes/collector.py",
-          "src/empire/features/themes/ui.py"
+          "src/empire/features/themes/ui.py",
+          "src/empire/features/market_review/query.py"
         ]
       },
       "theme_detail": {
@@ -976,6 +900,87 @@
           "src/empire/features/themes/query.py",
           "src/empire/features/themes/collector.py",
           "src/empire/features/themes/ui.py"
+        ]
+      },
+      "yuanhang_daily_price": {
+        "topic": "MySQL yuanhang_daily_price",
+        "sources": [
+          "src/empire/features/yuanhang/repository.py",
+          "src/empire/features/yuanhang/dataset.py",
+          "src/empire/features/yuanhang/query.py",
+          "src/empire/features/yuanhang/range_archive.py",
+          "src/empire/features/yuanhang/plan_query.py",
+          "src/empire/sources/yuanhang_range_payload.py",
+          "src/empire/sources/yuanhang_ranges.py",
+          "scripts/migrate_yuanhang_ranges.py"
+        ]
+      },
+      "yuanhang_price_year": {
+        "topic": "MySQL yuanhang_price_year",
+        "sources": [
+          "src/empire/features/yuanhang/repository.py",
+          "src/empire/features/yuanhang/dataset.py",
+          "src/empire/features/yuanhang/query.py",
+          "src/empire/features/yuanhang/range_archive.py",
+          "src/empire/features/yuanhang/plan_query.py",
+          "src/empire/sources/yuanhang_range_payload.py",
+          "src/empire/sources/yuanhang_ranges.py",
+          "scripts/migrate_yuanhang_ranges.py"
+        ]
+      },
+      "yuanhang_corporate_action": {
+        "topic": "MySQL yuanhang_corporate_action",
+        "sources": [
+          "src/empire/features/yuanhang/repository.py",
+          "src/empire/features/yuanhang/dataset.py",
+          "src/empire/features/yuanhang/query.py",
+          "scripts/yuanhang_financial_schema.py"
+        ]
+      },
+      "yuanhang_capital": {
+        "topic": "MySQL yuanhang_capital",
+        "sources": [
+          "src/empire/features/yuanhang/repository.py",
+          "src/empire/features/yuanhang/dataset.py",
+          "src/empire/features/yuanhang/query.py",
+          "scripts/yuanhang_financial_schema.py"
+        ]
+      },
+      "yuanhang_series_proof": {
+        "topic": "MySQL yuanhang_series_proof",
+        "sources": [
+          "src/empire/features/yuanhang/repository.py",
+          "src/empire/features/yuanhang/dataset.py",
+          "src/empire/features/yuanhang/query.py"
+        ]
+      },
+      "yuanhang_limit_pool": {
+        "topic": "MySQL yuanhang_limit_pool",
+        "sources": [
+          "src/empire/features/yuanhang_limits/repository.py",
+          "src/empire/features/yuanhang_limits/dataset.py",
+          "src/empire/features/yuanhang_limits/query.py",
+          "scripts/create_yuanhang_limits_schema.py",
+          "src/empire/features/market_review/query.py"
+        ]
+      },
+      "yuanhang_limit_member": {
+        "topic": "MySQL yuanhang_limit_member",
+        "sources": [
+          "src/empire/features/yuanhang_limits/repository.py",
+          "src/empire/features/yuanhang_limits/dataset.py",
+          "src/empire/features/yuanhang_limits/query.py",
+          "scripts/create_yuanhang_limits_schema.py",
+          "src/empire/features/market_review/query.py"
+        ]
+      },
+      "yuanhang_limit_reason": {
+        "topic": "MySQL yuanhang_limit_reason",
+        "sources": [
+          "src/empire/features/yuanhang_limits/repository.py",
+          "src/empire/features/yuanhang_limits/dataset.py",
+          "src/empire/features/yuanhang_limits/query.py",
+          "scripts/create_yuanhang_limits_schema.py"
         ]
       }
     },
@@ -1185,6 +1190,55 @@
           "src/empire/features/themes/history.py",
           "src/empire/features/themes/history_model.py"
         ]
+      },
+      "identity-runs": {
+        "topic": "Redis identity-runs",
+        "patterns": [
+          "<namespace>:collection:identity-runs:<platform_id>"
+        ],
+        "sources": [
+          "src/empire/plugins/collection/records.py",
+          "src/empire/plugins/collection/identity_runs.py",
+          "src/empire/sources/yuanhang_management.py"
+        ]
+      },
+      "identity-runs-revision": {
+        "topic": "Redis identity-runs-revision",
+        "patterns": [
+          "<namespace>:collection:identity-runs-revision:<platform_id>"
+        ],
+        "sources": [
+          "src/empire/plugins/collection/records.py",
+          "src/empire/plugins/collection/identity_runs.py",
+          "src/empire/sources/yuanhang_management.py"
+        ]
+      },
+      "yuanhang-intraday-snapshots": {
+        "topic": "Redis yuanhang-intraday-snapshots",
+        "patterns": [
+          "<namespace>:yuanhang:intraday:<pool_type>:snapshots:<version>"
+        ],
+        "sources": [
+          "src/empire/features/yuanhang_limits/intraday_store.py"
+        ]
+      },
+      "yuanhang-intraday-times": {
+        "topic": "Redis yuanhang-intraday-times",
+        "patterns": [
+          "<namespace>:yuanhang:intraday:<pool_type>:times"
+        ],
+        "sources": [
+          "src/empire/features/yuanhang_limits/intraday_store.py"
+        ]
+      },
+      "yuanhang-intraday-meta": {
+        "topic": "Redis yuanhang-intraday-meta",
+        "patterns": [
+          "<namespace>:yuanhang:intraday:<pool_type>:meta"
+        ],
+        "sources": [
+          "src/empire/features/yuanhang_limits/intraday_store.py"
+        ]
       }
     },
     "redis_constructors": {
@@ -1212,7 +1266,9 @@
           "archives",
           "archives-revision",
           "errors",
-          "errors-revision"
+          "errors-revision",
+          "identity-runs",
+          "identity-runs-revision"
         ]
       },
       "src/empire/features/capital_actions/query.py": {
@@ -1318,6 +1374,16 @@
       "src/empire/features/themes/history.py": {
         "f'{self.prefix}:theme-history'": [
           "theme_history"
+        ]
+      },
+      "src/empire/features/yuanhang_limits/intraday_store.py": {
+        "f'{self.redis.prefix}:yuanhang:intraday:{pool}'": [
+          "yuanhang-intraday-snapshots",
+          "yuanhang-intraday-times",
+          "yuanhang-intraday-meta"
+        ],
+        "f'{self.redis.prefix}:yuanhang:intraday:{pool}:snapshots:{version}'": [
+          "yuanhang-intraday-snapshots"
         ]
       }
     }

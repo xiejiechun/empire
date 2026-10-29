@@ -31,21 +31,21 @@ def resolve_security(conn, market, code):
 
 class AdjustmentDataPlugin:
     manifest = PluginManifest('data.adjustment', '自算复权因子与行情',
-        requires=('mysql.store', 'kaipanla_quote.query'), provides=('adjustment.query',),
-        description='只读已归档分红送转、配股及收盘价；缺输入和方案歧义不生成因子')
+        requires=('mysql.store', 'yuanhang.history.query'), provides=('adjustment.query',),
+        description='只读远航版完整日线与除权事件；缺输入不生成因子')
     output_version = ALGORITHM
-    preparation = tuple(ComputationContribution(requirement, 'adjustment.query', '自算：通达信事件 / 开盘啦价格',
+    preparation = tuple(ComputationContribution(requirement, 'adjustment.query', '自算：远航版日线及除权事件',
         'empire-' + requirement.replace('_', '-'), ('tests/test_adjustment.py', 'tests/test_adjustment_query.py'),
         ('tests/integration/test_adjustment_pipeline.py',), ALGORITHM,
-        page_id='adjustment', cache_revision=2,
+        page_id='adjustment', cache_revision=3,
         method='preparation_check' if requirement == 'adjustment_factors' else 'prices_preparation_check')
         for requirement in ('adjustment_factors', 'adjusted_prices'))
 
     def __init__(self, namespace='empire'):
-        self.namespace, self.mysql, self.quotes = namespace, None, None
+        self.namespace, self.mysql = namespace, None
 
     async def start(self, context):
-        self.mysql, self.quotes = context.get('mysql.store'), context.get('kaipanla_quote.query')
+        self.mysql = context.get('mysql.store')
         return {'adjustment.query': self}
 
     def _calculate(self, market, code, start, end):
@@ -53,8 +53,8 @@ class AdjustmentDataPlugin:
 
     def _history(self, market, code, start, end, *, require_adjustment=False):
         lower, upper = date.fromisoformat(iso(start)), date.fromisoformat(iso(end))
-        if lower < date(2021, 1, 1) or lower > upper or (upper-lower).days > MAX_DAYS:
-            raise ActionError('现有行情支持2021年起；起止须有序且最多3660日')
+        if lower < date(1900, 1, 1) or lower > upper or (upper-lower).days > MAX_DAYS:
+            raise ActionError('日期须从1900年起、有序且不超过150年')
         with self.mysql.read_engine.connect().execution_options(isolation_level='REPEATABLE READ') as conn, conn.begin():
             security = resolve_security(conn, market, code)
             market, code = security[-2:], security[:6]
@@ -67,13 +67,14 @@ class AdjustmentDataPlugin:
                     'AND trade_date<=:upper AND is_trade=1 LIMIT 1'), dict(cutoff=cutoff.date(), upper=upper)).first()
                 if upper > datetime.now(CHINA).date() or future_trade:
                     raise ActionError('范围包含尚未结束的交易日，请缩短计算范围')
-            prices = close_prices(conn, self.quotes, market, code, lower, upper)
-            problem, observed, event_plans = '', [], {}
+            prices, price_observed = close_prices(conn, market, code, lower, upper)
+            problem, observed, event_plans = '', price_observed, {}
             try:
-                dividends, rights, observed = events(conn, self.namespace, market, code)
-                event_plans = {r['record_key']: kind for kind, records in (('dividends', dividends), ('rights_issues', rights)) for r in records}
-                rows = calculate(prices, dividends, rights)
-                checksum = digest([ALGORITHM, security, start, end, prices, dividends, rights])
+                native_events, event_observed = events(conn, market, code)
+                observed += event_observed
+                event_plans = {r[0]: 'yuanhang' for r in native_events}
+                rows = calculate(prices, native_events)
+                checksum = digest([ALGORITHM, security, start, end, prices, native_events])
             except (ValueError, KeyError, TypeError) as exc:
                 if require_adjustment:
                     raise
@@ -84,7 +85,7 @@ class AdjustmentDataPlugin:
                 gaps = []
                 for price in prices:
                     try:
-                        rows.extend(calculate([price], [], []))
+                        rows.extend(calculate([price], []))
                     except (ValueError, KeyError, TypeError) as price_exc:
                         gaps.append(price['date'] + '：' + str(price_exc))
                         row = dict(date=price['date'], events=[], factor=None, reference=None,
@@ -105,7 +106,8 @@ class AdjustmentDataPlugin:
             adjustment_problem=problem,
             event_plans=event_plans,
             limitations='区间首日归一为1；理论参考价不舍入；当前来源修订版，不证明当时可知版本；'
-                         '仅分红送转及配股，不处理合并换股等其他事件；复权价不用于成交和现金记账')
+                         '采用远航版现金口径，不推算个人税后收益；仅分红送转及配股，不处理合并换股等其他事件；'
+                         '源完整序列内的停牌缺日不补价；复权价不用于成交和现金记账')
 
     async def calculate(self, market, code, start, end):
         return await self.mysql.read(self._calculate, market, code, start, end)
@@ -137,7 +139,7 @@ class AdjustmentDataPlugin:
         message = f'核实{len(results)}只证券，共{sum(len(r["rows"]) for r in results)}个交易日；输入完整集合、摘要和计算规则通过'
         fresh = all(datetime.fromisoformat(r['observed_at']) >= datetime.now(UTC)-timedelta(days=3) for r in results)
         return tuple(CheckEvidence(k, 'pass', message) for k in identifiers[:4]) + (
-            CheckEvidence('freshness', 'pass' if fresh else 'fail', '事件完整证明在三日内' if fresh else '事件完整证明过期，请先核验事件来源再重算'),
+            CheckEvidence('freshness', 'pass' if fresh else 'unknown', 'SQL输入确认在三日内' if fresh else 'SQL保留内容变化或回源确认时间；缓存核验可能更新，当前只读计算未核对Redis时效'),
             CheckEvidence('temporal', 'pass' if scope.purpose == 'analysis' else 'fail',
                           '截止日固定；当前来源修订版本，只支持普通分析，不证明过去可知的方案和行情版本'))
 
@@ -145,7 +147,7 @@ class AdjustmentDataPlugin:
         return await self.preparation_check(request)
 
     async def stop(self):
-        self.mysql = self.quotes = None
+        self.mysql = None
 
     def health(self):
         return dict(status='ok' if self.mysql else 'stopped', algorithm=ALGORITHM)

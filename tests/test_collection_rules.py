@@ -31,10 +31,7 @@ def test_incomplete_rule_rejected(field):
 
 
 def test_request_contracts_match_real_source_parameters():
-    from datetime import date
 
-    from empire.features.kaipanla.contract import PRODUCTS
-    from empire.features.kaipanla.product_source import options
     from empire.features.performance.source import params
     rules = collection_rules()
     for kind in ('earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report'):
@@ -45,13 +42,6 @@ def test_request_contracts_match_real_source_parameters():
         for p, value in zip(declared, actual, strict=True):
             if p['value'] not in ('YYYY-MM-DD', '空字符串'):
                 assert p['value'] == value
-    for kind in PRODUCTS:
-        request = rules['kaipanla-'+kind.replace('_','-')]['requests'][0]
-        actual = options('000001', date(2026, 10, 13), kind)['data']
-        declared = {p['name']: p['value'] for p in request['parameters']}
-        assert set(declared) == set(actual)
-        for key in ('c', 'a', 'apiv', 'PhoneOSNew', 'PhoneOS', 'VerSion'):
-            assert declared[key] == actual[key]
 
 
 def test_render_uses_current_namespace_without_exposing_credentials():
@@ -112,3 +102,26 @@ def test_all_rules_render_without_network_and_keep_parameter_tables(monkeypatch)
         pane.grab().save(str(ROOT / 'build/collection-rules-narrow.png'))
     finally:
         pane.close()
+
+
+def test_rule_storage_addresses_follow_config_without_leaking_credentials():
+    from empire.plugins.collection.rules import rule_details
+    cfg = {'redis': {'namespace': 'custom:test', 'password': 'REDIS_SECRET'},
+           'mysql': {'database': 'custom_db', 'password': 'MYSQL_SECRET'}}
+    import json
+    for ident in collection_rules():
+        value = rule_details(ident, cfg)
+        s = value['storage']
+        assert s['queue'] == 'custom:test:ingest'
+        assert s['checkpoint'] == 'custom:test:checkpoint:' + value['job_key']
+        assert s['database'] == 'custom_db'
+        assert s['tables'] == value['tables']
+        assert 'SECRET' not in json.dumps(value)
+    financial = rule_details('ths-yuanhang-financial', cfg)['storage']
+    assert financial['fingerprints'] == [
+        'custom:test:archive:fingerprints:v1:ths_yuanhang_history_v2:ths_yuanhang:financial']
+    pool = rule_details('ths-yuanhang-limit-up-pool', cfg)['storage']['intraday']
+    assert pool['body'] == 'custom:test:yuanhang:intraday:limit_up_pool:snapshots:<version>'
+    assert '不写 MySQL' in pool['note']
+    assert rule_details('ths-yuanhang-reason', cfg)['storage']['intraday'] is None
+    assert rule_details('unknown', cfg) is None

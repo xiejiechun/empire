@@ -21,6 +21,7 @@ from empire.contracts.preparation_scope import PreparationScope
 from empire.core.config import load_config, project_root
 from empire.features.holders.contract import KINDS, digest, report_key
 from empire.features.holders.dataset import HolderDataset, read_reports
+from empire.features.holders.planning import read_units
 from empire.features.holders.query import HolderDataPlugin
 from empire.features.holders.source import parse
 from empire.plugins.infra.collection_state import save_state
@@ -32,6 +33,7 @@ INPUT_PATHS = (
     'src/empire/features/holders/contract.py',
     'src/empire/features/holders/dataset.py',
     'src/empire/features/holders/query.py',
+    'src/empire/features/holders/planning.py',
     'src/empire/features/holders/source.py',
     'src/empire/sources/html.py',
     'scripts/measure_holders.py',
@@ -138,6 +140,14 @@ def run(args):
         audit_peak = tracemalloc.get_traced_memory()[1]
         tracemalloc.stop()
         measured, plans = {}, {}
+        with engine.connect() as conn:
+            started = time.perf_counter()
+            maintenance = read_units(conn, 'holder-capacity')
+            measured['maintenance_ms'] = (time.perf_counter() - started) * 1000
+            measured['maintenance_bytes'] = len(json.dumps(maintenance).encode())
+            if set(maintenance) != set(proofs) or any(
+                    maintenance[key]['fingerprint_hash'] != proofs[key]['fingerprint_hash'] for key in proofs):
+                raise ValueError('维护投影丢失已确认单元或内容绑定')
         queries = dict(page="SELECT report_key,unified_code,report_date,member_count,exit_count FROM holder_report WHERE kind='top_holders' ORDER BY report_date DESC,unified_code DESC,report_key DESC LIMIT 100",
             security="SELECT report_key,report_date FROM holder_report WHERE kind='top_holders' AND unified_code='000001.SH' ORDER BY report_date DESC,report_key DESC LIMIT 100",
             coverage="SELECT report_key,content_hash,member_count,exit_count FROM holder_report WHERE kind='top_holders' ORDER BY report_key LIMIT 10000")
@@ -198,7 +208,8 @@ def run(args):
                 detail_bytes=1048576, maximum_detail_p95_ms=100, maximum_detail_bytes=1048576, import_seconds=180, peak_python_bytes=134217728,
                 allocated_bytes=536870912, repeated_business_dml=0, repeated_written=0,
                 formal_audit_ms=30000, formal_combined_audit_ms=90000,
-                audit_peak_python_bytes=134217728, state_bytes=8388608),
+                audit_peak_python_bytes=134217728, state_bytes=8388608,
+                maintenance_ms=5000, maintenance_bytes=1048576),
             conditions=dict(platform=platform.platform(), mysql=mysql, reports=heads, members=members,
                 source='minimal source-semantic fixture; 2500 issuers × 4 periods distributed across all three kinds; long 281-character holder names',
                 real_sample='docs/evidence/ths-holders-source-2026-10-13.json',

@@ -29,17 +29,27 @@ def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_pat
                 assert len(pages) == len(expected)
                 return
             time.sleep(.02)
-        raise AssertionError(f"Expected {expected}, got {runtime.page_contributions()}")
+        actual = {p.id for p in runtime.page_contributions()}
+        raise AssertionError(f"Missing pages: {expected - actual}; unexpected pages: {actual - expected}")
 
     performance_ids = {'earnings_forecast', 'earnings_quick', 'earnings_disclosure', 'earnings_report', 'holder_count', 'shareholder_changes'}
     all_ids = {*performance_ids, "ths_capital", "unlock_industries", "unlocks", "top_holders", "float_holders", "bond_holders", "repurchases", "listing_status", "listings", "dividends", "additional_issues", "rights_issues", "home", "catalog", "stocks", "news", "calendar", "collection", "history",
                "archived_tasks", "sites", "system", "plugins", "help", "proxies", "downloads", "preparation", "suspensions",
-               "income", "balance", "cashflow", "industries", "indices", "index_prices", "names_company", "names_security", "st_implementation", "st_removal", "adjustment",
-               *('kaipanla_' + k for k in ('trend','auction','volume','trades','entrust','large_order','quote'))}
+               "income", "balance", "cashflow", "industries", "indices", "index_prices", "names_company", "names_security", "st_implementation", "st_removal", "adjustment"}
     all_ids.update('rules_' + k for k in ('limit_rules', 'settlement_rules', 'lot_rules', 'tick_rules', 'sessions', 'stamp_duty', 'transfer_fee'))
-    all_ids.add('themes')
+    all_ids.update({'themes', 'identities', 'yuanhang', 'yuanhang_limits', 'market_review'})
     runtime.start()
     try:
+        wait_pages(all_ids)
+        runtime.command('stop', 'ui.yuanhang').result(timeout=5)
+        wait_pages(all_ids - {'yuanhang'})
+        assert runtime.manager.entries['ui.proxies'].state == 'RUNNING'
+        runtime.command('start', 'ui.yuanhang').result(timeout=5)
+        wait_pages(all_ids)
+        runtime.command('stop', 'ui.identities').result(timeout=5)
+        wait_pages(all_ids - {'identities'})
+        assert runtime.manager.entries['ui.proxies'].state == 'RUNNING'
+        runtime.command('start', 'ui.identities').result(timeout=5)
         wait_pages(all_ids)
         runtime.command('stop', 'ui.themes').result(timeout=5)
         wait_pages(all_ids - {'themes'})
