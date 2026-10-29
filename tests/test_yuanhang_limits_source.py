@@ -209,3 +209,16 @@ async def test_reason_only_requests_single_date_and_closes_response():
     assert result['reason_text'] == '正文'
     assert 'startTime=20260715&endTime=20260715' in http.request.call_args.args[1]
     responses[0].close.assert_called_once()
+
+
+async def test_reason_failure_keeps_source_identity_body_and_business_status():
+    import httpx
+    url = 'http://dq.10jqka.com.cn/failure'
+    response = httpx.Response(200, request=httpx.Request('GET', url),
+        json={'status_code': -17, 'status_msg': 'unavailable'})
+    http = SimpleNamespace(request=AsyncMock(return_value=response), response_policy=lambda _: None)
+    with pytest.raises(ValueError) as caught:
+        await fetch_reason(http, '300010.SZ', '2020-03-23', project_id='ths-yuanhang-reason')
+    assert caught.value.source_metadata == dict(business_status=-17, unified_code='300010.SZ', trade_date='2020-03-23')
+    assert caught.value.source_diagnostic['raw_body'] == response.content
+    assert response.is_closed

@@ -475,3 +475,19 @@ async def test_numeric_failure_identifies_field_and_preserves_checkpoint(value):
     assert metadata == dict(index_code=CODE, trade_date="2025-12-30", field="amount",
                             source_value=value, source_value_truncated=False)
     assert c.ingest.state == before
+
+
+def test_annual_current_cache_lag_uses_only_anchored_recent_suffix():
+    rows = [[f'2026-01-{d:02}', '10', '12', '9', '11', '100', '1000'] for d in (5, 6, 7)]
+    snapshot = dict(start=rows[0][0], end=rows[-1][0], years={'2026': 3}, rows=rows)
+    assert annual(source(2026, rows[:2]), CODE, 2026, snapshot) == rows
+    # A missing middle date cannot be explained by a lagging cache.
+    with pytest.raises(ValueError):
+        annual(source(2026, [rows[0], rows[2]]), CODE, 2026, snapshot)
+    no_anchor = {**snapshot, 'rows': rows[2:]}
+    with pytest.raises(ValueError):
+        annual(source(2026, rows[:2]), CODE, 2026, no_anchor)
+    changed = copy.deepcopy(rows[:2])
+    changed[1][4] = '10.5'
+    with pytest.raises(ValueError, match='集合或内容'):
+        annual(source(2026, changed), CODE, 2026, snapshot)

@@ -139,3 +139,35 @@ async def test_waiting_stage_resume_no_download_and_catalog_identity():
     assert item.http.request.await_count == calls
     contribution = builtin_catalog().datasets[DATASET]
     assert contribution.projects == {'eastmoney-repurchases-v1': 'eastmoney-repurchases'}
+
+
+async def test_source_count_change_rebases_once_without_discarding_published_data():
+    item = collector([source_row('2')])
+    item.ingest.state = dict(revision=1, cursor=dict(phase='fetch', contract=1,
+        batch_id='old', pages=1, collected=1, total=3, after='1', digest='0'*64))
+    result = await item.execute(baseline_revision=1)
+    assert result['phase'] == 'complete' and result['collected'] == 1
+    assert result['batch_id'] != 'old' and item.http.request.await_count == 2
+    assert item.stats['source_rebases'] == 1
+
+
+async def test_repeated_source_change_does_not_loop_or_publish_failed_page():
+    item = collector([])
+    rows = [source_row(str(i)) for i in range(1001, 1501)]
+    async def request(*a, **kw):
+        body = feed([source_row('1501')], 1) if 'filter' in kw['params'] else feed(rows, 502)
+        return httpx.Response(200, request=httpx.Request('GET', URL), json=body)
+    item.http.request.side_effect = request
+    with pytest.raises(ValueError, match='来源集合'):
+        await item.execute()
+    assert item.http.request.await_count == 4
+    assert item.ingest.state['cursor']['collected'] == 500
+    assert len({e.batch_id for e in item.ingest.events}) == 2
+
+
+
+def test_corrupt_changed_page_is_not_a_rebase_signal():
+    from empire.features.repurchases.contract import SourceSetChanged
+    with pytest.raises(ValueError) as caught:
+        parse(feed([source_row('2'), source_row('2')]), after='1', remaining=3)
+    assert not isinstance(caught.value, SourceSetChanged)

@@ -1,0 +1,187 @@
+{
+  "checked_at": "2026-10-29T12:10:12.391900+00:00",
+  "jobs": {
+    "eastmoney-repurchases": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793354400.0,
+      "active": null,
+      "last_status": "complete",
+      "error": "",
+      "notice": ""
+    },
+    "ths-capital": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:30",
+        "request_retries": 30,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793356200.0,
+      "active": {
+        "run_id": "29e7385ccc394d96ad80dbcf640def23",
+        "task_id": "ths-capital",
+        "started_at": 1793275730.5711935,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 20402
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    },
+    "ths-index-prices": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 30,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793354400.0,
+      "active": {
+        "run_id": "7784840d2b9e4ba582beb4e7b780cf08",
+        "task_id": "ths-index-prices",
+        "started_at": 1793275730.5788367,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 6949
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    },
+    "ths-yuanhang-reason": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 2,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793354400.0,
+      "active": {
+        "run_id": "258051f8324b4cb5a1e8bdb1477f81cd",
+        "task_id": "ths-yuanhang-reason",
+        "started_at": 1793275730.7668877,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 191127
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    },
+    "ths-yuanhang-financial": {
+      "policy": {
+        "mode": "daily",
+        "interval_seconds": 86400,
+        "daily_time": "18:00",
+        "request_retries": 30,
+        "enabled": true,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "archived": false
+      },
+      "next_due": 1793354400.0,
+      "active": {
+        "run_id": "987c1e5fa911493f9b03483079e06336",
+        "task_id": "ths-yuanhang-financial",
+        "started_at": 1793275730.7792284,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 29768
+      },
+      "last_status": "running",
+      "error": "",
+      "notice": ""
+    }
+  },
+  "checkpoints": {
+    "eastmoney-repurchases": {
+      "phase": "complete",
+      "batch_id": "ac4278605ce54305989bc0c05cc490e6",
+      "pages": 23,
+      "collected": 5652,
+      "total": 5652,
+      "after": "9998",
+      "contract": 1,
+      "completed_at": "2026-10-29T12:04:38.634613+00:00"
+    },
+    "ths-capital": {
+      "phase": "fetch",
+      "batch_id": "5404e5e3efef4bbaa398cfa0208fc9e8",
+      "index": 3840,
+      "pages": 3840,
+      "collected": 479373,
+      "units": 5579,
+      "rolling": "854de9b67b2e99c4c059a9e263d0b5e9a21066c71638c30bc878c434bdf3cb62"
+    },
+    "ths-index-prices": {
+      "phase": "collecting",
+      "next_index": 30,
+      "next_year": 1990,
+      "pages": 62,
+      "collected": 4991,
+      "batch_id": "b6728b33c47c4446bd7da5e5ea5ec2c2",
+      "fresh": false,
+      "unavailable": 0,
+      "code_count": 573
+    },
+    "ths-yuanhang-reason": {
+      "contract": 1,
+      "phase": "fetch",
+      "batch_id": "9ee8d1f8743349729086cbf8c970eef3",
+      "page": 549,
+      "index": 37,
+      "cutoff": "2026-10-29",
+      "remaining": null,
+      "force": false,
+      "scan_after": [
+        1,
+        "2020-07-21",
+        "002789.SZ"
+      ]
+    },
+    "ths-yuanhang-financial": {
+      "phase": "collecting",
+      "through": "2026-10-29",
+      "next_index": 1771,
+      "next_year": 1900,
+      "pages": 1770,
+      "collected": 368805,
+      "batch_id": "e8c590476eff48b5bcc890f852626dcb",
+      "run_date": "2026-10-29",
+      "force_full": false,
+      "skipped_units": 0,
+      "deferred": {
+        "001381.SZ": {
+          "status": "deferred_prelisting",
+          "metadata_source": "eastmoney_listing_scope",
+          "code": "001381.SZ",
+          "listing_date": null,
+          "through": "2026-10-29",
+          "native_status": "empty_history"
+        }
+      }
+    }
+  }
+}

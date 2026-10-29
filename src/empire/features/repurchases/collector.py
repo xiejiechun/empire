@@ -17,6 +17,7 @@ from empire.features.repurchases.contract import (
     REPORT,
     SOURCE_FIELDS,
     URL,
+    SourceSetChanged,
     extend_digest,
     parse,
 )
@@ -70,7 +71,8 @@ class RepurchaseCollector:
         return DeferredResponse(response, consume)
 
     async def execute(self, *, fresh=False, baseline_revision=0):
-        self.stats.update(completed_units=0, total_units=None)
+        self.stats.update(completed_units=0, total_units=None, source_rebases=0)
+        rebased = False
         stage = 'checkpoint'
         try:
             state = await self.ingest.checkpoint(JOB)
@@ -91,7 +93,21 @@ class RepurchaseCollector:
                         domains=('eastmoney.com',), independent=False, item_name='页') as reads:
                     async for _, read in reads:
                         stage = 'source_validation'
-                        rows, remaining = await read.resolve()
+                        try:
+                            rows, remaining = await read.resolve()
+                        except SourceSetChanged:
+                            if rebased:
+                                raise
+                            # A mutable complete catalogue has no snapshot token.
+                            # Re-establish its proof once; no network/row failure
+                            # takes this path. Already queued data stays owned by
+                            # the archiver. Commit the new cursor only with data.
+                            rebased = True
+                            self.stats.update(source_rebases=1,
+                                notice='回购来源集合已改变，本轮限一次从头核验；已归档方案保留')
+                            cursor = dict(phase='fetch', batch_id=uuid4().hex, pages=0,
+                                collected=0, total=None, after='', digest='0'*64, contract=1)
+                            break
                         total = remaining if cursor['total'] is None else cursor['total']
                         limit = getattr(self.ingest, 'settings', {}).get('max_page_bytes', 524288)
                         chunks, group, used = [], [], 4096

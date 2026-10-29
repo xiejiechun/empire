@@ -116,12 +116,24 @@ def annual(source, code, year, snapshot, now=None):
     _, rows = parse(source, code, year)
     rows = [r for r in rows if r[0] <= snapshot["end"]]
     validate_rows(rows, year)
+    expected = [r for r in snapshot["rows"] if r[0][:4] == str(year)]
+    # Independent caches can publish the recent close before the annual file.
+    # Only append a proven recent suffix, with an overlapping anchor. Never
+    # fill an interior gap or infer a missing trading date from a calendar.
+    if (str(year) == snapshot['end'][:4] and rows and expected
+            and rows[-1][0] >= expected[0][0]):
+        suffix = [r.copy() for r in expected if r[0] > rows[-1][0]]
+        if len(rows) + len(suffix) == snapshot["years"][str(year)]:
+            rows.extend(suffix)
     if len(rows) != snapshot["years"][str(year)]:
-        raise ValueError("指数行情年度来源计数不符，保留断点")
+        error = ValueError("指数行情年度来源计数不符，保留断点")
+        error.source_metadata = dict(index_code=code, year=year, actual_count=len(rows),
+            expected_count=snapshot["years"][str(year)], snapshot_end=snapshot["end"],
+            annual_end=rows[-1][0] if rows else None)
+        raise error
     if str(year) == snapshot["start"][:4] and rows[0][0] != snapshot["start"]:
         raise ValueError("指数行情首年起点不符")
     by_date = {r[0]: r for r in rows}
-    expected = [r for r in snapshot["rows"] if r[0][:4] == str(year)]
     # Count and overlap identity are checked before any normalization/deduplication.
     for row in expected:
         actual = by_date.get(row[0])

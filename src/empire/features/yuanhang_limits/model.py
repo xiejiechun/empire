@@ -106,7 +106,9 @@ def member(row, day, *, identities=None):
 
 def response_data(obj):
     if not isinstance(obj, dict) or type(obj.get('status_code')) is not int or obj['status_code'] != 0:
-        raise ValueError('远航涨停分析业务响应失败')
+        error = ValueError('远航涨停分析业务响应失败')
+        error.source_metadata = {'business_status': obj.get('status_code') if isinstance(obj, dict) else None}
+        raise error
     if not isinstance(obj.get('data'), dict):
         raise ValueError('远航涨停分析响应结构错误')
     return obj['data']

@@ -1,0 +1,354 @@
+{
+  "capital": {
+    "run_id": "f47a60a74de146d78cc1564dbe6c32f5",
+    "checked_at": "2026-10-29T11:44:05.109404+00:00",
+    "passed": true,
+    "source_sha256": "4453e447f678e639c2aaebee899275c5cf596c8bcdde1889ccfac9dac5f45bc9",
+    "pipeline_verified": true,
+    "strict_proxy_verified": true,
+    "cleanup": {
+      "shutdown": true,
+      "sql": true,
+      "redis": true,
+      "sql_lock": true,
+      "connections": true,
+      "instance_lock": true
+    },
+    "report": "build\\five-errors-capital-live.json",
+    "report_sha256": "c156251a0e7a15b4046213a71edda102ea1149c0b37c613a0424c0957a20c50b",
+    "results": {
+      "ths_capital": {
+        "routes": {
+          "proxy_requests": 3
+        },
+        "pending": 0,
+        "source_units": 3,
+        "responses": []
+      }
+    }
+  },
+  "index": {
+    "run_id": "252db7ae19bf4e629855b97bde30429a",
+    "checked_at": "2026-10-29T11:44:22.998199+00:00",
+    "passed": true,
+    "source_sha256": "4453e447f678e639c2aaebee899275c5cf596c8bcdde1889ccfac9dac5f45bc9",
+    "pipeline_verified": true,
+    "strict_proxy_verified": true,
+    "cleanup": {
+      "shutdown": true,
+      "sql": true,
+      "redis": true,
+      "sql_lock": true,
+      "connections": true,
+      "instance_lock": true
+    },
+    "report": "build\\five-errors-index-live.json",
+    "report_sha256": "abf5b0fe5761fc7594291ef93cc4609b95a33d63137449b01610debc9a809ef0",
+    "results": {
+      "indices": {
+        "routes": {
+          "proxy_requests": 575
+        },
+        "pending": 0,
+        "source_units": 574,
+        "responses": []
+      },
+      "index_prices": {
+        "routes": {
+          "proxy_requests": 24
+        },
+        "pending": 0,
+        "sql_comparison": {
+          "1B0028": {
+            "years": 18,
+            "rows": 4322
+          }
+        },
+        "source_units": 19,
+        "responses": []
+      }
+    }
+  },
+  "financial": {
+    "run_id": "b55b6231f0924d9480b3d621ec4ba6c3",
+    "checked_at": "2026-10-29T11:49:02.237920+00:00",
+    "passed": true,
+    "source_sha256": "4453e447f678e639c2aaebee899275c5cf596c8bcdde1889ccfac9dac5f45bc9",
+    "pipeline_verified": true,
+    "strict_proxy_verified": true,
+    "cleanup": {
+      "shutdown": true,
+      "sql": true,
+      "redis": true,
+      "sql_lock": true,
+      "connections": true,
+      "instance_lock": true
+    },
+    "report": "build\\five-errors-financial-live.json",
+    "report_sha256": "bd2cfd378637bbce63bc2f7e98417278c832c95c4d691df6186beae2e7228764",
+    "results": {
+      "financial": {
+        "routes": {
+          "proxy_requests": 8
+        },
+        "pending": 0,
+        "proofs": {
+          "600519.SH": {
+            "actions": {
+              "series_kind": "actions",
+              "native_market": "USHA",
+              "source_count": 30,
+              "row_count": 30,
+              "first_date": "2002-07-25",
+              "last_date": "2026-06-26",
+              "key_hash": "41f3273121b54af37ba28bd860323e96e908c6120b4a6850fdcd759c9d10a2cd",
+              "content_hash": "9d7fee2248dfd8531aa28ee96d15c00cb58766a455dd15def899b72b3c188e97",
+              "contract_version": 5,
+              "response_group": "833df0a4da0609fe5ecf35a5f6371a9ca1c6b075dfbecc608a3e517c75ee7495"
+            },
+            "capital": {
+              "series_kind": "capital",
+              "native_market": "USHA",
+              "source_count": 191,
+              "row_count": 191,
+              "first_date": "2001-08-27",
+              "last_date": "2026-06-30",
+              "key_hash": "af4228157b63bca20a4f0e9328ad7649b2072d340165756e30265a45bf1f875d",
+              "content_hash": "a9f8ac9d897546d60984c53ac7f4ff26f1c91db15d17a3e7bf8d044a72e691bc",
+              "contract_version": 5,
+              "response_group": "833df0a4da0609fe5ecf35a5f6371a9ca1c6b075dfbecc608a3e517c75ee7495"
+            }
+          },
+          "300296.SZ": {
+            "actions": {
+              "series_kind": "actions",
+              "native_market": "USZA",
+              "source_count": 15,
+              "row_count": 15,
+              "first_date": "2012-05-24",
+              "last_date": "2026-05-19",
+              "key_hash": "4ef06efb137369c309e5d7b5f9f66b6904dbf7cb53a4073f8b92df8eaa61e3bf",
+              "content_hash": "647bf783d71e47a6c5e80e9903bdb9e3f4a7cccdb089ef530df2978433d10d00",
+              "contract_version": 5,
+              "response_group": "1dfeebf50b0d904974e2e6e93ff566607b832d09014bd32c0cdd6bb85172e5b3"
+            },
+            "capital": {
+              "series_kind": "capital",
+              "native_market": "USZA",
+              "source_count": 305,
+              "row_count": 305,
+              "first_date": "2012-03-15",
+              "last_date": "2026-10-28",
+              "key_hash": "3aebaace823a35c3e5a7eafadb8a4bc0f11d9e1444fd7b3b99e838a66853d1a5",
+              "content_hash": "f899cfc85c929d44d12afed52ae5a85df6bfda9e4e4cfbd698e7e2ec8ddb5b55",
+              "contract_version": 5,
+              "response_group": "1dfeebf50b0d904974e2e6e93ff566607b832d09014bd32c0cdd6bb85172e5b3"
+            }
+          }
+        },
+        "repeat_requests": 0,
+        "source_units": 0,
+        "responses": []
+      }
+    }
+  },
+  "reason": {
+    "run_id": "ee7d4c7df3d343c981a1f6947a33e370",
+    "checked_at": "2026-10-29T11:49:13.907533+00:00",
+    "passed": true,
+    "source_sha256": "4453e447f678e639c2aaebee899275c5cf596c8bcdde1889ccfac9dac5f45bc9",
+    "pipeline_verified": true,
+    "strict_proxy_verified": true,
+    "cleanup": {
+      "shutdown": true,
+      "sql": true,
+      "redis": true,
+      "sql_lock": true,
+      "connections": true,
+      "instance_lock": true
+    },
+    "report": "build\\five-errors-reason-live.json",
+    "report_sha256": "61b4b931d575791e7efc7e066babef2131c1d266abed518ca73752c2a5abf113",
+    "results": {
+      "reason": {
+        "routes": {
+          "proxy_requests": 5
+        },
+        "pending": 0,
+        "proofs": [
+          {
+            "day": "2020-03-23",
+            "code": "300014.SZ",
+            "digest": "31171bbda505c9c7ed3baca602abbdb5331128fc85ebabf41ac24cbdf649697d",
+            "availability": "no_content"
+          },
+          {
+            "day": "2020-08-03",
+            "code": "300114.SZ",
+            "digest": "b5d21a07fc8d5e7f511d25204c0ee4f702fa9251fd12e9550ec2f65c8fc2f128",
+            "availability": "available"
+          },
+          {
+            "day": "2020-03-23",
+            "code": "300010.SZ",
+            "digest": "3ee3ea259ed5f410bd2358d7d27c4760ad1dbbee6f99a7e469bef391ad5c74de",
+            "availability": "no_content"
+          },
+          {
+            "day": "2020-03-23",
+            "code": "300041.SZ",
+            "digest": "71ad76e9431c2cfb52537dab6b2a817ca0c056b5fe2530792e88a055a108f4f1",
+            "availability": "no_content"
+          },
+          {
+            "day": "2026-07-15",
+            "code": "688192.SH",
+            "digest": "f9c87b048aaa9c10c2d4c966f7767b65bf2a575df7840f36e2809984ba649f02",
+            "availability": "available"
+          }
+        ],
+        "source_units": 0,
+        "responses": []
+      }
+    }
+  },
+  "repurchases": {
+    "run_id": "6782989be9694f699fb5af83162f56c5",
+    "checked_at": "2026-10-29T11:52:06.009786+00:00",
+    "passed": true,
+    "source_sha256": "e6009adfd359838247092b27e3530937c1df38f0d0e38a556c183421ff8f39fe",
+    "pipeline_verified": true,
+    "strict_proxy_verified": true,
+    "cleanup": {
+      "shutdown": true,
+      "sql": true,
+      "redis": true,
+      "sql_lock": true,
+      "connections": true,
+      "instance_lock": true
+    },
+    "report": "build\\five-errors-repurchases-retry-live.json",
+    "report_sha256": "114ae21b6f56912aee06c064fa720df74b17fe83bec3e848d85b70868ebd81df",
+    "results": {
+      "eastmoney-repurchases": {
+        "routes": {
+          "proxy_requests": 12
+        },
+        "pending_stream": 0,
+        "count": 5646,
+        "securities": 2978,
+        "source_units": 0,
+        "responses": [
+          {
+            "after": "",
+            "remaining": 5646,
+            "rows": 500,
+            "bytes": 745759,
+            "sha256": "1c7526f1893f074338829c014666fc16fa5e1f6723ba2f8361bf2d3e84482ee4",
+            "first_id": "1",
+            "last_id": "11009"
+          },
+          {
+            "after": "11009",
+            "remaining": 5146,
+            "rows": 500,
+            "bytes": 722952,
+            "sha256": "f1ae23ee93b2044f8b1acf399895122805afcd4e3f4c06a5986ad62c039888d9",
+            "first_id": "11010",
+            "last_id": "11667"
+          },
+          {
+            "after": "11667",
+            "remaining": 4646,
+            "rows": 500,
+            "bytes": 670742,
+            "sha256": "9f052674e37c29161ca764faeaf78ee1a53ed666794eb6d4f350757c5f47304e",
+            "first_id": "11668",
+            "last_id": "12521"
+          },
+          {
+            "after": "12521",
+            "remaining": 4146,
+            "rows": 500,
+            "bytes": 626937,
+            "sha256": "f380b146a863c1404081e618446d70d026be523091dff1c92efc3364a3f45522",
+            "first_id": "12533",
+            "last_id": "13652"
+          },
+          {
+            "after": "13652",
+            "remaining": 3646,
+            "rows": 500,
+            "bytes": 716277,
+            "sha256": "d28454743431e06df4b416f719d748615afcdc3e342d75655411dcc66113b57c",
+            "first_id": "13653",
+            "last_id": "14752"
+          },
+          {
+            "after": "14752",
+            "remaining": 3146,
+            "rows": 500,
+            "bytes": 696933,
+            "sha256": "820df1548ad97897950cec3b1b34400da633a6aa0d936559e8e88418fca4469f",
+            "first_id": "14753",
+            "last_id": "16140"
+          },
+          {
+            "after": "16140",
+            "remaining": 2646,
+            "rows": 500,
+            "bytes": 652808,
+            "sha256": "9329198c71fbd862c9facb06e4447b5fe9ef14700f3d7bf9bf20596027c8f69c",
+            "first_id": "16141",
+            "last_id": "228"
+          },
+          {
+            "after": "228",
+            "remaining": 2146,
+            "rows": 500,
+            "bytes": 756967,
+            "sha256": "8e200be3b95f5dd9e2c36cf71c7fe17d7b9de202354d4422f8ee04414763ac3e",
+            "first_id": "232",
+            "last_id": "3536"
+          },
+          {
+            "after": "3536",
+            "remaining": 1646,
+            "rows": 500,
+            "bytes": 722169,
+            "sha256": "69a5e165022b01b0b4e547213ad288ea83898d096f1b42e9781160558e93147c",
+            "first_id": "3540",
+            "last_id": "6196"
+          },
+          {
+            "after": "6196",
+            "remaining": 1146,
+            "rows": 500,
+            "bytes": 750671,
+            "sha256": "a5a7ec55c080267df960afe39f10562f2c7ef0b057feee715d1d52924928cb14",
+            "first_id": "6197",
+            "last_id": "7861"
+          },
+          {
+            "after": "7861",
+            "remaining": 646,
+            "rows": 500,
+            "bytes": 751275,
+            "sha256": "552fdcb2f636cc7fbf1e1bd0ef51c68c19be6eb8cc928c8f5a6197666e3b3529",
+            "first_id": "7862",
+            "last_id": "9324"
+          },
+          {
+            "after": "9324",
+            "remaining": 146,
+            "rows": 146,
+            "bytes": 221268,
+            "sha256": "3d9cf40973882f35620293e4f330934fcd88a2caf9dee82f753fbf83c04a0f4e",
+            "first_id": "9326",
+            "last_id": "9998"
+          }
+        ]
+      }
+    }
+  }
+}

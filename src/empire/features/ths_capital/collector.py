@@ -47,7 +47,7 @@ class CapitalPageCollector:
         observed = datetime.now(UTC)
         response = await self.http.request('GET', url, headers=self.session.headers(url),
             allowed_domains=('10jqka.com.cn',), project_id=PROJECT, policy=self.http.response_policy('generic'),
-            max_retries=self.request_retries, reservation=reservation)
+            max_retries=self.request_retries, reservation=reservation, retry_empty_body=True)
         async def consume():
             try:
                 return parse(response.content, stock, observed.astimezone(CHINA).date()), observed, url

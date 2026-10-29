@@ -90,7 +90,8 @@ class LimitCollector:
         except Exception as exc:
             self.stats.update(status='error', error=self.records.sanitize_text(exc))
             await record_error_safely(self.records, self.stats, self.project_id, exc,
-                stage='yuanhang_limits', unavailable_message='涨停分析错误记录暂不可用')
+                stage='yuanhang_limits', unavailable_message='涨停分析错误记录暂不可用',
+                fields=getattr(exc, 'source_diagnostic', None))
             raise
 
     async def _execute(self, *, fresh=False, baseline_revision=0, history_only=False):

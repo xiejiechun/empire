@@ -113,3 +113,12 @@ def test_nonfinite_double_still_rejected_with_field_and_date():
     body += struct.pack('<id', 20261028, float('nan'))
     with pytest.raises(ValueError, match=r'Nonfinite HX double; field=407, row=0, date=20261028'):
         decode_table(body, 1024)
+
+
+def test_exact_all_bits_missing_double_preserves_null_not_zero():
+    assert scalar(b'\xff' * 8, 3) is None
+    assert scalar(b'\0' * 7 + b'\x80', 3) is None
+    assert scalar(struct.pack('<d', 0), 3) == 0
+    for value in (float('inf'), float('-inf'), float('nan')):
+        with pytest.raises(ValueError, match='Nonfinite'):
+            scalar(struct.pack('<d', value), 3)

@@ -220,7 +220,7 @@ class HttpService:
         self, method: str, url: str, *, allowed_domains: tuple[str, ...],
         max_retries: int = 2, max_redirects: int = 5, total_timeout: float | None = None,
         project_id: str | None = None, attempt_options=None, allow_not_found: bool = False,
-        retry_not_found: bool = False, sensitive: bool = False,
+        retry_not_found: bool = False, retry_empty_body: bool = False, sensitive: bool = False,
         **kwargs,
     ) -> httpx.Response:
         if self.closed:
@@ -231,6 +231,8 @@ class HttpService:
             total_timeout = request_timeout(max_retries)
         if type(allow_not_found) is not bool:
             raise ValueError('allow_not_found must be boolean')
+        if type(retry_empty_body) is not bool or (retry_empty_body and method.upper() == 'HEAD'):
+            raise ValueError('retry_empty_body requires a boolean and a body-bearing request')
         if type(retry_not_found) is not bool or (retry_not_found and allow_not_found):
             raise ValueError('retry_not_found must be boolean and cannot allow missing responses')
         if type(sensitive) is not bool or (sensitive and max_redirects != 0):
@@ -301,6 +303,15 @@ class HttpService:
                             await asyncio.sleep(retry_delay(retries))
                             continue
                         raise
+                    if retry_empty_body and response.status_code == 200 and not response.content:
+                        exc = DownloadIncompleteError('来源返回 HTTP 200 空正文，必要响应未取得')
+                        await self._record_failure(project_id, method, url, exc, response, retries + 1, sensitive=sensitive)
+                        if retries >= max_retries:
+                            raise exc
+                        retries += 1
+                        response.close()
+                        await asyncio.sleep(retry_delay(retries))
+                        continue
                     return response
         except BaseException as exc:
             try:

@@ -239,3 +239,33 @@ async def test_final_http_failure_is_recorded_once_and_marked_for_collector():
         assert records.errors[0]["raw_body"] == b"denied"
     finally:
         await service.close()
+
+
+@pytest.mark.parametrize('enabled,recover,expected', [(False, False, 1), (True, True, 2), (True, False, 3)])
+async def test_empty_200_retry_is_opt_in_and_shares_budget(monkeypatch, enabled, recover, expected):
+    from empire.plugins.infra.response_reader import DownloadIncompleteError
+    service = HttpService(MemoryPermits(), 'test', groups(1), records=ErrorRecorder())
+    responses = []
+    async def one(method, url, domains, **kwargs):
+        response = httpx.Response(200, request=httpx.Request(method, url),
+            content=b'ok' if recover and responses else b'')
+        responses.append(response)
+        return response
+    async def sleep(delay):
+        pass
+    monkeypatch.setattr(service, '_one', one)
+    monkeypatch.setattr(asyncio, 'sleep', sleep)
+    try:
+        options = dict(allowed_domains=('sina.com.cn',), project_id='sina-news',
+                       max_retries=2, retry_empty_body=enabled)
+        if enabled and not recover:
+            with pytest.raises(DownloadIncompleteError):
+                await service._request('GET', 'https://sina.com.cn/', **options)
+        else:
+            response = await service._request('GET', 'https://sina.com.cn/', **options)
+            assert response.content == (b'ok' if recover else b'')
+            response.close()
+        assert len(responses) == expected
+        assert all(r.is_closed for r in responses)
+    finally:
+        await service.close()

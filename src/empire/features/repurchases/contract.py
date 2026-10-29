@@ -107,6 +107,10 @@ def extend_digest(previous, rows):
     return previous
 
 
+class SourceSetChanged(ValueError):
+    """The source invalidated a saved whole-directory count, not a bad row."""
+
+
 def parse(body, *, after='', remaining=None):
     result = body.get('result') if isinstance(body, dict) else None
     if not isinstance(body, dict) or body.get('success') is not True or not isinstance(result, dict):
@@ -114,8 +118,6 @@ def parse(body, *, after='', remaining=None):
     count, pages = result.get('count'), result.get('pages')
     if type(count) is not int or not 0 <= count <= MAX_ROWS or type(pages) is not int:
         raise ValueError('回购来源统计无效或超过容量')
-    if remaining is not None and count != remaining:
-        raise ValueError('回购来源集合在翻页间变化，断点未推进；从头核验建立新轮次')
     if pages != (count + PAGE_SIZE - 1) // PAGE_SIZE or not isinstance(result.get('data'), list):
         raise ValueError('回购来源页数无效')
     rows = [normalize(r) for r in result['data']]
@@ -124,4 +126,6 @@ def parse(body, *, after='', remaining=None):
     keys = [after, *(r['plan_id'] for r in rows)]
     if any(a >= b for a, b in zip(keys, keys[1:])):
         raise ValueError('回购方案编号重复、乱序或游标不前进')
+    if remaining is not None and count != remaining:
+        raise SourceSetChanged('回购来源集合在翻页间变化，断点未推进；从头核验建立新轮次')
     return rows, count

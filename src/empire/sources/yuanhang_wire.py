@@ -87,7 +87,9 @@ def scalar(cell, kind):
     if kind == 2 and len(cell) >= 4:
         return hxlong(int.from_bytes(cell[:4], 'little'))
     if kind == 3 and len(cell) >= 8:
-        value = None if cell[:8] == b'\0' * 7 + b'\x80' else struct.unpack('<d', cell[:8])[0]
+        # HX uses both the sign-bit-only and all-bits-set missing markers.
+        # The latter is observed in capital field 407, not an arbitrary NaN.
+        value = None if cell[:8] in (b'\0' * 7 + b'\x80', b'\xff' * 8) else struct.unpack('<d', cell[:8])[0]
         if value is not None and not math.isfinite(value):
             raise ValueError('Nonfinite HX double')
         return value

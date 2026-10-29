@@ -88,5 +88,11 @@ async def fetch_reason(http, code, day, *, project_id, max_retries=1, reservatio
         result = parse_reason(json.loads(response.content), code, day)
         return {**result, 'requests': 1, 'response_bytes': len(response.content),
                 'wire_bytes': getattr(response, 'extensions', {}).get('download', {}).get('wire_bytes')}
+    except (ValueError, TypeError, KeyError, UnicodeError) as exc:
+        exc.source_metadata = {**getattr(exc, 'source_metadata', {}),
+                               'unified_code': code, 'trade_date': day}
+        exc.source_diagnostic = dict(request_url=str(response.url), status_code=response.status_code,
+                                     raw_body=response.content, metadata=exc.source_metadata)
+        raise
     finally:
         response.close()
