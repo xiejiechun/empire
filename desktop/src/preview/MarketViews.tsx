@@ -10,7 +10,7 @@ export function PriceView({ spec, rows, context, onNavigate }: PreviewProps) {
   const selectedCode = securities.includes(selected) ? selected : securities.length === 1 ? securities[0] : "";
   const chosen = rows.filter(row => code(row) === selectedCode).sort((a, b) => String(a.trade_date).localeCompare(String(b.trade_date)));
   const validDates = chosen.every(row => /^\d{4}-\d{2}-\d{2}$/.test(row.trade_date)) && new Set(chosen.map(row => row.trade_date)).size === chosen.length;
-  const close = chosen.map(row => row.close == null ? null : Number(row.close));
+  const close = chosen.map(row => row.close == null || String(row.close).trim() === "" ? null : Number(row.close));
   const finite = close.filter((v): v is number => v != null && Number.isFinite(v));
   const min = Math.min(...finite), max = Math.max(...finite), span = max - min || Math.abs(max) * .02 || 1;
   const x = (i: number) => 72 + i * 848 / Math.max(chosen.length - 1, 1);
@@ -47,12 +47,21 @@ export function CalendarView({ rows, context }: PreviewProps) {
   const [year, monthNumber] = month.split("-").map(Number);
   const offset = (new Date(Date.UTC(year, monthNumber - 1, 1)).getUTCDay() + 6) % 7;
   const count = new Date(Date.UTC(year, monthNumber, 0)).getUTCDate();
-  const records = new Map(rows.map(row => [row.trade_date, row]));
-  const trading = rows.filter(row => row.is_trade === true).length;
-  const rest = rows.filter(row => row.is_trade === false).length;
+  const records = new Map<string, Data>();
+  const duplicates = new Set<string>();
+  for (const row of rows) {
+    if (!String(row.trade_date).startsWith(month + "-")) continue;
+    if (records.has(row.trade_date)) duplicates.add(row.trade_date);
+    records.set(row.trade_date, row);
+  }
+  for (const day of duplicates) records.delete(day);
+  const days = Array.from({ length: count }, (_, index) => `${month}-${String(index + 1).padStart(2, "0")}`);
+  const trading = days.filter(day => records.get(day)?.is_trade === true).length;
+  const rest = days.filter(day => records.get(day)?.is_trade === false).length;
   return <div className="pv-calendar">
     <div className="pv-section-heading"><h3>{month} · A 股交易安排</h3><div><Tag color="cyan">交易日</Tag><Tag>休市日</Tag><Tag color="gold">未知</Tag></div></div>
-    <div className="pv-metrics"><Metric label="交易日" value={trading} unit="天" /><Metric label="休市日" value={rest} unit="天" /><Metric label="未取得数据" value={count - records.size} unit="天" /></div>
+    <div className="pv-metrics"><Metric label="交易日" value={trading} unit="天" /><Metric label="休市日" value={rest} unit="天" /><Metric label="未取得数据" value={count - trading - rest} unit="天" /></div>
+    {duplicates.size > 0 && <p role="alert" className="pv-warning">存在重复日期，相关日期显示为未知，请核查来源记录。</p>}
     <div className="pv-calendar-grid" role="grid" aria-label={`${month}交易日历`}>
       {["一", "二", "三", "四", "五", "六", "日"].map(day => <div role="columnheader" className="pv-calendar-weekday" key={day}>周{day}</div>)}
       {Array.from({ length: offset }, (_, i) => <div role="gridcell" className="pv-calendar-blank" key={`blank-${i}`} />)}

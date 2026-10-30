@@ -45,7 +45,7 @@ export function PoolView({ spec, rows, context, onNavigate }: PreviewProps) {
   const head = context?.head || {};
   const largest = rows.reduce<Data | undefined>((best, row) => row.change_rate != null && (!best || Number(row.change_rate) > Number(best.change_rate)) ? row : best, undefined);
   return <div className="pv-pool"><div className="pv-metrics"><Metric label="本页证券" value={rows.length} unit="只" />
-    {head.source_total != null && <Metric label="来源当日总数" value={head.source_total} unit="只" />}
+    {(head.source_total ?? context?.source_total) != null && <Metric label="来源当日总数" value={head.source_total ?? context?.source_total} unit="只" />}
     {largest && <Metric label={`本页最高涨幅 · ${largest.name || largest.unified_code}`} value={largest.change_rate} unit="%" />}
   </div>
     {(context?.snapshot_at || context?.at) && <p className="pv-note">盘中快照时间：{display(context.snapshot_at || context.at)}</p>}

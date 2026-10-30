@@ -39,8 +39,8 @@ export function StatementView({ spec, rows, onNavigate }: PreviewProps) {
         options={[{ value: "all", label: "全部报告期" }, { value: "12-31", label: "年报" }, { value: "06-30", label: "中报" }, { value: "03-31", label: "一季报" }, { value: "09-30", label: "三季报" }]} />
       <Input aria-label="搜索财报科目" placeholder="查找科目，如 营业收入" value={search} onChange={e => setSearch(e.target.value)} allowClear />
     </div>
-    <div className="pv-section-heading"><Security row={first} /><div><Tag>{display(first.period_basis)}</Tag><Tag>人民币 · 元</Tag><OpenDetail spec={spec} row={first} onNavigate={onNavigate} /></div></div>
-    <p className="pv-note">按当前页报告期对照；“—”表示来源空值，“未提供”表示该报告没有此科目。未取得公告日期的财报不能直接作为历史选股信号。</p>
+    <div className="pv-section-heading"><Security row={first} /><div><Tag>{display(first.period_basis)}</Tag><Tag>{first.currency ? display(first.currency) : "币种未提供"} · 元</Tag><OpenDetail spec={spec} row={first} onNavigate={onNavigate} /></div></div>
+    <p className="pv-note">{spec.hidden ? "按已读取的证券历史报告期对照；" : "按当前页报告期对照；"}“—”表示来源空值，“未提供”表示该报告没有此科目。未取得公告日期的财报不能直接作为历史选股信号。</p>
     {duplicateDates ? <div role="alert" className="pv-warning">报告期重复，无法可靠对齐科目，请核查数据。</div> : <div className="pv-matrix-scroll">
       <table className="pv-matrix" aria-label="财报科目对照"><thead><tr><th scope="col">科目 / 单位：元</th>{reports.map(row => <th key={row.report_date} scope="col">{row.report_date}<small>{row.announcement_date ? `公告 ${row.announcement_date}` : "公告日期未提供"}</small></th>)}</tr></thead>
         <tbody>{layout.map(([name, indent, heading, keyMetric]) => <tr key={name} className={heading ? "pv-matrix-group" : keyMetric ? "pv-matrix-key" : ""}>

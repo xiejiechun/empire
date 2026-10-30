@@ -49,13 +49,15 @@ export function display(value: any, field?: Field): string {
 export function fields(spec: Data): Field[] { return spec.columns || []; }
 export function rowIdentity(row: Data, spec: Data, index = 0): string {
   const values = (spec.identity || []).map((key: string) => row[key] ?? "");
-  return values.some((value: any) => value !== "") ? values.join("|") : String(index);
+  return values.some((value: any) => value !== "") ? JSON.stringify(values) : String(index);
 }
 export function detailFilters(spec: Data, row: Data): Data {
   return Object.fromEntries(Object.entries(spec.detailFilters || {}).map(([filter, key]) => [filter, String(row[String(key)] ?? "")]));
 }
 export function OpenDetail({ spec, row, onNavigate }: { spec: Data; row: Data; onNavigate?: PreviewProps["onNavigate"] }) {
-  return spec.detailView && onNavigate ? <Button type="link" size="small" onClick={() => onNavigate(spec.detailView, detailFilters(spec, row))}>查看{spec.detailLabel || "明细"} →</Button> : null;
+  const filters = detailFilters(spec, row);
+  const ready = Object.values(filters).every(value => String(value).trim());
+  return spec.detailView && onNavigate ? <Button disabled={!ready} title={ready ? undefined : "记录缺少关联信息，暂不能读取明细"} type="link" size="small" onClick={() => onNavigate(spec.detailView, filters)}>查看{spec.detailLabel || "明细"} →</Button> : null;
 }
 export function Facts({ row, columns }: { row: Data; columns: Field[] }) {
   return <dl className="pv-facts">{columns.map(field => <div key={field.key} className={longKinds.has(field.kind || "") ? "pv-fact-wide" : ""}>
@@ -66,11 +68,13 @@ export function Facts({ row, columns }: { row: Data; columns: Field[] }) {
 export function RecordTable({ rows, spec, onSelect, onNavigate, columns }: PreviewProps & { onSelect?: (row: Data) => void; columns?: Field[] }) {
   const declared = columns || fields(spec);
   return <div className="pv-table"><Table<Data> size="small" dataSource={rows} pagination={false}
-    rowKey={(row, i) => rowIdentity(row, spec, i)} scroll={{ x: "max-content" }}
+    rowKey={(row, i) => rowIdentity(row, spec, i)} scroll={{ x: "max-content", y: 520 }}
     onRow={row => ({ onDoubleClick: () => onSelect?.(row) })}
     columns={[
-      ...declared.map(field => ({ key: field.key, dataIndex: field.key,
+      ...declared.map((field, index) => ({ key: field.key, dataIndex: field.key,
         title: <span>{field.label}{field.unit && <small className="pv-unit">{field.unit}</small>}</span>,
+        align: numberKinds.has(field.kind || "") ? "right" as const : "left" as const,
+        fixed: index === 0 && declared.length > 5 ? "left" as const : undefined,
         width: longKinds.has(field.kind || "") ? 330 : field.kind === "date" ? 132 : 160,
         render: (value: any, row: Data) => <span className={numberKinds.has(field.kind || "") ? "pv-number" : ""}
           title={field.key === "quantity" && row.quantity_scale != null && row.quantity_decimals != null ? `来源最小数值刻度约 ${Number(row.quantity_scale) * 10 ** -Number(row.quantity_decimals)} ${field.unit || ""}` : undefined}>

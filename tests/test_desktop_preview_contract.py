@@ -13,7 +13,7 @@ from empire.features.suspensions.query import SuspensionDataPlugin
 
 
 def test_every_installed_project_has_business_presentation_and_resolvable_navigation():
-    manager = build_manager(load_config())
+    manager = build_manager(load_config("config/app.example.toml"))
     projects = manager.entries["collection.control"].plugin.definitions
     renderers = set()
     for project in projects:
@@ -39,7 +39,7 @@ def test_every_installed_project_has_business_presentation_and_resolvable_naviga
 def test_date_filters_and_amount_units_follow_business_meaning():
     cases = {"tdx-suspensions": "来源日历日", "tdx-holder-count": "统计日期",
              "tdx-shareholder-changes": "变动结束日", "tdx-earnings-forecast": "报告期",
-             "tdx-unlocks": "解禁日", "ths-index-prices": "交易日期"}
+             "tdx-unlocks": "解禁日", "ths-index-prices": "交易日期", "tdx-industry-margin": "统计日期"}
     for project, label in cases.items():
         spec = catalog(project)[0]
         assert next(f for f in spec["filter_specs"] if f["key"] == "start")["label"] == label + "从"

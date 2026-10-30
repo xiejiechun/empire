@@ -72,6 +72,8 @@ def presentation(task, view):
 
 def _filter(task, view, key):
     label, shape, placeholder = FILTERS[key]
+    if key == "search" and task == "tdx-industry-margin":
+        label, placeholder = "行业名称", "填写完整行业名称"
     if key == "code" and task == "ths-index-prices":
         label, placeholder = "指数代码", "例如 000001"
     if key in ("start", "end"):
@@ -80,7 +82,7 @@ def _filter(task, view, key):
             "tdx-unlock-industries": "解禁月份", "eastmoney-repurchases": "方案日期",
             "tdx-holder-count": "统计日期", "tdx-shareholder-changes": "变动结束日",
             "ths-listings": "上市日期", "ths-index-prices": "交易日期", "ths-yuanhang-prices": "交易日期",
-            "sina-news": "发布日期", "tdx-hot-list": "上榜日期", "tdx-margin": "交易日期", "ths-capital": "公告日/报告期",
+            "sina-news": "发布日期", "tdx-hot-list": "上榜日期", "tdx-margin": "交易日期", "tdx-industry-margin": "统计日期", "ths-capital": "公告日/报告期",
             "tdx-dividends": "事件日期（除权日优先）", "tdx-additional-issues": "事件日期（发行日优先）",
             "tdx-rights-issues": "除权日",
         }.get(task, "报告期" if task.startswith("tdx-earnings-") else "事件日期")

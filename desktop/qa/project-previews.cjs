@@ -56,7 +56,13 @@ function fixtureRows(spec, params) {
     { ...base(0), trade_date: "2026-10-28", open: "9.1", high: "10.2", low: "9", close: "10", volume_shares: "100000", amount_yuan: "980000" },
     { ...base(1), trade_date: "2026-10-27", open: "8", high: "9", low: "7.5", close: "8.5", volume_shares: "200000", amount_yuan: "1700000" },
   ];
+  if (renderer === "prices" && params.filters?.security === "000002.SZ") rows[0].close = "";
   if (renderer === "calendar") rows = [{ trade_date: "2026-10-01", is_trade: false }, { trade_date: "2026-10-09", is_trade: true }];
+  if (renderer === "calendar" && params.filters?.month === "2026-11") rows = [
+    { trade_date: "2026-11-01", is_trade: true }, { trade_date: "2026-11-01", is_trade: false },
+    { trade_date: "2026-11-02", is_trade: "invalid" }, { trade_date: "2026-10-09", is_trade: true },
+    { trade_date: "2026-11-03", is_trade: false },
+  ];
   if (renderer === "news") rows = rows.map((r, i) => ({ ...r, news_id: String(i + 1), title: i ? "第二条快讯" : "财经新闻阅读反例", content: longText,
     published_at: "2026-10-28T10:10:10+08:00", source: "sina", is_important: i === 0 }));
   if (renderer === "holdings" && spec.hidden) rows = [{ ...base(0), kind: "top_holders", report_type: "periodic",
@@ -305,6 +311,37 @@ async function main() {
       await input.fill("888888"); await preview.getByRole("button", { name: "preview-search", exact: true }).click();
       await preview.getByText(/不代表.*采齐/).first().waitFor();
       report.interactions.push("empty range does not certify collection completeness");
+      const capital = catalog.find(t => t.id === "ths-capital");
+      preview = await selectTask(capital);
+      const views = capital.views.filter(v => !v.hidden);
+      await preview.getByRole("tab", { name: views[0].title, exact: true }).click();
+      await fillFilters(preview, views[0]);
+      await preview.getByRole("button", { name: "preview-next", exact: true }).click();
+      await preview.locator(".preview-workspace-footer").filter({ hasText: "第 2 页" }).waitFor();
+      const field = views[0].filter_specs.find(f => f.key === "code");
+      await preview.getByLabel(field.label, { exact: true }).fill("123456");
+      await preview.getByRole("tab", { name: views[1].title, exact: true }).click();
+      await preview.getByRole("tab", { name: views[0].title, exact: true }).click();
+      assert.equal(await preview.getByLabel(field.label, { exact: true }).inputValue(), "123456");
+      await preview.locator(".preview-workspace-footer").filter({ hasText: "第 2 页" }).waitFor();
+      await preview.getByText("筛选已修改，查询后生效", { exact: true }).waitFor();
+      report.interactions.push("column switch retains unapplied draft and applied page independently");
+      const prices = catalog.find(t => t.id === "ths-yuanhang-prices");
+      preview = await selectTask(prices);
+      await preview.getByLabel("证券代码", { exact: true }).fill("000002.sz");
+      await preview.getByRole("button", { name: "preview-search", exact: true }).click();
+      await preview.locator(".pv-price-chart").waitFor();
+      assert.equal(await preview.locator(".pv-price-chart circle").count(), 1, "Empty close plotted as zero");
+      assert.equal(await preview.getByLabel("证券代码", { exact: true }).inputValue(), "000002.SZ");
+      const cal = catalog.find(t => t.id === "cninfo-calendar");
+      preview = await selectTask(cal);
+      await preview.getByLabel("查询月份", { exact: true }).fill("2026-11");
+      await preview.getByRole("button", { name: "preview-search", exact: true }).click();
+      await preview.getByRole("gridcell", { name: "2026-11-01 未知", exact: true }).waitFor();
+      await preview.getByRole("gridcell", { name: "2026-11-02 未知", exact: true }).waitFor();
+      const metrics = await preview.locator(".pv-metric").allTextContents();
+      assert.ok(metrics.some(t => /未取得数据29/.test(t)), JSON.stringify(metrics));
+      report.interactions.push("empty price, duplicate/invalid/out-of-month calendar records retain unknown semantics");
     }
     const calendar = catalog.find((t) => t.id === "cninfo-calendar");
     preview = await selectTask(calendar);

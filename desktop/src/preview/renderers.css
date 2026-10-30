@@ -125,3 +125,31 @@
 .pv-price-chart line { stroke: var(--border); }
 .pv-price-chart path { stroke: var(--blue); }
 .pv-price-chart circle { fill: var(--blue); }
+
+.pv-table .pv-number { white-space: nowrap; }
+.pv-reader-list > button { overflow-wrap: anywhere; }
+.pv-theme-intro h2, .pv-rule-citation h2, .pv-theme-card h3 { overflow-wrap: anywhere; }
+.pv-table .ant-table-thead > tr > th { vertical-align: bottom; }
+@media (max-width: 600px) {
+  .pv-calendar-weekday { padding: 8px 2px; }
+  .pv-calendar-day { padding: 6px 3px; min-height: 64px; }
+  .pv-calendar-day strong { font-size: 16px; }
+  .pv-metric + .pv-metric { padding-left: 10px; }
+  .pv-theme-intro { padding: 14px; }
+}
+
+@container preview (max-width: 700px) {
+  .pv-reader { display: block; }
+  .pv-reader-list { border-right: 0; border-bottom: 1px solid var(--border); max-height: 200px; }
+  .pv-reader-article { padding: 12px; }
+  .pv-facts { grid-template-columns: 1fr; }
+  .pv-matrix tr > th:first-child { min-width: 170px; max-width: 200px; }
+  .pv-holding-bar { grid-template-columns: minmax(100px, 40%) 1fr 75px; gap: 8px; }
+  .pv-calendar-weekday { padding: 8px 2px; }
+  .pv-calendar-day { padding: 6px 4px; min-height: 64px; }
+  .pv-calendar-day small { display: none; }
+  .pv-metrics { gap: 10px; }
+  .pv-metric + .pv-metric { padding-left: 10px; }
+  .pv-theme-intro { padding: 14px; }
+  .pv-tool-row > .ant-select { min-width: 0 !important; max-width: 100%; }
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Segmented, Tag } from "antd";
 import { Data } from "../api";
 import { display, Facts, Field, fields, Metric, OpenDetail, PreviewProps, RecordTable, Security } from "./presentation";
@@ -80,12 +80,14 @@ export function HotListView({ spec, rows, onNavigate }: PreviewProps) {
 export function NewsView({ rows }: PreviewProps) {
   const [selected, setSelected] = useState<string>();
   const current = rows.find(row => String(row.news_id) === selected) || rows[0];
+  const article = useRef<HTMLElement>(null);
+  useEffect(() => { article.current?.scrollTo({ top: 0 }); }, [current?.news_id]);
   if (!current) return null;
   return <div className="pv-reader pv-news"><div className="pv-reader-list" role="list" aria-label="财经快讯列表">{rows.map((row, index) => <button type="button" className={row === current ? "selected" : ""} key={row.news_id || index}
     onClick={() => setSelected(String(row.news_id))} aria-pressed={row === current}>
     <time>{display(row.published_at).replace("T", " ")}</time><strong>{row.is_important ? "● " : ""}{row.title || String(row.content || "").slice(0, 70)}</strong>
     <span>{String(row.content || "").slice(0, 110)}</span></button>)}</div>
-    <article className="pv-reader-article"><div className="pv-tool-row"><time>{display(current.published_at).replace("T", " ")}</time>{current.is_important && <Tag color="red">重要</Tag>}</div>
+    <article ref={article} className="pv-reader-article"><div className="pv-tool-row"><time>{display(current.published_at).replace("T", " ")}</time>{current.is_important && <Tag color="red">重要</Tag>}</div>
       <h2>{current.title || "财经快讯"}</h2><div className="pv-news-body">{current.content || "来源未提供正文"}</div>
       <div className="pv-tool-row">{Array.isArray(current.tags) && current.tags.map((tag: any, i: number) => <Tag key={i}>{typeof tag === "object" ? tag.name || tag.title || "" : tag}</Tag>)}</div>
       <div className="pv-subtle">来源修订时间：{display(current.source_updated_at)}<br />当前版本观测时间：{display(current.version_observed_at)}</div>
@@ -111,11 +113,11 @@ export function EventView({ spec, rows, context, onNavigate }: PreviewProps) {
     ]} /></>}
   </article>)}</div>;
   const dateField = fields(spec).find(f => f.kind === "date");
-  const titleField = fields(spec).find(f => f.kind === "text" && !["unified_code", "code"].includes(f.key));
+  const titleField = fields(spec).find(f => f.kind === "text" && !["unified_code", "code", "name", "instrument_name"].includes(f.key));
   return <div className="pv-events"><div className="pv-reader">
     <div className="pv-reader-list" role="list" aria-label="事件列表">{rows.map((row, i) => <button type="button" key={i} className={row === current ? "selected" : ""} aria-pressed={row === current} onClick={() => setSelected(row)}>
-      <time>{dateField ? display(row[dateField.key]) : `记录 ${i + 1}`}</time><Security row={{ unified_code: context?.filters?.security, ...row }} />
-      <span>{titleField ? display(row[titleField.key]) : spec.title}</span>
+      <time>{Array.isArray(row.source_dates) ? `来源日 ${display(row.source_dates)}` : dateField ? display(row[dateField.key]) : `记录 ${i + 1}`}</time><Security row={{ unified_code: context?.filters?.security, ...row }} />
+      <span>{row.old_name || row.new_name ? `${display(row.old_name)} → ${display(row.new_name)}` : titleField ? display(row[titleField.key]) : spec.title}</span>
     </button>)}</div>
     <article className="pv-reader-article"><div className="pv-section-heading"><Security row={{ unified_code: context?.filters?.security, ...current }} /><OpenDetail spec={spec} row={current} onNavigate={onNavigate} /></div>
       <Facts row={current} columns={fields(spec)} /><IssueDetail spec={spec} row={current} />

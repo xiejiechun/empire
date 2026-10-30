@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, Button, Empty, Popover, Skeleton, Space, Tag } from "antd";
 import { Data, useQuery } from "./api";
 import { QueryNotice } from "./shared";
@@ -23,6 +23,7 @@ export default function DataPreview({ project }: { project: string }) {
 function PreviewWorkspace({ project, catalog }: { project: string; catalog: Data[] }) {
   const visible = catalog.filter(v => !v.hidden);
   const [current, setCurrent] = useState<Selection>(() => selection(visible[0]));
+  const savedViews = useRef<Record<string, Selection>>({});
   const [trail, setTrail] = useState<Selection[]>([]);
   const [expanded, setExpanded] = useState(false);
   useEffect(() => {
@@ -55,23 +56,24 @@ function PreviewWorkspace({ project, catalog }: { project: string; catalog: Data
       </Space>
     </header>
     {visible.length > 1 && !spec.hidden && <div className="preview-view-tabs" role="tablist" aria-label="数据栏目">{visible.map(v => <Button key={v.id} role="tab" aria-selected={current.view === v.id} type={current.view === v.id ? "primary" : "default"} onClick={() => {
-      setTrail([]); setCurrent(selection(v));
+      savedViews.current[current.view] = current;
+      setTrail([]); setCurrent(savedViews.current[v.id] || selection(v));
     }}>{v.title}</Button>)}</div>}
     {!spec.hidden && <PreviewFilters key={spec.id} spec={spec} draft={current.draft} onChange={draft => setCurrent(s => ({ ...s, draft }))} onSubmit={submit} loading={query.loading} />}
     <div className="preview-result-context">
       <div><Tag color={query.data?.storage?.includes("Redis") ? "orange" : "blue"}>{query.data?.storage || "只读查询"}</Tag>
-        {Object.entries(current.filters).filter(([k,v]) => v && !["record_key", "plan_id"].includes(k)).map(([k,v]) => <span className="preview-applied" key={k}>{spec.filter_specs?.find((f: Data) => f.key === k)?.label || "筛选条件"}：{String(v)}</span>)}
+        {Object.entries(current.filters).filter(([k,v]) => v && !["record_key", "plan_id"].includes(k)).map(([k,v]) => <span className="preview-applied" key={k}>{spec.filter_specs?.find((f: Data) => f.key === k)?.label || "筛选条件"}：{spec.filter_specs?.find((f: Data) => f.key === k)?.options?.find((o: Data) => o.value === v)?.label || String(v)}</span>)}
         {pendingDraft && <Tag color="gold">筛选已修改，查询后生效</Tag>}
       </div>
-      <span className="muted">{query.loading ? "正在读取…" : query.stamp ? `读取于 ${new Date(query.stamp).toLocaleTimeString("zh-CN", { hour12: false })}` : "等待查询"}</span>
+      <span className="muted">{query.loading ? "正在读取…" : query.stamp ? `读取于 ${new Date(query.stamp).toLocaleTimeString("zh-CN", { hour12: false, timeZone: "Asia/Shanghai" })}` : "等待查询"}</span>
     </div>
     {query.error && <Alert showIcon type="error" title="本次查询未成功" description={query.error} action={<Button onClick={() => setCurrent(s => ({ ...s, revision: s.revision + 1 }))}>重试</Button>} />}
-    {query.data?.message && <Alert showIcon type="info" title={query.data.message} />}
+    {query.data?.message && !query.data?.required && <Alert showIcon type="info" title={query.data.message} />}
     <div className="preview-result-body" aria-busy={query.loading}>
       {query.loading ? <Skeleton active paragraph={{ rows: 6 }} /> : query.error ? null : query.data?.required ? <Empty description={query.data.message} image={Empty.PRESENTED_IMAGE_SIMPLE} /> : <PreviewContent key={current.view + JSON.stringify(current.filters) + JSON.stringify(current.cursors)} spec={spec} rows={rows} context={{ ...query.data?.context, filters: current.filters }} onNavigate={navigate} />}
     </div>
     <footer className="preview-workspace-footer">
-      <span>{query.loading ? "读取中" : `本页 ${rows.length} 条`} · 第 {current.cursors.length} 页{query.data?.total != null && ` · 共 ${query.data.total} 条`}</span>
+      <span>{query.loading ? "读取中" : query.error ? "查询失败" : query.data?.required ? "等待填写查询条件" : `本页 ${rows.length} 条`} · 第 {current.cursors.length} 页{query.data?.total != null && ` · 共 ${query.data.total} 条`}</span>
       <Space><Button aria-label="preview-previous" disabled={query.loading || current.cursors.length === 1} onClick={() => setCurrent(s => ({ ...s, cursors: s.cursors.slice(0, -1) }))}>上一页</Button>
         <Button aria-label="preview-next" disabled={query.loading || !!query.error || nextCursor == null} onClick={() => setCurrent(s => ({ ...s, cursors: [...s.cursors, nextCursor] }))}>下一页</Button></Space>
     </footer>
