@@ -35,7 +35,6 @@
     "src/empire/features/yuanhang_limits/__init__.py": "e3006b7256a8badc401baf585ab8f0122a6af5b9c351277e05f2d47d56760bdf",
     "src/empire/sources/security_identity.py": "9e6d5b95edfc63d81e69a6de34ca29074063f30697d4fd00bb8eec636f8646c8",
     "scripts/measure_yuanhang_limits_capacity.py": "facc2ceb7be373b83cf7be28587147fa77318bc88f917c7571d33b01dc2a9415",
-    "sql/schema.sql": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f",
     "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
     "src/empire/plugins/infra/collection_state_unit.py": "fd0c9d461c40f26c6387247dce3678566c6c22ca9e2f11008a4cb1fe33bc79fd"
   },
@@ -70,127 +69,57 @@
     "packed_unit_max_bytes": 7304
   },
   "schema_objects": {
-    "yuanhang_limit_pool": {
-      "ddl_sha256": "fbe6a3ea981af5f62d08c114078b24135f5e2be13522758f4f01811a16a9d21c",
+    "collection_state": {
+      "ddl_sha256": "0ec76b8e85e3f111e0463c991ae608f2c004982dee7622eabfc36ebcefe00c24",
       "shape": {
         "columns": {
-          "trade_date": {
-            "type": "date",
+          "namespace": {
+            "type": "varchar(160) collate \"utf8mb4_bin\"",
             "nullable": false,
             "unsigned": false
           },
-          "pool_type": {
-            "type": "varchar(24) collate \"ascii_bin\"",
+          "project_id": {
+            "type": "varchar(100) collate \"utf8mb4_bin\"",
             "nullable": false,
             "unsigned": false
           },
-          "source_total": {
-            "type": "integer",
-            "nullable": false,
-            "unsigned": true
-          },
-          "filter_text": {
-            "type": "varchar(32) collate \"ascii_bin\"",
+          "source": {
+            "type": "varchar(80) collate \"utf8mb4_bin\"",
             "nullable": false,
             "unsigned": false
           },
-          "key_sha256": {
-            "type": "char(64) collate \"ascii_bin\"",
+          "dataset": {
+            "type": "varchar(80) collate \"utf8mb4_bin\"",
             "nullable": false,
             "unsigned": false
           },
-          "content_sha256": {
-            "type": "char(64) collate \"ascii_bin\"",
+          "payload": {
+            "type": "json",
             "nullable": false,
             "unsigned": false
           },
-          "contract_version": {
-            "type": "smallint",
-            "nullable": false,
-            "unsigned": true
-          },
-          "observed_at": {
+          "updated_at": {
             "type": "datetime",
             "nullable": false,
             "unsigned": false
           }
         },
         "primary": [
-          "trade_date",
-          "pool_type"
+          "namespace",
+          "project_id"
         ],
-        "indexes": {
-          "idx_yuanhang_limit_pool_kind": {
-            "columns": [
-              "pool_type",
-              "trade_date"
-            ],
-            "expressions": null,
-            "unique": false
-          }
-        },
-        "checks": {
-          "ck_yuanhang_limit_pool_count": "(source_total<=10000)",
-          "ck_yuanhang_limit_pool_filter": "(filter_text='hs,gem2star')"
-        }
+        "indexes": {},
+        "checks": {}
       },
       "ownership": {
-        "fixed_sources": "ths_yuanhang",
-        "primary_keys": [
-          "trade_date",
-          "pool_type"
-        ],
+        "fixed_sources": null,
+        "primary_keys": null,
         "source_overrides": null,
-        "required_columns": [
-          "trade_date",
-          "pool_type",
-          "source_total",
-          "filter_text",
-          "key_sha256",
-          "content_sha256",
-          "contract_version",
-          "observed_at"
-        ],
+        "required_columns": null,
         "in_tables": true,
-        "primary_exempt": false,
+        "primary_exempt": true,
         "schema": 1,
-        "datasets": {
-          "yuanhang.limits.limit_up_pool": {
-            "tables": [
-              "yuanhang_limit_pool",
-              "yuanhang_limit_member"
-            ],
-            "primary": "yuanhang_limit_pool"
-          },
-          "yuanhang.limits.sprint_limit_up": {
-            "tables": [
-              "yuanhang_limit_pool",
-              "yuanhang_limit_member"
-            ],
-            "primary": "yuanhang_limit_pool"
-          },
-          "yuanhang.limits.connect_broad_pool": {
-            "tables": [
-              "yuanhang_limit_pool",
-              "yuanhang_limit_member"
-            ],
-            "primary": "yuanhang_limit_pool"
-          },
-          "yuanhang.limits.open_limit_up_pool": {
-            "tables": [
-              "yuanhang_limit_pool",
-              "yuanhang_limit_member"
-            ],
-            "primary": "yuanhang_limit_pool"
-          },
-          "yuanhang.limits.limit_down_pool": {
-            "tables": [
-              "yuanhang_limit_pool",
-              "yuanhang_limit_member"
-            ],
-            "primary": "yuanhang_limit_pool"
-          }
-        }
+        "datasets": {}
       }
     },
     "yuanhang_limit_member": {
@@ -464,6 +393,129 @@
         }
       }
     },
+    "yuanhang_limit_pool": {
+      "ddl_sha256": "fbe6a3ea981af5f62d08c114078b24135f5e2be13522758f4f01811a16a9d21c",
+      "shape": {
+        "columns": {
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "pool_type": {
+            "type": "varchar(24) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_total": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "filter_text": {
+            "type": "varchar(32) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "key_sha256": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_sha256": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "trade_date",
+          "pool_type"
+        ],
+        "indexes": {
+          "idx_yuanhang_limit_pool_kind": {
+            "columns": [
+              "pool_type",
+              "trade_date"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_yuanhang_limit_pool_count": "(source_total<=10000)",
+          "ck_yuanhang_limit_pool_filter": "(filter_text='hs,gem2star')"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "trade_date",
+          "pool_type"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "trade_date",
+          "pool_type",
+          "source_total",
+          "filter_text",
+          "key_sha256",
+          "content_sha256",
+          "contract_version",
+          "observed_at"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.limits.limit_up_pool": {
+            "tables": [
+              "yuanhang_limit_pool",
+              "yuanhang_limit_member"
+            ],
+            "primary": "yuanhang_limit_pool"
+          },
+          "yuanhang.limits.sprint_limit_up": {
+            "tables": [
+              "yuanhang_limit_pool",
+              "yuanhang_limit_member"
+            ],
+            "primary": "yuanhang_limit_pool"
+          },
+          "yuanhang.limits.connect_broad_pool": {
+            "tables": [
+              "yuanhang_limit_pool",
+              "yuanhang_limit_member"
+            ],
+            "primary": "yuanhang_limit_pool"
+          },
+          "yuanhang.limits.open_limit_up_pool": {
+            "tables": [
+              "yuanhang_limit_pool",
+              "yuanhang_limit_member"
+            ],
+            "primary": "yuanhang_limit_pool"
+          },
+          "yuanhang.limits.limit_down_pool": {
+            "tables": [
+              "yuanhang_limit_pool",
+              "yuanhang_limit_member"
+            ],
+            "primary": "yuanhang_limit_pool"
+          }
+        }
+      }
+    },
     "yuanhang_limit_reason": {
       "ddl_sha256": "776a64c5248f1df28dc25b68ba6ba10b5c6635f4a663be8b57b80fc3b5152364",
       "shape": {
@@ -565,59 +617,6 @@
             "primary": "yuanhang_limit_reason"
           }
         }
-      }
-    },
-    "collection_state": {
-      "ddl_sha256": "0ec76b8e85e3f111e0463c991ae608f2c004982dee7622eabfc36ebcefe00c24",
-      "shape": {
-        "columns": {
-          "namespace": {
-            "type": "varchar(160) collate \"utf8mb4_bin\"",
-            "nullable": false,
-            "unsigned": false
-          },
-          "project_id": {
-            "type": "varchar(100) collate \"utf8mb4_bin\"",
-            "nullable": false,
-            "unsigned": false
-          },
-          "source": {
-            "type": "varchar(80) collate \"utf8mb4_bin\"",
-            "nullable": false,
-            "unsigned": false
-          },
-          "dataset": {
-            "type": "varchar(80) collate \"utf8mb4_bin\"",
-            "nullable": false,
-            "unsigned": false
-          },
-          "payload": {
-            "type": "json",
-            "nullable": false,
-            "unsigned": false
-          },
-          "updated_at": {
-            "type": "datetime",
-            "nullable": false,
-            "unsigned": false
-          }
-        },
-        "primary": [
-          "namespace",
-          "project_id"
-        ],
-        "indexes": {},
-        "checks": {}
-      },
-      "ownership": {
-        "fixed_sources": null,
-        "primary_keys": null,
-        "source_overrides": null,
-        "required_columns": null,
-        "in_tables": true,
-        "primary_exempt": true,
-        "schema": 1,
-        "datasets": {}
       }
     }
   },
@@ -747,5 +746,18 @@
     "sync_binlog": 1,
     "log_bin": 0,
     "client_port": 13348
+  },
+  "ddl_scopes": {
+    "collection_state": "0ec76b8e85e3f111e0463c991ae608f2c004982dee7622eabfc36ebcefe00c24",
+    "yuanhang_limit_member": "bba5e91a5355a10dcc3df994b2946e6cab2993e6010341aa2f093f84896acd4f",
+    "yuanhang_limit_pool": "fbe6a3ea981af5f62d08c114078b24135f5e2be13522758f4f01811a16a9d21c",
+    "yuanhang_limit_reason": "776a64c5248f1df28dc25b68ba6ba10b5c6635f4a663be8b57b80fc3b5152364"
+  },
+  "schema_scope_migration": {
+    "baseline_commit": "57fc04a",
+    "original_bindings": {
+      "sql/schema.sql": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f"
+    },
+    "reason": "Only market_margin tables added. Original checksums verified against baseline LF/CRLF bytes; every measured table DDL, shape and ownership unchanged. Measurements retained, not rerun."
   }
 }

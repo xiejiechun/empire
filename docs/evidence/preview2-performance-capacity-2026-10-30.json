@@ -66,13 +66,12 @@
     "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
     "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
-    "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
     "docs/evidence/tdx-performance-probe-2026-10-12.json": "f96b922a58f4e0e5ccbc989843c5f0d6f6efd6dc50f2f3c3eb34f828b34cbfcf"
   },
   "ddl_scopes": {
+    "earnings_disclosure": "1771839ddd0292b4329595983d6d9721796cfdf6a269d5bb763103b7f428bc08",
     "earnings_forecast": "9033426446f7513e0f215cb8ac95e366664813d63dc47a50e2119358925a7a32",
     "earnings_quick": "da4209d6e798076d8c9c8d738906c03cbfaf3b517867fdbb88c81fe5da227bb5",
-    "earnings_disclosure": "1771839ddd0292b4329595983d6d9721796cfdf6a269d5bb763103b7f428bc08",
     "earnings_report": "5bd130574ecbbbccce57329cb37608257096f4952c82f91af26012d4daa443a5",
     "shareholder_count": "9dfed8ebc1bffb3dc204ad0524871babe181a2de2fe1e176ed33af9c36928f18"
   },
@@ -1397,5 +1396,639 @@
   "remaining": {
     "sql": false,
     "redis": false
+  },
+  "schema_objects": {
+    "earnings_disclosure": {
+      "ddl_sha256": "1771839ddd0292b4329595983d6d9721796cfdf6a269d5bb763103b7f428bc08",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "report_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "first_scheduled": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "changed_1": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "changed_2": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "changed_3": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "actual_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "report_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "earnings_disclosure.tdx_unit": {
+            "tables": [
+              "earnings_disclosure"
+            ],
+            "primary": "earnings_disclosure"
+          }
+        }
+      }
+    },
+    "earnings_forecast": {
+      "ddl_sha256": "9033426446f7513e0f215cb8ac95e366664813d63dc47a50e2119358925a7a32",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "report_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "announcement_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "forecast_type": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "forecast_text": {
+            "type": "mediumtext",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "report_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_type_date": {
+            "columns": [
+              "forecast_type",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "earnings_forecast.tdx_unit": {
+            "tables": [
+              "earnings_forecast"
+            ],
+            "primary": "earnings_forecast"
+          }
+        }
+      }
+    },
+    "earnings_quick": {
+      "ddl_sha256": "da4209d6e798076d8c9c8d738906c03cbfaf3b517867fdbb88c81fe5da227bb5",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "source_id": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "report_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "announcement_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "source_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "profit_basis": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "profit_scope": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "roe_scope": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "net_profit": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "roe": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "eps": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "assets": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "equity": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "comparison_value": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_profit": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_roe": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "profit_change": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "roe_change": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "report_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_source_report": {
+            "columns": [
+              "source_id",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "earnings_quick.tdx_unit": {
+            "tables": [
+              "earnings_quick"
+            ],
+            "primary": "earnings_quick"
+          }
+        }
+      }
+    },
+    "earnings_report": {
+      "ddl_sha256": "5bd130574ecbbbccce57329cb37608257096f4952c82f91af26012d4daa443a5",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "report_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "announcement_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "roe": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_roe": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "net_profit": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_profit": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "revenue": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_revenue": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "operating_cashflow": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "eps": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "report_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "earnings_report.tdx_unit": {
+            "tables": [
+              "earnings_report"
+            ],
+            "primary": "earnings_report"
+          }
+        }
+      }
+    },
+    "shareholder_count": {
+      "ddl_sha256": "9dfed8ebc1bffb3dc204ad0524871babe181a2de2fe1e176ed33af9c36928f18",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "statistics_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "holders": {
+            "type": "bigint",
+            "nullable": true,
+            "unsigned": false
+          },
+          "average_float": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "holder_change_pct": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "top_float_shares": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "top_float_pct": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "top_shares": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "top_pct": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "holder_change": {
+            "type": "bigint",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "statistics_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "statistics_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_holders": "((holdersisnull)or(holders>=0))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "holder_count.tdx_unit": {
+            "tables": [
+              "shareholder_count"
+            ],
+            "primary": "shareholder_count"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "baseline_commit": "57fc04a",
+    "original_bindings": {
+      "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121"
+    },
+    "reason": "Only market_margin tables added. Original checksums verified against baseline LF/CRLF bytes; every measured table DDL, shape and ownership unchanged. Measurements retained, not rerun."
   }
 }
