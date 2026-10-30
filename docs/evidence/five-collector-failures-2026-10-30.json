@@ -1661,7 +1661,7 @@
       }
     }
   },
-  "updated_at": "2026-10-30T13:34:08.699487+00:00",
+  "updated_at": "2026-10-30T14:34:31.849766+00:00",
   "scope": "按错误类型修复五项采集；固定业务反例完整单元复验，不代表全市场历史完成",
   "shared_environment": "保留桌面与市场融资融券等既有变更；本轮未发跨聊天消息、未启动子代理；客户端正常关闭；统一归档器正常处理遗留460条业务消息后队列0。",
   "development_tests": {
@@ -1728,7 +1728,7 @@
       }
     }
   },
-  "unresolved": "保留源站HTTP502/504、代理/认证暂时异常、缺诊断的旧原因/非有限数记录和2条未归因的旧龙虎榜范围冲突；失败运行历史不改写。；桌面自动化被Esc中止，五任务在正式桌面的续采结果尚未验收。",
+  "unresolved": "保留源站HTTP502/504、代理/认证暂时异常、缺诊断的旧原因/非有限数记录和2条未归因的旧龙虎榜范围冲突；失败运行历史不改写。",
   "release": {
     "status": "passed",
     "release_id": "94c21a0d874a44bea1e4f69118299a86",
@@ -1809,7 +1809,19 @@
       "failed_hot_harness_directory_request": 1
     },
     "wire_bytes": "认证及失败传输总字节未完整采集；各轮正文、解压及入队成本见对应结果，不能当作总网络流量。",
-    "all_successful_rounds_pending": 0
+    "all_successful_rounds_pending": 0,
+    "additional_source_to_formal_recheck": {
+      "scope": "指数1B0170当前完整年度与正式库复核，排错额外请求不固化为日常双读。",
+      "proxy_requests": 3,
+      "direct_requests": 0,
+      "fallback_requests": 0,
+      "logical_responses": 2,
+      "decoded_body_bytes": [
+        10556,
+        14481
+      ],
+      "business_writes": 0
+    }
   },
   "final_live_verification": {
     "network_policy": {
@@ -2138,16 +2150,574 @@
     "path": "D:\\project\\empire\\dist\\EmpireDesktop\\config.toml",
     "before_sha256": "c0a143ecda599fb761d57441ddf361bb285b7186f9a37de4ec9df66847720afc",
     "after_sha256": "c0a143ecda599fb761d57441ddf361bb285b7186f9a37de4ec9df66847720afc",
-    "preserved": true
+    "preserved": true,
+    "after_desktop_sha256": "c0a143ecda599fb761d57441ddf361bb285b7186f9a37de4ec9df66847720afc"
   },
   "actual_desktop": {
-    "status": "interrupted_by_physical_escape",
-    "attempted_launcher": "dist/EmpireDesktop/Empire.exe",
-    "observed_tool_result": "Computer Use was stopped by the user with the physical Escape key.",
-    "further_ui_actions": 0,
-    "resumed_five_jobs_verified": false,
-    "limitation": "打开窗口的自动化被Esc中止；未核实窗口是否已启动，未执行桌面五任务续采，不能宣称实际桌面交付验收完成。",
-    "pre_release_read_only_snapshot": "build/five-runtime-before-release-20261030.json"
+    "status": "verified_after_user_continued",
+    "launcher": "dist/EmpireDesktop/Empire.exe",
+    "window": {
+      "app": "process:D:\\project\\empire\\desktop\\node_modules\\electron\\dist\\electron.exe",
+      "id": 26678064,
+      "title": "Empire · 采集管理"
+    },
+    "operations": "正常打开当前启动器；在任务页逐项点击立即采集并确认按已保存配置执行，五项均fresh=false；未重置断点、未启动第二控制器或归档器。",
+    "resumed_five_jobs_verified": true,
+    "window_left_open": true,
+    "observed_real_window": true,
+    "snapshot_time": "2026-10-30T14:33:38.840932+00:00",
+    "projects": {
+      "ths-index-prices": {
+        "run_id": "b10c02790e674953a8a3a96b85a72b94",
+        "started_at_epoch": 1793370048.4530153,
+        "status": "running",
+        "failure_location_passed": true,
+        "before_cursor": {
+          "phase": "collecting",
+          "next_index": 138,
+          "next_year": 1990,
+          "snapshot_hash": "2cbd5f645f22e8819bcd4a721a2f304db2b790bb86d91199def710eab8ae6423",
+          "pages": 278,
+          "collected": 26302,
+          "batch_id": "5e723cd16474491aa8e992c31e57772b",
+          "fresh": false,
+          "unavailable": 0,
+          "codes_length": 573,
+          "next_codes": [
+            "1B0170",
+            "1B0300",
+            "1B0510"
+          ]
+        },
+        "current_cursor": {
+          "phase": "collecting",
+          "next_index": 279,
+          "next_year": 1990,
+          "snapshot_hash": "",
+          "pages": 560,
+          "collected": 54172,
+          "batch_id": "5e723cd16474491aa8e992c31e57772b",
+          "fresh": false,
+          "unavailable": 0,
+          "codes_length": 573,
+          "next_codes": [
+            "399301",
+            "399302",
+            "399303"
+          ]
+        },
+        "fresh": false,
+        "saved_policy": {
+          "mode": "daily",
+          "interval_seconds": 86400,
+          "daily_time": "18:00",
+          "request_retries": 30,
+          "enabled": true,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "archived": false
+        },
+        "remaining_error_records": 300
+      },
+      "ths-yuanhang-reason": {
+        "run_id": "e4005245d7e943a59839586f958b4ffc",
+        "started_at_epoch": 1793370098.78063,
+        "status": "running",
+        "failure_location_passed": true,
+        "before_cursor": {
+          "contract": 1,
+          "phase": "fetch",
+          "batch_id": "2f06a8b067664abdb4597856558b3e03",
+          "page": 507,
+          "index": 251,
+          "cutoff": "2026-10-30",
+          "remaining": null,
+          "force": false,
+          "scan_after": [
+            0,
+            "2026-10-30",
+            "002164.SZ"
+          ],
+          "plan_length": 256,
+          "next_plan": [
+            [
+              "2026-10-30",
+              "002088.SZ"
+            ],
+            [
+              "2026-10-30",
+              "002097.SZ"
+            ],
+            [
+              "2026-10-30",
+              "002112.SZ"
+            ]
+          ]
+        },
+        "current_cursor": {
+          "contract": 1,
+          "phase": "fetch",
+          "batch_id": "2f06a8b067664abdb4597856558b3e03",
+          "page": 4807,
+          "index": 199,
+          "cutoff": "2026-10-30",
+          "remaining": null,
+          "force": false,
+          "scan_after": [
+            1,
+            "2021-04-16",
+            "600197.SH"
+          ],
+          "plan_length": 256,
+          "next_plan": [
+            [
+              "2021-04-16",
+              "000928.SZ"
+            ],
+            [
+              "2021-04-16",
+              "000978.SZ"
+            ],
+            [
+              "2021-04-16",
+              "002011.SZ"
+            ]
+          ]
+        },
+        "fresh": false,
+        "saved_policy": {
+          "mode": "daily",
+          "interval_seconds": 86400,
+          "daily_time": "18:00",
+          "request_retries": 2,
+          "enabled": true,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "archived": false
+        },
+        "remaining_error_records": 33
+      },
+      "ths-yuanhang-prices": {
+        "run_id": "41197bd51e994bd099e5c255d1e851a4",
+        "started_at_epoch": 1793370153.9382522,
+        "status": "running",
+        "failure_location_passed": true,
+        "before_cursor": {
+          "phase": "complete",
+          "scope_hash": "1c95b4d4ebc6fa62b5e8e31af7af3bd9810ffc1344e51d02490d989321cccefb",
+          "through": "2026-10-29",
+          "next_index": 5579,
+          "next_year": 1900,
+          "snapshot_hash": "",
+          "pages": 9570,
+          "collected": 996958,
+          "batch_id": "db82e2b00fdf47118859ddf75a90b6fc",
+          "run_date": "2026-10-29",
+          "force_full": false,
+          "skipped_units": 0,
+          "deferred": {
+            "001381.SZ": {
+              "status": "deferred_prelisting",
+              "metadata_source": "eastmoney_listing_scope",
+              "code": "001381.SZ",
+              "listing_date": null,
+              "through": "2026-10-29",
+              "native_status": "empty_history"
+            },
+            "688827.SH": {
+              "status": "deferred_prelisting",
+              "metadata_source": "eastmoney_listing_scope",
+              "code": "688827.SH",
+              "listing_date": null,
+              "through": "2026-10-29",
+              "native_status": "empty_history"
+            },
+            "920085.BJ": {
+              "status": "deferred_prelisting",
+              "metadata_source": "eastmoney_listing_scope",
+              "code": "920085.BJ",
+              "listing_date": null,
+              "through": "2026-10-29",
+              "native_status": "empty_history"
+            }
+          }
+        },
+        "current_cursor": {
+          "phase": "collecting",
+          "scope_hash": "1c95b4d4ebc6fa62b5e8e31af7af3bd9810ffc1344e51d02490d989321cccefb",
+          "through": "2026-10-30",
+          "next_index": 254,
+          "next_year": 1900,
+          "snapshot_hash": "",
+          "pages": 2532,
+          "collected": 530835,
+          "batch_id": "f4b0892f0fa74db99392d4a6789fb8c4",
+          "run_date": "2026-10-30",
+          "force_full": false,
+          "skipped_units": 0,
+          "deferred": {}
+        },
+        "fresh": false,
+        "saved_policy": {
+          "mode": "daily",
+          "interval_seconds": 86400,
+          "daily_time": "18:00",
+          "request_retries": 30,
+          "enabled": true,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "archived": false
+        },
+        "remaining_error_records": 87
+      },
+      "ths-yuanhang-financial": {
+        "run_id": "0e21f115d17a4f71a350983b05ee0d78",
+        "started_at_epoch": 1793370200.0074985,
+        "status": "running",
+        "failure_location_passed": true,
+        "before_cursor": {
+          "phase": "collecting",
+          "scope_hash": "1c95b4d4ebc6fa62b5e8e31af7af3bd9810ffc1344e51d02490d989321cccefb",
+          "through": "2026-10-30",
+          "next_index": 45,
+          "next_year": 1900,
+          "snapshot_hash": "",
+          "pages": 45,
+          "collected": 13843,
+          "batch_id": "ee812a1b86b944568e64d33033a111e2",
+          "run_date": "2026-10-30",
+          "force_full": false,
+          "skipped_units": 0,
+          "deferred": {}
+        },
+        "current_cursor": {
+          "phase": "collecting",
+          "scope_hash": "1c95b4d4ebc6fa62b5e8e31af7af3bd9810ffc1344e51d02490d989321cccefb",
+          "through": "2026-10-30",
+          "next_index": 348,
+          "next_year": 1900,
+          "snapshot_hash": "",
+          "pages": 348,
+          "collected": 101207,
+          "batch_id": "ee812a1b86b944568e64d33033a111e2",
+          "run_date": "2026-10-30",
+          "force_full": false,
+          "skipped_units": 0,
+          "deferred": {}
+        },
+        "fresh": false,
+        "saved_policy": {
+          "mode": "daily",
+          "interval_seconds": 86400,
+          "daily_time": "18:00",
+          "request_retries": 30,
+          "enabled": true,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "archived": false
+        },
+        "remaining_error_records": 201
+      },
+      "tdx-hot-list": {
+        "run_id": "dc39cd4fc71e473a9e5aa67e075041b3",
+        "started_at_epoch": 1793370252.4582562,
+        "status": "running",
+        "failure_location_passed": true,
+        "before_cursor": {
+          "phase": "fetch",
+          "contract": 1,
+          "review_policy": 2,
+          "batch_id": "c48cb9e6645341ddb93364dacb1e1768",
+          "index": 3439,
+          "pages": 7583,
+          "collected": 5612,
+          "securities": 5581,
+          "scope_hash": "7077310862a2834fc6f010a825749d1f7412900cc87ce3f2a3df4b01618f352a",
+          "start": "",
+          "end": "",
+          "through": "2026-10-29",
+          "force": false,
+          "directory_hash": "",
+          "last_date": ""
+        },
+        "current_cursor": {
+          "phase": "fetch",
+          "contract": 1,
+          "review_policy": 2,
+          "batch_id": "c48cb9e6645341ddb93364dacb1e1768",
+          "index": 3945,
+          "pages": 8680,
+          "collected": 6237,
+          "securities": 5581,
+          "scope_hash": "7077310862a2834fc6f010a825749d1f7412900cc87ce3f2a3df4b01618f352a",
+          "start": "",
+          "end": "",
+          "through": "2026-10-29",
+          "force": false,
+          "directory_hash": "",
+          "last_date": ""
+        },
+        "fresh": false,
+        "saved_policy": {
+          "mode": "daily",
+          "interval_seconds": 86400,
+          "daily_time": "19:30",
+          "request_retries": 2,
+          "enabled": true,
+          "use_proxy": true,
+          "proxy_fallback": true,
+          "archived": false
+        },
+        "remaining_error_records": 4
+      }
+    },
+    "stream_total_at_snapshot": 213,
+    "stream_note": "五项正在采集，当前待归档由原统一归档器继续处理；不把运行中队列视为整轮完成，也未等待全市场历史补齐。",
+    "formal_read_only_checks": {
+      "checked_at": "2026-10-30T14:30:59.067074+00:00",
+      "read_only": true,
+      "source_requests": 0,
+      "business_writes": 0,
+      "checks": {
+        "prices": {
+          "code": "000001.SZ",
+          "start": "2026-10-23",
+          "end": "2026-10-30",
+          "rows": 6,
+          "digest": "086aa407cdedcfa681bd7f163b291f0113ebbbd636b0faa9fc5fd98af4b6ea33",
+          "source_sample_match": true
+        },
+        "financial": {
+          "300296.SZ": {
+            "series": 2,
+            "source_sample_match": true
+          },
+          "000078.SZ": {
+            "series": 2,
+            "source_sample_match": true
+          }
+        },
+        "index": {
+          "code": "1B0170",
+          "year": 2026,
+          "rows": 198,
+          "source_current_match": true,
+          "prior_verified_digest_changed": true,
+          "source_recheck": "build/five-index-live-formal-after-resume-20261030.json"
+        },
+        "hot": {
+          "code": "600715.SH",
+          "day": "2026-10-29",
+          "directory_count": 85,
+          "seats": 10,
+          "source_sample_match": true
+        },
+        "reason": [
+          {
+            "code": "001216.SZ",
+            "day": "2026-10-26",
+            "source_sample_match": true
+          },
+          {
+            "code": "002088.SZ",
+            "day": "2026-10-30",
+            "source_sample_match": true
+          }
+        ]
+      },
+      "new_errors_since_launch": {
+        "ths-index-prices": {
+          "retained_new_records": 84,
+          "categories": [
+            {
+              "stage": "http",
+              "status_code": 502,
+              "count": 77
+            },
+            {
+              "stage": "http",
+              "status_code": 504,
+              "count": 5
+            },
+            {
+              "stage": "http",
+              "status_code": null,
+              "count": 2
+            }
+          ],
+          "ids": [
+            "0e466388fc924842915c7f4dacd47bc7",
+            "9f11782e9b9d4388b4ecb6772817241a",
+            "cbf3a21917954476b216c2b494c5b92e",
+            "c93983e8dd3f4a85b2c37d29b22f60bf",
+            "c6be0b251d954003889009d46c5dfc7e",
+            "c3ec9273f4584e868a38870e04765510",
+            "da3fe7f3e99e4ccb86aabeea7c82a506",
+            "e38bde879be34dd3b130535332921fe0",
+            "b69e286ee86f499eb30a1f93e4c621a2",
+            "cf7133093ec04fccae7d940ef3734f9c",
+            "5099fb8485c24091a9821cbaed9cf04e",
+            "7b5a66670a81430b8905764f962f5f1b",
+            "39ee209002504abe926e0dc60e3ae09b",
+            "46e3c04a152a485daef720810bd94278",
+            "aea7dd076a394564bd2a9b36f98969f7",
+            "ab7e929fd6eb48088aec11c812464e72",
+            "8ae5bee735e2402e87c870fba7f9bf76",
+            "8737be6f074d43dab5b4034d96086b40",
+            "c378de67b85d43c38739c5e42bca1c9c",
+            "d4a1ca638de743cd957b77c76dc0a8ad",
+            "646d270e14c547089bd2aec50d7a01d8",
+            "10004a3a206e4fc280b78bdca95e3770",
+            "0390226da1a24802a99ae104c1606605",
+            "ce2d771f7f824b47ad13deb9aa00d87d",
+            "dfc75ca1d803414692ae94c5288b212f",
+            "2d8b36f2b61d4435a8fe206aa6d6932d",
+            "38f2e3a011df43d8a0aa64e419de5ad5",
+            "cfab96cc8d41488ca4c997cc6a24e846",
+            "40afb8bd14884a0bac1218000cf8bb65",
+            "a6573de1d91b42f38fd422a398604ea5",
+            "d7ce6651b8cd411baffb5286b3bc55a0",
+            "4790d852130749b9933a87d9170bfaaa",
+            "f04b1d6bbaa04496b6b7d76bbf376a62",
+            "059a4f2378a949c0acd748957e6c6b36",
+            "83be822819484dbea1ed7f1cf56940a8",
+            "0b5f6fd37e5b4dcc86b12acb7176d90e",
+            "8a59b0f3c2584c7ea5e70bbfcb4e79df",
+            "9d6be0e5fb714be3a363cdc1cf10b733",
+            "94f1025da87044e5b79de6acb36b41e7",
+            "ac5782433ad14983a7f0f2ba1860e1d0",
+            "4ffe36da87e6448aa1b460c72549471d",
+            "42d496b12a1b4d38baf55127e784f3af",
+            "402d3e6441234d75a96a4f0ebba0be0c",
+            "e3a727c4572142f79f4d6deae6d4f803",
+            "ee2670e10b5c462bac9e9ed54d2a30d4",
+            "0ddd5fc0aac545cb986043ed5b42ad3a",
+            "d69c2f1b9ed2474f944fea5154815fe0",
+            "8cbe38d4896e4561861c2d48e5b35e20",
+            "31d10abe95dc4848bcb02a10fead09c6",
+            "64b4fb36ca8644c1aeaa91347fb510da",
+            "24f6b8c669a9490c848414bd6b0d0a07",
+            "477c4267301e418cabc262b82f93f704",
+            "f29d2a0f5a0345648304d7a7335c8395",
+            "167d5d1ab0cf4836a6d77121aca4bd44",
+            "cf81c840a3824b46b2b53511226599d3",
+            "319747c7a8444b0a927a936334a17296",
+            "b965e692f09a446190336bf933524852",
+            "17b645085d5f484b8a83413663415c43",
+            "8daa919c9d6b4b8dac15a0a0e4e401c5",
+            "8e1e17402dcf48558b95650212b71bf8",
+            "8bd29e7df20e44f6b7f170a4dfd9a793",
+            "3e54dea80ca046ed831ba00c38b9a745",
+            "c65a853eb0fb437aaf2d3b69e2322f29",
+            "2c96665434ca4af781f5d7243bcdff19",
+            "5cd3ff7cbae94df1b51caf69b12b7b4a",
+            "82c5f4d8d62f456892275f432274abac",
+            "1db3c911f25c489cb7a8b838c675c1b8",
+            "b5595dc12aa74d16b1597c96fd40c2d9",
+            "1afc6c5763834c9ab97f4f0aaab0abdd",
+            "c503022c643f4cb99c32df92bec7d655",
+            "37660027a99b47ac874a411055b58f68",
+            "0404212bebdb4941a602a5ec302adab4",
+            "4dd80626af764183a50094be4ac5a20b",
+            "8027fb502bd4469594d4e552d5c3a602",
+            "4cf7b6e545eb4ee1aa4f1300b3158938",
+            "51755b835f2b48428d0c601d625af443",
+            "134fa56c7b6d47f69853528d9bdd5fa9",
+            "56a8fdf823ad4f8a8f70db21e0854b51",
+            "5654a4f136a94e57bd6261def368768e",
+            "c2eef1a95a2245ce831bcfa1f0cfb406",
+            "32f03826c342414fabd7e70849fc6eea",
+            "4d7cb10913214968a42730dee34a78e7",
+            "c63edf47d5ee4ebd8b82af4a6def9f59",
+            "e6c1b3d1f2c24880a1558102ed225e7b"
+          ]
+        },
+        "ths-yuanhang-reason": {
+          "retained_new_records": 3,
+          "categories": [
+            {
+              "stage": "http",
+              "status_code": null,
+              "count": 3
+            }
+          ],
+          "ids": [
+            "cb3afffab6774b5c8d183a4b3996ba96",
+            "761004495e0a4e9ebec6068337dc9d6b",
+            "c9bc8b4053a44e0e887e3067c8e44691"
+          ]
+        },
+        "ths-yuanhang-prices": {
+          "retained_new_records": 6,
+          "categories": [
+            {
+              "stage": "http",
+              "status_code": null,
+              "count": 6
+            }
+          ],
+          "ids": [
+            "808c04e3b3d743ebb8fc6ddc103a64e4",
+            "6ebe4bdc8d9d4f0f90de64fd851002cd",
+            "544a4c650f754eb7b7cd45ae6bea213d",
+            "d656f96ccdee463a8b7305d7211391d5",
+            "1209a103441f4dd0bdb3e260eb4b93a9",
+            "a4478d84b73c4569936bb87db5d12edd"
+          ]
+        },
+        "ths-yuanhang-financial": {
+          "retained_new_records": 1,
+          "categories": [
+            {
+              "stage": "http",
+              "status_code": null,
+              "count": 1
+            }
+          ],
+          "ids": [
+            "91e25f46f1a748b290ff8852e23aee9b"
+          ]
+        },
+        "tdx-hot-list": {
+          "retained_new_records": 0,
+          "categories": [],
+          "ids": []
+        }
+      },
+      "passed": true
+    },
+    "index_source_recheck": {
+      "checked_at": "2026-10-30T14:30:31.690063+00:00",
+      "code": "1B0170",
+      "year": 2026,
+      "network_policy": {
+        "use_proxy": true,
+        "proxy_fallback": true
+      },
+      "routes": {
+        "proxy_requests": 3
+      },
+      "source_requests": 3,
+      "decoded_body_bytes": [
+        10556,
+        14481
+      ],
+      "source_rows": 198,
+      "stored_rows": 198,
+      "source_digest": "40fea78f8f132df4f85a7ce857ec3125b4b93b913ff11b36ccd917f6dd3732ab",
+      "stored_digest": "40fea78f8f132df4f85a7ce857ec3125b4b93b913ff11b36ccd917f6dd3732ab",
+      "differing_dates": [],
+      "differences_sample": [],
+      "source_start": "2016-12-28",
+      "source_end": "2026-10-30",
+      "prior_verified_digest": "36e57c3c341b02f375dea72527c9ba074cd078c727dea6250aa76f46c138e3a4",
+      "passed": true,
+      "business_writes": 0
+    },
+    "source_revision_note": "21:31与22:30来源年度摘要不同；额外核对当前完整198日来源与正式查询，业务键及内容完全一致，无需代码变更。",
+    "additional_error_cleanup": 0,
+    "network_errors": "复核保留区间新增错误均为http阶段，含502/504及代理传输；有界重试后任务继续。未删除这些新记录。",
+    "limitations": "五项实采反例和正式桌面续采已验收，不表示全市场历史完成；Redis与SQL分别读取，不冒充原子快照。"
   },
   "test_mysql_shutdown": {
     "checked_at": "2026-10-30T13:33:00.961965+00:00",
@@ -2159,5 +2729,14 @@
     "pid": 48168,
     "owned_pid_exit_verified": true,
     "production_mysql_or_redis_restarted": false
+  },
+  "previous_interrupted_desktop_attempt": {
+    "status": "interrupted_by_physical_escape",
+    "attempted_launcher": "dist/EmpireDesktop/Empire.exe",
+    "observed_tool_result": "Computer Use was stopped by the user with the physical Escape key.",
+    "further_ui_actions": 0,
+    "resumed_five_jobs_verified": false,
+    "limitation": "打开窗口的自动化被Esc中止；未核实窗口是否已启动，未执行桌面五任务续采，不能宣称实际桌面交付验收完成。",
+    "pre_release_read_only_snapshot": "build/five-runtime-before-release-20261030.json"
   }
 }
