@@ -173,6 +173,10 @@
     "industry_margin": {
       "kind": "business",
       "description": "完整日期行业融资融券"
+    },
+    "market_margin": {
+      "kind": "business",
+      "description": "同花顺市场完整历史融资融券"
     }
   },
   "module_groups": [
@@ -1697,6 +1701,20 @@
       "prefix": "empire.features.industry_margin",
       "owner": "industry_margin",
       "reason": "独立来源完整日期集合",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "parser",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.market_margin",
+      "owner": "market_margin",
+      "reason": "完整市场序列、共享响应提供融资及融券",
       "roles": {
         "bundle": "composition",
         "contract": "contract",

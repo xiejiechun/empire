@@ -138,6 +138,8 @@ def _navigation(task, view, result):
 
 
 def _identity(task, view):
+    if task == "ths-market-margin":
+        return ["trade_date", "market_code"]
     if task == "tdx-industry-margin":
         return ["trade_date", "industry_name"]
     if task == "ths-holders":
@@ -177,6 +179,8 @@ def _identity(task, view):
 
 
 def _content(task, view):
+    if task == "ths-market-margin":
+        return "directory", "市场融资融券", "99沪深京合计、3沪市、2深市、4京市；搜索填写市场编号。金额元、净卖出股、比例为小数。合计不可与分市场重复相加。", "trade_date:统计日期:date|market_code:市场编号|market_name:市场|financing_balance:融资余额:decimal:元|financing_buy:融资买入:decimal:元|financing_net_buy:融资净买入:decimal:元|financing_net_change:净买入增减:decimal:元|lending_balance:融券余额:decimal:元|lending_net_sell:融券净卖出:decimal:股|lending_net_change:净卖出增减:decimal:股|balance_ratio:余额占流通市值比:decimal|total_balance:两融余额:decimal:元"
     if task == "tdx-industry-margin":
         return "directory", "行业融资融券", "2016年起来源完整日期集合；搜索需填写完整行业名称。日期不是公布时间，来源未给历史分类版本。", "trade_date:统计日期:date|industry_name:行业名称|financing_balance:融资余额:decimal:亿元|financing_buy:融资买入额:decimal:亿元|financing_repay:融资偿还额:decimal:亿元|lending_balance:融券余额:decimal:万元|lending_volume:融券余量:decimal:万股|lending_sell:融券卖出量:decimal:万股|lending_repay:融券偿还量:decimal:万股|margin_difference:融资融券差值:decimal:亿元"
     if task == "tdx-margin":

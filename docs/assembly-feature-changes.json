@@ -736,6 +736,181 @@
     ]
   },
   {
+    "path": "additive.market_margin",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "collector.ths_market_margin": {
+            "autostart": true,
+            "description": "四市场完整序列；每日全量核验例外",
+            "id": "collector.ths_market_margin",
+            "name": "市场融资融券采集",
+            "provides": [
+              "collector.ths_market_margin"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "market_margin.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.market_margin": {
+            "autostart": true,
+            "description": "同花顺四市场完整历史与结构化查询",
+            "id": "data.market_margin",
+            "name": "市场融资融券查询",
+            "provides": [
+              "market_margin.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.market_margin": {
+            "autostart": true,
+            "description": "按日期和来源市场名称浏览",
+            "id": "ui.market_margin",
+            "name": "市场融资融券浏览",
+            "provides": [
+              "ui.pages.market_margin"
+            ],
+            "requires": []
+          }
+        },
+        "tasks": {
+          "ths-market-margin": {
+            "capability": "collector.ths_market_margin",
+            "category": "融资融券",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "19:30",
+              "description": "每天北京时间19:30核验四市场完整历史；不重叠。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "2010年起四市场完整历史；每天四请求全量核验",
+            "fresh_description": "重新核验四市场完整序列，整轮入队后统一等待归档。",
+            "id": "ths-market-margin",
+            "interval_seconds": 86400,
+            "name": "市场融资融券（同花顺）",
+            "parallel_downloads": true,
+            "rate_group": "ths",
+            "source_name": "同花顺",
+            "unit_name": "个市场"
+          }
+        },
+        "datasets": {
+          "ths_market_margin_v1": {
+            "datasets": [
+              "market_margin.ths_series"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-market-margin-v1": "ths-market-margin"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "market_margin": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "融资融券",
+            "database_tables": [
+              "market_margin_series",
+              "market_margin_daily"
+            ],
+            "description": "2010年起来源市场汇总；金额元、数量股、比例小数",
+            "group": "数据浏览",
+            "id": "market_margin",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-market-margin",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 53,
+            "source": "同花顺",
+            "title": "市场融资融券",
+            "top_level": false
+          }
+        }
+      },
+      "bindings": {
+        "plugins": {
+          "collector.ths_market_margin": {
+            "module": "empire.features.market_margin.collector",
+            "qualname": "MarketMarginCollector"
+          },
+          "data.market_margin": {
+            "module": "empire.features.market_margin.query",
+            "qualname": "MarketMarginDataPlugin"
+          },
+          "ui.market_margin": {
+            "module": "empire.features.market_margin.ui",
+            "qualname": "MarketMarginUiPlugin"
+          }
+        },
+        "datasets": {
+          "ths_market_margin_v1": {
+            "module": "empire.features.market_margin.dataset",
+            "qualname": "MarketMarginDataset"
+          }
+        },
+        "pages": {
+          "market_margin": {
+            "module": "empire.features.market_margin.ui",
+            "qualname": "MarketMarginUiPlugin"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.market_margin",
+          "collector.ths_market_margin",
+          "ui.market_margin"
+        ],
+        "startup": [
+          "data.market_margin",
+          "collector.ths_market_margin",
+          "ui.market_margin"
+        ],
+        "tasks": [
+          "ths-market-margin"
+        ],
+        "datasets": [
+          "ths_market_margin_v1"
+        ],
+        "pages": [
+          "market_margin"
+        ]
+      }
+    },
+    "design": "docs/ths-market-margin.md",
+    "tests": [
+      "tests/test_market_margin.py",
+      "tests/integration/test_market_margin_archive.py"
+    ]
+  },
+  {
     "path": "additive.themes",
     "before": null,
     "after": {
@@ -1595,6 +1770,9 @@
       "data.industry_margin",
       "collector.tdx_industry_margin",
       "ui.industry_margin",
+      "data.market_margin",
+      "collector.ths_market_margin",
+      "ui.market_margin",
       "data.themes",
       "collector.theme_list",
       "collector.theme_detail",
@@ -3755,6 +3933,64 @@
     "design": "docs/download-resources.md",
     "tests": [
       "tests/test_download_settings.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.market_margin:market_financing",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "market_margin.query",
+      "collector": "collector.ths_market_margin",
+      "dataset": "market_margin.ths_series",
+      "job_key": "ths-market-margin-v1",
+      "method": "check_market_financing",
+      "project_id": "ths-market-margin",
+      "requirement": "market_financing",
+      "response_group": "market_margin.ths_series",
+      "scoped": true,
+      "source": "同花顺",
+      "archive_tests": [
+        "tests/integration/test_market_margin_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_market_margin.py"
+      ]
+    },
+    "design": "docs/ths-market-margin.md",
+    "tests": [
+      "tests/test_market_margin.py",
+      "tests/integration/test_market_margin_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.market_margin:market_short_lending",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "market_margin.query",
+      "collector": "collector.ths_market_margin",
+      "dataset": "market_margin.ths_series",
+      "job_key": "ths-market-margin-v1",
+      "method": "check_market_short_lending",
+      "project_id": "ths-market-margin",
+      "requirement": "market_short_lending",
+      "response_group": "market_margin.ths_series",
+      "scoped": true,
+      "source": "同花顺",
+      "archive_tests": [
+        "tests/integration/test_market_margin_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_market_margin.py"
+      ]
+    },
+    "design": "docs/ths-market-margin.md",
+    "tests": [
+      "tests/test_market_margin.py",
+      "tests/integration/test_market_margin_archive.py"
     ]
   }
 ]

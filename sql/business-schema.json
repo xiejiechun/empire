@@ -62,7 +62,9 @@
     "margin_security": "tdx",
     "margin_daily": "tdx",
     "industry_margin_day": "tdx",
-    "industry_margin_daily": "tdx"
+    "industry_margin_daily": "tdx",
+    "market_margin_series": "ths",
+    "market_margin_daily": "ths"
   },
   "tables": [
     "capital_funding",
@@ -129,7 +131,9 @@
     "margin_security",
     "margin_daily",
     "industry_margin_day",
-    "industry_margin_daily"
+    "industry_margin_daily",
+    "market_margin_series",
+    "market_margin_daily"
   ],
   "dataset_tables": {
     "ths.capital.security": "capital_funding",
@@ -186,7 +190,8 @@
     "yuanhang.limits.reason": "yuanhang_limit_reason",
     "hot_list.tdx_unit": "hot_list_day",
     "margin.tdx_security": "margin_security",
-    "industry_margin.tdx_day": "industry_margin_day"
+    "industry_margin.tdx_day": "industry_margin_day",
+    "market_margin.ths_series": "market_margin_series"
   },
   "dataset_table_groups": {
     "ths.capital.security": [
@@ -390,6 +395,10 @@
     "industry_margin.tdx_day": [
       "industry_margin_day",
       "industry_margin_daily"
+    ],
+    "market_margin.ths_series": [
+      "market_margin_series",
+      "market_margin_daily"
     ]
   },
   "primary_keys": {
@@ -626,6 +635,13 @@
     "industry_margin_daily": [
       "trade_date",
       "industry_name"
+    ],
+    "market_margin_series": [
+      "market_code"
+    ],
+    "market_margin_daily": [
+      "market_code",
+      "trade_date"
     ]
   },
   "source_overrides": {

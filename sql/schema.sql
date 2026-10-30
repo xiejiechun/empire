@@ -1237,3 +1237,31 @@ CREATE TABLE IF NOT EXISTS industry_margin_daily (
     PRIMARY KEY (trade_date, industry_name),
     KEY ix_industry_margin_name_date (industry_name, trade_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS market_margin_series (
+    market_code VARCHAR(2) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    row_count INT UNSIGNED NOT NULL,
+    first_date DATE NULL,
+    last_date DATE NULL,
+    contract_version INT NOT NULL,
+    PRIMARY KEY (market_code),
+    CONSTRAINT ck_market_margin_count CHECK (row_count >= 0 AND row_count <= 10000),
+    CONSTRAINT ck_market_margin_bounds CHECK ((row_count = 0 AND first_date IS NULL AND last_date IS NULL) OR (row_count > 0 AND first_date IS NOT NULL AND last_date IS NOT NULL AND first_date <= last_date))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS market_margin_daily (
+    market_code VARCHAR(2) NOT NULL,
+    trade_date DATE NOT NULL,
+    financing_balance DECIMAL(28,8) NOT NULL,
+    lending_balance DECIMAL(28,8) NOT NULL,
+    financing_buy DECIMAL(28,8) NOT NULL,
+    financing_net_buy DECIMAL(28,8) NOT NULL,
+    lending_net_sell DECIMAL(28,8) NOT NULL,
+    financing_net_change DECIMAL(28,8) NULL,
+    lending_net_change DECIMAL(28,8) NULL,
+    balance_ratio DECIMAL(38,24) NULL,
+    source_total DECIMAL(28,8) NULL,
+    PRIMARY KEY (market_code, trade_date),
+    KEY idx_market_margin_date (trade_date, market_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

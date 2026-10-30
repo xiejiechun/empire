@@ -1,5 +1,5 @@
 {
-  "schema_sha256": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f",
+  "schema_sha256": "d81afec8862158017f908b28d37beb0b2ad68a877424adc5b7696e95de0dfc52",
   "tables": {
     "additional_issue": {
       "columns": {
@@ -5125,6 +5125,122 @@
           "columns": [
             "industry_name",
             "trade_date"
+          ],
+          "expressions": null,
+          "unique": false
+        }
+      },
+      "checks": {}
+    },
+    "market_margin_series": {
+      "columns": {
+        "market_code": {
+          "type": "varchar(2) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "content_hash": {
+          "type": "char(64) collate \"ascii_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "row_count": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": true
+        },
+        "first_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "last_date": {
+          "type": "date",
+          "nullable": true,
+          "unsigned": false
+        },
+        "contract_version": {
+          "type": "integer",
+          "nullable": false,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "market_code"
+      ],
+      "indexes": {},
+      "checks": {
+        "ck_market_margin_bounds": "(((row_count=0)and(first_dateisnull)and(last_dateisnull))or((row_count>0)and(first_dateisnotnull)and(last_dateisnotnull)and(first_date<=last_date)))",
+        "ck_market_margin_count": "((row_count>=0)and(row_count<=10000))"
+      }
+    },
+    "market_margin_daily": {
+      "columns": {
+        "market_code": {
+          "type": "varchar(2) collate \"utf8mb4_bin\"",
+          "nullable": false,
+          "unsigned": false
+        },
+        "trade_date": {
+          "type": "date",
+          "nullable": false,
+          "unsigned": false
+        },
+        "financing_balance": {
+          "type": "decimal(28, 8)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "lending_balance": {
+          "type": "decimal(28, 8)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "financing_buy": {
+          "type": "decimal(28, 8)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "financing_net_buy": {
+          "type": "decimal(28, 8)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "lending_net_sell": {
+          "type": "decimal(28, 8)",
+          "nullable": false,
+          "unsigned": false
+        },
+        "financing_net_change": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "lending_net_change": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "balance_ratio": {
+          "type": "decimal(38, 24)",
+          "nullable": true,
+          "unsigned": false
+        },
+        "source_total": {
+          "type": "decimal(28, 8)",
+          "nullable": true,
+          "unsigned": false
+        }
+      },
+      "primary": [
+        "market_code",
+        "trade_date"
+      ],
+      "indexes": {
+        "idx_market_margin_date": {
+          "columns": [
+            "trade_date",
+            "market_code"
           ],
           "expressions": null,
           "unique": false

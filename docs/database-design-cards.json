@@ -1924,6 +1924,45 @@
         "tests/test_industry_margin.py",
         "tests/integration/test_industry_margin_archive.py"
       ]
+    },
+    "market_margin.ths_series": {
+      "tables": [
+        "market_margin_series",
+        "market_margin_daily"
+      ],
+      "grain": "每市场完整序列证明与市场×日期的九项原始事实",
+      "identity": "固定ths；market_code/trade_date",
+      "dictionary": "docs/ths-market-margin.md",
+      "queries": [
+        "市场和日期稳定游标200",
+        "完整单市场10000日",
+        "四市场集合摘要审计",
+        "日期范围分析"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/ths-market-margin-capacity-2026-10-30.json",
+        "sample": "四完整市场各10000日期，独立MySQL实测",
+        "growth": "每年约1000行，五年约5000行",
+        "page_limit": 200,
+        "response": "generic正文上限与10000日期，规范消息4MiB",
+        "budget": "初始化60秒，单市场10秒，列表100ms，历史1秒，重复零DML"
+      },
+      "integrity": [
+        "日期和item一一对应",
+        "起点/升序唯一",
+        "等数异集",
+        "旧响应",
+        "冷热摘要零业务DML",
+        "SQL后重放清队",
+        "不删除来源缺失历史"
+      ],
+      "lifecycle": "每天四请求完整核验；从未入队市场继续，Redis丢失四市场SQL差异恢复",
+      "delivery": "共享代理预取、入队、归档和查询；显式create_market_margin_schema新增两表；正式发布及实际全历史分别验收",
+      "tests": [
+        "tests/test_market_margin.py",
+        "tests/integration/test_market_margin_archive.py"
+      ]
     }
   },
   "json_roles": {
