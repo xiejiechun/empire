@@ -1,0 +1,210 @@
+{
+  "run_id": "8ffb7efff2124127b936f6fa83c0047a",
+  "mode": "verification",
+  "checked_at": "2026-10-30T06:04:07.949020+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\margin-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce",
+    "D:\\project\\empire\\src\\empire\\features\\listings\\contract.py": "16138fc66c730a771d46f981b0128ea44fd2648aa227b9710282c281edb1703f",
+    "D:\\project\\empire\\src\\empire\\features\\listings\\dataset.py": "c6cd69120db1ffcf4da63706424774a0f2cbe2b9dc1f27cf8e606a22ee7137d6",
+    "D:\\project\\empire\\src\\empire\\features\\listings\\query.py": "cbd20b36ae91c16b944beaec2e1f4aab6abef3e07b03a8ec848d272f24b5beb1",
+    "D:\\project\\empire\\scripts\\measure_listings.py": "e777c7e1228232d7d24fbe993b891252f73ac9f485d4d0c5d2a27505822c5c71",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "D:\\project\\empire\\scripts\\source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "D:\\project\\empire\\sql\\business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
+    "D:\\project\\empire\\src\\empire\\contracts\\business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
+  },
+  "subject": "listings_capacity",
+  "source_sha256": "40375fb0cb99082918502392e8e8f460e56ceef8de7869e4bf01c53ff4450319",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "15000行合成容量；不请求来源，不替代严格代理实采",
+  "storage": {
+    "database": "empire_verify_ths_8ffb7efff2124127b936f6fa83c0047a_test",
+    "namespace": "empire:test:verify_ths:8ffb7efff2124127b936f6fa83c0047a",
+    "run_id": "8ffb7efff2124127b936f6fa83c0047a",
+    "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+    "owner_sha256": "bed4a0ed332b9f9f829aa6004557def6d2ff2d4430f80da04e6c918ce9e974fa"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\margin-mysql-20261030-v2\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "bindings": {
+    "src/empire/features/listings/contract.py": "16138fc66c730a771d46f981b0128ea44fd2648aa227b9710282c281edb1703f",
+    "src/empire/features/listings/dataset.py": "c6cd69120db1ffcf4da63706424774a0f2cbe2b9dc1f27cf8e606a22ee7137d6",
+    "src/empire/features/listings/query.py": "cbd20b36ae91c16b944beaec2e1f4aab6abef3e07b03a8ec848d272f24b5beb1",
+    "scripts/measure_listings.py": "e777c7e1228232d7d24fbe993b891252f73ac9f485d4d0c5d2a27505822c5c71",
+    "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
+  },
+  "ddl_scopes": {
+    "stock_listing": "e15abb1412885c165061d610da69fd86abd49f60b7130a975f0ebf0481ac9d93"
+  },
+  "measurements": {
+    "page_p95_ms": 37.84730000188574,
+    "detail_p95_ms": 31.15550003712997,
+    "range_p95_ms": 39.58069998770952,
+    "coverage_p95_ms": 194.5787000004202,
+    "import_seconds": 23.936964299995452,
+    "audit_seconds": 1.1478907000273466,
+    "allocated_bytes": 126746624,
+    "state_bytes": 3647250
+  },
+  "limits": {
+    "page_p95_ms": 100,
+    "detail_p95_ms": 100,
+    "range_p95_ms": 100,
+    "coverage_p95_ms": 500,
+    "import_seconds": 60,
+    "audit_seconds": 5,
+    "allocated_bytes": 1610612736,
+    "state_bytes": 8388608
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 15000,
+    "state_units": 15000,
+    "formal_queries": true,
+    "audited": 15000,
+    "cache": "unforced first; subsequent hot repetitions",
+    "synthetic": true,
+    "incomplete_units": 750,
+    "unavailable_units": 750,
+    "history_sizes_bytes": [
+      2049,
+      105078,
+      262144
+    ],
+    "maximum_history_bytes": 262144
+  },
+  "reviewed_tradeoffs": "一证券一行；列表/补缺不读历史沿革；详细审计有界200行页读正文，来源范围只限当前池和已存记录。容量按真实正文尺寸放大，不代表全市场实采。正式列表和详情读取统一状态以提示来源缺值；15000单元约3.5MiB，实测63至77ms超过原50ms目标，接受100ms预算以保留单一状态路径和准确质量提示，不另建状态表或持久缓存。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_listing",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_listing_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_listing",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "range": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_listing",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_listing_date",
+        "key": "ix_listing_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 6118,
+        "filtered": 100.0,
+        "Extra": "Using where; Using index"
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_listing",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "11",
+        "ref": null,
+        "rows": 12236,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 11000
+    },
+    "detail": {
+      "returned": 1,
+      "read_bytes": 262401
+    },
+    "range": {
+      "returned": 200,
+      "read_bytes": 5800
+    },
+    "coverage": {
+      "returned": 15000,
+      "read_bytes": 1500000
+    }
+  },
+  "python_peak_bytes": 4602326,
+  "repeat": {
+    "status": "complete",
+    "row_count": 1,
+    "written_count": 0,
+    "confirmed": [
+      "SZ:000001"
+    ]
+  },
+  "revision": {
+    "status": "complete",
+    "row_count": 1,
+    "written_count": 1,
+    "confirmed": [
+      "SZ:000001"
+    ]
+  },
+  "cleanup_protocol": "shared owned-storage finish, checked before final durable report",
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

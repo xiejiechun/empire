@@ -1,0 +1,121 @@
+{
+  "run_id": "7e4f28e9dde441d3ab919b1b7786b85d",
+  "subject": "preview",
+  "started_at": "2026-10-30T05:59:50.754135+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/themes/history.py": "11f21aba4d89384116054d2acfd72027aeccf48be48d82e1f58b71c8a97a4295",
+    "src/empire/features/themes/history_model.py": "ecd4a8acbee387b5df7e8614dfb6144d4f3e41f9b504e441cedd6f144c4bb6eb",
+    "src/empire/features/themes/storage_contract.py": "4ac669e8521157fbe5ac5a441ff182d941e8e51695dc470770154a7cefd4afa4",
+    "src/empire/features/themes/repository.py": "ab1786d26d6c4c11cb4406eee0a19927b7de200cd29ffa516c4e6b630e768ac0",
+    "src/empire/features/themes/dataset.py": "b2e4acb25c65bfe5eb01cdc43c1c3e2decac5a65cfc79822ad0e1f8105bdc1d0",
+    "src/empire/features/themes/query.py": "37a7952f4cd03f424796f3eb2962ae52918a90bd571d1d33e5bd584c191285db",
+    "scripts/measure_theme_capacity.py": "764cd816a4af32090a49840260479eff20e3d45d25fc4267497d58a038b9b153",
+    "src/empire/sources/security_identity.py": "9e6d5b95edfc63d81e69a6de34ca29074063f30697d4fd00bb8eec636f8646c8"
+  },
+  "ddl_scopes": {
+    "theme_daily": "458338d0a2e43b28f9d5dbb0cdc3ca24aac2fb1f34c07b1bba5359c8fe4d2af1",
+    "theme_detail": "f0c72cba191f59bf02f836ec150071b5a5175d2690a5688878f28f494d6996d4",
+    "theme_category": "fe93be49d88b57af32e4cb7712c4cf27ba82ab9f7f4039a37442913d7629e3d1",
+    "theme_stock": "833547cbfd5ad93057fe0a2461491483c9c7632a12ed76ca99d4b61a4403a52d",
+    "theme_stock_reason": "de1074ff5fe7043069c2a517d2e8e34bb265959b10e2b48781022c997f3f3518"
+  },
+  "limits": {
+    "redis_peak_owned_bytes": 134217728,
+    "append_p95_ms": 50,
+    "replay_max_ms": 2000,
+    "daily_query_p95_ms": 100,
+    "detail_query_p95_ms": 100,
+    "list_write_seconds": 20,
+    "detail_write_seconds": 20
+  },
+  "measurements": {
+    "scope": "synthetic 252 roots, all four metrics change every sample; seven Beijing calendar days",
+    "rows": 252,
+    "rounds_per_day": 480,
+    "days": 7,
+    "redis_peak_owned_bytes": 71118055,
+    "append_p95_ms": 7.090599974617362,
+    "append_max_ms": 13.074300019070506,
+    "replay_max_ms": 1133.677100064233,
+    "elapsed_seconds": 27.244625699939206,
+    "day_memory_bytes": [
+      10151684,
+      10152046,
+      10151950,
+      10151998,
+      10152094,
+      10151774,
+      10151950
+    ],
+    "limitations": "Synthetic capacity, not seven days of production source history; no 2000-theme throughput claim",
+    "daily_rows": 60000,
+    "detail_units": 30,
+    "relation_rows": 30000,
+    "list_write_seconds": 1.492489000025671,
+    "detail_write_seconds": 0.8831208000192419,
+    "unchanged_list_and_detail_ms": 45.765799994114786,
+    "daily_query_p95_ms": 3.499799990095198,
+    "detail_query_p95_ms": 4.2844999697990716
+  },
+  "history": {
+    "scope": "synthetic 252 roots, all four metrics change every sample; seven Beijing calendar days",
+    "rows": 252,
+    "rounds_per_day": 480,
+    "days": 7,
+    "redis_peak_owned_bytes": 71118055,
+    "append_p95_ms": 7.090599974617362,
+    "append_max_ms": 13.074300019070506,
+    "replay_max_ms": 1133.677100064233,
+    "elapsed_seconds": 27.244625699939206,
+    "day_memory_bytes": [
+      10151684,
+      10152046,
+      10151950,
+      10151998,
+      10152094,
+      10151774,
+      10151950
+    ],
+    "limitations": "Synthetic capacity, not seven days of production source history; no 2000-theme throughput claim"
+  },
+  "conditions": {
+    "history": "Reused unchanged history implementation and 2026-10-24 seven-day measurement",
+    "sql": "Current typed repository and official paginated query; synthetic 60000 daily rows and 30000 relations including empty reasons"
+  },
+  "reviewed_tradeoffs": [
+    "Redis benchmark is 252 items, not a 2000-item worst-case guarantee; global shared capacity can refuse collection.",
+    "SQL 60000 daily rows allocated about 12MiB incl indexes; 2000/day one year ~141MiB, five years ~703MiB by linear extrapolation, not five-year test.",
+    "Last content observation does not update unchanged business rows; common fingerprint and collection_state track confirmation.",
+    "Only latest detail is retained; no historical body availability claim."
+  ],
+  "unchanged_business_dml": 0,
+  "exact_counts": {
+    "theme_daily": 60000,
+    "theme_detail": 30,
+    "theme_stock_reason": 30000
+  },
+  "reused_history_evidence": "docs/evidence/kaipanla-theme-capacity-2026-10-24.json",
+  "input_identity_verified": true,
+  "checked_at": "2026-10-30T05:59:55.373312+00:00",
+  "database": "empire_capacity_7e4f28e9dde441d3ab919b1b7786b85d_test",
+  "measurement_service": {
+    "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

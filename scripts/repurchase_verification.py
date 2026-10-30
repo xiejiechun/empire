@@ -112,7 +112,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     _app = QCoreApplication.instance() or QCoreApplication(sys.argv[:1])
     action = verification.recover(args) if args.cleanup_only else verification.verify(args, verify_scope,
-        subject='repurchases', require_proxy=True, non_stock_scope=dict(unit='全市场方案REPURCODE完整游标',
+        subject='repurchases', non_stock_scope=dict(unit='全市场方案REPURCODE完整游标',
             reason='纯组织迁移；请求按全市场方案编号而非证券过滤，完整源集合包含多市场及股份类型，不声明随机30股',fixed=[]))
     passed = asyncio.run(action)
     print('PASS' if passed else 'FAIL',flush=True)

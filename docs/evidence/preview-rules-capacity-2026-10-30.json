@@ -1,0 +1,247 @@
+{
+  "run_id": "3d03a34af8cf4ea5b84488738c90a64a",
+  "mode": "verification",
+  "checked_at": "2026-10-30T06:05:03.597331+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\margin-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce",
+    "D:\\project\\empire\\src\\empire\\features\\trading_rules\\contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+    "D:\\project\\empire\\src\\empire\\features\\trading_rules\\review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+    "D:\\project\\empire\\src\\empire\\features\\trading_rules\\bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+    "D:\\project\\empire\\src\\empire\\features\\trading_rules\\dataset.py": "1b2b5853a50ac1442a0ee42f3a0063df98b0e4e00b033123389902540f5f1841",
+    "D:\\project\\empire\\src\\empire\\features\\trading_rules\\query.py": "f8645bfff2c67467a30c31e3cde2036df944d9eeb0471b01637a7f774d5001a9",
+    "D:\\project\\empire\\scripts\\measure_trading_rules.py": "32f220235276b023a41fd2ef3bcbc3d9985142fa81808f9ef915b8173d210dfa",
+    "D:\\project\\empire\\scripts\\trading_rule_capacity.py": "47303fbcf8e76aeeef042d796cfd5a2a1a786be4a21a7e9eba48ba1c59e2200a",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "D:\\project\\empire\\scripts\\source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "D:\\project\\empire\\tests\\test_trading_rules.py": "0208a77a93f4738cfab3d26fd101d9a4a624dbfe97aa325bef26a08c2fdee53d",
+    "D:\\project\\empire\\tests\\rule_samples.py": "fd7360b8905aecf125f5dcdaba70c849973b649047111b71503a40737a9de137",
+    "D:\\project\\empire\\tests\\rule_bse_samples.py": "97351c01e5e5ba45735b653c0c79aebec0fe86ba8c02ccfb0216cf227a950e71"
+  },
+  "subject": "trading_rules_capacity",
+  "source_sha256": "40375fb0cb99082918502392e8e8f460e56ceef8de7869e4bf01c53ff4450319",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原77审核参数加10000行未来历史SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_3d03a34af8cf4ea5b84488738c90a64a_test",
+    "namespace": "empire:test:verify_ths:3d03a34af8cf4ea5b84488738c90a64a",
+    "run_id": "3d03a34af8cf4ea5b84488738c90a64a",
+    "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+    "owner_sha256": "58731d63eb4233aa35d5b27f033ea98ebabba94351397bda7073b41e662a5f71"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\margin-mysql-20261030-v2\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "ddl_scopes": {
+    "trading_rule_value": "bb7aac826b4644da861359d444478562b898e937f17bb759678ce277076bc6a2",
+    "trading_rule_citation": "6de4e97567f936aff1d6b3fe4929d5b9b2a03b5822c8cd76a037aa4dde1237d2"
+  },
+  "bindings": {
+    "src/empire/features/trading_rules/contract.py": "6ae461b788651fb9b92535306fad7e20281c8edc8e54e5faf6d758fbbbb96fb6",
+    "src/empire/features/trading_rules/review.py": "42a5d7c9cae0b9b582611e05345a1b8402abe6eacd1325e638a51f639f487fa7",
+    "src/empire/features/trading_rules/bse_review.py": "ca75d832a920c56f8c0068ecbfd32c0b307ae0e483369e856ffdc6bcb98c9ed7",
+    "src/empire/features/trading_rules/dataset.py": "1b2b5853a50ac1442a0ee42f3a0063df98b0e4e00b033123389902540f5f1841",
+    "src/empire/features/trading_rules/query.py": "f8645bfff2c67467a30c31e3cde2036df944d9eeb0471b01637a7f774d5001a9",
+    "scripts/measure_trading_rules.py": "32f220235276b023a41fd2ef3bcbc3d9985142fa81808f9ef915b8173d210dfa",
+    "scripts/trading_rule_capacity.py": "47303fbcf8e76aeeef042d796cfd5a2a1a786be4a21a7e9eba48ba1c59e2200a",
+    "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "tests/test_trading_rules.py": "0208a77a93f4738cfab3d26fd101d9a4a624dbfe97aa325bef26a08c2fdee53d",
+    "tests/rule_samples.py": "fd7360b8905aecf125f5dcdaba70c849973b649047111b71503a40737a9de137",
+    "tests/rule_bse_samples.py": "97351c01e5e5ba45735b653c0c79aebec0fe86ba8c02ccfb0216cf227a950e71"
+  },
+  "measurements": {
+    "import_seconds": 0.13156200002413243,
+    "page_p95_ms": 2.0593999652191997,
+    "detail_p95_ms": 0.4248999757692218,
+    "coverage_p95_ms": 21.034000033978373,
+    "allocated_bytes": 12763136
+  },
+  "limits": {
+    "page_p95_ms": 200,
+    "detail_p95_ms": 200,
+    "coverage_p95_ms": 500,
+    "import_seconds": 5,
+    "allocated_bytes": 67108864
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "actual_contract_rows": 77,
+    "stress_rows": 10000,
+    "cache": "first query unforced; following repetitions hot; original 20 samples, sorted index18 P95",
+    "synthetic": true
+  },
+  "reviewed_tradeoffs": "当前77审核参数用正式映射，逐kind参数及引用完整内容相同、重复零DML、单参数修订；10000行仅隔离未来历史索引压力，不宣称来源覆盖。原查询、20次P95及预算保持。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "trading_rule_value",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": "ix_rule_kind_market,ix_rule_effective",
+        "key": "PRIMARY",
+        "key_len": "64",
+        "ref": null,
+        "rows": 400,
+        "filtered": 49.99,
+        "Extra": "Using where"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "trading_rule_citation",
+        "partitions": null,
+        "type": "ALL",
+        "possible_keys": null,
+        "key": null,
+        "key_len": null,
+        "ref": null,
+        "rows": 30,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "v",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_rule_kind_market,ix_rule_effective",
+        "key": "ix_rule_kind_market",
+        "key_len": "32",
+        "ref": "const",
+        "rows": 4435,
+        "filtered": 100.0,
+        "Extra": "Using filesort"
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 68200,
+      "estimated_scan_rows": 400,
+      "first_ms": 2.063299994915724
+    },
+    "detail": {
+      "returned": 1,
+      "read_bytes": 1119,
+      "estimated_scan_rows": 30,
+      "first_ms": 0.4248999757692218
+    },
+    "coverage": {
+      "returned": 1001,
+      "read_bytes": 341341,
+      "estimated_scan_rows": 4435,
+      "first_ms": 20.0118999928236
+    }
+  },
+  "samples": {
+    "page": [
+      2.063299994915724,
+      1.4127999893389642,
+      1.261600002180785,
+      1.4886999852024019,
+      1.8532999674789608,
+      1.6739999991841614,
+      1.8739000079222023,
+      1.4324000221677125,
+      1.7011999734677374,
+      1.3463000068441033,
+      1.2815999798476696,
+      1.393500017002225,
+      1.3977999915368855,
+      1.3891999842599034,
+      1.3193999766372144,
+      1.6244000289589167,
+      1.4298000023700297,
+      1.4451000024564564,
+      1.863999990746379,
+      2.0593999652191997
+    ],
+    "detail": [
+      0.4248999757692218,
+      0.19890000112354755,
+      0.17499999376013875,
+      0.16490003326907754,
+      0.17859996296465397,
+      0.28500001644715667,
+      0.1878999755717814,
+      0.16460003098472953,
+      0.2921000123023987,
+      0.2995000104419887,
+      0.18820003606379032,
+      0.31539995688945055,
+      0.2964000450447202,
+      0.3184000379405916,
+      0.26599998818710446,
+      0.5061000119894743,
+      0.23259996669366956,
+      0.1832999987527728,
+      0.16739999409765005,
+      0.22950000129640102
+    ],
+    "coverage": [
+      20.0118999928236,
+      20.57069999864325,
+      20.25940001476556,
+      19.92299995617941,
+      20.128300006035715,
+      20.186299982015043,
+      19.069299974944443,
+      19.83120001386851,
+      19.831799960229546,
+      20.41779999854043,
+      20.045500015839934,
+      20.066299999598414,
+      19.979100034106523,
+      19.57919995766133,
+      19.36630002455786,
+      21.85230003669858,
+      19.82970000244677,
+      20.69230005145073,
+      21.034000033978373,
+      19.959400000516325
+    ]
+  },
+  "initial_dml": 107,
+  "duplicate_dml": 0,
+  "revised_dml": 1,
+  "correctness": {
+    "all_seven_kinds_and_citations_equal": true,
+    "stress_full_rows_equal": 10000,
+    "repeated_business_dml": 0
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

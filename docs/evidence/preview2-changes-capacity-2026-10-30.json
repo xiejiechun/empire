@@ -1,0 +1,256 @@
+{
+  "run_id": "edbee41b995c4c1f824b1e43cf19123a",
+  "mode": "verification",
+  "checked_at": "2026-10-30T06:09:09.859708+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\margin-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\source.py": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\collector.py": "9bb48c4d11b58943a2fbd013ece2b354dd2564ddafd80262bda751e234298a73",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\dataset.py": "5f28042c43308692ee72b78b3452238e396eb92af91a560da44bc6b937911784",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\query.py": "40b7afd383f65f8722aee0431d2e3fd06e406349663cee978901bad8804d441c",
+    "D:\\project\\empire\\scripts\\performance_capacity.py": "1bef98555b66947927a19a38a737abbe26d011cf06f999df34c00864fa753efc",
+    "D:\\project\\empire\\scripts\\measure_shareholder_changes.py": "2b181b8714913707bcdc212e56b9a345d4a10a9bed46a4e97f4fbe08dd79114c",
+    "D:\\project\\empire\\scripts\\performance_storage.py": "6e335affaba0dc6631e27a73f88bea279a0c4a9177fbf86aceeca945c0d878a6",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "D:\\project\\empire\\scripts\\source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "D:\\project\\empire\\src\\empire\\contracts\\business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+    "D:\\project\\empire\\sql\\business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
+    "D:\\project\\empire\\docs\\evidence\\shareholder-changes-live-2026-10-13.json": "02d7f91ac91cd90d6cd2d273739f9d543a15826f420cb289166f59ef44e04c4c"
+  },
+  "subject": "changes_capacity",
+  "source_sha256": "93f19b0b0316e87d9289c4386a31442908ad115cb46a01a54e5f950733c62d68",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原五表各100000行或股东变动100000行SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_edbee41b995c4c1f824b1e43cf19123a_test",
+    "namespace": "empire:test:verify_ths:edbee41b995c4c1f824b1e43cf19123a",
+    "run_id": "edbee41b995c4c1f824b1e43cf19123a",
+    "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+    "owner_sha256": "aa51efc0fbd809248944def9bf33baa7b50fbb996fb4f0739ee6e8fa9605b864"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\margin-mysql-20261030-v2\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "bindings": {
+    "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+    "src/empire/features/performance/source.py": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e",
+    "src/empire/features/performance/collector.py": "9bb48c4d11b58943a2fbd013ece2b354dd2564ddafd80262bda751e234298a73",
+    "src/empire/features/performance/dataset.py": "5f28042c43308692ee72b78b3452238e396eb92af91a560da44bc6b937911784",
+    "src/empire/features/performance/query.py": "40b7afd383f65f8722aee0431d2e3fd06e406349663cee978901bad8804d441c",
+    "scripts/performance_capacity.py": "1bef98555b66947927a19a38a737abbe26d011cf06f999df34c00864fa753efc",
+    "scripts/measure_shareholder_changes.py": "2b181b8714913707bcdc212e56b9a345d4a10a9bed46a4e97f4fbe08dd79114c",
+    "scripts/performance_storage.py": "6e335affaba0dc6631e27a73f88bea279a0c4a9177fbf86aceeca945c0d878a6",
+    "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+    "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
+    "docs/evidence/shareholder-changes-live-2026-10-13.json": "02d7f91ac91cd90d6cd2d273739f9d543a15826f420cb289166f59ef44e04c4c"
+  },
+  "ddl_scopes": {
+    "shareholder_change": "45308303c97fcad0dfc62948095056f389abfbdcfdd7ab746aa6cfcc014cc7c8"
+  },
+  "measurements": {
+    "page_ms": 2.9888999997638166,
+    "security_ms": 0.9726000134833157,
+    "detail_ms": 0.35640003625303507,
+    "month_ms": 90.60009999666363,
+    "range_ms": 3.8192999782040715,
+    "allocated_bytes": 81313792,
+    "projected_million_bytes": 813137920,
+    "import_seconds": 7.233986100007314,
+    "repeat_seconds": 0.16708270000526682,
+    "revision_seconds": 0.1685797999962233,
+    "message_bytes": 25200,
+    "matrix_bytes": 760001,
+    "query_peak_bytes": 5510284
+  },
+  "limits": {
+    "page_ms": 100,
+    "security_ms": 100,
+    "detail_ms": 100,
+    "month_ms": 5000,
+    "range_ms": 100,
+    "allocated_bytes": 268435456,
+    "projected_million_bytes": 2147483648,
+    "import_seconds": 120,
+    "repeat_seconds": 5,
+    "revision_seconds": 5,
+    "message_bytes": 524288,
+    "matrix_bytes": 8388608,
+    "query_peak_bytes": 33554432
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "independent_service": true,
+    "rows": 100000,
+    "cache": "first unforced plus four warm; maximum conservatively bounds P95",
+    "source": "real normalized early event expanded across 5000 securities and 20 months"
+  },
+  "reviewed_tradeoffs": "事实列与三个业务查询索引；开始日期严格保留月/日精度的VARCHAR(10)，不伪造日。测完整5000行市场重复零DML及单行修订；估计百万行是线性投影而非生产实采或冷盘承诺。",
+  "details": {
+    "all_rows_verified": 100000,
+    "samples": {
+      "page": [
+        2.9888999997638166,
+        2.808300021570176,
+        2.42829998023808,
+        2.480600029230118,
+        2.7709000278264284
+      ],
+      "security": [
+        0.9726000134833157,
+        0.5356000037863851,
+        0.5754000158049166,
+        0.6979999598115683,
+        0.6071000243537128
+      ],
+      "detail": [
+        0.35640003625303507,
+        0.28009997913613915,
+        0.26780000189319253,
+        0.3562999772839248,
+        0.311699986923486
+      ],
+      "month": [
+        90.60009999666363,
+        46.46589996991679,
+        44.71460002241656,
+        43.7104000011459,
+        46.63170001003891
+      ],
+      "range": [
+        3.8192999782040715,
+        1.7905000131577253,
+        1.0717999539338052,
+        1.5958999865688384,
+        1.1070000473409891
+      ]
+    },
+    "query_ms": {
+      "page": 2.9888999997638166,
+      "security": 0.9726000134833157,
+      "detail": 0.35640003625303507,
+      "month": 90.60009999666363,
+      "range": 3.8192999782040715
+    },
+    "returned": {
+      "page": 200,
+      "security": 20,
+      "detail": 1,
+      "month": 5000,
+      "range": 200
+    },
+    "explain": {
+      "page": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "index",
+          "possible_keys": null,
+          "key": "ix_date",
+          "key_len": "78",
+          "ref": null,
+          "rows": 200,
+          "filtered": 100.0,
+          "Extra": "Backward index scan"
+        }
+      ],
+      "security": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "ref",
+          "possible_keys": "ix_security_date",
+          "key": "ix_security_date",
+          "key_len": "11",
+          "ref": "const",
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": "Backward index scan"
+        }
+      ],
+      "detail": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "const",
+          "possible_keys": "PRIMARY",
+          "key": "PRIMARY",
+          "key_len": "64",
+          "ref": "const",
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": null
+        }
+      ],
+      "month": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "ref",
+          "possible_keys": "ix_month",
+          "key": "ix_month",
+          "key_len": "3",
+          "ref": "const",
+          "rows": 9314,
+          "filtered": 100.0,
+          "Extra": null
+        }
+      ],
+      "range": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "range",
+          "possible_keys": "ix_date",
+          "key": "ix_date",
+          "key_len": "3",
+          "ref": null,
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": "Using index condition; Backward index scan"
+        }
+      ]
+    },
+    "repeated_business_dml": 0,
+    "revised_rows": 1
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

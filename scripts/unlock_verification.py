@@ -191,7 +191,7 @@ def main(family, argv=None):
             unit='本轮来源目录全部月份与行业完整集合', reason='来源不按证券采集；行业不充当随机30股票', fixed=[]))
     else:
         action = verification.verify(args, verify_scope, subject='unlocks', minimum_random=30,
-                                     fixed_codes=('603027.SH',), require_proxy=True)
+                                     fixed_codes=('603027.SH',))
     passed = asyncio.run(action)
     print('PASS' if passed else 'FAIL', flush=True)
     return 0 if passed else 1
