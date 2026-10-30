@@ -387,14 +387,14 @@ async function main() {
       const checked = await p.evaluate(async ({ ident, view }) => {
         const counts = [];
         for (const direction of ["asc", "desc"]) {
-          const request = { ident, view, filters: {}, order: { field: "code", direction }, cursor: "null" };
+          const request = { ident, view, filters: {}, order: { field: "unified_code", direction }, cursor: "null" };
           const first = await window.empire.read("preview.read", request);
           if (!first.next) throw new Error("Live ordering requires two populated stock pages");
           const second = await window.empire.read("preview.read", { ...request, cursor: JSON.stringify(first.next) });
           const rows = [...first.rows, ...second.rows];
           if (rows.length !== 100 || new Set(rows.map(r => r.unified_code)).size !== 100)
             throw new Error("Live sorted pages are incomplete or repeated");
-          if (rows.some((r, i) => i && (direction === "asc" ? rows[i - 1].code > r.code : rows[i - 1].code < r.code)))
+          if (rows.some((r, i) => i && (direction === "asc" ? rows[i - 1].unified_code > r.unified_code : rows[i - 1].unified_code < r.unified_code)))
             throw new Error("Live cross-page order is incorrect");
           counts.push(rows.length);
         }

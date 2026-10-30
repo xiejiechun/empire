@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-30T07:21:04.656523+00:00",
-  "note": "Full regression found two stale test assumptions; adapted them without changing product code or weakening Redis-independent browsing/content assertions. Existing user help and capacity bindings remain valid.",
-  "unchanged_reason": "Only two test assertions/adapters changed to match already documented query behavior; no product behavior change.",
+  "reviewed_at": "2026-10-30T08:26:42.410215+00:00",
+  "note": "Final evidence review: full release 4476 passed and 10 explicit skips; live UI covers 51 entries, 76 views, 32 details and bidirectional cross-page stock ordering; configuration hashes preserved and visible launcher reopened. Post-release QA-only field correction leaves product/test digest unchanged.",
+  "unchanged_reason": "",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -618,7 +618,7 @@
     "src/empire/sources/yuanhang_service.py": "0f92c0e015cb817b631a980d8e7bc0072b32d3f8874278ea5de2941072eafebf",
     "src/empire/sources/yuanhang_wire.py": "a936cfd1c8e7a0e6c917934ed043e26686296ff43e41f3e6f21d0a63c47fde1b"
   },
-  "content_sha256": "a1b076caf5d277fd99fb9066f534db22e703549e373414eb802cf76289c4a692",
+  "content_sha256": "01c3f3cb77433ce535b99dac20cf619bde1f049513e57875d20991b3fbfd6b78",
   "features": {
     "page:ths_capital": {
       "sources": {

@@ -1,0 +1,842 @@
+{
+  "mode": "isolated",
+  "tasks": [
+    "tdx-unlock-industries",
+    "tdx-unlocks",
+    "ths-holders",
+    "ths-capital",
+    "tdx-earnings-forecast",
+    "tdx-earnings-quick",
+    "tdx-earnings-disclosure",
+    "tdx-earnings-report",
+    "tdx-holder-count",
+    "tdx-shareholder-changes",
+    "eastmoney-repurchases",
+    "rules-limit-rules",
+    "rules-settlement-rules",
+    "rules-lot-rules",
+    "rules-tick-rules",
+    "rules-sessions",
+    "rules-stamp-duty",
+    "rules-transfer-fee",
+    "tdx-listing-status",
+    "ths-index-prices",
+    "tdx-st-implementation",
+    "tdx-st-removal",
+    "tdx-company-renames",
+    "tdx-security-renames",
+    "ths-listings",
+    "ths-industries",
+    "ths-indices",
+    "ths-income",
+    "ths-balance",
+    "ths-cashflow",
+    "tdx-dividends",
+    "tdx-additional-issues",
+    "tdx-rights-issues",
+    "ths-stocks",
+    "sina-stocks",
+    "sina-news",
+    "cninfo-calendar",
+    "tdx-suspensions",
+    "tdx-hot-list",
+    "tdx-margin",
+    "tdx-industry-margin",
+    "kaipanla-themes",
+    "kaipanla-theme-details",
+    "ths-yuanhang-prices",
+    "ths-yuanhang-financial",
+    "ths-yuanhang-limit-up-pool",
+    "ths-yuanhang-sprint-limit-up",
+    "ths-yuanhang-connect-broad-pool",
+    "ths-yuanhang-open-limit-up-pool",
+    "ths-yuanhang-limit-down-pool",
+    "ths-yuanhang-reason"
+  ],
+  "views": [
+    {
+      "task": "tdx-unlock-industries",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-unlocks",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-holders",
+      "view": "top_holders",
+      "renderer": "holdings",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-holders",
+      "view": "float_holders",
+      "renderer": "holdings",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-holders",
+      "view": "bond_holders",
+      "renderer": "holdings",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_funding:raise_",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_project:progress",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_transaction:asset",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_transaction:transfer",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_transaction:connect",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_equity_summary:invest",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_equity_position:invest",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_ipo:ipo",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_encumbrance:pledge",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_encumbrance:freeze",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_release:pledge",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_release:freeze",
+      "renderer": "capital",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-earnings-forecast",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-earnings-quick",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-earnings-disclosure",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-earnings-report",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-holder-count",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-shareholder-changes",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "eastmoney-repurchases",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "rules-limit-rules",
+      "view": "rules",
+      "renderer": "rules",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "rules-settlement-rules",
+      "view": "rules",
+      "renderer": "rules",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "rules-lot-rules",
+      "view": "rules",
+      "renderer": "rules",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "rules-tick-rules",
+      "view": "rules",
+      "renderer": "rules",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "rules-sessions",
+      "view": "rules",
+      "renderer": "rules",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "rules-stamp-duty",
+      "view": "rules",
+      "renderer": "rules",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "rules-transfer-fee",
+      "view": "rules",
+      "renderer": "rules",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-listing-status",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-index-prices",
+      "view": "records",
+      "renderer": "prices",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-st-implementation",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-st-removal",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-company-renames",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-security-renames",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-listings",
+      "view": "records",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-industries",
+      "view": "directory",
+      "renderer": "directory",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-industries",
+      "view": "members",
+      "renderer": "directory",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-indices",
+      "view": "indices",
+      "renderer": "directory",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-indices",
+      "view": "members",
+      "renderer": "directory",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-income",
+      "view": "income",
+      "renderer": "statement",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-balance",
+      "view": "balance",
+      "renderer": "statement",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-cashflow",
+      "view": "cashflow",
+      "renderer": "statement",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-dividends",
+      "view": "dividends",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-additional-issues",
+      "view": "additional_issues",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-rights-issues",
+      "view": "rights_issues",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-stocks",
+      "view": "stocks",
+      "renderer": "directory",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "sina-stocks",
+      "view": "stocks",
+      "renderer": "directory",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "sina-news",
+      "view": "news",
+      "renderer": "news",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "cninfo-calendar",
+      "view": "calendar",
+      "renderer": "calendar",
+      "rows": 2,
+      "second": null
+    },
+    {
+      "task": "tdx-suspensions",
+      "view": "events",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-hot-list",
+      "view": "records",
+      "renderer": "hotlist",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-margin",
+      "view": "records",
+      "renderer": "directory",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "tdx-industry-margin",
+      "view": "records",
+      "renderer": "directory",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "kaipanla-themes",
+      "view": "daily",
+      "renderer": "themes",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "kaipanla-themes",
+      "view": "details",
+      "renderer": "themes",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "kaipanla-theme-details",
+      "view": "daily",
+      "renderer": "themes",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "kaipanla-theme-details",
+      "view": "details",
+      "renderer": "themes",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-prices",
+      "view": "prices",
+      "renderer": "prices",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-financial",
+      "view": "actions",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-financial",
+      "view": "total",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-financial",
+      "view": "circulating",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-financial",
+      "view": "free_float",
+      "renderer": "events",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-limit-up-pool",
+      "view": "daily",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-limit-up-pool",
+      "view": "live",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-sprint-limit-up",
+      "view": "daily",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-sprint-limit-up",
+      "view": "live",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-connect-broad-pool",
+      "view": "daily",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-connect-broad-pool",
+      "view": "live",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-open-limit-up-pool",
+      "view": "daily",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-open-limit-up-pool",
+      "view": "live",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-limit-down-pool",
+      "view": "daily",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-limit-down-pool",
+      "view": "live",
+      "renderer": "pool",
+      "rows": 2,
+      "second": 2
+    },
+    {
+      "task": "ths-yuanhang-reason",
+      "view": "reason",
+      "renderer": "reason",
+      "rows": 1,
+      "second": 1
+    }
+  ],
+  "details": [
+    {
+      "task": "tdx-unlocks",
+      "view": "records:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-holders",
+      "view": "top_holders:detail",
+      "rows": 1
+    },
+    {
+      "task": "ths-holders",
+      "view": "float_holders:detail",
+      "rows": 1
+    },
+    {
+      "task": "ths-holders",
+      "view": "bond_holders:detail",
+      "rows": 1
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_funding:raise_:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_project:progress:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_transaction:asset:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_transaction:transfer:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_transaction:connect:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_equity_summary:invest:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_equity_position:invest:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_ipo:ipo:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_encumbrance:pledge:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_encumbrance:freeze:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_release:pledge:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-capital",
+      "view": "capital_release:freeze:detail",
+      "rows": 2
+    },
+    {
+      "task": "eastmoney-repurchases",
+      "view": "records:detail",
+      "rows": 2
+    },
+    {
+      "task": "rules-limit-rules",
+      "view": "rules:detail",
+      "rows": 2
+    },
+    {
+      "task": "rules-settlement-rules",
+      "view": "rules:detail",
+      "rows": 2
+    },
+    {
+      "task": "rules-lot-rules",
+      "view": "rules:detail",
+      "rows": 2
+    },
+    {
+      "task": "rules-tick-rules",
+      "view": "rules:detail",
+      "rows": 2
+    },
+    {
+      "task": "rules-sessions",
+      "view": "rules:detail",
+      "rows": 2
+    },
+    {
+      "task": "rules-stamp-duty",
+      "view": "rules:detail",
+      "rows": 2
+    },
+    {
+      "task": "rules-transfer-fee",
+      "view": "rules:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-listings",
+      "view": "records:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-industries",
+      "view": "members",
+      "rows": 2
+    },
+    {
+      "task": "ths-indices",
+      "view": "members",
+      "rows": 2
+    },
+    {
+      "task": "ths-income",
+      "view": "income:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-balance",
+      "view": "balance:detail",
+      "rows": 2
+    },
+    {
+      "task": "ths-cashflow",
+      "view": "cashflow:detail",
+      "rows": 2
+    },
+    {
+      "task": "tdx-hot-list",
+      "view": "records:detail",
+      "rows": 1
+    },
+    {
+      "task": "kaipanla-themes",
+      "view": "details",
+      "rows": 2
+    },
+    {
+      "task": "kaipanla-theme-details",
+      "view": "details",
+      "rows": 2
+    }
+  ],
+  "interactions": [
+    "column visibility and row density survive global sorting and reset",
+    "tdx-unlock-industries/records all headers sortable; global request resets cursor",
+    "tdx-unlocks/records all headers sortable; global request resets cursor",
+    "all unlock holders retained",
+    "ths-holders/top_holders all headers sortable; global request resets cursor",
+    "top_holders current and exited holders distinct",
+    "ths-holders/float_holders all headers sortable; global request resets cursor",
+    "float_holders current and exited holders distinct",
+    "ths-holders/bond_holders all headers sortable; global request resets cursor",
+    "bond_holders current and exited holders distinct",
+    "ths-capital/capital_funding:raise_ all headers sortable; global request resets cursor",
+    "ths-capital/capital_project:progress all headers sortable; global request resets cursor",
+    "ths-capital/capital_transaction:asset all headers sortable; global request resets cursor",
+    "ths-capital/capital_transaction:transfer all headers sortable; global request resets cursor",
+    "ths-capital/capital_transaction:connect all headers sortable; global request resets cursor",
+    "ths-capital/capital_equity_summary:invest all headers sortable; global request resets cursor",
+    "ths-capital/capital_equity_position:invest all headers sortable; global request resets cursor",
+    "ths-capital/capital_ipo:ipo all headers sortable; global request resets cursor",
+    "ths-capital/capital_encumbrance:pledge all headers sortable; global request resets cursor",
+    "ths-capital/capital_encumbrance:freeze all headers sortable; global request resets cursor",
+    "ths-capital/capital_release:pledge all headers sortable; global request resets cursor",
+    "ths-capital/capital_release:freeze all headers sortable; global request resets cursor",
+    "tdx-earnings-forecast/records all headers sortable; global request resets cursor",
+    "tdx-earnings-quick/records all headers sortable; global request resets cursor",
+    "tdx-earnings-disclosure/records all headers sortable; global request resets cursor",
+    "tdx-earnings-report/records all headers sortable; global request resets cursor",
+    "tdx-holder-count/records all headers sortable; global request resets cursor",
+    "tdx-shareholder-changes/records all headers sortable; global request resets cursor",
+    "eastmoney-repurchases/records all headers sortable; global request resets cursor",
+    "tdx-listing-status/records all headers sortable; global request resets cursor",
+    "ths-index-prices/records all headers sortable; global request resets cursor",
+    "ths-index-prices chart ascending dates",
+    "tdx-st-implementation/records all headers sortable; global request resets cursor",
+    "tdx-st-removal/records all headers sortable; global request resets cursor",
+    "tdx-company-renames/records all headers sortable; global request resets cursor",
+    "tdx-security-renames/records all headers sortable; global request resets cursor",
+    "ths-listings/records all headers sortable; global request resets cursor",
+    "ths-industries/members all headers sortable; global request resets cursor",
+    "ths-indices/members all headers sortable; global request resets cursor",
+    "ths-income/income all headers sortable; global request resets cursor",
+    "ths-balance/balance all headers sortable; global request resets cursor",
+    "ths-cashflow/cashflow all headers sortable; global request resets cursor",
+    "tdx-dividends/dividends all headers sortable; global request resets cursor",
+    "tdx-additional-issues/additional_issues all headers sortable; global request resets cursor",
+    "issue unavailable detail distinguished from previous valid version",
+    "tdx-rights-issues/rights_issues all headers sortable; global request resets cursor",
+    "ths-stocks/stocks all headers sortable; global request resets cursor",
+    "sina-stocks/stocks all headers sortable; global request resets cursor",
+    "news full text retained",
+    "calendar missing weekend remains unknown",
+    "tdx-suspensions/events all headers sortable; global request resets cursor",
+    "suspension source dates presented separately",
+    "tdx-hot-list/records all headers sortable; global request resets cursor",
+    "hot list reason and both seat directions",
+    "source-empty seats explicitly labeled as previous valid data",
+    "tdx-margin/records all headers sortable; global request resets cursor",
+    "tdx-industry-margin/records all headers sortable; global request resets cursor",
+    "ths-yuanhang-prices/prices all headers sortable; global request resets cursor",
+    "ths-yuanhang-prices chart ascending dates",
+    "ths-yuanhang-financial/actions all headers sortable; global request resets cursor",
+    "ths-yuanhang-financial/total all headers sortable; global request resets cursor",
+    "ths-yuanhang-financial/circulating all headers sortable; global request resets cursor",
+    "ths-yuanhang-financial/free_float all headers sortable; global request resets cursor",
+    "ths-yuanhang-limit-up-pool/daily all headers sortable; global request resets cursor",
+    "ths-yuanhang-limit-up-pool/live all headers sortable; global request resets cursor",
+    "ths-yuanhang-sprint-limit-up/daily all headers sortable; global request resets cursor",
+    "ths-yuanhang-sprint-limit-up/live all headers sortable; global request resets cursor",
+    "ths-yuanhang-connect-broad-pool/daily all headers sortable; global request resets cursor",
+    "ths-yuanhang-connect-broad-pool/live all headers sortable; global request resets cursor",
+    "ths-yuanhang-open-limit-up-pool/daily all headers sortable; global request resets cursor",
+    "ths-yuanhang-open-limit-up-pool/live all headers sortable; global request resets cursor",
+    "ths-yuanhang-limit-down-pool/daily all headers sortable; global request resets cursor",
+    "ths-yuanhang-limit-down-pool/live all headers sortable; global request resets cursor",
+    "statement union of subjects, exact precision, missing distinct from zero",
+    "complete statement subjects sortable by each report amount",
+    "query race and failure cannot show prior data as current",
+    "empty range does not certify collection completeness",
+    "column switch retains unapplied draft and applied page independently",
+    "empty price, duplicate/invalid/out-of-month calendar records retain unknown semantics",
+    "reading notes open on demand without occupying the data workspace"
+  ],
+  "errors": [],
+  "requestCount": 617,
+  "passed": true
+}
