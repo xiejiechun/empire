@@ -53265,8 +53265,6 @@
     "src/empire/features/capital_actions/ui.py": "f2fd0ba7946638b3267ae1a2dc052dc9548e4d3ad566e4a2b4729cccce7be71b",
     "src/empire/features/capital_actions/validation.py": "e460199cd5bba3e4a1112ed6435c5b8cdfb2a711bdd5e9cf34c6114bd75646c6",
     "src/empire/features/capital_actions/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "sql/schema.sql": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f",
-    "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
     "scripts/measure_dividend_capacity.py": "98de0974d2320f6b64657b050d31b5c8546af4b637131bc8dd1d8462d6936904",
     "scripts/dividend_capacity.py": "82143b451bf9f52388557d5fd875382773682f5a4e7a19547e128410297f46c2",
     "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
@@ -58889,5 +58887,114 @@
   "remaining": {
     "sql": false,
     "redis": false
+  },
+  "schema_objects": {
+    "dividend_plan": {
+      "ddl_sha256": "6cdb5cf668ebfb2e6030ca5a82762af4dc8224c8ac084659e2eac2d7eedd53d1",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "event_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "payload": {
+            "type": "json",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_event_date": {
+            "columns": [
+              "event_date",
+              "unified_code",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "event_date"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_order": {
+            "columns": [
+              "unified_code",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "unified_code"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "dividends.unit": {
+            "tables": [
+              "dividend_plan"
+            ],
+            "primary": "dividend_plan"
+          }
+        }
+      }
+    }
+  },
+  "ddl_scopes": {
+    "dividend_plan": "6cdb5cf668ebfb2e6030ca5a82762af4dc8224c8ac084659e2eac2d7eedd53d1"
+  },
+  "schema_scope_migration": {
+    "baseline_commit": "57fc04a",
+    "original_bindings": {
+      "sql/schema.sql": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f",
+      "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121"
+    },
+    "reason": "Only market_margin tables added. Original checksums verified against baseline LF/CRLF bytes; every measured table DDL, shape and ownership unchanged. Measurements retained, not rerun."
   }
 }

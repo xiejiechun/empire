@@ -58,7 +58,6 @@
     "scripts/event_capacity.py": "0ec356f00c67816cd85ad7c2c240863fff4e9e3ac7bb64171f70f14cebd0a56d",
     "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
     "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
-    "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc"
   },
   "ddl_scopes": {
@@ -258,5 +257,129 @@
   "remaining": {
     "sql": false,
     "redis": false
+  },
+  "schema_objects": {
+    "security_st_event": {
+      "ddl_sha256": "64810a74718bb12b7fe80775f057d795cc33cfd01b1440bf0ea8f62b8b271838",
+      "shape": {
+        "columns": {
+          "event_kind": {
+            "type": "varchar(16) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "event_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "old_name": {
+            "type": "varchar(200) collate \"utf8mb4_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "new_name": {
+            "type": "varchar(200) collate \"utf8mb4_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "source_occurrences": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "csrc_industry": {
+            "type": "varchar(200) collate \"utf8mb4_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "tdx_industry": {
+            "type": "varchar(200) collate \"utf8mb4_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "reason": {
+            "type": "varchar(2000) collate \"utf8mb4_bin\"",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "event_kind",
+          "record_key"
+        ],
+        "indexes": {
+          "ix_st_date": {
+            "columns": [
+              "event_kind",
+              "event_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_st_security": {
+            "columns": [
+              "event_kind",
+              "unified_code",
+              "event_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_event_kind": "(event_kindin('implementation','removal'))",
+          "ck_st_new": "((new_nameisnull)or(char_length(trim(new_name))>0))",
+          "ck_st_occurrences": "(source_occurrences=1)",
+          "ck_st_old": "((old_nameisnull)or(char_length(trim(old_name))>0))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "event_kind",
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "st.implementation.market": {
+            "tables": [
+              "security_st_event"
+            ],
+            "primary": "security_st_event"
+          },
+          "st.removal.market": {
+            "tables": [
+              "security_st_event"
+            ],
+            "primary": "security_st_event"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "baseline_commit": "57fc04a",
+    "original_bindings": {
+      "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121"
+    },
+    "reason": "Only market_margin tables added. Original checksums verified against baseline LF/CRLF bytes; every measured table DDL, shape and ownership unchanged. Measurements retained, not rerun."
   }
 }

@@ -66,7 +66,6 @@
     "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
     "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
-    "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
     "docs/evidence/shareholder-changes-live-2026-10-13.json": "02d7f91ac91cd90d6cd2d273739f9d543a15826f420cb289166f59ef44e04c4c"
   },
   "ddl_scopes": {
@@ -252,5 +251,168 @@
   "remaining": {
     "sql": false,
     "redis": false
+  },
+  "schema_objects": {
+    "shareholder_change": {
+      "ddl_sha256": "45308303c97fcad0dfc62948095056f389abfbdcfdd7ab746aa6cfcc014cc7c8",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "data_month": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "change_end": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "change_start": {
+            "type": "varchar(10) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "announcement_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "actor": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "price": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "shares_changed": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "shares_after": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "reason": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "leader": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "position": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "relationship": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "occurrence": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "change_end",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_month": {
+            "columns": [
+              "data_month",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "change_end",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_change_dates": "((change_startisnull)or(regexp_like(change_start,'^[0-9]{4}-[0-9]{2}(-[0-9]{2})?$')and(change_start<=(cast(change_endascharcharsetutf8mb4)collateutf8mb4_unicode_ci))))",
+          "ck_change_month": "((dayofmonth(data_month)=1)and(year(data_month)=year(change_end))and(month(data_month)=month(change_end)))",
+          "ck_change_occurrence": "(occurrencebetween1and9999)",
+          "ck_change_shares": "((shares_afterisnull)or(shares_after>=0))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "shareholder_changes.tdx_unit": {
+            "tables": [
+              "shareholder_change"
+            ],
+            "primary": "shareholder_change"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "baseline_commit": "57fc04a",
+    "original_bindings": {
+      "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121"
+    },
+    "reason": "Only market_margin tables added. Original checksums verified against baseline LF/CRLF bytes; every measured table DDL, shape and ownership unchanged. Measurements retained, not rerun."
   }
 }

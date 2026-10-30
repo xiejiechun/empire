@@ -21,11 +21,8 @@
     "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
     "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
-    "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
     "src/empire/plugins/infra/mysql_store.py": "ea551cf918d953f88ab51f631689b43a24c05bd23e2bb8929edd262e861b3a0e",
     "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
-    "sql/schema.sql": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f",
-    "sql/schema-contract.json": "fd7f4797cea3c47cfb017a9dc2e48e99f5e31c038956bc76f8ef7e3a23f09fdb",
     "scripts/measure_index_prices.py": "7e41b903104195b798404da3c15650c73688b1f722771a4ac6d9b630a2ae5d03"
   },
   "ddl_scopes": {
@@ -162,5 +159,202 @@
     "sync_binlog": 1,
     "log_bin": 0,
     "client_port": 13348
+  },
+  "schema_objects": {
+    "index_daily_price": {
+      "ddl_sha256": "83e2f5fd66f9b1004a3c26ee72a66f8c211364d15caf8ce752b7213ae85feb87",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "open": {
+            "type": "decimal(18, 6)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "high": {
+            "type": "decimal(18, 6)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "low": {
+            "type": "decimal(18, 6)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "close": {
+            "type": "decimal(18, 6)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "volume": {
+            "type": "decimal(24, 4)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "amount": {
+            "type": "decimal(24, 4)",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code",
+          "trade_date"
+        ],
+        "indexes": {
+          "ix_index_price_date": {
+            "columns": [
+              "trade_date",
+              "index_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_index_price_code": "regexp_like(index_code,'^[0-9a-z]{6}$')",
+          "ck_index_price_date": "(trade_date>='1990-01-01')",
+          "ck_index_price_ohlc": "((close>0)and((openisnull)or(open>0))and((highisnull)or(high>0))and((lowisnull)or(low>0)))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "index_code",
+          "trade_date"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "index.price.year": {
+            "tables": [
+              "index_daily_price",
+              "index_price_year"
+            ],
+            "primary": "index_daily_price"
+          },
+          "index.price.status": {
+            "tables": [
+              "index_daily_price",
+              "index_price_year"
+            ],
+            "primary": "index_daily_price"
+          }
+        }
+      }
+    },
+    "index_price_year": {
+      "ddl_sha256": "adb3d00d819c95ce8f758988d2bd5001b02347412eab9abeed767365510eb177",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "quote_year": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "source_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "row_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "last_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "complete": {
+            "type": "tinyint",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code",
+          "quote_year"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_index_year_code": "regexp_like(index_code,'^[0-9a-z]{6}$')",
+          "ck_index_year_complete": "((completein(0,1))and((complete=0)or(source_count=row_count)))",
+          "ck_index_year_count": "((source_countbetween1and366)and(row_countbetween1and366))",
+          "ck_index_year_dates": "((year(first_date)=quote_year)and(year(last_date)=quote_year)and(first_date<=last_date))",
+          "ck_index_year_hash": "regexp_like(content_hash,'^[0-9a-f]{64}$')"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "index_code",
+          "quote_year"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "index.price.year": {
+            "tables": [
+              "index_daily_price",
+              "index_price_year"
+            ],
+            "primary": "index_daily_price"
+          },
+          "index.price.status": {
+            "tables": [
+              "index_daily_price",
+              "index_price_year"
+            ],
+            "primary": "index_daily_price"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "baseline_commit": "57fc04a",
+    "original_bindings": {
+      "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
+      "sql/schema.sql": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f",
+      "sql/schema-contract.json": "fd7f4797cea3c47cfb017a9dc2e48e99f5e31c038956bc76f8ef7e3a23f09fdb"
+    },
+    "reason": "Only market_margin tables added. Original checksums verified against baseline LF/CRLF bytes; every measured table DDL, shape and ownership unchanged. Measurements retained, not rerun."
   }
 }

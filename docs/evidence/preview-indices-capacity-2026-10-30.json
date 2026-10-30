@@ -20,11 +20,8 @@
     "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
     "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
     "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
-    "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
     "src/empire/plugins/infra/mysql_store.py": "ea551cf918d953f88ab51f631689b43a24c05bd23e2bb8929edd262e861b3a0e",
     "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
-    "sql/schema.sql": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f",
-    "sql/schema-contract.json": "fd7f4797cea3c47cfb017a9dc2e48e99f5e31c038956bc76f8ef7e3a23f09fdb",
     "scripts/measure_indices.py": "35b177833586f146c9c454fdc757cb37ac28e9cd9f11cc48bca3ef1a07af6002"
   },
   "ddl_scopes": {
@@ -212,5 +209,169 @@
     "sync_binlog": 1,
     "log_bin": 0,
     "client_port": 13348
+  },
+  "schema_objects": {
+    "stock_index": {
+      "ddl_sha256": "74d19f2dceccb5594c7391b03a1295a8a8fa909154edb0de594daa9522fe4546",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_group": {
+            "type": "varchar(40) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "members_available": {
+            "type": "tinyint",
+            "nullable": true,
+            "unsigned": false
+          },
+          "member_count": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "member_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_index_code": "regexp_like(index_code,'^[0-9a-z]{6}$')",
+          "ck_index_members": "(member_count<10000)"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "index_code"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "index.catalog": {
+            "tables": [
+              "stock_index",
+              "stock_index_member"
+            ],
+            "primary": "stock_index"
+          },
+          "index.members": {
+            "tables": [
+              "stock_index",
+              "stock_index_member"
+            ],
+            "primary": "stock_index"
+          }
+        }
+      }
+    },
+    "stock_index_member": {
+      "ddl_sha256": "cca1510279761ba337dd4d9258e1a6708356afcdc49deb01071abe0cde79e350",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_code": {
+            "type": "varchar(12) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code",
+          "source_code"
+        ],
+        "indexes": {
+          "ix_index_security": {
+            "columns": [
+              "unified_code",
+              "index_code"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_index_source_security": {
+            "columns": [
+              "source_code",
+              "index_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_index_member_code": "regexp_like(source_code,'^[0-9]{5,6}$')",
+          "ck_index_member_unified": "((unified_codeisnull)orregexp_like(unified_code,'^[0-9]{6}[.](sh|sz|bj)$'))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "index_code",
+          "source_code"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "index.catalog": {
+            "tables": [
+              "stock_index",
+              "stock_index_member"
+            ],
+            "primary": "stock_index"
+          },
+          "index.members": {
+            "tables": [
+              "stock_index",
+              "stock_index_member"
+            ],
+            "primary": "stock_index"
+          }
+        }
+      }
+    }
+  },
+  "schema_scope_migration": {
+    "baseline_commit": "57fc04a",
+    "original_bindings": {
+      "sql/business-schema.json": "ee7f28c56b3ecc2920191b0833440880d3350ff76cbf6aa014d3af3425ec0121",
+      "sql/schema.sql": "ec46de3c4ffe7955a54190cea1412582985b5554f3a129c0ed31f56dbb4a6d3f",
+      "sql/schema-contract.json": "fd7f4797cea3c47cfb017a9dc2e48e99f5e31c038956bc76f8ef7e3a23f09fdb"
+    },
+    "reason": "Only market_margin tables added. Original checksums verified against baseline LF/CRLF bytes; every measured table DDL, shape and ownership unchanged. Measurements retained, not rerun."
   }
 }
