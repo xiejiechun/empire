@@ -46,13 +46,13 @@ async def run(args):
                     raise RuntimeError("已有数据库维护，拒绝并发")
                 try:
                     validate_shapes(conn, [t for t in targets if report["exists"][t]])
-                    before = inventory(conn)
+                    before = inventory(conn, added_table="")
                     report["before"] = {k: v for k, v in before.items() if k not in targets}
                     for table in targets:
                         conn.exec_driver_sql(ddl(table))
                         conn.commit()
                     validate_shapes(conn, targets)
-                    after = inventory(conn)
+                    after = inventory(conn, added_table="")
                     report["after"] = {k: v for k, v in after.items() if k not in targets}
                     if report["before"] != report["after"]:
                         raise RuntimeError("原业务数量、结构或统一状态变化；停止交付")

@@ -1,7 +1,7 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-30T08:30:40.812405+00:00",
-  "note": "合并市场融资融券完整历史插件；保留并行完成的数据预览发布记录，审阅两表维护、完整性及来源全量请求例外。",
+  "reviewed_at": "2026-10-30T08:38:06.832130+00:00",
+  "note": "完成四市场生产历史归档，记录完整响应对账、零重复写入与全表维护核查证据；发布和桌面验收单列待完成。",
   "unchanged_reason": "",
   "exceptions": {
     "page:ths_capital": "逐项核对仅新增市场融资融券两表及归属，旧业务表定义和归属未改变，原有功能说明继续适用。",
@@ -109,7 +109,7 @@
     "scripts/create_listing_event_schema.py": "275346815d98feabcfecc0bd117f2f54d1b4cda40959a45d1580a5e4795f647a",
     "scripts/create_listing_schema.py": "f70f09e0d44beaee70da2ec1eb44eaa41ebe946030e5245a0c8c28c3b5ca4749",
     "scripts/create_margin_schema.py": "fe7213c2393e6b29368f41578cad97a1a411fb915020792ae5778de95215bbb9",
-    "scripts/create_market_margin_schema.py": "0146aab18149fb7d758842ac56755f8b37db30ee48608a85304254a2954d5cdc",
+    "scripts/create_market_margin_schema.py": "788ca6bd2cc1a87d7b9c7a117c5ac84bf8bace4efcbe0e8008893104e3c14012",
     "scripts/create_name_change_schema.py": "2bb0a9557aea3bfd512fc135d11f8ee16a3de5d624eda0075b80495c01fb6121",
     "scripts/create_repurchase_schema.py": "737f515efc62ebf44d34b00373df6ee4b3fb4a7f543bf34f759c5b07ea1e05bd",
     "scripts/create_rule_schema.py": "c00460fe1a0fff06c32041bb257cc2a85697f42612ca21f23e6eef7977561987",
@@ -703,7 +703,7 @@
     "src/empire/sources/yuanhang_service.py": "0f92c0e015cb817b631a980d8e7bc0072b32d3f8874278ea5de2941072eafebf",
     "src/empire/sources/yuanhang_wire.py": "a936cfd1c8e7a0e6c917934ed043e26686296ff43e41f3e6f21d0a63c47fde1b"
   },
-  "content_sha256": "3ed53d9cd8e959aa7ba90c9a59ef736fe89f5a65b8b58f156a07562807357e47",
+  "content_sha256": "65a2f20441255e4d1455ee6cedcf5f6d151986b68637520a3ac2c67beb42fbed",
   "features": {
     "page:ths_capital": {
       "sources": {

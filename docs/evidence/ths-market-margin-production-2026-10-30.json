@@ -1,0 +1,224 @@
+{
+  "complete": true,
+  "routes": {
+    "proxy_requests": 8,
+    "direct_requests": 0
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "record": {
+        "run_id": "98c4b297c6cd407c8c5d1716be58b0e5",
+        "task_id": "ths-market-margin",
+        "started_at": 1793349198.0621765,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 0,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 4
+        },
+        "finished_at": 1793349202.2558093,
+        "status": "complete",
+        "error": "",
+        "notice": "",
+        "result": {
+          "collected": 12978,
+          "completed_units": 4,
+          "total_units": 4,
+          "pages": 4,
+          "phase": "complete",
+          "contract": 1,
+          "scope_hash": "99bb7275dc66b9da3f0a601486865e261b61cfef0afb5b8b5839daccd8bb85d1",
+          "batch_id": "7b6959da0c1e4a9c9c54e70241f94ba5",
+          "index": 4,
+          "securities": 4,
+          "through": "2026-10-30"
+        }
+      },
+      "markets": [
+        {
+          "market": "99",
+          "name": "沪深京合计",
+          "rows": 4026,
+          "first": "2010-03-31",
+          "last": "2026-10-29",
+          "content_digest": "c4b295e778279c614c1e735d9c1d7e7452f5286f4a76e5c98d2d16dfe8dc3f04"
+        },
+        {
+          "market": "3",
+          "name": "沪市",
+          "rows": 4026,
+          "first": "2010-03-31",
+          "last": "2026-10-29",
+          "content_digest": "9f39e77b45cb3e2b73d47a6592d66fe2e1464446a01ea181f50e0d7e2f679806"
+        },
+        {
+          "market": "2",
+          "name": "深市",
+          "rows": 4026,
+          "first": "2010-03-31",
+          "last": "2026-10-29",
+          "content_digest": "d351b34594971d614f7f48cc6370c9602dfb13a7ac0c679415e803a82731a6a7"
+        },
+        {
+          "market": "4",
+          "name": "京市",
+          "rows": 900,
+          "first": "2023-02-13",
+          "last": "2026-10-29",
+          "content_digest": "11c9c2446a447bb25548f8c91aa6e1acf51d02f4696cf202670318a0741edcb1"
+        }
+      ],
+      "requests": 4,
+      "pending": 0,
+      "business_dml_statements": 33
+    },
+    {
+      "round": 2,
+      "record": {
+        "run_id": "e11b8c38ea9e42b88908b36ff3dbaf1e",
+        "task_id": "ths-market-margin",
+        "started_at": 1793349203.339424,
+        "origin": "manual",
+        "fresh": false,
+        "baseline_revision": 5,
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "network": {
+          "proxy_requests": 4
+        },
+        "finished_at": 1793349208.3644934,
+        "status": "complete",
+        "error": "",
+        "notice": "",
+        "result": {
+          "collected": 12978,
+          "completed_units": 4,
+          "total_units": 4,
+          "pages": 4,
+          "phase": "complete",
+          "contract": 1,
+          "scope_hash": "99bb7275dc66b9da3f0a601486865e261b61cfef0afb5b8b5839daccd8bb85d1",
+          "batch_id": "45b6f680f736409abf80995da57aaf35",
+          "index": 4,
+          "securities": 4,
+          "through": "2026-10-30"
+        }
+      },
+      "markets": [
+        {
+          "market": "99",
+          "name": "沪深京合计",
+          "rows": 4026,
+          "first": "2010-03-31",
+          "last": "2026-10-29",
+          "content_digest": "c4b295e778279c614c1e735d9c1d7e7452f5286f4a76e5c98d2d16dfe8dc3f04"
+        },
+        {
+          "market": "3",
+          "name": "沪市",
+          "rows": 4026,
+          "first": "2010-03-31",
+          "last": "2026-10-29",
+          "content_digest": "9f39e77b45cb3e2b73d47a6592d66fe2e1464446a01ea181f50e0d7e2f679806"
+        },
+        {
+          "market": "2",
+          "name": "深市",
+          "rows": 4026,
+          "first": "2010-03-31",
+          "last": "2026-10-29",
+          "content_digest": "d351b34594971d614f7f48cc6370c9602dfb13a7ac0c679415e803a82731a6a7"
+        },
+        {
+          "market": "4",
+          "name": "京市",
+          "rows": 900,
+          "first": "2023-02-13",
+          "last": "2026-10-29",
+          "content_digest": "11c9c2446a447bb25548f8c91aa6e1acf51d02f4696cf202670318a0741edcb1"
+        }
+      ],
+      "requests": 4,
+      "pending": 0,
+      "business_dml_statements": 0
+    }
+  ],
+  "responses": [
+    {
+      "market": "3",
+      "rows": 4026,
+      "first": "2010-03-31",
+      "last": "2026-10-29",
+      "bytes": 735999,
+      "digest": "9f39e77b45cb3e2b73d47a6592d66fe2e1464446a01ea181f50e0d7e2f679806",
+      "sha256": "3358e008d4cb20f451c76727c1ec72db4412757405e8dbf60002a0e82ee799b7"
+    },
+    {
+      "market": "4",
+      "rows": 900,
+      "first": "2023-02-13",
+      "last": "2026-10-29",
+      "bytes": 146104,
+      "digest": "11c9c2446a447bb25548f8c91aa6e1acf51d02f4696cf202670318a0741edcb1",
+      "sha256": "f5009df73928eca3e36040219681089b4061944d476f44297094b253e6858756"
+    },
+    {
+      "market": "99",
+      "rows": 4026,
+      "first": "2010-03-31",
+      "last": "2026-10-29",
+      "bytes": 755322,
+      "digest": "c4b295e778279c614c1e735d9c1d7e7452f5286f4a76e5c98d2d16dfe8dc3f04",
+      "sha256": "c7acbe79bb160fa942fa671247220c8582fe04a05b18ff38a114d6cb62eb38a0"
+    },
+    {
+      "market": "2",
+      "rows": 4026,
+      "first": "2010-03-31",
+      "last": "2026-10-29",
+      "bytes": 729475,
+      "digest": "d351b34594971d614f7f48cc6370c9602dfb13a7ac0c679415e803a82731a6a7",
+      "sha256": "e89b7846bd75d19dff994babd676131f7b1ff53655cd45e217589ac76505726f"
+    },
+    {
+      "market": "99",
+      "rows": 4026,
+      "first": "2010-03-31",
+      "last": "2026-10-29",
+      "bytes": 755322,
+      "digest": "c4b295e778279c614c1e735d9c1d7e7452f5286f4a76e5c98d2d16dfe8dc3f04",
+      "sha256": "c7acbe79bb160fa942fa671247220c8582fe04a05b18ff38a114d6cb62eb38a0"
+    },
+    {
+      "market": "4",
+      "rows": 900,
+      "first": "2023-02-13",
+      "last": "2026-10-29",
+      "bytes": 146104,
+      "digest": "11c9c2446a447bb25548f8c91aa6e1acf51d02f4696cf202670318a0741edcb1",
+      "sha256": "f5009df73928eca3e36040219681089b4061944d476f44297094b253e6858756"
+    },
+    {
+      "market": "3",
+      "rows": 4026,
+      "first": "2010-03-31",
+      "last": "2026-10-29",
+      "bytes": 735999,
+      "digest": "9f39e77b45cb3e2b73d47a6592d66fe2e1464446a01ea181f50e0d7e2f679806",
+      "sha256": "3358e008d4cb20f451c76727c1ec72db4412757405e8dbf60002a0e82ee799b7"
+    },
+    {
+      "market": "2",
+      "rows": 4026,
+      "first": "2010-03-31",
+      "last": "2026-10-29",
+      "bytes": 729475,
+      "digest": "d351b34594971d614f7f48cc6370c9602dfb13a7ac0c679415e803a82731a6a7",
+      "sha256": "e89b7846bd75d19dff994babd676131f7b1ff53655cd45e217589ac76505726f"
+    }
+  ],
+  "scope": "All dates returned by four THS market series; not an independent exchange-calendar audit"
+}
