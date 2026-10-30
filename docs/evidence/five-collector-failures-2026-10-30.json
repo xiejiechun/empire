@@ -1661,7 +1661,7 @@
       }
     }
   },
-  "updated_at": "2026-10-30T12:26:04.465370+00:00",
+  "updated_at": "2026-10-30T13:34:08.699487+00:00",
   "scope": "按错误类型修复五项采集；固定业务反例完整单元复验，不代表全市场历史完成",
   "shared_environment": "保留桌面与市场融资融券等既有变更；本轮未发跨聊天消息、未启动子代理；客户端正常关闭；统一归档器正常处理遗留460条业务消息后队列0。",
   "development_tests": {
@@ -1682,33 +1682,6 @@
     "random_seed": null,
     "not_a_market_wide_five_percent_claim": true,
     "known_limitations": "指数仅1个当前年度，原因2个证券日，日线1证券完整初始化及新增日，权息2证券，龙虎榜完整目录及2个完整榜单日；其余范围未实采。"
-  },
-  "costs": {
-    "proxy_requests": 24,
-    "direct_requests": 0,
-    "fallback_requests": 0,
-    "index_requests": 2,
-    "reason_requests": 2,
-    "hot_requests": 4,
-    "native_price_requests_including_auth": 8,
-    "native_financial_requests_including_auth": 8,
-    "financial_response_bytes": 4393,
-    "financial_decoded_bytes": 7732,
-    "price_increment_response_bytes": 275,
-    "price_increment_decoded_bytes": 282,
-    "price_unchanged_requests": 0,
-    "price_lost_checkpoint_requests": 0,
-    "financial_same_day_requests": 0,
-    "wire_bytes": "认证交换及失败传输总字节未采集；不把成功正文长度作为总网络流量",
-    "queued_units": {
-      "price_initial_years": 36,
-      "price_increment": 1,
-      "financial": 2,
-      "index": 1,
-      "reason": 2,
-      "hot": "目录1、详情2、证券完成1、整轮清单1"
-    },
-    "business_dml": "私有初次归档按规范内容写入；相同内容0 DML由专项/集成和容量复验覆盖，无生产业务事实修改。"
   },
   "price_state_recovery": {
     "mode": "explicit --rebuild-missing-state",
@@ -1755,15 +1728,436 @@
       }
     }
   },
-  "unresolved": "保留源站HTTP502/504、代理/认证暂时异常、缺诊断的旧原因/非有限数记录和2条未归因的旧龙虎榜范围冲突；失败运行历史不改写。",
+  "unresolved": "保留源站HTTP502/504、代理/认证暂时异常、缺诊断的旧原因/非有限数记录和2条未归因的旧龙虎榜范围冲突；失败运行历史不改写。；桌面自动化被Esc中止，五任务在正式桌面的续采结果尚未验收。",
   "release": {
-    "status": "ready_for_gate_rerun",
-    "failed_gate": "be107dc0670f42b28717b2a57950f287",
-    "reason": "原因和龙虎榜来源变动使对应容量输入失效，正在实测，不手改旧摘要。"
+    "status": "passed",
+    "release_id": "94c21a0d874a44bea1e4f69118299a86",
+    "report": "build/releases/94c21a0d874a44bea1e4f69118299a86/report.json",
+    "kind": "local-development-launcher",
+    "portable": false,
+    "implementation_commit": "54d9bd9",
+    "source_sha256": "aa7419dbc5044e0cb9b534a935fd98a7a76796c0c62639740a4d8d979d00431e",
+    "tests": {
+      "passed": 4504,
+      "skipped": 10,
+      "skipped_reason": "既有显式opt-in条件；不计为通过"
+    },
+    "desktop_transport_tests": {
+      "passed": 3
+    },
+    "previous_failed_gate": "be107dc0670f42b28717b2a57950f287",
+    "previous_failure_resolved": "原因及龙虎榜容量已实际重测并绑定新报告，后续正式门禁通过。"
   },
   "capacity": {
     "limits": "docs/evidence/five-limits-capacity-2026-10-30.json",
     "hot": "docs/evidence/five-hot-capacity-2026-10-30.json",
     "passed": true
+  },
+  "previous_successful_live_costs": {
+    "proxy_requests": 24,
+    "direct_requests": 0,
+    "fallback_requests": 0,
+    "index_requests": 2,
+    "reason_requests": 2,
+    "hot_requests": 4,
+    "native_price_requests_including_auth": 8,
+    "native_financial_requests_including_auth": 8,
+    "financial_response_bytes": 4393,
+    "financial_decoded_bytes": 7732,
+    "price_increment_response_bytes": 275,
+    "price_increment_decoded_bytes": 282,
+    "price_unchanged_requests": 0,
+    "price_lost_checkpoint_requests": 0,
+    "financial_same_day_requests": 0,
+    "wire_bytes": "认证交换及失败传输总字节未采集；不把成功正文长度作为总网络流量",
+    "queued_units": {
+      "price_initial_years": 36,
+      "price_increment": 1,
+      "financial": 2,
+      "index": 1,
+      "reason": 2,
+      "hot": "目录1、详情2、证券完成1、整轮清单1"
+    },
+    "business_dml": "私有初次归档按规范内容写入；相同内容0 DML由专项/集成和容量复验覆盖，无生产业务事实修改。"
+  },
+  "costs": {
+    "scope": "此前五项成功V1/V2验收及最终V3策略复核两轮合计；不冒称所有调查请求总量。",
+    "proxy_requests": 49,
+    "direct_requests": 0,
+    "fallback_requests": 0,
+    "prior_successful_round_proxy_requests": 24,
+    "final_round_proxy_requests": 25,
+    "final_round_routes": {
+      "prices": {
+        "proxy_requests": 8
+      },
+      "financial": {
+        "proxy_requests": 8
+      },
+      "reason": {
+        "proxy_requests": 2
+      },
+      "index": {
+        "proxy_requests": 3
+      },
+      "hot": {
+        "proxy_requests": 4
+      }
+    },
+    "other_known_diagnostic_requests": {
+      "reason_probes": 2,
+      "failed_hot_harness_directory_request": 1
+    },
+    "wire_bytes": "认证及失败传输总字节未完整采集；各轮正文、解压及入队成本见对应结果，不能当作总网络流量。",
+    "all_successful_rounds_pending": 0
+  },
+  "final_live_verification": {
+    "network_policy": {
+      "use_proxy": true,
+      "proxy_fallback": true,
+      "saved_daily_policy_overridden": false
+    },
+    "same_fixed_failure_samples": true,
+    "results": {
+      "prices": {
+        "pipeline_verified": true,
+        "acceptance_complete": true,
+        "strict_proxy_verified": true,
+        "routes": {
+          "proxy_requests": 8
+        },
+        "initial": {
+          "phase": "complete",
+          "scope_hash": "49500131961e37a6c97ea664574407d3497371ad68e5b725b95b21dc8706d603",
+          "through": "2026-10-29",
+          "next_index": 1,
+          "next_year": 1900,
+          "snapshot_hash": "",
+          "pages": 36,
+          "collected": 8520,
+          "batch_id": "af47066b215c4071927142b7a07cd517",
+          "run_date": "2026-10-30",
+          "force_full": false,
+          "skipped_units": 0,
+          "deferred": {},
+          "logical_history_requests": 1,
+          "response_bytes": 192233,
+          "decoded_bytes": 238674,
+          "planned_requests": 1,
+          "full_units": 1,
+          "range_units": 0
+        },
+        "increment": {
+          "phase": "complete",
+          "scope_hash": "49500131961e37a6c97ea664574407d3497371ad68e5b725b95b21dc8706d603",
+          "through": "2026-10-30",
+          "next_index": 1,
+          "next_year": 1900,
+          "snapshot_hash": "",
+          "pages": 1,
+          "collected": 6,
+          "batch_id": "01ba605a8711481687779cc18ab17dfc",
+          "run_date": "2026-10-30",
+          "force_full": false,
+          "skipped_units": 0,
+          "deferred": {},
+          "logical_history_requests": 1,
+          "response_bytes": 275,
+          "decoded_bytes": 282,
+          "planned_requests": 1,
+          "full_units": 0,
+          "range_units": 1
+        },
+        "proofs": [
+          {
+            "code": "000001.SZ",
+            "mode": null,
+            "rows": 6,
+            "digest": "086aa407cdedcfa681bd7f163b291f0113ebbbd636b0faa9fc5fd98af4b6ea33"
+          }
+        ],
+        "repeat_requests": 0,
+        "lost_checkpoint_requests": 0,
+        "pending": 0
+      },
+      "financial": {
+        "pipeline_verified": true,
+        "acceptance_complete": true,
+        "strict_proxy_verified": true,
+        "routes": {
+          "proxy_requests": 8
+        },
+        "proofs": {
+          "300296.SZ": {
+            "actions": {
+              "series_kind": "actions",
+              "native_market": "USZA",
+              "source_count": 15,
+              "row_count": 15,
+              "first_date": "2012-05-24",
+              "last_date": "2026-05-19",
+              "key_hash": "4ef06efb137369c309e5d7b5f9f66b6904dbf7cb53a4073f8b92df8eaa61e3bf",
+              "content_hash": "647bf783d71e47a6c5e80e9903bdb9e3f4a7cccdb089ef530df2978433d10d00",
+              "contract_version": 5,
+              "response_group": "1dfeebf50b0d904974e2e6e93ff566607b832d09014bd32c0cdd6bb85172e5b3"
+            },
+            "capital": {
+              "series_kind": "capital",
+              "native_market": "USZA",
+              "source_count": 305,
+              "row_count": 305,
+              "first_date": "2012-03-15",
+              "last_date": "2026-10-28",
+              "key_hash": "3aebaace823a35c3e5a7eafadb8a4bc0f11d9e1444fd7b3b99e838a66853d1a5",
+              "content_hash": "f899cfc85c929d44d12afed52ae5a85df6bfda9e4e4cfbd698e7e2ec8ddb5b55",
+              "contract_version": 5,
+              "response_group": "1dfeebf50b0d904974e2e6e93ff566607b832d09014bd32c0cdd6bb85172e5b3"
+            }
+          },
+          "000078.SZ": {
+            "actions": {
+              "series_kind": "actions",
+              "native_market": "USZA",
+              "source_count": 9,
+              "row_count": 9,
+              "first_date": "1999-04-27",
+              "last_date": "2019-07-16",
+              "key_hash": "be7a951f759ac395bede79bae38503ccbb6b7e22ddd6cdd21e7fc2feff5a6add",
+              "content_hash": "71876836eed5ae1c23aff8df908644839228b4862c91f65c26b96c4139a84023",
+              "contract_version": 5,
+              "response_group": "2c46b2b145bf2f8240d966dc2cf35b2611506c4388329ea3648849680243b6ff"
+            },
+            "capital": {
+              "series_kind": "capital",
+              "native_market": "USZA",
+              "source_count": 263,
+              "row_count": 263,
+              "first_date": "1998-12-18",
+              "last_date": "2026-09-30",
+              "key_hash": "2e90922a14e28f2b7a75d4ea0b20aacea422c9bec6794456015951fcd5f62e9f",
+              "content_hash": "35a7cf0c447454ee2a41226d823e2fceafc4eb17648c6aa478d0774c2df4d052",
+              "contract_version": 5,
+              "response_group": "2c46b2b145bf2f8240d966dc2cf35b2611506c4388329ea3648849680243b6ff"
+            }
+          }
+        },
+        "pending": 0,
+        "cursor": {
+          "phase": "complete",
+          "scope_hash": "7abb5f3c81cc9e77e9328bf161968f7ba89c0c53c03711a407ae7aa4ccbd9cdb",
+          "through": "2026-10-30",
+          "next_index": 2,
+          "next_year": 1900,
+          "snapshot_hash": "",
+          "pages": 2,
+          "collected": 592,
+          "batch_id": "69425f286ceb44b48eb9d0fa404bd718",
+          "run_date": "2026-10-30",
+          "force_full": false,
+          "skipped_units": 0,
+          "deferred": {},
+          "logical_history_requests": 2,
+          "response_bytes": 4393,
+          "decoded_bytes": 7732,
+          "planned_requests": 2,
+          "full_units": 0,
+          "range_units": 0
+        },
+        "repeat_requests": 0
+      },
+      "reason": {
+        "pipeline_verified": true,
+        "acceptance_complete": true,
+        "strict_proxy_verified": true,
+        "routes": {
+          "proxy_requests": 2
+        },
+        "proofs": [
+          {
+            "day": "2026-10-26",
+            "code": "001216.SZ",
+            "digest": "2e4c9ec18220836eaa0d46b5967ce9ff2ffee723d6b237bff4550ba9a81cf0f5",
+            "availability": "available"
+          },
+          {
+            "day": "2026-10-30",
+            "code": "002088.SZ",
+            "digest": "f182f75e90ea89020ad31ab86067cec74e8bc11e11a250a32de0fa8c267dcd63",
+            "availability": "available"
+          }
+        ],
+        "pending": 0,
+        "cursor": {
+          "contract": 1,
+          "phase": "complete",
+          "batch_id": "e71de6966a59491bbf09665cfc8c512a",
+          "page": 2,
+          "index": 2,
+          "plan": [
+            [
+              "2026-10-30",
+              "002088.SZ"
+            ],
+            [
+              "2026-10-26",
+              "001216.SZ"
+            ]
+          ],
+          "cutoff": "2026-10-29",
+          "remaining": 0,
+          "force": false,
+          "scan_after": null
+        },
+        "stats": {
+          "status": "stopped",
+          "collected": 2,
+          "requests": 2,
+          "response_bytes": 2017,
+          "record_name": "条成员",
+          "unit_name": "个完整单元",
+          "completed_units": 2,
+          "total_units": 2,
+          "error": "",
+          "wire_bytes": 1448,
+          "queued_bytes": 3212,
+          "queued_messages": 2,
+          "storage": "mysql_archive",
+          "notice": "",
+          "download_item_name": "涨停分析完整单元",
+          "download_window_limit": 18,
+          "download_buffer_capacity": 9362,
+          "download_concurrency": 0,
+          "download_pending_pages": 0,
+          "download_ready_pages": 0,
+          "download_failed_pages": 0,
+          "download_buffer_limited": false,
+          "download_wait_reason": "idle",
+          "remaining_units": 0
+        }
+      },
+      "index": {
+        "pipeline_verified": true,
+        "acceptance_complete": true,
+        "strict_proxy_verified": true,
+        "routes": {
+          "proxy_requests": 3
+        },
+        "code": "1B0170",
+        "year": 2026,
+        "rows": 198,
+        "digest": "36e57c3c341b02f375dea72527c9ba074cd078c727dea6250aa76f46c138e3a4",
+        "pending": 0,
+        "overlap_count": 140
+      },
+      "hot": {
+        "pipeline_verified": true,
+        "acceptance_complete": true,
+        "strict_proxy_verified": true,
+        "routes": {
+          "proxy_requests": 4
+        },
+        "directory_count": 86,
+        "frozen_count": 85,
+        "proofs": [
+          {
+            "day": "2026-10-30",
+            "digest": "3eb17bd23af1c5c3b7fc28ae6eb45a28567d00bd0f9a2c2249bd0028d40377ca",
+            "seats": 10
+          },
+          {
+            "day": "2026-10-29",
+            "digest": "60f284839e5b64e01fca496d6ecc9347b5688bf27fd2a5a3f65f9c8420de18cf",
+            "seats": 10
+          }
+        ],
+        "pending": 0,
+        "cursor": {
+          "phase": "complete",
+          "contract": 1,
+          "review_policy": 2,
+          "batch_id": "e8eb710e5efb4354bda0d6df3ecf9efd",
+          "index": 1,
+          "pages": 5,
+          "collected": 20,
+          "securities": 1,
+          "scope_hash": "928cd3aedf2a69f7629f5b4a7e6952b590387d94b211dd77b701002ec4c7dc8e",
+          "start": "2026-10-29",
+          "end": "2026-10-30",
+          "through": "2026-10-30",
+          "force": false,
+          "directory_hash": "",
+          "last_date": ""
+        }
+      }
+    },
+    "cleanup": {
+      "prices": {
+        "shutdown": true,
+        "sql": true,
+        "redis": true,
+        "sql_lock": true,
+        "connections": true,
+        "instance_lock": true
+      },
+      "financial": {
+        "shutdown": true,
+        "sql": true,
+        "redis": true,
+        "sql_lock": true,
+        "connections": true,
+        "instance_lock": true
+      },
+      "reason": {
+        "shutdown": true,
+        "sql": true,
+        "redis": true,
+        "sql_lock": true,
+        "connections": true,
+        "instance_lock": true
+      },
+      "index": {
+        "shutdown": true,
+        "sql": true,
+        "redis": true,
+        "sql_lock": true,
+        "connections": true,
+        "instance_lock": true
+      },
+      "hot": {
+        "shutdown": true,
+        "sql": true,
+        "redis": true,
+        "sql_lock": true,
+        "connections": true,
+        "instance_lock": true
+      }
+    },
+    "passed": true
+  },
+  "program_config": {
+    "path": "D:\\project\\empire\\dist\\EmpireDesktop\\config.toml",
+    "before_sha256": "c0a143ecda599fb761d57441ddf361bb285b7186f9a37de4ec9df66847720afc",
+    "after_sha256": "c0a143ecda599fb761d57441ddf361bb285b7186f9a37de4ec9df66847720afc",
+    "preserved": true
+  },
+  "actual_desktop": {
+    "status": "interrupted_by_physical_escape",
+    "attempted_launcher": "dist/EmpireDesktop/Empire.exe",
+    "observed_tool_result": "Computer Use was stopped by the user with the physical Escape key.",
+    "further_ui_actions": 0,
+    "resumed_five_jobs_verified": false,
+    "limitation": "打开窗口的自动化被Esc中止；未核实窗口是否已启动，未执行桌面五任务续采，不能宣称实际桌面交付验收完成。",
+    "pre_release_read_only_snapshot": "build/five-runtime-before-release-20261030.json"
+  },
+  "test_mysql_shutdown": {
+    "checked_at": "2026-10-30T13:33:00.961965+00:00",
+    "shutdown": true,
+    "port": 13348,
+    "server_uuid": "d846c66d-d38d-11f1-85e1-380525361d4e",
+    "datadir": "D:\\project\\empire\\build\\mysql-five-errors-20261029\\",
+    "other_client_connections": 0,
+    "pid": 48168,
+    "owned_pid_exit_verified": true,
+    "production_mysql_or_redis_restarted": false
   }
 }
