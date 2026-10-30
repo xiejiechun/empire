@@ -18,7 +18,7 @@ class FakeMysql:
             raise RuntimeError(f"missing table {self.missing_table}")
 
     async def read(self, operation, *args):
-        if operation.__name__ == "_list" and len(args) == 4:
+        if operation.__name__ == "_list" and isinstance(operation.__self__, StockDataPlugin):
             return {"snapshot": {"snapshot_id": "sql-publication"}, "total": 1,
                     "rows": [{"code": "000001"}], "offset": 0, "limit": args[2]}
         if operation.__name__ == "_list":

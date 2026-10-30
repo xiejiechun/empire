@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-10-30T06:25:48.011280+00:00",
-  "note": "Registered four new ordering helpers in existing infrastructure and feature query roles. Architecture and exact assembly checks pass; no new dependency debt. User help and capacity evidence reviewed.",
-  "unchanged_reason": "",
+  "reviewed_at": "2026-10-30T07:21:04.656523+00:00",
+  "note": "Full regression found two stale test assumptions; adapted them without changing product code or weakening Redis-independent browsing/content assertions. Existing user help and capacity bindings remain valid.",
+  "unchanged_reason": "Only two test assertions/adapters changed to match already documented query behavior; no product behavior change.",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",

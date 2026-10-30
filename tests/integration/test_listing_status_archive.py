@@ -65,7 +65,7 @@ async def test_complete_month_to_query_empty_dates_cursor_and_scope(status):
     result = await collect(c)
     assert result['collected'] == 2 and c.http.request.await_count == 30
     first = await q.list_events(limit=1)
-    assert first['next'] and 'description' not in first['rows'][0]
+    assert first['next'] and first['rows'][0]['description'] == '来源说明'
     second = await q.list_events(after=first['next'], limit=1)
     assert first['rows'][0]['record_key'] != second['rows'][0]['record_key']
     records = (await q.list_events(event_type='terminated'))['rows']
