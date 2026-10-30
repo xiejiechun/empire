@@ -1,6 +1,7 @@
 """One request per necessary page on shared routing and bounded buffers."""
 import json
 from decimal import Decimal
+from functools import partial
 from urllib.parse import urlencode
 
 from empire.features.yuanhang_limits.contract import (
@@ -74,17 +75,27 @@ async def fetch_pool(http, pool, day, *, project_id, max_retries=1, reservation=
                 if wire_bytes is not None and auxiliary['wire_bytes'] is not None else None}
 
 
-def transient_reason_failure(response):
-    """Only the observed -1/fail empty-column failure is retryable, never valid data."""
+def transient_reason_failure(response, *, code=None, day=None):
+    """Retry the observed -1/fail with valid columns; never accept its data."""
     try:
         obj = json.loads(response.content)
     except (ValueError, UnicodeError):
         return False
-    return (isinstance(obj, dict) and type(obj.get('status_code')) is int
+    known = (isinstance(obj, dict) and type(obj.get('status_code')) is int
             and obj['status_code'] == -1 and obj.get('status_msg') == 'fail'
             and isinstance(obj.get('data'), dict)
-            and set(obj['data']) == {'reasonrevealedList', 'reasonKindList'}
-            and all(value is None or value == [] for value in obj['data'].values()))
+            and set(obj['data']) == {'reasonrevealedList', 'reasonKindList'})
+    if not known:
+        return False
+    if all(value is None or value == [] for value in obj['data'].values()):
+        return True
+    if code is None or day is None:
+        return False
+    try:
+        parse_reason({**obj, 'status_code': 0}, code, day)
+    except (ValueError, TypeError, KeyError):
+        return False
+    return True
 
 
 async def fetch_reason(http, code, day, *, project_id, max_retries=1, reservation=None):
@@ -96,7 +107,8 @@ async def fetch_reason(http, code, day, *, project_id, max_retries=1, reservatio
         allowed_domains=(DOMAIN,), project_id=project_id, max_redirects=0,
         headers={'Referer': 'PC_Hevo_FocusLimitUp_IndividualStockAnalysisWidget'},
         policy=http.response_policy('generic'), reservation=reservation,
-        max_retries=max_retries, strip_credentials=True, retry_response=transient_reason_failure)
+        max_retries=max_retries, strip_credentials=True,
+        retry_response=partial(transient_reason_failure, code=code, day=day))
     try:
         result = parse_reason(json.loads(response.content), code, day)
         return {**result, 'requests': 1, 'response_bytes': len(response.content),

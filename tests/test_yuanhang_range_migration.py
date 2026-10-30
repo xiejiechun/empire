@@ -1,8 +1,9 @@
 from copy import deepcopy
+from datetime import datetime
 
 import pytest
 
-from scripts.migrate_yuanhang_ranges import upgrade
+from scripts.migrate_yuanhang_ranges import restore_missing, upgrade
 
 
 def fixture():
@@ -39,3 +40,20 @@ def test_missing_or_inconsistent_proof_is_not_promoted(case):
         previous['units']['000001.SZ']['versions']['2025'] = '2026-10-23T08:00:00'
     with pytest.raises(ValueError):
         upgrade(previous, heads)
+
+
+def test_missing_state_restore_uses_individual_cutoffs_and_beijing_versions():
+    _, heads = fixture()
+    head = dict(heads[0], native_market='USZA', version_observed_at=datetime(2026, 10, 23, 16),
+                key_hash='a' * 64, content_hash='b' * 64)
+    newer = dict(head, quote_year=2026, verified_through='2026-10-22')
+    restored = restore_missing([head, newer])['units']['000001.SZ']
+    assert restored['price_ranges']['2025'][0][:2] == ['2025-01-01', '2025-12-31']
+    assert restored['price_ranges']['2026'] == [['2026-01-01', '2026-10-22',
+                                               '2026-10-23T08:00:00.000000+00:00']]
+    for field, value in [('contract_version', 4), ('row_count', 199), ('verified_through', '2026-12-31'),
+                         ('key_hash', ''), ('version_observed_at', datetime(2025, 1, 1))]:
+        with pytest.raises(ValueError):
+            restore_missing([dict(head, **{field: value})])
+    with pytest.raises(ValueError):
+        restore_missing([head, head])

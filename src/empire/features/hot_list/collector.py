@@ -80,7 +80,8 @@ class HotListCollector:
             try:
                 body = json.loads(response.content, parse_float=Decimal)
                 return (
-                    parse_directory(body, code, through)
+                    parse_directory(body, code, through,
+                                    source_through=observed.astimezone(CHINA).date().isoformat())
                     if requested is None
                     else parse_detail(body)
                 ), observed

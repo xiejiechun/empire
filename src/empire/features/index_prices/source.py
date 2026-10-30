@@ -139,9 +139,10 @@ def annual(source, code, year, snapshot, now=None):
         actual = by_date.get(row[0])
         if actual == row:
             continue
-        # Independent caches can lag beyond midnight or a market holiday. The
-        # last snapshot owns only its latest valid date's values, never its keys.
-        if (actual is not None and row[0] == snapshot["end"]
+        # The validated recent endpoint is the revision window for the current
+        # source year. Annual caches can disagree on earlier overlapping days
+        # too. It owns values on existing keys, never missing/interior keys.
+        if (actual is not None and str(year) == snapshot['end'][:4]
                 and not pending_today(row, row[0])):
             rows[rows.index(actual)] = row.copy()
             continue

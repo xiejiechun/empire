@@ -179,9 +179,11 @@ def test_midnight_and_closed_market_latest_conflict(now):
     stale[-1][3:] = ["4617.14", "4645.81", "1203460010", "25282274000"]
     assert annual(source(2026, stale, code="399291"), "399291", 2026, snapshot, now) == last
     stale[0][4] = "4660"
-    with pytest.raises(ValueError, match="集合或内容") as caught:
-        annual(source(2026, stale, code="399291"), "399291", 2026, snapshot, now)
-    assert caught.value.source_metadata["trade_date"] == "2026-10-09"
+    assert annual(source(2026, stale, code="399291"), "399291", 2026, snapshot, now) == last
+    missing = copy.deepcopy(stale)
+    missing[0][0] = "2026-10-08"
+    with pytest.raises(ValueError):
+        annual(source(2026, missing, code="399291"), "399291", 2026, snapshot, now)
 
 
 def test_historical_placeholder_last_is_not_authoritative():
@@ -489,5 +491,4 @@ def test_annual_current_cache_lag_uses_only_anchored_recent_suffix():
         annual(source(2026, rows[:2]), CODE, 2026, no_anchor)
     changed = copy.deepcopy(rows[:2])
     changed[1][4] = '10.5'
-    with pytest.raises(ValueError, match='集合或内容'):
-        annual(source(2026, changed), CODE, 2026, snapshot)
+    assert annual(source(2026, changed), CODE, 2026, snapshot) == rows

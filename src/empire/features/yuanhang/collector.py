@@ -102,7 +102,7 @@ class YuanhangCollector:
                 if plan.get('mode') == 'range':
                     raise ValueError('远航区间含已知成交日仍返回空响应；保留断点，不转为成功或全历史') from exc
                 return await resolve_empty(self, code, through, reservation=reservation, cause=exc)
-            except (httpx.TransportError, SensitiveRequestError) as exc:
+            except (httpx.TransportError, SensitiveRequestError, TimeoutError) as exc:
                 if (isinstance(exc, SensitiveRequestError) and not exc.retryable_transport
                         or attempt >= self.request_retries):
                     raise

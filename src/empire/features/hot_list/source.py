@@ -74,15 +74,19 @@ def result_sets(body, columns):
     return output
 
 
-def parse_directory(body, code, through):
+def parse_directory(body, code, through, *, source_through=None):
+    day(through)
     rows = result_sets(body, [DIRECTORY_COLUMNS])[0]
     dates = []
     for stamp, weekday, source_code in rows:
         if source_code != code[:6] or type(weekday) is not int or not 1 <= weekday <= 7:
             raise ValueError("龙虎榜日期目录证券或星期错误")
         dates.append(day(stamp))
-    validate_dates(dates, through)
-    return dates
+    # A resumed run retains its original horizon, while this full directory
+    # can already include newer publications. Validate the complete response
+    # against request time before projecting the frozen run's date set.
+    validate_dates(dates, source_through or through)
+    return [stamp for stamp in dates if stamp <= through]
 
 
 def parse_detail(body):

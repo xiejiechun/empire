@@ -225,3 +225,11 @@ def test_daily_default():
     task = bundle({"redis": {}}).tasks[0].value
     assert task.default_schedule.mode == "daily" and task.default_schedule.daily_time == "19:30"
     assert task.parallel_downloads
+
+
+def test_resumed_frozen_directory_validates_new_publication_before_filtering():
+    dates = ['2026-10-30', '2026-10-29', DATE]
+    assert parse_directory(directory(dates), CODE, '2026-10-29', source_through='2026-10-30') == dates[1:]
+    for bad in ([dates[0], dates[0], DATE], [DATE, dates[0]], ['2026-10-31', DATE]):
+        with pytest.raises(ValueError):
+            parse_directory(directory(bad), CODE, '2026-10-29', source_through='2026-10-30')

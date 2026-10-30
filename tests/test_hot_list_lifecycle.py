@@ -108,6 +108,33 @@ async def test_directory_changed_after_interruption_requires_fresh(monkeypatch):
         await c.execute(baseline_revision=state["revision"])
 
 
+async def test_resume_next_day_projects_directory_before_hash_check(monkeypatch):
+    import json
+    from datetime import datetime, timedelta
+
+    from empire.core.time import CHINA
+
+    today = datetime.now(CHINA).date()
+    yesterday = (today - timedelta(days=1)).isoformat()
+    c, state, events = collector()
+    c.http.request.side_effect = lambda *a, **k: httpx.Response(
+        200, json=directory([yesterday])
+    )
+    c.query.day_heads.side_effect = asyncio.CancelledError
+    with pytest.raises(asyncio.CancelledError):
+        await c.execute()
+    state["cursor"]["through"] = yesterday
+    c.query.day_heads.side_effect = None
+    c.http.request.side_effect = lambda *a, **k: httpx.Response(
+        200, json=directory([today.isoformat(), yesterday])
+        if json.loads(k["content"])["Params"][0] == "0" else detail()
+    )
+    monkeypatch.setattr("empire.features.hot_list.collector.wait_for_archive", AsyncMock())
+    result = await c.execute(baseline_revision=state["revision"])
+    assert result["phase"] == "complete" and result["through"] == yesterday
+    assert [e.raw_payload["date"] for e in events if e.raw_payload["mode"] == "detail"] == [yesterday]
+
+
 async def test_incremental_new_old_gap_and_rotating_review(monkeypatch):
     import json
     from datetime import datetime, timedelta

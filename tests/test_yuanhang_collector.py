@@ -76,3 +76,15 @@ def test_sensitive_exception_only_exposes_transport_classification():
     assert error.retryable_transport
     assert 'secret' not in str(error)
     assert not SensitiveRequestError(ValueError('secret')).retryable_transport
+
+
+@pytest.mark.parametrize('budget,expected', [(0, 1), (1, 2)])
+async def test_native_timeout_uses_same_node_retry_budget(monkeypatch, budget, expected):
+    c = collector(monkeypatch)
+    c.request_retries = budget
+    fetch = AsyncMock(side_effect=TimeoutError())
+    monkeypatch.setattr(module, 'fetch_history', fetch)
+    with pytest.raises(TimeoutError):
+        await c.fetch(('000001.SZ', 'node001', '2026-10-23'))
+    assert fetch.await_count == expected
+    assert len(c.identity.login.await_args_list) == expected

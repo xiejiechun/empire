@@ -244,3 +244,14 @@ def test_reason_retry_only_matches_observed_failure(body, expected):
 def test_reason_retry_does_not_hide_invalid_json():
     from empire.features.yuanhang_limits.source import transient_reason_failure
     assert not transient_reason_failure(SimpleNamespace(content=b'{broken'))
+
+
+@pytest.mark.parametrize('code,valid', [('002088.SZ', True), ('002089.SZ', False)])
+def test_partial_content_business_failure_retries_only_valid_identity(code, valid):
+    from empire.features.yuanhang_limits.source import transient_reason_failure
+    body = {'status_code': -1, 'status_msg': 'fail', 'data': {
+        'reasonrevealedList': [{'valueList': ['002088.SZ', '样本', '正文']}], 'reasonKindList': None}}
+    response = SimpleNamespace(content=json.dumps(body).encode())
+    assert transient_reason_failure(response, code=code, day='2026-10-30') is valid
+    with pytest.raises(ValueError, match='业务响应失败'):
+        parse_reason(body, code, '2026-10-30')
