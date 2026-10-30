@@ -36,11 +36,13 @@ def test_maintenance_inventory_and_child_table_keep_distinct_meaning():
     assert schema.dataset_tables('suspensions.period') == ('suspension_event', 'suspension_source_date')
     assert schema.PRIMARY_KEYS['suspension_source_date'] == [
         'source_date', 'unified_code', 'suspended_at', 'resume_key', 'record_key']
-    assert schema.TABLES[-23:-20] == ('finance_news', 'collection_state', 'app_setting')
-    assert schema.TABLES[-20:-15] == ('theme_daily', 'theme_detail', 'theme_category', 'theme_stock', 'theme_stock_reason')
-    assert schema.TABLES[-15:-10] == ('yuanhang_daily_price', 'yuanhang_price_year',
+    assert schema.TABLES[-25:-22] == ('finance_news', 'collection_state', 'app_setting')
+    assert schema.TABLES[-22:-17] == ('theme_daily', 'theme_detail', 'theme_category', 'theme_stock', 'theme_stock_reason')
+    assert schema.TABLES[-17:-12] == ('yuanhang_daily_price', 'yuanhang_price_year',
                                  'yuanhang_corporate_action', 'yuanhang_capital', 'yuanhang_series_proof')
-    assert schema.TABLES[-10:-7] == ('yuanhang_limit_pool', 'yuanhang_limit_member', 'yuanhang_limit_reason')
+    assert schema.TABLES[-12:-9] == ('yuanhang_limit_pool', 'yuanhang_limit_member', 'yuanhang_limit_reason')
+    assert schema.TABLES[-2:] == ('market_margin_series', 'market_margin_daily')
+    assert schema.dataset_tables('market_margin.ths_series') == schema.TABLES[-2:]
     assert metadata()['primary_key_exemptions'] == ['finance_news', 'collection_state', 'app_setting']
 
 
