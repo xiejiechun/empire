@@ -1,0 +1,147 @@
+{
+  "run_id": "5b517469ec104595aa9eff2c93a0baf2",
+  "subject": "preview",
+  "started_at": "2026-10-30T07:57:12.017315+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "dataset": "market_margin.ths_series",
+  "measurements": {
+    "import_seconds": 2.4732015000190586,
+    "max_unit_seconds": 0.701722499972675,
+    "repeated_business_dml": 0,
+    "page_p95_ms": 14.020599948707968,
+    "history_p95_ms": 211.34520001942292,
+    "allocated_bytes": 7389184,
+    "peak_python_bytes": 6857658,
+    "page_bytes": 85239,
+    "history_bytes": 1040000
+  },
+  "limits": {
+    "import_seconds": 60,
+    "max_unit_seconds": 10,
+    "repeated_business_dml": 0,
+    "page_p95_ms": 100,
+    "history_p95_ms": 1000,
+    "allocated_bytes": 33554432,
+    "peak_python_bytes": 134217728,
+    "page_bytes": 262144,
+    "history_bytes": 4194304
+  },
+  "bindings": {
+    "src/empire/features/market_margin/contract.py": "7426457362317f25b0905b80c0e75c8c7ad438106addc728338d2705425da8a6",
+    "src/empire/features/market_margin/source.py": "b518b14f53f0947fc26834bed939a17f2b5e5038ff02cbd9c1fdec0d2906c675",
+    "src/empire/features/market_margin/dataset.py": "ee221142eddbb122b0850061ec086cf3863535ba184ba7fc731d142b4e76b785",
+    "src/empire/features/market_margin/query.py": "007f107e13bb5ced92e94b99719f239639e2902ac0f9921dc7e4a9f0253ee2b9",
+    "scripts/measure_market_margin.py": "56f345d2ab06337bc579307244e534be2c9bcd0e2bf6455f93bd79023a70e1d8"
+  },
+  "ddl_scopes": {
+    "market_margin_series": "f5fbe68cf59a54485611d20220c73a6d1b72449623dc11fe5705f64442337f17",
+    "market_margin_daily": "a5b856f331f0e2061cc6f779303389bc2ccba68e6052106ed0308acbdcf7f095"
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "market_margin_daily",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "idx_market_margin_date",
+        "key_len": "13",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "page_actual_rows": 200,
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "market_margin_daily",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "10",
+        "ref": "const",
+        "rows": 17984,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security_actual_rows": 10000,
+    "analysis": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "market_margin_daily",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,idx_market_margin_date",
+        "key": "PRIMARY",
+        "key_len": "13",
+        "ref": null,
+        "rows": 28,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "analysis_actual_rows": 28
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": {
+      "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+      "server_port": 13348,
+      "version": "8.4.9",
+      "innodb_flush_log_at_trx_commit": 2,
+      "sync_binlog": 1,
+      "log_bin": 0,
+      "client_port": 13348
+    },
+    "synthetic": true,
+    "markets": 4,
+    "rows": 40000,
+    "allocation": [
+      {
+        "TABLE_NAME": "market_margin_daily",
+        "DATA_LENGTH": 5783552,
+        "INDEX_LENGTH": 1589248
+      },
+      {
+        "TABLE_NAME": "market_margin_series",
+        "DATA_LENGTH": 16384,
+        "INDEX_LENGTH": 0
+      }
+    ],
+    "cache": "first query not forced cold; remaining nine warm; maximum bounds P95",
+    "actual_sample": "5% source verification recorded separately",
+    "peak": "tracemalloc allocations, not RSS"
+  },
+  "projected_five_year_bytes": 923648,
+  "reviewed_tradeoffs": "Four complete market snapshots; comparison bounded to10000 dates per market; bounded keyset SQL browsing. No business JSON.",
+  "input_identity_verified": true,
+  "checked_at": "2026-10-30T07:57:17.627502+00:00",
+  "database": "empire_capacity_5b517469ec104595aa9eff2c93a0baf2_test",
+  "measurement_service": {
+    "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

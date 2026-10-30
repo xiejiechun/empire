@@ -3695,6 +3695,48 @@
         "采集进度与运行记录",
         "查看结果"
       ]
+    },
+    "ths-market-margin": {
+      "requests": [
+        {
+          "url": "https://data.10jqka.com.cn/rzrq/fixdata/type/{market}/",
+          "method": "GET",
+          "purpose": "每市场一个完整历史响应",
+          "parameters": [
+            {
+              "name": "market",
+              "value": "99/3/2/4",
+              "meaning": "沪深京合计/沪市/深市/京市"
+            }
+          ]
+        }
+      ],
+      "tables": [
+        "market_margin_series",
+        "market_margin_daily"
+      ],
+      "start": "沪深及合计2010-03-31；京市2023-02-13",
+      "end": "来源最新日期",
+      "initial": "四市场有界预取，完整校验后原子入队，整轮归档成功清队才完成",
+      "incremental": "无区间协议；每日四请求约2.4MB全量核验例外，SQL仅差异写入",
+      "recovery": "Redis存活从未入队市场继续；丢失重新核验四市场，SQL比较和旧版保护",
+      "fresh": "从首个市场重核完整序列；已等待归档先确认清队",
+      "limits": "没有公布时刻及历史修订版本，不用统计日冒充可用时刻；合计和分市场不重复求和",
+      "job_key": "ths-market-margin-v1",
+      "source_file": "src/empire/features/market_margin/collector.py",
+      "scope": "四个完整市场历史序列",
+      "source": "ths",
+      "fingerprint_source": "ths",
+      "datasets": [
+        "market_margin.ths_series"
+      ],
+      "fingerprint_namespaces": [
+        "ths_market_margin_v1"
+      ],
+      "topics": [
+        "同花顺市场融资融券",
+        "采集进度与运行记录"
+      ]
     }
   }
 }

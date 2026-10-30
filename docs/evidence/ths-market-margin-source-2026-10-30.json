@@ -1,0 +1,95 @@
+{
+  "run_id": "811b9964fb1a4110901eea635ef0f614",
+  "mode": "verification",
+  "checked_at": "2026-10-30T07:52:37.663815+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": true,
+  "sample_30_met": false,
+  "results": {
+    "ths-market-margin": {
+      "pipeline_verified": true,
+      "acceptance_complete": true,
+      "pending": 0,
+      "strict_proxy_verified": true,
+      "routes": {
+        "proxy_requests": 1
+      },
+      "responses": [
+        {
+          "market": "99",
+          "rows": 4026,
+          "first": "2010-03-31",
+          "last": "2026-10-29",
+          "bytes": 755322,
+          "sha256": "c7acbe79bb160fa942fa671247220c8582fe04a05b18ff38a114d6cb62eb38a0",
+          "digest": "c4b295e778279c614c1e735d9c1d7e7452f5286f4a76e5c98d2d16dfe8dc3f04"
+        }
+      ],
+      "untested_markets": [
+        "3",
+        "2",
+        "4"
+      ],
+      "business_rows": 4026
+    }
+  },
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire-ths-market-margin\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\margin-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce"
+  },
+  "subject": "market_margin",
+  "selection": {
+    "selected": [],
+    "random": [],
+    "fixed": [],
+    "random_count": 0,
+    "non_stock_scope": {
+      "unit": "complete market",
+      "reason": "four complete fixed market series",
+      "fixed": []
+    },
+    "market_pool": [
+      "99",
+      "3",
+      "2",
+      "4"
+    ],
+    "selected_markets": [
+      "99"
+    ],
+    "seed": null,
+    "sample_ratio": 0.25,
+    "policy": "ceil(4*0.05)=1 complete market; fixed combined-market boundary"
+  },
+  "source_sha256": "cd4c0fbb3d51b701995a9dd1f90c75269964728a0d4c6340bee2a44af50cf187",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "verification_scope": "development_pipeline",
+  "routing_policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "sample_30_applicable": false,
+  "policy_snapshot_digest": "d277e976e6abdd3caa5e959d7d11ee7e4e4abd03f9b3bde6f3f6356ae7a704fd",
+  "acceptance_complete": true,
+  "storage": {
+    "database": "empire_verify_ths_811b9964fb1a4110901eea635ef0f614_test",
+    "namespace": "empire:test:verify_ths:811b9964fb1a4110901eea635ef0f614",
+    "run_id": "811b9964fb1a4110901eea635ef0f614",
+    "server_uuid": "3ed28294-d3b8-11f1-a931-380525361d4e",
+    "owner_sha256": "385ddaaa9d09a96259f7410945466635a3230efa64976d9b3e7a550dc49914c2"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

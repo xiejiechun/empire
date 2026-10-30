@@ -7108,3 +7108,116 @@ scripts/create_industry_margin_schema.py为显式建表入口；停机持锁、�
 [执行采集与计划](help:执行采集与计划)
 [MySQL industry_margin_day](help:MySQL%20industry_margin_day)
 [MySQL industry_margin_daily](help:MySQL%20industry_margin_daily)
+
+<!-- topic:数据说明|同花顺市场融资融券 -->
+<!-- summary:沪深京合计与各市场完整历史，金额元、数量股，每日四请求核验并差异归档。 -->
+<!-- group:融资融券 -->
+# 同花顺市场融资融券
+
+## 如何查看
+
+在采集管理搜索“市场融资融券（同花顺）”，执行后在数据预览查看。数据目录也可搜索市场融资融券。搜索填写99（沪深京合计）、3（沪市）、2（深市）、4（京市）或完整市场名，日期可筛选，每页最多200行。
+
+## 数据范围与更新
+
+沪深及合计从2010-03-31开始，京市从2023-02-13开始，结束日期以来源为准。推荐每天北京时间19:30执行。四市场各一次完整请求，总响应约2.4MB；来源没有验证可用的日期增量协议，日常是全量核验，所有历史修订随轮次检查。保存计划和网络选择后重启保留，已保存配置优先；缺省代理优先、可退回直连。
+
+每个市场完整校验后立即入队，继续下载其他市场，整轮入队后才等待归档。成功写入、确认相同或确认旧响应无需覆盖都由统一归档器清队。失败保留位置和消息；程序重启且Redis存活继续未入队市场，Redis丢失后重新核验四市场并与SQL比较。相同内容不写业务表。“从头采集”重新核验；等待归档的轮次先确认成功。
+
+## 字段与日期
+
+融资余额、融券余额、融资买入、融资净买入及其增减为元；融券净卖出及其增减为股；余额占流通市值比保留原始小数，不是百分数。净值允许负数。可选变化值、比例及来源总额缺值保留未知。合计总余额为来源lr，分市场总余额在查询时计算融资余额加融券余额。
+
+统计日期不等于公布时间。合计是来源单独返回的市场口径，不能和沪深京三条重复相加；不使用当前个股求和替代市场汇总。
+
+## 限制与排错
+
+日期与数值数组不等长、重复或乱序、缺起点、核心字段缺失、超界及超精度均失败，不推进断点。新响应丢失已存日期会拒绝覆盖；请查看错误并核实来源，不清空历史。接口没有独立总数或历史版本；“来源集合通过”表示当前完整响应与SQL的日期和内容完全一致，不是交易所逐日无遗漏审计。无公布时刻，严格历史信号回放受限。
+
+开发样本为四个完整市场中的一个（5%向上取整），不代表其他市场已完成；实际归档范围在任务详情和数据准备查看。
+
+## 相关说明
+
+[执行采集与计划](help:执行采集与计划)
+[MySQL market_margin_daily](help:MySQL%20market_margin_daily)
+[MySQL market_margin_series](help:MySQL%20market_margin_series)
+
+<!-- topic:数据库参考|MySQL market_margin_daily -->
+<!-- summary:同花顺市场融资融券结构化事实与完整序列证明。 -->
+<!-- group:MySQL -->
+# MySQL market_margin_daily
+
+## 用途与归属
+
+固定来源ths，任务ths-market-margin，数据集market_margin.ths_series。
+
+## 结构与身份
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `market_code` | `VARCHAR(2) NOT NULL` | 来源市场99/3/2/4 |
+| `trade_date` | `DATE NOT NULL` | 来源统计日，不是公布时间 |
+| `financing_balance` | `DECIMAL(28,8) NOT NULL` | rzye融资余额元 |
+| `lending_balance` | `DECIMAL(28,8) NOT NULL` | rqye融券余额元 |
+| `financing_buy` | `DECIMAL(28,8) NOT NULL` | rzmre融资买入元 |
+| `financing_net_buy` | `DECIMAL(28,8) NOT NULL` | rzjmr融资净买入元 |
+| `lending_net_sell` | `DECIMAL(28,8) NOT NULL` | rqjmc融券净卖出股 |
+| `financing_net_change` | `DECIMAL(28,8) NULL` | jmrzz融资净买入增减元 |
+| `lending_net_change` | `DECIMAL(28,8) NULL` | jmczz融券净卖出增减股 |
+| `balance_ratio` | `DECIMAL(38,24) NULL` | zb两融余额占流通市值小数比 |
+| `source_total` | `DECIMAL(28,8) NULL` | lr合计来源总额元，分市场NULL |
+
+- `PRIMARY KEY (market_code, trade_date)`
+- `KEY idx_market_margin_date (trade_date, market_code)`
+
+## 读写与关联
+
+主键(market_code,trade_date)，日期索引(trade_date,market_code)。分页最多200，单市场最多10000日期；核心五值必需，负净值保留，NULL不当零。 相同内容零业务DML，观测版本在collection_state同事务保存，旧响应不能覆盖。完整来源缩短拒绝删除。显式scripts/create_market_margin_schema.py建表，启动不迁移。Redis仅暂存消息与公共摘要；归档成功即清消息。
+
+## 保留与恢复
+
+长期保留市场历史，Redis丢失重核完整市场；SQL与collection_state同事务，归档失败保留消息，成功即清队。
+
+## 维护与相关说明
+
+建表仅由显式维护入口执行。手工修改业务前停止归档并失效对应市场摘要及覆盖证明。
+
+[同花顺市场融资融券](help:同花顺市场融资融券)
+
+<!-- topic:数据库参考|MySQL market_margin_series -->
+<!-- summary:同花顺市场融资融券结构化事实与完整序列证明。 -->
+<!-- group:MySQL -->
+# MySQL market_margin_series
+
+## 用途与归属
+
+固定来源ths，任务ths-market-margin，数据集market_margin.ths_series。
+
+## 结构与身份
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `market_code` | `VARCHAR(2) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 来源市场身份 |
+| `content_hash` | `CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL` | 规范全序列SHA-256 |
+| `row_count` | `INT UNSIGNED NOT NULL` | 全序列条数 |
+| `first_date` | `DATE NULL` | 最早来源日 |
+| `last_date` | `DATE NULL` | 最新来源日 |
+| `contract_version` | `INT NOT NULL` | 完整集合规范版本 |
+
+- `PRIMARY KEY (market_code)`
+- `CONSTRAINT ck_market_margin_count CHECK (row_count >= 0 AND row_count <= 10000)`
+- `CONSTRAINT ck_market_margin_bounds CHECK ((row_count = 0 AND first_date IS NULL AND last_date IS NULL) OR (row_count > 0 AND first_date IS NOT NULL AND last_date IS NOT NULL AND first_date <= last_date))`
+
+## 读写与关联
+
+主键market_code，每个完整市场一行内容证明，与明细同事务；不是运行记录。 相同内容零业务DML，观测版本在collection_state同事务保存，旧响应不能覆盖。完整来源缩短拒绝删除。显式scripts/create_market_margin_schema.py建表，启动不迁移。Redis仅暂存消息与公共摘要；归档成功即清消息。
+
+## 保留与恢复
+
+长期保留市场历史，Redis丢失重核完整市场；SQL与collection_state同事务，归档失败保留消息，成功即清队。
+
+## 维护与相关说明
+
+建表仅由显式维护入口执行。手工修改业务前停止归档并失效对应市场摘要及覆盖证明。
+
+[同花顺市场融资融券](help:同花顺市场融资融券)

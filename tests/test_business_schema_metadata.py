@@ -168,7 +168,7 @@ def test_design_gate_uses_explicit_root_and_keeps_full_physical_table_set(tmp_pa
     value = metadata()
     write_metadata(tmp_path, value)
     shapes = json.loads((ROOT / 'sql/schema-contract.json').read_text(encoding='utf-8'))['tables']
-    assert len(shapes) == 66 and len(value['tables']) == 65
+    assert len(shapes) == 68 and len(value['tables']) == 67
     assert verify_ownership(tmp_path, shapes, value['dataset_table_groups']) == value
 
 

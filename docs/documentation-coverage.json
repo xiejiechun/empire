@@ -250,6 +250,9 @@
     ],
     "industry_margin": [
       "通达信行业融资融券"
+    ],
+    "market_margin": [
+      "同花顺市场融资融券"
     ]
   },
   "guides": [
@@ -545,6 +548,10 @@
       "通达信行业融资融券",
       "采集进度与运行记录",
       "查看结果"
+    ],
+    "ths-market-margin": [
+      "同花顺市场融资融券",
+      "采集进度与运行记录"
     ]
   },
   "storage": {
@@ -1110,6 +1117,22 @@
           "src/empire/features/industry_margin/contract.py",
           "src/empire/features/industry_margin/dataset.py",
           "src/empire/features/industry_margin/query.py"
+        ]
+      },
+      "market_margin_series": {
+        "topic": "MySQL market_margin_series",
+        "sources": [
+          "src/empire/features/market_margin/contract.py",
+          "src/empire/features/market_margin/dataset.py",
+          "src/empire/features/market_margin/query.py"
+        ]
+      },
+      "market_margin_daily": {
+        "topic": "MySQL market_margin_daily",
+        "sources": [
+          "src/empire/features/market_margin/contract.py",
+          "src/empire/features/market_margin/dataset.py",
+          "src/empire/features/market_margin/query.py"
         ]
       }
     },

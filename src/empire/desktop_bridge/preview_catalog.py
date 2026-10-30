@@ -17,6 +17,8 @@ class View:
 
 
 def _views(task):
+    if task == "ths-market-margin":
+        return [View("records", "已归档数据", "market_margin.query", "browse", filters=("search", "start", "end"))]
     if task == "tdx-industry-margin":
         return [View("records", "已归档数据", "industry_margin.query", "browse", filters=("search", "start", "end"))]
     simple = {
