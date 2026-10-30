@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { Alert, Button, Empty, Popover, Skeleton, Space, Tag } from "antd";
+import { Alert, Button, Empty, Popover, Select, Skeleton, Space, Tag } from "antd";
 import { Data, useQuery } from "./api";
 import { QueryNotice } from "./shared";
 import { PreviewContent } from "./preview/PreviewContent";
 import { PreviewFilters } from "./preview/Filters";
 import { usePreviewRead } from "./preview/usePreviewRead";
+import { PreviewOrder } from "./preview/tableOrder";
+import type { TableOrder, TablePreferences } from "./preview/tableOrder";
 import "./preview/workspace.css";
 
-type Selection = { view: string; filters: Data; draft: Data; cursors: any[]; revision: number };
+type Selection = { view: string; filters: Data; draft: Data; cursors: any[]; revision: number; order?: TableOrder };
 const selection = (spec: Data, filters = spec.defaults || {}): Selection => ({
   view: spec.id, filters, draft: filters, cursors: [null], revision: 0,
 });
@@ -26,14 +28,17 @@ function PreviewWorkspace({ project, catalog }: { project: string; catalog: Data
   const savedViews = useRef<Record<string, Selection>>({});
   const [trail, setTrail] = useState<Selection[]>([]);
   const [expanded, setExpanded] = useState(false);
+  const [tables, setTables] = useState<Record<string, TablePreferences>>({});
   useEffect(() => {
     if (!expanded) return;
-    const exit = (event: KeyboardEvent) => { if (event.key === "Escape") setExpanded(false); };
+    const exit = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !document.querySelector(".ant-drawer-open")) setExpanded(false);
+    };
     window.addEventListener("keydown", exit);
     return () => window.removeEventListener("keydown", exit);
   }, [expanded]);
   const spec = catalog.find(v => v.id === current.view)!;
-  const query = usePreviewRead(project, current.view, current.filters, current.cursors.at(-1), current.revision);
+  const query = usePreviewRead(project, current.view, current.filters, current.cursors.at(-1), current.revision, current.order);
   const rows = query.data?.rows || [];
   const nextCursor = query.data?.next;
   const pendingDraft = JSON.stringify(current.draft) !== JSON.stringify(current.filters);
@@ -60,6 +65,15 @@ function PreviewWorkspace({ project, catalog }: { project: string; catalog: Data
       setTrail([]); setCurrent(savedViews.current[v.id] || selection(v));
     }}>{v.title}</Button>)}</div>}
     {!spec.hidden && <PreviewFilters key={spec.id} spec={spec} draft={current.draft} onChange={draft => setCurrent(s => ({ ...s, draft }))} onSubmit={submit} loading={query.loading} />}
+    {spec.sort_scope === "filtered" && <div className="pv-tool-row" aria-label="全部筛选结果排序">
+      <span>排序</span><Select aria-label="排序字段" value={current.order?.field || ""} style={{ minWidth: 210 }}
+        options={[{ value: "", label: "默认顺序" }, ...spec.columns.map((field: Data) => ({ value: field.key, label: field.label }))]}
+        onChange={field => setCurrent(s => ({ ...s, order: field ? { field, direction: s.order?.direction || "asc" } : undefined, cursors: [null] }))} />
+      <Select aria-label="排序方向" value={current.order?.direction || "asc"} disabled={!current.order} style={{ width: 100 }}
+        options={[{ value: "asc", label: "升序" }, { value: "desc", label: "降序" }]}
+        onChange={direction => setCurrent(s => ({ ...s, order: s.order ? { ...s.order, direction } : undefined, cursors: [null] }))} />
+      <span className="pv-subtle">对全部筛选结果排序后分页；空值置后</span>
+    </div>}
     <div className="preview-result-context">
       <div><Tag color={query.data?.storage?.includes("Redis") ? "orange" : "blue"}>{query.data?.storage || "只读查询"}</Tag>
         {Object.entries(current.filters).filter(([k,v]) => v && !["record_key", "plan_id"].includes(k)).map(([k,v]) => <span className="preview-applied" key={k}>{spec.filter_specs?.find((f: Data) => f.key === k)?.label || "筛选条件"}：{spec.filter_specs?.find((f: Data) => f.key === k)?.options?.find((o: Data) => o.value === v)?.label || String(v)}</span>)}
@@ -69,12 +83,20 @@ function PreviewWorkspace({ project, catalog }: { project: string; catalog: Data
     </div>
     {query.error && <Alert showIcon type="error" title="本次查询未成功" description={query.error} action={<Button onClick={() => setCurrent(s => ({ ...s, revision: s.revision + 1 }))}>重试</Button>} />}
     {query.data?.message && !query.data?.required && <Alert showIcon type="info" title={query.data.message} />}
+    <PreviewOrder.Provider value={spec.sort_scope === "filtered" ? {
+      view: current.view, order: current.order,
+      change: order => setCurrent(s => ({ ...s, order, cursors: [null], revision: s.revision + 1 })),
+      preferences: tables[current.view],
+      customize: preferences => setTables(s => ({ ...s, [current.view]: preferences })),
+    } : null}>
     <div className="preview-result-body" aria-busy={query.loading}>
       {query.loading ? <Skeleton active paragraph={{ rows: 6 }} /> : query.error ? null : query.data?.required ? <Empty description={query.data.message} image={Empty.PRESENTED_IMAGE_SIMPLE} /> : <PreviewContent key={current.view + JSON.stringify(current.filters) + JSON.stringify(current.cursors)} spec={spec} rows={rows} context={{ ...query.data?.context, filters: current.filters }} onNavigate={navigate} />}
     </div>
+    </PreviewOrder.Provider>
     <footer className="preview-workspace-footer">
       <span>{query.loading ? "读取中" : query.error ? "查询失败" : query.data?.required ? "等待填写查询条件" : `本页 ${rows.length} 条`} · 第 {current.cursors.length} 页{query.data?.total != null && ` · 共 ${query.data.total} 条`}</span>
-      <Space><Button aria-label="preview-previous" disabled={query.loading || current.cursors.length === 1} onClick={() => setCurrent(s => ({ ...s, cursors: s.cursors.slice(0, -1) }))}>上一页</Button>
+      <Space><Button aria-label="preview-first" disabled={query.loading || current.cursors.length === 1} onClick={() => setCurrent(s => ({ ...s, cursors: [null] }))}>第一页</Button>
+        <Button aria-label="preview-previous" disabled={query.loading || current.cursors.length === 1} onClick={() => setCurrent(s => ({ ...s, cursors: s.cursors.slice(0, -1) }))}>上一页</Button>
         <Button aria-label="preview-next" disabled={query.loading || !!query.error || nextCursor == null} onClick={() => setCurrent(s => ({ ...s, cursors: [...s.cursors, nextCursor] }))}>下一页</Button></Space>
     </footer>
   </section>;

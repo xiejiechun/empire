@@ -23,6 +23,7 @@ from empire.features.repurchases.contract import (
     validate,
 )
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 
 LIST_COLUMNS = tuple(k for k in COLUMNS if k not in TEXTS)
 
@@ -55,7 +56,7 @@ class RepurchaseDataPlugin:
         await self.mysql.require_schema(mapping.TABLES, mapping.KEYS)
         return {'repurchases.query': self}
 
-    async def list_plans(self, code='', start='', end='', progress='', after=None, limit=200):
+    async def list_plans(self, code='', start='', end='', progress='', after=None, limit=200, order=None):
         if (not isinstance(code, str) or not re.fullmatch(r'(?:[0-9]{0,6}|[0-9]{6}\.(?:SH|SZ|BJ))', code)
                 or not isinstance(progress, str) or not re.fullmatch(r'[0-9]{0,16}', progress)
                 or type(limit) is not int or not 1 <= limit <= 200):
@@ -72,7 +73,7 @@ class RepurchaseDataPlugin:
             if bound:
                 clauses.append('plan_date' + op + ':' + key)
                 params[key] = bound
-        if after is not None:
+        if after is not None and order is None:
             if (not isinstance(after, (tuple, list)) or len(after) != 2 or
                     not isinstance(after[1], str) or not re.fullmatch(r'[1-9][0-9]{0,19}', after[1])):
                 raise ValueError('回购分页游标无效')
@@ -81,6 +82,14 @@ class RepurchaseDataPlugin:
             params.update(day=after[0], identity=after[1])
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    records, cursor = ordered_page(
+                        conn, f'SELECT {",".join(LIST_COLUMNS)} FROM {mapping.TABLE} WHERE ' + ' AND '.join(clauses),
+                        {k: v for k, v in params.items() if k != 'limit'},
+                        order=order, fields=column_fields(LIST_COLUMNS),
+                        identity=('plan_id',), after=after, limit=limit,
+                    )
+                    return dict(rows=[public(r) for r in records], next=cursor)
                 values = conn.execute(text(f'SELECT {",".join(LIST_COLUMNS)} FROM {mapping.TABLE} '
                     f'WHERE {" AND ".join(clauses)} ORDER BY plan_date DESC,plan_id DESC LIMIT :limit'), params).mappings().all()
                 rows = [public(r) for r in values[:limit]]

@@ -16,6 +16,7 @@ from empire.features.trading_rules.dataset import (
     read_snapshot,
 )
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -36,9 +37,9 @@ class RuleDataPlugin:
         await self.mysql.require_schema(TABLES, KEYS)
         return {self.manifest.provides[0]: self}
 
-    async def list_rules(self, market='', after=None, limit=200):
+    async def list_rules(self, market='', after=None, limit=200, order=None):
         import re
-        if market not in ('', 'SH', 'SZ', 'BJ', 'CN') or type(limit) is not int or not 1 <= limit <= 200 or (after is not None and not re.fullmatch('[0-9a-f]{64}', after)):
+        if market not in ('', 'SH', 'SZ', 'BJ', 'CN') or type(limit) is not int or not 1 <= limit <= 200 or (order is None and after is not None and not re.fullmatch('[0-9a-f]{64}', after)):
             raise ValueError('规则查询市场、页数或游标无效')
         def read():
             with self.mysql.read_engine.connect() as conn:
@@ -46,9 +47,17 @@ class RuleDataPlugin:
                 if market:
                     where += ' AND market=:market'
                     args['market'] = market
-                if after:
+                if after and order is None:
                     where += ' AND record_key>:after'
                     args['after'] = after
+                if order is not None:
+                    result, cursor = ordered_page(
+                        conn, 'SELECT * FROM trading_rule_value WHERE ' + where,
+                        {k: v for k, v in args.items() if k != 'limit'}, order=order,
+                        fields=column_fields(TABLES['trading_rule_value']),
+                        identity=('record_key',), after=after, limit=limit,
+                    )
+                    return dict(rows=[canonical(r) for r in result], next=cursor)
                 result = conn.execute(text('SELECT * FROM trading_rule_value WHERE ' + where + ' ORDER BY record_key LIMIT :limit'), args).mappings().all()
                 values = [canonical(r) for r in result[:limit]]
                 return dict(rows=values, next=values[-1]['record_key'] if len(result) > limit else None)

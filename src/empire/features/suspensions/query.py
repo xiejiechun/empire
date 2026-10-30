@@ -10,6 +10,7 @@ from empire.contracts.preparation import PreparationContribution
 from empire.core.time import CHINA
 from empire.features.suspensions.contract import FIRST_DATE, periods_between
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 
 
 def closing_price_evidence(conn, namespace, security, day, now):
@@ -96,7 +97,7 @@ class SuspensionDataPlugin:
                 "coverage_through": through.isoformat() if through else None}
 
     async def list_events(self, market="", code="", start=None, end=None, limit=200, offset=0,
-                          sort_by="suspended_at", direction="desc"):
+                          sort_by="suspended_at", direction="desc", order=None, after=None):
         if market not in ("", "SH", "SZ") or (code and (not code.isdigit() or len(code) > 6)):
             raise ValueError("停复牌查询市场或代码无效")
         if type(limit) is not int or not 1 <= limit <= 500:
@@ -111,9 +112,9 @@ class SuspensionDataPlugin:
         if first < FIRST_DATE or last < first:
             raise ValueError("停复牌查询日期范围无效")
         return await self.mysql.read(self._list_events, market, code, first, last, limit, offset,
-                                     sort_by, direction)
+                                     sort_by, direction, order, after)
 
-    def _list_events(self, market, code, start, end, limit, offset, sort_by, direction):
+    def _list_events(self, market, code, start, end, limit, offset, sort_by, direction, order=None, after=None):
         filters = ["TRUE"]
         params = {"source": self.source, "start": start,
                   "end": end + timedelta(days=1), "day": start.isoformat(),
@@ -125,17 +126,35 @@ class SuspensionDataPlugin:
             filters.append("s.unified_code LIKE :code")
             params["code"] = code + "%"
         with self.mysql.read_engine.connect() as conn:
-            rows = conn.execute(text(f"""
-                SELECT s.unified_code,s.resume_key,s.record_key,RIGHT(s.unified_code,2) AS market,LEFT(s.unified_code,6) AS code,name,suspended_at,resumed_at,suspension_type,source_note,reason
-                FROM suspension_event s JOIN (
-                    SELECT DISTINCT unified_code,suspended_at,resume_key,record_key
-                    FROM suspension_source_date FORCE INDEX(PRIMARY)
-                    WHERE source_date>=:start AND source_date<:end
-                ) d USING (unified_code,suspended_at,resume_key,record_key)
-                WHERE {' AND '.join(filters)}
-                ORDER BY {sort_by} {direction},suspended_at DESC,market,code,resume_key,record_key
-                LIMIT :limit OFFSET :offset
-            """), params).mappings().all()
+            cursor = None
+            if order is not None:
+                fields = column_fields(('unified_code', 'market', 'code', 'name', 'suspended_at',
+                                        'resumed_at', 'suspension_type', 'source_note', 'reason'))
+                fields['source_dates'] = 'q.first_source_date'
+                rows, cursor = ordered_page(
+                    conn, 'SELECT s.unified_code,s.resume_key,s.record_key,s.name,s.suspended_at,s.resumed_at,'
+                    's.suspension_type,s.source_note,s.reason,RIGHT(s.unified_code,2) AS market,LEFT(s.unified_code,6) AS code,'
+                    'd.first_source_date FROM suspension_event s JOIN ('
+                    'SELECT unified_code,suspended_at,resume_key,record_key,MIN(source_date) AS first_source_date '
+                    'FROM suspension_source_date WHERE source_date>=:start AND source_date<:end '
+                    'GROUP BY unified_code,suspended_at,resume_key,record_key) d '
+                    'USING(unified_code,suspended_at,resume_key,record_key) WHERE ' + ' AND '.join(filters),
+                    {k: v for k, v in params.items() if k not in ('limit', 'offset')},
+                    order=order, fields=fields,
+                    identity=('unified_code', 'suspended_at', 'resume_key', 'record_key'), after=after, limit=limit,
+                )
+            else:
+                rows = conn.execute(text(f"""
+                    SELECT s.unified_code,s.resume_key,s.record_key,RIGHT(s.unified_code,2) AS market,LEFT(s.unified_code,6) AS code,name,suspended_at,resumed_at,suspension_type,source_note,reason
+                    FROM suspension_event s JOIN (
+                        SELECT DISTINCT unified_code,suspended_at,resume_key,record_key
+                        FROM suspension_source_date FORCE INDEX(PRIMARY)
+                        WHERE source_date>=:start AND source_date<:end
+                    ) d USING (unified_code,suspended_at,resume_key,record_key)
+                    WHERE {' AND '.join(filters)}
+                    ORDER BY {sort_by} {direction},suspended_at DESC,market,code,resume_key,record_key
+                    LIMIT :limit OFFSET :offset
+                """), params).mappings().all()
             # Page first, then fetch the actual source days for only those identities.
             # Never infer source dates from suspension/resumption effective times.
             identities = [(r["unified_code"], r["suspended_at"], r["resume_key"], r["record_key"])
@@ -152,10 +171,11 @@ class SuspensionDataPlugin:
                 for row in dates:
                     identity = tuple(row[k] for k in ("unified_code", "suspended_at", "resume_key", "record_key"))
                     source_days[identity].append(row["source_date"].isoformat())
-        return [{**{key: value.isoformat() if hasattr(value, "isoformat") else value
-                    for key, value in row.items() if key != "resume_key"},
+        values = [{**{key: value.isoformat() if hasattr(value, "isoformat") else value
+                    for key, value in row.items() if key not in ("resume_key", "first_source_date")},
                  "source_dates": source_days[identity]}
                 for row, identity in zip(rows, identities, strict=True)]
+        return dict(rows=values, next=cursor) if order is not None else values
 
     async def calendar_coverage(self):
         def read():

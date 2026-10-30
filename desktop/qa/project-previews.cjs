@@ -200,6 +200,32 @@ async function main() {
         await content.waitFor();
         const body = await preview.innerText();
         assert.ok(!body.includes("[object Object]"), "Object leaked: " + task.id + "/" + spec.id);
+        if (!live && spec.sort_scope === "filtered") {
+          const sorters = content.locator(".ant-table-header .ant-table-column-sorters");
+          if (await sorters.count()) {
+            assert.equal(await sorters.count(), spec.columns.length, "Every business column must be sortable");
+            if (task.id === "tdx-unlock-industries") {
+              await content.getByRole("button", { name: /^显示列 / }).click();
+              await p.getByRole("checkbox").nth(1).uncheck();
+              await content.getByRole("button", { name: /^显示列 / }).click();
+              await content.getByText("舒适", { exact: true }).click();
+            }
+            await sorters.first().click();
+            await preview.getByRole("button", { name: "恢复默认顺序", exact: true }).waitFor();
+            const calls = await app.evaluate(() => globalThis.previewQaCalls);
+            const call = calls.filter(c => c.op === "preview.read").at(-1);
+            assert.deepEqual(call.order, { field: spec.columns[0].key, direction: "asc" });
+            assert.equal(call.cursor, "null", "Sorting must start a new page chain");
+            await preview.getByRole("button", { name: "恢复默认顺序", exact: true }).click();
+            await content.waitFor();
+            if (task.id === "tdx-unlock-industries") {
+              await content.getByRole("button", { name: `显示列 ${spec.columns.length - 1}/${spec.columns.length}`, exact: true }).waitFor();
+              assert.equal(await content.locator(".ant-table-medium").count(), 1);
+              report.interactions.push("column visibility and row density survive global sorting and reset");
+            }
+            report.interactions.push(task.id + "/" + spec.id + " all headers sortable; global request resets cursor");
+          }
+        }
         assert.ok(!/\{\s*"(?:unified_code|record_key|report_key|fields)"\s*:/.test(body), "Raw JSON leaked");
         if (!live && spec.renderer === "calendar") {
           assert.equal(await content.getByRole("gridcell", { name: "2026-10-01 休市日", exact: true }).count(), 1);
@@ -221,10 +247,11 @@ async function main() {
           report.interactions.push("suspension source dates presented separately");
         }
         if (!live && task.id === "tdx-additional-issues") {
-          await content.getByText("发行完整明细", { exact: true }).waitFor();
-          await content.getByRole("list", { name: "事件列表" }).getByRole("button").nth(1).click();
-          await content.getByRole("alert").filter({ hasText: "上次有效明细" }).waitFor();
-          await content.getByText("上次有效发行明细", { exact: true }).waitFor();
+          await content.getByRole("button", { name: "展开记录", exact: true }).nth(1).click();
+          const drawer = p.getByRole("dialog");
+          await drawer.getByText("上次有效发行明细", { exact: true }).waitFor();
+          assert.ok((await drawer.innerText()).includes("本轮来源暂无可用发行详情"));
+          await p.keyboard.press("Escape");
           report.interactions.push("issue unavailable detail distinguished from previous valid version");
         }
         if (["ths-income", "cninfo-calendar", "ths-yuanhang-prices"].includes(task.id)) {
@@ -255,6 +282,11 @@ async function main() {
           await preview.locator(`[data-preview-kind="${detailSpec.renderer}"]`).waitFor();
           if (!live && detailSpec.renderer === "holdings") {
             await preview.getByText("测试当期持有人", { exact: true }).first().waitFor();
+            const beforeCalls = await app.evaluate(() => globalThis.previewQaCalls.length);
+            await preview.locator(".ant-table-header .ant-table-column-sorters").first().click();
+            await preview.getByRole("button", { name: "恢复默认顺序", exact: true }).waitFor();
+            assert.equal(await app.evaluate(() => globalThis.previewQaCalls.length), beforeCalls, "Complete detail sorts locally without a parent read");
+            await preview.getByRole("button", { name: "恢复默认顺序", exact: true }).click();
             await preview.getByText("退出名单 1", { exact: true }).click();
             await preview.getByText("测试退出持有人", { exact: true }).first().waitFor();
             report.interactions.push(spec.id + " current and exited holders distinct");
@@ -290,11 +322,17 @@ async function main() {
     let preview = await selectTask(statement);
     await fillFilters(preview, statement.views.find((v) => !v.hidden));
     if (!live) {
+      await preview.getByRole("button", { name: /^查看.*→$/ }).first().click();
       const matrix = preview.getByRole("table", { name: "财报科目对照" });
       await matrix.waitFor();
       const text = await matrix.innerText();
       assert.ok(text.includes("上期独有科目") && text.replaceAll(",", "").includes("123456789.012345") && text.includes("—"));
       report.interactions.push("statement union of subjects, exact precision, missing distinct from zero");
+      await matrix.getByRole("button", { name: "2026-09-30 ↕", exact: true }).click();
+      assert.equal(await matrix.locator('th[aria-sort="ascending"]').count(), 1);
+      await matrix.getByRole("button", { name: "2026-09-30 ↕", exact: true }).click();
+      assert.equal(await matrix.locator('th[aria-sort="descending"]').count(), 1);
+      report.interactions.push("complete statement subjects sortable by each report amount");
       const events = catalog.find((t) => t.id === "tdx-earnings-forecast");
       preview = await selectTask(events);
       const spec = events.views.find((v) => !v.hidden), code = spec.filter_specs.find((f) => f.key === "code");
@@ -343,6 +381,35 @@ async function main() {
       assert.ok(metrics.some(t => /未取得数据29/.test(t)), JSON.stringify(metrics));
       report.interactions.push("empty price, duplicate/invalid/out-of-month calendar records retain unknown semantics");
     }
+    if (live) {
+      const stocks = catalog.find(t => t.id === "ths-stocks");
+      const spec = stocks.views.find(v => !v.hidden);
+      const checked = await p.evaluate(async ({ ident, view }) => {
+        const counts = [];
+        for (const direction of ["asc", "desc"]) {
+          const request = { ident, view, filters: {}, order: { field: "code", direction }, cursor: "null" };
+          const first = await window.empire.read("preview.read", request);
+          if (!first.next) throw new Error("Live ordering requires two populated stock pages");
+          const second = await window.empire.read("preview.read", { ...request, cursor: JSON.stringify(first.next) });
+          const rows = [...first.rows, ...second.rows];
+          if (rows.length !== 100 || new Set(rows.map(r => r.unified_code)).size !== 100)
+            throw new Error("Live sorted pages are incomplete or repeated");
+          if (rows.some((r, i) => i && (direction === "asc" ? rows[i - 1].code > r.code : rows[i - 1].code < r.code)))
+            throw new Error("Live cross-page order is incorrect");
+          counts.push(rows.length);
+        }
+        return counts;
+      }, { ident: stocks.id, view: spec.id });
+      preview = await selectTask(stocks);
+      await fillFilters(preview, spec);
+      await preview.locator(".ant-table-header .ant-table-column-sorters").first().click();
+      await preview.getByRole("button", { name: "恢复默认顺序", exact: true }).waitFor();
+      await preview.getByRole("button", { name: "preview-next", exact: true }).click();
+      await preview.locator(".preview-workspace-footer").filter({ hasText: "第 2 页" }).waitFor();
+      await preview.getByRole("button", { name: "preview-first", exact: true }).click();
+      await preview.locator(".preview-workspace-footer").filter({ hasText: "第 1 页" }).waitFor();
+      report.interactions.push(`live stock ordering: ${checked.join("/")} rows asc/desc across pages; header, next and first page`);
+    }
     const calendar = catalog.find((t) => t.id === "cninfo-calendar");
     preview = await selectTask(calendar);
     await fillFilters(preview, calendar.views.find((v) => !v.hidden));
@@ -386,3 +453,6 @@ async function main() {
 
 if (process.versions.electron && process.argv.includes("--harness")) mockMain().catch((e) => { console.error(e); process.exit(1); });
 else main().catch((e) => { console.error(e); process.exitCode = 1; });
+
+
+

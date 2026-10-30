@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Data } from "../api";
 
 // A result belongs to one exact query, never to newly edited or failed filters.
-export function usePreviewRead(project: string, view: string, filters: Data, cursor: any, revision: number) {
-  const key = JSON.stringify({ ident: project, view, filters, cursor: JSON.stringify(cursor) });
+export function usePreviewRead(project: string, view: string, filters: Data, cursor: any, revision: number, order?: Data) {
+  const key = JSON.stringify({ ident: project, view, filters, cursor: JSON.stringify(cursor), order });
   const identity = key + ":" + revision;
   const [result, setResult] = useState<{ identity: string; data?: Data; error: string; stamp?: number }>({ identity: "", error: "" });
   useEffect(() => {

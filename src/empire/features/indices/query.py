@@ -28,6 +28,7 @@ from empire.features.indices.dataset import (
     validate_catalog,
 )
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -48,7 +49,7 @@ class IndexDataPlugin:
         await self.mysql.require_schema(TABLES, KEYS)
         return {'indices.query': self}
 
-    async def browse(self, mode='indices', search='', after=None, limit=200, selected_index=''):
+    async def browse(self, mode='indices', search='', after=None, limit=200, selected_index='', order=None):
         if (mode not in ('indices', 'members') or not isinstance(search, str) or len(search) > 100
                 or type(limit) is not int or not 1 <= limit <= 500):
             raise ValueError('指数查询范围无效')
@@ -71,7 +72,7 @@ class IndexDataPlugin:
             params['selected_index'] = selected_index
         if exact_security:
             conditions.append('m.unified_code=:security')
-        if after is not None:
+        if after is not None and order is None:
             if not isinstance(after, (tuple, list)) or len(after) != (1 if mode == 'indices' else 2):
                 raise ValueError('指数分页游标无效')
             params['index'] = index_code(after[0])
@@ -85,7 +86,7 @@ class IndexDataPlugin:
                 where = ' WHERE ' + ' AND '.join(conditions) if conditions else ''
                 if mode == 'indices':
                     sql = ('SELECT i.index_code,i.name AS index_name,i.source_group,i.members_available,i.member_count '
-                           'FROM stock_index i' + where + ' ORDER BY i.index_code LIMIT :limit')
+                           'FROM stock_index i' + where)
                 else:
                     # Complete codes use the two identity indexes; an empty search streams the member primary key.
                     members = ('(SELECT index_code,source_code FROM stock_index_member WHERE source_code=:code '
@@ -94,7 +95,20 @@ class IndexDataPlugin:
                                if exact_code else 'stock_index_member m')
                     sql = ('SELECT m.index_code,i.name AS index_name,m.source_code,m.unified_code,m.name,i.members_available '
                            'FROM ' + members + ' STRAIGHT_JOIN stock_index i ON i.index_code=m.index_code'
-                           + where + ' ORDER BY m.index_code,m.source_code LIMIT :limit')
+                           + where)
+                if order is not None:
+                    names = (('index_code', 'index_name', 'source_group', 'members_available', 'member_count')
+                             if mode == 'indices' else ('index_code', 'index_name', 'source_code',
+                                                        'unified_code', 'name', 'members_available'))
+                    rows, cursor = ordered_page(
+                        conn, sql, {k: v for k, v in params.items() if k != 'limit'},
+                        order=order, fields=column_fields(names),
+                        identity=('index_code',) if mode == 'indices' else ('index_code', 'source_code'),
+                        after=after, limit=limit,
+                    )
+                    return dict(rows=rows, next=cursor)
+                sql += (' ORDER BY i.index_code' if mode == 'indices'
+                        else ' ORDER BY m.index_code,m.source_code') + ' LIMIT :limit'
                 values = conn.execute(text(sql), params).mappings().all()
                 rows = [dict(r) for r in values[:limit]]
                 last = rows[-1] if rows else None

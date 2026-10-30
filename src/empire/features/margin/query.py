@@ -14,6 +14,7 @@ from empire.contracts.preparation_scope import PreparationScope
 from empire.features.margin.contract import (
     CONTRACT,
     DATASET,
+    FIELDS,
     JOB,
     PROJECT,
     TABLES,
@@ -24,6 +25,7 @@ from empire.features.margin.contract import (
 )
 from empire.features.margin.dataset import read_rows
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 
 
 class MarginDataPlugin:
@@ -95,7 +97,7 @@ class MarginDataPlugin:
 
         return await self.mysql.read(read)
 
-    async def browse(self, code="", start="", end="", after=None, limit=200):
+    async def browse(self, code="", start="", end="", after=None, limit=200, order=None):
         if (
             not isinstance(code, str)
             or not re.fullmatch(r"(?:\d{0,6}|\d{6}\.(SH|SZ|BJ))", code)
@@ -112,7 +114,7 @@ class MarginDataPlugin:
             if value:
                 clauses.append("d.trade_date" + op + ":" + key)
                 args[key] = value
-        if after is not None:
+        if after is not None and order is None:
             if not isinstance(after, (list, tuple)) or len(after) != 2:
                 raise ValueError("融资融券查询游标无效")
             day(after[0])
@@ -122,6 +124,27 @@ class MarginDataPlugin:
 
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    from empire.features.margin.ordering import sort_fields
+
+                    relation = (
+                        'SELECT d.*,p.financing_balance AS previous_financing,'
+                        'p.lending_balance AS previous_lending FROM margin_daily d '
+                        'LEFT JOIN margin_daily p ON p.unified_code=d.unified_code '
+                        'AND p.trade_date=(SELECT MAX(q.trade_date) FROM margin_daily q '
+                        'WHERE q.unified_code=d.unified_code AND q.trade_date<d.trade_date) WHERE '
+                        + ' AND '.join(clauses)
+                    )
+                    values, cursor = ordered_page(
+                        conn, relation, {k: v for k, v in args.items() if k != 'limit'},
+                        order=order, fields={**column_fields(('unified_code', 'trade_date', *FIELDS)),
+                                             **sort_fields()},
+                        identity=('unified_code', 'trade_date'), after=after, limit=limit,
+                    )
+                    for row in values:
+                        row['trade_date'] = row['trade_date'].isoformat()
+                        row.update(derived(row))
+                    return dict(rows=values, next=cursor)
                 # Limit first; indexed predecessor lookup stays bounded to this page.
                 sql = "SELECT d.*,p.financing_balance AS previous_financing,p.lending_balance AS previous_lending "
                 sql += "FROM (SELECT d.* FROM margin_daily d WHERE " + " AND ".join(clauses)

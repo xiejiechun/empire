@@ -1,5 +1,7 @@
 """Bounded adapters for registered task previews; never accept SQL/capability names."""
 
+import hashlib
+import json
 from datetime import date, datetime
 from decimal import Decimal
 
@@ -30,7 +32,7 @@ def catalog(ident):
                  **presentation(ident, v)) for v in views(ident)]
 
 
-async def read(registry, ident, view, filters, cursor=None):
+async def read(registry, ident, view, filters, cursor=None, order=None):
     spec = next((v for v in views(ident) if v.id == view), None)
     if spec is None:
         raise ValueError("该任务未登记此数据预览")
@@ -39,6 +41,10 @@ async def read(registry, ident, view, filters, cursor=None):
     if any(not isinstance(v, str) or len(v) > 200 for v in filters.values()):
         raise ValueError("预览筛选值必须是有界文本")
     q = {k: v.strip() for k, v in filters.items() if v.strip()}
+    if ident == 'tdx-unlock-industries':
+        for key in ('start', 'end'):
+            if key in q and len(q[key]) == 7:
+                q[key] += '-01'
     now = datetime.now(CHINA)
     for key in ("start", "end", "day"):
         if key in q:
@@ -58,10 +64,26 @@ async def read(registry, ident, view, filters, cursor=None):
         from empire.contracts.security import split_unified_code
 
         split_unified_code(q["security"])
+    sort_signature = None
+    if order is not None:
+        from .preview_presentation import presentation
+        allowed = {f['key'] for f in presentation(ident, spec)['columns']}
+        if (spec.hidden or spec.mode in ('month', 'reason') or not isinstance(order, dict)
+                or set(order) != {'field', 'direction'} or order['field'] not in allowed
+                or order['direction'] not in ('asc', 'desc')):
+            raise ValueError('当前预览排序字段或方向无效')
+        sort_signature = hashlib.sha256(json.dumps(
+            [ident, view, q, order], sort_keys=True, ensure_ascii=False,
+        ).encode()).hexdigest()
+        if cursor is not None:
+            if (not isinstance(cursor, dict) or set(cursor) != {'preview', 'position'}
+                    or cursor['preview'] != sort_signature):
+                raise ValueError('排序或筛选已变化，请返回第一页')
+            cursor = cursor['position']
     service = registry.get(spec.capability)
     method = getattr(service, spec.method)
     mode = spec.mode
-    offset = cursor or 0
+    offset = (cursor or 0) if order is None else 0
     if mode in ("offset", "list") and (type(offset) is not int or not 0 <= offset <= 100000):
         raise ValueError("分页位置无效")
     kwargs = {**q, **spec.fixed}
@@ -106,6 +128,11 @@ async def read(registry, ident, view, filters, cursor=None):
         )
     if spec.hidden and cursor is not None:
         raise ValueError("单条详情不接受分页游标")
+    if order is not None:
+        kwargs['order'] = order
+        if mode in ('offset', 'list'):
+            kwargs.pop('offset', None)
+            kwargs['after'] = cursor
     data = await method(**kwargs)
     if ident == "ths-capital" and spec.hidden and data:
         parent = next(v for v in views(ident) if v.id == spec.parent)
@@ -126,12 +153,14 @@ async def read(registry, ident, view, filters, cursor=None):
     context = {k: data[k] for k in ("head", "coverage", "month", "expected_count", "complete",
                                    "industry_count", "publication", "snapshot", "at", "source_total", "unavailable_count", "incomplete_count") if k in data}
     next_cursor = data.get("next", data.get("next_cursor"))
-    if mode in ("offset", "list"):
+    if mode in ("offset", "list") and order is None:
         next_cursor = (
             offset + len(rows)
             if len(rows) == 50 and (data.get("total") is None or offset + len(rows) < data["total"])
             else None
         )
+    if order is not None and next_cursor is not None:
+        next_cursor = dict(preview=sort_signature, position=next_cursor)
     return wire(
         dict(
             rows=rows,

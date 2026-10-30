@@ -24,6 +24,7 @@ from empire.features.hot_list.contract import (
 )
 from empire.features.hot_list.dataset import HotListDataset, read_detail, read_details
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -124,7 +125,7 @@ class HotListDataPlugin:
 
         return await self.mysql.read(read)
 
-    async def browse(self, code="", start="", end="", after=None, limit=200):
+    async def browse(self, code="", start="", end="", after=None, limit=200, order=None):
         if (
             not isinstance(code, str)
             or not re.fullmatch(r"(?:\d{0,6}|\d{6}\.(SH|SZ|BJ))", code)
@@ -141,7 +142,7 @@ class HotListDataPlugin:
             if bound:
                 clauses.append("list_date" + op + ":" + key)
                 args[key] = bound
-        if after is not None:
+        if after is not None and order is None:
             if not isinstance(after, (list, tuple)) or len(after) != 2:
                 raise ValueError("龙虎榜游标无效")
             day(after[0])
@@ -151,6 +152,14 @@ class HotListDataPlugin:
 
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    records, cursor = ordered_page(
+                        conn, 'SELECT unified_code,list_date,directory_listed,detail_status,reason_count,seat_count FROM hot_list_day WHERE ' + ' AND '.join(clauses),
+                        {k: v for k, v in args.items() if k != 'limit'},
+                        order=order, fields=column_fields(('unified_code', 'list_date', 'directory_listed', 'detail_status', 'reason_count', 'seat_count')),
+                        identity=('unified_code', 'list_date'), after=after, limit=limit,
+                    )
+                    return dict(rows=[{**r, 'list_date': r['list_date'].isoformat()} for r in records], next=cursor)
                 values = [
                     dict(r)
                     for r in conn.execute(

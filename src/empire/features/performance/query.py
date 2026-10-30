@@ -25,6 +25,7 @@ from empire.features.performance.contract import (
 )
 from empire.features.performance.dataset import PerformanceDataset, decode, unit_where
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -57,7 +58,7 @@ class PerformanceDataPlugin:
                 return read_state(conn, self.namespace, self.project_id, 'tdx')
         return await self.mysql.read(read)
 
-    async def list_records(self, code='', start='', end='', after=None, limit=200):
+    async def list_records(self, code='', start='', end='', after=None, limit=200, order=None):
         if not isinstance(code, str) or not re.fullmatch(r'(?:\d{0,6}|\d{6}\.(?:SH|SZ|BJ))', code) or type(limit) is not int or not 1 <= limit <= 200:
             raise ValueError('查询证券或分页上限无效')
         scope = PreparationScope.parse(dict(start=start, end=end))
@@ -70,7 +71,7 @@ class PerformanceDataPlugin:
             if bound:
                 clauses.append(field + op + ':' + key)
                 params[key] = bound
-        if after is not None:
+        if after is not None and order is None:
             if not isinstance(after, (list, tuple)) or len(after) != 3 or not re.fullmatch(r'\d{6}\.(SH|SZ|BJ)', str(after[1])) or not re.fullmatch('[a-f0-9]{64}', str(after[2])):
                 raise ValueError('查询游标无效')
             day(after[0])
@@ -78,6 +79,15 @@ class PerformanceDataPlugin:
             params.update(day=after[0], security=after[1], key=after[2])
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    relation = f'SELECT * FROM {self.table} WHERE ' + ' AND '.join(clauses)
+                    records, cursor = ordered_page(
+                        conn, relation, {k: v for k, v in params.items() if k != 'limit'},
+                        order=order, fields=column_fields(columns(self.kind)),
+                        identity=('record_key',), after=after, limit=limit,
+                    )
+                    return dict(rows=[{**decode(self.kind, r), 'record_key': r['record_key']}
+                                      for r in records], next=cursor)
                 index = (' FORCE INDEX (ix_security_date)' if len(code) >= 6 else ' FORCE INDEX (ix_date)') if self.kind == 'shareholder_changes' else ''
                 records = conn.execute(text(f'SELECT * FROM {self.table}{index} WHERE {" AND ".join(clauses)} '
                     f'ORDER BY {field} DESC,unified_code DESC,record_key DESC LIMIT :limit'), params).mappings().all()

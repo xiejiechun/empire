@@ -48,6 +48,7 @@ def presentation(task, view):
     renderer, title, description, definitions = _content(task, view)
     result = dict(renderer=renderer, title=title, description=description,
                   columns=columns(definitions), identity=_identity(task, view),
+                  sort_scope='complete' if view.hidden or view.mode in ('month', 'reason') else 'filtered',
                   hidden=view.hidden, parent=view.parent,
                   notes=["空白表示来源未提供，不按零处理。无记录不代表该范围已采集完整。"],
                   filter_specs=[_filter(task, view, key) for key in view.filters])
@@ -63,8 +64,14 @@ def presentation(task, view):
         table = view.fixed["table"]
         result["columns"] = [dict(key=k, label=label, kind="decimal" if kind == "num" else
                                   "longtext" if kind == "text" else "date" if kind == "date" else "boolean" if kind == "bool" else "integer" if kind == "int" else "text")
-                             for k, (label, kind) in fields(table).items() if k not in ("record_key", "section")]
+                             for k, (label, kind) in fields(table).items() if k not in ("record_key", "section")
+                             and (view.hidden or kind != 'text')]
         result["columns"].append(dict(key="in_window", label="属于当前来源窗口", kind="boolean"))
+    if task == 'tdx-suspensions':
+        result['notes'].append('来源出现日按筛选范围内最早的实际出现日期排序；不是停复牌生效日。')
+    if result['sort_scope'] == 'filtered':
+        result['notes'].append('排序作用于全部筛选结果，空值置后，同值按稳定业务身份排列。切换排序返回第一页。'
+                               'SQL翻页期间数据仍可能更新；盘中翻页固定在同一个保留快照，快照失效后需重新查询。')
     if not view.hidden:
         _navigation(task, view, result)
     return result
@@ -89,6 +96,8 @@ def _filter(task, view, key):
         if task == "ths-yuanhang-financial":
             basis = "除权日期" if view.id == "actions" else "股本生效日期"
         label = basis + ("从" if key == "start" else "至")
+        if task == 'tdx-unlock-industries':
+            shape = 'month'
     item = dict(key=key, label=label, type=shape, placeholder=placeholder,
                 required=view.hidden or key in ("security", "theme_id"))
     if key == "market":
@@ -210,7 +219,10 @@ def _content(task, view):
     if task == "tdx-unlock-industries":
         return "events", "行业月度解禁规模", "按解禁月份比较行业；市值与占比采用来源基准日，不视为历史当时价格。", "unlock_month:解禁月份:date|industry:行业|basis_date:估值基准日:date|shares:解禁数量:decimal:股|unlock_value:解禁市值:decimal:元|market_cap:总市值:decimal:元|negotiable_cap:流通市值:decimal:元|market_percent:占总市值比例:decimal:%|float_percent:占流通市值比例:decimal:%"
     if task in EVENTS:
-        defs = SECURITY + "|" + EVENTS[task]
+        base = 'unified_code:证券代码' if task in (
+            'tdx-company-renames', 'tdx-security-renames', 'tdx-st-implementation', 'tdx-st-removal',
+        ) else SECURITY
+        defs = base + "|" + EVENTS[task]
         if task == "tdx-unlocks" and view.hidden:
             defs = "unified_code:证券代码|unlock_date:解禁日期:date|holder:持有人|reason:解禁原因|shares:解禁股份:decimal:股|occurrence:来源出现次数:integer"
         note = "日期筛选为来源日历出现日期；逐条列出筛选范围内的实际出现日期，停复牌生效时间独立呈现。未知复牌日不作推断。" if task == "tdx-suspensions" else "按业务事件阅读日期、方案和变动前后信息；保留来源并列记录与未知值。"

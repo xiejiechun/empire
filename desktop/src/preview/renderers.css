@@ -52,6 +52,9 @@
 .pv-matrix { border-collapse: separate; border-spacing: 0; min-width: 100%; font-size: 13px; }
 .pv-matrix th, .pv-matrix td { border-bottom: 1px solid var(--border); padding: 7px 12px; min-width: 146px; white-space: nowrap; text-align: right; background: var(--surface); font-variant-numeric: tabular-nums; }
 .pv-matrix thead th { position: sticky; top: 0; z-index: 2; color: var(--muted); background: var(--hover); }
+.pv-matrix thead button { border: 0; padding: 4px 0; background: transparent; color: inherit; cursor: pointer; text-align: inherit; }
+.pv-matrix thead button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.pv-matrix th[aria-sort="ascending"] button, .pv-matrix th[aria-sort="descending"] button { color: var(--blue); font-weight: 600; }
 .pv-matrix thead small { display: block; color: var(--muted); font-weight: 400; margin-top: 5px; font-size: 10px; }
 .pv-matrix tr > th:first-child { text-align: left; position: sticky; left: 0; min-width: 290px; max-width: 290px; width: 290px; overflow-wrap: anywhere; white-space: normal; font-weight: 400; z-index: 1; box-shadow: 1px 0 var(--border); }
 .pv-matrix thead tr > th:first-child { z-index: 3; }

@@ -23,6 +23,7 @@ from empire.features.listings.contract import (
     validate,
 )
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 
 
 class ListingDataPlugin:
@@ -67,7 +68,7 @@ class ListingDataPlugin:
                 return self._plan(conn)
         return await self.mysql.read(read)
 
-    async def list_records(self, code='', start='', end='', after=None, limit=200):
+    async def list_records(self, code='', start='', end='', after=None, limit=200, order=None):
         import re
         if not isinstance(code, str) or not re.fullmatch(r'(?:[0-9]{0,6}|[0-9]{6}\.(?:SH|SZ|BJ))', code) or type(limit) is not int or not 1 <= limit <= 200:
             raise ValueError('上市查询代码或上限无效')
@@ -80,7 +81,7 @@ class ListingDataPlugin:
             if day:
                 clauses.append('l.listing_date' + op + ':' + key)
                 params[key] = day
-        if after is not None:
+        if after is not None and order is None:
             from datetime import date
             if not isinstance(after, (list, tuple)) or len(after) != 2:
                 raise ValueError('上市分页游标无效')
@@ -94,6 +95,26 @@ class ListingDataPlugin:
                 state = read_state(conn, self.namespace, PROJECT, 'ths')
                 unusable = {unit.split(':')[1] + '.' + unit.split(':')[0]: proof['availability']
                     for unit, proof in state.get('units', {}).items() if unusable_proof(proof)}
+                if order is not None:
+                    fields = column_fields((*[k for k in COLUMNS if k != 'history'], 'name'))
+                    args = {k: v for k, v in params.items() if k != 'limit'}
+                    cases = []
+                    for i, (security, status) in enumerate(sorted(unusable.items())):
+                        args[f'__status_code_{i}'], args[f'__status_value_{i}'] = security, status
+                        cases.append(f'WHEN :__status_code_{i} THEN :__status_value_{i}')
+                    fields['detail_status'] = ('CASE q.unified_code ' + ' '.join(cases)
+                                               + " ELSE 'available' END") if cases else "'available'"
+                    values, cursor = ordered_page(
+                        conn, f'SELECT {projection},s.name FROM {TABLE} l LEFT JOIN stock s USING(unified_code) '
+                        + ('WHERE ' + ' AND '.join(clauses) if clauses else ''), args,
+                        order=order, fields=fields, identity=('unified_code',), after=after, limit=limit,
+                    )
+                    rows = [{k: str(v) if v is not None else None for k, v in r.items()} for r in values]
+                    for row in rows:
+                        row['detail_status'] = unusable.get(row['unified_code'], 'available')
+                    return dict(rows=rows, next=cursor,
+                                unavailable_count=sum(k.startswith(code) and v == 'unavailable' for k, v in unusable.items()),
+                                incomplete_count=sum(k.startswith(code) and v == 'incomplete' for k, v in unusable.items()))
                 values = conn.execute(text(f'SELECT {projection},s.name FROM {TABLE} l LEFT JOIN stock s USING(unified_code) '
                     + ('WHERE ' + ' AND '.join(clauses) if clauses else '')
                     + ' ORDER BY l.listing_date,l.unified_code LIMIT :limit'), params).mappings().all()

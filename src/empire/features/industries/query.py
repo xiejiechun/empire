@@ -21,6 +21,7 @@ from empire.features.industries.dataset import (
     validate,
 )
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -47,7 +48,7 @@ class IndustryDataPlugin:
             return (read_snapshot(conn, self.source),
                     read_state(conn, self.namespace, PROJECT, self.source))
 
-    async def list_members(self, search='', offset=0, limit=200, industry=''):
+    async def list_members(self, search='', offset=0, limit=200, industry='', order=None, after=None):
         if (not isinstance(search, str) or len(search) > 100 or type(offset) is not int
                 or not 0 <= offset <= 15000 or type(limit) is not int or not 1 <= limit <= 500):
             raise ValueError('行业查询范围无效')
@@ -65,18 +66,40 @@ class IndustryDataPlugin:
                     params['industry'] = industry
                 join = 'industry_member m JOIN industry i ON i.industry_code=m.industry_code'
                 total = conn.execute(text(f'SELECT COUNT(*) FROM {join} WHERE {where}'), params).scalar_one()
+                if order is not None:
+                    rows, cursor = ordered_page(
+                        conn, 'SELECT i.industry_code,i.name AS industry_name,m.unified_code,'
+                        f'RIGHT(m.unified_code,2) AS market,LEFT(m.unified_code,6) AS code,m.name FROM {join} WHERE {where}',
+                        {k: v for k, v in params.items() if k not in ('limit', 'offset')}, order=order,
+                        fields=column_fields(('industry_code', 'industry_name', 'unified_code', 'market', 'code', 'name')),
+                        identity=('industry_code', 'unified_code'), after=after, limit=limit,
+                    )
+                    return dict(rows=rows, next=cursor, total=total,
+                                industry_count=state.get('industry_count', 0), publication=state.get('publication'))
                 rows = conn.execute(text(f'SELECT i.industry_code,i.name AS industry_name,RIGHT(m.unified_code,2) AS market,LEFT(m.unified_code,6) AS code,m.name '
                     f'FROM {join} WHERE {where} ORDER BY i.industry_code,m.unified_code LIMIT :limit OFFSET :offset'), params).mappings()
                 return dict(rows=[dict(r) for r in rows], total=total, offset=offset, limit=limit,
                             industry_count=state.get('industry_count', 0), publication=state.get('publication'))
         return await self.mysql.read(read)
 
-    async def directory(self, search='', after='', limit=200):
+    async def directory(self, search='', after='', limit=200, order=None):
         if not isinstance(search, str) or len(search) > 100 or type(limit) is not int or not 1 <= limit <= 200:
             raise ValueError('行业目录查询范围无效')
         pattern = '%' + search.strip().replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_') + '%'
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    rows, cursor = ordered_page(
+                        conn, 'SELECT i.industry_code,i.name,'
+                        '(SELECT COUNT(*) FROM industry_member m WHERE m.industry_code=i.industry_code) AS member_count '
+                        'FROM industry i WHERE (i.name LIKE :search OR i.industry_code LIKE :search OR EXISTS '
+                        '(SELECT 1 FROM industry_member m WHERE m.industry_code=i.industry_code AND '
+                        '(m.name LIKE :search OR CONVERT(m.unified_code USING utf8mb4) LIKE :search)))',
+                        dict(search=pattern), order=order,
+                        fields=column_fields(('industry_code', 'name', 'member_count')),
+                        identity=('industry_code',), after=after or None, limit=limit,
+                    )
+                    return dict(rows=rows, next=cursor)
                 result = conn.execute(text('SELECT i.industry_code,i.name, '
                     '(SELECT COUNT(*) FROM industry_member m WHERE m.industry_code=i.industry_code) AS member_count '
                     'FROM industry i WHERE i.industry_code>:after AND '

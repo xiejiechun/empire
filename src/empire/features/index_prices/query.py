@@ -26,6 +26,7 @@ from empire.features.index_prices.dataset import (
 )
 from empire.features.indices.contract import digest
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -117,7 +118,7 @@ class IndexPriceDataPlugin:
 
         return await self.mysql.read(read)
 
-    async def browse(self, code="", start="", end="", after=None, limit=200):
+    async def browse(self, code="", start="", end="", after=None, limit=200, order=None):
         if code:
             index_code(code)
         for value in (start, end):
@@ -134,7 +135,7 @@ class IndexPriceDataPlugin:
             if value:
                 params[field] = value
                 conditions.append(sql)
-        if after is not None:
+        if after is not None and order is None:
             if not isinstance(after, (list, tuple)) or len(after) != 2:
                 raise ValueError("指数行情分页游标无效")
             params.update(cursor_date=day(after[0]), cursor_code=index_code(after[1]))
@@ -145,6 +146,27 @@ class IndexPriceDataPlugin:
         def read():
             with self.mysql.read_engine.connect() as conn:
                 where = " WHERE " + " AND ".join(conditions) if conditions else ""
+                if order is not None:
+                    fields = column_fields(('index_code', 'name', 'trade_date',
+                                            'open', 'high', 'low', 'close', 'volume', 'amount'))
+                    # Each comparison with missing operands is false, as in the
+                    # existing source-quality functions; missing values stay missing.
+                    fields['price_relation_valid'] = 'NOT (' + ' OR '.join(
+                        'COALESCE(' + term + ',FALSE)' for term in (
+                            'q.low>q.high', 'q.open<q.low', 'q.close<q.low',
+                            'q.open>q.high', 'q.close>q.high',
+                        )) + ')'
+                    fields['volume_amount_valid'] = '(COALESCE(q.volume>=0,TRUE) AND COALESCE(q.amount>=0,TRUE))'
+                    values, cursor = ordered_page(
+                        conn, 'SELECT p.*,i.name FROM index_daily_price p LEFT JOIN stock_index i '
+                        'ON i.index_code=p.index_code' + where,
+                        {k: v for k, v in params.items() if k != 'limit'}, order=order,
+                        fields=fields, identity=('index_code', 'trade_date'), after=after, limit=limit,
+                    )
+                    for row in values:
+                        row['price_relation_valid'] = price_relation_valid([row[k] for k in ('open', 'high', 'low', 'close')])
+                        row['volume_amount_valid'] = volume_amount_valid([row['volume'], row['amount']])
+                    return dict(rows=values, next=cursor)
                 access = "PRIMARY" if code else "ix_index_price_date"
                 values = (
                     conn.execute(

@@ -23,6 +23,7 @@ from empire.features.listing_status.contract import (
     valid_proof,
 )
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -56,7 +57,7 @@ class ListingStatusDataPlugin:
         recent = (through.replace(day=1) - timedelta(days=1)).strftime('%Y-%m')
         return [m for m in expected if fresh or m >= recent or not valid_proof(proofs.get(m, {}), m, through)]
 
-    async def list_events(self, code='', event_type='', start='', end='', after=None, limit=200, descending=False):
+    async def list_events(self, code='', event_type='', start='', end='', after=None, limit=200, descending=False, order=None):
         if (not isinstance(code, str) or not re.fullmatch(r'(?:[0-9]{0,6}|[0-9]{6}\.(?:SH|SZ|BJ))', code)
                 or event_type not in ('', *TYPES) or type(limit) is not int or not 1 <= limit <= 200 or type(descending) is not bool):
             raise ValueError('上市状态查询条件或分页上限无效')
@@ -72,7 +73,7 @@ class ListingStatusDataPlugin:
             if value:
                 clauses.append('event_date' + op + ':' + key)
                 params[key] = value
-        if after is not None:
+        if after is not None and order is None:
             if (not isinstance(after, (list, tuple)) or len(after) != 4
                     or not all(isinstance(v, str) for v in after) or after[2] not in TYPES
                     or not re.fullmatch('[0-9a-f]{64}', after[3])):
@@ -86,7 +87,15 @@ class ListingStatusDataPlugin:
             params.update(day=after[0], security=after[1], kind=after[2], key=after[3])
         def read():
             with self.mysql.read_engine.connect() as conn:
-                records = conn.execute(text(f'SELECT {",".join(COLUMNS[:-1])} FROM {mapping.TABLE} '
+                if order is not None:
+                    records, cursor = ordered_page(
+                        conn, f'SELECT {",".join(COLUMNS)} FROM {mapping.TABLE} WHERE ' + ' AND '.join(clauses),
+                        {k: v for k, v in params.items() if k != 'limit'},
+                        order=order, fields=column_fields(COLUMNS),
+                        identity=('record_key',), after=after, limit=limit,
+                    )
+                    return dict(rows=[{**r, 'event_date': r['event_date'].isoformat()} for r in records], next=cursor)
+                records = conn.execute(text(f'SELECT {",".join(COLUMNS)} FROM {mapping.TABLE} '
                     f'WHERE {" AND ".join(clauses)} ORDER BY ' + ','.join(k + (' DESC' if descending else '')
                     for k in ('event_date', 'unified_code', 'event_type', 'record_key')) + ' LIMIT :limit'), params).mappings().all()
             rows = [{**dict(r), 'event_date': r['event_date'].isoformat()} for r in records[:limit]]

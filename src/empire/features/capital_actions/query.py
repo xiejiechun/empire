@@ -27,6 +27,7 @@ from empire.features.capital_actions.contract import (
 )
 from empire.features.capital_actions.dataset import CapitalDataset
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -137,7 +138,7 @@ class CapitalDataPlugin:
         from empire.features.capital_actions.issue_candidates import verified_candidates
         return await verified_candidates(self, rows, cutoff)
 
-    async def list_events(self, code='', market='', limit=51, offset=0, start='', end='', status='', record_key=''):
+    async def list_events(self, code='', market='', limit=51, offset=0, start='', end='', status='', record_key='', order=None, after=None):
         if market not in ('', 'SH', 'SZ', 'BJ') or (code and (not code.isascii() or not code.isdigit() or len(code) > 6)):
             raise ValueError('证券查询条件无效')
         if type(limit) is not int or not 1 <= limit <= 500 or type(offset) is not int or not 0 <= offset <= 1000000:
@@ -165,6 +166,14 @@ class CapitalDataPlugin:
                         filters.append(expression)
                         params[key] = value
                 where = ' WHERE ' + ' AND '.join(filters) if filters else ''
+                if order is not None:
+                    from empire.features.capital_actions.ordering import sort_fields
+                    records, cursor = ordered_page(
+                        conn, f'SELECT *,RIGHT(unified_code,2) AS market,LEFT(unified_code,6) AS code FROM {self.table}' + where,
+                        {k: v for k, v in params.items() if k not in ('limit', 'offset')},
+                        order=order, fields=sort_fields(self.kind), identity=('record_key',), after=after, limit=limit,
+                    )
+                    return dict(rows=[decode(r) for r in records], next=cursor)
                 records = conn.execute(text(f'SELECT s.*,RIGHT(s.unified_code,2) AS market,'
                     f'LEFT(s.unified_code,6) AS code FROM {self.table} s JOIN ('
                     f'SELECT record_key FROM {self.table}' + where +

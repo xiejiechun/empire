@@ -23,6 +23,7 @@ from empire.features.ths_capital.contract import (
 )
 from empire.features.ths_capital.dataset import CapitalPageDataset, decode, read_window
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -55,7 +56,7 @@ class CapitalPageDataPlugin:
                 return rows
         return await self.mysql.read(read)
 
-    async def browse(self, table='capital_funding', section='raise_', code='', start='', end='', after=None, limit=20):
+    async def browse(self, table='capital_funding', section='raise_', code='', start='', end='', after=None, limit=20, order=None):
         if table not in TABLES or section not in TABLE_SECTIONS[table] or not isinstance(code, str) or (
                 not re.fullmatch(r'(?:\d{0,6}|\d{6}\.(SH|SZ|BJ))', code)) or type(limit) is not int or not 1 <= limit <= 100:
             raise ValueError('资本运作查询范围无效')
@@ -68,7 +69,7 @@ class CapitalPageDataPlugin:
             if bound:
                 clauses.append('event_date' + op + ':' + key)
                 params[key] = bound
-        if after is not None:
+        if after is not None and order is None:
             if not isinstance(after, (list, tuple)) or len(after) != 3 or not re.fullmatch(r'\d{6}\.(SH|SZ|BJ)', str(after[1])) or not re.fullmatch('[a-f0-9]{64}', str(after[2])):
                 raise ValueError('资本运作游标无效')
             if after[0] is None:
@@ -80,6 +81,18 @@ class CapitalPageDataPlugin:
         projection = [k for k, (_, kind) in fields(table).items() if kind != 'text']
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    rows, cursor = ordered_page(
+                        conn, 'SELECT * FROM ' + table + ' WHERE ' + ' AND '.join(clauses),
+                        {k: v for k, v in params.items() if k != 'limit'}, order=order,
+                        fields=column_fields((*fields(table), 'in_window')),
+                        identity=('record_key',), after=after, limit=limit,
+                    )
+                    values = [{k: (r[k].isoformat() if isinstance(r[k], date) else
+                                   str(r[k]) if fields(table).get(k, ('', ''))[1] == 'num'
+                                   and r[k] is not None else r[k])
+                               for k in (*projection, 'in_window')} for r in rows]
+                    return dict(rows=values, next=cursor)
                 rows = conn.execute(text('SELECT ' + ','.join(projection) + ',in_window FROM ' + table +
                     ' WHERE ' + ' AND '.join(clauses) + ' ORDER BY event_date DESC,unified_code DESC,record_key DESC LIMIT :limit'), params).mappings().all()
                 values = [{k: (r[k].isoformat() if isinstance(r[k], date) else str(r[k]) if fields(table).get(k, ('', ''))[1] == 'num' and r[k] is not None else r[k])

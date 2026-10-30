@@ -13,6 +13,7 @@ from empire.core.time import CHINA
 from empire.features.industry_margin.contract import (
     CONTRACT,
     DATASET,
+    FIELDS,
     JOB,
     PROJECT,
     START,
@@ -24,6 +25,7 @@ from empire.features.industry_margin.contract import (
 )
 from empire.features.industry_margin.dataset import read_days, read_rows
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 
 
 class IndustryMarginDataPlugin:
@@ -94,7 +96,7 @@ class IndustryMarginDataPlugin:
 
         return await self.mysql.read(read)
 
-    async def browse(self, search="", start="", end="", after=None, limit=200):
+    async def browse(self, search="", start="", end="", after=None, limit=200, order=None):
         if (
             not isinstance(search, str)
             or len(search) > 64
@@ -112,7 +114,7 @@ class IndustryMarginDataPlugin:
                 day(value)
                 clauses.append("trade_date" + op + ":" + key)
                 args[key] = value
-        if after is not None:
+        if after is not None and order is None:
             if (
                 not isinstance(after, (list, tuple))
                 or len(after) != 2
@@ -126,6 +128,22 @@ class IndustryMarginDataPlugin:
 
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    fields = column_fields(('trade_date', 'industry_name', *FIELDS))
+                    fields['margin_difference'] = 'q.financing_balance - q.lending_balance / 10000'
+                    records, cursor = ordered_page(
+                        conn, 'SELECT * FROM industry_margin_daily WHERE ' + ' AND '.join(clauses),
+                        {k: v for k, v in args.items() if k != 'limit'}, order=order,
+                        fields=fields, identity=('trade_date', 'industry_name'), after=after, limit=limit,
+                    )
+                    for row in records:
+                        row['trade_date'] = row['trade_date'].isoformat()
+                        row['margin_difference'] = (
+                            row['financing_balance'] - row['lending_balance'] / Decimal(10000)
+                            if row['financing_balance'] is not None and row['lending_balance'] is not None
+                            else None
+                        )
+                    return dict(rows=records, next=cursor)
                 rows = (
                     conn.execute(
                         text(
