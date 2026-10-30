@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta
 from sqlalchemy import text
 
 from empire.contracts.plugin import PluginManifest
+from empire.plugins.infra.query_order import column_fields, ordered_page
 
 
 class NewsDataPlugin:
@@ -25,7 +26,7 @@ class NewsDataPlugin:
         return {"news.query": self, "news.schema": self}
 
     async def list_news(self, search="", limit=50, important=False, before=None, anchor=None,
-                        include_total=True, start='', end=''):
+                        include_total=True, start='', end='', order=None):
         if (not isinstance(search, str) or len(search) > 100 or not 1 <= limit <= 200
                 or type(important) is not bool or type(include_total) is not bool):
             raise ValueError("新闻查询参数超出范围")
@@ -35,7 +36,8 @@ class NewsDataPlugin:
         if start and end and start > end:
             raise ValueError('新闻起始日期晚于截止日期')
         return await self.mysql.read(self._list, search.strip(), limit, important,
-                                     self._cursor(before), self._cursor(anchor), include_total, start, end)
+                                     before if order is not None else self._cursor(before),
+                                     self._cursor(anchor), include_total, start, end, order)
 
     @staticmethod
     def _cursor(value):
@@ -56,7 +58,7 @@ class NewsDataPlugin:
     def _encode_cursor(row):
         return {"published_at": row["published_at"].isoformat(), "news_id": row["news_id"]}
 
-    def _list(self, search, limit, important, before, anchor, include_total, start='', end=''):
+    def _list(self, search, limit, important, before, anchor, include_total, start='', end='', order=None):
         params = {"source": self.source, "fetch_limit": limit + 1}
         filters = ["source=:source"]
         if start:
@@ -74,11 +76,26 @@ class NewsDataPlugin:
         if anchor:
             params.update(anchor_at=anchor[0], anchor_id=anchor[1])
             filters.append("(published_at<:anchor_at OR (published_at=:anchor_at AND news_id<=:anchor_id))")
-        if before:
+        if before and order is None:
             params.update(before_at=before[0], before_id=before[1])
             filters.append("(published_at<:before_at OR (published_at=:before_at AND news_id<:before_id))")
         where = " AND ".join(filters)
         with self.mysql.read_engine.connect() as conn:
+            if order is not None:
+                names = ('news_id', 'title', 'content', 'published_at', 'source_updated_at',
+                         'is_important', 'tags', 'url', 'version_observed_at')
+                data, cursor = ordered_page(
+                    conn, 'SELECT ' + ','.join(names) + f' FROM finance_news WHERE {where}',
+                    {k: v for k, v in params.items() if k != 'fetch_limit'}, order=order,
+                    fields=column_fields(names), identity=('news_id',), after=before, limit=limit,
+                )
+                rows = []
+                for row in data:
+                    value = {k: v.isoformat() if hasattr(v, 'isoformat') else v for k, v in row.items()}
+                    value['tags'] = json.loads(value['tags']) if isinstance(value['tags'], str) else value['tags']
+                    rows.append(value)
+                total = conn.execute(text(f'SELECT COUNT(*) FROM finance_news WHERE {where}'), params).scalar_one() if include_total else None
+                return dict(rows=rows, next_cursor=cursor, total=total, limit=limit, anchor=None)
             data = conn.execute(text(f"""
                 SELECT news_id,title,content,published_at,source_updated_at,is_important,tags,url,version_observed_at
                 FROM finance_news WHERE {where} ORDER BY published_at DESC,news_id DESC LIMIT :fetch_limit

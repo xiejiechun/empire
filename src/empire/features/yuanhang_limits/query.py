@@ -20,6 +20,7 @@ from empire.features.yuanhang_limits.planning import calendar_dates, plan_pool
 from empire.features.yuanhang_limits.preparation import CONTRIBUTIONS, check
 from empire.features.yuanhang_limits.repository import read_members, read_pool_head, read_reason
 from empire.features.yuanhang_limits.storage import pool_payload, pool_proof
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.infra.schema_manifest import schema_contract
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
@@ -82,13 +83,23 @@ class LimitQuery:
                     if len(matches := [value for value in known if value[:6] == code]) == 1}
         return await self.read(operation)
 
-    async def members(self, day, pool, *, after='', limit=200):
+    async def members(self, day, pool, *, after='', limit=200, order=None):
         day_value(day)
         pool_value(pool)
         page_limit(limit)
-        if after:
+        if after and order is None:
             split_unified_code(after)
         def operation(conn):
+            if order is not None:
+                from empire.features.yuanhang_limits.contract import TABLE_COLUMNS
+                rows, cursor = ordered_page(
+                    conn, 'SELECT * FROM yuanhang_limit_member WHERE trade_date=:day AND pool_type=:pool',
+                    dict(day=day, pool=pool), order=order,
+                    fields=column_fields(TABLE_COLUMNS['yuanhang_limit_member']),
+                    identity=('unified_code',), after=after or None, limit=limit,
+                )
+                head = read_pool_head(conn, day, pool)
+                return dict(head=dict(head) if head else None, rows=rows, next=cursor)
             # Decimal values remain Decimal in SQL browsing; no lossy float cast.
             rows = [dict(r) for r in conn.execute(text('SELECT * FROM yuanhang_limit_member '
                 'WHERE trade_date=:day AND pool_type=:pool AND unified_code>:after '
@@ -127,13 +138,13 @@ class LimitQuery:
             return dict(result) if result else None
         return await self.read(operation)
 
-    async def browse(self, filters, after=None):
+    async def browse(self, filters, after=None, order=None):
         if not isinstance(filters, (tuple, list)) or len(filters) != 6:
             raise ValueError('涨停分析查询条件错误')
         mode, pool, code, start, end, _ = filters
         if mode in (3, 4):
             from empire.features.yuanhang_limits.intraday_query import browse_live
-            return await browse_live(self, filters, after)
+            return await browse_live(self, filters, after, order=order)
         if mode == 0:
             result = await self.members(start, pool, after=after or '')
             head = result['head']

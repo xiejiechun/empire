@@ -12,6 +12,7 @@ from empire.contracts.preparation_scope import PreparationScope
 from empire.features.financial_statements.audit import audit_financial
 from empire.features.financial_statements.contract import KINDS, REQUIRED, digest
 from empire.features.financial_statements.dataset import FinancialDataset
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -52,7 +53,7 @@ class FinancialDataPlugin:
                 return self._securities(conn)
         return await self.mysql.read(read)
 
-    async def list_statements(self, code='', limit=51, offset=0):
+    async def list_statements(self, code='', limit=51, offset=0, order=None, after=None):
         if code and (not code.isascii() or not code.isdigit() or len(code) > 6):
             raise ValueError('证券代码无效')
         if type(limit) is not int or not 1 <= limit <= 500 or type(offset) is not int or not 0 <= offset <= 4500000:
@@ -64,6 +65,16 @@ class FinancialDataPlugin:
                     filters.append('unified_code LIKE :code')
                     params['code'] = code + ('.%' if len(code) == 6 else '%')
                 where = ' WHERE ' + ' AND '.join(filters) if filters else ''
+                if order is not None:
+                    fields = column_fields(('unified_code', 'report_date'))
+                    for key in ('name', 'market', 'code', 'currency', 'period_basis'):
+                        fields[key] = f"JSON_UNQUOTE(JSON_EXTRACT(q.payload,'$.{key}'))"
+                    rows, cursor = ordered_page(
+                        conn, f'SELECT unified_code,report_date,payload FROM {self.table}' + where,
+                        {k: v for k, v in params.items() if k not in ('limit', 'offset')}, order=order,
+                        fields=fields, identity=('unified_code', 'report_date'), after=after, limit=limit,
+                    )
+                    return dict(rows=[decode(r) for r in rows], next=cursor)
                 return [decode(r) for r in conn.execute(text(f'SELECT s.payload FROM {self.table} s JOIN ('
                     f'SELECT unified_code,report_date FROM {self.table}' + where +
                     ' ORDER BY report_date DESC,RIGHT(unified_code,2),unified_code LIMIT :limit OFFSET :offset) chosen '

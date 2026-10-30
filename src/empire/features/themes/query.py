@@ -12,6 +12,7 @@ from empire.features.themes.history import ThemeHistory
 from empire.features.themes.history_model import digest, directory
 from empire.features.themes.repository import TABLE_COLUMNS, read_detail
 from empire.features.themes.storage_contract import DAILY_FIELDS, decode_daily, security_map
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.infra.schema_manifest import schema_contract
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
@@ -54,12 +55,19 @@ class ThemeDataPlugin:
     async def intraday(self, day, at=''):
         return await self.history.snapshot(date.fromisoformat(day), at=datetime.fromisoformat(at) if at else None)
 
-    async def daily(self, day, after='', limit=200):
+    async def daily(self, day, after='', limit=200, order=None):
         date.fromisoformat(day)
-        if type(limit) is not int or not 1 <= limit <= 200 or not isinstance(after, str) or len(after) > 65:
+        if type(limit) is not int or not 1 <= limit <= 200 or (order is None and (not isinstance(after, str) or len(after) > 65)):
             raise ValueError('题材列表查询界限错误')
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    records, cursor = ordered_page(
+                        conn, f'SELECT {",".join(DAILY_FIELDS)},observed_at FROM theme_daily WHERE business_date=:day',
+                        dict(day=day), order=order, fields=column_fields((*DAILY_FIELDS, 'observed_at')),
+                        identity=('theme_id',), after=after or None, limit=limit,
+                    )
+                    return dict(rows=[decode_daily(r) for r in records], next=cursor)
                 records = conn.execute(text(f'SELECT {",".join(DAILY_FIELDS)},observed_at FROM theme_daily '
                     'WHERE business_date=:day AND theme_id>:after ORDER BY theme_id LIMIT :limit'),
                     dict(day=day, after=after, limit=limit + 1)).mappings().all()
@@ -77,9 +85,9 @@ class ThemeDataPlugin:
                 return None if not head else dict(detail=detail, observed_at=head['observed_at'].isoformat())
         return await self.mysql.read(read)
 
-    async def detail_page(self, theme_id, after='', limit=200):
+    async def detail_page(self, theme_id, after='', limit=200, order=None):
         source_id(theme_id)
-        if type(limit) is not int or not 1 <= limit <= 200 or not isinstance(after, str) or len(after) > 64:
+        if type(limit) is not int or not 1 <= limit <= 200 or (order is None and (not isinstance(after, str) or len(after) > 64)):
             raise ValueError('题材详情分页界限错误')
         def read():
             with self.mysql.read_engine.connect() as conn:
@@ -87,6 +95,18 @@ class ThemeDataPlugin:
                                          'WHERE theme_id=:id'), {'id': theme_id}).mappings().one_or_none()
                 if head is None:
                     return None
+                if order is not None:
+                    records, cursor = ordered_page(
+                        conn, 'SELECT r.*,s.name AS stock_name,c.name AS category_name '
+                        'FROM theme_stock_reason r LEFT JOIN theme_stock s ON r.theme_id=s.theme_id '
+                        'AND r.unified_code=s.unified_code LEFT JOIN theme_category c ON r.theme_id=c.theme_id '
+                        'AND r.category_id=c.category_id WHERE r.theme_id=:id', dict(id=theme_id),
+                        order=order, fields=column_fields((*TABLE_COLUMNS['theme_stock_reason'], 'stock_name', 'category_name')),
+                        identity=('relation_id',), after=after or None, limit=limit,
+                    )
+                    if any(r['stock_name'] is None or r['category_id'] is not None and r['category_name'] is None for r in records):
+                        raise ValueError('题材详情缺失必需企业或分类关联')
+                    return dict(head=dict(head), rows=records, next=cursor)
                 records = conn.execute(text('SELECT r.*,s.name AS stock_name,c.name AS category_name '
                     'FROM theme_stock_reason r LEFT JOIN theme_stock s ON r.theme_id=s.theme_id '
                     'AND r.unified_code=s.unified_code LEFT JOIN theme_category c ON r.theme_id=c.theme_id '

@@ -17,6 +17,7 @@ from empire.features.holders.contract import (
 )
 from empire.features.holders.dataset import HolderDataset, decode, read_reports
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -53,7 +54,7 @@ class HolderDataPlugin:
         from empire.features.holders.planning import confirmed_units
         return await confirmed_units(self, now)
 
-    async def browse(self, code='', start='', end='', after=None, limit=20):
+    async def browse(self, code='', start='', end='', after=None, limit=20, order=None):
         if not isinstance(code, str) or not re.fullmatch(r'(?:\d{0,6}|\d{6}\.(SH|SZ|BJ))', code) or type(limit) is not int or not 1 <= limit <= 100:
             raise ValueError('持有人查询范围无效')
         scope = PreparationScope.parse(dict(start=start, end=end))
@@ -65,7 +66,7 @@ class HolderDataPlugin:
             if bound:
                 clauses.append('report_date' + op + ':' + key)
                 params[key] = bound
-        if after is not None:
+        if after is not None and order is None:
             if not isinstance(after, (tuple, list)) or len(after) != 3 or not re.fullmatch(r'\d{6}\.(SH|SZ|BJ)', str(after[1])) or not re.fullmatch('[a-f0-9]{64}', str(after[2])):
                 raise ValueError('持有人游标无效')
             date.fromisoformat(after[0])
@@ -73,6 +74,18 @@ class HolderDataPlugin:
             params.update(day=after[0], security=after[1], key=after[2])
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    relation = ('SELECT report_key,' + ','.join(REPORT_FIELDS)
+                                + ',member_count,exit_count FROM holder_report WHERE '
+                                + ' AND '.join(clauses))
+                    heads, cursor = ordered_page(
+                        conn, relation, {k: v for k, v in params.items() if k != 'limit'},
+                        order=order, fields=column_fields((*REPORT_FIELDS, 'member_count', 'exit_count')),
+                        identity=('report_key',), after=after, limit=limit,
+                    )
+                    return dict(rows=[{**decode(r, REPORT_FIELDS), 'report_key': r['report_key'],
+                                      'member_count': r['member_count'], 'exit_count': r['exit_count']}
+                                     for r in heads], next=cursor)
                 heads = conn.execute(text('SELECT report_key,' + ','.join(REPORT_FIELDS) +
                     ',member_count,exit_count FROM holder_report WHERE ' + ' AND '.join(clauses) +
                     ' ORDER BY report_date DESC,unified_code DESC,report_key DESC LIMIT :limit'), params).mappings().all()

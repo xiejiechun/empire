@@ -39,10 +39,16 @@ class Task(Model):
     ident: Identifier
 
 
+class PreviewOrder(Model):
+    field: Annotated[str, Field(pattern=r'^[a-z][a-z0-9_]{0,63}$')]
+    direction: Literal['asc', 'desc']
+
+
 class Preview(Task):
     view: Identifier
     filters: dict[Annotated[str, Field(max_length=20)], Annotated[str, Field(max_length=100)]] = Field(default_factory=dict, max_length=8)
-    cursor: str = Field(default='null', max_length=8192)
+    cursor: str = Field(default='null', max_length=262144)
+    order: PreviewOrder | None = None
 
 
 class Run(Task):

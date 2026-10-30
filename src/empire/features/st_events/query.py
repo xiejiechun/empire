@@ -26,6 +26,7 @@ from empire.features.st_events.dataset import (
     read_rows,
 )
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -47,7 +48,7 @@ class StDataPlugin:
         await self.mysql.require_schema(TABLES, KEYS)
         return {self.manifest.provides[0]: self}
 
-    async def list_events(self, code='', start='', end='', after=None, limit=200, descending=False):
+    async def list_events(self, code='', start='', end='', after=None, limit=200, descending=False, order=None):
         if not isinstance(code, str) or not re.fullmatch(r'(?:[0-9]{0,6}|[0-9]{6}\.(?:SH|SZ|BJ))', code) or type(limit) is not int or not 1 <= limit <= 200 or type(descending) is not bool:
             raise ValueError('ST事件查询代码或每页上限无效')
         scope = PreparationScope.parse(dict(start=start, end=end))
@@ -60,7 +61,7 @@ class StDataPlugin:
                 key = 'start' if op == '>=' else 'end'
                 clauses.append('event_date' + op + ':' + key)
                 params[key] = bound
-        if after is not None:
+        if after is not None and order is None:
             if (not isinstance(after, (tuple, list)) or len(after) != 3
                     or not all(isinstance(x, str) for x in after)
                     or not re.fullmatch('[0-9a-f]{64}', after[2])):
@@ -74,6 +75,14 @@ class StDataPlugin:
             params.update(day=after[0], security=after[1], key=after[2])
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    records, cursor = ordered_page(
+                        conn, f'SELECT record_key,{",".join(COLUMNS)} FROM {TABLE} WHERE ' + ' AND '.join(clauses),
+                        {k: v for k, v in params.items() if k != 'limit'},
+                        order=order, fields=column_fields(COLUMNS),
+                        identity=('record_key',), after=after, limit=limit,
+                    )
+                    return dict(rows=[{**r, 'event_date': r['event_date'].isoformat()} for r in records], next=cursor)
                 values = conn.execute(text(f'SELECT record_key,{",".join(COLUMNS)} FROM {TABLE} '
                     f'WHERE {" AND ".join(clauses)} ORDER BY ' +
                     ','.join(k + (' DESC' if descending else '') for k in ('event_date', 'unified_code', 'record_key'))

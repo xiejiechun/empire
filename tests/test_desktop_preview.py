@@ -65,6 +65,17 @@ async def test_preview_cannot_cross_task_or_execute_methods():
     assert (await read(registry, "ths-yuanhang-prices", "prices", {}))["required"]
 
 
+async def test_industry_unlock_month_picker_uses_formal_month_identity():
+    from empire.desktop_bridge.preview import catalog
+    method = AsyncMock(return_value=dict(rows=[], next=None))
+    registry = SimpleNamespace(get=lambda _: SimpleNamespace(list_records=method))
+    await read(registry, 'tdx-unlock-industries', 'records', dict(start='2026-01', end='2026-06'))
+    assert method.call_args.kwargs['start'] == '2026-01-01'
+    assert method.call_args.kwargs['end'] == '2026-06-01'
+    assert all(f['type'] == 'month' for f in catalog('tdx-unlock-industries')[0]['filter_specs']
+               if f['key'] in ('start', 'end'))
+
+
 async def test_precision_and_pagination():
     method = AsyncMock(
         return_value={

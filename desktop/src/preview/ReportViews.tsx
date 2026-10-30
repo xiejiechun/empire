@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Segmented, Tag } from "antd";
+import { Button, Drawer, Segmented, Tag } from "antd";
 import { Data } from "../api";
 import { display, Facts, Field, fields, Metric, OpenDetail, PreviewProps, RecordTable, Security } from "./presentation";
 
@@ -14,12 +14,7 @@ const memberFields: Field[] = [
 export function HoldingsView({ spec, rows, onNavigate }: PreviewProps) {
   const [group, setGroup] = useState("current");
   const detail = rows.find(row => Array.isArray(row.members));
-  if (!detail) return <div className="pv-report-list">{rows.map((row, i) => <article className="pv-report-card" key={row.report_key || i}>
-    <div className="pv-section-heading"><Security row={row} /><Tag>{row.report_date}</Tag></div>
-    <div className="pv-metrics"><Metric label="当期持有人" value={row.member_count} unit="位" /><Metric label="退出名单" value={row.exit_count} unit="位" />
-      <Metric label="来源合计持有比例" value={row.total_ratio} unit="%" /></div>
-    <div className="pv-card-footer"><span className="pv-subtle">{display(row.report_type)} · {row.instrument_name || "股票"}{row.quality_flags ? " · 含来源质量提示" : ""}</span><OpenDetail spec={spec} row={row} onNavigate={onNavigate} /></div>
-  </article>)}</div>;
+  if (!detail) return <RecordTable rows={rows} spec={spec} onNavigate={onNavigate} />;
   const members = detail.members.filter((member: Data) => member.member_group === group);
   const unit = detail.kind === "bond_holders" ? "张" : "股";
   return <div className="pv-holdings-detail"><div className="pv-section-heading"><Security row={detail} /><Tag>{detail.report_date} · {display(detail.report_type)}</Tag></div>
@@ -50,11 +45,7 @@ const seatFields: Field[] = [
 export function HotListView({ spec, rows, onNavigate }: PreviewProps) {
   const [side, setSide] = useState("B");
   const detail = rows.find(row => Array.isArray(row.seats));
-  if (!detail) return <div className="pv-hot-list"><div className="pv-card-grid">{rows.map((row, i) => <article className="pv-event-card" key={`${row.unified_code}-${row.list_date}-${i}`}>
-    <div className="pv-section-heading"><Security row={row} /><Tag>{row.list_date}</Tag></div>
-    <div className="pv-metrics"><Metric label="上榜原因" value={row.reason_count} unit="项" /><Metric label="席位记录" value={row.seat_count} unit="条" /></div>
-    <div className="pv-card-footer"><Tag>{display(row.detail_status)}</Tag><OpenDetail spec={spec} row={row} onNavigate={onNavigate} /></div>
-  </article>)}</div></div>;
+  if (!detail) return <RecordTable rows={rows} spec={spec} onNavigate={onNavigate} />;
   const seats = detail.seats.filter((row: Data) => row.side === side).map((row: Data) => ({ ...row,
     source_tags: ["bq1", "bq2", "bq3", "bq4"].map(k => row.extension?.[k]).filter(Boolean),
   }));
@@ -112,17 +103,14 @@ export function EventView({ spec, rows, context, onNavigate }: PreviewProps) {
       { key: "in_window", label: "来源当前窗口", kind: "boolean" },
     ]} /></>}
   </article>)}</div>;
-  const dateField = fields(spec).find(f => f.kind === "date");
-  const titleField = fields(spec).find(f => f.kind === "text" && !["unified_code", "code", "name", "instrument_name"].includes(f.key));
-  return <div className="pv-events"><div className="pv-reader">
-    <div className="pv-reader-list" role="list" aria-label="事件列表">{rows.map((row, i) => <button type="button" key={i} className={row === current ? "selected" : ""} aria-pressed={row === current} onClick={() => setSelected(row)}>
-      <time>{Array.isArray(row.source_dates) ? `来源日 ${display(row.source_dates)}` : dateField ? display(row[dateField.key]) : `记录 ${i + 1}`}</time><Security row={{ unified_code: context?.filters?.security, ...row }} />
-      <span>{row.old_name || row.new_name ? `${display(row.old_name)} → ${display(row.new_name)}` : titleField ? display(row[titleField.key]) : spec.title}</span>
-    </button>)}</div>
-    <article className="pv-reader-article"><div className="pv-section-heading"><Security row={{ unified_code: context?.filters?.security, ...current }} /><OpenDetail spec={spec} row={current} onNavigate={onNavigate} /></div>
-      <Facts row={current} columns={fields(spec)} /><IssueDetail spec={spec} row={current} />
-    </article></div>
-    <details className="pv-more"><summary>表格对照本页 {rows.length} 条记录</summary><RecordTable rows={rows} spec={spec} onSelect={setSelected} onNavigate={onNavigate} /></details>
+  return <div className="pv-events">
+    <RecordTable rows={rows} spec={spec} onSelect={setSelected} onNavigate={onNavigate} />
+    <Drawer title="记录详情" open={!!selected && rows.includes(selected)} onClose={() => setSelected(undefined)}
+      size="large" destroyOnHidden>
+      {selected && <><div className="pv-section-heading"><Security row={{ unified_code: context?.filters?.security, ...selected }} />
+        <OpenDetail spec={spec} row={selected} onNavigate={onNavigate} /></div>
+        <Facts row={selected} columns={fields(spec)} /><IssueDetail spec={spec} row={selected} /></>}
+    </Drawer>
   </div>;
 }
 

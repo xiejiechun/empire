@@ -9,6 +9,7 @@ from empire.core.time import CHINA
 from empire.features.calendar.api import read_trade_day_cutoff
 from empire.features.yuanhang.contract import KEYS, TABLE_COLUMNS
 from empire.features.yuanhang.repository import read_heads, read_rows
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.sources.yuanhang_coverage import audit_financial, audit_year
 from empire.sources.yuanhang_history import price_quality, security_identity
 from empire.sources.yuanhang_payload import CAPITAL_KINDS, action_key, day, digest
@@ -43,12 +44,26 @@ class YuanhangDataPlugin:
                 return operation(conn)
         return await self.mysql.read(read)
 
-    async def prices(self, code, start='1900-01-01', end='2100-12-31', after=None, limit=500):
+    async def prices(self, code, start='1900-01-01', end='2100-12-31', after=None, limit=500, order=None):
         security_identity(code)
         _limit(limit)
-        if day(start) > day(end) or (after is not None and not start <= day(after).isoformat() <= end):
+        if day(start) > day(end) or (order is None and after is not None and not start <= day(after).isoformat() <= end):
             raise ValueError('远航版日线查询日期范围无效')
         def read(conn):
+            if order is not None:
+                names = ('trade_date', 'open', 'high', 'low', 'close', 'volume_shares', 'amount_yuan')
+                sort_fields = column_fields(names)
+                sort_fields['quality_flags'] = 'NOT (q.low<=LEAST(q.open,q.close) AND GREATEST(q.open,q.close)<=q.high)'
+                rows, cursor = ordered_page(
+                    conn, 'SELECT trade_date,open,high,low,close,volume_shares,amount_yuan FROM yuanhang_daily_price WHERE unified_code=:code '
+                    'AND trade_date BETWEEN :first AND :last', dict(code=code, first=start, last=end),
+                    order=order, fields=sort_fields, identity=('trade_date',), after=after, limit=limit,
+                )
+                from empire.features.yuanhang.plan_query import coverage_summary
+                for row in rows:
+                    row['quality_flags'] = price_quality(*(row[k] for k in ('open', 'high', 'low', 'close')))
+                return dict(rows=rows, next=cursor,
+                            coverage=coverage_summary(conn, self.namespace, code) if self.namespace else {})
             rows = [dict(r) for r in conn.execute(text('SELECT trade_date,open,high,low,close,'
                 'volume_shares,amount_yuan FROM yuanhang_daily_price WHERE unified_code=:code '
                 'AND trade_date BETWEEN :first AND :last AND (:after IS NULL OR trade_date>:after) '
@@ -89,11 +104,11 @@ class YuanhangDataPlugin:
             return {**{k: int(v) for k, v in counts.items()}, 'anomaly_dates': [d.isoformat() for d in dates]}
         return await self._read(read)
 
-    async def actions(self, code, start='1900-01-01', end='2100-12-31', after=None, limit=500):
+    async def actions(self, code, start='1900-01-01', end='2100-12-31', after=None, limit=500, order=None):
         security_identity(code)
         _limit(limit)
         after_date, after_key = None, ''
-        if after is not None:
+        if after is not None and order is None:
             if not isinstance(after, str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}:[0-9a-f]{64}', after):
                 raise ValueError('远航版权息游标必须含日期及事件身份')
             after_date, after_key = after.split(':', 1)
@@ -101,6 +116,15 @@ class YuanhangDataPlugin:
         if day(start) > day(end) or (after_date is not None and not start <= after_date <= end):
             raise ValueError('远航版权息查询日期范围无效')
         def read(conn):
+            if order is not None:
+                names = ('ex_date', 'event_key', 'bonus_ratio', 'transfer_ratio', 'rights_ratio', 'rights_price', 'cash_per_share')
+                sort_fields = column_fields(names)
+                rows, cursor = ordered_page(
+                    conn, 'SELECT ex_date,event_key,bonus_ratio,transfer_ratio,rights_ratio,rights_price,cash_per_share FROM yuanhang_corporate_action WHERE unified_code=:code '
+                    'AND ex_date BETWEEN :first AND :last', dict(code=code, first=start, last=end),
+                    order=order, fields=sort_fields, identity=('ex_date', 'event_key'), after=after, limit=limit,
+                )
+                return dict(rows=rows, next=cursor)
             rows = [dict(r) for r in conn.execute(text('SELECT ex_date,event_key,bonus_ratio,transfer_ratio,rights_ratio,'
                 'rights_price,cash_per_share FROM yuanhang_corporate_action WHERE unified_code=:code '
                 'AND ex_date BETWEEN :first AND :last AND (:after_date IS NULL OR ex_date>:after_date '
@@ -131,14 +155,23 @@ class YuanhangDataPlugin:
             'AND capital_kind=:kind AND effective_date<=:day ORDER BY effective_date DESC LIMIT 1'),
             dict(code=code, kind=kind, day=as_of)).mappings().first()))
 
-    async def capital_points(self, code, kind, start='1900-01-01', end='2100-12-31', after=None, limit=500):
+    async def capital_points(self, code, kind, start='1900-01-01', end='2100-12-31', after=None, limit=500, order=None):
         security_identity(code)
         _limit(limit)
         if kind not in CAPITAL_KINDS or day(start) > day(end):
             raise ValueError('远航版股本查询范围无效')
-        if after is not None and not start <= day(after).isoformat() <= end:
+        if order is None and after is not None and not start <= day(after).isoformat() <= end:
             raise ValueError('远航版股本分页日期无效')
         def read(conn):
+            if order is not None:
+                names = ('effective_date', 'shares')
+                sort_fields = column_fields(names)
+                rows, cursor = ordered_page(
+                    conn, 'SELECT effective_date,shares FROM yuanhang_capital WHERE unified_code=:code '
+                    'AND effective_date BETWEEN :first AND :last AND capital_kind=:kind', dict(code=code, first=start, last=end, kind=kind),
+                    order=order, fields=sort_fields, identity=('effective_date',), after=after, limit=limit,
+                )
+                return dict(rows=rows, next=cursor)
             rows = [dict(r) for r in conn.execute(text('SELECT effective_date,shares FROM yuanhang_capital '
                 'WHERE unified_code=:code AND capital_kind=:kind AND effective_date BETWEEN :first AND :last '
                 'AND (:after IS NULL OR effective_date>:after) ORDER BY effective_date LIMIT :n'),

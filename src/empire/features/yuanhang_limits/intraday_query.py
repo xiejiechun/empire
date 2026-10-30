@@ -7,7 +7,7 @@ from empire.features.yuanhang_limits.contract import TIME_FIELDS, day_value, poo
 from empire.features.yuanhang_limits.intraday_store import IntradayStore
 
 
-async def browse_live(query, filters, after):
+async def browse_live(query, filters, after, order=None):
     mode, pool, _, day, _, at = filters
     pool_value(pool)
     day_value(day)
@@ -31,15 +31,27 @@ async def browse_live(query, filters, after):
             raise ValueError('回放时刻须为HH:MM:SS或HH:MM:SS.ffffff') from exc
         if parsed.tzinfo is not None or not 8 <= len(at) <= 15:
             raise ValueError('回放时刻使用北京时间，不附加时区')
-    if after is not None and (not isinstance(after, (list, tuple)) or len(after) != 2):
+    if order is None and after is not None and (not isinstance(after, (list, tuple)) or len(after) != 2):
         raise ValueError('盘中分页须绑定快照版本和证券代码')
-    result = await live.read(pool, day, version=after[0] if after else None, at=at or None)
+    if order is not None and after is not None and (not isinstance(after, dict) or 'version' not in after):
+        raise ValueError('盘中排序分页须绑定快照版本')
+    version = (after['version'] if order is not None else after[0]) if after else None
+    result = await live.read(pool, day, version=version, at=at or None)
     if result is None:
+        if order is not None and after is not None:
+            raise ValueError('本次分页绑定的盘中快照已失效，请返回第一页重新查询')
         return dict(rows=[], next=None, message='该时刻无保留快照：尚未采样、已过期/淘汰或Redis重启丢失；不推断空池。')
     unit = result['unit']
-    rows = [r for r in unit['rows'] if not after or r['unified_code'] > after[1]]
-    following = (result['version'], rows[199]['unified_code']) if len(rows) > 200 else None
-    rows = [dict(r, trade_date=day, pool_type=pool) for r in rows[:200]]
+    if order is not None:
+        from .snapshot_order import snapshot_page
+        rows, following = snapshot_page(
+            [dict(r, trade_date=day, pool_type=pool) for r in unit['rows']],
+            result['version'], filters, order, after,
+        )
+    else:
+        rows = [r for r in unit['rows'] if not after or r['unified_code'] > after[1]]
+        following = (result['version'], rows[199]['unified_code']) if len(rows) > 200 else None
+        rows = [dict(r, trade_date=day, pool_type=pool) for r in rows[:200]]
     for row in rows:
         for key in TIME_FIELDS:
             if row[key] is not None:

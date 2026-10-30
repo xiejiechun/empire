@@ -6,6 +6,7 @@ from empire.contracts.preparation import PreparationContribution
 from empire.features.stocks.api import current_directory
 from empire.features.stocks.contract import MARKET_NAMES
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 
 
 class StockDataPlugin:
@@ -34,14 +35,14 @@ class StockDataPlugin:
         return {"stocks.query": self, "stocks.schema": self}
 
     async def list_stocks(self, search: str = "", offset: int = 0, limit: int = 200,
-                          market: str | None = None) -> dict:
+                          market: str | None = None, order=None, after=None) -> dict:
         if not 1 <= limit <= 500 or not 0 <= offset <= 100000 or len(search) > 100:
             raise ValueError("Invalid stock-list query bounds")
         if market is not None and market not in MARKET_NAMES:
             raise ValueError("不支持的股票市场，请选择 SH、SZ 或 BJ")
-        return await self.mysql.read(self._list, search.strip(), offset, limit, market)
+        return await self.mysql.read(self._list, search.strip(), offset, limit, market, order, after)
 
-    def _list(self, search, offset, limit, market=None):
+    def _list(self, search, offset, limit, market=None, order=None, after=None):
         with self.mysql.read_engine.connect() as connection:
             state = (current_directory(connection, self.namespace) if self.project_id == 'current'
                      else read_state(connection, self.namespace, self.project_id, self.source))
@@ -56,6 +57,17 @@ class StockDataPlugin:
                 where += " AND RIGHT(unified_code,2)=:market"
                 params["market"] = market
             total = connection.execute(text(f"SELECT COUNT(*) FROM stock WHERE {where}"), params).scalar_one()
+            if order is not None:
+                rows, cursor = ordered_page(
+                    connection, 'SELECT :source AS source,LEFT(unified_code,6) AS code,name,'
+                    'unified_code,RIGHT(unified_code,2) AS market,'
+                    'CONCAT(LOWER(RIGHT(unified_code,2)),LEFT(unified_code,6)) AS source_symbol '
+                    f'FROM stock WHERE {where}',
+                    {k: v for k, v in params.items() if k not in ('limit', 'offset')},
+                    order=order, fields=column_fields(('source', 'code', 'name', 'unified_code', 'market', 'source_symbol')),
+                    identity=('unified_code',), after=after, limit=limit,
+                )
+                return dict(snapshot=snapshot, total=total, rows=rows, next=cursor)
             rows = connection.execute(text(f"""
                 SELECT :source AS source, LEFT(unified_code,6) AS code, name, unified_code, RIGHT(unified_code,2) AS market, CONCAT(LOWER(RIGHT(unified_code,2)),LEFT(unified_code,6)) AS source_symbol
                 FROM stock WHERE {where} ORDER BY unified_code LIMIT :limit OFFSET :offset

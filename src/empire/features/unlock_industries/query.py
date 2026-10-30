@@ -21,6 +21,7 @@ from empire.features.unlock_industries.contract import (
 )
 from empire.features.unlock_industries.dataset import UnlockIndustryDataset, decode, read_month
 from empire.plugins.infra.collection_state import read_state
+from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
@@ -41,7 +42,7 @@ class UnlockIndustryDataPlugin:
         await self.mysql.require_schema(*schema_contract(TABLE, *COLUMNS, 'content_hash', 'version_observed_at'))
         return {'unlock_industries.tdx_query': self}
 
-    async def list_records(self, industry='', start='', end='', after=None, limit=200):
+    async def list_records(self, industry='', start='', end='', after=None, limit=200, order=None):
         if not isinstance(industry, str) or len(industry) > 200 or type(limit) is not int or not 1 <= limit <= 200:
             raise ValueError('解禁行业查询条件错误')
         clauses, params = ['TRUE'], {'limit': limit + 1}
@@ -54,7 +55,7 @@ class UnlockIndustryDataPlugin:
                 params[key] = month(value)
         if start and end and start > end:
             raise ValueError('解禁行业查询月份顺序错误')
-        if after is not None:
+        if after is not None and order is None:
             if (not isinstance(after, (tuple, list)) or len(after) != 2
                     or not isinstance(after[1], str) or not 1 <= len(after[1]) <= 200):
                 raise ValueError('解禁行业游标错误')
@@ -62,6 +63,14 @@ class UnlockIndustryDataPlugin:
             params.update(month=month(after[0]), name=after[1])
         def read():
             with self.mysql.read_engine.connect() as conn:
+                if order is not None:
+                    records, cursor = ordered_page(
+                        conn, f'SELECT {",".join(COLUMNS)} FROM {TABLE} WHERE ' + ' AND '.join(clauses),
+                        {k: v for k, v in params.items() if k != 'limit'},
+                        order=order, fields=column_fields(COLUMNS),
+                        identity=('unlock_month', 'industry'), after=after, limit=limit,
+                    )
+                    return dict(rows=[decode(r) for r in records], next=cursor)
                 records = conn.execute(text(f'SELECT {",".join(COLUMNS)} FROM {TABLE} WHERE '
                     + ' AND '.join(clauses) + ' ORDER BY unlock_month DESC,industry DESC LIMIT :limit'), params).mappings().all()
                 rows = [decode(r) for r in records[:limit]]
