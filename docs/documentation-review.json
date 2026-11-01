@@ -1,7 +1,7 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-11-01T18:04:19.831687+00:00",
-  "note": "远航共享会话与连接复用已通过36股正式路径实采，补齐跨月测试日历；确认认证、频控与存储说明一致",
+  "reviewed_at": "2026-11-01T18:49:33.321342+00:00",
+  "note": "发布新增独立测试环境预检；开发与发布按实际影响选择测试范围，明确未测与旧证据边界",
   "unchanged_reason": "",
   "exceptions": {},
   "sources": {
@@ -117,8 +117,9 @@
     "scripts/release.py": "85d8871147416e8db849208ca7b7965eacfcdf8e766a7007cf4a6a05d652ac47",
     "scripts/release_identity.py": "a405403f4c786e9212d2d9e087786fbbc4f5beab1f52c89e1dfd4c304f8c7591",
     "scripts/release_lock.py": "65dd0003660625745daca65a1ddd18bfbbf44528510fca22e5dca6f6f27973c9",
-    "scripts/release_steps.py": "398710674450b157de0addfe5d17346d937e1e24c7b66cdc7c15d2c5cf19d21f",
+    "scripts/release_steps.py": "636cc8910e699764fd4041219539a5b68cbfa3d8c751818022348401002282d5",
     "scripts/release_test_plan.py": "90177288599a365307b64f07dc956903ae5485e5dba907a81b3c103d4f55674d",
+    "scripts/release_test_preflight.py": "38862a7b2e3480dcace549e4a6b1886b28d96e706dbfbfd657def6c336426a31",
     "scripts/repair_shareholder_checkpoint.py": "fc02061ecf23f8100602621fd4633ad7c4dcfa0b6d399f793964742c21d7f286",
     "scripts/repurchase_capacity.py": "18f58faee1b3e26c338337dd05955fcf053046815baf788d0e1a64d9a98c80d8",
     "scripts/repurchase_verification.py": "703cf62e1a464a4ac18e4f372c7d29e4121299016ce8d878f06f5beeb72bb64f",
@@ -632,7 +633,7 @@
     "src/empire/sources/yuanhang_sessions.py": "93cb994a478b2bf3d781edf157765c80a0c000e59afd01ae23a3eec70bab5ba5",
     "src/empire/sources/yuanhang_wire.py": "a936cfd1c8e7a0e6c917934ed043e26686296ff43e41f3e6f21d0a63c47fde1b"
   },
-  "content_sha256": "23fa642242f6923ba4c61f8de2eadfb44ef6856c4863a19d8e22ede7d460a5cb",
+  "content_sha256": "4a35e21b2f50c340297b58e2ef2e1a96540bbed3c32ef496499429d4aa77fa28",
   "features": {
     "page:ths_capital": {
       "sources": {

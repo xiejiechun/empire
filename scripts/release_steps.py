@@ -10,6 +10,7 @@ def verify(runner):
     root, run, py = runner.root, runner.run_directory, runner.python
     dependency = root / 'build' / 'dependency-report.json'
     runner.command([py, root / 'scripts/verify_release_environment.py'])
+    runner.command([py, root / 'scripts/release_test_preflight.py'])
     runner.command([py, root / 'scripts/audit_dependencies.py', '--output', dependency])
     runner.evidence[dependency.relative_to(root).as_posix()] = sha256(dependency)
     help_report = run / 'help-report.json'

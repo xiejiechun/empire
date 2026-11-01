@@ -9,7 +9,7 @@ from scripts.release_identity import sha256
 from scripts.release_steps import retain_evidence, verify
 
 
-@pytest.mark.parametrize('failed', [None, 'help', 'pytest', 'capacity', 'architecture', 'assembly'])
+@pytest.mark.parametrize('failed', [None, 'preflight', 'help', 'pytest', 'capacity', 'architecture', 'assembly'])
 def test_verification_requires_all_checks_and_stops_on_failure(tmp_path, failed):
     calls = []
     run = tmp_path / 'build/releases/unit'
@@ -30,7 +30,8 @@ def test_verification_requires_all_checks_and_stops_on_failure(tmp_path, failed)
         if 'documentation_build.py' in text:
             assert words == ['python', str(tmp_path / 'scripts/documentation_build.py'),
                              'check', '--report', str(run / 'help-report.json')]
-        if failed and ((failed == 'pytest' and '-m pytest' in text)
+        if failed and ((failed == 'preflight' and 'release_test_preflight.py' in text)
+                       or (failed == 'pytest' and '-m pytest' in text)
                        or (failed == 'help' and 'documentation_build.py' in text)
                        or (failed == 'capacity' and 'measure_capacity.py' in text)
                        or (failed == 'architecture' and 'architecture_contract.py' in text)
@@ -54,13 +55,15 @@ def test_verification_requires_all_checks_and_stops_on_failure(tmp_path, failed)
     if failed:
         with pytest.raises(RuntimeError, match='injected'):
             verify(runner)
+        if failed == 'preflight':
+            assert len(calls) == 2
         assert not calls[-1].endswith(' package')
     else:
         dependency, capacity = verify(runner)
         assert dependency.exists() and capacity.exists()
         assert len(runner.evidence) == 5
         assert all('documentation_build.py generate' not in command for command in calls)
-        for step in ('verify_release_environment.py', 'audit_dependencies.py', 'documentation_build.py', 'verify_documentation.py',
+        for step in ('verify_release_environment.py', 'release_test_preflight.py', 'audit_dependencies.py', 'documentation_build.py', 'verify_documentation.py',
                      'verify_database_design.py', 'architecture_contract.py', 'assembly_contract.py',
                      '-m ruff check', '-m mypy', '-m pip check', 'diff --check', '-m pytest',
                      'measure_capacity.py', 'run build', 'test:transport'):
