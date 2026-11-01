@@ -7,12 +7,14 @@ import pytest
 from empire.features.yuanhang import collector as module
 from empire.plugins.infra.sensitive_request import SensitiveRequestError
 from empire.sources.yuanhang_auth import AuthenticationError
+from empire.sources.yuanhang_sessions import NodeSessions
 
 
 def collector(monkeypatch):
     c = module.YuanhangCollector()
     c.http, c.ingest = object(), object()
     c.identity = SimpleNamespace(
+        sessions=NodeSessions(),
         registry=SimpleNamespace(load=AsyncMock(return_value={
             n: SimpleNamespace(provisioned=True) for n in ('node001', 'node002')})),
         online_codes=lambda: {'node001', 'node002'},
@@ -46,7 +48,9 @@ async def test_protocol_or_authentication_error_never_switches_identity(monkeypa
     monkeypatch.setattr(module, 'fetch_history', fetch)
     with pytest.raises(type(error)):
         await c.fetch(('000001.SZ', 'node001', '2026-10-23'))
-    assert fetch.await_count == c.identity.login.await_count == 1
+    expected = 2 if isinstance(error, AuthenticationError) else 1
+    assert fetch.await_count == c.identity.login.await_count == expected
+    assert {call.args[0] for call in c.identity.login.await_args_list} == {'node001'}
 
 
 @pytest.mark.parametrize('failure', [httpx.ConnectError('fixture'), TimeoutError('fixture')])
@@ -57,7 +61,7 @@ async def test_sensitive_transport_failure_can_retry_without_carrying_credential
     monkeypatch.setattr(module, 'fetch_history', fetch)
     assert await c.fetch(('000001.SZ', 'node001', '2026-10-23')) == 'snapshot'
     assert fetch.await_args.args[1].proxy_code == 'node002'
-    assert set(c.sessions) == {'node002'}
+    assert not hasattr(c, 'sessions')
 
 
 async def test_offline_preferred_node_not_used_and_missing_identity_not_borrowed(monkeypatch):

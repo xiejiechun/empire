@@ -60,3 +60,5 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 [执行采集与计划](help:执行采集与计划)、[数据库职责与查阅](help:数据库职责与查阅)、[MySQL collection_state](help:MySQL%20collection_state)
 
 远航creation保留配方版本、参数来源、记录/申请时刻、客户端版本、固定逻辑MAC/IMEI、申请URL、GET方法及imei/qsid/reqtype白名单参数。新档案在请求前保存；旧schema1必须正常关闭Empire后用scripts/migrate_yuanhang_profiles.py核查，再以--apply显式迁移。旧记录标注legacy-reconstructed，首次申请时刻未知为null；迁移保持code、UUID、密文及状态不变。运行时不自动转换，参数不可在页面随意改写。操作历史只存Redis，不混入本表。日常入口见[平台身份管理](help:平台身份管理)。
+
+远航节点账号档案仍使用本表既有设置契约。跨任务复用的认证会话仅驻留身份服务内存，程序退出即释放，不将通行证写入app_setting，也不在每次采集结束时更新账号档案。

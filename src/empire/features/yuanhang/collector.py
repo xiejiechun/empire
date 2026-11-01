@@ -29,6 +29,7 @@ from empire.plugins.collectors.support import (
 )
 from empire.plugins.infra.routing import USE_PROXY
 from empire.plugins.infra.sensitive_request import SensitiveRequestError
+from empire.sources.yuanhang_auth import AuthenticationError
 from empire.sources.yuanhang_client import fetch_history
 from empire.sources.yuanhang_history import IncompleteFinancialHistory
 from empire.sources.yuanhang_payload import (
@@ -56,7 +57,6 @@ class YuanhangCollector:
             description='固定节点身份、完整原生响应、共享预取及统一归档')
         self.request_retries, self.selected_codes = 2, None
         self.stats = dict(status='stopped', collected=0)
-        self.sessions, self.session_locks = {}, {}
         self.plans = {}
 
     async def start(self, context):
@@ -90,14 +90,7 @@ class YuanhangCollector:
                 raise ValueError('远航版没有可重试的健康身份节点，保留当前断点')
             node = preferred if preferred in nodes else nodes[0]
             try:
-                async with self.session_locks.setdefault(node, asyncio.Lock()):
-                    if node not in self.sessions:
-                        self.sessions[node] = await self.identity.login(node, project_id=self.project_id)
-                return await fetch_history(self.http, self.sessions[node], unified_code=code,
-                    dataset='financial' if self.financial else 'daily',
-                    start=date.fromisoformat(plan['start']) if plan.get('start') else FIRST,
-                    end=FINANCIAL_END if self.financial else date.fromisoformat(through),
-                    max_retries=0, reservation=reservation, native_market=plan.get('native_market'))
+                return await self.fetch_authenticated(node, code, through, plan, reservation)
             except (EmptyHistoryResponse, IncompleteFinancialHistory) as exc:
                 if plan.get('mode') == 'range':
                     raise ValueError('远航区间含已知成交日仍返回空响应；保留断点，不转为成功或全历史') from exc
@@ -107,9 +100,27 @@ class YuanhangCollector:
                         or attempt >= self.request_retries):
                     raise
                 excluded.add(node)
-                self.sessions.pop(node, None)
                 self.stats['node_transport_retries'] = self.stats.get('node_transport_retries', 0) + 1
                 await asyncio.sleep(retry_delay(attempt + 1))
+
+    async def fetch_authenticated(self, node, code, through, plan, reservation):
+        session = await self.identity.login(node, project_id=self.project_id)
+        for renewal in range(2):
+            try:
+                result = await fetch_history(self.http, session, unified_code=code,
+                    dataset='financial' if self.financial else 'daily',
+                    start=date.fromisoformat(plan['start']) if plan.get('start') else FIRST,
+                    end=FINANCIAL_END if self.financial else date.fromisoformat(through),
+                    max_retries=0, reservation=reservation, native_market=plan.get('native_market'))
+                self.identity.sessions.confirm(node, session)
+                return result
+            except AuthenticationError as exc:
+                if exc.stage != 'native-login' or exc.code is None:
+                    raise
+                if renewal:
+                    self.identity.sessions.reject(node, session)
+                    raise
+                session = await self.identity.login(node, project_id=self.project_id, rejected=session)
 
     async def publish(self, state, cursor, history, observed):
         page = cursor['pages'] + 1
@@ -126,7 +137,6 @@ class YuanhangCollector:
 
     async def execute(self, *, fresh=False, baseline_revision=0):
         stage = 'plan'
-        self.sessions, self.session_locks = {}, {}
         try:
             self.stats.update(logical_history_requests=0, response_bytes=0, decoded_bytes=0)
             if not USE_PROXY.get():
@@ -257,9 +267,6 @@ class YuanhangCollector:
             await record_error_safely(self.records, self.stats, self.project_id, exc, stage=stage,
                 unavailable_message='远航错误记录暂不可用；已入队断点保留')
             raise
-        finally:
-            self.sessions.clear()
-            self.session_locks.clear()
 
     async def stop(self):
         self.stats['status'] = 'stopped'

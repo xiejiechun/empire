@@ -157,7 +157,7 @@ async def test_login_reuses_ready_profile_with_fixed_route_and_no_registration(m
     before = service.registry.settings.writes
     assert (await service.login('a', project_id='fixture')).proxy_code == 'a'
     assert (await service.login('a', project_id='fixture')).proxy_code == 'a'
-    assert calls[0] == calls[1] and len(service.http.calls) == 1
+    assert len(calls) == 1 and len(service.http.calls) == 1
     assert before == service.registry.settings.writes
     with pytest.raises(ValueError, match='尚未就绪'):
         await service.login('missing', project_id='fixture')

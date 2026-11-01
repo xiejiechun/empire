@@ -12,6 +12,7 @@ from empire.core.config import load_config
 from empire.features.yuanhang.contract import PRICE_JOB
 from empire.plugins.infra.routing import USE_PROXY
 from empire.sources.yuanhang_service import YuanhangIdentityPlugin
+from empire.sources.yuanhang_sessions import NodeSessions
 from tests.test_yuanhang_payload import CODE, bar, snapshot
 from tests.test_yuanhang_storage import envelope
 
@@ -21,7 +22,7 @@ pytestmark = [pytest.mark.integration,
 
 @pytest.fixture
 async def native(monkeypatch):
-    identity = SimpleNamespace(registry=SimpleNamespace(load=AsyncMock(return_value={
+    identity = SimpleNamespace(sessions=NodeSessions(), registry=SimpleNamespace(load=AsyncMock(return_value={
         'node-test': SimpleNamespace(provisioned=True)})), online_codes=lambda: {'node-test'})
     async def start(self, context):
         return {'yuanhang.identity': identity}

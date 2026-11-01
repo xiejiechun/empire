@@ -28,8 +28,10 @@ async def native_inputs():
         q, ingest, worker, redis = (manager.registry.get(k) for k in (
             'adjustment.query', 'ingest.publish', 'archive.worker', 'redis.store'))
         now = datetime.now(UTC)-timedelta(minutes=30)
+        today = datetime.now(CHINA).date()
+        previous_month = today.replace(day=1) - timedelta(days=1)
         with q.mysql.engine.begin() as conn:
-            for month in sorted({'2026-09', datetime.now(CHINA).strftime('%Y-%m')}):
+            for month in sorted({'2026-09', today.strftime('%Y-%m'), previous_month.strftime('%Y-%m')}):
                 for d in month_dates(month):
                     conn.execute(text('INSERT INTO trade_calendar(trade_date,is_trade,updated_at) VALUES(:d,:t,:now)'),
                                  dict(d=d, t=int(d.weekday()<5), now=now.replace(tzinfo=None)))

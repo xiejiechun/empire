@@ -157,3 +157,17 @@ async def test_unsupported_compression_frame_is_rejected():
     channel.data = channel.data[:12] + b'\x0a' + channel.data[13:]
     with pytest.raises(ValueError, match='unsupported'):
         await exchange_frame(channel, b'query')
+
+
+async def test_idle_control_frames_do_not_resend_or_replace_business_response():
+    channel = Channel(b'\0' * 4)
+    channel.data += Channel(b'valid-business-frame').data
+    assert await exchange_frame(channel, b'query', allow_idle=True) == b'valid-business-frame'
+    assert len(channel.sent) == 1
+    # Similar-looking malformed bodies are never silently discarded.
+    assert await exchange_frame(Channel(b'\0' * 3), b'query', allow_idle=True) == b'\0' * 3
+    channel = Channel(b'\0' * 4)
+    channel.data *= 9
+    with pytest.raises(ValueError, match='excessive idle'):
+        await exchange_frame(channel, b'query', allow_idle=True)
+    assert len(channel.sent) == 1

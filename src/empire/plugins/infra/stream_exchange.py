@@ -1,7 +1,7 @@
 """Native exchanges on the existing downloader's route, capacity and byte budget.
 
 The source supplies a bounded protocol exchange; no collector opens sockets.
-Connections are per exchange and are not pooled. This transport does not provision
+Sources may explicitly request a reusable connection. This transport does not provision
 or bind guest identities; source authentication must establish that contract.
 The caller must close the returned response after parsing.
 """
@@ -19,9 +19,10 @@ ATTEMPT_TIMEOUT_SECONDS = 30
 
 
 class BoundedChannel:
-    def __init__(self, reader, writer, policy, lease=None):
+    def __init__(self, reader, writer, policy, lease=None, state=None):
         self.reader, self.writer, self.policy, self.lease = reader, writer, policy, lease
         self.received = self.sent = 0
+        self.state = state if state is not None else {}
 
     async def readexactly(self, length):
         if (type(length) is not int or length < 0
@@ -64,7 +65,7 @@ class StreamResponse:
 
 
 async def request(service, target, protocol, *, policy=None, max_retries=2, total_timeout=None,
-                  proxy_code=None, reservation=None):
+                  proxy_code=None, reservation=None, connection_key=None):
     """Protocol/auth failures do not retry; transport failures use bounded failover.
 
     Authentication data is never sent to error-record storage by this layer.
@@ -86,6 +87,15 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
             # Bound an inactive native peer like HTTP. A source protocol or
             # authentication error remains non-retryable; only transport times out.
             async with asyncio.timeout(ATTEMPT_TIMEOUT_SECONDS):
+                if connection_key is not None:
+                    async with service.native_connections.connection(target, entry, group.name, connection_key) as conn:
+                        channel = BoundedChannel(conn.reader, conn.writer, policy, lease, conn.state)
+                        content = await protocol(channel)
+                        if not isinstance(content, bytes) or len(content) > policy.max_body_bytes:
+                            raise ValueError('Native decoded response exceeds body limit')
+                    if isinstance(policy, BufferedPolicy) and not lease.grow_to(3 * len(content) + 4 * CHUNK_BYTES):
+                        raise ValueError('共享下载缓冲不足，原生响应无法保留')
+                    return StreamResponse(content, None, service)
                 if entry is None:
                     reader, writer = await asyncio.open_connection(target.host, target.port, limit=16384)
                 else:

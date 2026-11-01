@@ -10,6 +10,7 @@ from empire.plugins.infra.routing import PROXY_FALLBACK, USE_PROXY
 from empire.plugins.infra.settings import SettingsStore
 from empire.sources.yuanhang_client import login_profile, provision_guest
 from empire.sources.yuanhang_profiles import ProfileRegistry, node_code
+from empire.sources.yuanhang_sessions import NodeSessions
 
 PROJECT = 'ths-yuanhang-identity'
 BLOCKED = {'requested', 'rejected', 'unknown'}
@@ -26,6 +27,7 @@ class IdentityService:
         self.lock = asyncio.Lock()
         self.inflight = set()
         self.runs = IdentityRuns(records, PROJECT)
+        self.sessions = NodeSessions()
 
     def online_codes(self):
         # Consume the existing discovery cache; never scan RouterProxy again.
@@ -35,6 +37,7 @@ class IdentityService:
 
     async def reload(self):
         self.profiles = await self.registry.load()
+        self.sessions.prune(self.profiles)
         self.next_reload = monotonic() + 60
 
     async def reconcile(self):
@@ -90,8 +93,8 @@ class IdentityService:
             await self.reconcile()
             await asyncio.sleep(5)
 
-    async def login(self, code, *, project_id):
-        """Reuse credentials on demand; callers own short-lived memory sessions.
+    async def login(self, code, *, project_id, rejected=None):
+        """Share node sessions across collectors and rounds, renewing on rejection.
 
         No speculative session expiry, background login or retry/registration on
         authentication failure. Every auth and later native request is node-bound.
@@ -107,8 +110,10 @@ class IdentityService:
             profile = profiles.get(code)
             if profile is None or not profile.provisioned:
                 raise ValueError('该节点身份尚未就绪，请查看远航节点身份服务状态')
-            async with self.runs.operation(code, 'login'):
-                return await login_profile(self.http, profile, project_id=project_id)
+            async def authenticate():
+                async with self.runs.operation(code, 'login'):
+                    return await login_profile(self.http, profile, project_id=project_id)
+            return await self.sessions.get(code, profile, authenticate, rejected=rejected)
         finally:
             USE_PROXY.reset(tokens[0])
             PROXY_FALLBACK.reset(tokens[1])
@@ -122,6 +127,7 @@ class IdentityService:
         if tasks:
             await asyncio.gather(*tasks, return_exceptions=True)
         self.profiles.clear()
+        self.sessions.entries.clear()
 
     def health(self):
         blocked = {code: p.registration for code, p in self.profiles.items()

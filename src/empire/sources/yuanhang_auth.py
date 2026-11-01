@@ -171,15 +171,22 @@ async def login_guest(http, identity: GuestIdentity, device: ClientDevice, *, pr
     return _passport(passport, user_id, device, proxy_code)
 
 
-async def exchange_frame(channel, payload: bytes) -> bytes:
+async def exchange_frame(channel, payload: bytes, *, allow_idle=False) -> bytes:
     if not isinstance(payload, bytes) or not 1 <= len(payload) <= 65523:
         raise ValueError('Yuanhang outbound frame exceeds bounds')
     await channel.write(b'\xfd' * 4 + f'{len(payload):08x}'.encode('ascii') + b'\x09' + payload)
-    header = await channel.readexactly(13)
-    if (header[:4] != b'\xfd' * 4 or header[-1] != 9
-            or not re.fullmatch(b'[0-9a-fA-F]{8}', header[4:12])):
-        raise ValueError('Yuanhang unsupported or malformed frame')
-    return await channel.readexactly(int(header[4:12], 16))
+    # An idle native connection can contain four-zero control frames. Consume
+    # only this exact frame, without resending the query or accepting it as data.
+    # Both frame count and the shared channel's byte/time budget remain bounded.
+    for _ in range(9):
+        header = await channel.readexactly(13)
+        if (header[:4] != b'\xfd' * 4 or header[-1] != 9
+                or not re.fullmatch(b'[0-9a-fA-F]{8}', header[4:12])):
+            raise ValueError('Yuanhang unsupported or malformed frame')
+        body = await channel.readexactly(int(header[4:12], 16))
+        if not allow_idle or body != b'\0' * 4:
+            return body
+    raise ValueError('Yuanhang excessive idle control frames')
 
 
 async def login_native(channel, session: GuestSession):

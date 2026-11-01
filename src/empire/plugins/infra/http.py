@@ -133,6 +133,8 @@ class HttpService:
         self.stats: dict[str, dict] = {}
         self.inflight: set[asyncio.Task] = set()
         self.closed = False
+        from empire.plugins.infra.native_connections import NativeConnections
+        self.native_connections = NativeConnections(self)
 
     async def _record_failure(self, project_id, method, url, error, response=None, attempt=1, *, sensitive=False):
         if self.records is None or getattr(error, "diagnostic_recorded", False):
@@ -401,6 +403,7 @@ class HttpService:
             await asyncio.gather(*tasks, return_exceptions=True)
         for response in list(self.responses):
             response.close()
+        await self.native_connections.close()
         await self.client.aclose()
 
 

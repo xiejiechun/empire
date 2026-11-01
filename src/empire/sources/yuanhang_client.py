@@ -110,12 +110,14 @@ async def _fetch_market(http, session, *, unified_code, dataset, start, end, ins
     policy = http.response_policy('stocks')
 
     async def exchange(channel):
-        await login_native(channel, session)
-        return await exchange_frame(channel, query)
+        if not channel.state.get('yuanhang_authenticated'):
+            await login_native(channel, session)
+            channel.state['yuanhang_authenticated'] = True
+        return await exchange_frame(channel, query, allow_idle=True)
 
     response = await http.request_stream(session.servers[0], exchange, policy=policy,
                                          proxy_code=session.proxy_code, max_retries=max_retries,
-                                         reservation=reservation)
+                                         reservation=reservation, connection_key=session)
     try:
         tables = decode_response(response.content, instance=instance,
                                  request_id=210 if dataset == 'daily' else 211,

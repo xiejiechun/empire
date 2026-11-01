@@ -200,6 +200,11 @@ async def collect(session, cfg, profiles, sample, request_retries=2):
             collector_status={k: dict(e.plugin.stats) for k, e in manager.entries.items()
                               if k in ('collector.yuanhang_prices', 'collector.yuanhang_financial')},
             registration_requests=0)
+        http = manager.registry.optional('http.fetch')
+        if http:
+            session.report['native_connections'] = dict(http.native_connections.stats)
+        if identity:
+            session.report['shared_sessions'] = dict(identity.sessions.stats)
         try:
             await manager.shutdown()
         finally:
@@ -224,7 +229,10 @@ def run(args):
     paths = [p.relative_to(root).as_posix() for p in (root/'src/empire/features/yuanhang').glob('*.py')]
     paths += ['src/empire/sources/' + name + '.py' for name in (
         'yuanhang_client', 'yuanhang_history', 'yuanhang_payload', 'yuanhang_coverage', 'yuanhang_wire',
-        'yuanhang_ranges', 'yuanhang_range_payload', 'listing_scope')]
+        'yuanhang_ranges', 'yuanhang_range_payload', 'listing_scope',
+        'yuanhang_service', 'yuanhang_sessions', 'yuanhang_auth')]
+    paths += ['src/empire/plugins/infra/' + name + '.py' for name in
+              ('http', 'stream_exchange', 'native_connections')]
     paths += ['scripts/verify_yuanhang_history.py']
     with CapacitySession(cfg['mysql'], test, root=root, subject='preview', output=args.output, input_paths=paths) as session:
         with session.source_engine.connect() as conn:
