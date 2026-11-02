@@ -213,6 +213,8 @@ def _views(task):
             ],
         ]
     if task.startswith("ths-yuanhang-"):
+        if task == "ths-yuanhang-sprint-limit-up-history":
+            task = "ths-yuanhang-sprint-limit-up"
         pool = task.removeprefix("ths-yuanhang-").replace("-", "_")
         if pool == "reason":
             return [

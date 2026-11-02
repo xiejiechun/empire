@@ -11,6 +11,7 @@ class PoolPlan:
     missing: int
     due: int
     remaining: int
+    pending: tuple[str, ...]
 
 
 def calendar_dates(rows, through):
@@ -31,7 +32,7 @@ def calendar_dates(rows, through):
 
 
 def plan_pool(trade_days, coverage, verified, *, cutoff, batch_limit=64,
-              lookback=5, audit_period=20, force=False, exclude=()):
+              lookback=5, audit_period=20, force=False, exclude=(), scope='all'):
     """Inputs have one fixed calendar origin; verified maps unit date to check date.
 
     Coverage contains only validated source units, not guessed empty days.
@@ -39,6 +40,8 @@ def plan_pool(trade_days, coverage, verified, *, cutoff, batch_limit=64,
     new plan after Redis loss uses SQL proofs, not the largest successful date.
     """
     day_value(cutoff)
+    if scope not in ('all', 'recent', 'history'):
+        raise ValueError('日期池规划范围无效')
     if (not trade_days or list(trade_days) != sorted(set(trade_days))
             or any(day_value(d) > cutoff for d in trade_days) or trade_days[-1] != cutoff):
         raise ValueError('日期池规划需要有序完整交易日范围和已结束截止日')
@@ -60,9 +63,18 @@ def plan_pool(trade_days, coverage, verified, *, cutoff, batch_limit=64,
         expected = cutoff if day in recent else trade_days[max(index, due_rank)]
         if force or verified.get(day, '') < expected:
             due.add(day)
-    work = (missing | due) - set(exclude)
+    if scope == 'recent':
+        work = missing | (due & recent)
+    elif scope == 'history':
+        work = (due - recent) & set(coverage)
+        missing = set()
+    else:
+        work = missing | due
+    due &= work
+    work -= set(exclude)
     # Reserve half of each batch for old work so daily arrivals cannot starve it.
     newest = sorted(work & recent, reverse=True)[:max(1, batch_limit // 2)]
     older = sorted(work - set(newest))[:batch_limit - len(newest)]
     selected = tuple(newest + older)
-    return PoolPlan(selected, len(missing), len(due - missing), len(work) - len(selected))
+    pending = tuple(sorted(work - set(selected)))
+    return PoolPlan(selected, len(missing), len(due - missing), len(pending), pending)

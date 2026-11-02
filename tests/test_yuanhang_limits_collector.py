@@ -117,6 +117,67 @@ def test_max_bounded_reason_cursor_fits_shared_checkpoint_budget():
     assert len(json.dumps(cursor).encode()) < 16384
 
 
+async def test_pool_plan_continuation_is_memory_only_and_never_rescans_sql():
+    c, state, events, order = setup_collector(['2026-07-14', '2026-07-15'])
+    c.query.collection_plan.return_value = dict(units=['2026-07-14'], cutoff='2026-07-15',
+                                               remaining=1, pending=['2026-07-15'])
+    await c.execute()
+    c.query.collection_plan.assert_awaited_once()
+    assert order == ['fetch', 'publish', 'fetch', 'publish', 'archive']
+    assert len({e.batch_id for e in events}) == 1
+    assert 'pending' not in state['cursor']
+    assert state['cursor']['plan'] == ['2026-07-15']
+
+
+async def test_lost_memory_plan_resumes_failed_later_batch_from_durable_cursor():
+    c, state, events, order = setup_collector(['2026-07-14', '2026-07-15'])
+    plans = iter([
+        dict(units=['2026-07-14'], cutoff='2026-07-15', remaining=1, pending=['2026-07-15']),
+        dict(units=['2026-07-15'], cutoff='2026-07-15', remaining=0, pending=[]),
+    ])
+    exclusions = []
+
+    async def replan(*args, **kwargs):
+        exclusions.append(set(kwargs.get('exclude', ())))
+        return next(plans)
+
+    c.query.collection_plan.side_effect = replan
+    original = c.fetch.side_effect
+
+    async def fail(day, **kwargs):
+        if day == '2026-07-15':
+            raise ValueError('later batch unavailable')
+        return await original(day, **kwargs)
+
+    c.fetch.side_effect = fail
+    with pytest.raises(ValueError, match='later batch unavailable'):
+        await c.execute()
+    assert state['cursor']['plan'] == ['2026-07-14']
+    assert state['cursor']['page'] == 1 and state['cursor']['remaining'] == 1
+    assert c.confirmation.page_status.call_count == 0
+    c.fetch.side_effect = original
+    await c.execute(baseline_revision=state['revision'])
+    assert len(events) == 2 and len({e.batch_id for e in events}) == 1
+    assert exclusions == [set(), {'2026-07-14'}]
+    assert state['cursor']['phase'] == 'complete' and c.http.buffer_budget.used == 0
+
+
+def test_sprint_tasks_have_separate_policies_checkpoints_and_one_dataset():
+    from empire.features.yuanhang_limits.bundle import bundle
+    from empire.features.yuanhang_limits.contract import SPLIT_POOL, history_project, project
+    feature = bundle({})
+    tasks = {item.value.id: item.value for item in feature.tasks}
+    collectors = {item.value.project_id: item.value for item in feature.plugins if isinstance(item.value, LimitCollector)}
+    current, history = collectors[project(SPLIT_POOL)], collectors[history_project(SPLIT_POOL)]
+    assert current.scope == 'recent' and current.intraday
+    assert history.scope == 'history' and not history.intraday
+    assert current.dataset == history.dataset and current.job_key != history.job_key
+    assert tasks[current.project_id].default_schedule.interval_seconds == 60
+    assert tasks[history.project_id].default_schedule.daily_time == '18:30'
+    mapping = next(item.value for item in feature.datasets if item.value.mapping.pool == SPLIT_POOL)
+    assert mapping.projects == {current.job_key: current.project_id, history.job_key: history.project_id}
+
+
 def test_storage_revalidates_identity_members_and_reason_status():
     from empire.features.yuanhang_limits.storage import pool_payload, reason_payload
     unit = dict(trade_date='2026-07-15', pool_type='limit_up_pool', filter='HS,GEM2STAR',

@@ -31,7 +31,7 @@ def test_every_installed_project_has_business_presentation_and_resolvable_naviga
             if spec["hidden"]:
                 assert spec["parent"] in specs
                 assert all(f["required"] for f in spec["filter_specs"])
-    assert len(projects) == 52
+    assert len(projects) == 53
     assert "tdx-industry-margin" in projects
     assert {"statement", "calendar", "hotlist", "holdings", "pool", "rules", "news"} <= renderers
 

@@ -13,6 +13,7 @@ POOLS = {
     'limit_down_pool': '跌停板',
 }
 PAGE_SIZE = 100
+SPLIT_POOL = 'sprint_limit_up'
 MAX_MEMBERS = 10000
 MAX_UNIT_BYTES = 8 * 1024 * 1024
 DECIMAL_FIELDS = ('change_rate', 'latest', 'turnover_rate', 'currency_value',
@@ -48,6 +49,15 @@ def project(pool):
 
 def job(pool):
     return project(pool) + '-v1'
+
+
+def history_project(pool):
+    pool_value(pool)
+    return project(pool) + '-history'
+
+
+def pool_projects(pool):
+    return (project(pool), history_project(pool)) if pool == SPLIT_POOL else (project(pool),)
 
 
 def dataset(pool):

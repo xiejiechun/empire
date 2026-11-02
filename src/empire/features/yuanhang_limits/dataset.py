@@ -4,7 +4,8 @@ from datetime import UTC, time
 from empire.contracts.archive_version import ArchiveVersion
 from empire.contracts.business_schema import require_fixed_source
 from empire.core.time import CHINA, mysql_time
-from empire.features.yuanhang_limits.contract import SOURCE, dataset, job, project
+from empire.features.yuanhang_limits.contract import SOURCE, SPLIT_POOL, dataset, job, project
+from empire.features.yuanhang_limits.proofs import latest_pool_version
 from empire.features.yuanhang_limits.repository import (
     read_pool_head,
     read_reason,
@@ -66,6 +67,8 @@ class LimitDataset:
         unit = data['unit']
         observed = envelope.observed_at.astimezone(UTC).isoformat(timespec='microseconds')
         previous = self.versions(data['archive_state'], unit).get(unit['trade_date'], '')
+        if self.pool == SPLIT_POOL:
+            previous = max(previous, latest_pool_version(conn, data['archive_namespace'], self.pool, unit['trade_date']))
         outcome = dict(status='complete', row_count=data['row_count'], written_count=0, confirmed=[])
         if not data.get('write_unit', True) or observed < previous:
             return outcome

@@ -39,7 +39,7 @@ export default function Tasks({
     [batch, setBatch] = useState(false),
     [editing, setEditing] = useState(false),
     [tab, setTab] = useState("runs"),
-    [expanded, setExpanded] = useState<React.Key[]>([]);
+    [collapsedPlatforms, setCollapsedPlatforms] = useState<React.Key[]>([]);
   const drafts = useRef<Record<string, Data>>({});
   const { message } = App.useApp();
   const searchRef = useRef<any>(null);
@@ -77,7 +77,6 @@ export default function Tasks({
   useEffect(() => {
     if (list.data && !rows.some((r: Data) => r.id === selected)) {
       setSelected(rows[0]?.id || "");
-      setExpanded(rows[0] ? ["platform:" + rows[0].source] : []);
       setEditing(false);
     }
   }, [list.data]);
@@ -265,8 +264,11 @@ export default function Tasks({
                     ),
                   )
                 }
-                expandedKeys={search ? tree.map((t) => t.key) : expanded}
-                onExpand={setExpanded}
+                expandedKeys={tree.map((t) => t.key).filter((key) => search || !collapsedPlatforms.includes(key))}
+                onExpand={(keys) => setCollapsedPlatforms((previous) => [
+                  ...previous.filter((key) => !tree.some((node) => node.key === key)),
+                  ...tree.map((t) => t.key).filter((key) => !keys.includes(key)),
+                ])}
                 key={`${search}:${offset}:${category}:${archived}`}
                 selectedKeys={[selected]}
                 onSelect={(keys) => {

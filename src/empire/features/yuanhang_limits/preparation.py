@@ -11,6 +11,7 @@ from empire.features.calendar.api import read_trade_day_cutoff
 from empire.features.yuanhang_limits.contract import POOLS, SOURCE, dataset, job, project
 from empire.features.yuanhang_limits.model import digest
 from empire.features.yuanhang_limits.planning import calendar_dates
+from empire.features.yuanhang_limits.proofs import pool_versions
 from empire.features.yuanhang_limits.repository import decode_member
 from empire.features.yuanhang_limits.storage import pool_payload, pool_proof, reason_payload
 
@@ -43,10 +44,13 @@ async def check(query, kind, request=None):
             "FROM trade_calendar WHERE trade_date BETWEEN '1990-12-19' AND :last ORDER BY trade_date"),
             dict(last=cutoff.date()))]
         trades = calendar_dates(all_rows, cutoff.date().isoformat())
-        raw = conn.execute(text("SELECT JSON_EXTRACT(payload,'$.versions') FROM collection_state "
-            'WHERE namespace=:ns AND project_id=:project AND source=:source'),
-            dict(ns=query.namespace, project=project(kind), source=SOURCE)).scalar_one_or_none()
-        versions = json.loads(raw) if isinstance(raw, str) else raw or {}
+        if kind == 'reason':
+            raw = conn.execute(text("SELECT JSON_EXTRACT(payload,'$.versions') FROM collection_state "
+                'WHERE namespace=:ns AND project_id=:project AND source=:source'),
+                dict(ns=query.namespace, project=project(kind), source=SOURCE)).scalar_one_or_none()
+            versions = json.loads(raw) if isinstance(raw, str) else raw or {}
+        else:
+            versions = pool_versions(conn, query.namespace, kind)
         return [r[0].isoformat() for r in rows if r[1]], start, end, trades, versions
     days, start, end, trades, versions = await query.read(dates)
     rank = len(trades) - 1

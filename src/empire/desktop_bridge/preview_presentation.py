@@ -246,6 +246,8 @@ def _content(task, view):
         return "reason", "证券涨跌停原因", "按证券和交易日阅读来源原因；来源未提供与未采集分别保留。", "trade_date:交易日期:date|unified_code:证券代码|name:证券名称|reason_kind:原因类型|availability:来源可用性|reason_text:原因正文:longtext"
     if task.startswith("ths-yuanhang-"):
         from empire.features.yuanhang_limits.contract import POOLS
+        if task == "ths-yuanhang-sprint-limit-up-history":
+            task = "ths-yuanhang-sprint-limit-up"
         title = POOLS[task.removeprefix("ths-yuanhang-").replace("-", "_")]
         return "pool", title + (" · 盘中快照" if view.id == "live" else " · 日终成员"), "日终归档与Redis盘中快照分栏；没有快照不表示空池，多页采样不表示同一瞬间冻结。", POOL
     raise ValueError("未登记专用预览呈现：" + task)

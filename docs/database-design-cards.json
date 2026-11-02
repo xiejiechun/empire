@@ -1571,7 +1571,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/five-limits-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/yuanhang-sprint-split-capacity-2026-11-02.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1613,7 +1613,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/five-limits-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/yuanhang-sprint-split-capacity-2026-11-02.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1627,7 +1627,7 @@
         "事务失败不残留业务",
         "来源空池不推断最早边界"
       ],
-      "lifecycle": "docs/ths-yuanhang-limits-implementation.md：完整日历1990-12-19至固定已结束交易日，新增/缺口∪近期5日∪20交易日轮转；连续有界计划后统一等待归档；Redis丢失从SQL恢复。",
+      "lifecycle": "docs/yuanhang-sprint-maintenance.md：原任务从1990-12-19初始化、精确补缺及近期5交易日；独立历史任务每日18:30核验已覆盖老日期，20交易日轮转及停机补查；合并SQL版本与可信摘要恢复，旧响应不覆盖。",
       "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
       "tests": [
         "tests/test_yuanhang_limits_source.py",
@@ -1635,7 +1635,8 @@
         "tests/test_yuanhang_limits_collector.py",
         "tests/test_yuanhang_limits_wire.py",
         "tests/integration/test_yuanhang_limits_archive.py",
-        "tests/integration/test_yuanhang_limits_plans.py"
+        "tests/integration/test_yuanhang_limits_plans.py",
+        "tests/integration/test_yuanhang_sprint_split.py"
       ]
     },
     "yuanhang.limits.connect_broad_pool": {
@@ -1655,7 +1656,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/five-limits-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/yuanhang-sprint-split-capacity-2026-11-02.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1697,7 +1698,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/five-limits-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/yuanhang-sprint-split-capacity-2026-11-02.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1739,7 +1740,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/five-limits-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/yuanhang-sprint-split-capacity-2026-11-02.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1780,7 +1781,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/five-limits-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/yuanhang-sprint-split-capacity-2026-11-02.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"

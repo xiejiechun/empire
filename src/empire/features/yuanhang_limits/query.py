@@ -1,5 +1,4 @@
 """Bounded SQL browsing; optional cache evidence is used only by collection planning."""
-import json
 from datetime import datetime
 
 from sqlalchemy import text
@@ -13,11 +12,11 @@ from empire.features.yuanhang_limits.contract import (
     TABLE_COLUMNS,
     day_value,
     pool_value,
-    project,
 )
 from empire.features.yuanhang_limits.dataset import LimitDataset
 from empire.features.yuanhang_limits.planning import calendar_dates, plan_pool
 from empire.features.yuanhang_limits.preparation import CONTRIBUTIONS, check
+from empire.features.yuanhang_limits.proofs import pool_versions
 from empire.features.yuanhang_limits.repository import read_members, read_pool_head, read_reason
 from empire.features.yuanhang_limits.storage import pool_payload, pool_proof
 from empire.plugins.infra.query_order import column_fields, ordered_page
@@ -194,7 +193,7 @@ class LimitQuery:
                         count=len(unit['rows']))
         return await self.read(operation)
 
-    async def collection_plan(self, pool, *, force=False, exclude=(), through=None, scan_after=None):
+    async def collection_plan(self, pool, *, force=False, exclude=(), through=None, scan_after=None, scope='all'):
         if pool == 'reason':
             # Reason planning has a different ownership/grain; implemented in its
             # own module rather than embedding cross-pool SQL in the collector.
@@ -218,16 +217,19 @@ class LimitQuery:
                 dict(pool=pool, last=endpoint)).mappings()]
             if len(heads) > 36600:
                 raise ValueError('日期池历史头超限')
-            state = conn.execute(text("SELECT JSON_EXTRACT(payload,'$.versions') FROM collection_state "
-                'WHERE namespace=:namespace AND project_id=:project AND source=:source'),
-                dict(namespace=self.namespace, project=project(pool), source=SOURCE)).scalar_one_or_none()
-            versions = json.loads(state) if isinstance(state, str) else state or {}
+            versions = pool_versions(conn, self.namespace, pool)
             return endpoint, trades, heads, versions
         cutoff, trades, heads, versions = await self.read(operation)
         coverage = {r['trade_date'].isoformat(): r for r in heads if r['contract_version'] == 1}
         verified = {d: datetime.fromisoformat(v).astimezone(CHINA).date().isoformat()
                     for d, v in versions.items() if d in coverage}
-        identities = [d + ':' + pool for d in coverage]
+        if any(v > now.date().isoformat() for v in verified.values()):
+            raise ValueError('SQL核验版本超前，不能据此跳过历史')
+        verified = {d: min(v, cutoff) for d, v in verified.items()}
+        candidates = plan_pool(trades, coverage, verified, cutoff=cutoff, force=force, exclude=exclude, scope=scope)
+        # Only due candidates can be skipped by a newer Redis confirmation.
+        # Normal recent maintenance no longer reads the entire historical cache.
+        identities = [d + ':' + pool for d in (*candidates.days, *candidates.pending) if d in coverage]
         proofs = {}
         for offset in range(0, len(identities), 256):
             proofs.update(await self.cache_proofs(pool, identities[offset:offset + 256]))
@@ -237,11 +239,10 @@ class LimitQuery:
                 observed = datetime.fromisoformat(proof['version'][0]).astimezone(CHINA).date().isoformat()
                 if observed <= now.date().isoformat():
                     verified[day] = max(verified.get(day, ''), min(observed, cutoff))
-        if any(v > now.date().isoformat() for v in verified.values()):
-            raise ValueError('SQL核验版本超前，不能据此跳过历史')
         verified = {d: min(v, cutoff) for d, v in verified.items()}
-        planned = plan_pool(trades, coverage, verified, cutoff=cutoff, force=force, exclude=exclude)
-        return dict(units=list(planned.days), cutoff=cutoff, remaining=planned.remaining)
+        planned = plan_pool(trades, coverage, verified, cutoff=cutoff, force=force, exclude=exclude, scope=scope)
+        return dict(units=list(planned.days), cutoff=cutoff, remaining=planned.remaining,
+                    pending=list(planned.pending))
 
     async def stop(self):
         self.mysql = None

@@ -84,6 +84,7 @@ async def test_daily_resume_does_not_mark_today_when_older_plan_completed(monkey
     from empire.features.yuanhang_limits import intraday
     monkeypatch.setattr(intraday, 'phase', AsyncMock(return_value='daily'))
     c = SimpleNamespace(pool='limit_up_pool', stats={},
+        plan_options=lambda: {},
         live_store=SimpleNamespace(maintenance_day=AsyncMock(return_value=None), mark_maintenance=AsyncMock()),
         query=SimpleNamespace(collection_plan=AsyncMock(return_value=dict(cutoff='2026-10-27', units=[]))),
         _execute=AsyncMock(return_value=dict(cutoff='2026-10-26')))

@@ -12,6 +12,7 @@ from empire.features.yuanhang_limits.contract import (
     MAX_UNIT_BYTES,
     SOURCE,
     dataset,
+    history_project,
     job,
     project,
 )
@@ -28,12 +29,19 @@ from empire.plugins.collectors.support import (
 
 
 class LimitCollector:
-    def __init__(self, pool, *, intraday=False):
+    def __init__(self, pool, *, intraday=False, scope='all'):
         self.pool = pool
         self.intraday = intraday
+        if scope not in ('all', 'recent', 'history') or scope != 'all' and pool == 'reason':
+            raise ValueError('涨停分析任务范围无效')
+        self.scope = scope
         self.project_id, self.job_key, self.dataset = project(pool), job(pool), dataset(pool)
         self.capability = 'collector.yuanhang_limits_' + pool
-        self.manifest = PluginManifest(self.capability, '远航涨停分析 ' + pool,
+        if scope == 'history':
+            self.project_id = history_project(pool)
+            self.job_key = self.project_id + '-v1'
+            self.capability += '_history'
+        self.manifest = PluginManifest(self.capability, '远航涨停分析 ' + pool + (' 历史核验' if scope == 'history' else ''),
             requires=('http.fetch', 'ingest.publish', 'archive.confirmation', 'collection.records', 'yuanhang.limits.query'),
             provides=(self.capability,))
         self.stats = dict(status='stopped', collected=0, requests=0, response_bytes=0,
@@ -107,8 +115,13 @@ class LimitCollector:
             raise ValueError('涨停分析断点契约不符，须显式维护')
         self.stats.update(status='collecting', error='', collected=0, requests=0, response_bytes=0,
                           wire_bytes=0, queued_bytes=0, queued_messages=0, storage='mysql_archive', notice='')
+        if self.scope != 'all':
+            self.stats['notice'] = ('独立历史核验：已覆盖老日期，20交易日轮转' if self.scope == 'history'
+                                    else '近期增量与缺口修复；老历史由独立核验任务执行')
+        pending = None
         if cursor.get('phase') not in ('fetch', 'awaiting_archive'):
-            planned = await self.query.collection_plan(self.pool, force=fresh)
+            planned = await self.query.collection_plan(self.pool, force=fresh, **self.plan_options())
+            pending = planned.get('pending')
             cursor = dict(contract=1, phase='fetch', batch_id=uuid4().hex, page=0, index=0,
                           plan=planned['units'], cutoff=planned['cutoff'], remaining=planned['remaining'],
                           force=fresh, scan_after=planned.get('scan_after'))
@@ -145,8 +158,13 @@ class LimitCollector:
                                       collected=self.stats['collected'] + (1 if self.pool == 'reason' else len(unit['rows'])))
             if cursor['phase'] == 'awaiting_archive' or cursor['remaining'] == 0:
                 break
-            planned = await self.query.collection_plan(self.pool, force=cursor.get('force', False),
-                exclude=visited, through=cursor['cutoff'], scan_after=cursor.get('scan_after'))
+            if pending is not None:
+                planned = dict(units=pending[:64], remaining=max(0, len(pending) - 64))
+                pending = pending[64:]
+            else:
+                planned = await self.query.collection_plan(self.pool, force=cursor.get('force', False),
+                    exclude=visited, through=cursor['cutoff'], scan_after=cursor.get('scan_after'), **self.plan_options())
+                pending = planned.get('pending')
             if self.pool == 'reason':
                 visited.clear()  # The durable key cursor already excludes prior reason pages.
             cursor = {**cursor, 'plan': planned['units'], 'index': 0, 'remaining': planned['remaining'],
@@ -163,6 +181,9 @@ class LimitCollector:
         self.stats.update(status='complete', remaining_units=cursor['remaining'])
         return cursor
 
+    def plan_options(self):
+        return {'scope': self.scope} if self.scope != 'all' else {}
+
     def _progress(self, cursor, *, finished=False):
         index = cursor.get('index', cursor['page'])
         remaining = cursor['remaining']
@@ -176,6 +197,8 @@ class LimitCollector:
             done = cursor['page']
             total = done + len(cursor['plan']) - index + remaining
             unit = '个完整单元'
+        if self.scope == 'history':
+            unit = '个历史日期池'
         self.stats.update(completed_units=done, total_units=total, unit_name=unit)
 
     async def stop(self):

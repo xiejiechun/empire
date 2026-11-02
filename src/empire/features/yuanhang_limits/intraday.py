@@ -64,7 +64,7 @@ async def dispatch(collector, *, fresh, baseline_revision):
         return dict(phase='complete', storage='none', cutoff=day, collected=0, queued_messages=0)
     result = await collector._execute(fresh=fresh, baseline_revision=baseline_revision, history_only=True)
     # An older interrupted plan must finish first; do not suppress today's next round.
-    target = await collector.query.collection_plan(collector.pool)
+    target = await collector.query.collection_plan(collector.pool, **collector.plan_options())
     if result['cutoff'] == target['cutoff'] and not target['units']:
         await collector.live_store.mark_maintenance(collector.pool, day)
     return result
