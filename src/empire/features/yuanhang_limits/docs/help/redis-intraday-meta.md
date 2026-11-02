@@ -11,7 +11,7 @@
 
 键模板：`<namespace>:yuanhang:intraday:<pool_type>:meta`。类型Hash，pool_type仅五池固定策略值。checked最近成功请求开始微秒、digest最近规范池摘要、latest最新快照版本、bytes正文累计字节、evicted累计淘汰计数、maintenance_day本日完成日终维护日期；size:<version>为对应正文长度，至多2048项，用于正文独立过期后的有界容量清理。
 
-每个日期池在自身meta中以maintenance_day表示近期维护完成日期，以history_day表示晚间历史核验完成日期，两者分别更新；恢复仍按唯一原任务带scope的断点执行。Redis丢失后回SQL和可信摘要规划，不将近期完成视为历史完成。
+每个日期池在自身meta中以maintenance_day表示近期维护完成日期，以history_day表示后续历史核验完成日期，两者分别更新；恢复仍按唯一原任务带scope的断点执行。Redis丢失后回SQL和可信摘要规划，不将近期完成视为历史完成。
 
 ## 读写与关联
 

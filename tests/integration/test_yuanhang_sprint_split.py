@@ -85,3 +85,24 @@ async def test_recent_cache_reads_only_due_candidates_and_reuses_sql_coverage(sp
     query.cache_proofs = AsyncMock(return_value={})
     assert not (await query.collection_plan(current.pool, scope='recent'))['units']
     query.cache_proofs.assert_not_awaited()
+
+
+async def test_same_day_late_source_revision_requires_explicit_recent_recheck(sprint, monkeypatch):
+    manager, current, query = sprint
+    current.http.request.return_value = httpx.Response(200, json=page([row('000001'), row('000917')]))
+    await collect(current)
+    assert (await query.audit_pool('2026-07-15', current.pool))['count'] == 2
+    await calendar(query, monkeypatch)
+    query.collection_plan = LimitQuery.collection_plan.__get__(query)
+    query.cache_proofs = AsyncMock(return_value={})
+    current.http.request.return_value = httpx.Response(200, json=page([row('000001')]))
+    await collect(current)
+    assert current.stats['requests'] == 0
+    assert (await query.audit_pool('2026-07-15', current.pool))['count'] == 2
+    await current.execute(fresh=True, baseline_revision=await current.checkpoint_revision(),
+                          history_only=True, maintenance_scope='recent')
+    assert current.stats['requests'] == 1
+    assert [r['unified_code'] for r in (await query.members('2026-07-15', current.pool))['rows']] == ['000001.SZ']
+    assert (await query.audit_pool('2026-07-15', current.pool))['count'] == 1
+    store = manager.registry.get('redis.store')
+    assert await store.client.xlen(store.stream) == 0

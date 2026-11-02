@@ -66,7 +66,7 @@ async def dispatch(collector, *, fresh, baseline_revision):
 
 
 async def pool_maintenance(collector, now, *, fresh, baseline_revision):
-    """One registered task: finish recent work, then audit in a later evening run."""
+    """One registered task: finish recent work, then audit in the next post-close run."""
     day = now.date().isoformat()
     state = await collector.ingest.checkpoint(collector.job_key)
     cursor = state['cursor']
@@ -75,13 +75,12 @@ async def pool_maintenance(collector, now, *, fresh, baseline_revision):
         scope = cursor.get('scope', 'recent')
     elif fresh or await collector.live_store.maintenance_day(collector.pool) != day:
         scope = 'recent'
-    elif (now.time().replace(tzinfo=None) >= time(18, 30) and
-            await collector.live_store.maintenance_day(collector.pool, history=True) != day):
+    elif await collector.live_store.maintenance_day(collector.pool, history=True) != day:
         scope = 'history'
     else:
         collector.stats.update(status='complete', collected=0, requests=0, response_bytes=0,
             wire_bytes=0, queued_messages=0, queued_bytes=0, total_units=0, completed_units=0,
-            notice='近期维护已完成；历史核验在18:30后的另轮执行或本日已完成')
+            notice='本日近期维护与到期历史核验均已完成')
         return dict(phase='complete', storage='none', cutoff=day, collected=0, queued_messages=0)
     result = await collector._execute(fresh=fresh, baseline_revision=baseline_revision,
                                        history_only=True, scope=scope)

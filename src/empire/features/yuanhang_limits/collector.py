@@ -114,7 +114,7 @@ class LimitCollector:
                           wire_bytes=0, queued_bytes=0, queued_messages=0, storage='mysql_archive', notice='')
         if scope != 'all':
             self.stats['notice'] = ('本轮历史核验：已覆盖老日期，20交易日轮转' if scope == 'history'
-                                    else '本轮近期增量与缺口修复；历史核验在晚间另轮执行')
+                                    else '本轮近期增量与缺口修复；历史核验在近期完成后的下一轮执行')
         pending = None
         if cursor.get('phase') not in ('fetch', 'awaiting_archive'):
             planned = await self.query.collection_plan(self.pool, force=fresh, **self.plan_options(scope))

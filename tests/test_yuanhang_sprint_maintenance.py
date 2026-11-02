@@ -1,4 +1,4 @@
-"""One task finishes recent work before a separate evening history round."""
+"""One task finishes recent work before a following post-close history round."""
 from datetime import datetime
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
@@ -14,8 +14,8 @@ from empire.features.yuanhang_limits.intraday import pool_maintenance
 @pytest.mark.parametrize('clock,recent,history,fresh,expected', [
     ('15:30', False, False, False, 'recent'),
     ('18:30', False, False, False, 'recent'),
-    ('18:29', True, False, False, None),
-    ('18:30', True, False, False, 'history'),
+    ('15:30', True, False, False, 'history'),
+    ('15:31', True, False, False, 'history'),
     ('19:00', True, True, False, None),
     ('19:00', True, True, True, 'recent'),
 ])
