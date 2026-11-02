@@ -71,6 +71,8 @@
 
 ## 发布与交接：结果必须对应同一份实现
 
+历史开发产物按[开发目录空间维护](build-storage-maintenance.md)显式清理：默认保留最近 7 天及最新 3 轮发布产物，报告和日志保留；不跟随目录联接，不自动清理数据库，不递归删除整个 build。
+
 1. 更新业务权威正文片段及关联说明，在发布冻结前显式运行 `scripts/documentation_build.py generate`，再按 [说明文档维护](documentation-maintenance.md) 记录审阅。自动生成聚合物不手工维护；门禁只读 check，过期聚合物不能通过审阅。
 2. 发布前停止本次实现修改，核实共享环境操作已结束，正常关闭 Empire，保留程序配置。正式入口仍为根目录 `verify-release.ps1`。
 3. 使用独立的 `build/pytest-<本次标识>` 测试临时目录，避免 Windows 历史临时目录权限干扰。不能用它跳过失败测试。

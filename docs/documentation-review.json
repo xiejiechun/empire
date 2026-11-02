@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "reviewed_at": "2026-11-01T18:49:33.321342+00:00",
-  "note": "发布新增独立测试环境预检；开发与发布按实际影响选择测试范围，明确未测与旧证据边界",
-  "unchanged_reason": "",
+  "reviewed_at": "2026-11-02T04:50:15.391054+00:00",
+  "note": "审阅开发目录空间维护：默认预览、7天与3轮保留、发布证据保留、数据库人工退役、联接不跟随及实际47.34GiB清理记录。",
+  "unchanged_reason": "新增工具仅维护开发目录，正式桌面与采集业务没有变化；使用方法及风险边界已写入开发流程和空间维护指南。",
   "exceptions": {},
   "sources": {
     "config/app.example.toml": "7343f58ab250c78b37d155a0c3c95a5032384db3fe9cdc8c995a8386fba7018c",
@@ -22,6 +22,7 @@
     "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
     "scripts/catalogue_verification.py": "e7310a762da07c4c0a9baaf8441b1768db4c2cee9282a26249c6903e97a5f429",
     "scripts/change_impact.py": "9722a55d375ae25c00ada0e2afac947f6be1ea1163a70b29f4fd3e83d3657637",
+    "scripts/clean_build_artifacts.py": "92b3a2dfe8d719b1947c670a686db738865a81e0fadf200c96850c81f27a2b84",
     "scripts/collect_name_changes.py": "637a83ef352bcee595c4f517587ab0fb1cf68991d307d2cc312377dbc24af6fa",
     "scripts/collect_st_events.py": "807b0cb4541c2708437161be357b71712961b18de4f6889153d60840164810d0",
     "scripts/collect_trading_rules.py": "a11c1a4cd2789acc8cc0f208d9d57262360ad2ff16e4ce27e9378ff47e4e6913",
@@ -633,7 +634,7 @@
     "src/empire/sources/yuanhang_sessions.py": "93cb994a478b2bf3d781edf157765c80a0c000e59afd01ae23a3eec70bab5ba5",
     "src/empire/sources/yuanhang_wire.py": "a936cfd1c8e7a0e6c917934ed043e26686296ff43e41f3e6f21d0a63c47fde1b"
   },
-  "content_sha256": "4a35e21b2f50c340297b58e2ef2e1a96540bbed3c32ef496499429d4aa77fa28",
+  "content_sha256": "5cfad75caa6eff3a502248f240e7539fd43ac98b2daccada7ac26480f8840ebe",
   "features": {
     "page:ths_capital": {
       "sources": {
