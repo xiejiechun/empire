@@ -9,9 +9,9 @@
 
 ## 结构与身份
 
-键模板：`<namespace>:yuanhang:intraday:<pool_type>:meta`。类型Hash，pool_type仅五池固定策略值。checked最近成功请求开始微秒、digest最近规范池摘要、latest最新快照版本、bytes正文累计字节、evicted累计淘汰计数、maintenance_day本日完成日终维护日期；size:<version>为对应正文长度，至多2048项，用于正文独立过期后的有界容量清理。
+键模板：`<namespace>:yuanhang:intraday:<pool_type>:meta`。类型Hash，pool_type仅五池固定策略值。checked最近成功请求开始微秒、digest最近规范池摘要、latest最新快照版本、bytes正文累计字节、evicted累计淘汰计数；size:<version>为对应正文长度，至多2048项，用于正文独立过期后的有界容量清理。
 
-每个日期池在自身meta中以maintenance_day表示近期维护完成日期，以history_day表示后续历史核验完成日期，两者分别更新；恢复仍按唯一原任务带scope的断点执行。Redis丢失后回SQL和可信摘要规划，不将近期完成视为历史完成。
+近期及历史补缺每轮从SQL完整性和可信摘要重新规划；不再读取或写入maintenance_day、history_day。旧临时字段随原TTL过期，不作为覆盖证明。恢复按唯一任务contract=2断点执行。
 
 ## 读写与关联
 
@@ -26,3 +26,5 @@
 ## 维护与相关说明
 
 不需要SQL迁移或清共享Redis；正常任务从当前时刻恢复采样。字段单位和来源限制见[远航版涨跌停分析](help:远航版涨跌停分析)。
+
+close_slot为最近成功完成的当天池半小时复核窗口，带北京时间时区的ISO分钟字符串；16:00至21:00含最后窗口。与当前有界断点的scope=today、close_slot配合，成功归档后写入，同轮完成重放可补记；失效后仅重新核验最新当天窗口，不把标志当业务完整性证明。休市日空计划亦可记窗口以避免重复规划。72小时TTL随元信息刷新，单字段容量固定。

@@ -145,6 +145,37 @@ class YuanhangCollector:
         return state, cursor
 
     async def execute(self, *, fresh=False, baseline_revision=0):
+        result = await self._execute(fresh=fresh, baseline_revision=baseline_revision)
+        carried = {}
+        if not fresh and not result.get('force_full'):
+            if self.financial:
+                behind = result['run_date'] < datetime.now(CHINA).date().isoformat()
+            else:
+                _, current_through = await self.query.collection_scope(self.selected_codes)
+                behind = result['through'] < current_through
+            if behind:
+                carried = {key: self.stats.get(key, 0) for key in ('logical_history_requests',
+                    'response_bytes', 'decoded_bytes', 'planned_requests', 'full_units', 'range_units')}
+                result = await self._execute(baseline_revision=await self.checkpoint_revision())
+        if (not self.financial and not fresh and not result.get('force_full')
+                and result.get('maintenance_scope') == 'recent'):
+            recent_result, recent_stats = result, dict(self.stats)
+            costs = {key: self.stats.get(key, 0) for key in ('logical_history_requests',
+                'response_bytes', 'decoded_bytes', 'planned_requests', 'full_units', 'range_units')}
+            result = await self._execute(baseline_revision=await self.checkpoint_revision(), maintenance_scope='backfill')
+            if not result['pages']:
+                self.stats.update(recent_stats)
+                result = recent_result
+            else:
+                for key, value in costs.items():
+                    self.stats[key] += value
+                    result[key] = self.stats[key]
+        for key, value in carried.items():
+            self.stats[key] += value
+            result[key] = self.stats[key]
+        return result
+
+    async def _execute(self, *, fresh=False, baseline_revision=0, maintenance_scope='recent'):
         stage = 'plan'
         try:
             self.stats.update(logical_history_requests=0, response_bytes=0, decoded_bytes=0)
@@ -152,6 +183,8 @@ class YuanhangCollector:
                 raise ValueError('远航节点身份要求代理，请在任务中启用代理；无法绑定本机直连身份')
             state = await self.ingest.checkpoint(self.job_key)
             cursor = state['cursor']
+            if cursor and not self.financial and cursor.get('contract') != 2:
+                raise ValueError('远航日线断点需通过显式维护转换为十交易日契约')
             if state['revision'] > baseline_revision and cursor.get('phase') == 'complete' and not fresh:
                 return self.result(cursor)
             codes, through = await self.query.collection_scope(self.selected_codes)
@@ -163,16 +196,21 @@ class YuanhangCollector:
                 self.stats.update(status='complete', planned_requests=0, skipped_units=len(codes),
                                   completed_units=len(codes), total_units=len(codes))
                 return self.result({**cursor, 'pages': 0, 'collected': 0})
-            if cursor.get('phase') == 'complete' or (fresh and state['revision'] <= baseline_revision):
+            if cursor.get('phase') == 'complete':
                 cursor = {}
             if cursor and cursor.get('scope_hash') != scope:
-                cursor = {}
+                raise ValueError('远航未完成批次的股票范围已改变；须显式维护，不能丢弃已入队批次')
             if 'plans' in cursor or 'work_codes' in cursor:
                 raise ValueError('远航旧版整池计划断点需通过显式维护入口转换，保留原断点')
             if not cursor:
                 cursor = dict(phase='collecting', scope_hash=scope, through=through,
                     next_index=0, next_year=1900, snapshot_hash='', pages=0, collected=0, batch_id=uuid4().hex,
-                    run_date=today, force_full=fresh, skipped_units=0)
+                    run_date=today, force_full=fresh, skipped_units=0, contract=2, maintenance_scope=maintenance_scope)
+            if cursor.get('replan_recent'):
+                cursor = {**cursor, 'through': through, 'run_date': today}
+                cursor.pop('replan_recent')
+                state = await self.ingest.advance_checkpoint(job_key=self.job_key,
+                    expected_revision=state['revision'], cursor=cursor)
             # Positions always refer to the complete, scope-hashed stock pool.
             # SQL may have advanced after a crash; rebuild only the unstarted
             # suffix, pinning any partially published security to its old plan.
@@ -185,20 +223,37 @@ class YuanhangCollector:
                     self.plans = {c: dict(mode='financial', native_market=markets.get(c)) for c in remaining}
                 elif remaining:
                     self.plans = await self.query.daily_plans(self.ingest.redis.prefix, remaining,
-                        cursor['through'], force=cursor.get('force_full', False))
+                        cursor['through'], force=cursor.get('force_full', False), scope=cursor['maintenance_scope'])
+                    if (cursor['maintenance_scope'] == 'recent' and cursor['next_index'] == 0 and not cursor.get('current_plan')
+                            and not any(p['mode'] != 'skip' for p in self.plans.values())):
+                        cursor = {**cursor, 'maintenance_scope': 'backfill'}
+                        self.plans = await self.query.daily_plans(self.ingest.redis.prefix, remaining,
+                            cursor['through'], scope='backfill')
                 if cursor.get('current_plan'):
                     self.plans[codes[cursor['next_index']]] = cursor['current_plan']
             positions = [i for i in range(cursor['next_index'], len(codes))
                          if self.plans.get(codes[i], {}).get('mode') != 'skip']
+            if not self.financial and cursor['maintenance_scope'] == 'backfill':
+                if 'round_end' in cursor:
+                    positions = [i for i in positions if i < cursor['round_end']]
+                else:
+                    positions = positions[:64]
+                    cursor = {**cursor, 'round_end': positions[-1] + 1 if positions else cursor['next_index']}
+                    state = await self.ingest.advance_checkpoint(job_key=self.job_key,
+                        expected_revision=state['revision'], cursor=cursor)
+            selected_plans = [self.plans[codes[i]] for i in positions]
             self.stats.update(planned_requests=len(positions), skipped_units=cursor.get('skipped_units', 0)
                               + len(codes) - cursor['next_index'] - len(positions),
-                full_units=sum(p['mode'] == 'full' for p in self.plans.values()),
-                range_units=sum(p['mode'] == 'range' for p in self.plans.values()))
+                full_units=sum(p['mode'] == 'full' for p in selected_plans),
+                range_units=sum(p['mode'] == 'range' for p in selected_plans))
             cursor = {**cursor, 'deferred': cursor.get('deferred', {}),
                       'skipped_units': cursor.get('skipped_units', 0)}
-            self.stats.update(status=cursor['phase'], total_units=len(codes),
-                completed_units=cursor['next_index'], collected=cursor['collected'],
+            self.stats.update(status=cursor['phase'], total_units=len(positions),
+                completed_units=0, collected=cursor['collected'],
                 deferred_units=len(cursor['deferred']), error='')
+            self.stats['notice'] = ('每日权息股本完整联合响应（来源能力限制）' if self.financial else
+                '历史初始化/补缺，每轮最多64只证券' if cursor['maintenance_scope'] == 'backfill' else
+                '最近10个交易日；旧历史缺口另轮补齐')
             if cursor['phase'] == 'collecting' and positions:
                 profiles = await self.identity.registry.load()
                 nodes = sorted(code for code in self.identity.online_codes()
@@ -248,14 +303,14 @@ class YuanhangCollector:
                         cursor.pop('current_plan', None)
                         state = await self.ingest.advance_checkpoint(job_key=self.job_key,
                             expected_revision=state['revision'], cursor=cursor)
-                        self.stats.update(completed_units=i + 1, collected=cursor['collected'], pages=cursor['pages'],
+                        self.stats.update(completed_units=n + 1, collected=cursor['collected'], pages=cursor['pages'],
                                           deferred_units=len(cursor['deferred']))
             if cursor['phase'] == 'collecting':
                 cursor = {**cursor, 'phase': 'awaiting_archive', 'next_index': len(codes),
                           'skipped_units': cursor['skipped_units'] + len(codes) - cursor['next_index']}
                 state = await self.ingest.advance_checkpoint(job_key=self.job_key,
                     expected_revision=state['revision'], cursor=cursor)
-                self.stats.update(completed_units=len(codes))
+                self.stats.update(completed_units=len(positions))
             stage = 'archive_confirmation'
             self.stats['status'] = 'awaiting_archive'
             if cursor['pages']:

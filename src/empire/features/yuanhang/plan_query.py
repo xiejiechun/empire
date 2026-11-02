@@ -1,16 +1,16 @@
 """Read-only planning from SQL coverage, without historical fact scans."""
 import json
-from dataclasses import asdict
-from datetime import datetime
+from dataclasses import asdict, replace
+from datetime import date, datetime, timedelta
 
 from sqlalchemy import text
 
 from empire.core.time import CHINA
 from empire.features.yuanhang.contract import PRICE_PROJECT
-from empire.features.yuanhang.planning import DailyPlan, plan_daily
+from empire.features.yuanhang.planning import DailyPlan, calendar_dates, plan_daily
 from empire.plugins.infra.collection_state_unit import unit_path
 from empire.sources.yuanhang_payload import CONTRACT
-from empire.sources.yuanhang_ranges import contiguous_through
+from empire.sources.yuanhang_ranges import contiguous_through, expand_versions
 
 
 def coverage_summary(conn, namespace, code):
@@ -35,7 +35,7 @@ def coverage_summary(conn, namespace, code):
                                         if full else None))
 
 
-def read_plans(conn, namespace, codes, through, *, force=False):
+def read_plans(conn, namespace, codes, through, *, force=False, scope='all'):
     plans, calendar = {}, None
     for code in codes:
         heads = conn.execute(text('SELECT quote_year,native_market,last_date,contract_version '
@@ -46,6 +46,8 @@ def read_plans(conn, namespace, codes, through, *, force=False):
         if not heads or force:
             plan = DailyPlan(code, 'full', '1900-01-01', through, heads[-1]['native_market'] if heads else None,
                              'explicit_full_verification' if force else 'missing_initial_coverage')
+            if not heads and scope == 'recent' and not force:
+                plan = DailyPlan(code, 'skip', None, through, None, 'initialization_in_backfill_round')
         else:
             raw = conn.execute(text('SELECT JSON_EXTRACT(payload,:path) FROM collection_state '
                 'WHERE namespace=:ns AND project_id=:project'),
@@ -81,8 +83,32 @@ def read_plans(conn, namespace, codes, through, *, force=False):
             full_checked = min(full_checked, through) if full_checked else None
             latest = max((h['last_date'].isoformat() for h in heads if h['last_date']), default=None)
             gaps = [(f'{y}-01-01', min(f'{y}-12-31', through)) for y in sorted(missing)]
+            if scope == 'recent':
+                trades = calendar_dates(calendar, through)
+                tail = trades[-10:]
+                versions = {}
+                for year in {int(day[:4]) for day in tail}:
+                    versions.update(expand_versions(unit['price_ranges'].get(str(year), []), year))
+                # A partial initialization can still have fully verified recent data.
+                # Require every requested trading date and a fresh source version.
+                now = datetime.now(CHINA)
+                if any(datetime.fromisoformat(value) > now for value in versions.values()):
+                    raise ValueError('远航近期覆盖版本超前')
+                valid_years = {h['quote_year'] for h in heads if h['contract_version'] == CONTRACT}
+                if all(int(day[:4]) in valid_years and day in versions
+                       and datetime.fromisoformat(versions[day]).astimezone(CHINA).date().isoformat() >= through
+                       for day in tail):
+                    coverage = through
+                else:
+                    coverage = (date.fromisoformat(tail[0]) - timedelta(days=1)).isoformat()
             plan = plan_daily(code, through=through, calendar=calendar, coverage=min(coverage, through) if coverage else None,
                 full_checked=full_checked, latest_quote=latest, native_market=heads[-1]['native_market'],
-                gaps=gaps, force=force)
+                gaps=gaps, force=force, scope=scope)
+            if plan.mode == 'range':
+                year = int(plan.start[:4])
+                if contiguous_through(unit['price_ranges'].get(str(year), []), year) is None:
+                    # Annual proof requires a January-1 prefix. A newly reached
+                    # year is initialized once; this never authorizes whole-history reuse.
+                    plan = replace(plan, start=f'{year}-01-01', reason='missing_annual_prefix')
         plans[code] = asdict(plan)
     return plans

@@ -66,27 +66,39 @@ async def dispatch(collector, *, fresh, baseline_revision):
 
 
 async def pool_maintenance(collector, now, *, fresh, baseline_revision):
-    """One registered task: finish recent work, then audit in the next post-close run."""
-    day = now.date().isoformat()
+    """Recent and close refresh have priority over one bounded missing-history batch."""
     state = await collector.ingest.checkpoint(collector.job_key)
     cursor = state['cursor']
     if (cursor.get('phase') in ('fetch', 'awaiting_archive') or
             cursor.get('phase') == 'complete' and state['revision'] > baseline_revision):
         scope = cursor.get('scope', 'recent')
-    elif fresh or await collector.live_store.maintenance_day(collector.pool) != day:
-        scope = 'recent'
-    elif await collector.live_store.maintenance_day(collector.pool, history=True) != day:
-        scope = 'history'
     else:
-        collector.stats.update(status='complete', collected=0, requests=0, response_bytes=0,
-            wire_bytes=0, queued_messages=0, queued_bytes=0, total_units=0, completed_units=0,
-            notice='本日近期维护与到期历史核验均已完成')
-        return dict(phase='complete', storage='none', cutoff=day, collected=0, queued_messages=0)
+        recent = await collector.query.collection_plan(collector.pool, force=fresh, scope='recent')
+        if recent['units']:
+            scope = 'recent'
+        else:
+            from empire.features.yuanhang_limits.close_refresh import refresh_slot
+            slot = refresh_slot(now)
+            if slot and await collector.live_store.close_slot(collector.pool) != slot:
+                return await finish_today(collector, fresh, baseline_revision)
+            scope = 'backfill'
+            pending = await collector.query.collection_plan(collector.pool, scope=scope)
+            if not pending['units']:
+                collector.stats.update(status='complete', requests=0, collected=0,
+                    response_bytes=0, wire_bytes=0, queued_messages=0, queued_bytes=0,
+                    total_units=0, completed_units=0, notice='近期已核验且无历史缺口，当前无需请求')
+                return dict(phase='complete', cutoff=recent['cutoff'], storage='none', queued_messages=0)
+    if scope == 'today':
+        return await finish_today(collector, fresh, baseline_revision)
+    return await collector._execute(fresh=fresh, baseline_revision=baseline_revision,
+                                    history_only=True, scope=scope)
+
+
+async def finish_today(collector, fresh, baseline_revision):
     result = await collector._execute(fresh=fresh, baseline_revision=baseline_revision,
-                                       history_only=True, scope=scope)
-    target = await collector.query.collection_plan(collector.pool, **collector.plan_options(scope))
-    if result['cutoff'] == target['cutoff'] and not target['units']:
-        await collector.live_store.mark_maintenance(collector.pool, day, history=scope == 'history')
+                                      history_only=True, scope='today')
+    if result.get('close_slot'):
+        await collector.live_store.mark_close_slot(collector.pool, result['close_slot'])
     return result
 
 

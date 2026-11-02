@@ -82,7 +82,7 @@ async def collect(session, cfg, profiles, sample, request_retries=2):
     identity_plugin.start, identity_plugin.stop = start, stop
     counts, expected, outcomes = {}, {}, {}
     price_fetch = None
-    tokens = USE_PROXY.set(True), PROXY_FALLBACK.set(False), ROUTE_COUNTS.set(counts)
+    tokens = USE_PROXY.set(True), PROXY_FALLBACK.set(True), ROUTE_COUNTS.set(counts)
     try:
         for financial in (False, True):
             capability = 'collector.yuanhang_financial' if financial else 'collector.yuanhang_prices'
@@ -242,7 +242,7 @@ def run(args):
         session.report.update(bindings=session.frozen_inputs, sample=sample, dataset_subject='yuanhang',
             additional_fixed=args.fixed,
             sample_seed=source_evidence.get('seed'), sampling_evidence='docs/evidence/ths-yuanhang-history-source-2026-10-24.json',
-            network_policy=dict(use_proxy=True, proxy_fallback=False, request_retries=args.request_retries))
+            network_policy=dict(use_proxy=True, proxy_fallback=True, request_retries=args.request_retries))
         asyncio.run(collect(session, cfg, profiles, sample, args.request_retries))
         session.measurements_complete = True
     print('PASS fixed random30 plus known native counterexamples → Redis → MySQL formal query; pending=0')

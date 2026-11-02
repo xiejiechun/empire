@@ -11,7 +11,7 @@ from empire.features.yuanhang_limits.ui import LimitsUiPlugin
 
 def bundle(cfg):
     kinds = [*POOLS, 'reason']
-    collectors = [LimitCollector(k, intraday=k != 'reason', scope='recent' if k in POOLS else 'all') for k in kinds]
+    collectors = [LimitCollector(k, intraday=k != 'reason', scope='recent') for k in kinds]
     mappings = [LimitDataset(k) for k in kinds]
     return FeatureBundle('yuanhang_limits', plugins=(
         OrderedContribution(41000, LimitQuery(cfg.get('redis', {}).get('namespace', 'empire'), cfg.get('archive', {}))),
@@ -19,13 +19,13 @@ def bundle(cfg):
         OrderedContribution(41030, LimitsUiPlugin()),
     ), tasks=tuple(OrderedContribution(41000 + i, TaskContribution(
         c.project_id, '远航版' + (POOLS[kinds[i]] if kinds[i] != 'reason' else '历史涨跌停原因'), c.capability,
-        'ths_yuanhang', ('近期增量优先完成；同一项目在近期完成后另轮执行20交易日历史核验。' if c.pool in POOLS
+        'ths_yuanhang', ('最近10交易日优先、历史缺口另轮补齐；当天池每30分钟复核至21:00。' if c.pool in POOLS
             else '按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界'),
         category='涨跌停分析', source_name='同花顺远航版', parallel_downloads=True,
-        default_schedule=(TaskDefaults('daily', description='每日北京时间18:00；近期5交易日和20交易日历史轮转。')
+        default_schedule=(TaskDefaults('daily', description='每日北京时间18:00；最近10交易日优先，历史仅补缺。')
             if kinds[i] == 'reason' else TaskDefaults('interval', interval_seconds=60,
                 description='盘中每轮结束60秒后采样，仅Redis变化快照；15:30后核验日终并归档。')),
-        fresh_description=('重新核验最近5交易日并补齐缺失日期；历史修订由本项目后续轮次核验。'
+        fresh_description=('重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。'
             if c.pool in POOLS else '重新核验有界历史批次；保留已归档事实，不清库。'), unit_name='个单元'))
         for i, c in enumerate(collectors)), datasets=tuple(OrderedContribution(41000 + i,
             DatasetContribution(m, 'incremental', {m.JOB: m.PROJECT}))

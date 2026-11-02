@@ -1,7 +1,6 @@
 """Pure daily request planning from explicit coverage and the formal calendar."""
 from dataclasses import dataclass
 from datetime import date, timedelta
-from hashlib import sha256
 
 from empire.sources.yuanhang_history import security_identity
 
@@ -39,21 +38,14 @@ def calendar_dates(days, through):
 
 
 def plan_daily(code, *, through, calendar, coverage=None, full_checked=None,
-               latest_quote=None, native_market=None, gaps=(), lookback=5,
-               audit_period=20, force=False):
-    """One request per security: full audit replaces, rather than adds to, tail work.
-
-    calendar supplies at least audit_period trading days before full_checked and
-    lookback before coverage. If durable proof lies outside that bounded calendar,
-    a full recheck is explicit in the reason, never a silent full-pool fallback.
-    gaps contains already established missing/untrusted date ranges, not dates
-    inferred from exchange openings without individual-security evidence.
-    """
+               latest_quote=None, native_market=None, gaps=(), lookback=10,
+               force=False, scope='all'):
+    """Recent range and known gap repair; no periodic full-history audit."""
     security_identity(code, native_market)
     if type(lookback) is not int or not 1 <= lookback <= 60:
         raise ValueError('Lookback must be 1..60 trading days')
-    if type(audit_period) is not int or not 1 <= audit_period <= 250:
-        raise ValueError('Audit period must be 1..250 trading days')
+    if scope not in ('all', 'recent', 'backfill'):
+        raise ValueError('Invalid daily planning scope')
     trades = calendar_dates(calendar, through)
     def full(reason):
         return DailyPlan(code, 'full', '1900-01-01', through, native_market, reason)
@@ -64,26 +56,19 @@ def plan_daily(code, *, through, calendar, coverage=None, full_checked=None,
     for value in (coverage, full_checked, latest_quote):
         if value is not None and (date.fromisoformat(value).isoformat() != value or value > through):
             raise ValueError('Invalid or future coverage evidence')
-    if full_checked is None:
-        return full('missing_full_verification')
-    # Rank against the supplied complete calendar, using actual trading days.
-    # SQL must supply the same fixed calendar origin for every invocation.
-    bucket = int.from_bytes(sha256(code.encode('ascii')).digest()[:8], 'big') % audit_period
-    due = next((d for i, d in reversed(list(enumerate(trades))) if i % audit_period == bucket), None)
-    if due is not None and full_checked < due:
-        return full('historical_audit_due')
     bounds = []
+    recent_start = trades[-min(lookback, len(trades))]
+    if coverage < recent_start and scope != 'recent':
+        bounds.append(coverage)
     for first, last in gaps:
         if date.fromisoformat(first).isoformat() != first or date.fromisoformat(last).isoformat() != last:
             raise ValueError('Invalid gap bounds')
         if first > last or last > through:
             raise ValueError('Gap outside requested horizon')
-        bounds.append(first)
-    if coverage < through:
-        before = [d for d in trades if d <= coverage]
-        if len(before) < lookback:
-            return full('coverage_outside_planning_calendar')
-        bounds.append(before[-lookback])
+        if scope != 'recent':
+            bounds.append(first)
+    if coverage < through and scope != 'backfill':
+        bounds.append(recent_start)
     if not bounds:
         return DailyPlan(code, 'skip', None, through, native_market, 'cutoff_already_verified')
     if latest_quote is None:

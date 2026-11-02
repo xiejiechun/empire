@@ -13,6 +13,20 @@ from tests.test_yuanhang_payload import CODE, bar, snapshot
 from tests.test_yuanhang_storage import envelope
 
 
+async def test_partial_initialization_keeps_recent_fresh_and_backfills_separately(native):  # noqa: F811
+    _, c, q, store, archive = native
+    initial = daily_years(snapshot((bar('2020-10-19'),)), code=CODE, through=date(2020, 12, 31))[0]
+    await publish(c, archive, envelope(initial))
+    payload = daily_ranges(snapshot((bar('2023-12-29'),)), code=CODE,
+                           start=date(2023, 1, 1), through=date(2023, 12, 31))[0]
+    await publish(c, archive, envelope(payload))
+    recent = await q.daily_plans(store.prefix, [CODE], '2023-12-31', scope='recent')
+    assert recent[CODE]['mode'] == 'skip'
+    old = await q.daily_plans(store.prefix, [CODE], '2023-12-31', scope='backfill')
+    assert old[CODE]['mode'] == 'range' and old[CODE]['start'] < '2021-01-01'
+    assert await store.client.xlen(store.stream) == 0
+
+
 async def test_range_delete_stale_full_disjoint_update_and_cold_replay(native):  # noqa: F811
     _, c, q, store, archive = native
     source = snapshot(tuple(bar(d) for d in ('2020-01-03', '2020-10-19', '2020-10-20', '2020-10-21')))

@@ -217,9 +217,9 @@ class YuanhangDataPlugin:
             return selected, cutoff.date().isoformat()
         return await self._read(read)
 
-    async def daily_plans(self, namespace, codes, through, *, force=False):
+    async def daily_plans(self, namespace, codes, through, *, force=False, scope='all'):
         from empire.features.yuanhang.plan_query import read_plans
-        return await self._read(lambda conn: read_plans(conn, namespace, codes, through, force=force))
+        return await self._read(lambda conn: read_plans(conn, namespace, codes, through, force=force, scope=scope))
 
     async def financial_markets(self):
         def read(conn):

@@ -43,8 +43,8 @@ async def sequential_reads(c, units, fetch, **kwargs):
 def harness(monkeypatch, codes, *, financial=False, mode='full'):
     c = module.YuanhangCollector(financial=financial)
     c.ingest = MemoryIngest()
-    async def plans(namespace, selected, through, force=False):
-        return {code: dict(code=code, mode='full' if force else mode, start='1900-01-01',
+    async def plans(namespace, selected, through, force=False, scope='all'):
+        return {code: dict(code=code, mode='skip' if scope == 'backfill' else 'full' if force else mode, start='1900-01-01',
                            end=through, native_market='USZA', reason='fixture') for code in selected}
     c.query = SimpleNamespace(collection_scope=AsyncMock(return_value=(codes, '2026-10-23')),
         daily_plans=AsyncMock(side_effect=plans), financial_markets=AsyncMock(return_value={}),
@@ -105,7 +105,7 @@ async def test_partial_year_resume_pins_plan_while_sql_changes_and_cutoff_advanc
         assert pinned['mode'] == 'full'
         # A partial SQL archive must not shorten the current security to skip/range.
         c.query.collection_scope.return_value = (codes, '2026-10-26')
-        async def replanned(ns, selected, through, force=False):
+        async def replanned(ns, selected, through, force=False, scope='all'):
             assert codes[0] not in selected and through == '2026-10-23' and force
             return {code: {**pinned, 'code': code} for code in selected}
         c.query.daily_plans.side_effect = replanned
@@ -122,8 +122,8 @@ async def test_partial_year_resume_pins_plan_while_sql_changes_and_cutoff_advanc
 async def test_sparse_skip_positions_and_trailing_skips_resume_in_complete_pool(monkeypatch):
     codes = [f'{i:06}.SZ' for i in range(8)]
     c = harness(monkeypatch, codes, mode='skip')
-    async def plans(ns, selected, through, force=False):
-        return {code: dict(mode='full' if code in (codes[2], codes[5]) else 'skip') for code in selected}
+    async def plans(ns, selected, through, force=False, scope='all'):
+        return {code: dict(mode='full' if scope != 'backfill' and code in (codes[2], codes[5]) else 'skip') for code in selected}
     c.query.daily_plans.side_effect = plans
     c.ingest.fail_page = 3
     token = USE_PROXY.set(True)
@@ -137,7 +137,7 @@ async def test_sparse_skip_positions_and_trailing_skips_resume_in_complete_pool(
     finally:
         USE_PROXY.reset(token)
     assert result['pages'] == 4 and result['skipped_units'] == 6
-    assert c.query.daily_plans.await_args.args[1] == codes[3:]
+    assert c.query.daily_plans.await_args_list[-2].args[1] == codes[3:]
     assert [e.raw_payload['history']['code'] for e in c.ingest.messages] == [codes[2]]*2 + [codes[5]]*2
 
 
@@ -151,6 +151,46 @@ async def test_all_skipped_needs_no_source_or_identity_request(monkeypatch):
     assert result['pages'] == 0 and result['skipped_units'] == 1
     c.fetch.assert_not_awaited()
     c.identity.registry.load.assert_not_awaited()
+
+
+async def test_backfill_is_bounded_and_resume_does_not_extend_the_batch(monkeypatch):
+    codes = [f'{i:06}.SZ' for i in range(100)]
+    c = harness(monkeypatch, codes)
+    async def plans(ns, selected, through, force=False, scope='all'):
+        return {code: dict(mode='skip' if scope == 'recent' else 'full') for code in selected}
+    c.query.daily_plans.side_effect = plans
+    c.ingest.fail_page = 21
+    token = USE_PROXY.set(True)
+    try:
+        with pytest.raises(ValueError, match='interrupted'):
+            await c.execute()
+        assert c.ingest.state['cursor']['round_end'] == 64
+        c.ingest.fail_page = None
+        result = await c.execute(baseline_revision=await c.checkpoint_revision())
+    finally:
+        USE_PROXY.reset(token)
+    assert result['pages'] == 128
+    assert len({e.raw_payload['history']['code'] for e in c.ingest.messages}) == 64
+    assert c.stats['total_units'] == 54
+
+
+@pytest.mark.parametrize('financial', [False, True])
+async def test_previous_day_archive_resume_updates_today_in_same_daily_invocation(monkeypatch, financial):
+    codes = ['000001.SZ']
+    c = harness(monkeypatch, codes, mode='range', financial=financial)
+    c.ingest.state['cursor'] = dict(contract=2, phase='awaiting_archive',
+        maintenance_scope='backfill', scope_hash=module.digest(codes), through='2026-10-22',
+        next_index=1, next_year=1900, snapshot_hash='', pages=1, collected=0,
+        batch_id='yesterday', run_date='2026-10-22', force_full=False, skipped_units=0, deferred={})
+    token = USE_PROXY.set(True)
+    try:
+        result = await c.execute()
+    finally:
+        USE_PROXY.reset(token)
+    assert result['through'] == '2026-10-23'
+    assert c.fetch.await_count == 1 and c.fetch.call_args.args[0][2] == '2026-10-23'
+    assert module.wait_for_archive.await_count == 2
+    assert all(e.batch_id != 'yesterday' for e in c.ingest.messages)
 
 
 async def test_old_pool_plan_cursor_requires_explicit_maintenance(monkeypatch):

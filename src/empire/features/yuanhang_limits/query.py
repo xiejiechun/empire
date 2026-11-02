@@ -198,9 +198,12 @@ class LimitQuery:
             # Reason planning has a different ownership/grain; implemented in its
             # own module rather than embedding cross-pool SQL in the collector.
             from empire.features.yuanhang_limits.reason_planning import reason_plan
-            return await reason_plan(self, force=force, exclude=exclude, through=through, scan_after=scan_after)
+            return await reason_plan(self, force=force, exclude=exclude, through=through, scan_after=scan_after, scope=scope)
         pool_value(pool)
         now = datetime.now(CHINA)
+        if scope == 'today':
+            from empire.features.yuanhang_limits.close_refresh import today_plan
+            return await today_plan(self, now, exclude=exclude)
         def operation(conn):
             cutoff, message = read_trade_day_cutoff(conn, now)
             if cutoff is None:

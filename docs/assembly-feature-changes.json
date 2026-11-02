@@ -1285,7 +1285,7 @@
             "default_enabled": true,
             "default_schedule": {
               "daily_time": "18:00",
-              "description": "每天北京时间18:00维护；日线按覆盖增量及轮转核验，金融联合核验；计划可编辑。",
+              "description": "每天北京时间18:00维护；日线先核验十交易日再有界补缺，金融联合核验；计划可编辑。",
               "interval_seconds": 86400,
               "mode": "daily"
             },
@@ -1305,11 +1305,11 @@
             "default_enabled": true,
             "default_schedule": {
               "daily_time": "18:00",
-              "description": "每天北京时间18:00维护；日线按覆盖增量及轮转核验，金融联合核验；计划可编辑。",
+              "description": "每天北京时间18:00维护；日线先核验十交易日再有界补缺，金融联合核验；计划可编辑。",
               "interval_seconds": 86400,
               "mode": "daily"
             },
-            "description": "上市至今不复权日线；初始化后按日期增量，5交易日回看及20交易日历史轮转",
+            "description": "上市至今不复权日线；最近10交易日优先；初始化与历史缺口另批，每批最多64只",
             "fresh_description": "重新核实当前股票池完整来源历史；保留已有事实，按完整单元更新修订。",
             "id": "ths-yuanhang-prices",
             "interval_seconds": 86400,
@@ -1378,12 +1378,14 @@
         ]
       }
     },
-    "design": "docs/ths-yuanhang-range-storage.md",
+    "design": "docs/yuanhang-ten-day-maintenance.md",
     "tests": [
       "tests/test_yuanhang_storage.py",
       "tests/integration/test_yuanhang_archive.py",
       "tests/test_yuanhang_planning.py",
-      "tests/integration/test_yuanhang_range_archive.py"
+      "tests/integration/test_yuanhang_range_archive.py",
+      "tests/test_yuanhang_ten_day_migration.py",
+      "tests/test_yuanhang_limits_planning.py"
     ]
   },
   {
@@ -2079,8 +2081,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "近期增量优先完成；同一项目在近期完成后另轮执行20交易日历史核验。",
-            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目后续轮次核验。",
+            "description": "最近10交易日优先、历史缺口另轮补齐；当天池每30分钟复核至21:00。",
+            "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-connect-broad-pool",
             "interval_seconds": 86400,
             "name": "远航版连板池",
@@ -2099,8 +2101,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "近期增量优先完成；同一项目在近期完成后另轮执行20交易日历史核验。",
-            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目后续轮次核验。",
+            "description": "最近10交易日优先、历史缺口另轮补齐；当天池每30分钟复核至21:00。",
+            "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-limit-down-pool",
             "interval_seconds": 86400,
             "name": "远航版跌停板",
@@ -2119,8 +2121,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "近期增量优先完成；同一项目在近期完成后另轮执行20交易日历史核验。",
-            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目后续轮次核验。",
+            "description": "最近10交易日优先、历史缺口另轮补齐；当天池每30分钟复核至21:00。",
+            "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-limit-up-pool",
             "interval_seconds": 86400,
             "name": "远航版涨停板",
@@ -2139,8 +2141,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "近期增量优先完成；同一项目在近期完成后另轮执行20交易日历史核验。",
-            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目后续轮次核验。",
+            "description": "最近10交易日优先、历史缺口另轮补齐；当天池每30分钟复核至21:00。",
+            "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-open-limit-up-pool",
             "interval_seconds": 86400,
             "name": "远航版炸板池",
@@ -2155,7 +2157,7 @@
             "default_enabled": true,
             "default_schedule": {
               "daily_time": "18:00",
-              "description": "每日北京时间18:00；近期5交易日和20交易日历史轮转。",
+              "description": "每日北京时间18:00；最近10交易日优先，历史仅补缺。",
               "interval_seconds": 86400,
               "mode": "daily"
             },
@@ -2179,8 +2181,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "近期增量优先完成；同一项目在近期完成后另轮执行20交易日历史核验。",
-            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目后续轮次核验。",
+            "description": "最近10交易日优先、历史缺口另轮补齐；当天池每30分钟复核至21:00。",
+            "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-sprint-limit-up",
             "interval_seconds": 86400,
             "name": "远航版涨停冲刺",
@@ -2301,7 +2303,7 @@
         ]
       }
     },
-    "design": "docs/yuanhang-pools-maintenance.md",
+    "design": "docs/yuanhang-ten-day-maintenance.md",
     "tests": [
       "tests/integration/test_yuanhang_limits_archive.py",
       "tests/integration/test_yuanhang_limits_intraday_real.py",
@@ -2309,7 +2311,9 @@
       "tests/test_yuanhang_limits_collector.py",
       "tests/test_yuanhang_limits_intraday.py",
       "tests/test_yuanhang_limits_planning.py",
-      "tests/test_yuanhang_limits_source.py"
+      "tests/test_yuanhang_limits_source.py",
+      "tests/test_yuanhang_ten_day_migration.py",
+      "tests/test_yuanhang_planning.py"
     ]
   },
   {

@@ -80,20 +80,18 @@ async def test_live_failure_preserves_snapshot_and_durable_checkpoint():
 
 
 @pytest.mark.asyncio
-async def test_daily_resume_does_not_mark_today_when_older_plan_completed(monkeypatch):
+async def test_daily_maintenance_rechecks_recent_plan_on_each_invocation(monkeypatch):
     from empire.features.yuanhang_limits import intraday
     monkeypatch.setattr(intraday, 'phase', AsyncMock(return_value='daily'))
     c = SimpleNamespace(pool='limit_up_pool', stats={},
-        plan_options=lambda scope=None: {"scope": scope},
-        job_key="pool", ingest=SimpleNamespace(checkpoint=AsyncMock(return_value=dict(cursor={}, revision=0))),
-        live_store=SimpleNamespace(maintenance_day=AsyncMock(return_value=None), mark_maintenance=AsyncMock()),
-        query=SimpleNamespace(collection_plan=AsyncMock(return_value=dict(cutoff='2026-10-27', units=[]))),
+        job_key='pool', ingest=SimpleNamespace(checkpoint=AsyncMock(return_value=dict(cursor={}, revision=0))),
+        query=SimpleNamespace(collection_plan=AsyncMock(return_value=dict(cutoff='2026-10-27', units=['2026-10-27']))),
         _execute=AsyncMock(return_value=dict(cutoff='2026-10-26')))
     await intraday.dispatch(c, fresh=False, baseline_revision=0)
-    c.live_store.mark_maintenance.assert_not_awaited()
-    c._execute.return_value = dict(cutoff='2026-10-27')
     await intraday.dispatch(c, fresh=False, baseline_revision=0)
-    c.live_store.mark_maintenance.assert_awaited_once()
+    assert c.query.collection_plan.await_count == 2
+    assert c._execute.await_count == 2
+    assert c._execute.call_args.kwargs['scope'] == 'recent'
 
 
 @pytest.mark.asyncio
@@ -257,7 +255,7 @@ async def test_expired_index_with_retained_maintenance_marker_recovers_byte_budg
         monkeypatch.setattr(module, 'MAX_BYTES', size + 100)
         await client.expire(store.body_key(pool, old), 1)
         await client.expire(keys[1], 1)
-        await store.mark_maintenance(pool, day)
+        await store.mark_close_slot(pool, day + 'T16:00+08:00')
         await asyncio.sleep(1.1)
         assert await client.exists(keys[2]) and not await client.exists(keys[1])
         now = datetime.now(CHINA)

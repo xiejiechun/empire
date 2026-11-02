@@ -32,7 +32,7 @@ def calendar_dates(rows, through):
 
 
 def plan_pool(trade_days, coverage, verified, *, cutoff, batch_limit=64,
-              lookback=5, audit_period=20, force=False, exclude=(), scope='all'):
+              lookback=10, force=False, exclude=(), scope='all'):
     """Inputs have one fixed calendar origin; verified maps unit date to check date.
 
     Coverage contains only validated source units, not guessed empty days.
@@ -40,12 +40,12 @@ def plan_pool(trade_days, coverage, verified, *, cutoff, batch_limit=64,
     new plan after Redis loss uses SQL proofs, not the largest successful date.
     """
     day_value(cutoff)
-    if scope not in ('all', 'recent', 'history'):
+    if scope not in ('all', 'recent', 'backfill'):
         raise ValueError('日期池规划范围无效')
     if (not trade_days or list(trade_days) != sorted(set(trade_days))
             or any(day_value(d) > cutoff for d in trade_days) or trade_days[-1] != cutoff):
         raise ValueError('日期池规划需要有序完整交易日范围和已结束截止日')
-    if not 1 <= batch_limit <= 256 or not 1 <= lookback <= 60 or not 1 <= audit_period <= 250:
+    if not 1 <= batch_limit <= 256 or not 1 <= lookback <= 60:
         raise ValueError('日期池规划预算错误')
     domain = set(trade_days)
     if set(coverage) - domain or set(verified) - domain:
@@ -53,27 +53,19 @@ def plan_pool(trade_days, coverage, verified, *, cutoff, batch_limit=64,
     if any(day_value(v) > cutoff for v in verified.values()):
         raise ValueError('核验版本超前')
     missing = domain - set(coverage)
-    rank = len(trade_days) - 1
     recent = set(trade_days[-lookback:])
-    due = set()
-    for index, day in enumerate(trade_days):
-        # A unit is due at its fixed bucket on each audit cycle. This includes
-        # missed rounds, rather than losing audits when the app was closed.
-        due_rank = rank - ((rank - index) % audit_period)
-        expected = cutoff if day in recent else trade_days[max(index, due_rank)]
-        if force or verified.get(day, '') < expected:
-            due.add(day)
+    due = {day for day in recent if force or verified.get(day, '') < cutoff}
     if scope == 'recent':
-        work = missing | (due & recent)
-    elif scope == 'history':
-        work = (due - recent) & set(coverage)
-        missing = set()
+        work = (missing & recent) | due
+    elif scope == 'backfill':
+        work = missing - recent
     else:
-        work = missing | due
+        work = domain if force else missing | due
+    missing &= work
     due &= work
     work -= set(exclude)
-    # Reserve half of each batch for old work so daily arrivals cannot starve it.
-    newest = sorted(work & recent, reverse=True)[:max(1, batch_limit // 2)]
+    # Recent work never waits behind historical gaps; backfill is a separate run.
+    newest = sorted(work & recent, reverse=True)[:batch_limit]
     older = sorted(work - set(newest))[:batch_limit - len(newest)]
     selected = tuple(newest + older)
     pending = tuple(sorted(work - set(selected)))
