@@ -210,8 +210,7 @@ def test_every_registered_task_declares_its_actual_independent_download_capabili
     manager = build_manager(dict(redis={}, mysql={}, archive={}, ingest={}, rate_groups={}))
     tasks = manager.entries['collection.control'].plugin.definitions
     serial = {'kaipanla-themes', 'eastmoney-repurchases', 'sina-news', 'ths-stocks', 'tdx-company-renames', 'tdx-security-renames', 'tdx-rights-issues', 'tdx-st-implementation', 'tdx-st-removal'}
-    assert len(tasks) == 53
-    assert tasks['ths-yuanhang-sprint-limit-up-history'].parallel_downloads
+    assert len(tasks) == 52
     assert tasks["ths-market-margin"].parallel_downloads
     assert tasks['ths-yuanhang-prices'].parallel_downloads
     assert tasks['ths-yuanhang-financial'].parallel_downloads

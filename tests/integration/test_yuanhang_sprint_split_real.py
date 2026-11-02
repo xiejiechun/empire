@@ -1,4 +1,4 @@
-"""Bounded source acceptance for the separate recent and historical owners."""
+"""Bounded source acceptance for the one project with separate maintenance rounds."""
 import json
 import os
 from datetime import date
@@ -20,7 +20,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     reason='Explicit bounded real-source proxy acceptance')]
 
 
-async def test_separate_owners_source_to_query_and_same_cutoff_zero_requests():
+async def test_single_owner_source_to_query_and_same_cutoff_zero_requests():
     manifest = json.loads(Path('build/sprint-split-sample-20261102.json').read_text(encoding='utf-8'))
     cfg = load_config()
     assert ':test:' in cfg['redis']['namespace'] and cfg['mysql']['database'].endswith('_test')
@@ -31,9 +31,7 @@ async def test_separate_owners_source_to_query_and_same_cutoff_zero_requests():
     report.update(network_policy=dict(use_proxy=True, proxy_fallback=True), passed=False)
     try:
         await manager.start('collector.yuanhang_limits_sprint_limit_up')
-        await manager.start('collector.yuanhang_limits_sprint_limit_up_history')
         current = manager.registry.get('collector.yuanhang_limits_sprint_limit_up')
-        history = manager.registry.get('collector.yuanhang_limits_sprint_limit_up_history')
         query = manager.registry.get('yuanhang.limits.query')
         with query.mysql.engine.begin() as conn:
             rows = [dict(day=date.fromisoformat(day), flag=flag) for day, flag in manifest['calendar']]
@@ -47,7 +45,7 @@ async def test_separate_owners_source_to_query_and_same_cutoff_zero_requests():
             return {**plan, 'units': units, 'pending': [], 'remaining': 0}
 
         query.collection_plan = sampled_plan
-        for collector in (current, history):
+        for collector in (current,):
             original_fetch = collector.fetch
 
             async def capture(day, *, reservation=None, original_fetch=original_fetch):
@@ -56,11 +54,12 @@ async def test_separate_owners_source_to_query_and_same_cutoff_zero_requests():
                 return unit, stamp
 
             collector.fetch = capture
-        for collector, fresh, label in ((current, False, 'sample_initialization'),
-                (history, True, 'explicit_historical_audit'), (current, True, 'explicit_recent_recheck'),
-                (current, False, 'recent_nochange'), (history, False, 'history_nochange')):
+        for scope, fresh, label in (('recent', False, 'sample_initialization'),
+                ('history', True, 'explicit_historical_audit'), ('recent', True, 'explicit_recent_recheck'),
+                ('recent', False, 'recent_nochange'), ('history', False, 'history_nochange')):
+            collector = current
             before = dict(counts)
-            await collector.execute(fresh=fresh, baseline_revision=await collector.checkpoint_revision(), history_only=True)
+            await collector.execute(fresh=fresh, baseline_revision=await collector.checkpoint_revision(), history_only=True, maintenance_scope=scope)
             phases.append(dict(label=label, project=collector.project_id,
                 requests=collector.stats['requests'], response_bytes=collector.stats['response_bytes'],
                 wire_bytes=collector.stats['wire_bytes'], queued_messages=collector.stats['queued_messages'],
@@ -95,7 +94,7 @@ async def test_separate_owners_source_to_query_and_same_cutoff_zero_requests():
             actual_sample_fraction=23 / 442, untested='其余419个日期本轮未实采；其他四池及原因不扩采。')
     finally:
         report.update(phases=phases, routes=counts)
-        Path('build/sprint-split-real-20261102.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+        Path('build/sprint-single-real-20261102.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
         await manager.shutdown()
         client = create_client(cfg['redis'])
         try:

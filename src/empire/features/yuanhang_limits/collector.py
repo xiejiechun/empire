@@ -12,7 +12,6 @@ from empire.features.yuanhang_limits.contract import (
     MAX_UNIT_BYTES,
     SOURCE,
     dataset,
-    history_project,
     job,
     project,
 )
@@ -37,11 +36,7 @@ class LimitCollector:
         self.scope = scope
         self.project_id, self.job_key, self.dataset = project(pool), job(pool), dataset(pool)
         self.capability = 'collector.yuanhang_limits_' + pool
-        if scope == 'history':
-            self.project_id = history_project(pool)
-            self.job_key = self.project_id + '-v1'
-            self.capability += '_history'
-        self.manifest = PluginManifest(self.capability, '远航涨停分析 ' + pool + (' 历史核验' if scope == 'history' else ''),
+        self.manifest = PluginManifest(self.capability, '远航涨停分析 ' + pool,
             requires=('http.fetch', 'ingest.publish', 'archive.confirmation', 'collection.records', 'yuanhang.limits.query'),
             provides=(self.capability,))
         self.stats = dict(status='stopped', collected=0, requests=0, response_bytes=0,
@@ -88,10 +83,11 @@ class LimitCollector:
             payload={'page': cursor['page'] + 1, 'unit_zlib': encode(unit)})
         return event.model_copy(update={'observed_at': observed, 'available_at': None, 'source_url': BASE_URL})
 
-    async def execute(self, *, fresh=False, baseline_revision=0, history_only=False):
+    async def execute(self, *, fresh=False, baseline_revision=0, history_only=False, maintenance_scope=None):
         self.stats.update(completed_units=0, total_units=None)
         try:
-            return await self._execute(fresh=fresh, baseline_revision=baseline_revision, history_only=history_only)
+            return await self._execute(fresh=fresh, baseline_revision=baseline_revision,
+                                       history_only=history_only, scope=maintenance_scope)
         except asyncio.CancelledError:
             self.stats['status'] = 'paused'
             raise
@@ -102,12 +98,13 @@ class LimitCollector:
                 fields=getattr(exc, 'source_diagnostic', None))
             raise
 
-    async def _execute(self, *, fresh=False, baseline_revision=0, history_only=False):
+    async def _execute(self, *, fresh=False, baseline_revision=0, history_only=False, scope=None):
         if self.intraday and not history_only:
             from empire.features.yuanhang_limits.intraday import dispatch
             return await dispatch(self, fresh=fresh, baseline_revision=baseline_revision)
         state = await self.ingest.checkpoint(self.job_key)
         cursor = state['cursor']
+        scope = cursor.get('scope', self.scope) if cursor.get('phase') in ('fetch', 'awaiting_archive') else scope or self.scope
         if state['revision'] > baseline_revision and cursor.get('phase') == 'complete':
             self._progress(cursor, finished=True)
             return cursor
@@ -115,16 +112,16 @@ class LimitCollector:
             raise ValueError('涨停分析断点契约不符，须显式维护')
         self.stats.update(status='collecting', error='', collected=0, requests=0, response_bytes=0,
                           wire_bytes=0, queued_bytes=0, queued_messages=0, storage='mysql_archive', notice='')
-        if self.scope != 'all':
-            self.stats['notice'] = ('独立历史核验：已覆盖老日期，20交易日轮转' if self.scope == 'history'
-                                    else '近期增量与缺口修复；老历史由独立核验任务执行')
+        if scope != 'all':
+            self.stats['notice'] = ('本轮历史核验：已覆盖老日期，20交易日轮转' if scope == 'history'
+                                    else '本轮近期增量与缺口修复；历史核验在晚间另轮执行')
         pending = None
         if cursor.get('phase') not in ('fetch', 'awaiting_archive'):
-            planned = await self.query.collection_plan(self.pool, force=fresh, **self.plan_options())
+            planned = await self.query.collection_plan(self.pool, force=fresh, **self.plan_options(scope))
             pending = planned.get('pending')
             cursor = dict(contract=1, phase='fetch', batch_id=uuid4().hex, page=0, index=0,
                           plan=planned['units'], cutoff=planned['cutoff'], remaining=planned['remaining'],
-                          force=fresh, scan_after=planned.get('scan_after'))
+                          force=fresh, scope=scope, scan_after=planned.get('scan_after'))
         # Whole-run page numbers bind every message to one confirmation.
         # Only the current bounded plan is persisted. After process/Redis
         # loss SQL restores archived units; unconfirmed work may be reread.
@@ -163,7 +160,7 @@ class LimitCollector:
                 pending = pending[64:]
             else:
                 planned = await self.query.collection_plan(self.pool, force=cursor.get('force', False),
-                    exclude=visited, through=cursor['cutoff'], scan_after=cursor.get('scan_after'), **self.plan_options())
+                    exclude=visited, through=cursor['cutoff'], scan_after=cursor.get('scan_after'), **self.plan_options(scope))
                 pending = planned.get('pending')
             if self.pool == 'reason':
                 visited.clear()  # The durable key cursor already excludes prior reason pages.
@@ -181,8 +178,9 @@ class LimitCollector:
         self.stats.update(status='complete', remaining_units=cursor['remaining'])
         return cursor
 
-    def plan_options(self):
-        return {'scope': self.scope} if self.scope != 'all' else {}
+    def plan_options(self, scope=None):
+        selected = scope or self.scope
+        return {'scope': selected} if selected != 'all' else {}
 
     def _progress(self, cursor, *, finished=False):
         index = cursor.get('index', cursor['page'])
@@ -197,7 +195,7 @@ class LimitCollector:
             done = cursor['page']
             total = done + len(cursor['plan']) - index + remaining
             unit = '个完整单元'
-        if self.scope == 'history':
+        if cursor.get('scope', self.scope) == 'history':
             unit = '个历史日期池'
         self.stats.update(completed_units=done, total_units=total, unit_name=unit)
 

@@ -108,13 +108,13 @@ class IntradayStore:
             MAX_BYTES, MAX_SNAPSHOTS, version_at(finished))
         return dict(changed=int(result[0]) == 1, stale=int(result[0]) == -1, evicted=int(result[1]))
 
-    async def maintenance_day(self, pool):
-        return await self.redis.client.hget(self.keys(pool)[2], 'maintenance_day')
+    async def maintenance_day(self, pool, *, history=False):
+        return await self.redis.client.hget(self.keys(pool)[2], 'history_day' if history else 'maintenance_day')
 
-    async def mark_maintenance(self, pool, day):
+    async def mark_maintenance(self, pool, day, *, history=False):
         day_value(day)
         async with self.redis.client.pipeline(transaction=True) as p:
-            p.hset(self.keys(pool)[2], 'maintenance_day', day)
+            p.hset(self.keys(pool)[2], 'history_day' if history else 'maintenance_day', day)
             p.expire(self.keys(pool)[2], TTL)
             await p.execute()
 

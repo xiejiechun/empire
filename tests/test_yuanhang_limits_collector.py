@@ -162,20 +162,18 @@ async def test_lost_memory_plan_resumes_failed_later_batch_from_durable_cursor()
     assert state['cursor']['phase'] == 'complete' and c.http.buffer_budget.used == 0
 
 
-def test_sprint_tasks_have_separate_policies_checkpoints_and_one_dataset():
+def test_sprint_has_one_project_job_and_policy_for_both_scopes():
     from empire.features.yuanhang_limits.bundle import bundle
-    from empire.features.yuanhang_limits.contract import SPLIT_POOL, history_project, project
+    from empire.features.yuanhang_limits.contract import SPLIT_POOL, project
     feature = bundle({})
     tasks = {item.value.id: item.value for item in feature.tasks}
-    collectors = {item.value.project_id: item.value for item in feature.plugins if isinstance(item.value, LimitCollector)}
-    current, history = collectors[project(SPLIT_POOL)], collectors[history_project(SPLIT_POOL)]
+    assert [key for key in tasks if 'sprint-limit-up' in key] == [project(SPLIT_POOL)]
+    collectors = [item.value for item in feature.plugins if isinstance(item.value, LimitCollector)]
+    current = next(c for c in collectors if c.pool == SPLIT_POOL)
     assert current.scope == 'recent' and current.intraday
-    assert history.scope == 'history' and not history.intraday
-    assert current.dataset == history.dataset and current.job_key != history.job_key
     assert tasks[current.project_id].default_schedule.interval_seconds == 60
-    assert tasks[history.project_id].default_schedule.daily_time == '18:30'
     mapping = next(item.value for item in feature.datasets if item.value.mapping.pool == SPLIT_POOL)
-    assert mapping.projects == {current.job_key: current.project_id, history.job_key: history.project_id}
+    assert mapping.projects == {current.job_key: current.project_id}
 
 
 def test_storage_revalidates_identity_members_and_reason_status():

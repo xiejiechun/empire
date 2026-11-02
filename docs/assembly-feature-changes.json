@@ -1787,7 +1787,6 @@
       "collector.yuanhang_limits_open_limit_up_pool",
       "collector.yuanhang_limits_limit_down_pool",
       "collector.yuanhang_limits_reason",
-      "collector.yuanhang_limits_sprint_limit_up_history",
       "ui.yuanhang_limits",
       "data.market_review",
       "ui.market_review",
@@ -1895,22 +1894,6 @@
             "name": "远航涨停分析 sprint_limit_up",
             "provides": [
               "collector.yuanhang_limits_sprint_limit_up"
-            ],
-            "requires": [
-              "http.fetch",
-              "ingest.publish",
-              "archive.confirmation",
-              "collection.records",
-              "yuanhang.limits.query"
-            ]
-          },
-          "collector.yuanhang_limits_sprint_limit_up_history": {
-            "autostart": true,
-            "description": "",
-            "id": "collector.yuanhang_limits_sprint_limit_up_history",
-            "name": "远航涨停分析 sprint_limit_up 历史核验",
-            "provides": [
-              "collector.yuanhang_limits_sprint_limit_up_history"
             ],
             "requires": [
               "http.fetch",
@@ -2047,7 +2030,6 @@
             },
             "mode": "incremental",
             "projects": {
-              "ths-yuanhang-sprint-limit-up-history-v1": "ths-yuanhang-sprint-limit-up-history",
               "ths-yuanhang-sprint-limit-up-v1": "ths-yuanhang-sprint-limit-up"
             },
             "schema_version": 1,
@@ -2197,8 +2179,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "补齐缺失日期并维护最近5交易日；历史轮转由独立核验任务执行。",
-            "fresh_description": "重新核验最近5交易日并补齐缺失日期；老历史修订请执行独立历史核验任务。",
+            "description": "近期增量优先完成；同一项目在18:30后另轮执行20交易日历史核验。",
+            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目晚间另轮核验。",
             "id": "ths-yuanhang-sprint-limit-up",
             "interval_seconds": 86400,
             "name": "远航版涨停冲刺",
@@ -2206,26 +2188,6 @@
             "rate_group": "ths_yuanhang",
             "source_name": "同花顺远航版",
             "unit_name": "个单元"
-          },
-          "ths-yuanhang-sprint-limit-up-history": {
-            "capability": "collector.yuanhang_limits_sprint_limit_up_history",
-            "category": "历史核验",
-            "default_enabled": true,
-            "default_schedule": {
-              "daily_time": "18:30",
-              "description": "每天北京时间18:30核验到期老历史，保留20交易日轮转及停机补查。",
-              "interval_seconds": 86400,
-              "mode": "daily"
-            },
-            "description": "独立执行已覆盖老历史的20交易日轮转；不阻塞涨停冲刺近期增量。",
-            "fresh_description": "重新核验已覆盖且位于近期5交易日以外的历史日期；保留业务事实。",
-            "id": "ths-yuanhang-sprint-limit-up-history",
-            "interval_seconds": 86400,
-            "name": "远航版涨停冲刺历史核验",
-            "parallel_downloads": true,
-            "rate_group": "ths_yuanhang",
-            "source_name": "同花顺远航版",
-            "unit_name": "个历史日期池"
           }
         }
       },
@@ -2252,10 +2214,6 @@
             "qualname": "LimitCollector"
           },
           "collector.yuanhang_limits_sprint_limit_up": {
-            "module": "empire.features.yuanhang_limits.collector",
-            "qualname": "LimitCollector"
-          },
-          "collector.yuanhang_limits_sprint_limit_up_history": {
             "module": "empire.features.yuanhang_limits.collector",
             "qualname": "LimitCollector"
           },
@@ -2310,7 +2268,6 @@
           "collector.yuanhang_limits_open_limit_up_pool",
           "collector.yuanhang_limits_limit_down_pool",
           "collector.yuanhang_limits_reason",
-          "collector.yuanhang_limits_sprint_limit_up_history",
           "ui.yuanhang_limits"
         ],
         "startup": [
@@ -2321,7 +2278,6 @@
           "collector.yuanhang_limits_open_limit_up_pool",
           "collector.yuanhang_limits_limit_down_pool",
           "collector.yuanhang_limits_reason",
-          "collector.yuanhang_limits_sprint_limit_up_history",
           "ui.yuanhang_limits"
         ],
         "tasks": [
@@ -2330,8 +2286,7 @@
           "ths-yuanhang-connect-broad-pool",
           "ths-yuanhang-open-limit-up-pool",
           "ths-yuanhang-limit-down-pool",
-          "ths-yuanhang-reason",
-          "ths-yuanhang-sprint-limit-up-history"
+          "ths-yuanhang-reason"
         ],
         "datasets": [
           "yuanhang_limits_limit_up_pool_v1",

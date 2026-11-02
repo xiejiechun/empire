@@ -51,15 +51,6 @@ def job(pool):
     return project(pool) + '-v1'
 
 
-def history_project(pool):
-    pool_value(pool)
-    return project(pool) + '-history'
-
-
-def pool_projects(pool):
-    return (project(pool), history_project(pool)) if pool == SPLIT_POOL else (project(pool),)
-
-
 def dataset(pool):
     if pool != 'reason':
         pool_value(pool)

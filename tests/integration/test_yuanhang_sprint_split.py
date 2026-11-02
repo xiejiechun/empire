@@ -1,4 +1,4 @@
-"""Separate owners retain one source-to-query path and cross-owner version safety."""
+"""One owner retains separate rounds and late-response version safety."""
 from datetime import UTC, datetime, timedelta
 from unittest.mock import AsyncMock
 
@@ -21,28 +21,28 @@ from tests.test_yuanhang_limits_source import page, row
 @pytest.fixture
 async def sprint(limits):
     manager, _, query = limits
-    capabilities = ['collector.yuanhang_limits_sprint_limit_up' + suffix for suffix in ('', '_history')]
-    collectors = []
-    for capability in capabilities:
-        await manager.start(capability)
-        collector = manager.registry.get(capability)
-        collector.http = prefetch_http(request=AsyncMock(return_value=httpx.Response(200, json=page([row()]))))
-        collectors.append(collector)
-    return manager, *collectors, query
+    capability = 'collector.yuanhang_limits_sprint_limit_up'
+    await manager.start(capability)
+    collector = manager.registry.get(capability)
+    collector.http = prefetch_http(request=AsyncMock(return_value=httpx.Response(200, json=page([row()]))))
+    return manager, collector, query
+
 
 
 async def test_separate_runs_share_cache_cold_proofs_reject_late_response_and_clean_queue(sprint, monkeypatch):
-    manager, current, history, query = sprint
+    manager, current, query = sprint
+    history = current
     now = datetime.now(UTC)
-    for collector, stamp in ((current, now - timedelta(hours=3)), (history, now - timedelta(hours=1))):
-        original = collector.fetch
+    original = current.fetch
+    stamp = now - timedelta(hours=3)
 
-        async def fetch(key, *, reservation=None, original=original, stamp=stamp):
-            unit, _ = await original(key, reservation=reservation)
-            return unit, stamp
+    async def fetch(key, *, reservation=None):
+        unit, _ = await original(key, reservation=reservation)
+        return unit, stamp
 
-        collector.fetch = fetch
+    current.fetch = fetch
     await collect(current)
+    stamp = now - timedelta(hours=1)
     archive = manager.registry.get('archive.worker')
     writes = []
 
@@ -51,10 +51,10 @@ async def test_separate_runs_share_cache_cold_proofs_reject_late_response_and_cl
             writes.append(statement)
 
     event.listen(query.mysql.engine, 'before_cursor_execute', track)
-    await collect(history)  # Shared trusted fingerprint: no SQL business writes.
+    await history.execute(baseline_revision=await history.checkpoint_revision(), history_only=True, maintenance_scope='history')  # Shared trusted fingerprint: no SQL business writes.
     assert not writes
     await archive.fingerprints.invalidate(LimitDataset(SPLIT_POOL).FINGERPRINT_NAMESPACE, SOURCE)
-    await collect(history)  # Cold SQL confirms the newer unchanged version in this owner.
+    await history.execute(baseline_revision=await history.checkpoint_revision(), history_only=True, maintenance_scope='history')  # Cold SQL confirms the newer unchanged version in this owner.
     assert not writes
     with query.mysql.engine.connect() as conn:
         versions = pool_versions(conn, query.namespace, SPLIT_POOL)
@@ -62,7 +62,7 @@ async def test_separate_runs_share_cache_cold_proofs_reject_late_response_and_cl
     await archive.fingerprints.invalidate(LimitDataset(SPLIT_POOL).FINGERPRINT_NAMESPACE, SOURCE)
     unit, _ = await current.fetch('2026-07-15')
     unit['rows'][0]['name'] = 'late revision'
-    stale = current.envelope(dict(page=0, batch_id='cross-owner-stale'), unit, now - timedelta(hours=2))
+    stale = current.envelope(dict(page=0, batch_id='single-owner-stale'), unit, now - timedelta(hours=2))
     outcome = await archive._archive_data(stale, LimitDataset(SPLIT_POOL).normalize(stale))
     assert outcome['written_count'] == 0 and not writes
     assert (await query.members('2026-07-15', SPLIT_POOL))['rows'][0]['name'] == '样本'
@@ -78,7 +78,7 @@ async def test_separate_runs_share_cache_cold_proofs_reject_late_response_and_cl
 
 
 async def test_recent_cache_reads_only_due_candidates_and_reuses_sql_coverage(sprint, monkeypatch):
-    _, current, _, query = sprint
+    _, current, query = sprint
     await collect(current)
     await calendar(query, monkeypatch)
     query.collection_plan = LimitQuery.collection_plan.__get__(query)

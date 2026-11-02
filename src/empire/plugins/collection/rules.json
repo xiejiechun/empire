@@ -3330,9 +3330,9 @@
       "start": "正式A股日历1990-12-19；空响应不证明源最早边界",
       "end": "盘中当天Redis采样；15:30后核验最近已结束交易日",
       "initial": "完整日历范围逐池补缺；原因按五池证券日并集消重。",
-      "incremental": "盘中仅采当天并存Redis；日终只处理新增、精确缺口及最近5交易日，老历史20交易日轮转由独立历史核验任务执行。",
+      "incremental": "盘中仅采当天并存Redis；日终先处理新增、精确缺口及最近5交易日；18:30后原项目下一轮执行老历史20交易日轮转核验。",
       "recovery": "Redis盘中回放丢失后只从当前时刻采样；日终SQL集合证明恢复补缺。",
-      "fresh": "重新核验最近5交易日并补缺，老历史重核使用独立历史核验任务；不删除已有业务。",
+      "fresh": "重新核验近期5交易日并补缺；历史核验在本项目晚间另轮执行，不删除已有业务。",
       "limits": "单响应100成员；完整池最多10000成员及8MiB规范正文、480KiB压缩消息。原因无可靠公布时刻。",
       "job_key": "ths-yuanhang-sprint-limit-up-v1",
       "source_file": "src/empire/features/yuanhang_limits/collector.py",
@@ -3736,49 +3736,6 @@
       "topics": [
         "同花顺市场融资融券",
         "采集进度与运行记录"
-      ]
-    },
-    "ths-yuanhang-sprint-limit-up-history": {
-      "requests": [
-        {
-          "url": "http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/change-table",
-          "method": "GET",
-          "purpose": "完整日期池有序分页",
-          "parameters": [
-            {
-              "name": "date/strategy/filter/limit/page/orderField/orderType",
-              "value": "YYYYMMDD/sprint_limit_up/HS,GEM2STAR/100/从1/code/1",
-              "meaning": "逐页收齐源总数并校验业务键集合"
-            }
-          ]
-        }
-      ],
-      "tables": [
-        "yuanhang_limit_pool",
-        "yuanhang_limit_member"
-      ],
-      "start": "正式A股日历1990-12-19；空响应不证明源最早边界",
-      "end": "最近5个已结束交易日以前的已覆盖历史日期",
-      "initial": "沿用原任务的SQL完整覆盖及两任务的核验证据，不重复初始化；历史缺口由原任务补齐。",
-      "incremental": "默认每天北京时间18:30独立执行到期老日期；保留20交易日固定分桶和停机补查，近期5日不重复核验。",
-      "recovery": "本项目独立断点；Redis丢失从合并SQL覆盖及版本恢复，不影响原任务近期更新。",
-      "fresh": "重新核验已覆盖且位于近期5交易日以外的老日期；不删除业务。",
-      "limits": "单响应100成员；完整池最多10000成员及8MiB规范正文、480KiB压缩消息。原因无可靠公布时刻。",
-      "job_key": "ths-yuanhang-sprint-limit-up-history-v1",
-      "source_file": "src/empire/features/yuanhang_limits/collector.py",
-      "scope": "HS,GEM2STAR源口径，保留历史证券，不按当前股票表过滤。",
-      "source": "ths_yuanhang",
-      "fingerprint_source": "ths_yuanhang",
-      "datasets": [
-        "yuanhang.limits.sprint_limit_up"
-      ],
-      "fingerprint_namespaces": [
-        "yuanhang_limits_sprint_limit_up_v1"
-      ],
-      "topics": [
-        "远航版涨跌停分析",
-        "采集进度与运行记录",
-        "查看结果"
       ]
     }
   }
