@@ -6,7 +6,7 @@ import pytest
 
 from empire.features.yuanhang import collector as module
 from empire.plugins.infra.sensitive_request import SensitiveRequestError
-from empire.sources.yuanhang_auth import AuthenticationError
+from empire.sources.yuanhang_auth import AuthenticationError, IdleConnectionError
 from empire.sources.yuanhang_sessions import NodeSessions
 
 
@@ -92,3 +92,43 @@ async def test_native_timeout_uses_same_node_retry_budget(monkeypatch, budget, e
         await c.fetch(('000001.SZ', 'node001', '2026-10-23'))
     assert fetch.await_count == expected
     assert len(c.identity.login.await_args_list) == expected
+
+
+@pytest.mark.parametrize('financial', [False, True])
+async def test_idle_backlog_reconnects_same_node_without_refreshing_identity(monkeypatch, financial):
+    c = collector(monkeypatch)
+    c.financial = financial
+    fetch = AsyncMock(side_effect=[IdleConnectionError(), 'snapshot'])
+    monkeypatch.setattr(module, 'fetch_history', fetch)
+    assert await c.fetch(('000001.SZ', 'node001', '2026-10-30')) == 'snapshot'
+    assert fetch.await_count == 2
+    assert all(call.kwargs['max_retries'] == 0 for call in fetch.await_args_list)
+    assert all(call.kwargs['dataset'] == ('financial' if financial else 'daily')
+               for call in fetch.await_args_list)
+    assert [call.args[0] for call in c.identity.login.await_args_list] == ['node001', 'node001']
+    assert all('rejected' not in call.kwargs for call in c.identity.login.await_args_list)
+    assert c.stats['idle_connection_retries'] == 1
+    assert c.stats.get('node_transport_retries', 0) == 0
+
+
+@pytest.mark.parametrize('budget', [0, 1, 30])
+async def test_idle_backlog_exhausts_original_budget(monkeypatch, budget):
+    c = collector(monkeypatch)
+    c.request_retries = budget
+    fetch = AsyncMock(side_effect=IdleConnectionError())
+    monkeypatch.setattr(module, 'fetch_history', fetch)
+    with pytest.raises(IdleConnectionError):
+        await c.fetch(('000001.SZ', 'node001', '2026-10-30'))
+    assert fetch.await_count == budget + 1
+    assert {call.args[0] for call in c.identity.login.await_args_list} == {'node001'}
+    assert c.stats.get('idle_connection_retries', 0) == budget
+
+
+async def test_idle_and_transport_failures_share_one_retry_budget(monkeypatch):
+    c = collector(monkeypatch)
+    c.request_retries = 2
+    fetch = AsyncMock(side_effect=[IdleConnectionError(), httpx.ProxyError('fixture'), 'snapshot'])
+    monkeypatch.setattr(module, 'fetch_history', fetch)
+    assert await c.fetch(('000001.SZ', 'node001', '2026-10-30')) == 'snapshot'
+    assert fetch.await_count == 3
+    assert [call.args[0] for call in c.identity.login.await_args_list] == ['node001', 'node001', 'node002']

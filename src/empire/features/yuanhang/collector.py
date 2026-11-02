@@ -29,7 +29,7 @@ from empire.plugins.collectors.support import (
 )
 from empire.plugins.infra.routing import USE_PROXY
 from empire.plugins.infra.sensitive_request import SensitiveRequestError
-from empire.sources.yuanhang_auth import AuthenticationError
+from empire.sources.yuanhang_auth import AuthenticationError, IdleConnectionError
 from empire.sources.yuanhang_client import fetch_history
 from empire.sources.yuanhang_history import IncompleteFinancialHistory
 from empire.sources.yuanhang_payload import (
@@ -95,6 +95,15 @@ class YuanhangCollector:
                 if plan.get('mode') == 'range':
                     raise ValueError('远航区间含已知成交日仍返回空响应；保留断点，不转为成功或全历史') from exc
                 return await resolve_empty(self, code, through, reservation=reservation, cause=exc)
+            except IdleConnectionError:
+                # Shared transport has retired the connection. A backlog says
+                # nothing about proxy/account health: reconnect on this node
+                # using the same session and the single outer retry budget.
+                if attempt >= self.request_retries:
+                    raise
+                preferred = node
+                self.stats['idle_connection_retries'] = self.stats.get('idle_connection_retries', 0) + 1
+                await asyncio.sleep(retry_delay(attempt + 1))
             except (httpx.TransportError, SensitiveRequestError, TimeoutError) as exc:
                 if (isinstance(exc, SensitiveRequestError) and not exc.retryable_transport
                         or attempt >= self.request_retries):

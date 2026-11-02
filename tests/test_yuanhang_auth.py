@@ -9,6 +9,7 @@ from empire.sources.yuanhang_auth import (
     AuthenticationError,
     ClientDevice,
     GuestSession,
+    IdleConnectionError,
     exchange_frame,
     login_guest,
     login_native,
@@ -168,6 +169,6 @@ async def test_idle_control_frames_do_not_resend_or_replace_business_response():
     assert await exchange_frame(Channel(b'\0' * 3), b'query', allow_idle=True) == b'\0' * 3
     channel = Channel(b'\0' * 4)
     channel.data *= 9
-    with pytest.raises(ValueError, match='excessive idle'):
+    with pytest.raises(IdleConnectionError, match='excessive idle'):
         await exchange_frame(channel, b'query', allow_idle=True)
     assert len(channel.sent) == 1

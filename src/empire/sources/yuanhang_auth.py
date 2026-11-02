@@ -30,6 +30,13 @@ class AuthenticationError(ValueError):
         self.stage, self.code = stage, code
 
 
+class IdleConnectionError(ValueError):
+    """A bounded control-frame backlog requires a fresh native connection."""
+
+    def __init__(self):
+        super().__init__('Yuanhang excessive idle control frames')
+
+
 @dataclass(frozen=True)
 class ClientDevice:
     mac: str = field(repr=False)
@@ -186,7 +193,7 @@ async def exchange_frame(channel, payload: bytes, *, allow_idle=False) -> bytes:
         body = await channel.readexactly(int(header[4:12], 16))
         if not allow_idle or body != b'\0' * 4:
             return body
-    raise ValueError('Yuanhang excessive idle control frames')
+    raise IdleConnectionError()
 
 
 async def login_native(channel, session: GuestSession):
