@@ -2079,8 +2079,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
-            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "description": "近期增量优先完成；同一项目在18:30后另轮执行20交易日历史核验。",
+            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目晚间另轮核验。",
             "id": "ths-yuanhang-connect-broad-pool",
             "interval_seconds": 86400,
             "name": "远航版连板池",
@@ -2099,8 +2099,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
-            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "description": "近期增量优先完成；同一项目在18:30后另轮执行20交易日历史核验。",
+            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目晚间另轮核验。",
             "id": "ths-yuanhang-limit-down-pool",
             "interval_seconds": 86400,
             "name": "远航版跌停板",
@@ -2119,8 +2119,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
-            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "description": "近期增量优先完成；同一项目在18:30后另轮执行20交易日历史核验。",
+            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目晚间另轮核验。",
             "id": "ths-yuanhang-limit-up-pool",
             "interval_seconds": 86400,
             "name": "远航版涨停板",
@@ -2139,8 +2139,8 @@
               "interval_seconds": 60,
               "mode": "interval"
             },
-            "description": "按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界",
-            "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
+            "description": "近期增量优先完成；同一项目在18:30后另轮执行20交易日历史核验。",
+            "fresh_description": "重新核验最近5交易日并补齐缺失日期；历史修订由本项目晚间另轮核验。",
             "id": "ths-yuanhang-open-limit-up-pool",
             "interval_seconds": 86400,
             "name": "远航版炸板池",
@@ -2301,7 +2301,7 @@
         ]
       }
     },
-    "design": "docs/yuanhang-sprint-maintenance.md",
+    "design": "docs/yuanhang-pools-maintenance.md",
     "tests": [
       "tests/integration/test_yuanhang_limits_archive.py",
       "tests/integration/test_yuanhang_limits_intraday_real.py",

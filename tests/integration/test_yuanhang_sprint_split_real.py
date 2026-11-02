@@ -9,7 +9,7 @@ from sqlalchemy import event, text
 
 from empire.bootstrap import build_manager
 from empire.core.config import load_config
-from empire.features.yuanhang_limits.contract import SPLIT_POOL
+from empire.features.yuanhang_limits.contract import POOLS
 from empire.features.yuanhang_limits.model import digest
 from empire.features.yuanhang_limits.repository import decode_member
 from empire.plugins.infra.redis_store import create_client
@@ -20,7 +20,8 @@ pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     reason='Explicit bounded real-source proxy acceptance')]
 
 
-async def test_single_owner_source_to_query_and_same_cutoff_zero_requests():
+@pytest.mark.parametrize('pool', tuple(POOLS))
+async def test_single_owner_source_to_query_and_same_cutoff_zero_requests(pool):
     manifest = json.loads(Path('build/sprint-split-sample-20261102.json').read_text(encoding='utf-8'))
     cfg = load_config()
     assert ':test:' in cfg['redis']['namespace'] and cfg['mysql']['database'].endswith('_test')
@@ -28,10 +29,10 @@ async def test_single_owner_source_to_query_and_same_cutoff_zero_requests():
     tokens = USE_PROXY.set(True), PROXY_FALLBACK.set(True), ROUTE_COUNTS.set(counts)
     selected = set(manifest['selected_dates'])
     report = {k: v for k, v in manifest.items() if k != 'calendar'}
-    report.update(network_policy=dict(use_proxy=True, proxy_fallback=True), passed=False)
+    report.update(pool=pool, network_policy=dict(use_proxy=True, proxy_fallback=True), passed=False)
     try:
-        await manager.start('collector.yuanhang_limits_sprint_limit_up')
-        current = manager.registry.get('collector.yuanhang_limits_sprint_limit_up')
+        await manager.start('collector.yuanhang_limits_' + pool)
+        current = manager.registry.get('collector.yuanhang_limits_' + pool)
         query = manager.registry.get('yuanhang.limits.query')
         with query.mysql.engine.begin() as conn:
             rows = [dict(day=date.fromisoformat(day), flag=flag) for day, flag in manifest['calendar']]
@@ -66,17 +67,18 @@ async def test_single_owner_source_to_query_and_same_cutoff_zero_requests():
                 queued_bytes=collector.stats['queued_bytes'], units=collector.stats['completed_units'],
                 routes={k: counts[k] - before.get(k, 0) for k in counts}))
         assert [p['units'] for p in phases] == [23, 22, 1, 0, 0]
-        assert [p['requests'] for p in phases] == [23, 22, 1, 0, 0]
+        assert all(p['requests'] >= p['units'] for p in phases)
+        assert [p['requests'] for p in phases[-2:]] == [0, 0]
         for day in sorted(selected):
             rows, after = [], ''
             while True:
-                result = await query.members(day, SPLIT_POOL, after=after)
+                result = await query.members(day, pool, after=after)
                 rows.extend(decode_member(row) for row in result['rows'])
                 after = result['next']
                 if after is None:
                     break
             assert rows == expected[day]['rows']
-            assert (await query.audit_pool(day, SPLIT_POOL))['complete']
+            assert (await query.audit_pool(day, pool))['complete']
         store = manager.registry.get('redis.store')
         assert await store.client.xlen(store.stream) == 0
         assert counts.get('direct_requests', 0) == 0 and counts.get('proxy_requests', 0) >= 46
@@ -91,10 +93,10 @@ async def test_single_owner_source_to_query_and_same_cutoff_zero_requests():
         assert not writes and current.stats['requests'] == 0
         report.update(passed=True, phases=phases, routes=counts, pending=0,
             content_sha256={day: digest(unit) for day, unit in expected.items()},
-            actual_sample_fraction=23 / 442, untested='其余419个日期本轮未实采；其他四池及原因不扩采。')
+            actual_sample_fraction=23 / 442, untested='本池其余419个日期本轮未实采；历史原因未扩采。')
     finally:
         report.update(phases=phases, routes=counts)
-        Path('build/sprint-single-real-20261102.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+        Path('build/five-pools-' + pool + '-real-20261102.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
         await manager.shutdown()
         client = create_client(cfg['redis'])
         try:

@@ -162,17 +162,20 @@ async def test_lost_memory_plan_resumes_failed_later_batch_from_durable_cursor()
     assert state['cursor']['phase'] == 'complete' and c.http.buffer_budget.used == 0
 
 
-def test_sprint_has_one_project_job_and_policy_for_both_scopes():
+@pytest.mark.parametrize('pool', ['limit_up_pool', 'sprint_limit_up', 'connect_broad_pool', 'open_limit_up_pool', 'limit_down_pool'])
+def test_each_pool_has_one_project_job_and_policy_for_both_scopes(pool):
     from empire.features.yuanhang_limits.bundle import bundle
-    from empire.features.yuanhang_limits.contract import SPLIT_POOL, project
+    from empire.features.yuanhang_limits.contract import project
     feature = bundle({})
     tasks = {item.value.id: item.value for item in feature.tasks}
-    assert [key for key in tasks if 'sprint-limit-up' in key] == [project(SPLIT_POOL)]
+    assert len(tasks) == 6
+    assert not any(key.endswith('-history') for key in tasks)
     collectors = [item.value for item in feature.plugins if isinstance(item.value, LimitCollector)]
-    current = next(c for c in collectors if c.pool == SPLIT_POOL)
+    current = next(c for c in collectors if c.pool == pool)
+    assert current.project_id == project(pool)
     assert current.scope == 'recent' and current.intraday
     assert tasks[current.project_id].default_schedule.interval_seconds == 60
-    mapping = next(item.value for item in feature.datasets if item.value.mapping.pool == SPLIT_POOL)
+    mapping = next(item.value for item in feature.datasets if item.value.mapping.pool == pool)
     assert mapping.projects == {current.job_key: current.project_id}
 
 

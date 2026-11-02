@@ -1,0 +1,166 @@
+{
+  "seed": 20261102,
+  "cutoff": "2026-11-02",
+  "total_days": 8754,
+  "historical_population": 437,
+  "historical_sha256": "b38ea19829ed32abd50c6057c6e8965bb470e8b150c67d30c0f57259919878c8",
+  "historical_sample": [
+    "1992-09-29",
+    "1993-08-10",
+    "1995-11-24",
+    "1997-06-18",
+    "1998-08-10",
+    "1998-11-04",
+    "1999-04-13",
+    "2006-09-26",
+    "2007-11-23",
+    "2008-04-23",
+    "2010-07-09",
+    "2012-07-31",
+    "2014-09-22",
+    "2016-01-14",
+    "2016-10-14",
+    "2017-05-11",
+    "2017-11-06",
+    "2018-03-06",
+    "2022-12-12",
+    "2023-04-12",
+    "2024-05-13",
+    "2026-03-06"
+  ],
+  "recent_population": 5,
+  "recent_sample": [
+    "2026-11-02"
+  ],
+  "selected_dates": [
+    "1992-09-29",
+    "1993-08-10",
+    "1995-11-24",
+    "1997-06-18",
+    "1998-08-10",
+    "1998-11-04",
+    "1999-04-13",
+    "2006-09-26",
+    "2007-11-23",
+    "2008-04-23",
+    "2010-07-09",
+    "2012-07-31",
+    "2014-09-22",
+    "2016-01-14",
+    "2016-10-14",
+    "2017-05-11",
+    "2017-11-06",
+    "2018-03-06",
+    "2022-12-12",
+    "2023-04-12",
+    "2024-05-13",
+    "2026-03-06",
+    "2026-11-02"
+  ],
+  "expected_base_requests": 46,
+  "scope": "完整日期池；独立测试库按本次23个完整日期投影执行正式规划、下载、入队、归档和查询；不宣称全历史完成。",
+  "pool": "limit_up_pool",
+  "network_policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "passed": true,
+  "phases": [
+    {
+      "label": "sample_initialization",
+      "project": "ths-yuanhang-limit-up-pool",
+      "requests": 24,
+      "response_bytes": 223773,
+      "wire_bytes": 45200,
+      "queued_messages": 23,
+      "queued_bytes": 68756,
+      "units": 23,
+      "routes": {
+        "proxy_requests": 24
+      }
+    },
+    {
+      "label": "explicit_historical_audit",
+      "project": "ths-yuanhang-limit-up-pool",
+      "requests": 22,
+      "response_bytes": 138242,
+      "wire_bytes": 28876,
+      "queued_messages": 22,
+      "queued_bytes": 49681,
+      "units": 22,
+      "routes": {
+        "proxy_requests": 22
+      }
+    },
+    {
+      "label": "explicit_recent_recheck",
+      "project": "ths-yuanhang-limit-up-pool",
+      "requests": 2,
+      "response_bytes": 85531,
+      "wire_bytes": 16324,
+      "queued_messages": 1,
+      "queued_bytes": 19074,
+      "units": 1,
+      "routes": {
+        "proxy_requests": 2
+      }
+    },
+    {
+      "label": "recent_nochange",
+      "project": "ths-yuanhang-limit-up-pool",
+      "requests": 0,
+      "response_bytes": 0,
+      "wire_bytes": 0,
+      "queued_messages": 0,
+      "queued_bytes": 0,
+      "units": 0,
+      "routes": {
+        "proxy_requests": 0
+      }
+    },
+    {
+      "label": "history_nochange",
+      "project": "ths-yuanhang-limit-up-pool",
+      "requests": 0,
+      "response_bytes": 0,
+      "wire_bytes": 0,
+      "queued_messages": 0,
+      "queued_bytes": 0,
+      "units": 0,
+      "routes": {
+        "proxy_requests": 0
+      }
+    }
+  ],
+  "routes": {
+    "proxy_requests": 48
+  },
+  "pending": 0,
+  "content_sha256": {
+    "2026-11-02": "c49e6542179f0d5a8657330d5fe144e61ee194881f9e4868dd71193691632baf",
+    "1992-09-29": "160b560f2b9573d95843d21a67961f2055fa9a39407f7843725d4381fe6229f3",
+    "1993-08-10": "079adc99e3bd7634656a7eedb99802249bafe587c8ba79c9424c9fdad1afbef5",
+    "1995-11-24": "cbddba67794c588e2ba79a79d90feb9a48d75de6ee8417ef13c549d04ae1cdd0",
+    "1997-06-18": "65d8714820d5feff00cece29ddbde1529a071dad1eee023dbc8ea969abe61828",
+    "1998-08-10": "86f56174bdc430f4ec6d5e071a216973a778ad5887048fb250d82d29a79a0577",
+    "1998-11-04": "693e943c099997484e1375d0fa52d2f7014b65ad9674bbdb68592e2287428eb3",
+    "1999-04-13": "4546817da7be16b90180f7ef9e2d37b25a6bfa7d0a69a1b8fe80faeb4da1ab0b",
+    "2006-09-26": "fcf06294b8918a14e09591e174476075f6374e7f58395b3f33d529288af3ed2d",
+    "2007-11-23": "2af7baa299623a2df83d5e037a5bdfc79023cc3dc02e23fc36efd40f14601aa5",
+    "2008-04-23": "242d2f9c63e503470d317464bbff94d3d526366c4d82bbce1427d6c31d55b4f3",
+    "2010-07-09": "1f2c9a56bec72399215617efd02488358ba3c3abecb94b46590971c79c22dfb7",
+    "2012-07-31": "99aa0357973e47f7f54d0e309193fa366761f11f8d20a70b28bc506ff1249ca5",
+    "2014-09-22": "398159f5e0f85c4a4fa6faf694d18e455b7d7d3111e5301a90e34a398cc3b33d",
+    "2016-01-14": "36d0ec5a104cf0be6b55271b2e47c45564f0510018b9ec9462ca201eaf74581d",
+    "2016-10-14": "a50be21ac05a612dbac05cfec3bc7afdc9afc1f75a650e72d643b7b18227d1c1",
+    "2017-05-11": "2d2888fa0359a9c15702f52d4ca9bf02de48d2cf181df571a7700c819b65f208",
+    "2017-11-06": "3c51cfa931b0f7393f48367a5d25cb5e49c1982e70af0cc5939f472678f47dbc",
+    "2018-03-06": "1fd1dcbd3bcc04408b305ed60f52f6e295b0861e16b568c23968512dc4f31a37",
+    "2022-12-12": "dbf9b5e3f05b17b5a0e8cb50ffd16f694c5660da6f8289145693973a6e5fb201",
+    "2023-04-12": "7981b7914441231406005dc73f108e98d3bab2a6cec29f57c21a9e74d13f570e",
+    "2024-05-13": "8c7e9fb659b0e47baf538e2fb02ce970ec883868cdcf55c4dc1bc02596a182db",
+    "2026-03-06": "2719e223b46de9c68d9bc94c84d7120392179f8da72192da19f94cb347996cf1"
+  },
+  "actual_sample_fraction": 0.05203619909502263,
+  "untested": "本池其余419个日期本轮未实采；历史原因未扩采。"
+}

@@ -5,7 +5,7 @@ from functools import partial
 from sqlalchemy import text
 
 from empire.core.time import CHINA
-from empire.features.yuanhang_limits.contract import BASE_URL, DOMAIN, MAX_UNIT_BYTES, SPLIT_POOL
+from empire.features.yuanhang_limits.contract import BASE_URL, DOMAIN, MAX_UNIT_BYTES
 from empire.features.yuanhang_limits.intraday_store import IntradayStore
 from empire.plugins.collection.unit_prefetch import prefetch_units
 from empire.plugins.collectors.support import wait_for_capacity
@@ -58,21 +58,14 @@ async def dispatch(collector, *, fresh, baseline_revision):
     mode = await phase(collector.query, now)
     if mode == 'live':
         return await collect_live(collector, now)
-    if mode == 'daily' and collector.pool == SPLIT_POOL:
-        return await sprint_maintenance(collector, now, fresh=fresh, baseline_revision=baseline_revision)
-    if mode == 'idle' or (not fresh and await collector.live_store.maintenance_day(collector.pool) == day):
+    if mode == 'idle':
         collector.stats.update(status='complete', collected=0, requests=0, response_bytes=0,
             wire_bytes=0, queued_messages=0, queued_bytes=0, total_units=0, completed_units=0, notice='非采样时段或本日收盘维护已完成')
         return dict(phase='complete', storage='none', cutoff=day, collected=0, queued_messages=0)
-    result = await collector._execute(fresh=fresh, baseline_revision=baseline_revision, history_only=True)
-    # An older interrupted plan must finish first; do not suppress today's next round.
-    target = await collector.query.collection_plan(collector.pool, **collector.plan_options())
-    if result['cutoff'] == target['cutoff'] and not target['units']:
-        await collector.live_store.mark_maintenance(collector.pool, day)
-    return result
+    return await pool_maintenance(collector, now, fresh=fresh, baseline_revision=baseline_revision)
 
 
-async def sprint_maintenance(collector, now, *, fresh, baseline_revision):
+async def pool_maintenance(collector, now, *, fresh, baseline_revision):
     """One registered task: finish recent work, then audit in a later evening run."""
     day = now.date().isoformat()
     state = await collector.ingest.checkpoint(collector.job_key)
