@@ -15,8 +15,8 @@ def collector(monkeypatch):
     c.http, c.ingest = object(), object()
     c.identity = SimpleNamespace(
         sessions=NodeSessions(),
-        registry=SimpleNamespace(load=AsyncMock(return_value={
-            n: SimpleNamespace(provisioned=True) for n in ('node001', 'node002')})),
+        get_profiles=AsyncMock(return_value={
+            n: SimpleNamespace(provisioned=True) for n in ('node001', 'node002')}),
         online_codes=lambda: {'node001', 'node002'},
         login=AsyncMock(side_effect=lambda node, **kw: SimpleNamespace(proxy_code=node)))
     monkeypatch.setattr(module, 'wait_for_capacity', AsyncMock())
@@ -70,7 +70,7 @@ async def test_offline_preferred_node_not_used_and_missing_identity_not_borrowed
     monkeypatch.setattr(module, 'fetch_history', AsyncMock(return_value='snapshot'))
     await c.fetch(('000001.SZ', 'node001', '2026-10-23'))
     assert c.identity.login.await_args.args[0] == 'node002'
-    c.identity.registry.load.return_value = {}
+    c.identity.get_profiles.return_value = {}
     with pytest.raises(ValueError, match='健康身份'):
         await c.fetch(('000001.SZ', 'node001', '2026-10-23'))
 

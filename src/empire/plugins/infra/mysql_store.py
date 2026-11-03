@@ -112,7 +112,7 @@ class MySQLPlugin:
         """Serialized writes and collection-critical reads, using engine (not read_engine)."""
         if self.control_lane is None:
             raise RuntimeError("MySQL 尚未启动")
-        return await self.control_lane.call(operation, *args)
+        return await self.control_lane.call(operation, *args, admission_timeout=30)
 
     async def archive(self, records: list[dict]) -> list[dict]:
         """Commit only business writes. Redis ownership is handled by the archive plugin."""
@@ -140,7 +140,7 @@ class MySQLPlugin:
         if self._stopping is None:
             for lane in (self.read_lane, self.control_lane):
                 if lane:
-                    lane.accepting = False
+                    lane.begin_close()
             self._stopping = asyncio.create_task(self._stop())
         await settle(self._stopping)
 

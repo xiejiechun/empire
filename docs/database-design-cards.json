@@ -473,7 +473,7 @@
         "regression": "页面P95<=50ms，100000导入<=20秒",
         "budget": "512MiB含索引，单指数<10000成员；100000实测不冒充1000000实测",
         "status": "measured",
-        "evidence": "docs/evidence/preview-indices-capacity-2026-10-30.json"
+        "evidence": "docs/evidence/sql-pressure-indices-capacity-2026-11-03.json"
       },
       "integrity": [
         "完整目录",
@@ -514,7 +514,7 @@
         "regression": "页面P95<=50ms，100000导入<=20秒",
         "budget": "512MiB含索引，单指数<10000成员；100000实测不冒充1000000实测",
         "status": "measured",
-        "evidence": "docs/evidence/preview-indices-capacity-2026-10-30.json"
+        "evidence": "docs/evidence/sql-pressure-indices-capacity-2026-11-03.json"
       },
       "integrity": [
         "完整目录",
@@ -579,7 +579,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview-index-prices-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/sql-pressure-index-prices-capacity-2026-11-03.json",
         "sample": "独立MySQL100000合成日行、1000指数",
         "budget": "导入<=30秒，200行查询P95<=50ms，分配<=64MiB；规划历史2GiB"
       },
@@ -614,7 +614,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview-index-prices-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/sql-pressure-index-prices-capacity-2026-11-03.json",
         "sample": "独立MySQL100000合成日行、1000指数",
         "budget": "导入<=30秒，200行查询P95<=50ms，分配<=64MiB；规划历史2GiB"
       },
@@ -1488,7 +1488,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-ten-day-native-capacity-2026-11-02.json",
+        "evidence": "docs/evidence/sql-pressure-yuanhang-capacity-2026-11-03.json",
         "sample": "100万日线/4000年度头/2000事件/30000股本/5578证券状态，独立MySQL",
         "growth": "2092万至3486万日线为线性规划，未实测全池；细节见实测证据和设计正文",
         "page_limit": 500,
@@ -1529,7 +1529,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-ten-day-native-capacity-2026-11-02.json",
+        "evidence": "docs/evidence/sql-pressure-yuanhang-capacity-2026-11-03.json",
         "sample": "100万日线/4000年度头/2000事件/30000股本/5578证券状态，独立MySQL",
         "growth": "2092万至3486万日线为线性规划，未实测全池；细节见实测证据和设计正文",
         "page_limit": 500,

@@ -64,3 +64,37 @@ async def test_range_delete_stale_full_disjoint_update_and_cold_replay(native): 
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', count)
     assert not writes and await store.client.xlen(store.stream) == 0
+
+
+async def test_planning_batches_sql_and_reuses_calendar_without_changing_scope(native):  # noqa: F811
+    from sqlalchemy import text
+
+    _, c, q, store, archive = native
+    codes = [f'{600000+i:06}.SH' for i in range(1, 66)]
+    payload = daily_years(snapshot((bar('2023-12-29'),)), code=CODE, through=date(2023, 12, 31))[0]
+    for code in codes:
+        await publish(c, archive, envelope({**payload, 'code': code}))
+    reads = []
+    def count(conn, cursor, sql, *args):
+        if sql.startswith('SELECT'):
+            reads.append(sql)
+    event.listen(q.mysql.read_engine, 'before_cursor_execute', count)
+    try:
+        recent = await q.daily_plans(store.prefix, codes, '2023-12-31', scope='recent')
+        assert set(recent) == set(codes) and all(p['mode'] == 'skip' for p in recent.values())
+        assert len(reads) == 5  # Two head/coverage groups and one formal calendar.
+        assert sum('FROM trade_calendar' in sql for sql in reads) == 1
+        reads.clear()
+        forced = await q.daily_plans(store.prefix, codes, '2023-12-31', force=True)
+        assert all(p['mode'] == 'full' for p in forced.values()) and len(reads) == 2
+        missing = '000099.SZ'
+        assert (await q.daily_plans(store.prefix, [missing], '2023-12-31', scope='recent'))[missing]['mode'] == 'skip'
+        assert (await q.daily_plans(store.prefix, [missing], '2023-12-31', scope='backfill'))[missing]['mode'] == 'full'
+    finally:
+        event.remove(q.mysql.read_engine, 'before_cursor_execute', count)
+    with q.mysql.engine.begin() as conn:
+        conn.execute(text('DELETE FROM collection_state WHERE namespace=:ns AND project_id=:p'),
+                     dict(ns=store.prefix, p=c.project_id))
+    import pytest
+    with pytest.raises(ValueError, match='显式转换覆盖状态'):
+        await q.daily_plans(store.prefix, codes, '2023-12-31')

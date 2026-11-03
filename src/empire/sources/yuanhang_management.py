@@ -21,7 +21,7 @@ class YuanhangManagement:
         active = {r['id']: r for r in health.get('active_runs', [])}
         warning = []
         try:
-            profiles = await self.registry.load()
+            profiles = await service.get_profiles() if service else await self.registry.load()
         except Exception:
             profiles = {}
             warning.append('身份配置读取失败；可能需显式迁移或无法解密，原档案保留')

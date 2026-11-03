@@ -219,7 +219,16 @@ class YuanhangDataPlugin:
 
     async def daily_plans(self, namespace, codes, through, *, force=False, scope='all'):
         from empire.features.yuanhang.plan_query import read_plans
-        return await self._read(lambda conn: read_plans(conn, namespace, codes, through, force=force, scope=scope))
+        if not isinstance(codes, (list, tuple)) or len(codes) > 15000 or len(set(codes)) != len(codes):
+            raise ValueError('远航版规划证券集合无效')
+        for code in codes:
+            security_identity(code)
+        plans, calendar_cache = {}, {}
+        for offset in range(0, len(codes), 64):
+            batch = codes[offset:offset + 64]
+            plans.update(await self._read(lambda conn: read_plans(conn, namespace, batch, through,
+                force=force, scope=scope, calendar_cache=calendar_cache)))
+        return plans
 
     async def financial_markets(self):
         def read(conn):

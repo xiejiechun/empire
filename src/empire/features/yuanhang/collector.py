@@ -83,7 +83,7 @@ class YuanhangCollector:
         await wait_for_capacity(self.ingest, self.stats)
         excluded = set()
         for attempt in range(self.request_retries + 1):
-            profiles = await self.identity.registry.load()
+            profiles = await self.identity.get_profiles()
             nodes = sorted(n for n in self.identity.online_codes() - excluded
                            if n in profiles and profiles[n].provisioned)
             if not nodes:
@@ -255,7 +255,7 @@ class YuanhangCollector:
                 '历史初始化/补缺，每轮最多64只证券' if cursor['maintenance_scope'] == 'backfill' else
                 '最近10个交易日；旧历史缺口另轮补齐')
             if cursor['phase'] == 'collecting' and positions:
-                profiles = await self.identity.registry.load()
+                profiles = await self.identity.get_profiles()
                 nodes = sorted(code for code in self.identity.online_codes()
                                if code in profiles and profiles[code].provisioned)
                 if not nodes:

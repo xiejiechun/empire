@@ -21,6 +21,10 @@ class DailyPlan:
 
 def calendar_dates(days, through):
     """Require a contiguous calendar, including source-declared non-trading days."""
+    if isinstance(days, PlanningCalendar):
+        if days.through != through:
+            raise ValueError('Planning calendar cutoff mismatch')
+        return days.trades
     if not days or len(days) > 150 * 366:
         raise ValueError('Planning calendar missing or exceeds limit')
     trade_days, previous = [], None
@@ -35,6 +39,17 @@ def calendar_dates(days, through):
     if not trade_days or trade_days[-1] != through or days[-1][0] < through:
         raise ValueError('Planning cutoff is not a verified trading day')
     return trade_days
+
+
+@dataclass(frozen=True, init=False)
+class PlanningCalendar:
+    """Validated once per planning round; never a cross-round coverage cache."""
+    through: str
+    trades: tuple[str, ...]
+
+    def __init__(self, days, through):
+        object.__setattr__(self, 'through', through)
+        object.__setattr__(self, 'trades', tuple(calendar_dates(days, through)))
 
 
 def plan_daily(code, *, through, calendar, coverage=None, full_checked=None,

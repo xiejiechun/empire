@@ -129,6 +129,7 @@ async def test_configuration_failure_never_sends_then_recovers(monkeypatch):
     assert not service.http.calls and service.health()['automatic_application_paused']
     assert 'secret' not in str(service.health())
     monkeypatch.setattr(service.registry, 'ensure', original)
+    service.next_reload = 0  # Retry after the short configuration-failure backoff.
     await service.reconcile()
     assert len(service.http.calls) == 1 and not service.health()['automatic_application_paused']
 

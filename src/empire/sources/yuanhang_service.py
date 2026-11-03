@@ -25,6 +25,8 @@ class IdentityService:
         self.next_reload = 0
         self.closed = False
         self.lock = asyncio.Lock()
+        self.reload_lock = asyncio.Lock()
+        self.reload_failed = False
         self.inflight = set()
         self.runs = IdentityRuns(records, PROJECT)
         self.sessions = NodeSessions()
@@ -35,10 +37,34 @@ class IdentityService:
         return {e.code for e in self.pool.entries.values()
                 if e.expires > now and e.cooldown <= now}
 
-    async def reload(self):
-        self.profiles = await self.registry.load()
-        self.sessions.prune(self.profiles)
-        self.next_reload = monotonic() + 60
+    async def reload(self, *, if_expired=False):
+        async with self.reload_lock:
+            if self.closed:
+                raise RuntimeError('远航身份服务已停止')
+            if if_expired and monotonic() < self.next_reload:
+                return
+            try:
+                profiles = await self.registry.load()
+            except BaseException:
+                self.reload_failed = True
+                self.next_reload = monotonic() + 5
+                raise
+            if self.closed:
+                raise RuntimeError('远航身份服务已停止')
+            self.profiles = profiles
+            self.sessions.prune(profiles)
+            self.reload_failed = False
+            self.next_reload = monotonic() + 60
+
+    async def get_profiles(self):
+        """One bounded snapshot shared by collection, login and management."""
+        if self.closed:
+            raise RuntimeError('远航身份服务已停止')
+        if monotonic() >= self.next_reload:
+            await self.reload(if_expired=True)
+        if self.reload_failed:
+            raise RuntimeError('远航身份配置核验失败，等待刷新后重试')
+        return dict(self.profiles)
 
     async def reconcile(self):
         """One serialized pass; persisted intent arbitrates other processes too."""
@@ -50,7 +76,9 @@ class IdentityService:
                 if self.closed:
                     return
                 if monotonic() >= self.next_reload:
-                    await self.reload()
+                    await self.reload(if_expired=True)
+                if self.reload_failed:
+                    return
                 missing = self.online_codes() - self.profiles.keys()
                 if missing:
                     self.profiles = await self.registry.ensure(missing)
@@ -81,7 +109,8 @@ class IdentityService:
                     finally:
                         self.current = None
         except Exception:
-            self.next_reload = 0
+            self.reload_failed = True
+            self.next_reload = monotonic() + 5
             self.error = '身份配置暂不可用，保留档案并暂停申请，等待恢复'
         finally:
             USE_PROXY.reset(tokens[0])
@@ -106,7 +135,7 @@ class IdentityService:
         self.inflight.add(task)
         tokens = USE_PROXY.set(True), PROXY_FALLBACK.set(False)
         try:
-            profiles = await self.registry.load()
+            profiles = await self.get_profiles()
             profile = profiles.get(code)
             if profile is None or not profile.provisioned:
                 raise ValueError('该节点身份尚未就绪，请查看远航节点身份服务状态')

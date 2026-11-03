@@ -49,8 +49,8 @@ def harness(monkeypatch, codes, *, financial=False, mode='full'):
     c.query = SimpleNamespace(collection_scope=AsyncMock(return_value=(codes, '2026-10-23')),
         daily_plans=AsyncMock(side_effect=plans), financial_markets=AsyncMock(return_value={}),
         has_history=AsyncMock(return_value=False))
-    c.identity = SimpleNamespace(registry=SimpleNamespace(load=AsyncMock(return_value={
-        'node': SimpleNamespace(provisioned=True)})), online_codes=lambda: {'node'})
+    c.identity = SimpleNamespace(get_profiles=AsyncMock(return_value={
+        'node': SimpleNamespace(provisioned=True)}), online_codes=lambda: {'node'})
     c.records = SimpleNamespace(sanitize_text=str)
     c.fetch = AsyncMock(return_value=SimpleNamespace(observed_at=datetime.now(timezone.utc)))
     c.confirmation = SimpleNamespace(page_status=AsyncMock())
@@ -150,7 +150,7 @@ async def test_all_skipped_needs_no_source_or_identity_request(monkeypatch):
         USE_PROXY.reset(token)
     assert result['pages'] == 0 and result['skipped_units'] == 1
     c.fetch.assert_not_awaited()
-    c.identity.registry.load.assert_not_awaited()
+    c.identity.get_profiles.assert_not_awaited()
 
 
 async def test_backfill_is_bounded_and_resume_does_not_extend_the_batch(monkeypatch):

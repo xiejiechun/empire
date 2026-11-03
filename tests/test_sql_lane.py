@@ -32,7 +32,7 @@ async def test_bounded_admission_and_queued_cancellation():
         with pytest.raises(RuntimeError, match="队列已满"):
             await lane.call(lambda: None)
         assert lane.health() == {"active": 1, "waiting": 1, "workers": 1,
-                                 "capacity": 2, "rejected": 1}
+                                 "capacity": 2, "rejected": 1, "admission_waiting": 0}
         queued.cancel()
         with pytest.raises(asyncio.CancelledError):
             await queued

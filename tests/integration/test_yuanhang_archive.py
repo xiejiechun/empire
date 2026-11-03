@@ -22,8 +22,8 @@ pytestmark = [pytest.mark.integration,
 
 @pytest.fixture
 async def native(monkeypatch):
-    identity = SimpleNamespace(sessions=NodeSessions(), registry=SimpleNamespace(load=AsyncMock(return_value={
-        'node-test': SimpleNamespace(provisioned=True)})), online_codes=lambda: {'node-test'})
+    identity = SimpleNamespace(sessions=NodeSessions(), get_profiles=AsyncMock(return_value={
+        'node-test': SimpleNamespace(provisioned=True)}), online_codes=lambda: {'node-test'})
     async def start(self, context):
         return {'yuanhang.identity': identity}
     monkeypatch.setattr(YuanhangIdentityPlugin, 'start', start)
