@@ -14,11 +14,23 @@ from empire.features.yuanhang_limits.contract import (
     day_value,
     pool_value,
 )
-from empire.features.yuanhang_limits.model import parse_page, parse_reason
+from empire.features.yuanhang_limits.model import SourceTimeDateError, parse_page, parse_reason
 from empire.sources.security_identity import resolve_identity
 
 
-async def fetch_pool(http, pool, day, *, project_id, max_retries=1, reservation=None, identity_resolver=None):
+def earlier_pool_time(response, *, day, page):
+    """Only an explicitly detected earlier epoch is eligible for live retry."""
+    try:
+        parse_page(json.loads(response.content, parse_float=Decimal), day, page)
+    except SourceTimeDateError as exc:
+        return exc.source_metadata['source_date'] < day
+    except (ValueError, TypeError, KeyError, UnicodeError, OverflowError, OSError):
+        pass
+    return False
+
+
+async def fetch_pool(http, pool, day, *, project_id, max_retries=1, reservation=None,
+                     identity_resolver=None, retry_earlier_time=False):
     pool_value(pool)
     day_value(day)
     policy = http.response_policy('generic')
@@ -33,7 +45,8 @@ async def fetch_pool(http, pool, day, *, project_id, max_retries=1, reservation=
             allowed_domains=(DOMAIN,), project_id=project_id, max_redirects=0,
             headers={'Referer': 'PC_Hevo_FocusLimitUp_ChangeGridWidget'},
             policy=policy, reservation=reservation, max_retries=max_retries,
-            strip_credentials=True)
+            strip_credentials=True,
+            retry_response=partial(earlier_pool_time, day=day, page=page) if retry_earlier_time else None)
         try:
             received += len(response.content)
             actual_wire = getattr(response, 'extensions', {}).get('download', {}).get('wire_bytes')
@@ -57,12 +70,20 @@ async def fetch_pool(http, pool, day, *, project_id, max_retries=1, reservation=
                                     source_name=row.get('name'), reservation=reservation, metrics=auxiliary)
                                 identities[code] = (symbol, 'sina_lookup')
             values, count, page_count = parse_page(obj, day, page, identities=identities)
+            if total is not None and (total != count or pages != page_count):
+                raise ValueError('涨停分析跨页总量改变')
+            if rows and values and rows[-1]['unified_code'][:6] >= values[0]['unified_code'][:6]:
+                raise ValueError('涨停分析跨页排序重复或倒序')
+        except (ValueError, TypeError, KeyError, UnicodeError, OverflowError, OSError) as exc:
+            # An auxiliary identity lookup may already own the failing response.
+            if not getattr(exc, 'source_diagnostic', None):
+                exc.source_metadata = {**getattr(exc, 'source_metadata', {}),
+                                       'trade_date': day, 'pool_type': pool, 'page': page}
+                exc.source_diagnostic = dict(request_url=str(response.url), status_code=response.status_code,
+                                             raw_body=response.content, metadata=exc.source_metadata)
+            raise
         finally:
             response.close()
-        if total is not None and (total != count or pages != page_count):
-            raise ValueError('涨停分析跨页总量改变')
-        if rows and values and rows[-1]['unified_code'][:6] >= values[0]['unified_code'][:6]:
-            raise ValueError('涨停分析跨页排序重复或倒序')
         rows.extend(values)
         total, pages = count, page_count
         page += 1

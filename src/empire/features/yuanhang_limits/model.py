@@ -24,6 +24,17 @@ def digest(value):
                                     separators=(',', ':')).encode()).hexdigest()
 
 
+class SourceTimeDateError(ValueError):
+    """A valid source epoch belongs to a different day; never normalize it away."""
+
+    def __init__(self, field, code, day, seconds, stamp):
+        super().__init__(f'{field}：来源时刻跨出查询交易日（{code}，查询{day}，'
+                         f'来源{stamp.isoformat()}，原值{seconds}）')
+        self.source_metadata = dict(field=field, unified_code=code, trade_date=day,
+                                    source_seconds=str(seconds), source_datetime=stamp.isoformat(),
+                                    source_date=stamp.date().isoformat())
+
+
 def decimal_value(value, field):
     if value is None:
         return None
@@ -99,7 +110,7 @@ def member(row, day, *, identities=None):
             value = int(value)
             stamp = datetime.fromtimestamp(value, CHINA)
             if value != 0 and stamp.date().isoformat() != day:
-                raise ValueError(f'{key}：来源时刻跨出查询交易日')
+                raise SourceTimeDateError(key, result['unified_code'], day, value, stamp)
         result[key] = value
     return result
 

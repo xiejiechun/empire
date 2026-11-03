@@ -171,7 +171,8 @@ def test_reason_documented_code_change_preserves_historical_query_identity():
 
 
 def client(*objects, budget=8 * 1024 * 1024):
-    responses = [SimpleNamespace(content=json.dumps(obj).encode(), close=Mock()) for obj in objects]
+    responses = [SimpleNamespace(content=json.dumps(obj).encode(), close=Mock(),
+                                 url='http://dq.10jqka.com.cn/change-table', status_code=200) for obj in objects]
     http = SimpleNamespace(request=AsyncMock(side_effect=responses),
                            response_policy=Mock(return_value=SimpleNamespace(max_body_bytes=budget)))
     return http, responses

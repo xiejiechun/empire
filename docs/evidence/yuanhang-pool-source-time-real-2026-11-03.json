@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "at": "2026-11-03T09:56:37.031688+08:00",
+  "pool": "limit_up_pool",
+  "scope": "one complete current-date pool; earlier failed responses unavailable",
+  "network_policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "routes": {
+    "proxy_requests": 1
+  },
+  "source_total": 35,
+  "content_sha256": "07ed244ed065ccde0348fe6edfe6d9b55ed239df05e393bdda2d3e5a605c2e42",
+  "requests": 1,
+  "response_bytes": 23263,
+  "archive_messages": 0,
+  "sql_business_dml": 0,
+  "exact_content_and_key_set_verified": true,
+  "bindings": {
+    "src/empire/features/yuanhang_limits/model.py": "05c52c29a5b7141d983a420712a316483168a974e3575259fc0c29bf6bab1a00",
+    "src/empire/features/yuanhang_limits/source.py": "57ed3249ead43e7526645e3ebe8ca23878b9708ee6a6511a05ae87dcea3c927e",
+    "src/empire/features/yuanhang_limits/collector.py": "63b7e95b43e2c57e80cc7b644dba49ceed0da98d206919976ab8a691f3059a3d",
+    "src/empire/features/yuanhang_limits/intraday.py": "7ce825c221a98e10ecc07818703b409cd9c636bad8922e56d4633a833bc0f054",
+    "src/empire/features/yuanhang_limits/intraday_store.py": "300e5261b197a95934a05706380e2a2ed74907775e50144c2c9105d9e1540450",
+    "src/empire/features/yuanhang_limits/intraday_query.py": "c4a10993d7bc9ce84cb16c00dbee78b3277864f9cd8914d934a199dd840d484f"
+  }
+}

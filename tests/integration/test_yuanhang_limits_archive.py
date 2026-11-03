@@ -120,7 +120,8 @@ async def test_invalid_equal_count_duplicate_keeps_queue_checkpoint(limits):
     manager, c, q = limits
     await collect(c)
     before = await c.ingest.checkpoint(c.job_key)
-    c.http.request.side_effect = lambda *a, **k: httpx.Response(200, json=page([row(), row()]))
+    c.http.request.side_effect = lambda method, url, **k: httpx.Response(
+        200, request=httpx.Request(method, url), json=page([row(), row()]))
     with pytest.raises(ValueError):
         await collect(c)
     assert await c.ingest.checkpoint(c.job_key) == before

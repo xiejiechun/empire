@@ -66,7 +66,8 @@ class LimitCollector:
         else:
             result = await fetch_pool(self.http, self.pool, key, project_id=self.project_id,
                 max_retries=self.request_retries, reservation=reservation,
-                identity_resolver=getattr(self.query, 'resolve_identities', None))
+                identity_resolver=getattr(self.query, 'resolve_identities', None),
+                retry_earlier_time=self.stats.get('storage') == 'redis_only')
         self.stats['requests'] += result.pop('requests')
         self.stats['response_bytes'] += result.pop('response_bytes')
         wire = result.pop('wire_bytes')
