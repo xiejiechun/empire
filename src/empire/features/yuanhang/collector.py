@@ -20,6 +20,7 @@ from empire.features.yuanhang.contract import (
     PRICE_PROJECT,
     SOURCE,
 )
+from empire.features.yuanhang.node_selection import select_node
 from empire.plugins.collection.unit_prefetch import prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -81,14 +82,10 @@ class YuanhangCollector:
         code, preferred, through = unit
         plan = self.plans.get(code, {})
         await wait_for_capacity(self.ingest, self.stats)
-        excluded = set()
+        failures = {}
+        last_error = None
         for attempt in range(self.request_retries + 1):
-            profiles = await self.identity.get_profiles()
-            nodes = sorted(n for n in self.identity.online_codes() - excluded
-                           if n in profiles and profiles[n].provisioned)
-            if not nodes:
-                raise ValueError('远航版没有可重试的健康身份节点，保留当前断点')
-            node = preferred if preferred in nodes else nodes[0]
+            node = await select_node(self.identity, preferred, failures, last_error=last_error)
             try:
                 return await self.fetch_authenticated(node, code, through, plan, reservation)
             except (EmptyHistoryResponse, IncompleteFinancialHistory) as exc:
@@ -108,7 +105,8 @@ class YuanhangCollector:
                 if (isinstance(exc, SensitiveRequestError) and not exc.retryable_transport
                         or attempt >= self.request_retries):
                     raise
-                excluded.add(node)
+                failures[node] = failures.get(node, 0) + 1
+                last_error = exc
                 self.stats['node_transport_retries'] = self.stats.get('node_transport_retries', 0) + 1
                 await asyncio.sleep(retry_delay(attempt + 1))
 

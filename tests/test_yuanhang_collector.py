@@ -132,3 +132,25 @@ async def test_idle_and_transport_failures_share_one_retry_budget(monkeypatch):
     assert await c.fetch(('000001.SZ', 'node001', '2026-10-30')) == 'snapshot'
     assert fetch.await_count == 3
     assert [call.args[0] for call in c.identity.login.await_args_list] == ['node001', 'node001', 'node002']
+
+
+@pytest.mark.parametrize('financial', [False, True])
+@pytest.mark.parametrize('budget', [0, 1, 30])
+async def test_single_recovered_node_uses_entire_transport_budget(monkeypatch, financial, budget):
+    c = collector(monkeypatch)
+    c.financial, c.request_retries = financial, budget
+    c.identity.online_codes = lambda: {'node001'}
+    fetch = AsyncMock(side_effect=httpx.ProxyError('fixture'))
+    monkeypatch.setattr(module, 'fetch_history', fetch)
+    with pytest.raises(httpx.ProxyError, match='fixture'):
+        await c.fetch(('000001.SZ', 'node001', '2026-11-03'))
+    assert fetch.await_count == budget + 1
+    assert {call.args[0] for call in c.identity.login.await_args_list} == {'node001'}
+
+
+async def test_all_nodes_failed_once_can_recover_with_remaining_budget(monkeypatch):
+    c = collector(monkeypatch)
+    fetch = AsyncMock(side_effect=[httpx.ProxyError('one'), httpx.ProxyError('two'), 'snapshot'])
+    monkeypatch.setattr(module, 'fetch_history', fetch)
+    assert await c.fetch(('000001.SZ', 'node001', '2026-11-03')) == 'snapshot'
+    assert [call.args[0] for call in c.identity.login.await_args_list] == ['node001', 'node002', 'node001']
