@@ -20,6 +20,7 @@ from empire.features.yuanhang.contract import (
     PRICE_PROJECT,
     SOURCE,
 )
+from empire.features.yuanhang.node_diagnostics import failure
 from empire.features.yuanhang.node_selection import select_node
 from empire.plugins.collection.unit_prefetch import prefetch_units
 from empire.plugins.collectors.support import (
@@ -86,9 +87,10 @@ class YuanhangCollector:
         last_error = None
         confirmed_null = False
         confirmation_node = None
+        diagnostics = dict(security=code, through=through, retry_limit=self.request_retries, failures=[])
         for attempt in range(self.request_retries + 1):
             node = await select_node(self.identity, preferred, failures, last_error=last_error,
-                                     required_node=confirmation_node)
+                                     required_node=confirmation_node, diagnostics=diagnostics)
             try:
                 return await self.fetch_authenticated(node, code, through, plan, reservation)
             except MissingFinancialValue as exc:
@@ -111,6 +113,8 @@ class YuanhangCollector:
                 self.stats['idle_connection_retries'] = self.stats.get('idle_connection_retries', 0) + 1
                 await asyncio.sleep(retry_delay(attempt + 1))
             except (httpx.TransportError, SensitiveRequestError, TimeoutError) as exc:
+                diagnostics['failures'] = (diagnostics['failures'] + [failure(node, exc, attempt + 1)])[-5:]
+                exc.yuanhang_diagnostics = dict(diagnostics)
                 if (isinstance(exc, SensitiveRequestError) and not exc.retryable_transport
                         or attempt >= self.request_retries):
                     raise
@@ -336,6 +340,8 @@ class YuanhangCollector:
         except Exception as exc:
             self.stats.update(status='error', error=self.records.sanitize_text(exc))
             await record_error_safely(self.records, self.stats, self.project_id, exc, stage=stage,
+                fields={'metadata': exc.yuanhang_diagnostics}
+                if hasattr(exc, 'yuanhang_diagnostics') else None,
                 unavailable_message='远航错误记录暂不可用；已入队断点保留')
             raise
 

@@ -127,6 +127,28 @@ async def test_source_validation_failure_keeps_resume_position(native):
     assert await store.client.xlen(store.stream) == 0
 
 
+async def test_node_unavailable_evidence_reaches_redis_without_advancing(native):
+    import httpx
+
+    from empire.features.yuanhang.node_diagnostics import failure
+
+    _, c, _, store, _ = native
+    error = ValueError('远航节点不可用；最后失败节点：node-test')
+    error.yuanhang_diagnostics = dict(security=CODE, required_node='node-test',
+        failures=[failure('node-test', httpx.ProxyError('user:secret@host'), 3)],
+        wait_started=dict(counts={'cooldown': 1}), wait_finished=dict(counts={'missing_directory': 1}))
+    c.fetch = AsyncMock(side_effect=error)
+    with pytest.raises(ValueError, match='node-test'):
+        await c.execute()
+    summary = await c.records.list_error_summaries(c.project_id)
+    record = await c.records.get_error(c.project_id, summary['rows'][0]['id'])
+    assert record['metadata'] == error.yuanhang_diagnostics
+    assert 'secret' not in str(record)
+    state = await c.ingest.checkpoint(PRICE_JOB)
+    assert state['cursor']['next_index'] == 0 and state['cursor']['pages'] == 0
+    assert await store.client.xlen(store.stream) == 0
+
+
 async def test_persistent_financial_null_never_publishes_or_advances(native, monkeypatch):
     from empire.features.yuanhang import collector as module
     from empire.features.yuanhang.contract import FINANCIAL_JOB

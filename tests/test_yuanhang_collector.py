@@ -41,6 +41,19 @@ async def test_node_failure_uses_other_nodes_own_account_and_one_retry_budget(mo
     assert c.stats['node_transport_retries'] == 1
 
 
+async def test_final_transport_failure_records_actual_node_without_credentials(monkeypatch):
+    c = collector(monkeypatch)
+    c.request_retries = 0
+    monkeypatch.setattr(module, 'fetch_history', AsyncMock(side_effect=httpx.ProxyError('password@proxy')))
+    with pytest.raises(httpx.ProxyError) as caught:
+        await c.fetch(('000001.SZ', 'node002', '2026-11-05'))
+    detail = caught.value.yuanhang_diagnostics
+    assert detail['security'] == '000001.SZ'
+    assert detail['failures'][0]['node'] == 'node002'
+    assert detail['failures'][0]['attempt'] == 1
+    assert 'password' not in str(detail)
+
+
 @pytest.mark.parametrize('error', [AuthenticationError('native-login', -1), ValueError('bad frame'),
                                    SensitiveRequestError(ValueError('bad auth response'))])
 async def test_protocol_or_authentication_error_never_switches_identity(monkeypatch, error):
