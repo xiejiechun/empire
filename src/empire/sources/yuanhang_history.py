@@ -23,6 +23,21 @@ class IncompleteFinancialHistory(ValueError):
         super().__init__('Yuanhang free-float field omitted from validated partial capital history')
 
 
+class MissingFinancialValue(ValueError):
+    """Explicit source NULL, distinct from malformed or out-of-contract values."""
+
+    def __init__(self, field, day, code):
+        self.field, self.day, self.code = field, day, code
+        super().__init__(f'{code}: Yuanhang financial NULL field={field}, date={day}; '
+                         'required value unavailable, checkpoint retained')
+
+
+def _financial_number(value, field, day, code):
+    if value is None:
+        raise MissingFinancialValue(field, day, code)
+    return _number(value, label=str(field), signed=field == 454)
+
+
 def price_quality(op, high, low, close):
     """Derived source-quality bit 1; preserve reported values without repair."""
     return int(not (low <= min(op, close) <= max(op, close) <= high))
@@ -149,7 +164,8 @@ def normalize_actions(tables, *, unified_code: str, start: date, end: date,
     complete = [t for t in tables if {f for f, *_ in t['fields']} == ACTION_FIELDS]
     rows = complete[0]['rows'] if complete else _same_grid(tables, ACTION_FIELDS)
     for row in rows:
-        values = {field: _number(row[field], label=str(field), signed=field == 454) for field in ACTION_FIELDS - {1}}
+        values = {field: _financial_number(row[field], field, row[1], unified_code)
+                  for field in ACTION_FIELDS - {1}}
         if values[454] < 0 and any(values[f] != 0 for f in (455, 456, 460, 463)):
             raise ValueError('Yuanhang negative share ratio requires a pure consolidation event')
         if values[454] >= 0 and values[454] < values[460]:
@@ -172,7 +188,8 @@ def normalize_capital(tables, *, unified_code: str, start: date, end: date,
     for table in tables:
         for row in table['rows']:
             for field in sorted(fields & row.keys()):
-                shares = None if field == 407 and row[field] is None else _number(row[field], label=str(field))
+                shares = (None if field == 407 and row[field] is None else
+                          _financial_number(row[field], field, row[1], unified_code))
                 if shares is not None and shares <= 0:
                     raise ValueError('Yuanhang capital balance must be positive')
                 result.append(CapitalPoint(unified_code, _date(row[1]), CAPITAL_FIELDS[field], shares))

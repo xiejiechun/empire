@@ -65,3 +65,11 @@ async def test_wait_uses_shared_snapshot_without_sql_reload_each_second(timer, m
     with pytest.raises(ValueError, match='125秒'):
         await module.select_node(service, 'one', {})
     assert registry.load.await_count == 3  # t=0,60,120; no refresh on each poll
+
+
+async def test_confirmation_does_not_switch_to_other_healthy_node(timer):
+    service = identity()
+    service.get_profiles.return_value['two'].provisioned = True
+    service.online_codes = lambda: {'two'} | ({'one'} if timer[0] >= 10 else set())
+    assert await module.select_node(service, 'two', {'one': 5}, required_node='one') == 'one'
+    assert timer[0] == 10

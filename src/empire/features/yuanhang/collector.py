@@ -32,7 +32,7 @@ from empire.plugins.infra.routing import USE_PROXY
 from empire.plugins.infra.sensitive_request import SensitiveRequestError
 from empire.sources.yuanhang_auth import AuthenticationError, IdleConnectionError
 from empire.sources.yuanhang_client import fetch_history
-from empire.sources.yuanhang_history import IncompleteFinancialHistory
+from empire.sources.yuanhang_history import IncompleteFinancialHistory, MissingFinancialValue
 from empire.sources.yuanhang_payload import (
     FINANCIAL_END,
     FIRST,
@@ -84,10 +84,19 @@ class YuanhangCollector:
         await wait_for_capacity(self.ingest, self.stats)
         failures = {}
         last_error = None
+        confirmed_null = False
+        confirmation_node = None
         for attempt in range(self.request_retries + 1):
-            node = await select_node(self.identity, preferred, failures, last_error=last_error)
+            node = await select_node(self.identity, preferred, failures, last_error=last_error,
+                                     required_node=confirmation_node)
             try:
                 return await self.fetch_authenticated(node, code, through, plan, reservation)
+            except MissingFinancialValue as exc:
+                if not self.financial or confirmed_null or attempt >= self.request_retries:
+                    raise
+                confirmed_null, confirmation_node, last_error = True, node, exc
+                self.stats['financial_null_confirmations'] = self.stats.get('financial_null_confirmations', 0) + 1
+                await asyncio.sleep(retry_delay(attempt + 1))
             except (EmptyHistoryResponse, IncompleteFinancialHistory) as exc:
                 if plan.get('mode') == 'range':
                     raise ValueError('远航区间含已知成交日仍返回空响应；保留断点，不转为成功或全历史') from exc

@@ -127,6 +127,27 @@ async def test_source_validation_failure_keeps_resume_position(native):
     assert await store.client.xlen(store.stream) == 0
 
 
+async def test_persistent_financial_null_never_publishes_or_advances(native, monkeypatch):
+    from empire.features.yuanhang import collector as module
+    from empire.features.yuanhang.contract import FINANCIAL_JOB
+    from empire.sources.yuanhang_history import MissingFinancialValue
+
+    manager, _, q, store, _ = native
+    await manager.start('collector.yuanhang_financial')
+    c = manager.registry.get('collector.yuanhang_financial')
+    c.identity.login = AsyncMock(return_value=SimpleNamespace(proxy_code='node-test'))
+    wire = AsyncMock(side_effect=MissingFinancialValue(402, '2023-01-01', CODE))
+    monkeypatch.setattr(module, 'fetch_history', wire)
+    monkeypatch.setattr(module, 'retry_delay', lambda _: 0)
+    before = await c.ingest.checkpoint(FINANCIAL_JOB)
+    with pytest.raises(MissingFinancialValue, match='field=402'):
+        await c.execute()
+    assert wire.await_count == 2
+    assert await c.ingest.checkpoint(FINANCIAL_JOB) == before
+    assert not await q.has_history(CODE, financial=True)
+    assert await store.client.xlen(store.stream) == 0
+
+
 async def test_partial_archive_resume_keeps_current_full_plan_without_pool_plan_checkpoint(native):
     import json
     from datetime import date

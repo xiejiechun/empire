@@ -13,6 +13,7 @@ from empire.sources.yuanhang_auth import (
 )
 from empire.sources.yuanhang_history import (
     IncompleteFinancialHistory,
+    MissingFinancialValue,
     history_query,
     normalize_daily,
     normalize_financial,
@@ -125,7 +126,7 @@ async def _fetch_market(http, session, *, unified_code, dataset, start, end, ins
         normalizer = {'daily': normalize_daily, 'financial': normalize_financial}[dataset]
         data = normalizer(tables, unified_code=unified_code, start=start, end=end, native_market=native_market)
         return DecodedHistory(data, len(response.content), sum(t['decoded_bytes'] for t in tables))
-    except (EmptyHistoryResponse, IncompleteFinancialHistory):
+    except (EmptyHistoryResponse, IncompleteFinancialHistory, MissingFinancialValue):
         raise
     except ValueError as exc:
         raise ValueError(f'{unified_code}/{dataset}/{native_market}: {exc}') from exc

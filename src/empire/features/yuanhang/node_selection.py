@@ -3,7 +3,7 @@ from asyncio import sleep
 from time import monotonic
 
 
-async def select_node(identity, preferred, failures, *, last_error=None):
+async def select_node(identity, preferred, failures, *, last_error=None, required_node=None):
     # The shared pool's maximum transport cooldown is 120 seconds. Allow its
     # five-second discovery tick, without bypassing leases or scanning Redis.
     deadline = monotonic() + 125
@@ -11,6 +11,8 @@ async def select_node(identity, preferred, failures, *, last_error=None):
         profiles = await identity.get_profiles()
         provisioned = {code for code, profile in profiles.items() if profile.provisioned}
         nodes = provisioned & identity.online_codes()
+        if required_node is not None:
+            nodes &= {required_node}
         if nodes:
             return min(nodes, key=lambda code: (failures.get(code, 0), code != preferred, code))
         if not provisioned:

@@ -53,12 +53,13 @@ async def test_two_empty_markets_remain_unknown_and_unbound_identity_never_reque
         await client.fetch_history(None, SimpleNamespace(proxy_code='node002'), **BOUNDS)
     assert calls == ['USHA', 'USHT']
 
-@pytest.mark.parametrize('special', ['empty', 'incomplete', 'invalid'])
+@pytest.mark.parametrize('special', ['empty', 'incomplete', 'invalid', 'null'])
 async def test_native_validation_context_preserves_availability_types_and_closes(monkeypatch, special):
     from unittest.mock import AsyncMock, Mock
 
-    from empire.sources.yuanhang_history import IncompleteFinancialHistory
+    from empire.sources.yuanhang_history import IncompleteFinancialHistory, MissingFinancialValue
     error = {'empty': EmptyHistoryResponse(1, 211), 'incomplete': IncompleteFinancialHistory(),
+             'null': MissingFinancialValue(402, 20261105, '300645.SZ'),
              'invalid': ValueError('Nonfinite HX double; field=407, date=20261028')}[special]
     response = SimpleNamespace(content=b'fixture', close=Mock(), reserve_decoded=Mock())
     http = SimpleNamespace(response_policy=lambda _: SimpleNamespace(max_body_bytes=1048576),

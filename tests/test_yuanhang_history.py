@@ -8,6 +8,7 @@ import pytest
 
 from empire.sources.yuanhang_history import (
     IncompleteFinancialHistory,
+    MissingFinancialValue,
     history_query,
     normalize_actions,
     normalize_capital,
@@ -150,6 +151,28 @@ def test_002042_explicit_missing_volume_keeps_bar_without_fabricating_no_trade()
 def capital_tables():
     return (tables([{1: 20110215, 402: 89400000., 407: 18000000.}])
             + tables([{1: 20110215, 380: 18000000.}]))
+
+
+@pytest.mark.parametrize('field', [380, 402, 454, 455, 456, 460, 463])
+def test_explicit_financial_null_has_precise_identity_and_date(field):
+    source = capital_tables() + tables([action()])
+    for table in source:
+        for row in table['rows']:
+            if field in row:
+                row[field] = None
+    with pytest.raises(MissingFinancialValue) as caught:
+        normalize_financial(source, **BOUNDS)
+    assert caught.value.field == field and caught.value.code == BOUNDS['unified_code']
+    assert caught.value.day == (20110215 if field in (380, 402) else 20180529)
+
+
+@pytest.mark.parametrize('value', [True, '1', -1, float('nan'), float('inf')])
+def test_invalid_financial_value_is_not_classified_as_confirmable_null(value):
+    source = capital_tables()
+    source[0]['rows'][0][402] = value
+    with pytest.raises(ValueError) as caught:
+        normalize_financial(source, **BOUNDS)
+    assert not isinstance(caught.value, MissingFinancialValue)
 
 
 def test_financial_empty_actions_requires_all_capital_series_and_identity():
