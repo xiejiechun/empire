@@ -51,8 +51,12 @@ async def audit(query, codes, expected, *, financial):
     for code in codes:
         proof = expected.pop(code)
         if 'deferred' in proof:
+            problems = (['initial_capital_source_gap']
+                        if proof['deferred']['status'] == 'deferred_initial_capital' else [])
+            if await query.has_history(code, financial=financial):
+                problems.append('prelisting_history_conflict')
             result.append(dict(units=0, rows=0, **proof['deferred'],
-                problems=['prelisting_history_conflict'] if await query.has_history(code, financial=financial) else []))
+                problems=problems))
             continue
         problems = await query.audit_source_proofs(code, proof, financial=financial)
         if not financial and set(await query.year_heads(code)) != set(proof):

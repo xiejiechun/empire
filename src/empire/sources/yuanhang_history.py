@@ -19,8 +19,10 @@ MARKETS = {'SH': 'USHA', 'SZ': 'USZA', 'BJ': 'USTM'}
 class IncompleteFinancialHistory(ValueError):
     """Validated single total/circulating point; absence needs listing evidence."""
 
-    def __init__(self):
-        super().__init__('Yuanhang free-float field omitted from validated partial capital history')
+    def __init__(self, code, source_date):
+        self.code, self.source_date = code, source_date
+        super().__init__(f'{code}: Yuanhang free-float field omitted from validated partial capital history; '
+                         f'source_date={source_date.isoformat()}')
 
 
 class MissingFinancialValue(ValueError):
@@ -216,7 +218,7 @@ def normalize_financial(tables, *, unified_code: str, start: date, end: date,
             raise ValueError('Yuanhang partial total capital must be positive')
         if row[407] is not None and _number(row[407], label='407') <= 0:
             raise ValueError('Yuanhang partial circulating capital must be positive or explicitly absent')
-        raise IncompleteFinancialHistory()
+        raise IncompleteFinancialHistory(unified_code, _date(row[1]))
     capital = normalize_capital(tables, unified_code=unified_code, start=start, end=end,
                                 native_market=native_market)
     present = {field for table in tables for field, *_ in table['fields']}

@@ -1,5 +1,5 @@
 """Native absence is deferred only with a complete, exact prelisting response."""
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
@@ -80,7 +80,7 @@ async def test_validated_partial_capital_defers_only_before_listing(monkeypatch,
             LISTING_DATE='2025-01-01 00:00:00' if listed else None)])))
     c.http = prefetch_http(request=request)
     monkeypatch.setattr(listing_scope, 'wait_for_capacity', AsyncMock())
-    monkeypatch.setattr(module, 'fetch_history', AsyncMock(side_effect=IncompleteFinancialHistory()))
+    monkeypatch.setattr(module, 'fetch_history', AsyncMock(side_effect=IncompleteFinancialHistory('688827.SH', date(2025, 6, 27))))
     if listed:
         with pytest.raises(IncompleteFinancialHistory):
             await c.fetch(('688827.SH', 'node001', '2026-10-23'))
@@ -98,3 +98,34 @@ async def test_arbitrary_parser_error_never_uses_listing_metadata(monkeypatch):
     with pytest.raises(ValueError, match='bad wire'):
         await c.fetch(('688827.SH', 'node001', '2026-10-23'))
     lookup.assert_not_awaited()
+
+
+@pytest.mark.parametrize('code', ['920085.BJ', '301718.SZ'])
+@pytest.mark.parametrize('mode', ['initial', 'wrong_day', 'existing', 'empty'])
+async def test_listed_initial_partial_capital_has_explicit_gap_only_with_exact_evidence(monkeypatch, code, mode):
+    c = collector(monkeypatch)
+    c.financial = True
+    c.query = SimpleNamespace(has_history=AsyncMock(return_value=mode == 'existing'))
+    response = httpx.Response(200, json=dict(success=True, result=dict(count=1, pages=1, data=[dict(
+        SECUCODE=code, SECURITY_CODE=code[:6], LISTING_STATE='0', LISTING_DATE='2026-11-06 00:00:00') ])))
+    c.http = prefetch_http(request=AsyncMock(return_value=response))
+    monkeypatch.setattr(listing_scope, 'wait_for_capacity', AsyncMock())
+    error = (EmptyHistoryResponse(1, 211) if mode == 'empty' else
+             IncompleteFinancialHistory(code, date(2026, 11, 5 if mode == 'wrong_day' else 6)))
+    native = AsyncMock(side_effect=error)
+    monkeypatch.setattr(module, 'fetch_history', native)
+    if mode == 'initial':
+        result = await c.fetch((code, 'node002', '2026-11-06'))
+        proof = result.evidence()
+        assert proof['status'] == 'deferred_initial_capital'
+        assert proof['listing_date'] == proof['source_date'] == '2026-11-06'
+        assert proof['missing_fields'] == [380] and proof['present_fields'] == [1, 402, 407]
+        assert proof['node'] == 'node002'
+    else:
+        with pytest.raises(ValueError):
+            await c.fetch((code, 'node002', '2026-11-06'))
+    assert native.await_count == 1
+    assert response.is_closed
+    if isinstance(error, IncompleteFinancialHistory):
+        assert error.yuanhang_diagnostics['node'] == 'node002'
+        assert error.yuanhang_diagnostics['security'] == code

@@ -304,6 +304,8 @@ async def test_prelisting_metadata_failure_never_advances_checkpoint(native, mon
 
 
 async def test_partial_financial_prelisting_creates_no_fact_then_recovers(native, monkeypatch):
+    from datetime import date
+
     import httpx
 
     from empire.features.yuanhang import collector as module
@@ -318,7 +320,7 @@ async def test_partial_financial_prelisting_creates_no_fact_then_recovers(native
     await manager.start('collector.yuanhang_financial')
     c = manager.registry.get('collector.yuanhang_financial')
     c.identity.login = AsyncMock(return_value=SimpleNamespace(proxy_code='node-test'))
-    wire = AsyncMock(side_effect=IncompleteFinancialHistory())
+    wire = AsyncMock(side_effect=IncompleteFinancialHistory(CODE, date(2023, 1, 1)))
     monkeypatch.setattr(module, 'fetch_history', wire)
     monkeypatch.setattr(c.http, 'request', AsyncMock(return_value=httpx.Response(200,
         json=dict(success=True, result=dict(count=1, pages=1, data=[dict(
@@ -329,7 +331,6 @@ async def test_partial_financial_prelisting_creates_no_fact_then_recovers(native
     assert not await q.has_history(CODE, financial=True)
     assert await store.client.xlen(store.stream) == 0
 
-    from datetime import date
     from decimal import Decimal
     wire.side_effect = None
     wire.return_value = snapshot(FinancialHistory((), tuple(
@@ -338,6 +339,64 @@ async def test_partial_financial_prelisting_creates_no_fact_then_recovers(native
     result = await c.execute(baseline_revision=await c.checkpoint_revision())
     assert result['pages'] == 1 and result['phase'] == 'complete' and result['deferred'] == {}
     assert await q.has_history(CODE, financial=True)
+    assert await store.client.xlen(store.stream) == 0
+
+
+async def test_initial_capital_gap_archives_sibling_and_recovers_only_missing_security(native, monkeypatch):
+    from datetime import date
+
+    import httpx
+
+    from empire.contracts.collector import CollectionSourceGap
+    from empire.features.yuanhang import collector as module
+    from empire.sources.yuanhang_client import HistorySnapshot
+    from empire.sources.yuanhang_history import normalize_financial
+    from empire.sources.yuanhang_payload import financial_payload
+    from tests.test_yuanhang_history import tables
+
+    manager, _, query, store, _ = native
+    await manager.start('collector.yuanhang_financial')
+    c = manager.registry.get('collector.yuanhang_financial')
+    query.collection_scope = AsyncMock(return_value=(['000001.SZ', CODE], '2023-12-31'))
+    c.identity.login = AsyncMock(return_value=SimpleNamespace(proxy_code='node-test'))
+    complete = False
+    sources = {}
+    async def fetch(http, session, *, unified_code, **kwargs):
+        market = 'USHA' if unified_code.endswith('.SH') else 'USZA'
+        row = {1: 20231101, 402: 100., 407: 10.}
+        if unified_code != CODE or complete:
+            row[380] = 8.
+        data = normalize_financial(tables([row], market + unified_code[:6]), unified_code=unified_code,
+                                  start=date(1900, 1, 1), end=date(2100, 12, 31))
+        result = HistorySnapshot(market, snapshot(()).observed_at, data)
+        sources[unified_code] = financial_payload(result, code=unified_code)
+        return result
+    wire = AsyncMock(side_effect=fetch)
+    monkeypatch.setattr(module, 'fetch_history', wire)
+    metadata = AsyncMock(return_value=httpx.Response(200, json=dict(success=True,
+        result=dict(count=1, pages=1, data=[dict(SECUCODE=CODE, SECURITY_CODE=CODE[:6],
+            LISTING_STATE='0', LISTING_DATE='2023-11-01 00:00:00')]))))
+    monkeypatch.setattr(c.http, 'request', metadata)
+    for run in range(2):
+        wire.reset_mock()
+        with pytest.raises(CollectionSourceGap, match=CODE):
+            await c.execute(baseline_revision=await c.checkpoint_revision())
+        assert [call.kwargs['unified_code'] for call in wire.await_args_list] == (['000001.SZ', CODE] if not run else [CODE])
+        state = await c.ingest.checkpoint(c.job_key)
+        assert state['cursor']['phase'] == 'source_gap'
+        assert state['cursor']['deferred'][CODE]['node'] == 'node-test'
+        assert not await query.has_history(CODE, financial=True)
+        assert await query.has_history('000001.SZ', financial=True)
+        assert await query.audit_financial(sources['000001.SZ']) == []
+        assert await store.client.xlen(store.stream) == 0
+    complete = True
+    wire.reset_mock()
+    result = await c.execute(baseline_revision=await c.checkpoint_revision())
+    assert result['phase'] == 'complete' and result['deferred'] == {}
+    assert [call.kwargs['unified_code'] for call in wire.await_args_list] == [CODE]
+    assert metadata.await_count == 2
+    assert await query.audit_financial(sources[CODE]) == []
+    assert (await query.capital_points(CODE, 'free_float'))['rows'][0]['shares'] == 8
     assert await store.client.xlen(store.stream) == 0
 
 

@@ -58,7 +58,7 @@ async def test_native_validation_context_preserves_availability_types_and_closes
     from unittest.mock import AsyncMock, Mock
 
     from empire.sources.yuanhang_history import IncompleteFinancialHistory, MissingFinancialValue
-    error = {'empty': EmptyHistoryResponse(1, 211), 'incomplete': IncompleteFinancialHistory(),
+    error = {'empty': EmptyHistoryResponse(1, 211), 'incomplete': IncompleteFinancialHistory('300645.SZ', date(2026, 11, 5)),
              'null': MissingFinancialValue(402, 20261105, '300645.SZ'),
              'invalid': ValueError('Nonfinite HX double; field=407, date=20261028')}[special]
     response = SimpleNamespace(content=b'fixture', close=Mock(), reserve_decoded=Mock())

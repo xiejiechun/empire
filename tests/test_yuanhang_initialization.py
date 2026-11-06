@@ -45,6 +45,15 @@ async def test_prelisting_scope_proof_is_distinct_from_zero_business_rows(financ
     q.audit_source_proofs.assert_not_awaited()
 
 
+async def test_initial_capital_source_gap_cannot_certify_initialization():
+    snapshot = DeferredSecurity(CODE, '2026-11-06', '2026-11-06', 'partial_total_circulating',
+                                'deferred_initial_capital', '2026-11-06', 'node-test')
+    query = SimpleNamespace(has_history=AsyncMock(return_value=False), audit_source_proofs=AsyncMock())
+    result = await audit(query, [CODE], {CODE: source_proofs(snapshot, CODE, '2026-11-06', True)}, financial=True)
+    assert result[0]['problems'] == ['initial_capital_source_gap']
+    query.audit_source_proofs.assert_not_awaited()
+
+
 @pytest.mark.parametrize('change', [None, 'target', 'through', 'prefix', 'unknown'])
 def test_audit_continuation_requires_same_target_scope_and_exact_published_prefix(change):
     codes = [CODE, '000001.SZ']

@@ -6,6 +6,7 @@ from uuid import uuid4
 
 import httpx
 
+from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.request_retry import retry_delay
@@ -102,7 +103,11 @@ class YuanhangCollector:
             except (EmptyHistoryResponse, IncompleteFinancialHistory) as exc:
                 if plan.get('mode') == 'range':
                     raise ValueError('远航区间含已知成交日仍返回空响应；保留断点，不转为成功或全历史') from exc
-                return await resolve_empty(self, code, through, reservation=reservation, cause=exc)
+                if isinstance(exc, IncompleteFinancialHistory):
+                    exc.yuanhang_diagnostics = {**diagnostics, 'node': node,
+                        'source_date': exc.source_date.isoformat(), 'missing_fields': [380],
+                        'present_fields': [1, 402, 407]}
+                return await resolve_empty(self, code, through, reservation=reservation, cause=exc, node=node)
             except IdleConnectionError:
                 # Shared transport has retired the connection. A backlog says
                 # nothing about proxy/account health: reconnect on this node
@@ -207,6 +212,17 @@ class YuanhangCollector:
                 self.stats.update(status='complete', planned_requests=0, skipped_units=len(codes),
                                   completed_units=len(codes), total_units=len(codes))
                 return self.result({**cursor, 'pages': 0, 'collected': 0})
+            if (cursor.get('phase') == 'source_gap' or cursor.get('retry_deferred')) and self.financial:
+                if cursor.get('scope_hash') != scope:
+                    raise ValueError('远航来源缺口批次的股票范围已改变；保留断点，须显式维护')
+                if fresh or cursor['run_date'] != today or cursor['through'] != through:
+                    cursor = {}
+                elif cursor.get('phase') == 'source_gap':
+                    pending = set(cursor['deferred'])
+                    if not pending or not pending <= set(codes):
+                        raise ValueError('远航来源缺口证券集合无效，保留断点')
+                    cursor = {**cursor, 'phase': 'collecting', 'retry_deferred': True,
+                              'next_index': min(codes.index(code) for code in pending)}
             if cursor.get('phase') == 'complete':
                 cursor = {}
             if cursor and cursor.get('scope_hash') != scope:
@@ -231,6 +247,8 @@ class YuanhangCollector:
                 remaining = codes[first:]
                 if self.financial:
                     markets = await self.query.financial_markets()
+                    if cursor.get('retry_deferred'):
+                        remaining = [code for code in remaining if code in cursor['deferred']]
                     self.plans = {c: dict(mode='financial', native_market=markets.get(c)) for c in remaining}
                 elif remaining:
                     self.plans = await self.query.daily_plans(self.ingest.redis.prefix, remaining,
@@ -243,7 +261,7 @@ class YuanhangCollector:
                 if cursor.get('current_plan'):
                     self.plans[codes[cursor['next_index']]] = cursor['current_plan']
             positions = [i for i in range(cursor['next_index'], len(codes))
-                         if self.plans.get(codes[i], {}).get('mode') != 'skip']
+                         if codes[i] in self.plans and self.plans[codes[i]]['mode'] != 'skip']
             if not self.financial and cursor['maintenance_scope'] == 'backfill':
                 if 'round_end' in cursor:
                     positions = [i for i in positions if i < cursor['round_end']]
@@ -288,6 +306,7 @@ class YuanhangCollector:
                             histories = []
                             cursor = {**cursor, 'deferred': {**cursor['deferred'], code: snapshot.evidence()}}
                         else:
+                            cursor['deferred'].pop(code, None)
                             plan = self.plans.get(code, {})
                             if plan.get('mode') == 'range':
                                 histories = daily_ranges(snapshot, code=code, start=date.fromisoformat(plan['start']),
@@ -330,12 +349,23 @@ class YuanhangCollector:
             for code in cursor['deferred']:
                 if await self.query.has_history(code, financial=self.financial):
                     raise ValueError(code + ': 延期证券出现已归档原生历史，需重新核实上市状态')
-            cursor = {**cursor, 'phase': 'complete'}
+            gaps = [code for code, proof in cursor['deferred'].items()
+                    if proof['status'] == 'deferred_initial_capital']
+            phase = 'source_gap' if gaps else 'complete'
+            cursor = {**cursor, 'phase': phase}
+            cursor.pop('retry_deferred', None)
             await self.ingest.advance_checkpoint(job_key=self.job_key, expected_revision=state['revision'], cursor=cursor)
-            self.stats.update(status='complete', error='')
+            self.stats.update(status=phase, error='', source_gap_units=len(gaps), deferred_units=len(cursor['deferred']))
+            if gaps:
+                notice = (f'远航 {len(gaps)} 只已上市证券初始股本来源尚未就绪（缺自由流通股本）：'
+                          + '、'.join(sorted(gaps)[:5]) + '；有效数据已归档，缺口保留并于下轮复查')
+                self.stats['notice'] = notice
+                raise CollectionSourceGap(notice)
             return self.result(cursor)
         except asyncio.CancelledError:
             self.stats['status'] = 'paused'
+            raise
+        except CollectionSourceGap:
             raise
         except Exception as exc:
             self.stats.update(status='error', error=self.records.sanitize_text(exc))

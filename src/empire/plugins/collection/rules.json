@@ -3204,7 +3204,7 @@
         {
           "url": "https://datacenter.eastmoney.com/api/data/v1/get",
           "method": "GET",
-          "purpose": "仅在原生空响应后查询精确证券上市状态；不采集外部量价、权息或股本",
+          "purpose": "仅在原生空响应或严格单点部分股本后查询精确上市状态；上市首日部分股本列为来源缺口，不采集外部股本",
           "parameters": [
             {
               "name": "reportName",

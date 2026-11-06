@@ -17,6 +17,8 @@
 
 revision 为递增比较交换版本；cursor 为对应来源规范 JSON，记录业务批次、位置、范围与 phase。job_key 是来源生命周期身份，不等于页面 ID。
 
+远航金融的deferred按证券保存来源可用性证据：status区分deferred_prelisting上市前与deferred_initial_capital已上市初始股本尚未就绪，保留上市日、来源截止日、native_status、来源日期、节点及缺字段380/已见字段1、402、407，不保存响应正文。存在后者时整轮清队后phase为source_gap，不能冒充完整覆盖；同日同截止日复查由retry_deferred标记，只规划该集合，当前部分入队计划与位置仍原子恢复。补齐后删除对应证据；新日恢复正常每日核验，范围摘要变化拒绝隐式重绑。上述字段复用原键与公共CAS，Redis丢失后重新核实来源及正式库。
+
 ## 读写与关联
 
 准入及隔离复核通过后与消息原子发布，失败不推进；支持显式无正文状态更新也通过公共 CAS。complete 表示入队结束，不能冒充 MySQL 已可查询。
