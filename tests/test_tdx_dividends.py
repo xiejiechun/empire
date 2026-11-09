@@ -1,4 +1,5 @@
 import copy
+from datetime import datetime
 from unittest.mock import AsyncMock
 
 import httpx
@@ -13,6 +14,64 @@ from tests.capital_samples import STOCK, source
 from tests.test_capital_lifecycle import configured
 
 PERIOD = '2025-12-31'
+
+
+def freeze_plan_day(monkeypatch, value='2026-11-09'):
+    class Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return cls.fromisoformat(value).replace(tzinfo=tz)
+    monkeypatch.setattr('empire.features.capital_actions.dividend_parser.datetime', Clock)
+
+
+@pytest.mark.parametrize('selected', ['2026-09-30', '2026-12-31'])
+async def test_current_quarter_preview_is_collected_without_losing_daily_or_old_periods(monkeypatch, selected):
+    from empire.features.capital_actions.dividend_history import report_periods
+    freeze_plan_day(monkeypatch)
+    c, _ = configured(TdxDividendsCollector)
+    c.query.dividend_report_dates = AsyncMock(return_value=['2000-05-31', '2026-12-31'])
+    body = dict(ErrorCode=0, ResultSets=[dict(ColName=['T002', 'maxrq'], Count=2,
+        Content=[['2026-12-31', selected], ['2026-09-30', selected]])])
+    c.http.request = AsyncMock(return_value=httpx.Response(200, json=body))
+    periods = await report_periods(c, {'1995-08-15'})
+    assert {'1980-03-31', '1995-08-15', '2000-05-31', '2026-09-30',
+            '2026-10-01', '2026-10-15', '2026-11-09', '2026-12-31'} <= set(periods)
+    assert not any('2026-11-09' < d < '2026-12-31' or d > '2026-12-31' for d in periods)
+    assert periods == sorted(set(periods)) and c.http.request.await_count == 1
+
+
+@pytest.mark.parametrize(('today', 'selected', 'preview', 'daily'), [
+    ('2026-12-31', '2026-09-30', '2026-12-31', '2026-12-30'),
+    ('2027-01-01', '2027-03-31', '2027-03-31', '2027-01-01'),
+    ('2028-02-29', '2028-03-31', '2028-03-31', '2028-02-29'),
+    ('2027-04-01', '2027-06-30', '2027-06-30', '2027-04-01'),
+])
+def test_preview_rolls_at_quarter_year_and_leap_boundaries(monkeypatch, today, selected, preview, daily):
+    freeze_plan_day(monkeypatch, today)
+    periods = period_plan(selected, [preview, '2000-05-31'])
+    assert {preview, daily, '2000-05-31'} <= set(periods)
+
+
+@pytest.mark.parametrize('value', ['1979-12-31', '2026-11-10', '2027-03-31',
+                                 '2026-12-30', '2026-02-30', '20261231', None])
+@pytest.mark.parametrize('location', ['latest', 'known'])
+def test_preview_does_not_allow_other_invalid_or_future_periods(monkeypatch, value, location):
+    freeze_plan_day(monkeypatch)
+    with pytest.raises(ValueError, match='报告期超出支持范围'):
+        period_plan(value if location == 'latest' else '2026-09-30',
+                    [value] if location == 'known' else [])
+
+
+async def test_invalid_future_catalog_does_not_publish_or_advance(monkeypatch):
+    freeze_plan_day(monkeypatch)
+    c, _ = configured(TdxDividendsCollector)
+    c.query.dividend_report_dates = AsyncMock(return_value=[])
+    c.http.request = AsyncMock(return_value=httpx.Response(200, json=dict(ErrorCode=0, ResultSets=[
+        dict(ColName=['T002', 'maxrq'], Count=2,
+             Content=[['2027-03-31', '2026-09-30'], ['2026-09-30', '2026-09-30']])])) )
+    with pytest.raises(ValueError, match='2027-03-31'):
+        await c.execute()
+    assert c.ingest.state['revision'] == 0 and c.ingest.events == []
 
 
 @pytest.mark.parametrize('selected', ['2026-06-30', '2026-09-30'])

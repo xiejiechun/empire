@@ -1,4 +1,4 @@
-"""Public pure dividend parser extracted without business-rule changes."""
+"""Pure dividend validation and bounded report-period planning."""
 from datetime import date, datetime, timedelta
 
 from empire.core.time import CHINA
@@ -13,23 +13,40 @@ CAPACITY = 10000
 
 
 def period_plan(latest, historical=()):
-    today = datetime.now(CHINA).date().isoformat()
+    today = datetime.now(CHINA).date()
+    quarter_month = (today.month - 1) // 3 * 3 + 1
+    quarter_start = date(today.year, quarter_month, 1)
+    next_quarter = (date(today.year + 1, 1, 1) if quarter_month == 10
+                    else date(today.year, quarter_month + 3, 1))
+    quarter_end = next_quarter - timedelta(days=1)
+
+    def supported(value):
+        try:
+            parsed = date.fromisoformat(value)
+            return (parsed.isoformat() == value and parsed >= date(1980, 1, 1)
+                    and (parsed <= today or parsed == quarter_end))
+        except (TypeError, ValueError):
+            return False
     known = set(historical)
     for value in known:
-        if date.fromisoformat(value).isoformat() != value or not '1980-01-01' <= value <= today:
-            raise ValueError('已有分红报告期超出支持范围，不能跳过历史')
+        if not supported(value):
+            raise ValueError(f'已有分红报告期超出支持范围，不能跳过历史：{value}')
+    if not supported(latest):
+        raise ValueError(f'分红最新报告期超出支持范围：{latest}')
     latest_day = date.fromisoformat(max({latest, *known}))
-    if not '1980-01-01' <= latest <= today:
-        raise ValueError('分红最新报告期超出支持范围')
     periods = {date(year, month, day).isoformat()
                for year in range(1980, latest_day.year + 1)
                for month, day in ((3, 31), (6, 30), (9, 30), (12, 31))
                if date(year, month, day) <= latest_day}
     periods.update(known)
-    # The website's selector can lag the latest non-quarter corporate actions.
-    # Scan only the open interval after its newest quarter, not all historical days.
-    day = date.fromisoformat(latest) + timedelta(days=1)
-    while day.isoformat() <= today:
+    periods.add(latest)
+    # The website's default selection can lag non-quarter corporate actions.
+    # Scan the open interval after that selection, not all historical days.
+    # Current-quarter previews are real plans, but cannot move the daily scan
+    # past the last ended quarter and hide non-quarter dates already available.
+    closed_quarter = quarter_end if quarter_end <= today else quarter_start - timedelta(days=1)
+    day = min(date.fromisoformat(latest), closed_quarter) + timedelta(days=1)
+    while day <= today:
         periods.add(day.isoformat())
         day += timedelta(days=1)
     if not periods or len(periods) > 1000:
