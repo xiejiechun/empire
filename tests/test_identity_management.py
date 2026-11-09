@@ -99,6 +99,18 @@ async def test_previous_failure_remains_visible_during_next_operation_and_idle_s
     assert (await query.snapshot(0, 50))['last_run']['status'] == 'success'
 
 
+async def test_pending_node_warning_does_not_claim_platform_application_paused():
+    service = make_service()
+    await service.registry.ensure(['a'])
+    await service.registry.transition('a', 'unrequested', 'requested')
+    await service.registry.transition('a', 'requested', 'unknown')
+    await service.reload()
+    snapshot = await adapter(service, Records()).snapshot(0, 50)
+    assert '1个节点申请待核查' in snapshot['warning']
+    assert '其他在线待申请节点继续自动申请' in snapshot['warning']
+    assert not snapshot['health']['automatic_application_paused']
+
+
 async def test_platform_isolation_and_stopped_service_query_never_authenticates():
     service, records = make_service(), Records()
     await service.registry.ensure(['offline'])

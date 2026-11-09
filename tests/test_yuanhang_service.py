@@ -57,19 +57,103 @@ async def test_new_node_later_arrival_restart_ip_change_and_offline_retention():
     (b'<response><ret code="-2"/></response>', 'rejected'),
     (TimeoutError('secret in transport error'), 'unknown'),
 ])
-async def test_denial_or_unknown_blocks_rest_of_batch_and_survives_restart(body, state):
+async def test_denial_or_unknown_isolates_only_failed_node_and_survives_restart(body, state):
     service = make_service()
     service.pool.entries = {c: endpoint(c) for c in ('a', 'b')}
-    service.http = Http(body)
+    source = Source(None)
+    broken = Http(body)
+
+    async def request(*args, **kwargs):
+        return await (broken if kwargs['proxy_code'] == 'a' else source).request(*args, **kwargs)
+
+    service.http = SimpleNamespace(request=request)
     await service.reconcile()
-    assert len(service.http.calls) == 1
+    assert len(broken.calls) == 1 and len(source.calls) == 1
+    assert service.profiles['b'].provisioned
     assert service.health()['blocked_nodes'] == {'a': state}
+    assert service.health()['status'] == 'degraded'
+    assert not service.health()['automatic_application_paused']
     assert 'secret' not in str(service.health())
     restarted = IdentityService(service.registry, service.pool, service.http)
     restarted.pool.entries['c'] = endpoint('c')
     await restarted.reconcile()
     assert set(restarted.profiles) == {'a', 'b', 'c'}  # Discovery still works.
-    assert len(service.http.calls) == 1 and restarted.health()['automatic_application_paused']
+    assert len(broken.calls) == 1 and len(source.calls) == 2
+    assert restarted.profiles['c'].provisioned
+    assert not restarted.health()['automatic_application_paused']
+
+
+@pytest.mark.parametrize('state', ['requested', 'rejected', 'unknown'])
+@pytest.mark.parametrize('online', [True, False])
+async def test_existing_unconfirmed_node_never_blocks_new_online_node(state, online):
+    service = make_service()
+    await service.registry.ensure(['a'])
+    await service.registry.transition('a', 'unrequested', 'requested')
+    if state != 'requested':
+        await service.registry.transition('a', 'requested', state)
+    original = (await service.registry.load())['a']
+    service.pool.entries = {'b': endpoint('b')}
+    if online:
+        service.pool.entries['a'] = endpoint('a')
+    await service.reconcile()
+    assert service.profiles['a'] == original and service.profiles['b'].provisioned
+    assert [options['proxy_code'] for _, options in service.http.calls] == ['b']
+
+
+async def test_reload_failure_after_success_stops_all_new_requests_until_readable(monkeypatch):
+    service = make_service()
+    service.pool.entries = {c: endpoint(c) for c in ('a', 'b')}
+    original = service.registry.load
+
+    async def load():
+        if service.http.calls:
+            raise RuntimeError('sql password secret')
+        return await original()
+
+    monkeypatch.setattr(service.registry, 'load', load)
+    await service.reconcile()
+    assert len(service.http.calls) == 1
+    assert service.health()['automatic_application_paused']
+    assert 'secret' not in str(service.health())
+    monkeypatch.setattr(service.registry, 'load', original)
+    service.next_reload = 0
+    await service.reconcile()
+    assert len(service.http.calls) == 2 and service.profiles['b'].provisioned
+    assert service.profiles['a'].registration == 'ready'
+
+
+async def test_account_save_failure_isolates_node_only_after_persisted_unknown(monkeypatch):
+    service = make_service()
+    service.pool.entries = {c: endpoint(c) for c in ('a', 'b')}
+    original = service.registry.bind
+
+    async def bind(code, *args):
+        if code == 'a':
+            raise RuntimeError('sql password secret')
+        return await original(code, *args)
+
+    monkeypatch.setattr(service.registry, 'bind', bind)
+    await service.reconcile()
+    assert service.profiles['a'].registration == 'unknown'
+    assert service.profiles['b'].provisioned and len(service.http.calls) == 2
+    await service.reconcile()
+    assert len(service.http.calls) == 2
+    assert not service.health()['automatic_application_paused']
+
+
+async def test_missing_diagnostic_intent_stops_round_without_source_request():
+    service = make_service()
+    service.pool.entries = {c: endpoint(c) for c in ('a', 'b')}
+
+    class BrokenRecords:
+        async def add_identity_run(self, *args):
+            raise RuntimeError('redis password secret')
+
+    service.runs.records = BrokenRecords()
+    await service.reconcile()
+    assert not service.http.calls and service.health()['automatic_application_paused']
+    assert all(p.registration == 'unrequested' for p in service.profiles.values())
+    assert 'secret' not in str(service.health())
 
 
 async def test_cancel_during_application_does_not_register_again_after_restart():

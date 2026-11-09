@@ -10,6 +10,8 @@
 
 ## 配置粒度与字典
 
+2026-11-09修订：申请异常仅按节点隔离，其他在线健康的unrequested继续串行申请。异常后重读SQL并确认已有持久意图或成功绑定，才继续其他节点；配置/解密不可读或申请前置诊断记录失败时停止本轮。health.blocked_nodes保留节点列表，status=degraded不代表全局申请停止；automatic_application_paused只表示全局故障。页面明确提示待核查数量和其他节点继续申请，未知结果不自动重置。设计与验证见[本次记录](evidence/yuanhang-node-application-isolation-2026-11-09.md)。
+
 沿用app_setting主键(namespace, kind=yuanhang, setting_key=guest-profiles)。一行有界身份配置整体事务读写，最多1000节点、4MiB；不用于行情查询。schema2每节点保留profile_id、registration、protected、rejection_code，增加creation快照。正式读取仅schema2，schema1必须显式维护迁移。
 
 creation含recipe_version（已支持配方编号）、provenance（recorded或legacy-reconstructed）、recorded_at（快照记录UTC时刻）、requested_at（首次申请意图时刻，旧档案未知为null）、client_version（建档时协议版本）、device_mac（逻辑标识）、imei、endpoint、method、params（仅imei/qsid/reqtype三字段）。快照在网络申请前存储；首次requested_at仅设置一次。MAC/IMEI固定延用，旧快照不可由新默认参数覆盖；目前登录使用固定逻辑标识和当前已支持协议。密码/账号继续DPAPI保护，会话、公钥和令牌不持久化；管理查询不输出凭据或密文。

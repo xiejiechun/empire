@@ -20,6 +20,10 @@ class YuanhangManagement:
         health = service.health() if service else {}
         active = {r['id']: r for r in health.get('active_runs', [])}
         warning = []
+        if health.get('automatic_application_paused'):
+            warning.append(health.get('error') or '身份配置核验失败，自动申请暂时暂停')
+        elif health.get('blocked_nodes'):
+            warning.append(f"{len(health['blocked_nodes'])}个节点申请待核查，暂不重复申请；其他在线待申请节点继续自动申请")
         try:
             profiles = await service.get_profiles() if service else await self.registry.load()
         except Exception:

@@ -83,13 +83,11 @@ class IdentityService:
                 if missing:
                     self.profiles = await self.registry.ensure(missing)
                 self.error = ''
-                if any(p.registration in BLOCKED for p in self.profiles.values()):
-                    return
                 for code in sorted(self.online_codes()):
                     if self.closed:
                         return
                     profile = self.profiles[code]
-                    if profile.provisioned or code not in self.online_codes():
+                    if profile.registration != 'unrequested' or code not in self.online_codes():
                         continue
                     self.current = code
                     try:
@@ -97,15 +95,14 @@ class IdentityService:
                             self.profiles[code] = await provision_guest(
                                 self.http, self.registry, code, project_id=PROJECT)
                         await self.reload()
-                        if any(p.registration in BLOCKED for p in self.profiles.values()):
-                            return
                     except Exception:
                         # Never retain exception text containing credentials. Reload
-                        # durable intent before any later pass can send a request.
+                        # durable intent before allowing any other application.
                         self.next_reload = 0
-                        self.error = '首次申请未确认成功，已暂停自动申请；请检查持久状态'
                         await self.reload()
-                        return
+                        if self.profiles[code].registration == 'unrequested':
+                            self.error = '申请前置步骤未完成，已暂停本轮自动申请；请检查配置及运行记录'
+                            return
                     finally:
                         self.current = None
         except Exception:
@@ -161,11 +158,12 @@ class IdentityService:
     def health(self):
         blocked = {code: p.registration for code, p in self.profiles.items()
                    if p.registration in BLOCKED}
-        return {'status': 'blocked' if blocked else 'error' if self.error else 'ok',
+        paused = bool(self.reload_failed or self.error)
+        return {'status': 'error' if paused else 'degraded' if blocked else 'ok',
                 'profiles': len(self.profiles), 'online': len(self.online_codes()),
                 'states': dict(Counter(p.registration for p in self.profiles.values())),
                 'applying': self.current, 'blocked_nodes': blocked,
-                'automatic_application_paused': bool(blocked or self.error), 'error': self.error,
+                'automatic_application_paused': paused, 'error': self.error,
                 'record_error': self.runs.error, 'active_runs': list(self.runs.active.values())}
 
 

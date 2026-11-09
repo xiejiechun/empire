@@ -152,3 +152,43 @@ async def test_explicit_profile_migration_preserves_sql_identities_and_second_ap
             event.remove(engine, 'before_cursor_execute', capture)
     finally:
         engine.dispose()
+
+
+async def test_sql_unknown_is_retained_while_other_nodes_provision_across_restart():
+    cfg = load_config()
+    engine = make_engine(cfg['mysql'])
+    registry = ProfileRegistry(SettingsStore(SQL(engine), cfg['redis']['namespace']), WindowsProtection())
+    pool = SimpleNamespace(entries={c: SimpleNamespace(code=c, expires=float('inf'), cooldown=0)
+                                    for c in ('a', 'b')})
+    requests = []
+
+    class Source:
+        async def request(self, *args, **kwargs):
+            code = kwargs['proxy_code']
+            assert (await registry.load())[code].registration == 'requested'
+            requests.append(code)
+            if code == 'a':
+                raise TimeoutError('fixture timeout')
+            content = f'<response><ret code="0"/><item account="thsguest_{code}" passwd="secret"/></response>'.encode()
+            return SimpleNamespace(content=content, close=lambda: None)
+
+    service = IdentityService(registry, pool, Source())
+    restarted = None
+    try:
+        await service.reconcile()
+        before = await registry.load()
+        assert before['a'].registration == 'unknown' and before['b'].provisioned
+        assert requests == ['a', 'b']
+        await service.close()
+        pool.entries['c'] = SimpleNamespace(code='c', expires=float('inf'), cooldown=0)
+        restarted = IdentityService(registry, pool, Source())
+        await restarted.reconcile()
+        after = await registry.load()
+        assert after['a'] == before['a'] and after['b'] == before['b'] and after['c'].provisioned
+        assert requests == ['a', 'b', 'c']
+        assert not restarted.health()['automatic_application_paused']
+    finally:
+        await service.close()
+        if restarted:
+            await restarted.close()
+        engine.dispose()
