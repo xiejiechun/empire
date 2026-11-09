@@ -70,15 +70,18 @@ async def test_observation_preserves_deferred_ownership(capacity):
 
 async def test_failure_restores_all_observers(capacity, monkeypatch):
     collector = SimpleNamespace(job_key='tdx-dividends-v1', ingest=SimpleNamespace(publish_page=AsyncMock()),
+                                checkpoint_revision=AsyncMock(return_value=0),
                                 execute=AsyncMock(side_effect=ValueError('source failure')))
     manager = SimpleNamespace(start=AsyncMock(), registry=SimpleNamespace(get=lambda key:
         collector if key.startswith('collector.') else object()))
     before = (capacity.dividend_history.report_periods, capacity.source.complete_response,
-              capacity.dividend_history.collect_history, collector.ingest.publish_page)
+              capacity.dividend_history.collect_history, collector.ingest.publish_page,
+             capacity.dividend_history.needs_review)
     with pytest.raises(ValueError, match='source failure'):
         await capacity.verify_scope(manager, {}, SimpleNamespace(proxy_only=True), dict(results={}))
     after = (capacity.dividend_history.report_periods, capacity.source.complete_response,
-             capacity.dividend_history.collect_history, collector.ingest.publish_page)
+             capacity.dividend_history.collect_history, collector.ingest.publish_page,
+             capacity.dividend_history.needs_review)
     assert before == after
 
 
@@ -141,6 +144,12 @@ async def test_actual_owned_seed_and_formal_query(capacity, monkeypatch):
         assert result['measured']['source_rows'] == result['measured']['planned_periods'] == 1
         assert len(result['query_timings_ms']) == 10 and result['comparison']['retained_history_count'] == 0
         assert not result['strict_proxy_verified'] and not result['sample_30_claimed']
+        # Fresh copied proofs cannot turn an explicit full-capacity observation
+        # into an ordinary maintenance run with no measured source periods.
+        repeated = dict(results={})
+        await capacity.verify_scope(manager, snapshot, SimpleNamespace(proxy_only=False), repeated)
+        assert repeated['results']['dividends']['measured']['source_rows'] == 1
+        assert repeated['results']['dividends']['measured']['planned_periods'] == 1
         # Actual private-session guard remains installed for seeded and query SQL.
         engine = make_engine(storage.settings)
         try:

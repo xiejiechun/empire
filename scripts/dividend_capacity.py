@@ -124,6 +124,7 @@ async def verify_scope(manager, snapshot, args, report):
         limits=LIMITS, protocol='architecture-e5-capacity-protocol-2026-10-20', sample_30_claimed=False)
     original_plan, original_fetch = dividend_history.report_periods, source.complete_response
     original_history, original_publish = dividend_history.collect_history, collector.ingest.publish_page
+    original_review = dividend_history.needs_review
 
     async def plan(*a, **kw):
         values = await original_plan(*a, **kw)
@@ -159,13 +160,19 @@ async def verify_scope(manager, snapshot, args, report):
     dividend_history.report_periods = plan
     source.complete_response = observe_fetch(original_fetch, remember)
     dividend_history.collect_history = history
+    # This explicit capacity run measures the entire declared source plan even
+    # when the copied SQL snapshot has fresh proofs. Restore normal maintenance
+    # before checking that a second unchanged round only reads the directory.
+    dividend_history.needs_review = lambda *a, **kw: True
     collector.ingest.publish_page = observe_publish(original_publish, check, published)
     try:
-        result['outcome'] = await routed(lambda: collector.execute(fresh=False, baseline_revision=0),
+        baseline = await collector.checkpoint_revision()
+        result['outcome'] = await routed(lambda: collector.execute(fresh=False, baseline_revision=baseline),
                                          counts, args.proxy_only)
     finally:
         dividend_history.report_periods, source.complete_response = original_plan, original_fetch
         dividend_history.collect_history, collector.ingest.publish_page = original_history, original_publish
+        dividend_history.needs_review = original_review
     require(set(periods) == set(source_periods), '本轮报告期未全部完成')
     require(set(sources) == {unit_key(row) for row in await query.securities()}, '本轮证券池未全部处理')
     require({r['identity'] for r in published} == set(sources) | {'manifest'}
