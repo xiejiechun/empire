@@ -9,6 +9,7 @@ import httpx
 from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import add_cost
 from empire.contracts.request_retry import retry_delay
 from empire.core.time import CHINA
 from empire.features.yuanhang.availability import DeferredSecurity, resolve_empty
@@ -22,7 +23,7 @@ from empire.features.yuanhang.contract import (
     SOURCE,
 )
 from empire.features.yuanhang.node_diagnostics import failure
-from empire.features.yuanhang.node_selection import select_node
+from empire.features.yuanhang.node_selection import NodeUnavailableError, select_node
 from empire.plugins.collection.unit_prefetch import prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -90,8 +91,18 @@ class YuanhangCollector:
         confirmation_node = None
         diagnostics = dict(security=code, through=through, retry_limit=self.request_retries, failures=[])
         for attempt in range(self.request_retries + 1):
-            node = await select_node(self.identity, preferred, failures, last_error=last_error,
-                                     required_node=confirmation_node, diagnostics=diagnostics)
+            diagnostics.update(attempt=attempt + 1, attempt_limit=self.request_retries + 1,
+                               remaining_retries=self.request_retries - attempt)
+            try:
+                node = await select_node(self.identity, preferred, failures, last_error=last_error,
+                                         required_node=confirmation_node, diagnostics=diagnostics)
+            except NodeUnavailableError:
+                if attempt >= self.request_retries:
+                    raise
+                add_cost('retries')
+                self.stats['node_unavailable_retries'] = self.stats.get('node_unavailable_retries', 0) + 1
+                await asyncio.sleep(retry_delay(attempt + 1))
+                continue
             try:
                 return await self.fetch_authenticated(node, code, through, plan, reservation)
             except MissingFinancialValue as exc:
@@ -287,9 +298,11 @@ class YuanhangCollector:
                 profiles = await self.identity.get_profiles()
                 nodes = sorted(code for code in self.identity.online_codes()
                                if code in profiles and profiles[code].provisioned)
-                if not nodes:
-                    raise ValueError('没有已就绪且在线的远航节点身份，请查看身份管理')
-                units = [(codes[i], nodes[n % len(nodes)], cursor['through']) for n, i in enumerate(positions)]
+                # No live route at planning time is transient too. The first
+                # bounded prefetch unit owns waiting/retries, without a full-pool
+                # retry loop or changing durable identities and checkpoints.
+                units = [(codes[i], nodes[n % len(nodes)] if nodes else None, cursor['through'])
+                         for n, i in enumerate(positions)]
                 async with prefetch_units(self, units, self.fetch, url='https://10jqka.com.cn/',
                         domains=('10jqka.com.cn',), profile='stocks', item_name='只股票') as reads:
                     async for n, read in reads:
