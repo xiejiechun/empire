@@ -85,6 +85,48 @@ async def test_source_to_query_completion_temporal_limit(financial_db):
     assert await store.client.xlen(store.stream) == 0
 
 
+@pytest.mark.parametrize('exhaust', [False, True])
+async def test_empty_response_retry_to_archive_and_resume(financial_db, monkeypatch, exhaust):
+    from empire.plugins.infra.http import HttpService
+    from empire.plugins.infra.response_reader import DownloadIncompleteError
+    manager, query, collector, _ = financial_db
+    store = manager.registry.get('redis.store')
+    attempts = []
+    recovering = False
+
+    def respond(request):
+        attempts.append(request.url.path)
+        if not recovering and (exhaust or len(attempts) == 1):
+            return httpx.Response(200, content=b'')
+        return httpx.Response(200, json=source(query.kind))
+
+    service = HttpService(store.client, store.prefix,
+        {'ths': {'domains': ['10jqka.com.cn'], 'min_interval_ms': 1, 'total_interval_ms': 1}},
+        records=collector.records, transport=httpx.MockTransport(respond))
+    collector.http = service
+    collector.request_retries = 1
+    monkeypatch.setattr('empire.plugins.infra.http.retry_delay', lambda attempt: 0)
+    before = await collector.ingest.checkpoint(collector.job_key)
+    try:
+        if exhaust:
+            with pytest.raises(DownloadIncompleteError, match='空正文'):
+                await collector.execute()
+            assert len(attempts) == 2
+            assert await collector.ingest.checkpoint(collector.job_key) == before
+            assert not await query.list_statements(STOCK['code'])
+            assert await store.client.xlen(store.stream) == 0
+            assert service.buffer_budget.used == 0
+            recovering = True
+        result = await asyncio.wait_for(collector.execute(), 15)
+        assert result['phase'] == 'complete'
+        assert len(attempts) == (3 if exhaust else 2)
+        assert await query.statement_history('601139.SH') == parse(query.kind, source(query.kind), STOCK)
+        assert await store.client.xlen(store.stream) == 0
+        assert service.buffer_budget.used == 0 and not service.responses
+    finally:
+        await service.close()
+
+
 async def test_large_matrix_uses_default_limit_without_partial_checkpoint(financial_db):
     manager, query, collector, _ = financial_db
     body = large_source(query.kind)

@@ -48,7 +48,7 @@ class ThsStatementCollector:
                      'Referer': f"https://basic.10jqka.com.cn/{stock['code']}/finance.html"},
             allowed_domains=('10jqka.com.cn',), project_id=self.project_id,
             policy=self.http.response_policy('generic'), max_retries=self.request_retries,
-            reservation=reservation)
+            reservation=reservation, retry_empty_body=True)
         async def consume():
             try:
                 return parse(self.kind, response.json(), stock), observed, url
