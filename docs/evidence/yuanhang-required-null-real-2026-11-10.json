@@ -1,0 +1,153 @@
+{
+  "run_id": "8aa99fc12a1445e88b150d7106f328a1",
+  "subject": "preview",
+  "started_at": "2026-11-10T14:59:26.556135+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/sources/yuanhang_auth.py": "9eaccf2935550f2c0a48c3309c9826c481f4035bff28995fd37d185b7cbc8c4b",
+    "src/empire/features/yuanhang/collector.py": "b8cc6e9628dcae857777acb4b8627efb4f83ea48b83c421c474b388a35273290",
+    "src/empire/sources/yuanhang_client.py": "5814caae2fe0069990276d846413dc82a79ba70df7c70dca8d0a8633def8a3d5",
+    "src/empire/plugins/infra/native_connections.py": "df88974ceab28b5e6cf1e2b29a24a83cede4078731ca19956861aaab6067c313",
+    "build/verify-yuanhang-required-null-20261110.py": "61c358085d8aa02733eaba34ee8ea8cc574f48fc4de16c438671e259b262f056"
+  },
+  "sample": [
+    "002966.SZ",
+    "300013.SZ"
+  ],
+  "sample_unit": "complete joint financial history",
+  "injected_null": true,
+  "strict_proxy_verified": true,
+  "native_connections": {
+    "opened": 2,
+    "reused": 1,
+    "closed": 1
+  },
+  "natural_null_reproduction": false,
+  "proofs": {
+    "300013.SZ": {
+      "actions": {
+        "series_kind": "actions",
+        "native_market": "USZA",
+        "source_count": 9,
+        "row_count": 9,
+        "first_date": "2010-04-30",
+        "last_date": "2019-07-12",
+        "key_hash": "c00b4dff45163bdb1f5f24e016b5bc481c96b6c3679f451456a9bd0d700f36d1",
+        "content_hash": "b176641c0a928eab6cdf6883809f0fa05f2585989ac305d9f011e27b851365bf",
+        "contract_version": 5,
+        "response_group": "28c2f65070c849fb4c6daebeedb9c06e7b08bac408f231c78dbdcb2caaa90219"
+      },
+      "capital": {
+        "series_kind": "capital",
+        "native_market": "USZA",
+        "source_count": 159,
+        "row_count": 159,
+        "first_date": "2009-10-30",
+        "last_date": "2026-09-30",
+        "key_hash": "4e552240e0766f0b5feedb356b0f277b7b07940c3639d05b770a5eeda6dd36ae",
+        "content_hash": "bec60a56e9cff941d3457882aaf559a42eabbba761c865167996366cc0d8073e",
+        "contract_version": 5,
+        "response_group": "28c2f65070c849fb4c6daebeedb9c06e7b08bac408f231c78dbdcb2caaa90219"
+      }
+    },
+    "002966.SZ": {
+      "actions": {
+        "series_kind": "actions",
+        "native_market": "USZA",
+        "source_count": 9,
+        "row_count": 9,
+        "first_date": "2020-06-04",
+        "last_date": "2026-06-24",
+        "key_hash": "ff69cc413fe80c6c6ba19ef38fbbf51a37c163312db524ea90d730fc5956c8a7",
+        "content_hash": "050d7fc48e7d07f4df5041deb989ecb4f248f277439f403f0ac471fa0839b74f",
+        "contract_version": 5,
+        "response_group": "f7c5534f156297da6ab5a21fd42332a582b840faa8ea0c751940c3791e482a97"
+      },
+      "capital": {
+        "series_kind": "capital",
+        "native_market": "USZA",
+        "source_count": 173,
+        "row_count": 173,
+        "first_date": "2019-08-02",
+        "last_date": "2026-10-23",
+        "key_hash": "bbfbd64f70757652449916157fc1d17c075fa48013a6dc9549a9b6fa461ced20",
+        "content_hash": "e66e2924c59127197f07b04742beeff65e782479dc844e6bf0b4f236a6d737ad",
+        "contract_version": 5,
+        "response_group": "f7c5534f156297da6ab5a21fd42332a582b840faa8ea0c751940c3791e482a97"
+      }
+    }
+  },
+  "problems": {
+    "300013.SZ": [],
+    "002966.SZ": []
+  },
+  "pending": 0,
+  "result": {
+    "phase": "complete",
+    "scope_hash": "988e0d1c6ca256a4ffa41a84ef0f8b15589ddff4053b5562e73f0733be9cf497",
+    "through": "2026-11-10",
+    "next_index": 2,
+    "next_year": 1900,
+    "snapshot_hash": "",
+    "pages": 2,
+    "collected": 350,
+    "batch_id": "c3a146758c1542e0ae4eb4d6c8a0f003",
+    "run_date": "2026-11-10",
+    "force_full": false,
+    "skipped_units": 0,
+    "contract": 2,
+    "maintenance_scope": "recent",
+    "deferred": {},
+    "logical_history_requests": 2,
+    "response_bytes": 3199,
+    "decoded_bytes": 4932,
+    "planned_requests": 2,
+    "full_units": 0,
+    "range_units": 0,
+    "network_costs": {
+      "http_attempts": 6,
+      "native_attempts": 4,
+      "native_queries": 3,
+      "authentication_http_attempts": 6,
+      "native_auth_exchanges": 2,
+      "retries": 2,
+      "observed_wire_bytes": 16991,
+      "observed_body_bytes": 11705,
+      "native_decoded_bytes": 7454
+    }
+  },
+  "routes": {
+    "proxy_requests": 10
+  },
+  "registration_requests": 0,
+  "network_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false,
+    "request_retries": 2
+  },
+  "same_cutoff_repeat_requests": 0,
+  "financial_null_confirmations": 1,
+  "private_redis_cleaned": true,
+  "input_identity_verified": true,
+  "checked_at": "2026-11-10T15:00:09.298270+00:00",
+  "database": "empire_capacity_8aa99fc12a1445e88b150d7106f328a1_test",
+  "measurement_service": {
+    "server_uuid": "8518ed43-dd15-11f1-a1fb-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

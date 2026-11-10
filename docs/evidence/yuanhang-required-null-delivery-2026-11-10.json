@@ -1,0 +1,134 @@
+{
+  "checked_at": "2026-11-10T15:09:47.453476+00:00",
+  "release_id": "558e0622a6f44d6283e90e032de0e1ae",
+  "project_id": "ths-yuanhang-financial",
+  "checkpoint": {
+    "phase": "collecting",
+    "scope_hash": "35422a602ef9799757fb25a8a501cf68eae24c6e3f2ff0efd3a4352d3e11a823",
+    "through": "2026-11-10",
+    "next_index": 1486,
+    "next_year": 1900,
+    "snapshot_hash": "",
+    "pages": 1486,
+    "collected": 307084,
+    "batch_id": "49540b59c672456d97a1ba030287a6ae",
+    "run_date": "2026-11-10",
+    "force_full": false,
+    "skipped_units": 0,
+    "contract": 2,
+    "maintenance_scope": "recent",
+    "deferred": {}
+  },
+  "exact_ids": [
+    "de55bdc2b85b4321ac62bcc05af13ec5",
+    "a38623b4dc7a4e4a860e9ecdd18c6adf"
+  ],
+  "production_write": true,
+  "source_proof_problems": {
+    "300013.SZ": [],
+    "002966.SZ": []
+  },
+  "capital_at_error_dates": {
+    "002966.SZ": {
+      "rows": [
+        {
+          "effective_date": "2019-08-02",
+          "shares": "3333333334.0000000000"
+        }
+      ],
+      "next": null
+    },
+    "300013.SZ": {
+      "rows": [
+        {
+          "effective_date": "2009-10-30",
+          "shares": "60000000.0000000000"
+        }
+      ],
+      "next": null
+    }
+  },
+  "errors_before": 24,
+  "cleared_count": 2,
+  "errors_after": 22,
+  "unrelated_preserved": true,
+  "cleared_ids": [
+    "a38623b4dc7a4e4a860e9ecdd18c6adf",
+    "de55bdc2b85b4321ac62bcc05af13ec5"
+  ],
+  "implementation_commit": "0b96eed",
+  "actual_desktop_verified": true,
+  "release_passed": true,
+  "selected_tests": 410,
+  "total_tests": 5243,
+  "untested": 4833,
+  "selected_test_files": 27,
+  "full_market_round_complete": false,
+  "current_checkpoint": {
+    "cursor": {
+      "phase": "collecting",
+      "scope_hash": "35422a602ef9799757fb25a8a501cf68eae24c6e3f2ff0efd3a4352d3e11a823",
+      "through": "2026-11-10",
+      "next_index": 1726,
+      "next_year": 1900,
+      "snapshot_hash": "",
+      "pages": 1726,
+      "collected": 359664,
+      "batch_id": "49540b59c672456d97a1ba030287a6ae",
+      "run_date": "2026-11-10",
+      "force_full": false,
+      "skipped_units": 0,
+      "contract": 2,
+      "maintenance_scope": "recent",
+      "deferred": {}
+    },
+    "revision": "48093"
+  },
+  "archive_progress": {
+    "batch_id": "49540b59c672456d97a1ba030287a6ae",
+    "page": 1725,
+    "status": "complete",
+    "row_count": 225,
+    "error_text": "",
+    "observed_at": "2026-11-10T15:10:19.005708+00:00"
+  },
+  "queue": {
+    "stream_total": 1,
+    "unreadable": 0,
+    "truncated": false,
+    "exact": true,
+    "fetched_envelope_bytes": 7547,
+    "scanned": 1,
+    "stream_ids": [
+      "1794323419607-0"
+    ],
+    "project_lower_bound": 1
+  },
+  "job": {
+    "last_status": "running",
+    "next_due": 1794391200,
+    "active": {
+      "started_at": 1794323314.9124,
+      "origin": "manual",
+      "run_id": "643e471df7024af28fabae638480c53a",
+      "fresh": false,
+      "task_id": "ths-yuanhang-financial",
+      "baseline_revision": 47481
+    },
+    "notice": "",
+    "policy": {
+      "enabled": true,
+      "request_retries": 30,
+      "daily_time": "18:00",
+      "proxy_fallback": true,
+      "archived": false,
+      "interval_seconds": 86400,
+      "use_proxy": true,
+      "mode": "daily"
+    },
+    "error": ""
+  },
+  "config_preserved": true,
+  "owned_test_mysql_stopped": true,
+  "scope": "Required financial NULL confirmation and bounded diagnostics; source NULL may persist"
+}
