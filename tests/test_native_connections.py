@@ -62,3 +62,47 @@ async def test_reuse_keeps_protocol_state_but_each_request_has_own_permit_and_bu
         server.close()
         await server.wait_closed()
     assert not http.native_connections.idle and not http.native_connections.closing
+
+
+async def test_fresh_request_replaces_exact_connection_then_normal_reuses_it():
+    accepted = []
+
+    async def peer(reader, writer):
+        accepted.append(1)
+        try:
+            while True:
+                writer.write(await reader.readexactly(4))
+                await writer.drain()
+        except asyncio.IncompleteReadError:
+            pass
+        finally:
+            writer.close()
+            await writer.wait_closed()
+
+    server = await asyncio.start_server(peer, '127.0.0.1', 0)
+    http, handshakes = service(), []
+    token = USE_PROXY.set(False)
+
+    async def protocol(channel):
+        if not channel.state.get('authenticated'):
+            handshakes.append(1)
+            channel.state['authenticated'] = True
+        await channel.write(b'data')
+        return await channel.readexactly(4)
+
+    try:
+        for fresh in (False, True, False):
+            response = await http.request_stream(target(server.sockets[0].getsockname()[1]), protocol,
+                policy=ResponsePolicy(4, 4), connection_key='same-session', fresh_connection=fresh)
+            assert response.content == b'data'
+            response.close()
+            assert http.buffer_budget.used == http.global_active == 0
+        assert len(accepted) == len(handshakes) == 2
+        assert http.native_connections.stats == dict(opened=2, reused=1, closed=1)
+        assert len(http.native_connections.idle) == 1
+    finally:
+        await http.close()
+        USE_PROXY.reset(token)
+        server.close()
+        await server.wait_closed()
+    assert not http.native_connections.idle and not http.native_connections.closing

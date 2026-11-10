@@ -88,6 +88,7 @@ class YuanhangCollector:
         failures = {}
         last_error = None
         confirmed_null = False
+        null_observations = []
         confirmation_node = None
         diagnostics = dict(security=code, through=through, retry_limit=self.request_retries, failures=[])
         for attempt in range(self.request_retries + 1):
@@ -104,8 +105,17 @@ class YuanhangCollector:
                 await asyncio.sleep(retry_delay(attempt + 1))
                 continue
             try:
-                return await self.fetch_authenticated(node, code, through, plan, reservation)
+                return await self.fetch_authenticated(node, code, through, plan, reservation,
+                                                      fresh_connection=confirmed_null)
             except MissingFinancialValue as exc:
+                evidence = {key: value for key, value in getattr(exc, 'yuanhang_diagnostics', {}).items()
+                    if key in ('node', 'security', 'native_market', 'field', 'source_date',
+                               'fresh_connection', 'response_bytes', 'response_sha256', 'null_tables')}
+                null_observations.append({**{key: value for key, value in evidence.items() if key != 'null_tables'},
+                    'node': node, 'attempt': attempt + 1, 'field': exc.field, 'source_date': str(exc.day)})
+                # Keep table structure shallow enough for bounded Redis metadata.
+                exc.yuanhang_diagnostics = {**diagnostics, **evidence,
+                    'null_observations': null_observations[-2:], 'confirmation_attempted': confirmed_null}
                 if not self.financial or confirmed_null or attempt >= self.request_retries:
                     raise
                 confirmed_null, confirmation_node, last_error = True, node, exc
@@ -139,7 +149,7 @@ class YuanhangCollector:
                 self.stats['node_transport_retries'] = self.stats.get('node_transport_retries', 0) + 1
                 await asyncio.sleep(retry_delay(attempt + 1))
 
-    async def fetch_authenticated(self, node, code, through, plan, reservation):
+    async def fetch_authenticated(self, node, code, through, plan, reservation, *, fresh_connection=False):
         session = await self.identity.login(node, project_id=self.project_id)
         for renewal in range(2):
             try:
@@ -147,7 +157,8 @@ class YuanhangCollector:
                     dataset='financial' if self.financial else 'daily',
                     start=date.fromisoformat(plan['start']) if plan.get('start') else FIRST,
                     end=FINANCIAL_END if self.financial else date.fromisoformat(through),
-                    max_retries=0, reservation=reservation, native_market=plan.get('native_market'))
+                    max_retries=0, reservation=reservation, native_market=plan.get('native_market'),
+                    fresh_connection=fresh_connection)
                 self.identity.sessions.confirm(node, session)
                 return result
             except AuthenticationError as exc:

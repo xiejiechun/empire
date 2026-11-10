@@ -43,10 +43,13 @@ class NativeConnections:
                 await self.retire(conn)
 
     @asynccontextmanager
-    async def connection(self, target, entry, site, token):
+    async def connection(self, target, entry, site, token, *, fresh=False):
         await self.prune()
         key = (target, id(entry), token)
         conn = self.idle.pop(key, None)
+        if fresh and conn is not None:
+            await self.retire(conn)
+            conn = None
         # A changed session for the same route must not retain old credentials.
         for old_key in list(self.idle):
             if old_key[:2] == key[:2]:

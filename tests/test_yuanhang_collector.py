@@ -178,6 +178,7 @@ async def test_financial_null_confirms_once_on_same_node_without_merging(monkeyp
     assert await c.fetch(('002346.SZ', 'node001', '2026-11-05')) == 'complete'
     assert [call.args[0] for call in c.identity.login.await_args_list] == ['node001', 'node001']
     assert c.stats['financial_null_confirmations'] == 1
+    assert [call.kwargs['fresh_connection'] for call in fetch.await_args_list] == [False, True]
 
 
 @pytest.mark.parametrize('budget,expected', [(0, 1), (1, 2), (30, 2)])
@@ -186,9 +187,15 @@ async def test_persistent_null_is_not_retried_until_accidentally_valid(monkeypat
     c.financial, c.request_retries = True, budget
     fetch = AsyncMock(side_effect=MissingFinancialValue(460, 20261105, '603303.SH'))
     monkeypatch.setattr(module, 'fetch_history', fetch)
-    with pytest.raises(MissingFinancialValue, match='field=460, date=20261105'):
+    with pytest.raises(MissingFinancialValue, match='field=460, date=20261105') as caught:
         await c.fetch(('603303.SH', 'node001', '2026-11-05'))
     assert fetch.await_count == expected
+    detail = caught.value.yuanhang_diagnostics
+    assert detail['confirmation_attempted'] == (budget > 0)
+    assert len(detail['null_observations']) == expected
+    assert all(row['node'] == 'node001' and row['field'] == 460
+               for row in detail['null_observations'])
+    assert [call.kwargs['fresh_connection'] for call in fetch.await_args_list] == [False] + [True] * (expected - 1)
 
 
 async def test_null_confirmation_uses_remaining_transport_budget_and_current_node(monkeypatch):

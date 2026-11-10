@@ -158,13 +158,28 @@ async def test_persistent_financial_null_never_publishes_or_advances(native, mon
     await manager.start('collector.yuanhang_financial')
     c = manager.registry.get('collector.yuanhang_financial')
     c.identity.login = AsyncMock(return_value=SimpleNamespace(proxy_code='node-test'))
-    wire = AsyncMock(side_effect=MissingFinancialValue(402, '2023-01-01', CODE))
+    def missing_value():
+        error = MissingFinancialValue(402, '2023-01-01', CODE)
+        error.yuanhang_diagnostics = dict(response_sha256='a' * 64, response_bytes=42,
+            null_tables=[dict(row_count=1, descriptor=[402, 3, 0, 8], null_dates=[20230101])])
+        return error
+    wire = AsyncMock(side_effect=[missing_value(), missing_value()])
     monkeypatch.setattr(module, 'fetch_history', wire)
     monkeypatch.setattr(module, 'retry_delay', lambda _: 0)
     before = await c.ingest.checkpoint(FINANCIAL_JOB)
     with pytest.raises(MissingFinancialValue, match='field=402'):
         await c.execute()
     assert wire.await_count == 2
+    assert [call.kwargs['fresh_connection'] for call in wire.await_args_list] == [False, True]
+    errors = await c.records.list_error_summaries(c.project_id)
+    record = await c.records.get_error(c.project_id, errors['rows'][0]['id'])
+    assert record['metadata']['confirmation_attempted'] is True
+    observations = record['metadata']['null_observations']
+    assert len(observations) == 2
+    assert all(row['node'] == 'node-test' and row['field'] == 402 for row in observations)
+    assert all(row['response_sha256'] == 'a' * 64 for row in observations)
+    assert record['metadata']['null_tables'] == [dict(row_count=1,
+        descriptor=[402, 3, 0, 8], null_dates=[20230101])]
     assert await c.ingest.checkpoint(FINANCIAL_JOB) == before
     assert not await q.has_history(CODE, financial=True)
     assert await store.client.xlen(store.stream) == 0

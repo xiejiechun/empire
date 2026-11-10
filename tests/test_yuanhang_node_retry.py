@@ -27,7 +27,8 @@ async def test_directory_outage_over_125_seconds_recovers_on_next_budgeted_attem
     def online():
         return {'node001'} if clock[0] == 0 else {'node002'} if clock[0] >= 150 else set()
     c.identity.online_codes = online
-    async def request(node, *args):
+    async def request(node, *args, fresh_connection=False):
+        assert fresh_connection is False
         if node == 'node001':
             clock[0] = 1
             raise httpx.ProxyError('secret')

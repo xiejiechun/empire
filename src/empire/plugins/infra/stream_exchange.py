@@ -65,7 +65,7 @@ class StreamResponse:
 
 
 async def request(service, target, protocol, *, policy=None, max_retries=2, total_timeout=None,
-                  proxy_code=None, reservation=None, connection_key=None):
+                  proxy_code=None, reservation=None, connection_key=None, fresh_connection=False):
     """Protocol/auth failures do not retry; transport failures use bounded failover.
 
     Authentication data is never sent to error-record storage by this layer.
@@ -73,6 +73,8 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
     """
     if service.closed:
         raise RuntimeError("Downloader has stopped")
+    if type(fresh_connection) is not bool:
+        raise ValueError('Invalid native fresh-connection flag')
     if type(max_retries) is not int or not 0 <= max_retries <= MAX_REQUEST_RETRIES:
         raise ValueError("Invalid native retry limit")
     group = service.rules.resolve(target.site_url, target.allowed_domains)
@@ -88,7 +90,8 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
             # authentication error remains non-retryable; only transport times out.
             async with asyncio.timeout(ATTEMPT_TIMEOUT_SECONDS):
                 if connection_key is not None:
-                    async with service.native_connections.connection(target, entry, group.name, connection_key) as conn:
+                    async with service.native_connections.connection(
+                            target, entry, group.name, connection_key, fresh=fresh_connection) as conn:
                         channel = BoundedChannel(conn.reader, conn.writer, policy, lease, conn.state)
                         content = await protocol(channel)
                         if not isinstance(content, bytes) or len(content) > policy.max_body_bytes:

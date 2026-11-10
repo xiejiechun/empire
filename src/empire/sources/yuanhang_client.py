@@ -1,6 +1,8 @@
 """Node-bound guest provisioning, login and native history over shared routing."""
+import hashlib
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from itertools import islice
 from urllib.parse import urlencode
 
 from empire.sources.yuanhang_auth import (
@@ -82,7 +84,7 @@ class DecodedHistory:
 
 
 async def fetch_history(http, session, *, unified_code, dataset, start, end, instance=1,
-                        max_retries=2, native_market=None, reservation=None):
+                        max_retries=2, native_market=None, reservation=None, fresh_connection=False):
     if session.proxy_code is None:
         raise ValueError('节点行情请求必须使用已绑定设备的登录会话')
     preferred = security_identity(unified_code, native_market)[:4]
@@ -94,7 +96,7 @@ async def fetch_history(http, session, *, unified_code, dataset, start, end, ins
         try:
             data = await _fetch_market(http, session, unified_code=unified_code, dataset=dataset,
                 start=start, end=end, instance=instance, max_retries=max_retries,
-                native_market=market, reservation=reservation)
+                native_market=market, reservation=reservation, fresh_connection=fresh_connection)
         except EmptyHistoryResponse:
             if market == markets[-1]:
                 raise
@@ -105,7 +107,7 @@ async def fetch_history(http, session, *, unified_code, dataset, start, end, ins
 
 
 async def _fetch_market(http, session, *, unified_code, dataset, start, end, instance,
-                        max_retries, native_market, reservation):
+                        max_retries, native_market, reservation, fresh_connection=False):
     query = history_query(unified_code=unified_code, dataset=dataset, start=start, end=end,
                           instance=instance, native_market=native_market)
     policy = http.response_policy('stocks')
@@ -118,7 +120,9 @@ async def _fetch_market(http, session, *, unified_code, dataset, start, end, ins
 
     response = await http.request_stream(session.servers[0], exchange, policy=policy,
                                          proxy_code=session.proxy_code, max_retries=max_retries,
-                                         reservation=reservation, connection_key=session)
+                                         reservation=reservation, connection_key=session,
+                                         fresh_connection=fresh_connection)
+    tables = ()
     try:
         tables = decode_response(response.content, instance=instance,
                                  request_id=210 if dataset == 'daily' else 211,
@@ -126,7 +130,19 @@ async def _fetch_market(http, session, *, unified_code, dataset, start, end, ins
         normalizer = {'daily': normalize_daily, 'financial': normalize_financial}[dataset]
         data = normalizer(tables, unified_code=unified_code, start=start, end=end, native_market=native_market)
         return DecodedHistory(data, len(response.content), sum(t['decoded_bytes'] for t in tables))
-    except (EmptyHistoryResponse, IncompleteFinancialHistory, MissingFinancialValue):
+    except MissingFinancialValue as exc:
+        # 211 contains business tables only; retain a bounded structural proof,
+        # never authentication tokens, endpoints or the full successful history.
+        exc.yuanhang_diagnostics = dict(node=session.proxy_code, security=unified_code,
+            native_market=native_market, field=exc.field, source_date=str(exc.day),
+            fresh_connection=fresh_connection, response_bytes=len(response.content),
+            response_sha256=hashlib.sha256(response.content).hexdigest(),
+            null_tables=[dict(version=t['version'], row_count=t['row_count'],
+                descriptor=next(list(d) for d in t['fields'] if d[0] == exc.field),
+                null_dates=list(islice((r[1] for r in t['rows'] if r.get(exc.field) is None), 8)))
+                for t in islice((t for t in tables if any(d[0] == exc.field for d in t['fields'])), 3)])
+        raise
+    except (EmptyHistoryResponse, IncompleteFinancialHistory):
         raise
     except ValueError as exc:
         raise ValueError(f'{unified_code}/{dataset}/{native_market}: {exc}') from exc
