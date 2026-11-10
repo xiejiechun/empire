@@ -6,6 +6,7 @@ from datetime import UTC, datetime, timedelta
 from functools import partial
 
 from sqlalchemy import text
+from sqlalchemy.exc import DBAPIError
 
 from empire.contracts.business_schema import schema_contract
 from empire.contracts.plugin import PluginManifest
@@ -81,19 +82,26 @@ class HotListDataPlugin:
             return sorted(security(c) for c in codes)
 
         def read():
-            with self.mysql.read_engine.connect() as conn:
-                rows = (
-                    conn.execute(
-                        text(
-                            "SELECT unified_code FROM stock UNION SELECT DISTINCT unified_code FROM hot_list_day ORDER BY unified_code LIMIT 30001"
-                        )
-                    )
-                    .scalars()
-                    .all()
-                )
-                if not rows or len(rows) > 30000:
-                    raise ValueError("龙虎榜股票池为空或超限")
-                return [security(c) for c in rows]
+            for attempt in range(2):
+                try:
+                    with self.mysql.read_engine.connect() as conn:
+                        # Read the small covering index sequentially instead of
+                        # seeking each security in the much larger clustered table.
+                        rows = conn.execute(text(
+                            "SELECT unified_code FROM stock UNION SELECT DISTINCT unified_code "
+                            "FROM hot_list_day FORCE INDEX (ix_date) ORDER BY unified_code LIMIT 30001"
+                        )).scalars().all()
+                    if not rows or len(rows) > 30000:
+                        raise ValueError("龙虎榜股票池为空或超限")
+                    return [security(c) for c in rows]
+                except DBAPIError as exc:
+                    # pre_ping only detects stale connections before a query.
+                    # Replay this read once after a mid-query disconnect; never
+                    # apply this rule to writes or other database failures.
+                    args = getattr(exc.orig, "args", ())
+                    code = args[0] if args else None
+                    if attempt or not exc.connection_invalidated or code not in (2006, 2013):
+                        raise
 
         return await self.mysql.read(read)
 

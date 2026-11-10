@@ -124,8 +124,13 @@ async def run(args):
             return fn(*args)
 
         query.mysql = SimpleNamespace(read_engine=engine, engine=engine, read=read)
-        page_ms, detail_ms, plans = [], [], {}
+        page_ms, detail_ms, pool_ms, plans = [], [], [], {}
         for i in range(10):
+            started = time.perf_counter()
+            pool = await query.securities()
+            pool_ms.append((time.perf_counter() - started) * 1000)
+            if pool != [f"{600000 + n:06d}.SH" for n in range(500)]:
+                raise ValueError("股票池集合不一致")
             started = time.perf_counter()
             page = await query.browse()
             page_ms.append((time.perf_counter() - started) * 1000)
@@ -141,6 +146,7 @@ async def run(args):
             raise ValueError("放大日期集合审计失败")
         with engine.connect() as conn:
             for label, sql in dict(
+                pool="SELECT unified_code FROM stock UNION SELECT DISTINCT unified_code FROM hot_list_day FORCE INDEX (ix_date) ORDER BY unified_code LIMIT 30001",
                 page="SELECT unified_code,list_date,detail_status FROM hot_list_day ORDER BY list_date DESC,unified_code DESC LIMIT 200",
                 security="SELECT list_date FROM hot_list_day WHERE unified_code='600000.SH' ORDER BY list_date DESC LIMIT 200",
                 seat="SELECT seat_name,buy_amount FROM hot_list_seat WHERE unified_code='600000.SH' AND list_date='2026-03-03' ORDER BY seq LIMIT 10001",
@@ -165,6 +171,7 @@ async def run(args):
             repeated_seconds=repeated,
             repeated_business_dml=len(dml),
             day_heads=5000,
+            pool_p95_ms=max(pool_ms),
             page_p95_ms=max(page_ms),
             detail_p95_ms=max(detail_ms),
             audit_ms=audit_ms,
@@ -176,6 +183,7 @@ async def run(args):
         limits = dict(
             import_seconds=60,
             repeated_business_dml=0,
+            pool_p95_ms=100,
             page_p95_ms=100,
             detail_p95_ms=100,
             audit_ms=10000,

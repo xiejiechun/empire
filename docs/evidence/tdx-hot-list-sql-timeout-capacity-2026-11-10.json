@@ -1,0 +1,224 @@
+{
+  "run_id": "a7d85239fe8b44d89f7ae9a7e003f1da",
+  "subject": "preview",
+  "started_at": "2026-11-10T12:26:28.497221+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "dataset": "hot_list.tdx_unit",
+  "measurements": {
+    "import_seconds": 34.02736509998795,
+    "repeated_seconds": 5.050176399992779,
+    "repeated_business_dml": 0,
+    "day_heads": 5000,
+    "pool_p95_ms": 3.082199953496456,
+    "page_p95_ms": 3.60920000821352,
+    "detail_p95_ms": 2.7184999780729413,
+    "audit_ms": 583.2300999900326,
+    "allocated_bytes": 35274752,
+    "peak_python_bytes": 1229052,
+    "page_bytes": 29047,
+    "detail_bytes": 1427
+  },
+  "limits": {
+    "import_seconds": 60,
+    "repeated_business_dml": 0,
+    "pool_p95_ms": 100,
+    "page_p95_ms": 100,
+    "detail_p95_ms": 100,
+    "audit_ms": 10000,
+    "allocated_bytes": 134217728,
+    "peak_python_bytes": 134217728,
+    "page_bytes": 262144,
+    "detail_bytes": 524288
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "synthetic": true,
+    "securities": 500,
+    "dates_per_stock": 10,
+    "actual_sample": "独立30随机股票代理全历史验证另列，不将合成容量当实际数据",
+    "cache": "首次未强制冷缓存，后九次热读，最大值约束P95",
+    "allocation": [
+      {
+        "TABLE_NAME": "collection_state",
+        "DATA_LENGTH": 131072,
+        "INDEX_LENGTH": 0
+      },
+      {
+        "TABLE_NAME": "hot_list_day",
+        "DATA_LENGTH": 1572864,
+        "INDEX_LENGTH": 147456
+      },
+      {
+        "TABLE_NAME": "hot_list_reason",
+        "DATA_LENGTH": 1589248,
+        "INDEX_LENGTH": 229376
+      },
+      {
+        "TABLE_NAME": "hot_list_seat",
+        "DATA_LENGTH": 29966336,
+        "INDEX_LENGTH": 1589248
+      },
+      {
+        "TABLE_NAME": "stock",
+        "DATA_LENGTH": 49152,
+        "INDEX_LENGTH": 0
+      }
+    ],
+    "transactions": "每目录/日期/证券证明独立事务，5000日头、5000原因、15000席位",
+    "peak": "tracemalloc仅跟踪测量阶段Python分配，不代表进程RSS"
+  },
+  "bindings": {
+    "src/empire/features/hot_list/contract.py": "581052c7cb0bc0fcf57dae611542545a0185345108bd29d9da0da659ed4f26c2",
+    "src/empire/features/hot_list/source.py": "d1992b5780042079a78b8f83d9c9a9861d06dca657e405c683cffd729905416c",
+    "src/empire/features/hot_list/dataset.py": "958204b040a00dbdab57aac16dd63712f86cd88bf5fe7140a076e49430a28d98",
+    "src/empire/features/hot_list/query.py": "9d3cd7d8b8f5dc6041f15eab71e041a826dff05f60c0143e2f84da0fde8914d9",
+    "scripts/measure_hot_list.py": "8cd2dd0ba03709defac18036ed57fa7846a95a8b2c6e60ca69a5238fbd04b853",
+    "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
+    "tests/test_tdx_hot_list.py": "8a0e8659b0dece2c00858ce359578ea464eac56877159ad9d7d3482d14ec3de1"
+  },
+  "ddl_scopes": {
+    "hot_list_day": "5da6d3ccf0f89df6ea645126618951f3619587a213a96f892acb619290914240",
+    "hot_list_reason": "642c9dfe0189e430c1ac91825dc0dab8483a5ade6773f7739fe2912da201c42a",
+    "hot_list_seat": "0bf8c2dd29466a51bdd72973a4de85c2086bab8e7fe482ce374f78d610e223e1"
+  },
+  "explain": {
+    "pool": [
+      {
+        "id": 1,
+        "select_type": "PRIMARY",
+        "table": "stock",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "11",
+        "ref": null,
+        "rows": 500,
+        "filtered": 100.0,
+        "Extra": "Using index"
+      },
+      {
+        "id": 2,
+        "select_type": "UNION",
+        "table": "hot_list_day",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": "ix_date",
+        "key": "ix_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 4807,
+        "filtered": 100.0,
+        "Extra": "Using index; Using temporary"
+      },
+      {
+        "id": 3,
+        "select_type": "UNION RESULT",
+        "table": "<union1,2>",
+        "partitions": null,
+        "type": "ALL",
+        "possible_keys": null,
+        "key": null,
+        "key_len": null,
+        "ref": null,
+        "rows": null,
+        "filtered": null,
+        "Extra": "Using temporary; Using filesort"
+      }
+    ],
+    "pool_actual_rows": 500,
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "hot_list_day",
+        "partitions": null,
+        "type": "ALL",
+        "possible_keys": null,
+        "key": null,
+        "key_len": null,
+        "ref": null,
+        "rows": 4807,
+        "filtered": 100.0,
+        "Extra": "Using filesort"
+      }
+    ],
+    "page_actual_rows": 200,
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "hot_list_day",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY,ix_date",
+        "key": "PRIMARY",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 10,
+        "filtered": 100.0,
+        "Extra": "Backward index scan; Using index"
+      }
+    ],
+    "security_actual_rows": 10,
+    "seat": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "hot_list_seat",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "14",
+        "ref": "const,const",
+        "rows": 3,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "seat_actual_rows": 3,
+    "analysis": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "hot_list_reason",
+        "partitions": null,
+        "type": "ALL",
+        "possible_keys": "ix_reason",
+        "key": null,
+        "key_len": null,
+        "ref": null,
+        "rows": 5000,
+        "filtered": 50.0,
+        "Extra": "Using where"
+      }
+    ],
+    "analysis_actual_rows": 1
+  },
+  "reviewed_tradeoffs": "三表避免核心事实JSON，auxiliary/extension白名单有界；审计最多2000日期、20日期批读。源无版本的SQL版本为最后内容变化观测，过期摘要后不能证明其后的无变化观察上界。",
+  "projected_five_year_bytes": 881868800,
+  "input_identity_verified": true,
+  "checked_at": "2026-11-10T12:27:08.962407+00:00",
+  "database": "empire_capacity_a7d85239fe8b44d89f7ae9a7e003f1da_test",
+  "measurement_service": {
+    "server_uuid": "b9701dec-d990-11f1-b1a0-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 1,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}
