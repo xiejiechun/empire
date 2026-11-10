@@ -45,15 +45,34 @@ def params(code, requested=None):
     return ["0", code[:6], ""] if requested is None else ["1", code[:6], day(requested)]
 
 
+def transient_query_timeout(response):
+    """Only the observed server cache-query timeout is safe to retry."""
+    try:
+        body = json.loads(response.content)
+    except (ValueError, UnicodeError):
+        return False
+    return (
+        isinstance(body, dict)
+        and type(body.get("ErrorCode")) is int
+        and body["ErrorCode"] == -1009
+        and body.get("ErrorInfo") == "cache语句执行超时"
+        and body.get("ResultSets") in (None, [])
+    )
+
+
 def result_sets(body, columns):
     if (
         not isinstance(body, dict)
         or type(body.get("ErrorCode")) is not int
         or body["ErrorCode"] != 0
     ):
+        reason = ""
+        if isinstance(body, dict) and body.get("ErrorCode") == -1009:
+            reason = "（来源服务端cache语句执行超时）" if body.get("ErrorInfo") == "cache语句执行超时" else ""
         raise ValueError(
             "通达信龙虎榜来源错误："
             + str(body.get("ErrorCode") if isinstance(body, dict) else "未知")
+            + reason
         )
     sets = body.get("ResultSets")
     if not isinstance(sets, list) or len(sets) != len(columns):

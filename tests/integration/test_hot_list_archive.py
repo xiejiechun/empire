@@ -265,3 +265,49 @@ async def test_failed_transaction_retains_queue_and_post_commit_replay(pipeline,
     assert await store.client.xlen(store.stream) == 0
     result = await collect(c)
     assert result["phase"] == "complete"
+
+
+@pytest.mark.parametrize("failed_mode", ["0", "1"])
+async def test_query_timeout_exhaustion_preserves_cursor_and_resumes(pipeline, monkeypatch, failed_mode):
+    from empire.features.hot_list.source import parse_detail
+    from empire.plugins.infra.http import HttpService
+    from tests.test_hot_list_timeout import GROUPS, TIMEOUT
+    from tests.test_http import ErrorRecorder, MemoryPermits
+
+    _, c, q, store = pipeline
+    failing, attempts = True, []
+
+    def respond(request):
+        mode = json.loads(request.content)["Params"][0]
+        attempts.append(mode)
+        return httpx.Response(200, json=TIMEOUT if failing and mode == failed_mode else
+                              directory() if mode == "0" else detail())
+
+    service = HttpService(MemoryPermits(), "timeout-test", GROUPS, records=ErrorRecorder(),
+                          transport=httpx.MockTransport(respond))
+    c.http, c.request_retries = service, 2
+    monkeypatch.setattr("empire.plugins.infra.http.retry_delay", lambda attempt: 0)
+    try:
+        with pytest.raises(ValueError, match="cache语句执行超时"):
+            await collect(c, fresh=True)
+        assert attempts.count(failed_mode) == 3
+        checkpoint = await c.ingest.checkpoint(c.job_key)
+        cursor = checkpoint["cursor"]
+        assert not cursor or (cursor["index"] == 0 and cursor["last_date"] == "")
+        current = await q.detail(CODE, DATE)
+        assert current is None or not current["seats"]
+        batch = cursor.get("batch_id")
+        failing = False
+        result = await collect(c)
+        assert result["phase"] == "complete"
+        if batch:
+            assert result["batch_id"] == batch
+        value = await q.detail(CODE, DATE)
+        expected = parse_detail(detail())
+        assert value["reasons"] == expected["reasons"]
+        assert value["seats"] == expected["seats"]
+        assert value["detail_status"] == expected["status"]
+        assert await store.client.xlen(store.stream) == 0
+        assert service.buffer_budget.used == 0
+    finally:
+        await service.close()

@@ -13,7 +13,14 @@ from empire.contracts.plugin import PluginManifest
 from empire.core.time import CHINA
 from empire.features.hot_list.contract import CONTRACT, DATASET, JOB, PROJECT, day, digest
 from empire.features.hot_list.review import REVIEW_POLICY, review_due
-from empire.features.hot_list.source import PAGE, URL, params, parse_detail, parse_directory
+from empire.features.hot_list.source import (
+    PAGE,
+    URL,
+    params,
+    parse_detail,
+    parse_directory,
+    transient_query_timeout,
+)
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -72,6 +79,7 @@ class HotListCollector:
             project_id=PROJECT,
             policy=self.http.response_policy("generic"),
             max_retries=self.request_retries,
+            retry_response=transient_query_timeout,
             reservation=reservation,
         )
         self.stats["requests"] += 1
