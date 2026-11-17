@@ -10,6 +10,8 @@
 
 ## 显式升级与生效
 
+东方财富明盘暗盘资金榜使用graymarket_day和graymarket_daily两表，固定来源eastmoney。旧库仅通过`scripts/create_graymarket_schema.py --apply --report <报告路径>`显式新增，要求正常停机及待归档清零，核对已有业务不变；启动不建表。设计和字段入口见[实施文档](eastmoney-graymarket-implementation-plan.md)。
+
 新空库使用现行 init-db。旧版完整业务库使用 scripts/migrate_business_schema.py；被替代的财报、行业、资本事件和分时单表创建脚本已退役。早于本轮输入契约的旧业务身份修复仍由标记为历史用途的显式入口处理，不能直接用本轮迁移跳过前置契约。
 
 先正常关闭 Empire，等待任务和连接退出、待归档 Stream 清零。不能清队、删除锁或强杀数据库来满足条件。程序目录 config.toml 始终保留。
@@ -74,7 +76,7 @@ status 查看阶段，resume 持同一日志续跑。日志绑定数据库 serve
 
 ## 当前指数结构
 
-stock_index和stock_index_member固定来源ths，归属index.catalog及index.members。目录主键index_code，成员主键index_code＋source_code，已识别市场时关联unified_code；未提供可确定市场的来源证券身份保留原值。核心字段均结构化，只有公共collection_state保存有界摘要及进度。create_index_schema.py关闭Empire且队列排空后显式新增，核对已有业务不变；启动不迁移。字段与容量见[指数说明](ths-indices.md)。
+指数正式存储与生命周期见[远航三个指数组件](ths-yuanhang-indices.md)。目录、网页成分状态/关系、原生日K事实/年度证明五表分开；来源暂无名单为空且数量未知，所有行情值可空；不迁入旧HTTP覆盖。scripts/switch_yuanhang_indices.py按停机/队列0及维护锁显式创建新表并删除已授权旧四表，启动不迁移。
 
 ## 北交所历史代码映射
 
@@ -82,7 +84,7 @@ security_code_alias固定bse来源，一项旧代码对应一个unified_code；�
 
 ## 指数历史日行情
 
-新增index_daily_price与index_price_year，固定ths，指数日期与指数年份主键，日期反查索引；不随当前目录删历史。scripts/create_index_price_schema.py显式加表，关闭Empire、队列清零和既有维护锁，原有业务核对不变；启动不迁移。字典及预算见[指数行情设计](ths-index-prices.md)。
+指数正式存储与生命周期见[远航三个指数组件](ths-yuanhang-indices.md)。目录、网页成分状态/关系、原生日K事实/年度证明五表分开；来源暂无名单为空且数量未知，所有行情值可空；不迁入旧HTTP覆盖。scripts/switch_yuanhang_indices.py按停机/队列0及维护锁显式创建新表并删除已授权旧四表，启动不迁移。
 
 指数日行情来源缺少open/high/low时存NULL，close/volume/amount保持必需；旧结构通过scripts/migrate_index_price_nulls.py显式维护，单次ALTER保留已有业务内容和年度证明，应用启动不迁移。
 
@@ -90,7 +92,7 @@ security_code_alias固定bse来源，一项旧代码对应一个unified_code；�
 
 交易规则及税费补充trading_rule_value/trading_rule_citation两表，共用固定归属reviewed_rules但引用保留真实发布或转述机构。独立维护scripts/create_rule_schema.py增量建表，不启动自动迁移；来源、数量/时段/税率字典及限制见[规则设计](trading-rules.md)。
 
-东方财富股票回购：`eastmoney-repurchases`任务与`stock_repurchase_plan`正式表，数据目录按需打开方案列表及详情；固定2000ms、每日18:00全量核验。字段、生命周期、显式建表和容量证据见[股票回购](eastmoney-repurchases.md)。回购完成不推断注销。
+东方财富股票回购：`eastmoney-repurchases`任务与`stock_repurchase_plan`正式表，数据目录按需打开方案列表及详情；固定2000ms、默认每日18:00维护近期UPD更新，至少每三天完整核验；用户已保存计划保持。字段、生命周期、显式建表和容量证据见[股票回购](eastmoney-repurchases.md)。回购完成不推断注销。
 
 同花顺三项持有人（2026-10-13）：一个股东研究采集任务一次下载HTML并校验前十大股东、前十大流通股东、十大债券持有人，统一入队归档；三个数据查询/UI页面按需创建。正式存储为 `holder_report` 报告头和 `holder_member` 当前/退出名单，无业务JSON；每日18:00、代理优先，新任务初始停用。当前可见窗口、部分变动公告、债券来源序号缺口及恢复限制见[持有人说明](ths-holders.md)。实采范围与开发验收分别记录，未声明全市场已采完。
 
@@ -99,3 +101,17 @@ security_code_alias固定bse来源，一项旧代码对应一个unified_code；�
 大小非解禁行业新增restricted_share_unlock_industry，固定tdx，月/行业名键；显式维护入口scripts/create_unlock_industry_schema.py，完整月事务保留旧目录月。
 
 同花顺持有人消息schema5允许隔离空名债券报告；holder_report/holder_member物理结构及业务身份不变。collection_state单位证明增加有界source_gaps及source_gaps_digest，债券栏目availability=source_gap；不保存未识别报告正文。旧schema4待归档只通过migrate_holder_source_rows.py --pending-only显式转换，正常启动不转换。
+
+远航五池含ST范围沿用原三表及统一归档，过滤约束的显式维护、旧口径保留及分批补齐见[ST补充](yuanhang-limits-st.md)；逐字段字典仍由远航池头正文维护。
+
+汇率使用fx_daily_price结构化OHLC及fx_price_year完整年证明，固定ths，symbol.FX身份；实时无SQL写入。字段及显式维护见[汇率设计](ths-fx-implementation-plan.md)。
+
+## 远航ETF
+
+ETF独立于stock。目录yuanhang_etf主键unified_code；日K yuanhang_etf_daily_price主键(unified_code,trade_date)及日期反查索引；年度yuanhang_etf_price_year主键(unified_code,quote_year)仅保存内容绑定证明。固定来源ths_yuanhang，结构及逐字段说明见[ETF契约](ths-yuanhang-etf.md)。盘中只Redis，不加SQL行情或状态。显式scripts/create_yuanhang_etf_schema.py只建三表，启动不迁移。
+
+## ETF份额与净值
+
+两类事实分别保存：etf_daily_share主键(unified_code,share_date,source)，etf_daily_nav主键(unified_code,nav_date)，均有日期反查索引。份额合并上交所普通ETF、交易货币基金与深交所ETF精确份额，来源参与身份；净值固定天天基金，在数据集登记来源，不保存常量source列。净值与货币收益分列、源端NULL保留，七列及来源附加标记结构化，数值DECIMAL(28,10)。
+
+etf_share_day按来源×日期、etf_nav_year按证券×年度绑定键集合、内容摘要及规范版本；年度范围版本属于collection_state每项目一行中的有界证明，不新增运行表或物理Redis键。事实与覆盖同事务，相同内容不写业务DML，迟到旧响应不能复活已撤回内容。逐字段、查询预算、生命周期和限制见[ETF份额与净值](etf-fundamentals.md)及数据库参考中的四表字典。新库用schema.sql，现有库仅显式scripts/create_etf_fundamentals_schema.py建四表，启动不迁移。

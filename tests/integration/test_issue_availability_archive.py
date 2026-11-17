@@ -38,6 +38,7 @@ async def test_absence_history_preservation_cold_replay_and_recovery(capital_db)
         if query.table in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await archive.fingerprints.invalidate(query.kind, query.source)
         state = await collector.ingest.checkpoint(collector.job_key)
@@ -60,6 +61,7 @@ async def test_absence_history_preservation_cold_replay_and_recovery(capital_db)
         assert (await collector.records.list_error_summaries(collector.project_id))['total'] == 0
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', capture)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_unknown_historical_row_is_excluded_only_by_exact_source_proof(capital_db):

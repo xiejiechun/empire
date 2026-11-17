@@ -197,13 +197,23 @@ def compare(baseline, current, migration, root: Path, features=None):
                            and parts[-1] in ('scoped', 'cache_revision', 'source', 'output_version'))
             plugin_change = (len(parts) == 5 and parts[:2] == ['semantic', 'plugins']
                              and parts[-1] in ('requires', 'description'))
-            if not (prep_change or plugin_change) or path in seen:
+            task_text = (parts[:2] == ['semantic', 'tasks'] and (
+                len(parts) == 4 and parts[-1] in ('name', 'description') or
+                len(parts) == 5 and parts[-2:] == ['default_schedule', 'description']))
+            page_text = (len(parts) == 4 and parts[:2] == ['semantic', 'pages'] and parts[-1] == 'title')
+            display_text = task_text or page_text
+            if not (prep_change or plugin_change or display_text) or path in seen:
                 raise ValueError('Only explicit preparation or plugin dependency/description changes are supported')
             seen.add(path)
-            identity = '.'.join(parts[2:-1])
+            identity = parts[2] if display_text else '.'.join(parts[2:-1])
             group = parts[1]
-            old = baseline['semantic'][group][identity][parts[-1]]
-            new = current['semantic'][group][identity][parts[-1]]
+            old, new = baseline['semantic'][group][identity], current['semantic'][group][identity]
+            for key in parts[3:] if display_text else [parts[-1]]:
+                old, new = old[key], new[key]
+            if display_text and (not isinstance(old, str) or not isinstance(new, str)):
+                raise ValueError('Task/page display changes must remain text')
+            if parts[-1] in ('name', 'title') and not new.strip():
+                raise ValueError('Task/page display names must not be blank')
             if parts[-1] == 'requires':
                 provided = {p for v in current['semantic']['plugins'].values() for p in v['provides']}
                 if (not isinstance(new, list) or len(new) != len(set(new)) or set(new) - provided):

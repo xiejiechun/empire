@@ -9,6 +9,7 @@ from uuid import uuid4
 from empire.contracts.collection_integrity import confirmed_distinct_records, require_complete_set
 from empire.contracts.collector import SuspensionRunResult
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.suspensions.batches import bounded_batches
 from empire.features.suspensions.contract import (
@@ -24,6 +25,7 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
+from empire.plugins.infra.tdx_maintenance import RecoveryStage
 
 API_URL = "http://page2.tdx.com.cn:7615/TQLEX?Entry=CWServ.tdxsj_tzrl_gsrl"
 PAGE_URL = "http://page2.tdx.com.cn:7615/site/tdxsj/html/tdxsj_tzrl_tzrl.html"
@@ -94,6 +96,7 @@ class TdxSuspensionCollector:
         self.source, self.project_id, self.job_key = "tdx", "tdx-suspensions", "tdx-suspensions-v1"
         self.http = self.ingest = self.query = self.confirmation = self.records = None
         self.request_retries = 2
+        self.recovery = RecoveryStage()
         self.stats = {"status": "stopped", "collected": 0}
 
     async def start(self, context):
@@ -177,6 +180,9 @@ class TdxSuspensionCollector:
         return normalized, requests
 
     async def download_day(self, day, *, reservation):
+        cached = self.recovery.get(day)
+        if cached is not None:
+            return cached
         await wait_for_capacity(self.ingest, self.stats)
         read = await self._request_page(day, 1, reservation=reservation, defer=True)
 
@@ -187,6 +193,7 @@ class TdxSuspensionCollector:
         # depends on its validated contents and runs in the ordered consumer.
         return DeferredResponse(read, consume)
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0) -> SuspensionRunResult:
         self.stats.update(completed_units=0, total_units=None)
         stage, current_date, current_period = "checkpoint", None, None
@@ -213,6 +220,7 @@ class TdxSuspensionCollector:
                 if cursor.get('resume_date'):
                     start = max(start, datetime.fromisoformat(cursor['resume_date']).date())
                 end = datetime.fromisoformat(current_period["end_date"]).date()
+                self.recovery.begin([cursor['batch_id'], current_period], datetime.now(UTC))
                 days = []
                 day = start
                 dates = [(start + timedelta(days=i)).isoformat() for i in range((end-start).days+1)]
@@ -226,6 +234,7 @@ class TdxSuspensionCollector:
                             pages=cursor["pages"], total_months=len(periods), error="")
                         stage = "http_request"
                         rows, pages = await read.resolve()
+                        self.recovery.put(current_date, [rows, pages])
                         stage = "suspension_validation"
                         days.append((current_date, rows, pages))
                 batches = bounded_batches(
@@ -234,6 +243,7 @@ class TdxSuspensionCollector:
                     limit=getattr(self.ingest, 'settings', {}).get('max_page_bytes', 524288),
                 )
                 for event, count, day_count, source_pages in batches:
+                    event = event.model_copy(update={'observed_at': self.recovery.started})
                     last = datetime.fromisoformat(event.raw_payload['end_date']).date()
                     next_index = cursor['period_index'] + int(last == end)
                     updated = {**cursor, 'period_index': next_index, 'pages': cursor['pages'] + 1,
@@ -255,12 +265,15 @@ class TdxSuspensionCollector:
             cursor = {**cursor, "phase": "complete"}
             await self.ingest.advance_checkpoint(
                 job_key=self.job_key, expected_revision=state["revision"], cursor=cursor)
+            self.recovery.clear()
             self.stats.update(status="complete", error="")
             return self._result(cursor)
         except asyncio.CancelledError:
             self.stats["status"] = "paused"
             raise
         except Exception as exc:
+            if stage == 'suspension_validation':
+                self.recovery.clear()
             self.stats.update(status="error", error=self.records.sanitize_text(exc))
             await record_error_safely(
                 self.records, self.stats, self.project_id, exc, stage=stage,
@@ -287,6 +300,7 @@ class TdxSuspensionCollector:
         ), retry_seconds=1)
 
     async def stop(self):
+        self.recovery.clear()
         self.stats["status"] = "stopped"
 
     def health(self):

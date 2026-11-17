@@ -33,7 +33,7 @@ def main(argv=None):
     args = parser().parse_args(argv)
     _app = QCoreApplication.instance() or QCoreApplication(sys.argv[:1])
     passed = asyncio.run(verification.recover(args) if args.cleanup_only else
-        verification.verify(args, verify_scope, subject='foundation', require_proxy=True,
+        verification.verify(args, verify_scope, subject='foundation',
             non_stock_scope=dict(unit='complete_directories_and_finite_calendar_dates',
                 reason='股票目录整份请求；日历与停复牌按日期请求完整响应，非逐股票采集', fixed=[])))
     print('PASS' if passed else 'FAIL', flush=True)

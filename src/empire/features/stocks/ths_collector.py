@@ -8,6 +8,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.features.stocks.ths_source import URL, parse_directory
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -57,6 +58,7 @@ class ThsUniverseCollector:
         finally:
             response.close()
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
         self.stats.update(collected=0, expected_count=None)
         reservation = None

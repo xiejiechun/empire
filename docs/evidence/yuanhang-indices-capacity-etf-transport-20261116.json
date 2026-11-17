@@ -1,0 +1,986 @@
+{
+  "run_id": "d41f9c4f6adf4df09d1cf05166f176eb",
+  "subject": "indices",
+  "started_at": "2026-11-16T09:29:57.769473+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/yuanhang_indices/audits.py": "9fe7b5551bbd5c72b59d8da5fd72aff11a9e471504b8afe1fe61e0a1c5a38c4d",
+    "src/empire/features/yuanhang_indices/bundle.py": "922d90a2ba1e71f2b99514ec09e176a651a1155ebb8c7e9978dfcf0c7e3a0671",
+    "src/empire/features/yuanhang_indices/catalog_collector.py": "022618a06ffa61d31ee66376e3352bd4e206e2d7bbae0b6cae4399a09edf17ea",
+    "src/empire/features/yuanhang_indices/catalog_dataset.py": "b622f042cbe0a95cf27017834ff23a75d2713e4c111a4796a8e70508ecb99e68",
+    "src/empire/features/yuanhang_indices/collector_support.py": "6759b3bf9607368ab5916dcee58119b1b849898ba82e2e62f0ee137a17b13e53",
+    "src/empire/features/yuanhang_indices/contract.py": "3ff9bb46ec3cef00ef6737c8ff77b548d5fd7809d4ab6de47ea770ab99cb3fc0",
+    "src/empire/features/yuanhang_indices/members_source.py": "6ce14ff7e7c47fd1c3c7dfccc613421fa88ffe96ea4982e10e58130e245e4485",
+    "src/empire/features/yuanhang_indices/member_collector.py": "63910758685a23309e4b3fd445915b056f8bc0f45e5785e24e92009bcdeabf75",
+    "src/empire/features/yuanhang_indices/member_dataset.py": "b6336c2a34d67a5e0d959a6bc303b6f3b15c24da533b55623857d990b46ed47f",
+    "src/empire/features/yuanhang_indices/native.py": "cf2cf486aea77886f9b6710e03ee7667153520a844907e830fd975ac2a990779",
+    "src/empire/features/yuanhang_indices/price_audit.py": "0d489000639d9760c9542a6514d5efdfc6c3af8e92c18ac6ec380a016e6ab959",
+    "src/empire/features/yuanhang_indices/price_collector.py": "1695631600791ebff0c7620475dc10471188330aef9e6b2c30d6b3892194673e",
+    "src/empire/features/yuanhang_indices/price_dataset.py": "63516c791d669b7397b201356cd08bba49e49d0a6309c58f2ea7281dc8a2d959",
+    "src/empire/features/yuanhang_indices/price_query.py": "29b1438a62304407cd7768111fdd19727ed2389035b0548ff598134b517be5de",
+    "src/empire/features/yuanhang_indices/price_reads.py": "f808c5d083c9fb4ae97debb48893fd7d527392da2e69a71852ce6ca0ca50cb29",
+    "src/empire/features/yuanhang_indices/quality.py": "babf38b0ea7d94b79d67fc847a96bff579b3cd9bbbc67df2df777693cbfe66ca",
+    "src/empire/features/yuanhang_indices/query.py": "c6806e6a3e8bc056230dc8b20c71715e101742806d3c68d22851b7274c2344cb",
+    "src/empire/features/yuanhang_indices/ui.py": "b0bbdce9a75ce000749d4ab9cdca022bd08dc741a1ae59a1f18a880ee344b336",
+    "src/empire/features/yuanhang_indices/__init__.py": "13d0078dabe443133f958473aad50605f16ca4ae4a8671970b1296ab4cd3e3c0",
+    "scripts/measure_yuanhang_indices.py": "6ab74f6c36e2ea9c12b0d50874e8812b7285f96f02e6e646e8acf9b0bb90965a",
+    "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
+    "src/empire/plugins/infra/collection_state_unit.py": "6e57e8dcce3f343f04b8061341e50d9547e42deae85418472a488361f9267559",
+    "src/empire/sources/yuanhang_ranges.py": "9cc46cbb84f2887769b42afab8cd74fd46794572f278bd5054fdeb97a09d327b"
+  },
+  "schema_objects": {
+    "yuanhang_index": {
+      "ddl_sha256": "ea2759930744471eb70b6a2baf4eb0e4eeb031d67c10215cfe6c50416e162059",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "native_market": {
+            "type": "char(4) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "active": {
+            "type": "tinyint",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_yhi_code": "regexp_like(index_code,'^[0-9a-z]{6}$')",
+          "ck_yhi_market": "(native_marketin('ushi','uszi','usti'))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "index_code"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.index.catalog": {
+            "tables": [
+              "yuanhang_index"
+            ],
+            "primary": "yuanhang_index"
+          }
+        }
+      }
+    },
+    "ths_index_member_state": {
+      "ddl_sha256": "b3a36e280c1d9a276f556605dd6804cf3b5b6d13b0a983cfc3e630cdeea2ef7c",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "available": {
+            "type": "tinyint",
+            "nullable": false,
+            "unsigned": false
+          },
+          "member_count": {
+            "type": "integer",
+            "nullable": true,
+            "unsigned": true
+          },
+          "member_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_thsi_member_state": "(((available=false)and(member_countisnull))or((available=true)and(member_count>0)and(member_count<10000)))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "index_code"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "ths.index.members": {
+            "tables": [
+              "ths_index_member_state",
+              "ths_index_member"
+            ],
+            "primary": "ths_index_member_state"
+          }
+        }
+      }
+    },
+    "ths_index_member": {
+      "ddl_sha256": "5c439b305c31e6dd11306b0df94ec2bec4331ea7169f00d7a9ca738be551adfc",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_code": {
+            "type": "varchar(12) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code",
+          "source_code"
+        ],
+        "indexes": {
+          "ix_thsi_security": {
+            "columns": [
+              "unified_code",
+              "index_code"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_thsi_source_security": {
+            "columns": [
+              "source_code",
+              "index_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_thsi_member_code": "regexp_like(source_code,'^[0-9]{5,6}$')",
+          "ck_thsi_member_unified": "((unified_codeisnull)orregexp_like(unified_code,'^[0-9]{6}[.](sh|sz|bj)$'))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "index_code",
+          "source_code"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "ths.index.members": {
+            "tables": [
+              "ths_index_member_state",
+              "ths_index_member"
+            ],
+            "primary": "ths_index_member_state"
+          }
+        }
+      }
+    },
+    "yuanhang_index_daily_price": {
+      "ddl_sha256": "dfa138e82566d539141af5694135d529799468591b1e2bf4bde1f43c97e2c062",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "open": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "high": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "low": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "close": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "volume": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "amount": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code",
+          "trade_date"
+        ],
+        "indexes": {
+          "ix_index_price_date": {
+            "columns": [
+              "trade_date",
+              "index_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "index_code",
+          "trade_date"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.index.price.range": {
+            "tables": [
+              "yuanhang_index_daily_price",
+              "yuanhang_index_price_year"
+            ],
+            "primary": "yuanhang_index_daily_price"
+          }
+        }
+      }
+    },
+    "yuanhang_index_price_year": {
+      "ddl_sha256": "eff5c27c660a4a39503d41d2123a49e59211ea5b6895ca5301eb5e7c82afb961",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "quote_year": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "native_market": {
+            "type": "char(4) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "row_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "last_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "key_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "verified_through": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code",
+          "quote_year"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_yhi_year": "((quote_yearbetween1900and2100)and(row_count<=366))",
+          "ck_yhi_year_dates": "(((row_count=0)and(first_dateisnull)and(last_dateisnull))or((row_count>0)and(first_dateisnotnull)and(last_dateisnotnull)and(first_date<=last_date)))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "index_code",
+          "quote_year"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.index.price.range": {
+            "tables": [
+              "yuanhang_index_daily_price",
+              "yuanhang_index_price_year"
+            ],
+            "primary": "yuanhang_index_daily_price"
+          }
+        }
+      }
+    }
+  },
+  "ddl_scopes": {
+    "yuanhang_index": "ea2759930744471eb70b6a2baf4eb0e4eeb031d67c10215cfe6c50416e162059",
+    "ths_index_member_state": "b3a36e280c1d9a276f556605dd6804cf3b5b6d13b0a983cfc3e630cdeea2ef7c",
+    "ths_index_member": "5c439b305c31e6dd11306b0df94ec2bec4331ea7169f00d7a9ca738be551adfc",
+    "yuanhang_index_daily_price": "dfa138e82566d539141af5694135d529799468591b1e2bf4bde1f43c97e2c062",
+    "yuanhang_index_price_year": "eff5c27c660a4a39503d41d2123a49e59211ea5b6895ca5301eb5e7c82afb961"
+  },
+  "measurements": {
+    "catalog_p95_ms": 6.5249999752268195,
+    "members_p95_ms": 2.548999967984855,
+    "reverse_p95_ms": 23.00190000096336,
+    "member_cursor_p95_ms": 3.993100021034479,
+    "index_range_p95_ms": 1.9712000503204763,
+    "cross_date_p95_ms": 5.988100019749254,
+    "content_audit_seconds": 3.0609416000079364,
+    "catalog_import_seconds": 0.08854660001816228,
+    "member_import_seconds": 2.038941300008446,
+    "price_import_seconds": 11.83634100004565,
+    "allocated_bytes": 30359552,
+    "unit_python_peak_bytes": 1267583
+  },
+  "limits": {
+    "catalog_p95_ms": 50,
+    "members_p95_ms": 50,
+    "reverse_p95_ms": 50,
+    "member_cursor_p95_ms": 50,
+    "index_range_p95_ms": 50,
+    "cross_date_p95_ms": 50,
+    "catalog_import_seconds": 2,
+    "member_import_seconds": 20,
+    "price_import_seconds": 30,
+    "allocated_bytes": 268435456,
+    "unit_python_peak_bytes": 16777216,
+    "content_audit_seconds": 30
+  },
+  "queries": {
+    "catalog": {
+      "first_ms": 5.448600044474006,
+      "warm_ms": [
+        5.010999972000718,
+        4.002799978479743,
+        4.0197999915108085,
+        4.872000019531697,
+        5.5451999651268125,
+        4.110300040338188,
+        6.192100001499057,
+        5.631199979688972,
+        4.482999967876822,
+        4.371399991214275,
+        5.089899990707636,
+        5.493099975865334,
+        7.094800006598234,
+        5.405300005804747,
+        6.5249999752268195,
+        4.820300033316016,
+        6.482700002379715,
+        6.016100000124425,
+        5.418600048869848,
+        4.793300002347678
+      ],
+      "returned_rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844,
+        16844
+      ]
+    },
+    "members": {
+      "first_ms": 1.6429000534117222,
+      "warm_ms": [
+        1.6436000005342066,
+        1.5604999498464167,
+        1.533699978608638,
+        1.497299992479384,
+        1.8752000178210437,
+        2.4198999744839966,
+        2.1134999697096646,
+        1.9140999647788703,
+        1.5259999781847,
+        1.6328999772667885,
+        1.5461999573744833,
+        1.5944000333547592,
+        1.4892000472173095,
+        2.410300017800182,
+        2.178700000513345,
+        1.6476999735459685,
+        1.6368000069633126,
+        2.48770002508536,
+        3.2254999969154596,
+        2.548999967984855
+      ],
+      "returned_rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327
+      ]
+    },
+    "reverse": {
+      "first_ms": 19.269199983682483,
+      "warm_ms": [
+        16.43840002361685,
+        17.408600018825382,
+        21.4405000442639,
+        15.934899973217398,
+        16.41909999307245,
+        20.110700046643615,
+        18.055299995467067,
+        20.318299997597933,
+        18.842699995730072,
+        18.302700016647577,
+        19.99559998512268,
+        19.61970003321767,
+        20.319400005973876,
+        23.08509999420494,
+        19.823400012683123,
+        19.06690001487732,
+        18.709299969486892,
+        18.94099998753518,
+        19.777700013946742,
+        23.00190000096336
+      ],
+      "returned_rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364,
+        41364
+      ]
+    },
+    "member_cursor": {
+      "first_ms": 3.176300029736012,
+      "warm_ms": [
+        4.426400002557784,
+        3.993100021034479,
+        3.137699968647212,
+        3.0030999914743006,
+        3.664499963633716,
+        3.009399981237948,
+        3.263199992943555,
+        3.325600002426654,
+        2.564300026278943,
+        2.7751000015996397,
+        3.2872000010684133,
+        2.8916000155732036,
+        3.3418999519199133,
+        2.2901000338606536,
+        3.3517999690957367,
+        2.8371999505907297,
+        2.790900005493313,
+        1.7728999955579638,
+        2.3276000283658504,
+        1.7384000238962471
+      ],
+      "returned_rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327,
+        41327
+      ]
+    },
+    "index_range": {
+      "first_ms": 1.484599953982979,
+      "warm_ms": [
+        1.6632999759167433,
+        1.9712000503204763,
+        1.3566999696195126,
+        1.491700008045882,
+        1.4624999603256583,
+        1.312199980020523,
+        1.936200016643852,
+        1.2678999919444323,
+        1.9830000237561762,
+        1.6187000437639654,
+        1.6737999976612628,
+        1.3714999658986926,
+        1.5044999890960753,
+        1.3617000076919794,
+        1.344999996945262,
+        1.2695000041276217,
+        1.2804000289179385,
+        1.2654999736696482,
+        1.2413000222295523,
+        1.5563999768346548
+      ],
+      "returned_rows": [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "encoded_bytes": [
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124,
+        28124
+      ]
+    },
+    "cross_date": {
+      "first_ms": 6.581999943591654,
+      "warm_ms": [
+        4.205000004731119,
+        3.916400019079447,
+        4.466500016860664,
+        5.988100019749254,
+        4.064899985678494,
+        5.006000050343573,
+        4.44039999274537,
+        3.7506999797187746,
+        4.258300003129989,
+        4.977600008714944,
+        4.264699993655086,
+        3.6708999541588128,
+        5.331499967724085,
+        6.319499982055277,
+        4.093999974429607,
+        4.7286999761126935,
+        3.5604999866336584,
+        3.4989999840036035,
+        3.4208999713882804,
+        5.054400011431426
+      ],
+      "returned_rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534,
+        56534
+      ]
+    }
+  },
+  "explain": {
+    "source_reverse": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "ths_index_member",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_thsi_source_security",
+        "key": "ix_thsi_source_security",
+        "key_len": "14",
+        "ref": "const",
+        "rows": 100,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "unified_reverse": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "ths_index_member",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_thsi_security",
+        "key": "ix_thsi_security",
+        "key_len": "12",
+        "ref": "const",
+        "rows": 100,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "index_range": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "yuanhang_index_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_index_price_date",
+        "key": "PRIMARY",
+        "key_len": "9",
+        "ref": null,
+        "rows": 69,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "cross_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "yuanhang_index_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_index_price_date",
+        "key": "ix_index_price_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 26972,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ]
+  },
+  "allocation": [
+    {
+      "table_name": "collection_state",
+      "data_length": 1114112,
+      "index_length": 0
+    },
+    {
+      "table_name": "ths_index_member",
+      "data_length": 6832128,
+      "index_length": 8421376
+    },
+    {
+      "table_name": "ths_index_member_state",
+      "data_length": 16384,
+      "index_length": 0
+    },
+    {
+      "table_name": "yuanhang_index",
+      "data_length": 81920,
+      "index_length": 0
+    },
+    {
+      "table_name": "yuanhang_index_daily_price",
+      "data_length": 11026432,
+      "index_length": 2637824
+    },
+    {
+      "table_name": "yuanhang_index_price_year",
+      "data_length": 229376,
+      "index_length": 0
+    }
+  ],
+  "conditions": {
+    "sample": "1000 synthetic catalogue identities,100000 member relations,100000 signed/nullable daily facts",
+    "cache": "first query separately; 20 warm repeats; buffer pool not flushed, not a cold-disk claim",
+    "memory": "tracemalloc maximum member unit, not process/MySQL RSS"
+  },
+  "correctness": {
+    "repeat_member_dml": 0,
+    "revision_member_dml": 2,
+    "repeat_price_dml": 0,
+    "revision_price_dml": 2,
+    "all_content_and_keys_audited": true
+  },
+  "reviewed_tradeoffs": "五表结构化，来源暂无与未知分开；两条成员反查索引及双向日K索引。100000行放大证明所测规模，580×36年空间仍是预算；日K状态按单指数有界读写，详细审计读取正文。",
+  "input_identity_verified": true,
+  "checked_at": "2026-11-16T09:30:16.123650+00:00",
+  "database": "empire_capacity_d41f9c4f6adf4df09d1cf05166f176eb_test",
+  "measurement_service": {
+    "server_uuid": "e935f57e-e19a-11f1-a2f2-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

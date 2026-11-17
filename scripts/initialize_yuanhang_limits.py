@@ -30,6 +30,24 @@ async def require_owned_pending(store):
         marker = '(' + messages[-1][0]
 
 
+async def complete_history(collector, through):
+    """Finish an interrupted bounded round, then explicitly drain all history."""
+    rounds = []
+    for _ in range(2):
+        result = await collector.execute(baseline_revision=await collector.checkpoint_revision(),
+                                         history_only=True, maintenance_scope='all')
+        rounds.append(dict(cursor=result, stats=dict(collector.health())))
+        if result['cutoff'] != through:
+            raise RuntimeError('恢复断点截止日与本轮范围不一致，请显式使用原截止日完成后再维护新增日期')
+        if result.get('phase') != 'complete':
+            raise RuntimeError('完整历史维护尚未完成归档确认')
+        if result.get('scope') == 'all':
+            if result.get('remaining') != 0:
+                raise RuntimeError('完整历史维护仍有待采单元')
+            return result, rounds
+    raise RuntimeError('完整历史维护未进入all范围，拒绝将有界轮次记为完成')
+
+
 async def run(args):
     cfg = load_config(args.config)
     report_path = Path(args.report)
@@ -40,7 +58,8 @@ async def run(args):
     routes = {}
     tokens = USE_PROXY.set(True), PROXY_FALLBACK.set(True), ROUTE_COUNTS.set(routes)
     report = dict(started_at=datetime.now(UTC).isoformat(), applied=args.apply, complete=False,
-                  network_policy=dict(use_proxy=True, proxy_fallback=True), projects={}, errors=[])
+                  network_policy=dict(use_proxy=True, proxy_fallback=True, request_retries=args.request_retries),
+                  projects={}, errors=[])
     root = Path(__file__).resolve().parents[1]
     paths = [*root.glob('src/empire/features/yuanhang_limits/*.py'), Path(__file__).resolve(), root / 'sql/schema.sql', root / 'src/empire/sources/security_identity.py']
 
@@ -83,7 +102,7 @@ async def run(args):
             ident = 'collector.yuanhang_limits_' + kind
             await manager.start(ident)
             collector = manager.registry.get(ident)
-            collector.request_retries = 2
+            collector.request_retries = args.request_retries
 
             async def progress():
                 while True:
@@ -95,10 +114,12 @@ async def run(args):
 
             monitor = asyncio.create_task(progress())
             try:
-                result = await collector.execute(baseline_revision=await collector.checkpoint_revision(), history_only=True)
-                if result['cutoff'] != report['through']:
-                    raise RuntimeError('恢复断点截止日与本轮范围不一致，请显式使用原截止日完成后再维护新增日期')
-                report['projects'][kind] = dict(cursor=result, stats=collector.health())
+                result, rounds = await complete_history(collector, report['through'])
+                # Audit can take several progress intervals. Stop its writer
+                # before publishing the final cursor and audit evidence.
+                monitor.cancel()
+                await asyncio.gather(monitor, return_exceptions=True)
+                report['projects'][kind] = dict(cursor=result, stats=collector.health(), execution_rounds=rounds)
                 scope = dict(start=report['first'], end=result['cutoff'])
                 checks = await getattr(query, 'check_' + kind)(scope)
                 report['projects'][kind]['audit'] = [dict(criterion=e.criterion, status=e.status, measured=e.measured)
@@ -144,6 +165,8 @@ if __name__ == '__main__':
     parser.add_argument('--config')
     parser.add_argument('--apply', action='store_true')
     parser.add_argument('--through', help='固定已结束交易日；跨日续跑使用原报告截止日')
+    parser.add_argument('--request-retries', type=int, choices=range(11), default=2,
+                        help='本次维护的共享单请求重试预算0～10，默认2，不修改日常任务配置')
     parser.add_argument('--pools-only', action='store_true', help='仅补齐并审计五池；原因明确留待后续，不标记全数据完成')
     parser.add_argument('--report', required=True)
     arguments = parser.parse_args()

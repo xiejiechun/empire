@@ -1,0 +1,166 @@
+{
+  "run_id": "216e83e6a5324c5f82930c0e652f31a7",
+  "subject": "index-prices",
+  "started_at": "2026-11-05T02:45:32.519721+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/index_prices/contract.py": "b6468227862ae7461e73019c6699d2c5537591effbf5a9eaad5d5d88999f92de",
+    "src/empire/features/index_prices/dataset.py": "45c2a96cfd6cced0cbec62b9b7d14cea715a97234597b937f90038ecda399e84",
+    "src/empire/features/index_prices/query.py": "ad1299b9deb0e88a474620176eb560446c8049150f6e322a41d77d3d90208443",
+    "src/empire/features/indices/contract.py": "7d76cd944add4345b3797e714a911be9d6fe85bbe1e9b7587cc1f32409980dee",
+    "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
+    "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+    "sql/business-schema.json": "dec4b14f67b1f055dabc17818669844b94daf4584408754b17c381e77cb9e6ca",
+    "src/empire/plugins/infra/mysql_store.py": "8fe849efe05be84a4fde3026251eb1783bf4368c740f2c73e9e63eae4375fb2a",
+    "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
+    "sql/schema.sql": "ae823bd561b30b120cd69bed74b6f411ba116e6297d08bb70294a3fed677df45",
+    "sql/schema-contract.json": "cbb17e4ad2050ff88c83fa5c02cb23c0dd267dbd98d46eb7bc10453da7cd27d1",
+    "scripts/measure_index_prices.py": "7e41b903104195b798404da3c15650c73688b1f722771a4ac6d9b630a2ae5d03"
+  },
+  "ddl_scopes": {
+    "index_daily_price": "83e2f5fd66f9b1004a3c26ee72a66f8c211364d15caf8ce752b7213ae85feb87",
+    "index_price_year": "adb3d00d819c95ce8f758988d2bd5001b02347412eab9abeed767365510eb177"
+  },
+  "measurements": {
+    "query_samples_ms": {
+      "index_page": [
+        4.083500010892749,
+        2.073100011330098,
+        3.1732000061310828,
+        2.2882000193931162,
+        2.125700004398823,
+        3.1437999568879604,
+        1.9114000024273992,
+        2.457000024151057,
+        2.0423000096343458,
+        2.204200020059943,
+        2.6319000171497464,
+        2.7757000061683357,
+        2.407899999525398,
+        1.895399997010827,
+        2.3737000301480293,
+        2.5928999530151486,
+        2.8528000111691654,
+        2.825199975632131,
+        2.424800011795014,
+        1.965200004633516
+      ],
+      "date_page": [
+        8.82149999961257,
+        7.645500008948147,
+        4.895400023087859,
+        7.456200022716075,
+        6.38859998434782,
+        5.1324000232852995,
+        5.865400016773492,
+        6.466399994678795,
+        5.092400009743869,
+        6.099299993366003,
+        6.595899991225451,
+        5.826700013130903,
+        8.428299974184483,
+        5.468000017572194,
+        7.783699955325574,
+        9.219800005666912,
+        7.5514999916777015,
+        5.6980999652296305,
+        8.02300003124401,
+        6.997899967245758
+      ]
+    },
+    "index_page_p95_ms": 3.1732000061310828,
+    "date_page_p95_ms": 8.82149999961257,
+    "import_seconds": 8.669960299972445,
+    "allocated_bytes": 12763136,
+    "state_bytes": 51210
+  },
+  "limits": {
+    "index_page_p95_ms": 50,
+    "date_page_p95_ms": 50,
+    "import_seconds": 30,
+    "allocated_bytes": 67108864,
+    "state_bytes": 8388608
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 100000,
+    "indices": 1000,
+    "synthetic": true,
+    "repeat_business_dml": 0,
+    "revision_writes": 2,
+    "repeats": 20,
+    "cache": "unforced MySQL warm repeats; Redis not used"
+  },
+  "reviewed_tradeoffs": "年度聚合证明与结构化日行；双向日期索引，主键游标分页。100000合成日行不代表全目录实采或全部历史容量；总2GiB为规划预算。状态只保留观察版本，无日线正文。",
+  "explain": {
+    "index_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "index_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_index_price_date",
+        "key": "PRIMARY",
+        "key_len": "9",
+        "ref": null,
+        "rows": 69,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "all_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "index_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_index_price_date",
+        "key": "ix_index_price_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 48535,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ]
+  },
+  "cleanup_protocol": "CapacitySession owned database; final result only after cleanup",
+  "protocol": {
+    "schema": 1,
+    "preserved_scale": true,
+    "preserved_limits": true
+  },
+  "correctness": {
+    "full_business_keys_and_content": true,
+    "original_year_digest": "d3c95d6ca3f39ca2856bf554c238ffcae9436ee9d735947baf55f81c97f3c6ac",
+    "revised_year_digest": "005ca3cf1d2aaac258ef858b180f033522d48d2d5521e32806b5ec3f67309af4",
+    "repeat_zero_business_dml": true,
+    "revision_writes": 2
+  },
+  "input_identity_verified": true,
+  "checked_at": "2026-11-05T02:45:46.342843+00:00",
+  "database": "empire_capacity_216e83e6a5324c5f82930c0e652f31a7_test",
+  "measurement_service": {
+    "server_uuid": "3f1d111c-d88d-11f1-8cfd-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 1,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

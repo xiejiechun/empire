@@ -285,7 +285,9 @@ def load_sample(args,family):
     sample=json.loads(path.read_text('utf8'))
     require(sample.get('passed') is True and sample.get('pipeline_verified') is True
             and sample.get('source_sha256')==source_digest(project_root()),'真实样本未核验或源码已改变')
-    require(sample.get('subject')=='unlocks' and sample.get('strict_proxy_verified') is True, '必须使用本轮解禁全代理样本')
+    require(sample.get('subject') == 'unlocks' and
+            sample.get('routing_policy', {}).get('use_proxy') is True,
+            '必须使用本轮经共享代理优先路径验证的解禁样本')
     return sample
 
 def measure(storage,sample):

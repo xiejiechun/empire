@@ -7,7 +7,7 @@
 
 同花顺当前行业目录，一行业一行。
 
-统一归档器调用 `datasets/industries.py` 写入；`data/industries.py` 提供正式查询。业务页面不直接写表。
+统一归档器调用 `features/industries/dataset.py` 写入；`features/industries/query.py` 提供正式查询。每日复盘 sectors 查询在同一只读快照读取当前目录、成员与所选日资金，并通过行业公开 api 核验当前完整集合。业务页面不直接写表。
 
 ## 结构与身份
 
@@ -26,7 +26,7 @@
 
 按 industry_code 定位当前行业，与 industry_member 用行业编号关联；完整当前目录和成员同事务，目录不能冒充历史行业。
 
-完整当前集合替换，不保存历史行业快照；与 industry_member 同事务核对。
+完整当前集合替换，不保存历史行业快照；与 industry_member 同事务核对。当前目录证明有效不代表所选历史日有资金交集；若全目录均无覆盖，复盘显示缺少数据来源而非无流入/流出。
 
 ## 保留与恢复
 

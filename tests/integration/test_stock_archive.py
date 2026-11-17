@@ -149,6 +149,7 @@ async def test_identical_stock_list_has_no_dml_and_late_batch_cannot_regress(sto
         if statement.lstrip().upper().startswith(("INSERT", "UPDATE", "DELETE")) and "stock" in statement:
             writes.append(statement)
     event.listen(mysql.engine, "before_cursor_execute", capture)
+    event.listen(mysql.archive_engine, "before_cursor_execute", capture)
     try:
         await publish("page", identical, page=1, rows=ROWS)
         await publish("complete", identical, pages=1, collected=2, count_after=2, terminal_rows=[])
@@ -166,6 +167,7 @@ async def test_identical_stock_list_has_no_dml_and_late_batch_cannot_regress(sto
         assert (await query.list_stocks())["rows"][0]["name"] == ROWS[0]["name"]
     finally:
         event.remove(mysql.engine, "before_cursor_execute", capture)
+        event.remove(mysql.archive_engine, "before_cursor_execute", capture)
 
 
 async def test_only_complete_snapshot_visible_and_partial_refresh_preserves_previous(stock_database):

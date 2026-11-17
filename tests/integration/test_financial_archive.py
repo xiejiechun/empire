@@ -148,6 +148,56 @@ async def test_large_matrix_uses_default_limit_without_partial_checkpoint(financ
     assert await store.client.xlen(store.stream) == 0
 
 
+async def test_process_matrix_cold_commit_ack_loss_then_hot_replay_needs_no_sql_or_row_graph(
+        financial_db, monkeypatch):
+    import importlib
+    from types import SimpleNamespace
+    units = importlib.import_module('empire.plugins.pipeline.archive_units')
+    manager, query, collector, publish = financial_db
+    worker = manager.registry.get('archive.worker')
+    worker.task.cancel()
+    await asyncio.gather(worker.task, return_exceptions=True)
+    worker.task = None
+    loads, original_loads = [], units.pickle.loads
+
+    def load_rows(raw):
+        loads.append(len(raw))
+        return original_loads(raw)
+
+    monkeypatch.setattr(units, 'pickle', SimpleNamespace(loads=load_rows))
+    original_ack = worker.acknowledge
+
+    async def lost_ack(ids):
+        raise ConnectionError('matrix ACK reply lost')
+
+    monkeypatch.setattr(worker, 'acknowledge', lost_ack)
+    body = large_source(query.kind)
+    with pytest.raises(ConnectionError, match='matrix ACK'):
+        await publish(body)
+    store, mysql = manager.registry.get('redis.store'), manager.registry.get('mysql.store')
+    assert await store.client.xlen(store.stream) == 1
+    assert len(loads) == 1 and worker.catalog.compute_lane.health()['started']
+    expected = parse(query.kind, body, STOCK)
+    assert await query.list_statements(STOCK['code'], 500) == expected
+    monkeypatch.setattr(worker, 'acknowledge', original_ack)
+
+    def forbidden(*args):
+        raise AssertionError('validated matrix proof must not access SQL')
+
+    engines = (mysql.engine, mysql.read_engine, mysql.archive_engine)
+    for engine in engines:
+        event.listen(engine, 'before_cursor_execute', forbidden)
+    try:
+        await worker.flush()
+    finally:
+        for engine in engines:
+            event.remove(engine, 'before_cursor_execute', forbidden)
+    assert len(loads) == 1
+    assert await store.client.xlen(store.stream) == 0
+    assert worker.catalog.compute_budget.used == 0
+    assert await query.list_statements(STOCK['code'], 500) == expected
+
+
 async def test_nonquarter_period_source_to_formal_query(financial_db):
     manager, query, collector, publish = financial_db
     body = source(query.kind)
@@ -183,6 +233,7 @@ async def test_missing_source_values_archive_but_do_not_pass_preparation(financi
         if query.table in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(query.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(query.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await collector.execute(baseline_revision=await collector.checkpoint_revision())
         await manager.registry.get('archive.worker').fingerprints.invalidate('ths_' + query.kind, query.source)
@@ -190,6 +241,7 @@ async def test_missing_source_values_archive_but_do_not_pass_preparation(financi
         assert not writes
     finally:
         event.remove(query.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(query.mysql.archive_engine, 'before_cursor_execute', capture)
     # Source correction repairs required data through the same normal round.
     collector.http.request = AsyncMock(side_effect=lambda *a, **k: httpx.Response(200, json=source(query.kind)))
     await collector.execute(baseline_revision=await collector.checkpoint_revision())
@@ -219,8 +271,9 @@ async def test_hot_cold_revision_old_and_repair(financial_db, monkeypatch):
     writes = []
     def capture(conn, cursor, statement, parameters, context, executemany):
         if statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')) and query.table in statement:
-            writes.append(statement)
+            writes.append(len(parameters) if executemany else 1)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         original = mysql.archive
         calls = []
@@ -240,11 +293,11 @@ async def test_hot_cold_revision_old_and_repair(financial_db, monkeypatch):
         f['report'].append(['10.00', '20.00'])
         revised['flashData'] = json.dumps(f)
         await publish(revised, early + timedelta(minutes=4))
-        assert len(writes) == 2
+        assert sum(writes) == 2
         expected = await query.list_statements()
         await archive.fingerprints.invalidate('ths_' + query.kind, query.source)
         await publish(observed=early + timedelta(minutes=3))
-        assert await query.list_statements() == expected and len(writes) == 2
+        assert await query.list_statements() == expected and sum(writes) == 2
         async with archive.lock:
             await archive.fingerprints.invalidate('ths_' + query.kind, query.source)
             with mysql.engine.begin() as conn:
@@ -255,6 +308,7 @@ async def test_hot_cold_revision_old_and_repair(financial_db, monkeypatch):
         assert await query.list_statements() == expected
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', capture)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_commit_then_ack_failure_retains_and_replays(financial_db, monkeypatch):
@@ -456,6 +510,7 @@ async def test_checkpoint_loss_rechecks_source_without_business_dml(financial_db
         if query.table in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         collector.http.request.reset_mock()
         await asyncio.wait_for(collector.execute(), 10)
@@ -464,6 +519,7 @@ async def test_checkpoint_loss_rechecks_source_without_business_dml(financial_db
         assert await store.client.xlen(store.stream) == 0
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', capture)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_scoped_financial_acceptance_proves_content_and_use(financial_db):

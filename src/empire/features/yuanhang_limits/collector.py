@@ -6,6 +6,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.features.yuanhang_limits.contract import (
     BASE_URL,
     DOMAIN,
@@ -84,26 +85,28 @@ class LimitCollector:
             payload={'page': cursor['page'] + 1, 'unit_zlib': encode(unit)})
         return event.model_copy(update={'observed_at': observed, 'available_at': None, 'source_url': BASE_URL})
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0, history_only=False, maintenance_scope=None):
         self.stats.update(completed_units=0, total_units=None)
+        calendar_cache = {}
         try:
             result = await self._execute(fresh=fresh, baseline_revision=baseline_revision,
-                                         history_only=history_only, scope=maintenance_scope)
+                                         history_only=history_only, scope=maintenance_scope, calendar_cache=calendar_cache)
             carried = {}
             if (self.pool == 'reason' and self.scope == 'recent' and not fresh
                     and not history_only and maintenance_scope is None):
-                current = await self.query.collection_plan('reason', scope='recent')
+                current = await self.query.collection_plan('reason', scope='recent', calendar_cache=calendar_cache)
                 if result['cutoff'] < current['cutoff']:
                     carried = {key: self.stats.get(key, 0) for key in ('requests', 'response_bytes',
                         'wire_bytes', 'queued_messages', 'queued_bytes', 'collected')}
                     result = await self._execute(baseline_revision=await self.checkpoint_revision(),
-                                                  history_only=True, scope='recent')
+                                                  history_only=True, scope='recent', calendar_cache=calendar_cache)
             if (self.pool == 'reason' and not fresh and not history_only and maintenance_scope is None
                     and result.get('scope') == 'recent'):
                 costs = {key: self.stats.get(key, 0) for key in ('requests', 'response_bytes',
                     'wire_bytes', 'queued_messages', 'queued_bytes', 'collected')}
                 result = await self._execute(baseline_revision=await self.checkpoint_revision(),
-                                              history_only=True, scope='backfill')
+                                              history_only=True, scope='backfill', calendar_cache=calendar_cache)
                 for key, value in costs.items():
                     self.stats[key] = None if value is None or self.stats.get(key) is None else self.stats[key] + value
             for key, value in carried.items():
@@ -119,7 +122,9 @@ class LimitCollector:
                 fields=getattr(exc, 'source_diagnostic', None))
             raise
 
-    async def _execute(self, *, fresh=False, baseline_revision=0, history_only=False, scope=None):
+    async def _execute(self, *, fresh=False, baseline_revision=0, history_only=False, scope=None,
+                       planned=None, calendar_cache=None):
+        calendar_cache = {} if calendar_cache is None else calendar_cache
         if self.intraday and not history_only:
             from empire.features.yuanhang_limits.intraday import dispatch
             return await dispatch(self, fresh=fresh, baseline_revision=baseline_revision)
@@ -140,10 +145,12 @@ class LimitCollector:
             self.stats['notice'] = '本轮仅复核当天完整池；每30分钟至21:00'
         pending = None
         if cursor.get('phase') not in ('fetch', 'awaiting_archive'):
-            planned = await self.query.collection_plan(self.pool, force=fresh, **self.plan_options(scope))
+            if planned is None:
+                planned = await self.query.collection_plan(self.pool, force=fresh,
+                    calendar_cache=calendar_cache, **self.plan_options(scope))
             if self.pool == 'reason' and scope == 'recent' and not planned['units'] and not fresh:
                 scope = 'backfill'
-                planned = await self.query.collection_plan(self.pool, scope=scope)
+                planned = await self.query.collection_plan(self.pool, scope=scope, calendar_cache=calendar_cache)
                 self.stats['notice'] = '近期已核验；本轮仅补最多256个历史证券日'
             pending = planned.get('pending')
             cursor = dict(contract=2, phase='fetch', batch_id=uuid4().hex, page=0, index=0,
@@ -152,7 +159,7 @@ class LimitCollector:
             if scope == 'today':
                 cursor['close_slot'] = planned['close_slot']
         if cursor.get('replan_recent'):
-            planned = await self.query.collection_plan(self.pool, scope='recent')
+            planned = await self.query.collection_plan(self.pool, scope='recent', calendar_cache=calendar_cache)
             cursor = {**cursor, 'plan': planned['units'], 'index': 0,
                       'cutoff': planned['cutoff'], 'remaining': planned['remaining'],
                       'scan_after': planned.get('scan_after'), 'scope': 'recent'}
@@ -198,7 +205,8 @@ class LimitCollector:
                 pending = pending[64:]
             else:
                 planned = await self.query.collection_plan(self.pool, force=cursor.get('force', False),
-                    exclude=visited, through=cursor['cutoff'], scan_after=cursor.get('scan_after'), **self.plan_options(scope))
+                    exclude=visited, through=cursor['cutoff'], scan_after=cursor.get('scan_after'),
+                    calendar_cache=calendar_cache, **self.plan_options(scope))
                 pending = planned.get('pending')
             if self.pool == 'reason':
                 visited.clear()  # The durable key cursor already excludes prior reason pages.

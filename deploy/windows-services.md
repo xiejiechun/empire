@@ -80,11 +80,15 @@
 
 上市与发行资料使用 `stock_listing`，每证券保存一行类型化资料及有上限的历史沿革，纳入正式备份与恢复。既有库通过 `scripts/create_listing_schema.py` 显式新增表，维护前关闭 Empire 并排空待归档队列，核对已有业务不变；启动不建表。采集范围为当前沪深北股票池及已留存记录，不保证从未采集的退市证券完整覆盖，见 [上市与发行资料](../docs/ths-listings.md)。
 
-## 当前指数表
+## 远航版指数三组件
 
-`stock_index` 保存同花顺当前指数目录、网站分组和成员可用状态；`stock_index_member` 保存当前成员关系和可确定的统一证券身份。只通过 scripts/create_index_schema.py 在Empire正常关闭且待归档清零后显式新增，启动不建表；已有业务保持。通用单响应保存8MiB以容纳完整名单，公共缓冲及其他资源不变。
+`yuanhang_index` 保存远航A股指数当前目录及原生市场；`ths_index_member_state` 保存同花顺网页成分可用性、数量和摘要；`ths_index_member` 保存当前成员及可靠统一证券身份。网页明确暂无时名单为空、数量NULL，不把网络失败写成暂无。
 
-`index_daily_price` 保存指数每日开高低收、成交量及成交额；`index_price_year` 保存年度日期集合与内容完整性证明。通过 scripts/create_index_price_schema.py 显式新增，启动不建表；采集使用同花顺 last.js 维护近期行情、YYYY.js 补齐历史年度，来源不支持的指数明确显示限制。
+`yuanhang_index_daily_price` 保存原生可空有符号日K；`yuanhang_index_price_year` 保存年度实际键集合、内容及覆盖证明。量额保留原生口径，不套旧网页单位。最近十交易日优先，每轮补最多64个指数历史，Redis丢失从SQL可信区间恢复。
+
+`yuanhang_etf` 保存远航ETF基金当前目录及有效状态，证券使用完整统一代码；`yuanhang_etf_daily_price` 保存来源不复权日K，成交量为份、成交额为元；`yuanhang_etf_price_year` 保存与年度内容绑定的覆盖证明。三表通过`scripts/create_yuanhang_etf_schema.py`正常停机、待归档清队并核对原业务后显式创建，启动不建表。ETF最新行情仅保存Redis完整最新值，不写SQL业务或项目状态；来源报价时间和净值日期未知。详见[ETF契约](../docs/ths-yuanhang-etf.md)。
+
+旧同花顺两任务及旧四表已退役设计。既有数据库只用scripts/switch_yuanhang_indices.py的只读plan与显式apply维护：正常关闭Empire、待归档为0、身份和DDL匹配后建新五表，迁移合法计划并按授权删旧四表。旧插件原工作区内容存archive/ths-indices-20261116/sources.zip。启动不改表，DDL分步隐式提交并有维护报告，不声称可事务回滚。迁移和实际采集覆盖以本轮证据为准。
 
 `security_code_alias` 保存北交所官方新旧代码关系，按旧代码和统一证券键分别索引，不依赖当前股票名单。正常关闭Empire、待归档清零后通过scripts/create_security_alias_schema.py显式新增，再由scripts/import_bse_code_mapping.py统一入队归档完整官方表；启动不迁移，不改变已有采集配置或行情请求代码。
 
@@ -115,3 +119,8 @@
 行业融资融券的 `industry_margin_day`、`industry_margin_daily` 保存完整日期证明及日期×行业的原始数值，包含有效空日和带质量异常的来源负值。停机且队列为空时通过 `scripts/create_industry_margin_schema.py --apply` 显式追加；备份恢复须连同统一 `collection_state`，程序启动不建表。
 
 市场融资融券的 `market_margin_series`、`market_margin_daily` 保存同花顺四市场完整历史证明和结构化日数据。正常关闭 Empire 且待归档为空后运行 `scripts/create_market_margin_schema.py --apply` 显式追加两表，原业务数据保持不变；启动不建表。备份恢复须连同 `collection_state`。
+东方财富明盘暗盘资金榜持久业务表为`graymarket_day`（整日集合证明）和`graymarket_daily`（证券日榜），通过`scripts/create_graymarket_schema.py`在正常停机、清队后显式新增；服务启动不自动建表。
+
+汇率日线新增`fx_daily_price`（结构化OHLC）与`fx_price_year`（完整年度证明）；实时只覆盖Redis最新值。两表由`scripts/create_fx_schema.py`显式维护，正常停机、待归档清队、独占锁及其他业务核对后创建，启动不迁移。
+
+ETF份额与净值使用`etf_daily_share`、`etf_share_day`、`etf_daily_nav`、`etf_nav_year`四表；两种事实与内容证明分开，恢复时连同`collection_state`核对。通过`scripts/create_etf_fundamentals_schema.py --apply`在正常停机、待归档队列为0并持独占锁后显式追加四表，核对原业务数量及状态不变；启动不建表。字段、来源单位与用途限制见[ETF份额与净值](../docs/etf-fundamentals.md)。

@@ -1,0 +1,448 @@
+{
+  "scope": "Static analysis of available 6.3.20.2 client code; no server absence proof",
+  "network_requests": 0,
+  "writes": 0,
+  "classes": [
+    {
+      "class": "Lcom/yzj/kaipanh/newindex/data/SocketRepository;",
+      "fields": [
+        [
+          "f",
+          "Lcom/yzj/kaipanh/newindex/data/SocketRepository;"
+        ],
+        [
+          "a",
+          "I"
+        ],
+        [
+          "b",
+          "I"
+        ],
+        [
+          "c",
+          "J"
+        ],
+        [
+          "d",
+          "I"
+        ],
+        [
+          "e",
+          "Z"
+        ]
+      ],
+      "methods": [
+        {
+          "name": "d",
+          "descriptor": "(Ljava/lang/String; Ljava/lang/String;)V",
+          "instructions": [
+            "invoke-static Lcom/yzj/kaipanh/newindex/common/socket/SocketHelper;->H()Lcom/yzj/kaipanh/newindex/common/socket/SocketHelper;",
+            "move-result-object v0",
+            "invoke-static Lux0;->v()Lux0$b;",
+            "move-result-object v1",
+            "const/16 v2, 2029",
+            "invoke-virtual v1, v2, Lux0$b;->c(I)Lux0$b;",
+            "move-result-object v1",
+            "invoke-static Lcom/yzj/kaipanh/newindex/common/socket/data/ServiceHqStock$HKHisHQReq;->newBuilder()Lcom/yzj/kaipanh/newindex/common/socket/data/ServiceHqStock$HKHisHQReq$Builder;",
+            "move-result-object v2",
+            "invoke-virtual v2, v4, Lcom/yzj/kaipanh/newindex/common/socket/data/ServiceHqStock$HKHisHQReq$Builder;->setStockId(Ljava/lang/String;)Lcom/yzj/kaipanh/newindex/common/socket/data/ServiceHqStock$HKHisHQReq$Builder;",
+            "move-result-object v4",
+            "invoke-virtual v4, v5, Lcom/yzj/kaipanh/newindex/common/socket/data/ServiceHqStock$HKHisHQReq$Builder;->setDate(Ljava/lang/String;)Lcom/yzj/kaipanh/newindex/common/socket/data/ServiceHqStock$HKHisHQReq$Builder;",
+            "move-result-object v4",
+            "invoke-virtual v4, Lcom/yzj/kaipanh/newindex/common/socket/data/ServiceHqStock$HKHisHQReq$Builder;->build()Lcom/yzj/kaipanh/newindex/common/socket/data/ServiceHqStock$HKHisHQReq;",
+            "move-result-object v4",
+            "invoke-virtual v1, v4, Lux0$b;->d(Lcom/google/protobuf/AbstractMessage;)Lux0$b;",
+            "move-result-object v4",
+            "const/4 v5, 1",
+            "invoke-virtual v4, v5, Lux0$b;->b(Z)Lux0$b;",
+            "move-result-object v4",
+            "const/4 v5, 3",
+            "invoke-virtual v4, v5, Lux0$b;->e(B)Lux0$b;",
+            "move-result-object v4",
+            "invoke-virtual v4, Lux0$b;->a()Lux0;",
+            "move-result-object v4",
+            "invoke-virtual v0, v4, Lcom/yzj/kaipanh/newindex/common/socket/SocketHelper;->sendPacket(Lux0;)V",
+            "return-void "
+          ]
+        },
+        {
+          "name": "m",
+          "descriptor": "(I Lux0;)V",
+          "instructions": [
+            "invoke-virtual v0, v2, v1, Lcom/yzj/kaipanh/newindex/data/SocketRepository;->k(Lux0; I)V",
+            "return-void "
+          ]
+        }
+      ]
+    },
+    {
+      "class": "Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel;",
+      "fields": [
+        [
+          "f",
+          "I"
+        ],
+        [
+          "g",
+          "I"
+        ],
+        [
+          "h",
+          "I"
+        ],
+        [
+          "i",
+          "Z"
+        ],
+        [
+          "j",
+          "Ljava/util/ArrayList;"
+        ],
+        [
+          "k",
+          "Loi0;"
+        ],
+        [
+          "l",
+          "Loi0;"
+        ],
+        [
+          "m",
+          "Loi0;"
+        ],
+        [
+          "n",
+          "Loi0;"
+        ],
+        [
+          "o",
+          "Loi0;"
+        ],
+        [
+          "p",
+          "Loi0;"
+        ],
+        [
+          "q",
+          "Lc51;"
+        ],
+        [
+          "r",
+          "Lc51;"
+        ],
+        [
+          "s",
+          "Lc51;"
+        ],
+        [
+          "t",
+          "Lc51;"
+        ],
+        [
+          "u",
+          "Lc51;"
+        ],
+        [
+          "v",
+          "Lc51;"
+        ],
+        [
+          "w",
+          "Z"
+        ],
+        [
+          "x",
+          "Ljava/lang/String;"
+        ]
+      ],
+      "methods": [
+        {
+          "name": "U",
+          "descriptor": "(Ljava/lang/String; Lif;)Ljava/lang/Object;",
+          "instructions": [
+            "instance-of v0, v14, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;",
+            "if-eqz v0, +011h",
+            "move-object v0, v14",
+            "check-cast v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;",
+            "iget v1, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->label I",
+            "const/high16 v2, -2147483648",
+            "and-int v3, v1, v2",
+            "if-eqz v3, +006h",
+            "sub-int/2addr v1, v2",
+            "iput v1, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->label I",
+            "goto +6h",
+            "new-instance v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;",
+            "invoke-direct v0, v12, v14, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;-><init>(Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel; Lif;)V",
+            "iget-object v14, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->result Ljava/lang/Object;",
+            "invoke-static Lh70;->d()Ljava/lang/Object;",
+            "move-result-object v1",
+            "iget v2, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->label I",
+            "const/4 v3, 2",
+            "const/4 v4, 1",
+            "if-eqz v2, +024h",
+            "if-eq v2, v4, +011h",
+            "if-ne v2, v3, +007h",
+            "invoke-static v14, Lgy0;->b(Ljava/lang/Object;)V",
+            "goto/16 +12ch",
+            "new-instance v13, Ljava/lang/IllegalStateException;",
+            "const-string v14, \"call to 'resume' before 'invoke' with coroutine\"",
+            "invoke-direct v13, v14, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V",
+            "throw v13",
+            "iget-object v13, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->L$2 Ljava/lang/Object;",
+            "check-cast v13, Loi0;",
+            "iget-object v2, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->L$1 Ljava/lang/Object;",
+            "check-cast v2, Ljava/lang/String;",
+            "iget-object v2, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->L$0 Ljava/lang/Object;",
+            "check-cast v2, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel;",
+            "invoke-static v14, Lgy0;->b(Ljava/lang/Object;)V",
+            "goto/16 +103h",
+            "invoke-static v14, Lgy0;->b(Ljava/lang/Object;)V",
+            "iput-object v13, v12, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel;->x Ljava/lang/String;",
+            "const/16 v14, 3009",
+            "invoke-virtual v12, v14, Lcom/yzj/kaipanh/newindex/base/SocketViewModel;->z(I)V",
+            "iget-object v14, v12, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel;->l Loi0;",
+            "iput-object v12, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->L$0 Ljava/lang/Object;",
+            "iput-object v13, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->L$1 Ljava/lang/Object;",
+            "iput-object v14, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->L$2 Ljava/lang/Object;",
+            "iput v4, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->label I",
+            "new-instance v2, Lzy0;",
+            "invoke-static v0, Lkotlin/coroutines/intrinsics/IntrinsicsKt__IntrinsicsJvmKt;->c(Lif;)Lif;",
+            "move-result-object v5",
+            "invoke-direct v2, v5, Lzy0;-><init>(Lif;)V",
+            "iget-object v5, v12, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel;->j Ljava/util/ArrayList;",
+            "new-instance v6, Ljava/util/ArrayList;",
+            "invoke-direct v6, Ljava/util/ArrayList;-><init>()V",
+            "invoke-interface v5, Ljava/lang/Iterable;->iterator()Ljava/util/Iterator;",
+            "move-result-object v5",
+            "invoke-interface v5, Ljava/util/Iterator;->hasNext()Z",
+            "move-result v7",
+            "if-eqz v7, +02ch",
+            "invoke-interface v5, Ljava/util/Iterator;->next()Ljava/lang/Object;",
+            "move-result-object v7",
+            "move-object v8, v7",
+            "check-cast v8, Lcom/yzj/kaipanh/newindex/topic/bean/ThemeBean;",
+            "invoke-virtual v8, Lcom/yzj/kaipanh/newindex/topic/bean/ThemeBean;->getName()Ljava/lang/String;",
+            "move-result-object v9",
+            "invoke-static v9, v13, v4, Lkotlin/text/StringsKt__StringsKt;->A(Ljava/lang/CharSequence; Ljava/lang/CharSequence; Z)Z",
+            "move-result v9",
+            "const/4 v10, 0",
+            "if-nez v9, +013h",
+            "invoke-virtual v8, Lcom/yzj/kaipanh/newindex/topic/bean/ThemeBean;->getPinyin()Ljava/lang/String;",
+            "move-result-object v8",
+            "if-eqz v8, +00ah",
+            "invoke-static v8, v13, v4, Lkotlin/text/StringsKt__StringsKt;->A(Ljava/lang/CharSequence; Ljava/lang/CharSequence; Z)Z",
+            "move-result v8",
+            "if-ne v8, v4, +004h",
+            "const/4 v8, 1",
+            "goto +2h",
+            "const/4 v8, 0",
+            "if-eqz v8, +003h",
+            "const/4 v10, 1",
+            "if-eqz v10, -02ah",
+            "invoke-interface v6, v7, Ljava/util/Collection;->add(Ljava/lang/Object;)Z",
+            "goto -2fh",
+            "new-instance v13, Ljava/util/HashSet;",
+            "invoke-direct v13, Ljava/util/HashSet;-><init>()V",
+            "new-instance v5, Ljava/util/ArrayList;",
+            "invoke-direct v5, Ljava/util/ArrayList;-><init>()V",
+            "invoke-interface v6, Ljava/lang/Iterable;->iterator()Ljava/util/Iterator;",
+            "move-result-object v6",
+            "invoke-interface v6, Ljava/util/Iterator;->hasNext()Z",
+            "move-result v7",
+            "if-eqz v7, +017h",
+            "invoke-interface v6, Ljava/util/Iterator;->next()Ljava/lang/Object;",
+            "move-result-object v7",
+            "move-object v8, v7",
+            "check-cast v8, Lcom/yzj/kaipanh/newindex/topic/bean/ThemeBean;",
+            "invoke-virtual v8, Lcom/yzj/kaipanh/newindex/topic/bean/ThemeBean;->getID()Ljava/lang/String;",
+            "move-result-object v8",
+            "invoke-virtual v13, v8, Ljava/util/HashSet;->add(Ljava/lang/Object;)Z",
+            "move-result v8",
+            "if-eqz v8, -015h",
+            "invoke-virtual v5, v7, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z",
+            "goto -1ah",
+            "new-instance v13, Ljava/util/ArrayList;",
+            "const/16 v6, 10",
+            "invoke-static v5, v6, Lsc;->s(Ljava/lang/Iterable; I)I",
+            "move-result v6",
+            "invoke-direct v13, v6, Ljava/util/ArrayList;-><init>(I)V",
+            "invoke-interface v5, Ljava/lang/Iterable;->iterator()Ljava/util/Iterator;",
+            "move-result-object v5",
+            "invoke-interface v5, Ljava/util/Iterator;->hasNext()Z",
+            "move-result v6",
+            "if-eqz v6, +010h",
+            "invoke-interface v5, Ljava/util/Iterator;->next()Ljava/lang/Object;",
+            "move-result-object v6",
+            "check-cast v6, Lcom/yzj/kaipanh/newindex/topic/bean/ThemeBean;",
+            "invoke-virtual v6, Lcom/yzj/kaipanh/newindex/topic/bean/ThemeBean;->getID()Ljava/lang/String;",
+            "move-result-object v6",
+            "invoke-interface v13, v6, Ljava/util/Collection;->add(Ljava/lang/Object;)Z",
+            "goto -13h",
+            "iget-object v5, v12, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel;->j Ljava/util/ArrayList;",
+            "new-instance v6, Ljava/util/ArrayList;",
+            "invoke-direct v6, Ljava/util/ArrayList;-><init>()V",
+            "invoke-interface v5, Ljava/lang/Iterable;->iterator()Ljava/util/Iterator;",
+            "move-result-object v5",
+            "invoke-interface v5, Ljava/util/Iterator;->hasNext()Z",
+            "move-result v7",
+            "if-eqz v7, +017h",
+            "invoke-interface v5, Ljava/util/Iterator;->next()Ljava/lang/Object;",
+            "move-result-object v7",
+            "move-object v8, v7",
+            "check-cast v8, Lcom/yzj/kaipanh/newindex/topic/bean/ThemeBean;",
+            "invoke-virtual v8, Lcom/yzj/kaipanh/newindex/topic/bean/ThemeBean;->getID()Ljava/lang/String;",
+            "move-result-object v8",
+            "invoke-interface v13, v8, Ljava/util/List;->contains(Ljava/lang/Object;)Z",
+            "move-result v8",
+            "if-eqz v8, -015h",
+            "invoke-interface v6, v7, Ljava/util/Collection;->add(Ljava/lang/Object;)Z",
+            "goto -1ah",
+            "invoke-interface v6, Ljava/util/Collection;->isEmpty()Z",
+            "move-result v13",
+            "xor-int/2addr v13, v4",
+            "if-eqz v13, +011h",
+            "sget-object v13, Lkotlin/Result;->Companion Lkotlin/Result$a;",
+            "new-instance v13, Lcom/yzj/kaipanh/net/entity/ApiSuccessResponse;",
+            "invoke-direct v13, v6, Lcom/yzj/kaipanh/net/entity/ApiSuccessResponse;-><init>(Ljava/lang/Object;)V",
+            "invoke-static v13, Lkotlin/Result;->constructor-impl(Ljava/lang/Object;)Ljava/lang/Object;",
+            "move-result-object v13",
+            "invoke-interface v2, v13, Lif;->resumeWith(Ljava/lang/Object;)V",
+            "goto +fh",
+            "sget-object v13, Lkotlin/Result;->Companion Lkotlin/Result$a;",
+            "new-instance v13, Lcom/yzj/kaipanh/net/entity/ApiEmptyResponse;",
+            "invoke-direct v13, Lcom/yzj/kaipanh/net/entity/ApiEmptyResponse;-><init>()V",
+            "invoke-static v13, Lkotlin/Result;->constructor-impl(Ljava/lang/Object;)Ljava/lang/Object;",
+            "move-result-object v13",
+            "invoke-interface v2, v13, Lif;->resumeWith(Ljava/lang/Object;)V",
+            "invoke-virtual v2, Lzy0;->a()Ljava/lang/Object;",
+            "move-result-object v13",
+            "invoke-static Lh70;->d()Ljava/lang/Object;",
+            "move-result-object v2",
+            "if-ne v13, v2, +005h",
+            "invoke-static v0, Lhh;->c(Lif;)V",
+            "if-ne v13, v1, +003h",
+            "return-object v1",
+            "move-object v11, v14",
+            "move-object v14, v13",
+            "move-object v13, v11",
+            "const/4 v2, 0",
+            "iput-object v2, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->L$0 Ljava/lang/Object;",
+            "iput-object v2, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->L$1 Ljava/lang/Object;",
+            "iput-object v2, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->L$2 Ljava/lang/Object;",
+            "iput v3, v0, Lcom/yzj/kaipanh/newindex/topic/model/ThemeExcavateListModel$searchList$1;->label I",
+            "invoke-interface v13, v14, v0, Loi0;->emit(Ljava/lang/Object; Lif;)Ljava/lang/Object;",
+            "move-result-object v13",
+            "if-ne v13, v1, +003h",
+            "return-object v1",
+            "sget-object v13, Lpk1;->a Lpk1;",
+            "return-object v13"
+          ]
+        },
+        {
+          "name": "k",
+          "descriptor": "(I)Lcom/google/protobuf/AbstractMessage;",
+          "instructions": [
+            "const/16 v0, 3009",
+            "if-ne v2, v0, +00bh",
+            "invoke-static Lcom/yzj/kaipanh/newindex/common/socket/data/Hq$HQListReq;->newBuilder()Lcom/yzj/kaipanh/newindex/common/socket/data/Hq$HQListReq$Builder;",
+            "move-result-object v2",
+            "invoke-virtual v2, Lcom/yzj/kaipanh/newindex/common/socket/data/Hq$HQListReq$Builder;->build()Lcom/yzj/kaipanh/newindex/common/socket/data/Hq$HQListReq;",
+            "move-result-object v2",
+            "return-object v2",
+            "const/4 v2, 0",
+            "return-object v2"
+          ]
+        }
+      ]
+    },
+    {
+      "class": "Lcom/yzj/kaipanh/newindex/base/SocketViewModel;",
+      "fields": [
+        [
+          "e",
+          "Lcom/yzj/kaipanh/newindex/base/SocketViewModel$a;"
+        ],
+        [
+          "c",
+          "Landroid/util/SparseIntArray;"
+        ],
+        [
+          "d",
+          "Z"
+        ]
+      ],
+      "methods": [
+        {
+          "name": "u",
+          "descriptor": "(I)I",
+          "instructions": [
+            "const/4 v1, 0",
+            "return v1"
+          ]
+        },
+        {
+          "name": "w",
+          "descriptor": "(I)I",
+          "instructions": [
+            "return v1"
+          ]
+        },
+        {
+          "name": "y",
+          "descriptor": "(I Z)Z",
+          "instructions": [
+            "invoke-virtual v3, v4, Lcom/yzj/kaipanh/newindex/base/SocketViewModel;->w(I)I",
+            "move-result v0",
+            "invoke-virtual v3, v0, Lcom/yzj/kaipanh/newindex/base/SocketViewModel;->k(I)Lcom/google/protobuf/AbstractMessage;",
+            "move-result-object v1",
+            "if-eqz v1, +056h",
+            "if-eqz v0, +054h",
+            "invoke-static Lux0;->v()Lux0$b;",
+            "move-result-object v2",
+            "invoke-virtual v2, v0, Lux0$b;->c(I)Lux0$b;",
+            "move-result-object v2",
+            "invoke-virtual v3, v0, Lcom/yzj/kaipanh/newindex/base/SocketViewModel;->u(I)I",
+            "move-result v0",
+            "invoke-virtual v2, v0, Lux0$b;->g(I)Lux0$b;",
+            "move-result-object v0",
+            "const/4 v2, 1",
+            "invoke-virtual v0, v2, Lux0$b;->f(Z)Lux0$b;",
+            "move-result-object v0",
+            "invoke-virtual v0, v1, Lux0$b;->d(Lcom/google/protobuf/AbstractMessage;)Lux0$b;",
+            "move-result-object v0",
+            "const/4 v1, 4",
+            "invoke-virtual v0, v1, Lux0$b;->e(B)Lux0$b;",
+            "move-result-object v0",
+            "invoke-virtual v0, Lux0$b;->a()Lux0;",
+            "move-result-object v0",
+            "if-eqz v5, +00dh",
+            "invoke-static Lcom/yzj/kaipanh/newindex/common/socket/SocketHelper;->H()Lcom/yzj/kaipanh/newindex/common/socket/SocketHelper;",
+            "move-result-object v5",
+            "invoke-virtual v5, v0, Lcom/yzj/kaipanh/newindex/common/socket/SocketHelper;->N(Lux0;)Z",
+            "move-result v5",
+            "if-eqz v5, +003h",
+            "return v2",
+            "invoke-virtual v3, Lcom/yzj/kaipanh/newindex/base/SocketViewModel;->l()Z",
+            "move-result v5",
+            "if-nez v5, +013h",
+            "invoke-static Lorg/greenrobot/eventbus/a;->d()Lorg/greenrobot/eventbus/a;",
+            "move-result-object v5",
+            "invoke-virtual v5, v3, Lorg/greenrobot/eventbus/a;->k(Ljava/lang/Object;)Z",
+            "move-result v5",
+            "if-nez v5, +009h",
+            "invoke-static Lorg/greenrobot/eventbus/a;->d()Lorg/greenrobot/eventbus/a;",
+            "move-result-object v5",
+            "invoke-virtual v5, v3, Lorg/greenrobot/eventbus/a;->q(Ljava/lang/Object;)V",
+            "invoke-static Lcom/yzj/kaipanh/newindex/data/SocketRepository;->e()Lcom/yzj/kaipanh/newindex/data/SocketRepository;",
+            "move-result-object v5",
+            "invoke-virtual v5, v4, v0, Lcom/yzj/kaipanh/newindex/data/SocketRepository;->m(I Lux0;)V",
+            "iget-object v5, v3, Lcom/yzj/kaipanh/newindex/base/SocketViewModel;->c Landroid/util/SparseIntArray;",
+            "invoke-virtual v5, v4, v2, Landroid/util/SparseIntArray;->put(I I)V",
+            "const/4 v4, 0",
+            "return v4"
+          ]
+        }
+      ]
+    }
+  ]
+}

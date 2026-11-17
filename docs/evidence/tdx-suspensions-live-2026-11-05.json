@@ -1,0 +1,175 @@
+{
+  "run_id": "fcca0518fff746dfb695a9d5b5e078e9",
+  "mode": "verification",
+  "checked_at": "2026-11-05T07:08:35.114600+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": true,
+  "sample_30_met": false,
+  "results": {
+    "suspensions": {
+      "pipeline_verified": true,
+      "routes": {
+        "proxy_requests": 7
+      },
+      "finite_plan": {
+        "periods": [
+          {
+            "period": "2004-12",
+            "start_date": "2004-12-27",
+            "end_date": "2004-12-31"
+          }
+        ],
+        "start_date": "2004-12-27",
+        "end_date": "2004-12-31",
+        "expected_days": 5,
+        "coverage_through": null
+      },
+      "source_units": {
+        "2004-12-27": {
+          "count": 15,
+          "digest": "c928e039f006eacf5fef326a6aaad2bfea72f3b560e921b5d33a2a2aa3260506",
+          "requests": 1
+        },
+        "2004-12-28": {
+          "count": 57,
+          "digest": "790bc72505a52a7383603703d5ba0124f9af2997692af1592e91a3be84540cd8",
+          "requests": 1
+        },
+        "2004-12-29": {
+          "count": 37,
+          "digest": "98cf19c106284dc8670b5ddb0b27432158470fe87f0e32be8cad7e08d29b850a",
+          "requests": 1
+        },
+        "2004-12-30": {
+          "count": 36,
+          "digest": "1f43999f327c55615686676691242e7b5fe3fd7aba91eb398073300c8dd7efb8",
+          "requests": 1
+        },
+        "2004-12-31": {
+          "count": 39,
+          "digest": "0a32a85c0266d7ca08d9252d4b5aa5dd5974b848450c6895155c7af918e70511",
+          "requests": 1
+        }
+      },
+      "published_units": [
+        {
+          "dataset": "suspensions.period",
+          "identity": "3b55ed0c594f4c439b7a5e9fd02b6523:2004-12-27:2004-12-31",
+          "digest": "de6fbada5e9857d39621b5b03e2377b9e661c2edb97df44692d2b4331faf4a1f"
+        }
+      ],
+      "fixed_error_id": "38622b7215a44fe4a5224031bdf4d963",
+      "fixed_date_observation": {
+        "2026-10-19": {
+          "count": 5,
+          "digest": "0dbef281e2ed467f8ea8a76c511225be86a1bd520488b59c8487ac54d45c30f7",
+          "requests": 1,
+          "fixed_security": [
+            {
+              "market": "SH",
+              "code": "603517",
+              "name": "绝味食品",
+              "suspended_at": "2026-10-19T09:30+08:00",
+              "resumed_at": "2026-10-20T09:30+08:00",
+              "suspension_type": "full_day",
+              "source_note": "停牌1天",
+              "reason": "重要公告"
+            }
+          ]
+        },
+        "2026-10-20": {
+          "count": 4,
+          "digest": "c988fe7c3b4bdbecaf23c52c75bf8c22c3e8d2329cd1ec9eb96cb1171bb86516",
+          "requests": 1,
+          "fixed_security": [
+            {
+              "market": "SH",
+              "code": "603517",
+              "name": "绝味食品",
+              "suspended_at": "2026-10-19T09:30+08:00",
+              "resumed_at": "2026-10-20T09:30+08:00",
+              "suspension_type": "full_day",
+              "source_note": "停牌1天",
+              "reason": "重要公告"
+            }
+          ]
+        }
+      },
+      "fixed_date_conflicts": [],
+      "fixed_date_limitations": "只读来源复核，未归档到此空私有库；既有错误未修复、不清ID；本轮正式全链路范围为下列来源起点日期",
+      "source_content_conflicts": [],
+      "strict_proxy_verified": true,
+      "acceptance_complete": true,
+      "pending": 0,
+      "outcome": {
+        "collected": 121,
+        "pages": 1,
+        "source_pages": 5,
+        "dates_checked": 5,
+        "batch_id": "3b55ed0c594f4c439b7a5e9fd02b6523",
+        "start_date": "2004-12-27",
+        "end_date": "2004-12-31",
+        "network_costs": {
+          "http_attempts": 5,
+          "native_attempts": 0,
+          "native_queries": 0,
+          "authentication_http_attempts": 0,
+          "native_auth_exchanges": 0,
+          "retries": 0,
+          "observed_wire_bytes": 22780,
+          "observed_body_bytes": 22780,
+          "native_decoded_bytes": 0
+        }
+      },
+      "public_query_equal": true,
+      "limitations": "限定自然日整响应；非逐股票采集，不证明全历史完整"
+    }
+  },
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\eastmoney-optimization-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce"
+  },
+  "subject": "foundation",
+  "selection": {
+    "selected": [],
+    "random": [],
+    "fixed": [],
+    "random_count": 0,
+    "non_stock_scope": {
+      "unit": "complete_directories_and_finite_calendar_dates",
+      "reason": "股票目录整份请求；日历与停复牌按日期请求完整响应，非逐股票采集",
+      "fixed": []
+    }
+  },
+  "source_sha256": "3b1cd9fc5f1b83ab3b6920140f565b1531021dd196776b17db6bfa05a79df35e",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "verification_scope": "development_pipeline",
+  "routing_policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "sample_30_applicable": false,
+  "policy_snapshot_digest": "d277e976e6abdd3caa5e959d7d11ee7e4e4abd03f9b3bde6f3f6356ae7a704fd",
+  "acceptance_complete": true,
+  "storage": {
+    "database": "empire_verify_ths_fcca0518fff746dfb695a9d5b5e078e9_test",
+    "namespace": "empire:test:verify_ths:fcca0518fff746dfb695a9d5b5e078e9",
+    "run_id": "fcca0518fff746dfb695a9d5b5e078e9",
+    "server_uuid": "3f1d111c-d88d-11f1-8cfd-380525361d4e",
+    "owner_sha256": "8c63ce0d17780883b082d521a219c6d52a3cc5d5cc61099810ac7a257d993d82"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

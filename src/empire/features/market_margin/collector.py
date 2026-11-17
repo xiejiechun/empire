@@ -10,6 +10,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.market_margin.contract import CONTRACT, DATASET, JOB, PROJECT, digest, pack
 from empire.features.market_margin.source import PAGE, URL, parse
@@ -101,6 +102,7 @@ class MarketMarginCollector:
 
         return DeferredResponse(response, consume)
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0, markets=None):
         stage = "plan"
         try:

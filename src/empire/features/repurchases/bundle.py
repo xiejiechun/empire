@@ -14,10 +14,10 @@ def bundle(cfg):
         OrderedContribution(3600, RepurchaseCollector()),
         OrderedContribution(3700, RepurchaseUiPlugin()),
     ), tasks=(
-        OrderedContribution(1100, TaskContribution('eastmoney-repurchases', '股票回购（东方财富）',
-                    'collector.eastmoney_repurchase', 'eastmoney', '唯一方案编号游标，全量核验历史及修订；不推断股份注销',
+        OrderedContribution(1100, TaskContribution('eastmoney-repurchases', '股票回购',
+                    'collector.eastmoney_repurchase', 'eastmoney', '近期更新增量；每三天完整核验历史及修订；不推断股份注销',
                     category='公司行动', source_name='东方财富', unit_name='页',
-                    default_schedule=TaskDefaults('daily', description='每天北京时间18:00完整核验方案与累计进展，发现历史修订；可编辑。'),
+                    default_schedule=TaskDefaults('daily', description='每天北京时间18:00核验近期更新；每三天完整核验历史，计划可编辑。'),
                     fresh_description='从首方案重新核验完整来源；不删除历史；待归档阶段先确认原轮次，下载阶段可重新建立范围。')),
     ), datasets=(
         OrderedContribution(1100, DatasetContribution(repurchases, 'incremental', {'eastmoney-repurchases-v1': 'eastmoney-repurchases'})),

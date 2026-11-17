@@ -19,6 +19,8 @@ field 为设备 code，value 为含 code/proxy/exit_ip 的 JSON。proxy 未声�
 
 候选分配用 Redis TIME 原子核对 Hash 映射与 router:proxies:device 租约；仅 Hash 有值不能证明在线。目录周期共享快照，不每请求全量扫描。
 
+完整目录最多 5000 项，Hash 的字段和值合计最多 8 MiB；单条 JSON 超过 4 KiB 作为无效项处理。超界明确提示，不静默截断或改写目录；旧完整快照中的候选仍须逐次核实映射和租约，没有可用候选时不会把超界当作空目录偷偷直连。每站以独立出口 IP 建立就绪/定时索引，同 IP 多设备仍只取得一个在途槽，绑定身份单独等待其设备。
+
 ## 保留与恢复
 
 Hash 不由 Empire 设置 TTL；失效设备由 RouterProxy 移出，恢复后重新发布。Empire 不建额外主动健康探测；异常格式只输出脱敏诊断。

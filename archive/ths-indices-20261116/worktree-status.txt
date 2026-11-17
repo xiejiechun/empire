@@ -1,0 +1,670 @@
+ M AGENTS.md
+ M README.md
+ M deploy/windows-services.md
+ M desktop/README.md
+ M desktop/electron/main.cjs
+ M desktop/qa/interaction.cjs
+ M desktop/qa/project-previews.cjs
+ M desktop/qa/resources-harness.cjs
+ M desktop/qa/resources.cjs
+ M desktop/src/App.tsx
+ M desktop/src/CollectionRules.tsx
+ M desktop/src/DataPreview.tsx
+ M desktop/src/Management.tsx
+ M desktop/src/Resources.tsx
+ M desktop/src/Tasks.tsx
+ M desktop/src/preview/Filters.tsx
+ M desktop/src/preview/PreviewContent.tsx
+ M desktop/src/preview/RecordTable.tsx
+ M desktop/src/preview/presentation.tsx
+ M desktop/src/preview/workspace.css
+ M docs/architecture-contract.json
+ M docs/archive-deduplication.md
+ M docs/assembly-feature-changes.json
+ M docs/collector-development-guide.md
+ M docs/database-design-cards.json
+ M docs/database-design-standard.md
+ M docs/database-reference.md
+ M docs/development-workflow.md
+ M docs/documentation-coverage.json
+ M docs/documentation-review.json
+ M docs/download-resources.md
+ M docs/eastmoney-repurchases.md
+ M docs/implementation-status.md
+ M docs/market-review.md
+ M docs/mysql-business-schema.md
+ M docs/proxy-collection.md
+ M docs/release-gate-review.md
+ M docs/tdx-capital-actions.md
+ M docs/tdx-hot-list.md
+ M docs/tdx-listing-status.md
+ M docs/tdx-margin.md
+ M docs/tdx-performance.md
+ M docs/tdx-shareholder-changes.md
+ M docs/tdx-suspensions.md
+ M docs/tdx-unlocks.md
+ M docs/ths-capital.md
+ M docs/ths-financial-statements.md
+ M docs/ths-index-prices.md
+ M docs/ths-industries.md
+ M docs/ths-listings.md
+ M docs/ths-market-margin.md
+ M docs/ths-yuanhang-implementation.md
+ M docs/ths-yuanhang-limits-implementation.md
+ M docs/ths-yuanhang-storage-design.md
+ M docs/yuanhang-ten-day-maintenance.md
+ D projectempirebuildpytest-documentation-release/test_apply_persists_then_retir0/local.toml
+ D projectempirebuildpytest-documentation-release/test_archive_index_must_cover_0/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_backup_identity_streams_s0/empire-backup.sql
+ D projectempirebuildpytest-documentation-release/test_build_manifest_is_strict_0/build_manifest.json
+ D projectempirebuildpytest-documentation-release/test_cancellation_at_file_comm0/downloads/complete.pdf
+ D projectempirebuildpytest-documentation-release/test_cancellation_at_file_comm1/downloads/complete.pdf
+ D projectempirebuildpytest-documentation-release/test_changed_source_or_corrupt0/Empire.spec
+ D projectempirebuildpytest-documentation-release/test_changed_source_or_corrupt0/build.ps1
+ D projectempirebuildpytest-documentation-release/test_changed_source_or_corrupt0/pyproject.toml
+ D projectempirebuildpytest-documentation-release/test_changed_source_or_corrupt0/requirements.lock
+ D projectempirebuildpytest-documentation-release/test_changed_source_or_corrupt0/src/example.py
+ D projectempirebuildpytest-documentation-release/test_changed_source_or_corrupt0/verify-release.ps1
+ D projectempirebuildpytest-documentation-release/test_cli_redacts_credentials0/local.toml
+ D projectempirebuildpytest-documentation-release/test_commit_checks_split_signa0/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_content_change_and_broken0/Empire.spec
+ D projectempirebuildpytest-documentation-release/test_content_change_and_broken0/config/app.example.toml
+ D projectempirebuildpytest-documentation-release/test_content_change_and_broken0/docs/documentation-coverage.json
+ D projectempirebuildpytest-documentation-release/test_content_change_and_broken0/docs/documentation-review.json
+ D projectempirebuildpytest-documentation-release/test_content_change_and_broken0/src/empire/plugins/ui/storage_reference.md
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every10/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every11/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every14/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every15/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every18/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every19/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every2/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every3/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every6/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_cross_origin_strips_every7/downloads/report.pdf
+ D "projectempirebuildpytest-documentation-release/test_default_config_is_created0/\347\224\250\346\210\267 \346\225\260\346\215\256/config.toml"
+ D projectempirebuildpytest-documentation-release/test_default_ingest_capacity_i0/default.toml
+ D projectempirebuildpytest-documentation-release/test_different_existing_sql_is0/local.toml
+ D projectempirebuildpytest-documentation-release/test_different_existing_sql_is1/local.toml
+ D projectempirebuildpytest-documentation-release/test_disk_failure_before_publi0/downloads/original.pdf
+ D projectempirebuildpytest-documentation-release/test_dry_run_locks_and_compare0/local.toml
+ D projectempirebuildpytest-documentation-release/test_existing_or_concurrent_ta0/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_failed_integrity_only_rem0/downloads/.part-user-original
+ D projectempirebuildpytest-documentation-release/test_failed_integrity_only_rem1/downloads/.part-user-original
+ D projectempirebuildpytest-documentation-release/test_failed_sql_readback_prese0/local.toml
+ D projectempirebuildpytest-documentation-release/test_file_changed_after_commit0/local.toml
+ D projectempirebuildpytest-documentation-release/test_ingest_protocol_rejects_m0/bad_collector.py
+ D projectempirebuildpytest-documentation-release/test_ingest_watermarks_require0/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_ingest_watermarks_require1/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_ingest_watermarks_require2/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_ingest_watermarks_require3/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_ingest_watermarks_require4/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_invalid_migration_does_no0/old.toml
+ D projectempirebuildpytest-documentation-release/test_link_checker_rejects_miss0/AGENTS.md
+ D projectempirebuildpytest-documentation-release/test_link_checker_rejects_miss0/README.md
+ D projectempirebuildpytest-documentation-release/test_malformed_existing_sql_nu0/local.toml
+ D projectempirebuildpytest-documentation-release/test_packaged_load_ignores_oth0/other/config.toml
+ D "projectempirebuildpytest-documentation-release/test_packaged_load_ignores_oth0/\347\250\213\345\272\217 \347\251\272\346\240\274/config.toml"
+ D projectempirebuildpytest-documentation-release/test_page_budget_rejects_inval0/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_page_budget_rejects_inval1/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_page_budget_rejects_inval2/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_page_budget_rejects_inval3/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_page_without_usage_articl0/Empire.spec
+ D projectempirebuildpytest-documentation-release/test_page_without_usage_articl0/config/app.example.toml
+ D projectempirebuildpytest-documentation-release/test_page_without_usage_articl0/docs/documentation-coverage.json
+ D projectempirebuildpytest-documentation-release/test_page_without_usage_articl0/src/empire/plugins/ui/storage_reference.md
+ D projectempirebuildpytest-documentation-release/test_pdf_file_streaming_uses_c0/downloads/report.pdf
+ D projectempirebuildpytest-documentation-release/test_process_crash_after_commi0/crash_after_commit.py
+ D projectempirebuildpytest-documentation-release/test_queue_capacity_rejects_in0/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_queue_capacity_rejects_in1/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_queue_capacity_rejects_in2/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_queue_capacity_rejects_in3/invalid.toml
+ D projectempirebuildpytest-documentation-release/test_quota_counts_nested_exist0/.part-old
+ D projectempirebuildpytest-documentation-release/test_quota_counts_nested_exist0/originals/keep.pdf
+ D projectempirebuildpytest-documentation-release/test_quota_counts_nested_exist0/report.pdf
+ D "projectempirebuildpytest-documentation-release/test_relative_download_directo0/\350\256\276\347\275\256 \347\233\256\345\275\225/config.toml"
+ D projectempirebuildpytest-documentation-release/test_release_lock_accepts_only0/requirements.lock
+ D projectempirebuildpytest-documentation-release/test_release_lock_rejects_miss0/requirements.lock
+ D projectempirebuildpytest-documentation-release/test_replace_failure_can_resum0/local.toml
+ D projectempirebuildpytest-documentation-release/test_replaced_partial_is_not_d0/downloads/.part-8151b289dabc4413b9b0b874f06b106c
+ D projectempirebuildpytest-documentation-release/test_replaced_partial_is_not_d0/downloads/moved-owned-part
+ D projectempirebuildpytest-documentation-release/test_replaced_root_is_not_clea0/downloads/.part-b3565c33eba14e4a8cd05a2bb9149298
+ D projectempirebuildpytest-documentation-release/test_replaced_root_is_not_clea0/moved-original-directory/.part-b3565c33eba14e4a8cd05a2bb9149298
+ D projectempirebuildpytest-documentation-release/test_running_empire_lock_failu0/local.toml
+ D projectempirebuildpytest-documentation-release/test_runtime_bridge_stops_thre0/plugin-state.json
+ D projectempirebuildpytest-documentation-release/test_same_existing_sql_finishe0/local.toml
+ D projectempirebuildpytest-documentation-release/test_schema_table_parser_track0/sql/schema.sql
+ D projectempirebuildpytest-documentation-release/test_source_change_cannot_reus0/Empire.spec
+ D projectempirebuildpytest-documentation-release/test_source_change_cannot_reus0/config/app.example.toml
+ D projectempirebuildpytest-documentation-release/test_source_change_cannot_reus0/docs/documentation-coverage.json
+ D projectempirebuildpytest-documentation-release/test_source_change_cannot_reus0/docs/documentation-review.json
+ D projectempirebuildpytest-documentation-release/test_source_change_cannot_reus0/src/empire/plugins/ui/storage_reference.md
+ D projectempirebuildpytest-documentation-release/test_sql_failure_preserves_com0/local.toml
+ D projectempirebuildpytest-documentation-release/test_symlink_inside_root_is_no0/user-original.pdf
+ D projectempirebuildpytest-documentation-release/test_ui_plugin_stop_restart_an0/plugin-state.json
+ D projectempirebuildpytest-documentation-release/test_user_config_migration_nev0/legacy.toml
+ D projectempirebuildpytest-documentation-release/test_user_config_migration_nev0/user/config.toml
+ D projectempirebuildpytest-documentation-release/test_windows_junction_is_not_f0/linked/original.pdf
+ D projectempirebuildpytest-documentation-release/test_windows_junction_is_not_f0/user-originals/original.pdf
+ D projectempirebuildpytest-documentation-release/test_windows_junction_is_not_f1/downloads/linked/original.pdf
+ D projectempirebuildpytest-documentation-release/test_windows_junction_is_not_f1/user-originals/original.pdf
+ M pyproject.toml
+ M requirements.lock
+ M scripts/assembly_contract.py
+ M scripts/audit_dependencies.py
+ M scripts/dividend_capacity.py
+ M scripts/foundation_verification.py
+ M scripts/initialize_yuanhang_limits.py
+ M scripts/measure_capacity.py
+ M scripts/measure_yuanhang_limits_capacity.py
+ M scripts/performance_verification.py
+ M scripts/unlock_capacity.py
+ M scripts/unlock_verification.py
+ M scripts/verify_documentation.py
+ M scripts/verify_foundation_sources.py
+ M scripts/verify_hot_list.py
+ M scripts/verify_listing_status.py
+ M scripts/verify_market_margin.py
+ M sql/business-schema.json
+ M sql/schema-contract.json
+ M sql/schema.sql
+ M src/empire/bootstrap.py
+ M src/empire/contracts/collector.py
+ M src/empire/contracts/data.py
+ M src/empire/contracts/dataset.py
+ M src/empire/contracts/download_settings.py
+ M src/empire/desktop_bridge/operations.py
+ M src/empire/desktop_bridge/preview.py
+ M src/empire/desktop_bridge/preview_catalog.py
+ M src/empire/desktop_bridge/preview_presentation.py
+ M src/empire/desktop_bridge/schemas.py
+ M src/empire/documentation/help-index.json
+ M src/empire/documentation/topics/archive-contract.md
+ M src/empire/documentation/topics/capabilities.md
+ M src/empire/documentation/topics/connection-capacity.md
+ M src/empire/documentation/topics/desktop-collect.md
+ M src/empire/documentation/topics/desktop-resources.md
+ M src/empire/documentation/topics/desktop-results.md
+ M src/empire/documentation/topics/download-resources.md
+ M src/empire/documentation/topics/mysql-collection-state.md
+ M src/empire/documentation/topics/proxy-and-rates.md
+ M src/empire/documentation/topics/redis-archives.md
+ M src/empire/documentation/topics/redis-checkpoint.md
+ M src/empire/documentation/topics/redis-collection-control.md
+ M src/empire/documentation/topics/redis-fingerprint-expiry.md
+ M src/empire/documentation/topics/redis-fingerprints.md
+ M src/empire/documentation/topics/redis-router-mapping.md
+ M src/empire/documentation/topics/routing.md
+ M src/empire/features/builtin.py
+ M src/empire/features/calendar/bundle.py
+ M src/empire/features/calendar/docs/help/mysql-trade-calendar.md
+ M src/empire/features/capital_actions/dataset.py
+ M src/empire/features/capital_actions/dividend_history.py
+ M src/empire/features/capital_actions/dividends_collector.py
+ M src/empire/features/capital_actions/docs/help/additional-issues.md
+ M src/empire/features/capital_actions/docs/help/dividends.md
+ M src/empire/features/capital_actions/docs/help/rights-issues.md
+ M src/empire/features/capital_actions/issues_collector.py
+ M src/empire/features/capital_actions/lifecycle.py
+ M src/empire/features/capital_actions/preparation.py
+ M src/empire/features/capital_actions/query.py
+ M src/empire/features/capital_actions/rights_collector.py
+ M src/empire/features/financial_statements/audit.py
+ M src/empire/features/financial_statements/bundle.py
+ M src/empire/features/financial_statements/collector.py
+ M src/empire/features/financial_statements/contract.py
+ M src/empire/features/financial_statements/dataset.py
+ M src/empire/features/financial_statements/docs/help/overview.md
+ M src/empire/features/financial_statements/query.py
+ M src/empire/features/holders/collector.py
+ M src/empire/features/holders/docs/help/overview.md
+ M src/empire/features/holders/source.py
+ M src/empire/features/hot_list/collector.py
+ M src/empire/features/hot_list/docs/help/overview.md
+ M src/empire/features/index_prices/collector.py
+ M src/empire/features/index_prices/docs/help/mysql-index-daily-price.md
+ M src/empire/features/index_prices/docs/help/overview.md
+ M src/empire/features/index_prices/query.py
+ M src/empire/features/indices/collector.py
+ M src/empire/features/industries/collector.py
+ M src/empire/features/industries/docs/help/overview.md
+ M src/empire/features/industry_margin/collector.py
+ M src/empire/features/industry_margin/docs/help/overview.md
+ M src/empire/features/listing_status/collector.py
+ M src/empire/features/listing_status/docs/help/overview.md
+ M src/empire/features/listings/collector.py
+ M src/empire/features/listings/docs/help/overview.md
+ M src/empire/features/margin/collector.py
+ M src/empire/features/margin/docs/help/overview.md
+ M src/empire/features/margin/source.py
+ M src/empire/features/market_margin/collector.py
+ M src/empire/features/market_margin/docs/help/market-margin.md
+ M src/empire/features/market_margin/docs/help/market_margin_daily.md
+ M src/empire/features/market_margin/docs/help/market_margin_series.md
+ M src/empire/features/market_margin/source.py
+ M src/empire/features/market_review/docs/help/overview.md
+ M src/empire/features/market_review/query.py
+ M src/empire/features/market_review/ui.py
+ M src/empire/features/name_changes/collector.py
+ M src/empire/features/name_changes/docs/help/overview.md
+ M src/empire/features/news/bundle.py
+ M src/empire/features/performance/collector.py
+ M src/empire/features/performance/dataset.py
+ M src/empire/features/performance/docs/help/disclosures.md
+ M src/empire/features/performance/docs/help/forecasts.md
+ M src/empire/features/performance/docs/help/quick-reports.md
+ M src/empire/features/performance/docs/help/reports.md
+ M src/empire/features/performance/docs/help/shareholder-changes.md
+ M src/empire/features/performance/docs/help/shareholder-counts.md
+ M src/empire/features/performance/query.py
+ M src/empire/features/preparation/events.py
+ M src/empire/features/preparation/foundation.py
+ M src/empire/features/preparation/markets.py
+ M src/empire/features/repurchases/bundle.py
+ M src/empire/features/repurchases/collector.py
+ M src/empire/features/repurchases/dataset.py
+ M src/empire/features/repurchases/docs/help/mysql-stock-repurchase-plan.md
+ M src/empire/features/repurchases/docs/help/overview.md
+ M src/empire/features/repurchases/query.py
+ M src/empire/features/st_events/collector.py
+ M src/empire/features/st_events/docs/help/overview.md
+ M src/empire/features/stocks/ths_collector.py
+ M src/empire/features/suspensions/collector.py
+ M src/empire/features/suspensions/docs/help/overview.md
+ M src/empire/features/themes/docs/help/overview.md
+ M src/empire/features/ths_capital/bundle.py
+ M src/empire/features/ths_capital/collector.py
+ M src/empire/features/ths_capital/dataset.py
+ M src/empire/features/ths_capital/docs/help/overview.md
+ M src/empire/features/ths_capital/query.py
+ M src/empire/features/unlock_industries/collector.py
+ M src/empire/features/unlock_industries/docs/help/overview.md
+ M src/empire/features/unlocks/collector.py
+ M src/empire/features/unlocks/dataset.py
+ M src/empire/features/unlocks/docs/help/overview.md
+ M src/empire/features/unlocks/query.py
+ M src/empire/features/yuanhang/availability.py
+ M src/empire/features/yuanhang/collector.py
+ M src/empire/features/yuanhang/docs/help/mysql-yuanhang-capital.md
+ M src/empire/features/yuanhang/docs/help/mysql-yuanhang-corporate-action.md
+ M src/empire/features/yuanhang/docs/help/mysql-yuanhang-daily-price.md
+ M src/empire/features/yuanhang/docs/help/mysql-yuanhang-series-proof.md
+ M src/empire/features/yuanhang/docs/help/yuanhang.md
+ M src/empire/features/yuanhang/plan_query.py
+ M src/empire/features/yuanhang/query.py
+ M src/empire/features/yuanhang_limits/collector.py
+ M src/empire/features/yuanhang_limits/contract.py
+ M src/empire/features/yuanhang_limits/docs/help/mysql-yuanhang-limit-member.md
+ M src/empire/features/yuanhang_limits/docs/help/mysql-yuanhang-limit-pool.md
+ M src/empire/features/yuanhang_limits/docs/help/mysql-yuanhang-limit-reason.md
+ M src/empire/features/yuanhang_limits/docs/help/overview.md
+ M src/empire/features/yuanhang_limits/docs/help/redis-intraday-meta.md
+ M src/empire/features/yuanhang_limits/docs/help/redis-intraday-snapshots.md
+ M src/empire/features/yuanhang_limits/docs/help/redis-intraday-times.md
+ M src/empire/features/yuanhang_limits/intraday.py
+ M src/empire/features/yuanhang_limits/intraday_query.py
+ M src/empire/features/yuanhang_limits/intraday_store.py
+ M src/empire/features/yuanhang_limits/model.py
+ M src/empire/features/yuanhang_limits/preparation.py
+ M src/empire/features/yuanhang_limits/proofs.py
+ M src/empire/features/yuanhang_limits/query.py
+ M src/empire/features/yuanhang_limits/reason_planning.py
+ M src/empire/features/yuanhang_limits/source.py
+ M src/empire/features/yuanhang_limits/storage.py
+ M src/empire/plugins/collection/control.py
+ M src/empire/plugins/collection/progress.py
+ M src/empire/plugins/collection/records.py
+ M src/empire/plugins/collection/rules.json
+ M src/empire/plugins/collection/rules.py
+ M src/empire/plugins/collection/unit_prefetch.py
+ M src/empire/plugins/datasets/astock.py
+ M src/empire/plugins/infra/collection_state_unit.py
+ M src/empire/plugins/infra/download_settings.py
+ M src/empire/plugins/infra/http.py
+ M src/empire/plugins/infra/mysql_store.py
+ M src/empire/plugins/infra/proxy_pool.py
+ M src/empire/plugins/infra/resources.py
+ M src/empire/plugins/infra/response_reader.py
+ M src/empire/plugins/infra/routing.py
+ M src/empire/plugins/infra/stream_exchange.py
+ M src/empire/plugins/pipeline/archive.py
+ M src/empire/plugins/pipeline/archive_metrics.py
+ M src/empire/plugins/pipeline/archive_queue.py
+ M src/empire/plugins/pipeline/ingest.py
+ M src/empire/plugins/ui/storage_reference.md
+ M src/empire/sources/security_identity.py
+ M src/empire/sources/yuanhang_auth.py
+ M src/empire/sources/yuanhang_client.py
+ M src/empire/sources/yuanhang_history.py
+ M src/empire/sources/yuanhang_ranges.py
+ M src/empire/sources/yuanhang_wire.py
+ M tests/integration/test_archive_fairness.py
+ M tests/integration/test_calendar_archive.py
+ M tests/integration/test_capital_archive.py
+ M tests/integration/test_collection_settings.py
+ M tests/integration/test_distribution_pipeline.py
+ M tests/integration/test_download_settings_persistence.py
+ M tests/integration/test_financial_archive.py
+ M tests/integration/test_holder_archive.py
+ M tests/integration/test_hot_list_archive.py
+ M tests/integration/test_index_archive.py
+ M tests/integration/test_index_price_archive.py
+ M tests/integration/test_industry_archive.py
+ M tests/integration/test_industry_margin_archive.py
+ M tests/integration/test_issue_availability_archive.py
+ M tests/integration/test_listing_archive.py
+ M tests/integration/test_listing_status_archive.py
+ M tests/integration/test_live_pipeline.py
+ M tests/integration/test_margin_archive.py
+ M tests/integration/test_market_margin_archive.py
+ M tests/integration/test_name_archive.py
+ M tests/integration/test_news_archive.py
+ M tests/integration/test_repurchase_archive.py
+ M tests/integration/test_rule_archive.py
+ M tests/integration/test_security_alias_archive.py
+ M tests/integration/test_st_archive.py
+ M tests/integration/test_stock_archive.py
+ M tests/integration/test_suspension_archive.py
+ M tests/integration/test_tdx_performance_archive.py
+ M tests/integration/test_tdx_shareholder_changes_archive.py
+ M tests/integration/test_tdx_unlock_industries_archive.py
+ M tests/integration/test_tdx_unlocks_archive.py
+ M tests/integration/test_theme_archive.py
+ M tests/integration/test_ths_capital_archive.py
+ M tests/integration/test_ths_stock_archive.py
+ M tests/integration/test_yuanhang_archive.py
+ M tests/integration/test_yuanhang_financial_event_pipeline.py
+ M tests/integration/test_yuanhang_limits_archive.py
+ M tests/integration/test_yuanhang_limits_intraday_real.py
+ M tests/integration/test_yuanhang_limits_plans.py
+ M tests/integration/test_yuanhang_limits_source_time_real.py
+ M tests/integration/test_yuanhang_range_archive.py
+ M tests/integration/test_yuanhang_sprint_split.py
+ M tests/integration/test_yuanhang_sprint_split_real.py
+ M tests/integration/test_yuanhang_typed_storage.py
+ M tests/test_all_collector_prefetch.py
+ M tests/test_archive_filter_audit.py
+ M tests/test_archive_queue.py
+ M tests/test_assembly_contract.py
+ M tests/test_business_schema_metadata.py
+ M tests/test_capital_lifecycle.py
+ M tests/test_capital_preparation.py
+ M tests/test_capital_scope.py
+ M tests/test_collection_rules.py
+ M tests/test_dataset_contributions.py
+ M tests/test_desktop_bridge.py
+ M tests/test_desktop_preview_contract.py
+ M tests/test_dividend_capacity.py
+ M tests/test_documentation_contracts.py
+ M tests/test_download_settings.py
+ M tests/test_foundation_verification.py
+ M tests/test_headless_pages.py
+ M tests/test_ingest_reservations.py
+ M tests/test_kaipanla_retirement.py
+ M tests/test_market_margin.py
+ M tests/test_parallel_collection.py
+ M tests/test_preview_snapshot_order.py
+ M tests/test_records.py
+ M tests/test_repurchases.py
+ M tests/test_scale_network.py
+ M tests/test_sql_lane.py
+ M tests/test_statement_progress.py
+ M tests/test_stream_exchange.py
+ M tests/test_tdx_performance_lifecycle.py
+ M tests/test_tdx_shareholder_changes.py
+ M tests/test_tdx_unlocks.py
+ M tests/test_theme_identity_source.py
+ M tests/test_ths_capital_lifecycle.py
+ M tests/test_ths_index_prices.py
+ M tests/test_ths_statements.py
+ M tests/test_ui_architecture.py
+ M tests/test_unit_prefetch.py
+ M tests/test_yuanhang_availability.py
+ M tests/test_yuanhang_close_refresh.py
+ M tests/test_yuanhang_collector.py
+ M tests/test_yuanhang_history.py
+ M tests/test_yuanhang_limits_collector.py
+ M tests/test_yuanhang_limits_initialization.py
+ M tests/test_yuanhang_limits_intraday.py
+ M tests/test_yuanhang_limits_planning.py
+ M tests/test_yuanhang_limits_source.py
+ M tests/test_yuanhang_limits_source_time.py
+ M tests/test_yuanhang_limits_wire.py
+ M tests/test_yuanhang_sprint_maintenance.py
+?? archive/
+?? desktop/qa/daily-review-harness.cjs
+?? desktop/qa/daily-review.cjs
+?? desktop/qa/observation-harness.cjs
+?? desktop/qa/observation-refresh.cjs
+?? desktop/qa/observation.cjs
+?? desktop/src/daily-review/
+?? desktop/src/observation/
+?? desktop/src/preview/FundFlowView.tsx
+?? desktop/src/preview/financialFormat.ts
+?? docs/daily-review-demo.md
+?? docs/daily-review-market.md
+?? docs/eastmoney-collection-optimization.md
+?? docs/eastmoney-graymarket-implementation-plan.md
+?? docs/evidence/daily-review-date-2026-11-13.md
+?? docs/evidence/daily-review-demo-2026-11-12.md
+?? docs/evidence/daily-review-market-2026-11-16.md
+?? docs/evidence/daily-review-today-market-2026-11-15.md
+?? docs/evidence/data-inventory-2026-11-02.json
+?? docs/evidence/data-inventory-2026-11-02.md
+?? docs/evidence/eastmoney-graymarket-optimization-capacity-2026-11-05.json
+?? docs/evidence/eastmoney-optimization-delivery-2026-11-05.md
+?? docs/evidence/eastmoney-repurchase-optimization-capacity-2026-11-05.json
+?? docs/evidence/graymarket-capacity-2026-11-03.json
+?? docs/evidence/graymarket-capacity-bj-2026-11-03.json
+?? docs/evidence/graymarket-capacity-intraday-2026-11-03.json
+?? docs/evidence/graymarket-earliest-window-2026-11-03.json
+?? docs/evidence/graymarket-error-cleanup-2026-11-03.json
+?? docs/evidence/graymarket-full-history-2026-11-03.json
+?? docs/evidence/graymarket-intraday-real-2026-11-03.json
+?? docs/evidence/graymarket-intraday-release-2026-11-03.md
+?? docs/evidence/graymarket-live-production-2026-11-03.json
+?? docs/evidence/graymarket-preview-2026-11-04.md
+?? docs/evidence/graymarket-preview-capacity-2026-11-04.json
+?? docs/evidence/graymarket-production-2026-11-03.json
+?? docs/evidence/graymarket-real-2026-11-03.json
+?? docs/evidence/graymarket-release-2026-11-03.md
+?? docs/evidence/graymarket-source-implementation-2026-11-03.json
+?? docs/evidence/graymarket-transition-real-2026-11-03.json
+?? docs/evidence/index-prices-st-schema-capacity-2026-11-04.json
+?? docs/evidence/indices-st-schema-capacity-2026-11-04.json
+?? docs/evidence/instruction-optimization-2026-11-02.md
+?? docs/evidence/kaipanla-theme-date-probes-2026-10-29.json
+?? docs/evidence/kaipanla-theme-historical-links-2026-10-29.json
+?? docs/evidence/kaipanla-theme-history-endpoints-2026-10-29.json
+?? docs/evidence/kaipanla-theme-history-investigation-2026-10-29.json
+?? docs/evidence/kaipanla-theme-history-investigation-2026-10-29.md
+?? docs/evidence/kaipanla-theme-membership-time-audit-2026-10-29.json
+?? docs/evidence/kaipanla-theme-socket-state-2026-10-29.json
+?? docs/evidence/kaipanla-theme-web-history-2026-10-29.json
+?? docs/evidence/large-exit-index-prices-capacity-2026-11-06-fx-scope.json
+?? docs/evidence/large-exit-index-prices-capacity-2026-11-06.json
+?? docs/evidence/large-exit-indices-capacity-2026-11-06-fx-scope.json
+?? docs/evidence/large-exit-indices-capacity-2026-11-06.json
+?? docs/evidence/large-exit-optimization-20261106.md
+?? docs/evidence/observation-calendar-2026-11-05.json
+?? docs/evidence/observation-calendar-2026-11-05.md
+?? docs/evidence/observation-calendar-metric-settings-2026-11-05.md
+?? docs/evidence/observation-calendar-polish-2026-11-05.md
+?? docs/evidence/observation-calendar-reading-2026-11-05.md
+?? docs/evidence/observation-continuous-months-2026-11-11.md
+?? docs/evidence/observation-data-sources-2026-11-11.md
+?? docs/evidence/observation-live-refresh-2026-11-11.md
+?? docs/evidence/observation-redis-intraday-2026-11-11.md
+?? docs/evidence/observation-selected-settings-fx-2026-11-10.md
+?? docs/evidence/observation-source-tabs-2026-11-11.md
+?? docs/evidence/tdx-changes-capacity-2026-11-05-fx-scope.json
+?? docs/evidence/tdx-changes-capacity-2026-11-05.json
+?? docs/evidence/tdx-dividend-capacity-2026-11-05.json
+?? docs/evidence/tdx-dividend-capacity-fx-scope-2026-11-09.json
+?? docs/evidence/tdx-hot-list-live-2026-11-05.json
+?? docs/evidence/tdx-listing-live-2026-11-05.json
+?? docs/evidence/tdx-margin-scope-recovery-2026-11-11.md
+?? docs/evidence/tdx-margin-scope-recovery-2026-11-11.patch
+?? docs/evidence/tdx-margin-source-timeout-2026-11-12.md
+?? docs/evidence/tdx-margin-source-timeout-2026-11-12.patch
+?? docs/evidence/tdx-margin-timeout-capacity-2026-11-12.json
+?? docs/evidence/tdx-optimization-delivery-2026-11-05.md
+?? docs/evidence/tdx-performance-capacity-2026-11-05-fx-scope.json
+?? docs/evidence/tdx-performance-capacity-2026-11-05.json
+?? docs/evidence/tdx-performance-live-2026-11-05.json
+?? docs/evidence/tdx-report-live-2026-11-05.json
+?? docs/evidence/tdx-suspensions-live-2026-11-05.json
+?? docs/evidence/tdx-unlock-industries-capacity-2026-11-05.json
+?? docs/evidence/tdx-unlocks-capacity-2026-11-05.json
+?? docs/evidence/tdx-unlocks-live-2026-11-05.json
+?? docs/evidence/ths-fx-cache-consistency-2026-11-10.md
+?? docs/evidence/ths-fx-capacity-2026-11-09.json
+?? docs/evidence/ths-fx-capacity-2026-11-10.json
+?? docs/evidence/ths-fx-capacity-2026-11-11.json
+?? docs/evidence/ths-fx-capacity-daily-empty-2026-11-12.json
+?? docs/evidence/ths-fx-capacity-native-day-2026-11-11.json
+?? docs/evidence/ths-fx-daily-empty-prices-2026-11-12.md
+?? docs/evidence/ths-fx-daily-empty-prices-2026-11-12.patch
+?? docs/evidence/ths-fx-directory-boundary-2026-11-11.md
+?? docs/evidence/ths-fx-directory-boundary-2026-11-11.patch
+?? docs/evidence/ths-fx-live-empty-quote-2026-11-11.md
+?? docs/evidence/ths-fx-live-empty-quote-2026-11-11.patch
+?? docs/evidence/ths-fx-native-day-changes-2026-11-11.patch
+?? docs/evidence/ths-fx-source-2026-11-09.json
+?? docs/evidence/ths-fx-xau-date-reconciliation-2026-11-11.md
+?? docs/evidence/ths-fx-xau-source-gap-2026-11-11.md
+?? docs/evidence/ths-fx-xau-source-gap-2026-11-11.patch
+?? docs/evidence/ths-optimization-capital-capacity-2026-11-05-fx-scope.json
+?? docs/evidence/ths-optimization-capital-capacity-2026-11-05.json
+?? docs/evidence/ths-optimization-delivery-2026-11-05.md
+?? docs/evidence/ths-optimization-holders-capacity-2026-11-05.json
+?? docs/evidence/ths-optimization-index-prices-capacity-2026-11-05.json
+?? docs/evidence/yuanhang-financial-omitted-fields-2026-11-15.md
+?? docs/evidence/yuanhang-limits-capacity-graymarket-release-2026-11-03.json
+?? docs/evidence/yuanhang-limits-capacity-shared-snapshot-2026-11-03.json
+?? docs/evidence/yuanhang-limits-st-capacity-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-capacity-final-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-delivery-2026-11-04.md
+?? docs/evidence/yuanhang-limits-st-history-2026-11-04.md
+?? docs/evidence/yuanhang-limits-st-history-audit-capacity-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-history-capacity-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-history-errors-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-history-final-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-history-time-capacity-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-market-capacity-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-market-errors-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-market-real-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-market-real-final-2026-11-04.json
+?? docs/evidence/yuanhang-limits-st-real-2026-11-04.json
+?? docs/evidence/yuanhang-optimization-delivery-2026-11-05.md
+?? docs/evidence/yuanhang-optimization-limits-capacity-2026-11-05-fx-scope.json
+?? docs/evidence/yuanhang-optimization-limits-capacity-2026-11-05.json
+?? docs/evidence/yuanhang-optimization-native-capacity-2026-11-05.json
+?? docs/evidence/yuanhang-optimization-planning-2026-11-05.json
+?? docs/evidence/yuanhang-st-theme-identity-capacity-2026-11-04.json
+?? docs/evidence/yuanhang-total-capital-null-2026-11-11.md
+?? docs/history/
+?? docs/large-exit-optimization-acceptance.md
+?? docs/large-exit-optimization-plan.md
+?? docs/observation-calendar-plan.md
+?? docs/tdx-collection-optimization.md
+?? docs/ths-collection-optimization.md
+?? docs/ths-fx-implementation-plan.md
+?? docs/ths-yuanhang-indices.md
+?? docs/yuanhang-limits-st.md
+?? docs/yuanhang-planning-optimization.md
+?? scripts/archive_capacity_fixtures.py
+?? scripts/archive_capacity_queries.py
+?? scripts/archive_capacity_sources.py
+?? scripts/archive_capacity_trial.py
+?? scripts/capacity_identity.py
+?? scripts/configure_graymarket_intraday.py
+?? scripts/create_fx_schema.py
+?? scripts/create_graymarket_schema.py
+?? scripts/measure_archive_capacity.py
+?? scripts/measure_archive_compute.py
+?? scripts/measure_archive_processing.py
+?? scripts/measure_fx.py
+?? scripts/measure_graymarket.py
+?? scripts/measure_proxy_capacity.py
+?? scripts/migrate_margin_checkpoint.py
+?? scripts/migrate_yuanhang_limits_st.py
+?? scripts/probe_graymarket_source.py
+?? scripts/proxy_capacity_server.py
+?? scripts/verify_fx.py
+?? scripts/verify_graymarket.py
+?? scripts/verify_observation_calendar.py
+?? scripts/verify_tdx_dividend_maintenance.py
+?? scripts/verify_ths_optimization.py
+?? src/empire/computation.py
+?? src/empire/contracts/request_cost.py
+?? src/empire/features/capital_actions/dividend_maintenance.py
+?? src/empire/features/fx/
+?? src/empire/features/graymarket/
+?? src/empire/features/index_prices/downloads.py
+?? src/empire/features/index_prices/planning.py
+?? src/empire/features/industries/staging.py
+?? src/empire/features/market_review/market.py
+?? src/empire/features/market_review/reading.py
+?? src/empire/features/observation_calendar/
+?? src/empire/features/repurchases/incremental.py
+?? src/empire/features/yuanhang_indices/
+?? src/empire/plugins/collection/followup_reads.py
+?? src/empire/plugins/collection/planned_reads.py
+?? src/empire/plugins/datasets/source_compute.py
+?? src/empire/plugins/infra/compute_lane.py
+?? src/empire/plugins/infra/download_admission.py
+?? src/empire/plugins/infra/proxy_index.py
+?? src/empire/plugins/infra/tdx_maintenance.py
+?? src/empire/plugins/infra/ths_maintenance.py
+?? src/empire/plugins/infra/volatile_snapshot.py
+?? src/empire/plugins/pipeline/archive_units.py
+?? tests/integration/test_archive_units.py
+?? tests/integration/test_archive_units_faults.py
+?? tests/integration/test_fx_archive.py
+?? tests/integration/test_fx_daily_empty_pipeline.py
+?? tests/integration/test_fx_directory_pipeline.py
+?? tests/integration/test_fx_empty_quote_pipeline.py
+?? tests/integration/test_fx_native_day_pipeline.py
+?? tests/integration/test_fx_source_gap_pipeline.py
+?? tests/integration/test_graymarket_archive.py
+?? tests/integration/test_margin_scope_maintenance.py
+?? tests/integration/test_margin_timeout_pipeline.py
+?? tests/integration/test_observation_intraday_pipeline.py
+?? tests/integration/test_proxy_connection_reuse.py
+?? tests/integration/test_proxy_directory_bounds.py
+?? tests/integration/test_review_market.py
+?? tests/integration/test_ths_maintenance.py
+?? tests/integration/test_yuanhang_index_archive.py
+?? tests/integration/test_yuanhang_null_pipeline.py
+?? tests/test_archive_metrics.py
+?? tests/test_archive_parallelism.py
+?? tests/test_compute_lane.py
+?? tests/test_download_admission.py
+?? tests/test_eastmoney_optimization.py
+?? tests/test_fx.py
+?? tests/test_fx_daily_empty_prices.py
+?? tests/test_fx_directory_boundary.py
+?? tests/test_fx_empty_quote.py
+?? tests/test_fx_native_day.py
+?? tests/test_fx_source_gaps.py
+?? tests/test_fx_verification.py
+?? tests/test_graymarket.py
+?? tests/test_graymarket_download.py
+?? tests/test_graymarket_intraday.py
+?? tests/test_graymarket_lifecycle.py
+?? tests/test_graymarket_preview.py
+?? tests/test_margin_scope_recovery.py
+?? tests/test_margin_timeout.py
+?? tests/test_observation_calendar.py
+?? tests/test_observation_intraday.py
+?? tests/test_proxy_index.py
+?? tests/test_repurchase_incremental.py
+?? tests/test_request_cost.py
+?? tests/test_source_compute.py
+?? tests/test_tdx_optimization.py
+?? tests/test_ths_optimization.py
+?? tests/test_yuanhang_indices.py
+?? tests/test_yuanhang_limits_st.py
+?? tests/test_yuanhang_null_rotation.py
+?? tests/test_yuanhang_planning_cost.py

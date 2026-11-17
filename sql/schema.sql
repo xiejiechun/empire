@@ -1,30 +1,6 @@
 -- Initial business schema only; application startup never executes DDL.
 -- DATETIME values use Asia/Shanghai wall-clock time (UTC+08:00).
 -- Fixed source ownership is declared in contracts/business_schema.py; news retains per-row source.
-CREATE TABLE IF NOT EXISTS stock_index (
-    index_code CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    source_group VARCHAR(40) NOT NULL,
-    members_available BOOLEAN NULL,
-    member_count INT UNSIGNED NOT NULL DEFAULT 0,
-    member_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NULL,
-    PRIMARY KEY (index_code),
-    CONSTRAINT ck_index_code CHECK (index_code REGEXP '^[0-9A-Z]{6}$'),
-    CONSTRAINT ck_index_members CHECK (member_count < 10000)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE IF NOT EXISTS stock_index_member (
-    index_code CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    source_code VARCHAR(12) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NULL,
-    name VARCHAR(100) NOT NULL,
-    PRIMARY KEY (index_code, source_code),
-    KEY ix_index_security (unified_code, index_code),
-    KEY ix_index_source_security (source_code, index_code),
-    CONSTRAINT ck_index_member_code CHECK (source_code REGEXP '^[0-9]{5,6}$'),
-    CONSTRAINT ck_index_member_unified CHECK (unified_code IS NULL OR unified_code REGEXP '^[0-9]{6}[.](SH|SZ|BJ)$')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE IF NOT EXISTS industry (
     industry_code CHAR(6) NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -281,40 +257,6 @@ CREATE TABLE IF NOT EXISTS security_code_alias (
     CONSTRAINT ck_alias_old CHECK (REGEXP_LIKE(legacy_code, '^[48][0-9]{5}$')),
     CONSTRAINT ck_alias_current CHECK (REGEXP_LIKE(unified_code, '^920[0-9]{3}[.]BJ$')),
     CONSTRAINT ck_alias_name CHECK (CHAR_LENGTH(TRIM(name)) BETWEEN 1 AND 100)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE IF NOT EXISTS index_daily_price (
-    index_code CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    trade_date DATE NOT NULL,
-    open DECIMAL(18,6) NULL,
-    high DECIMAL(18,6) NULL,
-    low DECIMAL(18,6) NULL,
-    close DECIMAL(18,6) NOT NULL,
-    volume DECIMAL(24,4) NOT NULL,
-    amount DECIMAL(24,4) NULL,
-    PRIMARY KEY (index_code, trade_date),
-    KEY ix_index_price_date (trade_date, index_code),
-    CONSTRAINT ck_index_price_code CHECK (REGEXP_LIKE(index_code, '^[0-9A-Z]{6}$')),
-    CONSTRAINT ck_index_price_date CHECK (trade_date >= '1990-01-01'),
-    CONSTRAINT ck_index_price_ohlc CHECK (close > 0 AND (open IS NULL OR open > 0) AND (high IS NULL OR high > 0) AND (low IS NULL OR low > 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE IF NOT EXISTS index_price_year (
-    index_code CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    quote_year SMALLINT UNSIGNED NOT NULL,
-    source_count SMALLINT UNSIGNED NOT NULL,
-    row_count SMALLINT UNSIGNED NOT NULL,
-    first_date DATE NOT NULL,
-    last_date DATE NOT NULL,
-    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-    complete BOOLEAN NOT NULL,
-    version_observed_at DATETIME(6) NOT NULL,
-    PRIMARY KEY (index_code, quote_year),
-    CONSTRAINT ck_index_year_code CHECK (REGEXP_LIKE(index_code, '^[0-9A-Z]{6}$')),
-    CONSTRAINT ck_index_year_count CHECK (source_count BETWEEN 1 AND 366 AND row_count BETWEEN 1 AND 366),
-    CONSTRAINT ck_index_year_dates CHECK (YEAR(first_date) = quote_year AND YEAR(last_date) = quote_year AND first_date <= last_date),
-    CONSTRAINT ck_index_year_hash CHECK (REGEXP_LIKE(content_hash, '^[0-9a-f]{64}$')),
-    CONSTRAINT ck_index_year_complete CHECK (complete IN (0,1) AND (complete = 0 OR source_count = row_count))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS security_st_event (
@@ -1029,7 +971,7 @@ CREATE TABLE IF NOT EXISTS yuanhang_limit_pool (
 
     CONSTRAINT ck_yuanhang_limit_pool_count CHECK (source_total <= 10000),
 
-    CONSTRAINT ck_yuanhang_limit_pool_filter CHECK (filter_text = 'HS,GEM2STAR')
+    CONSTRAINT ck_yuanhang_limit_pool_filter CHECK (filter_text IN ('HS,GEM2STAR','HS,GEM2STAR,ST'))
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
@@ -1215,6 +1157,33 @@ CREATE TABLE IF NOT EXISTS hot_list_seat (
     CONSTRAINT ck_hot_seat_positive CHECK ((buy_amount IS NULL OR buy_amount >= 0) AND (sell_amount IS NULL OR sell_amount >= 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
+CREATE TABLE IF NOT EXISTS graymarket_day (
+    trade_date DATE NOT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    row_count INT UNSIGNED NOT NULL,
+    contract_version INT UNSIGNED NOT NULL,
+    PRIMARY KEY (trade_date),
+    CONSTRAINT ck_graymarket_count CHECK (row_count >= 1 AND row_count <= 10000)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS graymarket_daily (
+    trade_date DATE NOT NULL,
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    name VARCHAR(64) COLLATE utf8mb4_bin NOT NULL,
+    dark_flow DECIMAL(24,0) NOT NULL,
+    visible_flow DECIMAL(24,0) NOT NULL,
+    main_flow DECIMAL(24,0) NOT NULL,
+    dark_activity DECIMAL(20,10) NOT NULL,
+    price DECIMAL(18,3) NOT NULL,
+    change_ratio DECIMAL(20,10) NOT NULL,
+    source_time CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    source_rank INT UNSIGNED NOT NULL,
+    PRIMARY KEY (trade_date, unified_code),
+    KEY ix_graymarket_security_date (unified_code, trade_date),
+    CONSTRAINT ck_graymarket_sum CHECK (dark_flow + visible_flow = main_flow),
+    CONSTRAINT ck_graymarket_values CHECK (price >= 0 AND dark_activity >= 0 AND source_rank >= 1 AND source_rank <= 1000000)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS industry_margin_day (
     trade_date DATE NOT NULL,
     content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
@@ -1265,3 +1234,220 @@ CREATE TABLE IF NOT EXISTS market_margin_daily (
     PRIMARY KEY (market_code, trade_date),
     KEY idx_market_margin_date (trade_date, market_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+
+CREATE TABLE IF NOT EXISTS fx_daily_price (
+  unified_code VARCHAR(10) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  trade_date DATE NOT NULL,
+  open DECIMAL(20,10) NOT NULL,
+  high DECIMAL(20,10) NOT NULL,
+  low DECIMAL(20,10) NOT NULL,
+  close DECIMAL(20,10) NOT NULL,
+  PRIMARY KEY (unified_code,trade_date),
+  KEY ix_fx_date_code (trade_date,unified_code),
+  CONSTRAINT ck_fx_positive CHECK (open>0 AND high>0 AND low>0 AND close>0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE IF NOT EXISTS fx_price_year (
+  unified_code VARCHAR(10) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  quote_year SMALLINT UNSIGNED NOT NULL,
+  source_count SMALLINT UNSIGNED NOT NULL,
+  row_count SMALLINT UNSIGNED NOT NULL,
+  first_date DATE NOT NULL,
+  last_date DATE NOT NULL,
+  content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  contract_version SMALLINT UNSIGNED NOT NULL,
+  version_observed_at DATETIME(6) NOT NULL,
+  PRIMARY KEY (unified_code,quote_year),
+  CONSTRAINT ck_fx_year_count CHECK (source_count>=1 AND source_count<=366 AND row_count=source_count),
+  CONSTRAINT ck_fx_year_range CHECK (quote_year>=1900 AND quote_year<=2100 AND first_date<=last_date AND contract_version=1)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Native Yuanhang index identities, web constituents and native daily prices.
+CREATE TABLE IF NOT EXISTS yuanhang_index (
+    index_code CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    native_market CHAR(4) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    active BOOLEAN NOT NULL,
+    PRIMARY KEY (index_code),
+    CONSTRAINT ck_yhi_code CHECK (index_code REGEXP '^[0-9A-Z]{6}$'),
+    CONSTRAINT ck_yhi_market CHECK (native_market IN ('USHI','USZI','USTI'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS ths_index_member_state (
+    index_code CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    available BOOLEAN NOT NULL,
+    member_count INT UNSIGNED NULL,
+    member_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    PRIMARY KEY (index_code),
+    CONSTRAINT ck_thsi_member_state CHECK ((available=FALSE AND member_count IS NULL) OR (available=TRUE AND member_count>0 AND member_count<10000))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS ths_index_member (
+    index_code CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    source_code VARCHAR(12) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NULL,
+    name VARCHAR(100) NOT NULL,
+    PRIMARY KEY (index_code,source_code),
+    KEY ix_thsi_security (unified_code,index_code),
+    KEY ix_thsi_source_security (source_code,index_code),
+    CONSTRAINT ck_thsi_member_code CHECK (source_code REGEXP '^[0-9]{5,6}$'),
+    CONSTRAINT ck_thsi_member_unified CHECK (unified_code IS NULL OR unified_code REGEXP '^[0-9]{6}[.](SH|SZ|BJ)$')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS yuanhang_index_daily_price (
+    index_code CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    open DECIMAL(28,10) NULL,
+    high DECIMAL(28,10) NULL,
+    low DECIMAL(28,10) NULL,
+    close DECIMAL(28,10) NULL,
+    volume DECIMAL(28,10) NULL,
+    amount DECIMAL(28,10) NULL,
+    PRIMARY KEY (index_code,trade_date),
+    KEY ix_index_price_date (trade_date,index_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS yuanhang_index_price_year (
+    index_code CHAR(6) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    quote_year SMALLINT UNSIGNED NOT NULL,
+    native_market CHAR(4) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    row_count SMALLINT UNSIGNED NOT NULL,
+    first_date DATE NULL,
+    last_date DATE NULL,
+    key_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    verified_through DATE NULL,
+    contract_version SMALLINT UNSIGNED NOT NULL,
+    version_observed_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (index_code,quote_year),
+    CONSTRAINT ck_yhi_year CHECK (quote_year BETWEEN 1900 AND 2100 AND row_count<=366),
+    CONSTRAINT ck_yhi_year_dates CHECK ((row_count=0 AND first_date IS NULL AND last_date IS NULL) OR (row_count>0 AND first_date IS NOT NULL AND last_date IS NOT NULL AND first_date<=last_date))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Yuanhang ETF: current identities and independently retained native daily history.
+CREATE TABLE IF NOT EXISTS yuanhang_etf (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    native_market CHAR(4) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    active BOOLEAN NOT NULL,
+    PRIMARY KEY (unified_code),
+    KEY ix_etf_active_market (active,native_market,unified_code),
+    CONSTRAINT ck_yhe_code CHECK (unified_code REGEXP '^[0-9]{6}[.](SH|SZ)$'),
+    CONSTRAINT ck_yhe_market CHECK ((native_market='USHJ' AND RIGHT(unified_code,2)='SH') OR (native_market='USZJ' AND RIGHT(unified_code,2)='SZ'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS yuanhang_etf_daily_price (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    trade_date DATE NOT NULL,
+    open DECIMAL(28,10) NULL,
+    high DECIMAL(28,10) NULL,
+    low DECIMAL(28,10) NULL,
+    close DECIMAL(28,10) NULL,
+    volume DECIMAL(28,10) NULL,
+    amount DECIMAL(28,10) NULL,
+    PRIMARY KEY (unified_code,trade_date),
+    KEY ix_etf_price_date (trade_date,unified_code),
+    CONSTRAINT ck_yhe_price_code CHECK (unified_code REGEXP '^[0-9]{6}[.](SH|SZ)$')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS yuanhang_etf_price_year (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    quote_year SMALLINT UNSIGNED NOT NULL,
+    native_market CHAR(4) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    row_count SMALLINT UNSIGNED NOT NULL,
+    first_date DATE NULL,
+    last_date DATE NULL,
+    key_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    verified_through DATE NULL,
+    contract_version SMALLINT UNSIGNED NOT NULL,
+    version_observed_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (unified_code,quote_year),
+    CONSTRAINT ck_yhe_year CHECK (quote_year BETWEEN 1900 AND 2049 AND row_count<=366 AND contract_version=1),
+    CONSTRAINT ck_yhe_year_dates CHECK ((row_count=0 AND first_date IS NULL AND last_date IS NULL) OR (row_count>0 AND first_date IS NOT NULL AND last_date IS NOT NULL AND first_date<=last_date AND YEAR(first_date)=quote_year AND YEAR(last_date)=quote_year)),
+    CONSTRAINT ck_yhe_year_verified CHECK (verified_through IS NULL OR YEAR(verified_through)=quote_year),
+    CONSTRAINT ck_yhe_year_market CHECK ((native_market='USHJ' AND RIGHT(unified_code,2)='SH') OR (native_market='USZJ' AND RIGHT(unified_code,2)='SZ')),
+    CONSTRAINT ck_yhe_year_code CHECK (unified_code REGEXP '^[0-9]{6}[.](SH|SZ)$')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Exchange ETF outstanding shares and complete Eastmoney NAV/income history.
+CREATE TABLE IF NOT EXISTS etf_daily_share (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    share_date DATE NOT NULL,
+    source VARCHAR(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    name VARCHAR(128) NOT NULL,
+    total_shares DECIMAL(28,10) NOT NULL,
+    source_group VARCHAR(16) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    source_type VARCHAR(64) NULL,
+    version_observed_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (unified_code,share_date,source),
+    KEY ix_etf_share_date (share_date,unified_code,source),
+    CONSTRAINT ck_etf_share_code CHECK (unified_code REGEXP '^[0-9]{6}[.](SH|SZ)$'),
+    CONSTRAINT ck_etf_share_market CHECK ((source='sse' AND RIGHT(unified_code,2)='SH') OR (source='szse' AND RIGHT(unified_code,2)='SZ')),
+    CONSTRAINT ck_etf_share_values CHECK (total_shares>=0 AND source_group IN ('etf','money') AND (source='sse' OR source_group='etf'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS etf_share_day (
+    source VARCHAR(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    share_date DATE NOT NULL,
+    key_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    row_count SMALLINT UNSIGNED NOT NULL,
+    contract_version SMALLINT UNSIGNED NOT NULL,
+    version_observed_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (source,share_date),
+    CONSTRAINT ck_etf_share_day CHECK (source IN ('sse','szse') AND row_count<=5000 AND contract_version=1)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS etf_daily_nav (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    nav_date DATE NOT NULL,
+    value_kind VARCHAR(16) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    unit_nav DECIMAL(28,10) NULL,
+    accumulated_nav DECIMAL(28,10) NULL,
+    daily_change_pct DECIMAL(28,10) NULL,
+    income_value DECIMAL(28,10) NULL,
+    income_basis_shares DECIMAL(28,10) NULL,
+    yield_7d_pct DECIMAL(28,10) NULL,
+    currency CHAR(3) CHARACTER SET ascii COLLATE ascii_bin NULL,
+    purchase_status VARCHAR(64) NULL,
+    redemption_status VARCHAR(64) NULL,
+    distribution_text VARCHAR(1024) NULL,
+    fund_type VARCHAR(16) NULL,
+    income_label VARCHAR(64) NULL,
+    nav_type VARCHAR(16) NULL,
+    income_start_date DATE NULL,
+    actual_income DECIMAL(28,10) NULL,
+    dividend_value DECIMAL(28,10) NULL,
+    dividend_per_ten DECIMAL(28,10) NULL,
+    dividend_basis VARCHAR(64) NULL,
+    distribution_type VARCHAR(64) NULL,
+    version_observed_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (unified_code,nav_date),
+    KEY ix_etf_nav_date (nav_date,unified_code),
+    CONSTRAINT ck_etf_nav_code CHECK (unified_code REGEXP '^[0-9]{6}[.](SH|SZ)$'),
+    CONSTRAINT ck_etf_nav_kind CHECK ((value_kind='nav' AND income_value IS NULL AND income_basis_shares IS NULL AND yield_7d_pct IS NULL) OR (value_kind='income' AND unit_nav IS NULL AND accumulated_nav IS NULL)),
+    CONSTRAINT ck_etf_nav_values CHECK ((unit_nav IS NULL OR unit_nav>=0) AND (accumulated_nav IS NULL OR accumulated_nav>=0) AND (income_basis_shares IS NULL OR income_basis_shares>0)),
+    CONSTRAINT ck_etf_nav_income_date CHECK (income_start_date IS NULL OR income_start_date<=nav_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS etf_nav_year (
+    unified_code VARCHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    nav_year SMALLINT UNSIGNED NOT NULL,
+    row_count SMALLINT UNSIGNED NOT NULL,
+    first_date DATE NULL,
+    last_date DATE NULL,
+    key_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    content_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    verified_through DATE NULL,
+    contract_version SMALLINT UNSIGNED NOT NULL,
+    version_observed_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (unified_code,nav_year),
+    CONSTRAINT ck_etf_nav_year_code CHECK (unified_code REGEXP '^[0-9]{6}[.](SH|SZ)$'),
+    CONSTRAINT ck_etf_nav_year CHECK (nav_year BETWEEN 2004 AND 2100 AND row_count<=366 AND contract_version=1),
+    CONSTRAINT ck_etf_nav_year_dates CHECK ((row_count=0 AND first_date IS NULL AND last_date IS NULL) OR (row_count>0 AND first_date IS NOT NULL AND last_date IS NOT NULL AND first_date<=last_date AND YEAR(first_date)=nav_year AND YEAR(last_date)=nav_year)),
+    CONSTRAINT ck_etf_nav_year_verified CHECK (verified_through IS NULL OR YEAR(verified_through)=nav_year)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

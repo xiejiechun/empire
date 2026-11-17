@@ -11,6 +11,19 @@ export default function CollectionRules({ rule }: { rule: Data }) {
   const s = rule.storage;
   if (!s) return <Empty description="暂无存储说明，请检查后台版本" />;
   const item = (key: string, label: string, children: React.ReactNode) => ({ key, label, children });
+  if (s.latest) return <section className="collection-rules" aria-label="采集说明">
+    <Descriptions column={1} size="small" bordered items={[
+      item("scope", "采集内容", rule.scope),
+      item("update", "更新方式", rule.incremental),
+      item("latest", "Redis 最新行情", <><Addresses values={[s.latest]} /><small>每个品种仅一份最新值，无分钟历史或快照。采样超过180秒标记过期。</small></>),
+      item("mysql", "日线归档", "实时任务不发布归档消息、不访问日线业务表；历史日K线在独立的汇率历史日线任务查看。"),
+      item("recovery", "恢复与保留", <>{rule.recovery}<br />整键最后成功写入7天过期，Redis或电脑重启丢失后重新采样；失败保留旧值。</>),
+      item("limits", "来源时间", rule.limits),
+    ]} />
+    <Collapse ghost items={[{ key: "source", label: "来源接口与参数", children: rule.requests.map((r: Data, index: number) =>
+      <div key={index}><strong>{r.purpose} · {r.method}</strong><Addresses values={[r.url]} />
+        <Descriptions column={1} size="small" items={r.parameters.map((p: Data) => item(p.name, p.name, <>{p.value} — {p.meaning}</>))} /></div>) }]} />
+  </section>;
   return <section className="collection-rules" aria-label="采集说明">
     <p className="muted">路径来自当前程序配置；这里说明数据去向，不表示已经采集完成。</p>
     <Descriptions column={1} size="small" bordered items={[

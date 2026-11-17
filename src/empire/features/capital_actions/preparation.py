@@ -85,6 +85,10 @@ def snapshot_units(plugin, scope, conn):
     checks = [CheckEvidence(k, 'fail' if failed else 'pass', message,
         findings=tuple(failed + findings), observed_at=observed) for k in CRITERIA[:4]]
     fresh = not failed and bool(stamps) and min(stamps) >= now - timedelta(days=3)
+    if plugin.kind == 'dividends' and state.get('manifest', {}).get('periods'):
+        from empire.features.capital_actions.dividend_maintenance import periods_fresh
+        manifest_stamp = datetime.fromisoformat(state['manifest']['observed_at'])
+        fresh = not failed and bool(stamps) and periods_fresh(state, now) and timedelta(0) <= now - manifest_stamp <= timedelta(days=3)
     checks.append(CheckEvidence('freshness', 'pass' if fresh else 'fail',
         f'各完整证券单元SQL证据须在三日内；最早 {observed or "缺少"}；检查执行时间不替代来源时间', observed_at=observed))
     checks.append(temporal(scope, observed))
@@ -113,6 +117,8 @@ async def optional_evidence(plugin, checks, verified):
                 measured=c.measured+'；来源范围已变化，新范围尚未确认') for c in checks)
     except Exception:
         pass
+    if plugin.kind == 'dividends':
+        return checks  # Report-period proofs retain their actual source times.
     if not verified or any(c.status != 'pass' for c in checks[:4]):
         return checks
     try:

@@ -3,7 +3,7 @@ import re
 from datetime import datetime
 
 from empire.core.time import CHINA
-from empire.features.yuanhang_limits.contract import TIME_FIELDS, day_value, pool_value
+from empire.features.yuanhang_limits.contract import FILTER, TIME_FIELDS, day_value, pool_value
 from empire.features.yuanhang_limits.intraday_store import IntradayStore
 
 
@@ -63,6 +63,7 @@ async def browse_live(query, filters, after, order=None):
                 if result['retained_since'] else '无')
     consistency = ('单响应采样' if result['consistency'] == 'single_response'
                    else '多页采样区间记录，非同一瞬间冻结完整池')
+    scope = '含ST' if unit['filter'] == FILTER else '旧口径，未补充ST'
     return dict(rows=rows, next=following,
-        message=f'Redis{consistency} {start} ～ {end}；{unit["source_total"]}条，未归档MySQL；'
+        message=f'Redis{consistency} {start} ～ {end}；{unit["source_total"]}条（{scope}），未归档MySQL；'
                 f'该池最近成功检查{checked}；保留自{retained}；累计淘汰{result["meta"].get("evicted", "0")}份；采样之间变化不可追溯。')

@@ -1,0 +1,1177 @@
+{
+  "run_id": "ec6d8d4bc6d74515828a2c87d492413f",
+  "subject": "indices",
+  "started_at": "2026-11-15T17:59:11.026453+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/yuanhang_indices/audits.py": "9fe7b5551bbd5c72b59d8da5fd72aff11a9e471504b8afe1fe61e0a1c5a38c4d",
+    "src/empire/features/yuanhang_indices/bundle.py": "3928e36c48061bf8f36f64ed81731bb962ecf01b737c30c7daa79d6825c180ca",
+    "src/empire/features/yuanhang_indices/catalog_collector.py": "022618a06ffa61d31ee66376e3352bd4e206e2d7bbae0b6cae4399a09edf17ea",
+    "src/empire/features/yuanhang_indices/catalog_dataset.py": "b622f042cbe0a95cf27017834ff23a75d2713e4c111a4796a8e70508ecb99e68",
+    "src/empire/features/yuanhang_indices/collector_support.py": "6759b3bf9607368ab5916dcee58119b1b849898ba82e2e62f0ee137a17b13e53",
+    "src/empire/features/yuanhang_indices/contract.py": "3ff9bb46ec3cef00ef6737c8ff77b548d5fd7809d4ab6de47ea770ab99cb3fc0",
+    "src/empire/features/yuanhang_indices/members_source.py": "6ce14ff7e7c47fd1c3c7dfccc613421fa88ffe96ea4982e10e58130e245e4485",
+    "src/empire/features/yuanhang_indices/member_collector.py": "0f4ffd7a8aba3c7fb28ab74bf91f97d2776c78ad18826d10e410fcc47275a358",
+    "src/empire/features/yuanhang_indices/member_dataset.py": "b6336c2a34d67a5e0d959a6bc303b6f3b15c24da533b55623857d990b46ed47f",
+    "src/empire/features/yuanhang_indices/native.py": "8644ce13187c4f3f517024db35f4d41bbadf84dda9fef0f0f6370e8b12824e1a",
+    "src/empire/features/yuanhang_indices/price_audit.py": "0d489000639d9760c9542a6514d5efdfc6c3af8e92c18ac6ec380a016e6ab959",
+    "src/empire/features/yuanhang_indices/price_collector.py": "1695631600791ebff0c7620475dc10471188330aef9e6b2c30d6b3892194673e",
+    "src/empire/features/yuanhang_indices/price_dataset.py": "63516c791d669b7397b201356cd08bba49e49d0a6309c58f2ea7281dc8a2d959",
+    "src/empire/features/yuanhang_indices/price_query.py": "29b1438a62304407cd7768111fdd19727ed2389035b0548ff598134b517be5de",
+    "src/empire/features/yuanhang_indices/price_reads.py": "f808c5d083c9fb4ae97debb48893fd7d527392da2e69a71852ce6ca0ca50cb29",
+    "src/empire/features/yuanhang_indices/quality.py": "babf38b0ea7d94b79d67fc847a96bff579b3cd9bbbc67df2df777693cbfe66ca",
+    "src/empire/features/yuanhang_indices/query.py": "c6806e6a3e8bc056230dc8b20c71715e101742806d3c68d22851b7274c2344cb",
+    "src/empire/features/yuanhang_indices/ui.py": "be666deb836a2100d89865bea8a4a32859b51e067ef672dd519381593be16133",
+    "src/empire/features/yuanhang_indices/__init__.py": "13d0078dabe443133f958473aad50605f16ca4ae4a8671970b1296ab4cd3e3c0",
+    "scripts/verify_yuanhang_indices.py": "d7131bf455702ba3a9e5a113a246cc4fb5004df46a8e927a007f630919b87207",
+    "src/empire/sources/yuanhang_wire.py": "585884a83bcc8c2da05deba6135b21028c39d455bcde6bbaeab218a55ae243b3"
+  },
+  "network_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false
+  },
+  "catalog_count": 580,
+  "catalog_hash": "b5df83794555cf544f70ff0ea4a5b3d5da307f55d5d649bcb056392b58186795",
+  "sample": [
+    "1A0001",
+    "1B0006",
+    "1B0007",
+    "1B0008",
+    "1B0009",
+    "1B0020",
+    "1B0046",
+    "1B0070",
+    "1B0992",
+    "399020",
+    "399088",
+    "399233",
+    "399267",
+    "399284",
+    "399371",
+    "399387",
+    "399408",
+    "399412",
+    "399417",
+    "399556",
+    "399557",
+    "399622",
+    "399655",
+    "399903",
+    "399913",
+    "399928",
+    "399976",
+    "899050",
+    "980023"
+  ],
+  "fixed": [
+    "1A0001",
+    "1B0007",
+    "1B0008",
+    "1B0009",
+    "1B0070",
+    "399412",
+    "399556",
+    "399557",
+    "899050",
+    "980023"
+  ],
+  "seed": 20261116,
+  "sample_fraction": 0.05,
+  "member_proofs": {
+    "1A0001": {
+      "available": true,
+      "count": 2262,
+      "hash": "98e83f52bd864547b4e66fa5bcbc45d50e82a8a773348d95d065f9792a80a5af"
+    },
+    "1B0006": {
+      "available": true,
+      "count": 1116,
+      "hash": "7f2c338caa7e0191cbbb7fb810d0d576c91015f1292f9245875bbda987f21584"
+    },
+    "1B0007": {
+      "available": true,
+      "count": 291,
+      "hash": "fc774f85063b75900de415d406e2bec5c7309ff2ea5cddc2d186f1deb2db0c58"
+    },
+    "1B0008": {
+      "available": true,
+      "count": 116,
+      "hash": "b64aeba7849ffca2e6bc1f77374e8eaf9a1b730b500b9f7def323e241b61cc65"
+    },
+    "1B0009": {
+      "available": true,
+      "count": 627,
+      "hash": "00759c5c7a18fec1fbe34df2286aab010bfe0a3e6ebff45e4edab5828bddb47c"
+    },
+    "1B0020": {
+      "available": true,
+      "count": 878,
+      "hash": "d57378b8e158ccf0d6b116c7fe0e61b13ef4a74aa324acf8fdf38b36158b892f"
+    },
+    "1B0046": {
+      "available": true,
+      "count": 450,
+      "hash": "785605403340be1b07a395d6842e8fc685501c36a71905afcd15a98ba221ed38"
+    },
+    "1B0070": {
+      "available": true,
+      "count": 30,
+      "hash": "ada4b80ea5f844026c092ee8d6da935020aeda4bba24956221d755152dd140ca"
+    },
+    "1B0992": {
+      "available": true,
+      "count": 127,
+      "hash": "0e1637bc8df91621d19240cc87fd30297e0f28be2cabc879271adac36655d548"
+    },
+    "399020": {
+      "available": true,
+      "count": 500,
+      "hash": "42ac6b4d7253a3ff6da50b5f529fbb778130a3be8a0811fdbe1782f0cb6ea052"
+    },
+    "399088": {
+      "available": true,
+      "count": 100,
+      "hash": "9a612b03c1cb9220e15722472f19348f4407ac66f12e1239a783959106d40a53"
+    },
+    "399233": {
+      "available": true,
+      "count": 1967,
+      "hash": "043367e20b640db09321cef1d700e6dc555e9261fef0847d28baf73595565a8e"
+    },
+    "399267": {
+      "available": true,
+      "count": 100,
+      "hash": "abee9202cf18e755ed8b9965878a1eddfd7484a6330a6f29fdd3c655f280a4d9"
+    },
+    "399284": {
+      "available": true,
+      "count": 50,
+      "hash": "adf7d59a44ea18bf9a55d371a3d8cea79114ec8460f5da65f8f421cf8c4ec0eb"
+    },
+    "399371": {
+      "available": true,
+      "count": 332,
+      "hash": "78248199045c150a89895ef6dee6e8f4373751f2137b58eff962b23d603abd40"
+    },
+    "399387": {
+      "available": true,
+      "count": 92,
+      "hash": "e1ae889b9a39ef2fc916e6718b7fba12c5a279affc85326a801dad5b645fb01d"
+    },
+    "399408": {
+      "available": true,
+      "count": 150,
+      "hash": "c2ea7b5c188937e7678157c94d4340bc0c905f4b2bfbd780997dfd625eaa1968"
+    },
+    "399412": {
+      "available": true,
+      "count": 50,
+      "hash": "e21a9a984dd3416f339bfdb1e412f5604e78085b557bda07f06b078fe8ac4a41"
+    },
+    "399417": {
+      "available": true,
+      "count": 50,
+      "hash": "dc257784adf51cebd4334bbb995f90aaa6d47fc4d54ae1103b3a658890c2089e"
+    },
+    "399556": {
+      "available": true,
+      "count": 50,
+      "hash": "2f00e3fdb5378f0a0a8695a7a09aad26a2a9718d7656b09220e439b11c5db3f3"
+    },
+    "399557": {
+      "available": true,
+      "count": 50,
+      "hash": "1dd98daad3710133aeb5571c5e02bc1f59c74ae5548bb5813d82297079ae8342"
+    },
+    "399622": {
+      "available": true,
+      "count": 20,
+      "hash": "449ac64b015df9f3434e802ea6ca97b560901ea172fd80eae0c9d150a4627967"
+    },
+    "399655": {
+      "available": true,
+      "count": 100,
+      "hash": "51a16f48144ba8d5966cb88b08d25fadd6999e663ed427894fb8664569cd29d5"
+    },
+    "399903": {
+      "available": false,
+      "count": 0,
+      "hash": "fe4c07f571f9e0563a1d33188d74a78fb10605439069b39b9cd1b622cf6f39b7"
+    },
+    "399913": {
+      "available": false,
+      "count": 0,
+      "hash": "fe4c07f571f9e0563a1d33188d74a78fb10605439069b39b9cd1b622cf6f39b7"
+    },
+    "399928": {
+      "available": false,
+      "count": 0,
+      "hash": "fe4c07f571f9e0563a1d33188d74a78fb10605439069b39b9cd1b622cf6f39b7"
+    },
+    "399976": {
+      "available": true,
+      "count": 50,
+      "hash": "ac14e6d6af458326915398f94c0d44f0a5d12896fd162e9c4116e16c74ac24db"
+    },
+    "899050": {
+      "available": false,
+      "count": 0,
+      "hash": "fe4c07f571f9e0563a1d33188d74a78fb10605439069b39b9cd1b622cf6f39b7"
+    },
+    "980023": {
+      "available": true,
+      "count": 37,
+      "hash": "b4a83d167ddf1c2620827df3eaa0da0280bc1bf3a7f40643b21cfc928f2996de"
+    }
+  },
+  "initial_price_proofs": {
+    "1A0001": {
+      "count": 8762,
+      "hash": "44a3f81aef580cea3566542bad3249558f27232ed64eb2fb04585d2b82a20354",
+      "first": "1990-12-19",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "1B0006": {
+      "count": 7388,
+      "hash": "494eb53e47c40729cfde7183b8849c2fb9d73fe74fcf017f5ba085624991abe4",
+      "first": "1996-05-23",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "1B0009": {
+      "count": 5308,
+      "hash": "a38e75030c9dcd4e482d85f3bdba5da85d1c441560d01a9c1fb43488445b6370",
+      "first": "2005-01-04",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "1B0046": {
+      "count": 4217,
+      "hash": "1b9f83e49337066adaba07403f11bdb4686a34119b6d6ea2dc1871c0e57e7057",
+      "first": "2009-07-03",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "1B0992": {
+      "count": 5308,
+      "hash": "dd69fbf74acacbe0f87f42dca9e7869ea7eed0e5e1ca9bde076dbe32752d3102",
+      "first": "2005-01-04",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399088": {
+      "count": 1635,
+      "hash": "fc0ba4107af3b18ecf271526a06265bc9ad09a975e62db6078c98f0da2a76937",
+      "first": "2020-02-18",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399267": {
+      "count": 319,
+      "hash": "246cf90f11dab607ca044757d1e27a30e953c60f1a45dd6f4cc0834e6f3c63b9",
+      "first": "2025-07-21",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399371": {
+      "count": 4093,
+      "hash": "255bc13bd2b837e695ab393f190eef81649ca92b31a8e37dc1204947942a0a88",
+      "first": "2010-01-04",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399408": {
+      "count": 3145,
+      "hash": "e01150f31f1a5a14ec2905f61bcbe4549b7c6b3b3e2d5af5a4f7a477af83d33f",
+      "first": "2013-12-05",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399417": {
+      "count": 3975,
+      "hash": "0347af08859142a4d10c87968a357984dbcf51d620c2f3abf52a7833fd3a84e4",
+      "first": "2010-07-01",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "1B0007": {
+      "count": 7366,
+      "hash": "f3ff5e4b0f6b25b55d39be5d8eb5b428fe0fa17ae76c54b55561ef1511fb5eeb",
+      "first": "1996-06-26",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399976": {
+      "count": 3607,
+      "hash": "36d45134c26e50a7d7ef3cd89d1edf58430980d33f0efc8611b7ed55d583b9d5",
+      "first": "2012-01-04",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "980023": {
+      "count": 3438,
+      "hash": "5d985be8890820ff91476ffa510a6939b5a419a2f48b167d3321600f51a90d8e",
+      "first": "2012-12-31",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "1B0070": {
+      "count": 5551,
+      "hash": "6018a7643faa3417ca5c96b4a67297848686d1184d036e39878eca3b165a07ef",
+      "first": "2004-01-02",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399233": {
+      "count": 6155,
+      "hash": "aa06f23d01631c4bf004b22de4e7546a52cbe9ffdbead5e86393c9a5284426e5",
+      "first": "2001-07-02",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399622": {
+      "count": 3744,
+      "hash": "30b0c4e366e45ae9fd65805c61d7fe3a4d0c4b685e4defa832becc495cef2b5a",
+      "first": "2011-06-15",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399655": {
+      "count": 3395,
+      "hash": "555c0d48540f80f0cca7e5995651b539bd393abc40cf9ed6709663b9bb8f671a",
+      "first": "2012-11-19",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399928": {
+      "count": 4217,
+      "hash": "d813728d11352747cd1cd4e06cc5e36c87e08b8b3d71755a427d9c9e8ae95dde",
+      "first": "2009-07-03",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "1B0008": {
+      "count": 6291,
+      "hash": "1b06ac7a4457d6d21724b95e928dfb46efb0234a5dbf2fc4b038a7e646da703a",
+      "first": "2000-10-25",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399387": {
+      "count": 3628,
+      "hash": "9340a8702652b9cb1f27f0317b85cdb8750524b30b9759fb93f366ed4041167c",
+      "first": "2011-12-02",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399557": {
+      "count": 3975,
+      "hash": "e795a1e22877b76d04ec3773cfbcb2cedca5a6ba8af919e36b14e5929186c518",
+      "first": "2010-07-01",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "899050": {
+      "count": 1100,
+      "hash": "d73ea80ea9f2c985a59bcc7abf21dde8d0bfd31f0264ec676f92d47a0d645924",
+      "first": "2022-04-29",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399284": {
+      "count": 1635,
+      "hash": "50160f5f9b11ebc5c0e4c2a58ce443d80b4f10be2abf622ff1885808397ff828",
+      "first": "2020-02-18",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399412": {
+      "count": 3975,
+      "hash": "6a8786a7fa5e66db5226d3596d268d0ffb010d6ed3f82d27fe5fe4ed769c9b9e",
+      "first": "2010-07-01",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399903": {
+      "count": 4975,
+      "hash": "02bdfb3cd3cd9924772805be8da3bce4b3e51d95e8d59f6e124d7c7e6f8655ff",
+      "first": "2006-05-29",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "1B0020": {
+      "count": 4708,
+      "hash": "29fcd3980c3f954734e259ec1f8f845f5f556564833be65bef10c39929699320",
+      "first": "2007-07-02",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399913": {
+      "count": 5308,
+      "hash": "bbc95a89ecc6a7f1439f039580d27c978e3afb8ba8c93f47ff441f4f903ac8a5",
+      "first": "2005-01-04",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399556": {
+      "count": 3975,
+      "hash": "cdac1afe6f1908aad5d67954059795b9c3e20803fcafc35b0ebe7e3312c8a6b6",
+      "first": "2010-07-01",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "399020": {
+      "count": 2030,
+      "hash": "2acfadcc10597e514e6bcf95791702b075bbc884130e4abf092900fec73999ce",
+      "first": "2018-07-02",
+      "last": "2026-11-12",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-12",
+        "full": true,
+        "history_start": null
+      }
+    }
+  },
+  "incremental": {
+    "prior": "2026-11-12",
+    "through": "2026-11-13",
+    "proofs": {
+      "1A0001": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "d7b3cdcd22068cb1ceab57914e8223f521acc7bb5e20d7e6fe6ee2b673266a9d",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "1990-12-19"
+        }
+      },
+      "1B0006": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "7c5c1824d0f5c7644e640b17d3f99b64bd4ebed7485ff9d119e0b6f3e956f4cb",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "1996-05-23"
+        }
+      },
+      "1B0007": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "0f357ca751c8d2dfc8a13bcd2f5353e915ec4a849cca900b82bde514d5bfba5e",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "1996-06-26"
+        }
+      },
+      "1B0008": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "a6f849a92491b6e275272a13b4f94a19da30376680af61867e8333746b5486f8",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2000-10-25"
+        }
+      },
+      "1B0009": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "41e611b18c57fb484cabf6f4fa2243707b36ab7942ff56ca5e9e26aad407a603",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2005-01-04"
+        }
+      },
+      "1B0020": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "cea14fc1649a526a6460858c169393830eca7dfc0cf85b5cb8f1858a4b4853d7",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2007-07-02"
+        }
+      },
+      "1B0070": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "d7dab3102b9f22c4fb75f8c74e0ef2e8a4341f0e3e230ea91996aa666d1759b9",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2004-01-02"
+        }
+      },
+      "1B0046": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "2d2fc9896cfcc2d928b47305ae5d55e69207826f4be53185778c76e21ecfba8b",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2009-07-03"
+        }
+      },
+      "399020": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "dfbb74a4c86f3cb81f242f2595afd870fa548a757460d369d40403b0acde016a",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2018-07-02"
+        }
+      },
+      "1B0992": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "224f3e44b336873510cac62e9fef2356680461fda2004a6509487140a848cfb3",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2005-01-04"
+        }
+      },
+      "399088": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "7769d4491fbb7cf4f442fcb00a476fbf8c8ab32bf9dc8493b8daa118569330aa",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2020-02-18"
+        }
+      },
+      "399267": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "58ef0c7546fa5055a7f01d2fa578f97eb627440e2b5579bc1b1418be7014ac91",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2025-07-21"
+        }
+      },
+      "399233": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "bc0c89d1e1d9fee4fd163b7796eeb44f514401e29005cfd112dbbbeec30a1005",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2001-07-02"
+        }
+      },
+      "399371": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "f2ae1ab10abd70dadc500df34d0a3b6117edea4771a417d1e9d15ca1eff7fb2f",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2010-01-04"
+        }
+      },
+      "399284": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "7a3c4e7424a8519d2408c8775acd5c9db8918f5f085cc5f80098a99bee21be43",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2020-02-18"
+        }
+      },
+      "399387": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "f13353e622a479f9d8fad6e4cc294836b138506d38c789a8c0c8a48b27578eaf",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2011-12-02"
+        }
+      },
+      "399412": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "a4f647ae0d38b5263119faada62c07b82566c17f7f028e9d543b9a91885573b9",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2010-07-01"
+        }
+      },
+      "399408": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "702e74b90a7be6d5b56d5799a5af3a4388a7748ed3012391d0413c54e968ecec",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2013-12-05"
+        }
+      },
+      "399417": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "d63a6a1a30d432526424f016df866dc9dd4028357ccd51db2e34a47c76a1d4c8",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2010-07-01"
+        }
+      },
+      "399556": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "3e0b1a8b9b7663d8c6d4f121e7c1ed0fb8a1876baea8afe5d4ffa84ec79db91e",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2010-07-01"
+        }
+      },
+      "399557": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "1edc0b6f509b74a51d7148a8a8717224aeb3d3eb21662bb1ed61b098fabb0958",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2010-07-01"
+        }
+      },
+      "399655": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "73726499591cf7701c588711c8723e641d00341714e0aae73943dd9213c2f462",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2012-11-19"
+        }
+      },
+      "399622": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "d8e99cb3274be5b9fc37dfa3a5861ae82d0807210945a72fb7c881e7be80be7a",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2011-06-15"
+        }
+      },
+      "399913": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "103939402798215d626f2e92f32cd7ece9775cba596ef527c4fd09f687d1509f",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2005-01-04"
+        }
+      },
+      "399903": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "fc392c71f95fb830597de39c51b4e51ff218613e18ce71296b5b85058f04c13d",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2006-05-29"
+        }
+      },
+      "399928": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "86fb11f325acafe5b1b0c9b8306eb9f041e999b39472091820e66adee598a0d4",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2009-07-03"
+        }
+      },
+      "899050": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "1ae56f5f8134249e0e979e85a7e94462c99dab7900d62fa62efb6ec8ac3b50b4",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2022-04-29"
+        }
+      },
+      "980023": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "7802765e9b81a13406f9ba795fac9a91ab54a84d372b5ef60262a75442a5b5e8",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2012-12-31"
+        }
+      },
+      "399976": {
+        "start": "2026-11-02",
+        "through": "2026-11-13",
+        "count": 10,
+        "hash": "4a532d44a46e1e4da18cdbb724691ee74cbf4531fe4caac52301dce1ea4fd741",
+        "first": "2026-11-02",
+        "last": "2026-11-13",
+        "plan": {
+          "start": "2026-11-02",
+          "through": "2026-11-13",
+          "full": false,
+          "history_start": "2012-01-04"
+        }
+      }
+    },
+    "routes": {
+      "proxy_requests": 29
+    }
+  },
+  "repeated_source_requests": 0,
+  "redis_checkpoint_loss_source_requests": 0,
+  "pending": 0,
+  "source_quality": [
+    {
+      "criterion": "fields",
+      "status": "pass"
+    },
+    {
+      "criterion": "keys",
+      "status": "pass"
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass"
+    },
+    {
+      "criterion": "quality",
+      "status": "fail"
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass"
+    },
+    {
+      "criterion": "temporal",
+      "status": "pass"
+    }
+  ],
+  "error_records": {
+    "ths-yuanhang-indices": {
+      "revision": "0",
+      "total": 0,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": []
+    },
+    "ths-yuanhang-index-members": {
+      "revision": "5",
+      "total": 5,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": [
+        {
+          "status_code": 502,
+          "error": "Server error '502 Bad Gateway' for url 'https://q.10jqka.com.cn/zs/detail/code/399928/field/code/order/asc/page/1/size/10000/ajax/1/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+          "id": "223d4cd413244c29a8c7da6615392972",
+          "project_id": "ths-yuanhang-index-members",
+          "created_at": "2026-11-15T17:59:44.119058+00:00",
+          "stage": "http"
+        },
+        {
+          "status_code": 502,
+          "error": "Server error '502 Bad Gateway' for url 'https://q.10jqka.com.cn/zs/detail/code/399284/field/code/order/asc/page/1/size/10000/ajax/1/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+          "id": "24ec382b71ea43a2bc1f26743abfe9d8",
+          "project_id": "ths-yuanhang-index-members",
+          "created_at": "2026-11-15T17:59:43.481923+00:00",
+          "stage": "http"
+        },
+        {
+          "status_code": 502,
+          "error": "Server error '502 Bad Gateway' for url 'https://q.10jqka.com.cn/zs/detail/code/399557/field/code/order/asc/page/1/size/10000/ajax/1/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+          "id": "263f40adaf934e2f9df448d072107d5b",
+          "project_id": "ths-yuanhang-index-members",
+          "created_at": "2026-11-15T17:59:43.480869+00:00",
+          "stage": "http"
+        },
+        {
+          "status_code": 502,
+          "error": "Server error '502 Bad Gateway' for url 'https://q.10jqka.com.cn/zs/detail/code/1B0008/field/code/order/asc/page/1/size/10000/ajax/1/'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502",
+          "id": "b1a5bc1599ec4ca48d8e4a23dbe026b1",
+          "project_id": "ths-yuanhang-index-members",
+          "created_at": "2026-11-15T17:59:42.405493+00:00",
+          "stage": "http"
+        },
+        {
+          "status_code": null,
+          "error": "代理设备 node041 请求失败（ProxyError），已临时隔离",
+          "id": "d473c913cce2458b929aad0b15e28f4b",
+          "project_id": "ths-yuanhang-index-members",
+          "created_at": "2026-11-15T17:59:33.431774+00:00",
+          "stage": "http"
+        }
+      ]
+    },
+    "ths-yuanhang-index-prices": {
+      "revision": "0",
+      "total": 0,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": []
+    }
+  },
+  "routes": {
+    "proxy_requests": 101
+  },
+  "registration_requests": 0,
+  "statuses": {
+    "collector.yuanhang_index_members": {
+      "status": "complete",
+      "collected": 9595,
+      "network_costs": {
+        "http_attempts": 34,
+        "native_attempts": 0,
+        "native_queries": 0,
+        "authentication_http_attempts": 0,
+        "native_auth_exchanges": 0,
+        "retries": 5,
+        "observed_wire_bytes": 583445,
+        "observed_body_bytes": 7002229,
+        "native_decoded_bytes": 0
+      },
+      "total_units": 29,
+      "completed_units": 29,
+      "download_item_name": "个指数",
+      "download_window_limit": 40,
+      "download_buffer_capacity": 2048,
+      "download_concurrency": 0,
+      "download_pending_pages": 0,
+      "download_ready_pages": 0,
+      "download_failed_pages": 0,
+      "download_buffer_limited": false,
+      "download_wait_reason": "idle",
+      "error": "",
+      "current_security": "980023",
+      "pages": 29,
+      "unavailable": 4
+    },
+    "collector.yuanhang_index_prices": {
+      "status": "complete",
+      "collected": 290,
+      "network_costs": {
+        "http_attempts": 0,
+        "native_attempts": 0,
+        "native_queries": 0,
+        "authentication_http_attempts": 0,
+        "native_auth_exchanges": 0,
+        "retries": 0,
+        "observed_wire_bytes": 0,
+        "observed_body_bytes": 0,
+        "native_decoded_bytes": 0
+      },
+      "total_units": 0,
+      "completed_units": 0,
+      "planned_requests": 0,
+      "maintenance_scope": "backfill",
+      "download_item_name": "个指数",
+      "download_window_limit": 1,
+      "download_buffer_capacity": 2048,
+      "download_concurrency": 0,
+      "download_pending_pages": 0,
+      "download_ready_pages": 0,
+      "download_failed_pages": 0,
+      "download_buffer_limited": false,
+      "download_wait_reason": "idle",
+      "error": "",
+      "current_security": "980023",
+      "pages": 29
+    }
+  },
+  "input_identity_verified": true,
+  "checked_at": "2026-11-15T18:02:58.930273+00:00",
+  "database": "empire_capacity_ec6d8d4bc6d74515828a2c87d492413f_test",
+  "measurement_service": {
+    "server_uuid": "480abbb0-e119-11f1-8add-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

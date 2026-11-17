@@ -126,6 +126,13 @@ async def routed_request(service, method, url, allowed, *, excluded_proxies=None
             if delay > 0 and entry:
                 service.pool.defer(entry, group.name, delay)
             if delay <= 0:
+                if entry:
+                    # Remember this granted IP interval locally as well. Without
+                    # it, a waiting request re-acquires a known-too-early exit,
+                    # revalidates its lease and asks Redis only to be deferred.
+                    # Redis remains the authority; the local deadline is a
+                    # conservative scheduling hint and never grants permission.
+                    service.pool.defer(entry, group.name, interval)
                 stats["requests"] += 1
                 service.recent_requests[group.name].add()
                 kind = "proxy_requests" if entry else "direct_requests"

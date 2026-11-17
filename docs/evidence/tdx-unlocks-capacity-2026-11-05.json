@@ -1,0 +1,543 @@
+{
+  "run_id": "168a1655e17e4ca4a5d1e39b8d172e86",
+  "mode": "verification",
+  "checked_at": "2026-11-05T06:17:22.889284+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\eastmoney-optimization-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce",
+    "D:\\project\\empire\\build\\tdx-unlocks-live-20261105-r2.json": "91c2dd5741bae699d401aac4db9b2afddb850f2acf3e41453ed02fbbc06951ff",
+    "D:\\project\\empire\\src\\empire\\features\\unlocks\\contract.py": "f7c082205645e04746d3bfb87a2bc168af3479126ca31725cdb4adec12d4a68f",
+    "D:\\project\\empire\\src\\empire\\sources\\tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
+    "D:\\project\\empire\\scripts\\unlock_capacity.py": "844eec0d7e83372331486b1ace6328c07a73d04914158acf883296e597be45c2",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "D:\\project\\empire\\scripts\\source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "D:\\project\\empire\\src\\empire\\features\\unlocks\\dataset.py": "5c77f1def2d83a88770f6a4a4515ab3d663c0741caa275f4cd17e160eff083e9",
+    "D:\\project\\empire\\src\\empire\\features\\unlocks\\query.py": "407f66cb878b2f6690599ff22e13d8cda9d599636e57769a2e689afddafc057d",
+    "D:\\project\\empire\\scripts\\measure_unlocks.py": "2399ef1244156163fd73153f1641192e431c1d27f55782d0417f2299185e49aa"
+  },
+  "reviewed_sample": {
+    "path": "build\\tdx-unlocks-live-20261105-r2.json",
+    "sha256": "91c2dd5741bae699d401aac4db9b2afddb850f2acf3e41453ed02fbbc06951ff",
+    "scope": "current full source verification"
+  },
+  "subject": "unlocks_capacity",
+  "source_sha256": "b8e4f18fbb09bb0984f1e2a982572284d52e5dfcd8824d8a8838f0f0cf757163",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原100000汇总/200000明细或12000行业行SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_168a1655e17e4ca4a5d1e39b8d172e86_test",
+    "namespace": "empire:test:verify_ths:168a1655e17e4ca4a5d1e39b8d172e86",
+    "run_id": "168a1655e17e4ca4a5d1e39b8d172e86",
+    "server_uuid": "3f1d111c-d88d-11f1-8cfd-380525361d4e",
+    "owner_sha256": "bb544da6fb6e1025c959a13d68d38011a38c1097be383ab38330bb840edb25c4"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\eastmoney-optimization-mysql-20261105\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "isolation": "actual UUID verified owned private schema on independent service",
+    "cache": "first read then five warm reads; maximum reported",
+    "rows": {
+      "parents": 100000,
+      "details": 200000
+    },
+    "projection": "linear 1100000-row planning estimate; not a measured million-detail import"
+  },
+  "reviewed_tradeoffs": "Two typed business tables; request-group shared details; bounded month snapshot and message limits. No stored raw success bodies or duplicated per-parent details.",
+  "measurements": {
+    "page_ms": 4.63589996797964,
+    "security_ms": 3.3014999935403466,
+    "detail_ms": 0.5617000279016793,
+    "month_ms": 24.10419995430857,
+    "range_ms": 7.010000001173466,
+    "allocated_bytes": 277970944,
+    "projected_1100000_bytes": 1019226794,
+    "import_seconds": 16.14202640001895,
+    "repeat_seconds": 0.17126299999654293,
+    "revision_seconds": 0.1226854000124149,
+    "message_bytes": 324472,
+    "query_peak_bytes": 1611718
+  },
+  "limits": {
+    "page_ms": 100,
+    "security_ms": 100,
+    "detail_ms": 100,
+    "month_ms": 5000,
+    "range_ms": 100,
+    "allocated_bytes": 805306368,
+    "projected_1100000_bytes": 2147483648,
+    "import_seconds": 300,
+    "repeat_seconds": 5,
+    "revision_seconds": 5,
+    "message_bytes": 524288,
+    "query_peak_bytes": 33554432
+  },
+  "allocation": {
+    "_empire_verifier_owner": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "additional_issue": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "app_setting": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "balance_statement": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "capital_encumbrance": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_equity_position": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_equity_summary": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_funding": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_ipo": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_project": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "capital_release": {
+      "data": 16384,
+      "indexes": 65536
+    },
+    "capital_transaction": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "cashflow_statement": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "collection_state": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "dividend_plan": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "earnings_disclosure": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "earnings_forecast": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "earnings_quick": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "earnings_report": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "finance_news": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "graymarket_daily": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "graymarket_day": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "holder_member": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "holder_report": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "hot_list_day": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "hot_list_reason": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "hot_list_seat": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "income_statement": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "index_daily_price": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "index_price_year": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "industry": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "industry_margin_daily": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "industry_margin_day": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "industry_member": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "margin_daily": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "margin_security": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "market_margin_daily": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "market_margin_series": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "restricted_share_unlock": {
+      "data": 56377344,
+      "indexes": 46055424
+    },
+    "restricted_share_unlock_detail": {
+      "data": 137363456,
+      "indexes": 35438592
+    },
+    "restricted_share_unlock_industry": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "rights_issue": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "security_code_alias": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "security_listing_event": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "security_name_change": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "security_st_event": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "shareholder_change": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "shareholder_count": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "stock": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "stock_index": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "stock_index_member": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "stock_listing": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "stock_repurchase_plan": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "suspension_event": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "suspension_source_date": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "theme_category": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "theme_daily": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "theme_detail": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "theme_stock": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "theme_stock_reason": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "trade_calendar": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "trading_rule_citation": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "trading_rule_value": {
+      "data": 16384,
+      "indexes": 49152
+    },
+    "yuanhang_capital": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "yuanhang_corporate_action": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "yuanhang_daily_price": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "yuanhang_limit_member": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "yuanhang_limit_pool": {
+      "data": 16384,
+      "indexes": 16384
+    },
+    "yuanhang_limit_reason": {
+      "data": 16384,
+      "indexes": 32768
+    },
+    "yuanhang_price_year": {
+      "data": 16384,
+      "indexes": 0
+    },
+    "yuanhang_series_proof": {
+      "data": 16384,
+      "indexes": 0
+    }
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_date",
+        "key_len": "78",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_security_date",
+        "key": "ix_security_date",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock_detail",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "64",
+        "ref": "const",
+        "rows": 2,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "month": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock_detail",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_date",
+        "key": "ix_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 3714,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Using filesort"
+      }
+    ],
+    "range": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "restricted_share_unlock",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_date",
+        "key": "ix_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ]
+  },
+  "returned": {
+    "page": 200,
+    "security": 100,
+    "detail": 2,
+    "month": 2000,
+    "range": 200
+  },
+  "read_bytes": {
+    "page": 81200,
+    "security": 40600,
+    "detail": 690,
+    "month": 690000,
+    "range": 9600
+  },
+  "bindings": {
+    "src/empire/features/unlocks/contract.py": "f7c082205645e04746d3bfb87a2bc168af3479126ca31725cdb4adec12d4a68f",
+    "src/empire/sources/tdx_unlock.py": "23589be025b6818bc49201389c5b66351923e548892247e2534a02f6bf5b8082",
+    "scripts/unlock_capacity.py": "844eec0d7e83372331486b1ace6328c07a73d04914158acf883296e597be45c2",
+    "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "src/empire/features/unlocks/dataset.py": "5c77f1def2d83a88770f6a4a4515ab3d663c0741caa275f4cd17e160eff083e9",
+    "src/empire/features/unlocks/query.py": "407f66cb878b2f6690599ff22e13d8cda9d599636e57769a2e689afddafc057d",
+    "scripts/measure_unlocks.py": "2399ef1244156163fd73153f1641192e431c1d27f55782d0417f2299185e49aa"
+  },
+  "ddl_scopes": {
+    "restricted_share_unlock": "9e93bda4b525128f0a1f9c83987e521b5b87fc18bc42099c31888b6955a8386d",
+    "restricted_share_unlock_detail": "956ee73532656f2271252a0e897a211f27a199eb29b790dd77f5890fa336be75"
+  },
+  "samples": {
+    "page": [
+      4.63589996797964,
+      2.929000009316951,
+      2.6848000125028193,
+      2.6092000189237297,
+      2.3215999826788902
+    ],
+    "security": [
+      3.3014999935403466,
+      1.5548999654129148,
+      1.266100036446005,
+      1.2113000266253948,
+      1.731799973640591
+    ],
+    "detail": [
+      0.44790003448724747,
+      0.5617000279016793,
+      0.32619998091831803,
+      0.2530000056140125,
+      0.5478999810293317
+    ],
+    "month": [
+      21.96159999584779,
+      24.10419995430857,
+      22.747399983927608,
+      22.176099999342114,
+      21.753799985162914
+    ],
+    "range": [
+      7.010000001173466,
+      2.159799973014742,
+      1.7576999962329865,
+      1.7165999743156135,
+      1.5734999906271696
+    ]
+  },
+  "correctness": {
+    "all_units_equal": true,
+    "units": 100,
+    "parent_count": 100000,
+    "detail_count": 200000,
+    "repeat_business_dml": 0,
+    "revision_written": 1
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

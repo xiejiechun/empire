@@ -45,7 +45,8 @@ async def test_every_advertised_sql_sort_column():
         registry = SimpleNamespace(get=get)
         for task in manager.entries['collection.control'].plugin.definitions:
             for declaration, spec in zip(views(task), catalog(task), strict=True):
-                if spec['sort_scope'] != 'filtered' or declaration.mode == 'live':
+                if (spec['sort_scope'] != 'filtered' or declaration.mode == 'live'
+                        or declaration.capability in {'fx.latest.query', 'yuanhang.etf.latest.query'}):
                     continue
                 filters = {key: value for key, value in {
                     'security': '000001.SZ', 'theme_id': '1', 'day': '2026-10-29',

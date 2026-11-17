@@ -70,6 +70,7 @@ class FinancialDataset:
             stored = {r['report_date'].isoformat(): dict(r) for r in conn.execute(text(
                 f'SELECT report_date,payload,content_hash FROM {self.table} '
                 'WHERE unified_code=:unified_code FOR UPDATE'), params).mappings()}
+            changed = []
             for row in data['rows']:
                 old = stored.get(row['report_date'])
                 checksum = digest(row)
@@ -77,14 +78,17 @@ class FinancialDataset:
                     actual = json.loads(old['payload']) if isinstance(old['payload'], str) else old['payload']
                     if actual == row:
                         continue
+                changed.append({**params, 'report_date': row['report_date'],
+                    'payload': json.dumps(row, ensure_ascii=False),
+                    'content_hash': checksum, 'observed': mysql_time(envelope.observed_at)})
+            if changed:
                 conn.execute(text(f'INSERT INTO {self.table} '
                     '(unified_code,report_date,payload,content_hash,version_observed_at) '
                     'VALUES (:unified_code,:report_date,:payload,:content_hash,:observed) '
                     'ON DUPLICATE KEY UPDATE payload=VALUES(payload),content_hash=VALUES(content_hash),'
                     'version_observed_at=VALUES(version_observed_at)'),
-                    {**params, 'report_date': row['report_date'], 'payload': json.dumps(row, ensure_ascii=False),
-                     'content_hash': checksum, 'observed': mysql_time(envelope.observed_at)})
-                written += 1
+                    changed)
+                written = len(changed)
         return dict(status='complete', row_count=data['row_count'], written_count=written,
                     confirmed=[unit] if accepted else [])
 
@@ -98,5 +102,6 @@ class FinancialDataset:
         else:
             result['units'] = {**previous.get('units', {}), data['unit']: {
                 'observed_at': observed, 'dates': [r['report_date'] for r in data['rows']],
-                'digest': digest(data['rows'])}}
+                'digest': digest(data['rows']),
+                'fingerprint_hash': digest({'rows': data['rows'], 'manifest': None})}}
         return result

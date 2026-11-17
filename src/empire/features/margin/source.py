@@ -1,5 +1,6 @@
 """The page's exact seven parameters; no hidden per-page or per-day requests."""
 
+import json
 import re
 
 from empire.features.margin.contract import CAPACITY, number, security, validate
@@ -14,13 +15,37 @@ def params(code):
     return ["2", "1", code[:6], "", "1", "1", str(CAPACITY)]
 
 
+def transient_query_timeout(response):
+    """Retry only the observed backend timeout without business result sets."""
+    try:
+        body = json.loads(response.content)
+    except (ValueError, UnicodeError):
+        return False
+    return (
+        isinstance(body, dict)
+        and type(body.get("ErrorCode")) is int
+        and body["ErrorCode"] == -1009
+        and body.get("ErrorInfo") == "cache语句执行超时"
+        and body.get("ResultSets") in (None, [])
+    )
+
+
 def parse(body, through):
     if (
         not isinstance(body, dict)
         or type(body.get("ErrorCode")) is not int
         or body["ErrorCode"] != 0
     ):
-        raise ValueError("融资融券来源错误，不能解释为空记录")
+        code = body.get("ErrorCode") if isinstance(body, dict) else "未知"
+        reason = (
+            "（来源服务端cache语句执行超时）"
+            if isinstance(body, dict)
+            and type(code) is int
+            and code == -1009
+            and body.get("ErrorInfo") == "cache语句执行超时"
+            else ""
+        )
+        raise ValueError(f"融资融券来源错误：{code}{reason}，不能解释为空记录")
     sets = body.get("ResultSets")
     if not isinstance(sets, list) or len(sets) != 3:
         raise ValueError("融资融券完整性结果集缺失")

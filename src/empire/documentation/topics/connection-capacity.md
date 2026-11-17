@@ -26,7 +26,7 @@
 | download payload 字段 | 默认值与用途 |
 | --- | --- |
 | planned_exit_devices | 历史规划值，当前桌面不展示、不据此分配资源。 |
-| max_parallel_downloads | 默认 128、最多 1024；全局在途下载安全阀及预取窗口上界。 |
+| max_parallel_downloads | 默认 128、最多 4096；全局在途下载安全阀及预取窗口上界。 |
 | buffer_budget_bytes | 536870912（512 MiB），所有项目、直连及代理共享的下载缓冲预留预算，不是进程总内存上限。 |
 | stock_response_bytes | 历史分类数值保留在配置中，已退出HTTP响应控制；不再作为单次下载上限。 |
 | news_response_bytes | 历史分类数值保留在配置中，已退出HTTP响应控制；不再作为单次下载上限。 |

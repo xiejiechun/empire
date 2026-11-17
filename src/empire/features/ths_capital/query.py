@@ -56,6 +56,10 @@ class CapitalPageDataPlugin:
                 return rows
         return await self.mysql.read(read)
 
+    async def collection_units(self):
+        from empire.plugins.infra.ths_maintenance import confirmed_units
+        return await confirmed_units(self, PROJECT, self.mapping)
+
     async def browse(self, table='capital_funding', section='raise_', code='', start='', end='', after=None, limit=20, order=None):
         if table not in TABLES or section not in TABLE_SECTIONS[table] or not isinstance(code, str) or (
                 not re.fullmatch(r'(?:\d{0,6}|\d{6}\.(SH|SZ|BJ))', code)) or type(limit) is not int or not 1 <= limit <= 100:

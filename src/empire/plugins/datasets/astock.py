@@ -1,22 +1,33 @@
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 from collections.abc import Iterable
+from contextlib import asynccontextmanager
 
-from empire.contracts.business_schema import require_dataset_source
-from empire.contracts.data import Envelope, UnsupportedSchema, make_envelope
+from empire.contracts.business_schema import DATASET_TABLE_GROUPS, require_dataset_source
+from empire.contracts.data import (
+    BackpressureError,
+    Envelope,
+    UnsupportedSchema,
+    make_envelope,
+    read_envelope_metadata,
+)
 from empire.contracts.dataset import DatasetContribution
 from empire.contracts.plugin import PluginContext, PluginManifest
+from empire.plugins.datasets.source_compute import compute_source
+from empire.plugins.infra.compute_lane import MAX_INPUT, MAX_RESULT, ComputeLane
+from empire.plugins.infra.sql_lane import settle
 
 
 class DatasetPlugin:
     manifest = PluginManifest(
-        "dataset.astock", "数据契约", provides=("dataset.catalog",),
+        "dataset.astock", "数据契约", requires=("http.fetch",), provides=("dataset.catalog",),
         description="内部股票、财经新闻、交易日历和停复牌数据契约、校验及业务表写入",
     )
 
-    def __init__(self, contributions: Iterable[DatasetContribution]):
+    def __init__(self, contributions: Iterable[DatasetContribution], *, compute_operation=None):
         self.contributions = tuple(contributions)
         datasets = {}
         namespaces = {}
@@ -29,16 +40,124 @@ class DatasetPlugin:
                 raise ValueError(f"重复摘要命名空间 {contribution.namespace}")
             namespaces[contribution.namespace] = contribution
         self.datasets, self.namespaces = datasets, namespaces
+        self.compute_lane = None
+        self.compute_budget = None
+        self.compute_operation = compute_operation
 
     async def start(self, context: PluginContext) -> dict:
+        self.compute_budget = context.get('http.fetch').buffer_budget
+        self.compute_lane = ComputeLane(4)
         return {"dataset.catalog": self}
 
     async def stop(self) -> None:
-        pass
+        if self.compute_lane:
+            await self.compute_lane.close()
+            self.compute_lane = None
+        self.compute_budget = None
+
+    async def compute_source(self, operation, body, stock, today, *, reservation=None):
+        return await compute_source(self, operation, body, stock, today, reservation=reservation)
+
+    def archive_envelope(self, raw):
+        """Avoid rebuilding a large body before its formal process validation.
+
+        Unknown schemas keep the complete Envelope reader and isolation rules.
+        Body-dependent completion predicates and direct units also retain it.
+        """
+        if not (self.compute_lane and self.compute_operation and 8192 <= len(raw.encode()) <= MAX_INPUT):
+            return Envelope.model_validate_json(raw)
+        header = read_envelope_metadata(raw)
+        contribution = self.datasets.get(header.dataset)
+        if (contribution and contribution.schema_version == header.schema_version
+                and contribution.process_safe
+                and not getattr(contribution.mapping, 'is_complete', None)):
+            return header
+        return Envelope.model_validate_json(raw)
+
+    @asynccontextmanager
+    async def computed(self, events, operation, *, serialized=None):
+        """Hold input/IPC/result capacity through the caller's publication or ACK.
+
+        No wait for more bytes while owning bodies: capacity failure preserves
+        the caller's checkpoint/Stream. Small and custom units use the same pure
+        functions directly. Large built-in independent units run in processes.
+        """
+        if len(events) > 16:
+            raise ValueError('计算批次最多 16 个完整单元')
+        if serialized is not None and (operation != 'normalize' or len(serialized) != len(events)):
+            raise ValueError('归档原文必须与规范化单元一一对应')
+        raw = {}
+        if self.compute_lane and self.compute_operation:
+            for index, event in enumerate(events):
+                contribution = self.mapping(event)
+                if contribution.process_safe:
+                    # Archive already owns the exact validated Stream wire.
+                    # Reuse it instead of serializing the full matrix again.
+                    value = serialized[index] if serialized is not None else event.model_dump_json()
+                    if 8192 <= len(value.encode()) <= MAX_INPUT:
+                        raw[index] = value
+        leases = []
+        results = [None] * len(events)
+        try:
+            async def compute(indices):
+                return await self.compute_lane.call(self.compute_operation, operation,
+                                                    [raw[index] for index in indices])
+
+            remaining = list(raw)
+            while remaining:
+                selected, required = [], 0
+                available = self.compute_budget.limit - self.compute_budget.used
+                for index in remaining[:self.compute_lane.workers * 4]:
+                    cost = 2 * len(raw[index].encode()) + 2 * MAX_RESULT
+                    if required + cost > available:
+                        break
+                    selected.append(index)
+                    required += cost
+                if not selected:
+                    raise BackpressureError('共享缓冲不足以保留计算输入及结果；消息与断点保留')
+                lease = self.compute_budget.try_reserve(required)
+                if lease is None:
+                    raise BackpressureError('共享缓冲不足以保留计算输入及结果；消息与断点保留')
+                leases.append(lease)
+                # Repeated cancellation retains all children and their IPC bytes.
+                width = min(4, max(1, (len(selected) + self.compute_lane.workers - 1)
+                                     // self.compute_lane.workers))
+                chunks = [selected[offset:offset + width] for offset in range(0, len(selected), width)]
+                groups = await settle(asyncio.gather(*(compute(chunk) for chunk in chunks),
+                                                     return_exceptions=True))
+                completed = []
+                for group in groups:
+                    if isinstance(group, BaseException):
+                        raise group
+                    completed.extend(group)
+                for value in completed:
+                    if isinstance(value, BaseException):
+                        raise value
+                lease.shrink_to(sum(2 * len(raw[index].encode()) + 2 * value[2]
+                                    for index, value in zip(selected, completed)))
+                for index, (value, error, _) in zip(selected, completed):
+                    if error is None and operation == 'normalize':
+                        expected = events[index].model_copy(update={'raw_payload': {}})
+                        if value['envelope'] != expected:
+                            raise ValueError('计算返回的消息身份与归档输入不一致；消息保留')
+                    results[index] = value, error
+                del remaining[:len(selected)]
+            for index, event in enumerate(events):
+                if index not in raw:
+                    try:
+                        value = self.canonicalize(event) if operation == 'canonicalize' else self.normalize(event)
+                        results[index] = value, None
+                    except (ValueError, TypeError) as exc:
+                        results[index] = None, exc
+            yield results
+        finally:
+            for lease in leases:
+                lease.release()
 
     def health(self) -> dict:
         return {"schemas": [f"{dataset}@{self.datasets[dataset].schema_version}"
-                            for dataset in sorted(self.datasets)]}
+                            for dataset in sorted(self.datasets)],
+                "compute": self.compute_lane.health() if self.compute_lane else None}
 
     def mapping(self, envelope):
         contribution = self.datasets.get(envelope.dataset)
@@ -59,6 +178,24 @@ class DatasetPlugin:
 
     def namespace(self, envelope):
         return self.mapping(envelope).namespace
+
+    def archive_domains(self, envelope):
+        """Conservative whole-table ownership from the formal schema registry.
+
+        Include every dataset of the contribution, its shared cache namespace
+        and its single project state. Unknown write ownership stays exclusive.
+        Aggregate replacements also run alone to bound their complete-set memory.
+        """
+        contribution = self.mapping(envelope)
+        if contribution.mode == 'aggregate' or not contribution.archive_tables or any(
+                dataset not in DATASET_TABLE_GROUPS for dataset in contribution.datasets):
+            return frozenset({'*'})
+        registered = {table for dataset in contribution.datasets for table in DATASET_TABLE_GROUPS[dataset]}
+        if set(contribution.archive_tables) != registered:
+            return frozenset({'*'})
+        return frozenset({('project', self.project_id(envelope)),
+            ('fingerprint', contribution.namespace, self.fingerprint_source(envelope)),
+            *(('table', table) for table in contribution.archive_tables)})
 
     def stale_outcome(self, envelope):
         return self.mapping(envelope).stale_outcome

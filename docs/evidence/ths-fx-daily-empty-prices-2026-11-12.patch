@@ -1,0 +1,268 @@
+--- a/src/empire/features/fx/source.py
++++ b/src/empire/features/fx/source.py
+@@ -9,6 +9,10 @@
+ 
+ class QuoteUnavailable(ValueError):
+     """A valid quote head explicitly contains no current prices."""
++
++
++class DailyQuoteUnavailable(ValueError):
++    """A dated native daily response explicitly contains four empty prices."""
+ 
+ 
+ def decode(body, callback):
+@@ -72,6 +76,8 @@
+         raise ValueError('汇率当日日线来源日期异常超前')
+     if type(item.get('open')) is not int or item['open'] not in (0, 1):
+         raise ValueError('汇率当日日线交易状态无效')
++    if all(item.get(key) == '' for key in ('7', '8', '9', '11')):
++        raise DailyQuoteUnavailable(f'{code}：来源当日日线暂无报价（{stamp}），保留原数据和断点')
+     return [stamp, *[number(item.get(key)) for key in ('7', '8', '9', '11')]]
+ 
+ 
+--- a/src/empire/features/fx/transport.py
++++ b/src/empire/features/fx/transport.py
+@@ -2,8 +2,9 @@
+ import hashlib
+ from datetime import UTC, datetime
+ 
+-from empire.features.fx.contract import LIVE_PROJECT, url
++from empire.features.fx.contract import DAILY_PROJECT, LIVE_PROJECT, url
+ from empire.features.fx.source import (
++    DailyQuoteUnavailable,
+     QuoteUnavailable,
+     annual,
+     candle,
+@@ -36,7 +37,8 @@
+                     return candle(body, code, unit)[1]
+                 return annual(body, code, unit, snapshot)
+             except (ValueError, TypeError, KeyError, UnicodeError) as exc:
+-                if isinstance(exc, QuoteUnavailable) and self.project_id == LIVE_PROJECT:
++                if (isinstance(exc, QuoteUnavailable) and self.project_id == LIVE_PROJECT
++                        or isinstance(exc, DailyQuoteUnavailable) and self.project_id == DAILY_PROJECT):
+                     raise
+                 raw = response.content
+                 exc.diagnostic_recorded = await record_error_safely(self.records, self.stats,
+--- a/src/empire/features/fx/collector.py
++++ b/src/empire/features/fx/collector.py
+@@ -9,6 +9,7 @@
+ from empire.features.fx.contract import BASE, DAILY_JOB, DAILY_PROJECT, DATASET, digest, url
+ from empire.features.fx.live import FxLiveCollector
+ from empire.features.fx.planning import full_years, tail
++from empire.features.fx.source import DailyQuoteUnavailable
+ from empire.features.fx.verification import FxSourceConflict, verified_snapshot
+ from empire.plugins.collection.unit_prefetch import prefetch_units
+ from empire.plugins.collectors.support import publish_with_capacity, wait_for_archive
+@@ -54,7 +55,8 @@
+             cursor = dict(phase='collecting', codes=self.codes(), next_index=0, next_year=1900,
+                 snapshot_hash='', pages=0, collected=0, batch_id=uuid4().hex, fresh=bool(fresh))
+         self.stats.update(status=cursor['phase'], collected=cursor['collected'], total_units=len(cursor['codes']),
+-            completed_units=cursor['next_index'], unavailable_codes=[], source_gap_units=0, notice='')
++            completed_units=cursor['next_index'], unavailable_codes=[], empty_daily_codes=[],
++            source_gap_units=0, notice='')
+         try:
+             if cursor['phase'] == 'collecting':
+                 from datetime import UTC, datetime
+@@ -66,8 +68,10 @@
+                     code = cursor['codes'][i]
+                     try:
+                         snapshot, observed, verified = await verified_snapshot(self, code)
+-                    except FxSourceConflict:
++                    except (FxSourceConflict, DailyQuoteUnavailable) as exc:
+                         self.stats['unavailable_codes'].append(code)
++                        if isinstance(exc, DailyQuoteUnavailable):
++                            self.stats['empty_daily_codes'].append(code)
+                         self.stats['source_gap_units'] += 1
+                         if deferred is None:
+                             deferred = {k: cursor[k] for k in ('next_index', 'next_year', 'snapshot_hash')}
+@@ -121,6 +125,8 @@
+                     self.stats['notice'] = ('来源日线核验缺口：' + '、'.join(self.stats['unavailable_codes'])
+                         + f"；已核验{self.stats['completed_units']}/{len(cursor['codes'])}个品种，"
+                         + '有效入队数据已归档；保留缺口原数据和断点，下次继续核验')
++                    if self.stats['empty_daily_codes']:
++                        self.stats['notice'] += '；当日日线暂无报价：' + '、'.join(self.stats['empty_daily_codes'])
+                     raise CollectionSourceGap(self.stats['notice'])
+             self.stats['status'] = 'awaiting_archive'
+             await wait_for_archive(partial(self.confirmation.page_status, 'ths', self.job_key,
+--- /dev/null
++++ b/tests/test_fx_daily_empty_prices.py
+@@ -0,0 +1,118 @@
++"""Native daily empty OHLC is an availability gap for every registered symbol."""
++import copy
++import json
++
++import httpx
++import pytest
++
++from empire.contracts.collector import CollectionSourceGap
++from empire.features.fx.contract import SYMBOLS
++from empire.features.fx.source import current_candle
++from tests.test_fx import CODE, today_source
++from tests.test_fx_source_gaps import CODES, gap_collector
++from tests.test_fx_verification import CURRENT, NOW
++
++PRICE_FIELDS = ('7', '8', '9', '11')
++
++
++def empty_day(code=CODE, **changes):
++    return today_source(CURRENT, code=code, **(dict.fromkeys(PRICE_FIELDS, '') | changes))
++
++
++@pytest.mark.parametrize('code', SYMBOLS)
++@pytest.mark.parametrize('open_state', [0, 1])
++def test_valid_empty_day_has_specific_availability_type(code, open_state):
++    from empire.features.fx.source import DailyQuoteUnavailable
++    with pytest.raises(DailyQuoteUnavailable, match=code):
++        current_candle(empty_day(code, open=open_state), code, NOW)
++
++
++@pytest.mark.parametrize('field', PRICE_FIELDS)
++@pytest.mark.parametrize('value', [None, 0, '--', '0', 'NaN', '6.5'])
++def test_partial_empty_or_invalid_price_is_not_availability(field, value):
++    from empire.features.fx.source import DailyQuoteUnavailable
++    with pytest.raises(ValueError) as error:
++        current_candle(empty_day(**{field: value}), CODE, NOW)
++    assert not isinstance(error.value, DailyQuoteUnavailable)
++
++
++@pytest.mark.parametrize('field', [*PRICE_FIELDS, '1', 'open'])
++def test_missing_fields_are_not_availability(field):
++    from empire.features.fx.source import DailyQuoteUnavailable
++    callback, raw = empty_day().split('(', 1)
++    value = json.loads(raw[:-1])
++    del value['wh_' + CODE][field]
++    with pytest.raises(ValueError) as error:
++        current_candle(callback + '(' + json.dumps(value) + ')', CODE, NOW)
++    assert not isinstance(error.value, DailyQuoteUnavailable)
++
++
++@pytest.mark.parametrize('changes', [{'1': '20261112'}, {'1': '20260230'}, {'open': True}, {'open': 2}])
++def test_invalid_day_or_state_is_not_availability(changes):
++    from empire.features.fx.source import DailyQuoteUnavailable
++    with pytest.raises(ValueError) as error:
++        current_candle(empty_day(**changes), CODE, NOW)
++    assert not isinstance(error.value, DailyQuoteUnavailable)
++
++
++def daily_empty_collector(monkeypatch, failures):
++    c, _ = gap_collector(monkeypatch, None)
++    original = c.http.request.side_effect
++    def response(method, url, **kwargs):
++        code = url.split('wh_')[1].split('/')[0]
++        if '/today.js' in url and code in failures:
++            return httpx.Response(200, content=empty_day(code).encode())
++        return original(method, url, **kwargs)
++    c.http.request.side_effect = response
++    return c
++
++
++@pytest.mark.parametrize('failures', [{code} for code in CODES] + [set(CODES), set(CODES[:2])])
++async def test_empty_day_keeps_first_gap_archives_siblings_and_recovers(monkeypatch, failures):
++    c = daily_empty_collector(monkeypatch, failures)
++    missing = set(failures)
++    async def confirm(*args):
++        assert {e.raw_payload['code'] for e in c.ingest.events} == set(CODES) - missing
++        return {'status': 'complete'}
++    c.confirmation.page_status.side_effect = confirm
++    with pytest.raises(CollectionSourceGap, match='当日日线暂无报价'):
++        await c.execute()
++    cursor = c.ingest.state['cursor']
++    if missing == set(CODES):
++        assert cursor == {} and c.ingest.state['revision'] == 0
++    else:
++        assert cursor['next_index'] == min(CODES.index(code) for code in missing)
++        assert cursor['phase'] == 'collecting' and cursor['pages'] == len(CODES) - len(missing)
++    assert c.stats['completed_units'] == len(CODES) - len(missing)
++    assert c.stats['status'] == 'source_gap'
++    assert c.http.request.await_count == 2 * len(CODES) + len(CODES) - len(missing)
++    # Empty symbols use last+today only, never a retry or an annual fallback.
++    for code in missing:
++        requests = [call.args[1] for call in c.http.request.await_args_list if 'wh_' + code + '/' in call.args[1]]
++        assert len(requests) == 2 and all(url.endswith(('last.js', 'today.js')) for url in requests)
++    c.records.add_error.assert_not_awaited()
++    c.confirmation.page_status.side_effect = None
++    c.confirmation.page_status.return_value = {'status': 'complete'}
++    failures.clear()
++    assert (await c.execute())['phase'] == 'complete'
++    assert c.stats['unavailable_codes'] == [] and c.stats['notice'] == ''
++
++
++async def test_empty_day_does_not_hide_archive_failure(monkeypatch):
++    c = daily_empty_collector(monkeypatch, {CODES[1]})
++    c.confirmation.page_status.side_effect = RuntimeError('archive unavailable')
++    with pytest.raises(RuntimeError, match='archive unavailable'):
++        await c.execute()
++    assert c.stats['status'] == 'paused'
++
++
++async def test_existing_year_position_survives_empty_first_symbol(monkeypatch):
++    c = daily_empty_collector(monkeypatch, {CODES[0]})
++    c.ingest.state['cursor'] = dict(phase='collecting', codes=CODES, next_index=0,
++        next_year=2026, snapshot_hash='previous-snapshot', pages=0, collected=0,
++        batch_id='existing-year', fresh=False)
++    before = copy.deepcopy(c.ingest.state['cursor'])
++    with pytest.raises(CollectionSourceGap):
++        await c.execute()
++    cursor = c.ingest.state['cursor']
++    assert all(cursor[key] == before[key] for key in ('next_index', 'next_year', 'snapshot_hash'))
+--- /dev/null
++++ b/tests/integration/test_fx_daily_empty_pipeline.py
+@@ -0,0 +1,58 @@
++"""Native empty-day gaps never replace stored candles or block valid siblings."""
++import asyncio
++
++import pytest
++from sqlalchemy import event
++from sqlalchemy.engine import Engine
++
++from empire.contracts.collector import CollectionSourceGap
++from empire.features.fx.contract import DAILY_JOB
++from tests.integration.test_fx_archive import fx, pytestmark  # noqa: F401
++from tests.test_fx_daily_empty_prices import daily_empty_collector
++from tests.test_fx_source_gaps import CODES
++from tests.test_fx_verification import CLOSED
++
++
++async def test_native_empty_day_preserves_sql_archives_others_and_recovers(fx, monkeypatch):  # noqa: F811
++    _, c, query, redis, _ = fx
++    failures = set()
++    sample = daily_empty_collector(monkeypatch, failures)
++    c.http, c.selected_codes = sample.http, CODES
++    assert (await asyncio.wait_for(c.execute(), 20))['phase'] == 'complete'
++    before = await c.ingest.checkpoint(DAILY_JOB)
++    failures.add(CODES[1])
++    writes = []
++    def capture(conn, cursor, sql, *args):
++        if 'fx_' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
++            writes.append(sql)
++    event.listen(Engine, 'before_cursor_execute', capture)
++    try:
++        for _ in range(2):
++            with pytest.raises(CollectionSourceGap, match='当日日线暂无报价'):
++                await asyncio.wait_for(c.execute(baseline_revision=before['revision']), 20)
++            before = await c.ingest.checkpoint(DAILY_JOB)
++            assert before['cursor']['next_index'] == 1 and before['cursor']['phase'] == 'collecting'
++            assert writes == [] and await redis.client.xlen(redis.stream) == 0
++            for code in CODES:
++                assert await query.history(code, 2026) == [CLOSED]
++        assert (await c.records.list_error_summaries(c.project_id))['rows'] == []
++        failures.clear()
++        assert (await asyncio.wait_for(c.execute(baseline_revision=before['revision']), 20))['phase'] == 'complete'
++        assert writes == [] and await redis.client.xlen(redis.stream) == 0
++        assert c.stats['unavailable_codes'] == [] and c.stats['notice'] == ''
++    finally:
++        event.remove(Engine, 'before_cursor_execute', capture)
++
++
++async def test_all_empty_daily_does_not_publish_or_advance_checkpoint(fx, monkeypatch):  # noqa: F811
++    _, c, query, redis, _ = fx
++    sample = daily_empty_collector(monkeypatch, set(CODES))
++    c.http, c.selected_codes = sample.http, CODES
++    before = await c.ingest.checkpoint(DAILY_JOB)
++    with pytest.raises(CollectionSourceGap, match='0/3'):
++        await asyncio.wait_for(c.execute(), 20)
++    assert await c.ingest.checkpoint(DAILY_JOB) == before
++    assert await redis.client.xlen(redis.stream) == 0
++    assert (await c.records.list_error_summaries(c.project_id))['rows'] == []
++    for code in CODES:
++        assert await query.history(code, 2026) == []

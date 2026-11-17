@@ -70,11 +70,13 @@ async def test_same_download_settings_skip_sql_dml_and_keep_one_global_row(envir
             statements.append(statement)
 
     event.listen(mysql.engine, "before_cursor_execute", capture)
+    event.listen(mysql.archive_engine, "before_cursor_execute", capture)
     try:
         await service.save(dict(values))
         assert statements == []
     finally:
         event.remove(mysql.engine, "before_cursor_execute", capture)
+        event.remove(mysql.archive_engine, "before_cursor_execute", capture)
     with mysql.engine.connect() as conn:
         rows = conn.execute(text("SELECT kind,setting_key,payload FROM app_setting "
             "WHERE namespace=:namespace"), {"namespace": cfg["redis"]["namespace"]}).all()

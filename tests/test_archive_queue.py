@@ -40,7 +40,7 @@ def test_index_only_contains_bounded_ids_and_removes_empty_projects():
         queue.add("2-0", event("b"), True)
     assert len(queue.ids) == 1
     queue.forget(["1-0"])
-    assert not queue.ids and not queue.batches and not queue.projects and not queue.dirty
+    assert not queue.ids and not queue.batches and not queue.aggregate_projects and not queue.dirty
     queue.add("2-0", event("b"), True)
     assert queue.take().project == "b"
 
@@ -79,3 +79,19 @@ def test_failed_project_is_delayed_while_other_projects_continue(monkeypatch):
     assert queue.take() is None
     queue.recheck(retry_failed=True)
     assert queue.take() is bad
+
+
+def test_incremental_backlog_does_not_scan_existing_independent_batches():
+    queue = ArchiveQueue(10000)
+    for number in range(2000):
+        queue.add(f'1-{number}', event('same', batch=str(number)), True)
+    assert len(queue.batches) == 2000 and not queue.aggregate_projects
+    # No aggregate recheck enumeration even with many pending incremental units.
+    aggregate = event('same', batch='aggregate', dataset='stock.universe.page')
+    queue.add('2-0', aggregate, False)
+    batch = queue.ids['2-0']
+    batch.checked = True
+    queue.add('3-0', event('same', batch='new'), True)
+    assert not batch.checked
+    queue.forget(['2-0'])
+    assert not queue.aggregate_projects

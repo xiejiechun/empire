@@ -105,6 +105,29 @@ def test_complete_matrix_and_precision(kind):
     assert amount('0')['value'] == '0'
 
 
+@pytest.mark.parametrize('bad', [
+    {'value': '100000000', 'resolution': '0'},
+    {'value': '100000000', 'resolution': '-1'},
+    {'value': '100000000', 'resolution': []},
+    {'value': 'NaN', 'resolution': '1000000'},
+    {'value': '100000000000000000001', 'resolution': '1000000'},
+    {'value': '100000000', 'resolution': '1000000', 'extra': 'x'},
+])
+def test_repeated_valid_amount_does_not_hide_a_later_invalid_precision(bad):
+    rows = parse('income', source('income'), STOCK)
+    rows[1]['fields'][REQUIRED['income'][0]] = bad
+    with pytest.raises(ValueError):
+        validate_rows('income', 'SH:601139', rows)
+
+
+def test_matrix_scalar_validation_cache_does_not_survive_calls():
+    rows = parse('income', source('income'), STOCK)
+    assert validate_rows('income', 'SH:601139', rows) is rows
+    rows[0]['fields'][REQUIRED['income'][0]]['resolution'] = '0'
+    with pytest.raises(ValueError, match='越界'):
+        validate_rows('income', 'SH:601139', rows)
+
+
 @pytest.mark.parametrize('kind', KINDS)
 @pytest.mark.parametrize('missing', [False, '--', ''])
 def test_source_missing_amount_is_unknown_and_quality_fails(kind, missing):

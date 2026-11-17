@@ -31,7 +31,7 @@ def test_automatic_capacity_grows_with_distinct_exit_ips(count, slots, interval)
     assert fixed["effective_concurrency"] == 1 and fixed["effective_interval_ms"] == 500
 
 
-@pytest.mark.parametrize("values", [{"max_concurrency": 1025}, {"max_rps": -1},
+@pytest.mark.parametrize("values", [{"max_concurrency": 4097}, {"max_rps": -1},
                                    {"max_rps": True}, {"scaling_mode": "unknown"}])
 def test_invalid_scaling_policy_is_rejected(values):
     with pytest.raises(ValueError):

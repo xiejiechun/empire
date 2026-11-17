@@ -11,7 +11,7 @@ import "./preview/workspace.css";
 
 type Selection = { view: string; filters: Data; draft: Data; cursors: any[]; revision: number; order?: TableOrder };
 const selection = (spec: Data, filters = spec.defaults || {}): Selection => ({
-  view: spec.id, filters, draft: filters, cursors: [null], revision: 0,
+  view: spec.id, filters, draft: filters, cursors: [null], revision: 0, order: spec.default_order,
 });
 
 export default function DataPreview({ project }: { project: string }) {
@@ -55,6 +55,7 @@ function PreviewWorkspace({ project, catalog }: { project: string; catalog: Data
     <header className="preview-workspace-heading">
       <div><h3>{spec.title}</h3><p>{spec.description}</p></div>
       <Space wrap>
+        {spec.refresh_label && <Button disabled={query.loading} onClick={() => setCurrent(s => ({ ...s, cursors: [null], revision: s.revision + 1 }))}>{spec.refresh_label}</Button>}
         <Popover trigger="click" placement="bottomRight" title="数据口径与阅读说明" content={<div className="preview-reading-notes">{(spec.notes || []).map((note: string) => <p key={note}>{note}</p>)}<p>{query.data?.notice || "查询只读取已有数据；无记录不代表该范围已完成采集。"}</p></div>}><Button>阅读说明</Button></Popover>
         {trail.length > 0 && <Button aria-label="preview-back" onClick={() => { setCurrent(trail[trail.length - 1]); setTrail(trail.slice(0, -1)); }}>返回{catalog.find(v => v.id === trail[trail.length - 1].view)?.title}</Button>}
         <Button onClick={() => setExpanded(!expanded)} aria-pressed={expanded}>{expanded ? "收起预览" : "展开预览"}</Button>

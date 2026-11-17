@@ -39,6 +39,7 @@ class ArchiveLimits:
     scan_time_ms: int = 50
     work_max_units: int = 32
     work_time_ms: int = 50
+    unit_batch_size: int = 16
     index_max_entries: int = 100000
 
     @classmethod
@@ -47,7 +48,7 @@ class ArchiveLimits:
         for name, maximum in (("batch_size", 100), ("scan_max_messages", 100000),
                               ("scan_max_bytes", 256 * 1024 * 1024), ("scan_time_ms", 5000),
                               ("work_max_units", 10000), ("work_time_ms", 5000),
-                              ("index_max_entries", 1000000)):
+                              ("index_max_entries", 1000000), ("unit_batch_size", 32)):
             value = settings.get(name, getattr(cls, name))
             if type(value) is not int or not 1 <= value <= maximum:
                 raise ValueError(f"archive.{name} 须为 1～{maximum} 的整数")
@@ -64,6 +65,8 @@ class Batch:
     complete: bool = False
     checked: bool = False
     dirty: bool = True
+    domains: frozenset = field(default_factory=lambda: frozenset({'*'}))
+    batch_independent: bool = False
 
 
 class ArchiveIndexFull(RuntimeError):
@@ -74,7 +77,7 @@ class ArchiveQueue:
     def __init__(self, limit):
         self.limit = limit
         self.batches = {}
-        self.projects = {}
+        self.aggregate_projects = {}
         self.dirty = set()
         self.ids = {}
         self.ready = OrderedDict()
@@ -85,7 +88,8 @@ class ArchiveQueue:
         self.more_scan = False
         self.next_recheck = monotonic() + 60
 
-    def add(self, ident, envelope, incremental, project=None, complete=None):
+    def add(self, ident, envelope, incremental, project=None, complete=None, *, domains=None,
+            batch_independent=False):
         if ident in self.ids:
             return
         if len(self.ids) >= self.limit:
@@ -95,14 +99,22 @@ class ArchiveQueue:
         if batch is None:
             project = project or safe_project_id(envelope.job_key or envelope.source)
             batch = self.batches[key] = Batch(key, project, incremental)
+            batch.batch_independent = batch_independent
+            if domains is not None:
+                batch.domains = domains
             # A fresh batch can supersede a parked incomplete one, but only after
             # the scanner's full cutoff fence and the checkpoint check agree.
-            for previous in self.projects.get(project, ()):
-                if not previous.incremental:
-                    previous.checked = False
-                    previous.dirty = True
-                    self.dirty.add(previous)
-            self.projects.setdefault(project, set()).add(batch)
+            # Incremental backlog must not turn insertion into a project-wide
+            # scan. Only aggregate batches can need their completion rechecked.
+            for previous in self.aggregate_projects.get(project, ()):
+                previous.checked = False
+                previous.dirty = True
+                self.dirty.add(previous)
+            if not incremental:
+                self.aggregate_projects.setdefault(project, set()).add(batch)
+        if domains is not None:
+            batch.domains |= domains
+        batch.batch_independent &= batch_independent
         batch.ids[ident] = None
         self.ids[ident] = batch
         batch.dirty = True
@@ -138,7 +150,7 @@ class ArchiveQueue:
                     self.schedule(batch)
             self.next_recheck = clock + 60
 
-    def take(self, excluded=()):
+    def take(self, excluded=(), occupied=frozenset()):
         for _ in range(len(self.ready)):
             project, batches = self.ready.popitem(last=False)
             if project in excluded:
@@ -147,7 +159,12 @@ class ArchiveQueue:
             if project in self.delayed:
                 self.delayed[project][1].update(batches)
                 continue
-            _, batch = batches.popitem(last=False)
+            key, batch = next(iter(batches.items()))
+            if occupied and ('*' in occupied or '*' in batch.domains or
+                             batch.domains.intersection(occupied)):
+                self.ready[project] = batches
+                continue
+            batch = batches.pop(key)
             if batches:
                 self.ready[project] = batches
             if not batch.incremental and self.cutoff is not None:
@@ -173,10 +190,11 @@ class ArchiveQueue:
             if not batch.ids:
                 self.batches.pop(batch.key, None)
                 self.dirty.discard(batch)
-                project = self.projects[batch.project]
-                project.discard(batch)
-                if not project:
-                    self.projects.pop(batch.project)
+                if not batch.incremental:
+                    project = self.aggregate_projects[batch.project]
+                    project.discard(batch)
+                    if not project:
+                        self.aggregate_projects.pop(batch.project)
                 ready = self.ready.get(batch.project)
                 if ready is not None:
                     ready.pop(batch.key, None)

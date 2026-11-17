@@ -10,6 +10,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.hot_list.contract import CONTRACT, DATASET, JOB, PROJECT, day, digest
 from empire.features.hot_list.review import REVIEW_POLICY, review_due
@@ -21,6 +22,7 @@ from empire.features.hot_list.source import (
     parse_directory,
     transient_query_timeout,
 )
+from empire.plugins.collection.followup_reads import followup_reads, retain_parent
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -113,7 +115,9 @@ class HotListCollector:
                 )
                 raise
 
-        return DeferredResponse(response, consume)
+        result = DeferredResponse(response, consume)
+        result.owner = getattr(reservation, 'owner', None)
+        return result
 
     def envelope(self, cursor, mode, code, stamp, value, observed):
         e = make_envelope(
@@ -140,6 +144,7 @@ class HotListCollector:
             cursor=cursor,
         )
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0, codes=None, start=None, end=None):
         stage = "plan"
         try:
@@ -189,19 +194,15 @@ class HotListCollector:
                         last_date="",
                     )
                 self.stats.update(status="collecting", error="", requests=0, total_units=len(pool))
-                for index in range(cursor["index"], len(pool)):
-                    code = pool[index]
+                first = cursor['index']
+                directories = [(code, None, cursor['through']) for code in pool[first:]]
+                async with prefetch_units(self, directories, self.fetch, url=URL,
+                        domains=('tdx.com.cn',), item_name='日期目录') as directories_read:
+                  async for offset, directory_read in directories_read:
+                    index, code = first + offset, pool[first + offset]
                     self.stats.update(current_security=code, completed_units=index)
-                    async with prefetch_units(
-                        self,
-                        [(code, None, cursor["through"])],
-                        self.fetch,
-                        url=URL,
-                        domains=("tdx.com.cn",),
-                        item_name="日期目录",
-                    ) as reads:
-                        async for _, read in reads:
-                            dates, observed = await read.resolve()
+                    dates, observed = await directory_read.resolve()
+                    owner, retained = retain_parent(directory_read, dates)
                     checksum = digest(dates)
                     if cursor["directory_hash"] and cursor["directory_hash"] != checksum:
                         raise ValueError("龙虎榜中断证券目录已修订，须重新初始化，不混合集合")
@@ -235,10 +236,10 @@ class HotListCollector:
                             )
                         )
                     ]
-                    async with prefetch_units(
+                    async with followup_reads(
                         self,
                         [(code, d, cursor["through"]) for d in chosen],
-                        self.fetch,
+                        self.fetch, owner, retained,
                         url=URL,
                         domains=("tdx.com.cn",),
                         item_name="榜单日期",

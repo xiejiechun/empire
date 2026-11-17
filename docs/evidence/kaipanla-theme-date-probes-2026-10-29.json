@@ -1,0 +1,231 @@
+{
+  "scope": "Explicit date candidate probes on theme catalog command 3009, with historical sentiment positive control",
+  "policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "catalog": {
+    "network": {
+      "proxy_requests": 6
+    },
+    "results": [
+      {
+        "case": "baseline",
+        "request_body_hex": "",
+        "count": 253,
+        "bytes": 13497,
+        "content_sha256": "09749b070f63e5d69712fb0c62e57d08581e54c9946da28f6dfda5b572db7e49",
+        "identity_sha256": "679b636eeb8d3a774901ef8e8ed13290e432b3d44f98621639e2b0260f23f505",
+        "top": [
+          {
+            "id": "84",
+            "name": "人形机器人",
+            "rank": 1
+          },
+          {
+            "id": "226",
+            "name": "商业航天",
+            "rank": 2
+          },
+          {
+            "id": "226_2521",
+            "name": "卫星相关",
+            "rank": null
+          }
+        ]
+      },
+      {
+        "case": "2025-10-28-json",
+        "request_body_hex": "7b2264617465223a22323032352d31302d3238222c2244617465223a22323032352d31302d3238222c22446179223a22323032352d31302d3238227d",
+        "count": 253,
+        "bytes": 13497,
+        "content_sha256": "09749b070f63e5d69712fb0c62e57d08581e54c9946da28f6dfda5b572db7e49",
+        "identity_sha256": "679b636eeb8d3a774901ef8e8ed13290e432b3d44f98621639e2b0260f23f505",
+        "top": [
+          {
+            "id": "84",
+            "name": "人形机器人",
+            "rank": 1
+          },
+          {
+            "id": "226",
+            "name": "商业航天",
+            "rank": 2
+          },
+          {
+            "id": "226_2521",
+            "name": "卫星相关",
+            "rank": null
+          }
+        ]
+      },
+      {
+        "case": "2025-10-28-protobuf-field3",
+        "request_body_hex": "1a0a323032352d31302d3238",
+        "count": 253,
+        "bytes": 13495,
+        "content_sha256": "9d6024365a72c0a59d5ace75133686c4ac2d25da3b360898adb78b4b206d4d74",
+        "identity_sha256": "679b636eeb8d3a774901ef8e8ed13290e432b3d44f98621639e2b0260f23f505",
+        "top": [
+          {
+            "id": "84",
+            "name": "人形机器人",
+            "rank": 1
+          },
+          {
+            "id": "226",
+            "name": "商业航天",
+            "rank": 2
+          },
+          {
+            "id": "226_2521",
+            "name": "卫星相关",
+            "rank": null
+          }
+        ]
+      },
+      {
+        "case": "2026-09-28-json",
+        "request_body_hex": "7b2264617465223a22323032362d30392d3238222c2244617465223a22323032362d30392d3238222c22446179223a22323032362d30392d3238227d",
+        "count": 253,
+        "bytes": 13495,
+        "content_sha256": "b41566bc4611569c0a58d421ea69e283bf03d0c0177a2bec0da1e5126205bf33",
+        "identity_sha256": "679b636eeb8d3a774901ef8e8ed13290e432b3d44f98621639e2b0260f23f505",
+        "top": [
+          {
+            "id": "84",
+            "name": "人形机器人",
+            "rank": 1
+          },
+          {
+            "id": "226",
+            "name": "商业航天",
+            "rank": 2
+          },
+          {
+            "id": "226_2521",
+            "name": "卫星相关",
+            "rank": null
+          }
+        ]
+      },
+      {
+        "case": "2026-09-28-protobuf-field3",
+        "request_body_hex": "1a0a323032362d30392d3238",
+        "count": 253,
+        "bytes": 13495,
+        "content_sha256": "b41566bc4611569c0a58d421ea69e283bf03d0c0177a2bec0da1e5126205bf33",
+        "identity_sha256": "679b636eeb8d3a774901ef8e8ed13290e432b3d44f98621639e2b0260f23f505",
+        "top": [
+          {
+            "id": "84",
+            "name": "人形机器人",
+            "rank": 1
+          },
+          {
+            "id": "226",
+            "name": "商业航天",
+            "rank": 2
+          },
+          {
+            "id": "226_2521",
+            "name": "卫星相关",
+            "rank": null
+          }
+        ]
+      },
+      {
+        "case": "baseline-after",
+        "request_body_hex": "",
+        "count": 253,
+        "bytes": 13495,
+        "content_sha256": "b41566bc4611569c0a58d421ea69e283bf03d0c0177a2bec0da1e5126205bf33",
+        "identity_sha256": "679b636eeb8d3a774901ef8e8ed13290e432b3d44f98621639e2b0260f23f505",
+        "top": [
+          {
+            "id": "84",
+            "name": "人形机器人",
+            "rank": 1
+          },
+          {
+            "id": "226",
+            "name": "商业航天",
+            "rank": 2
+          },
+          {
+            "id": "226_2521",
+            "name": "卫星相关",
+            "rank": null
+          }
+        ]
+      }
+    ],
+    "business_writes": 0,
+    "business_enqueued": 0,
+    "hypothetical_fields": true
+  },
+  "sentiment_control": {
+    "at": "2026-10-29T12:01:36.400897+00:00",
+    "network": {
+      "proxy_requests": 2
+    },
+    "results": [
+      {
+        "action": "GetSentimentChart",
+        "params": {
+          "date": "2025-10-28",
+          "mode": "today"
+        },
+        "anonymous": true,
+        "route_before": {},
+        "status": 200,
+        "bytes": 10365,
+        "sha256": "831eda92e5534e64d489684520a42f1802df5590c2effe3e0d725ee42fee0260",
+        "structure": {
+          "root:current,date,errcode,highest,lowest,mode,points,thresholds,ttag": 1
+        },
+        "metadata": {
+          "date": "2025-10-28",
+          "errcode": "0"
+        },
+        "masked_string_count": 0,
+        "six_digit_string_count": 0,
+        "route_after": {
+          "proxy_requests": 1
+        }
+      },
+      {
+        "action": "GetSentimentChart",
+        "params": {
+          "date": "2026-09-28",
+          "mode": "today"
+        },
+        "anonymous": true,
+        "route_before": {
+          "proxy_requests": 1
+        },
+        "status": 200,
+        "bytes": 8847,
+        "sha256": "19c87f183a4271f2368135f7aafaaf4de376b776470339fa3e66bdfb12cbf180",
+        "structure": {
+          "root:current,date,errcode,highest,lowest,mode,points,thresholds,ttag": 1
+        },
+        "metadata": {
+          "date": "2026-09-28",
+          "errcode": "0"
+        },
+        "masked_string_count": 0,
+        "six_digit_string_count": 0,
+        "route_after": {
+          "proxy_requests": 2
+        }
+      }
+    ]
+  },
+  "limitations": [
+    "JSON keys in a binary catalog body are hypotheses, not known supported named parameters.",
+    "Protobuf field 3 is hypothetical; no date field assignment is established.",
+    "Response payload bytes exclude TLS/authentication overhead.",
+    "No history member or complete past catalog proof."
+  ]
+}

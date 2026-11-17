@@ -5,27 +5,33 @@ import asyncio
 import hashlib
 import json
 import re
+from collections import OrderedDict
 from dataclasses import dataclass, field
 from ipaddress import ip_address
 from time import monotonic
 from urllib.parse import quote, urlsplit
 
 import httpx
+from redis.exceptions import ResponseError
 
 from empire.contracts.download_settings import MAX_PARALLEL_DOWNLOADS
 from empire.contracts.plugin import PluginManifest
+from empire.plugins.infra.proxy_index import ExitIndex
 
 DIRECTORY = """
 local t = redis.call('TIME')
 local now = tonumber(t[1]) + tonumber(t[2]) / 1000000
-if redis.call('HLEN', KEYS[1]) > 1000 then return redis.error_reply('Directory too large') end
+if redis.call('HLEN', KEYS[1]) > 5000 then return redis.error_reply('Directory item limit exceeded') end
 local mapping = redis.call('HGETALL', KEYS[1])
-local result = {}
+local result, bytes = {}, 0
 for i = 1, #mapping, 2 do
+    bytes = bytes + #mapping[i] + #mapping[i+1]
+    if bytes > 8388608 then return redis.error_reply('Directory byte limit exceeded') end
     local expires = tonumber(redis.call('ZSCORE', KEYS[2], mapping[i+1]) or '0')
     if expires > now then
         table.insert(result, mapping[i])
-        table.insert(result, mapping[i+1])
+        -- Invalid oversize entries are counted without returning credentials/body.
+        table.insert(result, #mapping[i+1] <= 4096 and mapping[i+1] or '')
         table.insert(result, tostring(expires - now))
     end
 end
@@ -39,6 +45,7 @@ local t = redis.call('TIME')
 local now = tonumber(t[1]) + tonumber(t[2]) / 1000000
 local raw = redis.call('HGET', KEYS[1], ARGV[1])
 if not raw then return {} end
+if #raw > 4096 then return {} end
 local expires = tonumber(redis.call('ZSCORE', KEYS[2], raw) or '0')
 if expires <= now then return {} end
 return {ARGV[1], raw, tostring(expires - now)}
@@ -72,6 +79,7 @@ class Endpoint:
 
 
 _SCHEMES = {"http": "HTTP", "https": "HTTPS", "socks5": "SOCKS5", "socks5h": "SOCKS5"}
+MAX_IDLE_ORIGINS_PER_DEVICE = 16
 
 
 def _quote_url_component(value):
@@ -93,7 +101,7 @@ def parse_endpoint(code, raw, remaining):
         raise ValueError("无效设备编号")
     if isinstance(raw, bytes):
         raw = raw.decode("utf-8")
-    if not isinstance(raw, str):
+    if not isinstance(raw, str) or len(raw.encode('utf-8')) > 4096:
         raise ValueError("代理目录格式无效")
     directory_raw = raw
     try:
@@ -155,6 +163,52 @@ class ProxyPool:
         self.refreshed_at = 0.0
         self.directory_reads = 0
         self.candidate_checks = 0
+        self.directory_limited = False
+        self.index = ExitIndex()
+        self.waiters = {}
+        self.wait_timers = {}
+
+    def _wake(self, site=None, *, all_waiters=False, device_code=None):
+        keys = list(self.waiters) if all_waiters else [(site, device_code)]
+        for key in keys:
+            waiting = self.waiters.get(key, {})
+            while waiting:
+                future, _ = waiting.popitem(last=False)
+                if not future.done():
+                    future.set_result(None)
+                    if not all_waiters:
+                        break
+
+    def _timer_wake(self, key):
+        self.wait_timers.pop(key, None)
+        self._wake(*key[:1], device_code=key[1])
+
+    async def _wait(self, site, delay, *, device_code=None):
+        loop = asyncio.get_running_loop()
+        key = (site, device_code)
+        future = loop.create_future()
+        waiting = self.waiters.setdefault(key, OrderedDict())
+        waiting[future] = None
+        # One deadline per interchangeable waiter group. Successful reservation
+        # passes the wake to the next general waiter; an unavailable candidate
+        # rearms this timer. Bound identities have their own wake channel.
+        deadline = loop.time() + delay
+        timer = self.wait_timers.get(key)
+        if timer is None or timer.when() > deadline:
+            if timer:
+                timer.cancel()
+            self.wait_timers[key] = loop.call_at(deadline, self._timer_wake, key)
+        try:
+            await future
+        finally:
+            waiting.pop(future, None)
+            if not waiting:
+                timer = self.wait_timers.pop(key, None)
+                if timer:
+                    timer.cancel()
+            # Cancellation after a wake must not strand the released slot.
+            if future.cancelled():
+                self._wake(site, device_code=device_code)
 
     def _create_client(self, url):
         if self.ssl_context is None:
@@ -164,7 +218,12 @@ class ProxyPool:
             timeout=httpx.Timeout(30, connect=10),
             # Real transfers are bounded by the downloader's shared global window.
             # A single connection here would silently serialize different sites.
-            limits=httpx.Limits(max_connections=MAX_PARALLEL_DOWNLOADS, max_keepalive_connections=1),
+            # Origins use distinct HTTP pools even through the same proxy. One
+            # idle connection makes alternating sites tear each other down.
+            # Keep a bounded set, with short idle expiry and the same global
+            # transfer window; device retirement still owns every close.
+            limits=httpx.Limits(max_connections=MAX_PARALLEL_DOWNLOADS,
+                max_keepalive_connections=MAX_IDLE_ORIGINS_PER_DEVICE, keepalive_expiry=5),
             follow_redirects=False, headers={"User-Agent": "EmpireResearch/0.1 personal-research"})
 
     async def open_tunnel(self, entry, host, port, *, site):
@@ -179,7 +238,7 @@ class ProxyPool:
         async with self.lock:
             if self.closed:
                 return
-            if waiting and monotonic() - self.refreshed_at < 1:
+            if waiting and monotonic() - self.refreshed_at < 5:
                 return
             old = self.entries
             current = {}
@@ -202,14 +261,26 @@ class ProxyPool:
                         entry = previous
                     current[entry.code] = entry
                 self.error = ""
-            except Exception:
+                self.directory_limited = False
+            except Exception as exc:
+                if isinstance(exc, ResponseError) and str(exc) in (
+                        'Directory item limit exceeded', 'Directory byte limit exceeded'):
+                    # A rejected snapshot says nothing about removals. Known
+                    # candidates still require the atomic HGET/lease recheck.
+                    current = old
+                    self.directory_limited = True
+                    self.error = "代理目录超出 5000 项或 8 MiB 上限；等待完整目录恢复"
+                else:
+                    self.directory_limited = False
+                    self.error = "无法读取代理目录，代理请求等待恢复"
                 # Fail closed; Redis errors can contain command arguments with credentials.
-                self.error = "无法读取代理目录，代理请求等待恢复"
             self.entries = current
             self.refreshed_at = monotonic()
             for entry in old.values():
                 if current.get(entry.code) is not entry:
                     self.retired.append(entry)
+            self.index.sync(self.entries, self.retired)
+            self._wake(all_waiters=True)
         await self._reap(wait=False)
 
     async def _reap(self, *, wait=True):
@@ -255,6 +326,12 @@ class ProxyPool:
             self.entries.pop(entry.code)
         if not any(old is entry for old in self.retired):
             self.retired.append(entry)
+        group = self.index.exits.get(entry.exit_ip, {})
+        if group.get(entry.code) is entry:
+            group.pop(entry.code)
+        if entry.busy:
+            self.index.retiring.add(entry.code)
+        self.index.changed(entry.exit_ip)
 
     async def _validate_candidate(self, entry):
         self.candidate_checks += 1
@@ -279,21 +356,22 @@ class ProxyPool:
         self._retire(entry)
         if current is not None:
             self.entries[current.code] = current
+            self.index.exits.setdefault(current.exit_ip, {})[current.code] = current
+            self.index.changed(current.exit_ip)
         return False
 
     def healthy_egress_count(self):
-        now = monotonic()
-        return len({e.egress_identity for e in self.entries.values()
-                    if e.expires > now and e.cooldown <= now})
+        return self.index.healthy_count()
 
     def healthy_count(self):
         return self.healthy_egress_count()
 
     def defer(self, entry, site, delay_ms):
         ready = monotonic() + delay_ms / 1000
-        for candidate in self.entries.values():
-            if candidate.egress_identity == entry.egress_identity:
-                candidate.ready_at[site] = max(candidate.ready_at.get(site, 0), ready)
+        for candidate in self.index.exits.get(entry.exit_ip, {}).values():
+            candidate.ready_at[site] = max(candidate.ready_at.get(site, 0), ready)
+        self.index.site(site).update(entry.exit_ip, monotonic())
+        self.index.site(site).compact(monotonic())
 
     async def acquire(self, *, fallback=False, site="", excluded=None, device_code=None):
         if device_code is not None and (not isinstance(device_code, str)
@@ -303,25 +381,29 @@ class ProxyPool:
         self.waiting += 1
         try:
             while not self.closed:
-                self.changed.clear()
                 await self.refresh(waiting=True)
                 if self.closed:
                     break
                 now = monotonic()
-                eligible = [e for e in self.entries.values()
-                            if len(excluded) < 1000 and e.code not in excluded
-                            and (device_code is None or e.code == device_code)
-                            and e.expires > now and e.cooldown <= now]
-                busy_egresses = {e.egress_identity for e in [*self.entries.values(), *self.retired]
-                                  if site in e.active_sites}
-                candidates = [e for e in eligible if site not in e.active_sites
-                              and e.ready_at.get(site, 0) <= now
-                              and e.egress_identity not in busy_egresses
-                              and not any(old.code == e.code and old.busy for old in self.retired)]
-                if candidates:
-                    entry = min(candidates, key=lambda e: (e.requests, e.last_used, e.code))
+                ready = self.index.site(site)
+                entry = None
+                if len(excluded) < 1000:
+                    if device_code is None:
+                        entry = ready.take(excluded, now)
+                    else:
+                        candidate = self.entries.get(device_code)
+                        if (candidate and candidate.code not in excluded
+                                and candidate.expires > now and candidate.cooldown <= now
+                                and candidate.ready_at.get(site, 0) <= now
+                                and not self.index.busy[site].get(candidate.exit_ip)
+                                and candidate.code not in self.index.retiring):
+                            entry = candidate
+                if entry is not None:
                     entry.active_sites.add(site)
+                    self.index.reserve(entry, site)
                     entry.last_used = now
+                    if device_code is None:
+                        self._wake(site)
                     try:
                         # Reserve synchronously before the Redis await: concurrent
                         # acquisition cannot select this exit IP again for this site.
@@ -340,21 +422,38 @@ class ProxyPool:
                         self.failed(entry)
                         raise RuntimeError("代理客户端初始化失败，请检查代理协议支持") from None
                     return entry
+                if device_code is not None:
+                    candidate = self.entries.get(device_code)
+                    eligible = bool(candidate and candidate.code not in excluded and
+                        candidate.expires > now and candidate.cooldown <= now)
+                elif excluded:
+                    # Only failover consults the request's exclusion set. The
+                    # normal allocation/health path never scans the directory.
+                    eligible = len(excluded) < 1000 and any(e.code not in excluded and
+                        e.expires > now and e.cooldown <= now for e in self.entries.values())
+                else:
+                    eligible = self.index.healthy_count() > 0
                 if not eligible:
                     if device_code is not None:
+                        self._wake(site, device_code=device_code)
                         raise httpx.ProxyError('绑定的代理设备当前不可用，不更换设备或退回直连')
+                    if self.directory_limited:
+                        self._wake(site)
+                        raise httpx.ProxyError(self.error)
                     if fallback:
+                        self._wake(site)
                         return None
                     if excluded:
+                        self._wake(site)
                         raise httpx.ProxyError("本次请求的可用代理设备已全部失败，当前任务禁止本机直连")
-                deadlines = [self.refreshed_at + 1]
-                for candidate in self.entries.values():
-                    deadlines.extend(t for t in (candidate.expires, candidate.cooldown,
-                                     candidate.ready_at.get(site, 0)) if t > now)
-                try:
-                    await asyncio.wait_for(self.changed.wait(), max(.001, min(deadlines) - now))
-                except TimeoutError:
-                    pass
+                deadline = ready.deadline()
+                if device_code is not None:
+                    candidate = self.entries.get(device_code)
+                    deadline = (max(candidate.cooldown, candidate.ready_at.get(site, 0))
+                                if candidate and not self.index.busy[site].get(candidate.exit_ip)
+                                else float('inf'))
+                await self._wait(site, max(.001, min(self.refreshed_at + 5, deadline) - now),
+                                 device_code=device_code)
             raise RuntimeError("代理池已停止")
         finally:
             self.waiting -= 1
@@ -362,12 +461,19 @@ class ProxyPool:
     def failed(self, entry):
         entry.failures += 1
         entry.cooldown = monotonic() + min(120, 10 * 2 ** min(entry.failures - 1, 4))
+        self.index.changed(entry.exit_ip)
 
     async def release(self, entry, *, site=""):
         if site not in entry.active_sites:
             raise RuntimeError("代理请求许可已释放")
         entry.active_sites.remove(site)
-        self.changed.set()
+        self.index.release(entry, site)
+        current = self.entries.get(entry.code)
+        if current is not None and current.exit_ip != entry.exit_ip:
+            self.index.changed(current.exit_ip)
+        self._wake(site)
+        for candidate in self.index.exits.get(entry.exit_ip, {}).values():
+            self._wake(site, device_code=candidate.code)
         await self._reap(wait=False)
 
     async def snapshot(self):
@@ -387,6 +493,7 @@ class ProxyPool:
     async def close(self):
         self.closed = True
         self.changed.set()
+        self._wake(all_waiters=True)
         for entry in list(self.entries.values()):
             self._retire(entry)
         await self._reap()

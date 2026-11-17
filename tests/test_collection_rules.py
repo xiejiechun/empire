@@ -70,6 +70,12 @@ def test_rule_storage_addresses_follow_config_without_leaking_credentials():
     for ident in collection_rules():
         value = rule_details(ident, cfg)
         s = value['storage']
+        if ident in ('ths-fx-live', 'ths-yuanhang-etf-latest'):
+            assert s['latest'] == 'custom:test:' + ('fx:latest' if ident == 'ths-fx-live' else 'yuanhang:etf:latest')
+            assert s['queue'] is None and s['checkpoint'] is None and not s['tables']
+            assert s['state_table'] is None and not s['fingerprints']
+            assert 'SECRET' not in json.dumps(value)
+            continue
         assert s['queue'] == 'custom:test:ingest'
         assert s['checkpoint'] == 'custom:test:checkpoint:' + value['job_key']
         assert s['database'] == 'custom_db'

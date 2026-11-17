@@ -109,9 +109,14 @@ def parse_table(kind, security, name, period, table, *, today=None):
     return report
 
 
-def parse(body, kind, stock, today=None, *, gaps=None):
+def parse_all(body, stock, today=None, *, gaps=None):
+    prepared = {}
+    return {kind: parse(body, kind, stock, today, gaps=gaps, prepared=prepared) for kind in KINDS}
+
+
+def parse(body, kind, stock, today=None, *, gaps=None, prepared=None):
     try:
-        return parse_sections(body, kind, stock, today=today, gaps=gaps)
+        return parse_sections(body, kind, stock, today=today, gaps=gaps, prepared=prepared)
     except (ValueError, TypeError, KeyError, UnicodeError) as exc:
         message = str(exc)
         category = ('required_quantity_missing' if message.startswith('持有数量或单位无效：') and message.split('：')[-1] in ('-', '--', '—', '') else
@@ -122,11 +127,20 @@ def parse(body, kind, stock, today=None, *, gaps=None):
         raise
 
 
-def parse_sections(body, kind, stock, today=None, *, gaps=None):
-    source = body.decode('gb18030') if isinstance(body, bytes) else body
+def parse_sections(body, kind, stock, today=None, *, gaps=None, prepared=None):
+    prepared = {} if prepared is None else prepared
+    if kind in prepared:
+        return prepared[kind]
+    source = prepared.get('source')
+    if source is None:
+        source = body.decode('gb18030') if isinstance(body, bytes) else body
+        prepared['source'] = source
     if '</html>' not in source.lower():
         raise ValueError('持有人响应截断或验证页')
-    root = Document(source).root
+    root = prepared.get('root')
+    if root is None:
+        root = Document(source).root
+        prepared['root'] = root
     identity = one([n for n in root.find('input') if n.attrs.get('id') == 'stockCode'], '股票代码')
     if identity.attrs.get('value') != stock['code']:
         raise ValueError('持有人响应股票身份不符')
@@ -142,7 +156,7 @@ def parse_sections(body, kind, stock, today=None, *, gaps=None):
             raise ValueError('持有人栏目缺失但来源结构不能证明未提供')
         # A missing required top-holder report is not an empty availability state.
         if complete_profile:
-            parse(body, 'top_holders', stock, today=today)
+            parse(body, 'top_holders', stock, today=today, prepared=prepared)
         return []
     section = one(sections, '业务栏目')
     tabs = section.find('a', KINDS[kind][2])
@@ -181,4 +195,5 @@ def parse_sections(body, kind, stock, today=None, *, gaps=None):
         else:
             reports.append(report)
     reports.sort(key=lambda r: (r['report_date'], r['instrument_key'], r['report_type']))
-    return validate(kind, security, reports, today=today or date.today())
+    prepared[kind] = validate(kind, security, reports, today=today or date.today())
+    return prepared[kind]

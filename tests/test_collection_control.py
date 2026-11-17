@@ -295,6 +295,26 @@ async def test_proxy_policy_is_snapshotted_for_run_and_does_not_leak_context():
         await http.close()
 
 
+async def test_collection_origin_is_supplied_per_run_and_resets_after_failure():
+    from empire.contracts.collector import COLLECTION_ORIGIN
+    control, collector, _, http = await setup()
+    observed = []
+    async def execute(**kwargs):
+        observed.append(COLLECTION_ORIGIN.get())
+        raise ValueError('fixture failure')
+    collector.execute = execute
+    try:
+        await control.run('stocks', origin='schedule')
+        await control.tasks['stocks']
+        assert observed == ['schedule'] and COLLECTION_ORIGIN.get() == 'manual'
+        await control.run('stocks')
+        await control.tasks['stocks']
+        assert observed == ['schedule', 'manual'] and COLLECTION_ORIGIN.get() == 'manual'
+    finally:
+        await control.stop()
+        await http.close()
+
+
 @pytest.mark.parametrize("field,value", [("request_retries", 101), ("daily_time", "25:00"),
                                          ("interval_seconds", 0), ("enabled", "yes")])
 def test_invalid_settings(field, value):

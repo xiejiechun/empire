@@ -42,8 +42,8 @@ async def monthly():
             await client.aclose()
 
 
-async def collect(c):
-    return await asyncio.wait_for(c.execute(start_month=MONTH, end_month=MONTH,
+async def collect(c, *, fresh=False):
+    return await asyncio.wait_for(c.execute(fresh=fresh, start_month=MONTH, end_month=MONTH,
         baseline_revision=await c.checkpoint_revision()), 25)
 
 
@@ -64,6 +64,7 @@ async def test_parent_shared_group_query_hot_cold_revision_stale_replay(monthly)
         if 'restricted_share_unlock' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             dml.append(statement)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     original = q.mysql.archive
     async def counted(records):
         calls.append(records)
@@ -77,7 +78,7 @@ async def test_parent_shared_group_query_hot_cold_revision_stale_replay(monthly)
         assert not dml and calls
         c.http.request.side_effect = lambda *a, **kw: httpx.Response(200,
             json=source(revised=True) if json.loads(kw['content'])['Params'][0] == '0' else detail(revised=True))
-        await collect(c)
+        await collect(c, fresh=True)
         assert dml and len((await q.list_records())['rows']) == 2
         p, d = normalized(revised=True)
         # Detail correction is separate from list correction.
@@ -94,6 +95,7 @@ async def test_parent_shared_group_query_hot_cold_revision_stale_replay(monthly)
     finally:
         q.mysql.archive = original
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 @pytest.mark.parametrize('failure', ['sql', 'ack'])
@@ -135,6 +137,9 @@ async def test_missing_association_same_count_wrong_set_repair_and_source_empty(
     def damage():
         with q.mysql.engine.begin() as conn:
             conn.execute(text("UPDATE restricted_share_unlock_detail SET holder='同数异集损坏' LIMIT 1"))
+            conn.execute(text("UPDATE collection_state SET payload=JSON_REMOVE(payload,'$.units') "
+                'WHERE namespace=:namespace AND project_id=:project'),
+                {'namespace': q.namespace, 'project': c.project_id})
     await q.mysql.control(damage)
     assert next(v for v in await q.preparation_check(dict(start=MONTH, end='2020-01-31')) if v.criterion == 'coverage').status == 'fail'
     await collect(c)
@@ -144,13 +149,13 @@ async def test_missing_association_same_count_wrong_set_repair_and_source_empty(
         row[2] = None
     c.http.request.side_effect = lambda *a, **kw: httpx.Response(200,
         json=optional if json.loads(kw['content'])['Params'][0] == '0' else detail())
-    await collect(c)
+    await collect(c, fresh=True)
     checks = {v.criterion: v.status for v in await q.preparation_check(dict(start=MONTH, end='2020-01-31'))}
     assert checks['fields'] == checks['quality'] == 'pass'  # Optional source names do not block analysis.
     assert all(r['name'] is None for r in (await q.list_records())['rows'])
     c.http.request.side_effect = lambda *a, **kw: httpx.Response(200,
         json=source() if json.loads(kw['content'])['Params'][0] == '0' else detail(empty=True))
-    await collect(c)
+    await collect(c, fresh=True)
     rows = (await q.list_records())['rows']
     assert len(rows) == 2 and not await q.details(rows[0]['group_key'])
     checks = {v.criterion: v.status for v in await q.preparation_check(dict(start=MONTH, end='2020-01-31'))}

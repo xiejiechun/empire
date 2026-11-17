@@ -52,6 +52,12 @@ class UnlockDataPlugin:
             await self.mysql.require_schema(*schema_contract(table, *columns, 'content_hash', 'version_observed_at'))
         return {'unlocks.tdx_query': self}
 
+    async def maintenance_state(self):
+        from empire.features.unlocks.dataset import UnlockDataset
+        from empire.plugins.infra.tdx_maintenance import confirmed_proofs
+        state = await self.state()
+        return {**state, 'units': await confirmed_proofs(self, state.get('units', {}), UnlockDataset())}
+
     async def state(self):
         def read():
             with self.mysql.read_engine.connect() as conn:
@@ -177,6 +183,15 @@ class UnlockDataPlugin:
                     fresh = timedelta(0) <= datetime.now(UTC) - stamp <= timedelta(days=3)
             except Exception:
                 pass
+        if complete:
+            from empire.plugins.infra.tdx_maintenance import proofs_fresh
+            current = await self.maintenance_state()
+            now = datetime.now(UTC)
+            threshold = f'{(now.year * 12 + now.month - 3) // 12:04d}-{(now.year * 12 + now.month - 3) % 12 + 1:02d}-01'
+            selected = {k: p for k, p in current.get('units', {}).items()
+                        if manifest['start'] <= k[:10] <= manifest['end']}
+            fresh &= (current.get('manifest', {}).get('digest') == manifest.get('digest') and
+                      proofs_fresh(selected, now, lambda k: k[:10] >= threshold))
         return (
             CheckEvidence('fields', 'pass' if complete and not missing and not empties else 'fail',
                 f'核验{count}条列表；必需字段缺失{missing}；来源空明细组{empties}'),
@@ -184,7 +199,7 @@ class UnlockDataPlugin:
             CheckEvidence('coverage', 'pass' if complete else 'fail', '完整月份、三市场及最终范围集合证明核验'),
             CheckEvidence('quality', 'pass' if complete and not missing and not empties else 'fail',
                 '股数精确换算；并列列表保留；共享明细不重复计数，未知不填零'),
-            CheckEvidence('freshness', 'pass' if complete and fresh else 'fail', '匹配完整范围的SQL或可信摘要确认须在3天内'),
+            CheckEvidence('freshness', 'pass' if complete and fresh else 'fail', '范围确认3天内；近期及未来月份3天、历史月份93天内核验'),
             CheckEvidence('temporal', 'fail', '来源没有公告可用日期；解禁日期不能证明历史信号已公开', blocking=scope.purpose != 'analysis'),
         )
 

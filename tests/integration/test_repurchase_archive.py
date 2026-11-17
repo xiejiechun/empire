@@ -49,7 +49,73 @@ async def plans():
 
 
 async def collect(c):
-    return await asyncio.wait_for(c.execute(baseline_revision=await c.checkpoint_revision()), 20)
+    return await asyncio.wait_for(c.execute(fresh=True, baseline_revision=await c.checkpoint_revision()), 20)
+
+
+async def test_recent_incremental_keeps_old_rows_and_dated_full_proof(plans):
+    from datetime import date
+
+    from empire.features.repurchases.dataset import COVERAGE_KEY
+    m, c, q, store, source = plans
+    source.append(source_row('2'))
+    await collect(c)
+    source[0].update(UPD=date.today().isoformat()+' 00:00:00', REMARK2='增量修订')
+    source.append(source_row('3', UPD=date.today().isoformat()+' 00:00:00'))
+    seen = []
+    async def filtered(*args, **kwargs):
+        value = kwargs['params']['filter']
+        seen.append(value)
+        since = value.split("'")[1]
+        rows = [r for r in source if r['UPD'][:10] >= since]
+        return httpx.Response(200, request=httpx.Request('GET', URL), json=feed(rows))
+    c.http.request.side_effect = filtered
+    result = await asyncio.wait_for(c.execute(baseline_revision=await c.checkpoint_revision()), 30)
+    assert len(seen) == 1 and seen[0].startswith('(UPD>=')
+    assert result['collected'] == 2 and result['coverage_count'] == 3
+    assert (await q.detail('1'))['progress_remark'] == '增量修订'
+    assert await q.detail('2')
+    audit = await q.current_summary()
+    assert audit['valid'] and audit['count'] == 3 and audit['proof']['contract'] == 2
+    assert audit['proof']['full_observed_at'] < audit['proof']['observed_at']
+    assert await store.client.xlen(store.stream) == 0
+    assert (await q.preparation_check())[2].status == 'pass'
+    assert COVERAGE_KEY == 'coverage'
+
+
+async def test_empty_incremental_still_confirms_and_drains(plans):
+    m, c, q, store, source = plans
+    await collect(c)
+    c.http.request.side_effect = lambda *a, **kw: httpx.Response(200,
+        request=httpx.Request('GET', URL), json=dict(success=False, result=None, message='返回数据为空'))
+    result = await asyncio.wait_for(c.execute(baseline_revision=await c.checkpoint_revision()), 30)
+    assert result['collected'] == 0 and result['coverage_count'] == 1
+    assert await store.client.xlen(store.stream) == 0
+    assert (await q.current_summary())['valid']
+
+
+async def test_prose_binary_binding_preserves_unicode_escapes_and_null(plans):
+    m, c, q, store, source = plans
+    prose = "中文😀'\"\\\n\r\x00\x1a；DROP TABLE stock_repurchase_plan;" * 100
+    source[0].update(REMARK=prose, REPUROBJECTIVE=None, REMARK2='')
+    await collect(c)
+    row = await q.detail('1')
+    assert (row['remark'], row['objective'], row['progress_remark']) == (prose, None, '')
+    assert (await q.current_summary())['valid']
+    await collect(c)
+    assert (await q.detail('1'))['remark'] == prose
+    assert await store.client.xlen(store.stream) == 0
+
+
+async def test_removed_source_plan_cannot_be_blessed_by_next_incremental(plans):
+    m, c, q, store, source = plans
+    source.append(source_row('2'))
+    await collect(c)
+    source.pop()
+    complete = await collect(c)
+    assert await q.detail('2')  # Retain history, but do not claim a matching set.
+    assert not (await q.current_summary())['valid']
+    assert await q.refresh_plan(complete) is None
+    assert await q.refresh_plan() is None
 
 
 async def test_hot_cold_revision_stale_and_missing_field_repair(plans, monkeypatch):
@@ -64,6 +130,7 @@ async def test_hot_cold_revision_stale_and_missing_field_repair(plans, monkeypat
         if 'stock_repurchase_plan' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     original = q.mysql.archive
     async def counted(records):
         calls.append(1)
@@ -107,6 +174,7 @@ async def test_hot_cold_revision_stale_and_missing_field_repair(plans, monkeypat
         assert await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_delayed_archive_does_not_block_next_page_and_pagination(plans, monkeypatch):

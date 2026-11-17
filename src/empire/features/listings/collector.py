@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.listings.contract import (
     DATASET,
@@ -85,6 +86,7 @@ class ThsListingCollector:
         return await publish_with_capacity(self.ingest, self.stats, [e], job_key=JOB,
                                           expected_revision=state['revision'], cursor=cursor)
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
         self.stats.update(completed_units=0, total_units=None, unit_name='只股票')
         stage = 'plan'
@@ -117,6 +119,13 @@ class ThsListingCollector:
                 self.stats.update(completed_units=cursor['index'], total_units=len(keys))
                 selected = [(i, stocks[i]) for i in range(cursor['index'], len(stocks))
                          if cursor['full_refresh'] or keys[i] not in existing]
+                if (not selected and not cursor['pages'] and not cursor['full_refresh']
+                        and proof.get('scope_hash') == scope and proof.get('units') == len(keys)):
+                    cursor = {**cursor, 'phase': 'complete', 'index': len(keys)}
+                    await self.ingest.advance_checkpoint(job_key=JOB,
+                        expected_revision=state['revision'], cursor=cursor)
+                    self.stats.update(status='complete', completed_units=len(keys), pages=0, collected=0, error='')
+                    return cursor
                 async def download(item, *, reservation):
                     return await self.fetch(item[1], reservation=reservation, defer=True)
                 async with prefetch_units(self, selected, download,

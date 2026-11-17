@@ -9,7 +9,7 @@ import httpx
 from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
-from empire.contracts.request_cost import add_cost
+from empire.contracts.request_cost import add_cost, measured_run
 from empire.contracts.request_retry import retry_delay
 from empire.core.time import CHINA
 from empire.features.yuanhang.availability import DeferredSecurity, resolve_empty
@@ -87,16 +87,14 @@ class YuanhangCollector:
         await wait_for_capacity(self.ingest, self.stats)
         failures = {}
         last_error = None
-        confirmed_null = False
         null_observations = []
-        confirmation_node = None
         diagnostics = dict(security=code, through=through, retry_limit=self.request_retries, failures=[])
         for attempt in range(self.request_retries + 1):
             diagnostics.update(attempt=attempt + 1, attempt_limit=self.request_retries + 1,
                                remaining_retries=self.request_retries - attempt)
             try:
                 node = await select_node(self.identity, preferred, failures, last_error=last_error,
-                                         required_node=confirmation_node, diagnostics=diagnostics)
+                                         diagnostics=diagnostics)
             except NodeUnavailableError:
                 if attempt >= self.request_retries:
                     raise
@@ -106,27 +104,35 @@ class YuanhangCollector:
                 continue
             try:
                 return await self.fetch_authenticated(node, code, through, plan, reservation,
-                                                      fresh_connection=confirmed_null)
+                                                      fresh_connection=bool(null_observations))
             except MissingFinancialValue as exc:
                 evidence = {key: value for key, value in getattr(exc, 'yuanhang_diagnostics', {}).items()
                     if key in ('node', 'security', 'native_market', 'field', 'source_date',
                                'fresh_connection', 'response_bytes', 'response_sha256', 'null_tables')}
                 null_observations.append({**{key: value for key, value in evidence.items() if key != 'null_tables'},
                     'node': node, 'attempt': attempt + 1, 'field': exc.field, 'source_date': str(exc.day)})
+                null_observations = null_observations[-5:]
+                diagnostics['failures'] = (diagnostics['failures'] + [failure(node, exc, attempt + 1)])[-5:]
                 # Keep table structure shallow enough for bounded Redis metadata.
                 exc.yuanhang_diagnostics = {**diagnostics, **evidence,
-                    'null_observations': null_observations[-2:], 'confirmation_attempted': confirmed_null}
-                if not self.financial or confirmed_null or attempt >= self.request_retries:
+                    'null_observations': null_observations, 'confirmation_attempted': len(null_observations) > 1}
+                if not self.financial or attempt >= self.request_retries:
                     raise
-                confirmed_null, confirmation_node, last_error = True, node, exc
-                self.stats['financial_null_confirmations'] = self.stats.get('financial_null_confirmations', 0) + 1
+                # NULL is scoped to this complete security response. Prefer a
+                # different ready node without cooling its unrelated requests.
+                failures[node] = failures.get(node, 0) + 1
+                last_error = exc
+                add_cost('retries')
+                self.stats['financial_null_retries'] = self.stats.get('financial_null_retries', 0) + 1
                 await asyncio.sleep(retry_delay(attempt + 1))
             except (EmptyHistoryResponse, IncompleteFinancialHistory) as exc:
                 if plan.get('mode') == 'range':
                     raise ValueError('远航区间含已知成交日仍返回空响应；保留断点，不转为成功或全历史') from exc
                 if isinstance(exc, IncompleteFinancialHistory):
                     exc.yuanhang_diagnostics = {**diagnostics, 'node': node,
-                        'source_date': exc.source_date.isoformat(), 'missing_fields': [380],
+                        'source_date': exc.source_date.isoformat(),
+                        'first_source_date': exc.first_source_date.isoformat(), 'point_count': exc.point_count,
+                        'missing_fields': [380],
                         'present_fields': [1, 402, 407]}
                 return await resolve_empty(self, code, through, reservation=reservation, cause=exc, node=node)
             except IdleConnectionError:
@@ -136,6 +142,7 @@ class YuanhangCollector:
                 if attempt >= self.request_retries:
                     raise
                 preferred = node
+                add_cost('retries')
                 self.stats['idle_connection_retries'] = self.stats.get('idle_connection_retries', 0) + 1
                 await asyncio.sleep(retry_delay(attempt + 1))
             except (httpx.TransportError, SensitiveRequestError, TimeoutError) as exc:
@@ -145,6 +152,7 @@ class YuanhangCollector:
                         or attempt >= self.request_retries):
                     raise
                 failures[node] = failures.get(node, 0) + 1
+                add_cost('retries')
                 last_error = exc
                 self.stats['node_transport_retries'] = self.stats.get('node_transport_retries', 0) + 1
                 await asyncio.sleep(retry_delay(attempt + 1))
@@ -168,6 +176,7 @@ class YuanhangCollector:
                     self.identity.sessions.reject(node, session)
                     raise
                 session = await self.identity.login(node, project_id=self.project_id, rejected=session)
+                add_cost('retries')
 
     async def publish(self, state, cursor, history, observed):
         page = cursor['pages'] + 1
@@ -182,6 +191,7 @@ class YuanhangCollector:
                                            expected_revision=state['revision'], cursor=cursor)
         return state, cursor
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
         result = await self._execute(fresh=fresh, baseline_revision=baseline_revision)
         carried = {}
@@ -266,7 +276,7 @@ class YuanhangCollector:
             self.plans = {}
             if cursor['phase'] == 'collecting':
                 first = cursor['next_index'] + int(bool(cursor.get('current_plan')))
-                remaining = codes[first:]
+                remaining = codes[first:cursor.get('round_end', len(codes))]
                 if self.financial:
                     markets = await self.query.financial_markets()
                     if cursor.get('retry_deferred'):
@@ -289,12 +299,12 @@ class YuanhangCollector:
                     positions = [i for i in positions if i < cursor['round_end']]
                 else:
                     positions = positions[:64]
-                    cursor = {**cursor, 'round_end': positions[-1] + 1 if positions else cursor['next_index']}
+                    cursor = {**cursor, 'round_end': positions[-1] + 1 if positions else len(codes)}
                     state = await self.ingest.advance_checkpoint(job_key=self.job_key,
                         expected_revision=state['revision'], cursor=cursor)
             selected_plans = [self.plans[codes[i]] for i in positions]
             self.stats.update(planned_requests=len(positions), skipped_units=cursor.get('skipped_units', 0)
-                              + len(codes) - cursor['next_index'] - len(positions),
+                              + sum(p['mode'] == 'skip' for p in self.plans.values()),
                 full_units=sum(p['mode'] == 'full' for p in selected_plans),
                 range_units=sum(p['mode'] == 'range' for p in selected_plans))
             cursor = {**cursor, 'deferred': cursor.get('deferred', {}),
@@ -360,8 +370,9 @@ class YuanhangCollector:
                         self.stats.update(completed_units=n + 1, collected=cursor['collected'], pages=cursor['pages'],
                                           deferred_units=len(cursor['deferred']))
             if cursor['phase'] == 'collecting':
+                end = cursor.get('round_end', len(codes))
                 cursor = {**cursor, 'phase': 'awaiting_archive', 'next_index': len(codes),
-                          'skipped_units': cursor['skipped_units'] + len(codes) - cursor['next_index']}
+                          'skipped_units': cursor['skipped_units'] + end - cursor['next_index']}
                 state = await self.ingest.advance_checkpoint(job_key=self.job_key,
                     expected_revision=state['revision'], cursor=cursor)
                 self.stats.update(completed_units=len(positions))

@@ -54,8 +54,11 @@ const path = require("node:path"),
         .getByRole("button", { name: "立即采集", exact: true })
         .isDisabled(),
     );
-    assert.equal(await p.locator('.context-item').count(),5);
-    assert.equal(await p.locator('.round-picker button').count(),3);
+    const navigation = await p.getByRole('complementary', {name:'采集管理菜单'}).locator('.context-item').allTextContents();
+    assert.equal(navigation.length,6);
+    for (const name of ['采集任务','已归档任务','站点访问规则','采集出口','身份管理','共享资源'])
+      assert.ok(navigation.some(text=>text.includes(name)));
+    assert.equal(await p.getByRole('combobox',{name:'选择运行轮次'}).count(),1);
     await p.waitForTimeout(500);
     await p.screenshot({animations:'disabled',path:path.join(root,'qa-output','restored-tasks.png')});
     console.log(

@@ -1,0 +1,371 @@
+{
+  "run_id": "3b75768af53b4fa9898fce17ba014ab7",
+  "subject": "index-prices",
+  "started_at": "2026-11-06T12:35:04.574346+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/index_prices/contract.py": "b6468227862ae7461e73019c6699d2c5537591effbf5a9eaad5d5d88999f92de",
+    "src/empire/features/index_prices/dataset.py": "45c2a96cfd6cced0cbec62b9b7d14cea715a97234597b937f90038ecda399e84",
+    "src/empire/features/index_prices/query.py": "ad1299b9deb0e88a474620176eb560446c8049150f6e322a41d77d3d90208443",
+    "src/empire/features/indices/contract.py": "7d76cd944add4345b3797e714a911be9d6fe85bbe1e9b7587cc1f32409980dee",
+    "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
+    "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+    "src/empire/plugins/infra/mysql_store.py": "ba3605c193ab06adf753287d0cafccf530e7a3cf11e80fd47605d34611db11c2",
+    "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
+    "scripts/measure_index_prices.py": "7e41b903104195b798404da3c15650c73688b1f722771a4ac6d9b630a2ae5d03"
+  },
+  "ddl_scopes": {
+    "index_daily_price": "83e2f5fd66f9b1004a3c26ee72a66f8c211364d15caf8ce752b7213ae85feb87",
+    "index_price_year": "adb3d00d819c95ce8f758988d2bd5001b02347412eab9abeed767365510eb177"
+  },
+  "measurements": {
+    "query_samples_ms": {
+      "index_page": [
+        3.602700002375059,
+        2.0454000041354448,
+        1.8703999958233908,
+        1.585899997735396,
+        1.6464000000269152,
+        1.4616999978898093,
+        1.4004999975441024,
+        1.486799999838695,
+        1.3592000032076612,
+        1.3560000006691553,
+        1.7063999985111877,
+        2.45869999343995,
+        1.5368999956990592,
+        1.6452999989269301,
+        1.4333000071928836,
+        1.4928000018699095,
+        1.3641999976243824,
+        1.3623999984702095,
+        1.613399996131193,
+        1.622199997655116
+      ],
+      "date_page": [
+        5.41259999590693,
+        5.004200000257697,
+        4.616400001395959,
+        5.787699999928009,
+        4.703499995230231,
+        5.7708999956958,
+        4.832500002521556,
+        4.366100001789164,
+        4.675899996072985,
+        4.676200005633291,
+        4.965699998138007,
+        5.4180000006454065,
+        4.514200001722202,
+        4.99629999831086,
+        5.03010000102222,
+        4.246600001351908,
+        5.36889999784762,
+        4.71809999726247,
+        4.162000004725996,
+        4.755100002512336
+      ]
+    },
+    "index_page_p95_ms": 2.45869999343995,
+    "date_page_p95_ms": 5.7708999956958,
+    "import_seconds": 5.368122400002903,
+    "allocated_bytes": 12763136,
+    "state_bytes": 51210
+  },
+  "limits": {
+    "index_page_p95_ms": 50,
+    "date_page_p95_ms": 50,
+    "import_seconds": 30,
+    "allocated_bytes": 67108864,
+    "state_bytes": 8388608
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 100000,
+    "indices": 1000,
+    "synthetic": true,
+    "repeat_business_dml": 0,
+    "revision_writes": 2,
+    "repeats": 20,
+    "cache": "unforced MySQL warm repeats; Redis not used"
+  },
+  "reviewed_tradeoffs": "年度聚合证明与结构化日行；双向日期索引，主键游标分页。100000合成日行不代表全目录实采或全部历史容量；总2GiB为规划预算。状态只保留观察版本，无日线正文。",
+  "explain": {
+    "index_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "index_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_index_price_date",
+        "key": "PRIMARY",
+        "key_len": "9",
+        "ref": null,
+        "rows": 69,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "all_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "index_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_index_price_date",
+        "key": "ix_index_price_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 49787,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ]
+  },
+  "cleanup_protocol": "CapacitySession owned database; final result only after cleanup",
+  "protocol": {
+    "schema": 1,
+    "preserved_scale": true,
+    "preserved_limits": true
+  },
+  "correctness": {
+    "full_business_keys_and_content": true,
+    "original_year_digest": "d3c95d6ca3f39ca2856bf554c238ffcae9436ee9d735947baf55f81c97f3c6ac",
+    "revised_year_digest": "005ca3cf1d2aaac258ef858b180f033522d48d2d5521e32806b5ec3f67309af4",
+    "repeat_zero_business_dml": true,
+    "revision_writes": 2
+  },
+  "input_identity_verified": true,
+  "checked_at": "2026-11-06T12:35:13.291139+00:00",
+  "database": "empire_capacity_3b75768af53b4fa9898fce17ba014ab7_test",
+  "measurement_service": {
+    "server_uuid": "b9701dec-d990-11f1-b1a0-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 1,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  },
+  "original_evidence": {
+    "path": "docs/evidence/large-exit-index-prices-capacity-2026-11-06.json",
+    "sha256": "ad4111644669c60129c1b8efd54d2c87b2230d76b37c513189b19f3ba7525813",
+    "bindings": {
+      "src/empire/features/index_prices/contract.py": "b6468227862ae7461e73019c6699d2c5537591effbf5a9eaad5d5d88999f92de",
+      "src/empire/features/index_prices/dataset.py": "45c2a96cfd6cced0cbec62b9b7d14cea715a97234597b937f90038ecda399e84",
+      "src/empire/features/index_prices/query.py": "ad1299b9deb0e88a474620176eb560446c8049150f6e322a41d77d3d90208443",
+      "src/empire/features/indices/contract.py": "7d76cd944add4345b3797e714a911be9d6fe85bbe1e9b7587cc1f32409980dee",
+      "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
+      "src/empire/contracts/security.py": "13caf2440c3514fb5b5e554a733b70800925147fe31f9a3dde21fb94ee982b6a",
+      "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+      "sql/business-schema.json": "dec4b14f67b1f055dabc17818669844b94daf4584408754b17c381e77cb9e6ca",
+      "src/empire/plugins/infra/mysql_store.py": "ba3605c193ab06adf753287d0cafccf530e7a3cf11e80fd47605d34611db11c2",
+      "src/empire/plugins/infra/collection_state.py": "b9c05411ffb27d626cd3d156ea96ee9f1fd4de7a1e65b2accc0f73881a733f76",
+      "sql/schema.sql": "ae823bd561b30b120cd69bed74b6f411ba116e6297d08bb70294a3fed677df45",
+      "sql/schema-contract.json": "cbb17e4ad2050ff88c83fa5c02cb23c0dd267dbd98d46eb7bc10453da7cd27d1",
+      "scripts/measure_index_prices.py": "7e41b903104195b798404da3c15650c73688b1f722771a4ac6d9b630a2ae5d03"
+    },
+    "note": "No measurements repeated or numbers changed. Reconstructed pre-forex inputs match original hashes; complete DDL/shapes/ownership identical for measured table scope. Only two disjoint forex tables added."
+  },
+  "schema_objects": {
+    "index_daily_price": {
+      "ddl_sha256": "83e2f5fd66f9b1004a3c26ee72a66f8c211364d15caf8ce752b7213ae85feb87",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "open": {
+            "type": "decimal(18, 6)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "high": {
+            "type": "decimal(18, 6)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "low": {
+            "type": "decimal(18, 6)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "close": {
+            "type": "decimal(18, 6)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "volume": {
+            "type": "decimal(24, 4)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "amount": {
+            "type": "decimal(24, 4)",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code",
+          "trade_date"
+        ],
+        "indexes": {
+          "ix_index_price_date": {
+            "columns": [
+              "trade_date",
+              "index_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_index_price_code": "regexp_like(index_code,'^[0-9a-z]{6}$')",
+          "ck_index_price_date": "(trade_date>='1990-01-01')",
+          "ck_index_price_ohlc": "((close>0)and((openisnull)or(open>0))and((highisnull)or(high>0))and((lowisnull)or(low>0)))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "index_code",
+          "trade_date"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "index.price.year": {
+            "tables": [
+              "index_daily_price",
+              "index_price_year"
+            ],
+            "primary": "index_daily_price"
+          },
+          "index.price.status": {
+            "tables": [
+              "index_daily_price",
+              "index_price_year"
+            ],
+            "primary": "index_daily_price"
+          }
+        }
+      }
+    },
+    "index_price_year": {
+      "ddl_sha256": "adb3d00d819c95ce8f758988d2bd5001b02347412eab9abeed767365510eb177",
+      "shape": {
+        "columns": {
+          "index_code": {
+            "type": "char(6) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "quote_year": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "source_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "row_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "last_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "complete": {
+            "type": "tinyint",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "index_code",
+          "quote_year"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_index_year_code": "regexp_like(index_code,'^[0-9a-z]{6}$')",
+          "ck_index_year_complete": "((completein(0,1))and((complete=0)or(source_count=row_count)))",
+          "ck_index_year_count": "((source_countbetween1and366)and(row_countbetween1and366))",
+          "ck_index_year_dates": "((year(first_date)=quote_year)and(year(last_date)=quote_year)and(first_date<=last_date))",
+          "ck_index_year_hash": "regexp_like(content_hash,'^[0-9a-f]{64}$')"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "index_code",
+          "quote_year"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "index.price.year": {
+            "tables": [
+              "index_daily_price",
+              "index_price_year"
+            ],
+            "primary": "index_daily_price"
+          },
+          "index.price.status": {
+            "tables": [
+              "index_daily_price",
+              "index_price_year"
+            ],
+            "primary": "index_daily_price"
+          }
+        }
+      }
+    }
+  }
+}

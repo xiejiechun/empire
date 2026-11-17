@@ -25,17 +25,29 @@ class BorrowedReservation:
         self.size += extra
         return True
 
+    def retain_bytes(self, size):
+        """Reuse the unit's pre-reserved result workspace before growing it."""
+        return self.owner.grow_to(max(self.owner.size, self.size + size))
+
 
 class DeferredResponse:
     """Keep source validation in the ordered consumer, with its diagnostic body."""
     def __init__(self, response, consume):
         self.response, self.consume = response, consume
+        self.retained = []
+
+    def retain(self, resource):
+        self.retained.append(resource)
 
     def close(self):
-        if self.response is not None:
-            self.response.close()
-            self.response = None
-        self.consume = None
+        try:
+            if self.response is not None:
+                self.response.close()
+        finally:
+            self.response = self.consume = None
+            for resource in self.retained:
+                resource.close()
+            self.retained.clear()
 
 
 @dataclass

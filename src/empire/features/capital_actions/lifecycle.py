@@ -44,7 +44,8 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
         if cursor.get('phase') != 'awaiting_archive':
             if c.kind == 'dividends':
                 from empire.features.capital_actions.dividend_history import collect_history
-                units, observed, source_hash = await collect_history(c, force_history=bool(fresh and not progressed))
+                units, observed, source_hash = await collect_history(c,
+                    force_history=bool(fresh and not progressed) or cursor.get('force_history', False))
             else:
                 async def download_list(_, *, reservation):
                     return await complete_response(c, c.kind, reservation=reservation, defer=True)
@@ -77,7 +78,7 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
                 cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0, collected=0,
                               source_hash=source_hash, scope_hash=digest(keys), units=len(keys),
                               rolling=digest([]), started_at=datetime.now(UTC).isoformat(),
-                              schema_version=SCHEMA_VERSIONS[c.kind])
+                              schema_version=SCHEMA_VERSIONS[c.kind], force_history=bool(fresh and not progressed))
                 if previous_source_hash and previous_source_hash != source_hash:
                     cursor['scope_changed'] = True
                 if c.kind == 'additional_issues':
@@ -151,9 +152,15 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
                     consecutive_failures = 0
                     next_cursor = {**cursor, 'index': index + 1, 'pages': cursor['pages'] + 1,
                                    'collected': cursor['collected'] + len(rows),
-                                   'rolling': chain(cursor['rolling'], unit, rows)}
+                                   'rolling': (digest([cursor['rolling'], unit,
+                                       c.dividend_summaries[unit]['digest'], len(rows)])
+                                       if c.kind == 'dividends' else chain(cursor['rolling'], unit, rows))}
                     stage = 'queue_publish'
-                    if failures:
+                    if c.kind == 'dividends' and unit in c.dividend_reused:
+                        next_cursor['pages'] = cursor['pages']
+                        state = await c.ingest.advance_checkpoint(job_key=c.job_key,
+                            expected_revision=state['revision'], cursor=next_cursor)
+                    elif failures:
                         # Independent successful units are useful, but cannot advance
                         # the continuous frontier or contribute to its manifest.
                         side_cursor = {**cursor, 'batch_id': uuid4().hex, 'pages': 1}
@@ -171,6 +178,9 @@ async def collect_units(collector, *, fresh=False, baseline_revision=0):
                 raise first_error
             manifest = {'units': cursor['units'], 'count': cursor['collected'],
                         'scope_hash': cursor['scope_hash'], 'digest': cursor['rolling']}
+            if c.kind == 'dividends':
+                manifest['periods'] = c.dividend_periods
+                manifest['period_scope_hash'] = digest(sorted(c.dividend_periods))
             next_cursor = {**cursor, 'pages': cursor['pages'] + 1, 'phase': 'awaiting_archive'}
             state = await publish(c, state, next_cursor, 'manifest', [], manifest, datetime.now(UTC))
             cursor = state['cursor']

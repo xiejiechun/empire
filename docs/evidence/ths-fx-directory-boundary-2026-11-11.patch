@@ -1,0 +1,139 @@
+--- a/src/empire/features/fx/verification.py
++++ b/src/empire/features/fx/verification.py
+@@ -2,8 +2,9 @@
+ from datetime import datetime
+ 
+ from empire.core.time import CHINA
+-from empire.features.fx.contract import validate_rows
++from empire.features.fx.contract import digest, url, validate_rows
+ from empire.features.fx.source import closed_through
++from empire.plugins.collectors.support import record_error_safely
+ 
+ 
+ def agrees(snapshot, quote, observed):
+@@ -17,15 +18,24 @@
+     return len(rows) >= 2 and rows[-2][4] == quote['previous_close']
+ 
+ 
+-def reconcile(snapshot, annual_rows, observed):
++def reconcile(snapshot, annual_rows, observed, quote):
+     """Validate raw directory counts before independently excluding unclosed rows."""
+     cutoff = closed_through(observed)
+     closed = {year: [r for r in rows if r[0] <= cutoff] for year, rows in annual_rows.items()}
+     counts = dict(snapshot['years'])
++    quote_day = datetime.fromisoformat(quote['source_time']).astimezone(CHINA).date().isoformat()
+     for year, rows in closed.items():
+         count = snapshot['source_years'].get(str(year))
+         raw = annual_rows[year]
+-        incomplete = count is not None and len(raw) != count or count is None and bool(rows)
++        validate_rows(raw, year)
++        # The directory and recent body can precede the first quote of a new
++        # source day. Only that exact unclosed suffix may extend its count.
++        extension = (count is not None and len(raw) == count + 1 and len(raw) >= 2
++            and raw[-1][0] == quote_day and quote_day > cutoff
++            and raw[-2][0] == snapshot['source_tail'][-1][0]
++            and quote_day > snapshot['source_tail'][-1][0])
++        incomplete = (count is not None and len(raw) != count and not extension
++                      or count is None and bool(rows))
+         wrong_start = rows and year == int(snapshot['start'][:4]) and rows[0][0] != snapshot['start']
+         if incomplete or wrong_start or raw[-1][0] > observed.astimezone(CHINA).date().isoformat():
+             raise ValueError(f'汇率核验年度与来源目录不完整（{year}: {len(raw)}/{count}），保留原数据')
+@@ -67,8 +77,21 @@
+     quote_year = datetime.fromisoformat(quote['source_time']).astimezone(CHINA).year
+     years = sorted({quote_year, int(snapshot['end'][:4])})
+     candidates = {year: await collector.fetch(code, year, raw_annual=True) for year in years}
+-    resolved, verified = reconcile(snapshot, candidates, observed)
+-    if not agrees(resolved, quote, observed):
+-        raise ValueError('汇率近期、年度日线与实时昨收/日期不一致，本轮保留原数据')
++    try:
++        resolved, verified = reconcile(snapshot, candidates, observed, quote)
++        if not agrees(resolved, quote, observed):
++            raise ValueError('汇率近期、年度日线与实时昨收/日期不一致，本轮保留原数据')
++    except ValueError as cause:
++        exc = ValueError(f'{code}: {cause}')
++        exc.diagnostic_recorded = await record_error_safely(collector.records, collector.stats,
++            collector.project_id, exc, stage='source_validation',
++            unavailable_message='汇率跨响应核验诊断暂不可用', fields=dict(request_url=url(code),
++                metadata=dict(kind='cross_response_validation', symbol=code,
++                    cutoff=closed_through(observed), source_tail=snapshot['source_tail'],
++                    quote=quote, annuals={str(year): dict(directory=snapshot['source_years'].get(str(year)),
++                        count=len(rows), first=rows[0][0] if rows else None, tail=rows[-3:],
++                        content_sha256=digest(rows), dates_sha256=digest([r[0] for r in rows]))
++                        for year, rows in candidates.items()})))
++        raise exc from cause
+     collector.stats['reconciled_years'] = years
+     return resolved, observed, verified
+--- a/tests/test_fx_verification.py
++++ b/tests/test_fx_verification.py
+@@ -52,7 +52,7 @@
+     stale_older = [*older[:4], '6.65']
+     initial = dict(start='2016-01-03', end=OLD[0], years={'2026': 2},
+                    rows=[older, OLD], source_tail=[OLD], source_years={'2026': 3})
+-    result, verified = reconcile(initial, {2026: [stale_older, CLOSED, CURRENT]}, NOW)
++    result, verified = reconcile(initial, {2026: [stale_older, CLOSED, CURRENT]}, NOW, QUOTE)
+     assert result['rows'] == [older, CLOSED] and verified[2026] == [older, CLOSED]
+     assert agrees(result, QUOTE, NOW)
+ 
+@@ -62,14 +62,15 @@
+     initial = dict(start='2016-01-03', end=OLD[0], years={'2026': 2},
+                    rows=[older, OLD], source_tail=[OLD], source_years={'2026': 3})
+     with pytest.raises(ValueError, match='日期集合不一致'):
+-        reconcile(initial, {2026: [["2026-11-05", *older[1:]], CLOSED, CURRENT]}, NOW)
++        reconcile(initial, {2026: [["2026-11-05", *older[1:]], CLOSED, CURRENT]}, NOW, QUOTE)
+ 
+ 
+ @pytest.mark.parametrize('candidate', [[OLD, CURRENT], [CURRENT]])
+ async def test_unresolved_conflict_or_incomplete_year_does_not_retry(candidate):
+     initial = snapshot([OLD])
+     initial['source_years']['2026'] = 2
+-    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, NOW), QUOTE, candidate]))
++    c = SimpleNamespace(stats={}, records=SimpleNamespace(add_error=AsyncMock()), project_id='ths-fx-daily',
++                        fetch=AsyncMock(side_effect=[(initial, NOW), QUOTE, candidate]))
+     with pytest.raises(ValueError, match='不一致|不完整'):
+         await verified_snapshot(c, CODE)
+     assert c.fetch.await_count == 3
+@@ -112,7 +113,8 @@
+     c.confirmation.page_status.assert_not_awaited()
+ 
+ 
+-async def test_reconciled_year_is_reused_during_initialization():
++async def test_reconciled_year_is_reused_during_initialization(monkeypatch):
++    monkeypatch.setattr('empire.features.fx.transport.datetime', SimpleNamespace(now=lambda _: NOW))
+     c = collector()
+     def request(method, url, **kwargs):
+         if '/realhead/' in url:
+--- a/scripts/verify_fx.py
++++ b/scripts/verify_fx.py
+@@ -63,7 +63,7 @@
+             years = {datetime.fromisoformat(expected['live']['source_time']).astimezone(CHINA).year,
+                      int(snapshot['end'][:4])}
+             snapshot, _ = reconcile(snapshot,
+-                {year: candle(annual_bodies[year], CODE, year)[1] for year in years}, datetime.now(UTC))
++                {year: candle(annual_bodies[year], CODE, year)[1] for year in years}, datetime.now(UTC), expected['live'])
+         verification.require(agrees(snapshot, expected['live'], datetime.now(UTC)), '日线与报价核验不一致')
+         expected['snapshot'] = snapshot
+         rows = 0
+--- a/tests/integration/test_fx_archive.py
++++ b/tests/integration/test_fx_archive.py
+@@ -138,13 +138,18 @@
+         event.remove(Engine, 'before_cursor_execute', reject)
+ 
+ 
+-async def test_stale_daily_cache_reconciles_through_archive_and_conflict_preserves_sql(fx):
++async def test_stale_daily_cache_reconciles_through_archive_and_conflict_preserves_sql(fx, monkeypatch):
++    from types import SimpleNamespace
++
+     from tests.test_fx import source
+-    from tests.test_fx_verification import CLOSED, CURRENT, OLD
++    from tests.test_fx_verification import CLOSED, CURRENT, NOW, OLD
++
++    monkeypatch.setattr('empire.features.fx.transport.datetime', SimpleNamespace(now=lambda _: NOW + timedelta(seconds=1)))
+ 
+     _, c, q, store, publish = fx
+     await publish(envelope([OLD], year=2026, source_count=1,
+-                           start='2026-11-09', end='2026-11-09'))
++                           start='2026-11-09', end='2026-11-09').model_copy(
++                               update={'observed_at': NOW}))
+     assert str((await q.browse(CODE))['rows'][0]['close']) == '6.6713100000'
+     unresolved = False
+     def request(method, url, **kwargs):

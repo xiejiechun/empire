@@ -18,7 +18,7 @@ def bundle(cfg):
         *(OrderedContribution(41010 + i, c) for i, c in enumerate(collectors)),
         OrderedContribution(41030, LimitsUiPlugin()),
     ), tasks=tuple(OrderedContribution(41000 + i, TaskContribution(
-        c.project_id, '远航版' + (POOLS[kinds[i]] if kinds[i] != 'reason' else '历史涨跌停原因'), c.capability,
+        c.project_id, (POOLS[kinds[i]] if kinds[i] != 'reason' else '历史涨跌停原因'), c.capability,
         'ths_yuanhang', ('最近10交易日优先、历史缺口另轮补齐；当天池每30分钟复核至21:00。' if c.pool in POOLS
             else '按完整日期池补齐历史、维护新增日和修订；来源空集合不证明历史边界'),
         category='涨跌停分析', source_name='同花顺远航版', parallel_downloads=True,

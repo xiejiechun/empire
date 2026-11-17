@@ -46,7 +46,44 @@ async def collect(c):
     return await asyncio.wait_for(c.execute(baseline_revision=await c.checkpoint_revision(), history_only=True), 30)
 
 
-async def test_explicit_pool_identity_resolves_missing_market_and_zero_time(limits):
+async def test_st_scope_migration_preserves_rows_then_formal_archive_adds_st(limits):
+    from sqlalchemy import text
+
+    from empire.features.yuanhang_limits.model import member
+    from empire.features.yuanhang_limits.repository import replace_pool
+    from scripts.migrate_yuanhang_limits_st import contents, migrate
+
+    manager, c, q = limits
+    old = dict(trade_date='2026-07-15', pool_type=c.pool, filter='HS,GEM2STAR',
+               source_total=1, rows=[member(row(), '2026-07-15')])
+    with q.mysql.engine.connect() as conn:
+        conn.exec_driver_sql("ALTER TABLE yuanhang_limit_pool DROP CHECK ck_yuanhang_limit_pool_filter, "
+                            "ADD CONSTRAINT ck_yuanhang_limit_pool_filter CHECK (filter_text='HS,GEM2STAR')")
+        conn.commit()
+        replace_pool(conn, old, datetime(2026, 7, 15, 16, tzinfo=UTC), None)
+        conn.commit()
+        before = contents(conn)
+        assert migrate(conn)
+        assert before == contents(conn)
+        assert not migrate(conn)
+    assert not (await q.audit_pool('2026-07-15', c.pool))['complete']
+    c.http.request.side_effect = lambda *a, **k: httpx.Response(200, json=page([
+        row(), {**row('600537'), 'market_id': 22, 'name': '*ST亿晶'}]))
+    await collect(c)
+    result = await q.members('2026-07-15', c.pool)
+    assert result['head']['source_total'] == 2 and result['head']['contract_version'] == 2
+    assert [(r['unified_code'], r['name']) for r in result['rows']] == [('000001.SZ', '样本'), ('600537.SH', '*ST亿晶')]
+    assert (await q.audit_pool('2026-07-15', c.pool))['complete']
+    assert c.http.request.call_count == 1
+    store = manager.registry.get('redis.store')
+    assert await store.client.xlen(store.stream) == 0
+    with q.mysql.read_engine.connect() as conn:
+        assert conn.execute(text('SELECT COUNT(*) FROM yuanhang_limit_member')).scalar_one() == 2
+
+
+@pytest.mark.parametrize('market_id', [None, 21])
+@pytest.mark.parametrize('source_seconds', [0, -60])
+async def test_explicit_pool_identity_resolves_missing_market_and_source_time(limits, market_id, source_seconds):
     from empire.core.time import CHINA
     from empire.features.yuanhang_limits.repository import decode_member
     manager, c, q = limits
@@ -55,12 +92,12 @@ async def test_explicit_pool_identity_resolves_missing_market_and_zero_time(limi
     assert await q.resolve_identities({'300362'}) == {'300362': '300362.SZ'}
     q.collection_plan.return_value = dict(units=['2026-07-16'], cutoff='2026-07-16', remaining=0)
     c.http.request.side_effect = lambda *a, **k: httpx.Response(200, json=page([
-        {**row('300362'), 'market_id': None, 'first_limit_up_time': '0'}]))
+        {**row('300362'), 'market_id': market_id, 'first_limit_up_time': str(source_seconds)}]))
     await collect(c)
     stored = (await q.members('2026-07-16', c.pool))['rows'][0]
-    assert stored['identity_basis'] == 'pool_history' and stored['source_market_id'] is None
-    assert stored['first_limit_up_time'].replace(tzinfo=CHINA).timestamp() == 0
-    assert decode_member(stored)['first_limit_up_time'] == 0
+    assert stored['identity_basis'] == 'pool_history' and stored['source_market_id'] == market_id
+    assert stored['first_limit_up_time'].replace(tzinfo=CHINA).timestamp() == source_seconds
+    assert decode_member(stored)['first_limit_up_time'] == source_seconds
     assert (await q.audit_pool('2026-07-16', c.pool))['complete']
     assert await manager.registry.get('redis.store').client.xlen(manager.registry.get('redis.store').stream) == 0
     q.collection_plan.return_value = dict(units=['2026-07-17'], cutoff='2026-07-17', remaining=0)
@@ -91,6 +128,7 @@ async def test_pool_real_archive_formal_query_hot_cold_repeat_zero_dml(limits):
             writes.append(statement)
 
     event.listen(q.mysql.engine, 'before_cursor_execute', track)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', track)
     await collect(c)
     assert not calls and not writes
     await manager.registry.get('archive.worker').fingerprints.invalidate(LimitDataset(c.pool).FINGERPRINT_NAMESPACE, 'ths_yuanhang')
@@ -173,6 +211,7 @@ async def test_failed_archive_retains_message_and_replay_is_exact(limits, monkey
             writes.append(statement)
 
     event.listen(q.mysql.engine, 'before_cursor_execute', track)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', track)
     if failure == 'acknowledgement':
         monkeypatch.setattr(archive, 'acknowledge', original)
     else:

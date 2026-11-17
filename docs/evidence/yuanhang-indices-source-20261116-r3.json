@@ -1,0 +1,209 @@
+{
+  "run_id": "b92a175f5bb44d65997733eacdb30705",
+  "subject": "indices",
+  "started_at": "2026-11-15T17:54:57.785469+00:00",
+  "passed": false,
+  "measurements_complete": false,
+  "errors": [
+    {
+      "stage": "measurement",
+      "type": "KeyError"
+    }
+  ],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/yuanhang_indices/audits.py": "9fe7b5551bbd5c72b59d8da5fd72aff11a9e471504b8afe1fe61e0a1c5a38c4d",
+    "src/empire/features/yuanhang_indices/bundle.py": "3928e36c48061bf8f36f64ed81731bb962ecf01b737c30c7daa79d6825c180ca",
+    "src/empire/features/yuanhang_indices/catalog_collector.py": "022618a06ffa61d31ee66376e3352bd4e206e2d7bbae0b6cae4399a09edf17ea",
+    "src/empire/features/yuanhang_indices/catalog_dataset.py": "b622f042cbe0a95cf27017834ff23a75d2713e4c111a4796a8e70508ecb99e68",
+    "src/empire/features/yuanhang_indices/collector_support.py": "6759b3bf9607368ab5916dcee58119b1b849898ba82e2e62f0ee137a17b13e53",
+    "src/empire/features/yuanhang_indices/contract.py": "3ff9bb46ec3cef00ef6737c8ff77b548d5fd7809d4ab6de47ea770ab99cb3fc0",
+    "src/empire/features/yuanhang_indices/members_source.py": "6ce14ff7e7c47fd1c3c7dfccc613421fa88ffe96ea4982e10e58130e245e4485",
+    "src/empire/features/yuanhang_indices/member_collector.py": "0f4ffd7a8aba3c7fb28ab74bf91f97d2776c78ad18826d10e410fcc47275a358",
+    "src/empire/features/yuanhang_indices/member_dataset.py": "b6336c2a34d67a5e0d959a6bc303b6f3b15c24da533b55623857d990b46ed47f",
+    "src/empire/features/yuanhang_indices/native.py": "8644ce13187c4f3f517024db35f4d41bbadf84dda9fef0f0f6370e8b12824e1a",
+    "src/empire/features/yuanhang_indices/price_audit.py": "0d489000639d9760c9542a6514d5efdfc6c3af8e92c18ac6ec380a016e6ab959",
+    "src/empire/features/yuanhang_indices/price_collector.py": "1695631600791ebff0c7620475dc10471188330aef9e6b2c30d6b3892194673e",
+    "src/empire/features/yuanhang_indices/price_dataset.py": "63516c791d669b7397b201356cd08bba49e49d0a6309c58f2ea7281dc8a2d959",
+    "src/empire/features/yuanhang_indices/price_query.py": "29b1438a62304407cd7768111fdd19727ed2389035b0548ff598134b517be5de",
+    "src/empire/features/yuanhang_indices/price_reads.py": "f808c5d083c9fb4ae97debb48893fd7d527392da2e69a71852ce6ca0ca50cb29",
+    "src/empire/features/yuanhang_indices/quality.py": "babf38b0ea7d94b79d67fc847a96bff579b3cd9bbbc67df2df777693cbfe66ca",
+    "src/empire/features/yuanhang_indices/query.py": "c6806e6a3e8bc056230dc8b20c71715e101742806d3c68d22851b7274c2344cb",
+    "src/empire/features/yuanhang_indices/ui.py": "be666deb836a2100d89865bea8a4a32859b51e067ef672dd519381593be16133",
+    "src/empire/features/yuanhang_indices/__init__.py": "13d0078dabe443133f958473aad50605f16ca4ae4a8671970b1296ab4cd3e3c0",
+    "scripts/verify_yuanhang_indices.py": "342b71bbebb6e55ae367f03e80d259c6bae579b539933b14e39fc09f312b55e5",
+    "src/empire/sources/yuanhang_wire.py": "585884a83bcc8c2da05deba6135b21028c39d455bcde6bbaeab218a55ae243b3"
+  },
+  "network_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false
+  },
+  "catalog_count": 580,
+  "catalog_hash": "b5df83794555cf544f70ff0ea4a5b3d5da307f55d5d649bcb056392b58186795",
+  "sample": [
+    "1A0001",
+    "1B0006",
+    "1B0007",
+    "1B0008",
+    "1B0009",
+    "1B0020",
+    "1B0046",
+    "1B0070",
+    "1B0992",
+    "399020",
+    "399088",
+    "399233",
+    "399267",
+    "399284",
+    "399371",
+    "399387",
+    "399408",
+    "399412",
+    "399417",
+    "399556",
+    "399557",
+    "399622",
+    "399655",
+    "399903",
+    "399913",
+    "399928",
+    "399976",
+    "899050",
+    "980023"
+  ],
+  "fixed": [
+    "1A0001",
+    "1B0007",
+    "1B0008",
+    "1B0009",
+    "1B0070",
+    "399412",
+    "399556",
+    "399557",
+    "899050",
+    "980023"
+  ],
+  "seed": 20261116,
+  "sample_fraction": 0.05,
+  "error_records": {
+    "ths-yuanhang-indices": {
+      "revision": "0",
+      "total": 0,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": []
+    },
+    "ths-yuanhang-index-members": {
+      "revision": "1",
+      "total": 1,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": [
+        {
+          "status_code": null,
+          "error": "代理设备 node041 请求失败（ProxyError），已临时隔离",
+          "id": "038f618dd68b4f348434ab56b0974ede",
+          "project_id": "ths-yuanhang-index-members",
+          "created_at": "2026-11-15T17:55:19.752717+00:00",
+          "stage": "http"
+        }
+      ]
+    },
+    "ths-yuanhang-index-prices": {
+      "revision": "0",
+      "total": 0,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": []
+    }
+  },
+  "routes": {
+    "proxy_requests": 97
+  },
+  "registration_requests": 0,
+  "statuses": {
+    "collector.yuanhang_index_members": {
+      "status": "complete",
+      "collected": 9595,
+      "network_costs": {
+        "http_attempts": 30,
+        "native_attempts": 0,
+        "native_queries": 0,
+        "authentication_http_attempts": 0,
+        "native_auth_exchanges": 0,
+        "retries": 1,
+        "observed_wire_bytes": 581281,
+        "observed_body_bytes": 7000065,
+        "native_decoded_bytes": 0
+      },
+      "total_units": 29,
+      "completed_units": 29,
+      "download_item_name": "个指数",
+      "download_window_limit": 40,
+      "download_buffer_capacity": 2048,
+      "download_concurrency": 0,
+      "download_pending_pages": 0,
+      "download_ready_pages": 0,
+      "download_failed_pages": 0,
+      "download_buffer_limited": false,
+      "download_wait_reason": "idle",
+      "error": "",
+      "current_security": "980023",
+      "pages": 29,
+      "unavailable": 4
+    },
+    "collector.yuanhang_index_prices": {
+      "status": "complete",
+      "collected": 290,
+      "network_costs": {
+        "http_attempts": 0,
+        "native_attempts": 29,
+        "native_queries": 29,
+        "authentication_http_attempts": 0,
+        "native_auth_exchanges": 0,
+        "retries": 0,
+        "observed_wire_bytes": 11915,
+        "observed_body_bytes": 0,
+        "native_decoded_bytes": 0
+      },
+      "total_units": 0,
+      "completed_units": 0,
+      "planned_requests": 0,
+      "maintenance_scope": "backfill",
+      "download_item_name": "个指数",
+      "download_window_limit": 1,
+      "download_buffer_capacity": 2048,
+      "download_concurrency": 0,
+      "download_pending_pages": 0,
+      "download_ready_pages": 0,
+      "download_failed_pages": 0,
+      "download_buffer_limited": false,
+      "download_wait_reason": "idle",
+      "error": "",
+      "current_security": "980023",
+      "pages": 29
+    }
+  },
+  "input_identity_verified": true,
+  "checked_at": "2026-11-15T17:58:31.384348+00:00",
+  "database": "empire_capacity_b92a175f5bb44d65997733eacdb30705_test",
+  "measurement_service": {
+    "server_uuid": "480abbb0-e119-11f1-8add-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

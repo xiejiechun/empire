@@ -1,0 +1,376 @@
+--- a/src/empire/features/fx/collector.py
++++ b/src/empire/features/fx/collector.py
+@@ -2,13 +2,14 @@
+ from functools import partial
+ from uuid import uuid4
+ 
++from empire.contracts.collector import CollectionSourceGap
+ from empire.contracts.data import make_envelope
+ from empire.contracts.plugin import PluginManifest
+ from empire.contracts.request_cost import measured_run
+ from empire.features.fx.contract import BASE, DAILY_JOB, DAILY_PROJECT, DATASET, digest, url
+ from empire.features.fx.live import FxLiveCollector
+ from empire.features.fx.planning import full_years, tail
+-from empire.features.fx.verification import verified_snapshot
++from empire.features.fx.verification import FxSourceConflict, verified_snapshot
+ from empire.plugins.collection.unit_prefetch import prefetch_units
+ from empire.plugins.collectors.support import publish_with_capacity, wait_for_archive
+ 
+@@ -53,23 +54,32 @@
+             cursor = dict(phase='collecting', codes=self.codes(), next_index=0, next_year=1900,
+                 snapshot_hash='', pages=0, collected=0, batch_id=uuid4().hex, fresh=bool(fresh))
+         self.stats.update(status=cursor['phase'], collected=cursor['collected'], total_units=len(cursor['codes']),
+-            completed_units=cursor['next_index'])
++            completed_units=cursor['next_index'], unavailable_codes=[], source_gap_units=0, notice='')
+         try:
+             if cursor['phase'] == 'collecting':
+                 from datetime import UTC, datetime
+ 
+                 from empire.features.fx.source import closed_through
+                 heads = await self.query.inventory(closed_through(datetime.now(UTC)))
++                deferred = None
+                 for i in range(cursor['next_index'], len(cursor['codes'])):
+                     code = cursor['codes'][i]
+-                    snapshot, observed, verified = await verified_snapshot(self, code)
++                    try:
++                        snapshot, observed, verified = await verified_snapshot(self, code)
++                    except FxSourceConflict:
++                        self.stats['unavailable_codes'].append(code)
++                        self.stats['source_gap_units'] += 1
++                        if deferred is None:
++                            deferred = {k: cursor[k] for k in ('next_index', 'next_year', 'snapshot_hash')}
++                        continue
+                     # A new source snapshot invalidates only this symbol's
+                     # resume position, while preserving all already queued pages.
+                     checksum = digest({k: snapshot[k] for k in ('start', 'end', 'years', 'rows')})
+-                    if checksum != cursor['snapshot_hash']:
++                    next_year = cursor['next_year'] if deferred is None and checksum == cursor['snapshot_hash'] else 1900
++                    if deferred is None and checksum != cursor['snapshot_hash']:
+                         cursor = dict(cursor, next_year=1900, snapshot_hash=checksum)
+                     years = [y for y in full_years(snapshot, heads[code], fresh=cursor['fresh'])
+-                             if y >= cursor['next_year']]
++                             if y >= next_year]
+                     async def download(year, *, reservation):
+                         if year in verified:
+                             return verified[year]
+@@ -81,22 +91,37 @@
+                             rows = await read.resolve()
+                             payload = dict(year=year, mode='full', source_count=snapshot['years'][str(year)],
+                                 start=snapshot['start'], end=snapshot['end'], rows=rows)
+-                            state, cursor = await self.publish(state, dict(cursor, next_year=year + 1), code, payload, observed)
++                            position = dict(cursor, next_year=year + 1) if deferred is None else cursor
++                            state, cursor = await self.publish(state, position, code, payload, observed)
+                             self.stats.update(collected=cursor['collected'], pages=cursor['pages'], current_date=str(year))
+                     recent = tail(snapshot)
+                     for year in sorted({r[0][:4] for r in recent}):
+                         if heads[code].get(year, {}).get('last_date', '') > snapshot['end']:
+                             continue
+-                        if int(year) in years or int(year) < cursor['next_year']:
++                        if int(year) in years or int(year) < next_year:
+                             continue
+                         rows = [r for r in recent if r[0][:4] == year]
+                         state, cursor = await self.publish(state, cursor, code, dict(year=int(year), mode='recent',
+                             source_count=snapshot['years'][year], start=snapshot['start'], end=snapshot['end'], rows=rows), observed)
+                     cursor = dict(cursor, next_index=i + 1, next_year=1900, snapshot_hash='')
+-                    if i + 1 == len(cursor['codes']):
++                    if deferred is not None:
++                        cursor.update(deferred)
++                    elif i + 1 == len(cursor['codes']):
+                         cursor['phase'] = 'awaiting_archive'
+                     state = await self.ingest.advance_checkpoint(job_key=self.job_key, expected_revision=state['revision'], cursor=cursor)
+-                    self.stats['completed_units'] = i + 1
++                    self.stats.update(completed_units=self.stats['completed_units'] + 1,
++                                      collected=cursor['collected'], pages=cursor['pages'])
++                if self.stats['unavailable_codes']:
++                    # The first unresolved symbol remains the durable resume
++                    # position even while later valid symbols are archived.
++                    self.stats['status'] = 'awaiting_archive'
++                    if cursor['pages']:
++                        await wait_for_archive(partial(self.confirmation.page_status, 'ths', self.job_key,
++                            self.project_id, cursor['batch_id'], cursor['pages']), retry_seconds=1)
++                    self.stats['notice'] = ('来源日线核验缺口：' + '、'.join(self.stats['unavailable_codes'])
++                        + f"；已核验{self.stats['completed_units']}/{len(cursor['codes'])}个品种，"
++                        + '有效入队数据已归档；保留缺口原数据和断点，下次继续核验')
++                    raise CollectionSourceGap(self.stats['notice'])
+             self.stats['status'] = 'awaiting_archive'
+             await wait_for_archive(partial(self.confirmation.page_status, 'ths', self.job_key,
+                 self.project_id, cursor['batch_id'], cursor['pages']), retry_seconds=1)
+@@ -104,6 +129,9 @@
+             await self.ingest.advance_checkpoint(job_key=self.job_key, expected_revision=state['revision'], cursor=cursor)
+             self.stats.update(status='complete', error='')
+             return {k: v for k, v in cursor.items() if k != 'codes'}
++        except CollectionSourceGap:
++            self.stats['status'] = 'source_gap'
++            raise
+         except BaseException:
+             self.stats['status'] = 'paused'
+             raise
+--- a/src/empire/features/fx/verification.py
++++ b/src/empire/features/fx/verification.py
+@@ -5,6 +5,10 @@
+ from empire.features.fx.contract import digest, url, validate_rows
+ from empire.features.fx.source import closed_through
+ from empire.plugins.collectors.support import record_error_safely
++
++
++class FxSourceConflict(ValueError):
++    """Valid responses disagree; this symbol needs a later source refresh."""
+ 
+ 
+ def agrees(snapshot, quote, observed):
+@@ -82,14 +86,15 @@
+         if not agrees(resolved, quote, observed):
+             raise ValueError('汇率近期、年度日线与实时昨收/日期不一致，本轮保留原数据')
+     except ValueError as cause:
+-        exc = ValueError(f'{code}: {cause}')
++        exc = FxSourceConflict(f'{code}: {cause}')
+         exc.diagnostic_recorded = await record_error_safely(collector.records, collector.stats,
+             collector.project_id, exc, stage='source_validation',
+             unavailable_message='汇率跨响应核验诊断暂不可用', fields=dict(request_url=url(code),
+                 metadata=dict(kind='cross_response_validation', symbol=code,
+                     cutoff=closed_through(observed), source_tail=snapshot['source_tail'],
+                     quote=quote, annuals={str(year): dict(directory=snapshot['source_years'].get(str(year)),
+-                        count=len(rows), first=rows[0][0] if rows else None, tail=rows[-3:],
++                        count=len(rows), first=rows[0][0] if rows else None,
++                        tail=[' | '.join(row) for row in rows[-3:]],
+                         content_sha256=digest(rows), dates_sha256=digest([r[0] for r in rows]))
+                         for year, rows in candidates.items()})))
+         raise exc from cause
+--- a/tests/test_fx_verification.py
++++ b/tests/test_fx_verification.py
+@@ -7,6 +7,7 @@
+ import httpx
+ import pytest
+ 
++from empire.contracts.collector import CollectionSourceGap
+ from empire.core.time import CHINA
+ from empire.features.fx.source import recent
+ from empire.features.fx.verification import agrees, reconcile, verified_snapshot
+@@ -107,7 +108,7 @@
+     initial['source_years']['2026'] = 2
+     c.fetch = AsyncMock(side_effect=[(initial, NOW), QUOTE, [OLD, CURRENT]])
+     before = copy.deepcopy(c.ingest.state)
+-    with pytest.raises(ValueError, match='不一致'):
++    with pytest.raises(CollectionSourceGap, match='USDCNH'):
+         await c.execute()
+     assert c.ingest.events == [] and c.ingest.state == before
+     c.confirmation.page_status.assert_not_awaited()
+--- a/tests/test_fx_directory_boundary.py
++++ b/tests/test_fx_directory_boundary.py
+@@ -6,6 +6,7 @@
+ 
+ import pytest
+ 
++from empire.contracts.collector import CollectionSourceGap
+ from empire.core.time import CHINA
+ from empire.features.fx.contract import SYMBOLS
+ from empire.features.fx.verification import reconcile, verified_snapshot
+@@ -53,7 +54,7 @@
+     c = collector()
+     before = copy.deepcopy(c.ingest.state)
+     c.fetch = AsyncMock(side_effect=[(initial, NOW), quote, candidate])
+-    with pytest.raises(ValueError):
++    with pytest.raises(CollectionSourceGap):
+         await c.execute()
+     assert c.ingest.events == [] and c.ingest.state == before
+     c.records.add_error.assert_awaited_once()
+--- a/tests/integration/test_fx_directory_pipeline.py
++++ b/tests/integration/test_fx_directory_pipeline.py
+@@ -8,6 +8,7 @@
+ from sqlalchemy import event
+ from sqlalchemy.engine import Engine
+ 
++from empire.contracts.collector import CollectionSourceGap
+ from empire.features.fx.contract import DAILY_JOB
+ from tests.integration.test_fx_archive import fx, pytestmark  # noqa: F401
+ from tests.test_fx import CODE, envelope, live_source, source
+@@ -50,7 +51,7 @@
+         assert writes == [] and await redis.client.xlen(redis.stream) == 0
+         before = await c.ingest.checkpoint(DAILY_JOB)
+         bad = True
+-        with pytest.raises(ValueError, match='USDCNH.*不完整'):
++        with pytest.raises(CollectionSourceGap, match='USDCNH'):
+             await c.execute(baseline_revision=before['revision'])
+         assert await c.ingest.checkpoint(DAILY_JOB) == before
+         assert (await q.browse(CODE))['rows'] == rows
+@@ -61,5 +62,6 @@
+         assert error['metadata']['kind'] == 'cross_response_validation'
+         assert error['metadata']['annuals']['2026']['count'] == 3
+         assert error['metadata']['annuals']['2026']['directory'] == 1
++        assert error['metadata']['annuals']['2026']['tail'][-1] == ' | '.join(CURRENT)
+     finally:
+         event.remove(Engine, 'before_cursor_execute', capture)
+--- a/tests/integration/test_fx_archive.py
++++ b/tests/integration/test_fx_archive.py
+@@ -11,6 +11,7 @@
+ from sqlalchemy.engine import Engine
+ 
+ from empire.bootstrap import build_manager
++from empire.contracts.collector import CollectionSourceGap
+ from empire.core.config import load_config
+ from empire.features.fx.contract import DAILY_JOB, SYMBOLS
+ from empire.features.fx.dataset import FINGERPRINT_NAMESPACE
+@@ -170,7 +171,7 @@
+     assert await store.client.xlen(store.stream) == 0
+     unresolved = True
+     before = await c.ingest.checkpoint(DAILY_JOB)
+-    with pytest.raises(ValueError, match='不一致'):
++    with pytest.raises(CollectionSourceGap, match='USDCNH'):
+         await c.execute(baseline_revision=before['revision'])
+     assert await c.ingest.checkpoint(DAILY_JOB) == before
+     assert (await q.browse(CODE))['rows'] == rows
+--- /dev/null
++++ b/tests/test_fx_source_gaps.py
+@@ -0,0 +1,102 @@
++"""An unresolved symbol cannot block siblings or advance its resume position."""
++import asyncio
++from types import SimpleNamespace
++
++import httpx
++import pytest
++
++from empire.contracts.collector import CollectionSourceGap
++from tests.test_fx import CODE, collector, live_source, source
++from tests.test_fx_verification import CLOSED, CURRENT, NOW, OLD
++
++CODES = ['USDIND', 'XAUUSD', 'EURUSD']
++
++
++def gap_collector(monkeypatch, bad_code):
++    monkeypatch.setattr('empire.features.fx.transport.datetime', SimpleNamespace(now=lambda _: NOW))
++    c = collector()
++    c.selected_codes = CODES
++    c.query.inventory.return_value = {code: {} for code in CODES}
++    faults = {bad_code}
++    def request(method, url, **kwargs):
++        code = url.split('wh_')[1].split('/')[0]
++        if '/realhead/' in url:
++            body = live_source(code=code, **{'10': CURRENT[4], '7': CURRENT[1], '8': CURRENT[2],
++                '9': CURRENT[3], '6': CLOSED[4], 'time': '2026-11-10 09:00:00 北京时间',
++                'updateTime': '2026-11-10 05:59'})
++        else:
++            unit = url.rsplit('/', 1)[1].split('.')[0]
++            rows = [OLD] if code in faults else [CLOSED, CURRENT]
++            changes = dict(start=CLOSED[0].replace('-', ''), year={'2026': 2}, total='2') if unit == 'last' else {}
++            body = source(unit, rows, **changes).replace('wh_' + CODE, 'wh_' + code)
++        return httpx.Response(200, content=body.encode())
++    c.http.request.side_effect = request
++    return c, faults
++
++
++@pytest.mark.parametrize('failed_index', range(3))
++async def test_source_gap_archives_all_siblings_and_resumes_first_unresolved(monkeypatch, failed_index):
++    bad_code = CODES[failed_index]
++    c, faults = gap_collector(monkeypatch, bad_code)
++    async def confirm(*args):
++        assert {e.raw_payload['code'] for e in c.ingest.events} == set(CODES) - faults
++        return {'status': 'complete'}
++    c.confirmation.page_status.side_effect = confirm
++    with pytest.raises(CollectionSourceGap, match=bad_code):
++        await c.execute()
++    cursor = c.ingest.state['cursor']
++    assert cursor['next_index'] == failed_index and cursor['phase'] == 'collecting'
++    assert cursor['pages'] == 2 and cursor['collected'] == 2
++    assert c.stats['status'] == 'source_gap' and c.stats['completed_units'] == 2
++    assert c.stats['unavailable_codes'] == [bad_code]
++    c.confirmation.page_status.assert_awaited_once()
++    faults.clear()
++    c.confirmation.page_status.side_effect = None
++    c.confirmation.page_status.return_value = {'status': 'complete'}
++    c.http.request.reset_mock()
++    assert (await c.execute())['phase'] == 'complete'
++    requested = [call.args[1].split('wh_')[1].split('/')[0] for call in c.http.request.await_args_list]
++    assert set(requested) == set(CODES[failed_index:])
++    assert c.stats['completed_units'] == 3 and c.stats['unavailable_codes'] == []
++    assert any(e.raw_payload['code'] == bad_code for e in c.ingest.events)
++
++
++async def test_gap_archive_failure_is_not_reported_as_confirmed_source_gap(monkeypatch):
++    c, _ = gap_collector(monkeypatch, 'XAUUSD')
++    c.confirmation.page_status.side_effect = RuntimeError('archive unavailable')
++    with pytest.raises(RuntimeError, match='archive unavailable'):
++        await c.execute()
++    assert c.stats['status'] == 'paused' and c.ingest.state['cursor']['next_index'] == 1
++
++
++async def test_recent_only_gap_reports_actual_enqueued_rows(monkeypatch):
++    c, _ = gap_collector(monkeypatch, 'XAUUSD')
++    c.query.inventory.return_value = {code: {'2026': dict(contract_version=1,
++        row_count=1, last_date=CLOSED[0], dates=[CLOSED[0]])} for code in CODES}
++    with pytest.raises(CollectionSourceGap):
++        await c.execute()
++    assert c.ingest.state['cursor']['collected'] == 2
++    assert c.stats['collected'] == 2 and c.stats['pages'] == 2
++    assert all(e.raw_payload['mode'] == 'recent' for e in c.ingest.events)
++
++
++async def test_first_gap_retains_existing_year_resume_while_siblings_initialize(monkeypatch):
++    c, faults = gap_collector(monkeypatch, 'USDIND')
++    faults.add('XAUUSD')
++    c.ingest.state['cursor'] = dict(phase='collecting', codes=CODES, next_index=0,
++        next_year=2027, snapshot_hash='existing-resume', pages=0, collected=0, batch_id='resume', fresh=False)
++    with pytest.raises(CollectionSourceGap, match='USDIND、XAUUSD'):
++        await c.execute()
++    cursor = c.ingest.state['cursor']
++    assert (cursor['next_index'], cursor['next_year'], cursor['snapshot_hash']) == (0, 2027, 'existing-resume')
++    assert [e.raw_payload['code'] for e in c.ingest.events] == ['EURUSD']
++    assert c.stats['completed_units'] == 1
++
++
++@pytest.mark.parametrize('failure', [httpx.ProxyError('unavailable'), asyncio.CancelledError()])
++async def test_network_failure_and_cancellation_are_not_swallowed(monkeypatch, failure):
++    c, _ = gap_collector(monkeypatch, 'XAUUSD')
++    c.http.request.side_effect = failure
++    with pytest.raises(type(failure)):
++        await c.execute()
++    assert not c.ingest.events and c.stats['status'] == 'paused'
+--- /dev/null
++++ b/tests/integration/test_fx_source_gap_pipeline.py
+@@ -0,0 +1,47 @@
++"""Conflicting source symbols preserve SQL while valid siblings archive and recover."""
++import asyncio
++
++import pytest
++from sqlalchemy import event
++from sqlalchemy.engine import Engine
++
++from empire.contracts.collector import CollectionSourceGap
++from empire.features.fx.contract import DAILY_JOB
++from tests.integration.test_fx_archive import fx, pytestmark  # noqa: F401
++from tests.test_fx_source_gaps import CODES, gap_collector
++from tests.test_fx_verification import CLOSED, OLD
++
++
++async def test_source_conflict_archives_siblings_preserves_resume_and_recovers(fx, monkeypatch):  # noqa: F811
++    _, c, query, redis, _ = fx
++    sample, faults = gap_collector(monkeypatch, 'XAUUSD')
++    c.http, c.selected_codes = sample.http, CODES
++    with pytest.raises(CollectionSourceGap, match='XAUUSD'):
++        await asyncio.wait_for(c.execute(), 20)
++    before = await c.ingest.checkpoint(DAILY_JOB)
++    assert before['cursor']['next_index'] == 1 and before['cursor']['phase'] == 'collecting'
++    assert before['cursor']['pages'] == 2 and c.stats['completed_units'] == 2
++    assert await query.history('XAUUSD', 2026) == []
++    for code in ('USDIND', 'EURUSD'):
++        assert await query.history(code, 2026) == [CLOSED]
++    assert await redis.client.xlen(redis.stream) == 0
++    errors = await c.records.list_error_summaries(c.project_id)
++    error = await c.records.get_error(c.project_id, errors['rows'][0]['id'])
++    assert error['metadata']['annuals']['2026']['tail'][0] == ' | '.join(OLD)
++    writes = []
++    def capture(conn, cursor, sql, *args):
++        if 'fx_' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
++            writes.append(sql)
++    event.listen(Engine, 'before_cursor_execute', capture)
++    try:
++        with pytest.raises(CollectionSourceGap):
++            await asyncio.wait_for(c.execute(baseline_revision=before['revision']), 20)
++        assert writes == [] and await redis.client.xlen(redis.stream) == 0
++    finally:
++        event.remove(Engine, 'before_cursor_execute', capture)
++    before = await c.ingest.checkpoint(DAILY_JOB)
++    faults.clear()
++    assert (await asyncio.wait_for(c.execute(baseline_revision=before['revision']), 20))['phase'] == 'complete'
++    for code in CODES:
++        assert await query.history(code, 2026) == [CLOSED]
++    assert await redis.client.xlen(redis.stream) == 0

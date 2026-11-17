@@ -1,0 +1,2615 @@
+{
+  "run_id": "d08d82b0ebfa4c65b33ee47677709086",
+  "subject": "indices",
+  "started_at": "2026-11-16T09:24:13.588371+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/yuanhang_etf/audits.py": "e1a05659eb5baf963934379d3e8d1190f8ce7a1c880b8ca991f0c4aa266576f4",
+    "src/empire/features/yuanhang_etf/bundle.py": "400770d1abcb1556c5a0e05e75c7afa94d77d5aa20f7b3deee7a6cc501e9497d",
+    "src/empire/features/yuanhang_etf/catalog_collector.py": "952d7cf104bcdea41025c34f73ee45c201a03b6fc96f0db594e8d569f33dc69c",
+    "src/empire/features/yuanhang_etf/catalog_dataset.py": "db916276ece87df87cc126283cd9c3cbe7b558fb367cf9dc6d4ca5cf9f07d914",
+    "src/empire/features/yuanhang_etf/collector_support.py": "d0e4ff7475c5e0a34b589127a0ce686d3e356b37fb350442e019467bd380805a",
+    "src/empire/features/yuanhang_etf/contract.py": "4c069ff86284d35a4dc3b9edbf118f3b515a97f26af29d469b24bfaf6c11aa4e",
+    "src/empire/features/yuanhang_etf/latest.py": "27667fe8770cdec5ab9f2fff11a46c1a01e92e289ff4077e6b61a74b7f7e36c2",
+    "src/empire/features/yuanhang_etf/live.py": "53e34fe18386fdae3798858b72a0156df8e065ffa915d6a9a2f664841b9b50b4",
+    "src/empire/features/yuanhang_etf/native.py": "120d872cc8355d6a8fbd22867fd0ba63000621a1925e5d3277983d427d1eb4a6",
+    "src/empire/features/yuanhang_etf/price_audit.py": "42035573ad195dea4a7321813c344447b1b6ece315ec5776e25944b52605f434",
+    "src/empire/features/yuanhang_etf/price_collector.py": "4f423d9e60ea056b0c5b3dbd51a94fe0ac1602004bacc2931a81f625eaa994f9",
+    "src/empire/features/yuanhang_etf/price_dataset.py": "9e6ca6db31385a2ffc09937e4557662fa93d91e598cd05971a63d2d978d4fc48",
+    "src/empire/features/yuanhang_etf/price_query.py": "51f4010db02619086e8d4fae08278d8f1ad858b83a5cf90d359d750d12c511a1",
+    "src/empire/features/yuanhang_etf/price_reads.py": "e197af63b0a09ef2c43aa65afe50dd80f5b5597dfc0663d3faf05086b8ed02f8",
+    "src/empire/features/yuanhang_etf/quality.py": "079451e3bdd638b4e38180451152a43a4928161b987c670086a950a8002ecdfd",
+    "src/empire/features/yuanhang_etf/query.py": "deef04bb19f773f1267efd855fdbba7106d513545ab75c9f076d902ce2dba2e0",
+    "src/empire/features/yuanhang_etf/ui.py": "d23bf3cbaee7b31cdff68213baee04895a3da569f10dd8a3a213bbe331bcf3b4",
+    "src/empire/features/yuanhang_etf/__init__.py": "576e7fc931aa63c4bdf7ac38af8e7e8fffced20226013ddba228d07575bee021",
+    "scripts/verify_yuanhang_etf.py": "32e45fd93f27328695ec2227863c1ee10179ee095247c77c958cfb458f1eb0ad",
+    "src/empire/sources/yuanhang_wire.py": "585884a83bcc8c2da05deba6135b21028c39d455bcde6bbaeab218a55ae243b3",
+    "src/empire/sources/yuanhang_transport.py": "8bed0bf9165e21c478c4d0e215916e89fb07aad6a7eab4ba97363e904a64ab32",
+    "src/empire/sources/yuanhang_auth.py": "bf56954dfda95c7bc4907fed6ef08429efd151586e3c3cb678f011d487ade2f8"
+  },
+  "network_policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "catalog_count": 1741,
+  "catalog_hash": "fb9db6ec5b263a40d4e959410d49b0a06c1f78482c6a863dbaba438865a06061",
+  "sample": [
+    "158009.SZ",
+    "158017.SZ",
+    "158022.SZ",
+    "158040.SZ",
+    "159016.SZ",
+    "159125.SZ",
+    "159201.SZ",
+    "159212.SZ",
+    "159219.SZ",
+    "159257.SZ",
+    "159302.SZ",
+    "159325.SZ",
+    "159376.SZ",
+    "159383.SZ",
+    "159387.SZ",
+    "159396.SZ",
+    "159521.SZ",
+    "159525.SZ",
+    "159536.SZ",
+    "159537.SZ",
+    "159543.SZ",
+    "159546.SZ",
+    "159570.SZ",
+    "159578.SZ",
+    "159602.SZ",
+    "159619.SZ",
+    "159621.SZ",
+    "159632.SZ",
+    "159652.SZ",
+    "159653.SZ",
+    "159740.SZ",
+    "159819.SZ",
+    "159834.SZ",
+    "159872.SZ",
+    "159915.SZ",
+    "159930.SZ",
+    "159949.SZ",
+    "510010.SH",
+    "510050.SH",
+    "510380.SH",
+    "510550.SH",
+    "510800.SH",
+    "510880.SH",
+    "511010.SH",
+    "511600.SH",
+    "511830.SH",
+    "511980.SH",
+    "512130.SH",
+    "512180.SH",
+    "512580.SH",
+    "512740.SH",
+    "512990.SH",
+    "513100.SH",
+    "513560.SH",
+    "513880.SH",
+    "515010.SH",
+    "515050.SH",
+    "515090.SH",
+    "515480.SH",
+    "515860.SH",
+    "516210.SH",
+    "516520.SH",
+    "516600.SH",
+    "516650.SH",
+    "516880.SH",
+    "516910.SH",
+    "517050.SH",
+    "517880.SH",
+    "518880.SH",
+    "530050.SH",
+    "530300.SH",
+    "530680.SH",
+    "530800.SH",
+    "560010.SH",
+    "560180.SH",
+    "560290.SH",
+    "561330.SH",
+    "561810.SH",
+    "561990.SH",
+    "562500.SH",
+    "562550.SH",
+    "563770.SH",
+    "588040.SH",
+    "588200.SH",
+    "589080.SH",
+    "589100.SH",
+    "589450.SH",
+    "589560.SH"
+  ],
+  "fixed": [
+    "510010.SH",
+    "510050.SH",
+    "511010.SH",
+    "511980.SH",
+    "513100.SH",
+    "518880.SH",
+    "159653.SZ",
+    "159915.SZ"
+  ],
+  "seed": 20261116,
+  "sample_fraction": 0.05054566341183228,
+  "initial_source_gap_notice": "1只ETF来源暂无日K，当前身份已核实但原因未知；未写空历史或覆盖证明，合法消息已清队，下轮重查。",
+  "incremental_source_gap_notice": "1只ETF来源暂无日K，当前身份已核实但原因未知；未写空历史或覆盖证明，合法消息已清队，下轮重查。",
+  "latest": {
+    "result": {
+      "phase": "complete",
+      "sampled": true,
+      "published": true,
+      "collected": 1741,
+      "storage": "redis_only",
+      "queued_messages": 0,
+      "source_time_unknown": true,
+      "network_costs": {
+        "http_attempts": 0,
+        "native_attempts": 2,
+        "native_queries": 2,
+        "authentication_http_attempts": 0,
+        "native_auth_exchanges": 0,
+        "retries": 0,
+        "observed_wire_bytes": 82625,
+        "observed_body_bytes": 0,
+        "native_decoded_bytes": 0
+      }
+    },
+    "rows": 1741,
+    "sql_writes": 0
+  },
+  "initial_price_proofs": {
+    "159387.SZ": {
+      "count": 349,
+      "hash": "19fc1182436643392e2ea9aa04e64e409ee0291d8e40dd09966188fac60c13bb",
+      "first": "2025-06-10",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "158022.SZ": {
+      "count": 35,
+      "hash": "e44f539a9b607e85546c23abce69a29bc49deccf77359a6a39cfe69237919f82",
+      "first": "2026-09-18",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159016.SZ": {
+      "count": 125,
+      "hash": "78a0c96af6691cdd41bf96cbcba3d9b381102781779513853da5ac7b407a91a6",
+      "first": "2026-05-14",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159201.SZ": {
+      "count": 417,
+      "hash": "74834ab6b079cbc6ea9bbf20bd5b180a2f4398552fdf752dbc625fe4c5ef28d8",
+      "first": "2025-02-27",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159257.SZ": {
+      "count": 315,
+      "hash": "6559c45287599aa83bde913961c2d9cd21058ee954ba9ac923a6bec31a8cb61f",
+      "first": "2025-07-28",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159325.SZ": {
+      "count": 489,
+      "hash": "ffd01534ac5afaa65b6af97355b8f115c42fa69bce8897736b6ae05f3105f125",
+      "first": "2024-11-08",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "158009.SZ": {
+      "count": 66,
+      "hash": "d32034c67d0b96f71c68be70c9fd78e3bbf76ae6d71f0e6de983db42367814ff",
+      "first": "2026-08-06",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159521.SZ": {
+      "count": 768,
+      "hash": "bcfe919ea507f84ecbcddbe17ba75ef86f9f7322d14e0993895ac0c01c5a23f1",
+      "first": "2023-09-07",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159536.SZ": {
+      "count": 759,
+      "hash": "384a6f4ffaa4edfa5cfc01f7b224593afbb03423b719016366ed364b74adccb8",
+      "first": "2023-09-21",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "158017.SZ": {
+      "count": 51,
+      "hash": "675bf1d93f8eba1da138740239c7ee0855d4ca551e609b15ae1587c71c427570",
+      "first": "2026-08-27",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159546.SZ": {
+      "count": 744,
+      "hash": "100b3bd7efa9099607a0c1abf9f9a00f16b22220c33dcb3d285d0ae48331d973",
+      "first": "2023-10-20",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159578.SZ": {
+      "count": 589,
+      "hash": "405703ca6fbbba04197dc9884bc3ebfed8b3df9c80d4c8e6ed940afc2a5ad5a7",
+      "first": "2024-06-07",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159619.SZ": {
+      "count": 1149,
+      "hash": "7deb6772b00809be79c1393ff71286b8e0226f7e9e5c22eb072b290e30d69099",
+      "first": "2022-02-18",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159652.SZ": {
+      "count": 914,
+      "hash": "c59b5e95d1a642f2d5123a33e31179ad11614f34e6af6b4d3b782acfc71d3743",
+      "first": "2023-02-08",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159740.SZ": {
+      "count": 1326,
+      "hash": "6068e932b524c22e3f187fb566a889b509dcda16d58eb8d1b8c76c71c5075e6a",
+      "first": "2021-05-27",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159834.SZ": {
+      "count": 1131,
+      "hash": "558d09a319b47ee2fab734870c2b8bc0509a5c43059e5e96d5cedd216add51a1",
+      "first": "2022-03-16",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159930.SZ": {
+      "count": 3193,
+      "hash": "d87f960790352ec289650859931e963447ea31f8da0b2ef51bdfe813ab47660a",
+      "first": "2013-09-16",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "510010.SH": {
+      "count": 4101,
+      "hash": "762da28480d4a8d0ae638564f3fd21394d02c128f0ee33b1739c8ca0459ba953",
+      "first": "2009-12-15",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "510380.SH": {
+      "count": 2029,
+      "hash": "d34c0e133470c4e38c7da63f914b770c76b515dac693dfb29fdee0548a2a0f3b",
+      "first": "2018-02-07",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "510800.SH": {
+      "count": 2141,
+      "hash": "3f8e0c4e01d0b9429145d1ebd88f74995ea344ead18492fccde8467b69723cf7",
+      "first": "2018-01-15",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159125.SZ": {
+      "count": 248,
+      "hash": "13dac3972bd9f58299375604afb4519983ee718d6c7d4fa9b818821859b4782f",
+      "first": "2025-11-06",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159302.SZ": {
+      "count": 531,
+      "hash": "49ded646175b226b669a04a79f8a7558a577c5773051235b4e833ecde2d9c4a7",
+      "first": "2024-09-02",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159383.SZ": {
+      "count": 426,
+      "hash": "cc5b7757a971fbe578d5bf9a5ed2704a2bdc4b5a57099f7c9d945308df8b9fe5",
+      "first": "2025-02-14",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159525.SZ": {
+      "count": 605,
+      "hash": "84ebd82eb01abef1acb9990051aa9b721d82acfaebe21dd15f01e6adf28a0933",
+      "first": "2024-05-20",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159543.SZ": {
+      "count": 723,
+      "hash": "8e7f01cf9ea7efd2818d2c127e7d1614e9fedf474c75c16c83767bd153786c2a",
+      "first": "2023-11-20",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "511600.SH": {
+      "count": 2457,
+      "hash": "bf2b18f3040d77224de736b39556a3f76bff72e1b80ccaeaec4dc5ef3df4e259",
+      "first": "2016-09-27",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159621.SZ": {
+      "count": 1007,
+      "hash": "fbbf617d91551c3de4414d8e8b43e93216a54f37c5afd986ff1bf1cf16662b7a",
+      "first": "2022-09-09",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159653.SZ": {
+      "count": 849,
+      "hash": "3c859503c1ce821c82433b98fe4622fbbe17de7763f0c3c475fa8ced1a5341a6",
+      "first": "2023-03-24",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159915.SZ": {
+      "count": 3623,
+      "hash": "c311ba56a753787949a61c2a8eaa105373721c4637119cb0fecdfd9efc3d93ec",
+      "first": "2011-12-09",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "510050.SH": {
+      "count": 5280,
+      "hash": "78a6ed3a047a5438cb340418a12d35a3d4b88960d1d7221edc42a8d5f3472b73",
+      "first": "2005-02-23",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "158040.SZ": {
+      "count": 23,
+      "hash": "af65639c5616759684e16fd1c56f2f5a8bec4b43634ecc9bcce7efecba87da6d",
+      "first": "2026-10-14",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159376.SZ": {
+      "count": 444,
+      "hash": "bbe763bd081cb6d4e597c5937c5c3afc9b5651a2c9118969320167c1db9c874b",
+      "first": "2025-01-13",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "510880.SH": {
+      "count": 4816,
+      "hash": "f14d87c7c68d3ed2c30e56d99385c65df40b304bb62521a740d8ff1239e65891",
+      "first": "2007-01-18",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "511010.SH": {
+      "count": 3314,
+      "hash": "4c3c65edad6ef76cc92c7a47ead29798289e6b482eae7b198e56fd4f58b3edd7",
+      "first": "2013-03-25",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159602.SZ": {
+      "count": 1217,
+      "hash": "e089ba9efaa19e9eaf4c0cb370722d39355b710c6184f5602ad5d18611813460",
+      "first": "2021-11-08",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159819.SZ": {
+      "count": 1486,
+      "hash": "11af25e243102263e2720942c6556a1436eaf815c456ccc5fac65a4f51b9bdbe",
+      "first": "2020-09-23",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159949.SZ": {
+      "count": 2503,
+      "hash": "8754c781978b40e7e3600ee71febfd1d863c47d89d3eb3a73e09fe72ff2fd642",
+      "first": "2016-07-22",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159212.SZ": {
+      "count": 389,
+      "hash": "f085ac8197fee39de21032c148acc60983a98a6f041dbd2947f20a112a94978c",
+      "first": "2025-04-09",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "512130.SH": {
+      "count": 334,
+      "hash": "c92f66163107d0b706dccc791c2ee890bac4dc6ee64fdc7f3a2a3d5c0d3c0ed5",
+      "first": "2025-07-01",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "512180.SH": {
+      "count": 2060,
+      "hash": "a3843f2960bd27f722b71538b7d2d5347574ee61395120bfac04064872710197",
+      "first": "2018-05-21",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159537.SZ": {
+      "count": 751,
+      "hash": "eba60f35c17414ad88a3fb05a743b2a6c84056f946935181d42cf5181ea86e5a",
+      "first": "2023-10-10",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159632.SZ": {
+      "count": 1037,
+      "hash": "6a793b07a12afec5a582437febc412fed52c32cd8a6fe75a566a126e7237201a",
+      "first": "2022-08-03",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "510550.SH": {
+      "count": 1897,
+      "hash": "21a50a6480685067f5f568837aefe33ca3b1550c7e5a2a1aa762092034d4dbb9",
+      "first": "2019-01-16",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "512580.SH": {
+      "count": 2359,
+      "hash": "00aaa325d50a780a6f69655963d36e790627711d771c99d3e5be295e298a3448",
+      "first": "2017-02-28",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159219.SZ": {
+      "count": 368,
+      "hash": "ad344fd5f5861757fdeac355cc6b813f9ac3016c1d30f4ffe60af1f0e0eea859",
+      "first": "2025-05-13",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159396.SZ": {
+      "count": 432,
+      "hash": "7626f403c1c2c42658dbab0e18532dcafe81e589442407ff5724661f3950ed82",
+      "first": "2025-02-06",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "512990.SH": {
+      "count": 2830,
+      "hash": "08aa923c2506682ad4ed02da26aa4b8ed87d131224cf485c744f5918ed591115",
+      "first": "2015-03-25",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "513560.SH": {
+      "count": 911,
+      "hash": "2e11fa1abc21973e4d251802e6ce94f0db3c75f3db7206681e7c5f04c01da858",
+      "first": "2023-02-13",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159570.SZ": {
+      "count": 679,
+      "hash": "b541513d283a2c5aa26002b5ce83f2cdaa9b7afca156e3ea42b508e1c789876f",
+      "first": "2024-01-22",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "511830.SH": {
+      "count": 2733,
+      "hash": "1142c2378704aeef4d0cb86e038ab5f5c524840e0801e6fa537d1b890a30f41d",
+      "first": "2015-08-03",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "512740.SH": {
+      "count": 39,
+      "hash": "8a85692af65a4aca2d92af1c758c790813cfbc24168d88ef2c0fdf2001109cca",
+      "first": "2026-09-14",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "515090.SH": {
+      "count": 1634,
+      "hash": "b9b425a6aad7421420354c10bffb747f48fea3b2bc3ae987f4f8f754aab05311",
+      "first": "2020-02-20",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "515860.SH": {
+      "count": 1714,
+      "hash": "42b1666789a9cb87496be61ce62ff69add3760a82126c70b0fb50f3fe68d6526",
+      "first": "2019-10-22",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "516520.SH": {
+      "count": 1385,
+      "hash": "b5ac259714a7b12a97eb7f356d0299dc6f127fccd146fd81661630d4011c532e",
+      "first": "2021-03-01",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "513100.SH": {
+      "count": 3281,
+      "hash": "009a66b9bc80c52c788c0ccb3fa9392aa2f31e2cac48f5c0925e9cc7aee4842d",
+      "first": "2013-05-15",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "515010.SH": {
+      "count": 1702,
+      "hash": "5d660863aeee0b9a74d21d8370c4860d0631275180b31be902731fccee462140",
+      "first": "2019-11-07",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "516650.SH": {
+      "count": 1310,
+      "hash": "a5c3297375045bc58758999ceb3a867ec72afee19db5c4fd1e246f35c751415b",
+      "first": "2021-06-21",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "516910.SH": {
+      "count": 1315,
+      "hash": "7f98d2a10c4d854acb50e7931171ed365f25e48131959ceee27d29efcdb38c0b",
+      "first": "2021-06-11",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "517880.SH": {
+      "count": 1199,
+      "hash": "f413178e0e73af603ba78caeff0927df7ab9d5e50d3ffb8e06a07b7c83358f7e",
+      "first": "2021-12-01",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "530050.SH": {
+      "count": 471,
+      "hash": "76d46a23510a6ded637fc72a08d4611e35a092f471a4cb2526234045efbf19b6",
+      "first": "2024-12-04",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "560010.SH": {
+      "count": 1035,
+      "hash": "9ec6a1ee1002ab2e0deeb6212c3b7cc57b85648c5abe794df3f39e7659928593",
+      "first": "2022-08-04",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "515050.SH": {
+      "count": 1718,
+      "hash": "53300fc46d2e1c28fa9f133986a41ba11f36e15eb2947029c5c9ab18bbe2dc7c",
+      "first": "2019-10-16",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "516210.SH": {
+      "count": 1243,
+      "hash": "61b11a8ae37fab3d7ffaf447ca7e1b7a74be4c9f6ef18c969adb883656987dbb",
+      "first": "2021-09-24",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "159872.SZ": {
+      "count": 1302,
+      "hash": "29f9a789448cdfd674ba08157d08b48c0979d2446afec32114cf15b424c81de4",
+      "first": "2021-07-01",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "513880.SH": {
+      "count": 1793,
+      "hash": "c5ddbf1872e7281a16ed884c8e1b1305607216095e6bfaf6548609c37e4c650e",
+      "first": "2019-06-25",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "517050.SH": {
+      "count": 1395,
+      "hash": "ac8ec6940c80f49326cb1d602f00aea0e589dabbcf51d1b4fbe4b7b5ca9554e6",
+      "first": "2021-02-08",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "530300.SH": {
+      "count": 445,
+      "hash": "8f4c8064044b345bd62588cfe83e54eefc4af1e2f17970a2b75a48e43bc1fdf6",
+      "first": "2025-01-10",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "530800.SH": {
+      "count": 434,
+      "hash": "46c6cbd10182e878254d1eefd05acb48d9a6cea1bee8c0fc6a410bca029da28e",
+      "first": "2025-01-27",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "515480.SH": {
+      "count": 89,
+      "hash": "90dbc6f3414c68473e1061ce957e035e0ca766f4ecd65ba2ffa6695011647a12",
+      "first": "2026-07-06",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "560180.SH": {
+      "count": 863,
+      "hash": "fa22e87247638caf2596ef6e3109b12249d3865eb2cf589e9c4d55970859a8dd",
+      "first": "2023-04-21",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "511980.SH": {
+      "count": 2662,
+      "hash": "357cdde76db73c39a8372e97c6e474f8cad31fdfe4bc69b4ce801a3dbc49527d",
+      "first": "2015-11-02",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "516880.SH": {
+      "count": 1410,
+      "hash": "7b70e052e37b9ab80ee97da67b1ab12898bf7dd54b1414a573d70c69340cd1e2",
+      "first": "2021-01-18",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "518880.SH": {
+      "count": 3232,
+      "hash": "cf7dedee8d765a8a2962069d8451d3efc068d89df231c23af56fe48064003087",
+      "first": "2013-07-29",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "530680.SH": {
+      "count": 447,
+      "hash": "5cee63c952f254a04bd057febba3f1e34dbf92ec6fffbe4195aae4c09cff0d23",
+      "first": "2025-01-08",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "560290.SH": {
+      "count": 184,
+      "hash": "6cc268b1ec68ecf1b920bea6b8ed9eff21823d8a7aba77bbdfa5ce802b2c14a3",
+      "first": "2026-02-06",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "516600.SH": {
+      "count": 1386,
+      "hash": "012d09f09c4fdd1407d7bc5d32ee57ffa9310b55a210bf3b77efa14914ce1934",
+      "first": "2021-02-26",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "561330.SH": {
+      "count": 979,
+      "hash": "66612f678567cc7696e0b31a7f76a95e372e2b671e0b424b69fb9d8064c1765e",
+      "first": "2022-11-01",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "561990.SH": {
+      "count": 1193,
+      "hash": "5b595c1c93bb5d69482f3373f74f2e4d68d4cac61e73bc1d38945b05f29319ab",
+      "first": "2021-12-10",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "562500.SH": {
+      "count": 1180,
+      "hash": "5bec78bbbc1de51b48ca6a9401fa0a2fb58aa27873de25040c8e66389e08dc2f",
+      "first": "2021-12-29",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "561810.SH": {
+      "count": 65,
+      "hash": "00c2d50c985bc7bf4c546b3aeb9b6bedcdd5d4db00dff9f66aabee70155b60c8",
+      "first": "2026-08-07",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "562550.SH": {
+      "count": 881,
+      "hash": "8ff99a05de23cf0b7ae7b7ab9a2f68215f0d6aeee964d35edbcfd715b17f0b3f",
+      "first": "2023-03-27",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "563770.SH": {
+      "count": 365,
+      "hash": "6c9b48070db59b957a4184f174e7c4d9e0148df625b2ee9fda830ec042dd5540",
+      "first": "2025-05-16",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "588040.SH": {
+      "count": 386,
+      "hash": "76ff6d2e8c4fecf07981a406972278df6ddddf37a54bc7da11dd89463f40a8dd",
+      "first": "2025-04-14",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "588200.SH": {
+      "count": 983,
+      "hash": "d0c0c1105e8f4e9471c3c99abc357a837c1535b91ff784c84297cedf229b2650",
+      "first": "2022-10-26",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "589080.SH": {
+      "count": 413,
+      "hash": "b3b167fe7a2e81acd3dda6fb80f22f6b75b3090db1400713759e9d0b93ea12a1",
+      "first": "2025-03-05",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "589100.SH": {
+      "count": 391,
+      "hash": "d89ceae9f40738416f9838644f39c6bfbacbb8a48d56cdea915ab3a5c1d6a717",
+      "first": "2025-04-07",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "589450.SH": {
+      "source_gap": true,
+      "count": 0,
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    },
+    "589560.SH": {
+      "count": 286,
+      "hash": "242d4d2eecb51df6416f8057975a79736b1b1764b1ce665215275e89078f8f78",
+      "first": "2025-09-05",
+      "last": "2026-11-13",
+      "plan": {
+        "start": "1900-01-01",
+        "through": "2026-11-13",
+        "full": true,
+        "history_start": null
+      }
+    }
+  },
+  "incremental": {
+    "prior": "2026-11-13",
+    "through": "2026-11-16",
+    "proofs": {
+      "158009.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "27fe08944873d3dafbe9b19c391bede0a659f5543be1880729d529440f9bc371",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2026-08-06"
+        }
+      },
+      "158017.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "3385c21eabf48a3f4112497a1723157f09452252480e694914e8fe7de4112ef1",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2026-08-27"
+        }
+      },
+      "158022.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "946dd7aaedc3d5d24ae079930475add92f6ab47256a8d2cbcc8ceae8a826a84a",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2026-09-18"
+        }
+      },
+      "158040.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "df7a8ce2919d87965ad242c0252930a3a51072c512545cb841112c021fd2aaa7",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2026-10-14"
+        }
+      },
+      "159016.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "bb55fb5b6db397f94753c63aef455a0ff0fe6be4998a4b798816be360f135724",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2026-05-14"
+        }
+      },
+      "159125.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "ca9f24d69b715291b3d70ff3f438db168d7863561935a5b63870ab6c36008ff6",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-11-06"
+        }
+      },
+      "159201.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "b7c2c2ccec4cb0708c0729e2a04a4e4cddd3da9d427cfd85f2c8d830a7217474",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-02-27"
+        }
+      },
+      "159219.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "3e3927582d0b644ce37a648c701b1c84508b0094ad4182786dc0984d70be9fd3",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-05-13"
+        }
+      },
+      "159212.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "61d1de27c96de7842d292d8a17a37c7cb03c3d6a10c01882b64e4416b8abff4d",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-04-09"
+        }
+      },
+      "159302.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "72256a593981b20f6c8ed6ae3e174e527ef7a2b65c9b95e718b2e22603cdbe0e",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2024-09-02"
+        }
+      },
+      "159257.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "6390786613c6a305ce95646668aaf6deb2c8782f147edb42cca74d2e019eb1c3",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-07-28"
+        }
+      },
+      "159325.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "bd3d942bf6d66e9b4b2e2e11e89f31892353e93bcfd58a2009311e64216aa3e5",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2024-11-08"
+        }
+      },
+      "159376.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "3844d2bcdfdc508709130c8f9667f9022958dab4ca5ce66b91c00f7288468506",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-01-13"
+        }
+      },
+      "159383.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "128ab69511ee79466cf4b49637d4a5e580a3d07ed6bef0f57642d1f1d79dad43",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-02-14"
+        }
+      },
+      "159387.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "0846022ce2bce9fe91c0fbdf7cf15e9c200df8c4a2f7dd887a418172acb9b02b",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-06-10"
+        }
+      },
+      "159396.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "e08f57126ae9fbffb2204d2004504ea150168d698f409099fc3eee5acabc7f7f",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-02-06"
+        }
+      },
+      "159525.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "098a1004ac14dc1884d311e9fa08661403ed8b8251d8ca1b237b7f5379832ba6",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2024-05-20"
+        }
+      },
+      "159536.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "4e9cb9dbe8fc202b52830046bc0ea4aa0fbefbac6dccd69085bb5cc81b8217dd",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-09-21"
+        }
+      },
+      "159521.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "0f7c60258acd0fc8f6abf8c549b2f43068dda8fb420ec5d99b5b4f6dd1ccc27f",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-09-07"
+        }
+      },
+      "159543.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "ee62a7b3d123738fd7aa46d2f5da71af962ea76a59def3144e48cc1e72103b21",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-11-20"
+        }
+      },
+      "159570.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "f001a9b9dc4452b97eb1e58b961729e95ec8d6e946accd53837a0c4f8cc2aa4d",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2024-01-22"
+        }
+      },
+      "159546.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "8f0883dcc47d667be3915583886f04a987d133ceab4cce2b12fdb4695757fa6f",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-10-20"
+        }
+      },
+      "159537.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "6099b3bf692d54f06cdebfe04aa5a338ef55b07ef2dd12e0635628c63ecb37c9",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-10-10"
+        }
+      },
+      "159578.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "758e924d620674a301388122670e5e54f273c4e71cacb86a711d0a57be2610eb",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2024-06-07"
+        }
+      },
+      "159621.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "b6ebba0a4cde26814168b0222292e261d1dbec636ec10582a41d232214e16ebb",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2022-09-09"
+        }
+      },
+      "159602.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "31a0c6292a3942220d1f6ce741e0e027605cefe886e65c9cf96dfc70a9b8e4d9",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-11-08"
+        }
+      },
+      "159619.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "87aa6facd66583d866f6e083850b45074220eba16c2f9293062bf54d93d38c11",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2022-02-18"
+        }
+      },
+      "159653.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "9472626cafec3d37aa20c0c67178c76ddedb5983cd8a06173fc949c5483af0d5",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-03-24"
+        }
+      },
+      "159740.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "8c37c4c8df83baee66a02d5fa11e76a0d7fca3379af5d0bb31e65c332ca5b4c8",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-05-27"
+        }
+      },
+      "159652.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "e6a0c259f79dfe71fbe0978b72b57786cd734354a7905129c95f2e154467bf52",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-02-08"
+        }
+      },
+      "159819.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "6d8fc0788773e460def55fe0abb0fedb5bb5e0e658132e0394dd4bcb4e5c631c",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2020-09-23"
+        }
+      },
+      "159632.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "43ec4eacabbe1d6df415bd9bf7b700cc8d745cee55a3f06bb46fe7f0d4e834dd",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2022-08-03"
+        }
+      },
+      "159834.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "83b66a778b58baa57551bfcf23bb73dba4c12128bcc34feed0b098553dde835c",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2022-03-16"
+        }
+      },
+      "159915.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "78ac7c81e241f8f3cee7e38c189b585872f918fc340e1e4d985ebb1a9d12c3d0",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2011-12-09"
+        }
+      },
+      "510010.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "534718ba1233aa7538032425363e8ed528c57c0ba1805c7d82879a805beee74c",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2009-12-15"
+        }
+      },
+      "510050.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "8d9ec2bc436a857836455f07c195a38c9c65268a5b411b8c59ac0ee744122a8b",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2005-02-23"
+        }
+      },
+      "159949.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "9c5bf8443a71066433f2ed30d0c3085edc7b4134a76845ecf42616384da963b4",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2016-07-22"
+        }
+      },
+      "159930.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "26e2f97911418cda2716a2e077b8b26087dcc850d21275a051c9f02ced868cd1",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2013-09-16"
+        }
+      },
+      "159872.SZ": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "fc01843127c72b0f0e56c373cf0dd03e259731a7f522ba60e1089be11f5f72a8",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-07-01"
+        }
+      },
+      "510550.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "452024b530418c001a99707ab7e34a6b19ef498ee4ada72ac58464b8db7e0832",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2019-01-16"
+        }
+      },
+      "510880.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "160f7393c7fd52ea79049762c0a2f714936e35dbd62f74274c66158ed72dafc1",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2007-01-18"
+        }
+      },
+      "511830.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "10452f1a054ad49bbac6312a7841de400abaaec818555228722999a05f0cbdc7",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2015-08-03"
+        }
+      },
+      "510800.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "9ba5e228ce7c8d7cbb6ca4f8431580af4cc5afdd24687e1145b7b436e893522a",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2018-01-15"
+        }
+      },
+      "510380.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "68ac96c3239d24f092158bbddbe59518c4fdcb787e46bbd9052f2910659713ce",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2018-02-07"
+        }
+      },
+      "511010.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "dd43f489a0d84269ec2aadc5b59c09ab2482143ee03046ba5cd65e66b1202651",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2013-03-25"
+        }
+      },
+      "511980.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "5619343ad098189339201c0f281e95eae31f1ed35c1b92d9187043efca93048c",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2015-11-02"
+        }
+      },
+      "512180.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "5fc6a04d10375bbc33a901ed909cc64fa403c95437c3502433b0c1b389527b9b",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2018-05-21"
+        }
+      },
+      "511600.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "cd94edc6da9f165a6f478aacb745a5d4976aee695b3d875b00bfdbc239422ad4",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2016-09-27"
+        }
+      },
+      "512130.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "531d2c3037a512a325cccdc08c9011be561eca59f2cfff55b553fed4b99e1785",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-07-01"
+        }
+      },
+      "512740.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "aa9f42fab7ba7877a9f2f04ac0ad5747157912d1a88e0baa0cc625deeaf46e18",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2026-09-14"
+        }
+      },
+      "513100.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "f62e3ce97753cdc605831902c71ab5a7e42cf29934af1a4d3ba740487a99e8b0",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2013-05-15"
+        }
+      },
+      "512580.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "798ea2cd8fc67614831965e13a80f4fb397bf10dc8817a796f75af74e7d42aca",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2017-02-28"
+        }
+      },
+      "515010.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "57629d9566dab129dd8cb19f8d40eb2fe1c6626672a80272d535f1c61b91ca71",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2019-11-07"
+        }
+      },
+      "513560.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "8fa0dba9587fd5fca02452cbb9150eb2aa88de3d74f8dd52bb7c69160b3c4c61",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-02-13"
+        }
+      },
+      "515050.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "45afec2a2d90d158110ea54f25aa0452b99d48e989af43635e63b41c02329498",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2019-10-16"
+        }
+      },
+      "515480.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "6c86796d3e44240e90437325b5398824e9ecf19ffc120c80ed66b4583da04a7c",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2026-07-06"
+        }
+      },
+      "515090.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "8a2c6ead977c2470b0c719871aa3a88db8a80e3790380bf121c35e5ab197eae5",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2020-02-20"
+        }
+      },
+      "513880.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "d541459a9fd5faea3d6ccc1246387f3ecca015ae9b8802dd59b266c4bbc2dbfe",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2019-06-25"
+        }
+      },
+      "512990.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "e10902d6fffe9d6654367064a1caffdb8ea0367aa4601fba1a56d1214d3b406c",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2015-03-25"
+        }
+      },
+      "515860.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "4728d41d7fea3ff39c15364b1b54139a24737bb2337c1dcbd74189ebf993a3da",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2019-10-22"
+        }
+      },
+      "516520.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "d3a2872a69d7e0da2e40ca38f13608a2b67a73ff0597644b3846dd3cdc791f6b",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-03-01"
+        }
+      },
+      "516650.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "64f39f70769fa5c93917ee485d993138d411a80b56ec0576ee31dc84d7a985fe",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-06-21"
+        }
+      },
+      "516910.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "98cab48ad69149f2af87c369c0c2cefc06f6d306a89666d049d68eafba7c3c35",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-06-11"
+        }
+      },
+      "517880.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "65a19e82c046c14ae373088bf8b32729bfea09286b8cd9b8713ace372eb6c549",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-12-01"
+        }
+      },
+      "518880.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "6b0547d3c9bc9165c5b71281fbe9589a8e4460ec1c515461dddb8edd33bd618f",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2013-07-29"
+        }
+      },
+      "516880.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "49d49cf1aaad351930ef6bf3f6d547d78656da865a18aefeab9885e77fdfba9e",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-01-18"
+        }
+      },
+      "516600.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "3f8b373663ea3751ebda77e0e50029db030d7ae8c52144129ebf0775c21eebef",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-02-26"
+        }
+      },
+      "516210.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "81f5369a121f60409d92faed8b0c05381f832859ddf4c223dcc6c938023c5b04",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-09-24"
+        }
+      },
+      "517050.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "d57f4ed2c23d5c753f4a75333a3777abd6d221a39d52a752495436881b545bd0",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-02-08"
+        }
+      },
+      "530300.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "ffc5d09db548e56540f5796523281946baf24cb09b44507041f1eb7b39d9db71",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-01-10"
+        }
+      },
+      "530800.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "2a46c3b709a67540c8700d8a13618850c389683a0435bd75f88a73abc8b62ee8",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-01-27"
+        }
+      },
+      "560290.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "4253dca3a18a04b3a31ddde48edb74d3ccf5d00b5aa34ed3608ffe2aec05ab3b",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2026-02-06"
+        }
+      },
+      "561330.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "4181c31da7d9795d4276593134c51db96dbec8b27cd6fc6c010e2ba87a791e11",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2022-11-01"
+        }
+      },
+      "530680.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "de234e0dcd8da8f38b7cd7204c0c35bf9916327bfcc889d976e4928fbb112f1e",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-01-08"
+        }
+      },
+      "560180.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "8cfe002e70b3073a3a29450a70a1e697e8d2087e64c95be2790abb0ff037783d",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-04-21"
+        }
+      },
+      "561810.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "6907a7b63a6ce1d0d4b14266b75b77c8b7f295778ffdb4a78932a1e7b2c9b52d",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2026-08-07"
+        }
+      },
+      "560010.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "b1fbf82ea6ad0da6befaf9dd4d9fd8a04b0cf38910a10f7ce38f2821911e0d15",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2022-08-04"
+        }
+      },
+      "561990.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "f8823c8cc5f458b47326733da4fadf2ed34f0ce8bbee50d1bf376fbd57dec0e8",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-12-10"
+        }
+      },
+      "530050.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "9ae4a96a1c659368d8cfcf3598adaf6ce1c4ea3ca0e3f7d167cf0af680ffcac0",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2024-12-04"
+        }
+      },
+      "562500.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "1e4d475a6c26e97422c43dda372e39c36ae821367e10be3c55c1b216a9d9acbf",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2021-12-29"
+        }
+      },
+      "563770.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "c632445edfe68517f38163eb02f9ebbc899e5be796bffc6e953d272ef6c05b7b",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-05-16"
+        }
+      },
+      "588200.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "2e8df01de170c56469ccae8c40b6c6028ce35307a65fc9e0dc7d785563390194",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2022-10-26"
+        }
+      },
+      "589100.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "a1b87c7b68a2ce29621a4e1a523ea3e57b1cd24b5f1a6284b23f6cf229c8a42a",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-04-07"
+        }
+      },
+      "562550.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "548bf63c960e610f480e7faf4a3529c898280b5f3e057c00e44f71feec568162",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2023-03-27"
+        }
+      },
+      "589080.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "917d5816636260fa1e0d7cab115d26b1da6a232f4051841f9ad2c2996bbb0b43",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-03-05"
+        }
+      },
+      "589560.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "0929cab84b56e17ab8c4e4be162ed02a1c0c9a4518e956f22832728eb873becd",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-09-05"
+        }
+      },
+      "588040.SH": {
+        "start": "2026-11-03",
+        "through": "2026-11-16",
+        "count": 10,
+        "hash": "0738e0e5404aaae3309a77556d12513bbc78c3838009f22c8486eaf0cef9060f",
+        "first": "2026-11-03",
+        "last": "2026-11-16",
+        "plan": {
+          "start": "2026-11-03",
+          "through": "2026-11-16",
+          "full": false,
+          "history_start": "2025-04-14"
+        }
+      }
+    },
+    "routes": {
+      "proxy_requests": 89
+    }
+  },
+  "repeated_confirmed_history_requests": 0,
+  "redis_checkpoint_loss_confirmed_history_requests": 0,
+  "source_gap_codes": [
+    "589450.SH"
+  ],
+  "source_gap_recheck_routes": {
+    "proxy_requests": 6
+  },
+  "pending": 0,
+  "source_quality": [
+    {
+      "criterion": "fields",
+      "status": "pass"
+    },
+    {
+      "criterion": "keys",
+      "status": "pass"
+    },
+    {
+      "criterion": "coverage",
+      "status": "pass"
+    },
+    {
+      "criterion": "quality",
+      "status": "pass"
+    },
+    {
+      "criterion": "freshness",
+      "status": "pass"
+    },
+    {
+      "criterion": "temporal",
+      "status": "pass"
+    }
+  ],
+  "error_records": {
+    "ths-yuanhang-etfs": {
+      "revision": "0",
+      "total": 0,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": []
+    },
+    "ths-yuanhang-etf-prices": {
+      "revision": "0",
+      "total": 0,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": []
+    },
+    "ths-yuanhang-etf-latest": {
+      "revision": "0",
+      "total": 0,
+      "changed": true,
+      "offset": 0,
+      "limit": 100,
+      "rows": []
+    }
+  },
+  "routes": {
+    "proxy_requests": 191
+  },
+  "registration_requests": 0,
+  "statuses": {
+    "collector.yuanhang_etfs": {
+      "status": "complete",
+      "collected": 1741,
+      "network_costs": {
+        "http_attempts": 3,
+        "native_attempts": 1,
+        "native_queries": 1,
+        "authentication_http_attempts": 3,
+        "native_auth_exchanges": 1,
+        "retries": 0,
+        "observed_wire_bytes": 44531,
+        "observed_body_bytes": 5859,
+        "native_decoded_bytes": 0
+      },
+      "total_units": 1,
+      "completed_units": 1,
+      "error": "",
+      "pages": 1
+    },
+    "collector.yuanhang_etf_prices": {
+      "status": "source_gap",
+      "collected": 870,
+      "network_costs": {
+        "http_attempts": 0,
+        "native_attempts": 2,
+        "native_queries": 2,
+        "authentication_http_attempts": 0,
+        "native_auth_exchanges": 0,
+        "retries": 0,
+        "observed_wire_bytes": 217,
+        "observed_body_bytes": 0,
+        "native_decoded_bytes": 0
+      },
+      "total_units": 0,
+      "completed_units": 0,
+      "planned_requests": 0,
+      "maintenance_scope": "backfill",
+      "download_item_name": "个ETF",
+      "download_window_limit": 1,
+      "download_buffer_capacity": 2048,
+      "download_concurrency": 0,
+      "download_pending_pages": 0,
+      "download_ready_pages": 0,
+      "download_failed_pages": 0,
+      "download_buffer_limited": false,
+      "download_wait_reason": "idle",
+      "error": "",
+      "current_security": "589560.SH",
+      "pages": 87,
+      "source_gap_units": 1,
+      "notice": "来源暂无日K，不证明无历史；下轮继续核实"
+    },
+    "collector.yuanhang_etf_latest": {
+      "status": "complete",
+      "collected": 1741,
+      "network_costs": {
+        "http_attempts": 0,
+        "native_attempts": 2,
+        "native_queries": 2,
+        "authentication_http_attempts": 0,
+        "native_auth_exchanges": 0,
+        "retries": 0,
+        "observed_wire_bytes": 82625,
+        "observed_body_bytes": 0,
+        "native_decoded_bytes": 0
+      },
+      "queued_messages": 0,
+      "storage": "redis_only",
+      "download_item_name": "个市场",
+      "download_window_limit": 14,
+      "download_buffer_capacity": 2048,
+      "download_concurrency": 0,
+      "download_pending_pages": 0,
+      "download_ready_pages": 0,
+      "download_failed_pages": 0,
+      "download_buffer_limited": false,
+      "download_wait_reason": "idle",
+      "error": ""
+    }
+  },
+  "input_identity_verified": true,
+  "checked_at": "2026-11-16T09:31:15.633268+00:00",
+  "database": "empire_capacity_d08d82b0ebfa4c65b33ee47677709086_test",
+  "measurement_service": {
+    "server_uuid": "e935f57e-e19a-11f1-a2f2-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

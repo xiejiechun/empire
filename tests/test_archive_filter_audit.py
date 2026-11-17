@@ -109,7 +109,7 @@ async def test_metrics_distinguish_equal_stale_missing_changed_and_sql():
     ]
     await w._archive_data(object(), {"row_count": 4})
     actual = w.metrics.snapshot("audit")
-    assert {k: v for k, v in actual.items() if k != "since"} == dict(
+    assert {k: v for k, v in actual.items() if k not in {"since", "timings"}} == dict(
         checked=4,
         equal=1,
         stale=1,
@@ -118,6 +118,8 @@ async def test_metrics_distinguish_equal_stale_missing_changed_and_sql():
         sql_attempts=1,
         sql_successes=1,
         written=1,
+        acknowledged=0,
+        deleted=0,
     )
 
 

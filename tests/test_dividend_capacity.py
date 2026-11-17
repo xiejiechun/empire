@@ -76,7 +76,7 @@ async def test_failure_restores_all_observers(capacity, monkeypatch):
         collector if key.startswith('collector.') else object()))
     before = (capacity.dividend_history.report_periods, capacity.source.complete_response,
               capacity.dividend_history.collect_history, collector.ingest.publish_page,
-             capacity.dividend_history.needs_review)
+              capacity.dividend_history.needs_review)
     with pytest.raises(ValueError, match='source failure'):
         await capacity.verify_scope(manager, {}, SimpleNamespace(proxy_only=True), dict(results={}))
     after = (capacity.dividend_history.report_periods, capacity.source.complete_response,
@@ -99,14 +99,15 @@ async def test_actual_owned_seed_and_formal_query(capacity, monkeypatch):
     from empire.core.redaction import Redactor
     from empire.features.capital_actions.contract import digest
     from empire.features.capital_actions.parser import parse
+    from empire.plugins.infra.http import HttpService
     from empire.plugins.infra.mysql_store import make_engine
     from tests.capital_samples import source
-    from tests.prefetch_source import prefetch_http
 
     cfg = load_config()
     settings = json.loads(Path(os.environ['EMPIRE_TEST_MYSQL_SETTINGS']).read_text('utf-8'))
     storage = PrivateStorage(settings, cfg['redis'], uuid4().hex, token_hex(32), read_server_uuid(cfg['mysql']))
     manager = None
+    test_http = None
     report = dict(cleanup={}, errors=[])
     row = parse('dividends', source('dividends'), 10000, '2025-12-31')[0][0]
     snapshot = dict(rows=[dict(unified_code='688110.SH', record_key=row['record_key'], name=row['name'],
@@ -133,10 +134,21 @@ async def test_actual_owned_seed_and_formal_query(capacity, monkeypatch):
         import httpx
         await manager.start('collector.tdx_dividends')
         collector = manager.registry.get('collector.tdx_dividends')
-        collector.http = prefetch_http(request=AsyncMock(return_value=httpx.Response(200,
-            json=source('dividends'))), response_policy=lambda profile: profile)
-        monkeypatch.setattr(capacity.dividend_history, 'report_periods',
-                            AsyncMock(return_value=['2025-12-31']))
+        def respond(request):
+            params = json.loads(request.content)['Params']
+            body = ({'ErrorCode': 0, 'ResultSets': [{'ColName': ['T002', 'maxrq'],
+                     'Content': [['2025-12-31', '2025-12-31']], 'Count': 1}]}
+                    if params[0] == 'fhszdate' else source('dividends'))
+            return httpx.Response(200, json=body)
+        store = manager.registry.get('redis.store')
+        test_http = HttpService(store.client, store.prefix, {
+            'tdx': {'domains': ['tdx.com.cn'], 'min_interval_ms': 1, 'max_concurrency': 1}
+        }, transport=httpx.MockTransport(respond), buffer_budget=collector.http.buffer_budget)
+        collector.http = test_http
+        # Bound the synthetic scope while retaining the real directory request,
+        # validation and its maintenance request-cost assertion.
+        monkeypatch.setattr(capacity.dividend_history, 'period_plan',
+                            lambda *args: ['2025-12-31'])
         observed = dict(results={})
         await capacity.verify_scope(manager, snapshot, SimpleNamespace(proxy_only=False), observed)
         result = observed['results']['dividends']
@@ -150,6 +162,7 @@ async def test_actual_owned_seed_and_formal_query(capacity, monkeypatch):
         await capacity.verify_scope(manager, snapshot, SimpleNamespace(proxy_only=False), repeated)
         assert repeated['results']['dividends']['measured']['source_rows'] == 1
         assert repeated['results']['dividends']['measured']['planned_periods'] == 1
+        assert repeated['results']['dividends']['maintenance']['pending'] == 0
         # Actual private-session guard remains installed for seeded and query SQL.
         engine = make_engine(storage.settings)
         try:
@@ -159,5 +172,7 @@ async def test_actual_owned_seed_and_formal_query(capacity, monkeypatch):
         finally:
             engine.dispose()
     finally:
+        if test_http:
+            await test_http.close()
         await finish(manager, storage, None, report, Redactor([storage.owner]))
     assert not report['errors'] and all(report['cleanup'].values()) and report['remaining'] == dict(sql=False, redis=False)

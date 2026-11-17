@@ -128,7 +128,7 @@ function Sites() {
     ["proxy_interval_ms", "每出口 IP 间隔（毫秒）", 100, 60000],
     ["min_interval_ms", "本机直连间隔（毫秒）", 100, 60000],
     ["total_interval_ms", "固定全站间隔（毫秒）", 100, 60000],
-    ["max_concurrency", "并发安全阀（0 跟随全局）", 0, 1024],
+    ["max_concurrency", "并发安全阀（0 跟随全局）", 0, 4096],
     ["max_rps", "全站每秒保护（0 不额外限制）", 0, 100],
   ];
   return (
@@ -136,11 +136,23 @@ function Sites() {
       <QueryNotice query={q} />
       <Table<Data>
         rowKey="name"
+        scroll={{ x: 1050 }}
         pagination={false}
         dataSource={q.data?.sites || []}
         columns={[
           { title: "站点", dataIndex: "name" },
           { title: "共享任务数", dataIndex: "task_count" },
+          {
+            title: "最近 10 秒请求数",
+            dataIndex: "recent_rps",
+            render: (v) => typeof v === "number" && Number.isFinite(v)
+              ? Math.round(v * 10) : "未知",
+          },
+          {
+            title: "当前并发请求数",
+            dataIndex: "active_requests",
+            render: (v) => v ?? "未知",
+          },
           {
             title: "模式",
             dataIndex: "scaling_mode",
@@ -174,6 +186,9 @@ function Sites() {
         ]}
         expandable={{ expandedRowRender: (r) => <Details value={r} /> }}
       />
+      <p className="muted">
+        每 5 秒刷新。最近 10 秒请求数为该站点所有任务实际发起的请求总数（含重试）；当前并发请求数为此刻在途请求数。无请求时显示 0，读取失败时以上方过期提示为准。
+      </p>
       <Pagination
         current={offset / 25 + 1}
         pageSize={25}

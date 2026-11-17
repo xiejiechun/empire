@@ -17,6 +17,24 @@ class View:
 
 
 def _views(task):
+    if task in ('sse-etf-shares', 'szse-etf-shares', 'ttjj-etf-nav'):
+        return [View('records', '历史净值明细' if task == 'ttjj-etf-nav' else '每日总份额',
+                     'etf.fundamentals.query', 'browse', fixed={'source': task.split('-')[0]})]
+    if task == 'ths-yuanhang-etfs':
+        return [View('etfs', 'ETF目录', 'yuanhang.etfs.query', 'browse', filters=('code', 'search'))]
+    if task == 'ths-yuanhang-etf-prices':
+        return [View('records', '已归档ETF日K', 'yuanhang.etf.prices.query', 'browse')]
+    if task == 'ths-yuanhang-etf-latest':
+        return [View('latest', 'Redis最新行情', 'yuanhang.etf.latest.query', 'browse', filters=('code', 'search'))]
+    if task == "ths-fx-live":
+        return [View("latest", "最新行情", "fx.latest.query", "browse", filters=("code",))]
+    if task == "ths-fx-daily":
+        return [View("records", "历史日K线", "fx.daily.query", "browse")]
+
+    if task == "eastmoney-graymarket":
+        return [View("live", "盘中资金榜", "graymarket.query", "browse_live", "live",
+                     fixed={"pool": "graymarket"}, filters=("day", "code")),
+                View("records", "已归档日榜", "graymarket.query", "browse")]
     if task == "ths-market-margin":
         return [View("records", "已归档数据", "market_margin.query", "browse", filters=("search", "start", "end"))]
     if task == "tdx-industry-margin":
@@ -44,7 +62,7 @@ def _views(task):
         "tdx-security-renames": ("names.security.query", "list_events"),
         "tdx-st-implementation": ("st.implementation.query", "list_events"),
         "tdx-st-removal": ("st.removal.query", "list_events"),
-        "ths-index-prices": ("index.prices.query", "browse"),
+        "ths-yuanhang-index-prices": ("index.prices.query", "browse"),
     }
     if task in simple:
         cap, method = simple[task]
@@ -106,7 +124,11 @@ def _views(task):
                 filters=("search", "industry"),
             )
         ]
-    if task == "ths-indices":
+    if task == "ths-yuanhang-indices":
+        return [View('indices', 'A股指数', 'yuanhang.indices.query', 'browse', filters=('search', 'selected_index')),
+                View('members', '对应成分', 'indices.query', 'browse', fixed={'mode': 'members'},
+                     filters=('search', 'selected_index'), hidden=True, parent='indices')]
+    if task == "ths-yuanhang-index-members":
         return [
             View(mode, title, "indices.query", "browse", fixed={"mode": mode}, filters=("search", "selected_index"))
             for mode, title in [("indices", "指数目录"), ("members", "指数成分")]

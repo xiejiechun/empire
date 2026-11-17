@@ -125,3 +125,24 @@ def test_reviewed_startup_interleave_cannot_reorder_old_plugins():
     current['startup'] = change['after']
     with pytest.raises(ValueError, match='preserve every old'):
         compare_order(before,current,[change])
+
+
+@pytest.mark.parametrize('nested', [False, True])
+def test_task_description_review_does_not_waive_schedule_or_identity(declared, nested):
+    before = copy.deepcopy(declared)
+    task = before['semantic']['tasks']['eastmoney-repurchases']
+    target = task['default_schedule'] if nested else task
+    new = target['description']
+    target['description'] = 'old reviewed wording'
+    path = 'semantic.tasks.eastmoney-repurchases.' + ('default_schedule.' if nested else '') + 'description'
+    change = dict(path=path, before=target['description'], after=new,
+        design='docs/eastmoney-collection-optimization.md', tests=['tests/test_repurchase_incremental.py'])
+    assert not compare(before, declared, {}, ROOT, [change])
+    with pytest.raises(ValueError, match='stale'):
+        compare(before, declared, {}, ROOT, [dict(change, after='incorrect')])
+    wrong = copy.deepcopy(declared)
+    wrong['semantic']['tasks']['eastmoney-repurchases']['default_schedule']['daily_time'] = '01:00'
+    assert compare(before, wrong, {}, ROOT, [change]) == [
+        'semantic.tasks.eastmoney-repurchases.default_schedule.daily_time']
+    with pytest.raises(ValueError, match='Only explicit'):
+        compare(before, wrong, {}, ROOT, [dict(change, path=path.replace('description', 'daily_time'))])

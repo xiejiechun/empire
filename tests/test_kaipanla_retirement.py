@@ -15,7 +15,8 @@ from scripts.retire_kaipanla_market import DATASETS, PROJECTS, TABLES, exclusive
 def test_only_theme_tasks_remain_and_no_retired_writer_or_page_is_registered():
     manager = build_manager(dict(redis={}, mysql={}, archive={}, ingest={}, rate_groups={}))
     tasks = manager.entries["collection.control"].plugin.definitions
-    assert len(tasks) == 52
+    assert len(tasks) == 59
+    assert {'ths-yuanhang-etfs', 'ths-yuanhang-etf-prices', 'ths-yuanhang-etf-latest'} <= set(tasks)
     assert {t for t in tasks if t.startswith("kaipanla-")} == {
         "kaipanla-themes",
         "kaipanla-theme-details",

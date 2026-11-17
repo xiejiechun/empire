@@ -251,8 +251,10 @@ async def test_scope_removes_unrelated_preparation_but_preserves_news_service():
 def test_backtest_valuation_scope_keeps_strategy_factors_and_dependencies():
     removed = set('share_capital free_float daily_limits delisting_periods news news_history news_revisions news_stocks announcement_index '
                   'announcement_files announcement_text gdp cpi ppi pmi money_supply credit credit_stock '
-                  'etf_catalog etf_nav etf_shares etf_pcf fx tick_trades tick_orders'.split())
+                  'etf_nav etf_shares etf_pcf fx tick_trades tick_orders'.split())
     assert removed.isdisjoint(BY_ID)
+    assert {'etf_catalog', 'etf_prices'} <= BY_ID.keys()
+    assert BY_ID['etf_prices'].related == ('etf_catalog',)
     assert {'top_holders', 'float_holders', 'holder_count',
             'financing', 'short_lending', 'market_financing', 'market_short_lending', 'margin_targets',
             'connect_holdings', 'connect_trades', 'block_trades', 'hot_list', 'hot_list_summary',

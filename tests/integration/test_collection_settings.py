@@ -40,12 +40,14 @@ async def test_mysql_settings_survive_loss_of_redis_runtime_without_collection()
                 statements.append(statement)
 
         event.listen(mysql.engine, "before_cursor_execute", capture)
+        event.listen(mysql.archive_engine, "before_cursor_execute", capture)
         try:
             await SettingsStore(mysql, cfg["redis"]["namespace"]).save("task", "sina-stocks", policy)
             await control.configure_site("sina", site_policy)
             assert statements == []
         finally:
             event.remove(mysql.engine, "before_cursor_execute", capture)
+            event.remove(mysql.archive_engine, "before_cursor_execute", capture)
         await manager.stop("collection.control")
         await manager.start("collection.control")
         assert manager.registry.get("collection.control").state["jobs"]["sina-stocks"]["next_due"] == original_due

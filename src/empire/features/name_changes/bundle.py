@@ -17,7 +17,7 @@ def bundle(cfg):
         *positioned((8800, 8900), (NameChangeCollector(kind) for kind in NAME_KINDS)),
         *positioned((9000, 9100), (NameUiPlugin(kind) for kind in NAME_KINDS)),
     ), tasks=(
-        *positioned((2300, 2400), (TaskContribution(name_project(kind), item[0] + '（通达信）',
+        *positioned((2300, 2400), (TaskContribution(name_project(kind), item[0],
                     'collector.tdx_' + kind + '_renames', 'tdx', '一次完整历史响应；缺名及链断裂独立显示',
                     category='证券基础', source_name='通达信', unit_name='次完整响应', default_schedule=TaskDefaults('daily',
                         description='每天北京时间18:00核验全部历史，一次请求发现新增与历史修订；可编辑计划。'),

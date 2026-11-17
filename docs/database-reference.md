@@ -24,6 +24,12 @@
 
 | 对象（点击打开正式条目） | 职责 |
 | --- | --- |
+| [etf_daily_share](../src/empire/features/etf_fundamentals/docs/help/db-etf_daily_share.md) | 来源×证券×日期的精确ETF份额。 |
+| [etf_share_day](../src/empire/features/etf_fundamentals/docs/help/db-etf_share_day.md) | 完整来源日的集合与正文证明。 |
+| [etf_daily_nav](../src/empire/features/etf_fundamentals/docs/help/db-etf_daily_nav.md) | 天天基金净值/收益、申赎状态与分红明细。 |
+| [etf_nav_year](../src/empire/features/etf_fundamentals/docs/help/db-etf_nav_year.md) | 证券年度的内容绑定覆盖证明。 |
+| [graymarket_day](../src/empire/features/graymarket/docs/help/graymarket_day.md) | 东方财富完整交易日日榜的集合证明。 |
+| [graymarket_daily](../src/empire/features/graymarket/docs/help/graymarket_daily.md) | 日期×证券的明盘、暗盘及含暗盘主力净流入和行情。 |
 | [industry_margin_day](../src/empire/plugins/ui/storage_reference.md#mysql-industry_margin_day) | 行业融资融券完整自然日集合证明，含有效空日。 |
 | [industry_margin_daily](../src/empire/plugins/ui/storage_reference.md#mysql-industry_margin_daily) | 日期×来源行业的七项融资融券原值，负值保留并另行质量检查。 |
 | [margin_security](../src/empire/plugins/ui/storage_reference.md#mysql-margin_security) | 通达信个股融资融券完整证券历史的集合证明。 |
@@ -44,8 +50,11 @@
 | [cashflow_statement](../src/empire/plugins/ui/storage_reference.md#mysql-cashflow_statement) | 同花顺现金流量表，一证券/报告期一行。 |
 | [industry](../src/empire/plugins/ui/storage_reference.md#mysql-industry) | 同花顺当前行业目录，一行业一行。 |
 | [industry_member](../src/empire/plugins/ui/storage_reference.md#mysql-industry_member) | 同花顺当前行业与证券关联，一行业/证券一行。 |
-| [stock_index](../src/empire/plugins/ui/storage_reference.md#mysql-stock_index) | 同花顺当前指数目录和成员可用性，一来源指数一行。 |
-| [stock_index_member](../src/empire/plugins/ui/storage_reference.md#mysql-stock_index_member) | 同花顺当前指数成分，一指数/来源证券编号一行。 |
+| [yuanhang_index](../src/empire/plugins/ui/storage_reference.md#mysql-yuanhang_index) | 远航A股指数当前目录及原生市场。 |
+| [ths_index_member_state](../src/empire/plugins/ui/storage_reference.md#mysql-ths_index_member_state) | 同花顺网页成分可用性及集合证明，暂无数量未知。 |
+| [ths_index_member](../src/empire/plugins/ui/storage_reference.md#mysql-ths_index_member) | 当前网页成员，一指数/来源证券编号一行。 |
+| [yuanhang_index_daily_price](../src/empire/plugins/ui/storage_reference.md#mysql-yuanhang_index_daily_price) | 原生日K，一指数/来源日期一行。 |
+| [yuanhang_index_price_year](../src/empire/plugins/ui/storage_reference.md#mysql-yuanhang_index_price_year) | 年度键集合、内容及范围证明。 |
 | [stock_market_day](../src/empire/plugins/ui/storage_reference.md#mysql-stock_market_day) | 开盘啦七种独立证券日业务头，一类型/证券/交易日一行。 |
 | [stock_intraday_trend](../src/empire/plugins/ui/storage_reference.md#mysql-stock_intraday_trend) | 开盘啦来源分钟分时事实，一证券/交易日/来源分钟一行。 |
 | [stock_opening_auction](../src/empire/plugins/ui/storage_reference.md#mysql-stock_opening_auction) | 开盘啦竞价序列事实，一证券/交易日/来源序号一行。 |
@@ -89,7 +98,7 @@ Redis 的两类 RouterProxy 键由外部生产者拥有，Empire 只读。其他
 
 北交所历史新旧代码关系见[bse代码映射](bse-code-mapping.md)，独立security_code_alias保存正式关系，不根据股票尾号猜测。
 
-指数日行情采用index_daily_price事实和index_price_year年度完整证明，由独立同花顺项目归档，不把日行装入JSON。open/high/low允许来源缺值为NULL，close/volume仍必需，amount来源缺失为NULL；显式维护入口为scripts/migrate_index_price_nulls.py，既有内容和索引保持。字段及查询预算见[指数行情说明](ths-index-prices.md)。
+指数正式存储与生命周期见[远航三个指数组件](ths-yuanhang-indices.md)。目录、网页成分状态/关系、原生日K事实/年度证明五表分开；来源暂无名单为空且数量未知，所有行情值可空；不迁入旧HTTP覆盖。scripts/switch_yuanhang_indices.py按停机/队列0及维护锁显式创建新表并删除已授权旧四表，启动不迁移。
 
 指数来源价格关系矛盾保留原值：scripts/migrate_index_price_quality.py仅显式调整ck_index_price_ohlc为正价格约束，已有内容/索引/证明保持。正式查询派生价格质量标注，数据准备质量项检查所选范围异常，完整集合证明不等于四价质量通过。
 
@@ -97,9 +106,9 @@ Redis 的两类 RouterProxy 键由外部生产者拥有，Empire 只读。其他
 
 [security_st_event](../src/empire/plugins/ui/storage_reference.md#mysql-security_st_event)：实施ST与撤销ST结构化来源事件，两个项目共表。
 
-指数来源负成交量/成交额按有符号DECIMAL原样存储，正式查询派生量额异常；scripts/migrate_index_price_numeric_quality.py显式移除旧非负约束，持锁及队列0后核对迁移前后内容。主键、索引及容量不变，详见[指数行情说明](ths-index-prices.md)。
+指数正式存储与生命周期见[远航三个指数组件](ths-yuanhang-indices.md)。目录、网页成分状态/关系、原生日K事实/年度证明五表分开；来源暂无名单为空且数量未知，所有行情值可空；不迁入旧HTTP覆盖。scripts/switch_yuanhang_indices.py按停机/队列0及维护锁显式创建新表并删除已授权旧四表，启动不迁移。
 
-东方财富股票回购：`eastmoney-repurchases`任务与`stock_repurchase_plan`正式表，数据目录按需打开方案列表及详情；固定2000ms、每日18:00全量核验。字段、生命周期、显式建表和容量证据见[股票回购](eastmoney-repurchases.md)。回购完成不推断注销。
+东方财富股票回购：`eastmoney-repurchases`任务与`stock_repurchase_plan`正式表，数据目录按需打开方案列表及详情；固定2000ms、默认每日18:00维护近期UPD更新，至少每三天完整核验；用户已保存计划保持。字段、生命周期、显式建表和容量证据见[股票回购](eastmoney-repurchases.md)。回购完成不推断注销。
 
 ## 通达信财报解读五项（2026-10-12）
 
@@ -252,3 +261,11 @@ Redis 的两类 RouterProxy 键由外部生产者拥有，Empire 只读。其他
 ## 龙虎榜对象
 
 新增固定tdx三表：hot_list_day证券日期与来源可用性；hot_list_reason原因/量额；hot_list_seat方向排名与金额。逐字段权威说明见features/hot_list/docs/help/mysql-*.md，方案见tdx-hot-list.md。
+
+资金榜盘中Redis对象：[snapshots](../src/empire/features/graymarket/docs/help/redis-intraday-snapshots.md)、[times](../src/empire/features/graymarket/docs/help/redis-intraday-times.md)、[meta](../src/empire/features/graymarket/docs/help/redis-intraday-meta.md)。字段与恢复规则以这些字典为准。
+
+远航五池含ST范围沿用原三表及统一归档，过滤约束的显式维护、旧口径保留及分批补齐见[ST补充](yuanhang-limits-st.md)；逐字段字典仍由远航池头正文维护。
+
+汇率对象：fx_daily_price、fx_price_year及Redis最新值Hash的权威字典位于features/fx/docs/help；入口和时间限制见[汇率说明](ths-fx-implementation-plan.md)。
+
+ETF新增对象：yuanhang_etf、yuanhang_etf_daily_price、yuanhang_etf_price_year及Redis yuanhang-etf-latest，权威字典位于[ETF来源契约](ths-yuanhang-etf.md)。历史及目录先Redis再统一归档，盘中仅Redis。

@@ -75,8 +75,11 @@ def stored_context(monkeypatch):
     monkeypatch.setattr(http_module, "SettingsStore", Store)
     services = {"mysql.store": database,
                 "redis.store": SimpleNamespace(prefix="empire:test-settings", client=Permits()),
-                "collection.records": None, "proxy.pool": None}
-    return database, services, SimpleNamespace(get=services.__getitem__)
+                "collection.records": None, "proxy.pool": None,
+                "archive.worker": SimpleNamespace(metrics=SimpleNamespace(projects={}),
+                    health=lambda: dict(status='ok', ready_pending=0, ready_oldest_ms=None))}
+    return database, services, SimpleNamespace(get=services.__getitem__, optional=services.get,
+        spawn=lambda coroutine, **kwargs: asyncio.create_task(coroutine))
 
 
 def test_valid_defaults_are_copied_and_old_profile_caps_do_not_set_budget_floor():
@@ -286,7 +289,7 @@ async def test_file_ceiling_clamps_both_limits_without_enlarging_explicit_contra
 
     monkeypatch.setattr(service, "_request", request)
     try:
-        await service.request("GET", "https://example.test/file", policy=FilePolicy(
+        await service.request("GET", "https://example.test/file", allowed_domains=('example.test',), policy=FilePolicy(
             max_body_bytes=body_limit, max_wire_bytes=wire_limit, filename="report.pdf", signature=b"%PDF-"))
         assert received[0].max_body_bytes == expected_body
         assert received[0].max_wire_bytes == expected_wire
@@ -308,6 +311,64 @@ async def test_plugin_reloads_saved_settings_without_redis_values(stored_context
     assert await second.snapshot() == {"saved": changed, "active": None, "pending_restart": False}
     assert database.writes == 1
     await second.stop()
+
+
+async def test_stale_archive_monitor_preserves_known_partial_batches_and_throttles_unseen_work(
+        stored_context, monkeypatch):
+    _, services, context = stored_context
+    settings = DownloadSettingsPlugin()
+    await settings.start(context)
+    services['download.settings'] = settings
+    advance, observed = asyncio.Queue(), asyncio.Queue()
+    clock, pending = 0, 5
+    real_sleep = asyncio.sleep
+
+    async def sleep(seconds):
+        nonlocal clock
+        if seconds == 1:
+            await advance.get()
+            clock += 1
+        else:
+            await real_sleep(seconds)
+
+    async def xlen(stream):
+        if pending is None:
+            raise ConnectionError('owned test connection unavailable')
+        return pending
+
+    monkeypatch.setattr(http_module, 'monotonic', lambda: clock)
+    monkeypatch.setattr(http_module.asyncio, 'sleep', sleep)
+    services['redis.store'].stream = 'test:stream'
+    services['redis.store'].client.xlen = xlen
+    services['archive.worker'].health = lambda: dict(status='ok', ready_pending=0,
+        ready_oldest_ms=None, indexed_messages=5, staging_batches=1, queue_sample_age_seconds=4)
+    plugin = HttpPlugin({})
+    await plugin.start(context)
+    gate = plugin.service.admission
+    original = gate.sample
+
+    def sample(**kwargs):
+        original(**kwargs)
+        observed.put_nowait(kwargs)
+
+    gate.sample = sample
+
+    async def tick():
+        advance.put_nowait(None)
+        return await asyncio.wait_for(observed.get(), 2)
+
+    try:
+        assert (await tick())['monitored']  # Known partial batch needs its remaining pages.
+        pending = 6
+        for _ in range(3):
+            assert not (await tick())['monitored']
+        assert gate.limit == 96 and gate.ceiling == 128
+        pending = None
+        assert not (await tick())['monitored']
+        assert not plugin.monitor.done()  # A transient Redis error must not kill feedback.
+    finally:
+        await plugin.stop()
+        await settings.stop()
 
 
 async def test_invalid_stored_configuration_is_not_silently_reset(stored_context):

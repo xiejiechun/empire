@@ -1,0 +1,107 @@
+--- a/src/empire/features/fx/source.py
++++ b/src/empire/features/fx/source.py
+@@ -5,6 +5,10 @@
+ 
+ from empire.core.time import CHINA
+ from empire.features.fx.contract import day, number, symbol, validate_rows
++
++
++class QuoteUnavailable(ValueError):
++    """A valid quote head explicitly contains no current prices."""
+ 
+ 
+ def decode(body, callback):
+@@ -115,8 +119,6 @@
+     if (not isinstance(value, dict) or len(value) > 160 or value.get('5') != code
+             or value.get('marketid') != '97'):
+         raise ValueError('汇率实时品种或市场身份不符')
+-    quote = {k: number(value.get(f)) for k, f in
+-             (('latest', '10'), ('open', '7'), ('high', '8'), ('low', '9'), ('previous_close', '6'))}
+     times = {}
+     for key, pattern in (('time', '%Y-%m-%d %H:%M:%S 北京时间'), ('updateTime', '%Y-%m-%d %H:%M')):
+         raw = value.get(key)
+@@ -126,5 +128,11 @@
+         if stamp > observed.astimezone(CHINA) + timedelta(minutes=5):
+             raise ValueError('汇率来源时间异常超前')
+         times[key] = stamp.isoformat()
++    if all(value.get(field) == '' for field in ('10', '7', '8', '9')) and '6' in value:
++        if value['6'] != '':
++            number(value['6'])
++        raise QuoteUnavailable(f'{code}：来源暂无报价，保留上次有效值和采样时间')
++    quote = {k: number(value.get(f)) for k, f in
++             (('latest', '10'), ('open', '7'), ('high', '8'), ('low', '9'), ('previous_close', '6'))}
+     return dict(symbol=code, unified_code=code + '.FX', **quote,
+         source_time=times['time'], source_update_time=times['updateTime'], observed_at=observed.isoformat())
+--- a/src/empire/features/fx/live.py
++++ b/src/empire/features/fx/live.py
+@@ -1,10 +1,12 @@
+ """Independent Redis-only task: no SQL capability or durable checkpoint."""
+ from functools import partial
+ 
++from empire.contracts.collector import CollectionSourceGap
+ from empire.contracts.plugin import PluginManifest
+ from empire.contracts.request_cost import measured_run
+ from empire.features.fx.contract import BASE, LIVE_JOB, LIVE_PROJECT, SYMBOLS
+ from empire.features.fx.latest import LatestStore
++from empire.features.fx.source import QuoteUnavailable
+ from empire.features.fx.transport import Transport
+ from empire.plugins.collection.unit_prefetch import prefetch_units
+ 
+@@ -49,17 +51,32 @@
+     @measured_run
+     async def execute(self, *, fresh=False, baseline_revision=0):
+         codes = self.codes()
+-        self.stats.update(status='collecting', collected=0, queued_messages=0, total_units=len(codes), completed_units=0)
++        self.stats.update(status='collecting', collected=0, queued_messages=0, total_units=len(codes),
++                          completed_units=0, unavailable_codes=[], source_gap_units=0,
++                          storage='redis_only', notice='')
+         async def download(code, *, reservation):
+             return await self.fetch(code, 'live', reservation=reservation)
+         try:
+             async with prefetch_units(self, codes, download, url=BASE, domains=('10jqka.com.cn',), item_name='汇率品种') as reads:
+                 async for i, read in reads:
+-                    quote = await read.resolve()
++                    try:
++                        quote = await read.resolve()
++                    except QuoteUnavailable:
++                        self.stats['unavailable_codes'].append(codes[i])
++                        self.stats['source_gap_units'] += 1
++                        self.stats['completed_units'] = i + 1
++                        continue
+                     await self.ingest.publish_volatile(self.project_id, partial(self.store.save, quote))
+-                    self.stats.update(collected=i + 1, completed_units=i + 1)
++                    self.stats.update(collected=self.stats['collected'] + 1, completed_units=i + 1)
++            if self.stats['unavailable_codes']:
++                self.stats['notice'] = ('来源暂无报价：' + '、'.join(self.stats['unavailable_codes'])
++                    + f"；本轮更新{self.stats['collected']}/{len(codes)}个品种，保留其余上次有效值，下轮重新采样")
++                raise CollectionSourceGap(self.stats['notice'])
+             self.stats['status'] = 'complete'
+             return dict(phase='complete', storage='redis_only', collected=len(codes), queued_messages=0)
++        except CollectionSourceGap:
++            self.stats['status'] = 'source_gap'
++            raise
+         except BaseException:
+             self.stats['status'] = 'paused'
+             raise
+--- a/src/empire/features/fx/transport.py
++++ b/src/empire/features/fx/transport.py
+@@ -2,8 +2,8 @@
+ import hashlib
+ from datetime import UTC, datetime
+ 
+-from empire.features.fx.contract import url
+-from empire.features.fx.source import annual, candle, realtime, recent
++from empire.features.fx.contract import LIVE_PROJECT, url
++from empire.features.fx.source import QuoteUnavailable, annual, candle, realtime, recent
+ from empire.plugins.collection.unit_prefetch import DeferredResponse
+ from empire.plugins.collectors.support import record_error_safely, wait_for_capacity
+ 
+@@ -27,6 +27,8 @@
+                     return candle(body, code, unit)[1]
+                 return annual(body, code, unit, snapshot)
+             except (ValueError, TypeError, KeyError, UnicodeError) as exc:
++                if isinstance(exc, QuoteUnavailable) and self.project_id == LIVE_PROJECT:
++                    raise
+                 raw = response.content
+                 exc.diagnostic_recorded = await record_error_safely(self.records, self.stats,
+                     self.project_id, exc, stage='source_validation',

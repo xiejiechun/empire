@@ -17,12 +17,15 @@ MARKETS = {'SH': 'USHA', 'SZ': 'USZA', 'BJ': 'USTM'}
 
 
 class IncompleteFinancialHistory(ValueError):
-    """Validated single total/circulating point; absence needs listing evidence."""
+    """Validated total/circulating history; absence needs listing evidence."""
 
-    def __init__(self, code, source_date):
+    def __init__(self, code, source_date, *, first_source_date=None, point_count=1):
         self.code, self.source_date = code, source_date
+        self.first_source_date = first_source_date or source_date
+        self.point_count = point_count
         super().__init__(f'{code}: Yuanhang free-float field omitted from validated partial capital history; '
-                         f'source_date={source_date.isoformat()}')
+                         f'source_date={source_date.isoformat()}, '
+                         f'first_source_date={self.first_source_date.isoformat()}, point_count={point_count}')
 
 
 class MissingFinancialValue(ValueError):
@@ -206,19 +209,21 @@ def normalize_financial(tables, *, unified_code: str, start: date, end: date,
     identify the requested security. Missing *all* action columns means no source
     action series; a partial series, unsupported field or null is an error.
     """
-    # Observed prelisting shape (688827.SH): exactly one dated total/circulating
-    # point (407 may explicitly be NULL), no actions and no free-float.
-    # Validate identity, extent and all available values
-    # before exposing this specific condition; arbitrary missing fields fail.
-    if (len(tables) == 1 and len(tables[0]['rows']) == 1
+    # Observed prelisting shapes (688827.SH, 688845.SH): a single table of
+    # total/circulating points, no actions or free-float. Circulating may be
+    # zero before trading, or explicitly NULL. These are availability evidence,
+    # never complete capital facts; all rows still require strict validation.
+    if (len(tables) == 1
             and {f for f, *_ in tables[0]['fields']} == {1, 402, 407}):
         _validated(tables, unified_code, start, end, {1, 402, 407}, native_market)
-        row = tables[0]['rows'][0]
-        if _number(row[402], label='402') <= 0:
-            raise ValueError('Yuanhang partial total capital must be positive')
-        if row[407] is not None and _number(row[407], label='407') <= 0:
-            raise ValueError('Yuanhang partial circulating capital must be positive or explicitly absent')
-        raise IncompleteFinancialHistory(unified_code, _date(row[1]))
+        rows = tables[0]['rows']
+        for row in rows:
+            if _number(row[402], label='402') <= 0:
+                raise ValueError('Yuanhang partial total capital must be positive')
+            if row[407] is not None:
+                _number(row[407], label='407')
+        raise IncompleteFinancialHistory(unified_code, _date(rows[-1][1]),
+            first_source_date=_date(rows[0][1]), point_count=len(rows))
     capital = normalize_capital(tables, unified_code=unified_code, start=start, end=end,
                                 native_market=native_market)
     present = {field for table in tables for field, *_ in table['fields']}

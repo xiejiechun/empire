@@ -6,6 +6,7 @@ import zlib
 import httpx
 
 from empire.contracts.download import CHUNK_BYTES, BufferedPolicy, FilePolicy
+from empire.contracts.request_cost import add_cost, http_attempt
 from empire.plugins.infra.http_safety import SENSITIVE_HEADERS
 
 
@@ -96,6 +97,7 @@ async def read_response(client, method, url, *, policy, storage, on_headers,
             request.headers.pop(name, None)
         # Ignore a manually configured default Host after crossing origins.
         request.headers["Host"] = httpx.Request(method, url).headers["Host"]
+    http_attempt()
     response = await client.send(request, stream=True, auth=auth, follow_redirects=False)
     sink = None
     wire_count = body_count = 0
@@ -135,6 +137,7 @@ async def read_response(client, method, url, *, policy, storage, on_headers,
         async def accept(chunk):
             nonlocal body_count
             body_count += len(chunk)
+            add_cost('observed_body_bytes', len(chunk))
             prefix.extend(chunk[:max(0, CHUNK_BYTES - len(prefix))])
             if body_count > body_limit:
                 raise DownloadLimitError('响应正文无法容纳于共享下载缓冲' if isinstance(policy, BufferedPolicy)
@@ -157,6 +160,7 @@ async def read_response(client, method, url, *, policy, storage, on_headers,
 
         async for block in encoded_chunks():
             wire_count += len(block)
+            add_cost('observed_wire_bytes', len(block))
             if wire_count > policy.max_wire_bytes:
                 raise DownloadLimitError("响应实际传输超过字节上限")
             for offset in range(0, len(block), CHUNK_BYTES):

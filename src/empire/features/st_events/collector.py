@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.st_events.contract import KINDS, MARKETS, SCHEMA_VERSION, pack_rows, project
 from empire.features.st_events.source import PAGE, URL, parse, request_body
@@ -67,6 +68,7 @@ class StEventCollector:
             return DeferredResponse(response, consume)
         return await consume()
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
         stage = 'source_validation'
         try:

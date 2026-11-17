@@ -39,6 +39,7 @@ async def test_complete_pool_time_validation_replays_without_sql_writes():
         redis = manager.registry.get('redis.store')
         query = manager.registry.get('yuanhang.limits.query')
         event.listen(mysql.engine, 'before_cursor_execute', track)
+        event.listen(mysql.archive_engine, 'before_cursor_execute', track)
         fetch = collector.fetch
 
         async def capture(key, **kwargs):
@@ -78,6 +79,7 @@ async def test_complete_pool_time_validation_replays_without_sql_writes():
     finally:
         if mysql is not None:
             event.remove(mysql.engine, 'before_cursor_execute', track)
+            event.remove(mysql.archive_engine, 'before_cursor_execute', track)
         await manager.shutdown()
         client = create_client(cfg['redis'])
         prefix = cfg['redis']['namespace'] + ':'

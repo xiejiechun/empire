@@ -55,8 +55,8 @@ MySQL 保存正式业务、每项目一条已确认状态和用户配置；Redis
 - [MySQL cashflow_statement](help:MySQL%20cashflow_statement)：同花顺现金流量表，一证券/报告期一行。
 - [MySQL industry](help:MySQL%20industry)：同花顺当前行业目录，一行业一行。
 - [MySQL industry_member](help:MySQL%20industry_member)：同花顺当前行业与证券关联，一行业/证券一行。
-- [MySQL stock_index](help:MySQL%20stock_index)：同花顺当前指数目录和成员可用性，一来源指数一行。
-- [MySQL stock_index_member](help:MySQL%20stock_index_member)：同花顺当前指数成分，一指数/来源证券编号一行。
+- [MySQL yuanhang_index](help:MySQL%20yuanhang_index)：同花顺当前指数目录和成员可用性，一来源指数一行。
+- [MySQL ths_index_member](help:MySQL%20ths_index_member)：同花顺当前指数成分，一指数/来源证券编号一行。
 - [MySQL collection_state](help:MySQL%20collection_state)：统一 SQL 已确认采集状态，每 namespace/project_id 一行。
 - [MySQL app_setting](help:MySQL%20app_setting)：用户正式保存的任务、网站频控、下载资源配置。
 
@@ -84,3 +84,5 @@ MySQL 保存正式业务、每项目一条已确认状态和用户配置；Redis
 - [Redis router-directory](help:Redis%20router-directory)：外部代理租约目录
 
 [文档分工与更新](help:文档分工与更新)
+
+- [MySQL ths_index_member_state](help:MySQL%20ths_index_member_state)：网页成员可用性、未知数量及集合摘要。

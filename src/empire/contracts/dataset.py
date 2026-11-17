@@ -14,8 +14,19 @@ class DatasetContribution:
     stale_outcome: str = "complete"
     schema_version: int = 1
     confirmation: str = ""
+    batch_independent: bool = False
+    process_safe: bool = False
+    archive_tables: tuple[str, ...] = ()
 
     def __post_init__(self):
+        if (not isinstance(self.archive_tables, tuple) or len(self.archive_tables) > 64
+                or any(not isinstance(name, str) or not name for name in self.archive_tables)
+                or len(set(self.archive_tables)) != len(self.archive_tables)):
+            raise ValueError('并行归档须显式声明经审阅的完整业务表集合')
+        if type(self.process_safe) is not bool or self.process_safe and not self.batch_independent:
+            raise ValueError('纯计算进程仅可用于显式独立增量单元')
+        if type(self.batch_independent) is not bool or self.batch_independent and self.mode != 'incremental':
+            raise ValueError('仅独立增量单元可声明事务批处理')
         if type(self.schema_version) is not int or self.schema_version < 1:
             raise ValueError('数据贡献 schema_version 须为正整数')
         if self.confirmation and (not isinstance(self.confirmation, str) or safe_project_id(self.confirmation) != self.confirmation):

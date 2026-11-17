@@ -12,6 +12,10 @@ let window,
   connected = false,
   status = "正在连接现有采集服务";
 const reads = new Set([
+  "review.market",
+  "observation.catalog",
+  "observation.read",
+  "observation.live",
   "preview.catalog",
   "preview.read",
   "health.read",

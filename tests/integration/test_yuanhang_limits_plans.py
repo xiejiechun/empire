@@ -29,6 +29,31 @@ async def calendar(q, monkeypatch):
             conn.execute(text('INSERT INTO trade_calendar VALUES (:day,:flag,NOW(6))'), rows[offset:offset + 500])
 
 
+async def test_recent_and_backfill_share_calendar_and_return_bounded_missing_units(limits, monkeypatch):
+    from sqlalchemy import event
+    manager, c, q = limits
+    await calendar(q, monkeypatch)
+    with q.mysql.engine.begin() as conn:
+        conn.execute(text("UPDATE trade_calendar SET is_trade=1 WHERE trade_date BETWEEN '2026-01-01' AND '2026-07-15'"))
+    q.collection_plan = LimitQuery.collection_plan.__get__(q)
+    statements = []
+    def capture(conn, cursor, sql, parameters, context, many):
+        statements.append(sql)
+    event.listen(q.mysql.read_engine, 'before_cursor_execute', capture)
+    try:
+        cache = {}
+        recent = await q.collection_plan(c.pool, scope='recent', calendar_cache=cache)
+        backfill = await q.collection_plan(c.pool, scope='backfill', calendar_cache=cache)
+    finally:
+        event.remove(q.mysql.read_engine, 'before_cursor_execute', capture)
+    assert len(recent['units']) == 10 and recent['units'][0] == '2026-07-15'
+    assert len(backfill['units']) == 64 and backfill['units'][0] == '2026-01-01'
+    assert backfill['remaining'] == 196 - 10 - 64
+    assert sum('SELECT trade_date,is_trade FROM trade_calendar WHERE trade_date BETWEEN' in s for s in statements) == 1
+    assert any('COUNT(*) OVER()' in s for s in statements)
+    assert any('JSON_OBJECT(' in s for s in statements)
+
+
 async def test_sql_plan_initial_nochange_new_day_and_lost_cache(limits, monkeypatch):
     manager, c, q = limits
     await calendar(q, monkeypatch)
@@ -81,12 +106,52 @@ async def test_reason_key_cursor_visits_over_one_plan_without_dropping_members(l
     _, _, q = limits
     await calendar(q, monkeypatch)
     values = [member({**row(f'{i:06}'), 'first_limit_up_time': None}, '2026-07-15') for i in range(1, 301)]
-    unit = dict(trade_date='2026-07-15', pool_type='limit_up_pool', filter='HS,GEM2STAR', source_total=300, rows=values)
+    unit = dict(trade_date='2026-07-15', pool_type='limit_up_pool', filter='HS,GEM2STAR,ST', source_total=300, rows=values)
     with q.mysql.engine.begin() as conn:
         replace_pool(conn, unit, datetime.now(UTC), None)
     q.collection_plan = LimitQuery.collection_plan.__get__(q)
-    first = await q.collection_plan('reason')
+    cache = {}
+    first = await q.collection_plan('reason', calendar_cache=cache)
     assert len(first['units']) == 256 and first['remaining'] is None
-    second = await q.collection_plan('reason', through=first['cutoff'], scan_after=first['scan_after'])
+    relation = cache[(first['cutoff'], 'all', 'reason_dates')]
+    second = await q.collection_plan('reason', through=first['cutoff'], scan_after=first['scan_after'], calendar_cache=cache)
+    assert cache[(first['cutoff'], 'all', 'reason_dates')] is relation
     assert len(second['units']) == 44 and second['remaining'] == 0
     assert [v[1] for v in first['units'] + second['units']] == [v['unified_code'] for v in values]
+
+
+async def test_preparation_uses_ten_day_tail_without_old_history_rotation(limits, monkeypatch):
+    from empire.features.yuanhang_limits.model import member
+    from empire.features.yuanhang_limits.repository import replace_pool, replace_reason
+
+    _, _, q = limits
+    await calendar(q, monkeypatch)
+    days = [date(2026, 6, 21) + timedelta(days=i) for i in range(25)]
+    cutoff = datetime(2026, 7, 15, 16, tzinfo=CHINA)
+    stale_day = days[-8]
+    q.cache_proofs = AsyncMock(return_value={})
+    with q.mysql.engine.begin() as conn:
+        # An explicitly synthetic, source-declared 25-trade-day fixture.
+        conn.execute(text('UPDATE trade_calendar SET is_trade=1 WHERE trade_date BETWEEN :first AND :last'),
+                     dict(first=days[0], last=days[-1]))
+        for i, day in enumerate(days):
+            stamp = cutoff if i >= len(days) - 10 else datetime.combine(day, cutoff.timetz())
+            for pool in POOLS:
+                rows = [member({**row(), 'first_limit_up_time': None}, day.isoformat())] if (
+                    pool == 'limit_up_pool' and day in (days[0], stale_day)) else []
+                replace_pool(conn, dict(trade_date=day.isoformat(), pool_type=pool,
+                    filter='HS,GEM2STAR,ST', source_total=len(rows), rows=rows), stamp, None)
+            if day in (days[0], stale_day):
+                reason = dict(trade_date=day.isoformat(), unified_code='000001.SZ', name=None,
+                              reason_text=None, reason_kind=None, availability='no_content')
+                replace_reason(conn, reason, datetime.combine(day, cutoff.timetz()), None)
+    scope = dict(start=days[0].isoformat(), end=days[-1].isoformat())
+    assert all(e.status == 'pass' for e in await q.check_limit_up_pool(scope))
+    checks = await q.check_reason(scope)
+    assert all(e.status == 'pass' for e in checks if e.criterion != 'freshness')
+    assert next(e for e in checks if e.criterion == 'freshness').measured.endswith('1个单元')
+    with q.mysql.engine.begin() as conn:
+        conn.execute(text('UPDATE yuanhang_limit_reason SET observed_at=:stamp WHERE trade_date=:day'),
+                     dict(stamp=cutoff.replace(tzinfo=None), day=stale_day))
+    # The old reason retains its original date/version; only the stale tail changes.
+    assert all(e.status == 'pass' for e in await q.check_reason(scope))

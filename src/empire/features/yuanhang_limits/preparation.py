@@ -8,7 +8,14 @@ from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
 from empire.core.time import CHINA
 from empire.features.calendar.api import read_trade_day_cutoff
-from empire.features.yuanhang_limits.contract import POOLS, SOURCE, dataset, job, project
+from empire.features.yuanhang_limits.contract import (
+    POOL_CONTRACT_VERSION,
+    POOLS,
+    SOURCE,
+    dataset,
+    job,
+    project,
+)
 from empire.features.yuanhang_limits.model import digest
 from empire.features.yuanhang_limits.planning import calendar_dates
 from empire.features.yuanhang_limits.proofs import pool_versions
@@ -53,8 +60,9 @@ async def check(query, kind, request=None):
             versions = pool_versions(conn, query.namespace, kind)
         return [r[0].isoformat() for r in rows if r[1]], start, end, trades, versions
     days, start, end, trades, versions = await query.read(dates)
-    rank = len(trades) - 1
-    expected_checks = {day: (trades[-1] if i >= len(trades) - 5 else trades[max(i, rank - ((rank - i) % 20))])
+    # Match the current collector policy: recheck the recent ten trade days;
+    # complete older units have no periodic full-history revision guarantee.
+    expected_checks = {day: (trades[-1] if i >= len(trades) - 10 else day)
                        for i, day in enumerate(trades)}
     missing, invalid, overdue, count, latest = [], [], [], 0, None
 
@@ -125,7 +133,7 @@ async def check(query, kind, request=None):
                 if latest is None or day > latest[0]:
                     latest = day, head['observed_at']
         else:
-            known = {(r[0].isoformat(), r[1]) for r in input_heads if r[2] == 1}
+            known = {(r[0].isoformat(), r[1]) for r in input_heads if r[2] == POOL_CONTRACT_VERSION}
             missing.extend(day + ':缺少原因适用证券集合' for day in chunk
                            if any((day, pool) not in known for pool in POOLS))
             # Input membership must have the same content-bound proof as a pool

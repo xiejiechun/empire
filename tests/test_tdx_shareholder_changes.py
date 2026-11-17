@@ -43,6 +43,7 @@ def setup_collector(monkeypatch):
     c = PerformanceCollector(KIND)
     state = {'revision': 0, 'cursor': {}}
     c.query = SimpleNamespace(state=AsyncMock(return_value={}))
+    c.query.maintenance_state = c.query.state
     c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
     c.http = prefetch_http(request=AsyncMock(return_value=httpx.Response(200, json=source())), response_policy=lambda _: None)
     async def publish(events, **kw):

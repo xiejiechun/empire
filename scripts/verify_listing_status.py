@@ -157,7 +157,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     _app = QCoreApplication.instance() or QCoreApplication(sys.argv[:1])
     passed = asyncio.run(verification.recover(args) if args.cleanup_only else verification.verify(
-        args, verify_scope, subject='listing_status', require_proxy=True,
+        args, verify_scope, subject='listing_status',
         non_stock_scope=dict(unit='complete_calendar_months', reason='每日完整市场响应，不按股票请求或当前股票名单过滤',
                              fixed=list(args.months))))
     print(('CLEANUP COMPLETE' if args.cleanup_only else 'PASS') if passed else 'FAIL', flush=True)

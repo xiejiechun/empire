@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.features.industries.dataset import JOB, PROJECT, validate
 from empire.features.industries.source import (
     BASE,
@@ -14,6 +15,7 @@ from empire.features.industries.source import (
     parse_catalog,
     parse_members,
 )
+from empire.features.industries.staging import IndustryStage
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -32,6 +34,7 @@ class ThsIndustryCollector:
     def __init__(self):
         self.source, self.project_id, self.job_key = 'ths', PROJECT, JOB
         self.session = None
+        self.staging = IndustryStage()
         self.request_retries = 2
         self.stats = {'status': 'stopped', 'collected': 0}
 
@@ -70,6 +73,7 @@ class ThsIndustryCollector:
             return DeferredResponse(response, consume)
         return await consume()
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
         self.stats.update(completed_units=0, total_units=None)
         stage = 'source_validation'
@@ -84,23 +88,39 @@ class ThsIndustryCollector:
                 self.stats.update(status='collecting', collected=0, pages=0, error='')
                 industries = await self.fetch(BASE, parse_catalog)
                 self.stats.update(total_units=len(industries), completed_units=0, unit_name='个行业')
+                observed = self.staging.begin(industries, observed, fresh=fresh)
+                selected = []
                 count, requests = 0, 1
+                for industry in industries:
+                    saved = self.staging.get(industry['code'])
+                    if saved is None:
+                        selected.append(industry)
+                    else:
+                        industry['members'] = saved
+                        count += len(saved)
+                self.stats['reused_units'] = len(industries) - len(selected)
                 async def download(industry, *, reservation):
                     return await self.fetch(members_url(industry['code']),
                         partial(parse_members, industry=industry['code']), reservation=reservation, defer=True)
-                async with prefetch_units(self, industries, download, url=BASE,
+                async with prefetch_units(self, selected, download, url=BASE,
                         domains=('10jqka.com.cn',), item_name='行业') as reads:
                     async for index, read in reads:
-                        industry = industries[index]
-                        self.stats.update(current_security=industry['name'], completed_units=index)
+                        industry = selected[index]
+                        self.stats.update(current_security=industry['name'], completed_units=self.stats['reused_units'] + index)
                         members = await read.resolve()
                         count += len(members)
                         if count > 15000:
+                            self.staging.clear()
                             raise ValueError('行业全量成员超过声明边界')
                         requests += 1
-                        self.stats.update(collected=count, pages=requests, completed_units=index + 1)
+                        self.stats.update(collected=count, pages=requests, completed_units=self.stats['reused_units'] + index + 1)
                         industry['members'] = members
-                validate(industries)
+                        self.staging.put(industry)
+                try:
+                    validate(industries)
+                except ValueError:
+                    self.staging.clear()
+                    raise
                 stage = 'queue_publish'
                 envelope = make_envelope(source=self.source, dataset='industry.snapshot', business_key='current',
                     job_key=self.job_key, batch_id=batch, run_id=batch, payload={'page': 1, 'industries': industries})
@@ -111,6 +131,7 @@ class ThsIndustryCollector:
                 state = await publish_with_capacity(self.ingest, self.stats, [envelope], job_key=self.job_key,
                     expected_revision=state['revision'], cursor=cursor)
                 cursor = state['cursor']
+                self.staging.clear()
             self.stats.update(completed_units=cursor.get('industries'), total_units=cursor.get('industries'), unit_name='个行业')
             stage = 'archive_confirmation'
             self.stats.update(status='awaiting_archive', collected=cursor['collected'])
@@ -119,6 +140,7 @@ class ThsIndustryCollector:
             cursor = {**cursor, 'phase': 'complete'}
             await self.ingest.advance_checkpoint(job_key=self.job_key,
                 expected_revision=state['revision'], cursor=cursor)
+            self.staging.clear()
             self.stats.update(status='complete', error='')
             return cursor
         except asyncio.CancelledError:
@@ -131,6 +153,7 @@ class ThsIndustryCollector:
             raise
 
     async def stop(self):
+        self.staging.clear()
         self.session = None
         self.stats['status'] = 'stopped'
 

@@ -58,8 +58,8 @@ async def performance(request, monkeypatch):
             await client.aclose()
 
 
-async def collect(c):
-    return await asyncio.wait_for(c.execute(baseline_revision=await c.checkpoint_revision()), 25)
+async def collect(c, *, fresh=False):
+    return await asyncio.wait_for(c.execute(fresh=fresh, baseline_revision=await c.checkpoint_revision()), 25)
 
 
 @pytest.mark.parametrize('failure', ['sql', 'ack'])
@@ -172,6 +172,7 @@ async def test_hot_cold_repeat_revision_old_response_and_replay(performance):
         if q.table in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             dml.append(statement)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     original = q.mysql.archive
     async def counted(records):
         sql_calls.append(records)
@@ -189,7 +190,7 @@ async def test_hot_cold_repeat_revision_old_response_and_replay(performance):
             return httpx.Response(200, json=directory(c.kind) if 'cache' in args[1] else
                 source(c.kind, revised=True, security=params[1] if c.kind == 'holder_count' else ''))
         c.http.request.side_effect = revised
-        await collect(c)
+        await collect(c, fresh=True)
         assert dml and all(r['name'] == '修订名称' for r in (await q.list_records())['rows'])
         assert await store.client.xlen(store.stream) == 0
         prior = next(e for e in reversed(c._test_events) if e.raw_payload['rows'])
@@ -204,6 +205,7 @@ async def test_hot_cold_repeat_revision_old_response_and_replay(performance):
         assert replay['written_count'] == 0 and len(dml) == before
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
         q.mysql.archive = original
 
 
@@ -217,10 +219,14 @@ async def test_equal_count_different_sql_set_and_missing_proof(performance):
     def alter():
         with q.mysql.engine.begin() as conn:
             conn.execute(text(f'UPDATE {q.table} SET name=\'正文不同\' LIMIT 1'))
+            conn.execute(text("UPDATE collection_state SET payload=JSON_REMOVE(payload,'$.units') "
+                'WHERE namespace=:namespace AND project_id=:project'),
+                {'namespace': q.namespace, 'project': q.project_id})
     await q.mysql.control(alter)
     assert next(v for v in await q.preparation_check() if v.criterion == 'coverage').status == 'fail'
     await collect(c)
     assert next(v for v in await q.preparation_check() if v.criterion == 'coverage').status == 'pass'
+
     def remove_proof():
         with q.mysql.engine.begin() as conn:
             conn.execute(text('UPDATE collection_state SET payload=JSON_REMOVE(payload,\'$.units\') '
@@ -230,3 +236,33 @@ async def test_equal_count_different_sql_set_and_missing_proof(performance):
     assert next(v for v in await q.preparation_check() if v.criterion == 'coverage').status == 'fail'
     await collect(c)
     assert next(v for v in await q.preparation_check() if v.criterion == 'coverage').status == 'pass'
+
+
+async def test_cold_proofs_skip_history_but_expired_units_recheck_without_fresh(performance):
+    manager, c, q, store = performance
+    await collect(c, fresh=True)
+    cache = manager.registry.get('archive.worker').fingerprints
+    await cache.invalidate(q.mapping.FINGERPRINT_NAMESPACE, 'tdx')
+    c.http.request.reset_mock()
+    await collect(c)
+    assert c.http.request.await_count == 1
+    assert await store.client.xlen(store.stream) == 0
+
+    def expire():
+        with q.mysql.engine.begin() as conn:
+            value = conn.execute(text('SELECT payload FROM collection_state WHERE namespace=:n AND project_id=:p'),
+                dict(n=q.namespace, p=q.project_id)).scalar_one()
+            payload = json.loads(value) if isinstance(value, str) else value
+            for proof in payload['units'].values():
+                proof['observed_at'] = (datetime.now(UTC) - timedelta(days=94)).isoformat(timespec='microseconds')
+            conn.execute(text('UPDATE collection_state SET payload=:value WHERE namespace=:n AND project_id=:p'),
+                dict(value=json.dumps(payload), n=q.namespace, p=q.project_id))
+
+    await cache.invalidate(q.mapping.FINGERPRINT_NAMESPACE, 'tdx')
+    await q.mysql.control(expire)
+    assert next(v for v in await q.preparation_check() if v.criterion == 'freshness').status == 'fail'
+    c.http.request.reset_mock()
+    await collect(c)
+    assert c.http.request.await_count == (3 if c.kind == 'holder_count' else 2)
+    assert next(v for v in await q.preparation_check() if v.criterion == 'freshness').status == 'pass'
+    assert await store.client.xlen(store.stream) == 0

@@ -1,0 +1,899 @@
+{
+  "scope": "来源可行性调查；非采集插件交付，非历史成员时点完整性认证",
+  "network_policy": {
+    "use_proxy": true,
+    "proxy_fallback": true
+  },
+  "requests": 14,
+  "response_bytes": 1642850,
+  "business_enqueued": 0,
+  "business_writes": 0,
+  "probes": [
+    {
+      "probe": "date-probe",
+      "at": "2026-10-29T11:28:01.291165+00:00",
+      "network": {
+        "proxy_requests": 3
+      },
+      "results": [
+        {
+          "action": "InfoGet",
+          "params": {
+            "ID": "148"
+          },
+          "anonymous": true,
+          "route_before": {},
+          "status": 200,
+          "bytes": 224646,
+          "sha256": "035b9ff62e62eed12733c304c705da3e024bba9c589bc0a1b1b14e133e4d93a1",
+          "structure": {
+            "root:BriefIntro,ClassLayer,ComNum,CreateTime,Desc,GoodNum,ID,Introduction,IsGood,IsNew,Name,PlateSwitch,Power,StkSwitch,StockList,Stocks,Subscribe,Table,UpdateTime,ZT,errcode,t": 1,
+            "root/Table[]:Level1,Level2": 16,
+            "root/Table[]/Level1:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 16,
+            "root/Table[]/Level2[]:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 55,
+            "root/Table[]/Level2[]/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 231,
+            "root/Table[]/Level1/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 22,
+            "root/StockList[]:HotNum,StockID,Tag,prod_name": 177,
+            "root/StockList[]/Tag[]:ID,Name,Reason": 253
+          },
+          "canonical_sha256": "84f27da8184bdce00014fdeabf32a361137a61cb37fb0fee323b8a2d519c6838",
+          "masked_string_count": 0,
+          "six_digit_string_count": 434,
+          "route_after": {
+            "proxy_requests": 1
+          }
+        },
+        {
+          "action": "InfoGet",
+          "params": {
+            "ID": "148",
+            "Date": "2025-10-28",
+            "Day": "2025-10-28"
+          },
+          "anonymous": true,
+          "route_before": {
+            "proxy_requests": 1
+          },
+          "status": 200,
+          "bytes": 224646,
+          "sha256": "49357bfee6b2b8fd2cf6333caee9ecd8f981ec32f0cd5aa70dc13330069069a0",
+          "structure": {
+            "root:BriefIntro,ClassLayer,ComNum,CreateTime,Desc,GoodNum,ID,Introduction,IsGood,IsNew,Name,PlateSwitch,Power,StkSwitch,StockList,Stocks,Subscribe,Table,UpdateTime,ZT,errcode,t": 1,
+            "root/Table[]:Level1,Level2": 16,
+            "root/Table[]/Level1:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 16,
+            "root/Table[]/Level2[]:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 55,
+            "root/Table[]/Level2[]/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 231,
+            "root/Table[]/Level1/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 22,
+            "root/StockList[]:HotNum,StockID,Tag,prod_name": 177,
+            "root/StockList[]/Tag[]:ID,Name,Reason": 253
+          },
+          "canonical_sha256": "dd141d56fa224bcd7c6eca17c2e429d23b12b31504090f6674d2865b6ccae337",
+          "masked_string_count": 0,
+          "six_digit_string_count": 434,
+          "route_after": {
+            "proxy_requests": 2
+          }
+        },
+        {
+          "action": "InfoGet",
+          "params": {
+            "ID": "148",
+            "Date": "2026-09-28",
+            "Day": "2026-09-28"
+          },
+          "anonymous": true,
+          "route_before": {
+            "proxy_requests": 2
+          },
+          "status": 200,
+          "bytes": 224646,
+          "sha256": "d199a512829121139fbd43f5f525b32adb622fd6d5078a930311a3179dc1e8bf",
+          "structure": {
+            "root:BriefIntro,ClassLayer,ComNum,CreateTime,Desc,GoodNum,ID,Introduction,IsGood,IsNew,Name,PlateSwitch,Power,StkSwitch,StockList,Stocks,Subscribe,Table,UpdateTime,ZT,errcode,t": 1,
+            "root/Table[]:Level1,Level2": 16,
+            "root/Table[]/Level1:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 16,
+            "root/Table[]/Level2[]:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 55,
+            "root/Table[]/Level2[]/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 231,
+            "root/Table[]/Level1/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 22,
+            "root/StockList[]:HotNum,StockID,Tag,prod_name": 177,
+            "root/StockList[]/Tag[]:ID,Name,Reason": 253
+          },
+          "canonical_sha256": "17eb7f953a0aedd5d571da90db6395cefa4bc60e41144aa434a2febbbafeb0da",
+          "masked_string_count": 0,
+          "six_digit_string_count": 434,
+          "route_after": {
+            "proxy_requests": 3
+          }
+        }
+      ]
+    },
+    {
+      "probe": "date-compare",
+      "at": "2026-10-29T11:28:52.385970+00:00",
+      "network": {
+        "proxy_requests": 3
+      },
+      "results": [
+        {
+          "action": "InfoGet",
+          "params": {
+            "ID": "148"
+          },
+          "anonymous": true,
+          "route_before": {},
+          "status": 200,
+          "bytes": 224646,
+          "sha256": "6086592deba26608c637c2601e924ae86db529fdc51d9a28aa1fd8dec87a7da3",
+          "structure": {
+            "root:BriefIntro,ClassLayer,ComNum,CreateTime,Desc,GoodNum,ID,Introduction,IsGood,IsNew,Name,PlateSwitch,Power,StkSwitch,StockList,Stocks,Subscribe,Table,UpdateTime,ZT,errcode,t": 1,
+            "root/Table[]:Level1,Level2": 16,
+            "root/Table[]/Level1:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 16,
+            "root/Table[]/Level2[]:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 55,
+            "root/Table[]/Level2[]/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 231,
+            "root/Table[]/Level1/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 22,
+            "root/StockList[]:HotNum,StockID,Tag,prod_name": 177,
+            "root/StockList[]/Tag[]:ID,Name,Reason": 253
+          },
+          "canonical_sha256": "df669590732f40bb75cce1aa878e80e463ccd3dc4c4ed1e53b9b89c7ad19d182",
+          "masked_string_count": 0,
+          "six_digit_string_count": 434,
+          "route_after": {
+            "proxy_requests": 1
+          }
+        },
+        {
+          "action": "InfoGet",
+          "params": {
+            "ID": "148",
+            "Date": "2025-10-28",
+            "Day": "2025-10-28"
+          },
+          "anonymous": true,
+          "route_before": {
+            "proxy_requests": 1
+          },
+          "status": 200,
+          "bytes": 224646,
+          "sha256": "0ec1227b9063fb766bd24c63af74c4dd889436e5e7841cab57a7fb11dc92baa9",
+          "structure": {
+            "root:BriefIntro,ClassLayer,ComNum,CreateTime,Desc,GoodNum,ID,Introduction,IsGood,IsNew,Name,PlateSwitch,Power,StkSwitch,StockList,Stocks,Subscribe,Table,UpdateTime,ZT,errcode,t": 1,
+            "root/Table[]:Level1,Level2": 16,
+            "root/Table[]/Level1:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 16,
+            "root/Table[]/Level2[]:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 55,
+            "root/Table[]/Level2[]/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 231,
+            "root/Table[]/Level1/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 22,
+            "root/StockList[]:HotNum,StockID,Tag,prod_name": 177,
+            "root/StockList[]/Tag[]:ID,Name,Reason": 253
+          },
+          "canonical_sha256": "df669590732f40bb75cce1aa878e80e463ccd3dc4c4ed1e53b9b89c7ad19d182",
+          "masked_string_count": 0,
+          "six_digit_string_count": 434,
+          "route_after": {
+            "proxy_requests": 2
+          }
+        },
+        {
+          "action": "InfoGet",
+          "params": {
+            "ID": "148",
+            "Date": "2026-09-28",
+            "Day": "2026-09-28"
+          },
+          "anonymous": true,
+          "route_before": {
+            "proxy_requests": 2
+          },
+          "status": 200,
+          "bytes": 224646,
+          "sha256": "785cb3e32b41ddfa929459302177889dd67839015715dcdaa204fc3c9c92ff7f",
+          "structure": {
+            "root:BriefIntro,ClassLayer,ComNum,CreateTime,Desc,GoodNum,ID,Introduction,IsGood,IsNew,Name,PlateSwitch,Power,StkSwitch,StockList,Stocks,Subscribe,Table,UpdateTime,ZT,errcode,t": 1,
+            "root/Table[]:Level1,Level2": 16,
+            "root/Table[]/Level1:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 16,
+            "root/Table[]/Level2[]:FirstShelveTime,ID,IsNew,Name,Stocks,UpdateCacheTime,ZSCode": 55,
+            "root/Table[]/Level2[]/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 231,
+            "root/Table[]/Level1/Stocks[]:FirstShelveTime,Hot,IsHot,IsNew,IsZz,Reason,StockID,UpdateCacheTime,prod_name": 22,
+            "root/StockList[]:HotNum,StockID,Tag,prod_name": 177,
+            "root/StockList[]/Tag[]:ID,Name,Reason": 253
+          },
+          "canonical_sha256": "df669590732f40bb75cce1aa878e80e463ccd3dc4c4ed1e53b9b89c7ad19d182",
+          "masked_string_count": 0,
+          "six_digit_string_count": 434,
+          "route_after": {
+            "proxy_requests": 3
+          }
+        }
+      ]
+    },
+    {
+      "probe": "review-probe",
+      "at": "2026-10-29T11:30:19.588784+00:00",
+      "network": {
+        "proxy_requests": 2
+      },
+      "results": [
+        {
+          "action": "GetPlateInfo_w38",
+          "params": {
+            "Date": "2025-10-28",
+            "Index": "0",
+            "st": "100"
+          },
+          "anonymous": true,
+          "route_before": {},
+          "status": 200,
+          "bytes": 66227,
+          "sha256": "cea18d02fc468ef3408d8d8d905f7fd65c5b51de9a1d57a9caaffa7820ac315c",
+          "structure": {
+            "nums": {
+              "SZJS": 2284,
+              "XDJS": 2705,
+              "ZT": 57,
+              "DT": 4,
+              "ZBL": 24,
+              "yestRase": 3.479
+            },
+            "list": {
+              "count": 11,
+              "examples": [
+                {
+                  "ZSCode": "801319",
+                  "ZSName": "福建",
+                  "TCExplain": "",
+                  "GroupStr": "",
+                  "StockList": {
+                    "count": 14,
+                    "examples": [
+                      {
+                        "count": 20,
+                        "examples": [
+                          "000547",
+                          "航天发展"
+                        ]
+                      },
+                      {
+                        "count": 20,
+                        "examples": [
+                          "000905",
+                          "厦门港务"
+                        ]
+                      }
+                    ]
+                  },
+                  "num": 14
+                },
+                {
+                  "ZSCode": "801573",
+                  "ZSName": "三季报增长",
+                  "TCExplain": "",
+                  "GroupStr": "",
+                  "StockList": {
+                    "count": 8,
+                    "examples": [
+                      {
+                        "count": 20,
+                        "examples": [
+                          "000421",
+                          "南京公用"
+                        ]
+                      },
+                      {
+                        "count": 20,
+                        "examples": [
+                          "000657",
+                          "中钨高新"
+                        ]
+                      }
+                    ]
+                  },
+                  "num": 8
+                }
+              ]
+            },
+            "date": "2025-10-28",
+            "ttag": 0.06349799999999994,
+            "errcode": "0"
+          },
+          "masked_string_count": 0,
+          "six_digit_string_count": 80,
+          "route_after": {
+            "proxy_requests": 1
+          }
+        },
+        {
+          "action": "GetPlateInfo_w38",
+          "params": {
+            "Date": "2026-09-28",
+            "Index": "0",
+            "st": "100"
+          },
+          "anonymous": true,
+          "route_before": {
+            "proxy_requests": 1
+          },
+          "status": 200,
+          "bytes": 44784,
+          "sha256": "65c573f12eb5943d6a45ab24a9b6f09938f67203b6999c1d2a9f44c391f9441f",
+          "structure": {
+            "nums": {
+              "SZJS": 898,
+              "XDJS": 4553,
+              "ZT": 35,
+              "DT": 57,
+              "ZBL": 25,
+              "yestRase": -1.95
+            },
+            "list": {
+              "count": 13,
+              "examples": [
+                {
+                  "ZSCode": "803023",
+                  "ZSName": "AI应用",
+                  "TCExplain": "",
+                  "GroupStr": "",
+                  "StockList": {
+                    "count": 5,
+                    "examples": [
+                      {
+                        "count": 20,
+                        "examples": [
+                          "000503",
+                          "国新健康"
+                        ]
+                      },
+                      {
+                        "count": 20,
+                        "examples": [
+                          "001330",
+                          "博纳影业"
+                        ]
+                      }
+                    ]
+                  },
+                  "num": 5
+                },
+                {
+                  "ZSCode": "801159",
+                  "ZSName": "机器人概念",
+                  "TCExplain": "",
+                  "GroupStr": "",
+                  "StockList": {
+                    "count": 4,
+                    "examples": [
+                      {
+                        "count": 20,
+                        "examples": [
+                          "000678",
+                          "襄阳轴承"
+                        ]
+                      },
+                      {
+                        "count": 20,
+                        "examples": [
+                          "002242",
+                          "九阳股份"
+                        ]
+                      }
+                    ]
+                  },
+                  "num": 4
+                }
+              ]
+            },
+            "date": "2026-09-28",
+            "ttag": 0.06814800000000001,
+            "errcode": "0"
+          },
+          "masked_string_count": 0,
+          "six_digit_string_count": 47,
+          "route_after": {
+            "proxy_requests": 2
+          }
+        }
+      ]
+    },
+    {
+      "probe": "members-probe",
+      "at": "2026-10-29T11:30:57.988043+00:00",
+      "network": {
+        "proxy_requests": 2
+      },
+      "results": [
+        {
+          "action": "ZhiShuStockList_W8",
+          "params": {
+            "PlateID": "801319",
+            "Date": "2025-10-28",
+            "Index": "0",
+            "st": "500",
+            "Type": "6",
+            "Order": "1",
+            "IsKZZType": "0",
+            "old": "1",
+            "IsZZ": "0",
+            "filterType": "0"
+          },
+          "anonymous": true,
+          "route_before": {},
+          "status": 200,
+          "bytes": 88,
+          "sha256": "5192f4185c5ed70d4f1f3516289d16b178401500818037c86a00c93439b0cf81",
+          "structure": {
+            "errcode": "9999",
+            "errmsg": "ZhiShuRanking class not exists mothod ZhiShuStockList_W8 !"
+          },
+          "masked_string_count": 0,
+          "six_digit_string_count": 0,
+          "route_after": {
+            "proxy_requests": 1
+          }
+        },
+        {
+          "action": "ZhiShuStockList_W8",
+          "params": {
+            "PlateID": "801319",
+            "Date": "2026-09-28",
+            "Index": "0",
+            "st": "500",
+            "Type": "6",
+            "Order": "1",
+            "IsKZZType": "0",
+            "old": "1",
+            "IsZZ": "0",
+            "filterType": "0"
+          },
+          "anonymous": true,
+          "route_before": {
+            "proxy_requests": 1
+          },
+          "status": 200,
+          "bytes": 88,
+          "sha256": "5192f4185c5ed70d4f1f3516289d16b178401500818037c86a00c93439b0cf81",
+          "structure": {
+            "errcode": "9999",
+            "errmsg": "ZhiShuRanking class not exists mothod ZhiShuStockList_W8 !"
+          },
+          "masked_string_count": 0,
+          "six_digit_string_count": 0,
+          "route_after": {
+            "proxy_requests": 2
+          }
+        }
+      ]
+    },
+    {
+      "probe": "members-historyhost",
+      "at": "2026-10-29T11:31:08.811192+00:00",
+      "network": {
+        "proxy_requests": 2
+      },
+      "results": [
+        {
+          "action": "ZhiShuStockList_W8",
+          "params": {
+            "PlateID": "801319",
+            "Date": "2025-10-28",
+            "Index": "0",
+            "st": "500",
+            "Type": "6",
+            "Order": "1",
+            "IsKZZType": "0",
+            "old": "1",
+            "IsZZ": "0",
+            "filterType": "0"
+          },
+          "anonymous": true,
+          "route_before": {},
+          "status": 200,
+          "bytes": 38771,
+          "sha256": "788ebc01308fab685d9598cd67103a7ffbc81e496608eb8e2632d4619d6a6329",
+          "structure": {
+            "list": {
+              "count": 81,
+              "examples": [
+                {
+                  "count": 70,
+                  "examples": [
+                    "000592",
+                    "平潭发展"
+                  ]
+                },
+                {
+                  "count": 70,
+                  "examples": [
+                    "300300",
+                    "海峡创新"
+                  ]
+                }
+              ]
+            },
+            "Time": 1793273467,
+            "Count": 81,
+            "Day": {
+              "count": 1,
+              "examples": [
+                "2025-10-28"
+              ]
+            },
+            "Min": "0925",
+            "Max": "1500",
+            "MinDay": "2024-03-28",
+            "Stocks": {
+              "count": 81,
+              "examples": [
+                "000592",
+                "300300"
+              ]
+            },
+            "kzzlist": {
+              "count": 0,
+              "examples": []
+            },
+            "ZB": {
+              "count": 9,
+              "examples": [
+                "第三季度机构增仓",
+                "2025年实际净利润"
+              ]
+            },
+            "State": 0,
+            "TSZBTitle": {
+              "count": 0,
+              "examples": []
+            },
+            "TSZBlist": {
+              "count": 0,
+              "examples": []
+            },
+            "TSZBBQ": {
+              "count": 81,
+              "examples": [
+                "",
+                ""
+              ]
+            },
+            "ZTWeiMaiList": {
+              "count": 81,
+              "examples": [
+                0,
+                0
+              ]
+            },
+            "ttag": 0.23976200000000003,
+            "errcode": "0"
+          },
+          "masked_string_count": 0,
+          "six_digit_string_count": 166,
+          "route_after": {
+            "proxy_requests": 1
+          }
+        },
+        {
+          "action": "ZhiShuStockList_W8",
+          "params": {
+            "PlateID": "801319",
+            "Date": "2026-09-28",
+            "Index": "0",
+            "st": "500",
+            "Type": "6",
+            "Order": "1",
+            "IsKZZType": "0",
+            "old": "1",
+            "IsZZ": "0",
+            "filterType": "0"
+          },
+          "anonymous": true,
+          "route_before": {
+            "proxy_requests": 1
+          },
+          "status": 200,
+          "bytes": 53128,
+          "sha256": "fae6f3990daf09583aac1db7913e9010581fe4f90d5b961d8feed9f22a7c5371",
+          "structure": {
+            "list": {
+              "count": 113,
+              "examples": [
+                {
+                  "count": 70,
+                  "examples": [
+                    "600802",
+                    "福建水泥"
+                  ]
+                },
+                {
+                  "count": 70,
+                  "examples": [
+                    "001368",
+                    "通达创智"
+                  ]
+                }
+              ]
+            },
+            "Time": 1793273468,
+            "Count": 113,
+            "Day": {
+              "count": 1,
+              "examples": [
+                "2026-09-28"
+              ]
+            },
+            "Min": "0925",
+            "Max": "1500",
+            "MinDay": "2024-03-28",
+            "Stocks": {
+              "count": 100,
+              "examples": [
+                "600802",
+                "001368"
+              ]
+            },
+            "kzzlist": {
+              "count": 0,
+              "examples": []
+            },
+            "ZB": {
+              "count": 9,
+              "examples": [
+                "第三季度机构增仓",
+                "2025年实际净利润"
+              ]
+            },
+            "State": 0,
+            "TSZBTitle": {
+              "count": 0,
+              "examples": []
+            },
+            "TSZBlist": {
+              "count": 0,
+              "examples": []
+            },
+            "TSZBBQ": {
+              "count": 113,
+              "examples": [
+                "",
+                ""
+              ]
+            },
+            "ZTWeiMaiList": {
+              "count": 113,
+              "examples": [
+                0,
+                0
+              ]
+            },
+            "ttag": 0.30717700000000003,
+            "errcode": "0"
+          },
+          "masked_string_count": 0,
+          "six_digit_string_count": 218,
+          "route_after": {
+            "proxy_requests": 2
+          }
+        }
+      ]
+    },
+    {
+      "probe": "members-validated",
+      "at": "2026-10-29T11:31:46.972953+00:00",
+      "network": {
+        "proxy_requests": 2
+      },
+      "results": [
+        {
+          "action": "ZhiShuStockList_W8",
+          "params": {
+            "PlateID": "801319",
+            "Date": "2025-10-28",
+            "Index": "0",
+            "st": "500",
+            "Type": "6",
+            "Order": "1",
+            "IsKZZType": "0",
+            "old": "1",
+            "IsZZ": "0",
+            "filterType": "0"
+          },
+          "anonymous": true,
+          "route_before": {},
+          "status": 200,
+          "bytes": 38759,
+          "sha256": "d7e79dde9c79fcec27fa62becde49dea3be0740cac98cc332bc1bf28e4ef5abc",
+          "structure": {
+            "list": {
+              "count": 81,
+              "examples": [
+                {
+                  "count": 70,
+                  "examples": [
+                    "000592",
+                    "平潭发展"
+                  ]
+                },
+                {
+                  "count": 70,
+                  "examples": [
+                    "300300",
+                    "海峡创新"
+                  ]
+                }
+              ]
+            },
+            "Time": 1793273506,
+            "Count": 81,
+            "Day": {
+              "count": 1,
+              "examples": [
+                "2025-10-28"
+              ]
+            },
+            "Min": "0925",
+            "Max": "1500",
+            "MinDay": "2024-03-28",
+            "Stocks": {
+              "count": 81,
+              "examples": [
+                "000592",
+                "300300"
+              ]
+            },
+            "kzzlist": {
+              "count": 0,
+              "examples": []
+            },
+            "ZB": {
+              "count": 9,
+              "examples": [
+                "第三季度机构增仓",
+                "2025年实际净利润"
+              ]
+            },
+            "State": 0,
+            "TSZBTitle": {
+              "count": 0,
+              "examples": []
+            },
+            "TSZBlist": {
+              "count": 0,
+              "examples": []
+            },
+            "TSZBBQ": {
+              "count": 81,
+              "examples": [
+                "",
+                ""
+              ]
+            },
+            "ZTWeiMaiList": {
+              "count": 81,
+              "examples": [
+                0,
+                0
+              ]
+            },
+            "ttag": 0.05118,
+            "errcode": "0"
+          },
+          "unique_codes": 81,
+          "row_count": 81,
+          "declared_count": 81,
+          "key_sha256": "c00fe4cf8f54b3b4e962d69441e434fcdd52a14708ebcf130bca615860d1343a",
+          "stocks_subset": true,
+          "count_matches": true,
+          "masked_string_count": 0,
+          "six_digit_string_count": 166,
+          "route_after": {
+            "proxy_requests": 1
+          }
+        },
+        {
+          "action": "ZhiShuStockList_W8",
+          "params": {
+            "PlateID": "801319",
+            "Date": "2026-09-28",
+            "Index": "0",
+            "st": "500",
+            "Type": "6",
+            "Order": "1",
+            "IsKZZType": "0",
+            "old": "1",
+            "IsZZ": "0",
+            "filterType": "0"
+          },
+          "anonymous": true,
+          "route_before": {
+            "proxy_requests": 1
+          },
+          "status": 200,
+          "bytes": 53129,
+          "sha256": "a1f963f872f749fc2ae8dc0d9ce64133c6cf07a79e3e745fc74260b9cf780c79",
+          "structure": {
+            "list": {
+              "count": 113,
+              "examples": [
+                {
+                  "count": 70,
+                  "examples": [
+                    "600802",
+                    "福建水泥"
+                  ]
+                },
+                {
+                  "count": 70,
+                  "examples": [
+                    "001368",
+                    "通达创智"
+                  ]
+                }
+              ]
+            },
+            "Time": 1793273506,
+            "Count": 113,
+            "Day": {
+              "count": 1,
+              "examples": [
+                "2026-09-28"
+              ]
+            },
+            "Min": "0925",
+            "Max": "1500",
+            "MinDay": "2024-03-28",
+            "Stocks": {
+              "count": 100,
+              "examples": [
+                "600802",
+                "001368"
+              ]
+            },
+            "kzzlist": {
+              "count": 0,
+              "examples": []
+            },
+            "ZB": {
+              "count": 9,
+              "examples": [
+                "第三季度机构增仓",
+                "2025年实际净利润"
+              ]
+            },
+            "State": 0,
+            "TSZBTitle": {
+              "count": 0,
+              "examples": []
+            },
+            "TSZBlist": {
+              "count": 0,
+              "examples": []
+            },
+            "TSZBBQ": {
+              "count": 113,
+              "examples": [
+                "",
+                ""
+              ]
+            },
+            "ZTWeiMaiList": {
+              "count": 113,
+              "examples": [
+                0,
+                0
+              ]
+            },
+            "ttag": 0.047480999999999995,
+            "errcode": "0"
+          },
+          "unique_codes": 113,
+          "row_count": 113,
+          "declared_count": 113,
+          "key_sha256": "da79216eed03899c567a495f7ff2ee97cf80b59face13e0a76155bdb8f5bc7e1",
+          "stocks_subset": true,
+          "count_matches": true,
+          "masked_string_count": 0,
+          "six_digit_string_count": 218,
+          "route_after": {
+            "proxy_requests": 2
+          }
+        }
+      ]
+    }
+  ]
+}

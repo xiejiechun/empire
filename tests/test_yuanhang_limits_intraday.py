@@ -125,7 +125,7 @@ async def test_volatile_success_not_reclassified_after_dispatch():
 def unit(day, code='000001'):
     raw = row()
     raw.update(code=code, market_id=33, first_limit_up_time=None)
-    return dict(trade_date=day, pool_type='limit_up_pool', filter='HS,GEM2STAR',
+    return dict(trade_date=day, pool_type='limit_up_pool', filter='HS,GEM2STAR,ST',
                 source_total=1, rows=[member(raw, day)])
 
 

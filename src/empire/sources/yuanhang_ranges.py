@@ -21,12 +21,12 @@ def _version(value):
     return value
 
 
-def expand_versions(segments, year):
+def validated_segments(segments, year):
     if type(year) is not int or not 1900 <= year <= 2100:
         raise ValueError('Invalid range year')
     if not isinstance(segments, list) or len(segments) > 366:
         raise ValueError('Annual range versions exceed limit')
-    result = {}
+    result = []
     previous_end, previous_version = None, None
     for segment in segments:
         if not isinstance(segment, list) or len(segment) != 3:
@@ -37,11 +37,25 @@ def expand_versions(segments, year):
             raise ValueError('Range versions overlap or are unsorted')
         if previous_end is not None and first == previous_end + timedelta(days=1) and version == previous_version:
             raise ValueError('Adjacent equal range versions must be coalesced')
+        result.append((first, last, version))
+        previous_end, previous_version = last, version
+    return result
+
+
+def versions_on(segments, year, days):
+    """Validate all segments, materializing only the requested calendar dates."""
+    ranges = validated_segments(segments, year)
+    return {day: version for day in days for first, last, version in ranges
+            if first.isoformat() <= day <= last.isoformat()}
+
+
+def expand_versions(segments, year):
+    result = {}
+    for first, last, version in validated_segments(segments, year):
         current = first
         while current <= last:
             result[current.isoformat()] = version
             current += timedelta(days=1)
-        previous_end, previous_version = last, version
     return result
 
 
@@ -101,10 +115,12 @@ def replace_range(existing, incoming, *, year, start, end, observed, segments):
 
 def contiguous_through(segments, year):
     """Coverage requires every calendar day from January 1; quote count is irrelevant."""
-    versions = expand_versions(segments, year)
+    ranges = validated_segments(segments, year)
     current = date(year, 1, 1)
     through = None
-    while current.year == year and current.isoformat() in versions:
-        through = current.isoformat()
-        current += timedelta(days=1)
+    for first, last, _ in ranges:
+        if first != current:
+            break
+        through = last.isoformat()
+        current = last + timedelta(days=1)
     return through

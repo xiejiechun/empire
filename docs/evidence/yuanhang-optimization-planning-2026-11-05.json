@@ -1,0 +1,33 @@
+{
+  "before": {
+    "materialized_dates": 645696,
+    "median_seconds": 0.8475120000075549,
+    "samples_seconds": [
+      0.8603712999611162,
+      0.858600799983833,
+      0.8475120000075549,
+      0.8085267000133172,
+      0.8066495999810286
+    ]
+  },
+  "after": {
+    "materialized_dates": 640,
+    "median_seconds": 0.0019850999815389514,
+    "samples_seconds": [
+      0.0019239999819546938,
+      0.0020101999980397522,
+      0.0020946000004187226,
+      0.0019850999815389514,
+      0.0018429000047035515
+    ]
+  },
+  "scope": "synthetic 64 securities, 2000-2026 coverage, cutoff 2026-10-23; prevalidated calendar; no SQL/network",
+  "same_plans": true,
+  "baseline_commit": "b908b64c974ecefedafa3cbd9758dde2096e150e",
+  "bindings": {
+    "src/empire/features/yuanhang/plan_query.py": "74320d1e3eb2a7b9c10f12367741e818a33a00b89f5ab5b708df83d766e5feae",
+    "src/empire/sources/yuanhang_ranges.py": "9cc46cbb84f2887769b42afab8cd74fd46794572f278bd5054fdeb97a09d327b",
+    "src/empire/features/yuanhang/query.py": "80378a650bbea8a380045d00d13eacb41c62730afa206c2542a8b16b85a9e356"
+  },
+  "limits": "Synthetic CPU-only comparison; SQL input reader stubbed and calendar already validated. Timing is not full collection throughput."
+}

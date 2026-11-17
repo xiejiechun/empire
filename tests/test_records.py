@@ -8,6 +8,7 @@ import pytest
 from empire.core.identity import safe_project_id
 from empire.plugins.collection.records import (
     APPEND,
+    APPEND_ARCHIVES,
     CLEAR,
     GET_ERROR,
     LIST_ERROR_SUMMARIES,
@@ -26,6 +27,15 @@ class MemoryRedis:
     async def eval(self, script, count, key, *args):
         async with self.lock:
             entries = self.lists.setdefault(key, [])
+            if script == APPEND_ARCHIVES:
+                assert count == 2
+                revision_key, *values = args
+                for ident, raw in zip(values[::2], values[1::2]):
+                    entries[:] = [item for item in entries if json.loads(item)['id'] != ident]
+                    entries.insert(0, raw)
+                    del entries[100:]
+                    self.revisions[revision_key] = self.revisions.get(revision_key, 0) + 1
+                return len(values) // 2
             if script == APPEND:
                 assert count == 2
                 revision_key, raw, ident, limit = args

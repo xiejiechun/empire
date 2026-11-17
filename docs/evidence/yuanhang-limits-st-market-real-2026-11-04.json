@@ -1,0 +1,87 @@
+{
+  "started": "2026-11-04T11:58:51.547375+00:00",
+  "scope": "2 complete fixed counterexample pools for source market 37; no reason source requests",
+  "filter": "HS,GEM2STAR,ST",
+  "samples": [
+    {
+      "pool": "limit_up_pool",
+      "day": "2026-10-28",
+      "count": 71,
+      "st": [
+        {
+          "code": "002816.SZ",
+          "name": "*ST和科"
+        }
+      ],
+      "content_sha256": "0fdf26916865cacd6a3b6631bb47206c56ee508e026c4fb734e6b3868cf94394",
+      "requests": null,
+      "filter": "HS,GEM2STAR,ST"
+    }
+  ],
+  "passed": false,
+  "batches": [
+    {
+      "pool": "limit_up_pool",
+      "batch_id": "900e518bfd3245f5997ecb67962aba92",
+      "pages": 1,
+      "confirmation": {
+        "batch_id": "900e518bfd3245f5997ecb67962aba92",
+        "page": 1,
+        "status": "complete",
+        "row_count": 71,
+        "error_text": "",
+        "observed_at": "2026-11-04T11:58:51.870283+00:00"
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 71,
+        "requests": 1,
+        "response_bytes": 48893,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 1,
+        "total_units": 1,
+        "error": "",
+        "wire_bytes": 9351,
+        "queued_bytes": 11830,
+        "queued_messages": 1,
+        "storage": "mysql_archive",
+        "notice": "本轮仅核验最近10个交易日；历史缺口另轮补齐",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 25,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      }
+    }
+  ],
+  "error": "AssertionError",
+  "source_bindings": {
+    "src/empire/features/yuanhang_limits/bundle.py": "bc6103ffb381a88285ba031a0ca4f884bf9caa63476277929cc1da4ec5968a51",
+    "src/empire/features/yuanhang_limits/close_refresh.py": "ed1dbcfc7c6301e233ad299fa8eefbcb7cc99d746052c9803147ea965f0dfb6c",
+    "src/empire/features/yuanhang_limits/collector.py": "63b7e95b43e2c57e80cc7b644dba49ceed0da98d206919976ab8a691f3059a3d",
+    "src/empire/features/yuanhang_limits/contract.py": "36047ff5b2fd008127d1e81e4ac180c401e1473384073712cadedf4777234099",
+    "src/empire/features/yuanhang_limits/dataset.py": "dfd92f4dc51be835dc43b4803f20b345f70997d605e9205eae2ddbbcb44f2e95",
+    "src/empire/features/yuanhang_limits/intraday.py": "7ce825c221a98e10ecc07818703b409cd9c636bad8922e56d4633a833bc0f054",
+    "src/empire/features/yuanhang_limits/intraday_query.py": "8affd0918bc366f9c15e794019c1789d91c0b93440f803cbb584b9ff8c225387",
+    "src/empire/features/yuanhang_limits/intraday_store.py": "c44bd919cc6db315691e45b88d346fc56faca53bb0ef70201fb80990a0eb01a7",
+    "src/empire/features/yuanhang_limits/model.py": "05c52c29a5b7141d983a420712a316483168a974e3575259fc0c29bf6bab1a00",
+    "src/empire/features/yuanhang_limits/planning.py": "32fc2ecf8030cb35bd69852e13e1e3382782686ef44ef4a626a025c3b3176e8a",
+    "src/empire/features/yuanhang_limits/preparation.py": "f78b11bfef72b5156857081681256dfc4ae3127d4acb315171f16b582dd10a38",
+    "src/empire/features/yuanhang_limits/proofs.py": "eb10ce77278826828195f3ca984f2b1dba3ef1e3cfbd87726a45ae9915fd0c0c",
+    "src/empire/features/yuanhang_limits/query.py": "ccff9accd6ddf7f91f2e31937660bc985295b5f9e8c54aec98e60d275ab317d7",
+    "src/empire/features/yuanhang_limits/reason_planning.py": "a86159e1d869a3005697a3bdee22106b6f147bc17e9360ce57cba56a93d1d3c7",
+    "src/empire/features/yuanhang_limits/repository.py": "c312fdb6657dae9a5a52778aefadf89c4e3c3880ac66748becf6d76574c22e5f",
+    "src/empire/features/yuanhang_limits/snapshot_order.py": "bc38cc690e3fb1313e757a5c229bc44dca0f277b8896813d807400e6746250f6",
+    "src/empire/features/yuanhang_limits/source.py": "57ed3249ead43e7526645e3ebe8ca23878b9708ee6a6511a05ae87dcea3c927e",
+    "src/empire/features/yuanhang_limits/storage.py": "69a0c03c5909fe34df282cc220cbf5800a2a846954b57056cfd006021b9a9345",
+    "src/empire/features/yuanhang_limits/ui.py": "1aeb2a206bd766d68d87ed90d32a8a4d9dc2889c82ac0a8855d0ca25f9d16e30",
+    "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
+    "src/empire/features/yuanhang_limits/__init__.py": "e3006b7256a8badc401baf585ab8f0122a6af5b9c351277e05f2d47d56760bdf"
+  }
+}

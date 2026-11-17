@@ -17,11 +17,11 @@ def bundle(cfg):
         OrderedContribution(12200, ThsUniverseCollector()),
         OrderedContribution(15000, StockUiPlugin()),
     ), tasks=(
-        OrderedContribution(4100, TaskContribution('ths-stocks', '同花顺 A 股股票列表',
+        OrderedContribution(4100, TaskContribution('ths-stocks', 'A股股票列表',
                     'collector.ths_universe', 'ths', '沪深北完整单页目录 · 一次HTTP获取代码与名称',
                     category='基础数据', source_name='同花顺', unit_name='只股票', default_schedule=TaskDefaults('daily',
                         description='每天北京时间18:00完整核验一次当前目录；可编辑执行计划。'))),
-        OrderedContribution(4200, TaskContribution("sina-stocks", "新浪 A 股股票列表",
+        OrderedContribution(4200, TaskContribution("sina-stocks", "A股股票列表",
                     "collector.sina_universe", "sina", "沪深北全量股票 · 代码 / 名称 / 统一代码 / 市场",
                     category="基础数据", source_name="新浪财经", parallel_downloads=True, unit_name='只股票')),
     ), datasets=(

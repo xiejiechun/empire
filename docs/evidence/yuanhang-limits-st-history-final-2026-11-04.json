@@ -1,0 +1,1372 @@
+{
+  "kind": "formal-full-history-yuanhang-st-backfill",
+  "complete": true,
+  "scope": {
+    "first": "1990-12-19",
+    "through": "2026-11-04",
+    "trade_dates_per_pool": 8756
+  },
+  "limitations": [
+    "Source empty responses are retained; the calendar start is not a verified source support start.",
+    "Reason no_content means an explicit successful source response without text; failures are not empty reasons.",
+    "Reason history has no reliable publication timestamp and does not support strict historical signal replay.",
+    "ST-name subset is diagnostic only; the formal reason universe is the full five-pool security-day union."
+  ],
+  "bindings": {
+    "src/empire/features/yuanhang_limits/bundle.py": "bc6103ffb381a88285ba031a0ca4f884bf9caa63476277929cc1da4ec5968a51",
+    "src/empire/features/yuanhang_limits/close_refresh.py": "ed1dbcfc7c6301e233ad299fa8eefbcb7cc99d746052c9803147ea965f0dfb6c",
+    "src/empire/features/yuanhang_limits/collector.py": "63b7e95b43e2c57e80cc7b644dba49ceed0da98d206919976ab8a691f3059a3d",
+    "src/empire/features/yuanhang_limits/contract.py": "a41e8543c4be4e1557dcadb726950aa86fcfab7174f12a8e24d0cf6dc48921ec",
+    "src/empire/features/yuanhang_limits/dataset.py": "dfd92f4dc51be835dc43b4803f20b345f70997d605e9205eae2ddbbcb44f2e95",
+    "src/empire/features/yuanhang_limits/intraday.py": "7ce825c221a98e10ecc07818703b409cd9c636bad8922e56d4633a833bc0f054",
+    "src/empire/features/yuanhang_limits/intraday_query.py": "8affd0918bc366f9c15e794019c1789d91c0b93440f803cbb584b9ff8c225387",
+    "src/empire/features/yuanhang_limits/intraday_store.py": "c44bd919cc6db315691e45b88d346fc56faca53bb0ef70201fb80990a0eb01a7",
+    "src/empire/features/yuanhang_limits/model.py": "2780746b640440175b643b2b8525f0d93ec517f1f876a3ed890fefc04d9ee953",
+    "src/empire/features/yuanhang_limits/planning.py": "32fc2ecf8030cb35bd69852e13e1e3382782686ef44ef4a626a025c3b3176e8a",
+    "src/empire/features/yuanhang_limits/preparation.py": "c986ec274ffc07f1c18e2f5a72f4c2bccd7bf2c6f4a6045b29fa366fa989a345",
+    "src/empire/features/yuanhang_limits/proofs.py": "eb10ce77278826828195f3ca984f2b1dba3ef1e3cfbd87726a45ae9915fd0c0c",
+    "src/empire/features/yuanhang_limits/query.py": "ccff9accd6ddf7f91f2e31937660bc985295b5f9e8c54aec98e60d275ab317d7",
+    "src/empire/features/yuanhang_limits/reason_planning.py": "a86159e1d869a3005697a3bdee22106b6f147bc17e9360ce57cba56a93d1d3c7",
+    "src/empire/features/yuanhang_limits/repository.py": "c312fdb6657dae9a5a52778aefadf89c4e3c3880ac66748becf6d76574c22e5f",
+    "src/empire/features/yuanhang_limits/snapshot_order.py": "bc38cc690e3fb1313e757a5c229bc44dca0f277b8896813d807400e6746250f6",
+    "src/empire/features/yuanhang_limits/source.py": "8a073bab169bf6680efc7d81cb64c0e0878747142f12f63ffd6270f26fb443ef",
+    "src/empire/features/yuanhang_limits/storage.py": "69a0c03c5909fe34df282cc220cbf5800a2a846954b57056cfd006021b9a9345",
+    "src/empire/features/yuanhang_limits/ui.py": "1aeb2a206bd766d68d87ed90d32a8a4d9dc2889c82ac0a8855d0ca25f9d16e30",
+    "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
+    "src/empire/features/yuanhang_limits/__init__.py": "e3006b7256a8badc401baf585ab8f0122a6af5b9c351277e05f2d47d56760bdf",
+    "scripts/initialize_yuanhang_limits.py": "4de6561b1f48d52ffa9640f4b6828f27df9bef0a1d966bae5c4cd9f8b2ad811f",
+    "sql/schema.sql": "ae823bd561b30b120cd69bed74b6f411ba116e6297d08bb70294a3fed677df45",
+    "src/empire/sources/security_identity.py": "aa27a0ed0d1eccfc28e24c08d900c0fd54941ad41e3724c4f2611120a0dfb4c7"
+  },
+  "target": {
+    "database_name": "empire",
+    "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+    "namespace": "empire:dev"
+  },
+  "projects": {
+    "limit_up_pool": {
+      "cursor": {
+        "contract": 2,
+        "phase": "complete",
+        "batch_id": "71e32f73634d469b9bd5e09c8c1ae27d",
+        "page": 0,
+        "index": 0,
+        "plan": [],
+        "cutoff": "2026-11-04",
+        "remaining": 0,
+        "force": false,
+        "scope": "all",
+        "scan_after": null
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 0,
+        "requests": 0,
+        "response_bytes": 0,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 0,
+        "total_units": 0,
+        "error": "",
+        "wire_bytes": 0,
+        "queued_bytes": 0,
+        "queued_messages": 0,
+        "storage": "mysql_archive",
+        "notice": "",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 1,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      },
+      "audit": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，120634条；缺口0，无效0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，120634条；缺口0，无效0"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，120634条；缺口0，无效0"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，120634条；缺口0，无效0"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "统一SQL核验状态及内容匹配的有效缓存证据；到期未核验0个单元"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "日终快照仅用于下一可交易日；原因没有可靠公布时间，不能回放历史原因选股。"
+        }
+      ],
+      "coverage": {
+        "dates": 8756,
+        "members": "120634",
+        "source_empty_dates": "7115",
+        "first_checked": "1990-12-19",
+        "last_checked": "2026-11-04",
+        "first_nonempty": "2020-01-23"
+      }
+    },
+    "sprint_limit_up": {
+      "cursor": {
+        "contract": 2,
+        "phase": "complete",
+        "batch_id": "e7f28a4eec104aedbb8caf5a74e1fb10",
+        "page": 0,
+        "index": 0,
+        "plan": [],
+        "cutoff": "2026-11-04",
+        "remaining": 0,
+        "force": false,
+        "scope": "all",
+        "scan_after": null
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 0,
+        "requests": 0,
+        "response_bytes": 0,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 0,
+        "total_units": 0,
+        "error": "",
+        "wire_bytes": 0,
+        "queued_bytes": 0,
+        "queued_messages": 0,
+        "storage": "mysql_archive",
+        "notice": "",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 1,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      },
+      "audit": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，23933条；缺口0，无效0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，23933条；缺口0，无效0"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，23933条；缺口0，无效0"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，23933条；缺口0，无效0"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "统一SQL核验状态及内容匹配的有效缓存证据；到期未核验0个单元"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "日终快照仅用于下一可交易日；原因没有可靠公布时间，不能回放历史原因选股。"
+        }
+      ],
+      "coverage": {
+        "dates": 8756,
+        "members": "23933",
+        "source_empty_dates": "7320",
+        "first_checked": "1990-12-19",
+        "last_checked": "2026-11-04",
+        "first_nonempty": "2020-11-27"
+      }
+    },
+    "connect_broad_pool": {
+      "cursor": {
+        "contract": 2,
+        "phase": "complete",
+        "batch_id": "7affd491961648ce992b394297362307",
+        "page": 0,
+        "index": 0,
+        "plan": [],
+        "cutoff": "2026-11-04",
+        "remaining": 0,
+        "force": false,
+        "scope": "all",
+        "scan_after": null
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 0,
+        "requests": 0,
+        "response_bytes": 0,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 0,
+        "total_units": 0,
+        "error": "",
+        "wire_bytes": 0,
+        "queued_bytes": 0,
+        "queued_messages": 0,
+        "storage": "mysql_archive",
+        "notice": "",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 1,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      },
+      "audit": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，41774条；缺口0，无效0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，41774条；缺口0，无效0"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，41774条；缺口0，无效0"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，41774条；缺口0，无效0"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "统一SQL核验状态及内容匹配的有效缓存证据；到期未核验0个单元"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "日终快照仅用于下一可交易日；原因没有可靠公布时间，不能回放历史原因选股。"
+        }
+      ],
+      "coverage": {
+        "dates": 8756,
+        "members": "41774",
+        "source_empty_dates": "7115",
+        "first_checked": "1990-12-19",
+        "last_checked": "2026-11-04",
+        "first_nonempty": "2020-01-23"
+      }
+    },
+    "open_limit_up_pool": {
+      "cursor": {
+        "contract": 2,
+        "phase": "complete",
+        "batch_id": "a1c157c8808e4a5db91cbeef53bd1354",
+        "page": 0,
+        "index": 0,
+        "plan": [],
+        "cutoff": "2026-11-04",
+        "remaining": 0,
+        "force": false,
+        "scope": "all",
+        "scan_after": null
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 0,
+        "requests": 0,
+        "response_bytes": 0,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 0,
+        "total_units": 0,
+        "error": "",
+        "wire_bytes": 0,
+        "queued_bytes": 0,
+        "queued_messages": 0,
+        "storage": "mysql_archive",
+        "notice": "",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 1,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      },
+      "audit": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，44543条；缺口0，无效0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，44543条；缺口0，无效0"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，44543条；缺口0，无效0"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，44543条；缺口0，无效0"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "统一SQL核验状态及内容匹配的有效缓存证据；到期未核验0个单元"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "日终快照仅用于下一可交易日；原因没有可靠公布时间，不能回放历史原因选股。"
+        }
+      ],
+      "coverage": {
+        "dates": 8756,
+        "members": "44543",
+        "source_empty_dates": "7116",
+        "first_checked": "1990-12-19",
+        "last_checked": "2026-11-04",
+        "first_nonempty": "2020-01-23"
+      }
+    },
+    "limit_down_pool": {
+      "cursor": {
+        "contract": 2,
+        "phase": "complete",
+        "batch_id": "f1e1be95ba9b4756ba2235da2c2a1427",
+        "page": 0,
+        "index": 0,
+        "plan": [],
+        "cutoff": "2026-11-04",
+        "remaining": 0,
+        "force": false,
+        "scope": "all",
+        "scan_after": null
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 0,
+        "requests": 0,
+        "response_bytes": 0,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 0,
+        "total_units": 0,
+        "error": "",
+        "wire_bytes": 0,
+        "queued_bytes": 0,
+        "queued_messages": 0,
+        "storage": "mysql_archive",
+        "notice": "",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 1,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      },
+      "audit": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，44022条；缺口0，无效0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，44022条；缺口0，无效0"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，44022条；缺口0，无效0"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，44022条；缺口0，无效0"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "统一SQL核验状态及内容匹配的有效缓存证据；到期未核验0个单元"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "日终快照仅用于下一可交易日；原因没有可靠公布时间，不能回放历史原因选股。"
+        }
+      ],
+      "coverage": {
+        "dates": 8756,
+        "members": "44022",
+        "source_empty_dates": "7145",
+        "first_checked": "1990-12-19",
+        "last_checked": "2026-11-04",
+        "first_nonempty": "2020-01-23"
+      }
+    },
+    "reason": {
+      "cursor": {
+        "contract": 2,
+        "phase": "complete",
+        "batch_id": "86c89d6c42604a2f8acec2d6b3ed33db",
+        "page": 1155,
+        "index": 131,
+        "plan": [
+          [
+            "2026-10-23",
+            "603626.SH"
+          ],
+          [
+            "2026-10-23",
+            "603657.SH"
+          ],
+          [
+            "2026-10-23",
+            "603677.SH"
+          ],
+          [
+            "2026-10-23",
+            "603713.SH"
+          ],
+          [
+            "2026-10-23",
+            "603721.SH"
+          ],
+          [
+            "2026-10-23",
+            "603728.SH"
+          ],
+          [
+            "2026-10-23",
+            "603838.SH"
+          ],
+          [
+            "2026-10-23",
+            "603859.SH"
+          ],
+          [
+            "2026-10-23",
+            "603901.SH"
+          ],
+          [
+            "2026-10-23",
+            "603933.SH"
+          ],
+          [
+            "2026-10-23",
+            "605488.SH"
+          ],
+          [
+            "2026-10-23",
+            "688023.SH"
+          ],
+          [
+            "2026-10-23",
+            "688039.SH"
+          ],
+          [
+            "2026-10-23",
+            "688071.SH"
+          ],
+          [
+            "2026-10-23",
+            "688097.SH"
+          ],
+          [
+            "2026-10-23",
+            "688286.SH"
+          ],
+          [
+            "2026-10-23",
+            "688322.SH"
+          ],
+          [
+            "2026-10-23",
+            "688368.SH"
+          ],
+          [
+            "2026-10-23",
+            "688381.SH"
+          ],
+          [
+            "2026-10-23",
+            "688499.SH"
+          ],
+          [
+            "2026-10-23",
+            "688585.SH"
+          ],
+          [
+            "2026-10-23",
+            "688628.SH"
+          ],
+          [
+            "2026-10-23",
+            "688686.SH"
+          ],
+          [
+            "2026-10-23",
+            "688698.SH"
+          ],
+          [
+            "2026-10-23",
+            "688787.SH"
+          ],
+          [
+            "2026-10-23",
+            "688836.SH"
+          ],
+          [
+            "2026-10-22",
+            "000011.SZ"
+          ],
+          [
+            "2026-10-22",
+            "000032.SZ"
+          ],
+          [
+            "2026-10-22",
+            "000530.SZ"
+          ],
+          [
+            "2026-10-22",
+            "000637.SZ"
+          ],
+          [
+            "2026-10-22",
+            "000678.SZ"
+          ],
+          [
+            "2026-10-22",
+            "000712.SZ"
+          ],
+          [
+            "2026-10-22",
+            "000948.SZ"
+          ],
+          [
+            "2026-10-22",
+            "000993.SZ"
+          ],
+          [
+            "2026-10-22",
+            "000995.SZ"
+          ],
+          [
+            "2026-10-22",
+            "001216.SZ"
+          ],
+          [
+            "2026-10-22",
+            "001239.SZ"
+          ],
+          [
+            "2026-10-22",
+            "001317.SZ"
+          ],
+          [
+            "2026-10-22",
+            "001318.SZ"
+          ],
+          [
+            "2026-10-22",
+            "001323.SZ"
+          ],
+          [
+            "2026-10-22",
+            "001330.SZ"
+          ],
+          [
+            "2026-10-22",
+            "001360.SZ"
+          ],
+          [
+            "2026-10-22",
+            "001368.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002076.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002085.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002097.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002112.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002172.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002181.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002185.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002212.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002238.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002249.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002264.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002307.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002337.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002347.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002363.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002388.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002469.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002476.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002520.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002535.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002593.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002696.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002724.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002815.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002827.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002835.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002877.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002907.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002980.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002983.SZ"
+          ],
+          [
+            "2026-10-22",
+            "002990.SZ"
+          ],
+          [
+            "2026-10-22",
+            "003021.SZ"
+          ],
+          [
+            "2026-10-22",
+            "300839.SZ"
+          ],
+          [
+            "2026-10-22",
+            "301023.SZ"
+          ],
+          [
+            "2026-10-22",
+            "301413.SZ"
+          ],
+          [
+            "2026-10-22",
+            "301502.SZ"
+          ],
+          [
+            "2026-10-22",
+            "301563.SZ"
+          ],
+          [
+            "2026-10-22",
+            "600127.SH"
+          ],
+          [
+            "2026-10-22",
+            "600178.SH"
+          ],
+          [
+            "2026-10-22",
+            "600192.SH"
+          ],
+          [
+            "2026-10-22",
+            "600202.SH"
+          ],
+          [
+            "2026-10-22",
+            "600241.SH"
+          ],
+          [
+            "2026-10-22",
+            "600261.SH"
+          ],
+          [
+            "2026-10-22",
+            "600281.SH"
+          ],
+          [
+            "2026-10-22",
+            "600293.SH"
+          ],
+          [
+            "2026-10-22",
+            "600360.SH"
+          ],
+          [
+            "2026-10-22",
+            "600408.SH"
+          ],
+          [
+            "2026-10-22",
+            "600661.SH"
+          ],
+          [
+            "2026-10-22",
+            "600698.SH"
+          ],
+          [
+            "2026-10-22",
+            "600825.SH"
+          ],
+          [
+            "2026-10-22",
+            "600838.SH"
+          ],
+          [
+            "2026-10-22",
+            "600843.SH"
+          ],
+          [
+            "2026-10-22",
+            "600860.SH"
+          ],
+          [
+            "2026-10-22",
+            "601091.SH"
+          ],
+          [
+            "2026-10-22",
+            "601177.SH"
+          ],
+          [
+            "2026-10-22",
+            "601999.SH"
+          ],
+          [
+            "2026-10-22",
+            "603013.SH"
+          ],
+          [
+            "2026-10-22",
+            "603028.SH"
+          ],
+          [
+            "2026-10-22",
+            "603083.SH"
+          ],
+          [
+            "2026-10-22",
+            "603089.SH"
+          ],
+          [
+            "2026-10-22",
+            "603096.SH"
+          ],
+          [
+            "2026-10-22",
+            "603105.SH"
+          ],
+          [
+            "2026-10-22",
+            "603126.SH"
+          ],
+          [
+            "2026-10-22",
+            "603138.SH"
+          ],
+          [
+            "2026-10-22",
+            "603155.SH"
+          ],
+          [
+            "2026-10-22",
+            "603188.SH"
+          ],
+          [
+            "2026-10-22",
+            "603230.SH"
+          ],
+          [
+            "2026-10-22",
+            "603278.SH"
+          ],
+          [
+            "2026-10-22",
+            "603280.SH"
+          ],
+          [
+            "2026-10-22",
+            "603329.SH"
+          ],
+          [
+            "2026-10-22",
+            "603330.SH"
+          ],
+          [
+            "2026-10-22",
+            "603350.SH"
+          ],
+          [
+            "2026-10-22",
+            "603370.SH"
+          ],
+          [
+            "2026-10-22",
+            "603373.SH"
+          ],
+          [
+            "2026-10-22",
+            "603528.SH"
+          ],
+          [
+            "2026-10-22",
+            "603529.SH"
+          ],
+          [
+            "2026-10-22",
+            "603598.SH"
+          ],
+          [
+            "2026-10-22",
+            "603636.SH"
+          ],
+          [
+            "2026-10-22",
+            "603668.SH"
+          ],
+          [
+            "2026-10-22",
+            "603669.SH"
+          ],
+          [
+            "2026-10-22",
+            "603728.SH"
+          ],
+          [
+            "2026-10-22",
+            "603818.SH"
+          ],
+          [
+            "2026-10-22",
+            "603933.SH"
+          ],
+          [
+            "2026-10-22",
+            "603968.SH"
+          ],
+          [
+            "2026-10-22",
+            "605287.SH"
+          ],
+          [
+            "2026-10-22",
+            "605577.SH"
+          ],
+          [
+            "2026-10-22",
+            "688137.SH"
+          ],
+          [
+            "2026-10-22",
+            "688651.SH"
+          ]
+        ],
+        "cutoff": "2026-11-04",
+        "remaining": 0,
+        "force": false,
+        "scope": "all",
+        "scan_after": null
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 1155,
+        "requests": 1155,
+        "response_bytes": 819022,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 1155,
+        "total_units": 1155,
+        "error": "",
+        "wire_bytes": 588415,
+        "queued_bytes": 1544998,
+        "queued_messages": 1155,
+        "storage": "mysql_archive",
+        "notice": "",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 23,
+        "download_buffer_capacity": 9362,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      },
+      "audit": [
+        {
+          "criterion": "fields",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，226329条；缺口0，无效0"
+        },
+        {
+          "criterion": "keys",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，226329条；缺口0，无效0"
+        },
+        {
+          "criterion": "coverage",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，226329条；缺口0，无效0"
+        },
+        {
+          "criterion": "quality",
+          "status": "pass",
+          "measured": "1990-12-19～2026-11-04，8756个交易日，226329条；缺口0，无效0"
+        },
+        {
+          "criterion": "freshness",
+          "status": "pass",
+          "measured": "统一SQL核验状态及内容匹配的有效缓存证据；到期未核验0个单元"
+        },
+        {
+          "criterion": "temporal",
+          "status": "pass",
+          "measured": "日终快照仅用于下一可交易日；原因没有可靠公布时间，不能回放历史原因选股。"
+        }
+      ]
+    }
+  },
+  "pending": 0,
+  "rounds": [
+    {
+      "report": "build/st-history-full-20261104-a.json",
+      "sha256": "2621ea4986afcc633d04aeb66cbff0786bfc155680cbab8ae625d0eec7e26b5e",
+      "started_at": "2026-11-04T12:52:20.071460+00:00",
+      "finished_at": "2026-11-04T13:46:43.752375+00:00",
+      "complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-limit-up-pool",
+          "error": "身份核实证券字段改变"
+        },
+        {
+          "project": "ths-yuanhang-sprint-limit-up",
+          "error": "涨停分析返回未验证的市场身份"
+        },
+        {
+          "project": "ths-yuanhang-connect-broad-pool",
+          "error": "身份核实证券字段改变"
+        },
+        {
+          "project": "ths-yuanhang-open-limit-up-pool",
+          "error": "first_limit_up_time：非法来源秒时间"
+        },
+        {
+          "project": "ths-yuanhang-limit-down-pool",
+          "error": "身份核实证券字段改变"
+        },
+        {
+          "error": "运行期间来源实现或结构改变，当前报告不能作为最终验收"
+        }
+      ],
+      "routes": {
+        "proxy_requests": 30112
+      },
+      "network_policy": {
+        "use_proxy": true,
+        "proxy_fallback": true
+      }
+    },
+    {
+      "report": "build/st-history-full-20261104-b.json",
+      "sha256": "4ab76aa801aa639fc49d4591c7946cc020c43d0f8c8e9dc2349bc3ff6ec0cdba",
+      "started_at": "2026-11-04T13:48:36.705797+00:00",
+      "finished_at": "2026-11-04T13:59:29.854593+00:00",
+      "complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-limit-up-pool",
+          "error": "last_limit_up_time：非法来源秒时间"
+        },
+        {
+          "project": "ths-yuanhang-connect-broad-pool",
+          "error": "last_limit_up_time：非法来源秒时间"
+        },
+        {
+          "project": "ths-yuanhang-limit-down-pool",
+          "error": "first_limit_down_time：非法来源秒时间"
+        },
+        {
+          "error": "运行期间来源实现或结构改变，当前报告不能作为最终验收"
+        }
+      ],
+      "routes": {
+        "proxy_requests": 4788
+      },
+      "network_policy": {
+        "use_proxy": true,
+        "proxy_fallback": true
+      }
+    },
+    {
+      "report": "build/st-history-full-20261104-c.json",
+      "sha256": "a547578f876e4d496c4f18289309eb31f4217f605dd1c76b6bc8aa14020bb867",
+      "started_at": "2026-11-04T14:01:06.814517+00:00",
+      "finished_at": "2026-11-04T14:12:43.905198+00:00",
+      "complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "Server error '500 Internal Server Error' for url 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=002719.SZ&startTime=20200508&endTime=20200508%27\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+        }
+      ],
+      "routes": {
+        "proxy_requests": 5208
+      },
+      "network_policy": {
+        "use_proxy": true,
+        "proxy_fallback": true
+      }
+    },
+    {
+      "report": "build/st-history-full-20261104-d.json",
+      "sha256": "39ae7201fcb9e120271a3c62270c4e0b595065a6b01b39b4f5cd8a2d48e9a9b2",
+      "started_at": "2026-11-04T14:15:28.124510+00:00",
+      "finished_at": "2026-11-04T14:16:18.960754+00:00",
+      "complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ],
+      "routes": {
+        "proxy_requests": 24
+      },
+      "network_policy": {
+        "use_proxy": true,
+        "proxy_fallback": true
+      }
+    },
+    {
+      "report": "build/st-history-full-20261104-e.json",
+      "sha256": "b547aa4a87aa062c89751a8e1ec6abf58de66dbb5678ed6f021c95d572c129e0",
+      "started_at": "2026-11-04T14:20:01.354412+00:00",
+      "finished_at": "2026-11-04T14:35:13.114326+00:00",
+      "complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "远航涨停分析业务响应失败"
+        }
+      ],
+      "routes": {
+        "proxy_requests": 7512
+      },
+      "network_policy": {
+        "use_proxy": true,
+        "proxy_fallback": true
+      }
+    },
+    {
+      "report": "build/st-history-full-20261104-f.json",
+      "sha256": "e09c8a55a63e67f28897920d5a8f6056d146fd238a7de28afd3c796a12401b2e",
+      "started_at": "2026-11-04T14:37:18.038557+00:00",
+      "finished_at": "2026-11-04T14:58:30.613903+00:00",
+      "complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "Server error '500 Internal Server Error' for url 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=000809.SZ&startTime=20220810&endTime=20220810%27\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+        }
+      ],
+      "routes": {
+        "proxy_requests": 10866
+      },
+      "network_policy": {
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "request_retries": 5
+      }
+    },
+    {
+      "report": "build/st-history-full-20261104-g.json",
+      "sha256": "5799f3630d3ebfa89d5775c6933d6730937def2862dc991bdeb24e3ec5847f67",
+      "started_at": "2026-11-04T14:59:20.946944+00:00",
+      "finished_at": "2026-11-04T15:53:17.769062+00:00",
+      "complete": false,
+      "errors": [
+        {
+          "project": "ths-yuanhang-reason",
+          "error": "历史范围数据准备未通过"
+        }
+      ],
+      "routes": {
+        "proxy_requests": 25194
+      },
+      "network_policy": {
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "request_retries": 5
+      }
+    },
+    {
+      "report": "build/st-history-full-20261104-h.json",
+      "sha256": "7a05060cd5e0c5031b160bde81359c06a2c6182200cc09715755893218211b64",
+      "started_at": "2026-11-04T15:58:50.244350+00:00",
+      "finished_at": "2026-11-04T16:03:21.533669+00:00",
+      "complete": true,
+      "errors": [],
+      "routes": {
+        "proxy_requests": 1157
+      },
+      "network_policy": {
+        "use_proxy": true,
+        "proxy_fallback": true,
+        "request_retries": 5
+      }
+    }
+  ],
+  "independent_sql_redis_audit": {
+    "checked_at": "2026-11-04T16:04:00.376082+00:00",
+    "formal_report": "build/st-history-full-20261104-h.json",
+    "formal_report_sha256": "7a05060cd5e0c5031b160bde81359c06a2c6182200cc09715755893218211b64",
+    "bindings_match": true,
+    "through": "2026-11-04",
+    "target": [
+      {
+        "database_name": "empire",
+        "server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e"
+      }
+    ],
+    "calendar": [
+      {
+        "dates": 8756
+      }
+    ],
+    "pools": [
+      {
+        "pool_type": "connect_broad_pool",
+        "filter_text": "HS,GEM2STAR,ST",
+        "contract_version": 2,
+        "dates": 8756,
+        "first": "1990-12-19",
+        "last": "2026-11-04",
+        "members": "41774",
+        "source_empty_dates": "7115"
+      },
+      {
+        "pool_type": "limit_down_pool",
+        "filter_text": "HS,GEM2STAR,ST",
+        "contract_version": 2,
+        "dates": 8756,
+        "first": "1990-12-19",
+        "last": "2026-11-04",
+        "members": "44022",
+        "source_empty_dates": "7145"
+      },
+      {
+        "pool_type": "limit_up_pool",
+        "filter_text": "HS,GEM2STAR,ST",
+        "contract_version": 2,
+        "dates": 8756,
+        "first": "1990-12-19",
+        "last": "2026-11-04",
+        "members": "120634",
+        "source_empty_dates": "7115"
+      },
+      {
+        "pool_type": "open_limit_up_pool",
+        "filter_text": "HS,GEM2STAR,ST",
+        "contract_version": 2,
+        "dates": 8756,
+        "first": "1990-12-19",
+        "last": "2026-11-04",
+        "members": "44543",
+        "source_empty_dates": "7116"
+      },
+      {
+        "pool_type": "sprint_limit_up",
+        "filter_text": "HS,GEM2STAR,ST",
+        "contract_version": 2,
+        "dates": 8756,
+        "first": "1990-12-19",
+        "last": "2026-11-04",
+        "members": "23933",
+        "source_empty_dates": "7320"
+      }
+    ],
+    "member_keys": [
+      {
+        "members": 274906,
+        "unique_security_days": 226329
+      }
+    ],
+    "reason_coverage": [
+      {
+        "required": 226329,
+        "missing": "0",
+        "available": "142422",
+        "no_content": "83907"
+      }
+    ],
+    "st_name_subset": [
+      {
+        "required": 44982,
+        "missing": "0",
+        "available": "21512",
+        "no_content": "23470"
+      }
+    ],
+    "reasons": [
+      {
+        "availability": "no_content",
+        "records": 83915,
+        "first": "2020-01-23",
+        "last": "2026-11-04"
+      },
+      {
+        "availability": "available",
+        "records": 142422,
+        "first": "2020-01-23",
+        "last": "2026-11-04"
+      }
+    ],
+    "preview_dates": [
+      {
+        "trade_date": "2026-11-03",
+        "total": 52,
+        "st_names": "4"
+      },
+      {
+        "trade_date": "2026-11-04",
+        "total": 119,
+        "st_names": "3"
+      }
+    ],
+    "invalid_time_example": [
+      {
+        "trade_date": "2021-06-09",
+        "pool_type": "open_limit_up_pool",
+        "unified_code": "603729.SH",
+        "name": "ST龙韵",
+        "first_limit_up_time": "1970-01-01 07:59:00"
+      }
+    ],
+    "redis_checked_at": "2026-11-04T16:04:09.781230+00:00",
+    "pending": 0,
+    "complete": true
+  }
+}

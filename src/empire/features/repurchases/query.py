@@ -107,6 +107,30 @@ class RepurchaseDataPlugin:
                 return public(row) if row else None
         return await self.mysql.read(read)
 
+    async def refresh_plan(self, cursor=None):
+        from empire.features.repurchases.incremental import refresh_plan
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                proof = read_state(conn, self.namespace, PROJECT, 'eastmoney').get('coverage', {})
+                # Full source removals retain SQL history, so a source proof can
+                # legitimately have fewer rows than SQL. Do not turn that known
+                # mismatch into a successful composed proof on the next delta.
+                count = conn.execute(text(f'SELECT COUNT(*) FROM {mapping.TABLE}')).scalar_one()
+                if proof.get('count') != count:
+                    return None
+                cursor_value = cursor or {}
+                if (cursor_value.get('phase') == 'complete' and cursor_value.get('contract') == 1
+                        and cursor_value.get('coverage_count', cursor_value.get('total')) == proof.get('count')
+                        and cursor_value.get('coverage_digest', cursor_value.get('digest')) == proof.get('digest')):
+                    stamp = cursor_value.get('completed_at', proof.get('observed_at'))
+                    proof = dict(proof, observed_at=stamp, full_observed_at=(
+                        cursor_value.get('refresh') or {}).get('full_observed_at', stamp))
+                return refresh_plan(proof, datetime.now(UTC))
+        return await self.mysql.read(read)
+
+    async def current_summary(self):
+        return await self.mysql.read(self.audit)
+
     def audit(self):
         count, summary, after, invalid, last = 0, '0'*64, '', 0, None
         with self.mysql.read_engine.begin() as conn:
@@ -128,7 +152,7 @@ class RepurchaseDataPlugin:
                 if count > MAX_ROWS:
                     raise ValueError('回购业务行数超过声明审计范围')
         proof = state.get('coverage', {})
-        valid = proof.get('contract') == 1 and proof.get('count') == count and proof.get('digest') == summary and invalid == 0
+        valid = proof.get('contract') in (1, 2) and proof.get('count') == count and proof.get('digest') == summary and invalid == 0
         return dict(count=count, digest=summary, valid=valid, proof=proof, last=last, invalid=invalid)
 
     async def preparation_check(self, request=None):
@@ -140,18 +164,22 @@ class RepurchaseDataPlugin:
         valid, count = audit['valid'], audit['count']
         try:
             stamp = datetime.fromisoformat(audit['proof']['observed_at'])
+            full = datetime.fromisoformat(audit['proof'].get('full_observed_at', audit['proof']['observed_at']))
             ingest = self.context.optional('ingest.publish')
             if valid and ingest:
                 try:
                     current = (await asyncio.wait_for(ingest.checkpoint(JOB), 3))['cursor']
                     if (current.get('phase') == 'complete' and current.get('contract') == 1
-                            and current.get('total') == count and current.get('digest') == audit['digest']):
+                            and current.get('coverage_count', current.get('total')) == count
+                            and current.get('coverage_digest', current.get('digest')) == audit['digest']):
                         newer = datetime.fromisoformat(current['completed_at'])
                         if newer.tzinfo is not None and stamp <= newer <= datetime.now(UTC):
                             stamp = newer
+                            full = datetime.fromisoformat((current.get('refresh') or {}).get('full_observed_at', current['completed_at']))
                 except Exception:
                     pass
-            fresh = stamp.tzinfo is not None and timedelta(0) <= datetime.now(UTC) - stamp <= timedelta(days=3)
+            fresh = (stamp.tzinfo is not None and full.tzinfo is not None and full <= stamp
+                     and timedelta(0) <= datetime.now(UTC) - full <= timedelta(days=3))
         except (KeyError, ValueError, TypeError):
             fresh = False
         def evidence(key, ok, message):
@@ -159,9 +187,9 @@ class RepurchaseDataPlugin:
         return (
             evidence('fields', valid, f'{count}方案；身份、日期、数量金额及来源说明逐行校验；NULL保持未知'),
             evidence('keys', valid, '唯一来源方案编号；完整SQL键与规范内容滚动摘要匹配'),
-            evidence('coverage', valid, '完整来源集合与SQL逐行摘要核对；不是依据最大日期或条数推断完整'),
+            evidence('coverage', valid, '全历史基线及近期更新后的SQL集合摘要核对；全历史核验时刻单独保留'),
             evidence('quality', valid, '计划与累计实际分开，未知状态保留；回购完成不推断注销完成'),
-            evidence('freshness', valid and fresh, 'SQL完整集合匹配后，以SQL或匹配完整已归档轮次的核验时间确认3天时效；Redis可选'),
+            evidence('freshness', valid and fresh, '全历史核验不超过3天；近期更新不能延长全历史证明时效；Redis可选'),
             CheckEvidence('temporal', 'fail', '仅当前修订和公告自然日，无完整旧版本/日内时刻，不用于严格历史信号回放',
                           blocking=scope.purpose != 'analysis'),
         )

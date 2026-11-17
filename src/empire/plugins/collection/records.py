@@ -30,6 +30,25 @@ redis.call('INCR', KEYS[2])
 return 1
 """
 
+# Archive batches scan the bounded history once. Replays replace exact IDs;
+# submitted order, last-100 retention and revision-per-record stay unchanged.
+APPEND_ARCHIVES = """
+local incoming, result = {}, {}
+for i = 1, #ARGV, 2 do incoming[ARGV[i]] = i end
+for i = #ARGV - 1, 1, -2 do
+    if incoming[ARGV[i]] == i then result[#result+1] = ARGV[i+1] end
+end
+for _, raw in ipairs(redis.call('LRANGE', KEYS[1], 0, -1)) do
+    local ok, row = pcall(cjson.decode, raw)
+    if not ok or not incoming[row['id']] then result[#result+1] = raw end
+    if #result >= 100 then break end
+end
+redis.call('DEL', KEYS[1])
+for i = 1, math.min(100, #result) do redis.call('RPUSH', KEYS[1], result[i]) end
+redis.call('INCRBY', KEYS[2], #ARGV / 2)
+return #ARGV / 2
+"""
+
 # Compare exact IDs inside one atomic operation; new/unreviewed records survive.
 CLEAR = """
 local selected = {}
@@ -204,13 +223,26 @@ class RecordsPlugin:
             CLEAR, 2, self._key("errors", project_id), self._revision_key("errors", project_id), *ids))
 
     async def add_archive(self, project_id, record):
+        return (await self.add_archives(project_id, [record]))[0]
+
+    async def add_archives(self, project_id, records):
+        if not 1 <= len(records) <= 32:
+            raise ValueError('归档记录批次须为 1～32 条')
+        safe = [self._archive_record(project_id, record) for record in records]
+        args = [part for record in safe for part in
+                (record['id'], json.dumps(record, ensure_ascii=False, separators=(',', ':')))]
+        await self.redis.client.eval(APPEND_ARCHIVES, 2, self._key('archives', project_id),
+                                    self._revision_key('archives', project_id), *args)
+        return safe
+
+    def _archive_record(self, project_id, record):
         # Operational metadata only. Successful responses never enter this list.
         safe = self._bounded_metadata({key: value for key, value in record.items()
                                        if key not in {"body", "raw_body", "raw_response", "raw_payload"}})
         safe.update(id=self.sanitize_text(record.get("id") or uuid4().hex, 256),
                     project_id=project_id, created_at=datetime.now(UTC).isoformat(),
                     version=self.version)
-        return await self._append("archives", project_id, safe, ARCHIVE_LIMIT)
+        return safe
 
     async def list_archives(self, project_id):
         return [json.loads(raw) for raw in await self.redis.client.lrange(

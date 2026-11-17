@@ -19,6 +19,7 @@ def collector(kind, monkeypatch):
     state = {'revision': 0, 'cursor': {}}
     c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
     c.query = SimpleNamespace(state=AsyncMock(return_value={}))
+    c.query.maintenance_state = c.query.state
     def response(*args, **kwargs):
         params = json.loads(kwargs['content'])['Params']
         if 'cache' in args[1]:

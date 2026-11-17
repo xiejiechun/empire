@@ -21,6 +21,54 @@ pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get('EMPIRE_INTEGRATION') != '1', reason='Set EMPIRE_INTEGRATION=1 explicitly')]
 
 
+async def test_dividend_disappeared_scheme_remains_valid_for_next_maintenance(capital_db, monkeypatch):
+    manager, query, collector, _ = capital_db
+    if query.kind != 'dividends':
+        return
+    await asyncio.wait_for(collector.execute(), 20)
+    before = await query.list_events()
+    assert before
+    collector.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=source('dividends', rows=[]))
+    with monkeypatch.context() as patch:
+        patch.setattr('empire.features.capital_actions.dividend_history.needs_review', lambda *a, **kw: True)
+        await asyncio.wait_for(collector.execute(baseline_revision=await collector.checkpoint_revision()), 20)
+    assert await query.list_events() == before
+    state, stored = await query.dividend_maintenance()
+    assert state['units']['SH:688110']['count'] == len(stored['SH:688110'])
+    calls = collector.http.request.await_count
+    again = await asyncio.wait_for(collector.execute(baseline_revision=await collector.checkpoint_revision()), 20)
+    assert collector.http.request.await_count == calls
+    assert again['pages'] == 1 and collector.stats['assembled_securities'] == 0
+    store = manager.registry.get('redis.store')
+    assert await store.client.xlen(store.stream) == 0
+
+
+async def test_dividend_retired_stock_without_proof_does_not_force_current_pool_reload(capital_db, monkeypatch):
+    manager, query, collector, _ = capital_db
+    if query.kind != 'dividends':
+        return
+    from empire.plugins.infra.collection_state import read_state, save_state
+    second = dict(STOCK, code='688111')
+    query.dividend_history_proofs.return_value['SH:688111'] = '2026-01-01T00:00:00+00:00'
+    monkeypatch.setattr(query, '_securities', lambda conn: [STOCK, second])
+    rows = source('dividends')['ResultSets'][0]['Content'] + source('dividends', code='688111')['ResultSets'][0]['Content']
+    collector.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=source('dividends', rows=rows))
+    await asyncio.wait_for(collector.execute(), 20)
+    monkeypatch.setattr(query, '_securities', lambda conn: [STOCK])
+    mysql = manager.registry.get('mysql.store')
+    with mysql.engine.begin() as conn:
+        old = read_state(conn, query.namespace, query.project_id, query.source, lock=True)
+        revised = copy.deepcopy(old)
+        del revised['units']['SH:688111']
+        save_state(conn, query.namespace, query.project_id, query.source, 'dividends.unit', revised, old)
+    state, stored = await query.dividend_maintenance()
+    assert state and len(stored) == 2
+    calls = collector.http.request.await_count
+    again = await asyncio.wait_for(collector.execute(baseline_revision=await collector.checkpoint_revision()), 20)
+    assert collector.http.request.await_count == calls and again['pages'] == 1
+    assert len(await query.list_events()) == 2
+
+
 async def test_replan_retains_old_queue_and_confirms_only_new_complete_scope(capital_db):
     manager, query, collector, _ = capital_db
     if query.kind == 'dividends':
@@ -127,6 +175,7 @@ async def test_forced_round_reuses_verified_unavailable_and_refreshes_next_round
         if query.table in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(sql.engine, 'before_cursor_execute', capture)
+    event.listen(sql.archive_engine, 'before_cursor_execute', capture)
     try:
         collector.http.request.side_effect = [httpx.Response(200, json=body), httpx.Response(200, json=good)]
         calls = collector.http.request.await_count
@@ -151,6 +200,7 @@ async def test_forced_round_reuses_verified_unavailable_and_refreshes_next_round
         assert not writes and await store.client.xlen(store.stream) == 0
     finally:
         event.remove(sql.engine, 'before_cursor_execute', capture)
+        event.remove(sql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_independent_security_archives_before_failed_frontier_is_repaired(capital_db, monkeypatch):
@@ -300,6 +350,7 @@ async def test_repeat_hot_cold_revision_old_response_and_missing_fields(capital_
         if statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')) and query.table in statement:
             writes.append(statement)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         original = mysql.archive
         calls = []
@@ -333,6 +384,7 @@ async def test_repeat_hot_cold_revision_old_response_and_missing_fields(capital_
         assert await query.list_events() == new
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', capture)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_sql_commit_then_ack_failure_replays_without_business_dml(capital_db, monkeypatch):
@@ -354,11 +406,13 @@ async def test_sql_commit_then_ack_failure_replays_without_business_dml(capital_
         if query.table in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await archive.flush()
         assert not writes
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', capture)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', capture)
     assert await store.client.xlen(store.stream) == 0
     assert len(await query.list_events()) == 1
 

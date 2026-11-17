@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from empire.contracts.business_schema import read_business_schema
 from empire.features.builtin import dataset_contributions
 from empire.plugins.datasets.astock import DatasetPlugin
+from scripts.capacity_display_names import preserved_binding as preserved_display_binding
 from scripts.schema_evidence_scope import verify as verify_schema_objects
 
 LEGACY_BASELINES = frozenset({
@@ -89,7 +90,8 @@ def verify(root):
                 # prove every table used by this dataset unchanged in current SQL.
                 verify_scoped_ddl(evidence, schema.decode(), card['tables'])
             for path, checksum in evidence['bindings'].items():
-                if hashlib.sha256((root/path).read_bytes()).hexdigest() != checksum:
+                if (hashlib.sha256((root/path).read_bytes()).hexdigest() != checksum
+                        and not preserved_display_binding(root, path, checksum)):
                     raise ValueError(f'{dataset} 容量证据已过期：{path}')
             for key, maximum in evidence['limits'].items():
                 if evidence['measurements'][key] > maximum:

@@ -105,6 +105,16 @@ class CapitalDataPlugin:
                 return values
         return await self.mysql.read(read)
 
+    async def dividend_maintenance(self):
+        from empire.features.capital_actions.dividend_maintenance import snapshot
+        return await snapshot(self)
+
+    async def dividend_state(self):
+        def read():
+            with self.mysql.read_engine.connect() as conn:
+                return read_state(conn, self.namespace, self.project_id, self.source)
+        return await self.mysql.read(read)
+
     async def dividend_history_proofs(self):
         def read():
             with self.mysql.read_engine.connect() as conn:
@@ -275,6 +285,9 @@ class CapitalDataPlugin:
                             observed = stamp
             except Exception:
                 pass  # Optional read-only evidence; SQL remains independently usable.
+        if self.kind == 'dividends':
+            from empire.features.capital_actions.dividend_maintenance import periods_fresh
+            fresh &= periods_fresh(await self.dividend_state(), datetime.now(UTC))
         stamp_text = observed.isoformat() if observed else ''
         checks = [CheckEvidence(key, 'pass' if complete else 'fail', detail, observed_at=stamp_text)
                   for key in ('fields', 'keys', 'coverage', 'quality')]

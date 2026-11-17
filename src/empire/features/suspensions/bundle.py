@@ -14,7 +14,7 @@ def bundle(cfg):
         OrderedContribution(12800, TdxSuspensionCollector()),
         OrderedContribution(15300, SuspensionsUiPlugin()),
     ), tasks=(
-        OrderedContribution(4500, TaskContribution("tdx-suspensions", "沪深 A 股历史停复牌（通达信）",
+        OrderedContribution(4500, TaskContribution("tdx-suspensions", "沪深 A 股历史停复牌",
                     "collector.tdx_suspensions", "tdx", "2004-12-27 起逐自然日完整检查 · 停牌 / 复牌 / 全天或临停",
                     interval_seconds=86400, category="交易可实现性", source_name="通达信", parallel_downloads=True, unit_name='个月',
                     fresh_description="从 2004-12-27 起按自然月重新核验至今；保留已归档事件。")),

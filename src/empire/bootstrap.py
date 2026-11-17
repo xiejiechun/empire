@@ -1,5 +1,6 @@
 from dataclasses import replace
 
+from empire.computation import execute as compute_event
 from empire.contracts.bundle import OrderedContribution, ordered
 from empire.core.manager import PluginManager
 from empire.core.redaction import Redactor
@@ -45,7 +46,7 @@ def build_manager(cfg: dict) -> PluginManager:
     for group, domains in {"sse": ["sse.com.cn"], "szse": ["szse.cn"], "tax": ["chinatax.gov.cn"], "government": ["gov.cn"], "chinaclear": ["chinaclear.cn"], "chinagate": ["chinagate.cn"]}.items():
         rate_groups.setdefault(group, {"domains": domains, "min_interval_ms": 2000})
     platform = (
-        OrderedContribution(6300, DatasetPlugin(ordered_contributions(bundles, 'datasets'))),
+        OrderedContribution(6300, DatasetPlugin(ordered_contributions(bundles, 'datasets'), compute_operation=compute_event)),
         OrderedContribution(6400, RedisPlugin(cfg["redis"])),
         OrderedContribution(6500, MySQLPlugin(cfg["mysql"])),
         OrderedContribution(6600, RecordsPlugin(secrets=tuple(

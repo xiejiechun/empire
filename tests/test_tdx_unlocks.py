@@ -53,6 +53,7 @@ def collector():
     c, state = UnlockCollector(), {'revision': 0, 'cursor': {}}
     c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
     c.query = SimpleNamespace(state=AsyncMock(return_value={}))
+    c.query.maintenance_state = c.query.state
     def response(*args, **kwargs):
         params = json.loads(kwargs['content'])['Params']
         return httpx.Response(200, json=source() if params[0] == '0' else detail())
@@ -204,7 +205,7 @@ async def test_sql_proofs_skip_unchanged_except_rotating_review(monkeypatch):
     c, state = collector()
     p, d = normalized()
     proof = dict(contract=1, count=2, details=1, empty_groups=0, list_digest=list_digest(p),
-                 digest=digest([p, d]), observed_at=datetime.now(UTC).isoformat())
+                 digest=digest([p, d]), observed_at='2026-10-14T00:00:00+00:00')
     c.query.state.return_value = dict(contract_version=1, units={MONTH + '|SH': proof})
     # Two months put the one rotating review in the empty next month.
     class Clock:

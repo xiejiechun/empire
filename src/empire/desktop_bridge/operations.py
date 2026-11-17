@@ -8,6 +8,19 @@ from empire.plugins.collection.rules import rule_details
 
 async def execute(runtime, operation, params):
     registry = runtime.manager.registry
+    if operation == 'review.market':
+        from .preview import wire
+        return wire(await registry.get('market.review.query').market(**params))
+    if operation.startswith('observation.'):
+        from .preview import wire
+        service = registry.get('observation.query')
+        if operation == 'observation.catalog':
+            return wire(await service.catalog())
+        if operation == 'observation.read':
+            return wire(await service.month(**params))
+        if operation == 'observation.live':
+            return wire(await service.live(**params))
+        raise ValueError('未知观察操作')
     if operation == 'health.read':
         return runtime.snapshot()
     if operation == 'exits.read':
@@ -21,6 +34,7 @@ async def execute(runtime, operation, params):
         if operation == 'resources.read':
             http = registry.optional('http.fetch')
             live = None if http is None else {
+                **http.admission.snapshot(),
                 'active_requests': http.global_active,
                 'buffer_reserved_bytes': http.buffer_budget.used,
                 'buffer_limit_bytes': http.buffer_budget.limit,

@@ -16,7 +16,7 @@ def bundle(cfg):
         OrderedContribution(7800, TdxListingStatusCollector()),
         OrderedContribution(7900, ListingStatusUiPlugin()),
     ), tasks=(
-        OrderedContribution(1900, TaskContribution('tdx-listing-status', '暂停恢复终止上市（通达信）',
+        OrderedContribution(1900, TaskContribution('tdx-listing-status', '暂停恢复终止上市',
                     'collector.tdx_listing_status', 'tdx', '沪深A股三类事件；逐日核验，按月独立归档',
                     category='证券基础', source_name='通达信', parallel_downloads=True, unit_name='个月', default_schedule=TaskDefaults('daily',
                         description='每天北京时间18:00补缺并回查最近一个月；首次补历史，计划可编辑。'),

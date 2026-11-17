@@ -22,6 +22,10 @@
 .preview-workspace-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
 .preview-reading-notes { max-width: min(480px, 75vw); font-size: 12px; line-height: 1.8; }
 .preview-reading-notes p { margin: 8px 0; }
+.pv-fundflow-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding: 12px 0; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+.pv-fundflow-summary > div { display: flex; flex-direction: column; gap: 5px; }
+.pv-fundflow-summary span { color: var(--muted); font-size: 12px; }
+.pv-fundflow-summary strong { font-size: 15px; font-variant-numeric: tabular-nums; }
 .project-preview.is-expanded { position: fixed; z-index: 90; inset: 52px 16px 16px; padding: 0 20px; overflow: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 5px; box-shadow: 0 12px 60px #14284240; }
 .is-expanded .preview-workspace-footer { position: sticky; bottom: 0; background: var(--surface); z-index: 4; }
 .project-preview-loading { padding: 24px; }

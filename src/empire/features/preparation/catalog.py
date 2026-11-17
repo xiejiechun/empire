@@ -1,5 +1,6 @@
 """The single catalogue of independently deliverable collection and processing jobs."""
 from empire.features.preparation.capital_page import ITEMS as CAPITAL_PAGE
+from empire.features.preparation.etf import ITEMS as ETF
 from empire.features.preparation.events import ITEMS as EVENTS
 from empire.features.preparation.existing import ITEMS as EXISTING
 from empire.features.preparation.foundation import ITEMS as FOUNDATION
@@ -7,7 +8,7 @@ from empire.features.preparation.markets import ITEMS as MARKETS
 from empire.features.preparation.processing import ITEMS as PROCESSING
 from empire.features.preparation.yuanhang_limits import ITEMS as YUANHANG_LIMITS
 
-REQUIREMENTS = (*EXISTING, *FOUNDATION, *EVENTS, *CAPITAL_PAGE, *MARKETS, *YUANHANG_LIMITS, *PROCESSING)
+REQUIREMENTS = (*EXISTING, *FOUNDATION, *EVENTS, *CAPITAL_PAGE, *MARKETS, *YUANHANG_LIMITS, *PROCESSING, *ETF)
 BY_ID = {item.id: item for item in REQUIREMENTS}
 if len(BY_ID) != len(REQUIREMENTS):
     raise ValueError('数据准备项目 ID 重复')

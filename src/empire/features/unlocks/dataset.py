@@ -158,5 +158,6 @@ class UnlockDataset:
             result['units'] = {**previous.get('units', {}), data['unit']: dict(
                 observed_at=stamp, count=len(data['parents']), details=len(data['details']), contract=CONTRACT,
                 list_digest=list_digest(data['parents']), digest=digest([data['parents'], data['details']]),
+                fingerprint_hash=digest({'parents': data['parents'], 'details': data['details'], 'manifest': None}),
                 empty_groups=len({r['group_key'] for r in data['parents'] if r['detail_status'] == 'source_empty'}))}
         return result

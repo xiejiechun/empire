@@ -25,6 +25,17 @@ def timed_row(field, day='2026-07-14', code='000001'):
 
 
 @pytest.mark.parametrize('field', TIME_FIELDS)
+def test_observed_invalid_time_preserves_source_value(field):
+    from empire.features.yuanhang_limits.storage import validate_member
+    value = member({**row('603729'), field: '-60'}, '2026-07-15')
+    assert value[field] == -60
+    assert validate_member(value, '2026-07-15') == value
+    for field, raw in [(field, '-1'), (field, '-61'), (field, -60), (field, '-060')]:
+        with pytest.raises(ValueError):
+            member({**row(), field: raw}, '2026-07-15')
+
+
+@pytest.mark.parametrize('field', TIME_FIELDS)
 @pytest.mark.parametrize('code', ['000001', '300010'])
 def test_every_time_field_and_security_keeps_original_date(field, code):
     with pytest.raises(SourceTimeDateError) as caught:
@@ -70,6 +81,7 @@ async def test_exhausted_page_diagnostic_keeps_time_context_and_body(pool):
     (True, 2, True, False, 2), (True, 2, False, False, 3),
     (True, 2, True, True, 3), (True, 1, False, True, 2),
     (True, 0, False, False, 1), (False, 2, False, False, 1),
+    (True, 5, True, True, 6),
 ])
 async def test_fetch_recovery_or_exhaustion_uses_one_shared_budget(
         monkeypatch, live, budget, recover, transport, attempts):
@@ -101,7 +113,7 @@ async def test_fetch_recovery_or_exhaustion_uses_one_shared_budget(
             with pytest.raises(SourceTimeDateError):
                 await fetch_pool(http, 'limit_up_pool', '2026-07-15', project_id='test',
                                  max_retries=budget, retry_earlier_time=live)
-        assert len(responses) == attempts and delays == [1, 2][:attempts - 1]
+        assert len(responses) == attempts and delays == [min(30, 2 ** i) for i in range(attempts - 1)]
         assert all(response.is_closed for response in responses)
         assert service.buffer_budget.used == 0
     finally:

@@ -35,6 +35,7 @@ async def test_official_source_archive_decimal_and_sql_only_readiness(capital_db
         if statement.lstrip().split()[0].upper() in ('INSERT', 'UPDATE', 'DELETE'):
             mutations.append(statement)
     event.listen(mysql.engine, 'before_cursor_execute', record)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', record)
     event.listen(mysql.read_engine, 'before_cursor_execute', record)
     try:
         result = await query.distribution_summary(SCOPE)
@@ -59,6 +60,7 @@ async def test_official_source_archive_decimal_and_sql_only_readiness(capital_db
         assert await store.client.xlen(store.stream) == 0
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', record)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', record)
         event.remove(mysql.read_engine, 'before_cursor_execute', record)
 
 

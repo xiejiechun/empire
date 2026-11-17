@@ -42,8 +42,8 @@ async def monthly(monkeypatch):
             await client.aclose()
 
 
-async def collect(c):
-    return await asyncio.wait_for(c.execute(baseline_revision=await c.checkpoint_revision()), 25)
+async def collect(c, *, fresh=False):
+    return await asyncio.wait_for(c.execute(fresh=fresh, baseline_revision=await c.checkpoint_revision()), 25)
 
 
 async def test_duplicate_facts_query_filters_hot_cold_revision_stale_replay(monthly):
@@ -61,6 +61,7 @@ async def test_duplicate_facts_query_filters_hot_cold_revision_stale_replay(mont
         if q.table in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             dml.append(statement)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     original = q.mysql.archive
     async def counted(records):
         calls.append(records)
@@ -73,7 +74,7 @@ async def test_duplicate_facts_query_filters_hot_cold_revision_stale_replay(mont
         await collect(c)
         assert not dml and calls
         c.http.request.side_effect = lambda *a, **kw: httpx.Response(200, json=source(revised=True))
-        await collect(c)
+        await collect(c, fresh=True)
         assert dml and len((await q.list_records())['rows']) == 2  # Withdrawn duplicate removed.
         from empire.features.performance.source import parse
         rows = [r for r in parse(KIND, source(revised=True), PERIOD)[0] if r['unified_code'].endswith('SH')]
@@ -87,6 +88,7 @@ async def test_duplicate_facts_query_filters_hot_cold_revision_stale_replay(mont
     finally:
         q.mysql.archive = original
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 @pytest.mark.parametrize('failure', ['sql', 'ack'])
@@ -128,6 +130,9 @@ async def test_completed_history_same_count_wrong_set_and_missing_required_field
     def damage():
         with q.mysql.engine.begin() as conn:
             conn.execute(text("UPDATE shareholder_change SET actor='' LIMIT 1"))
+            conn.execute(text("UPDATE collection_state SET payload=JSON_REMOVE(payload,'$.units') "
+                'WHERE namespace=:namespace AND project_id=:project'),
+                {'namespace': q.namespace, 'project': q.project_id})
     await q.mysql.control(damage)
     assert next(v for v in await q.preparation_check() if v.criterion == 'coverage').status == 'fail'
     await collect(c)

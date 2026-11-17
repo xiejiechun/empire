@@ -12,6 +12,7 @@ from empire.features.yuanhang_limits.contract import (
     PAGE_SIZE,
     REQUEST_FIELDS,
     day_value,
+    needs_identity_lookup,
     pool_value,
 )
 from empire.features.yuanhang_limits.model import SourceTimeDateError, parse_page, parse_reason
@@ -60,7 +61,7 @@ async def fetch_pool(http, pool, day, *, project_id, max_retries=1, reservation=
                 members = obj['data'].get('data')
                 if isinstance(members, list):
                     codes = {r.get('code') for r in members if isinstance(r, dict)
-                             and r.get('market_id') is None and r.get('market_type') == 'HS'}
+                             and needs_identity_lookup(r.get('market_id'), r.get('market_type'))}
                     if codes:
                         identities = await identity_resolver(codes)
                         for row in members:

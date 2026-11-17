@@ -44,7 +44,7 @@ def test_decimal_precision_is_not_lost_to_default_decimal_context():
     assert decimal_value(source, 'turnover') == source
 
 
-@pytest.mark.parametrize('field,value', [('market_id', 34), ('market_id', True),
+@pytest.mark.parametrize('field,value', [('market_id', 34), ('market_id', True), ('market_id', 21.0),
     ('latest', float('nan')), ('latest', '1.0000000000000000000000001'), ('latest', -1), ('is_new', 3),
     ('limit_up_suc_rate', 50), ('first_limit_up_time', '1783992705')])
 def test_invalid_fields_fail(field, value):
@@ -84,13 +84,16 @@ def test_equal_count_duplicate_missing_identity_and_page_errors():
     assert parse_page(page([]), '2026-07-15', 1) == ([], 0, 0)
 
 
-def test_zero_time_and_proven_history_identity_round_trip():
+@pytest.mark.parametrize('market_id', [None, 21])
+def test_zero_time_and_proven_history_identity_round_trip(market_id):
     from empire.features.yuanhang_limits.storage import validate_member
-    raw = {**row('300362'), 'market_id': None, 'first_limit_up_time': '0'}
+    raw = {**row('300362'), 'market_id': market_id, 'first_limit_up_time': '0'}
     parsed = member(raw, '2026-07-15', identities={'300362': '300362.SZ'})
     assert parsed['identity_basis'] == 'pool_history'
     assert parsed['first_limit_up_time'] == 0
     assert validate_member(parsed, '2026-07-15') == parsed
+    with pytest.raises(ValueError):
+        member(raw, '2026-07-15')
     with pytest.raises(ValueError):
         member(raw, '2026-07-15', identities={'300362': '300363.SZ'})
     with pytest.raises(ValueError):
@@ -98,8 +101,9 @@ def test_zero_time_and_proven_history_identity_round_trip():
 
 
 @pytest.mark.asyncio
-async def test_missing_identity_uses_one_bounded_lookup_without_redownload():
-    http, responses = client(page([{**row('300362'), 'market_id': None}]))
+@pytest.mark.parametrize('market_id', [None, 21])
+async def test_missing_identity_uses_one_bounded_lookup_without_redownload(market_id):
+    http, responses = client(page([{**row('300362'), 'market_id': market_id}]))
     resolve = AsyncMock(return_value={'300362': '300362.SZ'})
     value = await fetch_pool(http, 'limit_up_pool', '2026-07-15', project_id='test', identity_resolver=resolve)
     assert value['rows'][0]['identity_basis'] == 'pool_history'
@@ -109,8 +113,9 @@ async def test_missing_identity_uses_one_bounded_lookup_without_redownload():
 
 
 @pytest.mark.asyncio
-async def test_unknown_history_identity_uses_exact_supplement_and_accounts_cost():
-    http, responses = client(page([{**row('600687'), 'market_id': None}]))
+@pytest.mark.parametrize('market_id', [None, 21])
+async def test_unknown_history_identity_uses_exact_supplement_and_accounts_cost(market_id):
+    http, responses = client(page([{**row('600687'), 'market_id': market_id}]))
     body = b'var themeIdentity="old,11,600687,sh600687,old,,old,99,0,,,old";'
     responses.append(SimpleNamespace(content=body, close=Mock()))
     http.request.side_effect = responses
@@ -118,6 +123,7 @@ async def test_unknown_history_identity_uses_exact_supplement_and_accounts_cost(
                              identity_resolver=AsyncMock(return_value={}))
     assert value['rows'][0]['unified_code'] == '600687.SH'
     assert value['rows'][0]['identity_basis'] == 'sina_lookup'
+    assert value['rows'][0]['source_market_id'] == market_id
     assert value['requests'] == http.request.call_count == 2
     assert value['response_bytes'] == sum(len(r.content) for r in responses)
     assert all(r.close.call_count == 1 for r in responses)

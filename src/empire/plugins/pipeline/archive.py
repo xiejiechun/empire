@@ -3,7 +3,9 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+from contextlib import AsyncExitStack
 from datetime import UTC, datetime
+from itertools import islice
 from time import monotonic
 from uuid import uuid4
 
@@ -12,6 +14,7 @@ from empire.contracts.plugin import PluginContext, PluginManifest
 from empire.core.identity import safe_project_id
 from empire.core.time import mysql_time
 from empire.plugins.infra.collection_state import CollectionState
+from empire.plugins.infra.sql_lane import settle
 from empire.plugins.pipeline.archive_metrics import ArchiveMetrics
 from empire.plugins.pipeline.archive_queue import (
     SCAN_WINDOW,
@@ -21,7 +24,8 @@ from empire.plugins.pipeline.archive_queue import (
     ArchiveQueue,
     stream_number,
 )
-from empire.plugins.pipeline.fingerprints import FingerprintCache, digest
+from empire.plugins.pipeline.archive_units import archive_units
+from empire.plugins.pipeline.fingerprints import FingerprintCache
 
 
 def now() -> str:
@@ -49,6 +53,7 @@ class ArchivePlugin:
         self.isolation_retry = 0
         self.stats = {"status": "stopped", "archived": 0, "errors": 0}
         self.metrics = ArchiveMetrics()
+        self.queue_sample_time = monotonic()
 
     async def start(self, context: PluginContext) -> dict:
         self.redis = context.get("redis.store")
@@ -108,8 +113,13 @@ class ArchivePlugin:
         # Valid messages reach here after commit, confirmed equality or stale-version
         # rejection. A fingerprint hit is proof from a prior successful transaction.
         for offset in range(0, len(ids), 500):
-            await self.redis.client.xdel(self.redis.stream, *ids[offset:offset + 500])
-            self.queue.forget(ids[offset:offset + 500])
+            selected = ids[offset:offset + 500]
+            owners = {self.queue.ids[ident].project for ident in selected if ident in self.queue.ids}
+            project = next(iter(owners)) if len(owners) == 1 else None
+            with self.metrics.span(project, 'ack'):
+                deleted = await self.redis.client.xdel(self.redis.stream, *selected)
+            self.metrics.add(project, acknowledged=len(selected), deleted=deleted)
+            self.queue.forget(selected)
 
     async def _record_invalid(self, ident, raw, envelope, exc, *, schema=False):
         owner = self.catalog.schema_owner(envelope) if schema and envelope else None
@@ -167,7 +177,8 @@ class ArchivePlugin:
             except UnsupportedSchema:
                 continue
             self.queue.add(ident, envelope, incremental, self.catalog.project_id(envelope),
-                           self.catalog.is_complete(envelope))
+                           self.catalog.is_complete(envelope), domains=self.catalog.archive_domains(envelope),
+                           batch_independent=self.catalog.mapping(envelope).batch_independent)
             self.isolated.pop(ident)
 
     async def _scan(self):
@@ -207,7 +218,7 @@ class ArchivePlugin:
                 raw = dict(zip(pairs[::2], pairs[1::2])).get("envelope", "")
                 envelope = None
                 try:
-                    envelope = Envelope.model_validate_json(raw)
+                    envelope = self.catalog.archive_envelope(raw)
                     incremental = self.catalog.incremental(envelope)
                 except UnsupportedSchema as exc:
                     await self._record_invalid(ident, raw, envelope, exc, schema=True)
@@ -230,7 +241,8 @@ class ArchivePlugin:
                     if ident not in queue.ids and ident not in self.isolated and self.indexed_count >= queue.limit:
                         raise ArchiveIndexFull("归档隔离与消息索引达到容量上限；消息保留")
                     queue.add(ident, envelope, incremental, self.catalog.project_id(envelope),
-                              self.catalog.is_complete(envelope))
+                              self.catalog.is_complete(envelope), domains=self.catalog.archive_domains(envelope),
+                              batch_independent=self.catalog.mapping(envelope).batch_independent)
                 queue.cursor = ident
                 scanned += 1
             if stream_number(queue.cursor) >= stream_number(queue.cutoff):
@@ -247,30 +259,60 @@ class ArchivePlugin:
         self.stats.update(scan_messages=scanned, scan_bytes=size, scan_more=queue.more_scan,
                           scan_elapsed_ms=round((monotonic() - began) * 1000, 2))
 
-    async def _load_records(self, ids):
+    async def _load_records(self, ids, computation, project):
         records = []
-        # Full stock metadata is one business unit. Raw bodies live only for this
-        # read; unfinished batches otherwise retain just bounded Stream IDs.
-        for ident in ids:
+        size = rows = 0
+        # At most sixteen inputs on four pure workers; hold capacity through ACK.
+        # Aggregate sets keep their existing metadata-only staging path.
+        for offset in range(0, len(ids), 16):
             if self.stop_event.is_set():
                 return None
-            page = await self.redis.client.xrange(self.redis.stream, min=ident, max=ident, count=1)
-            if not page:
-                self.queue.forget([ident])  # ACK may have succeeded before a cancelled Redis reply.
-                continue
-            raw = page[0][1].get("envelope", "")
-            envelope = Envelope.model_validate_json(raw)
-            record = {"id": ident, "envelope": envelope.model_copy(update={"raw_payload": {}})}
-            try:
-                normalized = self.catalog.normalize(envelope)
-                record["normalized"] = {key: value for key, value in normalized.items() if key != "rows"}
-            except UnsupportedSchema as exc:
-                await self._record_invalid(ident, raw, envelope, exc, schema=True)
-                raise
-            except (ValueError, TypeError) as exc:
-                await self._record_invalid(ident, raw, envelope, exc)
-                record["invalid"] = str(exc)
-            records.append(record)
+            selected = []
+            selected_ids = ids[offset:offset + 16]
+            with self.metrics.span(project, 'read'):
+                async with self.redis.client.pipeline(transaction=False) as pipe:
+                    for ident in selected_ids:
+                        pipe.xrange(self.redis.stream, min=ident, max=ident, count=1)
+                    pages = await pipe.execute()
+            for ident, page in zip(selected_ids, pages):
+                if not page:
+                    self.queue.forget([ident])
+                    continue
+                raw = page[0][1].get("envelope", "")
+                selected.append((ident, raw, self.catalog.archive_envelope(raw)))
+            with self.metrics.span(self.catalog.project_id(selected[0][2]) if selected else None, 'normalize'):
+                prepared = await computation.enter_async_context(
+                    self.catalog.computed([event for _, _, event in selected], 'normalize',
+                                          serialized=[raw for _, raw, _ in selected]))
+            for (ident, raw, envelope), (value, error) in zip(selected, prepared):
+                record = {"id": ident, "envelope": envelope.model_copy(update={"raw_payload": {}})}
+                if error:
+                    await self._record_invalid(ident, raw, envelope, error)
+                    record['invalid'] = str(error)
+                else:
+                    # Process results include prepared hashes, direct units use
+                    # the identical catalog functions at the normal call site.
+                    if isinstance(value, dict) and 'normalized' in value and 'hashes' in value:
+                        record.update(value)
+                        normalized = value['normalized']
+                    else:
+                        normalized = value
+                    incremental = self.catalog.incremental(envelope)
+                    record['normalized'] = (normalized if incremental else
+                        {key: value for key, value in normalized.items() if key != 'rows'})
+                    if incremental:
+                        if 'normalized_bytes' not in record:
+                            record['normalized_bytes'] = len(json.dumps(normalized, default=str,
+                                ensure_ascii=False, separators=(',', ':')).encode())
+                        size += record['normalized_bytes']
+                        rows += normalized.get('row_count', 0)
+                records.append(record)
+            # Keep every result of a submitted compute wave. SQL grouping below
+            # enforces its own byte/row target; discarding the tail here would
+            # normalize those durable messages again on the next turn.
+            if selected and self.catalog.incremental(selected[0][2]) and (
+                    size >= 4 * 1024 * 1024 or rows >= 10000):
+                return records
         return records
 
     async def _load_rows(self, records: list[dict]) -> list[dict]:
@@ -346,6 +388,12 @@ class ArchivePlugin:
     async def _history(self, project: str, batch: str, status: str, started: str,
                        *, processed_count: int | None = None, written_count: int | None = None,
                        error: str = "", stable: bool = False) -> None:
+        await self.records.add_archive(project, self._history_record(batch, status, started,
+            processed_count=processed_count, written_count=written_count, error=error, stable=stable))
+
+    @staticmethod
+    def _history_record(batch, status, started, *, processed_count=None, written_count=None,
+                        error='', stable=False):
         record = {
             "id": f"{batch}:{status}" if stable else uuid4().hex,
             "snapshot_id": batch, "status": status, "started_at": started,
@@ -355,7 +403,7 @@ class ArchivePlugin:
             record["processed_count"] = processed_count
         if written_count is not None:
             record["written_count"] = written_count
-        await self.records.add_archive(project, record)
+        return record
 
     async def _aggregate_result(self, envelope, batch: str, status: str,
                       *, count: int = 0, error: str = "", started_at=None) -> None:
@@ -389,9 +437,52 @@ class ArchivePlugin:
 
     async def _flush_incremental(self, records, project):
         """Independent business pages archive in order without SQL staging tables."""
+        if len(records) == 1:
+            return await self._flush_units(records, project)
+        group, identities, size, rows = [], set(), 0, 0
         for record in records:
             if self.stop_event.is_set():
                 return
+            envelope = record['envelope']
+            independent = (self.catalog.mapping(envelope).batch_independent and not record.get('invalid')
+                           and record['normalized'].get('unit') != 'manifest')
+            namespace, plan = ((record['namespace'], record['plan']) if 'hashes' in record else
+                               self.catalog.fingerprint_plan(envelope, record['normalized'])
+                               if independent else ('', {}))
+            record.update(plan=plan, namespace=namespace)
+            count = record.get('normalized', {}).get('row_count', 0)
+            byte_count = record.get('normalized_bytes', 0)
+            scope = (envelope.dataset, self.catalog.fingerprint_source(envelope))
+            if group and (not independent or not group[0]['independent']
+                    or scope != group[0]['scope'] or identities.intersection(plan)
+                    or len(group) >= self.limits.unit_batch_size
+                    or size + byte_count > 4 * 1024 * 1024 or rows + count > 10000):
+                await self._flush_units(group, project)
+                group, identities, size, rows = [], set(), 0, 0
+            record.update(independent=independent, scope=scope)
+            group.append(record)
+            identities.update(plan)
+            size += byte_count
+            rows += count
+        if group and not self.stop_event.is_set():
+            await self._flush_units(group, project)
+
+    async def _flush_units(self, records, project):
+        if len(records) > 1:
+            started = now()
+            outcomes = await archive_units(self, records)
+            histories = [self._history_record(record['envelope'].event_id, 'complete', started,
+                processed_count=outcome['row_count'], written_count=outcome.get('written_count'), stable=True)
+                for record, outcome in zip(records, outcomes)]
+            await self.records.add_archives(project, histories)
+            last = records[-1]
+            await self._incremental_result(last['envelope'], last['normalized']['page'], 'complete',
+                                           outcomes[-1]['row_count'])
+            await self.acknowledge([record['id'] for record in records])
+            self.stats['archived'] += len(records)
+            self.stats.update(last_success=now())
+            return
+        for record in records:
             envelope = record["envelope"]
             started = now()
             if record.get("invalid"):
@@ -400,12 +491,8 @@ class ArchivePlugin:
                                     error=record["invalid"], stable=True)
                 await self.acknowledge([record["id"]])
                 continue
-            page = await self.redis.client.xrange(self.redis.stream, min=record["id"], max=record["id"], count=1)
-            if not page:
-                raise RuntimeError("待归档业务分页在读取期间消失")
-            full = Envelope.model_validate_json(page[0][1]["envelope"])
-            normalized = self.catalog.normalize(full)
-            outcome = await self._archive_data(full, normalized)
+            normalized = record["normalized"]
+            outcome = (await archive_units(self, [record]))[0] if 'hashes' in record else await self._archive_data(envelope, normalized)
             await self._history(project, envelope.event_id, "complete", started,
                                 processed_count=outcome["row_count"],
                                 written_count=outcome.get("written_count"), stable=True)
@@ -415,50 +502,10 @@ class ArchivePlugin:
             self.stats.update(last_success=now())
 
     async def _archive_data(self, envelope, data):
-        namespace, plan = self.catalog.fingerprint_plan(envelope, data)
-        version_contract = self.catalog.fingerprint_version(namespace)
-        fingerprint_source = self.catalog.fingerprint_source(envelope)
-        cached = await self.fingerprints.get(namespace, fingerprint_source, list(plan))
-        project = self.catalog.project_id(envelope)
-        pending, confirmed = set(), {}
-        stale = 0
-        for ident, (content, version) in plan.items():
-            value = {"hash": digest(content), "version": version}
-            old = cached.get(ident)
-            if old and version_contract.compare(version, old["version"]) < 0:
-                stale += 1
-            elif old and value["hash"] == old["hash"]:
-                confirmed[ident] = value
-            else:
-                pending.add(ident)
-        count = data.get("row_count", data.get("expected_count", 0))
-        self.metrics.add(project, checked=len(plan), equal=len(confirmed), stale=stale,
-                         missing=len(set(plan) - cached.keys()),
-                         changed=len(pending & cached.keys()))
-        outcome = {"status": self.catalog.stale_outcome(envelope) if stale else "complete",
-                   "row_count": count, "written_count": 0}
-        if pending or not plan:
-            self.metrics.add(project, sql_attempts=1)
-            subset = self.catalog.fingerprint_subset(envelope, data, pending)
-            outcome = (await self.mysql.archive([{
-                "envelope": envelope, "normalized": subset, "writer": self.states.writer(self.catalog, data),
-            }]))[0]
-            self.metrics.add(project, sql_successes=1, written=outcome.get('written_count', 0) or 0)
-            # Rejected old SQL versions must never be cached as the current content.
-            accepted = outcome["confirmed"]
-            if accepted and outcome.get('reset_fingerprints') is True:
-                # Cross-key SQL replacement invalidates the previous proofs.
-                # Run before publishing the new proof; failure retains the message
-                # and the dataset repeats its declaration even after SQL replay.
-                await self.fingerprints.invalidate(namespace, fingerprint_source)
-            for ident in accepted:
-                content, version = plan[ident]
-                confirmed[ident] = {"hash": digest(content), "version": version}
-            outcome["row_count"] = count
-        # Commit/equality precedes cache; cache precedes queue ACK. Any failure keeps
-        # the queue replayable. Never cache uncommitted collection output.
-        await self.fingerprints.put(namespace, fingerprint_source, confirmed)
-        return outcome
+        with self.metrics.span(self.catalog.project_id(envelope), 'plan'):
+            namespace, plan = self.catalog.fingerprint_plan(envelope, data)
+        return (await archive_units(self, [dict(envelope=envelope, normalized=data,
+                                               namespace=namespace, plan=plan)]))[0]
 
     async def _flush_aggregate(self, records, project, current):
         first = records[0]
@@ -535,6 +582,41 @@ class ArchivePlugin:
         self.stats["archived"] += len(ids)
         self.stats.update(last_success=now())
 
+    async def _process_batch(self, batch, current):
+        width = self.limits.unit_batch_size if batch.batch_independent else 1
+        ids = list(islice(batch.ids, width)) if batch.incremental else list(batch.ids)
+        records = None
+        computation = AsyncExitStack()
+        failed = False
+        try:
+            if self.blocked or batch.project in self.blocked_projects:
+                return None
+            records = await self._load_records(ids, computation, batch.project)
+            batch.checked = True
+            if records:
+                if self.blocked or batch.project in self.blocked_projects:
+                    return None
+                if batch.incremental:
+                    await self._flush_incremental(records, batch.project)
+                else:
+                    await self._flush_aggregate(records, batch.project, current)
+            self.stats['last_project'] = batch.project
+        except Exception as exc:
+            failed = True
+            try:
+                await self._history(batch.project, batch.key[2], 'failed', now(), error=str(exc))
+            except Exception:
+                pass
+            return exc.with_traceback(None)
+        except BaseException:
+            self.queue.schedule(batch)
+            raise
+        finally:
+            await computation.aclose()
+            records = None
+            self.queue.reschedule(batch, failed=failed)
+        return None
+
     async def flush(self, *, retry_failed=True) -> None:
         """One bounded scheduling quantum; remaining work wakes the resident loop."""
         async with self.lock:
@@ -556,47 +638,49 @@ class ArchivePlugin:
             while not self.stop_event.is_set() and units < self.limits.work_max_units:
                 if units and (monotonic() - began) * 1000 >= self.limits.work_time_ms:
                     break
-                batch = self.queue.take(self.blocked_projects)
-                if batch is None:
+                selected, projects, domains = [], set(), set()
+                # One coordinator owns all claims. A project and any shared
+                # table/cache domain remain exclusive through ACK and reschedule.
+                for _ in range(min(4, self.limits.work_max_units - units)):
+                    batch = self.queue.take(self.blocked_projects | projects, domains)
+                    if batch is None:
+                        break
+                    selected.append(batch)
+                    projects.add(batch.project)
+                    domains.update(batch.domains)
+                if not selected:
                     break
-                units += 1
-                ids = [next(iter(batch.ids))] if batch.incremental and batch.ids else list(batch.ids)
-                records = None
-                failed = False
+                units += len(selected)
+                tasks = [asyncio.create_task(self._process_batch(batch, current)) for batch in selected]
+                completed = asyncio.gather(*tasks, return_exceptions=True)
                 try:
-                    records = await self._load_records(ids)
-                    batch.checked = True
-                    if records:
-                        if batch.incremental:
-                            await self._flush_incremental(records, batch.project)
-                        else:
-                            await self._flush_aggregate(records, batch.project, current)
-                    self.stats["last_project"] = batch.project
-                except Exception as exc:
-                    failed = True
-                    if not failures:
-                        failures.append(exc.with_traceback(None))
-                    try:
-                        await self._history(batch.project, batch.key[2], "failed", now(), error=str(exc))
-                    except Exception:
-                        pass
-                    if self.blocked:
-                        raise
+                    outcomes = await asyncio.shield(completed)
                 except BaseException:
-                    self.queue.schedule(batch)
+                    for task in tasks:
+                        task.cancel()
+                    # SQLLane retains real transaction ownership; repeated
+                    # cancellation cannot free this wave's claims early.
+                    await settle(completed)
                     raise
-                finally:
-                    records = None
-                    self.queue.reschedule(batch, failed=failed)
+                failures.extend(outcome for outcome in outcomes if isinstance(outcome, Exception))
+                if self.blocked and failures:
+                    raise failures[0]
             if index_error and self.indexed_count >= self.queue.limit:
                 self.stats["scan_failed"] = True
                 failures.append(index_error)
+            ready = [batch for batch in self.queue.batches.values()
+                     if batch.project not in self.blocked_projects and (batch.incremental or batch.complete)]
             self.stats.update(pending=await self.redis.client.xlen(self.redis.stream),
+                ready_pending=sum(len(batch.ids) for batch in ready),
+                ready_oldest_ms=min((stream_number(next(iter(batch.ids)))[0] for batch in ready if batch.ids),
+                                    default=None),
                 staging_batches=sum(not b.incremental and not b.complete for b in self.queue.batches.values()),
                 indexed_messages=len(self.queue.ids), indexed_batches=len(self.queue.batches),
-                ready_projects=sum(p not in self.queue.delayed for p in self.queue.ready),
+                ready_projects=sum(p not in self.queue.delayed and p not in self.blocked_projects
+                                   for p in self.queue.ready),
                 retry_projects=len(self.queue.delayed),
                 work_units=units, work_elapsed_ms=round((monotonic() - began) * 1000, 2))
+            self.queue_sample_time = monotonic()
             if self.queue.more_scan or any(p not in self.blocked_projects and p not in self.queue.delayed
                                           for p in self.queue.ready):
                 self.wake_event.set()
@@ -623,4 +707,5 @@ class ArchivePlugin:
 
     def health(self) -> dict:
         return {**self.stats, "blocked": self.blocked, "blocked_projects": sorted(self.blocked_projects),
-                "isolated_messages": len(self.isolated)}
+                "isolated_messages": len(self.isolated),
+                "queue_sample_age_seconds": max(0, monotonic() - self.queue_sample_time)}

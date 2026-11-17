@@ -51,6 +51,7 @@ async def test_separate_runs_share_cache_cold_proofs_reject_late_response_and_cl
             writes.append(statement)
 
     event.listen(query.mysql.engine, 'before_cursor_execute', track)
+    event.listen(query.mysql.archive_engine, 'before_cursor_execute', track)
     await history.execute(baseline_revision=await history.checkpoint_revision(), history_only=True, maintenance_scope='backfill')  # Shared trusted fingerprint: no SQL business writes.
     assert not writes
     await archive.fingerprints.invalidate(LimitDataset(current.pool).FINGERPRINT_NAMESPACE, SOURCE)
@@ -137,6 +138,7 @@ async def test_same_day_late_source_revision_is_refreshed_automatically(sprint, 
         if 'yuanhang_limit_' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(query.mysql.engine, 'before_cursor_execute', track)
+    event.listen(query.mysql.archive_engine, 'before_cursor_execute', track)
     await pool_maintenance(current, Clock.now(CHINA), fresh=False,
                            baseline_revision=await current.checkpoint_revision())
     assert current.stats['requests'] == 1 and not writes

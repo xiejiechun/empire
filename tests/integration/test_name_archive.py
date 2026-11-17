@@ -86,6 +86,7 @@ async def test_hot_cold_duplicate_revision_stale_and_same_count_wrong_sql(names,
         if 'security_name_change' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     original = q.mysql.archive
     async def counted(records):
         calls.append(1)
@@ -142,6 +143,7 @@ async def test_hot_cold_duplicate_revision_stale_and_same_count_wrong_sql(names,
         assert await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_commit_then_ack_failure_resume_without_network(names, monkeypatch):

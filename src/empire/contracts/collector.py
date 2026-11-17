@@ -12,6 +12,8 @@ from empire.contracts.data import Envelope
 # overwriting task settings. A missing/manual schedule uses source defaults.
 NEXT_MAINTENANCE_DUE: ContextVar[Callable[[float], float | None] | None] = ContextVar(
     'empire_next_maintenance_due', default=None)
+COLLECTION_PROJECT: ContextVar[str | None] = ContextVar('empire_collection_project', default=None)
+COLLECTION_ORIGIN: ContextVar[str] = ContextVar('empire_collection_origin', default='manual')
 
 
 class CollectionSourceGap(Exception):

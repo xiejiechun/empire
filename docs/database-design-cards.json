@@ -183,7 +183,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/tdx-dividend-capacity-2026-11-09.json"
+        "evidence": "docs/evidence/tdx-dividend-capacity-fx-scope-2026-11-09.json"
       },
       "integrity": [
         "完整报告期唯一键/元数据/容量校验",
@@ -193,9 +193,10 @@
       "tests": [
         "tests/test_tdx_dividends.py",
         "tests/test_capital_lifecycle.py",
-        "tests/integration/test_capital_archive.py"
+        "tests/integration/test_capital_archive.py",
+        "tests/test_tdx_optimization.py"
       ],
-      "lifecycle": "docs/tdx-capital-actions.md：全历史报告期计划；未证实证券发现非季度日期；重新采集全池发现；中断重新组装后接入队位置，Redis丢失复用SQL历史证明。",
+      "lifecycle": "docs/tdx-collection-optimization.md：首次全范围、近期按计划复查、历史90天或户数30天轮换；缺证明补采；SQL恢复；完整入队后统一确认归档。",
       "delivery": "scripts/migrate_dividend_identity.py显式无损升级@3；原内容、观测时间及行数保持；碰撞拒绝、不合并、不删除；正式发布门禁和实际查询分别验证。"
     },
     "additional_issues.unit": {
@@ -451,88 +452,6 @@
       "lifecycle": "docs/tdx-listing-status.md：初始化1990-12-19至固定启动日；按月补缺、回查最近一个月；整轮统一等归档；Redis丢失回SQL月份证明",
       "delivery": "scripts/create_listing_event_schema.py显式新增空表；启动不DDL；正式查询/入队/归档各一条路径，动态进度见验收记录"
     },
-    "index.catalog": {
-      "tables": [
-        "stock_index",
-        "stock_index_member"
-      ],
-      "grain": "当前指数目录及每指数完整成员关系；来源暂无单独保留",
-      "identity": "index_code；index_code+source_code；可确定市场时关联unified_code",
-      "dictionary": "docs/ths-indices.md",
-      "queries": [
-        "有界目录主键游标",
-        "有界成员主键游标",
-        "来源证券或统一代码反查",
-        "详细完整集合审计"
-      ],
-      "capacity": {
-        "sample": "独立MySQL，100指数100000关系",
-        "growth": "当前关系不按日累积；最多1000指数、1000000关系",
-        "page_limit": 200,
-        "response": "公共generic下载及max_page_bytes入队预算",
-        "regression": "页面P95<=50ms，100000导入<=20秒",
-        "budget": "512MiB含索引，单指数<10000成员；100000实测不冒充1000000实测",
-        "status": "measured",
-        "evidence": "docs/evidence/sql-pressure-indices-capacity-2026-11-03.json"
-      },
-      "integrity": [
-        "完整目录",
-        "请求身份及连续序号和严格排序",
-        "单页完整及截断拒绝",
-        "同数异集",
-        "修订与旧响应",
-        "来源暂无不冒充空集合",
-        "同事务摘要关联",
-        "成功清队"
-      ],
-      "tests": [
-        "tests/test_ths_indices.py",
-        "tests/integration/test_index_archive.py"
-      ],
-      "lifecycle": "docs/ths-indices.md；每日完整目录及每指数一个size10000响应；按入队断点继续，不逐批等归档，整轮处理成功后完成；Redis丢失完整刷新",
-      "delivery": "两张结构化表、单一正式路径；create_index_schema.py显式新增且核对已有业务，不自动迁移；独立容量及真实完整目录另验"
-    },
-    "index.members": {
-      "tables": [
-        "stock_index",
-        "stock_index_member"
-      ],
-      "grain": "当前指数目录及每指数完整成员关系；来源暂无单独保留",
-      "identity": "index_code；index_code+source_code；可确定市场时关联unified_code",
-      "dictionary": "docs/ths-indices.md",
-      "queries": [
-        "有界目录主键游标",
-        "有界成员主键游标",
-        "来源证券或统一代码反查",
-        "详细完整集合审计"
-      ],
-      "capacity": {
-        "sample": "独立MySQL，100指数100000关系",
-        "growth": "当前关系不按日累积；最多1000指数、1000000关系",
-        "page_limit": 200,
-        "response": "公共generic下载及max_page_bytes入队预算",
-        "regression": "页面P95<=50ms，100000导入<=20秒",
-        "budget": "512MiB含索引，单指数<10000成员；100000实测不冒充1000000实测",
-        "status": "measured",
-        "evidence": "docs/evidence/sql-pressure-indices-capacity-2026-11-03.json"
-      },
-      "integrity": [
-        "完整目录",
-        "请求身份及连续序号和严格排序",
-        "单页完整及截断拒绝",
-        "同数异集",
-        "修订与旧响应",
-        "来源暂无不冒充空集合",
-        "同事务摘要关联",
-        "成功清队"
-      ],
-      "tests": [
-        "tests/test_ths_indices.py",
-        "tests/integration/test_index_archive.py"
-      ],
-      "lifecycle": "docs/ths-indices.md；每日完整目录及每指数一个size10000响应；按入队断点继续，不逐批等归档，整轮处理成功后完成；Redis丢失完整刷新",
-      "delivery": "两张结构化表、单一正式路径；create_index_schema.py显式新增且核对已有业务，不自动迁移；独立容量及真实完整目录另验"
-    },
     "bse.code_mapping.complete": {
       "tables": [
         "security_code_alias"
@@ -563,76 +482,6 @@
         "tests/test_bse_code_mapping.py",
         "tests/integration/test_security_alias_archive.py"
       ]
-    },
-    "index.price.status": {
-      "tables": [
-        "index_daily_price",
-        "index_price_year"
-      ],
-      "grain": "一个同花顺指数一个交易日；按指数年度聚合完整证明",
-      "identity": "固定ths；指数代码保持同花顺身份；日键(index_code,trade_date)，年键(index_code,quote_year)，不级联当前目录",
-      "dictionary": "docs/ths-index-prices.md",
-      "queries": [
-        "单指数日期范围游标200/最多500行",
-        "按日期跨指数200行；(trade_date,index_code)索引",
-        "最多40年度证明，逐年最多366行正文核验"
-      ],
-      "capacity": {
-        "status": "measured",
-        "evidence": "docs/evidence/sql-pressure-index-prices-capacity-2026-11-03.json",
-        "sample": "独立MySQL100000合成日行、1000指数",
-        "budget": "导入<=30秒，200行查询P95<=50ms，分配<=64MiB；规划历史2GiB"
-      },
-      "integrity": [
-        "JSONP指数及年份身份、排序无重复、源年计数及近期重叠集合",
-        "年度规范内容与覆盖摘要同事务绑定",
-        "重复零业务DML、有效修订、迟到旧响应、提交后重放与成功清队",
-        "部分窗口不能冒充完整历史，同数异集正文损坏须失败",
-        "源端价格矛盾保留原值，集合完整与用途质量分别核验；范围内异常不通过质量项",
-        "空成交额保留NULL，真实0不改；补额修订及迟到空值防覆盖，默认收盘分析与依赖量额用途分别说明",
-        "负量额来源原值保留、派生质量、日期范围统计；非法数字详细定位；量额纠正及迟到负值防覆盖"
-      ],
-      "tests": [
-        "tests/test_ths_index_prices.py",
-        "tests/integration/test_index_price_archive.py"
-      ],
-      "lifecycle": "docs/ths-index-prices.md；YYYY初始化补年、last近期回看；失败断点不推进、整轮归档完成；Redis丢失从SQL年度证明补缺",
-      "delivery": "单一正式结构化读写路径；create_index_price_schema.py显式加两表；migrate_index_price_nulls.py显式允许open/high/low为NULL且核对原内容与证明；容量与有限实采分别验收；migrate_index_price_quality.py显式将关系校验转为派生质量标注、保留原值及正价格约束，核对前后内容；migrate_index_price_amount.py显式允许来源成交额NULL，核对已有内容与证明，不填零；migrate_index_price_numeric_quality.py显式移除旧非负量额CHECK，正价格及精度约束不变，核对原内容"
-    },
-    "index.price.year": {
-      "tables": [
-        "index_daily_price",
-        "index_price_year"
-      ],
-      "grain": "一个同花顺指数一个交易日；按指数年度聚合完整证明",
-      "identity": "固定ths；指数代码保持同花顺身份；日键(index_code,trade_date)，年键(index_code,quote_year)，不级联当前目录",
-      "dictionary": "docs/ths-index-prices.md",
-      "queries": [
-        "单指数日期范围游标200/最多500行",
-        "按日期跨指数200行；(trade_date,index_code)索引",
-        "最多40年度证明，逐年最多366行正文核验"
-      ],
-      "capacity": {
-        "status": "measured",
-        "evidence": "docs/evidence/sql-pressure-index-prices-capacity-2026-11-03.json",
-        "sample": "独立MySQL100000合成日行、1000指数",
-        "budget": "导入<=30秒，200行查询P95<=50ms，分配<=64MiB；规划历史2GiB"
-      },
-      "integrity": [
-        "JSONP指数及年份身份、排序无重复、源年计数及近期重叠集合",
-        "年度规范内容与覆盖摘要同事务绑定",
-        "重复零业务DML、有效修订、迟到旧响应、提交后重放与成功清队",
-        "部分窗口不能冒充完整历史，同数异集正文损坏须失败",
-        "源端价格矛盾保留原值，集合完整与用途质量分别核验；范围内异常不通过质量项",
-        "空成交额保留NULL，真实0不改；补额修订及迟到空值防覆盖，默认收盘分析与依赖量额用途分别说明",
-        "负量额来源原值保留、派生质量、日期范围统计；非法数字详细定位；量额纠正及迟到负值防覆盖"
-      ],
-      "tests": [
-        "tests/test_ths_index_prices.py",
-        "tests/integration/test_index_price_archive.py"
-      ],
-      "lifecycle": "docs/ths-index-prices.md；YYYY初始化补年、last近期回看；失败断点不推进、整轮归档完成；Redis丢失从SQL年度证明补缺",
-      "delivery": "单一正式结构化读写路径；create_index_price_schema.py显式加两表；migrate_index_price_nulls.py显式允许open/high/low为NULL且核对原内容与证明；容量与有限实采分别验收；migrate_index_price_quality.py显式将关系校验转为派生质量标注、保留原值及正价格约束，核对前后内容；migrate_index_price_amount.py显式允许来源成交额NULL，核对已有内容与证明，不填零；migrate_index_price_numeric_quality.py显式移除旧非负量额CHECK，正价格及精度约束不变，核对原内容"
     },
     "st.implementation.market": {
       "tables": [
@@ -993,7 +842,7 @@
         "regression": "分页P95和容量实测",
         "budget": "表和索引<=256MiB，首次导入<=60秒，列表/详情<=100ms；重复业务DML=0",
         "status": "measured",
-        "evidence": "docs/evidence/preview2-repurchase-capacity-2026-10-30.json"
+        "evidence": "docs/evidence/eastmoney-repurchase-optimization-capacity-2026-11-05.json"
       },
       "integrity": [
         "唯一编号keyset和剩余统计",
@@ -1006,7 +855,7 @@
         "tests/test_repurchases.py",
         "tests/integration/test_repurchase_archive.py"
       ],
-      "lifecycle": "docs/eastmoney-repurchases.md：初次和每天全量核验；已入队游标续采，尾批后仅等待整轮归档；Redis丢失重新全量；明确重新采集可重置下载阶段，历史不删除。",
+      "lifecycle": "docs/eastmoney-repurchases.md：初次及至少每三天完整核验，其间按UPD回看三自然日；已入队游标续采，增量归档后核对SQL并发布组合证明；Redis丢失依据有效SQL证明恢复；明确重新采集可重置下载阶段，历史不删除。",
       "delivery": "显式scripts/create_repurchase_schema.py新增typed表，单一读写路径；容量及实采/发布分别记载。"
     },
     "earnings_forecast.tdx_unit": {
@@ -1023,7 +872,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview2-performance-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-11-05-fx-scope.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1037,12 +886,13 @@
         "旧响应不覆盖",
         "统一成功清队"
       ],
-      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "lifecycle": "docs/tdx-collection-optimization.md：首次全范围、近期按计划复查、历史90天或户数30天轮换；缺证明补采；SQL恢复；完整入队后统一确认归档。",
       "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
       "tests": [
         "tests/test_tdx_performance.py",
         "tests/test_tdx_performance_lifecycle.py",
-        "tests/integration/test_tdx_performance_archive.py"
+        "tests/integration/test_tdx_performance_archive.py",
+        "tests/test_tdx_optimization.py"
       ]
     },
     "earnings_quick.tdx_unit": {
@@ -1059,7 +909,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview2-performance-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-11-05-fx-scope.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1073,12 +923,13 @@
         "旧响应不覆盖",
         "统一成功清队"
       ],
-      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "lifecycle": "docs/tdx-collection-optimization.md：首次全范围、近期按计划复查、历史90天或户数30天轮换；缺证明补采；SQL恢复；完整入队后统一确认归档。",
       "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
       "tests": [
         "tests/test_tdx_performance.py",
         "tests/test_tdx_performance_lifecycle.py",
-        "tests/integration/test_tdx_performance_archive.py"
+        "tests/integration/test_tdx_performance_archive.py",
+        "tests/test_tdx_optimization.py"
       ]
     },
     "earnings_disclosure.tdx_unit": {
@@ -1095,7 +946,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview2-performance-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-11-05-fx-scope.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1109,12 +960,13 @@
         "旧响应不覆盖",
         "统一成功清队"
       ],
-      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "lifecycle": "docs/tdx-collection-optimization.md：首次全范围、近期按计划复查、历史90天或户数30天轮换；缺证明补采；SQL恢复；完整入队后统一确认归档。",
       "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
       "tests": [
         "tests/test_tdx_performance.py",
         "tests/test_tdx_performance_lifecycle.py",
-        "tests/integration/test_tdx_performance_archive.py"
+        "tests/integration/test_tdx_performance_archive.py",
+        "tests/test_tdx_optimization.py"
       ]
     },
     "earnings_report.tdx_unit": {
@@ -1131,7 +983,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview2-performance-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-11-05-fx-scope.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1145,12 +997,13 @@
         "旧响应不覆盖",
         "统一成功清队"
       ],
-      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "lifecycle": "docs/tdx-collection-optimization.md：首次全范围、近期按计划复查、历史90天或户数30天轮换；缺证明补采；SQL恢复；完整入队后统一确认归档。",
       "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
       "tests": [
         "tests/test_tdx_performance.py",
         "tests/test_tdx_performance_lifecycle.py",
-        "tests/integration/test_tdx_performance_archive.py"
+        "tests/integration/test_tdx_performance_archive.py",
+        "tests/test_tdx_optimization.py"
       ]
     },
     "holder_count.tdx_unit": {
@@ -1167,7 +1020,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview2-performance-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/tdx-performance-capacity-2026-11-05-fx-scope.json",
         "sample": "100000行，5000证券×20合成期",
         "growth": "报告每年约2.3万行；户数按每年60统计日预算33.5万",
         "page_limit": 200,
@@ -1181,12 +1034,13 @@
         "旧响应不覆盖",
         "统一成功清队"
       ],
-      "lifecycle": "docs/tdx-performance.md：每轮完整声明范围回查，已入队单元续采，Redis丢失重建计划，历史撤回保留并暴露差异。",
+      "lifecycle": "docs/tdx-collection-optimization.md：首次全范围、近期按计划复查、历史90天或户数30天轮换；缺证明补采；SQL恢复；完整入队后统一确认归档。",
       "delivery": "显式init_tdx_performance.py新增typed表；开发、实采及发布分别验收。",
       "tests": [
         "tests/test_tdx_performance.py",
         "tests/test_tdx_performance_lifecycle.py",
-        "tests/integration/test_tdx_performance_archive.py"
+        "tests/integration/test_tdx_performance_archive.py",
+        "tests/test_tdx_optimization.py"
       ]
     },
     "holders.reports": {
@@ -1210,7 +1064,7 @@
         "response": "详情1MiB；最多400成员；正文审计批读10报告/4000成员",
         "regression": "查询P95≤100ms，覆盖≤1000ms，导入≤180秒，Python峰值≤128MiB",
         "status": "measured",
-        "evidence": "docs/evidence/preview-holders-capacity-2026-10-30.json"
+        "evidence": "docs/evidence/ths-optimization-holders-capacity-2026-11-05.json"
       },
       "integrity": [
         "标签与正文集合匹配",
@@ -1249,7 +1103,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview2-changes-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/tdx-changes-capacity-2026-11-05-fx-scope.json",
         "sample": "历史真实规范行作为明确fixture，5000证券×20合成月共100000事件；当前有限来源范围另见E6e实采报告",
         "growth": "一年20万、五年100万；来源实际容量另记",
         "page_limit": 200,
@@ -1265,11 +1119,12 @@
         "SQL后重放",
         "成功清队"
       ],
-      "lifecycle": "docs/tdx-shareholder-changes.md：1990-01核查下限至当前月，完整回查补缺；可显式指定月份，Redis丢失重查；整轮最终等待。",
+      "lifecycle": "docs/tdx-collection-optimization.md：首次全范围、近期按计划复查、历史90天或户数30天轮换；缺证明补采；SQL恢复；完整入队后统一确认归档。",
       "delivery": "显式新增shareholder_change，不动原业务；共享正式路径；隔离实测与有限/历史实采分开；不承诺全旧版本。",
       "tests": [
         "tests/test_tdx_shareholder_changes.py",
-        "tests/integration/test_tdx_shareholder_changes_archive.py"
+        "tests/integration/test_tdx_shareholder_changes_archive.py",
+        "tests/test_tdx_optimization.py"
       ]
     },
     "unlocks.tdx_month": {
@@ -1289,7 +1144,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview2-unlocks-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/tdx-unlocks-capacity-2026-11-05.json",
         "sample": "真实样本语义和隔离10万列表/20万明细放大",
         "growth": "一年2万列表与20万明细；五年10万/100万预测",
         "page_limit": 200,
@@ -1305,11 +1160,12 @@
         "旧版保护",
         "SQL后重放及成功清队"
       ],
-      "lifecycle": "1990-01到下一年12月；每日列表补缺及轮换一个历史月明细；fresh全明细；Redis丢失SQL重建。",
+      "lifecycle": "docs/tdx-collection-optimization.md：首次全范围、近期按计划复查、历史90天或户数30天轮换；缺证明补采；SQL恢复；完整入队后统一确认归档。",
       "delivery": "显式新增两表，不改原业务；共享下载/代理/入队/归档；实际进度另记。",
       "tests": [
         "tests/test_tdx_unlocks.py",
-        "tests/integration/test_tdx_unlocks_archive.py"
+        "tests/integration/test_tdx_unlocks_archive.py",
+        "tests/test_tdx_optimization.py"
       ]
     },
     "unlocks.tdx_industry_month": {
@@ -1327,7 +1183,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview2-unlock-industries-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/tdx-unlock-industries-capacity-2026-11-05.json",
         "sample": "原已审行业来源语义和隔离120月×100行业12000行；本轮实采24月703行另证",
         "growth": "五年6000行，来源窗口变化以目录为准",
         "page_limit": 200,
@@ -1372,7 +1228,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview-capital-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/ths-optimization-capital-capacity-2026-11-05-fx-scope.json",
         "sample": "本轮独立SQL合成容量700证券10500事实；真实来源另有30随机加8固定证券5080事实，不混用实采与容量样本",
         "growth": "6000股票每年50新增事实，五年150万事实；按本次分配空间外推，不代表已采覆盖",
         "page_limit": 100,
@@ -1410,7 +1266,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview-themes-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/yuanhang-st-theme-identity-capacity-2026-11-04.json",
         "sample": "30题材+军工真实全链路；60000日列表/30000合成理由及七日日内模拟",
         "growth": "2000题材每日730000行/年；五年3650000行，约703MiB含索引线性估算",
         "page_limit": 200,
@@ -1450,7 +1306,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview-themes-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/yuanhang-st-theme-identity-capacity-2026-11-04.json",
         "sample": "30题材+军工真实全链路；60000日列表/30000合成理由及七日日内模拟",
         "growth": "2000题材每日730000行/年；五年3650000行，约703MiB含索引线性估算",
         "page_limit": 200,
@@ -1488,7 +1344,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/sql-pressure-yuanhang-capacity-2026-11-03.json",
+        "evidence": "docs/evidence/yuanhang-native-index-unit-capacity-20261116.json",
         "sample": "100万日线/4000年度头/2000事件/30000股本/5578证券状态，独立MySQL",
         "growth": "2092万至3486万日线为线性规划，未实测全池；细节见实测证据和设计正文",
         "page_limit": 500,
@@ -1529,7 +1385,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/sql-pressure-yuanhang-capacity-2026-11-03.json",
+        "evidence": "docs/evidence/yuanhang-native-index-unit-capacity-20261116.json",
         "sample": "100万日线/4000年度头/2000事件/30000股本/5578证券状态，独立MySQL",
         "growth": "2092万至3486万日线为线性规划，未实测全池；细节见实测证据和设计正文",
         "page_limit": 500,
@@ -1571,7 +1427,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-ten-day-limits-capacity-resume-2026-11-02.json",
+        "evidence": "docs/evidence/yuanhang-limits-capacity-etf-fundamentals-schema-20261117.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1583,7 +1439,8 @@
         "旧版本防覆盖",
         "SQL提交后重放",
         "事务失败不残留业务",
-        "来源空池不推断最早边界"
+        "来源空池不推断最早边界",
+        "含ST口径版本2；旧口径头不作为当前完整覆盖，近期优先、历史分批补齐，见docs/yuanhang-limits-st.md"
       ],
       "lifecycle": "docs/yuanhang-ten-day-maintenance.md：近期10交易日优先，历史仅补缺，五池每批64日期/原因256证券日；五池当天每30分钟至21:00。SQL集合和版本恢复，旧断点显式转换保留已入队批次。",
       "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
@@ -1613,7 +1470,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-ten-day-limits-capacity-resume-2026-11-02.json",
+        "evidence": "docs/evidence/yuanhang-limits-capacity-etf-fundamentals-schema-20261117.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1625,7 +1482,8 @@
         "旧版本防覆盖",
         "SQL提交后重放",
         "事务失败不残留业务",
-        "来源空池不推断最早边界"
+        "来源空池不推断最早边界",
+        "含ST口径版本2；旧口径头不作为当前完整覆盖，近期优先、历史分批补齐，见docs/yuanhang-limits-st.md"
       ],
       "lifecycle": "docs/yuanhang-ten-day-maintenance.md：近期10交易日优先，历史仅补缺，五池每批64日期/原因256证券日；五池当天每30分钟至21:00。SQL集合和版本恢复，旧断点显式转换保留已入队批次。",
       "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
@@ -1656,7 +1514,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-ten-day-limits-capacity-resume-2026-11-02.json",
+        "evidence": "docs/evidence/yuanhang-limits-capacity-etf-fundamentals-schema-20261117.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1668,7 +1526,8 @@
         "旧版本防覆盖",
         "SQL提交后重放",
         "事务失败不残留业务",
-        "来源空池不推断最早边界"
+        "来源空池不推断最早边界",
+        "含ST口径版本2；旧口径头不作为当前完整覆盖，近期优先、历史分批补齐，见docs/yuanhang-limits-st.md"
       ],
       "lifecycle": "docs/yuanhang-ten-day-maintenance.md：近期10交易日优先，历史仅补缺，五池每批64日期/原因256证券日；五池当天每30分钟至21:00。SQL集合和版本恢复，旧断点显式转换保留已入队批次。",
       "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
@@ -1698,7 +1557,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-ten-day-limits-capacity-resume-2026-11-02.json",
+        "evidence": "docs/evidence/yuanhang-limits-capacity-etf-fundamentals-schema-20261117.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1710,7 +1569,8 @@
         "旧版本防覆盖",
         "SQL提交后重放",
         "事务失败不残留业务",
-        "来源空池不推断最早边界"
+        "来源空池不推断最早边界",
+        "含ST口径版本2；旧口径头不作为当前完整覆盖，近期优先、历史分批补齐，见docs/yuanhang-limits-st.md"
       ],
       "lifecycle": "docs/yuanhang-ten-day-maintenance.md：近期10交易日优先，历史仅补缺，五池每批64日期/原因256证券日；五池当天每30分钟至21:00。SQL集合和版本恢复，旧断点显式转换保留已入队批次。",
       "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
@@ -1740,7 +1600,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-ten-day-limits-capacity-resume-2026-11-02.json",
+        "evidence": "docs/evidence/yuanhang-limits-capacity-etf-fundamentals-schema-20261117.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1752,7 +1612,8 @@
         "旧版本防覆盖",
         "SQL提交后重放",
         "事务失败不残留业务",
-        "来源空池不推断最早边界"
+        "来源空池不推断最早边界",
+        "含ST口径版本2；旧口径头不作为当前完整覆盖，近期优先、历史分批补齐，见docs/yuanhang-limits-st.md"
       ],
       "lifecycle": "docs/yuanhang-ten-day-maintenance.md：近期10交易日优先，历史仅补缺，五池每批64日期/原因256证券日；五池当天每30分钟至21:00。SQL集合和版本恢复，旧断点显式转换保留已入队批次。",
       "delivery": "显式scripts/create_yuanhang_limits_schema.py；scripts/initialize_yuanhang_limits.py使用正式采集器补历史；发布和实际覆盖另行报告，不以隔离容量代表生产完成。",
@@ -1781,7 +1642,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/yuanhang-ten-day-limits-capacity-resume-2026-11-02.json",
+        "evidence": "docs/evidence/yuanhang-limits-capacity-etf-fundamentals-schema-20261117.json",
         "sample": "250000成员、100000原因、500池头、100000核验状态点；独立MySQL",
         "budget": "200行列表P95≤200ms、500行历史≤300ms、原因点查≤200ms、状态局部更新≤200ms、初始原因计划≤1000ms；非冷缓存或全市场吞吐证明",
         "growth": "250交易日/年，平均五池合计200成员/日时年5万、五年25万；原因按去重证券日单独计量，极端日不使用均值作上限"
@@ -1864,7 +1725,7 @@
       ],
       "capacity": {
         "status": "measured",
-        "evidence": "docs/evidence/preview-margin-capacity-2026-10-30.json",
+        "evidence": "docs/evidence/tdx-margin-timeout-capacity-2026-11-12.json",
         "sample": "21证券20000行，其中一股10000完整历史，独立MySQL",
         "growth": "6000证券250交易日/年；五年750万行",
         "page_limit": 200,
@@ -1964,6 +1825,258 @@
         "tests/test_market_margin.py",
         "tests/integration/test_market_margin_archive.py"
       ]
+    },
+    "graymarket.eastmoney_day": {
+      "tables": [
+        "graymarket_day",
+        "graymarket_daily"
+      ],
+      "grain": "完整日榜头及交易日乘证券的结构化事实",
+      "identity": "固定eastmoney；trade_date/unified_code",
+      "dictionary": "docs/eastmoney-graymarket-implementation-plan.md",
+      "queries": [
+        "日期榜单稳定游标200",
+        "证券日期索引范围200",
+        "完整日集合10000及摘要审计",
+        "日期范围聚合"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/eastmoney-graymarket-optimization-capacity-2026-11-05.json",
+        "sample": "20日112163行，含10000行最大完整日；独立13348实例",
+        "growth": "约134万行/年，672万行/五年，空间按实测投影",
+        "page_limit": 200,
+        "response": "每页100、单日10000及4MiB规范正文",
+        "budget": "导入120秒，单日5秒，列表300ms，整日5秒，重复零DML"
+      },
+      "integrity": [
+        "日期总数页长排序及唯一集合",
+        "冷热摘要零DML",
+        "旧版防覆盖",
+        "同数异集",
+        "事务失败及提交后重放清队"
+      ],
+      "lifecycle": "2026-05-11起正式交易日补缺，近三个交易日回看；SQL覆盖恢复，不循环全历史",
+      "delivery": "共享HTTP、统一入队归档、SQL查询、显式新增表及桌面发布",
+      "tests": [
+        "tests/test_graymarket.py",
+        "tests/test_graymarket_lifecycle.py",
+        "tests/integration/test_graymarket_archive.py"
+      ]
+    },
+    "fx.price.year": {
+      "tables": [
+        "fx_daily_price",
+        "fx_price_year"
+      ],
+      "grain": "品种乘来源日期OHLC及完整年度证明",
+      "identity": "固定ths，unified_code为白名单symbol.FX",
+      "dictionary": "docs/ths-fx-implementation-plan.md",
+      "queries": [
+        "品种日期范围最多500",
+        "全品种日期范围最多500",
+        "年度覆盖最多1800头与近期日期5000",
+        "完整年正文366"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/ths-fx-capacity-daily-empty-2026-11-12.json",
+        "sample": "独立13348五年十二品种21960行及真实USDCNH来源样本",
+        "growth": "4392行一年，21960五年，150年658800硬上限",
+        "page_limit": 500,
+        "response": "近期1000/年度366规范行，正文2MiB上限",
+        "budget": "导入30秒，范围覆盖与单年300ms"
+      },
+      "integrity": [
+        "日期身份排序精度及年度目录",
+        "近30日集合证明与缺口全年度",
+        "重复零业务DML",
+        "来源修订及迟到旧消息",
+        "提交后重放与成功清队"
+      ],
+      "lifecycle": "实时仅最新值；日线09:00集中补缺及近30日修订；Redis丢失据SQL证明恢复",
+      "delivery": "统一HTTP、入队归档、正式查询、显式两表维护和任务预览",
+      "tests": [
+        "tests/test_fx.py",
+        "tests/integration/test_fx_archive.py"
+      ]
+    },
+    "yuanhang.index.catalog": {
+      "tables": [
+        "yuanhang_index"
+      ],
+      "grain": "当前目录一指数；当前成分一指数/来源证券；日K一指数/日期及年度覆盖证明",
+      "identity": "固定来源及主键见SQL；指数保留原始市场+代码，成员可靠前缀才关联unified_code",
+      "dictionary": "docs/ths-yuanhang-indices.md",
+      "queries": [
+        "目录/成分分页<=500；主键及来源/统一代码反查索引；日K按指数日期及按日期分页；年度<=366日、每指数<=150年"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-indices-capacity-etf-transport-20261116.json"
+      },
+      "integrity": [
+        "完整目录/成分键集合；NULL/暂无语义；按日期版本合并，旧响应不覆盖；同数异集及SQL后重放清队"
+      ],
+      "lifecycle": "docs/ths-yuanhang-indices.md：独立目录、网页成分；十交易日维护+64指数历史补缺，SQL区间恢复，显式fresh全史",
+      "delivery": "独立维护入口先核对停机/队列/身份和保存配置；创建新五表，删除用户授权旧四表；不搬旧HTTP覆盖；启动不迁移",
+      "tests": [
+        "tests/test_yuanhang_indices.py",
+        "tests/integration/test_yuanhang_index_archive.py"
+      ]
+    },
+    "ths.index.members": {
+      "tables": [
+        "ths_index_member_state",
+        "ths_index_member"
+      ],
+      "grain": "当前目录一指数；当前成分一指数/来源证券；日K一指数/日期及年度覆盖证明",
+      "identity": "固定来源及主键见SQL；指数保留原始市场+代码，成员可靠前缀才关联unified_code",
+      "dictionary": "docs/ths-yuanhang-indices.md",
+      "queries": [
+        "目录/成分分页<=500；主键及来源/统一代码反查索引；日K按指数日期及按日期分页；年度<=366日、每指数<=150年"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-indices-capacity-etf-transport-20261116.json"
+      },
+      "integrity": [
+        "完整目录/成分键集合；NULL/暂无语义；按日期版本合并，旧响应不覆盖；同数异集及SQL后重放清队"
+      ],
+      "lifecycle": "docs/ths-yuanhang-indices.md：独立目录、网页成分；十交易日维护+64指数历史补缺，SQL区间恢复，显式fresh全史",
+      "delivery": "独立维护入口先核对停机/队列/身份和保存配置；创建新五表，删除用户授权旧四表；不搬旧HTTP覆盖；启动不迁移",
+      "tests": [
+        "tests/test_yuanhang_indices.py",
+        "tests/integration/test_yuanhang_index_archive.py"
+      ]
+    },
+    "yuanhang.index.price.range": {
+      "tables": [
+        "yuanhang_index_daily_price",
+        "yuanhang_index_price_year"
+      ],
+      "grain": "当前目录一指数；当前成分一指数/来源证券；日K一指数/日期及年度覆盖证明",
+      "identity": "固定来源及主键见SQL；指数保留原始市场+代码，成员可靠前缀才关联unified_code",
+      "dictionary": "docs/ths-yuanhang-indices.md",
+      "queries": [
+        "目录/成分分页<=500；主键及来源/统一代码反查索引；日K按指数日期及按日期分页；年度<=366日、每指数<=150年"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-indices-capacity-etf-transport-20261116.json"
+      },
+      "integrity": [
+        "完整目录/成分键集合；NULL/暂无语义；按日期版本合并，旧响应不覆盖；同数异集及SQL后重放清队"
+      ],
+      "lifecycle": "docs/ths-yuanhang-indices.md：独立目录、网页成分；十交易日维护+64指数历史补缺，SQL区间恢复，显式fresh全史",
+      "delivery": "独立维护入口先核对停机/队列/身份和保存配置；创建新五表，删除用户授权旧四表；不搬旧HTTP覆盖；启动不迁移",
+      "tests": [
+        "tests/test_yuanhang_indices.py",
+        "tests/integration/test_yuanhang_index_archive.py"
+      ]
+    },
+    "yuanhang.etf.catalog": {
+      "tables": [
+        "yuanhang_etf"
+      ],
+      "grain": "当前ETF目录一证券；日K一证券一真实日期；年度表只存内容绑定证明",
+      "identity": "固定ths_yuanhang；证券unified_code六位加.SH/.SZ，USHJ/USZJ严格对应；不依赖stock",
+      "dictionary": "src/empire/features/yuanhang_etf/docs/help/db-yuanhang_etf.md",
+      "queries": [
+        "目录/Redis最新最多500，日K按证券日期主键或日期反查索引；年度最多150×366；性能预算和EXPLAIN见容量报告"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-etf-capacity-20261116.json"
+      },
+      "integrity": [
+        "完整动态目录来源总数及身份集合；年度正文/键/区间同事务绑定；重复零DML、修订和旧响应、SQL后重放清队；来源暂无不造空覆盖"
+      ],
+      "lifecycle": "docs/ths-yuanhang-etf.md：近期十交易日优先、另补64只历史，窗口外显式核验；Redis丢失由SQL恢复，盘中只保留一份最新",
+      "delivery": "scripts/create_yuanhang_etf_schema.py显式仅建三表，停机清队及完整性核对；启动不迁移，不修改其他业务",
+      "tests": [
+        "tests/test_yuanhang_etf.py",
+        "tests/integration/test_yuanhang_etf_archive.py"
+      ]
+    },
+    "yuanhang.etf.price.range": {
+      "tables": [
+        "yuanhang_etf_daily_price",
+        "yuanhang_etf_price_year"
+      ],
+      "grain": "当前ETF目录一证券；日K一证券一真实日期；年度表只存内容绑定证明",
+      "identity": "固定ths_yuanhang；证券unified_code六位加.SH/.SZ，USHJ/USZJ严格对应；不依赖stock",
+      "dictionary": "src/empire/features/yuanhang_etf/docs/help/db-yuanhang_etf_daily_price.md",
+      "queries": [
+        "目录/Redis最新最多500，日K按证券日期主键或日期反查索引；年度最多150×366；性能预算和EXPLAIN见容量报告"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/yuanhang-etf-capacity-20261116.json"
+      },
+      "integrity": [
+        "完整动态目录来源总数及身份集合；年度正文/键/区间同事务绑定；重复零DML、修订和旧响应、SQL后重放清队；来源暂无不造空覆盖"
+      ],
+      "lifecycle": "docs/ths-yuanhang-etf.md：近期十交易日优先、另补64只历史，窗口外显式核验；Redis丢失由SQL恢复，盘中只保留一份最新",
+      "delivery": "scripts/create_yuanhang_etf_schema.py显式仅建三表，停机清队及完整性核对；启动不迁移，不修改其他业务",
+      "tests": [
+        "tests/test_yuanhang_etf.py",
+        "tests/integration/test_yuanhang_etf_archive.py"
+      ]
+    },
+    "etf.share.day": {
+      "tables": [
+        "etf_daily_share",
+        "etf_share_day"
+      ],
+      "grain": "完整来源日期集合；事实为来源×证券×日期",
+      "identity": "(unified_code,share_date,source)；sse/szse多来源，完整日证明(source,share_date)",
+      "dictionary": "docs/etf-fundamentals.md",
+      "queries": [
+        "正式预览默认200、最大500；证券日期走主键，跨证券日期走反查索引；复盘最多3份额日+2净值日、5000ETF，批量读取无逐证券SQL；净值准备按64证券年度分批核查完整内容"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/etf-fundamentals-capacity-20261117-r2.json"
+      },
+      "integrity": [
+        "完整日/年度键集合与正文摘要同事务绑定；同数异集、撤回与旧区间防复活；热冷重复零业务DML；SQL失败留队、提交后安全重放；成功清队"
+      ],
+      "lifecycle": "docs/etf-fundamentals.md：份额近5交易日+20历史日；净值近10交易日窗口+32证券补缺；月度有界轮转，不因历史缺口反复全历史下载；未完断点优先恢复，Redis丢失按SQL事实/证明/collection_state恢复。",
+      "delivery": "新空库schema.sql；已有库显式scripts/create_etf_fundamentals_schema.py仅建四表，持锁及队列0并核对旧业务；三个任务共享下载/Redis/统一归档，启动不迁移；金额用途缺币种/事件仍显示缺项。",
+      "tests": [
+        "tests/test_etf_fundamentals.py",
+        "tests/test_etf_fundamentals_planning.py",
+        "tests/test_etf_fundamentals_lifecycle.py",
+        "tests/integration/test_etf_fundamentals_archive.py"
+      ]
+    },
+    "etf.nav.range": {
+      "tables": [
+        "etf_daily_nav",
+        "etf_nav_year"
+      ],
+      "grain": "证券年度内已核验自然日期区间；明细为证券×披露日期",
+      "identity": "(unified_code,nav_date)；ttjj固定来源；年度证明(unified_code,nav_year)",
+      "dictionary": "docs/etf-fundamentals.md",
+      "queries": [
+        "正式预览默认200、最大500；证券日期走主键，跨证券日期走反查索引；复盘最多3份额日+2净值日、5000ETF，批量读取无逐证券SQL；净值准备按64证券年度分批核查完整内容"
+      ],
+      "capacity": {
+        "status": "measured",
+        "evidence": "docs/evidence/etf-fundamentals-capacity-20261117-r2.json"
+      },
+      "integrity": [
+        "完整日/年度键集合与正文摘要同事务绑定；同数异集、撤回与旧区间防复活；热冷重复零业务DML；SQL失败留队、提交后安全重放；成功清队"
+      ],
+      "lifecycle": "docs/etf-fundamentals.md：份额近5交易日+20历史日；净值近10交易日窗口+32证券补缺；月度有界轮转，不因历史缺口反复全历史下载；未完断点优先恢复，Redis丢失按SQL事实/证明/collection_state恢复。",
+      "delivery": "新空库schema.sql；已有库显式scripts/create_etf_fundamentals_schema.py仅建四表，持锁及队列0并核对旧业务；三个任务共享下载/Redis/统一归档，启动不迁移；金额用途缺币种/事件仍显示缺项。",
+      "tests": [
+        "tests/test_etf_fundamentals.py",
+        "tests/test_etf_fundamentals_planning.py",
+        "tests/test_etf_fundamentals_lifecycle.py",
+        "tests/integration/test_etf_fundamentals_archive.py"
+      ]
     }
   },
   "json_roles": {
@@ -1990,7 +2103,7 @@
     "collection_state.payload": {
       "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",
       "limit": "沿现行数据集校验/配置限制，改造需字段专项预算",
-      "policy": "现行契约基线，不授权新数据集整份payload兜底"
+      "policy": "现行契约基线，不授权新数据集整份payload兜底 通达信分红manifest.periods最多1000个count/digest/observed_at证明，period_scope_hash绑定日期集合；旧证明无扩展时下轮完整核验，无DDL或启动迁移。"
     },
     "dividend_plan.payload": {
       "purpose": "现行配置/状态/动态业务内容，按设计规范分批治理",

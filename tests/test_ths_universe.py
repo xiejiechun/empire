@@ -11,13 +11,17 @@ from empire.plugins.collection.records import RecordsPlugin
 from tests.test_sina_universe import MemoryIngest
 
 
-def document(codes=('920627', '300522', '688196')):
+def document(codes=('920627', '300522', '688196'), *, quote_headers=None):
+    if quote_headers is None:
+        quote_headers = ['现价', '涨跌幅(%)', '涨跌', '涨速(%)', '换手(%)', '量比',
+                         '振幅(%)', '成交额', '流通股', '流通市值', '市盈率']
     rows = []
     for number, code in enumerate(codes, 1):
         anchor = f'<a href="http://stockpage.10jqka.com.cn/{code}/">'
         rows.append(f'<tr><td>{number}</td><td>{anchor}{code}</a></td>'
-                    f'<td>{anchor}股票{code}</a></td>' + '<td>--</td>' * 11 + '</tr>')
-    return '<table class="m-table"><tbody>' + ''.join(rows) + '</tbody></table>' + (
+                    f'<td>{anchor}股票{code}</a></td>' + '<td>--</td>' * len(quote_headers) + '</tr>')
+    header = '<thead><tr>' + ''.join(f'<th>{label}</th>' for label in ['序号', '代码', '名称', *quote_headers]) + '</tr></thead>'
+    return '<table class="m-table">' + header + '<tbody>' + ''.join(rows) + '</tbody></table>' + (
         f"<input id='request' value='{json.dumps(REQUEST)}'>"
         "<input id='baseUrl' value='index/index'><div class='m-pager'></div>")
 
@@ -52,6 +56,37 @@ def test_complete_set_has_markets_leading_zero_and_link_identity():
     rows = parse_directory(document(('920627', '000001', '688196')))
     assert {r['unified_code'] for r in rows} == {'920627.BJ', '000001.SZ', '688196.SH'}
     assert [r['source_symbol'] for r in rows] == sorted((r['source_symbol'] for r in rows), reverse=True)
+
+
+@pytest.mark.parametrize('quotes', [[], ['现价'], ['现价', '总市值', '市盈率'],
+    ['现价', '涨跌幅(%)', '涨跌', '涨速(%)', '换手(%)', '量比', '振幅(%)', '成交额',
+     '流通股', '流通市值', '总市值', '市盈率']])
+def test_nonidentity_quote_columns_do_not_change_directory_contents(quotes):
+    assert parse_directory(document(quote_headers=quotes)) == parse_directory(document())
+
+
+@pytest.mark.parametrize('change', [
+    lambda s: s.replace('<th>代码</th>', '<th>证券简称</th>'),
+    lambda s: s.replace('<th>现价</th>', '<th>名称</th>'),
+    lambda s: s.replace('<th>现价</th>', '<th></th>'),
+    lambda s: s.replace('<thead>', '').replace('</thead>', ''),
+    lambda s: s.replace('</thead>', ''),
+    lambda s: s.replace('</tr></thead>', '</tr><tr><th>第二行</th></tr></thead>'),
+    lambda s: s.replace('</thead>', '</thead><thead><tr><th>伪表头</th></tr></thead>'),
+    lambda s: s.replace('<td>--</td>', '<td>--</td><td>多一列</td>', 1),
+    lambda s: s.replace('<td>--</td>', '', 1),
+    lambda s: s.replace('<th>现价</th>', '<th>' + '长' * 81 + '</th>'),
+])
+async def test_invalid_header_or_row_width_never_advances_checkpoint(change):
+    item = collector(change(document()))
+    with pytest.raises(ValueError):
+        await item.execute()
+    assert item.ingest.state['revision'] == 0 and not item.ingest.events
+
+
+def test_excessive_quote_header_count_fails():
+    with pytest.raises(ValueError):
+        parse_directory(document(quote_headers=[f'行情{n}' for n in range(30)]))
 
 
 @pytest.mark.parametrize('change', [

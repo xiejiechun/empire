@@ -37,6 +37,7 @@ async def capital():
             conn.execute(text('INSERT INTO stock(unified_code,name) VALUES(:code,:name)'), dict(code=STOCK['unified_code'], name=STOCK['name']))
         c.session = type('Session', (), {'headers': lambda *a: {}})()
         c.http = prefetch_http(request=AsyncMock(side_effect=lambda *a, **kw: httpx.Response(200, content=feed['text'].encode('gb18030'))))
+        c.http.buffer_budget = c.catalog.compute_budget
         yield m, c, q, store, feed
     finally:
         await m.shutdown()
@@ -51,7 +52,20 @@ async def capital():
 
 
 async def collect(c):
-    return await asyncio.wait_for(c.execute(baseline_revision=await c.checkpoint_revision()), 20)
+    return await asyncio.wait_for(c.execute(fresh=True, baseline_revision=await c.checkpoint_revision()), 20)
+
+
+async def test_spawned_large_source_through_formal_archive_and_detail(capital):
+    m, c, q, store, feed = capital
+    feed['text'] = feed['text'].replace('项目完整&lt;br&gt;简介', '完整详情' * 3000)
+    await collect(c)
+    expected = parse(feed['text'].encode('gb18030'), STOCK, datetime.now(CHINA).date())
+    row = expected['rows']['capital_project'][0]
+    actual = await q.detail('capital_project', row['record_key'])
+    assert {key: actual[key] for key in row} == row
+    assert c.catalog.compute_lane.health()['started']
+    assert c.http.buffer_budget.used == 0
+    assert await store.client.xlen(store.stream) == 0
 
 
 @pytest.mark.parametrize('foreign_value,amount,currency', [
@@ -99,6 +113,7 @@ async def test_roundtrip_hot_cold_zero_dml_revision_old_replay_and_required_fiel
         if sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')) and any(t in sql for t in TABLES):
             statements.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         async def forbidden_sql(*a, **kw):
             raise AssertionError('trusted fingerprint must not access MySQL archive')
@@ -133,6 +148,7 @@ async def test_roundtrip_hot_cold_zero_dml_revision_old_replay_and_required_fiel
         assert (await q.mysql.read(q.audit, PreparationScope(codes=('601139',))))['complete']
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_same_count_different_set_preserves_history_and_keyset_pages(capital):

@@ -1,10 +1,12 @@
 """Complete report-period responses assembled into existing full-security units."""
+import copy
 import json
 from datetime import UTC, date, datetime
 
 from empire.features.capital_actions.contract import digest, ordered, unit_key
 from empire.features.capital_actions.dividend_parser import period_plan
 from empire.plugins.collection.unit_prefetch import prefetch_units
+from empire.plugins.infra.tdx_maintenance import needs_review
 
 MAX_ROWS = 100000
 MAX_BYTES = 128 * 1024**2
@@ -58,15 +60,29 @@ async def collect_history(c, *, force_history=False):
     c.history_discoveries = marks
     c.stats['history_discovery_securities'] = len(unproven)
     periods = await report_periods(c, discovered)
-    units = {key: [] for key in stocks}
+    state, previous = await c.query.dividend_maintenance()
+    proofs = state.get('manifest', {}).get('periods', {})
+    force = force_history or bool(unproven) or not proofs
+    selected = [period for period in periods if needs_review(proofs.get(period, {}), period, observed,
+        recent=period >= f'{observed.year - 1}-01-01', force=force)]
+    selected_set = set(selected)
+    affected = {key for key in stocks if force or key not in state.get('units', {}) or
+        any(row['data']['report_date'] in selected_set or row['name'] != stocks[key]['name']
+            for row in previous.get(key, []))}
+    units = {key: ([copy.deepcopy(row) for row in previous.get(key, [])] if key in affected
+                  else previous.get(key, [])) for key in stocks}
+    fetched_keys = {key: set() for key in required}
+    period_proofs = {key: value for key, value in proofs.items() if key in periods}
     size, count = 0, 0
     async def download(period, *, reservation):
         return await complete_response(c, 'dividends', period, reservation=reservation, defer=True)
     c.stats.update(total_report_periods=len(periods), downloaded_report_periods=0,
                    total_units=len(periods), completed_units=0, unit_name='个报告期（来源核验）')
-    async with prefetch_units(c, periods, download, url=PAGE_URL, domains=('tdx.com.cn',), item_name='报告期') as reads:
+    async with prefetch_units(c, selected, download, url=PAGE_URL, domains=('tdx.com.cn',), item_name='报告期') as reads:
         async for index, read in reads:
             rows, _ = await read.resolve()
+            period_proofs[selected[index]] = dict(count=len(rows), digest=digest(rows),
+                observed_at=observed.isoformat(timespec='microseconds'))
             size += len(json.dumps(rows, ensure_ascii=False, separators=(',', ':')).encode())
             count += len(rows)
             if count > MAX_ROWS or size > MAX_BYTES:
@@ -74,15 +90,34 @@ async def collect_history(c, *, force_history=False):
             for row in rows:
                 key = unit_key(row)
                 if key in units:
+                    if key in fetched_keys:
+                        fetched_keys[key].add(row['record_key'])
+                    if key not in affected:
+                        units[key] = copy.deepcopy(units[key])
+                        affected.add(key)
                     row['name'] = stocks[key]['name']  # Same SQL stock-pool identity as the former detail path.
                     units[key].append(row)
-            c.stats.update(downloaded_report_periods=index + 1, current_report_period=periods[index], completed_units=index + 1)
-    for key in units:
-        units[key] = ordered(units[key])
+            c.stats.update(downloaded_report_periods=index + 1, current_report_period=selected[index], completed_units=index + 1)
+    for key in affected:
+        for row in units[key]:
+            row['name'] = stocks[key]['name']
+        # SQL deliberately retains source-disappeared historical schemes.
+        # Current responses replace the same business key, not the whole period.
+        units[key] = ordered(list({row['record_key']: row for row in units[key]}.values()))
         from empire.features.capital_actions.contract import validate_rows
         validate_rows('dividends', key, units[key])
-        missing = required.get(key, set()) - {row['record_key'] for row in units[key]}
+        missing = required.get(key, set()) - fetched_keys.get(key, set())
         if missing:
             raise ValueError('分红报告期列表未覆盖历史目录方案，禁止发布不完整证券：'
                              f'{key}，缺少{len(missing)}项，示例业务键{min(missing)}')
-    return units, observed, digest([periods, stocks, units])
+    if sum(map(len, units.values())) > MAX_ROWS or len(json.dumps(units, ensure_ascii=False).encode()) > MAX_BYTES:
+        raise ValueError('分红合并历史超过100000条或128MiB规范内容预算')
+    c.dividend_periods = period_proofs
+    c.dividend_reused = {key for key in units if not force_history and key in state.get('units', {})
+        and units[key] == previous.get(key, []) and key not in unproven}
+    c.stats.update(reused_report_periods=len(periods) - len(selected),
+                   reused_securities=len(c.dividend_reused), assembled_securities=len(affected))
+    c.dividend_summaries = {key: state['units'][key] if key not in affected else
+                           dict(count=len(units[key]), digest=digest(units[key])) for key in units}
+    return units, observed, digest([periods, stocks,
+        {key: [p['count'], p['digest']] for key, p in c.dividend_summaries.items()}])

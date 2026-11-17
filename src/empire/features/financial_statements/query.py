@@ -10,7 +10,7 @@ from empire.contracts.plugin import PluginManifest
 from empire.contracts.preparation import CheckEvidence, PreparationContribution
 from empire.contracts.preparation_scope import PreparationScope
 from empire.features.financial_statements.audit import audit_financial
-from empire.features.financial_statements.contract import KINDS, REQUIRED, digest
+from empire.features.financial_statements.contract import KINDS, REQUIRED
 from empire.features.financial_statements.dataset import FinancialDataset
 from empire.plugins.infra.query_order import column_fields, ordered_page
 from empire.plugins.pipeline.fingerprints import FingerprintCache
@@ -52,6 +52,10 @@ class FinancialDataPlugin:
             with self.mysql.read_engine.connect() as conn:
                 return self._securities(conn)
         return await self.mysql.read(read)
+
+    async def collection_units(self):
+        from empire.plugins.infra.ths_maintenance import confirmed_units
+        return await confirmed_units(self, self.project_id, FinancialDataset(self.kind), financial=True)
 
     async def list_statements(self, code='', limit=51, offset=0, order=None, after=None):
         if code and (not code.isascii() or not code.isdigit() or len(code) > 6):
@@ -117,34 +121,27 @@ class FinancialDataPlugin:
     async def preparation_check(self, request=None):
         scope = PreparationScope.parse(request)
         try:
-            complete, fresh, count, actual, observed, findings = await self.mysql.read(self._audit) if request is None else await self.mysql.read(self._audit, request)
+            complete, fresh, count, _actual, _observed, findings = await self.mysql.read(self._audit) if request is None else await self.mysql.read(self._audit, request)
             detail = f'{count} 份报表；来源报告期集合及金额精度' + ('匹配' if complete else '未证实完整')
         except (ValueError, KeyError, TypeError):
-            complete, fresh, count, observed, detail = False, False, 0, None, '财报缺失或规范字段/来源集合不完整'
+            complete, fresh, count, _observed, detail = False, False, 0, None, '财报缺失或规范字段/来源集合不完整'
             findings = dict(fields=0, quality=0, examples=[])
         store = self.context.optional('redis.store') if self.context else None
         if complete and store is not None:
             try:
                 cache = FingerprintCache(store, self.archive_settings, lambda _: FinancialDataset.FINGERPRINT_VERSION)
-                if scope.codes or scope.start or scope.end:
-                    plan = findings.get('cache_plan', {})
-                    proofs = await asyncio.wait_for(cache.peek('ths_' + self.kind, self.source, list(plan)), 3)
-                    valid = bool(plan)
-                    for unit, expected in plan.items():
-                        proof = proofs.get(unit)
-                        if not proof or proof['hash'] != expected['hash'] or not expected['observed']:
-                            valid = False
-                            break
-                        stamp = FinancialDataset.FINGERPRINT_VERSION.key(proof['version'])[0]
-                        valid &= (stamp >= datetime.fromisoformat(expected['observed']) and
-                                  datetime.now(UTC) - timedelta(days=3) <= stamp <= datetime.now(UTC))
-                    fresh |= valid
-                else:
-                    proof = (await asyncio.wait_for(cache.peek('ths_' + self.kind, self.source, ['manifest']), 3)).get('manifest')
-                    if proof and proof['hash'] == digest({'rows': [], 'manifest': actual}):
-                        stamp = FinancialDataset.FINGERPRINT_VERSION.key(proof['version'])[0]
-                        if observed is not None and stamp >= observed:
-                            fresh = datetime.now(UTC) - timedelta(days=3) <= stamp <= datetime.now(UTC)
+                plan = findings.get('cache_plan', {})
+                proofs = await asyncio.wait_for(cache.peek('ths_' + self.kind, self.source, list(plan)), 3)
+                valid = bool(plan)
+                for unit, expected in plan.items():
+                    proof = proofs.get(unit)
+                    if not proof or proof['hash'] != expected['hash'] or not expected['observed']:
+                        valid = False
+                        break
+                    stamp = FinancialDataset.FINGERPRINT_VERSION.key(proof['version'])[0]
+                    valid &= (stamp >= datetime.fromisoformat(expected['observed']) and
+                              datetime.now(UTC) - timedelta(days=3) <= stamp <= datetime.now(UTC))
+                fresh |= valid
             except Exception:
                 pass  # Optional read-only evidence; unavailable Redis does not break SQL browsing.
         coverage_status = 'pass' if complete else 'unknown' if (

@@ -1,0 +1,409 @@
+{
+  "captured_at": "2026-11-02T19:39:17.478732+08:00",
+  "method": "read-only consistent snapshot; each SELECT bounded to 8000 ms; no source requests",
+  "tables": {
+    "additional_issue": {
+      "rows_count": 6573,
+      "securities": 3036,
+      "first_date": "1998-06-26",
+      "last_date": "2026-10-29",
+      "date_field": "event_date"
+    },
+    "balance_statement": {
+      "rows_count": 325241,
+      "securities": 5584,
+      "first_date": "1989-12-31",
+      "last_date": "2026-09-30",
+      "date_field": "report_date"
+    },
+    "capital_encumbrance": {
+      "rows_count": 99290,
+      "securities": 3273,
+      "first_date": "2002-07-06",
+      "last_date": "2026-10-31",
+      "date_field": "event_date"
+    },
+    "capital_equity_position": {
+      "rows_count": 21921,
+      "securities": 2154,
+      "first_date": "2004-12-31",
+      "last_date": "2026-06-30",
+      "date_field": "event_date"
+    },
+    "capital_equity_summary": {
+      "rows_count": 19997,
+      "securities": 2154,
+      "first_date": "2004-12-31",
+      "last_date": "2026-06-30",
+      "date_field": "event_date"
+    },
+    "capital_funding": {
+      "rows_count": 14223,
+      "securities": 5579,
+      "first_date": "1987-01-01",
+      "last_date": "2026-10-29",
+      "date_field": "event_date"
+    },
+    "capital_ipo": {
+      "rows_count": 123,
+      "securities": 123,
+      "first_date": null,
+      "last_date": null,
+      "date_field": "event_date"
+    },
+    "capital_project": {
+      "rows_count": 63751,
+      "securities": 5576,
+      "first_date": "1988-07-01",
+      "last_date": "2026-10-31",
+      "date_field": "event_date"
+    },
+    "capital_release": {
+      "rows_count": 80683,
+      "securities": 3087,
+      "first_date": "2002-07-06",
+      "last_date": "2026-10-31",
+      "date_field": "event_date"
+    },
+    "capital_transaction": {
+      "rows_count": 254563,
+      "securities": 5501,
+      "first_date": "0226-09-23",
+      "last_date": "2026-11-03",
+      "date_field": "event_date"
+    },
+    "cashflow_statement": {
+      "rows_count": 326289,
+      "securities": 5584,
+      "first_date": "1996-12-31",
+      "last_date": "2026-09-30",
+      "date_field": "report_date"
+    },
+    "dividend_plan": {
+      "rows_count": 56399,
+      "securities": 5450,
+      "first_date": "1991-06-08",
+      "last_date": "2026-11-09",
+      "date_field": "event_date"
+    },
+    "earnings_disclosure": {
+      "rows_count": 264815,
+      "securities": 5581,
+      "first_date": "2001-12-31",
+      "last_date": "2026-09-30",
+      "date_field": "report_date"
+    },
+    "earnings_forecast": {
+      "rows_count": 109203,
+      "securities": 5528,
+      "first_date": "2001-06-30",
+      "last_date": "2026-12-31",
+      "date_field": "report_date"
+    },
+    "earnings_quick": {
+      "rows_count": 53831,
+      "securities": 4101,
+      "first_date": "2004-06-30",
+      "last_date": "2026-09-30",
+      "date_field": "report_date"
+    },
+    "earnings_report": {
+      "rows_count": 309067,
+      "securities": 5584,
+      "first_date": "1989-12-31",
+      "last_date": "2026-09-30",
+      "date_field": "report_date"
+    },
+    "finance_news": {
+      "rows_count": 61536,
+      "first_date": "2026-09-22 23:21:16",
+      "last_date": "2026-11-02 19:38:37",
+      "date_field": "published_at"
+    },
+    "holder_member": {
+      "rows_count": 794486,
+      "date_field": null
+    },
+    "holder_report": {
+      "rows_count": 69581,
+      "securities": 5583,
+      "first_date": "2011-03-31",
+      "last_date": "2026-11-30",
+      "date_field": "report_date"
+    },
+    "hot_list_day": {
+      "rows_count": 209289,
+      "securities": 5539,
+      "first_date": "2002-08-02",
+      "last_date": "2026-11-02",
+      "date_field": "list_date"
+    },
+    "hot_list_reason": {
+      "rows_count": 270496,
+      "securities": 5539,
+      "first_date": "2002-08-02",
+      "last_date": "2026-11-02",
+      "date_field": "list_date"
+    },
+    "hot_list_seat": {
+      "rows_count": 2337369,
+      "securities": 5539,
+      "first_date": "2006-07-03",
+      "last_date": "2026-11-02",
+      "date_field": "list_date"
+    },
+    "income_statement": {
+      "rows_count": 336933,
+      "securities": 5584,
+      "first_date": "1988-12-31",
+      "last_date": "2026-09-30",
+      "date_field": "report_date"
+    },
+    "index_daily_price": {
+      "rows_count": 2246125,
+      "first_date": "1990-12-19",
+      "last_date": "2026-11-02",
+      "date_field": "trade_date"
+    },
+    "index_price_year": {
+      "rows_count": 9598,
+      "date_field": null
+    },
+    "industry": {
+      "rows_count": 90,
+      "date_field": null
+    },
+    "industry_margin_daily": {
+      "rows_count": 78810,
+      "first_date": "2016-01-04",
+      "last_date": "2026-10-29",
+      "date_field": "trade_date"
+    },
+    "industry_margin_day": {
+      "rows_count": 3955,
+      "first_date": "2016-01-01",
+      "last_date": "2026-10-29",
+      "date_field": "trade_date"
+    },
+    "industry_member": {
+      "rows_count": 5578,
+      "securities": 5578,
+      "date_field": null
+    },
+    "margin_daily": {
+      "rows_count": 6293546,
+      "securities": 4077,
+      "first_date": "2010-03-31",
+      "last_date": "2026-10-30",
+      "date_field": "trade_date"
+    },
+    "margin_security": {
+      "rows_count": 5579,
+      "securities": 5579,
+      "date_field": null
+    },
+    "market_margin_daily": {
+      "rows_count": 12982,
+      "first_date": "2010-03-31",
+      "last_date": "2026-10-30",
+      "date_field": "trade_date"
+    },
+    "market_margin_series": {
+      "rows_count": 4,
+      "date_field": null
+    },
+    "restricted_share_unlock": {
+      "rows_count": 37360,
+      "securities": 5842,
+      "first_date": "1996-05-10",
+      "last_date": "2027-12-31",
+      "date_field": "unlock_date"
+    },
+    "restricted_share_unlock_detail": {
+      "rows_count": 364818,
+      "securities": 5842,
+      "first_date": "1996-05-10",
+      "last_date": "2027-12-31",
+      "date_field": "unlock_date"
+    },
+    "restricted_share_unlock_industry": {
+      "rows_count": 739,
+      "first_date": "2026-09-01",
+      "last_date": "2028-09-01",
+      "date_field": "unlock_month"
+    },
+    "rights_issue": {
+      "rows_count": 1191,
+      "securities": 766,
+      "first_date": "1990-03-01",
+      "last_date": "2026-08-21",
+      "date_field": "event_date"
+    },
+    "security_listing_event": {
+      "rows_count": 556,
+      "securities": 420,
+      "first_date": "1998-09-14",
+      "last_date": "2026-10-28",
+      "date_field": "event_date"
+    },
+    "security_name_change": {
+      "rows_count": 11923,
+      "securities": 2727,
+      "first_date": "1990-12-10",
+      "last_date": "2026-10-30",
+      "date_field": "event_date"
+    },
+    "security_st_event": {
+      "rows_count": 3952,
+      "securities": 1106,
+      "first_date": "1998-04-28",
+      "last_date": "2026-10-23",
+      "date_field": "event_date"
+    },
+    "shareholder_change": {
+      "rows_count": 326935,
+      "securities": 5465,
+      "first_date": "2002-07-01",
+      "last_date": "2026-11-01",
+      "date_field": "data_month"
+    },
+    "shareholder_count": {
+      "rows_count": 232561,
+      "securities": 5581,
+      "first_date": "2021-10-12",
+      "last_date": "2026-10-30",
+      "date_field": "statistics_date"
+    },
+    "stock": {
+      "rows_count": 5579,
+      "securities": 5579,
+      "date_field": null
+    },
+    "stock_index": {
+      "rows_count": 573,
+      "date_field": null
+    },
+    "stock_index_member": {
+      "rows_count": 99594,
+      "securities": 5596,
+      "date_field": null
+    },
+    "stock_listing": {
+      "rows_count": 5500,
+      "securities": 5500,
+      "first_date": "1990-12-19",
+      "last_date": "2026-11-03",
+      "date_field": "listing_date"
+    },
+    "stock_repurchase_plan": {
+      "rows_count": 5665,
+      "securities": 2979,
+      "first_date": "2005-06-17",
+      "last_date": "2026-11-02",
+      "date_field": "plan_date"
+    },
+    "suspension_event": {
+      "rows_count": 104771,
+      "securities": 4407,
+      "first_date": "2004-12-27 09:30:00",
+      "last_date": "2026-11-02 09:30:00",
+      "date_field": "suspended_at"
+    },
+    "suspension_source_date": {
+      "rows_count": 145401,
+      "securities": 4407,
+      "first_date": "2004-12-27",
+      "last_date": "2026-11-02",
+      "date_field": "source_date"
+    },
+    "theme_category": {
+      "rows_count": 3023,
+      "date_field": null
+    },
+    "theme_daily": {
+      "rows_count": 2278,
+      "first_date": "2026-10-25",
+      "last_date": "2026-11-02",
+      "date_field": "business_date"
+    },
+    "theme_detail": {
+      "rows_count": 251,
+      "date_field": null
+    },
+    "theme_stock": {
+      "rows_count": 13710,
+      "securities": 4331,
+      "date_field": null
+    },
+    "theme_stock_reason": {
+      "rows_count": 15951,
+      "securities": 4331,
+      "date_field": null
+    },
+    "trade_calendar": {
+      "rows_count": 13527,
+      "first_date": "1990-12-19",
+      "last_date": "2027-12-31",
+      "date_field": "trade_date"
+    },
+    "trading_rule_citation": {
+      "rows_count": 30,
+      "date_field": null
+    },
+    "trading_rule_value": {
+      "rows_count": 77,
+      "first_date": "2022-04-29",
+      "last_date": "2026-07-06",
+      "date_field": "effective_start"
+    },
+    "yuanhang_capital": {
+      "rows_count": 764005,
+      "securities": 5576,
+      "first_date": "1990-12-19",
+      "last_date": "2026-11-02",
+      "date_field": "effective_date"
+    },
+    "yuanhang_corporate_action": {
+      "rows_count": 57688,
+      "securities": 5434,
+      "first_date": "1991-02-26",
+      "last_date": "2026-11-02",
+      "date_field": "ex_date"
+    },
+    "yuanhang_daily_price": {
+      "rows_count": 17033204,
+      "note": "Separate later read-only count; original combined aggregate timed out; no date/security totals asserted"
+    },
+    "yuanhang_limit_member": {
+      "rows_count": 217189,
+      "securities": 5336,
+      "first_date": "2020-01-23",
+      "last_date": "2026-11-02",
+      "date_field": "trade_date"
+    },
+    "yuanhang_limit_pool": {
+      "rows_count": 43770,
+      "first_date": "1990-12-19",
+      "last_date": "2026-11-02",
+      "date_field": "trade_date"
+    },
+    "yuanhang_limit_reason": {
+      "rows_count": 180331,
+      "securities": 5336,
+      "first_date": "2020-01-23",
+      "last_date": "2026-10-30",
+      "date_field": "trade_date"
+    },
+    "yuanhang_price_year": {
+      "rows_count": 75987,
+      "securities": 5576,
+      "date_field": null
+    },
+    "yuanhang_series_proof": {
+      "rows_count": 11152,
+      "securities": 5576,
+      "date_field": null
+    }
+  },
+  "finished_at": "2026-11-02T19:39:40.915205+08:00"
+}

@@ -109,12 +109,14 @@ async def test_hot_fingerprint_is_sql_free_and_cold_duplicate_or_stale_cleans_me
         if sql.startswith(('INSERT INTO yuanhang_', 'DELETE FROM yuanhang_', 'UPDATE yuanhang_')):
             business_dml.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', count)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', count)
     try:
         await publish(c, archive, e)
         await publish(c, archive, e.model_copy(update=dict(observed_at=e.observed_at - timedelta(hours=1))))
         assert business_dml == [] and await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', count)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', count)
 
 
 async def test_source_validation_failure_keeps_resume_position(native):
@@ -157,6 +159,7 @@ async def test_persistent_financial_null_never_publishes_or_advances(native, mon
     manager, _, q, store, _ = native
     await manager.start('collector.yuanhang_financial')
     c = manager.registry.get('collector.yuanhang_financial')
+    c.request_retries = 1
     c.identity.login = AsyncMock(return_value=SimpleNamespace(proxy_code='node-test'))
     def missing_value():
         error = MissingFinancialValue(402, '2023-01-01', CODE)
@@ -243,12 +246,14 @@ async def test_complete_wire_repeats_reach_formal_query_once_and_replay_without_
         if sql.startswith(('INSERT INTO yuanhang_', 'DELETE FROM yuanhang_', 'UPDATE yuanhang_')):
             dml.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', count)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', count)
     try:
         c.fetch = AsyncMock(return_value=snapshot(normalized_daily([raw_bar(), raw_bar(20221011)])))
         await c.execute(baseline_revision=await c.checkpoint_revision())
         assert dml == [] and await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', count)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', count)
 
 
 async def test_conflicting_wire_repeat_preserves_checkpoint_and_existing_formal_rows(native):
@@ -434,11 +439,13 @@ async def test_native_null_volume_reaches_queue_archive_formal_query_and_replay(
         if sql.startswith(('INSERT INTO yuanhang_', 'UPDATE yuanhang_', 'DELETE FROM yuanhang_')):
             writes.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', count)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', count)
     try:
         await c.execute(baseline_revision=await c.checkpoint_revision())
         assert not writes and await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', count)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', count)
 
 
 async def test_initialization_resumes_source_audit_without_redownloading_published_prefix(native, monkeypatch):

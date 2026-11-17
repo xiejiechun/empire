@@ -83,7 +83,7 @@ async def test_recent_query_reads_ten_candidate_fingerprints_instead_of_8754():
     from empire.features.yuanhang_limits.query import LimitQuery
     days = [(date(1990, 12, 19) + timedelta(days=i)).isoformat() for i in range(8754)]
     query = LimitQuery('test')
-    heads = [dict(trade_date=date.fromisoformat(day), contract_version=1, content_sha256='a' * 64) for day in days]
+    heads = [dict(trade_date=date.fromisoformat(day), contract_version=2, filter_text='HS,GEM2STAR,ST', content_sha256='a' * 64) for day in days]
     versions = dict.fromkeys(days, days[-2] + 'T00:00:00+00:00')
     query.read = AsyncMock(return_value=(days[-1], days, heads, versions))
     query.cache_proofs = AsyncMock(return_value={})

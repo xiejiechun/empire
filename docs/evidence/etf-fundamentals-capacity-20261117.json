@@ -1,0 +1,829 @@
+{
+  "run_id": "06e00aeabeea4e98abdc79e2d53b86ae",
+  "subject": "indices",
+  "started_at": "2026-11-16T17:16:27.874228+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/etf_fundamentals/bundle.py": "30f4e7fb5545fe4c5c5e7f1f7a7e506ab38c7e6de4f17c7958013c84e0df7bba",
+    "src/empire/features/etf_fundamentals/collector.py": "3058f4055f743054bbd3dfe636195e2430604d851fe02af9f8a8e554bc191a4d",
+    "src/empire/features/etf_fundamentals/contract.py": "45468b7f724a8641ba405322d3e5a57d7f69daa08cda92ae7a9227f034a70eaa",
+    "src/empire/features/etf_fundamentals/download.py": "f14609b298b671e5bf00f2fa163a287f365db606d7390a22a530cea48442298d",
+    "src/empire/features/etf_fundamentals/nav_dataset.py": "0d0ce6e0f539d30dc4d6aae5a65848cbc5cd3b548e9a88b34804fab339749800",
+    "src/empire/features/etf_fundamentals/planning.py": "918456300fd22ca68665aeca0c9ca64f62f464acde194dc0e41afa8413cf5722",
+    "src/empire/features/etf_fundamentals/preparation.py": "e751696ded2a226bed70d16033a40c2f8bb0546f463ce078c49aad2f0110cf9f",
+    "src/empire/features/etf_fundamentals/query.py": "88b5fd60063849bbd8a2c273c573a6bcc3f7f23043d902186524d970cd361263",
+    "src/empire/features/etf_fundamentals/share_dataset.py": "5271c3dab49d9a57f11b5c2600d96cdf9b2310ca1c480fad03be751c9e14db69",
+    "src/empire/features/etf_fundamentals/source.py": "21baf47bd320d3dc4638291aa3ca73026d8b08e873fcdb338730c93f5f2681fb",
+    "src/empire/features/etf_fundamentals/ui.py": "ed408b2cbbe4fdd4be3a4311ccb2faf84dcd2906ded51728747d2749cdddc0b4",
+    "src/empire/features/etf_fundamentals/xlsx.py": "a4c7e24b3a0c18b58bee81ee27fe3343a5c97fa8f615718d195f71749f83d910",
+    "src/empire/features/etf_fundamentals/__init__.py": "5a12fc72a03c7914f463ac458c2c2de14b2fcc033f712b2b77f4e42d53976126",
+    "scripts/measure_etf_fundamentals.py": "bc9151355d1efc5d132d88fe68a19502d56115c88524249504d5255bb42d2516",
+    "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
+    "src/empire/features/market_review/etf_flows.py": "6b9848eaef5c9fcd53d8f75420f15aabc2f7c94b61c59c190af169feab0f1eff"
+  },
+  "feature": "etf-fundamentals",
+  "schema_objects": {
+    "etf_daily_share": {
+      "ddl_sha256": "49501f53d744a2942404cb39ae9562083027deb225c717e7d50adbaa8ecff28b",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "share_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source": {
+            "type": "varchar(8) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(128) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "total_shares": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_group": {
+            "type": "varchar(16) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_type": {
+            "type": "varchar(64) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "share_date",
+          "source"
+        ],
+        "indexes": {
+          "ix_etf_share_date": {
+            "columns": [
+              "share_date",
+              "unified_code",
+              "source"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_etf_share_code": "regexp_like(unified_code,'^[0-9]{6}[.](sh|sz)$')",
+          "ck_etf_share_market": "(((source='sse')and(right(unified_code,2)='sh'))or((source='szse')and(right(unified_code,2)='sz')))",
+          "ck_etf_share_values": "((total_shares>=0)and(source_groupin('etf','money'))and((source='sse')or(source_group='etf')))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": null,
+        "primary_keys": [
+          "unified_code",
+          "share_date",
+          "source"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "etf.share.day": {
+            "tables": [
+              "etf_daily_share",
+              "etf_share_day"
+            ],
+            "primary": "etf_daily_share"
+          }
+        }
+      }
+    },
+    "etf_share_day": {
+      "ddl_sha256": "55e178f58711353a8d00eba40af45e8be91c90e07eae23eaa74cc67798a43e2a",
+      "shape": {
+        "columns": {
+          "source": {
+            "type": "varchar(8) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "share_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "key_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "row_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "source",
+          "share_date"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_etf_share_day": "((sourcein('sse','szse'))and(row_count<=5000)and(contract_version=1))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": null,
+        "primary_keys": [
+          "source",
+          "share_date"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "etf.share.day": {
+            "tables": [
+              "etf_daily_share",
+              "etf_share_day"
+            ],
+            "primary": "etf_daily_share"
+          }
+        }
+      }
+    },
+    "etf_daily_nav": {
+      "ddl_sha256": "bc9ec9a69e2c30e2fb504feb3a227be1a281535f6296a7070e0d7391b7bce088",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "nav_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "value_kind": {
+            "type": "varchar(16) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unit_nav": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "accumulated_nav": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "daily_change_pct": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "income_value": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "income_basis_shares": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "yield_7d_pct": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "currency": {
+            "type": "char(3) collate \"ascii_bin\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "purchase_status": {
+            "type": "varchar(64) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "redemption_status": {
+            "type": "varchar(64) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "distribution_text": {
+            "type": "varchar(1024) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "fund_type": {
+            "type": "varchar(16) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "income_label": {
+            "type": "varchar(64) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "nav_type": {
+            "type": "varchar(16) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "income_start_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "actual_income": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "dividend_value": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "dividend_per_ten": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "dividend_basis": {
+            "type": "varchar(64) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "distribution_type": {
+            "type": "varchar(64) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "nav_date"
+        ],
+        "indexes": {
+          "ix_etf_nav_date": {
+            "columns": [
+              "nav_date",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_etf_nav_code": "regexp_like(unified_code,'^[0-9]{6}[.](sh|sz)$')",
+          "ck_etf_nav_income_date": "((income_start_dateisnull)or(income_start_date<=nav_date))",
+          "ck_etf_nav_kind": "(((value_kind='nav')and(income_valueisnull)and(income_basis_sharesisnull)and(yield_7d_pctisnull))or((value_kind='income')and(unit_navisnull)and(accumulated_navisnull)))",
+          "ck_etf_nav_values": "(((unit_navisnull)or(unit_nav>=0))and((accumulated_navisnull)or(accumulated_nav>=0))and((income_basis_sharesisnull)or(income_basis_shares>0)))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ttjj",
+        "primary_keys": [
+          "unified_code",
+          "nav_date"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "etf.nav.range": {
+            "tables": [
+              "etf_daily_nav",
+              "etf_nav_year"
+            ],
+            "primary": "etf_daily_nav"
+          }
+        }
+      }
+    },
+    "etf_nav_year": {
+      "ddl_sha256": "b01e2a2b97d0ec2bf30ac9f74fa522469fe0fdf8fcc155e2079e1316416b2a15",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "nav_year": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "row_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "last_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "key_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "verified_through": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "nav_year"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_etf_nav_year": "((nav_yearbetween2004and2100)and(row_count<=366)and(contract_version=1))",
+          "ck_etf_nav_year_code": "regexp_like(unified_code,'^[0-9]{6}[.](sh|sz)$')",
+          "ck_etf_nav_year_dates": "(((row_count=0)and(first_dateisnull)and(last_dateisnull))or((row_count>0)and(first_dateisnotnull)and(last_dateisnotnull)and(first_date<=last_date)and(year(first_date)=nav_year)and(year(last_date)=nav_year)))",
+          "ck_etf_nav_year_verified": "((verified_throughisnull)or(year(verified_through)=nav_year))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ttjj",
+        "primary_keys": [
+          "unified_code",
+          "nav_year"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "etf.nav.range": {
+            "tables": [
+              "etf_daily_nav",
+              "etf_nav_year"
+            ],
+            "primary": "etf_daily_nav"
+          }
+        }
+      }
+    }
+  },
+  "ddl_scopes": {
+    "etf_daily_share": "49501f53d744a2942404cb39ae9562083027deb225c717e7d50adbaa8ecff28b",
+    "etf_share_day": "55e178f58711353a8d00eba40af45e8be91c90e07eae23eaa74cc67798a43e2a",
+    "etf_daily_nav": "bc9ec9a69e2c30e2fb504feb3a227be1a281535f6296a7070e0d7391b7bce088",
+    "etf_nav_year": "b01e2a2b97d0ec2bf30ac9f74fa522469fe0fdf8fcc155e2079e1316416b2a15"
+  },
+  "measurements": {
+    "nav_year_p95_ms": 13.011100003495812,
+    "share_day_p95_ms": 10.068100003991276,
+    "nav_day_p95_ms": 13.52420001057908,
+    "review_p95_ms": 165.42829998070374,
+    "share_import_seconds": 2.7534839999862015,
+    "nav_import_seconds": 8.455551899969578,
+    "allocated_bytes": 35913728,
+    "unit_python_peak_bytes": 2016,
+    "content_audit_seconds": 4.440863599942531
+  },
+  "limits": {
+    "nav_year_p95_ms": 150,
+    "share_day_p95_ms": 200,
+    "nav_day_p95_ms": 200,
+    "review_p95_ms": 500,
+    "share_import_seconds": 90,
+    "nav_import_seconds": 90,
+    "allocated_bytes": 268435456,
+    "unit_python_peak_bytes": 16777216,
+    "content_audit_seconds": 60
+  },
+  "queries": {
+    "nav_year": {
+      "first_ms": 15.438599977642298,
+      "warm_ms": [
+        12.228699983097613,
+        12.27960002142936,
+        11.916199990082532,
+        10.88089996483177,
+        11.93139998940751,
+        11.249300034251064,
+        11.092500004451722,
+        10.885900002904236,
+        13.011100003495812,
+        11.310799978673458,
+        10.499899974092841,
+        11.377900023944676,
+        11.789000011049211,
+        10.64539997605607,
+        10.837900044862181,
+        12.288900034036487,
+        12.246500002220273,
+        11.084199999459088,
+        17.150700034108013,
+        10.69269998697564
+      ],
+      "rows": [
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250,
+        250
+      ],
+      "encoded_bytes": [
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774,
+        161774
+      ]
+    },
+    "share_day": {
+      "first_ms": 10.914199985563755,
+      "warm_ms": [
+        7.692699960898608,
+        9.81269998010248,
+        8.31619999371469,
+        8.029299962799996,
+        8.624100009910762,
+        8.089000009931624,
+        8.504100027494133,
+        8.042500005103648,
+        7.712799997534603,
+        8.793499961029738,
+        10.068100003991276,
+        8.387599955312908,
+        9.920299984514713,
+        8.42279999051243,
+        9.1281000059098,
+        8.725899970158935,
+        8.451400033663958,
+        9.170099976472557,
+        7.364799967035651,
+        10.612500016577542
+      ],
+      "rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465,
+        47465
+      ]
+    },
+    "nav_day": {
+      "first_ms": 10.198899952229112,
+      "warm_ms": [
+        8.597399981226772,
+        9.288599947467446,
+        8.611899975221604,
+        8.178099989891052,
+        8.099199971184134,
+        9.422599978279322,
+        7.548400026280433,
+        9.204800007864833,
+        8.523199998307973,
+        9.14600002579391,
+        8.663899963721633,
+        9.943199984263629,
+        9.742400026880205,
+        9.078199975192547,
+        11.167199991177768,
+        10.025299969129264,
+        13.52420001057908,
+        12.655499973334372,
+        11.991900042630732,
+        13.701500021852553
+      ],
+      "rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575,
+        129575
+      ]
+    },
+    "review": {
+      "first_ms": 175.8724999963306,
+      "warm_ms": [
+        125.17919996753335,
+        113.18310000933707,
+        129.98670001979917,
+        105.84800003562123,
+        103.64190000109375,
+        132.25140003487468,
+        108.04949997691438,
+        135.82590001169592,
+        110.16969999764115,
+        90.78169998247176,
+        127.55560001824051,
+        121.9400999834761,
+        128.38829995598644,
+        164.77909998502582,
+        126.81029998930171,
+        122.67130002146587,
+        165.95560003770515,
+        131.87799998559058,
+        129.38339996617287,
+        165.42829998070374
+      ],
+      "candidates": 400
+    }
+  },
+  "explain": {
+    "nav_range": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "etf_daily_nav",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_etf_nav_date",
+        "key": "PRIMARY",
+        "key_len": "14",
+        "ref": null,
+        "rows": 250,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "share_day": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "etf_daily_share",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_etf_share_date",
+        "key": "ix_etf_share_date",
+        "key_len": "3",
+        "ref": "const",
+        "rows": 2500,
+        "filtered": 10.0,
+        "Extra": "Using index condition"
+      }
+    ],
+    "nav_day": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "etf_daily_nav",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_etf_nav_date",
+        "key": "ix_etf_nav_date",
+        "key_len": "3",
+        "ref": "const",
+        "rows": 400,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "allocation": [
+    {
+      "table_name": "etf_daily_nav",
+      "estimated_rows": 97677,
+      "data_length": 15253504,
+      "index_length": 3686400
+    },
+    {
+      "table_name": "etf_daily_share",
+      "estimated_rows": 106713,
+      "data_length": 14204928,
+      "index_length": 2637824
+    },
+    {
+      "table_name": "etf_nav_year",
+      "estimated_rows": 400,
+      "data_length": 114688,
+      "index_length": 0
+    },
+    {
+      "table_name": "etf_share_day",
+      "estimated_rows": 40,
+      "data_length": 16384,
+      "index_length": 0
+    }
+  ],
+  "message_bytes": {
+    "mean": 57473.818181818184,
+    "p95": 168922,
+    "maximum": 168922
+  },
+  "conditions": {
+    "sample": "40 complete source days ×2500 ETFs=100000 shares;400 ETFs ×250 dates=100000 NAV facts",
+    "cache": "first query separately;20 warm repeats;buffer pool not flushed;no cold-disk claim",
+    "memory": "tracemalloc normalization of complete units;not process/MySQL RSS"
+  },
+  "correctness": {
+    "repeat_business_dml": [
+      0,
+      0
+    ],
+    "revision_business_dml": [
+      2,
+      2
+    ],
+    "all_content_and_keys_audited": true
+  },
+  "reviewed_tradeoffs": "两类结构化事实和内容证明独立；精确DECIMAL、日期反查索引计入空间。放大20万事实仅证明所测规模；五年空间按实际分配外推，不宣称全历史冷缓存已测。",
+  "input_identity_verified": true,
+  "checked_at": "2026-11-16T17:16:47.839036+00:00",
+  "database": "empire_capacity_06e00aeabeea4e98abdc79e2d53b86ae_test",
+  "measurement_service": {
+    "server_uuid": "e935f57e-e19a-11f1-a2f2-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 1,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

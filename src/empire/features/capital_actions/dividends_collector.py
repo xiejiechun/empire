@@ -1,5 +1,6 @@
 """Independent TDX 分红送转 task and capability."""
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.features.capital_actions.lifecycle import collect_units
 
 
@@ -25,6 +26,7 @@ class TdxDividendsCollector:
     async def checkpoint_revision(self):
         return (await self.ingest.checkpoint(self.job_key))['revision']
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
         return await collect_units(self, fresh=fresh, baseline_revision=baseline_revision)
 

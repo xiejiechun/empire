@@ -28,7 +28,12 @@ export function PreviewFilters({ spec, draft, onChange, onSubmit, loading }: {
           value={draft[field.key] || ""} placeholder={field.placeholder || "不限"} allowClear={!["date", "month"].includes(field.type)}
           onChange={e => { setError(""); onChange({ ...draft, [field.key]: e.target.value }); }} />}
       </label>)}
-      <div className="preview-filter-actions"><Button aria-label="preview-search" type="primary" htmlType="submit" loading={loading}>查询数据</Button><Button onClick={() => { setError(""); onChange(spec.defaults || {}); onSubmit(spec.defaults || {}); }}>重置</Button></div>
+      <div className="preview-filter-actions"><Button aria-label="preview-search" type="primary" htmlType="submit" loading={loading}>查询数据</Button>
+        {spec.today_filter && <Button disabled={loading} onClick={() => {
+          const today = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+          setError(""); onSubmit({ ...draft, [spec.today_filter]: today });
+        }}>查看今天</Button>}
+        <Button onClick={() => { setError(""); onChange(spec.defaults || {}); onSubmit(spec.defaults || {}); }}>重置</Button></div>
     </div>
     {error && <Alert type="warning" title={error} showIcon />}
   </form>;

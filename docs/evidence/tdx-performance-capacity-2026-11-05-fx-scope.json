@@ -1,0 +1,2047 @@
+{
+  "run_id": "5bc87df8851a4188946397274683eafb",
+  "mode": "verification",
+  "checked_at": "2026-11-05T06:04:05.366211+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\eastmoney-optimization-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\source.py": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\collector.py": "b969decbc98a44051792089ccb09cbcd1be781304a592a21630b9ec1ebe8ed5a",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\dataset.py": "d2fbc2623147390f215f00db44dadd60fa49454faeab2c4ea038eeb6e3af9420",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\query.py": "6f0dcf0943b24737735543044d91cfac051a016b490bd89887d49fbe0460c2e6",
+    "D:\\project\\empire\\scripts\\performance_capacity.py": "1bef98555b66947927a19a38a737abbe26d011cf06f999df34c00864fa753efc",
+    "D:\\project\\empire\\scripts\\measure_tdx_performance.py": "59be9e1bfbb8c00f160076e44d0a3f018f5ef52fc9f7268d5be8450926857afd",
+    "D:\\project\\empire\\scripts\\performance_storage.py": "6e335affaba0dc6631e27a73f88bea279a0c4a9177fbf86aceeca945c0d878a6",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "D:\\project\\empire\\scripts\\source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "D:\\project\\empire\\src\\empire\\contracts\\business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+    "D:\\project\\empire\\sql\\business-schema.json": "dec4b14f67b1f055dabc17818669844b94daf4584408754b17c381e77cb9e6ca",
+    "D:\\project\\empire\\docs\\evidence\\tdx-performance-probe-2026-10-12.json": "f96b922a58f4e0e5ccbc989843c5f0d6f6efd6dc50f2f3c3eb34f828b34cbfcf"
+  },
+  "subject": "performance_capacity",
+  "source_sha256": "c822f18fae6ce93a0972aca0742fc3dc7362f6d073316aab931a0e8b74ab5f3d",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原五表各100000行或股东变动100000行SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_5bc87df8851a4188946397274683eafb_test",
+    "namespace": "empire:test:verify_ths:5bc87df8851a4188946397274683eafb",
+    "run_id": "5bc87df8851a4188946397274683eafb",
+    "server_uuid": "3f1d111c-d88d-11f1-8cfd-380525361d4e",
+    "owner_sha256": "c27e531fa35700ef2a8976c566ced41782893d300605657e65b3a6c038fef9a0"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\eastmoney-optimization-mysql-20261105\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "bindings": {
+    "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+    "src/empire/features/performance/source.py": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e",
+    "src/empire/features/performance/collector.py": "b969decbc98a44051792089ccb09cbcd1be781304a592a21630b9ec1ebe8ed5a",
+    "src/empire/features/performance/dataset.py": "d2fbc2623147390f215f00db44dadd60fa49454faeab2c4ea038eeb6e3af9420",
+    "src/empire/features/performance/query.py": "6f0dcf0943b24737735543044d91cfac051a016b490bd89887d49fbe0460c2e6",
+    "scripts/performance_capacity.py": "1bef98555b66947927a19a38a737abbe26d011cf06f999df34c00864fa753efc",
+    "scripts/measure_tdx_performance.py": "59be9e1bfbb8c00f160076e44d0a3f018f5ef52fc9f7268d5be8450926857afd",
+    "scripts/performance_storage.py": "6e335affaba0dc6631e27a73f88bea279a0c4a9177fbf86aceeca945c0d878a6",
+    "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+    "docs/evidence/tdx-performance-probe-2026-10-12.json": "f96b922a58f4e0e5ccbc989843c5f0d6f6efd6dc50f2f3c3eb34f828b34cbfcf"
+  },
+  "ddl_scopes": {
+    "earnings_disclosure": "1771839ddd0292b4329595983d6d9721796cfdf6a269d5bb763103b7f428bc08",
+    "earnings_forecast": "9033426446f7513e0f215cb8ac95e366664813d63dc47a50e2119358925a7a32",
+    "earnings_quick": "da4209d6e798076d8c9c8d738906c03cbfaf3b517867fdbb88c81fe5da227bb5",
+    "earnings_report": "5bd130574ecbbbccce57329cb37608257096f4952c82f91af26012d4daa443a5",
+    "shareholder_count": "9dfed8ebc1bffb3dc204ad0524871babe181a2de2fe1e176ed33af9c36928f18"
+  },
+  "measurements": {
+    "earnings_forecast_page_ms": 8.886799972970039,
+    "earnings_forecast_security_ms": 1.7571999924257398,
+    "earnings_forecast_detail_ms": 0.7118000066839159,
+    "earnings_forecast_range_ms": 2.8667000005953014,
+    "earnings_forecast_coverage_ms": 578.6457000067458,
+    "earnings_forecast_unit_ms": 190.55030000163242,
+    "earnings_quick_page_ms": 22.862999991048127,
+    "earnings_quick_security_ms": 3.483499982394278,
+    "earnings_quick_detail_ms": 0.7512999582104385,
+    "earnings_quick_range_ms": 3.8594999932684004,
+    "earnings_quick_coverage_ms": 633.6112999706529,
+    "earnings_quick_unit_ms": 421.46179999690503,
+    "earnings_disclosure_page_ms": 9.098100010305643,
+    "earnings_disclosure_security_ms": 1.9292999641038477,
+    "earnings_disclosure_detail_ms": 0.7286999607458711,
+    "earnings_disclosure_range_ms": 3.00030002836138,
+    "earnings_disclosure_coverage_ms": 610.0970000261441,
+    "earnings_disclosure_unit_ms": 220.5936000100337,
+    "earnings_report_page_ms": 11.299100005999207,
+    "earnings_report_security_ms": 2.0395999890752137,
+    "earnings_report_detail_ms": 1.1149000492878258,
+    "earnings_report_range_ms": 2.905599947553128,
+    "earnings_report_coverage_ms": 639.6593000390567,
+    "earnings_report_unit_ms": 307.08050000248477,
+    "holder_count_page_ms": 7.952700019814074,
+    "holder_count_security_ms": 1.6752000083215535,
+    "holder_count_detail_ms": 0.7403999916277826,
+    "holder_count_range_ms": 2.565799979493022,
+    "holder_count_coverage_ms": 635.8197999652475,
+    "holder_count_unit_ms": 2.072300005238503,
+    "earnings_forecast_allocated_bytes": 102367232,
+    "earnings_quick_allocated_bytes": 103464960,
+    "earnings_disclosure_allocated_bytes": 58654720,
+    "earnings_report_allocated_bytes": 76513280,
+    "holder_count_allocated_bytes": 61833216,
+    "earnings_forecast_import_seconds": 3.906540900003165,
+    "earnings_quick_import_seconds": 5.25933279999299,
+    "earnings_disclosure_import_seconds": 3.4307303999667056,
+    "earnings_report_import_seconds": 4.208442599978298,
+    "holder_count_import_seconds": 3.8011830000323243,
+    "earnings_forecast_query_peak_bytes": 320583,
+    "earnings_quick_query_peak_bytes": 817442,
+    "earnings_disclosure_query_peak_bytes": 229485,
+    "earnings_report_query_peak_bytes": 551977,
+    "holder_count_query_peak_bytes": 138752
+  },
+  "limits": {
+    "earnings_forecast_page_ms": 2000,
+    "earnings_forecast_security_ms": 2000,
+    "earnings_forecast_detail_ms": 2000,
+    "earnings_forecast_range_ms": 2000,
+    "earnings_forecast_coverage_ms": 2000,
+    "earnings_forecast_unit_ms": 2000,
+    "earnings_quick_page_ms": 2000,
+    "earnings_quick_security_ms": 2000,
+    "earnings_quick_detail_ms": 2000,
+    "earnings_quick_range_ms": 2000,
+    "earnings_quick_coverage_ms": 2000,
+    "earnings_quick_unit_ms": 2000,
+    "earnings_disclosure_page_ms": 2000,
+    "earnings_disclosure_security_ms": 2000,
+    "earnings_disclosure_detail_ms": 2000,
+    "earnings_disclosure_range_ms": 2000,
+    "earnings_disclosure_coverage_ms": 2000,
+    "earnings_disclosure_unit_ms": 2000,
+    "earnings_report_page_ms": 2000,
+    "earnings_report_security_ms": 2000,
+    "earnings_report_detail_ms": 2000,
+    "earnings_report_range_ms": 2000,
+    "earnings_report_coverage_ms": 2000,
+    "earnings_report_unit_ms": 2000,
+    "holder_count_page_ms": 2000,
+    "holder_count_security_ms": 2000,
+    "holder_count_detail_ms": 2000,
+    "holder_count_range_ms": 2000,
+    "holder_count_coverage_ms": 2000,
+    "holder_count_unit_ms": 2000,
+    "earnings_forecast_allocated_bytes": 536870912,
+    "earnings_quick_allocated_bytes": 536870912,
+    "earnings_disclosure_allocated_bytes": 536870912,
+    "earnings_report_allocated_bytes": 536870912,
+    "holder_count_allocated_bytes": 536870912,
+    "earnings_forecast_import_seconds": 120,
+    "earnings_quick_import_seconds": 120,
+    "earnings_disclosure_import_seconds": 120,
+    "earnings_report_import_seconds": 120,
+    "holder_count_import_seconds": 120,
+    "earnings_forecast_query_peak_bytes": 33554432,
+    "earnings_quick_query_peak_bytes": 33554432,
+    "earnings_disclosure_query_peak_bytes": 33554432,
+    "earnings_report_query_peak_bytes": 33554432,
+    "holder_count_query_peak_bytes": 33554432
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "independent_service": true,
+    "rows_per_table": 100000,
+    "cache": "first unforced, four warm; maximum conservatively bounds P95",
+    "source": "one normalized live 10000-request row per entity; 5000 securities and 20 synthetic periods"
+  },
+  "reviewed_tradeoffs": "结构化列与证券/日期索引；前十大为汇总而非名单。预告正文随200条页读取，最大文本32768字符。覆盖以200条流式读取，32MiB预算是单查询Python受测分配。重复/修订测一个完整市场5000行或一个证券20统计日，非全表重复吞吐。放大实验不代表生产全市场历史覆盖，不能推断冷磁盘延迟或完整进程内存上限。",
+  "details": {
+    "earnings_forecast": {
+      "samples": {
+        "page": {
+          "milliseconds": [
+            8.813799999188632,
+            8.886799972970039,
+            8.039499982260168,
+            7.652600004803389,
+            8.04649997735396
+          ],
+          "peak_bytes": [
+            167794,
+            168882,
+            166682,
+            166674,
+            166666
+          ]
+        },
+        "security": {
+          "milliseconds": [
+            1.7207000055350363,
+            1.213999988976866,
+            1.1910999892279506,
+            1.0791000095196068,
+            1.7571999924257398
+          ],
+          "peak_bytes": [
+            26614,
+            26406,
+            26398,
+            26390,
+            26382
+          ]
+        },
+        "detail": {
+          "milliseconds": [
+            0.7118000066839159,
+            0.5113999941386282,
+            0.43399998685345054,
+            0.423500023316592,
+            0.4214000073261559
+          ],
+          "peak_bytes": [
+            12151,
+            12119,
+            12111,
+            12095,
+            12087
+          ]
+        },
+        "range": {
+          "milliseconds": [
+            2.3370999842882156,
+            2.2455999860540032,
+            2.1778999944217503,
+            2.8667000005953014,
+            2.368299989029765
+          ],
+          "peak_bytes": [
+            48032,
+            37984,
+            37984,
+            37984,
+            37984
+          ]
+        },
+        "coverage": {
+          "milliseconds": [
+            575.6022999994457,
+            578.6457000067458,
+            562.8738999948837,
+            559.7678000340238,
+            561.1187000176869
+          ],
+          "peak_bytes": [
+            131268,
+            120044,
+            120044,
+            120044,
+            120044
+          ]
+        },
+        "unit": {
+          "milliseconds": [
+            187.4194000265561,
+            190.55030000163242,
+            186.98739999672398,
+            188.75269999261945,
+            189.15979994926602
+          ],
+          "peak_bytes": [
+            320583,
+            320111,
+            320111,
+            320111,
+            320111
+          ]
+        }
+      },
+      "all_rows_verified": 100000,
+      "rows": 100000,
+      "import_seconds": 3.906540900003165,
+      "allocated_bytes": 102367232,
+      "query_ms": {
+        "page": 8.886799972970039,
+        "security": 1.7571999924257398,
+        "detail": 0.7118000066839159,
+        "range": 2.8667000005953014,
+        "coverage": 578.6457000067458,
+        "unit": 190.55030000163242
+      },
+      "query_peak_bytes": {
+        "page": 168882,
+        "security": 26614,
+        "detail": 12151,
+        "range": 48032,
+        "coverage": 131268,
+        "unit": 320583
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 5000
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 52649,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 100001,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_forecast",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": "const",
+            "rows": 9314,
+            "filtered": 11.11,
+            "Extra": "Using index condition; Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 5000,
+      "revised_rows": 1
+    },
+    "earnings_quick": {
+      "samples": {
+        "page": {
+          "milliseconds": [
+            15.940400015097111,
+            22.862999991048127,
+            18.30689999042079,
+            19.88009997876361,
+            21.216999972239137
+          ],
+          "peak_bytes": [
+            421536,
+            423368,
+            420144,
+            420144,
+            420144
+          ]
+        },
+        "security": {
+          "milliseconds": [
+            2.833500038832426,
+            3.483499982394278,
+            3.2982000266201794,
+            2.3554000072181225,
+            1.94540002848953
+          ],
+          "peak_bytes": [
+            61128,
+            60992,
+            60992,
+            60992,
+            60992
+          ]
+        },
+        "detail": {
+          "milliseconds": [
+            0.7512999582104385,
+            0.611600000411272,
+            0.5879999953322113,
+            0.5756999598816037,
+            0.6068999646231532
+          ],
+          "peak_bytes": [
+            22766,
+            22742,
+            22742,
+            22742,
+            22742
+          ]
+        },
+        "range": {
+          "milliseconds": [
+            3.8594999932684004,
+            2.871100034099072,
+            2.417400013655424,
+            2.2357000270858407,
+            2.2036999580450356
+          ],
+          "peak_bytes": [
+            46776,
+            37960,
+            37960,
+            37960,
+            37960
+          ]
+        },
+        "coverage": {
+          "milliseconds": [
+            602.3472999804653,
+            630.023000005167,
+            633.6112999706529,
+            600.5859000142664,
+            582.3254000279121
+          ],
+          "peak_bytes": [
+            131244,
+            120020,
+            120020,
+            120020,
+            120020
+          ]
+        },
+        "unit": {
+          "milliseconds": [
+            355.44539999682456,
+            333.73449998907745,
+            421.46179999690503,
+            359.93239999515936,
+            367.95049998909235
+          ],
+          "peak_bytes": [
+            817442,
+            817026,
+            817026,
+            817026,
+            817026
+          ]
+        }
+      },
+      "all_rows_verified": 100000,
+      "rows": 100000,
+      "import_seconds": 5.25933279999299,
+      "allocated_bytes": 103464960,
+      "query_ms": {
+        "page": 22.862999991048127,
+        "security": 3.483499982394278,
+        "detail": 0.7512999582104385,
+        "range": 3.8594999932684004,
+        "coverage": 633.6112999706529,
+        "unit": 421.46179999690503
+      },
+      "query_peak_bytes": {
+        "page": 423368,
+        "security": 61128,
+        "detail": 22766,
+        "range": 46776,
+        "coverage": 131244,
+        "unit": 817442
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 5000
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 52461,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 100001,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_quick",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": "const",
+            "rows": 9314,
+            "filtered": 11.11,
+            "Extra": "Using index condition; Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 5000,
+      "revised_rows": 1
+    },
+    "earnings_disclosure": {
+      "samples": {
+        "page": {
+          "milliseconds": [
+            8.94910003989935,
+            9.00379999075085,
+            9.098100010305643,
+            8.618400024715811,
+            8.850699989125133
+          ],
+          "peak_bytes": [
+            122558,
+            121782,
+            121782,
+            121782,
+            121782
+          ]
+        },
+        "security": {
+          "milliseconds": [
+            1.595199981238693,
+            1.6971000004559755,
+            1.679799985140562,
+            1.281399978324771,
+            1.9292999641038477
+          ],
+          "peak_bytes": [
+            23336,
+            23200,
+            23200,
+            23200,
+            23200
+          ]
+        },
+        "detail": {
+          "milliseconds": [
+            0.7286999607458711,
+            0.624599982984364,
+            0.5539999692700803,
+            0.5234999698586762,
+            0.44220004929229617
+          ],
+          "peak_bytes": [
+            12556,
+            12532,
+            12532,
+            12532,
+            12532
+          ]
+        },
+        "range": {
+          "milliseconds": [
+            2.9773000278510153,
+            2.5044999783858657,
+            2.482099982444197,
+            3.00030002836138,
+            2.4379000533372164
+          ],
+          "peak_bytes": [
+            47432,
+            38000,
+            38000,
+            38000,
+            38000
+          ]
+        },
+        "coverage": {
+          "milliseconds": [
+            610.0970000261441,
+            601.9298000028357,
+            605.7630000286736,
+            580.5706999963149,
+            605.3136000409722
+          ],
+          "peak_bytes": [
+            131284,
+            120060,
+            120060,
+            120060,
+            120060
+          ]
+        },
+        "unit": {
+          "milliseconds": [
+            220.5936000100337,
+            205.70150000276044,
+            218.10960001312196,
+            191.96150003699586,
+            184.30670001544058
+          ],
+          "peak_bytes": [
+            229485,
+            229069,
+            229069,
+            229069,
+            229069
+          ]
+        }
+      },
+      "all_rows_verified": 100000,
+      "rows": 100000,
+      "import_seconds": 3.4307303999667056,
+      "allocated_bytes": 58654720,
+      "query_ms": {
+        "page": 9.098100010305643,
+        "security": 1.9292999641038477,
+        "detail": 0.7286999607458711,
+        "range": 3.00030002836138,
+        "coverage": 610.0970000261441,
+        "unit": 220.5936000100337
+      },
+      "query_peak_bytes": {
+        "page": 122558,
+        "security": 23336,
+        "detail": 12556,
+        "range": 47432,
+        "coverage": 131284,
+        "unit": 229485
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 5000
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 52735,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 100001,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_disclosure",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": "const",
+            "rows": 9314,
+            "filtered": 11.11,
+            "Extra": "Using index condition; Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 5000,
+      "revised_rows": 1
+    },
+    "earnings_report": {
+      "samples": {
+        "page": {
+          "milliseconds": [
+            11.299100005999207,
+            11.096500034909695,
+            11.174200044479221,
+            11.209200019948184,
+            10.546399978920817
+          ],
+          "peak_bytes": [
+            285334,
+            285326,
+            284334,
+            284334,
+            284334
+          ]
+        },
+        "security": {
+          "milliseconds": [
+            2.0003000390715897,
+            1.9242999842390418,
+            1.4639999717473984,
+            1.9503000075928867,
+            2.0395999890752137
+          ],
+          "peak_bytes": [
+            42045,
+            41909,
+            41909,
+            41909,
+            41909
+          ]
+        },
+        "detail": {
+          "milliseconds": [
+            1.1149000492878258,
+            0.6435000104829669,
+            0.5606000195257366,
+            0.6785999867133796,
+            0.5101999850012362
+          ],
+          "peak_bytes": [
+            15908,
+            15884,
+            15884,
+            15884,
+            15884
+          ]
+        },
+        "range": {
+          "milliseconds": [
+            2.6936000213027,
+            2.4394000065512955,
+            2.905599947553128,
+            2.2358999704010785,
+            2.271800010930747
+          ],
+          "peak_bytes": [
+            47568,
+            37968,
+            37968,
+            37968,
+            37968
+          ]
+        },
+        "coverage": {
+          "milliseconds": [
+            611.3200999679975,
+            602.8652000240982,
+            622.9678000090644,
+            639.6593000390567,
+            584.1426000115462
+          ],
+          "peak_bytes": [
+            131252,
+            120028,
+            120028,
+            120028,
+            120028
+          ]
+        },
+        "unit": {
+          "milliseconds": [
+            265.1348999934271,
+            307.08050000248477,
+            289.9096999899484,
+            288.52149995509535,
+            262.7807999961078
+          ],
+          "peak_bytes": [
+            551977,
+            551505,
+            551505,
+            551505,
+            551505
+          ]
+        }
+      },
+      "all_rows_verified": 100000,
+      "rows": 100000,
+      "import_seconds": 4.208442599978298,
+      "allocated_bytes": 76513280,
+      "query_ms": {
+        "page": 11.299100005999207,
+        "security": 2.0395999890752137,
+        "detail": 1.1149000492878258,
+        "range": 2.905599947553128,
+        "coverage": 639.6593000390567,
+        "unit": 307.08050000248477
+      },
+      "query_peak_bytes": {
+        "page": 285334,
+        "security": 42045,
+        "detail": 15908,
+        "range": 47568,
+        "coverage": 131252,
+        "unit": 551977
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 5000
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 50128,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 100001,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "earnings_report",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": "const",
+            "rows": 9314,
+            "filtered": 11.11,
+            "Extra": "Using index condition; Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 5000,
+      "revised_rows": 1
+    },
+    "holder_count": {
+      "samples": {
+        "page": {
+          "milliseconds": [
+            7.952700019814074,
+            7.001899997703731,
+            7.312500034458935,
+            7.172699959482998,
+            6.558599998243153
+          ],
+          "peak_bytes": [
+            138752,
+            137808,
+            137808,
+            137808,
+            137808
+          ]
+        },
+        "security": {
+          "milliseconds": [
+            1.4571999781765044,
+            1.3435999862849712,
+            1.5435999957844615,
+            1.6752000083215535,
+            1.0315999970771372
+          ],
+          "peak_bytes": [
+            26762,
+            26626,
+            26626,
+            26626,
+            26626
+          ]
+        },
+        "detail": {
+          "milliseconds": [
+            0.4932999727316201,
+            0.7403999916277826,
+            0.5918000242672861,
+            0.4637999809347093,
+            0.43999997433274984
+          ],
+          "peak_bytes": [
+            14650,
+            14626,
+            14626,
+            14626,
+            14626
+          ]
+        },
+        "range": {
+          "milliseconds": [
+            2.2825999767519534,
+            2.2070000413805246,
+            2.565799979493022,
+            2.375099982600659,
+            2.40910000866279
+          ],
+          "peak_bytes": [
+            47656,
+            38000,
+            38000,
+            38000,
+            38000
+          ]
+        },
+        "coverage": {
+          "milliseconds": [
+            635.8197999652475,
+            635.3865999844857,
+            568.1944999960251,
+            593.0015000049025,
+            566.2905999924988
+          ],
+          "peak_bytes": [
+            131268,
+            120044,
+            120044,
+            120044,
+            120044
+          ]
+        },
+        "unit": {
+          "milliseconds": [
+            1.9740000134333968,
+            2.072300005238503,
+            1.324000011663884,
+            1.1612999951466918,
+            1.0688999900594354
+          ],
+          "peak_bytes": [
+            27098,
+            26626,
+            26626,
+            26626,
+            26626
+          ]
+        }
+      },
+      "all_rows_verified": 100000,
+      "rows": 100000,
+      "import_seconds": 3.8011830000323243,
+      "allocated_bytes": 61833216,
+      "query_ms": {
+        "page": 7.952700019814074,
+        "security": 1.6752000083215535,
+        "detail": 0.7403999916277826,
+        "range": 2.565799979493022,
+        "coverage": 635.8197999652475,
+        "unit": 2.072300005238503
+      },
+      "query_peak_bytes": {
+        "page": 138752,
+        "security": 26762,
+        "detail": 14650,
+        "range": 47656,
+        "coverage": 131268,
+        "unit": 27098
+      },
+      "returned": {
+        "page": 200,
+        "security": 20,
+        "detail": 1,
+        "range": 200,
+        "coverage": 100000,
+        "unit": 20
+      },
+      "explain": {
+        "page": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "ix_date",
+            "key_len": "78",
+            "ref": null,
+            "rows": 200,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "security": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Backward index scan"
+          }
+        ],
+        "detail": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "const",
+            "possible_keys": "PRIMARY",
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": "const",
+            "rows": 1,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "range": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "range",
+            "possible_keys": "ix_security_date,ix_date",
+            "key": "ix_date",
+            "key_len": "3",
+            "ref": null,
+            "rows": 45476,
+            "filtered": 100.0,
+            "Extra": "Using where; Backward index scan; Using index"
+          }
+        ],
+        "coverage": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "index",
+            "possible_keys": null,
+            "key": "PRIMARY",
+            "key_len": "64",
+            "ref": null,
+            "rows": 90952,
+            "filtered": 100.0,
+            "Extra": null
+          }
+        ],
+        "unit": [
+          {
+            "id": 1,
+            "select_type": "SIMPLE",
+            "table": "shareholder_count",
+            "partitions": null,
+            "type": "ref",
+            "possible_keys": "ix_security_date",
+            "key": "ix_security_date",
+            "key_len": "11",
+            "ref": "const",
+            "rows": 20,
+            "filtered": 100.0,
+            "Extra": "Using filesort"
+          }
+        ]
+      },
+      "repeated_business_dml": 0,
+      "repeated_rows": 20,
+      "revised_rows": 1
+    }
+  },
+  "representative_rows": {
+    "earnings_forecast": {
+      "unified_code": "600187.SH",
+      "name": "*ST国中",
+      "report_date": "2026-06-30",
+      "announcement_date": "2026-08-19",
+      "forecast_type": "预计扭亏",
+      "forecast_text": "预计公司2026年01-06月归属于母公司所有者的净利润为265万元至315万元，与上年同期相比变动幅度为114.47%至117.19%。"
+    },
+    "earnings_quick": {
+      "unified_code": "300124.SZ",
+      "name": "汇川技术",
+      "source_id": "9900012527",
+      "report_date": "2026-06-30",
+      "announcement_date": "2026-08-24",
+      "source_date": "2026-08-24",
+      "profit_basis": "071001",
+      "profit_scope": "033003",
+      "roe_scope": "033003",
+      "net_profit": "2809924100",
+      "roe": "7.69",
+      "eps": "1.04",
+      "assets": "74154849200",
+      "equity": "36783734800",
+      "comparison_value": "2968388046.74",
+      "previous_profit": "2968388046.74",
+      "previous_roe": "10.06",
+      "profit_change": "-5.338384",
+      "roe_change": "-23.55864811"
+    },
+    "earnings_disclosure": {
+      "unified_code": "300866.SZ",
+      "name": "安克创新",
+      "report_date": "2026-06-30",
+      "first_scheduled": "2026-08-31",
+      "changed_1": null,
+      "changed_2": null,
+      "changed_3": null,
+      "actual_date": "2026-08-31"
+    },
+    "earnings_report": {
+      "unified_code": "000001.SZ",
+      "name": "平安银行",
+      "report_date": "2026-06-30",
+      "announcement_date": "2026-08-15",
+      "roe": "5.22",
+      "previous_roe": "5.25",
+      "net_profit": "25696000000",
+      "previous_profit": "24870000000",
+      "revenue": "70617000000",
+      "previous_revenue": "69385000000",
+      "operating_cashflow": "215012000000",
+      "eps": "1.24"
+    },
+    "holder_count": {
+      "unified_code": "301660.SZ",
+      "name": "粤芯半导体",
+      "statistics_date": "2026-10-12",
+      "holders": 365463,
+      "average_float": "0",
+      "holder_change_pct": null,
+      "top_float_shares": null,
+      "top_float_pct": null,
+      "top_shares": null,
+      "top_pct": null,
+      "holder_change": null
+    }
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  },
+  "original_evidence": {
+    "path": "docs/evidence/tdx-performance-capacity-2026-11-05.json",
+    "sha256": "fec861bd4433c45109685c5495033eaf379b3fefcb20a7b122413086dc6e6362",
+    "bindings": {
+      "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+      "src/empire/features/performance/source.py": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e",
+      "src/empire/features/performance/collector.py": "b969decbc98a44051792089ccb09cbcd1be781304a592a21630b9ec1ebe8ed5a",
+      "src/empire/features/performance/dataset.py": "d2fbc2623147390f215f00db44dadd60fa49454faeab2c4ea038eeb6e3af9420",
+      "src/empire/features/performance/query.py": "6f0dcf0943b24737735543044d91cfac051a016b490bd89887d49fbe0460c2e6",
+      "scripts/performance_capacity.py": "1bef98555b66947927a19a38a737abbe26d011cf06f999df34c00864fa753efc",
+      "scripts/measure_tdx_performance.py": "59be9e1bfbb8c00f160076e44d0a3f018f5ef52fc9f7268d5be8450926857afd",
+      "scripts/performance_storage.py": "6e335affaba0dc6631e27a73f88bea279a0c4a9177fbf86aceeca945c0d878a6",
+      "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+      "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+      "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+      "sql/business-schema.json": "dec4b14f67b1f055dabc17818669844b94daf4584408754b17c381e77cb9e6ca",
+      "docs/evidence/tdx-performance-probe-2026-10-12.json": "f96b922a58f4e0e5ccbc989843c5f0d6f6efd6dc50f2f3c3eb34f828b34cbfcf"
+    },
+    "note": "No measurements repeated or numbers changed. Reconstructed pre-forex inputs match original hashes; complete DDL/shapes/ownership identical for measured table scope. Only two disjoint forex tables added."
+  },
+  "schema_objects": {
+    "earnings_disclosure": {
+      "ddl_sha256": "1771839ddd0292b4329595983d6d9721796cfdf6a269d5bb763103b7f428bc08",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "report_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "first_scheduled": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "changed_1": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "changed_2": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "changed_3": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "actual_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "report_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "earnings_disclosure.tdx_unit": {
+            "tables": [
+              "earnings_disclosure"
+            ],
+            "primary": "earnings_disclosure"
+          }
+        }
+      }
+    },
+    "earnings_forecast": {
+      "ddl_sha256": "9033426446f7513e0f215cb8ac95e366664813d63dc47a50e2119358925a7a32",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "report_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "announcement_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "forecast_type": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "forecast_text": {
+            "type": "mediumtext",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "report_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_type_date": {
+            "columns": [
+              "forecast_type",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "earnings_forecast.tdx_unit": {
+            "tables": [
+              "earnings_forecast"
+            ],
+            "primary": "earnings_forecast"
+          }
+        }
+      }
+    },
+    "earnings_quick": {
+      "ddl_sha256": "da4209d6e798076d8c9c8d738906c03cbfaf3b517867fdbb88c81fe5da227bb5",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "source_id": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "report_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "announcement_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "source_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "profit_basis": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "profit_scope": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "roe_scope": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "net_profit": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "roe": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "eps": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "assets": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "equity": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "comparison_value": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_profit": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_roe": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "profit_change": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "roe_change": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "report_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_source_report": {
+            "columns": [
+              "source_id",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "earnings_quick.tdx_unit": {
+            "tables": [
+              "earnings_quick"
+            ],
+            "primary": "earnings_quick"
+          }
+        }
+      }
+    },
+    "earnings_report": {
+      "ddl_sha256": "5bd130574ecbbbccce57329cb37608257096f4952c82f91af26012d4daa443a5",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "report_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "announcement_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "roe": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_roe": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "net_profit": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_profit": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "revenue": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "previous_revenue": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "operating_cashflow": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "eps": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "report_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "report_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {}
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "earnings_report.tdx_unit": {
+            "tables": [
+              "earnings_report"
+            ],
+            "primary": "earnings_report"
+          }
+        }
+      }
+    },
+    "shareholder_count": {
+      "ddl_sha256": "9dfed8ebc1bffb3dc204ad0524871babe181a2de2fe1e176ed33af9c36928f18",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "statistics_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "holders": {
+            "type": "bigint",
+            "nullable": true,
+            "unsigned": false
+          },
+          "average_float": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "holder_change_pct": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "top_float_shares": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "top_float_pct": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "top_shares": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "top_pct": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "holder_change": {
+            "type": "bigint",
+            "nullable": true,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "statistics_date",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "statistics_date",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_holders": "((holdersisnull)or(holders>=0))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "holder_count.tdx_unit": {
+            "tables": [
+              "shareholder_count"
+            ],
+            "primary": "shareholder_count"
+          }
+        }
+      }
+    }
+  }
+}

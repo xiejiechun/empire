@@ -34,6 +34,7 @@ class Publisher:
 
     async def advance_checkpoint(self, *, expected_revision, cursor, **kw):
         self.state = dict(revision=expected_revision + 1, cursor=copy.deepcopy(cursor))
+        return copy.deepcopy(self.state)
 
 
 def configured(cls):
@@ -41,6 +42,7 @@ def configured(cls):
     c.ingest = Publisher()
     c.query = SimpleNamespace(securities=AsyncMock(return_value=[STOCK, dict(market='SH', code='688111', name='第二证券')]))
     c.query.issue_detail_candidates = AsyncMock(return_value=[])
+    c.query.dividend_maintenance = AsyncMock(return_value=({}, {}))
     c.query.dividend_history_proofs = AsyncMock(return_value={
         'SH:688110': '2026-01-01T00:00:00+00:00', 'SH:688111': '2026-01-01T00:00:00+00:00'})
     c.query.verified_issue_candidates = AsyncMock(return_value=[])

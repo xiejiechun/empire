@@ -16,6 +16,7 @@ from cryptography.hazmat.primitives.asymmetric import padding, rsa
 
 from empire.contracts.download import ResponsePolicy
 from empire.contracts.native_stream import StreamTarget
+from empire.contracts.request_cost import request_kind
 from empire.sources.yuanhang_identity import GuestIdentity
 
 AUTH_URL = 'http://auth.10jqka.com.cn/verify2'
@@ -61,6 +62,14 @@ class GuestSession:
     mac64: str = field(repr=False)
     servers: tuple[StreamTarget, ...]
     proxy_code: str | None = None
+    server_groups: tuple[tuple[str, tuple[StreamTarget, ...]], ...] = ()
+
+    def targets_for(self, service: str) -> tuple[StreamTarget, ...]:
+        """Select only the service advertised by this authenticated directory."""
+        targets = dict(self.server_groups).get(service, ())
+        if not targets:
+            raise ValueError('Yuanhang authenticated service is unavailable')
+        return targets
 
 
 def _token(value, maximum=4096):
@@ -96,12 +105,13 @@ async def _request_item(http, project_id, stage, params=None, *, proxy_code=None
     options = dict(allowed_domains=('10jqka.com.cn',), policy=AUTH_POLICY,
                    max_retries=0, max_redirects=0, total_timeout=30,
                    project_id=project_id, sensitive=True, proxy_code=proxy_code)
-    if params is None:
-        response = await http.request('GET', AUTH_URL + '?reqtype=do_rsa&type=get_pubkey', **options)
-    else:
-        response = await http.request('POST', AUTH_URL,
-            content=urlencode(params, encoding='gbk').encode('ascii'),
-            headers={'Content-Type': 'application/x-www-form-urlencoded'}, **options)
+    with request_kind('authentication'):
+        if params is None:
+            response = await http.request('GET', AUTH_URL + '?reqtype=do_rsa&type=get_pubkey', **options)
+        else:
+            response = await http.request('POST', AUTH_URL,
+                content=urlencode(params, encoding='gbk').encode('ascii'),
+                headers={'Content-Type': 'application/x-www-form-urlencoded'}, **options)
     try:
         return _item(response.content, stage)
     finally:
@@ -131,14 +141,21 @@ def _passport(item, user_id, device, proxy_code=None):
         directory = attributes.get('M_hqdns', '').split(',')
         if not 1 <= len(directory) <= 64:
             raise ValueError
-        servers = []
+        servers, groups = [], {}
         for address in directory:
             fields = address.split(':')
             if len(fields) < 2:
                 raise ValueError
-            servers.append(StreamTarget(fields[0], int(fields[1]), 'https://10jqka.com.cn/',
-                                         ('10jqka.com.cn', '123ths.com')))
-        return GuestSession(user_id, passport64, device.mac64, tuple(dict.fromkeys(servers)), proxy_code)
+            target = StreamTarget(fields[0], int(fields[1]), 'https://10jqka.com.cn/',
+                                  ('10jqka.com.cn', '123ths.com'))
+            servers.append(target)
+            tags = fields[2].split(';') if len(fields) > 2 else []
+            if len(tags) > 64 or any(tag and not re.fullmatch(r'[A-Za-z0-9_]{1,32}', tag) for tag in tags):
+                raise ValueError
+            for tag in set(tags) - {''}:
+                groups.setdefault(tag, []).append(target)
+        return GuestSession(user_id, passport64, device.mac64, tuple(dict.fromkeys(servers)), proxy_code,
+                            tuple((tag, tuple(dict.fromkeys(targets))) for tag, targets in sorted(groups.items())))
     except (ValueError, UnicodeError, struct.error):
         raise AuthenticationError('passport-format') from None
 

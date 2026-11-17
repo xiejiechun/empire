@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "kind": "retained_summary_of_prior_read_only_audit",
+  "audit_date_china": "2026-11-16",
+  "evidence_copied_date_china": "2026-11-17",
+  "catalog_sha256": "fb9db6ec5b263a40d4e959410d49b0a06c1f78482c6a863dbaba438865a06061",
+  "prior_report_sha256": "58bc74b371c643d2baa91316218481573e9616fbf43da00e5dc636c93110241d",
+  "summary": {
+    "checked_at": "2026-11-16T22:49:05.150743",
+    "pool_count": 1741,
+    "fund_directory_matches": 1741,
+    "full_history_count": 1741,
+    "total_history_rows": 1603527,
+    "normal_nav_count": 1715,
+    "income_count": 26,
+    "no_history_count": 0,
+    "unconfirmed_count": 0,
+    "missing_primary_rows": 2,
+    "missing_primary_funds": 2,
+    "missing_secondary_rows": 35,
+    "missing_secondary_funds": 30,
+    "missing_growth_rows": 6563,
+    "missing_growth_funds": 1715,
+    "date_range": [
+      "2004-12-30",
+      "2026-11-16"
+    ]
+  },
+  "method": [
+    "Verified current SQL catalog through formal CatalogQuery; matched all codes in Eastmoney fund directory.",
+    "Fetched all source-declared date/core-value histories through official mobile endpoint; compared website first, last and empty-tail pages.",
+    "All requests used project shared downloader, proxy/rate/resource boundaries. No SQL business writes."
+  ],
+  "source_endpoints": [
+    "https://api.fund.eastmoney.com/f10/lsjz",
+    "https://fundmobapi.eastmoney.com/FundMNewApi/FundMNHisNetList"
+  ],
+  "missing_value_verification": {
+    "funds_checked": 31,
+    "field_checks": 38,
+    "statuses": {
+      "source_missing": 38
+    },
+    "unit_nav_examples": [
+      {
+        "code": "511120.SH",
+        "name": "科创债ETF广发",
+        "date": "2025-07-10",
+        "field": "DWJZ",
+        "mobile_value": "--",
+        "web_value": "",
+        "web_also_missing": true
+      },
+      {
+        "code": "551900.SH",
+        "name": "科创债ETF招商",
+        "date": "2025-07-10",
+        "field": "DWJZ",
+        "mobile_value": "--",
+        "web_value": "",
+        "web_also_missing": true
+      }
+    ]
+  },
+  "limitations": [
+    "Historical purchase/redemption status and dividend-text columns were not enumerated for every web page.",
+    "Full source-returned history does not prove the source never omitted or misreported a date.",
+    "Successful raw bodies are not retained. No SQL business import, schema change, formal collector or client change.",
+    "Income classification describes inspected source display; historical income denomination changes have not been validated.",
+    "This retained summary does not prove future collector, archive, full seven-column history, exchange share coverage or production initialization."
+  ],
+  "raw_successful_bodies_retained": false,
+  "new_source_requests_for_this_summary": 0,
+  "sql_business_writes": 0
+}

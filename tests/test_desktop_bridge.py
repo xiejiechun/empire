@@ -16,6 +16,54 @@ from empire.plugins.collection.management_query import event_page, task_page
 
 
 @pytest.mark.asyncio
+async def test_review_market_strict_date_read_dispatch_and_decimal_wire():
+    from decimal import Decimal
+    from unittest.mock import AsyncMock
+
+    from empire.desktop_bridge.operations import execute
+    from empire.desktop_bridge.schemas import READS, WRITES, ReviewMarket
+
+    assert READS['review.market'] is ReviewMarket and 'review.market' not in WRITES
+    assert ReviewMarket.model_validate({'date': '2026-10-26'}).date == '2026-10-26'
+    for params in ({'date': '2026-02-30'}, {'date': '0000-01-01'}, {'date': 20261116},
+                   {'date': '2026-10-26', 'sql': 'SELECT 1'}):
+        with pytest.raises(ValidationError):
+            ReviewMarket.model_validate(params)
+    service = SimpleNamespace(market=AsyncMock(return_value={'amount_yuan': Decimal('123.25')}))
+    registry = SimpleNamespace(get=lambda key: service if key == 'market.review.query' else None)
+    runtime = SimpleNamespace(manager=SimpleNamespace(registry=registry))
+    assert await execute(runtime, 'review.market', {'date': '2026-10-26'}) == {'amount_yuan': '123.25'}
+    service.market.assert_awaited_once_with(date='2026-10-26')
+
+
+@pytest.mark.asyncio
+async def test_observation_live_strict_bounded_schema_and_explicit_dispatch():
+    from decimal import Decimal
+    from unittest.mock import AsyncMock
+
+    from empire.desktop_bridge.operations import execute
+    from empire.desktop_bridge.schemas import READS, ObservationLive
+
+    basis = dict(mode='sum', days=60, ready=True, total='400.12345678901234567890')
+    params = dict(date='2026-11-11', basis={'fx_USDCNH': basis})
+    assert READS['observation.live'] is ObservationLive
+    assert ObservationLive.model_validate(params).model_dump() == params
+    for bad in [dict(basis={'fx_UNKNOWN': basis}), dict(password='secret'),
+                dict(basis={'fx_USDCNH': {**basis, 'days': 61}}),
+                dict(basis={'fx_USDCNH': {**basis, 'ready': 1}}),
+                dict(basis={'fx_USDCNH': {**basis, 'total': 'NaN'}}),
+                dict(basis={'fx_USDCNH': {**basis, 'total': '1e999999'}})]:
+        with pytest.raises(ValidationError):
+            ObservationLive.model_validate(params | bad)
+    service = SimpleNamespace(live=AsyncMock(return_value={'price': Decimal('6.1234567890123')}))
+    runtime = SimpleNamespace(manager=SimpleNamespace(registry=SimpleNamespace(get=lambda _: service)))
+    assert await execute(runtime, 'observation.live', params) == {'price': '6.1234567890123'}
+    service.live.assert_awaited_once_with(**params)
+    with pytest.raises(ValueError, match='未知观察操作'):
+        await execute(runtime, 'observation.unknown', {})
+
+
+@pytest.mark.asyncio
 async def test_task_details_remain_available_when_archive_service_is_disabled():
     from unittest.mock import AsyncMock
 

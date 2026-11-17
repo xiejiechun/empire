@@ -115,6 +115,7 @@ async def test_pipeline_hot_cold_revision_stale_and_empty_rejection(pipeline):
             dml.append(statement)
 
     event.listen(q.mysql.engine, "before_cursor_execute", track)
+    event.listen(q.mysql.archive_engine, "before_cursor_execute", track)
     archive = manager.registry.get("archive.worker")
     mapping = IndustryMarginDataset()
     try:
@@ -166,6 +167,7 @@ async def test_pipeline_hot_cold_revision_stale_and_empty_rejection(pipeline):
         assert (await q.history("2016-01-04"))[0][2] == "201"
     finally:
         event.remove(q.mysql.engine, "before_cursor_execute", track)
+        event.remove(q.mysql.archive_engine, "before_cursor_execute", track)
 
 
 async def test_transaction_failure_commit_replay_content_corruption(pipeline, monkeypatch):

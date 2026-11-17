@@ -62,7 +62,7 @@ export function RecordTable({ rows, spec, onSelect, onNavigate, columns }: Previ
           render: (value: any, row: Data) => <span className={numberKinds.has(field.kind || "") ? "pv-number" : ""}
             title={field.key === "quantity" && row.quantity_scale != null && row.quantity_decimals != null
               ? `来源最小数值刻度约 ${Number(row.quantity_scale) * 10 ** -Number(row.quantity_decimals)} ${field.unit || ""}`
-              : display(value, field)}>{display(value, field)}</span>,
+              : display(value, { ...field, format: undefined }) + (field.format === "money" ? " 元" : field.format === "percent" ? "（来源小数）" : "")}>{display(value, field)}</span>,
         })),
         ...(onSelect || spec.detailView ? [{ key: "action", title: "查看", width: onSelect && spec.detailView ? 210 : 116, fixed: "right" as const,
           render: (_: any, row: Data) => <>{onSelect && <Button type="link" size="small" onClick={() => onSelect(row)}>展开记录</Button>}

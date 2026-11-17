@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.listing_status.contract import DATASET, JOB, PROJECT, bounds, validate_rows
 from empire.features.listing_status.source import (
@@ -22,6 +23,7 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
+from empire.plugins.infra.tdx_maintenance import RecoveryStage
 
 
 class TdxListingStatusCollector:
@@ -34,6 +36,7 @@ class TdxListingStatusCollector:
         self.today = today or (lambda: datetime.now(CHINA).date())
         self.stats = dict(status='stopped', collected=0)
         self.request_retries = 2
+        self.recovery = RecoveryStage()
 
     async def start(self, context):
         self.http, self.ingest, self.query = context.get('http.fetch'), context.get('ingest.publish'), context.get('listing_status.query')
@@ -70,6 +73,7 @@ class TdxListingStatusCollector:
             return DeferredResponse(response, consume)
         return await consume()
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
         self.stats.update(completed_units=0, total_units=None)
         stage = 'planning'
@@ -92,9 +96,13 @@ class TdxListingStatusCollector:
                 for month in plan:
                     start, end = bounds(month, through)
                     day, rows, counts = start, [], []
-                    observed = datetime.now(UTC)
+                    self.recovery.begin([cursor['batch_id'], month], datetime.now(UTC))
+                    observed = self.recovery.started
                     dates = [(start + timedelta(days=i)).isoformat() for i in range((end-start).days+1)]
                     async def download(day, *, reservation):
+                        cached = self.recovery.get(day)
+                        if cached is not None:
+                            return cached
                         return await self.fetch(day, reservation=reservation, defer=True)
                     async with prefetch_units(self, dates, download, url=API_URL,
                             domains=('tdx.com.cn',), item_name='日') as reads:
@@ -104,11 +112,17 @@ class TdxListingStatusCollector:
                             self.stats.update(status='collecting', current_date=day.isoformat(), current_month=month,
                                               collected=cursor['collected'], pages=cursor['pages'], error='')
                             values, count = await read.resolve()
+                            self.recovery.put(dates[index], [values, count])
                             rows.extend(values)
                             counts.append(count)
                             if len(rows) > 5000:
+                                self.recovery.clear()
                                 raise ValueError('上市状态月份事件超限，断点保留')
-                    rows = validate_rows(rows, start, end)
+                    try:
+                        rows = validate_rows(rows, start, end)
+                    except ValueError:
+                        self.recovery.clear()
+                        raise
                     page = cursor['pages'] + 1
                     envelope = make_envelope(source='tdx', dataset=DATASET, job_key=JOB,
                         batch_id=cursor['batch_id'], run_id=cursor['batch_id'], business_key=month,
@@ -131,6 +145,7 @@ class TdxListingStatusCollector:
                                               cursor['batch_id'], cursor['pages']), retry_seconds=1)
             cursor = {**cursor, 'phase': 'complete'}
             await self.ingest.advance_checkpoint(job_key=JOB, expected_revision=state['revision'], cursor=cursor)
+            self.recovery.clear()
             self.stats.update(status='complete', error='')
             return cursor
         except asyncio.CancelledError:
@@ -143,6 +158,7 @@ class TdxListingStatusCollector:
             raise
 
     async def stop(self):
+        self.recovery.clear()
         self.stats['status'] = 'stopped'
 
     def health(self):

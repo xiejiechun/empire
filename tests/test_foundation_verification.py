@@ -61,6 +61,9 @@ def test_formal_datetime_precision_is_equivalent_but_changed_business_content_is
                   resumed_at=None, suspension_type='full_day', source_note='停牌1天', reason='事项')
     actual = dict(source, suspended_at='2026-10-19T09:30:00')
     verifier.same_suspensions([source], [actual])
+    another = dict(source, code='600000')
+    verifier.same_suspensions([source, another],
+                             [dict(reversed(list(another.items()))), dict(reversed(list(actual.items())))])
     for key, value in [('suspended_at', '2026-10-19T09:31:00'), ('name', 'changed'),
                        ('reason', 'other'), ('resumed_at', '2026-10-20T09:30:00')]:
         with pytest.raises(ValueError, match='集合或内容不同'):

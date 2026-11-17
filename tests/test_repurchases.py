@@ -40,6 +40,7 @@ def feed(rows, count=None):
 
 def collector(rows):
     item = RepurchaseCollector()
+    item.query = SimpleNamespace(refresh_plan=AsyncMock(return_value=None))
     item.ingest, item.records = MemoryIngest(), Diagnostics()
     async def request(method, url, **kw):
         assert method == 'GET' and url == URL and kw['allowed_domains'] == ('eastmoney.com',)

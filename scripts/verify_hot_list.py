@@ -255,7 +255,6 @@ def main():
             subject="hot-list",
             fixed_codes=("601139.SH", "000001.SZ"),
             minimum_random=30,
-            require_proxy=True,
         )
     )
     passed = asyncio.run(action)

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   Alert,
   Button,
@@ -14,6 +14,8 @@ import {
 import {
   ArrowRightOutlined,
   ClockCircleOutlined,
+  FundOutlined,
+  CalendarOutlined,
   FileTextOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -28,7 +30,11 @@ import Tasks from "./Tasks";
 import Records from "./Records";
 import Management from "./Management";
 import Help from "./Help";
+import ObservationCalendar from "./observation/ObservationCalendar";
+const DailyReview = lazy(() => import("./daily-review/DailyReview"));
+const observationPages = [["observation", "多指标观察日历"], ["market_review", "每日复盘"]];
 const destinations = [
+  ...observationPages,
   ["help", "说明文档"],
   ["tasks", "采集任务"],
   ["archived", "已归档任务"],
@@ -55,6 +61,7 @@ export default function App({
     [comfortable, setComfortable] = useState(false);
   const searchRef = useRef<any>(null);
   const commands = useCommands();
+  const observing = observationPages.some(([id]) => id === page);
   const { token } = theme.useToken();
   const counts = useQuery("tasks.list", { limit: 1 }, 15000, !!status.online);
   const archived = useQuery(
@@ -121,10 +128,11 @@ export default function App({
           <span className="muted">研究工作空间</span>
         </div>
         <nav className="global-navigation" aria-label="主导航">
-          <button aria-current="page" onClick={() => navigate("tasks")}>
+          <button aria-current={!observing ? "page" : undefined} onClick={() => navigate("tasks")}>
             <ClockCircleOutlined />
             采集管理
           </button>
+          <button aria-current={observing ? "page" : undefined} onClick={() => navigate("observation")}><FundOutlined />市场观察</button>
           <button onClick={() => navigate("help")}><QuestionCircleOutlined />说明文档</button>
         </nav>
         <div className="global-tools">
@@ -136,7 +144,7 @@ export default function App({
             <span>搜索功能</span>
             <kbd>Ctrl K</kbd>
           </button>
-          <Tag className="design-badge">采集管理</Tag>
+          <Tag className="design-badge">{observing ? "市场观察" : "采集管理"}</Tag>
           <Tooltip title={dark ? "切换浅色" : "切换深色"}>
             <Button
               type="text"
@@ -179,9 +187,9 @@ export default function App({
         </div>
       </header>
       <div className={`review-body ${collapsed ? "rail-mode" : ""}`}>
-        <aside className="context-sidebar">
+        <aside className="context-sidebar" aria-label={observing ? "市场观察菜单" : "采集管理菜单"}>
           <div className="sidebar-title">
-            <strong>采集管理</strong>
+            <strong>{observing ? "市场观察" : "采集管理"}</strong>
             <Button
               type="text"
               aria-label={collapsed ? "展开侧栏" : "收起侧栏"}
@@ -189,7 +197,13 @@ export default function App({
               onClick={() => setCollapsed(!collapsed)}
             />
           </div>
-          {!collapsed && (
+          {!collapsed && observing && (
+            <nav className="sidebar-scroll" aria-label="观察功能">
+              <div className="sidebar-section">观察工具</div>
+              {observationPages.map(([id, name]) => <button key={id} className={`context-item ${page === id ? "active" : ""}`} aria-current={page === id ? "page" : undefined} onClick={() => navigate(id)}>{id === "observation" ? <CalendarOutlined /> : <FileTextOutlined />}<span>{name}</span></button>)}
+            </nav>
+          )}
+          {!collapsed && !observing && (
             <div className="sidebar-scroll">
               <div className="sidebar-section">任务视图</div>
               {[
@@ -207,6 +221,7 @@ export default function App({
               ))}
               <div className="sidebar-section">运行与配置</div>
               {[
+                ["sites", "站点访问规则"],
                 ["exits", "采集出口"],
                 ["identities", "身份管理"],
                 ["resources", "共享资源"],
@@ -248,7 +263,9 @@ export default function App({
               onPage={navigate}
             />
           </div>
-          {!["tasks", "archived"].includes(page) && (
+          {page === "observation" && <div className="screen-container observation-container"><ObservationCalendar /></div>}
+          {page === "market_review" && <div className="screen-container observation-container"><Suspense fallback={<Spin />}><DailyReview /></Suspense></div>}
+          {!["tasks", "archived", "observation", "market_review"].includes(page) && (
             <div className="screen-container">
               <Management page={page} onNavigate={navigate} />
             </div>
@@ -314,7 +331,7 @@ export default function App({
               <button key={id} onClick={() => navigate(id)}>
                 <FileTextOutlined />
                 <span>{name}</span>
-                <small>采集管理</small>
+                <small>{observationPages.some(([pageId]) => pageId === id) ? "市场观察" : "采集管理"}</small>
                 <ArrowRightOutlined />
               </button>
             ))}

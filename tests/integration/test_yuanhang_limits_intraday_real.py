@@ -38,6 +38,7 @@ async def test_five_pools_redis_replay_without_archive_or_business_dml():
         await manager.start('collector.yuanhang_limits_limit_up_pool')
         mysql = manager.registry.get('mysql.store')
         event.listen(mysql.engine, 'before_cursor_execute', track)
+        event.listen(mysql.archive_engine, 'before_cursor_execute', track)
         q = manager.registry.get('yuanhang.limits.query')
         redis = manager.registry.get('redis.store')
         now = datetime.now(CHINA)
@@ -93,6 +94,7 @@ async def test_five_pools_redis_replay_without_archive_or_business_dml():
     finally:
         if mysql is not None:
             event.remove(mysql.engine, 'before_cursor_execute', track)
+            event.remove(mysql.archive_engine, 'before_cursor_execute', track)
         await manager.shutdown()
         client = create_client(cfg['redis'])
         prefix = cfg['redis']['namespace'] + ':'

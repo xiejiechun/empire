@@ -16,6 +16,7 @@ from empire.features.yuanhang_limits.contract import (
     TEXT_LIMITS,
     TIME_FIELDS,
     day_value,
+    needs_identity_lookup,
 )
 
 
@@ -74,7 +75,7 @@ def member(row, day, *, identities=None):
             raise ValueError('来源市场与板块身份冲突')
     elif market_id is None and board is not None:
         market, basis = board, 'source_board'
-    elif market_id is None and row['market_type'] == 'HS' and (identities or {}).get(row['code']):
+    elif needs_identity_lookup(market_id, row['market_type']) and (identities or {}).get(row['code']):
         identity = identities[row['code']]
         symbol, basis = identity if isinstance(identity, tuple) else (identity, 'pool_history')
         market, code = split_unified_code(symbol)
@@ -105,6 +106,11 @@ def member(row, day, *, identities=None):
     for key in TIME_FIELDS:
         value = row[key]
         if value is not None:
+            # Observed invalid optional source value, retained losslessly and
+            # displayed as invalid. It is never treated as an event timestamp.
+            if value == '-60':
+                result[key] = -60
+                continue
             if not isinstance(value, str) or not value.isascii() or not value.isdigit():
                 raise ValueError(f'{key}：非法来源秒时间')
             value = int(value)

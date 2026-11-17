@@ -26,6 +26,8 @@ async def test_optional_freshness_proof_preserves_sql_fallback(monkeypatch, sql_
         reader.side_effect = ConnectionError('private diagnostic')
     monkeypatch.setattr('empire.plugins.pipeline.fingerprints.FingerprintCache.peek', reader)
     plugin = CapitalDataPlugin('dividends')
+    plugin.dividend_state = AsyncMock(return_value={'manifest': {'period_scope_hash': digest(['2026-09-30']), 'periods': {
+        '2026-09-30': dict(count=1, digest='a' * 64, observed_at=now.isoformat())}}})
     plugin.mysql = SimpleNamespace(read=AsyncMock(return_value=(actual, True, sql_recent, 'matched', observed)))
     store = SimpleNamespace(prefix='test', client=None)
     plugin.context = SimpleNamespace(optional=lambda _: None if proof_state == 'offline' else store)

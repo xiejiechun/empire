@@ -8,6 +8,9 @@ from pathlib import Path
 from urllib.parse import unquote
 
 EXPECTED_TABLES = {
+    'etf_daily_share', 'etf_share_day', 'etf_daily_nav', 'etf_nav_year',
+    'fx_daily_price', 'fx_price_year',
+    "graymarket_day", "graymarket_daily",
     'industry_margin_day', 'industry_margin_daily',
     'market_margin_series', 'market_margin_daily',
     'margin_security', 'margin_daily',
@@ -28,8 +31,9 @@ EXPECTED_TABLES = {
     'security_listing_event',
     'stock_listing',
     'security_name_change', 'security_st_event',
-    'industry', 'industry_member', 'stock_index', 'stock_index_member',
-    'index_daily_price', 'index_price_year',
+    'industry', 'industry_member', 'yuanhang_index', 'ths_index_member_state', 'ths_index_member',
+    'yuanhang_index_daily_price', 'yuanhang_index_price_year',
+    'yuanhang_etf', 'yuanhang_etf_daily_price', 'yuanhang_etf_price_year',
     "stock", "finance_news", "trade_calendar", "suspension_event", "suspension_source_date", "income_statement", "balance_statement", "cashflow_statement",
     "collection_state", "app_setting", "dividend_plan", "additional_issue", "rights_issue",
 }

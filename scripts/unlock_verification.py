@@ -167,6 +167,15 @@ async def verify_scope(manager, selection, args, report):
             strict_proxy_verified=strict_proxy(routes, len(result['responses'])), random_samples_complete=not industry)
         result['preparation'] = [dict(criterion=v.criterion, status=v.status, measured=v.measured, blocking=v.blocking)
                                  for v in await query.preparation_check()]
+        if getattr(args, 'verify_maintenance', False) and not industry:
+            # Initial complete sets have already been compared above. Restore
+            # observers that deliberately reject duplicate first-round reads.
+            http.request, ingest.publish_page = original_request, original_publish
+            again = await collector.execute(start_month=args.months[-1], end_month=args.months[-1],
+                baseline_revision=await collector.checkpoint_revision())
+            require(await store.client.xlen(store.stream) == 0, '维护消息未清队')
+            result['maintenance'] = dict(network_costs=again['network_costs'],
+                reused_months=collector.stats['reused_months'], pending=0)
     finally:
         http.request, ingest.publish_page = original_request, original_publish
         ROUTE_COUNTS.reset(tokens[2])
@@ -176,6 +185,7 @@ async def verify_scope(manager, selection, args, report):
 
 def main(family, argv=None):
     parser = verification.parser(__doc__)
+    parser.add_argument('--verify-maintenance', action='store_true')
     parser.add_argument('--months', nargs='+', default=['1990-01-01', '1996-05-01', '2020-01-01',
         '2020-02-01', '2025-10-01', '2027-12-01'])
     parser.set_defaults(family=family, **({'random_count': 0} if family == 'industries' else {}))

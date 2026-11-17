@@ -1,13 +1,15 @@
 """Bounded SQL browsing; optional cache evidence is used only by collection planning."""
 from datetime import datetime
 
-from sqlalchemy import text
+from sqlalchemy import bindparam, text
 
 from empire.contracts.plugin import PluginManifest
 from empire.contracts.security import split_unified_code
 from empire.core.time import CHINA
 from empire.features.calendar.api import read_trade_day_cutoff
 from empire.features.yuanhang_limits.contract import (
+    FILTER,
+    POOL_CONTRACT_VERSION,
     SOURCE,
     TABLE_COLUMNS,
     day_value,
@@ -27,6 +29,14 @@ from empire.plugins.pipeline.fingerprints import FingerprintCache
 def page_limit(value, maximum=200):
     if type(value) is not int or not 1 <= value <= maximum:
         raise ValueError('涨停分析查询条数超界')
+
+
+def pool_result(head, rows, following):
+    total = head['source_total'] if head else None
+    scope = '含ST' if head and head['filter_text'] == FILTER else '旧口径，未补充ST'
+    message = (f'来源池共{total}只（{scope}）；下方本页条数仅为分页数量。'
+               if head else '未采集该日期池')
+    return dict(head=dict(head) if head else None, rows=rows, next=following, total=total, message=message)
 
 
 class LimitQuery:
@@ -98,14 +108,13 @@ class LimitQuery:
                     identity=('unified_code',), after=after or None, limit=limit,
                 )
                 head = read_pool_head(conn, day, pool)
-                return dict(head=dict(head) if head else None, rows=rows, next=cursor)
+                return pool_result(head, rows, cursor)
             # Decimal values remain Decimal in SQL browsing; no lossy float cast.
             rows = [dict(r) for r in conn.execute(text('SELECT * FROM yuanhang_limit_member '
                 'WHERE trade_date=:day AND pool_type=:pool AND unified_code>:after '
                 'ORDER BY unified_code LIMIT :n'), dict(day=day, pool=pool, after=after, n=limit + 1)).mappings()]
             head = read_pool_head(conn, day, pool)
-            return dict(head=dict(head) if head else None, rows=rows[:limit],
-                        next=rows[limit - 1]['unified_code'] if len(rows) > limit else None)
+            return pool_result(head, rows[:limit], rows[limit - 1]['unified_code'] if len(rows) > limit else None)
         return await self.read(operation)
 
     async def history(self, code, start, end, *, after=None, limit=500):
@@ -185,6 +194,8 @@ class LimitQuery:
             head = read_pool_head(conn, day, pool)
             if head is None:
                 return dict(complete=False, reason='未归档日期池')
+            if head['filter_text'] != FILTER or head['contract_version'] != POOL_CONTRACT_VERSION:
+                return dict(complete=False, reason='旧口径未补充ST，等待完整池补采', count=head['source_total'])
             unit = dict(trade_date=day, pool_type=pool, filter=head['filter_text'],
                         source_total=head['source_total'], rows=read_members(conn, day, pool))
             proof = pool_proof(pool_payload(unit))
@@ -193,14 +204,16 @@ class LimitQuery:
                         count=len(unit['rows']))
         return await self.read(operation)
 
-    async def collection_plan(self, pool, *, force=False, exclude=(), through=None, scan_after=None, scope='all'):
+    async def collection_plan(self, pool, *, force=False, exclude=(), through=None, scan_after=None, scope='all', calendar_cache=None):
         if pool == 'reason':
             # Reason planning has a different ownership/grain; implemented in its
             # own module rather than embedding cross-pool SQL in the collector.
             from empire.features.yuanhang_limits.reason_planning import reason_plan
-            return await reason_plan(self, force=force, exclude=exclude, through=through, scan_after=scan_after, scope=scope)
+            return await reason_plan(self, force=force, exclude=exclude, through=through, scan_after=scan_after,
+                                     scope=scope, calendar_cache=calendar_cache)
         pool_value(pool)
         now = datetime.now(CHINA)
+        calendar_cache = {} if calendar_cache is None else calendar_cache
         if scope == 'today':
             from empire.features.yuanhang_limits.close_refresh import today_plan
             return await today_plan(self, now, exclude=exclude)
@@ -209,21 +222,39 @@ class LimitQuery:
             if cutoff is None:
                 raise ValueError(message)
             endpoint = min(cutoff.date().isoformat(), through) if through else cutoff.date().isoformat()
-            days = [(r[0].isoformat(), r[1]) for r in conn.execute(text('SELECT trade_date,is_trade '
-                'FROM trade_calendar WHERE trade_date BETWEEN :first AND :last ORDER BY trade_date'),
-                dict(first='1990-12-19', last=endpoint))]
-            if not days or days[0][0] != '1990-12-19':
-                raise ValueError('全历史规划缺少正式日历起点')
-            trades = calendar_dates(days, endpoint)
-            heads = [dict(r) for r in conn.execute(text('SELECT trade_date,contract_version,content_sha256 '
-                'FROM yuanhang_limit_pool WHERE pool_type=:pool AND trade_date<=:last ORDER BY trade_date LIMIT 36601'),
-                dict(pool=pool, last=endpoint)).mappings()]
+            trades = calendar_cache.get(endpoint)
+            if trades is None:
+                days = [(r[0].isoformat(), r[1]) for r in conn.execute(text('SELECT trade_date,is_trade '
+                    'FROM trade_calendar WHERE trade_date BETWEEN :first AND :last ORDER BY trade_date'),
+                    dict(first='1990-12-19', last=endpoint))]
+                trades = calendar_dates(days, endpoint)
+                calendar_cache[endpoint] = trades
+            if scope == 'backfill':
+                first_recent = trades[-min(10, len(trades))]
+                statement = text('SELECT c.trade_date,COUNT(*) OVER() AS missing FROM trade_calendar c '
+                    'LEFT JOIN yuanhang_limit_pool p ON p.trade_date=c.trade_date AND p.pool_type=:pool '
+                    'AND p.contract_version=:contract AND p.filter_text=:filter '
+                    "WHERE c.trade_date>='1990-12-19' AND c.trade_date<:recent AND c.is_trade=1 "
+                    'AND p.trade_date IS NULL AND c.trade_date NOT IN :exclude '
+                    'ORDER BY c.trade_date LIMIT 64').bindparams(bindparam('exclude', expanding=True))
+                rows = conn.execute(statement, dict(pool=pool, contract=POOL_CONTRACT_VERSION,
+                    filter=FILTER, recent=first_recent, exclude=list(exclude))).mappings().all()
+                return dict(units=[r['trade_date'].isoformat() for r in rows], cutoff=endpoint,
+                            remaining=int(rows[0]['missing']) - len(rows) if rows else 0)
+            first = trades[-10] if len(trades) >= 10 and scope == 'recent' else trades[0]
+            heads = [dict(r) for r in conn.execute(text('SELECT trade_date,filter_text,contract_version,content_sha256 '
+                'FROM yuanhang_limit_pool WHERE pool_type=:pool AND trade_date BETWEEN :first AND :last ORDER BY trade_date LIMIT 36601'),
+                dict(pool=pool, first=first, last=endpoint)).mappings()]
             if len(heads) > 36600:
                 raise ValueError('日期池历史头超限')
-            versions = pool_versions(conn, self.namespace, pool)
+            versions = pool_versions(conn, self.namespace, pool, trades[-10:] if scope == 'recent' else None)
             return endpoint, trades, heads, versions
-        cutoff, trades, heads, versions = await self.read(operation)
-        coverage = {r['trade_date'].isoformat(): r for r in heads if r['contract_version'] == 1}
+        inputs = await self.read(operation)
+        if isinstance(inputs, dict):
+            return inputs
+        cutoff, trades, heads, versions = inputs
+        coverage = {r['trade_date'].isoformat(): r for r in heads
+                    if r['contract_version'] == POOL_CONTRACT_VERSION and r['filter_text'] == FILTER}
         verified = {d: datetime.fromisoformat(v).astimezone(CHINA).date().isoformat()
                     for d, v in versions.items() if d in coverage}
         if any(v > now.date().isoformat() for v in verified.values()):

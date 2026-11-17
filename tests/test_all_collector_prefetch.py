@@ -38,7 +38,7 @@ def adapter(family):
         c.ingest = Publisher()
         c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
         c.confirmation = SimpleNamespace(page_status=AsyncMock(return_value={'status': 'complete'}))
-        c.query = SimpleNamespace(securities=AsyncMock(return_value=stocks),
+        c.query = SimpleNamespace(collection_units=AsyncMock(return_value={}), securities=AsyncMock(return_value=stocks),
                                   plan=AsyncMock(return_value=(stocks, set(), {})))
         c.session = SimpleNamespace(headers=lambda _: {})
         body = listing_details() if family == 'listings' else financial_source(family)
@@ -209,10 +209,15 @@ async def test_real_adapters_prefetch_without_crossing_unvalidated_frontier(fami
 def test_every_registered_task_declares_its_actual_independent_download_capability():
     manager = build_manager(dict(redis={}, mysql={}, archive={}, ingest={}, rate_groups={}))
     tasks = manager.entries['collection.control'].plugin.definitions
-    serial = {'kaipanla-themes', 'eastmoney-repurchases', 'sina-news', 'ths-stocks', 'tdx-company-renames', 'tdx-security-renames', 'tdx-rights-issues', 'tdx-st-implementation', 'tdx-st-removal'}
-    assert len(tasks) == 55
+    serial = {'kaipanla-themes', 'eastmoney-repurchases', 'sina-news', 'ths-stocks', 'tdx-company-renames', 'tdx-security-renames', 'tdx-rights-issues', 'tdx-st-implementation', 'tdx-st-removal', 'ths-yuanhang-indices'}
+    serial.add('ths-yuanhang-etfs')
+    assert len(tasks) == 62
+    assert all(tasks[p].parallel_downloads for p in ('sse-etf-shares', 'szse-etf-shares', 'ttjj-etf-nav'))
+    assert tasks['ths-yuanhang-etf-prices'].parallel_downloads
+    assert tasks['ths-yuanhang-etf-latest'].parallel_downloads
     assert tasks['ths-fx-live'].parallel_downloads
     assert tasks['ths-fx-daily'].parallel_downloads
+    assert tasks['eastmoney-graymarket'].parallel_downloads
     assert tasks["ths-market-margin"].parallel_downloads
     assert tasks['ths-yuanhang-prices'].parallel_downloads
     assert tasks['ths-yuanhang-financial'].parallel_downloads

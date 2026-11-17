@@ -1,0 +1,357 @@
+{
+  "started": "2026-11-04T11:38:32.463552+00:00",
+  "scope": "6 complete date-pool units, current day all five pools plus fixed Nov3 limit-up counterexample; no reason source requests",
+  "filter": "HS,GEM2STAR,ST",
+  "samples": [
+    {
+      "pool": "limit_up_pool",
+      "day": "2026-11-03",
+      "count": 52,
+      "st": [
+        {
+          "code": "000838.SZ",
+          "name": "*ST发展"
+        },
+        {
+          "code": "300010.SZ",
+          "name": "ST豆神"
+        },
+        {
+          "code": "600537.SH",
+          "name": "*ST亿晶"
+        },
+        {
+          "code": "600734.SH",
+          "name": "*ST实达"
+        }
+      ],
+      "content_sha256": "fe53a1b0ac5189bb88ec3df905a2088ed3ef4cb3bcdc0a369018933cc116310c",
+      "requests": null,
+      "filter": "HS,GEM2STAR,ST"
+    },
+    {
+      "pool": "limit_up_pool",
+      "day": "2026-11-04",
+      "count": 119,
+      "st": [
+        {
+          "code": "600180.SH",
+          "name": "*ST瑞茂"
+        },
+        {
+          "code": "600537.SH",
+          "name": "*ST亿晶"
+        },
+        {
+          "code": "603595.SH",
+          "name": "ST东尼"
+        }
+      ],
+      "content_sha256": "9210dc8e83c6666187f9e5922705d576fb41e5076f12b21acb28af0482ea7117",
+      "requests": null,
+      "filter": "HS,GEM2STAR,ST"
+    },
+    {
+      "pool": "sprint_limit_up",
+      "day": "2026-11-04",
+      "count": 81,
+      "st": [
+        {
+          "code": "000821.SZ",
+          "name": "ST京机"
+        },
+        {
+          "code": "002055.SZ",
+          "name": "ST得润"
+        },
+        {
+          "code": "002217.SZ",
+          "name": "ST合力泰"
+        },
+        {
+          "code": "002667.SZ",
+          "name": "*ST威领"
+        },
+        {
+          "code": "002694.SZ",
+          "name": "*ST顾地"
+        },
+        {
+          "code": "002816.SZ",
+          "name": "*ST和科"
+        },
+        {
+          "code": "603377.SH",
+          "name": "ST东时"
+        }
+      ],
+      "content_sha256": "c0b37f7022b2481ba7d36ac94f9db0167c29f42339b0182ea0c74706c9eef604",
+      "requests": null,
+      "filter": "HS,GEM2STAR,ST"
+    },
+    {
+      "pool": "connect_broad_pool",
+      "day": "2026-11-04",
+      "count": 23,
+      "st": [
+        {
+          "code": "600537.SH",
+          "name": "*ST亿晶"
+        }
+      ],
+      "content_sha256": "762dbaef73e028842ac1ee9ec04ea89541962887b01401db4cad85eba90e9dd1",
+      "requests": null,
+      "filter": "HS,GEM2STAR,ST"
+    },
+    {
+      "pool": "open_limit_up_pool",
+      "day": "2026-11-04",
+      "count": 34,
+      "st": [
+        {
+          "code": "000821.SZ",
+          "name": "ST京机"
+        }
+      ],
+      "content_sha256": "c07302536e0686e3eedd831b5bf3e4e8111f1f55abb748839303cc082187709d",
+      "requests": null,
+      "filter": "HS,GEM2STAR,ST"
+    },
+    {
+      "pool": "limit_down_pool",
+      "day": "2026-11-04",
+      "count": 10,
+      "st": [],
+      "content_sha256": "3057eb02dc6af79327b4dfa90e4b77736a24ccb4692e166f1fc4e200df93e20a",
+      "requests": null,
+      "filter": "HS,GEM2STAR,ST"
+    }
+  ],
+  "passed": true,
+  "batches": [
+    {
+      "pool": "limit_up_pool",
+      "batch_id": "2ec74e1859814ec997c79bb14538c245",
+      "pages": 2,
+      "confirmation": {
+        "batch_id": "2ec74e1859814ec997c79bb14538c245",
+        "page": 2,
+        "status": "complete",
+        "row_count": 52,
+        "error_text": "",
+        "observed_at": "2026-11-04T11:38:32.993600+00:00"
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 171,
+        "requests": 3,
+        "response_bytes": 118123,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 2,
+        "total_units": 2,
+        "error": "",
+        "wire_bytes": 22854,
+        "queued_bytes": 27552,
+        "queued_messages": 2,
+        "storage": "mysql_archive",
+        "notice": "本轮仅核验最近10个交易日；历史缺口另轮补齐",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 25,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      }
+    },
+    {
+      "pool": "sprint_limit_up",
+      "batch_id": "8de5b7d67cd84d8b85b329d5f618033f",
+      "pages": 1,
+      "confirmation": {
+        "batch_id": "8de5b7d67cd84d8b85b329d5f618033f",
+        "page": 1,
+        "status": "complete",
+        "row_count": 81,
+        "error_text": "",
+        "observed_at": "2026-11-04T11:38:37.708415+00:00"
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 81,
+        "requests": 1,
+        "response_bytes": 48402,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 1,
+        "total_units": 1,
+        "error": "",
+        "wire_bytes": 5469,
+        "queued_bytes": 7144,
+        "queued_messages": 1,
+        "storage": "mysql_archive",
+        "notice": "本轮仅核验最近10个交易日；历史缺口另轮补齐",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 25,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      }
+    },
+    {
+      "pool": "connect_broad_pool",
+      "batch_id": "82c82936bcf4474f95a1abb12205216c",
+      "pages": 1,
+      "confirmation": {
+        "batch_id": "82c82936bcf4474f95a1abb12205216c",
+        "page": 1,
+        "status": "complete",
+        "row_count": 23,
+        "error_text": "",
+        "observed_at": "2026-11-04T11:38:39.380349+00:00"
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 23,
+        "requests": 1,
+        "response_bytes": 15982,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 1,
+        "total_units": 1,
+        "error": "",
+        "wire_bytes": 3582,
+        "queued_bytes": 4997,
+        "queued_messages": 1,
+        "storage": "mysql_archive",
+        "notice": "本轮仅核验最近10个交易日；历史缺口另轮补齐",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 25,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      }
+    },
+    {
+      "pool": "open_limit_up_pool",
+      "batch_id": "afe1e05f0c9a4602a85d4a186f3fff38",
+      "pages": 1,
+      "confirmation": {
+        "batch_id": "afe1e05f0c9a4602a85d4a186f3fff38",
+        "page": 1,
+        "status": "complete",
+        "row_count": 34,
+        "error_text": "",
+        "observed_at": "2026-11-04T11:38:40.986569+00:00"
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 34,
+        "requests": 1,
+        "response_bytes": 21312,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 1,
+        "total_units": 1,
+        "error": "",
+        "wire_bytes": 3407,
+        "queued_bytes": 4685,
+        "queued_messages": 1,
+        "storage": "mysql_archive",
+        "notice": "本轮仅核验最近10个交易日；历史缺口另轮补齐",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 25,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      }
+    },
+    {
+      "pool": "limit_down_pool",
+      "batch_id": "b101d9aa6ef94d999220ec40e8c90dac",
+      "pages": 1,
+      "confirmation": {
+        "batch_id": "b101d9aa6ef94d999220ec40e8c90dac",
+        "page": 1,
+        "status": "complete",
+        "row_count": 10,
+        "error_text": "",
+        "observed_at": "2026-11-04T11:38:43.174679+00:00"
+      },
+      "stats": {
+        "status": "complete",
+        "collected": 10,
+        "requests": 1,
+        "response_bytes": 6403,
+        "record_name": "条成员",
+        "unit_name": "个完整单元",
+        "completed_units": 1,
+        "total_units": 1,
+        "error": "",
+        "wire_bytes": 1231,
+        "queued_bytes": 2220,
+        "queued_messages": 1,
+        "storage": "mysql_archive",
+        "notice": "本轮仅核验最近10个交易日；历史缺口另轮补齐",
+        "download_item_name": "涨停分析完整单元",
+        "download_window_limit": 25,
+        "download_buffer_capacity": 168,
+        "download_concurrency": 0,
+        "download_pending_pages": 0,
+        "download_ready_pages": 0,
+        "download_failed_pages": 0,
+        "download_buffer_limited": false,
+        "download_wait_reason": "idle",
+        "remaining_units": 0
+      }
+    }
+  ],
+  "owned_pending": 0,
+  "shared_pending": 3091,
+  "routes": {
+    "proxy_requests": 7
+  },
+  "finished": "2026-11-04T11:38:45.101903+00:00",
+  "source_bindings": {
+    "src/empire/features/yuanhang_limits/bundle.py": "bc6103ffb381a88285ba031a0ca4f884bf9caa63476277929cc1da4ec5968a51",
+    "src/empire/features/yuanhang_limits/close_refresh.py": "ed1dbcfc7c6301e233ad299fa8eefbcb7cc99d746052c9803147ea965f0dfb6c",
+    "src/empire/features/yuanhang_limits/collector.py": "63b7e95b43e2c57e80cc7b644dba49ceed0da98d206919976ab8a691f3059a3d",
+    "src/empire/features/yuanhang_limits/contract.py": "4aa8ab420006711237abf1665932b7cead20e193d2fa13ca1662e3e24854c73e",
+    "src/empire/features/yuanhang_limits/dataset.py": "dfd92f4dc51be835dc43b4803f20b345f70997d605e9205eae2ddbbcb44f2e95",
+    "src/empire/features/yuanhang_limits/intraday.py": "7ce825c221a98e10ecc07818703b409cd9c636bad8922e56d4633a833bc0f054",
+    "src/empire/features/yuanhang_limits/intraday_query.py": "8affd0918bc366f9c15e794019c1789d91c0b93440f803cbb584b9ff8c225387",
+    "src/empire/features/yuanhang_limits/intraday_store.py": "c44bd919cc6db315691e45b88d346fc56faca53bb0ef70201fb80990a0eb01a7",
+    "src/empire/features/yuanhang_limits/model.py": "05c52c29a5b7141d983a420712a316483168a974e3575259fc0c29bf6bab1a00",
+    "src/empire/features/yuanhang_limits/planning.py": "32fc2ecf8030cb35bd69852e13e1e3382782686ef44ef4a626a025c3b3176e8a",
+    "src/empire/features/yuanhang_limits/preparation.py": "f78b11bfef72b5156857081681256dfc4ae3127d4acb315171f16b582dd10a38",
+    "src/empire/features/yuanhang_limits/proofs.py": "eb10ce77278826828195f3ca984f2b1dba3ef1e3cfbd87726a45ae9915fd0c0c",
+    "src/empire/features/yuanhang_limits/query.py": "ccff9accd6ddf7f91f2e31937660bc985295b5f9e8c54aec98e60d275ab317d7",
+    "src/empire/features/yuanhang_limits/reason_planning.py": "a86159e1d869a3005697a3bdee22106b6f147bc17e9360ce57cba56a93d1d3c7",
+    "src/empire/features/yuanhang_limits/repository.py": "c312fdb6657dae9a5a52778aefadf89c4e3c3880ac66748becf6d76574c22e5f",
+    "src/empire/features/yuanhang_limits/snapshot_order.py": "bc38cc690e3fb1313e757a5c229bc44dca0f277b8896813d807400e6746250f6",
+    "src/empire/features/yuanhang_limits/source.py": "57ed3249ead43e7526645e3ebe8ca23878b9708ee6a6511a05ae87dcea3c927e",
+    "src/empire/features/yuanhang_limits/storage.py": "69a0c03c5909fe34df282cc220cbf5800a2a846954b57056cfd006021b9a9345",
+    "src/empire/features/yuanhang_limits/ui.py": "1aeb2a206bd766d68d87ed90d32a8a4d9dc2889c82ac0a8855d0ca25f9d16e30",
+    "src/empire/features/yuanhang_limits/wire.py": "690eb35160c7bb0c20f827045b6774b424b4abf4a727242d0db76539351c5bde",
+    "src/empire/features/yuanhang_limits/__init__.py": "e3006b7256a8badc401baf585ab8f0122a6af5b9c351277e05f2d47d56760bdf"
+  }
+}

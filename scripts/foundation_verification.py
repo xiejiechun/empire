@@ -9,7 +9,7 @@ from empire.features.calendar.contract import FIRST_DATE as CALENDAR_FIRST
 from empire.features.calendar.contract import month_dates, month_start
 from empire.features.stocks.contract import normalize_sina_stock
 from empire.features.suspensions.contract import FIRST_DATE as SUSPENSION_FIRST
-from empire.features.suspensions.contract import event_identity, periods_between
+from empire.features.suspensions.contract import event_identity, periods_between, record_key
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
 
 
@@ -161,7 +161,7 @@ def same_suspensions(expected, actual):
         return {k: (datetime.fromisoformat(row[k]).replace(tzinfo=None).isoformat(timespec='minutes')
                     if k in ('suspended_at', 'resumed_at') and row[k] else row[k]) for k in row}
     left, right = [normalized(r) for r in expected], [normalized(r) for r in actual]
-    require(sorted(left, key=repr) == sorted(right, key=repr), '停复牌来源日正式查询集合或内容不同')
+    require(sorted(left, key=digest) == sorted(right, key=digest), '停复牌来源日正式查询集合或内容不同')
 
 
 async def verify_suspensions(manager, start, end, proxy_only, report):
@@ -209,7 +209,9 @@ async def verify_suspensions(manager, start, end, proxy_only, report):
     require(len(sources) == plan['expected_days'], '停复牌来源日期不完整')
     for day, rows in sources.items():
         actual = await query.list_events(start=day, end=day, limit=500)
-        same_suspensions(rows, actual)
+        expected = [dict(row, unified_code=row['code'] + '.' + row['market'],
+                         record_key=record_key(row), source_dates=[day]) for row in rows]
+        same_suspensions(expected, actual)
     require(bool(envelopes), '停复牌未入队')
     result.update(pipeline_verified=True, strict_proxy_verified=strict_proxy(counts, len(sources)),
                   acceptance_complete=True, pending=await require_drained(manager), outcome=outcome,

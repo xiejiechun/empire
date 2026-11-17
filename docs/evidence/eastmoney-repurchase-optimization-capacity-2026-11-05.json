@@ -1,0 +1,286 @@
+{
+  "run_id": "ae4d8d25d21c4612a2006b1dfc1932cf",
+  "mode": "verification",
+  "checked_at": "2026-11-04T20:48:18.318568+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\dist\\EmpireDesktop\\config.toml": "c0a143ecda599fb761d57441ddf361bb285b7186f9a37de4ec9df66847720afc",
+    "D:\\project\\empire\\build\\eastmoney-optimization-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce",
+    "D:\\project\\empire\\build\\eastmoney-optimization-repurchase-live-verified.json": "b6658637624dd101a4c6b81b2c1866d0287a1cc7af8d8e58bd1edd53be4d7563",
+    "D:\\project\\empire\\src\\empire\\features\\repurchases\\contract.py": "83fd184e9d089c53e38c2b109e196a6ee6901d7ae400fe1d38eb041c3feed6f2",
+    "D:\\project\\empire\\src\\empire\\features\\repurchases\\dataset.py": "be98c83ab1d91ce67f5daacb44259e4f7d41106a8dfad95cc3f8e6011ad9b6c2",
+    "D:\\project\\empire\\src\\empire\\features\\repurchases\\query.py": "49f3d5be73f75450d607f8ac0a8fc2694a593dcffd7103164524f880762cc639",
+    "D:\\project\\empire\\scripts\\measure_repurchases.py": "312e2b39ceee3d2ec1914e3a397857402952b2278a0ed3bcb9dbbe9b8a06b042",
+    "D:\\project\\empire\\scripts\\repurchase_capacity.py": "18f58faee1b3e26c338337dd05955fcf053046815baf788d0e1a64d9a98c80d8",
+    "D:\\project\\empire\\scripts\\repurchase_verification.py": "703cf62e1a464a4ac18e4f372c7d29e4121299016ce8d878f06f5beeb72bb64f",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "D:\\project\\empire\\scripts\\source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663"
+  },
+  "subject": "repurchases_capacity",
+  "source_sha256": "3612fdf8000b0f8839a226d3b5c636130609e94529874ebd354c852dcfde6341",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原回购50000行SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_ae4d8d25d21c4612a2006b1dfc1932cf_test",
+    "namespace": "empire:test:verify_ths:ae4d8d25d21c4612a2006b1dfc1932cf",
+    "run_id": "ae4d8d25d21c4612a2006b1dfc1932cf",
+    "server_uuid": "3f1d111c-d88d-11f1-8cfd-380525361d4e",
+    "owner_sha256": "f1fe415358594a993356382cd68215b4c0dd3099f6dd480b44334eefb39b4c96"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\eastmoney-optimization-mysql-20261105\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "samples": {
+    "page": [
+      3.6007000016979873,
+      4.068100010044873,
+      4.528400022536516,
+      3.6865000147372484,
+      3.778900019824505,
+      3.339699993375689,
+      3.9345999830402434,
+      3.3514000242576003,
+      3.53670003823936,
+      3.5386999952606857
+    ],
+    "security": [
+      1.4640000299550593,
+      0.6257999921217561,
+      0.6284000119194388,
+      0.5222999607212842,
+      0.4412999842315912,
+      0.4212000058032572,
+      0.4044999950565398,
+      0.4081000224687159,
+      0.41829998372122645,
+      0.8707999950274825
+    ],
+    "progress": [
+      4.171600041445345,
+      4.8247999511659145,
+      4.178400035016239,
+      5.046699952799827,
+      3.2174999942071736,
+      3.1945000519044697,
+      4.086800036020577,
+      3.6278999759815633,
+      4.173099994659424,
+      3.5937000066041946
+    ],
+    "detail": [
+      0.833400001283735,
+      0.6398000405170023,
+      0.7596000214107335,
+      0.44079998042434454,
+      0.4653999931178987,
+      0.6274000043049455,
+      0.48859999515116215,
+      0.32970000756904483,
+      0.29260001610964537,
+      0.477899971883744
+    ],
+    "coverage": [
+      163.5682000196539,
+      146.38009999180213,
+      123.5980000346899,
+      116.91169999539852,
+      115.6858999747783,
+      125.40149997221306,
+      109.46720000356436,
+      118.73039999045432,
+      106.43760004313663,
+      113.6512000230141
+    ]
+  },
+  "all_rows_verified": 50000,
+  "bindings": {
+    "src/empire/features/repurchases/contract.py": "83fd184e9d089c53e38c2b109e196a6ee6901d7ae400fe1d38eb041c3feed6f2",
+    "src/empire/features/repurchases/dataset.py": "be98c83ab1d91ce67f5daacb44259e4f7d41106a8dfad95cc3f8e6011ad9b6c2",
+    "src/empire/features/repurchases/query.py": "49f3d5be73f75450d607f8ac0a8fc2694a593dcffd7103164524f880762cc639",
+    "scripts/measure_repurchases.py": "312e2b39ceee3d2ec1914e3a397857402952b2278a0ed3bcb9dbbe9b8a06b042",
+    "scripts/repurchase_capacity.py": "18f58faee1b3e26c338337dd05955fcf053046815baf788d0e1a64d9a98c80d8",
+    "scripts/repurchase_verification.py": "703cf62e1a464a4ac18e4f372c7d29e4121299016ce8d878f06f5beeb72bb64f",
+    "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663"
+  },
+  "ddl_scopes": {
+    "stock_repurchase_plan": "90495c60933b3dd6cbcb694168acf783dd4c43d167cfd09bfc43d6cfe6435f8a"
+  },
+  "measurements": {
+    "page_p95_ms": 4.528400022536516,
+    "security_p95_ms": 1.4640000299550593,
+    "progress_p95_ms": 5.046699952799827,
+    "detail_p95_ms": 0.833400001283735,
+    "coverage_p95_ms": 163.5682000196539,
+    "import_seconds": 19.083226199960336,
+    "allocated_bytes": 159678464,
+    "repeated_business_dml": 0
+  },
+  "limits": {
+    "page_p95_ms": 100,
+    "security_p95_ms": 100,
+    "progress_p95_ms": 100,
+    "detail_p95_ms": 100,
+    "coverage_p95_ms": 1000,
+    "import_seconds": 60,
+    "allocated_bytes": 268435456,
+    "repeated_business_dml": 0
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "rows": 50000,
+    "source_sample": "normalized live first plan; 2100-byte synthetic remark; 5000 securities/10 dates",
+    "cache": "first unforced, nine hot repetitions; max of ten conservatively bounds P95",
+    "synthetic": true,
+    "independent_test_service": true
+  },
+  "reviewed_tradeoffs": "一次方案一行typed存储；索引对应范围/状态/证券查询，TEXT不进入列表。完整审计有界200行逐批读取，轻量头覆盖扫描与正文审计不同；5万行放大实验不是生产覆盖声明。",
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "ix_plan_date",
+        "key_len": "25",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_security_date,ix_plan_date",
+        "key": "ix_security_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 10,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Backward index scan"
+      }
+    ],
+    "progress": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_progress_date",
+        "key": "ix_progress_date",
+        "key_len": "18",
+        "ref": "const",
+        "rows": 19415,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "detail": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "const",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": "const",
+        "rows": 1,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "coverage": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "stock_repurchase_plan",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "22",
+        "ref": null,
+        "rows": 38831,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ]
+  },
+  "queries": {
+    "page": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 200,
+      "first_ms": 3.6007000016979873
+    },
+    "security": {
+      "returned": 10,
+      "read_bytes": 3455,
+      "estimated_scan_rows": 10,
+      "first_ms": 1.4640000299550593
+    },
+    "progress": {
+      "returned": 200,
+      "read_bytes": 69200,
+      "estimated_scan_rows": 19415,
+      "first_ms": 4.171600041445345
+    },
+    "detail": {
+      "returned": 1,
+      "read_bytes": 2233,
+      "estimated_scan_rows": 1,
+      "first_ms": 0.833400001283735
+    },
+    "coverage": {
+      "returned": 50000,
+      "read_bytes": 3938894,
+      "estimated_scan_rows": 38831,
+      "first_ms": 163.5682000196539
+    }
+  },
+  "python_peak_bytes": 8900465,
+  "initial_rows_written": 50000,
+  "revised_rows_written": 1,
+  "source_proof": {
+    "path": "D:\\project\\empire\\build\\eastmoney-optimization-repurchase-live-verified.json",
+    "sha256": "b6658637624dd101a4c6b81b2c1866d0287a1cc7af8d8e58bd1edd53be4d7563",
+    "run_id": "57270666359a49bd8f7a4f9f89478778",
+    "source_sha256": "3612fdf8000b0f8839a226d3b5c636130609e94529874ebd354c852dcfde6341"
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

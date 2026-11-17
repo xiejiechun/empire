@@ -77,6 +77,11 @@ function fixtureRows(spec, params) {
       { seq: 2, reason_code: "01", side: "S", seat_rank: 1, seat_name: "测试卖出营业部", buy_amount: null, sell_amount: "9000", net_amount: "-9000" }],
   }];
   if (renderer === "reason") rows = [{ ...base(0), trade_date: "2026-10-28", availability: "present", reason_text: longText }];
+  if (renderer === "fundflow") rows = rows.map((r, i) => ({ ...r,
+    dark_flow: i ? "-10001" : "123456789.012345", visible_flow: "9007199254740993.1234",
+    main_flow: "0", dark_activity: "0.0123", change_ratio: "-0.0101", source_time: "094500",
+    trade_date: params.filters?.day || "2026-11-04",
+  }));
   if (renderer === "themes") rows = rows.map((r) => ({ ...r, name: "测试题材", parent_id: null,
     category_name: "产业链分类", stock_name: "测试证券", reason: longText, brief: "题材摘要", introduction: longText }));
   if (params.ident === "tdx-additional-issues") rows = rows.map((r, i) => {
@@ -112,6 +117,9 @@ async function mockMain() {
         message: "隔离样本，不是实采证据", storage: spec.id === "live" ? "Redis 盘中快照" : "已归档数据",
         context: { month: filters.month || "2026-10", ...(spec.renderer === "pool" || spec.id === "details" ? {
           head: { theme_id: "1", name: "测试题材", brief: "完整题材摘要", introduction: longText, source_total: 2 },
+        } : {}), ...(spec.renderer === "fundflow" && spec.id === "live" ? {
+          source_total: 5377, snapshot: { date: filters.day, available: true,
+            started: "2026-11-04T09:44:00+08:00", finished: "2026-11-04T09:45:00+08:00" },
         } : {}), complete: false },
       };
     }
@@ -319,6 +327,38 @@ async function main() {
       }
     }
     const statement = catalog.find((t) => t.id === "ths-income");
+    if (!live) {
+      const funds = catalog.find(t => t.id === "eastmoney-graymarket");
+      const preview = await selectTask(funds);
+      await preview.getByRole("tab", { name: "盘中资金榜", exact: true }).click();
+      await preview.getByRole("button", { name: "查看今天", exact: true }).click();
+      await preview.getByLabel("资金榜采样信息").waitFor();
+      assert.ok((await preview.getByLabel("资金榜采样信息").innerText()).includes("5,377"));
+      assert.ok((await preview.innerText()).includes("1.23亿"));
+      assert.ok((await preview.innerText()).includes("-1.01%"));
+      assert.ok(await preview.locator('[title="123,456,789.012345 元"]').count());
+      assert.ok(await preview.locator('[title="9,007,199,254,740,993.1234 元"]').count());
+      await preview.getByRole("button", { name: "preview-next", exact: true }).click();
+      await preview.locator(".preview-workspace-footer").filter({ hasText: "第 2 页" }).waitFor();
+      await preview.getByLabel("证券代码", { exact: true }).fill("123456");
+      await preview.getByRole("button", { name: "刷新最新", exact: true }).click();
+      await preview.getByLabel("资金榜采样信息").waitFor();
+      await preview.locator(".preview-workspace-footer").filter({ hasText: "第 1 页" }).waitFor();
+      assert.equal(await preview.getByLabel("证券代码", { exact: true }).inputValue(), "123456");
+      await preview.getByText("筛选已修改，查询后生效", { exact: true }).waitFor();
+      const calls = await app.evaluate(() => globalThis.previewQaCalls);
+      const last = calls.filter(c => c.op === "preview.read" && c.ident === "eastmoney-graymarket").at(-1);
+      assert.notEqual(last.filters.code, "123456", "Refresh must not submit the draft");
+      assert.equal(JSON.parse(last.cursor), null, "Refresh must return to first page");
+      await preview.getByRole("button", { name: "展开预览", exact: true }).click();
+      await p.screenshot({ path: path.join(output, "graymarket-preview-wide.png"), animations: "disabled" });
+      await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(850, 760));
+      await p.screenshot({ path: path.join(output, "graymarket-preview-narrow.png"), animations: "disabled" });
+      await preview.getByRole("button", { name: "刷新最新", exact: true }).waitFor({ state: "visible" });
+      await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(1540, 1000));
+      await preview.getByRole("button", { name: "收起预览", exact: true }).click();
+      report.interactions.push("fund flow today, snapshot metadata, exact money/percent display, latest refresh preserving draft and resetting cursor, wide/narrow layout");
+    }
     let preview = await selectTask(statement);
     await fillFilters(preview, statement.views.find((v) => !v.hidden));
     if (!live) {

@@ -89,6 +89,7 @@ async def test_single_owner_source_to_query_and_same_cutoff_zero_requests(pool):
                 writes.append(statement)
 
         event.listen(query.mysql.engine, 'before_cursor_execute', track)
+        event.listen(query.mysql.archive_engine, 'before_cursor_execute', track)
         await current.execute(baseline_revision=await current.checkpoint_revision(), history_only=True)
         assert not writes and current.stats['requests'] == 0
         report.update(passed=True, phases=phases, routes=counts, pending=0,

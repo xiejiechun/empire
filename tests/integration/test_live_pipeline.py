@@ -49,7 +49,8 @@ async def live():
         contexts.append(result)
         return result
     records = RecordsPlugin()
-    plugins = [catalog, redis, mysql, records]
+    plugins = [redis, mysql, records]
+    http = None
     started = []
     ids = []
     snapshots = {}
@@ -58,6 +59,10 @@ async def live():
         for plugin in plugins:
             registry.values.update(await plugin.start(context(plugin.manifest.id)))
             started.append(plugin)
+        http = HttpService(redis.client, redis.prefix, {})
+        registry.values['http.fetch'] = http
+        registry.values.update(await catalog.start(context(catalog.manifest.id)))
+        started.append(catalog)
         registry.values["archive.worker"] = archive
         registry.values.update(await ingest.start(context("pipeline.ingest")))
         started.append(ingest)
@@ -115,6 +120,8 @@ async def live():
                 await redis.client.delete(*keys)
         for plugin in reversed(started):
             if plugin is not archive:
+                if plugin is redis and http:
+                    await http.close()
                 await plugin.stop()
 
 

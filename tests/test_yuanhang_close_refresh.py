@@ -63,7 +63,7 @@ async def test_due_window_uses_one_day_then_waits_and_recovers_marker_loss(pool)
     await pool_maintenance(c, now, fresh=False, baseline_revision=state['revision'])
     assert len(events) == 1 and marker == day + 'T16:00+08:00'
     assert state['cursor']['scope'] == 'today'
-    c.query.collection_plan.assert_any_await(pool, force=False, scope='today')
+    c.query.collection_plan.assert_any_await(pool, force=False, scope='today', calendar_cache={})
     await pool_maintenance(c, now.replace(minute=29), fresh=False, baseline_revision=state['revision'])
     assert len(events) == 1 and c.stats['requests'] == 0
     # Crash after completion checkpoint, before marker: same invocation repairs

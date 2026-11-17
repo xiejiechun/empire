@@ -3,6 +3,7 @@ import argparse
 import asyncio
 import hashlib
 import json
+import re
 from pathlib import Path
 
 from sqlalchemy import inspect, text
@@ -18,7 +19,10 @@ from empire.plugins.infra.schema_manifest import shape, validate_shapes
 
 def ddl(table=TABLE):
     sql = (project_root() / 'sql/schema.sql').read_text('utf-8')
-    return sql[sql.index('CREATE TABLE IF NOT EXISTS ' + table):].split(';', 1)[0]
+    match = re.search(r'CREATE TABLE IF NOT EXISTS ' + re.escape(table) + r'\s*\(', sql)
+    if match is None:
+        raise ValueError('schema.sql未声明精确表名：' + table)
+    return sql[match.start():].split(';', 1)[0]
 
 
 def inventory(conn, added_table=TABLE):

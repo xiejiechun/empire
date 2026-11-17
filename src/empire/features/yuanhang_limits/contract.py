@@ -4,7 +4,10 @@ from datetime import date
 SOURCE = 'ths_yuanhang'
 DOMAIN = '10jqka.com.cn'
 BASE_URL = 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/'
-FILTER = 'HS,GEM2STAR'
+FILTER = 'HS,GEM2STAR,ST'
+POOL_CONTRACT_VERSION = 2
+# Persisted historical scope remains readable; only FILTER is published now.
+POOL_FILTER_VERSIONS = {'HS,GEM2STAR': 1, FILTER: POOL_CONTRACT_VERSION}
 POOLS = {
     'limit_up_pool': '涨停板',
     'sprint_limit_up': '涨停冲刺',
@@ -28,7 +31,7 @@ TEXT_LIMITS = {'name': 80, 'market_type': 32, 'reason_type': 4096,
 REQUEST_FIELDS = ','.join((*DECIMAL_FIELDS, *TIME_FIELDS, 'open_num',
                            'name', 'reason_type', 'limit_up_type', 'limit_down_type',
                            'high_days', '941948930'))
-MARKETS = {17: 'SH', 22: 'SH', 33: 'SZ', 151: 'BJ'}
+MARKETS = {17: 'SH', 22: 'SH', 33: 'SZ', 37: 'SZ', 151: 'BJ'}
 BOARD_MARKETS = {'GEM': 'SZ', 'STAR': 'SH'}
 MEMBER_FIELDS = ('unified_code', 'source_market_id', 'identity_basis', *DECIMAL_FIELDS, *INTEGER_FIELDS,
                  *(k if k != '941948930' else 'top_concept' for k in TEXT_LIMITS), *TIME_FIELDS)
@@ -39,6 +42,12 @@ REASON_FIELDS = ('trade_date', 'unified_code', 'name', 'reason_text', 'reason_ki
 TABLE_COLUMNS = {'yuanhang_limit_pool': POOL_FIELDS,
                  'yuanhang_limit_member': ('trade_date', 'pool_type', *MEMBER_FIELDS),
                  'yuanhang_limit_reason': REASON_FIELDS}
+
+
+def needs_identity_lookup(market_id, market_type):
+    # Observed legacy id 21 has no verified static mapping. Resolve each code
+    # from explicit archived/source evidence, retaining its original id.
+    return market_type == 'HS' and (market_id is None or type(market_id) is int and market_id == 21)
 
 
 def project(pool):

@@ -8,6 +8,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.performance.contract import (
     SCHEMA_VERSION,
@@ -31,13 +32,15 @@ from empire.features.performance.source import (
     parse_directory,
     request_body,
 )
-from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
+from empire.plugins.collection.planned_reads import planned_reads
+from empire.plugins.collection.unit_prefetch import DeferredResponse
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
     wait_for_archive,
     wait_for_capacity,
 )
+from empire.plugins.infra.tdx_maintenance import needs_review
 
 
 class PerformanceCollector:
@@ -94,6 +97,7 @@ class PerformanceCollector:
             return DeferredResponse(response, consume)
         return await consume()
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0, start_month=None, end_month=None):
         stage = 'plan'
         try:
@@ -139,6 +143,25 @@ class PerformanceCollector:
                     downloads = quarterly_plan(latest)
                     units = [period + '|' + market for period in downloads for market in ('SH', 'SZ', 'BJ')]
                     latest_by_code = {}
+                stored = await self.query.maintenance_state()
+                proofs = stored.get('units', {}) if stored.get('contract_version') == SCHEMA_VERSION else {}
+                now = datetime.now(UTC)
+                reused = {}
+                for requested in downloads:
+                    keys = [requested] if self.kind == 'holder_count' else [requested + '|' + m for m in ('SH', 'SZ', 'BJ')]
+                    recent = requested >= (f'{int(latest[:4]) - 1}-01-01' if self.kind != 'shareholder_changes'
+                                           else f'{(int(latest[:4]) * 12 + int(latest[5:7]) - 3) // 12:04d}-{(int(latest[:4]) * 12 + int(latest[5:7]) - 3) % 12 + 1:02d}-01')
+                    if self.kind == 'holder_count':
+                        recent = False
+                    changed = (self.kind == 'holder_count' and requested in latest_by_code
+                               and proofs.get(requested, {}).get('latest_hash') != digest(latest_by_code[requested]))
+                    if not changed and all(not needs_review(proofs.get(k, {}), k, now, recent=recent,
+                            days=30 if self.kind == 'holder_count' else 90,
+                            force=bool(fresh and not progressed) or
+                                  (cursor.get('phase') == 'fetch' and cursor.get('force', False)),
+                            contract=SCHEMA_VERSION) for k in keys):
+                        reused[requested] = [(k, proofs[k]) for k in keys]
+                self.stats['reused_units'] = len(reused)
                 scope_hash = digest(units)
                 if (self.kind == 'shareholder_changes' and cursor.get('phase') == 'fetch'
                         and cursor.get('scope_hash') != scope_hash and not fresh):
@@ -149,17 +172,31 @@ class PerformanceCollector:
                 if not cursor:
                     cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, market_index=0, response_hash='', page=0, collected=0,
                         rolling='', scope_hash=scope_hash, units=len(units), latest=latest,
-                        started_at=datetime.now(UTC).isoformat(), contract=SCHEMA_VERSION)
+                        started_at=datetime.now(UTC).isoformat(), contract=SCHEMA_VERSION,
+                        force=bool(fresh and not progressed))
                 observed = datetime.fromisoformat(cursor['started_at'])
                 self.stats.update(total_units=len(downloads), completed_units=cursor['index'],
                                   collected=cursor['collected'])
                 async def download(unit, *, reservation):
                     return await self.fetch(unit, reservation=reservation, defer=True)
                 remaining = downloads[cursor['index']:]
-                async with prefetch_units(self, remaining, download,
+                if cursor.get('market_index') and remaining:
+                    reused.pop(remaining[0], None)
+                async with planned_reads(self, remaining, download, reused,
                         url=BASE + entry(self.kind), domains=('tdx.com.cn',), item_name='完整响应') as reads:
                     async for offset, read in reads:
                         requested = remaining[offset]
+                        if read is None:
+                            updated = dict(cursor)
+                            for unit, proof in reused[requested]:
+                                updated['collected'] += proof['count']
+                                updated['rolling'] = digest([updated['rolling'], unit, proof['digest'], proof['count']])
+                            updated['index'] += 1
+                            state = await self.ingest.advance_checkpoint(job_key=self.job_key,
+                                expected_revision=state['revision'], cursor=updated)
+                            cursor = updated
+                            self.stats.update(collected=cursor['collected'], completed_units=cursor['index'])
+                            continue
                         stage = 'source_validation'
                         rows, _ = await read.resolve()
                         observed = datetime.now(UTC)
@@ -190,8 +227,10 @@ class PerformanceCollector:
                             # archive confirmation; never wait between markets/months.
                             cursor = {**cursor, **cursor['unit_base'], 'market_index': 0,
                                       'response_hash': ''}
+                        packed = {}
                         for unit, values in groups:
                             probe = self.envelope(unit, values, cursor['page'] + 1, cursor['batch_id'], observed)
+                            packed[unit] = probe.raw_payload['rows']
                             if len(probe.model_dump_json().encode()) > getattr(self.ingest, 'settings', {}).get('max_page_bytes', 524288):
                                 raise ValueError('完整报告市场超过单消息容量；未入队本期，禁止截断')
                         # Validate whole source and every message budget before publishing any market.
@@ -200,7 +239,7 @@ class PerformanceCollector:
                                 continue
                             stage = 'queue_publish'
                             page = cursor['page'] + 1
-                            event = self.envelope(unit, values, page, cursor['batch_id'], observed)
+                            event = self.envelope(unit, values, page, cursor['batch_id'], observed, packed=packed[unit])
                             next_cursor = {**cursor, 'page': page, 'market_index': group_index + 1, 'response_hash': source_hash,
                                 'collected': cursor['collected'] + len(values),
                                 'rolling': digest([cursor['rolling'], unit, digest(values), len(values)])}
@@ -238,10 +277,10 @@ class PerformanceCollector:
                                     unavailable_message='错误记录暂不可用；未跳过失败单元')
             raise
 
-    def envelope(self, unit, rows, page, batch, observed, manifest=None):
+    def envelope(self, unit, rows, page, batch, observed, manifest=None, *, packed=None):
         event = make_envelope(source='tdx', dataset=self.kind + '.tdx_unit', business_key=unit,
             job_key=self.job_key, batch_id=batch, run_id=batch, schema_version=SCHEMA_VERSION,
-            payload=dict(page=page, unit=unit, rows=[] if manifest is not None else pack(self.kind, rows), manifest=manifest))
+            payload=dict(page=page, unit=unit, rows=[] if manifest is not None else packed if packed is not None else pack(self.kind, rows), manifest=manifest))
         return event.model_copy(update={'observed_at': observed,
             'source_url': CHANGES_PAGE if self.kind == 'shareholder_changes' else PAGE, 'available_at': None})
 

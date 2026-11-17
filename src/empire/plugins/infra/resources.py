@@ -23,6 +23,13 @@ class Reservation:
             self.budget.used -= self.size
             self.budget.changed.set()
 
+    def shrink_to(self, size):
+        if self.released or type(size) is not int or not 0 <= size <= self.size:
+            raise ValueError('缓冲租约缩减无效')
+        self.budget.used -= self.size - size
+        self.size = size
+        self.budget.changed.set()
+
 
 class ByteBudget:
     def __init__(self, limit):

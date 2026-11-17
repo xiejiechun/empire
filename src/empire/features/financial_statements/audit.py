@@ -106,9 +106,6 @@ def audit_financial(plugin, request=None):
                 findings['manifest_mismatch'] = not manifest_matches
                 if not manifest_matches and len(findings['coverage']) < 100:
                     findings['coverage'].append(dict(code='', report_date='', message='整轮集合证明与当前内容不匹配，不能宣称本轮完整'))
-                stamp = manifest.get('observed_at')
-                last = datetime.fromisoformat(stamp) if stamp else None
-            else:
-                last = min(observed) if keys and len(observed) == len(keys) else None
+            last = min(observed) if keys and len(observed) == len(keys) else None
             fresh = bool(last and datetime.now(UTC) - timedelta(days=3) <= last <= datetime.now(UTC))
             return complete, fresh, count, actual, last, findings

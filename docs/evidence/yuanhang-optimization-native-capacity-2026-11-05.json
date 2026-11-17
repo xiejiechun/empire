@@ -1,0 +1,717 @@
+{
+  "run_id": "0797e21515664f35b275cbfe6853f322",
+  "subject": "preview",
+  "started_at": "2026-11-04T18:41:13.431504+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/yuanhang/repository.py": "77c4fbc854d01fd7874fcabc92f0163486a2b2dacb56589b551862ff6d52783a",
+    "src/empire/features/yuanhang/contract.py": "382074b08eba521c9fa8cd9d8cbd369591528223293af7b14c7f860eea4fccc0",
+    "src/empire/features/yuanhang/dataset.py": "8ee9a9ddfb7152d43e0ede288a8197d76733e97f42ad770073554df21343c50b",
+    "src/empire/features/yuanhang/query.py": "80378a650bbea8a380045d00d13eacb41c62730afa206c2542a8b16b85a9e356",
+    "src/empire/features/yuanhang/range_archive.py": "ab37349658c1fa536407aeb21e6e30667a7a9b6297656729aa1b5476553ca6df",
+    "src/empire/sources/yuanhang_payload.py": "301d1753d5ce57ab4c5eae48fd4949a7d65b8cf643afa1cd9cc03c51487723bb",
+    "src/empire/sources/yuanhang_coverage.py": "30a8e271d8ff6f31a6caae298f051c31b72ed5c6f874f51b3359ddd061818ea7",
+    "src/empire/sources/yuanhang_ranges.py": "9cc46cbb84f2887769b42afab8cd74fd46794572f278bd5054fdeb97a09d327b",
+    "src/empire/sources/yuanhang_range_payload.py": "422a8b2051a2bb7963ec805db9219107974e919dd723423752e55e1c9e4d3e9e",
+    "scripts/measure_yuanhang_capacity.py": "b2a12ac702e31eed6c5bde6bd4bbdc63a14d5ac4d120ef70ab804ecbbf859189",
+    "src/empire/plugins/infra/collection_state_unit.py": "fd0c9d461c40f26c6387247dce3678566c6c22ca9e2f11008a4cb1fe33bc79fd"
+  },
+  "dataset_subject": "yuanhang",
+  "measurements": {
+    "price_rows": 1000000,
+    "import_seconds": 113.38293189997785,
+    "security_query_p95_ms": 11.699699971359223,
+    "cross_section_p95_ms": 10.057299979962409,
+    "quality_query_p95_ms": 1.0118000209331512,
+    "annual_audit_p95_ms": 20.569399988744408,
+    "annual_archive_ms": 32.586999994236976,
+    "unchanged_business_dml": 0,
+    "revision_rows": 10000,
+    "revision_seconds": 0.07538909994764253,
+    "financial_seconds": 1.9370047999545932,
+    "python_peak_tracked_bytes": 204893080,
+    "actions_query_p95_ms": 12.138499994762242,
+    "price_year_proofs": 4000,
+    "state_units": 5578,
+    "state_json_bytes": 25190282,
+    "state_unit_write_p95_ms": 738.9878999674693
+  },
+  "limits": {
+    "security_query_p95_ms": 200,
+    "cross_section_p95_ms": 300,
+    "annual_audit_p95_ms": 1000,
+    "quality_query_p95_ms": 1000,
+    "annual_archive_ms": 2000,
+    "unchanged_business_dml": 0,
+    "state_unit_write_p95_ms": 2000,
+    "actions_query_p95_ms": 200
+  },
+  "queries": {
+    "security": {
+      "first_query_ms": 10.16830001026392,
+      "warm_p95_ms": 11.699699971359223,
+      "rows": 500,
+      "encoded_bytes": 52000
+    },
+    "cross_section": {
+      "first_query_ms": 39.55119999591261,
+      "warm_p95_ms": 10.057299979962409,
+      "rows": 500,
+      "encoded_bytes": 34510
+    },
+    "quality": {
+      "first_query_ms": 1.3614000054076314,
+      "warm_p95_ms": 1.0118000209331512,
+      "rows": 1,
+      "encoded_bytes": 14
+    },
+    "actions": {
+      "first_query_ms": 11.32390002021566,
+      "warm_p95_ms": 12.138499994762242,
+      "rows": 500
+    }
+  },
+  "explain": {
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "yuanhang_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,idx_yuanhang_price_date",
+        "key": "PRIMARY",
+        "key_len": "14",
+        "ref": null,
+        "rows": 999,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "cross_section": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "yuanhang_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,idx_yuanhang_price_date",
+        "key": "idx_yuanhang_price_date",
+        "key_len": "14",
+        "ref": null,
+        "rows": 1000,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ],
+    "quality": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "yuanhang_daily_price",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 1000,
+        "filtered": 100.0,
+        "Extra": null
+      }
+    ],
+    "actions": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "yuanhang_corporate_action",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,idx_yuanhang_action_date",
+        "key": "PRIMARY",
+        "key_len": "78",
+        "ref": null,
+        "rows": 1002,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ]
+  },
+  "allocation": [
+    {
+      "TABLE_NAME": "collection_state",
+      "TABLE_ROWS": 1,
+      "DATA_LENGTH": 36716544,
+      "INDEX_LENGTH": 0
+    },
+    {
+      "TABLE_NAME": "yuanhang_capital",
+      "TABLE_ROWS": 28594,
+      "DATA_LENGTH": 2637824,
+      "INDEX_LENGTH": 0
+    },
+    {
+      "TABLE_NAME": "yuanhang_corporate_action",
+      "TABLE_ROWS": 2000,
+      "DATA_LENGTH": 376832,
+      "INDEX_LENGTH": 196608
+    },
+    {
+      "TABLE_NAME": "yuanhang_daily_price",
+      "TABLE_ROWS": 978048,
+      "DATA_LENGTH": 122339328,
+      "INDEX_LENGTH": 53051392
+    },
+    {
+      "TABLE_NAME": "yuanhang_price_year",
+      "TABLE_ROWS": 3911,
+      "DATA_LENGTH": 1589248,
+      "INDEX_LENGTH": 0
+    },
+    {
+      "TABLE_NAME": "yuanhang_series_proof",
+      "TABLE_ROWS": 2,
+      "DATA_LENGTH": 16384,
+      "INDEX_LENGTH": 0
+    }
+  ],
+  "conditions": {
+    "data": "1m synthetic price facts, 2000 actions, 30000 capital points; independent private MySQL",
+    "cache": "first and warm queries; server buffer pool not flushed, first query is not a cold-disk guarantee",
+    "memory": "tracemalloc Python allocations, not total process or MySQL RSS"
+  },
+  "reviewed_tradeoffs": [
+    "1m price rows are an amplification test, 20m–35m capacity is extrapolation.",
+    "Initial bulk import uses the same repository upsert; archive transaction measured separately.",
+    "Annual archive revises one fact and its proof inside an existing 250-row year.",
+    "1% throughput uses one range update; annual semantic revision/rollback is covered by integration tests.",
+    "EXPLAIN reports optimizer row estimates, not exact physical reads; encoded bytes are returned JSON bytes."
+  ],
+  "schema_objects": {
+    "yuanhang_daily_price": {
+      "ddl_sha256": "2321f8be8a2056801716553ee73777d0875cd4483ab8c7b675378c2b260468ac",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "open": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "high": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "low": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "close": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "volume_shares": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "amount_yuan": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date"
+        ],
+        "indexes": {
+          "idx_yuanhang_price_date": {
+            "columns": [
+              "trade_date",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_yuanhang_price_values": "((open>0)and(high>0)and(low>0)and(close>0)and(volume_shares>=0)and((amount_yuanisnull)or(amount_yuan>=0)))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "unified_code",
+          "trade_date"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "unified_code",
+          "trade_date",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume_shares",
+          "amount_yuan"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.price.year": {
+            "tables": [
+              "yuanhang_daily_price",
+              "yuanhang_price_year"
+            ],
+            "primary": "yuanhang_daily_price"
+          }
+        }
+      }
+    },
+    "yuanhang_price_year": {
+      "ddl_sha256": "ba5e48c98541529ce3e2301bdf1dd23633b5fa65fe0e4f0d876aee816c602d4b",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "quote_year": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "native_market": {
+            "type": "char(4) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_count": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "row_count": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "last_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "key_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "verified_through": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "quote_year"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_yuanhang_year_count": "((quote_yearbetween1900and2100)and(source_count=row_count)and(row_count<=366))",
+          "ck_yuanhang_year_dates": "(((row_count=0)and(first_dateisnull)and(last_dateisnull))or((row_count>0)and(first_dateisnotnull)and(last_dateisnotnull)and(first_date<=last_date)and(year(first_date)=quote_year)and(year(last_date)=quote_year)))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "unified_code",
+          "quote_year"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "unified_code",
+          "quote_year",
+          "native_market",
+          "source_count",
+          "row_count",
+          "first_date",
+          "last_date",
+          "key_hash",
+          "content_hash",
+          "contract_version",
+          "verified_through",
+          "version_observed_at"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.price.year": {
+            "tables": [
+              "yuanhang_daily_price",
+              "yuanhang_price_year"
+            ],
+            "primary": "yuanhang_daily_price"
+          }
+        }
+      }
+    },
+    "yuanhang_corporate_action": {
+      "ddl_sha256": "6f5b95504174b4ce18a5f8e2df42a61a48ca334a114aba37c18b9dc96d984754",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "ex_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "event_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "bonus_ratio": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "transfer_ratio": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "rights_ratio": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "rights_price": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "cash_per_share": {
+            "type": "decimal(28, 10)",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "ex_date",
+          "event_key"
+        ],
+        "indexes": {
+          "idx_yuanhang_action_date": {
+            "columns": [
+              "ex_date",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_yuanhang_action_values": "(((bonus_ratio>=0)or((bonus_ratio>-(1))and(transfer_ratio=0)and(rights_ratio=0)and(rights_price=0)and(cash_per_share=0)))and(transfer_ratio>=0)and(rights_ratio>=0)and(rights_price>=0)and(cash_per_share>=0)and((rights_ratio=0)or(rights_price>0)))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "unified_code",
+          "ex_date",
+          "event_key"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "unified_code",
+          "ex_date",
+          "event_key",
+          "bonus_ratio",
+          "transfer_ratio",
+          "rights_ratio",
+          "rights_price",
+          "cash_per_share"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.financial": {
+            "tables": [
+              "yuanhang_corporate_action",
+              "yuanhang_capital",
+              "yuanhang_series_proof"
+            ],
+            "primary": "yuanhang_corporate_action"
+          }
+        }
+      }
+    },
+    "yuanhang_capital": {
+      "ddl_sha256": "23d99da656b151b9d4b8a3c7e74715c03d65be3209433e8a7c709b7da965352d",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "capital_kind": {
+            "type": "varchar(11) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "effective_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "shares": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "capital_kind",
+          "effective_date"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_yuanhang_capital_kind": "(capital_kindin('total','circulating','free_float'))",
+          "ck_yuanhang_capital_shares": "(((sharesisnotnull)and(shares>0))or((sharesisnull)and(capital_kind='circulating')))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "unified_code",
+          "capital_kind",
+          "effective_date"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "unified_code",
+          "capital_kind",
+          "effective_date",
+          "shares"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.financial": {
+            "tables": [
+              "yuanhang_corporate_action",
+              "yuanhang_capital",
+              "yuanhang_series_proof"
+            ],
+            "primary": "yuanhang_corporate_action"
+          }
+        }
+      }
+    },
+    "yuanhang_series_proof": {
+      "ddl_sha256": "d6f15ac42b62f7d3a787ff0cb3e40debe76fb7201c5034922b82b504a4dc32d0",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "series_kind": {
+            "type": "varchar(7) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "native_market": {
+            "type": "char(4) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "source_count": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "row_count": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "last_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "key_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "response_group": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "total_count": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "circulating_count": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "free_float_count": {
+            "type": "integer",
+            "nullable": false,
+            "unsigned": true
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "series_kind"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_yuanhang_series_count": "((source_count=row_count)and(((series_kind='actions')and(row_count<=2000)and(total_count=0)and(circulating_count=0)and(free_float_count=0))or((series_kind='capital')and(row_count<=30000)and(total_count>0)and(circulating_count>0)and(free_float_count>0)and(((total_count+circulating_count)+free_float_count)=row_count))))",
+          "ck_yuanhang_series_dates": "(((row_count=0)and(first_dateisnull)and(last_dateisnull))or((row_count>0)and(first_dateisnotnull)and(last_dateisnotnull)and(first_date<=last_date)))",
+          "ck_yuanhang_series_kind": "(series_kindin('actions','capital'))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "unified_code",
+          "series_kind"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "unified_code",
+          "series_kind",
+          "native_market",
+          "source_count",
+          "row_count",
+          "first_date",
+          "last_date",
+          "key_hash",
+          "content_hash",
+          "contract_version",
+          "response_group",
+          "total_count",
+          "circulating_count",
+          "free_float_count",
+          "version_observed_at"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.financial": {
+            "tables": [
+              "yuanhang_corporate_action",
+              "yuanhang_capital",
+              "yuanhang_series_proof"
+            ],
+            "primary": "yuanhang_corporate_action"
+          }
+        }
+      }
+    }
+  },
+  "ddl_scopes": {
+    "yuanhang_daily_price": "2321f8be8a2056801716553ee73777d0875cd4483ab8c7b675378c2b260468ac",
+    "yuanhang_price_year": "ba5e48c98541529ce3e2301bdf1dd23633b5fa65fe0e4f0d876aee816c602d4b",
+    "yuanhang_corporate_action": "6f5b95504174b4ce18a5f8e2df42a61a48ca334a114aba37c18b9dc96d984754",
+    "yuanhang_capital": "23d99da656b151b9d4b8a3c7e74715c03d65be3209433e8a7c709b7da965352d",
+    "yuanhang_series_proof": "d6f15ac42b62f7d3a787ff0cb3e40debe76fb7201c5034922b82b504a4dc32d0"
+  },
+  "input_identity_verified": true,
+  "checked_at": "2026-11-04T18:43:44.510451+00:00",
+  "database": "empire_capacity_0797e21515664f35b275cbfe6853f322_test",
+  "measurement_service": {
+    "server_uuid": "4596c999-d87d-11f1-bfd8-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

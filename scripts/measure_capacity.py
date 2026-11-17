@@ -62,7 +62,7 @@ class _ProcessMemoryCounters(ctypes.Structure):
     ]
 
 
-def process_resources() -> dict[str, int | None]:
+def process_resources(pid: int | None = None) -> dict[str, int | None]:
     """Return current RSS and handle count without adding a runtime dependency."""
     if os.name == "nt":
         counters = _ProcessMemoryCounters()
@@ -77,15 +77,24 @@ def process_resources() -> dict[str, int | None]:
                                                ctypes.POINTER(_ProcessMemoryCounters),
                                                ctypes.c_ulong]
         psapi.GetProcessMemoryInfo.restype = ctypes.c_int
-        process = kernel32.GetCurrentProcess()
-        ok = psapi.GetProcessMemoryInfo(process, ctypes.byref(counters), counters.cb)
-        handles = ctypes.c_ulong()
-        handle_ok = kernel32.GetProcessHandleCount(process, ctypes.byref(handles))
+        kernel32.OpenProcess.argtypes = [ctypes.c_ulong, ctypes.c_int, ctypes.c_ulong]
+        kernel32.OpenProcess.restype = ctypes.c_void_p
+        kernel32.CloseHandle.argtypes = [ctypes.c_void_p]
+        process = kernel32.OpenProcess(0x1010, False, pid) if pid else kernel32.GetCurrentProcess()
+        try:
+            ok = psapi.GetProcessMemoryInfo(process, ctypes.byref(counters), counters.cb)
+            handles = ctypes.c_ulong()
+            handle_ok = kernel32.GetProcessHandleCount(process, ctypes.byref(handles))
+        finally:
+            if pid and process:
+                kernel32.CloseHandle(process)
         return {
             "rss_bytes": int(counters.WorkingSetSize) if ok else None,
             "handles": int(handles.value) if handle_ok else None,
         }
     # The release gate is Windows-only. Keep developer runs portable where possible.
+    if pid:
+        return {"rss_bytes": None, "handles": None}
     try:
         import resource
         raw = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss

@@ -10,6 +10,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.industry_margin.contract import (
     CONTRACT,
@@ -112,6 +113,7 @@ class IndustryMarginCollector:
 
         return DeferredResponse(response, consume)
 
+    @measured_run
     async def execute(
         self, *, fresh=False, baseline_revision=0, start=None, end=None, sample_dates=None
     ):

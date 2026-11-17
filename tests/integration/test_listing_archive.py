@@ -73,11 +73,13 @@ async def test_announced_listing_source_archive_query_and_replay(listing):
         if 'stock_listing' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await collect(c, True)
         assert not writes and await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_sql_zero_rate_formal_queries_and_cold_replay_do_not_write(listing):
@@ -97,12 +99,14 @@ async def test_sql_zero_rate_formal_queries_and_cold_replay_do_not_write(listing
             writes.append(sql)
 
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await collect(c, True)
         assert not writes and await store.client.xlen(store.stream) == 0
         assert (await q.detail('000001.SZ'))['winning_rate'] == '0'
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 def unavailable_source(*args, **kwargs):
@@ -151,6 +155,7 @@ async def test_unusable_preserves_valid_duplicate_and_late_responses_then_recove
         if 'stock_listing' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     async def late(row):
         e = make_envelope(source='ths', dataset=DATASET, business_key='SZ:000001', job_key=JOB,
             run_id='late', batch_id='late', payload=dict(page=1, unit='SZ:000001', row=row, manifest=None))
@@ -178,6 +183,7 @@ async def test_unusable_preserves_valid_duplicate_and_late_responses_then_recove
         assert await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 @pytest.mark.parametrize('availability', ['unavailable', 'incomplete'])
@@ -258,6 +264,7 @@ async def test_hot_cold_no_dml_revision_stale_and_redis_loss(listing,monkeypatch
         if 'stock_listing' in sql and sql.lstrip().upper().startswith(('INSERT','UPDATE','DELETE')):
             writes.append(sql)
     event.listen(q.mysql.engine,'before_cursor_execute',capture)
+    event.listen(q.mysql.archive_engine,'before_cursor_execute',capture)
     original = q.mysql.archive
     async def counted(records):
         calls.append(1)
@@ -290,6 +297,7 @@ async def test_hot_cold_no_dml_revision_stale_and_redis_loss(listing,monkeypatch
         assert len(stocks)==len(existing)==2 and proof['refresh_started_at']
     finally:
         event.remove(q.mysql.engine,'before_cursor_execute',capture)
+        event.remove(q.mysql.archive_engine,'before_cursor_execute',capture)
 
 
 async def test_commit_ack_failure_replay_and_invalid_source_no_advance(listing,monkeypatch):
@@ -367,8 +375,10 @@ async def test_large_utf8_history_full_archive_and_repeat_without_business_dml(l
         if 'stock_listing' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await collect(c, True)
         assert not writes and await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)

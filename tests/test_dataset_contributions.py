@@ -63,6 +63,7 @@ async def test_fourth_dataset_contribution_uses_generic_archive_and_project_iden
     record = {"id": "1-0", "envelope": envelope.model_copy(update={"raw_payload": {}}),
               "normalized": {"page": 1, "value": 42, "row_count": 1}}
     await worker._flush_incremental([record], "metric-sample")
+    worker.redis.client.xrange.assert_not_awaited()
     worker._archive_data.assert_awaited_once()
     worker.acknowledge.assert_awaited_once_with(["1-0"])
 

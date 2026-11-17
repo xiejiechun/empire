@@ -69,6 +69,7 @@ async def test_detail_hot_cold_repeat_success_queue_cleanup_and_official_query(t
         if 'theme_' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             dml.append(statement)
     event.listen(q.mysql.engine, 'before_cursor_execute', track)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', track)
     await collect(c, fresh=True)
     assert not calls and not dml
     await archive.fingerprints.invalidate(ThemeDetailDataset.FINGERPRINT_NAMESPACE, 'kaipanla')
@@ -141,6 +142,7 @@ async def test_commit_ack_failure_keeps_message_and_replay_has_no_business_dml(t
         if 'theme_' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             dml.append(statement)
     event.listen(q.mysql.engine, 'before_cursor_execute', track)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', track)
     monkeypatch.setattr(archive, 'acknowledge', original_ack)
     await archive.flush()
     assert not dml

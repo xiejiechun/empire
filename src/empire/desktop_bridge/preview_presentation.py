@@ -57,6 +57,20 @@ def presentation(task, view):
             .joinpath("statement_layouts.json").read_text("utf8"))[task[4:]]
     if task == "tdx-additional-issues":
         result["detail_columns"] = columns(ISSUE_DETAILS)
+    if task == "eastmoney-graymarket":
+        result["refresh_label"] = "刷新最新"
+        if view.id == "live":
+            result["default_order"] = dict(field="dark_flow", direction="desc")
+            result["today_filter"] = "day"
+        for column in result["columns"]:
+            key = column["key"]
+            if key in ("dark_flow", "visible_flow", "main_flow"):
+                column.update(format="money", unit="元 / 万元 / 亿元")
+            elif key in ("dark_activity", "change_ratio"):
+                column.update(format="percent", unit="%")
+            elif key == "source_time":
+                column["format"] = "clock"
+        result["notes"].append("盘中默认查询今天，按暗盘资金降序；刷新最新返回第一页并读取新的完整快照。金额缩写显示，悬停查看精确元值；百分比由来源小数换算。")
     if task == "ths-holders":
         result["member_columns"] = columns(MEMBERS)
     if task == "ths-capital":
@@ -79,19 +93,26 @@ def presentation(task, view):
 
 def _filter(task, view, key):
     label, shape, placeholder = FILTERS[key]
+    if key == "code" and task.startswith("ths-fx-"):
+        label, placeholder = "汇率品种", "例如USDCNH"
+    if task == "eastmoney-graymarket" and key == "code":
+        placeholder = "代码前缀或完整代码，如000001.SZ"
     if key == "search" and task == "tdx-industry-margin":
         label, placeholder = "行业名称", "填写完整行业名称"
-    if key == "code" and task == "ths-index-prices":
+    if key == "code" and task == "ths-yuanhang-etf-prices":
+        return dict(key=key, label="ETF代码", kind="text", placeholder="例如510050.SH或159915.SZ")
+    if key == "code" and task == "ths-yuanhang-index-prices":
         label, placeholder = "指数代码", "例如 000001"
     if key in ("start", "end"):
         basis = {
             "tdx-suspensions": "来源日历日", "ths-holders": "报告期", "tdx-unlocks": "解禁日",
             "tdx-unlock-industries": "解禁月份", "eastmoney-repurchases": "方案日期",
             "tdx-holder-count": "统计日期", "tdx-shareholder-changes": "变动结束日",
-            "ths-listings": "上市日期", "ths-index-prices": "交易日期", "ths-yuanhang-prices": "交易日期",
+            "ths-fx-daily": "来源日线日期", "ths-listings": "上市日期", "ths-yuanhang-index-prices": "交易日期", "ths-yuanhang-prices": "交易日期",
             "sina-news": "发布日期", "tdx-hot-list": "上榜日期", "tdx-margin": "交易日期", "tdx-industry-margin": "统计日期", "ths-capital": "公告日/报告期",
             "tdx-dividends": "事件日期（除权日优先）", "tdx-additional-issues": "事件日期（发行日优先）",
             "tdx-rights-issues": "除权日",
+            "eastmoney-graymarket": "交易日期",
         }.get(task, "报告期" if task.startswith("tdx-earnings-") else "事件日期")
         if task == "ths-yuanhang-financial":
             basis = "除权日期" if view.id == "actions" else "股本生效日期"
@@ -129,7 +150,7 @@ def _navigation(task, view, result):
         target, mapping = view.id + ":detail", dict(plan_id="plan_id")
     elif task == "ths-industries" and view.id == "directory":
         target, mapping = "members", dict(industry="industry_code")
-    elif task == "ths-indices" and view.id == "indices":
+    elif task in ("ths-yuanhang-indices", "ths-yuanhang-index-members") and view.id == "indices":
         target, mapping = "members", dict(selected_index="index_code")
     elif task.startswith("kaipanla-") and view.id == "daily":
         target, mapping = "details", dict(theme_id="theme_id")
@@ -138,6 +159,13 @@ def _navigation(task, view, result):
 
 
 def _identity(task, view):
+    if task in ('sse-etf-shares', 'szse-etf-shares', 'ttjj-etf-nav'):
+        return ['unified_code', 'nav_date' if task == 'ttjj-etf-nav' else 'share_date']
+    if task in ('ths-yuanhang-etfs', 'ths-yuanhang-etf-latest'):
+        return ['unified_code']
+    if task == "ths-fx-live":
+        return ["unified_code"]
+
     if task == "ths-market-margin":
         return ["trade_date", "market_code"]
     if task == "tdx-industry-margin":
@@ -163,9 +191,9 @@ def _identity(task, view):
         return ["unlock_month", "industry"]
     if task == "ths-industries":
         return ["industry_code", "unified_code"]
-    if task == "ths-indices":
-        return ["index_code", "source_code"]
-    if task == "ths-index-prices":
+    if task in ("ths-yuanhang-indices", "ths-yuanhang-index-members"):
+        return ["index_code"] if view.id == "indices" else ["index_code", "source_code"]
+    if task == "ths-yuanhang-index-prices":
         return ["index_code", "trade_date"]
     if task == "ths-yuanhang-financial":
         return ["ex_date", "event_key"] if view.id == "actions" else ["effective_date"]
@@ -179,6 +207,25 @@ def _identity(task, view):
 
 
 def _content(task, view):
+    if task in ('sse-etf-shares', 'szse-etf-shares'):
+        return 'directory', 'ETF每日总份额', '精确份额，单位份；深市次日复核。空白不填零，未采集不代表没有ETF。', 'unified_code:证券代码|name:名称|share_date:份额日期:date|total_shares:总份额:decimal:份|source_group:来源分组|source_type:来源类型|version_observed_at:有效版本观测时间'
+    if task == 'ttjj-etf-nav':
+        return 'directory', 'ETF历史净值明细', '完整网页七列；收益和单位净值分开。历史收益基数及币种未知时保持空白。净值日期不是公布时间。', 'unified_code:证券代码|nav_date:净值日期:date|value_kind:指标口径|unit_nav:单位净值:decimal|accumulated_nav:累计净值:decimal|daily_change_pct:来源增长率:decimal:%|income_value:收益值:decimal|income_basis_shares:历史收益基数:decimal:份|yield_7d_pct:七日年化:decimal:%|purchase_status:申购状态|redemption_status:赎回状态|distribution_text:分红送配:longtext|currency:币种|income_label:来源当前收益标签|nav_type:来源NAVTYPE|income_start_date:来源收益起点:date|fund_type:来源基金类型|actual_income:实际收益字段:decimal|dividend_value:来源FHFCZ:decimal|dividend_per_ten:来源FHFCZ10:decimal|dividend_basis:来源FHFCBZ|distribution_type:来源DTYPE|version_observed_at:有效版本观测时间'
+    if task == 'ths-yuanhang-etfs':
+        return 'directory', 'ETF目录', '当前远航版ETF基金完整集合；退出目录者保留日K历史。', SECURITY + '|native_market:原生市场'
+    if task == 'ths-yuanhang-etf-prices':
+        return 'prices', 'ETF日K', '来源不复权原值；成交量为份、成交额为元。代码填写完整身份，例如510050.SH。', SECURITY + '|' + PRICE + '|volume:成交量:decimal:份|amount:成交额:decimal:元|price_relation_valid:价格关系有效:boolean|volume_amount_valid:量额非负:boolean'
+    if task == 'ths-yuanhang-etf-latest':
+        return 'directory', 'ETF最新行情', '仅Redis最新完整采样；来源报价时间及净值日期未知，净值不代表实时估值。', SECURITY + '|latest:现价:decimal:元|change:涨跌额（计算）:decimal:元|change_percent:涨幅（计算）:decimal:%|amplitude:振幅（计算）:decimal:%|previous_close:昨收:decimal:元|open:开盘:decimal:元|high:最高:decimal:元|low:最低:decimal:元|volume:成交量:decimal:份|amount:成交额:decimal:元|net_value:来源净值:decimal:元|quote_at:来源报价时间|net_value_date:净值日期:date|observed_at:采样时间|sampling_stale:采样过期:boolean|availability:报价状态'
+    if task == "ths-fx-live":
+        return "directory", "汇率最新行情", "每轮结束60秒后采样；仅最新值。来源time与updateTime分别保留，不以响应时间认定价格新鲜。", "unified_code:品种|name:名称|latest:最新价:decimal|open:开盘:decimal|high:最高:decimal|low:最低:decimal|previous_close:前收:decimal|unit:报价单位|source_time:来源time|source_update_time:来源updateTime|observed_at:采样时间|sampling_stale:采样已过期:boolean"
+    if task == "ths-fx-daily":
+        return "prices", "汇率历史日线", "来源日期标签及日K线；默认每日09:00归档更早日期，近期30自然日接受修订。图表仅概览当前页。", "unified_code:品种|name:名称|trade_date:来源日线日期:date|open:开盘:decimal|high:最高:decimal|low:最低:decimal|close:收盘:decimal|unit:报价单位|price_relation_valid:价格关系有效:boolean"
+
+    if task == "eastmoney-graymarket":
+        description = ("查看所选交易日最近一份完整盘中采样；今天的盘中数据在这里。15:30后日终结果见已归档日榜。"
+                       if view.id == "live" else "查看收盘后已归档的历史日榜；当天盘中数据请切换盘中资金榜。")
+        return "fundflow", view.title, description, "unified_code:证券代码|name:名称|dark_flow:暗盘资金:decimal:元|visible_flow:明盘资金:decimal:元|main_flow:主力净流入（含暗盘）:decimal:元|change_ratio:涨跌幅:decimal|dark_activity:暗盘活跃度:decimal|price:价格:decimal:元|trade_date:交易日期:date|source_time:来源行情时间|source_rank:来源序号:integer"
     if task == "ths-market-margin":
         return "directory", "市场融资融券", "99沪深京合计、3沪市、2深市、4京市；搜索填写市场编号。金额元、净卖出股、比例为小数。合计不可与分市场重复相加。", "trade_date:统计日期:date|market_code:市场编号|market_name:市场|financing_balance:融资余额:decimal:元|financing_buy:融资买入:decimal:元|financing_net_buy:融资净买入:decimal:元|financing_net_change:净买入增减:decimal:元|lending_balance:融券余额:decimal:元|lending_net_sell:融券净卖出:decimal:股|lending_net_change:净卖出增减:decimal:股|balance_ratio:余额占流通市值比:decimal|total_balance:两融余额:decimal:元"
     if task == "tdx-industry-margin":
@@ -198,8 +245,10 @@ def _content(task, view):
     if task == "ths-industries":
         defs = "industry_code:行业代码|name:行业名称|member_count:成分数量:integer" if view.id == "directory" else SECURITY + "|industry_code:行业代码|industry_name:所属行业"
         return "directory", "行业目录" if view.id == "directory" else "行业成分证券", "从行业进入成分证券；当前分类关系不表示历史归属。", defs
-    if task == "ths-indices":
-        defs = "index_code:指数代码|index_name:指数名称|source_group:来源分组|members_available:来源提供成员:boolean|member_count:成员数:integer" if view.id == "indices" else "index_code:指数代码|index_name:指数名称|source_code:来源证券代码|unified_code:统一证券代码|name:证券名称|members_available:来源提供成员:boolean"
+    if task in ("ths-yuanhang-indices", "ths-yuanhang-index-members"):
+        defs = "index_code:指数代码|index_name:指数名称|native_market:原生市场|members_available:来源提供成员:boolean|member_count:成员数:integer" if view.id == "indices" else "index_code:指数代码|index_name:指数名称|source_code:来源证券代码|unified_code:统一证券代码|name:证券名称|members_available:来源提供成员:boolean"
+        if task == 'ths-yuanhang-indices' and view.id == 'indices':
+            defs = 'index_code:指数代码|index_name:指数名称|native_market:原生市场'
         return "directory", "指数目录" if view.id == "indices" else "指数成分证券", "从指数进入成分；来源暂无成员不能解释为零成员，当前目录不提供历史调样。", defs
     if task in ("ths-income", "ths-balance", "ths-cashflow"):
         name = {"ths-income": "利润表", "ths-balance": "资产负债表", "ths-cashflow": "现金流量表"}[task]
@@ -235,8 +284,8 @@ def _content(task, view):
         if view.id == "daily":
             return "themes", "题材热度日目录", "查看当日题材层级、热度与涨停数；选择题材阅读说明和关联证券。", "rank_no:来源排名:integer|name:题材名称|parent_id:父题材编号|hot_score:热度:decimal|change_rate:涨幅:decimal:%|limit_up_count:涨停数:integer|new_flag:新增标记:boolean"
         return "themes", "题材逻辑与关联证券", "题材介绍和证券入选原因分别阅读；同一证券可在不同分类出现。", "unified_code:证券代码|stock_name:证券名称|category_name:题材分类|reason:入选原因:longtext|first_shelved_at:首次收录时间:date|is_new:新增:boolean|is_hot:热门:boolean"
-    if task == "ths-index-prices":
-        return "prices", "指数日线", "选择单一指数比较价格；成交量、成交额保留来源单位，质量标记不被隐藏。", "index_code:指数代码|name:指数名称|" + PRICE.replace(":元", ":点") + "|volume:成交量（来源口径）:decimal|amount:成交额:decimal:元|price_relation_valid:价格关系有效:boolean|volume_amount_valid:量额有效:boolean"
+    if task == "ths-yuanhang-index-prices":
+        return "prices", "指数日线", "选择单一指数比较价格；成交量、成交额保留来源单位，质量标记不被隐藏。", "index_code:指数代码|name:指数名称|" + PRICE.replace(":元", ":点") + "|volume:成交量（来源口径）:decimal|amount:成交额（来源口径）:decimal|price_relation_valid:价格关系有效:boolean|volume_amount_valid:量额有效:boolean"
     if task == "ths-yuanhang-prices":
         return "prices", "不复权日行情", "按证券浏览不复权OHLC与成交量额；图表仅概览当前页，完整值见明细。", PRICE + "|volume_shares:成交量:decimal:股|amount_yuan:成交额:decimal:元|quality_flags:质量标记:integer"
     if task == "ths-yuanhang-financial":

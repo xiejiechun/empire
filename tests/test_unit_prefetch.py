@@ -32,7 +32,8 @@ async def test_managed_response_close_keeps_retained_unit_budget_until_ordered_c
         return response
     http._request = AsyncMock(side_effect=transport)
     async def fetch(unit, *, reservation):
-        response = await http.request('GET', 'https://example.com/' + str(unit), reservation=reservation)
+        response = await http.request('GET', 'https://example.com/' + str(unit),
+                                      allowed_domains=('example.com',), reservation=reservation)
         async def consume():
             value = response.json()
             response.close()

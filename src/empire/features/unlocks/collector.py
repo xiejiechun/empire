@@ -1,12 +1,14 @@
 """One collector discovers list facts and reads each shared detail group once."""
 import asyncio
 import hashlib
+import json
 from datetime import UTC, datetime
 from functools import partial
 from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.unlocks.contract import (
     CONTRACT,
@@ -28,13 +30,16 @@ from empire.features.unlocks.source import (
     parse_detail,
     parse_list,
 )
-from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
+from empire.plugins.collection.followup_reads import followup_reads, retain_parent
+from empire.plugins.collection.planned_reads import planned_reads
+from empire.plugins.collection.unit_prefetch import DeferredResponse
 from empire.plugins.collectors.support import (
     publish_with_capacity,
     record_error_safely,
     wait_for_archive,
     wait_for_capacity,
 )
+from empire.plugins.infra.tdx_maintenance import RecoveryStage, needs_review
 from empire.sources.tdx_unlock import PAGE, body
 
 
@@ -46,6 +51,7 @@ class UnlockCollector:
 
     def __init__(self):
         self.request_retries = 2
+        self.recovery = RecoveryStage()
         self.stats = dict(status='stopped', collected=0, record_name='条解禁列表事实',
                           unit_name='个月', completed_units=0, requests=0)
 
@@ -78,15 +84,18 @@ class UnlockCollector:
                                 observed_bytes=len(raw), body_sha256=hashlib.sha256(raw).hexdigest(),
                                 metadata={'mode': 'detail' if detail else 'list', 'params': params}))
                 raise
-        return DeferredResponse(response, consume)
+        result = DeferredResponse(response, consume)
+        result.owner = getattr(reservation, 'owner', None)
+        return result
 
-    def envelope(self, unit, parents, details, cursor, observed, manifest=None):
+    def envelope(self, unit, parents, details, cursor, observed, manifest=None, *, packed=None):
         event = make_envelope(source='tdx', dataset=DATASET, business_key=unit, job_key=JOB,
             batch_id=cursor['batch_id'], run_id=cursor['batch_id'], schema_version=CONTRACT,
             payload=dict(page=cursor['page'] + 1, unit=unit,
-                         data=None if manifest else pack(parents, details), manifest=manifest))
+                         data=None if manifest else packed if packed is not None else pack(parents, details), manifest=manifest))
         return event.model_copy(update={'observed_at': observed, 'source_url': PAGE, 'available_at': None})
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0, start_month=None, end_month=None):
         stage = 'plan'
         try:
@@ -113,16 +122,41 @@ class UnlockCollector:
                         response_hash='', page=0, collected=0, details=0, rolling='', contract=CONTRACT,
                         batch_id=uuid4().hex, force=bool(fresh),
                         review_index=datetime.now(CHINA).date().toordinal() % len(months))
-                stored = await self.query.state()
+                stored = await self.query.maintenance_state()
                 proofs = stored.get('units', {}) if stored.get('contract_version') == CONTRACT else {}
                 self.stats.update(status='collecting', error='', requests=0, total_units=len(months),
                                   completed_units=cursor['index'], collected=cursor['collected'])
-                for index in range(cursor['index'], len(months)):
-                    month, observed = months[index], datetime.now(UTC)
-                    async with prefetch_units(self, [month], self.fetch, url=URL,
-                            domains=('tdx.com.cn',), item_name='月列表') as reads:
-                        async for _, read in reads:
-                            parents = await read.resolve()
+                now = datetime.now(UTC)
+                recent_month = f'{(now.year * 12 + now.month - 3) // 12:04d}-{(now.year * 12 + now.month - 3) % 12 + 1:02d}-01'
+                reused = {m for m in months if all(valid_proof(proofs.get(m + '|' + market, {}))
+                    and not proofs[m + '|' + market]['empty_groups']
+                    and not needs_review(proofs[m + '|' + market], m + '|' + market, now,
+                        recent=m >= recent_month, force=cursor['force'], contract=CONTRACT)
+                    for market in MARKETS)}
+                if cursor['market_index']:
+                    reused.discard(months[cursor['index']])
+                self.stats['reused_months'] = len(reused)
+                remaining = months[cursor['index']:]
+                first = cursor['index']
+                async with planned_reads(self, remaining, self.fetch, reused, url=URL,
+                        domains=('tdx.com.cn',), item_name='月列表') as reads:
+                  async for offset, read in reads:
+                    index, month = first + offset, remaining[offset]
+                    if read is None:
+                        following = dict(cursor)
+                        for market in MARKETS:
+                            unit = month + '|' + market
+                            proof = proofs[unit]
+                            following['collected'] += proof['count']
+                            following['details'] += proof['details']
+                            following['rolling'] = digest([following['rolling'], unit, proof['digest'], proof['count'], proof['details']])
+                        following['index'] = index + 1
+                        state = await self.ingest.advance_checkpoint(job_key=JOB, expected_revision=state['revision'], cursor=following)
+                        cursor = following
+                        continue
+                    observed = datetime.now(UTC)
+                    parents = await read.resolve()
+                    owner, retained = retain_parent(read, parents)
                     groups, skipped = {}, {}
                     for market in MARKETS:
                         unit = month + '|' + market
@@ -130,34 +164,50 @@ class UnlockCollector:
                         proof = proofs.get(unit, {})
                         if (not cursor['force'] and not cursor['market_index'] and index != cursor['review_index']
                                 and valid_proof(proof) and proof.get('count') == len(rows)
+                                and not needs_review(proof, unit, now, recent=month >= recent_month, contract=CONTRACT)
                                 and proof.get('list_digest') == list_digest(rows) and not proof.get('empty_groups', 1)):
                             skipped[unit] = proof
                         else:
                             groups[unit] = rows
                     requests = {r['group_key']: r for rows in groups.values() for r in rows}
+                    self.recovery.begin([cursor['batch_id'], month, digest(parents)], observed)
+                    observed = self.recovery.started
                     detail_rows = {}
                     async def download(parent, *, reservation):
-                        return await self.fetch(parent, detail=True, reservation=reservation)
+                        cached = self.recovery.get(parent['group_key'])
+                        return cached if cached is not None else await self.fetch(parent, detail=True, reservation=reservation)
                     keys = sorted(requests)
-                    async with prefetch_units(self, [requests[k] for k in keys], download, url=URL,
+                    async with followup_reads(self, [requests[k] for k in keys], download, owner, lambda: retained, url=URL,
                             domains=('tdx.com.cn',), item_name='明细请求组') as reads:
                         async for offset, read in reads:
                             detail_rows[keys[offset]] = await read.resolve()
+                            if owner is not None:
+                                retained += 3 * len(json.dumps(detail_rows[keys[offset]], ensure_ascii=False,
+                                    separators=(',', ':')).encode())
+                                if not owner.grow_to(max(owner.size, retained)):
+                                    raise ValueError('解禁完整明细超过共享缓冲预算')
+                            self.recovery.put(keys[offset], detail_rows[keys[offset]])
                     complete = {}
                     for unit, rows in groups.items():
                         headers = [{**r, 'detail_status': 'present' if detail_rows[r['group_key']] else 'source_empty',
                                     'detail_count': len(detail_rows[r['group_key']])} for r in rows]
                         children = sorted([r for key in {r['group_key'] for r in rows} for r in detail_rows[key]],
                                           key=lambda r: r['record_key'])
-                        validate_unit(unit, headers, children)
+                        try:
+                            validate_unit(unit, headers, children)
+                        except ValueError:
+                            self.recovery.clear()
+                            raise
                         complete[unit] = (headers, children)
                     source_hash = digest({month + '|' + market:
                         digest(list(complete[month + '|' + market])) if month + '|' + market in complete
                         else skipped[month + '|' + market]['digest'] for market in MARKETS})
                     if cursor['market_index'] and cursor['response_hash'] != source_hash:
                         raise ValueError('解禁中断月份来源已修订；须重新初始化，不混合旧新集合')
+                    packed = {}
                     for unit, (headers, children) in complete.items():
                         probe = self.envelope(unit, headers, children, cursor, observed)
+                        packed[unit] = probe.raw_payload['data']
                         if len(probe.model_dump_json().encode()) > getattr(self.ingest, 'settings', {}).get('max_page_bytes', 524288):
                             raise ValueError('解禁完整月市场消息超限；不截断或推进断点')
                     for market_index, market in enumerate(MARKETS):
@@ -177,7 +227,7 @@ class UnlockCollector:
                             next_cursor.update(index=index + 1, market_index=0, response_hash='')
                         stage = 'queue_publish'
                         if unit in complete:
-                            event = self.envelope(unit, headers, children, cursor, observed)
+                            event = self.envelope(unit, headers, children, cursor, observed, packed=packed[unit])
                             next_cursor['page'] += 1
                             state = await publish_with_capacity(self.ingest, self.stats, [event], job_key=JOB,
                                 expected_revision=state['revision'], cursor=next_cursor)
@@ -200,6 +250,7 @@ class UnlockCollector:
                 cursor['batch_id'], cursor['page']), retry_seconds=1)
             cursor = {**cursor, 'phase': 'complete'}
             await self.ingest.advance_checkpoint(job_key=JOB, expected_revision=state['revision'], cursor=cursor)
+            self.recovery.clear()
             self.stats.update(status='complete', error='')
             return cursor
         except asyncio.CancelledError:
@@ -212,6 +263,7 @@ class UnlockCollector:
             raise
 
     async def stop(self):
+        self.recovery.clear()
         self.stats['status'] = 'stopped'
 
     def health(self):

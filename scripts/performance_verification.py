@@ -59,6 +59,7 @@ async def verify_kind(manager, kind, selection, args, result):
         record = dict(params=json.loads(kwargs['content'])['Params'],
             bytes=len(response.content), sha256=hashlib.sha256(response.content).hexdigest())
         try:
+            record['source_error_code'] = response.json().get('ErrorCode')
             sets = response.json()['ResultSets']
             record['shape'] = [dict(declared=s.get('Count'), actual=len(s.get('Content', []))) for s in sets]
             if len(sets) == 3:
@@ -162,6 +163,17 @@ async def verify_kind(manager, kind, selection, args, result):
             strict_proxy_verified=strict_proxy(routes, len(responses)))
         result['preparation'] = [dict(criterion=v.criterion, status=v.status, measured=v.measured, blocking=v.blocking)
                                 for v in await q.preparation_check()]
+        if (getattr(args, 'verify_maintenance', False)
+                and not any(f['scope'] == scopes[-1] for f in failures)):
+            directories.clear()
+            options = dict(start_month=scopes[-1], end_month=scopes[-1]) if kind == 'shareholder_changes' else {}
+            again = await c.execute(baseline_revision=await c.checkpoint_revision(), **options)
+            expected = 0 if kind == 'shareholder_changes' else 1
+            require(again['network_costs']['http_attempts'] - again['network_costs']['retries'] == expected,
+                    '已确认单元在无变化维护中重复下载')
+            require(await store.client.xlen(store.stream) == 0, '维护消息未清队')
+            result['maintenance'] = dict(network_costs=again['network_costs'], reused=c.stats['reused_units'], pending=0)
+            result['maintenance_scope'] = scopes[-1]
     finally:
         http.request, c.fetch, ingest.publish_page = original_request, original_fetch, original_publish
         runtime.quarterly_plan = original_plan
@@ -181,6 +193,7 @@ async def verify_scope(manager, selection, args, report):
 
 def main(default_kinds=None, argv=None):
     parser = verification.parser(__doc__)
+    parser.add_argument('--verify-maintenance', action='store_true')
     parser.add_argument('--kinds', nargs='+', choices=tuple(UNIT_KINDS), default=default_kinds or list(UNIT_KINDS))
     parser.add_argument('--periods', nargs='+', default=['2013-12-31', '2022-03-31', '2026-06-30', '2026-09-30'])
     parser.add_argument('--months', nargs='+', default=['1990-01-01', '2010-01-01', '2014-06-01', '2026-09-01'])
@@ -194,7 +207,7 @@ def main(default_kinds=None, argv=None):
     _app = QCoreApplication.instance() or QCoreApplication(sys.argv[:1])
     action = verification.recover(args) if args.cleanup_only else verification.verify(
         args, verify_scope, subject='tdx_performance', fixed_codes=('601919.SH', '601958.SH', '601139.SH'),
-        minimum_random=30, require_proxy=True)
+        minimum_random=30)
     # This command owns its single process and one run. Restore the shared
     # factory even on cancellation; resource lifecycle/recovery remains shared.
     with patch.object(verification, 'PrivateStorage', PerformanceStorage):

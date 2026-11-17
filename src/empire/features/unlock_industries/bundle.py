@@ -14,7 +14,7 @@ def bundle(cfg):
         OrderedContribution(3000, UnlockIndustryCollector()),
         OrderedContribution(3100, UnlockIndustryUiPlugin()),
     ), tasks=(
-        OrderedContribution(100, TaskContribution('tdx-unlock-industries', '大小非解禁行业（通达信）',
+        OrderedContribution(100, TaskContribution('tdx-unlock-industries', '大小非解禁行业',
                     'collector.tdx_unlock_industries', 'tdx', '完整可得月份行业汇总及估值基准日，无分页参数',
                     category='股东数据', source_name='通达信', parallel_downloads=True, unit_name='个月',
                     default_schedule=TaskDefaults('daily', description='每天北京时间18:00回查当前来源目录全部月份；保留已退出目录历史，可编辑。'),

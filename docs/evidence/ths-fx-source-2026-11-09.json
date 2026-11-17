@@ -1,0 +1,283 @@
+{
+  "run_id": "19ccf993a01e42429bd5f006f1eaa1fc",
+  "mode": "verification",
+  "checked_at": "2026-11-09T14:51:38.271115+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": true,
+  "sample_30_met": false,
+  "results": {
+    "fx.price.year": {
+      "pipeline_verified": true,
+      "acceptance_complete": true,
+      "strict_proxy_verified": true,
+      "routes": {
+        "proxy_requests": 14
+      },
+      "responses": [
+        {
+          "unit": "last",
+          "count": 139,
+          "bytes": 8198,
+          "sha256": "4aa22cbfbfa61fa9a8e88312e14bef996a9af639cffb5511b32e5a6aafdf76f1"
+        },
+        {
+          "unit": "2016",
+          "count": 263,
+          "bytes": 14777,
+          "sha256": "bc04b0617e14db4fad1e600cb7abb648f85b4145161f4e9269b295b44d281f3d"
+        },
+        {
+          "unit": "2018",
+          "count": 260,
+          "bytes": 14609,
+          "sha256": "6d7bc4e104e105b945cf30954d7d394b5c3e4ca930cebbafdced906ad1744c7c"
+        },
+        {
+          "unit": "2023",
+          "count": 260,
+          "bytes": 14609,
+          "sha256": "371006e18e5249664812db995cab99860de33f018dd44ff908dee41c8cc3f54b"
+        },
+        {
+          "unit": "2020",
+          "count": 260,
+          "bytes": 14609,
+          "sha256": "5ba7c2b8f61eac3d15141a4aa3708d244e74f0b2eca4824ea1672fc06b9d8d4c"
+        },
+        {
+          "unit": "2021",
+          "count": 246,
+          "bytes": 13825,
+          "sha256": "1484087222e7a86f4a51f67f06e1a5af4f91ceb5b3fa5bfdd256b658e4164820"
+        },
+        {
+          "unit": "2025",
+          "count": 261,
+          "bytes": 14665,
+          "sha256": "623ca0beaaa3fe8623fbd0c72312664233a49f464aaf785eb0ee05fdce157fda"
+        },
+        {
+          "unit": "2024",
+          "count": 262,
+          "bytes": 14721,
+          "sha256": "8f135958eb251fc60c83d04a34adda37114f68e7ad86002af8885fe11ed5222e"
+        },
+        {
+          "unit": "2026",
+          "count": 222,
+          "bytes": 12537,
+          "sha256": "d3deb8900948a9782f4fa22bf771996a81add6830b5a6fe63a8f46208a246db4"
+        },
+        {
+          "unit": "2019",
+          "count": 261,
+          "bytes": 14665,
+          "sha256": "5816eb82cedd46127c41bd2002df70b30f7807bc369382a17233f6cae3025478"
+        },
+        {
+          "unit": "2022",
+          "count": 260,
+          "bytes": 14609,
+          "sha256": "49f6c536a8e14c2a730bbdcfe074f2c44efc0d2bc9cb3a14c9a1715453e4ecfc"
+        },
+        {
+          "unit": "2017",
+          "count": 260,
+          "bytes": 14609,
+          "sha256": "c6b6d8df27e3aff3d216947fd273c0a8a1f5f7e5aa69db63d3d96e2712c35e0a"
+        },
+        {
+          "unit": "live",
+          "count": 1,
+          "bytes": 1006,
+          "sha256": "f0593fafff626b00e5f30a12a1389f40f81ef08c335e312ffbe992a55534db59"
+        }
+      ],
+      "business_rows": 2815,
+      "years": {
+        "2016": 263,
+        "2017": 260,
+        "2018": 260,
+        "2019": 261,
+        "2020": 260,
+        "2021": 246,
+        "2022": 260,
+        "2023": 260,
+        "2024": 262,
+        "2025": 261,
+        "2026": 222
+      },
+      "full_history_digest": "119a8694e5592fe8273bbd4698590453427c0c3b2485e212de17b7fd2ad9551f",
+      "pending": 0,
+      "realtime_zero_sql": true,
+      "untested_instruments": [
+        "USDIND",
+        "USDCNY",
+        "XAUUSD",
+        "EURUSD",
+        "GBPUSD",
+        "USDCAD",
+        "USDCHF",
+        "USDHKD",
+        "AUDUSD",
+        "USDJPY",
+        "USDSGD"
+      ]
+    }
+  },
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\large-exit-20261106-implementation\\private-mysql.json": "68bfb083461855a898b9fbc7e4e0df3ccce202c32283c2e1ad80b6ab923f3296"
+  },
+  "subject": "fx",
+  "selection": {
+    "selected": [],
+    "random": [],
+    "fixed": [],
+    "random_count": 0,
+    "non_stock_scope": {
+      "unit": "complete instrument",
+      "reason": "Twelve fixed forex-page instruments, source-year completeness",
+      "fixed": [
+        "USDCNH"
+      ]
+    },
+    "instrument_pool": [
+      "USDIND",
+      "USDCNY",
+      "USDCNH",
+      "XAUUSD",
+      "EURUSD",
+      "GBPUSD",
+      "USDCAD",
+      "USDCHF",
+      "USDHKD",
+      "AUDUSD",
+      "USDJPY",
+      "USDSGD"
+    ],
+    "selected_instruments": [
+      "USDCNH"
+    ],
+    "seed": null,
+    "sample_ratio": 0.08333333333333333,
+    "policy": "Fixed offshore RMB boundary; ceil(12*0.05)=1 complete instrument, all advertised years; no replacement on failure"
+  },
+  "source_sha256": "c6632958a0e23ca82de02e0f23f2ac9d963a0ff27ab87e3c8b949abd8889aab4",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "verification_scope": "proxy_pipeline",
+  "routing_policy": {
+    "use_proxy": true,
+    "proxy_fallback": false
+  },
+  "sample_30_applicable": false,
+  "policy_snapshot_digest": "d277e976e6abdd3caa5e959d7d11ee7e4e4abd03f9b3bde6f3f6356ae7a704fd",
+  "acceptance_complete": true,
+  "storage": {
+    "database": "empire_verify_ths_19ccf993a01e42429bd5f006f1eaa1fc_test",
+    "namespace": "empire:test:verify_ths:19ccf993a01e42429bd5f006f1eaa1fc",
+    "run_id": "19ccf993a01e42429bd5f006f1eaa1fc",
+    "server_uuid": "b9701dec-d990-11f1-b1a0-380525361d4e",
+    "owner_sha256": "3435b3b0aa0c9feaf4acd59a2a5a74939f98ce2f770bf15883b119903ad18d0c"
+  },
+  "source_attempts": {
+    "routes": {
+      "proxy_requests": 14
+    },
+    "responses": [
+      {
+        "unit": "last",
+        "count": 139,
+        "bytes": 8198,
+        "sha256": "4aa22cbfbfa61fa9a8e88312e14bef996a9af639cffb5511b32e5a6aafdf76f1"
+      },
+      {
+        "unit": "2016",
+        "count": 263,
+        "bytes": 14777,
+        "sha256": "bc04b0617e14db4fad1e600cb7abb648f85b4145161f4e9269b295b44d281f3d"
+      },
+      {
+        "unit": "2018",
+        "count": 260,
+        "bytes": 14609,
+        "sha256": "6d7bc4e104e105b945cf30954d7d394b5c3e4ca930cebbafdced906ad1744c7c"
+      },
+      {
+        "unit": "2023",
+        "count": 260,
+        "bytes": 14609,
+        "sha256": "371006e18e5249664812db995cab99860de33f018dd44ff908dee41c8cc3f54b"
+      },
+      {
+        "unit": "2020",
+        "count": 260,
+        "bytes": 14609,
+        "sha256": "5ba7c2b8f61eac3d15141a4aa3708d244e74f0b2eca4824ea1672fc06b9d8d4c"
+      },
+      {
+        "unit": "2021",
+        "count": 246,
+        "bytes": 13825,
+        "sha256": "1484087222e7a86f4a51f67f06e1a5af4f91ceb5b3fa5bfdd256b658e4164820"
+      },
+      {
+        "unit": "2025",
+        "count": 261,
+        "bytes": 14665,
+        "sha256": "623ca0beaaa3fe8623fbd0c72312664233a49f464aaf785eb0ee05fdce157fda"
+      },
+      {
+        "unit": "2024",
+        "count": 262,
+        "bytes": 14721,
+        "sha256": "8f135958eb251fc60c83d04a34adda37114f68e7ad86002af8885fe11ed5222e"
+      },
+      {
+        "unit": "2026",
+        "count": 222,
+        "bytes": 12537,
+        "sha256": "d3deb8900948a9782f4fa22bf771996a81add6830b5a6fe63a8f46208a246db4"
+      },
+      {
+        "unit": "2019",
+        "count": 261,
+        "bytes": 14665,
+        "sha256": "5816eb82cedd46127c41bd2002df70b30f7807bc369382a17233f6cae3025478"
+      },
+      {
+        "unit": "2022",
+        "count": 260,
+        "bytes": 14609,
+        "sha256": "49f6c536a8e14c2a730bbdcfe074f2c44efc0d2bc9cb3a14c9a1715453e4ecfc"
+      },
+      {
+        "unit": "2017",
+        "count": 260,
+        "bytes": 14609,
+        "sha256": "c6b6d8df27e3aff3d216947fd273c0a8a1f5f7e5aa69db63d3d96e2712c35e0a"
+      },
+      {
+        "unit": "live",
+        "count": 1,
+        "bytes": 1006,
+        "sha256": "f0593fafff626b00e5f30a12a1389f40f81ef08c335e312ffbe992a55534db59"
+      }
+    ],
+    "request_retries": 4
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  }
+}

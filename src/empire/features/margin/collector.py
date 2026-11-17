@@ -10,9 +10,10 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.margin.contract import CONTRACT, DATASET, JOB, PROJECT, digest, pack
-from empire.features.margin.source import PAGE, URL, params, parse
+from empire.features.margin.source import PAGE, URL, params, parse, transient_query_timeout
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -71,6 +72,7 @@ class MarginCollector:
             project_id=PROJECT,
             policy=self.http.response_policy("generic"),
             max_retries=self.request_retries,
+            retry_response=transient_query_timeout,
             reservation=reservation,
         )
         self.stats["requests"] += 1
@@ -100,6 +102,7 @@ class MarginCollector:
 
         return DeferredResponse(response, consume)
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0, codes=None):
         stage = "plan"
         try:
@@ -114,7 +117,7 @@ class MarginCollector:
                 if (fresh and not progressed) or cursor.get("phase") == "complete":
                     cursor = {}
                 if cursor and cursor["scope_hash"] != digest(pool):
-                    raise ValueError("融资融券证券范围与未完成断点冲突，须重新初始化")
+                    raise ValueError("融资融券证券范围与未完成断点冲突，须显式维护范围；原批次与断点保留")
                 if not cursor:
                     cursor = dict(
                         phase="fetch",

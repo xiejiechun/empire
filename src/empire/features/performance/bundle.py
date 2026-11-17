@@ -16,7 +16,7 @@ def bundle(cfg):
         *positioned((1700, 1800, 1900, 2000, 2100, 2200), (PerformanceCollector(kind) for kind in PERFORMANCE_KINDS)),
         *positioned((2300, 2400, 2500, 2600, 2700, 2800), (PerformanceUiPlugin(kind) for kind in PERFORMANCE_KINDS)),
     ), tasks=(
-        *positioned((500, 600, 700, 800, 900, 1000), (TaskContribution(performance_project(kind), item[0] + '（通达信）',
+        *positioned((500, 600, 700, 800, 900, 1000), (TaskContribution(performance_project(kind), item[0],
                     'collector.tdx_' + kind, 'tdx', '每页10000；完整来源单元、历史回查及结构化查询',
                     category=item[3], source_name='通达信', parallel_downloads=True, unit_name='个完整响应',
                     default_schedule=TaskDefaults('daily', description='每天北京时间18:00完整回查来源单元历史；首次补来源可得范围，可编辑。'),

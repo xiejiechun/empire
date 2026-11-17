@@ -7,9 +7,9 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.ths_capital.contract import DATASET, JOB, PROJECT, TABLES, digest
-from empire.features.ths_capital.source import parse
 from empire.features.ths_capital.transport import SCHEMA, pack
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
@@ -19,13 +19,16 @@ from empire.plugins.collectors.support import (
     wait_for_capacity,
 )
 from empire.plugins.collectors.ths_session import ThsSession
+from empire.plugins.datasets.source_compute import MAX_SOURCE_RESULT
+from empire.plugins.infra.ths_maintenance import due
 
 
 class CapitalPageCollector:
     def __init__(self):
         self.source, self.project_id, self.job_key = 'ths', PROJECT, JOB
         self.manifest = PluginManifest('collector.ths_capital', '公司资本运作（同花顺）',
-            requires=('http.fetch', 'ingest.publish', 'ths_capital.query', 'archive.confirmation', 'collection.records'),
+            requires=('http.fetch', 'ingest.publish', 'ths_capital.query', 'archive.confirmation',
+                      'collection.records', 'dataset.catalog'),
             provides=('collector.ths_capital',), description='一次响应采集全部栏目、展开详情及原事件/解除')
         self.stats, self.session, self.request_retries = dict(status='stopped', collected=0), None, 2
 
@@ -33,6 +36,7 @@ class CapitalPageCollector:
         self.http, self.ingest = context.get('http.fetch'), context.get('ingest.publish')
         self.query, self.confirmation = context.get('ths_capital.query'), context.get('archive.confirmation')
         self.records = context.get('collection.records')
+        self.catalog = context.get('dataset.catalog')
         self.stats['status'] = 'idle'
         return {'collector.ths_capital': self}
 
@@ -48,9 +52,12 @@ class CapitalPageCollector:
         response = await self.http.request('GET', url, headers=self.session.headers(url),
             allowed_domains=('10jqka.com.cn',), project_id=PROJECT, policy=self.http.response_policy('generic'),
             max_retries=self.request_retries, reservation=reservation, retry_empty_body=True)
+        error, result = None, None
         async def consume():
             try:
-                return parse(response.content, stock, observed.astimezone(CHINA).date()), observed, url
+                if error is not None:
+                    raise error
+                return result.value, observed, url
             except (ValueError, TypeError, KeyError, UnicodeError) as exc:
                 body = response.content
                 exc.diagnostic_recorded = await record_error_safely(self.records, self.stats, PROJECT, exc,
@@ -60,8 +67,20 @@ class CapitalPageCollector:
                 raise
             finally:
                 if not defer:
-                    response.close()
-        return DeferredResponse(response, consume) if defer else await consume()
+                    pending.close()
+        pending = DeferredResponse(response, consume)
+        try:
+            result = await self.catalog.compute_source('ths.capital', response.content, stock,
+                observed.astimezone(CHINA).date(), reservation=reservation)
+            pending.retain(result)
+        except (ValueError, TypeError, KeyError, UnicodeError) as exc:
+            # Pure parsing can finish out of order; only the ordered consumer
+            # reports source failure and decides the publication frontier.
+            error = exc
+        except BaseException:
+            pending.close()
+            raise
+        return pending if defer else await consume()
 
     async def publish(self, state, cursor, unit, value, manifest, observed, url):
         self.stats.update(publication_unit=unit, publication_url=url, publication_bytes=None,
@@ -74,13 +93,16 @@ class CapitalPageCollector:
         return await publish_with_capacity(self.ingest, self.stats, [e], job_key=JOB,
                                           expected_revision=state['revision'], cursor=cursor)
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
         self.stats.update(completed_units=0, total_units=None, unit_name='只股票')
+        self.stats['reused_units'] = 0
         stage = 'plan'
         try:
             state = await self.ingest.checkpoint(JOB)
             cursor = state['cursor']
             progressed = state['revision'] > baseline_revision
+            force = bool((fresh and not progressed) or (cursor.get('phase') == 'fetch' and cursor.get('fresh')))
             if progressed and cursor.get('phase') == 'complete':
                 self.stats.update(completed_units=cursor['index'], total_units=cursor['units'])
                 return cursor
@@ -92,18 +114,30 @@ class CapitalPageCollector:
                 if cursor and cursor.get('scope_hash') != digest(keys):
                     cursor = {}
                     self.stats['scope_changed'] = True
+                units = await self.query.collection_units()
+                now = datetime.now(UTC)
                 if not cursor:
                     cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0, collected=0,
-                                  units=len(keys), scope_hash=digest(keys), rolling=digest([]))
+                                  units=len(keys), scope_hash=digest(keys), rolling=digest([]), fresh=force)
                 self.stats.update(completed_units=cursor['index'], total_units=len(keys))
-                selected = stocks[cursor['index']:]
-                first = cursor['index']
-                async def download(stock, *, reservation):
-                    return await self.fetch(stock, reservation=reservation, defer=True)
+                selected = [(i, stocks[i]) for i in range(cursor['index'], len(keys))
+                            if cursor.get('fresh', False) or keys[i] not in units or due(units[keys[i]]['stamp'], now)]
+                def reuse_before(stop):
+                    nonlocal cursor
+                    self.stats['reused_units'] = self.stats.get('reused_units', 0) + stop - cursor['index']
+                    for i in range(cursor['index'], stop):
+                        proof = units[keys[i]]
+                        cursor = {**cursor, 'index': i + 1,
+                            'collected': cursor['collected'] + proof['count'],
+                            'rolling': digest([cursor['rolling'], keys[i], proof['digest'], proof['count']])}
+                async def download(item, *, reservation):
+                    return await self.fetch(item[1], reservation=reservation, defer=True)
+                retained = (MAX_SOURCE_RESULT if self.http.buffer_budget.limit >= 4 * MAX_SOURCE_RESULT else 0)
                 async with prefetch_units(self, selected, download, url='https://basic.10jqka.com.cn/',
-                        domains=('10jqka.com.cn',), item_name='股票') as reads:
+                        domains=('10jqka.com.cn',), item_name='股票', retained_bytes=retained) as reads:
                     async for number, read in reads:
-                        index = first + number
+                        index = selected[number][0]
+                        reuse_before(index)
                         self.stats.update(status='collecting', current_security=keys[index], total_units=len(keys),
                                           processed_units=index, pages=cursor['pages'], collected=cursor['collected'])
                         stage = 'source_validation'
@@ -116,6 +150,7 @@ class CapitalPageCollector:
                         state = await self.publish(state, following, keys[index], value, None, observed, url)
                         cursor = state['cursor']
                         self.stats['completed_units'] = cursor['index']
+                reuse_before(len(keys))
                 following = {**cursor, 'phase': 'awaiting_archive', 'pages': cursor['pages'] + 1}
                 manifest = dict(units=len(keys), count=cursor['collected'], securities=keys,
                                 scope_hash=digest(keys), digest=cursor['rolling'])

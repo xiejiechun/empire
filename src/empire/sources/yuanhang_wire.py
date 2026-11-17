@@ -98,7 +98,7 @@ def scalar(cell, kind):
     raise ValueError(f'Unsupported HX field encoding kind={kind} width={len(cell)}')
 
 
-def decode_table(data: bytes, limit: int, reserve=None):
+def decode_table(data: bytes, limit: int, reserve=None, *, text_encodings=None):
     if type(limit) is not int or not 22 <= len(data) <= limit:
         raise ValueError('Truncated HX table')
     version = data[:6]
@@ -131,7 +131,8 @@ def decode_table(data: bytes, limit: int, reserve=None):
             cell = data[offset:offset + width]
             offset += width
             try:
-                point[field] = scalar(cell, kind)
+                encoding = (text_encodings or {}).get(field)
+                point[field] = (None if cell[:1] == b'\xff' else cell.split(b'\0', 1)[0].decode(encoding)) if encoding and kind == 1 else scalar(cell, kind)
             except ValueError as exc:
                 raise ValueError(f'{exc}; field={field}, row={row}, date={point.get(1)}, '
                                  f'encoding={kind}, cell={cell[:8].hex()}') from exc

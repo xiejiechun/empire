@@ -36,13 +36,24 @@ def test_maintenance_inventory_and_child_table_keep_distinct_meaning():
     assert schema.dataset_tables('suspensions.period') == ('suspension_event', 'suspension_source_date')
     assert schema.PRIMARY_KEYS['suspension_source_date'] == [
         'source_date', 'unified_code', 'suspended_at', 'resume_key', 'record_key']
-    assert schema.TABLES[-25:-22] == ('finance_news', 'collection_state', 'app_setting')
-    assert schema.TABLES[-22:-17] == ('theme_daily', 'theme_detail', 'theme_category', 'theme_stock', 'theme_stock_reason')
-    assert schema.TABLES[-17:-12] == ('yuanhang_daily_price', 'yuanhang_price_year',
+    assert schema.TABLES[-4:] == ('etf_daily_share', 'etf_share_day', 'etf_daily_nav', 'etf_nav_year')
+    assert schema.dataset_tables('etf.share.day') == ('etf_daily_share', 'etf_share_day')
+    assert schema.dataset_tables('etf.nav.range') == ('etf_daily_nav', 'etf_nav_year')
+    assert schema.TABLES[-7:-4] == ('yuanhang_etf', 'yuanhang_etf_daily_price', 'yuanhang_etf_price_year')
+    current = schema.TABLES[:-7]
+    previous = current[:-7]
+    assert previous[-27:-24] == ('finance_news', 'collection_state', 'app_setting')
+    assert previous[-24:-19] == ('theme_daily', 'theme_detail', 'theme_category', 'theme_stock', 'theme_stock_reason')
+    assert previous[-19:-14] == ('yuanhang_daily_price', 'yuanhang_price_year',
                                  'yuanhang_corporate_action', 'yuanhang_capital', 'yuanhang_series_proof')
-    assert schema.TABLES[-12:-9] == ('yuanhang_limit_pool', 'yuanhang_limit_member', 'yuanhang_limit_reason')
-    assert schema.TABLES[-2:] == ('market_margin_series', 'market_margin_daily')
-    assert schema.dataset_tables('market_margin.ths_series') == schema.TABLES[-2:]
+    assert previous[-14:-11] == ('yuanhang_limit_pool', 'yuanhang_limit_member', 'yuanhang_limit_reason')
+    assert previous[-4:-2] == ('market_margin_series', 'market_margin_daily')
+    assert schema.dataset_tables('market_margin.ths_series') == previous[-4:-2]
+    assert current[-9:-5] == ('graymarket_day', 'graymarket_daily', 'fx_daily_price', 'fx_price_year')
+    assert schema.dataset_tables('fx.price.year') == current[-7:-5]
+    assert current[-5:] == ('yuanhang_index', 'ths_index_member_state', 'ths_index_member',
+                                 'yuanhang_index_daily_price', 'yuanhang_index_price_year')
+    assert schema.dataset_tables('graymarket.eastmoney_day') == previous[-2:]
     assert metadata()['primary_key_exemptions'] == ['finance_news', 'collection_state', 'app_setting']
 
 
@@ -170,7 +181,7 @@ def test_design_gate_uses_explicit_root_and_keeps_full_physical_table_set(tmp_pa
     value = metadata()
     write_metadata(tmp_path, value)
     shapes = json.loads((ROOT / 'sql/schema-contract.json').read_text(encoding='utf-8'))['tables']
-    assert len(shapes) == 68 and len(value['tables']) == 67
+    assert len(shapes) == 80 and len(value['tables']) == 79
     assert verify_ownership(tmp_path, shapes, value['dataset_table_groups']) == value
 
 

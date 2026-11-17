@@ -172,5 +172,6 @@ class PerformanceDataset:
             latest = max(data['rows'], key=lambda r: r.get('statistics_date', ''), default=None)
             result['units'] = {**previous.get('units', {}), data['unit']: {
                 'observed_at': observed, 'count': len(data['rows']), 'digest': digest(data['rows']),
-                'contract': SCHEMA_VERSION, 'latest_hash': digest(latest) if latest else None}}
+                'contract': SCHEMA_VERSION, 'latest_hash': digest(latest) if latest else None,
+                'fingerprint_hash': digest({'rows': data['rows'], 'manifest': None})}}
         return result

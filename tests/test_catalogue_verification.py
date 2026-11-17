@@ -1,6 +1,5 @@
 """Observer ownership and same-count/different-content counterexamples, no network."""
 import importlib
-from datetime import date
 from decimal import Decimal
 from pathlib import Path
 from types import SimpleNamespace
@@ -89,11 +88,8 @@ async def test_nonzero_pending_or_isolation_refuses_acceptance(observer):
         await observer.require_drained(manager)
 
 
-def test_known_negative_amount_cannot_be_removed_filled_or_marked_valid(observer):
-    prices = importlib.import_module('verify_index_prices')
-    row = dict(trade_date=date(2014, 12, 5), amount=Decimal('-1'), volume_amount_valid=False)
-    prices.verify_known_negative('399317', [row])
-    for rows in ([], [dict(row, amount=0)], [dict(row, volume_amount_valid=True)]):
-        with pytest.raises(ValueError, match='负成交额'):
-            prices.verify_known_negative('399317', rows)
-    assert set(prices.FIXED_CODES) >= {'399411', '1A0001', '399001', '1B0300', '399317'}
+def test_native_index_negative_amount_is_retained():
+    from empire.features.yuanhang_indices.contract import number
+    from empire.features.yuanhang_indices.quality import volume_amount_valid
+    assert number(Decimal('-1')) == '-1'
+    assert not volume_amount_valid([Decimal('1'), Decimal('-1')])

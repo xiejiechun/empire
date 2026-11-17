@@ -128,6 +128,7 @@ async def test_hot_cold_same_content_revisions_removal_stale_and_repair(industry
         if 'industry' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         original = mysql.archive
         calls = []
@@ -158,6 +159,7 @@ async def test_hot_cold_same_content_revisions_removal_stale_and_repair(industry
         assert all(c.status == 'pass' for c in await query.preparation_check())
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', capture)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_sql_failure_and_commit_ack_replay(industry_db, monkeypatch):
@@ -180,6 +182,7 @@ async def test_sql_failure_and_commit_ack_replay(industry_db, monkeypatch):
         if 'industry' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(statement)
     event.listen(query.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(query.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         monkeypatch.setattr(archive, 'acknowledge', acknowledge)
         await archive.fingerprints.invalidate(FINGERPRINT_NAMESPACE, query.source)
@@ -187,6 +190,7 @@ async def test_sql_failure_and_commit_ack_replay(industry_db, monkeypatch):
         assert not writes and await store.client.xlen(store.stream) == 0
     finally:
         event.remove(query.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(query.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_cancel_after_queue_resume_without_network(industry_db):

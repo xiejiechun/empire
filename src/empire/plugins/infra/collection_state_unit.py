@@ -5,14 +5,16 @@ from datetime import UTC, datetime
 
 from sqlalchemy import text
 
-from empire.contracts.security import unit_identity
+from empire.contracts.security import index_code, unit_identity
 from empire.core.time import mysql_time
 
 FIELDS = ('contract_version', 'progress', 'manifest')
 
 
 def unit_path(unit):
-    if isinstance(unit, str) and re.fullmatch(r'[0-9]{4}-[0-9]{2}-[0-9]{2}\|(SH|SZ|BJ)', unit):
+    if isinstance(unit, str) and re.fullmatch(r'[0-9A-Z]{6}', unit):
+        index_code(unit)
+    elif isinstance(unit, str) and re.fullmatch(r'[0-9]{4}-[0-9]{2}-[0-9]{2}\|(SH|SZ|BJ)', unit):
         from datetime import date
         date.fromisoformat(unit[:10])
     elif isinstance(unit, str) and re.fullmatch(r'[0-9]{6}\.(SH|SZ|BJ)', unit):

@@ -224,10 +224,15 @@ class YuanhangDataPlugin:
         for code in codes:
             security_identity(code)
         plans, calendar_cache = {}, {}
+        work = 0
         for offset in range(0, len(codes), 64):
             batch = codes[offset:offset + 64]
-            plans.update(await self._read(lambda conn: read_plans(conn, namespace, batch, through,
-                force=force, scope=scope, calendar_cache=calendar_cache)))
+            selected = await self._read(lambda conn: read_plans(conn, namespace, batch, through,
+                force=force, scope=scope, calendar_cache=calendar_cache))
+            plans.update(selected)
+            work += sum(p['mode'] != 'skip' for p in selected.values())
+            if scope == 'backfill' and work >= 64:
+                break
         return plans
 
     async def financial_markets(self):

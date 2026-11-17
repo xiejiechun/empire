@@ -60,7 +60,8 @@ def test_current_revisions_are_never_authorized_as_historical_signals():
 
 
 @pytest.mark.parametrize('case', ['valid','offline','wrong','old','future','pending'])
-async def test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_negative_evidence(monkeypatch, case):
+@pytest.mark.parametrize('kind', ['dividends', 'additional_issues', 'rights_issues'])
+async def test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_negative_evidence(monkeypatch, case, kind):
     from empire.features.capital_actions.preparation import preparation_check
     now = datetime.now(UTC)
     old = now-timedelta(days=4)
@@ -74,10 +75,11 @@ async def test_scoped_unit_freshness_reuses_exact_optional_cache_and_preserves_n
     client = SimpleNamespace(hget=AsyncMock(return_value='{"phase":"fetch","scope_changed":true}' if case=='pending' else '{}'))
     store=SimpleNamespace(prefix='unit-test',client=client)
     plugin=SimpleNamespace(mysql=SimpleNamespace(read=AsyncMock(return_value=(checks,verified,{}))),
-        kind='dividends',source='tdx',job_key='tdx-dividends-v1',archive_settings={},
+        kind=kind,source='tdx',job_key='tdx-'+kind+'-v1',archive_settings={},
         context=SimpleNamespace(optional=lambda _:None if case=='offline' else store))
     result={c.criterion:c for c in await preparation_check(plugin,PreparationScope())}
-    assert result['freshness'].status == ('pass' if case=='valid' else 'fail')
+    # A newer securities hash cannot refresh dividend report-period proofs.
+    assert result['freshness'].status == ('pass' if case=='valid' and kind != 'dividends' else 'fail')
     assert result['coverage'].status == ('fail' if case=='pending' else 'pass')
 
 

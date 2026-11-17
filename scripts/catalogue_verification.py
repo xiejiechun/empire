@@ -6,8 +6,8 @@ from dataclasses import asdict
 
 from source_verification import require, strict_proxy
 
-from empire.features.indices.contract import digest, member_identity
 from empire.features.industries.contract import market
+from empire.features.yuanhang_indices.contract import digest
 from empire.plugins.collection.unit_prefetch import DeferredResponse
 from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
 
@@ -67,7 +67,7 @@ async def public_pages(read, **kwargs):
 
 
 async def verify_catalogue(manager, kind, proxy_only, report):
-    require(kind in ('indices', 'industries'), '目录类型无效')
+    require(kind == 'industries', '目录类型无效')
     await manager.start('collector.ths_' + kind)
     collector = manager.registry.get('collector.ths_' + kind)
     query = manager.registry.get(kind + '.query')
@@ -90,14 +90,8 @@ async def verify_catalogue(manager, kind, proxy_only, report):
 
     def check(envelope):
         payload = envelope.raw_payload
-        if kind == 'indices':
-            identity = envelope.business_key
-            expected = (payload.get('catalog') if identity == 'catalog' else
-                        {key: payload[key] for key in ('available', 'members')})
-            require(expected == sources[identity], '指数来源与正式入队内容不同')
-        else:
-            require(envelope.dataset == 'industry.snapshot' and envelope.business_key == 'current'
-                    and payload['industries'] == expected_industries(), '行业来源与正式入队集合不同')
+        require(envelope.dataset == 'industry.snapshot' and envelope.business_key == 'current'
+                and payload['industries'] == expected_industries(), '行业来源与正式入队集合不同')
 
     original, publish = collector.fetch, collector.ingest.publish_page
     collector.fetch = observe_fetch(original, remember)
@@ -112,45 +106,25 @@ async def verify_catalogue(manager, kind, proxy_only, report):
         USE_PROXY.reset(tokens[0])
     require(cursor.get('phase') == 'complete', '目录未完成')
     require(set(sources) == {'catalog'} | {row['code'] for row in sources['catalog']}, '目录与成员来源集合不同')
-    if kind == 'indices':
-        heads, complete, _, unavailable, unknown, count, problems, proofs = await query.mysql.read(query.snapshot_audit)
-        require(complete and not problems and set(proofs) == set(sources), '指数正式集合证明不完整')
-        expected_catalog = sources['catalog']
-        require([dict(code=r['index_code'], name=r['name'], group=r['source_group']) for r in heads] == expected_catalog,
-                '指数目录SQL内容不同')
-        require(len(published) == len(sources) and {p['identity'] for p in published} == set(sources), '指数入队集合不完整')
-        for code, value in sources.items():
-            expected = value if code == 'catalog' else [value['available'], value['members']]
-            require(proofs[code]['hash'] == digest(expected), '指数SQL证明与来源不同')
-        rows = await public_pages(query.browse, mode='indices', limit=500)
-        require([dict(code=r['index_code'], name=r['index_name'], group=r['source_group']) for r in rows] == expected_catalog,
-                '指数正式目录查询内容不同')
-        members = await public_pages(query.browse, mode='members', limit=500)
-        expected = [dict(index_code=row['code'], source_code=code, unified_code=member_identity(code), name=name)
-                    for row in expected_catalog for code, name in sources[row['code']]['members']]
-        require([{key: row[key] for key in ('index_code', 'source_code', 'unified_code', 'name')} for row in members] == expected,
-                '指数正式成员查询集合或内容不同')
-        result.update(member_count=count, catalogue_count=len(heads), unavailable=unavailable, unknown_identity_count=unknown)
-    else:
-        expected = expected_industries()
-        actual, state = await query.mysql.read(query.snapshot)
-        require(actual == expected and state.get('digest') == digest(expected), '行业SQL集合/内容/证明不同')
-        require(len(published) == 1, '行业应只发布一份完整snapshot')
-        directory = await public_pages(query.directory, limit=200)
-        require(directory == [dict(industry_code=row['code'], name=row['name'], member_count=len(row['members']))
-                              for row in expected], '行业正式目录查询不同')
-        rows, offset = [], 0
-        while True:
-            page = await query.list_members(offset=offset, limit=500)
-            rows.extend(page['rows'])
-            if len(rows) >= page['total']:
-                break
-            require(bool(page['rows']) and len(rows) <= 15000, '行业正式分页停滞或越界')
-            offset += len(page['rows'])
-        members = [dict(industry_code=row['code'], industry_name=row['name'], market=market(code), code=code, name=name)
-                   for row in expected for code, name in row['members']]
-        require(rows == members, '行业正式成员查询集合或内容不同')
-        result.update(catalogue_count=len(expected), member_count=len(members))
+    expected = expected_industries()
+    actual, state = await query.mysql.read(query.snapshot)
+    require(actual == expected and state.get('digest') == digest(expected), '行业SQL集合/内容/证明不同')
+    require(len(published) == 1, '行业应只发布一份完整snapshot')
+    directory = await public_pages(query.directory, limit=200)
+    require(directory == [dict(industry_code=row['code'], name=row['name'], member_count=len(row['members']))
+                          for row in expected], '行业正式目录查询不同')
+    rows, offset = [], 0
+    while True:
+        page = await query.list_members(offset=offset, limit=500)
+        rows.extend(page['rows'])
+        if len(rows) >= page['total']:
+            break
+        require(bool(page['rows']) and len(rows) <= 15000, '行业正式分页停滞或越界')
+        offset += len(page['rows'])
+    members = [dict(industry_code=row['code'], industry_name=row['name'], market=market(code), code=code, name=name)
+               for row in expected for code, name in row['members']]
+    require(rows == members, '行业正式成员查询集合或内容不同')
+    result.update(catalogue_count=len(expected), member_count=len(members))
     result.update(pipeline_verified=True, strict_proxy_verified=strict_proxy(counts, len(sources)),
                   acceptance_complete=True, cursor=cursor, pending=await require_drained(manager),
                   public_query_equal=True, preparation=[asdict(e) for e in await query.preparation_check()],

@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.features.financial_statements.contract import KINDS, chain, digest, parse
 from empire.features.financial_statements.wire import SCHEMA_VERSION, pack_rows
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
@@ -16,6 +17,7 @@ from empire.plugins.collectors.support import (
     wait_for_archive,
     wait_for_capacity,
 )
+from empire.plugins.infra.ths_maintenance import due
 
 
 class ThsStatementCollector:
@@ -76,14 +78,16 @@ class ThsStatementCollector:
         return await publish_with_capacity(self.ingest, self.stats, [envelope], job_key=self.job_key,
                                           expected_revision=state['revision'], cursor=cursor)
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
+        self.stats['reused_units'] = 0
         stage = 'plan'
-        self.stats = {'status': 'planning', 'collected': 0, 'completed_units': 0,
-                      'unit_name': '只股票'}
+        self.stats.update(status='planning', collected=0, completed_units=0, unit_name='只股票')
         try:
             state = await self.ingest.checkpoint(self.job_key)
             cursor = state['cursor']
             progressed = state['revision'] > baseline_revision
+            force = bool((fresh and not progressed) or (cursor.get('phase') == 'fetch' and cursor.get('fresh')))
             if progressed and cursor.get('phase') == 'complete':
                 self.stats.update(status='complete', completed_units=cursor['index'],
                                   total_units=cursor['units'], collected=cursor['collected'])
@@ -99,10 +103,21 @@ class ThsStatementCollector:
                     # Keep old queued units; a new complete round rebuilds coverage.
                     self.stats.update(scope_changed=True, previous_units=cursor.get('units'))
                     cursor = {}
+                units = await self.query.collection_units()
+                now = datetime.now(UTC)
                 if not cursor:
                     cursor = dict(phase='fetch', batch_id=uuid4().hex, index=0, pages=0, collected=0,
-                                  units=len(keys), scope_hash=scope, rolling=digest([]))
-                selected = list(enumerate(stocks))[cursor['index']:]
+                                  units=len(keys), scope_hash=scope, rolling=digest([]), fresh=force)
+                selected = [(i, stocks[i]) for i in range(cursor['index'], len(keys))
+                            if cursor.get('fresh', False) or keys[i] not in units or due(units[keys[i]]['stamp'], now)]
+                def reuse_before(stop):
+                    nonlocal cursor
+                    self.stats['reused_units'] = self.stats.get('reused_units', 0) + stop - cursor['index']
+                    for i in range(cursor['index'], stop):
+                        proof = units[keys[i]]
+                        cursor = {**cursor, 'index': i + 1,
+                            'collected': cursor['collected'] + proof['count'],
+                            'rolling': digest([cursor['rolling'], keys[i], proof['digest'], proof['count']])}
                 self.stats.update(completed_units=cursor['index'], total_units=len(keys),
                                   collected=cursor['collected'])
                 async def download(item, *, reservation):
@@ -111,6 +126,7 @@ class ThsStatementCollector:
                         url='https://basic.10jqka.com.cn/', domains=('10jqka.com.cn',), item_name='证券') as reads:
                     async for number, read in reads:
                         index = selected[number][0]
+                        reuse_before(index)
                         stage = 'source_validation'
                         self.stats.update(status='collecting', current_security=keys[index],
                                           collected=cursor['collected'], pages=cursor['pages'], total_units=len(keys))
@@ -123,6 +139,7 @@ class ThsStatementCollector:
                         cursor = state['cursor']
                         self.stats.update(completed_units=cursor['index'],
                                           collected=cursor['collected'], pages=cursor['pages'])
+                reuse_before(len(keys))
                 manifest = dict(units=cursor['units'], count=cursor['collected'],
                                 scope_hash=scope, digest=cursor['rolling'])
                 following = {**cursor, 'phase': 'awaiting_archive', 'pages': cursor['pages'] + 1}

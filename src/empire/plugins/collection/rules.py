@@ -1,5 +1,6 @@
 """Offline, reviewable collection contracts; never execute source requests."""
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -14,12 +15,15 @@ def validate_rules(document):
     if document.get('schema') != 1 or not isinstance(document.get('tasks'), dict):
         raise ValueError('采集规则资源格式无效')
     for ident, rule in document['tasks'].items():
+        latest = rule.get('storage_mode') == 'latest'
+        if latest and (not isinstance(rule.get('latest_key'), str) or not re.fullmatch(r'[a-z][a-z0-9_-]*(?::[a-z][a-z0-9_-]*){1,5}', rule['latest_key'])):
+            raise ValueError(f'{ident}: 最新值键身份无效')
         for key in TEXT_FIELDS:
             if not isinstance(rule.get(key), str) or not rule[key].strip():
                 raise ValueError(f'{ident}: 采集规则缺少 {key}')
         for key in LIST_FIELDS:
             values = rule.get(key)
-            if (not isinstance(values, list) or not values or
+            if (not isinstance(values, list) or (not values and not (latest and key == 'tables')) or
                     any(not isinstance(v, str) or not v.strip() for v in values) or
                     len(set(values)) != len(values)):
                 raise ValueError(f'{ident}: 采集规则列表无效 {key}')
@@ -69,6 +73,9 @@ def rule_details(ident, cfg):
         storage['intraday'] = dict(body=prefix + ':snapshots:<version>',
             keys=[prefix + suffix for suffix in (':snapshots', ':times', ':meta')],
             note='盘中快照只存 Redis，最多 72 小时且受容量限制；不入归档队列、不写 MySQL。日终数据按下列路径归档。')
+    if rule.get('storage_mode') == 'latest':
+        storage.update(latest=f"{ns}:{rule['latest_key']}", queue=None, checkpoint=None,
+            progress=None, fingerprints=[], tables=[], state_table=None)
     return {**rule, 'storage': storage}
 
 

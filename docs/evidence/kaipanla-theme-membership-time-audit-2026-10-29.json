@@ -1,0 +1,160 @@
+{
+  "routes": {
+    "proxy_requests": 2
+  },
+  "results": [
+    {
+      "theme_id": "148",
+      "name": "军工",
+      "created": "2023-12-25T15:27:57+08:00",
+      "updated": "2026-09-22T18:23:35+08:00",
+      "stocks": 177,
+      "relations": 253,
+      "categories": 71,
+      "relation_fields": [
+        "category_id",
+        "first_shelved_at",
+        "is_hot",
+        "is_new",
+        "occurrences",
+        "reason",
+        "relation_id",
+        "source_is_zz",
+        "source_stock_id",
+        "updated_at"
+      ],
+      "missing_first_shelved": 0,
+      "max_relation_update": "2026-09-22T18:23:31+08:00",
+      "max_relation_first_shelved": "2026-09-22T18:23:35+08:00",
+      "date_filters": [
+        {
+          "day": "2025-10-28",
+          "current_relations_first_shelved_on_or_before": 248,
+          "unique_current_stocks": 172,
+          "relations_updated_after": 0,
+          "not_historical_snapshot": true
+        },
+        {
+          "day": "2026-09-28",
+          "current_relations_first_shelved_on_or_before": 253,
+          "unique_current_stocks": 177,
+          "relations_updated_after": 0,
+          "not_historical_snapshot": true
+        }
+      ]
+    },
+    {
+      "theme_id": "226",
+      "name": "商业航天",
+      "created": "2024-05-07T10:14:36+08:00",
+      "updated": "2026-07-12T14:17:44+08:00",
+      "stocks": 347,
+      "relations": 472,
+      "categories": 74,
+      "relation_fields": [
+        "category_id",
+        "first_shelved_at",
+        "is_hot",
+        "is_new",
+        "occurrences",
+        "reason",
+        "relation_id",
+        "source_is_zz",
+        "source_stock_id",
+        "updated_at"
+      ],
+      "missing_first_shelved": 0,
+      "max_relation_update": "2026-07-12T14:17:03+08:00",
+      "max_relation_first_shelved": "2026-07-12T14:17:44+08:00",
+      "date_filters": [
+        {
+          "day": "2025-10-28",
+          "current_relations_first_shelved_on_or_before": 82,
+          "unique_current_stocks": 76,
+          "relations_updated_after": 0,
+          "not_historical_snapshot": true
+        },
+        {
+          "day": "2026-09-28",
+          "current_relations_first_shelved_on_or_before": 472,
+          "unique_current_stocks": 347,
+          "relations_updated_after": 0,
+          "not_historical_snapshot": true
+        }
+      ]
+    }
+  ],
+  "writes": 0,
+  "enqueued": 0,
+  "update_click_trace": [
+    {
+      "cls": "Lhg1;",
+      "method": "<init>",
+      "instructions": [
+        "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+        "iput-object v1, v0, Lhg1;->a Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;",
+        "return-void "
+      ]
+    },
+    {
+      "cls": "Lhg1;",
+      "method": "onClick",
+      "instructions": [
+        "iget-object v0, v1, Lhg1;->a Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;",
+        "invoke-static v0, v2, Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;->N8(Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity; Landroid/view/View;)V",
+        "return-void "
+      ]
+    },
+    {
+      "cls": "Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;",
+      "method": "Fe",
+      "instructions": [
+        "invoke-static v5, Lcom/yzj/kaipanh/plugin/PluginAgent;->h0(Landroid/view/View;)V",
+        "const-string v5, \"this$0\"",
+        "invoke-static v4, v5, Lg70;->g(Ljava/lang/Object; Ljava/lang/String;)V",
+        "iget-object v5, v4, Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;->U Lcom/yzj/kaipanh/view/UISwitchButton;",
+        "const-string v0, \"showNewButton\"",
+        "const/4 v1, 0",
+        "if-nez v5, +006h",
+        "invoke-static v0, Lg70;->y(Ljava/lang/String;)V",
+        "move-object v5, v1",
+        "iget-object v2, v4, Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;->U Lcom/yzj/kaipanh/view/UISwitchButton;",
+        "if-nez v2, +006h",
+        "invoke-static v0, Lg70;->y(Ljava/lang/String;)V",
+        "move-object v2, v1",
+        "invoke-virtual v2, Lcom/yzj/kaipanh/view/UISwitchButton;->isChecked()Z",
+        "move-result v2",
+        "xor-int/lit8 v2, v2, 1",
+        "invoke-virtual v5, v2, Lcom/yzj/kaipanh/view/UISwitchButton;->setChecked(Z)V",
+        "iget-object v5, v4, Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;->c0 Lcom/yzj/kaipanh/newindex/topic/adapter/TableAdapter;",
+        "const-string v2, \"mTableAdapter\"",
+        "if-nez v5, +006h",
+        "invoke-static v2, Lg70;->y(Ljava/lang/String;)V",
+        "move-object v5, v1",
+        "iget-object v3, v4, Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;->U Lcom/yzj/kaipanh/view/UISwitchButton;",
+        "if-nez v3, +006h",
+        "invoke-static v0, Lg70;->y(Ljava/lang/String;)V",
+        "move-object v3, v1",
+        "invoke-virtual v3, Lcom/yzj/kaipanh/view/UISwitchButton;->isChecked()Z",
+        "move-result v0",
+        "invoke-virtual v5, v0, Lcom/yzj/kaipanh/newindex/topic/adapter/TableAdapter;->m0(Z)V",
+        "iget-object v4, v4, Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;->c0 Lcom/yzj/kaipanh/newindex/topic/adapter/TableAdapter;",
+        "if-nez v4, +006h",
+        "invoke-static v2, Lg70;->y(Ljava/lang/String;)V",
+        "goto +2h",
+        "move-object v1, v4",
+        "invoke-virtual v1, Landroidx/recyclerview/widget/RecyclerView$Adapter;->notifyDataSetChanged()V",
+        "return-void "
+      ]
+    },
+    {
+      "cls": "Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;",
+      "method": "N8",
+      "instructions": [
+        "invoke-static v0, v1, Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity;->Fe(Lcom/yzj/kaipanh/newindex/topic/activity/ThemeExcavateDetailActivity; Landroid/view/View;)V",
+        "return-void "
+      ]
+    }
+  ],
+  "conclusion": "FirstShelveTime filters surviving current relations, not a proven complete historical membership. No removed relations or effective end dates in the verified detail contract."
+}

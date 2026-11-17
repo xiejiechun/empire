@@ -59,10 +59,12 @@ async def test_range_delete_stale_full_disjoint_update_and_cold_replay(native): 
         if sql.startswith(('INSERT INTO yuanhang_', 'UPDATE yuanhang_', 'DELETE FROM yuanhang_')):
             writes.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', count)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', count)
     try:
         await publish(c, archive, newer)
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', count)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', count)
     assert not writes and await store.client.xlen(store.stream) == 0
 
 

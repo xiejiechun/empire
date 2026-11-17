@@ -11,6 +11,7 @@ import httpx
 
 from empire.contracts.download import CHUNK_BYTES, BufferedPolicy
 from empire.contracts.native_stream import StreamTarget as StreamTarget
+from empire.contracts.request_cost import add_cost
 from empire.contracts.request_retry import MAX_REQUEST_RETRIES, request_timeout, retry_delay
 from empire.plugins.infra.proxy_tunnel import close_writer
 from empire.plugins.infra.routing import ProxyRouteError, routed_request
@@ -31,8 +32,13 @@ class BoundedChannel:
         if isinstance(self.policy, BufferedPolicy) and (self.lease is None or not self.lease.grow_to(
                 3 * (self.received + length) + 4 * CHUNK_BYTES)):
             raise ValueError('共享下载缓冲不足，原生响应未完整读取')
-        data = await self.reader.readexactly(length)
+        try:
+            data = await self.reader.readexactly(length)
+        except asyncio.IncompleteReadError as exc:
+            add_cost('observed_wire_bytes', len(exc.partial))
+            raise
         self.received += len(data)
+        add_cost('observed_wire_bytes', len(data))
         return data
 
     async def write(self, data):
@@ -64,7 +70,17 @@ class StreamResponse:
         self.owner.responses.discard(self)
 
 
-async def request(service, target, protocol, *, policy=None, max_retries=2, total_timeout=None,
+async def request(service, target, protocol, **kwargs):
+    retries = kwargs.get('max_retries', 2)
+    if type(retries) is not int or not 0 <= retries <= MAX_REQUEST_RETRIES:
+        raise ValueError('Invalid native retry limit')
+    timeout = kwargs.get('total_timeout')
+    async with asyncio.timeout(request_timeout(retries) if timeout is None else timeout):
+        async with service.admit_request(target.site_url, target.allowed_domains):
+            return await _request(service, target, protocol, **kwargs)
+
+
+async def _request(service, target, protocol, *, policy=None, max_retries=2, total_timeout=None,
                   proxy_code=None, reservation=None, connection_key=None, fresh_connection=False):
     """Protocol/auth failures do not retry; transport failures use bounded failover.
 
@@ -79,12 +95,12 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
         raise ValueError("Invalid native retry limit")
     group = service.rules.resolve(target.site_url, target.allowed_domains)
     policy = policy or service.response_policy()
-    task, lease = asyncio.current_task(), None
-    service.inflight.add(task)
+    lease = None
     timeout = request_timeout(max_retries) if total_timeout is None else total_timeout
 
     async def exchange(entry):
         writer = None
+        add_cost('native_attempts')
         try:
             # Bound an inactive native peer like HTTP. A source protocol or
             # authentication error remains non-retryable; only transport times out.
@@ -146,12 +162,13 @@ async def request(service, target, protocol, *, policy=None, max_retries=2, tota
                         # wait on its own excluded node; the session owner decides.
                         raise
                     excluded.add(exc.code)
+                    add_cost('retries')
                 except httpx.TransportError:
                     if retries >= max_retries:
                         raise
                     retries += 1
+                    add_cost('retries')
                     await asyncio.sleep(retry_delay(retries))
     finally:
         if lease is not None and reservation is None:
             lease.release()
-        service.inflight.discard(task)

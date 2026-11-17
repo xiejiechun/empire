@@ -21,7 +21,9 @@ def parse_identity(body, code, *, source_name=None):
         if not record:
             continue
         parts = record.split(b',')
-        if len(parts) != 12:
+        # Delisted securities can append a thirteenth auxiliary field. Both
+        # observed layouts retain the same exact code/type/market/name prefix.
+        if len(parts) not in (12, 13):
             raise ValueError('身份核实证券字段改变')
         if parts[2] != code.encode('ascii'):
             continue

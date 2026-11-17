@@ -27,7 +27,7 @@ GROUPS = {
     "qt": {"pyside6", "pyside6-addons", "pyside6-essentials", "shiboken6"},
     "validation": {"pydantic", "pydantic-core", "annotated-types", "typing-inspection"},
     "database": {"sqlalchemy", "greenlet", "pymysql", "cryptography", "cffi", "pycparser"},
-    "network": {"httpx", "httpcore", "h11", "anyio", "socksio", "certifi", "idna"},
+    "network": {"httpx", "httpcore", "h11", "anyio", "sniffio", "socksio", "certifi", "idna"},
     "redis": {"redis"},
     "build": {"pyinstaller", "pyinstaller-hooks-contrib", "altgraph", "pefile",
               "pywin32-ctypes", "setuptools"},

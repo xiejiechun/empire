@@ -1,0 +1,148 @@
+{
+  "run_id": "e6db8fcf8e4e4f53b5c6e0af1c4248f5",
+  "subject": "preview",
+  "started_at": "2026-11-03T02:01:49.545396+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "dataset": "graymarket.eastmoney_day",
+  "measurements": {
+    "import_seconds": 7.7777746000065235,
+    "max_unit_seconds": 0.7332552000007126,
+    "repeated_business_dml": 0,
+    "page_p95_ms": 4.473099994356744,
+    "history_p95_ms": 404.4845000025816,
+    "allocated_bytes": 18956288,
+    "peak_python_bytes": 6832898,
+    "page_bytes": 56047,
+    "history_bytes": 1028895
+  },
+  "limits": {
+    "import_seconds": 120,
+    "max_unit_seconds": 5,
+    "repeated_business_dml": 0,
+    "page_p95_ms": 300,
+    "history_p95_ms": 5000,
+    "allocated_bytes": 134217728,
+    "peak_python_bytes": 134217728,
+    "page_bytes": 262144,
+    "history_bytes": 4194304
+  },
+  "bindings": {
+    "src/empire/features/graymarket/contract.py": "9d9f72186ecb78a44ab414735fc5c69e015c2f0df071e0b1097cbdc5a1afb676",
+    "src/empire/features/graymarket/source.py": "4dfdae2a3aca89b12331c8c3e33b93c44536ab65634844abf2683e236f5228ff",
+    "src/empire/features/graymarket/codec.py": "72f37d8e9d2988ce71c4e541b21c833df2282c3ba299227e7fc2419f1f7a903b",
+    "src/empire/features/graymarket/dataset.py": "cf12348ef3b5e7c423d01918c02f1a37791dd2f65dd53aad6282a6b4045835cc",
+    "src/empire/features/graymarket/query.py": "0564cfd1ce92028b349ed3983f163557f9b4ba0a42f208f1acb03771aedb70d0",
+    "scripts/measure_graymarket.py": "7dd9e3035a0f05f601937629f32cdc1d67ffe3ad575b7c34111185908a5c1dff"
+  },
+  "ddl_scopes": {
+    "graymarket_day": "b1825a71e49b04f20fa33cd4afdb320f158498323b7bb0c0f849cec98734a1a5",
+    "graymarket_daily": "f05e17a86f710fe542693459d00288f79b9b7a9e17ac21c2381a1eaf3c453ca5"
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "graymarket_daily",
+        "partitions": null,
+        "type": "index",
+        "possible_keys": null,
+        "key": "PRIMARY",
+        "key_len": "14",
+        "ref": null,
+        "rows": 200,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "page_actual_rows": 200,
+    "industry": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "graymarket_daily",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "ix_graymarket_security_date",
+        "key": "ix_graymarket_security_date",
+        "key_len": "11",
+        "ref": "const",
+        "rows": 20,
+        "filtered": 100.0,
+        "Extra": "Backward index scan"
+      }
+    ],
+    "industry_actual_rows": 20,
+    "analysis": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "graymarket_daily",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_graymarket_security_date",
+        "key": "PRIMARY",
+        "key_len": "3",
+        "ref": null,
+        "rows": 56081,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "analysis_actual_rows": 20
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": {
+      "server_uuid": "b0dea804-d729-11f1-be5e-380525361d4e",
+      "server_port": 13348,
+      "version": "8.4.9",
+      "innodb_flush_log_at_trx_commit": 1,
+      "sync_binlog": 1,
+      "log_bin": 0,
+      "client_port": 13348
+    },
+    "synthetic": true,
+    "dates": 20,
+    "rows": 112163,
+    "allocation": [
+      {
+        "TABLE_NAME": "graymarket_daily",
+        "DATA_LENGTH": 14204928,
+        "INDEX_LENGTH": 4734976
+      },
+      {
+        "TABLE_NAME": "graymarket_day",
+        "DATA_LENGTH": 16384,
+        "INDEX_LENGTH": 0
+      }
+    ],
+    "cache": "first query not forced cold; nine subsequent warm; maximum bounds P95",
+    "actual_sample": "5% source verification recorded separately",
+    "peak": "tracemalloc not RSS"
+  },
+  "projected_five_year_bytes": 1135935653,
+  "reviewed_tradeoffs": "Typed daily source facts; complete-date aggregate proof; no business JSON; per-day bounded audits.",
+  "input_identity_verified": true,
+  "checked_at": "2026-11-03T02:02:07.612533+00:00",
+  "database": "empire_capacity_e6db8fcf8e4e4f53b5c6e0af1c4248f5_test",
+  "measurement_service": {
+    "server_uuid": "b0dea804-d729-11f1-be5e-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 1,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

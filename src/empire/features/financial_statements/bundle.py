@@ -17,7 +17,7 @@ def bundle(cfg):
         *positioned((14100, 14200, 14300), (ThsStatementCollector(kind) for kind in FINANCIAL_KINDS)),
         *positioned((14400, 14500, 14600), (FinancialUiPlugin(kind) for kind in FINANCIAL_KINDS)),
     ), tasks=(
-        *positioned((3500, 3600, 3700), (TaskContribution('ths-' + kind, item[0] + '（同花顺）',
+        *positioned((3500, 3600, 3700), (TaskContribution('ths-' + kind, item[0],
                     'collector.ths_' + kind, 'ths', '逐证券完整历史 · 来源舍入金额 · 无公告日期',
                     category='基本面', source_name='同花顺', interval_seconds=86400, parallel_downloads=True, unit_name='只股票',
                     fresh_description='从当前股票池首个证券重查全部历史；保留已归档报表。')
@@ -25,5 +25,7 @@ def bundle(cfg):
     ), datasets=(
         *positioned((3600, 3700, 3800), (DatasetContribution(FinancialDataset(kind), 'incremental',
                                           {'ths-' + kind + '-v1': 'ths-' + kind},
-                                          schema_version=FINANCIAL_SCHEMA_VERSION) for kind in FINANCIAL_KINDS)),
+                                          schema_version=FINANCIAL_SCHEMA_VERSION, batch_independent=True,
+                                          process_safe=True, archive_tables=(FINANCIAL_KINDS[kind][2],))
+                                      for kind in FINANCIAL_KINDS)),
     ))

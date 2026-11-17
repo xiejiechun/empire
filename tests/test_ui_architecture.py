@@ -37,10 +37,16 @@ def test_ui_plugin_stop_restart_and_restore_preserve_other_contributions(tmp_pat
                "archived_tasks", "sites", "system", "plugins", "help", "proxies", "downloads", "preparation", "suspensions",
                "income", "balance", "cashflow", "industries", "indices", "index_prices", "names_company", "names_security", "st_implementation", "st_removal", "adjustment"}
     all_ids.update('rules_' + k for k in ('limit_rules', 'settlement_rules', 'lot_rules', 'tick_rules', 'sessions', 'stamp_duty', 'transfer_fee'))
-    all_ids.update({'themes', 'identities', 'yuanhang', 'yuanhang_limits', 'market_review', 'industry_margin', 'market_margin'})
+    all_ids.update({'themes', 'identities', 'yuanhang', 'yuanhang_limits', 'market_review', 'industry_margin', 'market_margin', 'graymarket', 'fx', 'observation_calendar'})
     runtime.start()
     try:
         wait_pages(all_ids)
+        for kind in ('fx', 'observation_calendar'):
+            runtime.command('stop', 'ui.' + kind).result(timeout=5)
+            wait_pages(all_ids - {kind})
+            assert runtime.manager.entries['ui.news'].state == 'RUNNING'
+            runtime.command('start', 'ui.' + kind).result(timeout=5)
+            wait_pages(all_ids)
         runtime.command('stop', 'ui.market_margin').result(timeout=5)
         wait_pages(all_ids - {'market_margin'})
         assert runtime.manager.entries['ui.news'].state == 'RUNNING'

@@ -26,8 +26,8 @@ def bundle(cfg):
         default_schedule=TaskDefaults('daily', description='每天北京时间18:00维护；日线先核验十交易日再有界补缺，金融联合核验；计划可编辑。'),
         fresh_description='重新核实当前股票池完整来源历史；保留已有事实，按完整单元更新修订。'))
         for order, project, title, capability, description in (
-            (40000, PRICE_PROJECT, '远航版完整历史日线', 'collector.yuanhang_prices', '上市至今不复权日线；最近10交易日优先；初始化与历史缺口另批，每批最多64只'),
-            (40010, FINANCIAL_PROJECT, '远航版权息与股本历史', 'collector.yuanhang_financial', '每证券一次联合响应；分红、送转、配股及三种股本'),
+            (40000, PRICE_PROJECT, '股票完整历史日K', 'collector.yuanhang_prices', '上市至今不复权日线；最近10交易日优先；初始化与历史缺口另批，每批最多64只'),
+            (40010, FINANCIAL_PROJECT, '权息与股本历史', 'collector.yuanhang_financial', '每证券一次联合响应；分红、送转、配股及三种股本'),
         )), datasets=(OrderedContribution(40000, DatasetContribution(dataset, 'incremental',
             {PRICE_JOB: PRICE_PROJECT, FINANCIAL_JOB: FINANCIAL_PROJECT})),))
 

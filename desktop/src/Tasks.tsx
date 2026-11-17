@@ -117,20 +117,20 @@ export default function Tasks({
         }
       },
     });
-  const tree = [...new Set<string>(rows.map((r: Data) => r.source))].map(
-    (source) => ({
-      key: "platform:" + source,
+  const tree = [...new Set<string>(rows.map((r: Data) => r.source_name))].map(
+    (platform) => ({
+      key: "platform:" + platform,
       selectable: false,
       title: (
         <span className="platform-tree-title">
           <strong>
-            {rows.find((r: Data) => r.source === source)?.source_name}
+            {platform}
           </strong>
-          <small>{rows.filter((r: Data) => r.source === source).length}</small>
+          <small>{rows.filter((r: Data) => r.source_name === platform).length}</small>
         </span>
       ),
       children: rows
-        .filter((r: Data) => r.source === source)
+        .filter((r: Data) => r.source_name === platform)
         .map((r: Data) => ({
           key: r.id,
           title: (

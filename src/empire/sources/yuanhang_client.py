@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 from itertools import islice
 from urllib.parse import urlencode
 
+from empire.contracts.request_cost import add_cost
 from empire.sources.yuanhang_auth import (
     AUTH_POLICY,
     AuthenticationError,
@@ -114,8 +115,10 @@ async def _fetch_market(http, session, *, unified_code, dataset, start, end, ins
 
     async def exchange(channel):
         if not channel.state.get('yuanhang_authenticated'):
+            add_cost('native_auth_exchanges')
             await login_native(channel, session)
             channel.state['yuanhang_authenticated'] = True
+        add_cost('native_queries')
         return await exchange_frame(channel, query, allow_idle=True)
 
     response = await http.request_stream(session.servers[0], exchange, policy=policy,
@@ -127,6 +130,7 @@ async def _fetch_market(http, session, *, unified_code, dataset, start, end, ins
         tables = decode_response(response.content, instance=instance,
                                  request_id=210 if dataset == 'daily' else 211,
                                  limit=policy.max_body_bytes, reserve=response.reserve_decoded)
+        add_cost('native_decoded_bytes', sum(t['decoded_bytes'] for t in tables))
         normalizer = {'daily': normalize_daily, 'financial': normalize_financial}[dataset]
         data = normalizer(tables, unified_code=unified_code, start=start, end=end, native_market=native_market)
         return DecodedHistory(data, len(response.content), sum(t['decoded_bytes'] for t in tables))

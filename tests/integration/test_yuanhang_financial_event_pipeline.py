@@ -87,15 +87,20 @@ async def test_financial_queue_commit_replay_hot_and_cold_duplicates_revision_an
         assert await store.client.xlen(store.stream) == 1
         assert await q.audit_financial(p) == []
     finally:
-        worker.acknowledge = original_ack
-    keys = [k async for k in store.client.scan_iter(match=store.prefix+':archive:fingerprint*')]
-    if keys:
-        await store.client.delete(*keys)
+        # Invalidate under the same ownership as the resident worker. Otherwise
+        # it can ACK a hot replay between our scan and DELETE, leaving an empty
+        # queue and no proof for the next supposedly hot replay.
+        async with worker.lock:
+            worker.acknowledge = original_ack
+            keys = [k async for k in store.client.scan_iter(match=store.prefix+':archive:fingerprint*')]
+            if keys:
+                await store.client.delete(*keys)
     writes = []
     def count(conn,cursor,sql,*args):
         if sql.startswith(('INSERT INTO yuanhang_','UPDATE yuanhang_','DELETE FROM yuanhang_')):
             writes.append(sql)
     event.listen(q.mysql.engine,'before_cursor_execute',count)
+    event.listen(q.mysql.archive_engine,'before_cursor_execute',count)
     try:
         await worker.flush()
         assert writes == [] and await store.client.xlen(store.stream) == 0
@@ -120,3 +125,4 @@ async def test_financial_queue_commit_replay_hot_and_cold_duplicates_revision_an
         assert await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine,'before_cursor_execute',count)
+        event.remove(q.mysql.archive_engine,'before_cursor_execute',count)

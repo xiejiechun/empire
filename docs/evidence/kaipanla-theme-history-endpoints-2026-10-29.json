@@ -1,0 +1,371 @@
+{
+  "theme-history-endpoint-candidates": {
+    "routes": {
+      "proxy_requests": 9
+    },
+    "results": [
+      {
+        "host": "applhb",
+        "c": "Theme",
+        "a": "InfoGet",
+        "status": 200,
+        "bytes": 224656,
+        "keys": [
+          "BriefIntro",
+          "ClassLayer",
+          "ComNum",
+          "CreateTime",
+          "Desc",
+          "GoodNum",
+          "ID",
+          "Introduction",
+          "IsGood",
+          "IsNew",
+          "Name",
+          "PlateSwitch",
+          "Power",
+          "StkSwitch",
+          "StockList",
+          "Stocks",
+          "Subscribe",
+          "Table",
+          "UpdateTime",
+          "ZT",
+          "errcode",
+          "t"
+        ],
+        "errcode": "0",
+        "errmsg": null,
+        "canonical_sha256": "cea3466bcd75a9889197491fc4bb995be8349e830f23bb6e7f0cbcc24ff855e0",
+        "stock_count": 177,
+        "dates": {
+          "CreateTime": "1703489277",
+          "UpdateTime": "1790072615"
+        }
+      },
+      {
+        "host": "apphis",
+        "c": "Theme",
+        "a": "InfoGet",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      },
+      {
+        "host": "apphis",
+        "c": "HisTheme",
+        "a": "InfoGet",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      },
+      {
+        "host": "applhb",
+        "c": "HisTheme",
+        "a": "InfoGet",
+        "status": 200,
+        "bytes": 72,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": "9999",
+        "errmsg": "HisTheme class not exists mothod InfoGet !",
+        "canonical_sha256": "9865d6e9c3e996118695bbba9aed4e96a3c20de059bedcc5c4324fdb60861f01",
+        "stock_count": 0,
+        "dates": {}
+      },
+      {
+        "host": "apphis",
+        "c": "HisTheme",
+        "a": "InfoList",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      },
+      {
+        "host": "apphis",
+        "c": "HisTheme",
+        "a": "InfoGR",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      },
+      {
+        "host": "apphis",
+        "c": "Theme",
+        "a": "InfoHistory",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      },
+      {
+        "host": "apphis",
+        "c": "Theme",
+        "a": "InfoListHistory",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      },
+      {
+        "host": "apphis",
+        "c": "Theme",
+        "a": "GetHistoryList",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      }
+    ],
+    "writes": 0,
+    "enqueued": 0,
+    "date": "2025-10-28",
+    "hypotheses_not_known_endpoints": true
+  },
+  "theme-history-endpoint-controls": {
+    "routes": {
+      "proxy_requests": 4
+    },
+    "results": [
+      {
+        "host": "apphis",
+        "c": "HisMarketSentiment",
+        "a": "GetSentimentChart",
+        "status": 200,
+        "bytes": 10364,
+        "keys": [
+          "current",
+          "date",
+          "errcode",
+          "highest",
+          "lowest",
+          "mode",
+          "points",
+          "thresholds",
+          "ttag"
+        ],
+        "errcode": "0",
+        "errmsg": null,
+        "canonical_sha256": "fa173b52799dacbb87a7990bcb6f69334d6cd835cb2c2af704fe1d0380f81e20",
+        "stock_count": 0,
+        "dates": {
+          "date": "2025-10-28"
+        }
+      },
+      {
+        "host": "apphis",
+        "c": "ThemeHistoryReadProbe",
+        "a": "GetList",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      },
+      {
+        "host": "apphis",
+        "c": "HisTheme",
+        "a": "InfoGet",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      },
+      {
+        "host": "apphis",
+        "c": "Theme",
+        "a": "InfoGet",
+        "status": 200,
+        "bytes": 52,
+        "keys": [
+          "errcode",
+          "errmsg"
+        ],
+        "errcode": 1020,
+        "errmsg": "参数出错",
+        "canonical_sha256": "2a2752aef0e9ec808bcfa9af752245e61ecfde981bd93e005e6d73a0a6ea0783",
+        "stock_count": 0,
+        "dates": {}
+      }
+    ],
+    "writes": 0,
+    "enqueued": 0,
+    "date": "2025-10-28",
+    "hypotheses_not_known_endpoints": true
+  },
+  "theme-history-name-scan": [
+    {
+      "dex": "code-0.dex",
+      "matches": []
+    },
+    {
+      "dex": "code-1.dex",
+      "matches": [
+        "SonThemeRangeInformationByDate",
+        "ThemeRangeInformationByDate",
+        "theme_day_night"
+      ]
+    },
+    {
+      "dex": "code-2.dex",
+      "matches": []
+    },
+    {
+      "dex": "code-3.dex",
+      "matches": [
+        "ThemeOverlay_AppCompat_DayNight",
+        "ThemeOverlay_AppCompat_DayNight_ActionBar",
+        "ThemeOverlay_MaterialComponents_DayNight_BottomSheetDialog",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Calendar",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Header_Text",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Header_Text_Day",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Spinner",
+        "Theme_AppCompat_DayNight",
+        "Theme_AppCompat_DayNight_DarkActionBar",
+        "Theme_AppCompat_DayNight_Dialog",
+        "Theme_AppCompat_DayNight_DialogWhenLarge",
+        "Theme_AppCompat_DayNight_Dialog_Alert",
+        "Theme_AppCompat_DayNight_Dialog_MinWidth",
+        "Theme_AppCompat_DayNight_NoActionBar",
+        "Theme_MaterialComponents_DayNight",
+        "Theme_MaterialComponents_DayNight_BottomSheetDialog",
+        "Theme_MaterialComponents_DayNight_Bridge",
+        "Theme_MaterialComponents_DayNight_DarkActionBar",
+        "Theme_MaterialComponents_DayNight_DarkActionBar_Bridge",
+        "Theme_MaterialComponents_DayNight_Dialog",
+        "Theme_MaterialComponents_DayNight_DialogWhenLarge",
+        "Theme_MaterialComponents_DayNight_Dialog_Alert",
+        "Theme_MaterialComponents_DayNight_Dialog_Alert_Bridge",
+        "Theme_MaterialComponents_DayNight_Dialog_Bridge",
+        "Theme_MaterialComponents_DayNight_Dialog_FixedSize",
+        "Theme_MaterialComponents_DayNight_Dialog_FixedSize_Bridge",
+        "Theme_MaterialComponents_DayNight_Dialog_MinWidth",
+        "Theme_MaterialComponents_DayNight_Dialog_MinWidth_Bridge",
+        "Theme_MaterialComponents_DayNight_NoActionBar",
+        "Theme_MaterialComponents_DayNight_NoActionBar_Bridge"
+      ]
+    },
+    {
+      "dex": "code-4.dex",
+      "matches": [
+        "%1$s requires a value for the %2$s attribute to be set in your app theme. You can either set the attribute in your theme or update your theme to inherit from Theme.MaterialComponents (or a descendant).",
+        "@android:attr/listDivider was not set in the theme used for this DividerItemDecoration. Please set that attribute all call setDrawable()",
+        "The style on this component requires your app theme to be ",
+        "ThemeOverlay_AppCompat_DayNight",
+        "ThemeOverlay_AppCompat_DayNight_ActionBar",
+        "ThemeOverlay_Material3_DayNight_BottomSheetDialog",
+        "ThemeOverlay_Material3_DynamicColors_DayNight",
+        "ThemeOverlay_MaterialComponents_DayNight_BottomSheetDialog",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Calendar",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Header_Text",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Header_Text_Day",
+        "ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Spinner",
+        "Theme_AppCompat_DayNight",
+        "Theme_AppCompat_DayNight_DarkActionBar",
+        "Theme_AppCompat_DayNight_Dialog",
+        "Theme_AppCompat_DayNight_DialogWhenLarge",
+        "Theme_AppCompat_DayNight_Dialog_Alert",
+        "Theme_AppCompat_DayNight_Dialog_MinWidth",
+        "Theme_AppCompat_DayNight_NoActionBar",
+        "Theme_Material3_DayNight",
+        "Theme_Material3_DayNight_BottomSheetDialog",
+        "Theme_Material3_DayNight_Dialog",
+        "Theme_Material3_DayNight_DialogWhenLarge",
+        "Theme_Material3_DayNight_Dialog_Alert",
+        "Theme_Material3_DayNight_Dialog_MinWidth",
+        "Theme_Material3_DayNight_NoActionBar",
+        "Theme_Material3_DynamicColors_DayNight",
+        "Theme_MaterialComponents_DayNight",
+        "Theme_MaterialComponents_DayNight_BottomSheetDialog",
+        "Theme_MaterialComponents_DayNight_Bridge",
+        "Theme_MaterialComponents_DayNight_DarkActionBar",
+        "Theme_MaterialComponents_DayNight_DarkActionBar_Bridge",
+        "Theme_MaterialComponents_DayNight_Dialog",
+        "Theme_MaterialComponents_DayNight_DialogWhenLarge",
+        "Theme_MaterialComponents_DayNight_Dialog_Alert",
+        "Theme_MaterialComponents_DayNight_Dialog_Alert_Bridge",
+        "Theme_MaterialComponents_DayNight_Dialog_Bridge",
+        "Theme_MaterialComponents_DayNight_Dialog_FixedSize",
+        "Theme_MaterialComponents_DayNight_Dialog_FixedSize_Bridge",
+        "Theme_MaterialComponents_DayNight_Dialog_MinWidth",
+        "Theme_MaterialComponents_DayNight_Dialog_MinWidth_Bridge",
+        "Theme_MaterialComponents_DayNight_NoActionBar",
+        "Theme_MaterialComponents_DayNight_NoActionBar_Bridge",
+        "This Activity already has an action bar supplied by the window decor. Do not request Window.FEATURE_SUPPORT_ACTION_BAR and set windowActionBar to false in your theme to use a Toolbar instead.",
+        "This component requires that you specify a valid TextAppearance attribute. Update your app theme to inherit from Theme.MaterialComponents (or a descendant).",
+        "You need to use a Theme.AppCompat theme (or descendant) with this activity.",
+        "icon_theme_day"
+      ]
+    }
+  ]
+}

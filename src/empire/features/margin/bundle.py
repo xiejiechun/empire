@@ -22,7 +22,7 @@ def bundle(cfg):
                 6100,
                 TaskContribution(
                     PROJECT,
-                    "个股融资融券（通达信）",
+                    "个股融资融券",
                     "collector.tdx_margin",
                     "tdx",
                     "每股一次10000条完整历史；融资、融券与页面派生指标",

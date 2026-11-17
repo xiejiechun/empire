@@ -9,7 +9,7 @@ from empire.contracts.download import (
     ResponsePolicy,
 )
 
-MAX_PARALLEL_DOWNLOADS = 1024
+MAX_PARALLEL_DOWNLOADS = 4096
 DEVICE_TIERS = tuple(range(100, 1001, 100))
 
 

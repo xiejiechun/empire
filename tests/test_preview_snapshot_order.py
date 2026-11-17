@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from empire.features.yuanhang_limits.contract import TIME_FIELDS
+from empire.features.yuanhang_limits.contract import FILTER, TIME_FIELDS
 from empire.features.yuanhang_limits.intraday_query import browse_live
 from empire.features.yuanhang_limits.snapshot_order import snapshot_page
 
@@ -32,10 +32,11 @@ def test_complete_snapshot_decimal_ties_nulls_and_version_binding():
             snapshot_page(rows, version, filters, selected_order, cursor)
 
 
-async def test_formal_live_query_keeps_snapshot_and_reports_expiration(monkeypatch):
+@pytest.mark.parametrize('scope,label', [(FILTER, '含ST'), ('old', '旧口径')])
+async def test_formal_live_query_keeps_snapshot_and_reports_expiration(monkeypatch, scope, label):
     stamp = '2026-10-29T10:00:00+08:00'
     read = AsyncMock(return_value=dict(
-        unit=dict(rows=members(), source_total=421), version='1793239200000000',
+        unit=dict(rows=members(), source_total=421, filter=scope), version='1793239200000000',
         started=stamp, finished=stamp, meta=dict(checked='1793239200000000'),
         retained_since=None, consistency='single_response',
     ))
@@ -44,6 +45,7 @@ async def test_formal_live_query_keeps_snapshot_and_reports_expiration(monkeypat
     query = SimpleNamespace(context=SimpleNamespace(optional=lambda _: object()))
     filters, order = [3, 'limit_up_pool', '', '2026-10-29', '', ''], dict(field='latest', direction='asc')
     first = await browse_live(query, filters, None, order)
+    assert label in first['message']
     second = await browse_live(query, filters, first['next'], order)
     assert read.call_args.kwargs['version'] == '1793239200000000'
     assert not {r['unified_code'] for r in first['rows']} & {r['unified_code'] for r in second['rows']}

@@ -144,6 +144,8 @@ class CapitalPageDataset:
             result['manifest'] = {**data['manifest'], 'observed_at': observed}
         else:
             proof = dict(observed_at=observed, digest=digest(data['rows']), count=data['row_count'],
+                         content_digest=digest({k: data[k] for k in ('rows', 'availability')}),
+                         fingerprint_hash=digest({k: data[k] for k in ('rows', 'availability', 'manifest')}),
                          availability=data['availability'], contract=1,
                          sections={section: digest({t: [r for r in values if r['section'] == section]
                             for t, values in data['rows'].items()}) for section in SECTIONS})

@@ -1,0 +1,431 @@
+{
+  "run_id": "6da0a1c95c7541e3a40d5835b4ffc772",
+  "mode": "verification",
+  "checked_at": "2026-11-05T06:04:53.103732+00:00",
+  "passed": true,
+  "pipeline_verified": true,
+  "strict_proxy_verified": false,
+  "sample_30_met": false,
+  "results": {},
+  "errors": [],
+  "cleanup": {
+    "shutdown": true,
+    "sql": true,
+    "redis": true,
+    "sql_lock": true,
+    "connections": true,
+    "instance_lock": true
+  },
+  "input_files": {
+    "D:\\project\\empire\\config.toml": "206362e3333bc4b75841eb534d547d5d0651f5bddabef82c5cd475b813f98b10",
+    "D:\\project\\empire\\build\\eastmoney-optimization-mysql-settings.json": "2cd593f3a23e7caa16de0f60e98c4aaf887b1d5af24f37308f8cea74ccce44ce",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\source.py": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\collector.py": "b969decbc98a44051792089ccb09cbcd1be781304a592a21630b9ec1ebe8ed5a",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\dataset.py": "d2fbc2623147390f215f00db44dadd60fa49454faeab2c4ea038eeb6e3af9420",
+    "D:\\project\\empire\\src\\empire\\features\\performance\\query.py": "6f0dcf0943b24737735543044d91cfac051a016b490bd89887d49fbe0460c2e6",
+    "D:\\project\\empire\\scripts\\performance_capacity.py": "1bef98555b66947927a19a38a737abbe26d011cf06f999df34c00864fa753efc",
+    "D:\\project\\empire\\scripts\\measure_shareholder_changes.py": "2b181b8714913707bcdc212e56b9a345d4a10a9bed46a4e97f4fbe08dd79114c",
+    "D:\\project\\empire\\scripts\\performance_storage.py": "6e335affaba0dc6631e27a73f88bea279a0c4a9177fbf86aceeca945c0d878a6",
+    "D:\\project\\empire\\scripts\\source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "D:\\project\\empire\\scripts\\source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "D:\\project\\empire\\src\\empire\\contracts\\business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+    "D:\\project\\empire\\sql\\business-schema.json": "dec4b14f67b1f055dabc17818669844b94daf4584408754b17c381e77cb9e6ca",
+    "D:\\project\\empire\\docs\\evidence\\shareholder-changes-live-2026-10-13.json": "02d7f91ac91cd90d6cd2d273739f9d543a15826f420cb289166f59ef44e04c4c"
+  },
+  "subject": "changes_capacity",
+  "source_sha256": "30f2ce476c06d43383bb93d68895cc1897b1de5008522e67a358077e5df7d58e",
+  "source_server_uuid": "77f9ba30-b666-11f1-81c5-380525361d4e",
+  "acceptance_complete": true,
+  "sample_30_applicable": false,
+  "sample_30_reason": "原五表各100000行或股东变动100000行SQL容量；不请求来源",
+  "storage": {
+    "database": "empire_verify_ths_6da0a1c95c7541e3a40d5835b4ffc772_test",
+    "namespace": "empire:test:verify_ths:6da0a1c95c7541e3a40d5835b4ffc772",
+    "run_id": "6da0a1c95c7541e3a40d5835b4ffc772",
+    "server_uuid": "3f1d111c-d88d-11f1-8cfd-380525361d4e",
+    "owner_sha256": "1e33c7a2e090ff97acae15d4b820f39042d76185fb499a0e8c6cb553b3509643"
+  },
+  "environment": {
+    "version": "8.4.9",
+    "port": 13348,
+    "datadir": "D:\\project\\empire\\build\\eastmoney-optimization-mysql-20261105\\",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0
+  },
+  "bindings": {
+    "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+    "src/empire/features/performance/source.py": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e",
+    "src/empire/features/performance/collector.py": "b969decbc98a44051792089ccb09cbcd1be781304a592a21630b9ec1ebe8ed5a",
+    "src/empire/features/performance/dataset.py": "d2fbc2623147390f215f00db44dadd60fa49454faeab2c4ea038eeb6e3af9420",
+    "src/empire/features/performance/query.py": "6f0dcf0943b24737735543044d91cfac051a016b490bd89887d49fbe0460c2e6",
+    "scripts/performance_capacity.py": "1bef98555b66947927a19a38a737abbe26d011cf06f999df34c00864fa753efc",
+    "scripts/measure_shareholder_changes.py": "2b181b8714913707bcdc212e56b9a345d4a10a9bed46a4e97f4fbe08dd79114c",
+    "scripts/performance_storage.py": "6e335affaba0dc6631e27a73f88bea279a0c4a9177fbf86aceeca945c0d878a6",
+    "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+    "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+    "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+    "docs/evidence/shareholder-changes-live-2026-10-13.json": "02d7f91ac91cd90d6cd2d273739f9d543a15826f420cb289166f59ef44e04c4c"
+  },
+  "ddl_scopes": {
+    "shareholder_change": "45308303c97fcad0dfc62948095056f389abfbdcfdd7ab746aa6cfcc014cc7c8"
+  },
+  "measurements": {
+    "page_ms": 3.712999983690679,
+    "security_ms": 0.9739999659359455,
+    "detail_ms": 0.5315000307746232,
+    "month_ms": 105.34609999740496,
+    "range_ms": 3.481700026895851,
+    "allocated_bytes": 81313792,
+    "projected_million_bytes": 813137920,
+    "import_seconds": 4.698316199996043,
+    "repeat_seconds": 0.18071169999893755,
+    "revision_seconds": 0.196390800003428,
+    "message_bytes": 25200,
+    "matrix_bytes": 760001,
+    "query_peak_bytes": 5510284
+  },
+  "limits": {
+    "page_ms": 100,
+    "security_ms": 100,
+    "detail_ms": 100,
+    "month_ms": 5000,
+    "range_ms": 100,
+    "allocated_bytes": 268435456,
+    "projected_million_bytes": 2147483648,
+    "import_seconds": 120,
+    "repeat_seconds": 5,
+    "revision_seconds": 5,
+    "message_bytes": 524288,
+    "matrix_bytes": 8388608,
+    "query_peak_bytes": 33554432
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": "8.4.9",
+    "independent_service": true,
+    "rows": 100000,
+    "cache": "first unforced plus four warm; maximum conservatively bounds P95",
+    "source": "real normalized early event expanded across 5000 securities and 20 months"
+  },
+  "reviewed_tradeoffs": "事实列与三个业务查询索引；开始日期严格保留月/日精度的VARCHAR(10)，不伪造日。测完整5000行市场重复零DML及单行修订；估计百万行是线性投影而非生产实采或冷盘承诺。",
+  "details": {
+    "all_rows_verified": 100000,
+    "samples": {
+      "page": [
+        3.1590000144205987,
+        3.2396999886259437,
+        3.0576999997720122,
+        3.712999983690679,
+        2.9999000253155828
+      ],
+      "security": [
+        0.9739999659359455,
+        0.8048000163398683,
+        0.7110000005923212,
+        0.6697999779134989,
+        0.6624000379815698
+      ],
+      "detail": [
+        0.4795000422745943,
+        0.5315000307746232,
+        0.38159999530762434,
+        0.33219996839761734,
+        0.36830001045018435
+      ],
+      "month": [
+        47.94309998396784,
+        105.34609999740496,
+        47.714399988763034,
+        46.35329998563975,
+        49.893899995367974
+      ],
+      "range": [
+        3.481700026895851,
+        2.277499996125698,
+        1.3856999576091766,
+        1.616200024727732,
+        1.1366999824531376
+      ]
+    },
+    "query_ms": {
+      "page": 3.712999983690679,
+      "security": 0.9739999659359455,
+      "detail": 0.5315000307746232,
+      "month": 105.34609999740496,
+      "range": 3.481700026895851
+    },
+    "returned": {
+      "page": 200,
+      "security": 20,
+      "detail": 1,
+      "month": 5000,
+      "range": 200
+    },
+    "explain": {
+      "page": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "index",
+          "possible_keys": null,
+          "key": "ix_date",
+          "key_len": "78",
+          "ref": null,
+          "rows": 200,
+          "filtered": 100.0,
+          "Extra": "Backward index scan"
+        }
+      ],
+      "security": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "ref",
+          "possible_keys": "ix_security_date",
+          "key": "ix_security_date",
+          "key_len": "11",
+          "ref": "const",
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": "Backward index scan"
+        }
+      ],
+      "detail": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "const",
+          "possible_keys": "PRIMARY",
+          "key": "PRIMARY",
+          "key_len": "64",
+          "ref": "const",
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": null
+        }
+      ],
+      "month": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "ref",
+          "possible_keys": "ix_month",
+          "key": "ix_month",
+          "key_len": "3",
+          "ref": "const",
+          "rows": 9314,
+          "filtered": 100.0,
+          "Extra": null
+        }
+      ],
+      "range": [
+        {
+          "id": 1,
+          "select_type": "SIMPLE",
+          "table": "shareholder_change",
+          "partitions": null,
+          "type": "range",
+          "possible_keys": "ix_date",
+          "key": "ix_date",
+          "key_len": "3",
+          "ref": null,
+          "rows": 1,
+          "filtered": 100.0,
+          "Extra": "Using index condition; Backward index scan"
+        }
+      ]
+    },
+    "repeated_business_dml": 0,
+    "revised_rows": 1
+  },
+  "remaining": {
+    "sql": false,
+    "redis": false
+  },
+  "original_evidence": {
+    "path": "docs/evidence/tdx-changes-capacity-2026-11-05.json",
+    "sha256": "22196ab834def1ddd95e992be89afede7de8c17e020b17185c7efa0b5f7ca102",
+    "bindings": {
+      "src/empire/features/performance/contract.py": "da2c755cc8b00820522818a4b85a54fd5287b9abc63f8acfc5030e20237aa00e",
+      "src/empire/features/performance/source.py": "22dc55a278eed30a5496af88e6294660abdfcdd8e100094a5efe3377da63cd5e",
+      "src/empire/features/performance/collector.py": "b969decbc98a44051792089ccb09cbcd1be781304a592a21630b9ec1ebe8ed5a",
+      "src/empire/features/performance/dataset.py": "d2fbc2623147390f215f00db44dadd60fa49454faeab2c4ea038eeb6e3af9420",
+      "src/empire/features/performance/query.py": "6f0dcf0943b24737735543044d91cfac051a016b490bd89887d49fbe0460c2e6",
+      "scripts/performance_capacity.py": "1bef98555b66947927a19a38a737abbe26d011cf06f999df34c00864fa753efc",
+      "scripts/measure_shareholder_changes.py": "2b181b8714913707bcdc212e56b9a345d4a10a9bed46a4e97f4fbe08dd79114c",
+      "scripts/performance_storage.py": "6e335affaba0dc6631e27a73f88bea279a0c4a9177fbf86aceeca945c0d878a6",
+      "scripts/source_test_storage.py": "5f044e771c539da9021ba0316cbbadba822c867a1c4fd8d5b2e362ef60699c8d",
+      "scripts/source_verification.py": "256755e5d92c23373de0ebb117ab1c7d0d56d48b0e5f92cb3c32d4a1aa8c3663",
+      "src/empire/contracts/business_schema.py": "7004f3ad6f6c6184a88b3f510db382da876e9b3ba17ad2d50117a77bb28c47cc",
+      "sql/business-schema.json": "dec4b14f67b1f055dabc17818669844b94daf4584408754b17c381e77cb9e6ca",
+      "docs/evidence/shareholder-changes-live-2026-10-13.json": "02d7f91ac91cd90d6cd2d273739f9d543a15826f420cb289166f59ef44e04c4c"
+    },
+    "note": "No measurements repeated or numbers changed. Reconstructed pre-forex inputs match original hashes; complete DDL/shapes/ownership identical for measured table scope. Only two disjoint forex tables added."
+  },
+  "schema_objects": {
+    "shareholder_change": {
+      "ddl_sha256": "45308303c97fcad0dfc62948095056f389abfbdcfdd7ab746aa6cfcc014cc7c8",
+      "shape": {
+        "columns": {
+          "record_key": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "data_month": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "change_end": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "change_start": {
+            "type": "varchar(10) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "announcement_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "actor": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "price": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "shares_changed": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "shares_after": {
+            "type": "decimal(28, 8)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "reason": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "leader": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "position": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "relationship": {
+            "type": "varchar(512) collate \"utf8mb4_unicode_ci\"",
+            "nullable": true,
+            "unsigned": false
+          },
+          "occurrence": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "record_key"
+        ],
+        "indexes": {
+          "ix_date": {
+            "columns": [
+              "change_end",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_month": {
+            "columns": [
+              "data_month",
+              "unified_code",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          },
+          "ix_security_date": {
+            "columns": [
+              "unified_code",
+              "change_end",
+              "record_key"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_change_dates": "((change_startisnull)or(regexp_like(change_start,'^[0-9]{4}-[0-9]{2}(-[0-9]{2})?$')and(change_start<=(cast(change_endascharcharsetutf8mb4)collateutf8mb4_unicode_ci))))",
+          "ck_change_month": "((dayofmonth(data_month)=1)and(year(data_month)=year(change_end))and(month(data_month)=month(change_end)))",
+          "ck_change_occurrence": "(occurrencebetween1and9999)",
+          "ck_change_shares": "((shares_afterisnull)or(shares_after>=0))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "tdx",
+        "primary_keys": [
+          "record_key"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "shareholder_changes.tdx_unit": {
+            "tables": [
+              "shareholder_change"
+            ],
+            "primary": "shareholder_change"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import asyncio
 import copy
 import os
+from dataclasses import replace
 from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
@@ -191,6 +192,7 @@ async def test_state_failure_rolls_back_business_and_progress_recovers_without_r
         if statement.lstrip().upper().startswith("INSERT INTO COLLECTION_STATE"):
             raise RuntimeError("injected state write failure")
     event.listen(mysql.engine, "before_cursor_execute", fail_state)
+    event.listen(mysql.archive_engine, "before_cursor_execute", fail_state)
     try:
         with pytest.raises(RuntimeError, match="state write"):
             await publish(batch="state-rollback")
@@ -199,6 +201,7 @@ async def test_state_failure_rolls_back_business_and_progress_recovers_without_r
         assert await store.client.xlen(store.stream) == 1
     finally:
         event.remove(mysql.engine, "before_cursor_execute", fail_state)
+        event.remove(mysql.archive_engine, "before_cursor_execute", fail_state)
     await archive.flush()
     await store.client.delete(f"{store.prefix}:archive:progress:{query.job_key}")
     assert (await manager.registry.get("archive.confirmation").page_status(
@@ -329,6 +332,9 @@ async def test_news_commit_ack_failure_replays_and_sql_outage_preserves_pending(
 async def test_news_page_failure_does_not_confirm_later_page_in_same_run(news_db, monkeypatch):
     manager, publish, query = news_db
     archive, mysql = manager.registry.get("archive.worker"), manager.registry.get("mysql.store")
+    # This case tests failure fences, independent of cold pool/thread startup
+    # exceeding the normal 50 ms cooperative scheduling quantum.
+    archive.limits = replace(archive.limits, work_time_ms=5000)
     batch = uuid4().hex
     await publish(batch=batch, page=1, flush=False)
     await publish(102, batch=batch, page=2, flush=False)
@@ -454,6 +460,7 @@ async def test_identical_news_and_stale_replays_issue_no_business_dml(news_db):
         if statement.lstrip().upper().startswith(("INSERT", "UPDATE", "DELETE")) and "finance_news" in statement:
             writes.append(statement)
     event.listen(mysql.engine, "before_cursor_execute", capture)
+    event.listen(mysql.archive_engine, "before_cursor_execute", capture)
     try:
         await publish(content="初版", observed=initial + timedelta(minutes=1))
         assert not writes
@@ -469,6 +476,7 @@ async def test_identical_news_and_stale_replays_issue_no_business_dml(news_db):
         assert len(writes) == 1
     finally:
         event.remove(mysql.engine, "before_cursor_execute", capture)
+        event.remove(mysql.archive_engine, "before_cursor_execute", capture)
 
 
 async def test_news_archive_and_query_survive_preparation_retirement(news_db):

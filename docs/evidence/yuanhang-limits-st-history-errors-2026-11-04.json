@@ -1,0 +1,597 @@
+{
+  "entries": [
+    {
+      "project": "ths-yuanhang-limit-up-pool",
+      "error_id": "414c39d6e342494dbc1c4319f3e47c65",
+      "date": "2020-01-23",
+      "classification": "Observed 13-field exact identity response; 12-field-only parser rejected delisted security",
+      "fixed": true,
+      "validated": true,
+      "cleared": true,
+      "replay": {
+        "status": "pass",
+        "date": "2020-01-23",
+        "page": 1,
+        "members": 31,
+        "source_total": 31,
+        "pages": 1,
+        "storage_roundtrip": true
+      },
+      "validation": "Original complete pool replay and storage roundtrip; formal all-history audit passed; targeted release passed",
+      "formal_audit": "build/st-history-final-audit-20261104.json",
+      "release_report": "build/releases/f64227468a284d499afa38cd416bb62c/report.json",
+      "cleared_at": "2026-11-04T16:12:57.698099+00:00"
+    },
+    {
+      "project": "ths-yuanhang-sprint-limit-up",
+      "error_id": "a65a6cee058241f2a851d008dc6f742e",
+      "metadata": {
+        "trade_date": "2021-02-04",
+        "pool_type": "sprint_limit_up",
+        "page": 1
+      },
+      "error": "涨停分析返回未验证的市场身份",
+      "unknown": [
+        {
+          "code": "600687",
+          "name": "退市刚泰",
+          "market_id": 21,
+          "market_type": "HS"
+        }
+      ],
+      "fixed": true,
+      "validated": true,
+      "cleared": true,
+      "replay": {
+        "status": "pass",
+        "date": "2021-02-04",
+        "page": 1,
+        "members": 11,
+        "source_total": 11,
+        "pages": 1,
+        "storage_roundtrip": true
+      },
+      "validation": "Original complete pool replay and storage roundtrip; formal all-history audit passed; targeted release passed",
+      "formal_audit": "build/st-history-final-audit-20261104.json",
+      "release_report": "build/releases/f64227468a284d499afa38cd416bb62c/report.json",
+      "cleared_at": "2026-11-04T16:12:57.699605+00:00"
+    },
+    {
+      "project": "ths-yuanhang-connect-broad-pool",
+      "error_id": "581d5abd3f674466a38634016c4bf475",
+      "metadata": {
+        "trade_date": "2020-02-03",
+        "pool_type": "connect_broad_pool",
+        "page": 1
+      },
+      "error": "身份核实证券字段改变",
+      "fixed": true,
+      "validated": true,
+      "cleared": true,
+      "identity_candidates": [
+        {
+          "code": "002711",
+          "name": "*ST欧浦",
+          "market_id": null,
+          "market_type": "HS"
+        }
+      ],
+      "replay": {
+        "status": "pass",
+        "date": "2020-02-03",
+        "page": 1,
+        "members": 30,
+        "source_total": 30,
+        "pages": 1,
+        "storage_roundtrip": true
+      },
+      "validation": "Original complete pool replay and storage roundtrip; formal all-history audit passed; targeted release passed",
+      "formal_audit": "build/st-history-final-audit-20261104.json",
+      "release_report": "build/releases/f64227468a284d499afa38cd416bb62c/report.json",
+      "cleared_at": "2026-11-04T16:12:57.702609+00:00"
+    },
+    {
+      "project": "ths-yuanhang-open-limit-up-pool",
+      "error_id": "14409487a0714b4fb23cc7a5ff4f0d25",
+      "metadata": {
+        "trade_date": "2021-06-09",
+        "pool_type": "open_limit_up_pool",
+        "page": 1
+      },
+      "error": "first_limit_up_time：非法来源秒时间",
+      "fixed": true,
+      "validated": true,
+      "cleared": true,
+      "identity_candidates": [],
+      "replay": {
+        "status": "pass",
+        "date": "2021-06-09",
+        "page": 1,
+        "members": 41,
+        "source_total": 41,
+        "pages": 1,
+        "storage_roundtrip": true
+      },
+      "validation": "Original complete pool replay and storage roundtrip; formal all-history audit passed; targeted release passed",
+      "source_invalid_time": {
+        "unified_code": "603729.SH",
+        "name": "ST龙韵",
+        "field": "first_limit_up_time",
+        "source_value": "-60",
+        "preserved": -60,
+        "display": "无效时间（来源-60）"
+      },
+      "formal_audit": "build/st-history-final-audit-20261104.json",
+      "release_report": "build/releases/f64227468a284d499afa38cd416bb62c/report.json",
+      "cleared_at": "2026-11-04T16:12:57.705285+00:00"
+    },
+    {
+      "project": "ths-yuanhang-limit-down-pool",
+      "error_id": "d715c633a4ea4b36a7460d922765da2a",
+      "metadata": {
+        "trade_date": "2020-01-23",
+        "pool_type": "limit_down_pool",
+        "page": 1
+      },
+      "error": "身份核实证券字段改变",
+      "fixed": false,
+      "validated": false,
+      "cleared": false,
+      "replay": {
+        "status": "not_pool_body",
+        "reason": "Unterminated string starting at: line 1 column 64977 (char 64976)",
+        "body_bytes": 65536
+      }
+    },
+    {
+      "project": "ths-yuanhang-limit-up-pool",
+      "error_id": "ccfa92353c88459095e21ec4e1557842",
+      "metadata": {
+        "trade_date": "2021-06-09",
+        "pool_type": "limit_up_pool",
+        "page": 1
+      },
+      "error": "last_limit_up_time：非法来源秒时间",
+      "fixed": true,
+      "validated": true,
+      "cleared": true,
+      "identity_candidates": [],
+      "invalid_times": [
+        {
+          "code": "600112",
+          "name": "*ST天成",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "-60"
+          }
+        },
+        {
+          "code": "600146",
+          "name": "*ST环球",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "1623204460"
+          }
+        },
+        {
+          "code": "600198",
+          "name": "*ST大唐",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "-60"
+          }
+        },
+        {
+          "code": "600241",
+          "name": "ST时万",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "-60"
+          }
+        },
+        {
+          "code": "600291",
+          "name": "*ST西水",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "-60"
+          }
+        },
+        {
+          "code": "600306",
+          "name": "*ST商城",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "1623206675"
+          }
+        },
+        {
+          "code": "600311",
+          "name": "ST荣华",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "-60"
+          }
+        },
+        {
+          "code": "600652",
+          "name": "*ST游久",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "1623205378"
+          }
+        },
+        {
+          "code": "600734",
+          "name": "*ST实达",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "-60"
+          }
+        },
+        {
+          "code": "603032",
+          "name": "*ST德新",
+          "times": {
+            "first_limit_up_time": "-60",
+            "last_limit_down_time": null,
+            "first_limit_down_time": null,
+            "last_limit_up_time": "-60"
+          }
+        }
+      ],
+      "replay": {
+        "status": "pass",
+        "date": "2021-06-09",
+        "page": 1,
+        "members": 89,
+        "source_total": 89,
+        "pages": 1,
+        "storage_roundtrip": true
+      },
+      "validation": "Original complete pool replay and storage roundtrip; formal all-history audit passed; targeted release passed",
+      "formal_audit": "build/st-history-final-audit-20261104.json",
+      "release_report": "build/releases/f64227468a284d499afa38cd416bb62c/report.json",
+      "cleared_at": "2026-11-04T16:12:57.707500+00:00"
+    },
+    {
+      "project": "ths-yuanhang-connect-broad-pool",
+      "error_id": "5455708b989f45c0a51dfa6f123ae094",
+      "metadata": {
+        "trade_date": "2021-06-09",
+        "pool_type": "connect_broad_pool",
+        "page": 1
+      },
+      "error": "last_limit_up_time：非法来源秒时间",
+      "fixed": true,
+      "validated": true,
+      "cleared": true,
+      "identity_candidates": [],
+      "replay": {
+        "status": "pass",
+        "date": "2021-06-09",
+        "page": 1,
+        "members": 40,
+        "source_total": 40,
+        "pages": 1,
+        "storage_roundtrip": true
+      },
+      "validation": "Original complete pool replay and storage roundtrip; formal all-history audit passed; targeted release passed",
+      "formal_audit": "build/st-history-final-audit-20261104.json",
+      "release_report": "build/releases/f64227468a284d499afa38cd416bb62c/report.json",
+      "cleared_at": "2026-11-04T16:12:57.708511+00:00"
+    },
+    {
+      "project": "ths-yuanhang-limit-down-pool",
+      "error_id": "8d2346a15a934fcdb774b73ac143f77a",
+      "metadata": {
+        "trade_date": "2024-11-22",
+        "pool_type": "limit_down_pool",
+        "page": 1
+      },
+      "error": "first_limit_down_time：非法来源秒时间",
+      "fixed": true,
+      "validated": true,
+      "cleared": true,
+      "identity_candidates": [],
+      "replay": {
+        "status": "pass",
+        "date": "2024-11-22",
+        "page": 1,
+        "members": 17,
+        "source_total": 17,
+        "pages": 1,
+        "storage_roundtrip": true
+      },
+      "validation": "Original complete pool replay and storage roundtrip; formal all-history audit passed; targeted release passed",
+      "formal_audit": "build/st-history-final-audit-20261104.json",
+      "release_report": "build/releases/f64227468a284d499afa38cd416bb62c/report.json",
+      "cleared_at": "2026-11-04T16:12:57.711612+00:00"
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "a0a01a0c34b445e6b3b16a388076cb1f",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "Server error '500 Internal Server Error' for url 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=002719.SZ&startTime=20200508&endTime=20200508%27\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "c6766e72680c46259505beb47186fe66",
+      "metadata": {
+        "business_status": -1,
+        "unified_code": "600122.SH",
+        "trade_date": "2020-05-08"
+      },
+      "error": "远航涨停分析业务响应失败",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "fe8a486e5c324bd8a097257cd5d696b5",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "来源声明的暂时业务失败，按共享请求预算重试",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "0bc7f130b00f4e709d1d660ac8683241",
+      "metadata": {
+        "method": "GET",
+        "attempt": 2
+      },
+      "error": "来源声明的暂时业务失败，按共享请求预算重试",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "14cb099605c54ea4adae2f501a1bc420",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "来源声明的暂时业务失败，按共享请求预算重试",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "5d9548e40ba24d519dce4cb4c11601cf",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "来源声明的暂时业务失败，按共享请求预算重试",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "d85baa1f0bba446f86067dd313f99eee",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "来源声明的暂时业务失败，按共享请求预算重试",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "31e0d90bc10a499fa297ac047f51ed55",
+      "metadata": {
+        "business_status": -1,
+        "unified_code": "002086.SZ",
+        "trade_date": "2021-04-28"
+      },
+      "error": "远航涨停分析业务响应失败",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "41fae154a7054c1aaf556a4026273ce8",
+      "metadata": {
+        "method": "GET",
+        "attempt": 2
+      },
+      "error": "来源声明的暂时业务失败，按共享请求预算重试",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "7a19be2b9b72422a83d01335a237f0bf",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "来源声明的暂时业务失败，按共享请求预算重试",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "5291d8270fb44671a6fc917d087ea503",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "Server error '500 Internal Server Error' for url 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=000809.SZ&startTime=20220810&endTime=20220810%27\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "3041c5d9043a4f72871a13be1fdf9a7e",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "Server error '504 Gateway Timeout' for url 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=002592.SZ&startTime=20250528&endTime=20250528%27\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "7ee3b6c207c54061885126e9869d67e6",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "Server error '504 Gateway Timeout' for url 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=600193.SH&startTime=20250528&endTime=20250528%27\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "3da22d758e4049b5a74c30cc6cda549a",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "Server error '504 Gateway Timeout' for url 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=600421.SH&startTime=20250528&endTime=20250528%27\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "0cf61c5cbd774b219170fcaa8a3d74f5",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "Server error '504 Gateway Timeout' for url 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=600696.SH&startTime=20250528&endTime=20250528%27\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "a8a294c3762a44febf21132e440d9302",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "Server error '504 Gateway Timeout' for url 'http://dq.10jqka.com.cn/fuyao/pc_hevo_ztjj/focus_limit_up/v1/single_stock_analysis?indexCode=002808.SZ&startTime=20250528&endTime=20250528%27\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "ebe2ea4c4a874006b8fc17ca99ab348d",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "代理设备 node023 请求失败（ProxyError），已临时隔离",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "b6b35ebc93d2457c8589940fb7677a80",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "代理设备 node023 请求失败（ProxyError），已临时隔离",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "1238b1c322c3403aa2e022815fca9429",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "代理设备 node032 请求失败（ReadTimeout），已临时隔离",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "888b86c4e96e45ba97ca8596649f6ae9",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "代理设备 node020 请求失败（ProxyError），已临时隔离",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    },
+    {
+      "project": "ths-yuanhang-reason",
+      "error_id": "ef2725037a074ca085ba66dfd263f735",
+      "metadata": {
+        "method": "GET",
+        "attempt": 1
+      },
+      "error": "代理设备 node020 请求失败（RemoteProtocolError），已临时隔离",
+      "fixed": false,
+      "validated": false,
+      "cleared": false
+    }
+  ],
+  "cleanup": {
+    "at": "2026-11-04T16:12:57.712141+00:00",
+    "exact_ids_cleared": [
+      "14409487a0714b4fb23cc7a5ff4f0d25",
+      "414c39d6e342494dbc1c4319f3e47c65",
+      "5455708b989f45c0a51dfa6f123ae094",
+      "581d5abd3f674466a38634016c4bf475",
+      "8d2346a15a934fcdb774b73ac143f77a",
+      "a65a6cee058241f2a851d008dc6f742e",
+      "ccfa92353c88459095e21ec4e1557842"
+    ],
+    "preserved": "Truncated original pool record, intermittent source failures, and every other unselected/concurrently added error remain untouched"
+  }
+}

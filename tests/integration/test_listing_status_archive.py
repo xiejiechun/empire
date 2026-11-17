@@ -91,6 +91,7 @@ async def test_hot_cold_duplicate_revision_stale_and_equal_count_sql_corruption(
         return await original(records)
     monkeypatch.setattr(q.mysql, 'archive', counted)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await collect(c)
         assert not calls and not writes
@@ -137,6 +138,7 @@ async def test_hot_cold_duplicate_revision_stale_and_equal_count_sql_corruption(
         assert await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_commit_then_ack_failure_retains_and_replays_without_download(status, monkeypatch):

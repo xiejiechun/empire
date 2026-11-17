@@ -10,28 +10,37 @@ from empire.features.yuanhang_limits.contract import SOURCE, project
 from empire.features.yuanhang_limits.planning import calendar_dates
 
 
-async def reason_plan(query, *, force=False, exclude=(), through=None, scan_after=None, scope='all'):
+async def reason_plan(query, *, force=False, exclude=(), through=None, scan_after=None, scope='all', calendar_cache=None):
     if scope not in ('all', 'recent', 'backfill'):
         raise ValueError('原因规划范围无效')
     now = datetime.now(CHINA)
+    calendar_cache = {} if calendar_cache is None else calendar_cache
     def calendar(conn):
         cutoff, message = read_trade_day_cutoff(conn, now)
         if cutoff is None:
             raise ValueError(message)
         endpoint = min(cutoff.date().isoformat(), through) if through else cutoff.date().isoformat()
+        if endpoint in calendar_cache:
+            return endpoint, calendar_cache[endpoint]
         rows = [(r[0].isoformat(), r[1]) for r in conn.execute(text('SELECT trade_date,is_trade '
             'FROM trade_calendar WHERE trade_date BETWEEN :first AND :last ORDER BY trade_date'),
             dict(first='1990-12-19', last=endpoint))]
         if not rows or rows[0][0] != '1990-12-19':
             raise ValueError('原因全历史规划缺少正式日历')
-        return endpoint, calendar_dates(rows, endpoint)
+        calendar_cache[endpoint] = calendar_dates(rows, endpoint)
+        return endpoint, calendar_cache[endpoint]
     cutoff, days = await query.read(calendar)
-    expected = {day: (cutoff if i >= len(days) - 10 else day)
-                for i, day in enumerate(days)}
-    # This is a bounded calendar relation, not serialized business history.
-    dates = json.dumps([dict(day=day, priority=int(i < len(days) - 10), expected=expected[day],
-        expected_utc=datetime.fromisoformat(expected[day]).replace(tzinfo=CHINA).astimezone(UTC).isoformat(timespec='microseconds'))
-        for i, day in enumerate(days)])
+    relation_key = (cutoff, scope, 'reason_dates')
+    if relation_key not in calendar_cache:
+        # Reuse the bounded date relation across this run's 256-unit pages too.
+        relevant = days[-10:] if scope == 'recent' else days[:-10] if scope == 'backfill' else days
+        recent_first = days[-min(10, len(days))]
+        expected = {day: cutoff if day >= recent_first else day for day in relevant}
+        dates = json.dumps([dict(day=day, expected=expected[day],
+            expected_utc=datetime.fromisoformat(expected[day]).replace(tzinfo=CHINA).astimezone(UTC).isoformat(timespec='microseconds'))
+            for day in relevant])
+        calendar_cache[relation_key] = expected, dates
+    expected, dates = calendar_cache[relation_key]
     marker = tuple(scan_after) if scan_after else (1, '1900-01-01', '') if scope == 'backfill' else (0, '9999-12-31', '')
     if len(marker) != 3 or marker[0] not in (0, 1):
         raise ValueError('原因规划游标无效')

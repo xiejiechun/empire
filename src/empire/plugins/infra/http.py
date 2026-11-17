@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import asyncio
 from collections import defaultdict
+from contextlib import asynccontextmanager
 from dataclasses import dataclass, replace
+from time import monotonic, time
 from urllib.parse import urljoin, urlsplit
 
 import httpx
 
+from empire.contracts.collector import COLLECTION_PROJECT
 from empire.contracts.download import CHUNK_BYTES, BufferedPolicy, FilePolicy
 from empire.contracts.download_settings import (
     DEFAULTS,
@@ -15,10 +18,12 @@ from empire.contracts.download_settings import (
     local_download_options,
 )
 from empire.contracts.plugin import PluginContext, PluginManifest
+from empire.contracts.request_cost import add_cost
 from empire.contracts.request_retry import MAX_REQUEST_RETRIES, request_timeout, retry_delay
 from empire.core.config import user_data_dir
 from empire.core.redaction import exception_text
 from empire.plugins.infra.capacity import capacity
+from empire.plugins.infra.download_admission import DownloadAdmission
 from empire.plugins.infra.download_storage import DownloadStorage
 from empire.plugins.infra.http_safety import (
     MAX_COOLDOWN_MS,
@@ -102,7 +107,7 @@ class RateRules:
 
 
 class HttpService:
-    def __init__(self, redis, prefix: str, groups: dict, *, transport=None, records=None, settings=None, pool=None, resources=None) -> None:
+    def __init__(self, redis, prefix: str, groups: dict, *, transport=None, records=None, settings=None, pool=None, resources=None, buffer_budget=None) -> None:
         self.redis = redis
         self.prefix = prefix
         self.records = records
@@ -113,7 +118,7 @@ class HttpService:
         global_limit = resources["max_parallel_downloads"]
         if type(global_limit) is not int or not 1 <= global_limit <= MAX_PARALLEL_DOWNLOADS:
             raise ValueError(f"全局最多同时下载须为 1～{MAX_PARALLEL_DOWNLOADS} 的整数")
-        self.buffer_budget = ByteBudget(resources["buffer_budget_bytes"])
+        self.buffer_budget = buffer_budget if buffer_budget is not None else ByteBudget(resources["buffer_budget_bytes"])
         self.storage = DownloadStorage(resources.get("download_directory", user_data_dir() / "downloads"),
             quota_bytes=resources["download_quota_bytes"],
             min_free_bytes=resources["disk_free_margin_bytes"], concurrency=resources["file_concurrency"])
@@ -121,6 +126,7 @@ class HttpService:
         self.global_limit = global_limit
         self.global_active = 0
         self.global_peak = 0
+        self.admission = DownloadAdmission(global_limit)
         self.admission_changed = asyncio.Event()
         self.active = {}
         self.direct_active = {}
@@ -181,10 +187,43 @@ class HttpService:
         return FilePolicy(max_body_bytes=size, max_wire_bytes=size, filename=filename,
                           signature=signature, expected_sha256=expected_sha256)
 
-    async def request(self, method, url, *, policy=None, reservation=None, **kwargs):
-        """Close the returned response after consumption; files stream to a quota'd sink."""
+    @asynccontextmanager
+    async def admit_request(self, url, allowed_domains, project_id=None):
+        group = self.rules.resolve(url, allowed_domains)
         task = asyncio.current_task()
         self.inflight.add(task)
+        acquired = False
+        stats = self.stats.setdefault(group.name, dict(requests=0, waiting=0, last_status=None))
+        waits = stats.setdefault('waiting_reasons', {})
+        waiting = self.admission.active >= self.admission.limit
+        if waiting:
+            stats['waiting'] += 1
+            waits['global'] = waits.get('global', 0) + 1
+        try:
+            try:
+                await self.admission.acquire(group.name, project_id or COLLECTION_PROJECT.get() or '__anonymous__')
+            finally:
+                if waiting:
+                    stats['waiting'] -= 1
+                    waits['global'] -= 1
+            acquired = True
+            yield
+        finally:
+            if acquired:
+                self.admission.release()
+            self.inflight.discard(task)
+
+    async def request(self, method, url, *, policy=None, reservation=None, **kwargs):
+        retries = kwargs.get('max_retries', 2)
+        if type(retries) is not int or not 0 <= retries <= MAX_REQUEST_RETRIES:
+            raise ValueError('Invalid retry limit')
+        timeout = kwargs.get('total_timeout')
+        async with asyncio.timeout(request_timeout(retries) if timeout is None else timeout):
+            async with self.admit_request(url, kwargs['allowed_domains'], kwargs.get('project_id')):
+                return await self._buffered_request(method, url, policy=policy, reservation=reservation, **kwargs)
+
+    async def _buffered_request(self, method, url, *, policy=None, reservation=None, **kwargs):
+        """Close the returned response after consumption; files stream to a quota'd sink."""
         lease, file_slot = None, False
         try:
             if self.closed:
@@ -216,7 +255,6 @@ class HttpService:
                 lease.release()
             if file_slot:
                 self.storage.slots.release()
-            self.inflight.discard(task)
 
     async def _request(
         self, method: str, url: str, *, allowed_domains: tuple[str, ...],
@@ -267,6 +305,7 @@ class HttpService:
                     except ProxyRouteError as exc:
                         await self._record_failure(project_id, method, url, exc, attempt=retries + 1, sensitive=sensitive)
                         excluded_proxies.add(exc.code)
+                        add_cost('retries')
                         # Device switching is bounded by unique device IDs and the
                         # same total timeout; source/direct retries keep their budget.
                         continue
@@ -275,6 +314,7 @@ class HttpService:
                         if retries >= max_retries:
                             raise
                         retries += 1
+                        add_cost('retries')
                         await asyncio.sleep(retry_delay(retries))
                         continue
                     if response.status_code in (301, 302, 303, 307, 308) and "location" in response.headers:
@@ -304,6 +344,7 @@ class HttpService:
                         )
                         if retryable and retries < max_retries:
                             retries += 1
+                            add_cost('retries')
                             response.close()
                             await asyncio.sleep(retry_delay(retries))
                             continue
@@ -314,6 +355,7 @@ class HttpService:
                         if retries >= max_retries:
                             raise exc
                         retries += 1
+                        add_cost('retries')
                         response.close()
                         await asyncio.sleep(retry_delay(retries))
                         continue
@@ -326,6 +368,7 @@ class HttpService:
                         await self._record_failure(project_id, method, url, exc, response,
                                                    retries + 1, sensitive=sensitive)
                         retries += 1
+                        add_cost('retries')
                         response.close()
                         await asyncio.sleep(retry_delay(retries))
                         continue
@@ -369,6 +412,7 @@ class HttpService:
                  "buffer_available_bytes": self.buffer_budget.limit - self.buffer_budget.used,
                  "response_reservation_bytes": {name: self.response_policy(name).reservation_bytes
                                                 for name in PROFILE_FIELDS},
+                 **self.admission.snapshot(),
                  **capacity(g, self.pool.healthy_count() if self.pool else 0, self.global_limit),
                  **self.activity_snapshot(g.name)} for g in self.rules.groups]
 
@@ -379,7 +423,8 @@ class HttpService:
         await self.pool.refresh(waiting=True)
         group = self.rules.resolve(url, allowed_domains)
         healthy = self.pool.healthy_count()
-        return max(1, min(healthy, capacity(group, healthy, self.global_limit)["effective_concurrency"]))
+        return max(1, min(healthy, self.admission.limit,
+                         capacity(group, healthy, self.global_limit)["effective_concurrency"]))
 
     async def configure_site(self, name, values):
         group = next((g for g in self.rules.groups if g.name == name), None)
@@ -396,6 +441,7 @@ class HttpService:
 
     async def close(self) -> None:
         self.closed = True
+        self.admission.close()
         tasks = [t for t in self.inflight if t is not asyncio.current_task()]
         for task in tasks:
             task.cancel()
@@ -419,6 +465,7 @@ class HttpPlugin:
         self.local_options = local_download_options(resources or {})
         self.download_settings = None
         self.service: HttpService | None = None
+        self.monitor = None
 
     async def start(self, context: PluginContext) -> dict:
         store = context.get("redis.store")
@@ -430,14 +477,56 @@ class HttpPlugin:
                 groups[name].update(site_policy(value, {
                     k: v for k, v in groups[name].items() if k in site_policy({})}))
         self.download_settings = context.get("download.settings")
-        resources = dict(self.download_settings.saved)
+        budget = self.download_settings.shared_budget()
+        resources = dict(self.download_settings.active)
         self.service = HttpService(store.client, store.prefix, groups,
             records=context.get("collection.records"), settings=settings, pool=context.get("proxy.pool"),
-            resources={**resources, **self.local_options})
+            resources={**resources, **self.local_options}, buffer_budget=budget)
         self.download_settings.activate(resources)
+        async def monitor():
+            previous_ack = 0
+            previous_time = monotonic()
+            while True:
+                expected = monotonic() + 1
+                await asyncio.sleep(1)
+                archive = context.optional('archive.worker')
+                if archive is None:
+                    self.service.admission.sample(monitored=False)
+                    previous_time, previous_ack = monotonic(), 0
+                    continue
+                stats = archive.health()
+                current_time = monotonic()
+                ack = sum(row['acknowledged'] for row in archive.metrics.projects.values())
+                elapsed = max(.001, current_time - previous_time)
+                rate = max(0, ack - previous_ack) / elapsed
+                previous_ack, previous_time = ack, current_time
+                oldest = stats.get('ready_oldest_ms')
+                age = max(0, time() - oldest / 1000) if oldest else 0
+                monitored = True
+                if stats.get('queue_sample_age_seconds', 0) > 3:
+                    # A stalled scanner cannot report newly queued work as zero
+                    # pressure. Known incomplete batches remain completion work.
+                    try:
+                        pending = await store.client.xlen(store.stream)
+                        monitored = pending <= stats.get('indexed_messages', 0)
+                    except Exception:
+                        monitored = False
+                self.service.admission.sample(pending=stats.get('ready_pending', 0),
+                    oldest_seconds=age, buffer_ratio=self.service.buffer_budget.used / self.service.buffer_budget.limit,
+                    lag_ms=max(0, monotonic() - expected) * 1000,
+                    archived_per_second=rate,
+                    elapsed_seconds=elapsed,
+                    monitored=monitored,
+                    archive_failed=stats.get('status') == 'degraded' and not stats.get('blocked_projects'))
+
+        self.monitor = context.spawn(monitor(), name='download-feedback', critical=True)
         return {"http.fetch": self.service}
 
     async def stop(self) -> None:
+        if self.monitor:
+            self.monitor.cancel()
+            await asyncio.gather(self.monitor, return_exceptions=True)
+            self.monitor = None
         if self.service:
             await self.service.close()
             self.service = None
@@ -450,4 +539,5 @@ class HttpPlugin:
                           if self.service else {},
                 "global_active_requests": self.service.global_active if self.service else 0,
                 "global_concurrency_limit": self.service.global_limit if self.service else 0,
+                **(self.service.admission.snapshot() if self.service else {}),
                 "buffer": self.service.buffer_budget.health() if self.service else {}}

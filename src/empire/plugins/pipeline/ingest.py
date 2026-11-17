@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import re
+from contextlib import AsyncExitStack
 from dataclasses import dataclass
 from uuid import uuid4
 
@@ -219,6 +220,13 @@ class IngestPlugin:
         self, envelopes: list[Envelope], *, job_key: str, expected_revision: int, cursor: dict,
         reservation: BatchReservation | None = None,
     ) -> dict:
+        async with AsyncExitStack() as computation:
+            return await self._publish_page(envelopes, job_key=job_key,
+                expected_revision=expected_revision, cursor=cursor,
+                reservation=reservation, computation=computation)
+
+    async def _publish_page(self, envelopes, *, job_key, expected_revision, cursor,
+                            reservation, computation):
         if not self.redis:
             raise RuntimeError("Ingest plugin is not running")
         self._check_archive_admission()
@@ -233,13 +241,21 @@ class IngestPlugin:
         if len(cursor_json.encode()) > 16384:
             raise ValueError("Checkpoint is too large")
         values, projects = [], set()
+        checked = []
         for event in envelopes:
             event = Envelope.model_validate(event)
             if event.job_key != job_key:
                 raise ValueError("Envelope and checkpoint job keys differ")
-            event = self.catalog.canonicalize(event)
-            projects.add(self.catalog.project_id(event))
-            values.append(event.model_dump_json())
+            checked.append(event)
+        for offset in range(0, len(checked), 16):
+            prepared = await computation.enter_async_context(
+                self.catalog.computed(checked[offset:offset + 16], 'canonicalize'))
+            for event, error in prepared:
+                if error:
+                    raise error
+                header = event['envelope'] if isinstance(event, dict) and 'publication' in event else event
+                projects.add(self.catalog.project_id(header))
+                values.append(event['publication'] if header is not event else event.model_dump_json())
         self._check_archive_admission(projects)
         encoded_bytes = sum(len(v.encode()) for v in values)
         if encoded_bytes > self.settings.get("max_page_bytes", 524288):

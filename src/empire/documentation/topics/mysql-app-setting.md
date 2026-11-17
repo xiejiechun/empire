@@ -55,6 +55,8 @@ MySQL 持久保存，Redis 丢失不删除本表；未归档数据须按来源�
 
 结构与约束以 `sql/schema.sql` 为现行契约；新空库用 init-db，已有库只通过对应显式维护入口升级，启动不改表。先核对队列、业务数量/集合，维护后验证正式查询。
 
+远航指数替换仅通过scripts/switch_yuanhang_indices.py显式迁移：旧目录任务的合法计划复制给新目录和网页成分，新日K继承旧行情计划；已有新计划优先。旧两任务保留为archived=true且enabled=false，不再调度，不删除其他配置。
+
 配置保存走 SettingsStore；旧下载配置转换用 scripts/migrate_download_settings.py / migrate_download_capacity.py，当前合法配置不需再次迁移。程序目录连接配置仅用 scripts/migrate_program_config.py 显式搬入，不存本表。
 
 [执行采集与计划](help:执行采集与计划)、[数据库职责与查阅](help:数据库职责与查阅)、[MySQL collection_state](help:MySQL%20collection_state)

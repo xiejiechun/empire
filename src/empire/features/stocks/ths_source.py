@@ -14,6 +14,9 @@ class DirectoryParser(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.table = self.body = self.row = self.cell = self.pager = False
+        self.head = self.header_row = self.heading = False
+        self.headers, self.header_text = [], []
+        self.heads = self.header_rows = 0
         self.cells, self.links, self.rows, self.codes = [], [], [], set()
         self.text, self.anchors = [], []
         self.tables = self.closed = self.pagers = self.requests = 0
@@ -25,7 +28,25 @@ class DirectoryParser(HTMLParser):
         if tag == 'table' and 'm-table' in css:
             self.tables += 1
             self.table = True
+        elif tag == 'thead' and self.table:
+            if self.heads or self.body or self.rows:
+                raise ValueError('同花顺股票表头重复或顺序无效')
+            self.heads += 1
+            self.head = True
+        elif tag == 'tr' and self.head:
+            if self.header_row or self.header_rows:
+                raise ValueError('同花顺股票表头必须为完整单行')
+            self.header_row = True
+        elif tag == 'th' and self.head:
+            if not self.header_row or self.heading:
+                raise ValueError('同花顺股票表头字段未闭合')
+            self.heading, self.header_text = True, []
         elif tag == 'tbody' and self.table:
+            if (self.heads != 1 or self.head or self.header_rows != 1
+                    or not 3 <= len(self.headers) <= 32
+                    or self.headers[:3] != ['序号', '代码', '名称']
+                    or len(set(self.headers)) != len(self.headers)):
+                raise ValueError('同花顺股票表头缺少完整身份或列结构无效')
             self.body = True
         elif tag == 'tr' and self.body:
             if self.row:
@@ -49,19 +70,39 @@ class DirectoryParser(HTMLParser):
             self.base = attrs.get('value')
 
     def handle_data(self, data):
+        if self.heading:
+            self.header_text.append(data)
         if self.cell:
             self.text.append(data)
         if self.pager and data.strip():
             raise ValueError('同花顺完整响应仍有分页')
 
     def handle_endtag(self, tag):
-        if tag == 'td' and self.cell:
+        if tag == 'th' and self.heading:
+            label = ''.join(self.header_text).strip()
+            if not label or len(label) > 80 or len(self.headers) >= 32:
+                raise ValueError('同花顺股票表头列名或数量无效')
+            self.headers.append(label)
+            self.heading = False
+        elif tag == 'tr' and self.head:
+            if not self.header_row or self.heading:
+                raise ValueError('同花顺股票表头行未闭合')
+            self.header_rows += 1
+            self.header_row = False
+        elif tag == 'thead' and self.head:
+            if self.heading or self.header_row:
+                raise ValueError('同花顺股票表头未闭合')
+            self.head = False
+        elif tag == 'td' and self.cell:
             self.cells.append(''.join(self.text).strip())
             self.links.append(self.anchors)
             self.cell = False
         elif tag == 'tr' and self.row:
-            if self.cell or len(self.cells) != 14 or self.cells[0] != str(len(self.rows) + 1):
-                raise ValueError('同花顺股票字段或连续序号无效')
+            if self.cell or len(self.cells) != len(self.headers):
+                raise ValueError(f'同花顺股票行列数与表头不一致：第{len(self.rows) + 1}行，'
+                                 f'预期{len(self.headers)}列，实际{len(self.cells)}列')
+            if self.cells[0] != str(len(self.rows) + 1):
+                raise ValueError(f'同花顺股票连续序号无效：预期{len(self.rows) + 1}，实际{self.cells[0][:80]}')
             code, label = self.cells[1:3]
             venue = market(code)
             for anchors in self.links[1:3]:
@@ -88,6 +129,7 @@ def parse_directory(source):
     parser.feed(source)
     parser.close()
     if (parser.tables != 1 or parser.closed != 1 or parser.body or parser.row or parser.cell
+            or parser.heads != 1 or parser.head or parser.heading or parser.header_row
             or parser.pagers != 1 or parser.pager or parser.requests != 1
             or parser.request != REQUEST or parser.base != 'index/index' or not parser.rows):
         raise ValueError('同花顺股票响应缺少完整单页或请求身份证明')

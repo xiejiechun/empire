@@ -26,7 +26,7 @@ def bundle(cfg):
                 6000,
                 TaskContribution(
                     PROJECT,
-                    "个股龙虎榜（通达信）",
+                    "个股龙虎榜",
                     "collector.tdx_hot_list",
                     "tdx",
                     "首次全部历史；补缺及7/30日轮转回查；单日与多日榜分别保留",

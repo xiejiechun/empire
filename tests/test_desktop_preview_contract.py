@@ -31,7 +31,11 @@ def test_every_installed_project_has_business_presentation_and_resolvable_naviga
             if spec["hidden"]:
                 assert spec["parent"] in specs
                 assert all(f["required"] for f in spec["filter_specs"])
-    assert len(projects) == 52
+    assert len(projects) == 62
+    assert {"sse-etf-shares", "szse-etf-shares", "ttjj-etf-nav"} <= projects.keys()
+    assert {"ths-yuanhang-etfs", "ths-yuanhang-etf-prices", "ths-yuanhang-etf-latest"} <= projects.keys()
+    assert {'ths-fx-live', 'ths-fx-daily'} <= projects.keys()
+    assert "eastmoney-graymarket" in projects
     assert "tdx-industry-margin" in projects
     assert {"statement", "calendar", "hotlist", "holdings", "pool", "rules", "news"} <= renderers
 
@@ -39,7 +43,7 @@ def test_every_installed_project_has_business_presentation_and_resolvable_naviga
 def test_date_filters_and_amount_units_follow_business_meaning():
     cases = {"tdx-suspensions": "来源日历日", "tdx-holder-count": "统计日期",
              "tdx-shareholder-changes": "变动结束日", "tdx-earnings-forecast": "报告期",
-             "tdx-unlocks": "解禁日", "ths-index-prices": "交易日期", "tdx-industry-margin": "统计日期"}
+             "tdx-unlocks": "解禁日", "ths-yuanhang-index-prices": "交易日期", "tdx-industry-margin": "统计日期"}
     for project, label in cases.items():
         spec = catalog(project)[0]
         assert next(f for f in spec["filter_specs"] if f["key"] == "start")["label"] == label + "从"

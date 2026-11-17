@@ -10,6 +10,7 @@ from empire.bootstrap import build_manager
 from empire.features.ths_capital.collector import CapitalPageCollector
 from empire.features.ths_capital.contract import JOB, PROJECT, TABLES
 from empire.features.ths_capital.transport import unpack
+from tests.catalog_factory import builtin_catalog
 from tests.prefetch_source import prefetch_http
 from tests.test_capital_lifecycle import Publisher
 from tests.test_ths_capital import STOCK, source
@@ -18,7 +19,8 @@ from tests.test_ths_capital import STOCK, source
 def configured(stocks=None):
     c = CapitalPageCollector()
     c.ingest = Publisher()
-    c.query = SimpleNamespace(securities=AsyncMock(return_value=stocks or [STOCK]))
+    c.catalog = builtin_catalog()
+    c.query = SimpleNamespace(collection_units=AsyncMock(return_value={}), securities=AsyncMock(return_value=stocks or [STOCK]))
     c.confirmation = SimpleNamespace(page_status=AsyncMock(return_value={'status': 'complete'}))
     c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
     c.session = SimpleNamespace(headers=lambda _: {})

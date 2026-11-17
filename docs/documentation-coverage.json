@@ -64,8 +64,8 @@
       "公司与股票更名",
       "上市与发行资料",
       "暂停恢复终止上市",
-      "同花顺当前指数及成分",
-      "同花顺指数历史日行情",
+      "同花顺指数成分",
+      "同花顺远航版指数日K",
       "回测与估值准备范围",
       "查找与浏览数据",
       "大小非解禁个股与明细",
@@ -143,17 +143,9 @@
       "暂停恢复终止上市",
       "查找与浏览数据"
     ],
-    "indices": [
-      "同花顺当前指数及成分",
-      "查找与浏览数据"
-    ],
     "adjustment": [
       "自算复权因子与行情",
       "数据准备",
-      "查找与浏览数据"
-    ],
-    "index_prices": [
-      "同花顺指数历史日行情",
       "查找与浏览数据"
     ],
     "st_implementation": [
@@ -243,7 +235,8 @@
       "远航版涨跌停分析"
     ],
     "market_review": [
-      "市场复盘"
+      "市场复盘",
+      "查看结果"
     ],
     "hot_list": [
       "通达信个股龙虎榜"
@@ -253,6 +246,50 @@
     ],
     "market_margin": [
       "同花顺市场融资融券"
+    ],
+    "graymarket": [
+      "东方财富明盘暗盘资金榜"
+    ],
+    "observation_calendar": [
+      "多指标观察日历",
+      "查看结果"
+    ],
+    "fx": [
+      "同花顺汇率行情",
+      "查看结果"
+    ],
+    "yuanhang_indices": [
+      "同花顺远航版A股指数",
+      "查找与浏览数据"
+    ],
+    "yuanhang_index_members": [
+      "同花顺指数成分",
+      "查找与浏览数据"
+    ],
+    "yuanhang_index_prices": [
+      "同花顺远航版指数日K",
+      "查找与浏览数据"
+    ],
+    "yuanhang_etfs": [
+      "同花顺远航版ETF目录",
+      "查看结果"
+    ],
+    "yuanhang_etf_prices": [
+      "同花顺远航版ETF日K",
+      "查看结果"
+    ],
+    "yuanhang_etf_latest": [
+      "同花顺远航版ETF最新行情",
+      "查看结果"
+    ],
+    "etf_sse_shares": [
+      "ETF份额与净值"
+    ],
+    "etf_szse_shares": [
+      "ETF份额与净值"
+    ],
+    "etf_ttjj_nav": [
+      "ETF份额与净值"
     ]
   },
   "guides": [
@@ -273,7 +310,6 @@
     "docs/name-change-industry-upgrade.md",
     "docs/adjustment-factors.md",
     "docs/stock-directory.md",
-    "docs/ths-indices.md",
     "docs/ths-yuanhang-implementation.md",
     "docs/ths-yuanhang-storage-design.md",
     "docs/ths-listings.md",
@@ -302,7 +338,13 @@
     "src/empire/documentation/README.md",
     "docs/data-usability-scope.md",
     "docs/identity-management-design.md",
-    "docs/preview-sorting.md"
+    "docs/preview-sorting.md",
+    "docs/eastmoney-graymarket-implementation-plan.md",
+    "docs/ths-fx-implementation-plan.md",
+    "docs/ths-yuanhang-indices.md",
+    "docs/ths-yuanhang-etf.md",
+    "docs/etf-shares-nav-implementation-plan.md",
+    "docs/etf-fundamentals.md"
   ],
   "tasks": {
     "tdx-listing-status": [
@@ -327,11 +369,6 @@
     ],
     "ths-industries": [
       "同花顺当前行业",
-      "采集进度与运行记录",
-      "查看结果"
-    ],
-    "ths-indices": [
-      "同花顺当前指数及成分",
       "采集进度与运行记录",
       "查看结果"
     ],
@@ -389,11 +426,6 @@
     ],
     "tdx-suspensions": [
       "历史停复牌",
-      "采集进度与运行记录",
-      "查看结果"
-    ],
-    "ths-index-prices": [
-      "同花顺指数历史日行情",
       "采集进度与运行记录",
       "查看结果"
     ],
@@ -552,6 +584,56 @@
     "ths-market-margin": [
       "同花顺市场融资融券",
       "采集进度与运行记录"
+    ],
+    "eastmoney-graymarket": [
+      "东方财富明盘暗盘资金榜",
+      "采集进度与运行记录",
+      "查看结果"
+    ],
+    "ths-fx-live": [
+      "同花顺汇率行情"
+    ],
+    "ths-fx-daily": [
+      "同花顺汇率行情"
+    ],
+    "ths-yuanhang-indices": [
+      "同花顺远航版A股指数",
+      "采集进度与运行记录",
+      "查看结果"
+    ],
+    "ths-yuanhang-index-members": [
+      "同花顺指数成分",
+      "采集进度与运行记录",
+      "查看结果"
+    ],
+    "ths-yuanhang-index-prices": [
+      "同花顺远航版指数日K",
+      "采集进度与运行记录",
+      "查看结果"
+    ],
+    "ths-yuanhang-etfs": [
+      "同花顺远航版ETF目录",
+      "采集进度与运行记录",
+      "查看结果"
+    ],
+    "ths-yuanhang-etf-prices": [
+      "同花顺远航版ETF日K",
+      "采集进度与运行记录",
+      "查看结果"
+    ],
+    "ths-yuanhang-etf-latest": [
+      "同花顺远航版ETF最新行情",
+      "采集进度与运行记录",
+      "查看结果"
+    ],
+    "sse-etf-shares": [
+      "ETF份额与净值"
+    ],
+    "szse-etf-shares": [
+      "ETF份额与净值"
+    ],
+    "ttjj-etf-nav": [
+      "ETF份额与净值"
     ]
   },
   "storage": {
@@ -590,7 +672,8 @@
         "sources": [
           "src/empire/features/calendar/dataset.py",
           "src/empire/features/calendar/query.py",
-          "src/empire/features/market_review/query.py"
+          "src/empire/features/market_review/query.py",
+          "src/empire/features/market_review/market.py"
         ]
       },
       "suspension_event": {
@@ -660,29 +743,16 @@
         "topic": "MySQL industry",
         "sources": [
           "src/empire/features/industries/dataset.py",
-          "src/empire/features/industries/query.py"
+          "src/empire/features/industries/query.py",
+          "src/empire/features/market_review/sectors.py"
         ]
       },
       "industry_member": {
         "topic": "MySQL industry_member",
         "sources": [
           "src/empire/features/industries/dataset.py",
-          "src/empire/features/industries/query.py"
-        ]
-      },
-      "stock_index": {
-        "topic": "MySQL stock_index",
-        "sources": [
-          "src/empire/features/indices/dataset.py",
-          "src/empire/features/indices/query.py",
-          "src/empire/features/index_prices/query.py"
-        ]
-      },
-      "stock_index_member": {
-        "topic": "MySQL stock_index_member",
-        "sources": [
-          "src/empire/features/indices/dataset.py",
-          "src/empire/features/indices/query.py"
+          "src/empire/features/industries/query.py",
+          "src/empire/features/market_review/sectors.py"
         ]
       },
       "collection_state": {
@@ -692,7 +762,8 @@
           "src/empire/plugins/infra/collection_state_unit.py",
           "src/empire/plugins/pipeline/archive.py",
           "src/empire/diagnostics/project.py",
-          "src/empire/features/holders/planning.py"
+          "src/empire/features/holders/planning.py",
+          "src/empire/features/market_review/sectors.py"
         ]
       },
       "app_setting": {
@@ -715,20 +786,6 @@
           "src/empire/features/security_aliases/dataset.py",
           "scripts/import_bse_code_mapping.py",
           "scripts/create_security_alias_schema.py"
-        ]
-      },
-      "index_daily_price": {
-        "topic": "MySQL index_daily_price",
-        "sources": [
-          "src/empire/features/index_prices/dataset.py",
-          "src/empire/features/index_prices/query.py"
-        ]
-      },
-      "index_price_year": {
-        "topic": "MySQL index_price_year",
-        "sources": [
-          "src/empire/features/index_prices/dataset.py",
-          "src/empire/features/index_prices/query.py"
         ]
       },
       "security_st_event": {
@@ -992,7 +1049,8 @@
           "src/empire/features/yuanhang/plan_query.py",
           "src/empire/sources/yuanhang_range_payload.py",
           "src/empire/sources/yuanhang_ranges.py",
-          "scripts/migrate_yuanhang_ranges.py"
+          "scripts/migrate_yuanhang_ranges.py",
+          "src/empire/features/market_review/market.py"
         ]
       },
       "yuanhang_price_year": {
@@ -1041,7 +1099,8 @@
           "src/empire/features/yuanhang_limits/dataset.py",
           "src/empire/features/yuanhang_limits/query.py",
           "scripts/create_yuanhang_limits_schema.py",
-          "src/empire/features/market_review/query.py"
+          "src/empire/features/market_review/query.py",
+          "src/empire/features/market_review/market.py"
         ]
       },
       "yuanhang_limit_member": {
@@ -1051,7 +1110,8 @@
           "src/empire/features/yuanhang_limits/dataset.py",
           "src/empire/features/yuanhang_limits/query.py",
           "scripts/create_yuanhang_limits_schema.py",
-          "src/empire/features/market_review/query.py"
+          "src/empire/features/market_review/query.py",
+          "src/empire/features/market_review/market.py"
         ]
       },
       "yuanhang_limit_reason": {
@@ -1133,6 +1193,133 @@
           "src/empire/features/market_margin/contract.py",
           "src/empire/features/market_margin/dataset.py",
           "src/empire/features/market_margin/query.py"
+        ]
+      },
+      "graymarket_day": {
+        "topic": "MySQL graymarket_day",
+        "sources": [
+          "src/empire/features/graymarket/contract.py",
+          "src/empire/features/graymarket/dataset.py",
+          "src/empire/features/graymarket/query.py",
+          "src/empire/features/market_review/market.py"
+        ]
+      },
+      "graymarket_daily": {
+        "topic": "MySQL graymarket_daily",
+        "sources": [
+          "src/empire/features/graymarket/contract.py",
+          "src/empire/features/graymarket/dataset.py",
+          "src/empire/features/graymarket/query.py",
+          "src/empire/features/market_review/market.py"
+        ]
+      },
+      "fx_daily_price": {
+        "topic": "MySQL fx_daily_price",
+        "sources": [
+          "src/empire/features/fx/contract.py",
+          "src/empire/features/fx/dataset.py",
+          "src/empire/features/fx/query.py"
+        ]
+      },
+      "fx_price_year": {
+        "topic": "MySQL fx_price_year",
+        "sources": [
+          "src/empire/features/fx/contract.py",
+          "src/empire/features/fx/dataset.py",
+          "src/empire/features/fx/query.py"
+        ]
+      },
+      "yuanhang_index": {
+        "topic": "MySQL yuanhang_index",
+        "sources": [
+          "src/empire/features/yuanhang_indices/catalog_dataset.py",
+          "src/empire/features/yuanhang_indices/query.py",
+          "src/empire/features/yuanhang_indices/price_reads.py"
+        ]
+      },
+      "ths_index_member_state": {
+        "topic": "MySQL ths_index_member_state",
+        "sources": [
+          "src/empire/features/yuanhang_indices/member_dataset.py",
+          "src/empire/features/yuanhang_indices/query.py",
+          "src/empire/features/yuanhang_indices/audits.py"
+        ]
+      },
+      "ths_index_member": {
+        "topic": "MySQL ths_index_member",
+        "sources": [
+          "src/empire/features/yuanhang_indices/member_dataset.py",
+          "src/empire/features/yuanhang_indices/query.py",
+          "src/empire/features/yuanhang_indices/audits.py"
+        ]
+      },
+      "yuanhang_index_daily_price": {
+        "topic": "MySQL yuanhang_index_daily_price",
+        "sources": [
+          "src/empire/features/yuanhang_indices/price_dataset.py",
+          "src/empire/features/yuanhang_indices/price_reads.py",
+          "src/empire/features/yuanhang_indices/price_audit.py",
+          "src/empire/features/market_review/market.py"
+        ]
+      },
+      "yuanhang_index_price_year": {
+        "topic": "MySQL yuanhang_index_price_year",
+        "sources": [
+          "src/empire/features/yuanhang_indices/price_dataset.py",
+          "src/empire/features/yuanhang_indices/price_query.py",
+          "src/empire/features/yuanhang_indices/price_audit.py"
+        ]
+      },
+      "yuanhang_etf": {
+        "topic": "MySQL yuanhang_etf",
+        "sources": [
+          "src/empire/features/yuanhang_etf/catalog_dataset.py",
+          "src/empire/features/yuanhang_etf/query.py",
+          "src/empire/features/yuanhang_etf/price_reads.py"
+        ]
+      },
+      "yuanhang_etf_daily_price": {
+        "topic": "MySQL yuanhang_etf_daily_price",
+        "sources": [
+          "src/empire/features/yuanhang_etf/price_dataset.py",
+          "src/empire/features/yuanhang_etf/price_reads.py",
+          "src/empire/features/yuanhang_etf/price_audit.py"
+        ]
+      },
+      "yuanhang_etf_price_year": {
+        "topic": "MySQL yuanhang_etf_price_year",
+        "sources": [
+          "src/empire/features/yuanhang_etf/price_dataset.py",
+          "src/empire/features/yuanhang_etf/price_query.py",
+          "src/empire/features/yuanhang_etf/price_audit.py"
+        ]
+      },
+      "etf_daily_share": {
+        "topic": "MySQL etf_daily_share",
+        "sources": [
+          "src/empire/features/etf_fundamentals/share_dataset.py",
+          "src/empire/features/etf_fundamentals/query.py"
+        ]
+      },
+      "etf_share_day": {
+        "topic": "MySQL etf_share_day",
+        "sources": [
+          "src/empire/features/etf_fundamentals/share_dataset.py",
+          "src/empire/features/etf_fundamentals/query.py"
+        ]
+      },
+      "etf_daily_nav": {
+        "topic": "MySQL etf_daily_nav",
+        "sources": [
+          "src/empire/features/etf_fundamentals/nav_dataset.py",
+          "src/empire/features/etf_fundamentals/query.py"
+        ]
+      },
+      "etf_nav_year": {
+        "topic": "MySQL etf_nav_year",
+        "sources": [
+          "src/empire/features/etf_fundamentals/nav_dataset.py",
+          "src/empire/features/etf_fundamentals/query.py"
         ]
       }
     },
@@ -1391,6 +1578,54 @@
         "sources": [
           "src/empire/features/yuanhang_limits/intraday_store.py"
         ]
+      },
+      "graymarket-intraday-snapshots": {
+        "topic": "Redis graymarket-intraday-snapshots",
+        "patterns": [
+          "<namespace>:graymarket:intraday:snapshots:<version>"
+        ],
+        "sources": [
+          "src/empire/features/graymarket/intraday_store.py"
+        ]
+      },
+      "graymarket-intraday-times": {
+        "topic": "Redis graymarket-intraday-times",
+        "patterns": [
+          "<namespace>:graymarket:intraday:times"
+        ],
+        "sources": [
+          "src/empire/features/graymarket/intraday_store.py"
+        ]
+      },
+      "graymarket-intraday-meta": {
+        "topic": "Redis graymarket-intraday-meta",
+        "patterns": [
+          "<namespace>:graymarket:intraday:meta"
+        ],
+        "sources": [
+          "src/empire/features/graymarket/intraday_store.py"
+        ]
+      },
+      "fx-latest": {
+        "topic": "Redis fx-latest",
+        "patterns": [
+          "<namespace>:fx:latest"
+        ],
+        "sources": [
+          "src/empire/features/fx/latest.py",
+          "src/empire/features/fx/live.py",
+          "src/empire/features/observation_calendar/intraday.py"
+        ]
+      },
+      "yuanhang-etf-latest": {
+        "topic": "Redis yuanhang-etf-latest",
+        "patterns": [
+          "<namespace>:yuanhang:etf:latest"
+        ],
+        "sources": [
+          "src/empire/features/yuanhang_etf/latest.py",
+          "src/empire/features/yuanhang_etf/live.py"
+        ]
       }
     },
     "redis_constructors": {
@@ -1536,6 +1771,26 @@
         ],
         "f'{self.redis.prefix}:yuanhang:intraday:{pool}:snapshots:{version}'": [
           "yuanhang-intraday-snapshots"
+        ]
+      },
+      "src/empire/features/graymarket/intraday_store.py": {
+        "f'{self.redis.prefix}:graymarket:intraday'": [
+          "graymarket-intraday-snapshots",
+          "graymarket-intraday-times",
+          "graymarket-intraday-meta"
+        ],
+        "f'{self.redis.prefix}:graymarket:intraday:snapshots:{version}'": [
+          "graymarket-intraday-snapshots"
+        ]
+      },
+      "src/empire/features/fx/latest.py": {
+        "f'{redis.prefix}:fx:latest'": [
+          "fx-latest"
+        ]
+      },
+      "src/empire/features/yuanhang_etf/latest.py": {
+        "f'{store.prefix}:yuanhang:etf:latest'": [
+          "yuanhang-etf-latest"
         ]
       }
     }

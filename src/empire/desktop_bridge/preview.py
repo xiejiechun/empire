@@ -126,6 +126,8 @@ async def read(registry, ident, view, filters, cursor=None, order=None):
             filters=(3, spec.fixed["pool"], "", q.get("day", now.date().isoformat()), "", ""),
             after=cursor,
         )
+        if "code" in spec.filters:
+            kwargs["code"] = q.get("code", "")
     if spec.hidden and cursor is not None:
         raise ValueError("单条详情不接受分页游标")
     if order is not None:
@@ -169,6 +171,6 @@ async def read(registry, ident, view, filters, cursor=None, order=None):
             total=data.get("total"),
             message=data.get("message", ""),
             notice="无记录不代表已完成该范围采集。",
-            storage="Redis 盘中快照" if mode == "live" else "已归档数据",
+            storage="Redis 最新行情" if ident in {"ths-fx-live", "ths-yuanhang-etf-latest"} else "Redis 盘中快照" if mode == "live" else "已归档数据",
         )
     )

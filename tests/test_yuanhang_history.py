@@ -187,8 +187,9 @@ def test_financial_empty_actions_requires_all_capital_series_and_identity():
 
 
 @pytest.mark.parametrize('mode', ['valid', 'wrong_security', 'bad_date', 'future', 'null', 'null_total', 'zero',
-                                  'unknown', 'unsupported', 'partial_action', 'two_points', 'missing_total'])
-def test_only_verified_single_partial_capital_point_has_distinct_unavailability(mode):
+                                  'unknown', 'unsupported', 'partial_action', 'two_points', 'missing_total',
+                                  'negative', 'late_null_total', 'duplicate', 'reversed', 'late_bad_value'])
+def test_only_verified_partial_capital_history_has_distinct_unavailability(mode):
     row = {1: 20250627, 402: 100000000., 407: 10000000.}
     security = 'USZA300176'
     if mode == 'wrong_security':
@@ -201,14 +202,35 @@ def test_only_verified_single_partial_capital_point_has_distinct_unavailability(
         row[407] = None if mode == 'null' else 0
     if mode == 'null_total':
         row[402] = None
+    if mode == 'negative':
+        row[407] = -1
     if mode in ('unknown', 'unsupported', 'partial_action'):
         row[{'unknown': 471, 'unsupported': 0x80000000 | 380, 'partial_action': 454}[mode]] = 0.
     if mode == 'missing_total':
         del row[402]
-    rows = [row] if mode != 'two_points' else [row, {**row, 1: 20250628}]
+    rows = [row]
+    if mode in ('two_points', 'late_null_total', 'duplicate', 'reversed', 'late_bad_value'):
+        rows.append({**row, 1: 20250628})
+        if mode == 'late_null_total':
+            rows[-1][402] = None
+        if mode == 'duplicate':
+            rows[-1][1] = row[1]
+        if mode == 'reversed':
+            rows.reverse()
+        if mode == 'late_bad_value':
+            rows[-1][407] = 'invalid'
     with pytest.raises(ValueError) as caught:
         normalize_financial(tables(rows, security), **BOUNDS)
-    assert isinstance(caught.value, IncompleteFinancialHistory) == (mode in ('valid', 'null'))
+    assert isinstance(caught.value, IncompleteFinancialHistory) == (mode in ('valid', 'null', 'zero', 'two_points'))
+    if isinstance(caught.value, IncompleteFinancialHistory):
+        assert caught.value.point_count == len(rows)
+        assert caught.value.first_source_date == date(2025, 6, 27)
+        assert caught.value.source_date == date(2025, 6, 28 if mode == 'two_points' else 27)
+
+
+def test_zero_circulating_in_complete_financial_history_still_fails():
+    with pytest.raises(ValueError, match='positive'):
+        normalize_financial(tables([{1: 20250627, 402: 100., 407: 0., 380: 10.}]), **BOUNDS)
 
 
 def test_combined_financial_keeps_separate_dates_and_transfer_semantics():

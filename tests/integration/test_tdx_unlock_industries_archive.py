@@ -62,6 +62,7 @@ async def test_hot_cold_repeat_revision_old_basis_wrong_set_and_old_month_retent
         if 'restricted_share_unlock_industry' in statement and statement.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             dml.append(statement)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     original = q.mysql.archive
     async def counted(records):
         calls.append(records)
@@ -108,6 +109,7 @@ async def test_hot_cold_repeat_revision_old_basis_wrong_set_and_old_month_retent
     finally:
         q.mysql.archive = original
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 @pytest.mark.parametrize('failure', ['sql', 'ack'])

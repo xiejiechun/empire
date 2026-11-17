@@ -95,6 +95,7 @@ async def test_source_quality_roundtrip_hot_cold_recovery_and_old_version(holder
         if sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')) and any(t in sql for t in ('holder_report', 'holder_member')):
             writes.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await collect(c)
         await archive.fingerprints.invalidate(q.mapping.FINGERPRINT_NAMESPACE, 'ths')
@@ -120,6 +121,7 @@ async def test_source_quality_roundtrip_hot_cold_recovery_and_old_version(holder
         assert (await q.detail(key))['quality_flags'] == (128 if shape == 'future_date' else 0)
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 @pytest.mark.parametrize('shape', ['large_notice', 'periodic84', 'missing_sections'])
@@ -145,6 +147,7 @@ async def test_large_notice_unknown_exit_ratios_and_parallel_bond_ranks_roundtri
         if sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')) and any(t in sql for t in ('holder_report', 'holder_member')):
             writes.append(sql)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await collect(c)  # trusted digest
         await archive.fingerprints.invalidate(q.mapping.FINGERPRINT_NAMESPACE, 'ths')
@@ -155,6 +158,7 @@ async def test_large_notice_unknown_exit_ratios_and_parallel_bond_ranks_roundtri
             assert await q.detail(report_key(row)) == row
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 @pytest.mark.parametrize('failure', ['identity', 'empty_bond'])
@@ -247,11 +251,13 @@ async def test_partial_bond_gap_roundtrip_duplicate_recovery_and_late_replay(hol
             if statement.lstrip().upper().startswith(('INSERT INTO HOLDER_', 'UPDATE HOLDER_', 'DELETE FROM HOLDER_')):
                 writes.append(statement)
         event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+        event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
         try:
             with pytest.raises(CollectionSourceGap, match='可识别报告已确认归档'):
                 await collect(c)
         finally:
             event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+            event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
         if attempt:
             assert not writes
         for row in reports[q.kind]:
@@ -338,6 +344,7 @@ async def test_hot_cold_revision_old_observation_and_field_repair(holders, monke
             dml.append(sql)
     monkeypatch.setattr(q.mysql, 'archive', counted)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await collect(c)
         assert not calls and not dml and await store.client.xlen(store.stream) == 0
@@ -381,6 +388,7 @@ async def test_hot_cold_revision_old_observation_and_field_repair(holders, monke
         assert (await q.detail(key))['members'][0]['holder_name'] == '修订持有人0'
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_sql_commit_ack_failure_replay_and_checkpoint_loss(holders, monkeypatch):
@@ -465,6 +473,7 @@ async def test_later_section_sql_failure_rolls_back_all_three(holders, monkeypat
         return await original(records)
     monkeypatch.setattr(q.mysql, 'archive', bounded)
     event.listen(q.mysql.engine, 'before_cursor_execute', interrupt)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', interrupt)
     task = asyncio.create_task(collect(c))
     try:
         await asyncio.wait_for(failed.wait(), 5)
@@ -476,6 +485,7 @@ async def test_later_section_sql_failure_rolls_back_all_three(holders, monkeypat
             assert conn.execute(text('SELECT COUNT(*) FROM holder_member')).scalar_one() == 0
         assert await store.client.xlen(store.stream) > 0
         event.remove(q.mysql.engine, 'before_cursor_execute', interrupt)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', interrupt)
         replay.set()
         archive.request_flush()
         await task
@@ -486,6 +496,7 @@ async def test_later_section_sql_failure_rolls_back_all_three(holders, monkeypat
     finally:
         if event.contains(q.mysql.engine, 'before_cursor_execute', interrupt):
             event.remove(q.mysql.engine, 'before_cursor_execute', interrupt)
+            event.remove(q.mysql.archive_engine, 'before_cursor_execute', interrupt)
         replay.set()
         if not task.done():
             task.cancel()

@@ -1,0 +1,39 @@
+{
+  "scope": "source-only; no Redis business publication or SQL archive",
+  "date": "2026-11-02",
+  "observed_at": "2026-11-02T19:06:18.598535+00:00",
+  "rows": 5377,
+  "unique_keys": 5377,
+  "content_sha256": "09d7c5c4dabc4b66f5e435b66a765c64bb36533073c7d2e5ddb036fb5829ca7c",
+  "key_sha256": "eda195b758bafb261fa6851a7429e7300f69349397f44b4c67c91a04318296a9",
+  "markets": {
+    "SZ": 3141,
+    "SH": 2236
+  },
+  "requests": 54,
+  "routes": {
+    "proxy_requests": 57
+  },
+  "max_daily_rows": 10000,
+  "page_size": 100,
+  "retained_bytes_after": 0,
+  "source_sha256": {
+    "scripts/probe_graymarket_source.py": "b73365db29596e94d5b0bdf8b837aba1799514864c1f9867ad0f6e06ca7e0b38",
+    "src/empire/features/graymarket/__init__.py": "8915eaa530340b6ed02f8e60d993ce774338772ecb39df096b6686a81cffdf41",
+    "src/empire/features/graymarket/contract.py": "954c41c746e3412227ff966a64724c113e63334bc813398f235b5f47df1ff543",
+    "src/empire/features/graymarket/download.py": "e516118fd4bacbfcee37a1a923db9fa4ce56d3e359de4ac1035f1d1951961591",
+    "src/empire/features/graymarket/source.py": "131288dfce45030ff3f225818e18731b7365874a6ce1c500ea518ed538a322e5",
+    "tests/test_graymarket.py": "2fd74a6b20aaa5074530dc3c36607b6b94e2fc63634e8defb6fa234803851610",
+    "tests/test_graymarket_download.py": "4b4e1c5ae0d0fe2e9de2ba5858fca4cbc98dc71bccf7c505a25e3bc0ead262bc"
+  },
+  "tests": {
+    "passed": 67,
+    "files": [
+      "tests/test_graymarket.py",
+      "tests/test_graymarket_download.py",
+      "tests/test_unit_prefetch.py",
+      "tests/test_collection_integrity.py"
+    ]
+  },
+  "pipeline_verified": false
+}

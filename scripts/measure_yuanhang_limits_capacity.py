@@ -82,7 +82,7 @@ def unit(day):
                    latest='10.15', change_rate='9.999999999999999999', turnover='123456789.25',
                    order_volume='123000', reason_type='来源原因摘要' * (1 + index % 20))
         rows.append(row)
-    return dict(trade_date=day, pool_type='limit_up_pool', filter='HS,GEM2STAR', source_total=500, rows=rows)
+    return dict(trade_date=day, pool_type='limit_up_pool', filter='HS,GEM2STAR,ST', source_total=500, rows=rows)
 
 
 async def measure_queries(engine):

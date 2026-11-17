@@ -151,18 +151,19 @@ async def test_indices_stricter_source_policy_keeps_elastic_prefetch_lease():
     from types import SimpleNamespace
     from unittest.mock import AsyncMock
 
-    from empire.features.indices.collector import ThsIndexCollector
+    from empire.features.yuanhang_indices.member_collector import MemberCollector
+    from tests.test_yuanhang_indices import member_html
 
-    http, _, _ = service(b'valid source')
-    collector = ThsIndexCollector()
+    http, _, _ = service(member_html().encode('gb18030'))
+    collector = MemberCollector()
     collector.http = http
     collector.ingest = SimpleNamespace(ensure_capacity=AsyncMock())
     collector.session = SimpleNamespace(headers=lambda url: {})
     owner = await http.buffer_budget.reserve(http.response_policy().reservation_bytes)
     try:
-        result = await collector.fetch('https://q.10jqka.com.cn/zs/', lambda body: body,
-            reservation=BorrowedReservation(owner, http.response_policy().reservation_bytes), defer=True)
-        assert await result.consume() == 'valid source'
+        result = await collector.fetch(dict(code='1A0001'),
+            reservation=BorrowedReservation(owner, http.response_policy().reservation_bytes))
+        assert (await result.consume())['available'] is True
         result.close()
         assert http.buffer_budget.used > 256 * 1024
     finally:

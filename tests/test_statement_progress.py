@@ -18,7 +18,7 @@ async def test_stock_progress_initial_resume_and_archive(monkeypatch, kind, resu
                   index=resume, pages=resume, collected=0, units=2,
                   scope_hash=digest(['SZ:000001', 'SZ:000002']), rolling=digest([]))
     c = ThsStatementCollector(kind)
-    c.query = SimpleNamespace(securities=AsyncMock(return_value=stocks))
+    c.query = SimpleNamespace(collection_units=AsyncMock(return_value={}), securities=AsyncMock(return_value=stocks))
     c.ingest = SimpleNamespace(checkpoint=AsyncMock(return_value={'revision': 1, 'cursor': cursor}),
                               advance_checkpoint=AsyncMock())
     c.records = SimpleNamespace(sanitize_text=str, add_error=AsyncMock())
@@ -56,7 +56,7 @@ async def test_stock_progress_initial_resume_and_archive(monkeypatch, kind, resu
 @pytest.mark.asyncio
 async def test_failed_publish_does_not_advance_stock_progress(monkeypatch):
     c = ThsStatementCollector('income')
-    c.query = SimpleNamespace(securities=AsyncMock(return_value=[dict(market='SZ',code='000001')]))
+    c.query = SimpleNamespace(collection_units=AsyncMock(return_value={}), securities=AsyncMock(return_value=[dict(market='SZ',code='000001')]))
     c.ingest = SimpleNamespace(checkpoint=AsyncMock(return_value={'revision':0,'cursor':{}}))
     c.records = SimpleNamespace(sanitize_text=str,add_error=AsyncMock())
     c.publish = AsyncMock(side_effect=RuntimeError('publish failed'))

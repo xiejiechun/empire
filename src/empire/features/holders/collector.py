@@ -8,10 +8,11 @@ from uuid import uuid4
 from empire.contracts.collector import CollectionSourceGap
 from empire.contracts.data import make_envelope
 from empire.contracts.plugin import PluginManifest
+from empire.contracts.request_cost import measured_run
 from empire.core.time import CHINA
 from empire.features.holders.contract import KINDS, digest, project
 from empire.features.holders.planning import choose, gap_notice, manifest_for
-from empire.features.holders.source import parse
+from empire.features.holders.source import parse_all
 from empire.plugins.collection.unit_prefetch import DeferredResponse, prefetch_units
 from empire.plugins.collectors.support import (
     publish_with_capacity,
@@ -54,8 +55,7 @@ class HolderCollector:
         async def consume():
             try:
                 gaps = []
-                reports = {kind: parse(response.content, kind, stock, observed.astimezone(CHINA).date(), gaps=gaps)
-                           for kind in KINDS}
+                reports = parse_all(response.content, stock, observed.astimezone(CHINA).date(), gaps=gaps)
                 return reports, observed, url, gaps
             except (ValueError, TypeError, KeyError, UnicodeError) as exc:
                 body = response.content
@@ -95,6 +95,7 @@ class HolderCollector:
         self.stats['completed_units'] = cursor['units']
         return cursor
 
+    @measured_run
     async def execute(self, *, fresh=False, baseline_revision=0):
         stage = 'plan'
         try:

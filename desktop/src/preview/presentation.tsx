@@ -1,5 +1,6 @@
 import { Button, Tag } from "antd";
 import type { Data } from "../api";
+import { financialDisplay } from "./financialFormat";
 
 export type PreviewProps = {
   spec: Data;
@@ -7,7 +8,7 @@ export type PreviewProps = {
   context?: Data;
   onNavigate?: (view: string, filters: Data) => void;
 };
-export type Field = { key: string; label: string; kind?: string; unit?: string };
+export type Field = { key: string; label: string; kind?: string; unit?: string; format?: string };
 export const numberKinds = new Set(["number", "num", "decimal", "integer"]);
 export const longKinds = new Set(["longtext", "url"]);
 
@@ -32,12 +33,15 @@ const labels: Record<string, string> = {
 
 export function display(value: any, field?: Field): string {
   if (value == null || value === "") return "—";
+  if (field?.kind === "time" && ["first_limit_up_time", "last_limit_up_time", "first_limit_down_time", "last_limit_down_time"].includes(field.key) && (value === -60 || value === "-60" || /^1970-01-01[T ]07:59:00(?:[+.].*)?$/.test(String(value)))) return "无效时间（来源-60）";
   if (field?.kind === "time" && (value === 0 || value === "0" || /^1970-01-01[T ]08:00:00(?:[+.].*)?$/.test(String(value)))) return "未知（来源0）";
   if (typeof value === "boolean") return value ? "是" : "否";
   if (field?.kind === "boolean" && ["0", "1"].includes(String(value))) return String(value) === "1" ? "是" : "否";
   if (Array.isArray(value)) return value.map(v => display(v)).join("、") || "—";
   if (typeof value === "object") return "—";
   const raw = String(value);
+  const formatted = financialDisplay(raw, field?.format);
+  if (formatted !== undefined) return formatted;
   if (field?.key === "progress_code") return `来源进度代码 ${raw}`;
   if (field?.kind === "time" && /^\d{10}$/.test(raw))
     return new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", hour12: false,

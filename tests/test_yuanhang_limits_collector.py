@@ -48,7 +48,7 @@ def setup_collector(days):
         order.append('fetch')
         raw = row()
         raw['first_limit_up_time'] = None
-        return dict(trade_date=day, pool_type=c.pool, filter='HS,GEM2STAR', source_total=1,
+        return dict(trade_date=day, pool_type=c.pool, filter='HS,GEM2STAR,ST', source_total=1,
                     rows=[member(raw, day)]), datetime.now(UTC)
 
     c.fetch = AsyncMock(side_effect=fetch)
@@ -181,7 +181,7 @@ def test_each_pool_has_one_project_job_and_policy_for_both_scopes(pool):
 
 def test_storage_revalidates_identity_members_and_reason_status():
     from empire.features.yuanhang_limits.storage import pool_payload, reason_payload
-    unit = dict(trade_date='2026-07-15', pool_type='limit_up_pool', filter='HS,GEM2STAR',
+    unit = dict(trade_date='2026-07-15', pool_type='limit_up_pool', filter='HS,GEM2STAR,ST',
                 source_total=1, rows=[member(row(), '2026-07-15')])
     assert pool_payload(unit) == unit
     unit['rows'][0]['latest'] = '10.150'

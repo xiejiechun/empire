@@ -138,12 +138,14 @@ async def test_insert_repeat_cache_hit_and_cache_loss_have_no_duplicate_dml(susp
             writes.append(statement)
 
     event.listen(mysql.engine, "before_cursor_execute", capture_sql)
+    event.listen(mysql.archive_engine, "before_cursor_execute", capture_sql)
     try:
         await publish([row])
         assert len(calls) == 1 and not writes
         assert await store.client.xlen(store.stream) == 0
     finally:
         event.remove(mysql.engine, "before_cursor_execute", capture_sql)
+        event.remove(mysql.archive_engine, "before_cursor_execute", capture_sql)
 
 
 async def test_distinct_source_records_coexist_and_exact_replay_is_idempotent(suspension_db):

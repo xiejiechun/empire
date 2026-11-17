@@ -23,11 +23,7 @@
     "stock_repurchase_plan": "eastmoney",
     "trading_rule_value": "reviewed_rules",
     "trading_rule_citation": "reviewed_rules",
-    "index_daily_price": "ths",
-    "index_price_year": "ths",
     "security_code_alias": "bse",
-    "stock_index": "ths",
-    "stock_index_member": "ths",
     "security_listing_event": "tdx",
     "stock_listing": "ths",
     "stock": "sina",
@@ -64,7 +60,21 @@
     "industry_margin_day": "tdx",
     "industry_margin_daily": "tdx",
     "market_margin_series": "ths",
-    "market_margin_daily": "ths"
+    "market_margin_daily": "ths",
+    "graymarket_day": "eastmoney",
+    "graymarket_daily": "eastmoney",
+    "fx_daily_price": "ths",
+    "fx_price_year": "ths",
+    "yuanhang_index": "ths_yuanhang",
+    "ths_index_member_state": "ths",
+    "ths_index_member": "ths",
+    "yuanhang_index_daily_price": "ths_yuanhang",
+    "yuanhang_index_price_year": "ths_yuanhang",
+    "yuanhang_etf": "ths_yuanhang",
+    "yuanhang_etf_daily_price": "ths_yuanhang",
+    "yuanhang_etf_price_year": "ths_yuanhang",
+    "etf_daily_nav": "ttjj",
+    "etf_nav_year": "ttjj"
   },
   "tables": [
     "capital_funding",
@@ -89,11 +99,7 @@
     "stock_repurchase_plan",
     "trading_rule_value",
     "trading_rule_citation",
-    "index_daily_price",
-    "index_price_year",
     "security_code_alias",
-    "stock_index",
-    "stock_index_member",
     "security_listing_event",
     "stock_listing",
     "stock",
@@ -133,7 +139,23 @@
     "industry_margin_day",
     "industry_margin_daily",
     "market_margin_series",
-    "market_margin_daily"
+    "market_margin_daily",
+    "graymarket_day",
+    "graymarket_daily",
+    "fx_daily_price",
+    "fx_price_year",
+    "yuanhang_index",
+    "ths_index_member_state",
+    "ths_index_member",
+    "yuanhang_index_daily_price",
+    "yuanhang_index_price_year",
+    "yuanhang_etf",
+    "yuanhang_etf_daily_price",
+    "yuanhang_etf_price_year",
+    "etf_daily_share",
+    "etf_share_day",
+    "etf_daily_nav",
+    "etf_nav_year"
   ],
   "dataset_tables": {
     "ths.capital.security": "capital_funding",
@@ -154,11 +176,7 @@
     "rules.sessions.complete": "trading_rule_value",
     "rules.stamp_duty.complete": "trading_rule_value",
     "rules.transfer_fee.complete": "trading_rule_value",
-    "index.price.year": "index_daily_price",
-    "index.price.status": "index_daily_price",
     "bse.code_mapping.complete": "security_code_alias",
-    "index.catalog": "stock_index",
-    "index.members": "stock_index",
     "listing_status.month": "security_listing_event",
     "listing.detail": "stock_listing",
     "st.implementation.market": "security_st_event",
@@ -191,7 +209,16 @@
     "hot_list.tdx_unit": "hot_list_day",
     "margin.tdx_security": "margin_security",
     "industry_margin.tdx_day": "industry_margin_day",
-    "market_margin.ths_series": "market_margin_series"
+    "market_margin.ths_series": "market_margin_series",
+    "graymarket.eastmoney_day": "graymarket_day",
+    "fx.price.year": "fx_daily_price",
+    "yuanhang.index.catalog": "yuanhang_index",
+    "ths.index.members": "ths_index_member_state",
+    "yuanhang.index.price.range": "yuanhang_index_daily_price",
+    "yuanhang.etf.catalog": "yuanhang_etf",
+    "yuanhang.etf.price.range": "yuanhang_etf_daily_price",
+    "etf.share.day": "etf_daily_share",
+    "etf.nav.range": "etf_daily_nav"
   },
   "dataset_table_groups": {
     "ths.capital.security": [
@@ -264,24 +291,8 @@
       "trading_rule_value",
       "trading_rule_citation"
     ],
-    "index.price.year": [
-      "index_daily_price",
-      "index_price_year"
-    ],
-    "index.price.status": [
-      "index_daily_price",
-      "index_price_year"
-    ],
     "bse.code_mapping.complete": [
       "security_code_alias"
-    ],
-    "index.catalog": [
-      "stock_index",
-      "stock_index_member"
-    ],
-    "index.members": [
-      "stock_index",
-      "stock_index_member"
     ],
     "listing_status.month": [
       "security_listing_event"
@@ -399,6 +410,40 @@
     "market_margin.ths_series": [
       "market_margin_series",
       "market_margin_daily"
+    ],
+    "graymarket.eastmoney_day": [
+      "graymarket_day",
+      "graymarket_daily"
+    ],
+    "fx.price.year": [
+      "fx_daily_price",
+      "fx_price_year"
+    ],
+    "yuanhang.index.catalog": [
+      "yuanhang_index"
+    ],
+    "ths.index.members": [
+      "ths_index_member_state",
+      "ths_index_member"
+    ],
+    "yuanhang.index.price.range": [
+      "yuanhang_index_daily_price",
+      "yuanhang_index_price_year"
+    ],
+    "yuanhang.etf.catalog": [
+      "yuanhang_etf"
+    ],
+    "yuanhang.etf.price.range": [
+      "yuanhang_etf_daily_price",
+      "yuanhang_etf_price_year"
+    ],
+    "etf.share.day": [
+      "etf_daily_share",
+      "etf_share_day"
+    ],
+    "etf.nav.range": [
+      "etf_daily_nav",
+      "etf_nav_year"
     ]
   },
   "primary_keys": {
@@ -472,23 +517,8 @@
     "trading_rule_citation": [
       "citation_key"
     ],
-    "index_daily_price": [
-      "index_code",
-      "trade_date"
-    ],
-    "index_price_year": [
-      "index_code",
-      "quote_year"
-    ],
     "security_code_alias": [
       "legacy_code"
-    ],
-    "stock_index": [
-      "index_code"
-    ],
-    "stock_index_member": [
-      "index_code",
-      "source_code"
     ],
     "security_listing_event": [
       "event_date",
@@ -642,6 +672,67 @@
     "market_margin_daily": [
       "market_code",
       "trade_date"
+    ],
+    "graymarket_day": [
+      "trade_date"
+    ],
+    "graymarket_daily": [
+      "trade_date",
+      "unified_code"
+    ],
+    "fx_daily_price": [
+      "unified_code",
+      "trade_date"
+    ],
+    "fx_price_year": [
+      "unified_code",
+      "quote_year"
+    ],
+    "yuanhang_index": [
+      "index_code"
+    ],
+    "ths_index_member_state": [
+      "index_code"
+    ],
+    "ths_index_member": [
+      "index_code",
+      "source_code"
+    ],
+    "yuanhang_index_daily_price": [
+      "index_code",
+      "trade_date"
+    ],
+    "yuanhang_index_price_year": [
+      "index_code",
+      "quote_year"
+    ],
+    "yuanhang_etf": [
+      "unified_code"
+    ],
+    "yuanhang_etf_daily_price": [
+      "unified_code",
+      "trade_date"
+    ],
+    "yuanhang_etf_price_year": [
+      "unified_code",
+      "quote_year"
+    ],
+    "etf_daily_share": [
+      "unified_code",
+      "share_date",
+      "source"
+    ],
+    "etf_share_day": [
+      "source",
+      "share_date"
+    ],
+    "etf_daily_nav": [
+      "unified_code",
+      "nav_date"
+    ],
+    "etf_nav_year": [
+      "unified_code",
+      "nav_year"
     ]
   },
   "source_overrides": {
@@ -824,6 +915,25 @@
       "availability",
       "content_sha256",
       "observed_at"
+    ],
+    "fx_daily_price": [
+      "close",
+      "high",
+      "low",
+      "open",
+      "trade_date",
+      "unified_code"
+    ],
+    "fx_price_year": [
+      "content_hash",
+      "contract_version",
+      "first_date",
+      "last_date",
+      "quote_year",
+      "row_count",
+      "source_count",
+      "unified_code",
+      "version_observed_at"
     ]
   },
   "primary_key_exemptions": [

@@ -105,6 +105,7 @@ async def test_duplicate_zero_business_dml_revision_and_late_unchanged_version(s
         if sql.startswith(('INSERT INTO yuanhang_', 'UPDATE yuanhang_', 'DELETE FROM yuanhang_')):
             statements.append(sql)
     event.listen(mysql.engine, 'before_cursor_execute', count)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', count)
     try:
         newer = first.model_copy(update=dict(observed_at=first.observed_at + timedelta(hours=2)))
         with mysql.engine.begin() as conn:
@@ -126,6 +127,7 @@ async def test_duplicate_zero_business_dml_revision_and_late_unchanged_version(s
         assert await q.audit_price(h) == []
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', count)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', count)
 
 
 async def test_financial_atomic_replacement_future_asof_and_rollback(storage):

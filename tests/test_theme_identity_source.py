@@ -41,3 +41,19 @@ def test_company_label_cannot_replace_original_code_or_resolve_same_name_conflic
             b'x,11,300114,sh300114,old,,old,99,1,,,old";')
     with pytest.raises(ValueError):
         parse_identity(body, '300114', source_name='old')
+
+
+def test_delisted_stock_thirteenth_auxiliary_field_keeps_exact_identity():
+    # The observed 002711 lookup has 13 fields; the identity prefix is unchanged.
+    body = ('var themeIdentity="sz002711,11,002711,sz002711,欧浦退,'
+            ',欧浦退,99,0,,,欧浦智网,";').encode('gb18030')
+    assert parse_identity(body, '002711', source_name='*ST欧浦') == '002711.SZ'
+    with pytest.raises(ValueError):
+        parse_identity(body, '002712')
+
+
+@pytest.mark.parametrize('width', [5, 11, 14])
+def test_unknown_identity_field_layout_stays_rejected(width):
+    fields = [b'sz002711', b'11', b'002711', b'sz002711', b'name'] + [b''] * (width - 5)
+    with pytest.raises(ValueError, match='字段改变'):
+        parse_identity(b'var themeIdentity="' + b','.join(fields) + b'";', '002711')

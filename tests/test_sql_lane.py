@@ -97,7 +97,8 @@ async def test_plugin_isolates_pools_drains_shutdown_and_restarts(monkeypatch):
     plugin = MySQLPlugin({"database": "test"})
     await plugin.start(None)
     assert plugin.engine is not plugin.read_engine
-    assert [engine.size for engine in engines] == [1, 2]
+    assert [engine.size for engine in engines] == [1, 2, 1]
+    assert plugin.archive_engine is not plugin.engine
     release = threading.Event()
     reads = [asyncio.create_task(plugin.read(lambda: release.wait(3))) for _ in range(2)]
     stopping = queued = None
@@ -120,7 +121,7 @@ async def test_plugin_isolates_pools_drains_shutdown_and_restarts(monkeypatch):
         with pytest.raises(asyncio.CancelledError):
             await stopping
         assert all(engine.dispose.call_count == 1 for engine in engines)
-        assert plugin.engine is plugin.read_engine is None
+        assert plugin.engine is plugin.read_engine is plugin.archive_engine is None
         await plugin.stop()
         await plugin.start(None)
         assert await plugin.read(lambda: "restarted") == "restarted"

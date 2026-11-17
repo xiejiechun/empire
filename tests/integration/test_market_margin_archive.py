@@ -78,6 +78,7 @@ async def test_formal_roundtrip_duplicate_revision_and_query_boundaries(pipeline
             dml.append(statement)
 
     event.listen(q.mysql.engine, "before_cursor_execute", track)
+    event.listen(q.mysql.archive_engine, "before_cursor_execute", track)
     try:
         await collect(c)
         assert not dml
@@ -114,6 +115,7 @@ async def test_formal_roundtrip_duplicate_revision_and_query_boundaries(pipeline
         assert (await q.history("99"))[0][1] == "201"
     finally:
         event.remove(q.mysql.engine, "before_cursor_execute", track)
+        event.remove(q.mysql.archive_engine, "before_cursor_execute", track)
 
 
 async def test_failure_retention_commit_replay_and_same_count_corruption(pipeline, monkeypatch):

@@ -95,6 +95,7 @@ async def test_hot_cold_zero_dml_metadata_revision_late_old_and_corruption(rules
             writes.append(sql)
     monkeypatch.setattr(q.mysql, 'archive', counted)
     event.listen(q.mysql.engine, 'before_cursor_execute', capture)
+    event.listen(q.mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         await collect(c)
         assert not calls and not writes
@@ -134,6 +135,7 @@ async def test_hot_cold_zero_dml_metadata_revision_late_old_and_corruption(rules
         assert await store.client.xlen(store.stream) == 0
     finally:
         event.remove(q.mysql.engine, 'before_cursor_execute', capture)
+        event.remove(q.mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_sql_commit_ack_failure_recovers_without_redownload(rules, monkeypatch):

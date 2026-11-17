@@ -69,20 +69,23 @@ async def pool_maintenance(collector, now, *, fresh, baseline_revision):
     """Recent and close refresh have priority over one bounded missing-history batch."""
     state = await collector.ingest.checkpoint(collector.job_key)
     cursor = state['cursor']
+    planned, calendar_cache = None, {}
     if (cursor.get('phase') in ('fetch', 'awaiting_archive') or
             cursor.get('phase') == 'complete' and state['revision'] > baseline_revision):
         scope = cursor.get('scope', 'recent')
     else:
-        recent = await collector.query.collection_plan(collector.pool, force=fresh, scope='recent')
+        recent = await collector.query.collection_plan(collector.pool, force=fresh, scope='recent', calendar_cache=calendar_cache)
         if recent['units']:
             scope = 'recent'
+            planned = recent
         else:
             from empire.features.yuanhang_limits.close_refresh import refresh_slot
             slot = refresh_slot(now)
             if slot and await collector.live_store.close_slot(collector.pool) != slot:
                 return await finish_today(collector, fresh, baseline_revision)
             scope = 'backfill'
-            pending = await collector.query.collection_plan(collector.pool, scope=scope)
+            pending = await collector.query.collection_plan(collector.pool, scope=scope, calendar_cache=calendar_cache)
+            planned = pending
             if not pending['units']:
                 collector.stats.update(status='complete', requests=0, collected=0,
                     response_bytes=0, wire_bytes=0, queued_messages=0, queued_bytes=0,
@@ -91,7 +94,7 @@ async def pool_maintenance(collector, now, *, fresh, baseline_revision):
     if scope == 'today':
         return await finish_today(collector, fresh, baseline_revision)
     return await collector._execute(fresh=fresh, baseline_revision=baseline_revision,
-                                    history_only=True, scope=scope)
+                                    history_only=True, scope=scope, planned=planned, calendar_cache=calendar_cache)
 
 
 async def finish_today(collector, fresh, baseline_revision):

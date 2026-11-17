@@ -86,14 +86,6 @@
       "kind": "business",
       "description": "公司及证券更名"
     },
-    "indices": {
-      "kind": "business",
-      "description": "指数及成分"
-    },
-    "index_prices": {
-      "kind": "business",
-      "description": "指数日行情"
-    },
     "security_aliases": {
       "kind": "business",
       "description": "北交所证券代码映射"
@@ -177,6 +169,22 @@
     "market_margin": {
       "kind": "business",
       "description": "同花顺市场完整历史融资融券"
+    },
+    "graymarket": {
+      "kind": "business",
+      "description": "东方财富完整交易日资金榜"
+    },
+    "observation_calendar": {
+      "kind": "business",
+      "description": "只读多指标观察日历"
+    },
+    "fx": {
+      "kind": "business",
+      "description": "同花顺十二品种外汇行情"
+    },
+    "etf_fundamentals": {
+      "kind": "business",
+      "description": "ETF精确每日份额、净值和内容绑定覆盖"
     }
   },
   "module_groups": [
@@ -186,22 +194,6 @@
       "role": "parser",
       "modules": [
         "empire.sources.html"
-      ]
-    },
-    {
-      "owner": "index_prices",
-      "reason": "指数日行情：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.features.index_prices.source"
-      ]
-    },
-    {
-      "owner": "indices",
-      "reason": "指数及成分：来源解析或纯范围规划，无请求执行",
-      "role": "parser",
-      "modules": [
-        "empire.features.indices.source"
       ]
     },
     {
@@ -248,7 +240,8 @@
       "role": "composition",
       "modules": [
         "empire.__main__",
-        "empire.bootstrap"
+        "empire.bootstrap",
+        "empire.computation"
       ]
     },
     {
@@ -301,6 +294,8 @@
         "empire.plugins.collection.records",
         "empire.plugins.collection.rules",
         "empire.plugins.collection.unit_prefetch",
+        "empire.plugins.collection.planned_reads",
+        "empire.plugins.collection.followup_reads",
         "empire.plugins.collection.identity_runs",
         "empire.plugins.collection.identities",
         "empire.plugins.collection.management_query"
@@ -440,87 +435,6 @@
       ]
     },
     {
-      "owner": "index_prices",
-      "reason": "指数日行情：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.features.index_prices.contract"
-      ]
-    },
-    {
-      "owner": "index_prices",
-      "reason": "指数日行情：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.features.index_prices.chart",
-        "empire.features.index_prices.ui"
-      ]
-    },
-    {
-      "owner": "index_prices",
-      "reason": "指数日行情：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.features.index_prices.dataset"
-      ]
-    },
-    {
-      "owner": "index_prices",
-      "reason": "指数日行情：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.features.index_prices.query"
-      ]
-    },
-    {
-      "owner": "index_prices",
-      "reason": "指数日行情：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.features.index_prices.collector"
-      ]
-    },
-    {
-      "owner": "indices",
-      "reason": "指数及成分：业务标识、字段和纯规范声明",
-      "role": "contract",
-      "modules": [
-        "empire.features.indices.contract"
-      ]
-    },
-    {
-      "owner": "indices",
-      "reason": "指数及成分：业务页面和展示状态",
-      "role": "ui",
-      "modules": [
-        "empire.features.indices.ui"
-      ]
-    },
-    {
-      "owner": "indices",
-      "reason": "指数及成分：归档映射、内容比较及校验",
-      "role": "dataset",
-      "modules": [
-        "empire.features.indices.dataset"
-      ]
-    },
-    {
-      "owner": "indices",
-      "reason": "指数及成分：正式查询或准备读取实现",
-      "role": "query",
-      "modules": [
-        "empire.features.indices.query"
-      ]
-    },
-    {
-      "owner": "indices",
-      "reason": "指数及成分：采集生命周期、入队和归档确认",
-      "role": "collector",
-      "modules": [
-        "empire.features.indices.collector"
-      ]
-    },
-    {
       "owner": "industries",
       "reason": "行业及成员：业务标识、字段和纯规范声明",
       "role": "contract",
@@ -557,7 +471,8 @@
       "reason": "行业及成员：采集生命周期、入队和归档确认",
       "role": "collector",
       "modules": [
-        "empire.features.industries.collector"
+        "empire.features.industries.collector",
+        "empire.features.industries.staging"
       ]
     },
     {
@@ -569,15 +484,18 @@
         "empire.plugins.infra.capacity",
         "empire.plugins.infra.collection_state",
         "empire.plugins.infra.collection_state_unit",
+        "empire.plugins.infra.compute_lane",
+        "empire.plugins.infra.download_admission",
         "empire.plugins.infra.download_settings",
         "empire.plugins.infra.download_storage",
         "empire.plugins.infra.http",
         "empire.plugins.infra.http_safety",
         "empire.plugins.infra.mysql_store",
+        "empire.plugins.infra.native_connections",
+        "empire.plugins.infra.proxy_index",
         "empire.plugins.infra.proxy_pool",
         "empire.plugins.infra.proxy_tunnel",
-        "empire.plugins.infra.stream_exchange",
-        "empire.plugins.infra.native_connections",
+        "empire.plugins.infra.query_order",
         "empire.plugins.infra.redis_store",
         "empire.plugins.infra.request_activity",
         "empire.plugins.infra.resources",
@@ -587,7 +505,8 @@
         "empire.plugins.infra.sensitive_request",
         "empire.plugins.infra.settings",
         "empire.plugins.infra.sql_lane",
-        "empire.plugins.infra.query_order"
+        "empire.plugins.infra.stream_exchange",
+        "empire.plugins.infra.volatile_snapshot"
       ]
     },
     {
@@ -613,6 +532,7 @@
         "empire.contracts.download_settings",
         "empire.contracts.native_stream",
         "empire.contracts.request_retry",
+        "empire.contracts.request_cost",
         "empire.contracts.security",
         "empire.contracts.ui",
         "empire.contracts.listing_scope"
@@ -671,10 +591,11 @@
       "role": "pipeline",
       "modules": [
         "empire.plugins.pipeline.archive",
+        "empire.plugins.pipeline.archive_metrics",
         "empire.plugins.pipeline.archive_queue",
+        "empire.plugins.pipeline.archive_units",
         "empire.plugins.pipeline.fingerprints",
-        "empire.plugins.pipeline.ingest",
-        "empire.plugins.pipeline.archive_metrics"
+        "empire.plugins.pipeline.ingest"
       ]
     },
     {
@@ -884,22 +805,6 @@
       ]
     },
     {
-      "owner": "indices",
-      "role": "composition",
-      "reason": "E2 explicit bundle",
-      "modules": [
-        "empire.features.indices.bundle"
-      ]
-    },
-    {
-      "owner": "indices",
-      "role": "package",
-      "reason": "E2 business package",
-      "modules": [
-        "empire.features.indices"
-      ]
-    },
-    {
       "owner": "industries",
       "role": "composition",
       "reason": "E2 explicit bundle",
@@ -913,22 +818,6 @@
       "reason": "E2 business package",
       "modules": [
         "empire.features.industries"
-      ]
-    },
-    {
-      "owner": "index_prices",
-      "role": "composition",
-      "reason": "E2 explicit bundle",
-      "modules": [
-        "empire.features.index_prices.bundle"
-      ]
-    },
-    {
-      "owner": "index_prices",
-      "role": "package",
-      "reason": "E2 business package",
-      "modules": [
-        "empire.features.index_prices"
       ]
     },
     {
@@ -987,7 +876,8 @@
         "empire.sources.yuanhang_sessions",
         "empire.sources.yuanhang_wire",
         "empire.sources.yuanhang_recipe",
-        "empire.sources.yuanhang_management"
+        "empire.sources.yuanhang_management",
+        "empire.sources.yuanhang_transport"
       ]
     },
     {
@@ -1065,7 +955,6 @@
       "role": "parser",
       "modules": [
         "empire.features.yuanhang.planning",
-        "empire.sources.yuanhang_ranges",
         "empire.sources.yuanhang_range_payload"
       ]
     },
@@ -1117,6 +1006,119 @@
       "modules": [
         "empire.features.yuanhang.node_selection",
         "empire.features.yuanhang.node_diagnostics"
+      ]
+    },
+    {
+      "owner": "infrastructure",
+      "role": "query",
+      "reason": "同花顺完整响应任务共享只读维护摘要投影；不读历史业务正文、不执行采集",
+      "modules": [
+        "empire.plugins.infra.ths_maintenance",
+        "empire.plugins.infra.tdx_maintenance"
+      ]
+    },
+    {
+      "owner": "application",
+      "role": "composition",
+      "reason": "显式来源纯函数白名单及有界计算调用；不反向导入总数据集装配",
+      "modules": [
+        "empire.plugins.datasets.source_compute"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航指数组件：contract，独立任务共享原生身份、协议和统一归档",
+      "role": "contract",
+      "modules": [
+        "empire.features.yuanhang_indices.contract",
+        "empire.features.yuanhang_indices.quality"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航指数组件：parser，独立任务共享原生身份、协议和统一归档",
+      "role": "parser",
+      "modules": [
+        "empire.features.yuanhang_indices.members_source"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航指数组件：source_adapter，独立任务共享原生身份、协议和统一归档",
+      "role": "source_adapter",
+      "modules": [
+        "empire.features.yuanhang_indices.native"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航指数组件：collector，独立任务共享原生身份、协议和统一归档",
+      "role": "collector",
+      "modules": [
+        "empire.features.yuanhang_indices.collector_support",
+        "empire.features.yuanhang_indices.catalog_collector",
+        "empire.features.yuanhang_indices.member_collector",
+        "empire.features.yuanhang_indices.price_collector"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航指数组件：dataset，独立任务共享原生身份、协议和统一归档",
+      "role": "dataset",
+      "modules": [
+        "empire.features.yuanhang_indices.catalog_dataset",
+        "empire.features.yuanhang_indices.member_dataset",
+        "empire.features.yuanhang_indices.price_dataset"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航指数组件：query，独立任务共享原生身份、协议和统一归档",
+      "role": "query",
+      "modules": [
+        "empire.features.yuanhang_indices.audits",
+        "empire.features.yuanhang_indices.price_audit",
+        "empire.features.yuanhang_indices.query",
+        "empire.features.yuanhang_indices.price_query",
+        "empire.features.yuanhang_indices.price_reads"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航指数组件：ui，独立任务共享原生身份、协议和统一归档",
+      "role": "ui",
+      "modules": [
+        "empire.features.yuanhang_indices.ui"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "远航指数组件：composition，独立任务共享原生身份、协议和统一归档",
+      "role": "composition",
+      "modules": [
+        "empire.features.yuanhang_indices.bundle",
+        "empire.features.yuanhang_indices"
+      ]
+    },
+    {
+      "owner": "preparation",
+      "role": "contract",
+      "reason": "ETF独立准备范围与用途契约，无I/O",
+      "modules": [
+        "empire.features.preparation.etf"
+      ]
+    },
+    {
+      "owner": "yuanhang",
+      "reason": "纯日期版本段公共契约，ETF与远航共享同一防旧版合并算法",
+      "role": "parser",
+      "modules": [
+        "empire.sources.yuanhang_ranges"
+      ],
+      "public_symbols": [
+        "validated_segments",
+        "replace_range",
+        "versions_on"
       ]
     }
   ],
@@ -1182,48 +1184,8 @@
       }
     },
     {
-      "prefix": "empire.features.indices",
-      "owner": "indices",
-      "reason": "E2 explicit business package",
-      "roles": {
-        "contracts": "contract",
-        "contract": "contract",
-        "api": "api",
-        "query": "query",
-        "queries": "query",
-        "dataset": "dataset",
-        "datasets": "dataset",
-        "collector": "collector",
-        "collectors": "collector",
-        "source": "source_adapter",
-        "parsers": "parser",
-        "ui": "ui",
-        "registration": "composition"
-      }
-    },
-    {
       "prefix": "empire.features.industries",
       "owner": "industries",
-      "reason": "E2 explicit business package",
-      "roles": {
-        "contracts": "contract",
-        "contract": "contract",
-        "api": "api",
-        "query": "query",
-        "queries": "query",
-        "dataset": "dataset",
-        "datasets": "dataset",
-        "collector": "collector",
-        "collectors": "collector",
-        "source": "source_adapter",
-        "parsers": "parser",
-        "ui": "ui",
-        "registration": "composition"
-      }
-    },
-    {
-      "prefix": "empire.features.index_prices",
-      "owner": "index_prices",
       "reason": "E2 explicit business package",
       "roles": {
         "contracts": "contract",
@@ -1399,6 +1361,7 @@
         "dataset": "dataset",
         "source": "source_adapter",
         "dividend_history": "source_adapter",
+        "dividend_maintenance": "query",
         "dividend_discovery": "source_adapter",
         "lifecycle": "collector_support",
         "recovery": "collector_support",
@@ -1570,6 +1533,7 @@
       "roles": {
         "bundle": "composition",
         "contract": "contract",
+        "incremental": "contract",
         "collector": "collector",
         "dataset": "dataset",
         "query": "query",
@@ -1675,8 +1639,12 @@
         "bundle": "composition",
         "model": "contract",
         "query": "query",
+        "reading": "query",
+        "market": "query",
         "ui": "ui",
-        "views": "ui"
+        "views": "ui",
+        "sectors": "query",
+        "etf_flows": "query"
       }
     },
     {
@@ -1736,6 +1704,106 @@
         "dataset": "dataset",
         "query": "query",
         "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.graymarket",
+      "owner": "graymarket",
+      "reason": "Graymarket source-owned lifecycle",
+      "roles": {
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "parser",
+        "collector": "collector",
+        "dataset": "dataset",
+        "query": "query",
+        "ui": "ui",
+        "codec": "contract",
+        "download": "source_adapter",
+        "intraday": "collector",
+        "intraday_store": "query",
+        "intraday_query": "query"
+      }
+    },
+    {
+      "prefix": "empire.features.observation_calendar",
+      "owner": "observation_calendar",
+      "reason": "编排已有正式查询，不采集或持久化业务数据",
+      "roles": {
+        "__init__": "contract",
+        "bundle": "composition",
+        "query": "query",
+        "ui": "ui",
+        "concentration": "query",
+        "fx": "query",
+        "intraday": "query",
+        "configured": "query",
+        "reading": "query"
+      }
+    },
+    {
+      "prefix": "empire.features.fx",
+      "owner": "fx",
+      "reason": "实时最新值与日线分离，共享下载入队归档",
+      "roles": {
+        "verification": "collector_support",
+        "__init__": "contract",
+        "bundle": "composition",
+        "contract": "contract",
+        "source": "parser",
+        "planning": "contract",
+        "latest": "query",
+        "query": "query",
+        "dataset": "dataset",
+        "transport": "source_adapter",
+        "live": "collector",
+        "collector": "collector",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.yuanhang_etf",
+      "owner": "yuanhang",
+      "reason": "ETF独立身份、采集和归档；复用远航公共协议与节点选择",
+      "roles": {
+        "__init__": "contract",
+        "contract": "contract",
+        "quality": "contract",
+        "bundle": "composition",
+        "native": "source_adapter",
+        "collector_support": "collector",
+        "catalog_collector": "collector",
+        "price_collector": "collector",
+        "live": "collector",
+        "latest": "query",
+        "query": "query",
+        "price_query": "query",
+        "price_reads": "query",
+        "price_audit": "query",
+        "audits": "query",
+        "catalog_dataset": "dataset",
+        "price_dataset": "dataset",
+        "ui": "ui"
+      }
+    },
+    {
+      "prefix": "empire.features.etf_fundamentals",
+      "owner": "etf_fundamentals",
+      "reason": "三来源下载复用公共设施；事实与证明归档、范围查询独立",
+      "roles": {
+        "__init__": "contract",
+        "bundle": "composition",
+        "collector": "collector",
+        "contract": "contract",
+        "download": "source_adapter",
+        "nav_dataset": "dataset",
+        "planning": "contract",
+        "preparation": "query",
+        "query": "query",
+        "share_dataset": "dataset",
+        "source": "parser",
+        "ui": "ui",
+        "xlsx": "parser"
       }
     }
   ],

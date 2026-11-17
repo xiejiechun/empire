@@ -13,7 +13,8 @@ pytestmark = [pytest.mark.integration, pytest.mark.skipif(
     os.environ.get('EMPIRE_INTEGRATION') != '1', reason='Set EMPIRE_INTEGRATION=1 explicitly')]
 
 
-async def test_ths_source_to_query_cold_hot_repair_replay_and_cross_source_old_version(stock_database, monkeypatch):  # noqa: F811
+@pytest.mark.parametrize('extra_column', [False, True])
+async def test_ths_source_to_query_cold_hot_repair_replay_and_cross_source_old_version(stock_database, monkeypatch, extra_column):  # noqa: F811
     snapshot, publish, query, manager = stock_database
     # Old directory first; the new source must fill names and replace the complete set.
     older = snapshot()
@@ -25,7 +26,12 @@ async def test_ths_source_to_query_cold_hot_repair_replay_and_cross_source_old_v
     collector = ThsUniverseCollector()
     await manager.start('infra.http')
     await collector.start(SimpleNamespace(get=manager.registry.get))
-    collector.http = Source(document(('920627', '000001', '688196')))
+    content = document(('920627', '000001', '688196'))
+    if extra_column:
+        content = content.replace('<th>市盈率</th>', '<th>总市值</th><th>市盈率</th>')
+        content = content.replace(
+            '<td>--</td></tr>', '<td>--</td><td>--</td></tr>')
+    collector.http = Source(content)
     collector.session = SimpleNamespace(headers=lambda referer: {'Referer': referer})
     await asyncio.wait_for(collector.execute(), 10)
     result = await query.list_stocks()
@@ -40,7 +46,19 @@ async def test_ths_source_to_query_cold_hot_repair_replay_and_cross_source_old_v
         if upper.startswith(('INSERT INTO STOCK ', 'DELETE FROM STOCK', 'UPDATE STOCK ')):
             changes.append(statement)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', capture)
     try:
+        # Invalid structure cannot publish, advance the checkpoint or replace SQL.
+        checkpoint = await ingest.checkpoint('ths-universe-v1')
+        collector.http.content = content.replace('<th>代码</th>', '<th>错误身份</th>')
+        with pytest.raises(ValueError, match='表头'):
+            await collector.execute(baseline_revision=await collector.checkpoint_revision())
+        assert await ingest.checkpoint('ths-universe-v1') == checkpoint
+        assert await store.client.xlen(store.stream) == 0 and not changes
+        assert {r['unified_code'] for r in (await query.list_stocks())['rows']} == {
+            '920627.BJ', '000001.SZ', '688196.SH'}
+        # Returning to the old quote columns has identical directory content.
+        collector.http.content = document(('920627', '000001', '688196'))
         # Trusted common-directory proof must avoid all MySQL, not just business DML.
         async def forbidden(*args, **kwargs):
             raise AssertionError('Hot directory proof must avoid MySQL')
@@ -81,4 +99,5 @@ async def test_ths_source_to_query_cold_hot_repair_replay_and_cross_source_old_v
         assert {r['unified_code'] for r in (await query.list_stocks())['rows']} == latest
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', capture)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', capture)
     assert (await ingest.checkpoint('ths-universe-v1'))['cursor']['phase'] == 'complete'

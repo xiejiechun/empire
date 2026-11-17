@@ -58,6 +58,11 @@ class PerformanceDataPlugin:
                 return read_state(conn, self.namespace, self.project_id, 'tdx')
         return await self.mysql.read(read)
 
+    async def maintenance_state(self):
+        from empire.plugins.infra.tdx_maintenance import confirmed_proofs
+        state = await self.state()
+        return {**state, 'units': await confirmed_proofs(self, state.get('units', {}), self.mapping)}
+
     async def list_records(self, code='', start='', end='', after=None, limit=200, order=None):
         if not isinstance(code, str) or not re.fullmatch(r'(?:\d{0,6}|\d{6}\.(?:SH|SZ|BJ))', code) or type(limit) is not int or not 1 <= limit <= 200:
             raise ValueError('查询证券或分页上限无效')
@@ -189,6 +194,18 @@ class PerformanceDataPlugin:
                     fresh = timedelta(0) <= datetime.now(UTC) - stamp <= timedelta(days=3)
             except Exception:
                 pass
+        if complete:
+            from empire.plugins.infra.tdx_maintenance import proofs_fresh
+            current = await self.maintenance_state()
+            now = datetime.now(UTC)
+            latest = manifest.get('latest', '')
+            threshold = (f'{(now.year * 12 + now.month - 3) // 12:04d}-{(now.year * 12 + now.month - 3) % 12 + 1:02d}-01'
+                if self.kind == 'shareholder_changes' else f'{int(latest[:4]) - 1}-01-01')
+            selected = {k: p for k, p in current.get('units', {}).items() if self.kind == 'holder_count'
+                or manifest.get('start', '') <= k[:10] <= latest}
+            fresh &= (current.get('manifest', {}).get('digest') == manifest.get('digest') and
+                proofs_fresh(selected, now, lambda k: self.kind != 'holder_count' and k[:10] >= threshold,
+                             days=30 if self.kind == 'holder_count' else 90))
         temporal_ok = not temporal and self.kind not in ('holder_count', 'earnings_disclosure')
         return (
             CheckEvidence('fields', 'pass' if complete and not missing else 'fail', f'核验{count}条，必需字段缺失{missing}条；源端可选空值保留'),
@@ -197,7 +214,7 @@ class PerformanceDataPlugin:
             CheckEvidence('quality', 'pass' if complete and not missing else 'fail',
                 '持股数量以股、均价元/股；来源未知数量保留NULL，开始日期保留月/日精度' if self.kind == 'shareholder_changes' else
                 '金额元、比率百分数、户数整数；快报同比原口径并列保留'),
-            CheckEvidence('freshness', 'pass' if fresh and complete else 'fail', 'SQL完整范围或与其内容匹配的可信缓存确认须在3天内'),
+            CheckEvidence('freshness', 'pass' if fresh and complete else 'fail', '范围确认3天内；近期单元3天、历史93天、未变化户数33天内核验'),
             CheckEvidence('temporal', 'pass' if temporal_ok else 'fail', f'不可确认信号可用日期{temporal}条；预约日期和股东统计日不代表公告时刻', blocking=scope.purpose != 'analysis'),
         )
 

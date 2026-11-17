@@ -11,6 +11,7 @@ from empire.features.repurchases.contract import (
     DATASET,
     MAX_ROWS,
     PAGE_SIZE,
+    TEXTS,
     digest,
     validate,
 )
@@ -26,8 +27,13 @@ COVERAGE_KEY = 'coverage'  # Plan IDs are decimal strings; this cannot collide.
 
 def normalize(envelope):
     p = envelope.raw_payload
-    if set(p) != {'page', 'rows', 'total', 'collected', 'digest', 'finished'}:
+    if set(p) - {'refresh'} != {'page', 'rows', 'total', 'collected', 'digest', 'finished'}:
         raise ValueError('回购页消息契约不符')
+    if 'refresh' in p:
+        from empire.features.repurchases.incremental import validate_refresh
+        validate_refresh(p['refresh'], envelope.observed_at)
+        if p['refresh']['proof'] and (p['rows'] or not p['finished']):
+            raise ValueError('回购组合证明必须在业务归档后单独发布')
     if (type(p['page']) is not int or not 1 <= p['page'] <= (MAX_ROWS + 1)
             or type(p['total']) is not int or not 0 <= p['total'] <= MAX_ROWS
             or type(p['collected']) is not int or not 0 <= p['collected'] <= p['total']
@@ -44,18 +50,29 @@ def normalize(envelope):
 
 
 def canonical_payload(envelope, data):
-    return {k: data[k] for k in ('page', 'rows', 'total', 'collected', 'digest', 'finished')}
+    return {k: data[k] for k in ('page', 'rows', 'total', 'collected', 'digest', 'finished', 'refresh') if k in data}
+
+
+def covers(data):
+    return data.get('finished', False) and ('refresh' not in data or data['refresh']['proof'])
+
+
+def coverage(data):
+    value = dict(contract=1, count=data['total'], digest=data['digest'])
+    if 'refresh' in data:
+        value.update(contract=2, full_observed_at=data['refresh']['full_observed_at'])
+    return value
 
 
 def fingerprint_plan(envelope, data):
     observed = envelope.observed_at.astimezone(UTC).isoformat(timespec='microseconds')
     plan = {r['plan_id']: (r, [r['updated_date'] + 'T00:00:00.000000', observed])
             for r in data['rows']}
-    if data['finished']:
+    if covers(data):
         # The final page's rows may all be hot while an earlier page changed.
         # Give the complete source proof its own content identity in the same
         # bounded cache, so changed coverage reaches the existing SQL writer.
-        plan[COVERAGE_KEY] = (dict(contract=1, count=data['total'], digest=data['digest']),
+        plan[COVERAGE_KEY] = (coverage(data),
             [mysql_time(envelope.observed_at).isoformat(timespec='microseconds'), observed])
     return FINGERPRINT_NAMESPACE, plan
 
@@ -89,10 +106,15 @@ def write(conn, envelope, data):
         changed.append({**row, 'content_hash': digest(row), 'version_observed_at': observed})
     if changed:
         fields = (*COLUMNS, 'content_hash', 'version_observed_at')
+        # Bind UTF-8 bytes for long prose: PyMySQL's Unicode escaping walks every
+        # character in Python. The driver safely encodes binary parameters as hex
+        # literals; the utf8mb4 TEXT columns decode them without changing NULL.
+        parameters = [{k: v.encode('utf-8') if k in TEXTS and v is not None else v
+                       for k, v in row.items()} for row in changed]
         conn.execute(text(f'INSERT INTO {TABLE}({",".join(fields)}) '
             f'VALUES({",".join(":"+k for k in fields)}) ON DUPLICATE KEY UPDATE '
-            + ','.join(f'{k}=VALUES({k})' for k in fields if k != 'plan_id')), changed)
-    if (data.get('finished') and data.get('confirm_coverage', True)
+            + ','.join(f'{k}=VALUES({k})' for k in fields if k != 'plan_id')), parameters)
+    if (covers(data) and data.get('confirm_coverage', True)
             and envelope.observed_at.isoformat(timespec='microseconds') >=
             data.get('archive_state', {}).get('coverage', {}).get('observed_at', '')):
         confirmed.append(COVERAGE_KEY)
@@ -102,6 +124,6 @@ def write(conn, envelope, data):
 def archive_state(envelope, data, outcome, previous):
     state = {**previous, 'progress': confirmed_page(envelope, data, previous)}
     if COVERAGE_KEY in outcome['confirmed']:
-        state['coverage'] = dict(count=data['total'], digest=data['digest'], contract=1,
+        state['coverage'] = dict(coverage(data),
                                 observed_at=envelope.observed_at.isoformat(timespec='microseconds'))
     return state

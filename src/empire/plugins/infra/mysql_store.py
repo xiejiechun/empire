@@ -76,7 +76,8 @@ class MySQLPlugin:
         self.settings = settings
         self.engine = None
         self.read_engine = None
-        self.read_lane = self.control_lane = None
+        self.archive_engine = None
+        self.read_lane = self.control_lane = self.archive_lane = None
         self._stopping = None
         self.stats = {"status": "stopped"}
 
@@ -87,8 +88,10 @@ class MySQLPlugin:
         try:
             self.engine = make_engine(self.settings, pool_size=1)
             self.read_engine = make_engine(self.settings, pool_size=2)
+            self.archive_engine = make_engine(self.settings, pool_size=1)
             self.read_lane = SQLLane("empire-mysql-read", 2, 16)
             self.control_lane = SQLLane("empire-mysql-control", 1, 32)
+            self.archive_lane = SQLLane("empire-mysql-archive", 1, 16)
             version = await self.control(self._validate)
         except BaseException:
             await self.stop()
@@ -117,7 +120,9 @@ class MySQLPlugin:
     async def archive(self, records: list[dict]) -> list[dict]:
         """Commit only business writes. Redis ownership is handled by the archive plugin."""
         try:
-            result = await self.control(self._archive, records)
+            if self.archive_lane is None:
+                raise RuntimeError("MySQL 尚未启动")
+            result = await self.archive_lane.call(self._archive, records, admission_timeout=30)
             self.stats.update(status="ok", error="")
             self.stats["transactions"] = self.stats.get("transactions", 0) + 1
             return result
@@ -126,7 +131,7 @@ class MySQLPlugin:
             raise
 
     def _archive(self, records: list[dict]) -> list[dict]:
-        with self.engine.begin() as conn:
+        with self.archive_engine.begin() as conn:
             return [record["writer"](conn, record["envelope"], record["normalized"])
                     for record in records]
 
@@ -138,21 +143,22 @@ class MySQLPlugin:
 
     async def stop(self) -> None:
         if self._stopping is None:
-            for lane in (self.read_lane, self.control_lane):
+            for lane in (self.read_lane, self.control_lane, self.archive_lane):
                 if lane:
                     lane.begin_close()
             self._stopping = asyncio.create_task(self._stop())
         await settle(self._stopping)
 
     async def _stop(self):
-        await asyncio.gather(*(lane.close() for lane in (self.read_lane, self.control_lane) if lane))
-        for engine in (self.read_engine, self.engine):
+        await asyncio.gather(*(lane.close() for lane in (self.read_lane, self.control_lane, self.archive_lane) if lane))
+        for engine in (self.read_engine, self.engine, self.archive_engine):
             if engine is not None:
                 await asyncio.to_thread(engine.dispose)
-        self.read_engine = self.engine = None
-        self.read_lane = self.control_lane = None
+        self.read_engine = self.engine = self.archive_engine = None
+        self.read_lane = self.control_lane = self.archive_lane = None
         self.stats["status"] = "stopped"
 
     def health(self) -> dict:
         return {**self.stats, "lanes": {name: lane.health() for name, lane in (
-            ("read", self.read_lane), ("control", self.control_lane)) if lane}}
+            ("read", self.read_lane), ("control", self.control_lane),
+            ("archive", self.archive_lane)) if lane}}

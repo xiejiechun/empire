@@ -20,7 +20,7 @@ def bundle(cfg):
         OrderedContribution(13400, TdxRightsIssuesCollector()),
         *positioned((13500, 13600, 13700), (CapitalUiPlugin(kind) for kind in KINDS)),
     ), tasks=(
-        *positioned((3800, 3900, 4000), (TaskContribution(item[2], item[0] + '（通达信）',
+        *positioned((3800, 3900, 4000), (TaskContribution(item[2], item[0],
                     'collector.tdx_' + kind, 'tdx', '全部可得历史核验 · 单证券完整归档',
                     category='增发送配', source_name='通达信', parallel_downloads=kind != 'rights_issues', unit_name='只股票',
                     fresh_description='从当前来源完整范围重新核验，保留已归档历史；普通采集优先续跑已入队断点。')

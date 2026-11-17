@@ -23,7 +23,7 @@ def digest(value):
                                     separators=(',', ':')).encode()).hexdigest()
 
 
-def validate_report_date(day):
+def validate_report_date(day, *, today=None):
     # Source matrices also contain non-quarter reporting cutoffs (920000: 2014-07-31).
     if not isinstance(day, str):
         raise ValueError('财报报告期无效')
@@ -31,7 +31,7 @@ def validate_report_date(day):
         parsed = date.fromisoformat(day)
     except ValueError as exc:
         raise ValueError('财报报告期无效') from exc
-    if parsed.isoformat() != day or not date(1000, 1, 1) <= parsed <= date.today():
+    if parsed.isoformat() != day or not date(1000, 1, 1) <= parsed <= (today or date.today()):
         raise ValueError('财报报告期无效')
 
 
@@ -92,34 +92,50 @@ def validate_rows(kind, unit, rows):
     if not isinstance(rows, list) or not 1 <= len(rows) <= 300:
         raise ValueError('财报单元为空或超限')
     dates = []
+    today = date.today()
+    valid_unit = isinstance(unit, str) and re.fullmatch(r'(SH|SZ|BJ):\d{6}', unit)
+    # Repeated labels and amount/precision pairs are common within one matrix.
+    # Memoize only successful scalar checks, never business rows or an envelope.
+    # The caches die with this validation and have fixed cardinality bounds.
+    checked_labels, checked_amounts = set(), set()
     for row in rows:
         if set(row) != {'market', 'code', 'name', 'report_date', 'basis', 'currency',
                         'period_basis', 'announcement_date', 'fields'}:
             raise ValueError('规范财报字段不匹配')
-        if (row['market'] + ':' + row['code'] != unit or not re.fullmatch(r'(SH|SZ|BJ):\d{6}', unit)
+        if (row['market'] + ':' + row['code'] != unit or not valid_unit
                 or not isinstance(row['name'], str) or not 1 <= len(row['name']) <= 100
                 or row['basis'] != 'source_report' or row['currency'] != 'CNY'
                 or row['period_basis'] != ('instant' if kind == 'balance' else 'year_to_date')
                 or row['announcement_date'] is not None):
             raise ValueError('财报身份或口径无效')
         day = row['report_date']
-        validate_report_date(day)
+        validate_report_date(day, today=today)
         dates.append(day)
         fields = row['fields']
         if not isinstance(fields, dict) or not set(REQUIRED[kind]) <= fields.keys() or len(fields) > 400:
             raise ValueError('财报核心字段缺失')
         for key, value in fields.items():
-            if not isinstance(key, str) or not 1 <= len(key) <= 200:
-                raise ValueError('财报科目无效')
+            if key not in checked_labels:
+                if not isinstance(key, str) or not 1 <= len(key) <= 200:
+                    raise ValueError('财报科目无效')
+                if len(checked_labels) < 400:
+                    checked_labels.add(key)
             if value is None:
                 continue
             if not isinstance(value, dict) or set(value) != {'value', 'resolution'}:
                 raise ValueError('财报金额精度缺失')
-            for name in value:
-                if not isinstance(value[name], str) or not re.fullmatch(r'-?\d+(?:\.\d+)?', value[name]):
+            if any(not isinstance(value[name], str) for name in value):
+                raise ValueError('规范金额无效')
+            pair = (value['value'], value['resolution'])
+            if pair in checked_amounts:
+                continue
+            for number in pair:
+                if not re.fullmatch(r'-?\d+(?:\.\d+)?', number):
                     raise ValueError('规范金额无效')
             if Decimal(value['resolution']) <= 0 or abs(Decimal(value['value'])) > Decimal('1e20'):
                 raise ValueError('财报金额越界')
+            if len(checked_amounts) < 1024:
+                checked_amounts.add(pair)
     if dates != sorted(set(dates), reverse=True):
         raise ValueError('规范报告期重复或乱序')
     return rows

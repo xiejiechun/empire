@@ -130,6 +130,7 @@ async def test_cold_hot_revision_old_replay_and_source_empty(pipeline):
             dml.append(statement)
 
     event.listen(q.mysql.engine, "before_cursor_execute", capture)
+    event.listen(q.mysql.archive_engine, "before_cursor_execute", capture)
     try:
         await collect(c, fresh=True)
         assert not dml
@@ -182,6 +183,7 @@ async def test_cold_hot_revision_old_replay_and_source_empty(pipeline):
         )
     finally:
         event.remove(q.mysql.engine, "before_cursor_execute", capture)
+        event.remove(q.mysql.archive_engine, "before_cursor_execute", capture)
 
 
 async def test_date_gap_and_sql_commit_then_replay(pipeline):
@@ -244,8 +246,15 @@ async def test_failed_transaction_retains_queue_and_post_commit_replay(pipeline,
         return result
 
     monkeypatch.setattr(mapping, "write", fail)
+
+    async def flush_all():
+        # Each flush is a bounded scheduling quantum, not a drain operation.
+        async with asyncio.timeout(5):
+            while await store.client.xlen(store.stream):
+                await archive.flush()
+
     with pytest.raises(RuntimeError, match="transaction failure"):
-        await archive.flush()
+        await flush_all()
     current = await q.detail(CODE, DATE)
     assert current["detail_status"] == "pending" and not current["seats"]
     assert await store.client.xlen(store.stream) == 3
@@ -257,11 +266,11 @@ async def test_failed_transaction_retains_queue_and_post_commit_replay(pipeline,
 
     monkeypatch.setattr(archive.fingerprints, "put", fail_redis)
     with pytest.raises(RuntimeError, match="post-commit"):
-        await archive.flush()
+        await flush_all()
     assert (await q.detail(CODE, DATE))["detail_status"] == "present"
     assert await store.client.xlen(store.stream) == 3
     monkeypatch.setattr(archive.fingerprints, "put", put)
-    await archive.flush()
+    await flush_all()
     assert await store.client.xlen(store.stream) == 0
     result = await collect(c)
     assert result["phase"] == "complete"

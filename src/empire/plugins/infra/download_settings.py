@@ -3,6 +3,7 @@ import asyncio
 
 from empire.contracts.download_settings import DEFAULTS, validate_settings
 from empire.contracts.plugin import PluginManifest
+from empire.plugins.infra.resources import ByteBudget
 from empire.plugins.infra.settings import SettingsStore
 
 
@@ -16,6 +17,7 @@ class DownloadSettingsPlugin:
         self.saved = dict(DEFAULTS)
         self.active = None
         self.lock = asyncio.Lock()
+        self.buffer_budget = None
 
     async def start(self, context):
         self.store = SettingsStore(context.get("mysql.store"), context.get("redis.store").prefix)
@@ -39,6 +41,12 @@ class DownloadSettingsPlugin:
     def activate(self, values):
         self.active = dict(values)
 
+    def shared_budget(self):
+        if self.buffer_budget is None:
+            self.activate(self.saved)
+            self.buffer_budget = ByteBudget(self.saved['buffer_budget_bytes'])
+        return self.buffer_budget
+
     async def save_limits(self, values):
         if not isinstance(values, dict) or set(values) != {'max_parallel_downloads', 'buffer_budget_bytes'}:
             raise ValueError('仅允许修改同时下载数和下载缓冲上限')
@@ -52,10 +60,12 @@ class DownloadSettingsPlugin:
 
     def deactivate(self):
         self.active = None
+        self.buffer_budget = None
 
     async def stop(self):
         self.deactivate()
         self.store = None
+        self.buffer_budget = None
 
     def health(self):
         return {"status": "ok" if self.store else "stopped",

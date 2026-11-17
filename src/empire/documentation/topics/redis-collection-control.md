@@ -46,6 +46,8 @@ jobs 按 task_id 保存 policy、next_due、active、last_status、error、notic
 | status / error / notice | complete、paused、error、source_gap 等结果；error 保存真正失败，notice 保存来源限制，均脱敏且最多4096字符。source_gap 仅在有效消息全部确认归档后使用，不代表完整覆盖，不能推进缺口断点。旧记录不补写。 |
 | result | 结果摘要，如 snapshot_id、collected、expected_count、pages；结束、暂停和失败时补充已提供的显示字段，包括 completed_units、processed_units、total_units、total_months、当前位置、失败数与分类及暂无详情数。新增快照仅使用固定白名单标量和四类失败计数，字符串最长512字符，不复制游标或业务数组；返回结果中的同名值优先。旧记录不补造统计。 |
 
+远航任务的result.network_costs为固定九个非负整数：http_attempts（HTTP实际发送尝试）、native_attempts（原生路由连接交换尝试，可能连接失败）、native_queries（已进入发送的行情查询）、authentication_http_attempts（HTTP认证尝试，是http_attempts子集）、native_auth_exchanges（原生认证交换）、retries（重试/故障切换事件）、observed_wire_bytes（已观察接收字节，不含HTTP头和网络协议头）、observed_body_bytes（HTTP解码正文）、native_decoded_bytes（成功解码的原生表字节）。失败和暂停仍保留已发生计数，旧记录缺失不补零；不同协议层计数不直接相加。仅运行内累加，沿用本键history期限与清理，不增加物理键或保存端点、凭据、正文。
+
 ## 读写与关联
 
 policy 从 app_setting 加载为运行副本；合法已保存值优先，不按重启覆盖用户策略。next_due 从任务结束后计算，同任务不重叠。运行历史不进入 ingest。

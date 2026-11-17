@@ -75,6 +75,7 @@ async def test_shared_archive_replay_revisions_stale_and_sets(aliases):
         if 'security_code_alias' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
             writes.append(sql)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         base = envelope().model_copy(update={'observed_at': datetime.now(UTC) - timedelta(minutes=5)})
         await publish(base)
@@ -100,6 +101,7 @@ async def test_shared_archive_replay_revisions_stale_and_sets(aliases):
         assert await mysql.read(scalar, mysql, 'SELECT COUNT(*) FROM security_code_alias') == 2
     finally:
         event.remove(mysql.engine, 'before_cursor_execute', capture)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', capture)
 
 
 async def test_capacity_1000_rows(aliases, tmp_path):

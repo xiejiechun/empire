@@ -1,4 +1,5 @@
 import asyncio
+from contextlib import asynccontextmanager
 from types import SimpleNamespace
 
 import pytest
@@ -36,7 +37,12 @@ def ingest_service(client, *, capacity=5, page_bytes=1024):
                             "low_watermark": .5, "high_watermark": .7})
     service.redis = SimpleNamespace(prefix="test", stream="test:archive", client=client)
     service.archive = SimpleNamespace(blocked=False, request_flush=lambda: None)
-    service.catalog = SimpleNamespace(canonicalize=lambda event: event,
+    @asynccontextmanager
+    async def computed(events, operation):
+        assert operation == 'canonicalize'
+        yield [(event, None) for event in events]
+
+    service.catalog = SimpleNamespace(computed=computed,
                                       project_id=lambda event: event.job_key)
     service.stats = {"status": "ok", "published": 0}
     return service

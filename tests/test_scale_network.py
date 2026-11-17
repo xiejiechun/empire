@@ -78,7 +78,7 @@ async def test_cached_candidate_is_checked_for_removal_expiry_rotation_and_rejoi
         raw = directory_entry("node0000", "http://u:p@localhost:31000", "198.18.0.1")
         directory.mapping["node0000"] = raw
         directory.expires[raw] = time.monotonic() + 180
-        pool.refreshed_at -= 2
+        pool.refreshed_at -= 6
         await pool.refresh(waiting=True)
         assert pool.healthy_count() == 2
     finally:
@@ -466,7 +466,7 @@ async def test_default_factory_shares_one_verified_tls_context(monkeypatch):
     await pool.close()
 
 
-@pytest.mark.parametrize("value", [0, -1, 1025, True, 3.5, "128"])
+@pytest.mark.parametrize("value", [0, -1, 4097, True, 3.5, "128"])
 def test_direct_service_rejects_invalid_global_limit(value):
     with pytest.raises(ValueError, match="全局最多同时下载"):
         HttpService(MemoryPermits(), "test", {}, resources={"max_parallel_downloads": value})

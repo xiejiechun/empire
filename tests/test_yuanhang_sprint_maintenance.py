@@ -31,7 +31,9 @@ async def test_recent_and_today_have_priority_over_bounded_backfill(pool, recent
         c._execute.assert_not_awaited()
         assert c.stats['requests'] == 0
     else:
-        c._execute.assert_awaited_once_with(fresh=False, baseline_revision=0, history_only=True, scope=expected)
+        options = {} if expected == 'today' else dict(
+            planned=dict(cutoff=day, units=[day]), calendar_cache={})
+        c._execute.assert_awaited_once_with(fresh=False, baseline_revision=0, history_only=True, scope=expected, **options)
 
 
 @pytest.mark.parametrize('pool', POOLS)

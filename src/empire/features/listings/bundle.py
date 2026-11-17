@@ -16,7 +16,7 @@ def bundle(cfg):
         OrderedContribution(7500, ThsListingCollector()),
         OrderedContribution(7600, ListingUiPlugin()),
     ), tasks=(
-        OrderedContribution(3200, TaskContribution('ths-listings', '股票上市与发行资料（同花顺）',
+        OrderedContribution(3200, TaskContribution('ths-listings', '股票上市与发行资料',
                     'collector.ths_listings', 'ths', '逐证券补缺，每七天回查当前股票池；保留已存退市证券资料',
                     category='证券基础', source_name='同花顺', parallel_downloads=True, unit_name='只股票', default_schedule=TaskDefaults('daily',
                         description='每天北京时间18:00补新增和缺失；每七天全池回查独立修订；计划可编辑。'),

@@ -175,8 +175,9 @@ async def verify_scope(manager, snapshot, args, report):
         dividend_history.needs_review = original_review
     require(set(periods) == set(source_periods), '本轮报告期未全部完成')
     require(set(sources) == {unit_key(row) for row in await query.securities()}, '本轮证券池未全部处理')
-    require({r['identity'] for r in published} == set(sources) | {'manifest'}
-            and len(published) == len(sources) + 1, '入队单元缺漏或重复')
+    expected_published = (set(sources) - collector.dividend_reused) | {'manifest'}
+    require({r['identity'] for r in published} == expected_published
+            and len(published) == len(expected_published), '变化单元入队缺漏或重复')
     actual = []
     while True:
         page = await query.list_events(limit=500, offset=len(actual))
@@ -206,6 +207,19 @@ async def verify_scope(manager, snapshot, args, report):
                   source_digest=digest(source_periods), pipeline_verified=True,
                   strict_proxy_verified=strict_proxy(counts, 1))
     capacity_checks(measured)
+    revision = await collector.checkpoint_revision()
+    maintenance = await routed(lambda: collector.execute(baseline_revision=revision), counts, args.proxy_only)
+    result['maintenance'] = dict(outcome=maintenance, reused_securities=collector.stats['reused_securities'],
+                                reused_report_periods=collector.stats['reused_report_periods'],
+                                assembled_securities=collector.stats['assembled_securities'],
+                                downloaded_report_periods=collector.stats['downloaded_report_periods'])
+    require(maintenance['network_costs']['http_attempts'] - maintenance['network_costs']['retries'] == 1
+            and collector.stats['downloaded_report_periods'] == 0
+            and collector.stats['assembled_securities'] == 0
+            and maintenance['pages'] == 1, '无变化分红维护重复请求或重组证券')
+    require(await require_drained(manager) == 0, '无变化分红维护未清队')
+    result['maintenance'] = dict(outcome=maintenance, reused_securities=collector.stats['reused_securities'],
+                                reused_report_periods=collector.stats['reused_report_periods'], pending=0)
     report.update(measurements={**measured, 'sql_rows': len(actual), 'query_p95_ms': max(timings)},
                   limits=LIMITS, conditions='本轮完整冻结股票池，正式来源报告期计划；保留旧历史；原SQLLane连续10次查询最大值',
                   reviewed_tradeoffs='原业务表/索引/来源协议不变；容量通过不代表来源消失的旧方案已裁定，也不替代随机30严格实采')

@@ -371,7 +371,7 @@
             "fresh_description": "强制重新核验全部证券、全部历史日期；保留已归档历史，接收有效来源修订。",
             "id": "tdx-hot-list",
             "interval_seconds": 86400,
-            "name": "个股龙虎榜（通达信）",
+            "name": "个股龙虎榜",
             "parallel_downloads": true,
             "rate_group": "tdx",
             "source_name": "通达信",
@@ -487,7 +487,7 @@
             "fresh_description": "重新从第一只证券核验全部历史；未完成入队轮次先确认归档。",
             "id": "tdx-margin",
             "interval_seconds": 86400,
-            "name": "个股融资融券（通达信）",
+            "name": "个股融资融券",
             "parallel_downloads": true,
             "rate_group": "tdx",
             "source_name": "通达信",
@@ -620,7 +620,7 @@
             "fresh_description": "重新核验2016年起所有完整日期，整轮入队后统一等待归档。",
             "id": "tdx-industry-margin",
             "interval_seconds": 86400,
-            "name": "行业融资融券（通达信）",
+            "name": "行业融资融券",
             "parallel_downloads": true,
             "rate_group": "tdx",
             "source_name": "通达信",
@@ -795,7 +795,7 @@
             "fresh_description": "重新核验四市场完整序列，整轮入队后统一等待归档。",
             "id": "ths-market-margin",
             "interval_seconds": 86400,
-            "name": "市场融资融券（同花顺）",
+            "name": "市场融资融券",
             "parallel_downloads": true,
             "rate_group": "ths",
             "source_name": "同花顺",
@@ -911,6 +911,420 @@
     ]
   },
   {
+    "path": "additive.graymarket",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "collector.eastmoney_graymarket": {
+            "autostart": true,
+            "description": "完整交易日补缺及近端回看",
+            "id": "collector.eastmoney_graymarket",
+            "name": "明盘暗盘资金榜采集",
+            "provides": [
+              "collector.eastmoney_graymarket"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "graymarket.query",
+              "archive.confirmation",
+              "collection.records",
+              "redis.store"
+            ]
+          },
+          "data.graymarket": {
+            "autostart": true,
+            "description": "完整日榜与证券日期范围查询",
+            "id": "data.graymarket",
+            "name": "明盘暗盘资金榜查询",
+            "provides": [
+              "graymarket.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.graymarket": {
+            "autostart": true,
+            "description": "按交易日和证券浏览",
+            "id": "ui.graymarket",
+            "name": "明盘暗盘资金榜浏览",
+            "provides": [
+              "ui.pages.graymarket"
+            ],
+            "requires": []
+          }
+        },
+        "tasks": {
+          "eastmoney-graymarket": {
+            "capability": "collector.eastmoney_graymarket",
+            "category": "资金流向",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "盘中每轮结束60秒后采入Redis；15:30后归档日榜并有界补缺。",
+              "interval_seconds": 60,
+              "mode": "interval"
+            },
+            "description": "盘中Redis快照；收盘近期复核及2026-05-11起历史补缺",
+            "fresh_description": "盘中重新采样；收盘重新核验近三个交易日，历史缺口由后续轮次补齐。",
+            "id": "eastmoney-graymarket",
+            "interval_seconds": 86400,
+            "name": "明盘暗盘资金榜",
+            "parallel_downloads": true,
+            "rate_group": "eastmoney",
+            "source_name": "东方财富",
+            "unit_name": "个日期"
+          }
+        },
+        "datasets": {
+          "eastmoney_graymarket_v1": {
+            "datasets": [
+              "graymarket.eastmoney_day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "eastmoney-graymarket-v1": "eastmoney-graymarket"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "graymarket": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "资金流向",
+            "database_tables": [
+              "graymarket_day",
+              "graymarket_daily"
+            ],
+            "description": "2026-05-11起完整个股日榜；模型估算金额元、比例小数",
+            "group": "数据浏览",
+            "id": "graymarket",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "eastmoney-graymarket",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 52,
+            "source": "东方财富",
+            "title": "明盘暗盘资金榜",
+            "top_level": false
+          }
+        }
+      },
+      "bindings": {
+        "plugins": {
+          "collector.eastmoney_graymarket": {
+            "module": "empire.features.graymarket.collector",
+            "qualname": "GraymarketCollector"
+          },
+          "data.graymarket": {
+            "module": "empire.features.graymarket.query",
+            "qualname": "GraymarketDataPlugin"
+          },
+          "ui.graymarket": {
+            "module": "empire.features.graymarket.ui",
+            "qualname": "GraymarketUiPlugin"
+          }
+        },
+        "datasets": {
+          "eastmoney_graymarket_v1": {
+            "module": "empire.features.graymarket.dataset",
+            "qualname": "GraymarketDataset"
+          }
+        },
+        "pages": {
+          "graymarket": {
+            "module": "empire.features.graymarket.ui",
+            "qualname": "GraymarketUiPlugin"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.graymarket",
+          "collector.eastmoney_graymarket",
+          "ui.graymarket"
+        ],
+        "startup": [
+          "data.graymarket",
+          "collector.eastmoney_graymarket",
+          "ui.graymarket"
+        ],
+        "tasks": [
+          "eastmoney-graymarket"
+        ],
+        "datasets": [
+          "eastmoney_graymarket_v1"
+        ],
+        "pages": [
+          "graymarket"
+        ]
+      }
+    },
+    "design": "docs/eastmoney-graymarket-implementation-plan.md",
+    "tests": [
+      "tests/test_graymarket.py",
+      "tests/test_graymarket_lifecycle.py",
+      "tests/integration/test_graymarket_archive.py",
+      "tests/test_graymarket_intraday.py"
+    ]
+  },
+  {
+    "path": "additive.fx",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "data.fx_latest": {
+            "autostart": true,
+            "description": "",
+            "id": "data.fx_latest",
+            "name": "汇率最新行情",
+            "provides": [
+              "fx.latest.query"
+            ],
+            "requires": [
+              "redis.store"
+            ]
+          },
+          "data.fx_daily": {
+            "autostart": true,
+            "description": "",
+            "id": "data.fx_daily",
+            "name": "汇率日线查询",
+            "provides": [
+              "fx.daily.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "collector.ths_fx_live": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.ths_fx_live",
+            "name": "同花顺汇率实时行情",
+            "provides": [
+              "collector.ths_fx_live"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "fx.latest.query",
+              "collection.records"
+            ]
+          },
+          "collector.ths_fx_daily": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.ths_fx_daily",
+            "name": "同花顺汇率日线",
+            "provides": [
+              "collector.ths_fx_daily"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "fx.daily.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "ui.fx": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.fx",
+            "name": "汇率行情浏览",
+            "provides": [
+              "ui.pages.fx"
+            ],
+            "requires": []
+          }
+        },
+        "tasks": {
+          "ths-fx-live": {
+            "capability": "collector.ths_fx_live",
+            "category": "外汇数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每轮结束等待60秒，仅更新Redis最新行情。",
+              "interval_seconds": 60,
+              "mode": "interval"
+            },
+            "description": "十二品种仅Redis最新值；不保留分钟历史",
+            "fresh_description": "重新采样最新值，不生成历史快照。",
+            "id": "ths-fx-live",
+            "interval_seconds": 86400,
+            "name": "汇率实时行情",
+            "parallel_downloads": true,
+            "rate_group": "ths",
+            "source_name": "同花顺远航版",
+            "unit_name": "个品种"
+          },
+          "ths-fx-daily": {
+            "capability": "collector.ths_fx_daily",
+            "category": "外汇数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "09:00",
+              "description": "每天北京时间09:00集中补缺和归档，排除当日K线。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "来源日K线；逐年补缺及最近30自然日修订",
+            "fresh_description": "重新核验全部来源年份，接收较早历史修订；不删除来源范围外数据。",
+            "id": "ths-fx-daily",
+            "interval_seconds": 86400,
+            "name": "汇率历史日线",
+            "parallel_downloads": true,
+            "rate_group": "ths",
+            "source_name": "同花顺远航版",
+            "unit_name": "个品种"
+          }
+        },
+        "datasets": {
+          "ths_fx_v1": {
+            "datasets": [
+              "fx.price.year"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-fx-daily-v1": "ths-fx-daily",
+              "ths-fx-live-v1": "ths-fx-live"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "fx": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "外汇数据",
+            "database_tables": [
+              "fx_daily_price",
+              "fx_price_year"
+            ],
+            "description": "实时最新值在Redis；来源日K线在MySQL",
+            "group": "数据浏览",
+            "id": "fx",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-fx-daily",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 53,
+            "source": "同花顺远航版",
+            "title": "汇率行情",
+            "top_level": false
+          }
+        }
+      },
+      "bindings": {
+        "plugins": {
+          "data.fx_latest": {
+            "module": "empire.features.fx.live",
+            "qualname": "FxLatestQuery"
+          },
+          "data.fx_daily": {
+            "module": "empire.features.fx.query",
+            "qualname": "FxDailyQuery"
+          },
+          "collector.ths_fx_live": {
+            "module": "empire.features.fx.live",
+            "qualname": "FxLiveCollector"
+          },
+          "collector.ths_fx_daily": {
+            "module": "empire.features.fx.collector",
+            "qualname": "FxDailyCollector"
+          },
+          "ui.fx": {
+            "module": "empire.features.fx.ui",
+            "qualname": "FxUiPlugin"
+          }
+        },
+        "datasets": {
+          "ths_fx_v1": {
+            "module": "empire.features.fx.dataset",
+            "qualname": ""
+          }
+        },
+        "pages": {
+          "fx": {
+            "module": "empire.features.fx.ui",
+            "qualname": "FxUiPlugin"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.fx_latest",
+          "data.fx_daily",
+          "collector.ths_fx_live",
+          "collector.ths_fx_daily",
+          "ui.fx"
+        ],
+        "startup": [
+          "data.fx_latest",
+          "data.fx_daily",
+          "collector.ths_fx_live",
+          "collector.ths_fx_daily",
+          "ui.fx"
+        ],
+        "tasks": [
+          "ths-fx-live",
+          "ths-fx-daily"
+        ],
+        "datasets": [
+          "ths_fx_v1"
+        ],
+        "pages": [
+          "fx"
+        ]
+      }
+    },
+    "design": "docs/ths-fx-implementation-plan.md",
+    "tests": [
+      "tests/test_fx.py",
+      "tests/integration/test_fx_archive.py"
+    ]
+  },
+  {
     "path": "additive.themes",
     "before": null,
     "after": {
@@ -986,7 +1400,7 @@
             },
             "order": 80,
             "source": "开盘啦",
-            "title": "开盘啦题材库",
+            "title": "题材库",
             "top_level": false
           }
         },
@@ -1062,7 +1476,7 @@
             "fresh_description": "保留已有历史；详情按共享窗口完成当轮题材，最多2000项。",
             "id": "kaipanla-theme-details",
             "interval_seconds": 86400,
-            "name": "题材最新详情（开盘啦）",
+            "name": "题材最新详情",
             "parallel_downloads": true,
             "rate_group": "kaipanla",
             "source_name": "开盘啦",
@@ -1082,7 +1496,7 @@
             "fresh_description": "保留已有历史；详情按共享窗口完成当轮题材，最多2000项。",
             "id": "kaipanla-themes",
             "interval_seconds": 86400,
-            "name": "题材列表与日内变化（开盘啦）",
+            "name": "题材列表与日内变化",
             "parallel_downloads": false,
             "rate_group": "kaipanla",
             "source_name": "开盘啦",
@@ -1216,7 +1630,7 @@
             },
             "order": 60,
             "source": "同花顺远航版",
-            "title": "远航历史行情",
+            "title": "股票历史行情",
             "top_level": false
           }
         },
@@ -1293,7 +1707,7 @@
             "fresh_description": "重新核实当前股票池完整来源历史；保留已有事实，按完整单元更新修订。",
             "id": "ths-yuanhang-financial",
             "interval_seconds": 86400,
-            "name": "远航版权息与股本历史",
+            "name": "权息与股本历史",
             "parallel_downloads": true,
             "rate_group": "ths_yuanhang",
             "source_name": "同花顺远航版",
@@ -1313,7 +1727,7 @@
             "fresh_description": "重新核实当前股票池完整来源历史；保留已有事实，按完整单元更新修订。",
             "id": "ths-yuanhang-prices",
             "interval_seconds": 86400,
-            "name": "远航版完整历史日线",
+            "name": "股票完整历史日K",
             "parallel_downloads": true,
             "rate_group": "ths_yuanhang",
             "source_name": "同花顺远航版",
@@ -1693,9 +2107,6 @@
       "ui.rules_sessions",
       "ui.rules_stamp_duty",
       "ui.rules_transfer_fee",
-      "data.index_prices",
-      "collector.ths_index_prices",
-      "ui.index_prices",
       "source.yuanhang_identity",
       "collection.identities",
       "data.stocks",
@@ -1708,9 +2119,6 @@
       "data.industries",
       "collector.ths_industries",
       "ui.industries",
-      "data.indices",
-      "collector.ths_indices",
-      "ui.indices",
       "data.names_company",
       "data.names_security",
       "collector.tdx_company_renames",
@@ -1775,6 +2183,14 @@
       "data.market_margin",
       "collector.ths_market_margin",
       "ui.market_margin",
+      "data.graymarket",
+      "collector.eastmoney_graymarket",
+      "ui.graymarket",
+      "data.fx_latest",
+      "data.fx_daily",
+      "collector.ths_fx_live",
+      "collector.ths_fx_daily",
+      "ui.fx",
       "data.themes",
       "collector.theme_list",
       "collector.theme_detail",
@@ -1782,6 +2198,25 @@
       "collector.yuanhang_prices",
       "collector.yuanhang_financial",
       "ui.yuanhang",
+      "data.yuanhang_indices",
+      "data.yuanhang_index_members",
+      "data.yuanhang_index_prices",
+      "collector.yuanhang_indices",
+      "collector.yuanhang_index_members",
+      "collector.yuanhang_index_prices",
+      "ui.yuanhang_indices",
+      "data.yuanhang_etfs",
+      "data.yuanhang_etf_prices",
+      "data.yuanhang_etf_latest",
+      "collector.yuanhang_etfs",
+      "collector.yuanhang_etf_prices",
+      "collector.yuanhang_etf_latest",
+      "ui.yuanhang_etf",
+      "data.etf_fundamentals",
+      "collector.sse_etf_shares",
+      "collector.szse_etf_shares",
+      "collector.ttjj_etf_nav",
+      "ui.etf_fundamentals",
       "data.yuanhang_limits",
       "collector.yuanhang_limits_limit_up_pool",
       "collector.yuanhang_limits_sprint_limit_up",
@@ -1792,6 +2227,8 @@
       "ui.yuanhang_limits",
       "data.market_review",
       "ui.market_review",
+      "data.observation_calendar",
+      "ui.observation_calendar",
       "data.preparation",
       "ui.preparation"
     ],
@@ -1800,7 +2237,1168 @@
       "tests/test_assembly_contract.py",
       "tests/test_adjustment.py",
       "tests/test_adjustment_query.py",
-      "tests/integration/test_adjustment_pipeline.py"
+      "tests/integration/test_adjustment_pipeline.py",
+      "tests/test_yuanhang_indices.py",
+      "tests/test_yuanhang_etf.py",
+      "tests/integration/test_yuanhang_etf_archive.py"
+    ]
+  },
+  {
+    "path": "additive.yuanhang_indices",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "data.yuanhang_indices": {
+            "autostart": true,
+            "description": "",
+            "id": "data.yuanhang_indices",
+            "name": "远航指数目录查询",
+            "provides": [
+              "yuanhang.indices.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "data.yuanhang_index_members": {
+            "autostart": true,
+            "description": "",
+            "id": "data.yuanhang_index_members",
+            "name": "同花顺网页指数成分查询",
+            "provides": [
+              "indices.query"
+            ],
+            "requires": [
+              "mysql.store",
+              "yuanhang.indices.query"
+            ]
+          },
+          "data.yuanhang_index_prices": {
+            "autostart": true,
+            "description": "",
+            "id": "data.yuanhang_index_prices",
+            "name": "远航指数日K查询",
+            "provides": [
+              "index.prices.query"
+            ],
+            "requires": [
+              "mysql.store",
+              "yuanhang.indices.query"
+            ]
+          },
+          "collector.yuanhang_indices": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_indices",
+            "name": "同花顺远航版 A股指数",
+            "provides": [
+              "collector.yuanhang_indices"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "yuanhang.indices.query",
+              "yuanhang.identity",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.yuanhang_index_members": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_index_members",
+            "name": "同花顺 指数成分",
+            "provides": [
+              "collector.yuanhang_index_members"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "indices.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.yuanhang_index_prices": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_index_prices",
+            "name": "同花顺远航版 指数日K",
+            "provides": [
+              "collector.yuanhang_index_prices"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "index.prices.query",
+              "yuanhang.identity",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "ui.yuanhang_indices": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.yuanhang_indices",
+            "name": "远航指数组件",
+            "provides": [
+              "ui.pages.yuanhang_indices"
+            ],
+            "requires": []
+          }
+        },
+        "tasks": {
+          "ths-yuanhang-indices": {
+            "capability": "collector.yuanhang_indices",
+            "category": "指数数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每天北京时间18:00；目录先归档，下游独立维护；计划可编辑。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "远航版A股指数完整目录与原生市场、名称；以客户端实际集合为准",
+            "fresh_description": "完整刷新当前目录；不删除指数日K历史。",
+            "id": "ths-yuanhang-indices",
+            "interval_seconds": 86400,
+            "name": "A股指数",
+            "parallel_downloads": false,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "个指数"
+          },
+          "ths-yuanhang-index-members": {
+            "capability": "collector.yuanhang_index_members",
+            "category": "指数数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每天北京时间18:00；目录先归档，下游独立维护；计划可编辑。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "原同花顺网页端当前成分；来源明确暂无正常完成并保持空，不提供历史调样",
+            "fresh_description": "完整刷新网页当前成员；明确暂无清除旧当前名单，不提供历史成分。",
+            "id": "ths-yuanhang-index-members",
+            "interval_seconds": 86400,
+            "name": "指数成分",
+            "parallel_downloads": true,
+            "rate_group": "ths",
+            "source_name": "同花顺",
+            "unit_name": "个指数"
+          },
+          "ths-yuanhang-index-prices": {
+            "capability": "collector.yuanhang_index_prices",
+            "category": "指数数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每天北京时间18:00；目录先归档，下游独立维护；计划可编辑。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "远航原生指数日K；最近十交易日优先，每轮另补最多64个指数历史；缺值保留",
+            "fresh_description": "核实所选指数全部来源历史；保留原值及缺值，按完整区间修订。",
+            "id": "ths-yuanhang-index-prices",
+            "interval_seconds": 86400,
+            "name": "指数日K",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "个指数"
+          }
+        },
+        "datasets": {
+          "yuanhang_index_catalog_v1": {
+            "datasets": [
+              "yuanhang.index.catalog"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-indices-v1": "ths-yuanhang-indices"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "yuanhang_index_members_v1": {
+            "datasets": [
+              "ths.index.members"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-index-members-v1": "ths-yuanhang-index-members"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "yuanhang_index_prices_v1": {
+            "datasets": [
+              "yuanhang.index.price.range"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-index-prices-v1": "ths-yuanhang-index-prices"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "yuanhang_indices": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "指数数据",
+            "database_tables": [
+              "yuanhang_index"
+            ],
+            "description": "原生目录、市场与名称",
+            "group": "数据浏览",
+            "id": "yuanhang_indices",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-yuanhang-indices",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 40200,
+            "source": "同花顺远航版",
+            "title": "A股指数",
+            "top_level": false
+          },
+          "yuanhang_index_members": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "指数数据",
+            "database_tables": [
+              "ths_index_member_state",
+              "ths_index_member"
+            ],
+            "description": "同花顺网页当前成分；来源暂无正常显示为空",
+            "group": "数据浏览",
+            "id": "yuanhang_index_members",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-yuanhang-index-members",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 40201,
+            "source": "同花顺",
+            "title": "指数成分",
+            "top_level": false
+          },
+          "yuanhang_index_prices": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "指数数据",
+            "database_tables": [
+              "yuanhang_index_daily_price",
+              "yuanhang_index_price_year"
+            ],
+            "description": "原生日K、来源缺值及覆盖范围",
+            "group": "数据浏览",
+            "id": "yuanhang_index_prices",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-yuanhang-index-prices",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 40202,
+            "source": "同花顺远航版",
+            "title": "指数日K",
+            "top_level": false
+          }
+        }
+      },
+      "bindings": {
+        "plugins": {
+          "data.yuanhang_indices": {
+            "module": "empire.features.yuanhang_indices.query",
+            "qualname": "CatalogQuery"
+          },
+          "data.yuanhang_index_members": {
+            "module": "empire.features.yuanhang_indices.query",
+            "qualname": "MemberQuery"
+          },
+          "data.yuanhang_index_prices": {
+            "module": "empire.features.yuanhang_indices.price_query",
+            "qualname": "PriceQuery"
+          },
+          "collector.yuanhang_indices": {
+            "module": "empire.features.yuanhang_indices.catalog_collector",
+            "qualname": "CatalogCollector"
+          },
+          "collector.yuanhang_index_members": {
+            "module": "empire.features.yuanhang_indices.member_collector",
+            "qualname": "MemberCollector"
+          },
+          "collector.yuanhang_index_prices": {
+            "module": "empire.features.yuanhang_indices.price_collector",
+            "qualname": "PriceCollector"
+          },
+          "ui.yuanhang_indices": {
+            "module": "empire.features.yuanhang_indices.ui",
+            "qualname": "IndexUiPlugin"
+          }
+        },
+        "datasets": {
+          "yuanhang_index_catalog_v1": {
+            "module": "empire.features.yuanhang_indices.catalog_dataset",
+            "qualname": ""
+          },
+          "yuanhang_index_members_v1": {
+            "module": "empire.features.yuanhang_indices.member_dataset",
+            "qualname": ""
+          },
+          "yuanhang_index_prices_v1": {
+            "module": "empire.features.yuanhang_indices.price_dataset",
+            "qualname": ""
+          }
+        },
+        "pages": {
+          "yuanhang_indices": {
+            "module": "empire.features.yuanhang_indices.ui",
+            "qualname": "IndexUiPlugin"
+          },
+          "yuanhang_index_members": {
+            "module": "empire.features.yuanhang_indices.ui",
+            "qualname": "IndexUiPlugin"
+          },
+          "yuanhang_index_prices": {
+            "module": "empire.features.yuanhang_indices.ui",
+            "qualname": "IndexUiPlugin"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.yuanhang_indices",
+          "data.yuanhang_index_members",
+          "data.yuanhang_index_prices",
+          "collector.yuanhang_indices",
+          "collector.yuanhang_index_members",
+          "collector.yuanhang_index_prices",
+          "ui.yuanhang_indices"
+        ],
+        "startup": [
+          "data.yuanhang_indices",
+          "data.yuanhang_index_members",
+          "data.yuanhang_index_prices",
+          "collector.yuanhang_indices",
+          "collector.yuanhang_index_members",
+          "collector.yuanhang_index_prices",
+          "ui.yuanhang_indices"
+        ],
+        "tasks": [
+          "ths-yuanhang-indices",
+          "ths-yuanhang-index-members",
+          "ths-yuanhang-index-prices"
+        ],
+        "datasets": [
+          "yuanhang_index_catalog_v1",
+          "yuanhang_index_members_v1",
+          "yuanhang_index_prices_v1"
+        ],
+        "pages": [
+          "yuanhang_indices",
+          "yuanhang_index_members",
+          "yuanhang_index_prices"
+        ]
+      }
+    },
+    "design": "docs/ths-yuanhang-indices.md",
+    "tests": [
+      "tests/test_yuanhang_indices.py",
+      "tests/integration/test_yuanhang_index_archive.py"
+    ]
+  },
+  {
+    "path": "additive.yuanhang_etf",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "collector.yuanhang_etf_latest": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_etf_latest",
+            "name": "同花顺远航版 ETF最新行情",
+            "provides": [
+              "collector.yuanhang_etf_latest"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "collection.records",
+              "yuanhang.identity",
+              "yuanhang.etfs.query",
+              "yuanhang.etf.latest.query",
+              "calendar.query"
+            ]
+          },
+          "collector.yuanhang_etf_prices": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_etf_prices",
+            "name": "同花顺远航版 ETF日K",
+            "provides": [
+              "collector.yuanhang_etf_prices"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "yuanhang.etf.prices.query",
+              "yuanhang.identity",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.yuanhang_etfs": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.yuanhang_etfs",
+            "name": "同花顺远航版 A股ETF",
+            "provides": [
+              "collector.yuanhang_etfs"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "yuanhang.etfs.query",
+              "yuanhang.identity",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.yuanhang_etf_latest": {
+            "autostart": true,
+            "description": "",
+            "id": "data.yuanhang_etf_latest",
+            "name": "远航ETF最新行情查询",
+            "provides": [
+              "yuanhang.etf.latest.query"
+            ],
+            "requires": [
+              "redis.store"
+            ]
+          },
+          "data.yuanhang_etf_prices": {
+            "autostart": true,
+            "description": "",
+            "id": "data.yuanhang_etf_prices",
+            "name": "远航ETF日K查询",
+            "provides": [
+              "yuanhang.etf.prices.query"
+            ],
+            "requires": [
+              "mysql.store",
+              "yuanhang.etfs.query"
+            ]
+          },
+          "data.yuanhang_etfs": {
+            "autostart": true,
+            "description": "",
+            "id": "data.yuanhang_etfs",
+            "name": "远航ETF目录查询",
+            "provides": [
+              "yuanhang.etfs.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.yuanhang_etf": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.yuanhang_etf",
+            "name": "远航ETF组件",
+            "provides": [
+              "ui.pages.yuanhang_etf"
+            ],
+            "requires": []
+          }
+        },
+        "datasets": {
+          "yuanhang_etf_catalog_v1": {
+            "datasets": [
+              "yuanhang.etf.catalog"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-etf-latest-v1": "ths-yuanhang-etf-latest",
+              "ths-yuanhang-etfs-v1": "ths-yuanhang-etfs"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "yuanhang_etf_prices_v1": {
+            "datasets": [
+              "yuanhang.etf.price.range"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-yuanhang-etf-prices-v1": "ths-yuanhang-etf-prices"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "yuanhang_etf_latest": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "基金数据",
+            "database_tables": [],
+            "description": "仅Redis最新值；来源报价时间及净值日期未知",
+            "group": "数据浏览",
+            "id": "yuanhang_etf_latest",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-yuanhang-etf-latest",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 40302,
+            "source": "同花顺远航版",
+            "title": "ETF最新行情",
+            "top_level": false
+          },
+          "yuanhang_etf_prices": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "基金数据",
+            "database_tables": [
+              "yuanhang_etf_daily_price",
+              "yuanhang_etf_price_year"
+            ],
+            "description": "不复权日K与来源缺值",
+            "group": "数据浏览",
+            "id": "yuanhang_etf_prices",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-yuanhang-etf-prices",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 40301,
+            "source": "同花顺远航版",
+            "title": "ETF日K",
+            "top_level": false
+          },
+          "yuanhang_etfs": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "基金数据",
+            "database_tables": [
+              "yuanhang_etf"
+            ],
+            "description": "原生完整目录、市场和名称",
+            "group": "数据浏览",
+            "id": "yuanhang_etfs",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-yuanhang-etfs",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 40300,
+            "source": "同花顺远航版",
+            "title": "ETF目录",
+            "top_level": false
+          }
+        },
+        "tasks": {
+          "ths-yuanhang-etf-latest": {
+            "capability": "collector.yuanhang_etf_latest",
+            "category": "基金数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每轮结束等待60秒；正式交易日09:15～11:30、13:00～15:05采样，盘外可手动采样一次。",
+              "interval_seconds": 60,
+              "mode": "interval"
+            },
+            "description": "沪深ETF基础报价和来源净值，仅Redis最新值；来源报价时间及净值日期未知",
+            "fresh_description": "重新采样一次，仅替换完整合法的Redis最新结果，不生成盘中历史。",
+            "id": "ths-yuanhang-etf-latest",
+            "interval_seconds": 86400,
+            "name": "ETF最新行情",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "只ETF"
+          },
+          "ths-yuanhang-etf-prices": {
+            "capability": "collector.yuanhang_etf_prices",
+            "category": "基金数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每天北京时间18:00，目录先准备，下游独立维护。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "来源不复权日K；最近十交易日优先，每轮另补最多64只ETF历史",
+            "fresh_description": "重新核验所选ETF全部来源历史，保留范围外历史。",
+            "id": "ths-yuanhang-etf-prices",
+            "interval_seconds": 86400,
+            "name": "ETF日K",
+            "parallel_downloads": true,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "只ETF"
+          },
+          "ths-yuanhang-etfs": {
+            "capability": "collector.yuanhang_etfs",
+            "category": "基金数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每天北京时间18:00，目录先准备，下游独立维护。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "远航版ETF基金完整动态集合；不混入股票目录",
+            "fresh_description": "完整刷新ETF目录，退出者标记无效并保留历史。",
+            "id": "ths-yuanhang-etfs",
+            "interval_seconds": 86400,
+            "name": "ETF目录",
+            "parallel_downloads": false,
+            "rate_group": "ths_yuanhang",
+            "source_name": "同花顺远航版",
+            "unit_name": "只ETF"
+          }
+        }
+      },
+      "bindings": {
+        "plugins": {
+          "collector.yuanhang_etf_latest": {
+            "module": "empire.features.yuanhang_etf.live",
+            "qualname": "LiveCollector"
+          },
+          "collector.yuanhang_etf_prices": {
+            "module": "empire.features.yuanhang_etf.price_collector",
+            "qualname": "PriceCollector"
+          },
+          "collector.yuanhang_etfs": {
+            "module": "empire.features.yuanhang_etf.catalog_collector",
+            "qualname": "CatalogCollector"
+          },
+          "data.yuanhang_etf_latest": {
+            "module": "empire.features.yuanhang_etf.latest",
+            "qualname": "LatestQuery"
+          },
+          "data.yuanhang_etf_prices": {
+            "module": "empire.features.yuanhang_etf.price_query",
+            "qualname": "PriceQuery"
+          },
+          "data.yuanhang_etfs": {
+            "module": "empire.features.yuanhang_etf.query",
+            "qualname": "CatalogQuery"
+          },
+          "ui.yuanhang_etf": {
+            "module": "empire.features.yuanhang_etf.ui",
+            "qualname": "EtfUiPlugin"
+          }
+        },
+        "datasets": {
+          "yuanhang_etf_catalog_v1": {
+            "module": "empire.features.yuanhang_etf.catalog_dataset",
+            "qualname": ""
+          },
+          "yuanhang_etf_prices_v1": {
+            "module": "empire.features.yuanhang_etf.price_dataset",
+            "qualname": ""
+          }
+        },
+        "pages": {
+          "yuanhang_etf_latest": {
+            "module": "empire.features.yuanhang_etf.ui",
+            "qualname": "EtfUiPlugin"
+          },
+          "yuanhang_etf_prices": {
+            "module": "empire.features.yuanhang_etf.ui",
+            "qualname": "EtfUiPlugin"
+          },
+          "yuanhang_etfs": {
+            "module": "empire.features.yuanhang_etf.ui",
+            "qualname": "EtfUiPlugin"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.yuanhang_etfs",
+          "data.yuanhang_etf_prices",
+          "data.yuanhang_etf_latest",
+          "collector.yuanhang_etfs",
+          "collector.yuanhang_etf_prices",
+          "collector.yuanhang_etf_latest",
+          "ui.yuanhang_etf"
+        ],
+        "datasets": [
+          "yuanhang_etf_catalog_v1",
+          "yuanhang_etf_prices_v1"
+        ],
+        "pages": [
+          "yuanhang_etfs",
+          "yuanhang_etf_prices",
+          "yuanhang_etf_latest"
+        ],
+        "tasks": [
+          "ths-yuanhang-etfs",
+          "ths-yuanhang-etf-prices",
+          "ths-yuanhang-etf-latest"
+        ],
+        "startup": [
+          "data.yuanhang_etfs",
+          "data.yuanhang_etf_prices",
+          "data.yuanhang_etf_latest",
+          "collector.yuanhang_etfs",
+          "collector.yuanhang_etf_prices",
+          "collector.yuanhang_etf_latest",
+          "ui.yuanhang_etf"
+        ]
+      }
+    },
+    "design": "docs/ths-yuanhang-etf.md",
+    "tests": [
+      "tests/test_yuanhang_etf.py",
+      "tests/integration/test_yuanhang_etf_archive.py"
+    ]
+  },
+  {
+    "path": "additive.etf_fundamentals",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "collector.sse_etf_shares": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.sse_etf_shares",
+            "name": "sse-etf-shares",
+            "provides": [
+              "collector.sse_etf_shares"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "etf.fundamentals.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.szse_etf_shares": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.szse_etf_shares",
+            "name": "szse-etf-shares",
+            "provides": [
+              "collector.szse_etf_shares"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "etf.fundamentals.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.ttjj_etf_nav": {
+            "autostart": true,
+            "description": "",
+            "id": "collector.ttjj_etf_nav",
+            "name": "ttjj-etf-nav",
+            "provides": [
+              "collector.ttjj_etf_nav"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "etf.fundamentals.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.etf_fundamentals": {
+            "autostart": true,
+            "description": "",
+            "id": "data.etf_fundamentals",
+            "name": "ETF份额与净值查询",
+            "provides": [
+              "etf.fundamentals.query"
+            ],
+            "requires": [
+              "mysql.store",
+              "yuanhang.etfs.query"
+            ]
+          },
+          "ui.etf_fundamentals": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.etf_fundamentals",
+            "name": "ETF份额与净值组件",
+            "provides": [
+              "ui.pages.etf_fundamentals"
+            ],
+            "requires": []
+          }
+        },
+        "datasets": {
+          "etf_nav_v1": {
+            "datasets": [
+              "etf.nav.range"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ttjj-etf-nav-v1": "ttjj-etf-nav"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "etf_shares_v1": {
+            "datasets": [
+              "etf.share.day"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "sse-etf-shares-v1": "sse-etf-shares",
+              "szse-etf-shares-v1": "szse-etf-shares"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "etf_sse_shares": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "基金数据",
+            "database_tables": [
+              "etf_daily_share",
+              "etf_share_day"
+            ],
+            "description": "完整普通及交易货币基金来源日集合",
+            "group": "数据浏览",
+            "id": "etf_sse_shares",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "sse-etf-shares",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 40400,
+            "source": "上交所",
+            "title": "上交所ETF每日份额",
+            "top_level": false
+          },
+          "etf_szse_shares": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "基金数据",
+            "database_tables": [
+              "etf_daily_share",
+              "etf_share_day"
+            ],
+            "description": "导出文件精确份额，次日复核",
+            "group": "数据浏览",
+            "id": "etf_szse_shares",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "szse-etf-shares",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 40401,
+            "source": "深交所",
+            "title": "深交所ETF每日份额",
+            "top_level": false
+          },
+          "etf_ttjj_nav": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "基金数据",
+            "database_tables": [
+              "etf_daily_nav",
+              "etf_nav_year"
+            ],
+            "description": "完整七列；货币收益与净值分列",
+            "group": "数据浏览",
+            "id": "etf_ttjj_nav",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ttjj-etf-nav",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 40402,
+            "source": "天天基金",
+            "title": "ETF历史净值明细",
+            "top_level": false
+          }
+        },
+        "tasks": {
+          "sse-etf-shares": {
+            "capability": "collector.sse_etf_shares",
+            "category": "基金数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每轮结束等待12小时；先补近期，再有界补历史，深市次日复核。",
+              "interval_seconds": 43200,
+              "mode": "interval"
+            },
+            "description": "完整来源集合、近期优先及有界历史补缺；不以成交量代替份额",
+            "fresh_description": "重新核验有界历史单元，保留范围外历史；普通采集继续补缺。",
+            "id": "sse-etf-shares",
+            "interval_seconds": 86400,
+            "name": "上交所ETF每日份额",
+            "parallel_downloads": true,
+            "rate_group": "sse",
+            "source_name": "上交所",
+            "unit_name": "个完整日期"
+          },
+          "szse-etf-shares": {
+            "capability": "collector.szse_etf_shares",
+            "category": "基金数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每轮结束等待12小时；先补近期，再有界补历史，深市次日复核。",
+              "interval_seconds": 43200,
+              "mode": "interval"
+            },
+            "description": "完整来源集合、近期优先及有界历史补缺；不以成交量代替份额",
+            "fresh_description": "重新核验有界历史单元，保留范围外历史；普通采集继续补缺。",
+            "id": "szse-etf-shares",
+            "interval_seconds": 86400,
+            "name": "深交所ETF每日份额",
+            "parallel_downloads": true,
+            "rate_group": "szse",
+            "source_name": "深交所",
+            "unit_name": "个完整日期"
+          },
+          "ttjj-etf-nav": {
+            "capability": "collector.ttjj_etf_nav",
+            "category": "基金数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每轮结束等待12小时；先补近期，再有界补历史，深市次日复核。",
+              "interval_seconds": 43200,
+              "mode": "interval"
+            },
+            "description": "完整来源集合、近期优先及有界历史补缺；不以成交量代替份额",
+            "fresh_description": "重新核验有界历史单元，保留范围外历史；普通采集继续补缺。",
+            "id": "ttjj-etf-nav",
+            "interval_seconds": 86400,
+            "name": "ETF历史净值明细",
+            "parallel_downloads": true,
+            "rate_group": "ttjj",
+            "source_name": "天天基金",
+            "unit_name": "只ETF"
+          }
+        }
+      },
+      "bindings": {
+        "plugins": {
+          "collector.sse_etf_shares": {
+            "module": "empire.features.etf_fundamentals.collector",
+            "qualname": "Collector"
+          },
+          "collector.szse_etf_shares": {
+            "module": "empire.features.etf_fundamentals.collector",
+            "qualname": "Collector"
+          },
+          "collector.ttjj_etf_nav": {
+            "module": "empire.features.etf_fundamentals.collector",
+            "qualname": "Collector"
+          },
+          "data.etf_fundamentals": {
+            "module": "empire.features.etf_fundamentals.query",
+            "qualname": "Query"
+          },
+          "ui.etf_fundamentals": {
+            "module": "empire.features.etf_fundamentals.ui",
+            "qualname": "Ui"
+          }
+        },
+        "datasets": {
+          "etf_nav_v1": {
+            "module": "empire.features.etf_fundamentals.nav_dataset",
+            "qualname": ""
+          },
+          "etf_shares_v1": {
+            "module": "empire.features.etf_fundamentals.share_dataset",
+            "qualname": ""
+          }
+        },
+        "pages": {
+          "etf_sse_shares": {
+            "module": "empire.features.etf_fundamentals.ui",
+            "qualname": "Ui"
+          },
+          "etf_szse_shares": {
+            "module": "empire.features.etf_fundamentals.ui",
+            "qualname": "Ui"
+          },
+          "etf_ttjj_nav": {
+            "module": "empire.features.etf_fundamentals.ui",
+            "qualname": "Ui"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.etf_fundamentals",
+          "collector.sse_etf_shares",
+          "collector.szse_etf_shares",
+          "collector.ttjj_etf_nav",
+          "ui.etf_fundamentals"
+        ],
+        "startup": [
+          "data.etf_fundamentals",
+          "collector.sse_etf_shares",
+          "collector.szse_etf_shares",
+          "collector.ttjj_etf_nav",
+          "ui.etf_fundamentals"
+        ],
+        "tasks": [
+          "sse-etf-shares",
+          "szse-etf-shares",
+          "ttjj-etf-nav"
+        ],
+        "datasets": [
+          "etf_shares_v1",
+          "etf_nav_v1"
+        ],
+        "pages": [
+          "etf_sse_shares",
+          "etf_szse_shares",
+          "etf_ttjj_nav"
+        ]
+      }
+    },
+    "design": "docs/etf-fundamentals.md",
+    "tests": [
+      "tests/test_etf_fundamentals.py",
+      "tests/integration/test_etf_fundamentals_archive.py"
     ]
   },
   {
@@ -2066,7 +3664,7 @@
             },
             "order": 61,
             "source": "同花顺远航版",
-            "title": "远航涨跌停分析",
+            "title": "涨跌停分析",
             "top_level": false
           }
         },
@@ -2085,7 +3683,7 @@
             "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-connect-broad-pool",
             "interval_seconds": 86400,
-            "name": "远航版连板池",
+            "name": "连板池",
             "parallel_downloads": true,
             "rate_group": "ths_yuanhang",
             "source_name": "同花顺远航版",
@@ -2105,7 +3703,7 @@
             "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-limit-down-pool",
             "interval_seconds": 86400,
-            "name": "远航版跌停板",
+            "name": "跌停板",
             "parallel_downloads": true,
             "rate_group": "ths_yuanhang",
             "source_name": "同花顺远航版",
@@ -2125,7 +3723,7 @@
             "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-limit-up-pool",
             "interval_seconds": 86400,
-            "name": "远航版涨停板",
+            "name": "涨停板",
             "parallel_downloads": true,
             "rate_group": "ths_yuanhang",
             "source_name": "同花顺远航版",
@@ -2145,7 +3743,7 @@
             "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-open-limit-up-pool",
             "interval_seconds": 86400,
-            "name": "远航版炸板池",
+            "name": "炸板池",
             "parallel_downloads": true,
             "rate_group": "ths_yuanhang",
             "source_name": "同花顺远航版",
@@ -2165,7 +3763,7 @@
             "fresh_description": "重新核验有界历史批次；保留已归档事实，不清库。",
             "id": "ths-yuanhang-reason",
             "interval_seconds": 86400,
-            "name": "远航版历史涨跌停原因",
+            "name": "历史涨跌停原因",
             "parallel_downloads": true,
             "rate_group": "ths_yuanhang",
             "source_name": "同花顺远航版",
@@ -2185,7 +3783,7 @@
             "fresh_description": "重新核验最近10交易日；历史缺口由本项目后续有界轮次补齐。",
             "id": "ths-yuanhang-sprint-limit-up",
             "interval_seconds": 86400,
-            "name": "远航版涨停冲刺",
+            "name": "涨停冲刺",
             "parallel_downloads": true,
             "rate_group": "ths_yuanhang",
             "source_name": "同花顺远航版",
@@ -2540,14 +4138,21 @@
               "trade_calendar",
               "yuanhang_limit_pool",
               "yuanhang_limit_member",
-              "theme_daily"
+              "theme_daily",
+              "yuanhang_index_daily_price",
+              "yuanhang_daily_price",
+              "graymarket_day",
+              "graymarket_daily",
+              "industry",
+              "industry_member",
+              "collection_state"
             ],
-            "description": "涨停炸板、封板率、连板梯队、最高板演变、题材轮动与热度",
+            "description": "每日复盘整体行情、指数、个股样本成交额与含暗盘资金；其余分支逐项接入",
             "group": "市场复盘",
             "id": "market_review",
             "management": null,
             "order": 62,
-            "source": "远航 / 开盘啦",
+            "source": "远航 / 同花顺 / 东方财富 / 开盘啦",
             "title": "市场复盘",
             "top_level": true
           }
@@ -2593,7 +4198,10 @@
     "design": "docs/market-review.md",
     "tests": [
       "tests/test_market_review.py",
-      "tests/test_headless_pages.py"
+      "tests/test_headless_pages.py",
+      "tests/integration/test_review_market.py",
+      "tests/test_desktop_bridge.py",
+      "tests/integration/test_review_sectors.py"
     ]
   },
   {
@@ -3998,6 +5606,1075 @@
     "tests": [
       "tests/test_market_margin.py",
       "tests/integration/test_market_margin_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.graymarket:graymarket",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "graymarket.query",
+      "collector": "collector.eastmoney_graymarket",
+      "dataset": "graymarket.eastmoney_day",
+      "job_key": "eastmoney-graymarket-v1",
+      "method": "preparation_check",
+      "project_id": "eastmoney-graymarket",
+      "requirement": "graymarket",
+      "response_group": "",
+      "scoped": true,
+      "source": "东方财富",
+      "archive_tests": [
+        "tests/integration/test_graymarket_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_graymarket.py",
+        "tests/test_graymarket_lifecycle.py"
+      ]
+    },
+    "design": "docs/eastmoney-graymarket-implementation-plan.md",
+    "tests": [
+      "tests/test_graymarket.py",
+      "tests/test_graymarket_lifecycle.py",
+      "tests/integration/test_graymarket_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.plugins.collector.eastmoney_repurchase.description",
+    "before": "唯一方案编号游标；每轮全量核验历史及修订",
+    "after": "唯一方案编号游标；近期增量与三日全历史核验",
+    "design": "docs/eastmoney-collection-optimization.md",
+    "tests": [
+      "tests/test_repurchase_incremental.py",
+      "tests/test_assembly_contract.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.eastmoney-repurchases.description",
+    "before": "唯一方案编号游标，全量核验历史及修订；不推断股份注销",
+    "after": "近期更新增量；每三天完整核验历史及修订；不推断股份注销",
+    "design": "docs/eastmoney-collection-optimization.md",
+    "tests": [
+      "tests/test_repurchase_incremental.py",
+      "tests/test_assembly_contract.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.eastmoney-repurchases.default_schedule.description",
+    "before": "每天北京时间18:00完整核验方案与累计进展，发现历史修订；可编辑。",
+    "after": "每天北京时间18:00核验近期更新；每三天完整核验历史，计划可编辑。",
+    "design": "docs/eastmoney-collection-optimization.md",
+    "tests": [
+      "tests/test_repurchase_incremental.py",
+      "tests/test_assembly_contract.py"
+    ]
+  },
+  {
+    "path": "computation.observation_calendar",
+    "before": null,
+    "after": {
+      "semantic": {
+        "plugins": {
+          "data.observation_calendar": {
+            "autostart": true,
+            "description": "",
+            "id": "data.observation_calendar",
+            "name": "多指标观察查询",
+            "provides": [
+              "observation.query"
+            ],
+            "requires": [
+              "calendar.query",
+              "index.prices.query",
+              "market_margin.query",
+              "mysql.store",
+              "fx.daily.query"
+            ]
+          },
+          "ui.observation_calendar": {
+            "autostart": true,
+            "description": "",
+            "id": "ui.observation_calendar",
+            "name": "多指标观察日历页面",
+            "provides": [
+              "ui.pages.observation_calendar"
+            ],
+            "requires": []
+          }
+        },
+        "pages": {
+          "observation_calendar": {
+            "cache_policy": "lru",
+            "catalogued": false,
+            "category": "研究分析",
+            "database_tables": [
+              "trade_calendar",
+              "yuanhang_index",
+              "yuanhang_index_daily_price",
+              "market_margin_daily",
+              "yuanhang_daily_price",
+              "fx_daily_price"
+            ],
+            "description": "按月对照指数行情、融资融券与汇率日线，保留真实日期和缺值",
+            "group": "研究分析",
+            "id": "observation_calendar",
+            "management": null,
+            "order": 63,
+            "source": "同花顺 / 巨潮资讯",
+            "title": "多指标观察日历",
+            "top_level": true
+          }
+        },
+        "tasks": {},
+        "datasets": {}
+      },
+      "bindings": {
+        "plugins": {
+          "data.observation_calendar": {
+            "module": "empire.features.observation_calendar.query",
+            "qualname": "ObservationQuery"
+          },
+          "ui.observation_calendar": {
+            "module": "empire.features.observation_calendar.ui",
+            "qualname": "ObservationUi"
+          }
+        },
+        "datasets": {},
+        "pages": {
+          "observation_calendar": {
+            "module": "empire.features.observation_calendar.ui",
+            "qualname": "ObservationUi"
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.observation_calendar",
+          "ui.observation_calendar"
+        ],
+        "pages": [
+          "observation_calendar"
+        ],
+        "tasks": [],
+        "datasets": [],
+        "startup": [
+          "data.observation_calendar",
+          "ui.observation_calendar"
+        ]
+      }
+    },
+    "design": "docs/observation-calendar-plan.md",
+    "tests": [
+      "tests/test_observation_calendar.py",
+      "tests/test_headless_pages.py"
+    ]
+  },
+  {
+    "path": "semantic.plugins.collector.ths_capital.requires",
+    "before": [
+      "http.fetch",
+      "ingest.publish",
+      "ths_capital.query",
+      "archive.confirmation",
+      "collection.records"
+    ],
+    "after": [
+      "http.fetch",
+      "ingest.publish",
+      "ths_capital.query",
+      "archive.confirmation",
+      "collection.records",
+      "dataset.catalog"
+    ],
+    "design": "docs/large-exit-optimization-plan.md",
+    "tests": [
+      "tests/test_source_compute.py",
+      "tests/test_compute_lane.py",
+      "tests/test_ths_capital_lifecycle.py"
+    ]
+  },
+  {
+    "path": "semantic.plugins.dataset.astock.requires",
+    "before": [],
+    "after": [
+      "http.fetch"
+    ],
+    "design": "docs/large-exit-optimization-plan.md",
+    "tests": [
+      "tests/test_source_compute.py",
+      "tests/test_compute_lane.py",
+      "tests/test_ths_capital_lifecycle.py"
+    ]
+  },
+  {
+    "path": "retirement.ths_indices",
+    "before": {
+      "semantic": {
+        "datasets": {
+          "ths_index_prices_v1": {
+            "datasets": [
+              "index.price.status",
+              "index.price.year"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-index-prices-v1": "ths-index-prices"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          },
+          "ths_indices_v1": {
+            "datasets": [
+              "index.catalog",
+              "index.members"
+            ],
+            "fingerprint_version": {
+              "observed_index": 0,
+              "parts": [
+                "utc"
+              ],
+              "source_indices": []
+            },
+            "mode": "incremental",
+            "projects": {
+              "ths-indices-v1": "ths-indices"
+            },
+            "schema_version": 1,
+            "stale_outcome": "complete"
+          }
+        },
+        "pages": {
+          "index_prices": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "指数数据",
+            "database_tables": [
+              "index_daily_price",
+              "index_price_year"
+            ],
+            "description": "历史开高低收及来源量额；逐年补缺、近期修订",
+            "group": "数据浏览",
+            "id": "index_prices",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-index-prices",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 12,
+            "source": "同花顺",
+            "title": "同花顺指数历史日行情",
+            "top_level": false
+          },
+          "indices": {
+            "cache_policy": "lru",
+            "catalogued": true,
+            "category": "指数数据",
+            "database_tables": [
+              "stock_index",
+              "stock_index_member"
+            ],
+            "description": "当前目录及成分；允许交叉归属，来源暂无单独标注",
+            "group": "数据浏览",
+            "id": "indices",
+            "management": {
+              "context": {
+                "day": "",
+                "end": "",
+                "event_key": "",
+                "index_code": "",
+                "source": "",
+                "start": "",
+                "task_id": "ths-indices",
+                "unified_code": ""
+              },
+              "page_id": "collection"
+            },
+            "order": 11,
+            "source": "同花顺",
+            "title": "同花顺当前指数及成分",
+            "top_level": false
+          }
+        },
+        "plugins": {
+          "collector.ths_index_prices": {
+            "autostart": true,
+            "description": "逐年补缺及last近期修订；年度独立并行归档",
+            "id": "collector.ths_index_prices",
+            "name": "同花顺指数历史日行情",
+            "provides": [
+              "collector.ths_index_prices"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "index.prices.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "collector.ths_indices": {
+            "autostart": true,
+            "description": "完整指数目录与当前成分；每指数独立单页归档",
+            "id": "collector.ths_indices",
+            "name": "同花顺当前指数及成分",
+            "provides": [
+              "collector.ths_indices"
+            ],
+            "requires": [
+              "http.fetch",
+              "ingest.publish",
+              "indices.query",
+              "archive.confirmation",
+              "collection.records"
+            ]
+          },
+          "data.index_prices": {
+            "autostart": true,
+            "description": "年度覆盖证明及结构化日行情",
+            "id": "data.index_prices",
+            "name": "指数日行情查询",
+            "provides": [
+              "index.prices.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "data.indices": {
+            "autostart": true,
+            "description": "同花顺目录及成分关系；来源暂无单独呈现",
+            "id": "data.indices",
+            "name": "当前指数查询",
+            "provides": [
+              "indices.query"
+            ],
+            "requires": [
+              "mysql.store"
+            ]
+          },
+          "ui.index_prices": {
+            "autostart": true,
+            "description": "按需创建日线范围查询",
+            "id": "ui.index_prices",
+            "name": "指数日行情界面",
+            "provides": [
+              "ui.pages.index_prices"
+            ],
+            "requires": []
+          },
+          "ui.indices": {
+            "autostart": true,
+            "description": "按需创建指数目录与成分浏览",
+            "id": "ui.indices",
+            "name": "当前指数界面",
+            "provides": [
+              "ui.pages.indices"
+            ],
+            "requires": []
+          }
+        },
+        "preparation": {
+          "data.index_prices:index_prices": {
+            "analysis_quality_limits": false,
+            "cache_revision": 4,
+            "capability": "index.prices.query",
+            "collector": "collector.ths_index_prices",
+            "dataset": "index.price.year",
+            "job_key": "ths-index-prices-v1",
+            "method": "preparation_check",
+            "project_id": "ths-index-prices",
+            "requirement": "index_prices",
+            "response_group": "",
+            "scoped": true,
+            "source": "同花顺"
+          },
+          "data.indices:board_history": {
+            "analysis_quality_limits": false,
+            "cache_revision": 1,
+            "capability": "indices.query",
+            "collector": "collector.ths_indices",
+            "dataset": "index.members",
+            "job_key": "ths-indices-v1",
+            "method": "preparation_check",
+            "project_id": "ths-indices",
+            "requirement": "board_history",
+            "response_group": "",
+            "scoped": true,
+            "source": "同花顺"
+          }
+        },
+        "tasks": {
+          "ths-index-prices": {
+            "capability": "collector.ths_index_prices",
+            "category": "指数数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每天北京时间18:00补缺及更新近期日线；初次补历史，计划可编辑。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "逐年补齐来源可得历史；last更新近期；开高低收及量额",
+            "fresh_description": "回查来源全部年份，保留已有历史；未完成轮次先继续，不提供历史版本回放。",
+            "id": "ths-index-prices",
+            "interval_seconds": 86400,
+            "name": "同花顺指数历史日行情",
+            "parallel_downloads": true,
+            "rate_group": "ths",
+            "source_name": "同花顺",
+            "unit_name": "个指数"
+          },
+          "ths-indices": {
+            "capability": "collector.ths_indices",
+            "category": "指数数据",
+            "default_enabled": true,
+            "default_schedule": {
+              "daily_time": "18:00",
+              "description": "每天北京时间18:00完整刷新目录和当前成员；计划可编辑。",
+              "interval_seconds": 86400,
+              "mode": "daily"
+            },
+            "description": "完整指数目录及当前成分；来源暂无单独呈现，不保存历史调样",
+            "fresh_description": "完整刷新当前目录和成分；未完成轮次先续跑并归档，不保存历史调样。",
+            "id": "ths-indices",
+            "interval_seconds": 86400,
+            "name": "同花顺当前指数及成分",
+            "parallel_downloads": true,
+            "rate_group": "ths",
+            "source_name": "同花顺",
+            "unit_name": "个指数"
+          }
+        }
+      },
+      "bindings": {
+        "datasets": {
+          "ths_index_prices_v1": {
+            "module": "empire.plugins.datasets.index_prices",
+            "qualname": ""
+          },
+          "ths_indices_v1": {
+            "module": "empire.plugins.datasets.indices",
+            "qualname": ""
+          }
+        },
+        "pages": {
+          "index_prices": {
+            "module": "empire.plugins.ui.index_prices",
+            "qualname": "IndexPricePage"
+          },
+          "indices": {
+            "module": "empire.plugins.ui.indices",
+            "qualname": "IndexPage"
+          }
+        },
+        "plugins": {
+          "collector.ths_index_prices": {
+            "module": "empire.plugins.collectors.ths_index_prices",
+            "qualname": "ThsIndexPriceCollector"
+          },
+          "collector.ths_indices": {
+            "module": "empire.plugins.collectors.ths_indices",
+            "qualname": "ThsIndexCollector"
+          },
+          "data.index_prices": {
+            "module": "empire.plugins.data.index_prices",
+            "qualname": "IndexPriceDataPlugin"
+          },
+          "data.indices": {
+            "module": "empire.plugins.data.indices",
+            "qualname": "IndexDataPlugin"
+          },
+          "ui.index_prices": {
+            "module": "empire.plugins.ui.index_prices",
+            "qualname": "IndexPriceUiPlugin"
+          },
+          "ui.indices": {
+            "module": "empire.plugins.ui.indices",
+            "qualname": "IndexUiPlugin"
+          }
+        },
+        "tests": {
+          "data.index_prices:index_prices": {
+            "archive_tests": [
+              "tests/integration/test_index_price_archive.py"
+            ],
+            "source_tests": [
+              "tests/test_ths_index_prices.py"
+            ]
+          },
+          "data.indices:board_history": {
+            "archive_tests": [
+              "tests/integration/test_index_archive.py"
+            ],
+            "source_tests": [
+              "tests/test_ths_indices.py"
+            ]
+          }
+        }
+      },
+      "order": {
+        "plugins": [
+          "data.index_prices",
+          "collector.ths_index_prices",
+          "ui.index_prices",
+          "data.indices",
+          "collector.ths_indices",
+          "ui.indices"
+        ],
+        "startup": [
+          "data.index_prices",
+          "collector.ths_index_prices",
+          "ui.index_prices",
+          "data.indices",
+          "collector.ths_indices",
+          "ui.indices"
+        ],
+        "tasks": [
+          "ths-index-prices",
+          "ths-indices"
+        ],
+        "datasets": [
+          "ths_index_prices_v1",
+          "ths_indices_v1"
+        ],
+        "pages": [
+          "index_prices",
+          "indices"
+        ],
+        "preparation": [
+          "data.index_prices:index_prices",
+          "data.indices:board_history"
+        ]
+      }
+    },
+    "after": null,
+    "design": "docs/ths-yuanhang-indices.md",
+    "tests": [
+      "tests/test_yuanhang_indices.py",
+      "tests/integration/test_yuanhang_index_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_index_members:board_history",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "indices.query",
+      "collector": "collector.yuanhang_index_members",
+      "dataset": "ths.index.members",
+      "job_key": "ths-yuanhang-index-members-v1",
+      "method": "preparation_check",
+      "project_id": "ths-yuanhang-index-members",
+      "requirement": "board_history",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺网页端",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_index_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_indices.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-indices.md",
+    "tests": [
+      "tests/test_yuanhang_indices.py",
+      "tests/integration/test_yuanhang_index_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_indices:index_catalog",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "yuanhang.indices.query",
+      "collector": "collector.yuanhang_indices",
+      "dataset": "yuanhang.index.catalog",
+      "job_key": "ths-yuanhang-indices-v1",
+      "method": "preparation_check",
+      "project_id": "ths-yuanhang-indices",
+      "requirement": "index_catalog",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_index_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_indices.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-indices.md",
+    "tests": [
+      "tests/test_yuanhang_indices.py",
+      "tests/integration/test_yuanhang_index_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_index_prices:index_prices",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "index.prices.query",
+      "collector": "collector.yuanhang_index_prices",
+      "dataset": "yuanhang.index.price.range",
+      "job_key": "ths-yuanhang-index-prices-v1",
+      "method": "preparation_check",
+      "project_id": "ths-yuanhang-index-prices",
+      "requirement": "index_prices",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_index_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_indices.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-indices.md",
+    "tests": [
+      "tests/test_yuanhang_indices.py",
+      "tests/integration/test_yuanhang_index_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.cninfo-calendar.name",
+    "before": "大 A 交易日期（巨潮资讯）",
+    "after": "A股交易日历",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.eastmoney-repurchases.name",
+    "before": "股票回购（东方财富）",
+    "after": "股票回购",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.sina-news.name",
+    "before": "新浪 7×24 小时全球实时财经新闻直播",
+    "after": "7×24 小时全球实时财经新闻直播",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.sina-stocks.name",
+    "before": "新浪 A 股股票列表",
+    "after": "A股股票列表",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-additional-issues.name",
+    "before": "增发（通达信）",
+    "after": "增发",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-company-renames.name",
+    "before": "公司更名（通达信）",
+    "after": "公司更名",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-dividends.name",
+    "before": "分红送转（通达信）",
+    "after": "分红送转",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-earnings-disclosure.name",
+    "before": "业绩披露时间（通达信）",
+    "after": "业绩披露时间",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-earnings-forecast.name",
+    "before": "业绩预告（通达信）",
+    "after": "业绩预告",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-earnings-quick.name",
+    "before": "业绩快报（通达信）",
+    "after": "业绩快报",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-earnings-report.name",
+    "before": "业绩报告（通达信）",
+    "after": "业绩报告",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-holder-count.name",
+    "before": "股东户数（通达信）",
+    "after": "股东户数",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-listing-status.name",
+    "before": "暂停恢复终止上市（通达信）",
+    "after": "暂停恢复终止上市",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-rights-issues.name",
+    "before": "配股（通达信）",
+    "after": "配股",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-security-renames.name",
+    "before": "股票更名（通达信）",
+    "after": "股票更名",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-shareholder-changes.name",
+    "before": "重要股东持股变动（通达信）",
+    "after": "重要股东持股变动",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-st-implementation.name",
+    "before": "实施ST（通达信）",
+    "after": "实施ST",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-st-removal.name",
+    "before": "撤销ST（通达信）",
+    "after": "撤销ST",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-suspensions.name",
+    "before": "沪深 A 股历史停复牌（通达信）",
+    "after": "沪深 A 股历史停复牌",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-unlock-industries.name",
+    "before": "大小非解禁行业（通达信）",
+    "after": "大小非解禁行业",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.tdx-unlocks.name",
+    "before": "大小非解禁个股与明细（通达信）",
+    "after": "大小非解禁个股与明细",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.ths-balance.name",
+    "before": "资产负债表（同花顺）",
+    "after": "资产负债表",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.ths-capital.name",
+    "before": "公司资本运作（同花顺）",
+    "after": "公司资本运作",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.ths-cashflow.name",
+    "before": "现金流量表（同花顺）",
+    "after": "现金流量表",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.ths-holders.name",
+    "before": "股东研究（同花顺）",
+    "after": "股东研究",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.ths-income.name",
+    "before": "利润表（同花顺）",
+    "after": "利润表",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.ths-industries.name",
+    "before": "同花顺当前行业",
+    "after": "同花顺行业",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.ths-listings.name",
+    "before": "股票上市与发行资料（同花顺）",
+    "after": "股票上市与发行资料",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.tasks.ths-stocks.name",
+    "before": "同花顺 A 股股票列表",
+    "after": "A股股票列表",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.pages.industries.title",
+    "before": "同花顺当前行业",
+    "after": "同花顺行业",
+    "design": "docs/collector-task-names.md",
+    "tests": [
+      "tests/test_assembly_display_names.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_etf_prices:etf_prices",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "yuanhang.etf.prices.query",
+      "collector": "collector.yuanhang_etf_prices",
+      "dataset": "yuanhang.etf.price.range",
+      "job_key": "ths-yuanhang-etf-prices-v1",
+      "method": "preparation_check",
+      "project_id": "ths-yuanhang-etf-prices",
+      "requirement": "etf_prices",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_etf_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_etf.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-etf.md",
+    "tests": [
+      "tests/test_yuanhang_etf.py",
+      "tests/integration/test_yuanhang_etf_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.yuanhang_etfs:etf_catalog",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "yuanhang.etfs.query",
+      "collector": "collector.yuanhang_etfs",
+      "dataset": "yuanhang.etf.catalog",
+      "job_key": "ths-yuanhang-etfs-v1",
+      "method": "preparation_check",
+      "project_id": "ths-yuanhang-etfs",
+      "requirement": "etf_catalog",
+      "response_group": "",
+      "scoped": true,
+      "source": "同花顺远航版",
+      "archive_tests": [
+        "tests/integration/test_yuanhang_etf_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_yuanhang_etf.py"
+      ]
+    },
+    "design": "docs/ths-yuanhang-etf.md",
+    "tests": [
+      "tests/test_yuanhang_etf.py",
+      "tests/integration/test_yuanhang_etf_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.etf_fundamentals:etf_sse_shares",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "etf.fundamentals.query",
+      "collector": "collector.sse_etf_shares",
+      "dataset": "etf.share.day",
+      "job_key": "sse-etf-shares-v1",
+      "method": "check_sse",
+      "project_id": "sse-etf-shares",
+      "requirement": "etf_sse_shares",
+      "response_group": "",
+      "scoped": true,
+      "source": "sse",
+      "archive_tests": [
+        "tests/integration/test_etf_fundamentals_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_etf_fundamentals.py",
+        "tests/test_etf_fundamentals_lifecycle.py"
+      ]
+    },
+    "design": "docs/etf-fundamentals.md",
+    "tests": [
+      "tests/test_etf_fundamentals.py",
+      "tests/test_etf_fundamentals_lifecycle.py",
+      "tests/integration/test_etf_fundamentals_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.etf_fundamentals:etf_szse_shares",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "etf.fundamentals.query",
+      "collector": "collector.szse_etf_shares",
+      "dataset": "etf.share.day",
+      "job_key": "szse-etf-shares-v1",
+      "method": "check_szse",
+      "project_id": "szse-etf-shares",
+      "requirement": "etf_szse_shares",
+      "response_group": "",
+      "scoped": true,
+      "source": "szse",
+      "archive_tests": [
+        "tests/integration/test_etf_fundamentals_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_etf_fundamentals.py",
+        "tests/test_etf_fundamentals_lifecycle.py"
+      ]
+    },
+    "design": "docs/etf-fundamentals.md",
+    "tests": [
+      "tests/test_etf_fundamentals.py",
+      "tests/test_etf_fundamentals_lifecycle.py",
+      "tests/integration/test_etf_fundamentals_archive.py"
+    ]
+  },
+  {
+    "path": "semantic.preparation.data.etf_fundamentals:etf_ttjj_nav",
+    "before": null,
+    "after": {
+      "analysis_quality_limits": false,
+      "cache_revision": 1,
+      "capability": "etf.fundamentals.query",
+      "collector": "collector.ttjj_etf_nav",
+      "dataset": "etf.nav.range",
+      "job_key": "ttjj-etf-nav-v1",
+      "method": "check_ttjj",
+      "project_id": "ttjj-etf-nav",
+      "requirement": "etf_ttjj_nav",
+      "response_group": "",
+      "scoped": true,
+      "source": "ttjj",
+      "archive_tests": [
+        "tests/integration/test_etf_fundamentals_archive.py"
+      ],
+      "source_tests": [
+        "tests/test_etf_fundamentals.py",
+        "tests/test_etf_fundamentals_lifecycle.py"
+      ]
+    },
+    "design": "docs/etf-fundamentals.md",
+    "tests": [
+      "tests/test_etf_fundamentals.py",
+      "tests/test_etf_fundamentals_lifecycle.py",
+      "tests/integration/test_etf_fundamentals_archive.py"
     ]
   }
 ]

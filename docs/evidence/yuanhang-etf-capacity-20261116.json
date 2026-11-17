@@ -1,0 +1,662 @@
+{
+  "run_id": "c5fa28fa7b914841b22a8148b28de6a4",
+  "subject": "indices",
+  "started_at": "2026-11-16T09:23:45.536546+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "bindings": {
+    "src/empire/features/yuanhang_etf/audits.py": "e1a05659eb5baf963934379d3e8d1190f8ce7a1c880b8ca991f0c4aa266576f4",
+    "src/empire/features/yuanhang_etf/bundle.py": "400770d1abcb1556c5a0e05e75c7afa94d77d5aa20f7b3deee7a6cc501e9497d",
+    "src/empire/features/yuanhang_etf/catalog_collector.py": "952d7cf104bcdea41025c34f73ee45c201a03b6fc96f0db594e8d569f33dc69c",
+    "src/empire/features/yuanhang_etf/catalog_dataset.py": "db916276ece87df87cc126283cd9c3cbe7b558fb367cf9dc6d4ca5cf9f07d914",
+    "src/empire/features/yuanhang_etf/collector_support.py": "d0e4ff7475c5e0a34b589127a0ce686d3e356b37fb350442e019467bd380805a",
+    "src/empire/features/yuanhang_etf/contract.py": "4c069ff86284d35a4dc3b9edbf118f3b515a97f26af29d469b24bfaf6c11aa4e",
+    "src/empire/features/yuanhang_etf/latest.py": "27667fe8770cdec5ab9f2fff11a46c1a01e92e289ff4077e6b61a74b7f7e36c2",
+    "src/empire/features/yuanhang_etf/live.py": "53e34fe18386fdae3798858b72a0156df8e065ffa915d6a9a2f664841b9b50b4",
+    "src/empire/features/yuanhang_etf/native.py": "120d872cc8355d6a8fbd22867fd0ba63000621a1925e5d3277983d427d1eb4a6",
+    "src/empire/features/yuanhang_etf/price_audit.py": "42035573ad195dea4a7321813c344447b1b6ece315ec5776e25944b52605f434",
+    "src/empire/features/yuanhang_etf/price_collector.py": "4f423d9e60ea056b0c5b3dbd51a94fe0ac1602004bacc2931a81f625eaa994f9",
+    "src/empire/features/yuanhang_etf/price_dataset.py": "9e6ca6db31385a2ffc09937e4557662fa93d91e598cd05971a63d2d978d4fc48",
+    "src/empire/features/yuanhang_etf/price_query.py": "51f4010db02619086e8d4fae08278d8f1ad858b83a5cf90d359d750d12c511a1",
+    "src/empire/features/yuanhang_etf/price_reads.py": "e197af63b0a09ef2c43aa65afe50dd80f5b5597dfc0663d3faf05086b8ed02f8",
+    "src/empire/features/yuanhang_etf/quality.py": "079451e3bdd638b4e38180451152a43a4928161b987c670086a950a8002ecdfd",
+    "src/empire/features/yuanhang_etf/query.py": "deef04bb19f773f1267efd855fdbba7106d513545ab75c9f076d902ce2dba2e0",
+    "src/empire/features/yuanhang_etf/ui.py": "d23bf3cbaee7b31cdff68213baee04895a3da569f10dd8a3a213bbe331bcf3b4",
+    "src/empire/features/yuanhang_etf/__init__.py": "576e7fc931aa63c4bdf7ac38af8e7e8fffced20226013ddba228d07575bee021",
+    "scripts/measure_yuanhang_etf.py": "8b6289ff1e5b21eab7a27997cf80cdb333584798a9728421f1d831d51a7ab992",
+    "scripts/capacity_session.py": "ff6839898d756dbd2686a627555a08152cc3b2b1b52222dfdcc91a953b263583",
+    "src/empire/plugins/infra/collection_state_unit.py": "6e57e8dcce3f343f04b8061341e50d9547e42deae85418472a488361f9267559",
+    "src/empire/sources/yuanhang_ranges.py": "9cc46cbb84f2887769b42afab8cd74fd46794572f278bd5054fdeb97a09d327b"
+  },
+  "schema_objects": {
+    "yuanhang_etf": {
+      "ddl_sha256": "46eed77e13ff5660042409293c5e37eebd3b2f0f74d5d7c72b8b3a98dc863837",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "name": {
+            "type": "varchar(100) collate \"utf8mb4_unicode_ci\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "native_market": {
+            "type": "char(4) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "active": {
+            "type": "tinyint",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code"
+        ],
+        "indexes": {
+          "ix_etf_active_market": {
+            "columns": [
+              "active",
+              "native_market",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_yhe_code": "regexp_like(unified_code,'^[0-9]{6}[.](sh|sz)$')",
+          "ck_yhe_market": "(((native_market='ushj')and(right(unified_code,2)='sh'))or((native_market='uszj')and(right(unified_code,2)='sz')))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "unified_code"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.etf.catalog": {
+            "tables": [
+              "yuanhang_etf"
+            ],
+            "primary": "yuanhang_etf"
+          }
+        }
+      }
+    },
+    "yuanhang_etf_daily_price": {
+      "ddl_sha256": "8459249805915f74264653316b7d430575883836782875d8752ec960744ae76c",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "open": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "high": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "low": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "close": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "volume": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          },
+          "amount": {
+            "type": "decimal(28, 10)",
+            "nullable": true,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date"
+        ],
+        "indexes": {
+          "ix_etf_price_date": {
+            "columns": [
+              "trade_date",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_yhe_price_code": "regexp_like(unified_code,'^[0-9]{6}[.](sh|sz)$')"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "unified_code",
+          "trade_date"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.etf.price.range": {
+            "tables": [
+              "yuanhang_etf_daily_price",
+              "yuanhang_etf_price_year"
+            ],
+            "primary": "yuanhang_etf_daily_price"
+          }
+        }
+      }
+    },
+    "yuanhang_etf_price_year": {
+      "ddl_sha256": "90c692384332dc2a54e88b46263744f2554c5a2b4be9398c772cc19a07c30e9c",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(9) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "quote_year": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "native_market": {
+            "type": "char(4) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "row_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "last_date": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "key_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "verified_through": {
+            "type": "date",
+            "nullable": true,
+            "unsigned": false
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "quote_year"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_yhe_year": "((quote_yearbetween1900and2049)and(row_count<=366)and(contract_version=1))",
+          "ck_yhe_year_code": "regexp_like(unified_code,'^[0-9]{6}[.](sh|sz)$')",
+          "ck_yhe_year_dates": "(((row_count=0)and(first_dateisnull)and(last_dateisnull))or((row_count>0)and(first_dateisnotnull)and(last_dateisnotnull)and(first_date<=last_date)and(year(first_date)=quote_year)and(year(last_date)=quote_year)))",
+          "ck_yhe_year_market": "(((native_market='ushj')and(right(unified_code,2)='sh'))or((native_market='uszj')and(right(unified_code,2)='sz')))",
+          "ck_yhe_year_verified": "((verified_throughisnull)or(year(verified_through)=quote_year))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths_yuanhang",
+        "primary_keys": [
+          "unified_code",
+          "quote_year"
+        ],
+        "source_overrides": null,
+        "required_columns": null,
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "yuanhang.etf.price.range": {
+            "tables": [
+              "yuanhang_etf_daily_price",
+              "yuanhang_etf_price_year"
+            ],
+            "primary": "yuanhang_etf_daily_price"
+          }
+        }
+      }
+    }
+  },
+  "ddl_scopes": {
+    "yuanhang_etf": "46eed77e13ff5660042409293c5e37eebd3b2f0f74d5d7c72b8b3a98dc863837",
+    "yuanhang_etf_daily_price": "8459249805915f74264653316b7d430575883836782875d8752ec960744ae76c",
+    "yuanhang_etf_price_year": "90c692384332dc2a54e88b46263744f2554c5a2b4be9398c772cc19a07c30e9c"
+  },
+  "measurements": {
+    "catalog_p95_ms": 6.606000009924173,
+    "etf_range_p95_ms": 3.0712999869138002,
+    "cross_date_p95_ms": 4.091799957677722,
+    "latest_p95_ms": 60.959999973420054,
+    "latest_python_peak_bytes": 5960592,
+    "content_audit_seconds": 1.5344081000075676,
+    "catalog_import_seconds": 0.6427237999741919,
+    "price_import_seconds": 5.066144000040367,
+    "allocated_bytes": 15269888,
+    "unit_python_peak_bytes": 1518
+  },
+  "limits": {
+    "catalog_p95_ms": 100,
+    "etf_range_p95_ms": 100,
+    "cross_date_p95_ms": 100,
+    "latest_p95_ms": 100,
+    "catalog_import_seconds": 2,
+    "price_import_seconds": 30,
+    "allocated_bytes": 268435456,
+    "unit_python_peak_bytes": 16777216,
+    "content_audit_seconds": 30,
+    "latest_python_peak_bytes": 67108864
+  },
+  "queries": {
+    "catalog": {
+      "first_ms": 6.270600017160177,
+      "warm_ms": [
+        6.061499996576458,
+        5.721100023947656,
+        5.062899959739298,
+        5.857899959664792,
+        5.646199977491051,
+        6.111100025009364,
+        5.983000039122999,
+        5.758200015407056,
+        5.432100035250187,
+        7.670299964956939,
+        5.800000042654574,
+        5.379999987781048,
+        6.060600047931075,
+        5.407100019510835,
+        6.606000009924173,
+        5.6356999557465315,
+        5.1865000277757645,
+        6.306800001766533,
+        5.504300002939999,
+        5.221500003244728
+      ],
+      "returned_rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050,
+        16050
+      ]
+    },
+    "etf_range": {
+      "first_ms": 2.4987999931909144,
+      "warm_ms": [
+        2.5667999871075153,
+        2.0806000102311373,
+        2.519999979995191,
+        2.140299999155104,
+        2.2301000426523387,
+        2.4151000543497503,
+        3.0712999869138002,
+        2.845299954060465,
+        2.1366000291891396,
+        2.5923000066541135,
+        2.203799958806485,
+        2.7156000141985714,
+        2.682400052435696,
+        2.6775000151246786,
+        2.1287999697960913,
+        2.2396999993361533,
+        2.1143999765627086,
+        3.708000003825873,
+        2.3037000210024416,
+        2.142300014384091
+      ],
+      "returned_rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647,
+        56647
+      ]
+    },
+    "cross_date": {
+      "first_ms": 4.339899984188378,
+      "warm_ms": [
+        3.3999999868683517,
+        3.640200011432171,
+        4.115999967325479,
+        3.295699949376285,
+        3.739900013897568,
+        3.397099964786321,
+        2.813300001434982,
+        2.942299994174391,
+        3.35869996342808,
+        3.4629000001586974,
+        3.733399964403361,
+        2.843800000846386,
+        3.138999978546053,
+        3.297499963082373,
+        3.1478999881073833,
+        3.0016000382602215,
+        3.240100049879402,
+        3.8274999824352562,
+        4.091799957677722,
+        3.0151999671943486
+      ],
+      "returned_rows": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "encoded_bytes": [
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937,
+        56937
+      ]
+    },
+    "latest": {
+      "first_ms": 73.82410002173856,
+      "warm_ms": [
+        61.73879996640608,
+        28.889300010632724,
+        46.44970002118498,
+        33.15809997729957,
+        32.99379994859919,
+        32.12710004299879,
+        35.66510003292933,
+        53.75459999777377,
+        30.469999997876585,
+        44.982500025071204,
+        33.79150002729148,
+        33.37020002072677,
+        32.858500024303794,
+        43.59730001306161,
+        56.04070000117645,
+        54.79580000974238,
+        52.87699995096773,
+        60.959999973420054,
+        39.74849998485297,
+        36.68730001663789
+      ],
+      "encoded_bytes": [
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103,
+        105103
+      ],
+      "redis_bytes": 38731,
+      "ttl": 604800,
+      "old_version_rejected": true,
+      "rows": 5000,
+      "source_time_unknown": true
+    }
+  },
+  "explain": {
+    "etf_range": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "yuanhang_etf_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_etf_price_date",
+        "key": "PRIMARY",
+        "key_len": "14",
+        "ref": null,
+        "rows": 219,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "cross_date": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "yuanhang_etf_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_etf_price_date",
+        "key": "ix_etf_price_date",
+        "key_len": "3",
+        "ref": null,
+        "rows": 6000,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ]
+  },
+  "allocation": [
+    {
+      "table_name": "collection_state",
+      "data_length": 16384,
+      "index_length": 0
+    },
+    {
+      "table_name": "yuanhang_etf",
+      "data_length": 294912,
+      "index_length": 131072
+    },
+    {
+      "table_name": "yuanhang_etf_daily_price",
+      "data_length": 11026432,
+      "index_length": 3686400
+    },
+    {
+      "table_name": "yuanhang_etf_price_year",
+      "data_length": 114688,
+      "index_length": 0
+    }
+  ],
+  "conditions": {
+    "sample": "5000 synthetic ETF identities,400 ETFs ×250 dates =100000 nullable/signed daily facts",
+    "cache": "first query separately; 20 warm repeats; buffer pool not flushed, not a cold-disk claim",
+    "memory": "tracemalloc maximum catalog unit, not process/MySQL RSS"
+  },
+  "correctness": {
+    "repeat_price_dml": 0,
+    "revision_price_dml": 2,
+    "all_content_and_keys_audited": true
+  },
+  "reviewed_tradeoffs": "三表结构化与双向日K索引；ETF按完整统一代码独立于股票名单。100000行放大只证明所测规模，当前1741只及实际跨度空间另作估算；不声称5000×150年可放入16GiB。",
+  "input_identity_verified": true,
+  "checked_at": "2026-11-16T09:23:54.818459+00:00",
+  "database": "empire_capacity_c5fa28fa7b914841b22a8148b28de6a4_test",
+  "measurement_service": {
+    "server_uuid": "e935f57e-e19a-11f1-a2f2-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

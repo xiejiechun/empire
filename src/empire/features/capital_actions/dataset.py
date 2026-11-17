@@ -35,7 +35,20 @@ class CapitalDataset:
             raise ValueError('增发送配批次序号无效')
         if p['unit'] == 'manifest':
             m = p['manifest']
-            if p['rows'] != [] or not isinstance(m, dict) or set(m) != {'units', 'count', 'scope_hash', 'digest'}:
+            expected = {'units', 'count', 'scope_hash', 'digest'}
+            if self.kind == 'dividends' and isinstance(m, dict) and 'periods' in m:
+                from datetime import date
+
+                from empire.plugins.infra.tdx_maintenance import valid_proof
+                expected.update(('periods', 'period_scope_hash'))
+                if not isinstance(m['periods'], dict) or not 1 <= len(m['periods']) <= 1000:
+                    raise ValueError('分红报告期证明数量无效')
+                if m.get('period_scope_hash') != digest(sorted(m['periods'])):
+                    raise ValueError('分红报告期证明范围不完整')
+                for period, proof in m['periods'].items():
+                    if date.fromisoformat(period).isoformat() != period or not valid_proof(proof, envelope.observed_at):
+                        raise ValueError('分红报告期证明无效')
+            if p['rows'] != [] or not isinstance(m, dict) or set(m) != expected:
                 raise ValueError('最终范围证明无效')
             if any(type(m[k]) is not int or not 0 <= m[k] <= 1000000 for k in ('units', 'count')):
                 raise ValueError('范围证明计数无效')
@@ -51,12 +64,17 @@ class CapitalDataset:
         return {k: data[k] for k in ('page', 'unit', 'rows', 'manifest', 'history_discovered_at') if k in data}
 
     def fingerprint_plan(self, envelope, data):
+        if self.kind == 'dividends' and data['unit'] == 'manifest' and 'periods' in data['manifest']:
+            # Per-period confirmation times are state, not business content.
+            # Commit this one bounded state row; business units retain cache hits.
+            return self.kind, {}
         return self.kind, {data['unit']: (
             {'rows': data['rows'], 'manifest': data['manifest']},
             [envelope.observed_at.astimezone(UTC).isoformat(timespec='microseconds')])}
 
     def fingerprint_subset(self, data, identities):
-        return {**data, 'write_unit': data['unit'] in identities}
+        state_only = self.kind == 'dividends' and data['unit'] == 'manifest' and 'periods' in data['manifest']
+        return {**data, 'write_unit': state_only or data['unit'] in identities}
 
     @staticmethod
     def state_unit(data):
@@ -93,13 +111,15 @@ class CapitalDataset:
                     'ON DUPLICATE KEY UPDATE name=VALUES(name),event_date=VALUES(event_date),payload=VALUES(payload),'
                     'content_hash=VALUES(content_hash),version_observed_at=VALUES(version_observed_at)'), values)
                 written += 1
+        state_only = self.kind == 'dividends' and unit == 'manifest' and 'periods' in data['manifest']
         return dict(status='complete', row_count=data['row_count'], written_count=written,
-                    confirmed=[unit] if accepted else [])
+                    confirmed=[unit] if accepted and not state_only else [],
+                    state_confirmed=accepted and state_only)
 
     def archive_state(self, envelope, data, outcome, previous):
         result = {**previous, 'contract_version': SCHEMA_VERSIONS[self.kind],
                   'progress': confirmed_page(envelope, data, previous)}
-        if data['unit'] not in outcome['confirmed']:
+        if data['unit'] not in outcome['confirmed'] and not outcome.get('state_confirmed', False):
             return previous
         observed = envelope.observed_at.isoformat(timespec='microseconds')
         if data['unit'] == 'manifest':

@@ -6,4 +6,5 @@ from empire.features.market_review.ui import ReviewUi
 
 def bundle(cfg):
     return FeatureBundle('market_review', plugins=(
-        OrderedContribution(42000, ReviewQuery()), OrderedContribution(42010, ReviewUi())))
+        OrderedContribution(42000, ReviewQuery(cfg['redis'].get('namespace', 'empire'))),
+        OrderedContribution(42010, ReviewUi())))

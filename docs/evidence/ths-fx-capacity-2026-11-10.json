@@ -1,0 +1,333 @@
+{
+  "run_id": "0c8f2b57394a4529b02405c501c67f9b",
+  "subject": "preview",
+  "started_at": "2026-11-10T14:03:55.909879+00:00",
+  "passed": true,
+  "measurements_complete": true,
+  "errors": [],
+  "cleanup": {
+    "business_engine": true,
+    "sql": true,
+    "sql_lock": true,
+    "admin_connection": true,
+    "admin_engine": true,
+    "source_engine": true
+  },
+  "dataset": "fx.price.year",
+  "measurements": {
+    "import_seconds": 1.4044258000212722,
+    "repeated_business_dml": 0,
+    "revision_dml": 2,
+    "page_max_ms": 14.949099975638092,
+    "coverage_max_ms": 10.684400040190667,
+    "annual_max_ms": 4.554000042844564,
+    "allocated_bytes": 4243456,
+    "peak_python_bytes": 494028,
+    "page_bytes": 52867,
+    "annual_rows": 366
+  },
+  "limits": {
+    "import_seconds": 30,
+    "repeated_business_dml": 0,
+    "revision_dml": 2,
+    "page_max_ms": 300,
+    "coverage_max_ms": 300,
+    "annual_max_ms": 300,
+    "allocated_bytes": 16777216,
+    "peak_python_bytes": 33554432,
+    "page_bytes": 262144,
+    "annual_rows": 366
+  },
+  "bindings": {
+    "src/empire/features/fx/contract.py": "86c044adda70de829a0f1848349663996d0b6fe13a5dce089ae3423ee81a591d",
+    "src/empire/features/fx/source.py": "560f1e5f51b8ede829d34c15148921f3474051c16d6759b78f308a1df44a44bc",
+    "src/empire/features/fx/dataset.py": "dfde8d0ba869c26ffda40c34fbc21e59301791040cba661e23964d97173e4b31",
+    "src/empire/features/fx/query.py": "561c272cea111ad314a71c84e936d8d58402f3640d04584eb4a5fe2169a40812",
+    "scripts/measure_fx.py": "87fa714190b2f47051d41693aca8455445d27344214c2f875d3087e2eec81268"
+  },
+  "ddl_scopes": {
+    "fx_daily_price": "1322b53af09e9229e258f68513dde19c9087e763d307c658db68ff6a06d44b5a",
+    "fx_price_year": "1d5cbe6c82882e0cfbfaa0cda1816e9d13facc8ea110584b798127108a667f97"
+  },
+  "schema_objects": {
+    "fx_daily_price": {
+      "ddl_sha256": "1322b53af09e9229e258f68513dde19c9087e763d307c658db68ff6a06d44b5a",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(10) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "trade_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "open": {
+            "type": "decimal(20, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "high": {
+            "type": "decimal(20, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "low": {
+            "type": "decimal(20, 10)",
+            "nullable": false,
+            "unsigned": false
+          },
+          "close": {
+            "type": "decimal(20, 10)",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "trade_date"
+        ],
+        "indexes": {
+          "ix_fx_date_code": {
+            "columns": [
+              "trade_date",
+              "unified_code"
+            ],
+            "expressions": null,
+            "unique": false
+          }
+        },
+        "checks": {
+          "ck_fx_positive": "((open>0)and(high>0)and(low>0)and(close>0))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "unified_code",
+          "trade_date"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "close",
+          "high",
+          "low",
+          "open",
+          "trade_date",
+          "unified_code"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "fx.price.year": {
+            "tables": [
+              "fx_daily_price",
+              "fx_price_year"
+            ],
+            "primary": "fx_daily_price"
+          }
+        }
+      }
+    },
+    "fx_price_year": {
+      "ddl_sha256": "1d5cbe6c82882e0cfbfaa0cda1816e9d13facc8ea110584b798127108a667f97",
+      "shape": {
+        "columns": {
+          "unified_code": {
+            "type": "varchar(10) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "quote_year": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "source_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "row_count": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "first_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "last_date": {
+            "type": "date",
+            "nullable": false,
+            "unsigned": false
+          },
+          "content_hash": {
+            "type": "char(64) collate \"ascii_bin\"",
+            "nullable": false,
+            "unsigned": false
+          },
+          "contract_version": {
+            "type": "smallint",
+            "nullable": false,
+            "unsigned": true
+          },
+          "version_observed_at": {
+            "type": "datetime",
+            "nullable": false,
+            "unsigned": false
+          }
+        },
+        "primary": [
+          "unified_code",
+          "quote_year"
+        ],
+        "indexes": {},
+        "checks": {
+          "ck_fx_year_count": "((source_count>=1)and(source_count<=366)and(row_count=source_count))",
+          "ck_fx_year_range": "((quote_year>=1900)and(quote_year<=2100)and(first_date<=last_date)and(contract_version=1))"
+        }
+      },
+      "ownership": {
+        "fixed_sources": "ths",
+        "primary_keys": [
+          "unified_code",
+          "quote_year"
+        ],
+        "source_overrides": null,
+        "required_columns": [
+          "content_hash",
+          "contract_version",
+          "first_date",
+          "last_date",
+          "quote_year",
+          "row_count",
+          "source_count",
+          "unified_code",
+          "version_observed_at"
+        ],
+        "in_tables": true,
+        "primary_exempt": false,
+        "schema": 1,
+        "datasets": {
+          "fx.price.year": {
+            "tables": [
+              "fx_daily_price",
+              "fx_price_year"
+            ],
+            "primary": "fx_daily_price"
+          }
+        }
+      }
+    }
+  },
+  "explain": {
+    "page": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "fx_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "ix_fx_date_code",
+        "key": "ix_fx_date_code",
+        "key_len": "3",
+        "ref": null,
+        "rows": 4392,
+        "filtered": 100.0,
+        "Extra": "Using index condition; Using filesort"
+      }
+    ],
+    "page_actual": [
+      "-> Limit: 200 row(s)  (cost=1977 rows=200) (actual time=7.05..7.07 rows=200 loops=1)\n    -> Sort: fx_daily_price.trade_date DESC, fx_daily_price.unified_code, limit input to 200 row(s) per chunk  (cost=1977 rows=4392) (actual time=7.05..7.06 rows=200 loops=1)\n        -> Index range scan on fx_daily_price using ix_fx_date_code over ('2024-01-01' <= trade_date <= '2024-12-31'), with index condition: (fx_daily_price.trade_date between '2024-01-01' and '2024-12-31')  (cost=1977 rows=4392) (actual time=0.459..6.15 rows=4392 loops=1)\n"
+    ],
+    "page_returned": 200,
+    "security": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "fx_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_fx_date_code",
+        "key": "PRIMARY",
+        "key_len": "15",
+        "ref": null,
+        "rows": 366,
+        "filtered": 100.0,
+        "Extra": "Using where"
+      }
+    ],
+    "security_actual": [
+      "-> Limit: 366 row(s)  (cost=73.6 rows=366) (actual time=0.018..0.14 rows=366 loops=1)\n    -> Filter: ((fx_daily_price.unified_code = 'USDCNH.FX') and (fx_daily_price.trade_date between '2024-01-01' and '2024-12-31'))  (cost=73.6 rows=366) (actual time=0.0175..0.124 rows=366 loops=1)\n        -> Index range scan on fx_daily_price using PRIMARY over (unified_code = 'USDCNH.FX' AND '2024-01-01' <= trade_date <= '2024-12-31')  (cost=73.6 rows=366) (actual time=0.0154..0.0572 rows=366 loops=1)\n"
+    ],
+    "security_returned": 366,
+    "analysis": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "fx_daily_price",
+        "partitions": null,
+        "type": "range",
+        "possible_keys": "PRIMARY,ix_fx_date_code",
+        "key": "ix_fx_date_code",
+        "key_len": "3",
+        "ref": null,
+        "rows": 4392,
+        "filtered": 100.0,
+        "Extra": "Using index condition"
+      }
+    ],
+    "analysis_actual": [
+      "-> Group aggregate: avg(fx_daily_price.`close`)  (cost=2416 rows=4392) (actual time=0.541..4.71 rows=366 loops=1)\n    -> Index range scan on fx_daily_price using ix_fx_date_code over ('2024-01-01' <= trade_date <= '2024-12-31'), with index condition: (fx_daily_price.trade_date between '2024-01-01' and '2024-12-31')  (cost=1977 rows=4392) (actual time=0.531..4.48 rows=4392 loops=1)\n"
+    ],
+    "analysis_returned": 366
+  },
+  "conditions": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "mysql": {
+      "server_uuid": "0d5460b8-dd0d-11f1-9ec0-380525361d4e",
+      "server_port": 13348,
+      "version": "8.4.9",
+      "innodb_flush_log_at_trx_commit": 2,
+      "sync_binlog": 1,
+      "log_bin": 0,
+      "client_port": 13348
+    },
+    "synthetic": true,
+    "unit_count": 60,
+    "rows": 21924,
+    "allocation": [
+      {
+        "TABLE_NAME": "fx_daily_price",
+        "DATA_LENGTH": 2637824,
+        "INDEX_LENGTH": 1589248
+      },
+      {
+        "TABLE_NAME": "fx_price_year",
+        "DATA_LENGTH": 16384,
+        "INDEX_LENGTH": 0
+      }
+    ],
+    "cache": "First query not forced cold; nine warm; reported maximum of ten",
+    "peak": "tracemalloc, excludes fixtures and driver/native RSS",
+    "real_sample": "USDCNH full history verified separately"
+  },
+  "reviewed_tradeoffs": "Typed OHLC with range indexes; one annual proof per symbol/year; no minute storage; five-year synthetic calendar is capacity stress, not market calendar.",
+  "input_identity_verified": true,
+  "checked_at": "2026-11-10T14:03:58.309593+00:00",
+  "database": "empire_capacity_0c8f2b57394a4529b02405c501c67f9b_test",
+  "measurement_service": {
+    "server_uuid": "0d5460b8-dd0d-11f1-9ec0-380525361d4e",
+    "server_port": 13348,
+    "version": "8.4.9",
+    "innodb_flush_log_at_trx_commit": 2,
+    "sync_binlog": 1,
+    "log_bin": 0,
+    "client_port": 13348
+  }
+}

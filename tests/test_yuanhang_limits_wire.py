@@ -10,7 +10,7 @@ from tests.test_yuanhang_limits_source import row
 
 
 def test_large_complete_pool_fits_default_ingest_without_losing_nulls_or_precision():
-    unit = dict(trade_date='2026-07-15', pool_type='limit_down_pool', filter='HS,GEM2STAR', source_total=5000,
+    unit = dict(trade_date='2026-07-15', pool_type='limit_down_pool', filter='HS,GEM2STAR,ST', source_total=5000,
                 rows=[member(row(f'{i:06}'), '2026-07-15') for i in range(5000)])
     packed = encode(unit)
     assert len(packed) < 480 * 1024

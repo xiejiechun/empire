@@ -24,7 +24,7 @@ def bundle(cfg):
                 6300,
                 TaskContribution(
                     PROJECT,
-                    "市场融资融券（同花顺）",
+                    "市场融资融券",
                     "collector.ths_market_margin",
                     "ths",
                     "2010年起四市场完整历史；每天四请求全量核验",

@@ -184,6 +184,9 @@ async def test_socks_route_uses_remote_destination_and_shared_lease():
         def healthy_count(self):
             return 1
 
+        def defer(self, current, site, delay_ms):
+            assert current is entry and site in entry.active_sites and delay_ms > 0
+
         async def acquire(self, *, site, **kwargs):
             assert not entry.active_sites
             entry.active_sites.add(site)
@@ -250,7 +253,8 @@ async def test_prefetched_native_response_does_not_double_reserve_or_release_own
 
 async def test_stalled_native_peer_uses_bounded_transport_retry_and_cleans_up(monkeypatch):
     from empire.plugins.infra import stream_exchange
-    monkeypatch.setattr(stream_exchange, 'ATTEMPT_TIMEOUT_SECONDS', .03)
+    # Allow Windows loopback setup under suite load before testing a stalled peer.
+    monkeypatch.setattr(stream_exchange, 'ATTEMPT_TIMEOUT_SECONDS', .2)
     monkeypatch.setattr(stream_exchange, 'retry_delay', lambda n: 0)
     clients = []
     async def hold(reader, writer):

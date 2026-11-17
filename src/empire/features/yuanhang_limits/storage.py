@@ -5,6 +5,7 @@ from empire.features.yuanhang_limits.contract import (
     MARKETS,
     MAX_MEMBERS,
     MEMBER_FIELDS,
+    POOL_FILTER_VERSIONS,
     TIME_FIELDS,
     day_value,
     pool_value,
@@ -34,13 +35,14 @@ def validate_member(value, day):
     return result
 
 
-def pool_payload(value):
+def pool_payload(value, *, require_current=True):
     if not isinstance(value, dict) or set(value) != {'trade_date', 'pool_type', 'filter', 'source_total', 'rows'}:
         raise ValueError('日期池规范字段不符')
     day = day_value(value['trade_date'])
     pool_value(value['pool_type'])
     rows = value['rows']
-    if (value['filter'] != FILTER or type(value['source_total']) is not int or not isinstance(rows, list)
+    filters = (FILTER,) if require_current else POOL_FILTER_VERSIONS
+    if (value['filter'] not in filters or type(value['source_total']) is not int or not isinstance(rows, list)
             or not 0 <= len(rows) <= MAX_MEMBERS or value['source_total'] != len(rows)):
         raise ValueError('日期池过滤或完整集合计数不符')
     normalized = [validate_member(row, day) for row in rows]
@@ -67,6 +69,6 @@ def reason_payload(value):
 
 
 def pool_proof(value):
-    return {'source_total': value['source_total'], 'filter_text': FILTER,
+    return {'source_total': value['source_total'], 'filter_text': value['filter'],
             'key_sha256': digest([r['unified_code'] for r in value['rows']]),
-            'content_sha256': digest(value), 'contract_version': 1}
+            'content_sha256': digest(value), 'contract_version': POOL_FILTER_VERSIONS[value['filter']]}

@@ -16,7 +16,7 @@ def bundle(cfg):
         OrderedContribution(400, HolderCollector()),
         *positioned((800, 900, 1000), (HolderUiPlugin(k) for k in HOLDER_KINDS)),
     ), tasks=(
-        OrderedContribution(300, TaskContribution(holder_project('top_holders'), '股东研究（同花顺）',
+        OrderedContribution(300, TaskContribution(holder_project('top_holders'), '股东研究',
                     'collector.ths_holders', 'ths', '一次HTML采集前十大股东、流通股东和债券持有人；历史保留，无公告日期',
                     category='股东数据', source_name='同花顺', parallel_downloads=True, unit_name='只股票', default_enabled=False,
                     default_schedule=TaskDefaults('daily', description='每天北京时间18:00核验当前报告窗口及修订；可编辑计划。'),

@@ -1,4 +1,5 @@
 """Bounded presentation snapshot; never persist collector cursors or business rows."""
+from empire.contracts.request_cost import FIELDS as COST_FIELDS
 
 DISPLAY_FIELDS = (
     'collected', 'queued_records', 'expected_count', 'record_name', 'unit_name',
@@ -18,4 +19,8 @@ def display_snapshot(stats):
         result['failure_categories'] = {
             key: categories[key] for key in ('source_request', 'minute_gap', 'placeholder', 'invalid_fields')
             if type(categories.get(key)) is int}
+    costs = stats.get('network_costs')
+    if isinstance(costs, dict):
+        result['network_costs'] = {key: costs[key] for key in COST_FIELDS
+                                  if type(costs.get(key)) is int and costs[key] >= 0}
     return result

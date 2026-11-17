@@ -35,11 +35,13 @@ async def test_preparation_uses_recent_noop_proofs_without_writes(calendar_db):
             writes.append(statement)
     event.listen(mysql.read_engine, 'before_cursor_execute', capture)
     event.listen(mysql.engine, 'before_cursor_execute', capture)
+    event.listen(mysql.archive_engine, 'before_cursor_execute', capture)
     try:
         checks = {c.criterion: c for c in await query.preparation_check()}
     finally:
         event.remove(mysql.read_engine, 'before_cursor_execute', capture)
         event.remove(mysql.engine, 'before_cursor_execute', capture)
+        event.remove(mysql.archive_engine, 'before_cursor_execute', capture)
     assert checks['freshness'].status == checks['temporal'].status == 'pass'
     assert not writes
     assert before == (await store.client.hgetall(keys[0]), await store.client.zrange(keys[1], 0, -1, withscores=True))
@@ -124,6 +126,7 @@ async def test_repeat_has_no_dml_and_noop_observation_protects_against_old_month
         if statement.lstrip().upper().startswith(("INSERT", "UPDATE", "DELETE")) and "trade_calendar" in statement:
             writes.append(statement)
     event.listen(mysql.engine, "before_cursor_execute", capture)
+    event.listen(mysql.archive_engine, "before_cursor_execute", capture)
     try:
         await publish(observed=earlier + timedelta(minutes=3))
         assert not writes and await query.month("2027-01") == before
@@ -136,6 +139,7 @@ async def test_repeat_has_no_dml_and_noop_observation_protects_against_old_month
         assert len((await query.month("1990-12"))["rows"]) == 13
     finally:
         event.remove(mysql.engine, "before_cursor_execute", capture)
+        event.remove(mysql.archive_engine, "before_cursor_execute", capture)
 
 
 async def test_commit_ack_failure_replay_and_sql_outage_keep_data(calendar_db, monkeypatch):

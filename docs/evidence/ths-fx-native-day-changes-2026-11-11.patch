@@ -1,0 +1,779 @@
+--- a/src/empire/features/fx/contract.py
++++ b/src/empire/features/fx/contract.py
+@@ -90,6 +90,8 @@
+     symbol(code)
+     if unit == 'live':
+         return BASE + f'realhead/wh_{code}/last.js'
++    if unit == 'today':
++        return f'https://d.10jqka.com.cn/v6/line/wh_{code}/01/today.js'
+     if unit != 'last' and (type(unit) is not int or not 1900 <= unit <= 2100):
+         raise ValueError('汇率历史年份无效')
+     return BASE + f'line/wh_{code}/01/{unit}.js'
+--- a/src/empire/features/fx/source.py
++++ b/src/empire/features/fx/source.py
+@@ -55,6 +55,24 @@
+     # At/after 09:00 accept only earlier labels; early manual runs defer one more
+     # label to avoid treating an overnight candle as closed during DST transitions.
+     return (local.date() - timedelta(days=1 if local.hour >= 9 else 2)).isoformat()
++
++
++def current_candle(body, code, observed):
++    """The chart's dated daily row is separate from its historical response."""
++    symbol(code)
++    value = decode(body, f'quotebridge_v6_line_wh_{code}_01_today')
++    if set(value) != {'wh_' + code} or not isinstance(value['wh_' + code], dict):
++        raise ValueError('汇率当日日线品种身份不符')
++    item = value['wh_' + code]
++    stamp = item.get('1')
++    if not isinstance(stamp, str) or not re.fullmatch(r'\d{8}', stamp):
++        raise ValueError('汇率当日日线来源日期无效')
++    stamp = day(f'{stamp[:4]}-{stamp[4:6]}-{stamp[6:]}')
++    if stamp > observed.astimezone(CHINA).date().isoformat():
++        raise ValueError('汇率当日日线来源日期异常超前')
++    if type(item.get('open')) is not int or item['open'] not in (0, 1):
++        raise ValueError('汇率当日日线交易状态无效')
++    return [stamp, *[number(item.get(key)) for key in ('7', '8', '9', '11')]]
+ 
+ 
+ def recent(body, code, now):
+--- a/src/empire/features/fx/transport.py
++++ b/src/empire/features/fx/transport.py
+@@ -3,7 +3,14 @@
+ from datetime import UTC, datetime
+ 
+ from empire.features.fx.contract import LIVE_PROJECT, url
+-from empire.features.fx.source import QuoteUnavailable, annual, candle, realtime, recent
++from empire.features.fx.source import (
++    QuoteUnavailable,
++    annual,
++    candle,
++    current_candle,
++    realtime,
++    recent,
++)
+ from empire.plugins.collection.unit_prefetch import DeferredResponse
+ from empire.plugins.collectors.support import record_error_safely, wait_for_capacity
+ 
+@@ -21,6 +28,8 @@
+                 body = response.content.decode('utf8')
+                 if unit == 'live':
+                     return realtime(body, code, observed)
++                if unit == 'today':
++                    return current_candle(body, code, observed)
+                 if unit == 'last':
+                     return recent(body, code, observed), observed
+                 if raw_annual:
+--- a/src/empire/features/fx/verification.py
++++ b/src/empire/features/fx/verification.py
+@@ -1,71 +1,71 @@
+-"""Resolve inconsistent daily caches against a date-matched quote head."""
+-from datetime import datetime
+-
+-from empire.core.time import CHINA
++"""Verify daily history against the chart's native dated current candle."""
+ from empire.features.fx.contract import digest, url, validate_rows
+ from empire.features.fx.source import closed_through
+ from empire.plugins.collectors.support import record_error_safely
+ 
+ 
+ class FxSourceConflict(ValueError):
+-    """Valid responses disagree; this symbol needs a later source refresh."""
++    """Valid daily responses disagree; this symbol needs a later source refresh."""
+ 
+ 
+-def agrees(snapshot, quote, observed):
+-    rows = snapshot['source_tail']
+-    latest = rows[-1]
+-    quote_day = datetime.fromisoformat(quote['source_time']).astimezone(CHINA).date().isoformat()
+-    if latest[0] != quote_day or latest[1] != quote['open']:
++def agrees(snapshot, current, observed):
++    latest = snapshot['source_tail'][-1]
++    if latest[0] != current[0] or latest[1] != current[1]:
+         return False
+-    if quote_day <= closed_through(observed):
+-        return latest[1:] == [quote[k] for k in ('open', 'high', 'low', 'latest')]
+-    return len(rows) >= 2 and rows[-2][4] == quote['previous_close']
++    # Intraday prices move between necessary responses and are never archived.
++    return current[0] > closed_through(observed) or latest == current
+ 
+ 
+-def reconcile(snapshot, annual_rows, observed, quote):
+-    """Validate raw directory counts before independently excluding unclosed rows."""
++def reconcile(snapshot, annual_rows, observed, current):
++    """Account for the separately dated active row; never allow a count tolerance."""
+     cutoff = closed_through(observed)
+-    closed = {year: [r for r in rows if r[0] <= cutoff] for year, rows in annual_rows.items()}
++    active_day = current[0] > cutoff
++    latest = snapshot['source_tail'][-1]
++    if latest[0] > current[0] or latest[0] == current[0] and latest[1] != current[1]:
++        raise ValueError('汇率近期与当日日线日期/开盘不一致，保留原数据')
++    closed = {}
+     counts = dict(snapshot['years'])
+-    quote_day = datetime.fromisoformat(quote['source_time']).astimezone(CHINA).date().isoformat()
+-    for year, rows in closed.items():
++    recent = {row[0]: row for row in snapshot['rows']}
++    for year, raw in annual_rows.items():
++        validate_rows(raw, year)
++        rows = [row for row in raw if row[0] <= cutoff]
+         count = snapshot['source_years'].get(str(year))
+-        raw = annual_rows[year]
+-        validate_rows(raw, year)
+-        # The directory and recent body can precede the first quote of a new
+-        # source day. Only that exact unclosed suffix may extend its count.
+-        extension = (count is not None and len(raw) == count + 1 and len(raw) >= 2
+-            and raw[-1][0] == quote_day and quote_day > cutoff
+-            and raw[-2][0] == snapshot['source_tail'][-1][0]
+-            and quote_day > snapshot['source_tail'][-1][0])
+-        incomplete = (count is not None and len(raw) != count and not extension
++        native_year = year == int(current[0][:4]) and active_day
++        contains_current = raw[-1][0] == current[0]
++        # Official daily history and today's row are separate. The directory
++        # may reserve that exact active row before it appears in either body.
++        reserved = (native_year and count == len(raw) + 1 and not contains_current
++                    and raw[-1][0] == snapshot['source_tail'][-1][0]
++                    and raw[-1][0] < current[0])
++        extension = (native_year and count == len(raw) - 1 and contains_current
++                     and len(raw) >= 2 and raw[-2][0] == snapshot['source_tail'][-1][0]
++                     and current[0] > snapshot['source_tail'][-1][0])
++        incomplete = (count is not None and len(raw) != count and not (reserved or extension)
+                       or count is None and bool(rows))
+         wrong_start = rows and year == int(snapshot['start'][:4]) and rows[0][0] != snapshot['start']
+-        if incomplete or wrong_start or raw[-1][0] > observed.astimezone(CHINA).date().isoformat():
++        if incomplete or wrong_start or raw[-1][0] > current[0]:
+             raise ValueError(f'汇率核验年度与来源目录不完整（{year}: {len(raw)}/{count}），保留原数据')
++        by_date = {row[0]: row for row in rows}
++        expected = {day: row for day, row in recent.items() if int(day[:4]) == year}
++        if not expected.keys() <= by_date.keys():
++            raise ValueError('汇率年度与近期日期集合不一致，保留原数据')
++        if any(by_date[day] != row for day, row in expected.items()):
++            raise ValueError('汇率近期与年度已结束日线内容不一致，保留原数据')
++        if contains_current and (raw[-1][1] != current[1] or not active_day and raw[-1] != current):
++            raise ValueError('汇率年度与当日日线内容不一致，保留原数据')
++        closed[year] = rows
+         if rows:
+             counts[str(year)] = len(rows)
+         else:
+             counts.pop(str(year), None)
+-        expected = {r[0] for r in snapshot['rows'] if int(r[0][:4]) == year}
+-        if not expected <= {r[0] for r in rows}:
+-            raise ValueError('汇率年度与近期日期集合不一致，保留原数据')
+-    raw = {r[0]: r for r in snapshot['source_tail'] if int(r[0][:4]) not in closed}
+-    raw.update((r[0], r) for values in annual_rows.values() for r in values)
+-    source_tail = [raw[d] for d in sorted(raw)[-2:]]
+-    anchor = next((r[0] for r in reversed(source_tail) if r[0] <= cutoff), '')
+-    # The quote can justify the anchor, not revisions to every other historical
+-    # row in this annual cache. Preserve the recent response on those overlaps.
+-    for year, values in closed.items():
+-        by_date = {r[0]: r for r in values}
+-        by_date.update((r[0], r) for r in snapshot['rows']
+-                       if int(r[0][:4]) == year and r[0] != anchor)
+-        closed[year] = [by_date[d] for d in sorted(by_date)]
+-    values = {r[0]: r for r in snapshot['rows'] if int(r[0][:4]) not in closed}
+-    values.update((r[0], r) for rows in closed.values() for r in rows)
+-    rows = [values[d] for d in sorted(values)]
++    values = {day: row for day, row in recent.items() if int(day[:4]) not in closed}
++    values.update((row[0], row) for rows in closed.values() for row in rows)
++    rows = [values[day] for day in sorted(values)]
+     if not rows:
+         raise ValueError('汇率核验未取得已结束日线')
++    # The unclosed native row proves directory membership, not a historical
++    # price: keep it only in the in-memory verification tail, never in rows.
++    source_tail = [rows[-1], current] if active_day else rows[-2:]
+     return {**snapshot, 'rows': rows, 'end': rows[-1][0], 'years': counts,
+             'source_tail': source_tail}, {
+                 year: validate_rows(values, year) for year, values in closed.items() if values}
+@@ -73,18 +73,15 @@
+ 
+ async def verified_snapshot(collector, code):
+     snapshot, observed = await collector.fetch(code)
+-    quote = await collector.fetch(code, 'live')
+-    if agrees(snapshot, quote, observed):
++    current = await collector.fetch(code, 'today')
++    if agrees(snapshot, current, observed):
+         return snapshot, observed, {}
+-    # Only the quote's source year and the latest archived-label year can be
+-    # involved, including a year rollover. Never loop until a cache happens to agree.
+-    quote_year = datetime.fromisoformat(quote['source_time']).astimezone(CHINA).year
+-    years = sorted({quote_year, int(snapshot['end'][:4])})
++    years = sorted({int(current[0][:4]), int(snapshot['end'][:4])})
+     candidates = {year: await collector.fetch(code, year, raw_annual=True) for year in years}
+     try:
+-        resolved, verified = reconcile(snapshot, candidates, observed, quote)
+-        if not agrees(resolved, quote, observed):
+-            raise ValueError('汇率近期、年度日线与实时昨收/日期不一致，本轮保留原数据')
++        resolved, verified = reconcile(snapshot, candidates, observed, current)
++        if not agrees(resolved, current, observed):
++            raise ValueError('汇率近期、年度与当日日线日期/内容不一致，本轮保留原数据')
+     except ValueError as cause:
+         exc = FxSourceConflict(f'{code}: {cause}')
+         exc.diagnostic_recorded = await record_error_safely(collector.records, collector.stats,
+@@ -92,7 +89,7 @@
+             unavailable_message='汇率跨响应核验诊断暂不可用', fields=dict(request_url=url(code),
+                 metadata=dict(kind='cross_response_validation', symbol=code,
+                     cutoff=closed_through(observed), source_tail=snapshot['source_tail'],
+-                    quote=quote, annuals={str(year): dict(directory=snapshot['source_years'].get(str(year)),
++                    current_candle=current, annuals={str(year): dict(directory=snapshot['source_years'].get(str(year)),
+                         count=len(rows), first=rows[0][0] if rows else None,
+                         tail=[' | '.join(row) for row in rows[-3:]],
+                         content_sha256=digest(rows), dates_sha256=digest([r[0] for r in rows]))
+--- a/tests/test_fx.py
++++ b/tests/test_fx.py
+@@ -41,6 +41,13 @@
+     return f'quotebridge_v4_realhead_wh_{code}_last({json.dumps(dict(items=items))})'
+ 
+ 
++def today_source(row=None, code=CODE, **changes):
++    row = ROWS[-1] if row is None else row
++    item = dict(zip(('1', '7', '8', '9', '11'), [row[0].replace('-', ''), *row[1:]], strict=True), open=1)
++    item.update(changes)
++    return f'quotebridge_v6_line_wh_{code}_01_today({json.dumps({"wh_" + code: item})})'
++
++
+ def envelope(rows=None, year=2025, mode='full', **changes):
+     payload = dict(page=1, code=CODE, year=year, mode=mode, source_count=2,
+         start=ROWS[0][0], end=ROWS[-1][0], rows=copy.deepcopy(ROWS[:2] if rows is None else rows))
+@@ -55,10 +62,8 @@
+     c.selected_codes = [CODE]
+     c.query = SimpleNamespace(inventory=AsyncMock(return_value={CODE: {}}))
+     def request(method, url, **kw):
+-        if '/realhead/' in url:
+-            return httpx.Response(200, content=live_source(**{'10': '7.5', '7': '7', '8': '8',
+-                '9': '6', '6': '7', 'time': '2026-01-02 23:59:00 北京时间',
+-                'updateTime': '2026-01-02 23:59'}).encode())
++        if '/today.js' in url:
++            return httpx.Response(200, content=today_source().encode())
+         unit = url.rsplit('/', 1)[1].split('.')[0]
+         rows = ROWS if unit == 'last' else [r for r in ROWS if r[0][:4] == unit]
+         return httpx.Response(200, content=source(unit, rows).encode())
+--- a/tests/test_fx_directory_boundary.py
++++ b/tests/test_fx_directory_boundary.py
+@@ -11,13 +11,13 @@
+ from empire.features.fx.contract import SYMBOLS
+ from empire.features.fx.verification import reconcile, verified_snapshot
+ from tests.test_fx import collector
+-from tests.test_fx_verification import CLOSED, CURRENT, NOW, QUOTE, snapshot
++from tests.test_fx_verification import CLOSED, CURRENT, NOW, snapshot
+ 
+ 
+ @pytest.mark.parametrize('code', SYMBOLS)
+ async def test_stale_directory_accepts_only_new_unclosed_quote_day_for_all_symbols(code):
+     initial = snapshot([CLOSED])
+-    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, NOW), QUOTE, [CLOSED, CURRENT]]))
++    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, NOW), CURRENT, [CLOSED, CURRENT]]))
+     result, _, verified = await verified_snapshot(c, code)
+     assert result['rows'] == [CLOSED] and result['years'] == {'2026': 1}
+     assert verified == {2026: [CLOSED]} and c.fetch.await_count == 3
+@@ -33,21 +33,19 @@
+     today = ['2026-11-11', '1.6', '2', '1.5', '1.7']
+     initial = dict(start=rows[0][0], end=rows[-1][0], rows=rows[-140:], source_tail=rows[-2:],
+                    years={'2026': 224}, source_years={'2026': 224})
+-    quote = dict(source_time='2026-11-11T09:00:00+08:00', open='1.6', previous_close='1.5')
+     result, verified = reconcile(initial, {2026: rows + [today]},
+-                                 datetime(2026, 11, 11, 9, tzinfo=CHINA), quote)
++                                 datetime(2026, 11, 11, 9, tzinfo=CHINA), today)
+     assert result['years']['2026'] == 224 and verified[2026] == rows
+     assert result['end'] == '2026-11-10'
+ 
+ 
+ @pytest.mark.parametrize('candidate,quote', [
+-    ([CLOSED, CURRENT], {**QUOTE, 'source_time': '2026-11-09T09:00:00+08:00'}),
+-    ([CLOSED, CURRENT], {**QUOTE, 'open': '6.6'}),
+-    ([CLOSED, CURRENT], {**QUOTE, 'previous_close': '6.6'}),
+-    ([['2026-11-06', *CLOSED[1:]], CURRENT], QUOTE),
+-    ([CLOSED, CLOSED, CURRENT], QUOTE),
+-    ([CLOSED, ['2026-11-11', *CURRENT[1:]]], QUOTE),
+-    ([['2026-11-06', *CLOSED[1:]], CLOSED, CURRENT], QUOTE),
++    ([CLOSED, CURRENT], ['2026-11-09', *CURRENT[1:]]),
++    ([CLOSED, CURRENT], [CURRENT[0], '6.6', *CURRENT[2:]]),
++    ([['2026-11-06', *CLOSED[1:]], CURRENT], CURRENT),
++    ([CLOSED, CLOSED, CURRENT], CURRENT),
++    ([CLOSED, ['2026-11-11', *CURRENT[1:]]], CURRENT),
++    ([['2026-11-06', *CLOSED[1:]], CLOSED, CURRENT], CURRENT),
+ ])
+ async def test_extra_closed_missing_duplicate_future_or_unproven_dates_fail(candidate, quote):
+     initial = snapshot([CLOSED])
+@@ -71,7 +69,6 @@
+     today = ['2027-01-01', '1.6', '2', '1.5', '1.7']
+     initial = dict(start=end[0], end=end[0], rows=[end], source_tail=[end],
+                    years={'2026': 1}, source_years={'2026': 1})
+-    quote = dict(source_time='2027-01-01T09:00:00+08:00', open='1.6', previous_close='1.5')
+     resolved, verified = reconcile(initial, {2026: [end], 2027: [today]},
+-                                   datetime(2027, 1, 1, 9, tzinfo=CHINA), quote)
++                                   datetime(2027, 1, 1, 9, tzinfo=CHINA), today)
+     assert resolved['years'] == {'2026': 1} and verified == {2026: [end]}
+--- a/tests/test_fx_empty_quote.py
++++ b/tests/test_fx_empty_quote.py
+@@ -95,13 +95,13 @@
+     c.records.add_error.assert_not_awaited()
+ 
+ 
+-async def test_daily_empty_quote_cannot_advance_or_skip_validation():
++async def test_daily_unrelated_quote_cannot_substitute_native_day_validation():
+     c = collector()
+     original = c.http.request.side_effect
+     c.http.request.side_effect = lambda method, url, **kw: (
+-        httpx.Response(200, content=empty('USDCNH').encode()) if '/realhead/' in url
++        httpx.Response(200, content=empty('USDCNH').encode()) if '/today.js' in url
+         else original(method, url, **kw))
+-    with pytest.raises(QuoteUnavailable):
++    with pytest.raises(ValueError, match='JSONP身份不符'):
+         await c.execute()
+     assert not c.ingest.events
+     c.records.add_error.assert_awaited_once()
+--- a/tests/test_fx_source_gaps.py
++++ b/tests/test_fx_source_gaps.py
+@@ -6,7 +6,7 @@
+ import pytest
+ 
+ from empire.contracts.collector import CollectionSourceGap
+-from tests.test_fx import CODE, collector, live_source, source
++from tests.test_fx import CODE, collector, source, today_source
+ from tests.test_fx_verification import CLOSED, CURRENT, NOW, OLD
+ 
+ CODES = ['USDIND', 'XAUUSD', 'EURUSD']
+@@ -20,13 +20,11 @@
+     faults = {bad_code}
+     def request(method, url, **kwargs):
+         code = url.split('wh_')[1].split('/')[0]
+-        if '/realhead/' in url:
+-            body = live_source(code=code, **{'10': CURRENT[4], '7': CURRENT[1], '8': CURRENT[2],
+-                '9': CURRENT[3], '6': CLOSED[4], 'time': '2026-11-10 09:00:00 北京时间',
+-                'updateTime': '2026-11-10 05:59'})
++        if '/today.js' in url:
++            body = today_source(CURRENT, code=code)
+         else:
+             unit = url.rsplit('/', 1)[1].split('.')[0]
+-            rows = [OLD] if code in faults else [CLOSED, CURRENT]
++            rows = ([CLOSED] if unit == 'last' else [OLD]) if code in faults else [CLOSED, CURRENT]
+             changes = dict(start=CLOSED[0].replace('-', ''), year={'2026': 2}, total='2') if unit == 'last' else {}
+             body = source(unit, rows, **changes).replace('wh_' + CODE, 'wh_' + code)
+         return httpx.Response(200, content=body.encode())
+--- a/tests/test_fx_verification.py
++++ b/tests/test_fx_verification.py
+@@ -1,4 +1,4 @@
+-"""A stale recent cache must never override a date-matched previous close."""
++"""Daily protocol boundaries must not depend on unrelated realhead fields."""
+ import copy
+ from datetime import datetime
+ from types import SimpleNamespace
+@@ -11,14 +11,12 @@
+ from empire.core.time import CHINA
+ from empire.features.fx.source import recent
+ from empire.features.fx.verification import agrees, reconcile, verified_snapshot
+-from tests.test_fx import CODE, collector, live_source, source
++from tests.test_fx import CODE, collector, source, today_source
+ 
+ NOW = datetime(2026, 11, 10, 9, tzinfo=CHINA)
+ OLD = ['2026-11-09', '6.6703', '6.67434', '6.66984', '6.67131']
+ CLOSED = ['2026-11-09', '6.6703', '6.67434', '6.66925', '6.66945']
+ CURRENT = ['2026-11-10', '6.67014', '6.6738', '6.66488', '6.67291']
+-QUOTE = dict(source_time='2026-11-10T09:00:00+08:00', open=CURRENT[1],
+-             high=CURRENT[2], low=CURRENT[3], latest=CURRENT[4], previous_close=CLOSED[4])
+ 
+ 
+ def snapshot(rows):
+@@ -26,77 +24,69 @@
+                          total=str(len(rows))), CODE, NOW)
+ 
+ 
+-@pytest.mark.parametrize('with_current', [False, True])
+-async def test_stale_recent_reconciled_once_with_annual_previous_close(with_current):
+-    initial = snapshot([OLD, CURRENT] if with_current else [OLD])
+-    initial['source_years']['2026'] = 2
+-    if not with_current:
+-        initial['years']['2026'] = 2  # Fresh directory already counts the missing partial day.
+-    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, NOW), QUOTE, [CLOSED, CURRENT]]))
++async def test_missing_current_reconciles_once_and_excludes_native_day():
++    initial = snapshot([CLOSED])
++    initial['source_years']['2026'] = initial['years']['2026'] = 2
++    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, NOW), CURRENT, [CLOSED]]))
+     result, observed, verified = await verified_snapshot(c, CODE)
+-    assert result['rows'] == [CLOSED] and result['end'] == '2026-11-09'
++    assert result['rows'] == [CLOSED] and result['years'] == {'2026': 1}
++    assert result['source_tail'] == [CLOSED, CURRENT]
+     assert observed == NOW and verified == {2026: [CLOSED]}
+-    assert result['years']['2026'] == 1
+-    assert c.fetch.await_args_list[-1].args == (CODE, 2026)
+     assert c.fetch.await_count == 3
+ 
+ 
+-async def test_matching_recent_never_downloads_stale_annual_cache():
++async def test_matching_recent_uses_only_two_daily_responses():
+     initial = snapshot([CLOSED, CURRENT])
+-    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, NOW), QUOTE]))
++    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, NOW), CURRENT]))
+     result, _, verified = await verified_snapshot(c, CODE)
+     assert result['rows'] == [CLOSED] and verified == {} and c.fetch.await_count == 2
++    assert c.fetch.await_args_list[1].args == (CODE, 'today')
+ 
+ 
+-def test_annual_anchor_cannot_roll_back_other_recent_corrections():
++def test_annual_cannot_choose_a_different_closed_price_over_recent():
+     older = ['2026-11-06', '6.6', '6.8', '6.5', '6.7']
+-    stale_older = [*older[:4], '6.65']
+-    initial = dict(start='2016-01-03', end=OLD[0], years={'2026': 2},
+-                   rows=[older, OLD], source_tail=[OLD], source_years={'2026': 3})
+-    result, verified = reconcile(initial, {2026: [stale_older, CLOSED, CURRENT]}, NOW, QUOTE)
+-    assert result['rows'] == [older, CLOSED] and verified[2026] == [older, CLOSED]
+-    assert agrees(result, QUOTE, NOW)
++    initial = dict(start='2016-01-03', end=CLOSED[0], years={'2026': 2},
++        rows=[older, CLOSED], source_tail=[older, CLOSED], source_years={'2026': 3})
++    for candidate in ([[*older[:4], '6.65'], CLOSED, CURRENT], [older, OLD, CURRENT]):
++        with pytest.raises(ValueError, match='内容不一致'):
++            reconcile(initial, {2026: candidate}, NOW, CURRENT)
+ 
+ 
+ def test_same_count_changed_date_set_is_not_a_valid_annual_candidate():
+     older = ['2026-11-06', '6.6', '6.8', '6.5', '6.7']
+-    initial = dict(start='2016-01-03', end=OLD[0], years={'2026': 2},
+-                   rows=[older, OLD], source_tail=[OLD], source_years={'2026': 3})
++    initial = dict(start='2016-01-03', end=CLOSED[0], years={'2026': 2},
++        rows=[older, CLOSED], source_tail=[older, CLOSED], source_years={'2026': 3})
+     with pytest.raises(ValueError, match='日期集合不一致'):
+-        reconcile(initial, {2026: [["2026-11-05", *older[1:]], CLOSED, CURRENT]}, NOW, QUOTE)
++        reconcile(initial, {2026: [['2026-11-05', *older[1:]], CLOSED, CURRENT]}, NOW, CURRENT)
+ 
+ 
+ @pytest.mark.parametrize('candidate', [[OLD, CURRENT], [CURRENT]])
+-async def test_unresolved_conflict_or_incomplete_year_does_not_retry(candidate):
+-    initial = snapshot([OLD])
++async def test_unresolved_content_or_incomplete_year_does_not_retry(candidate):
++    initial = snapshot([CLOSED])
+     initial['source_years']['2026'] = 2
+     c = SimpleNamespace(stats={}, records=SimpleNamespace(add_error=AsyncMock()), project_id='ths-fx-daily',
+-                        fetch=AsyncMock(side_effect=[(initial, NOW), QUOTE, candidate]))
++        fetch=AsyncMock(side_effect=[(initial, NOW), CURRENT, candidate]))
+     with pytest.raises(ValueError, match='不一致|不完整'):
+         await verified_snapshot(c, CODE)
+     assert c.fetch.await_count == 3
+ 
+ 
+-def test_equal_price_without_matching_source_date_and_open_is_not_proof():
++def test_native_day_identity_and_open_are_required_and_closed_day_checks_all_prices():
+     initial = snapshot([CLOSED, CURRENT])
+-    assert agrees(initial, QUOTE, NOW)
+-    assert not agrees(initial, {**QUOTE, 'source_time': '2026-11-09T09:00:00+08:00'}, NOW)
+-    assert not agrees(initial, {**QUOTE, 'open': '6.6'}, NOW)
+-    # Weekend/stale live quotes can verify a closed source label only by all OHLC.
+-    quote = dict(source_time='2026-11-09T23:59:00+08:00',
+-                 **dict(zip(('open', 'high', 'low', 'latest'), CLOSED[1:], strict=True)))
+-    assert agrees(snapshot([CLOSED]), quote, NOW)
+-    assert not agrees(snapshot([CLOSED]), {**quote, 'low': '6.66984'}, NOW)
++    assert agrees(initial, CURRENT, NOW)
++    assert not agrees(initial, ['2026-11-09', *CURRENT[1:]], NOW)
++    assert not agrees(initial, [CURRENT[0], '6.6', *CURRENT[2:]], NOW)
++    assert agrees(snapshot([CLOSED]), CLOSED, NOW)
++    assert not agrees(snapshot([CLOSED]), OLD, NOW)
+ 
+ 
+ async def test_year_rollover_is_bounded_to_two_complete_source_years():
+     observed = datetime(2027, 1, 1, 9, tzinfo=CHINA)
+     previous = ['2026-12-31', '6.7', '6.8', '6.6', '6.75']
+     today = ['2027-01-01', '6.76', '6.8', '6.7', '6.78']
+-    initial = dict(start='2026-12-31', end='2026-12-31', years={'2026': 1},
+-                   rows=[previous], source_tail=[previous], source_years={'2026': 1})
+-    quote = dict(source_time='2027-01-01T09:00:00+08:00', open='6.76', previous_close='6.75')
+-    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, observed), quote, [previous], [today]]))
++    initial = dict(start=previous[0], end=previous[0], years={'2026': 1},
++        rows=[previous], source_tail=[previous], source_years={'2026': 1})
++    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, observed), today, [previous], [today]]))
+     result, _, verified = await verified_snapshot(c, CODE)
+     assert result['rows'] == [previous] and verified == {2026: [previous]}
+     assert c.fetch.await_count == 4
+@@ -104,9 +94,9 @@
+ 
+ async def test_conflict_is_rejected_before_any_enqueue_or_checkpoint_advance():
+     c = collector()
+-    initial = snapshot([OLD])
++    initial = snapshot([CLOSED])
+     initial['source_years']['2026'] = 2
+-    c.fetch = AsyncMock(side_effect=[(initial, NOW), QUOTE, [OLD, CURRENT]])
++    c.fetch = AsyncMock(side_effect=[(initial, NOW), CURRENT, [OLD, CURRENT]])
+     before = copy.deepcopy(c.ingest.state)
+     with pytest.raises(CollectionSourceGap, match='USDCNH'):
+         await c.execute()
+@@ -118,12 +108,10 @@
+     monkeypatch.setattr('empire.features.fx.transport.datetime', SimpleNamespace(now=lambda _: NOW))
+     c = collector()
+     def request(method, url, **kwargs):
+-        if '/realhead/' in url:
+-            body = live_source(**{'10': CURRENT[4], '7': CURRENT[1], '8': CURRENT[2],
+-                '9': CURRENT[3], '6': CLOSED[4], 'time': '2026-11-10 09:00:00 北京时间',
+-                'updateTime': '2026-11-10 05:59'})
++        if '/today.js' in url:
++            body = today_source(CURRENT)
+         elif '/last.js' in url:
+-            body = source(rows=[OLD], start='20261109', year={'2026': 2}, total='2')
++            body = source(rows=[CLOSED], start='20261109', year={'2026': 2}, total='2')
+         else:
+             body = source(2026, [CLOSED, CURRENT])
+         return httpx.Response(200, content=body.encode())
+--- a/tests/integration/test_fx_archive.py
++++ b/tests/integration/test_fx_archive.py
+@@ -142,7 +142,7 @@
+ async def test_stale_daily_cache_reconciles_through_archive_and_conflict_preserves_sql(fx, monkeypatch):
+     from types import SimpleNamespace
+ 
+-    from tests.test_fx import source
++    from tests.test_fx import source, today_source
+     from tests.test_fx_verification import CLOSED, CURRENT, NOW, OLD
+ 
+     monkeypatch.setattr('empire.features.fx.transport.datetime', SimpleNamespace(now=lambda _: NOW + timedelta(seconds=1)))
+@@ -154,12 +154,10 @@
+     assert str((await q.browse(CODE))['rows'][0]['close']) == '6.6713100000'
+     unresolved = False
+     def request(method, url, **kwargs):
+-        if '/realhead/' in url:
+-            body = live_source(**{'10': CURRENT[4], '7': CURRENT[1], '8': CURRENT[2],
+-                '9': CURRENT[3], '6': CLOSED[4], 'time': '2026-11-10 09:00:00 北京时间',
+-                'updateTime': '2026-11-10 05:59'})
++        if '/today.js' in url:
++            body = today_source(CURRENT)
+         elif '/last.js' in url:
+-            body = source(rows=[OLD], start='20261109', year={'2026': 2}, total='2')
++            body = source(rows=[CLOSED], start='20261109', year={'2026': 2}, total='2')
+         else:
+             body = source(2026, [OLD if unresolved else CLOSED, CURRENT])
+         return httpx.Response(200, content=body.encode())
+--- a/tests/integration/test_fx_directory_pipeline.py
++++ b/tests/integration/test_fx_directory_pipeline.py
+@@ -11,7 +11,7 @@
+ from empire.contracts.collector import CollectionSourceGap
+ from empire.features.fx.contract import DAILY_JOB
+ from tests.integration.test_fx_archive import fx, pytestmark  # noqa: F401
+-from tests.test_fx import CODE, envelope, live_source, source
++from tests.test_fx import CODE, envelope, source, today_source
+ from tests.test_fx_verification import CLOSED, CURRENT, NOW, OLD
+ 
+ 
+@@ -22,10 +22,8 @@
+                   .model_copy(update={'observed_at': NOW}))
+     bad = False
+     def request(method, url, **kwargs):
+-        if '/realhead/' in url:
+-            body = live_source(**{'10': CURRENT[4], '7': CURRENT[1], '8': CURRENT[2],
+-                '9': CURRENT[3], '6': CLOSED[4], 'time': '2026-11-10 09:00:00 北京时间',
+-                'updateTime': '2026-11-10 05:59'})
++        if '/today.js' in url:
++            body = today_source(CURRENT)
+         elif '/last.js' in url:
+             body = source(rows=[CLOSED], start='20261109', year={'2026': 1}, total='1')
+         else:
+--- a/scripts/verify_fx.py
++++ b/scripts/verify_fx.py
+@@ -9,7 +9,7 @@
+ from sqlalchemy.engine import Engine
+ 
+ from empire.features.fx.contract import DATASET, SYMBOLS, digest
+-from empire.features.fx.source import annual, candle, realtime, recent
++from empire.features.fx.source import annual, candle, current_candle, realtime, recent
+ from empire.features.fx.verification import agrees, reconcile
+ from empire.plugins.infra.routing import PROXY_FALLBACK, ROUTE_COUNTS, USE_PROXY
+ 
+@@ -31,13 +31,16 @@
+     annual_bodies = {}
+     original = http.request
+     async def request(method, url, **kwargs):
+-        verification.require(re.fullmatch(r'https://d\.10jqka\.com\.cn/v4/(?:line/wh_USDCNH/01/(?:last|\d{4})|realhead/wh_USDCNH/last)\.js', url) is not None, '请求超出固定品种')
++        verification.require(re.fullmatch(r'https://d\.10jqka\.com\.cn/(?:v4/(?:line/wh_USDCNH/01/(?:last|\d{4})|realhead/wh_USDCNH/last)|v6/line/wh_USDCNH/01/today)\.js', url) is not None, '请求超出固定品种')
+         observed = datetime.now(UTC)
+         response = await original(method, url, **kwargs)
+         try:
+             unit = url.rsplit('/', 1)[1].split('.')[0]
+             if '/realhead/' in url:
+                 expected['live'] = realtime(response.content.decode(), CODE, observed)
++                count = 1
++            elif unit == 'today':
++                expected['current'] = current_candle(response.content.decode(), CODE, observed)
+                 count = 1
+             elif unit == 'last':
+                 expected['snapshot'] = recent(response.content.decode(), CODE, observed)
+@@ -58,13 +61,11 @@
+         result = await daily.execute(fresh=True, baseline_revision=await daily.checkpoint_revision())
+         verification.require(result['phase'] == 'complete', '日线未完成')
+         snapshot = expected['snapshot']
+-        if not agrees(snapshot, expected['live'], datetime.now(UTC)):
+-            from empire.core.time import CHINA
+-            years = {datetime.fromisoformat(expected['live']['source_time']).astimezone(CHINA).year,
+-                     int(snapshot['end'][:4])}
++        if not agrees(snapshot, expected['current'], datetime.now(UTC)):
++            years = {int(expected['current'][0][:4]), int(snapshot['end'][:4])}
+             snapshot, _ = reconcile(snapshot,
+-                {year: candle(annual_bodies[year], CODE, year)[1] for year in years}, datetime.now(UTC), expected['live'])
+-        verification.require(agrees(snapshot, expected['live'], datetime.now(UTC)), '日线与报价核验不一致')
++                {year: candle(annual_bodies[year], CODE, year)[1] for year in years}, datetime.now(UTC), expected['current'])
++        verification.require(agrees(snapshot, expected['current'], datetime.now(UTC)), '历史与原生当日日线核验不一致')
+         expected['snapshot'] = snapshot
+         rows = 0
+         for year in sorted(expected['snapshot']['years']):
+--- /dev/null
++++ b/tests/test_fx_native_day.py
+@@ -0,0 +1,109 @@
++"""Native daily membership distinguishes a reserved day from a missing history row."""
++import copy
++from datetime import date, datetime, timedelta
++from types import SimpleNamespace
++from unittest.mock import AsyncMock
++
++import httpx
++import pytest
++
++from empire.core.time import CHINA
++from empire.features.fx.contract import SYMBOLS, url
++from empire.features.fx.source import current_candle
++from empire.features.fx.verification import reconcile, verified_snapshot
++from tests.test_fx import CODE, collector, source, today_source
++from tests.test_fx_verification import CLOSED, CURRENT, NOW, snapshot
++
++
++@pytest.mark.parametrize('code', SYMBOLS)
++async def test_reserved_native_current_day_adjusts_directory_for_all_symbols(code):
++    initial = snapshot([CLOSED])
++    initial['source_years']['2026'] = initial['years']['2026'] = 2
++    c = SimpleNamespace(stats={}, fetch=AsyncMock(side_effect=[(initial, NOW), CURRENT, [CLOSED]]))
++    resolved, _, verified = await verified_snapshot(c, code)
++    assert resolved['years'] == {'2026': 1} and verified == {2026: [CLOSED]}
++    assert resolved['rows'] == [CLOSED] and CURRENT not in resolved['rows']
++    assert c.fetch.await_count == 3
++
++
++def test_exact_223_history_plus_native_current_proves_224_without_fabricating_day():
++    # A synthetic fixed date collection exercises counts, not a market calendar.
++    start = date(2026, 1, 2)
++    rows = [[(start + timedelta(days=i)).isoformat(), '1', '2', '0.5', '1.5']
++        for i in range(313) if (start + timedelta(days=i)).weekday() < 5]
++    assert len(rows) == 223 and rows[-1][0] == '2026-11-10'
++    current = ['2026-11-11', '1.6', '2', '1.5', '1.7']
++    initial = dict(start='1974-12-31', end=rows[-1][0], rows=rows[-140:],
++        source_tail=rows[-2:], years={'2026': 224}, source_years={'2026': 224})
++    result, verified = reconcile(initial, {2026: rows}, datetime(2026, 11, 11, 9, tzinfo=CHINA), current)
++    assert verified == {2026: rows} and result['years'] == {'2026': 223}
++    assert result['rows'] == rows and result['source_tail'] == [rows[-1], current]
++
++
++@pytest.mark.parametrize('changes', [{'1': '20261111'}, {'1': '20260230'}, {'1': '2026-11-10'},
++    {'7': ''}, {'11': '0'}, {'9': None}, {'open': True}, {'open': 2}])
++def test_invalid_native_day_cannot_prove_directory(changes):
++    with pytest.raises((ValueError, TypeError)):
++        current_candle(today_source(CURRENT, **changes), CODE, NOW)
++
++
++def test_native_day_identity_jsonp_uniqueness_and_ohlc_mapping():
++    assert current_candle(today_source(CURRENT), CODE, NOW) == CURRENT
++    assert url(CODE, 'today') == f'https://d.10jqka.com.cn/v6/line/wh_{CODE}/01/today.js'
++    for body in (today_source(CURRENT, code='EURUSD'), today_source(CURRENT)[:-1],
++        today_source(CURRENT).replace('"open": 1', '"open": 1, "open": 1'),
++        today_source(CURRENT).replace('"wh_USDCNH":', '"wh_EURUSD":')):
++        with pytest.raises(ValueError):
++            current_candle(body, CODE, NOW)
++    body = today_source(CURRENT).replace('})', ', "wh_EURUSD": {}})')
++    with pytest.raises(ValueError):
++        current_candle(body, CODE, NOW)
++
++
++@pytest.mark.parametrize('count,rows,native', [
++    (3, [CLOSED], CURRENT),
++    (3, [CLOSED, CURRENT], CURRENT),
++    (2, [CLOSED], CLOSED),
++    (2, [CLOSED], ['2025-12-31', *CURRENT[1:]]),
++    (2, [['2026-11-06', *CLOSED[1:]]], CURRENT),
++])
++def test_a_numeric_difference_alone_does_not_authorize_missing_closed_days(count, rows, native):
++    initial = snapshot([CLOSED])
++    initial['source_years']['2026'] = count
++    with pytest.raises(ValueError):
++        reconcile(initial, {2026: rows}, NOW, native)
++
++
++async def test_daily_native_protocol_does_not_request_realhead_or_archive_intraday(monkeypatch):
++    monkeypatch.setattr('empire.features.fx.transport.datetime', SimpleNamespace(now=lambda _: NOW))
++    c = collector()
++    def request(method, target, **kwargs):
++        assert '/realhead/' not in target
++        if target.endswith('today.js'):
++            body = today_source(CURRENT)
++        elif target.endswith('last.js'):
++            body = source(rows=[CLOSED], start='20261109', year={'2026': 2}, total='2')
++        else:
++            body = source(2026, [CLOSED])
++        return httpx.Response(200, content=body.encode())
++    c.http.request.side_effect = request
++    result = await c.execute()
++    assert result['phase'] == 'complete' and c.http.request.await_count == 3
++    payload = c.ingest.events[0].raw_payload
++    assert payload['rows'] == [CLOSED] and payload['source_count'] == 1
++    assert payload['end'] == CLOSED[0]
++    c.records.add_error.assert_not_awaited()
++
++
++async def test_invalid_native_day_preserves_checkpoint_and_is_not_a_source_gap(monkeypatch):
++    monkeypatch.setattr('empire.features.fx.transport.datetime', SimpleNamespace(now=lambda _: NOW))
++    c = collector()
++    original = c.http.request.side_effect
++    c.http.request.side_effect = lambda method, target, **kw: (
++        httpx.Response(200, content=today_source(CURRENT, **{'11': ''}).encode())
++        if target.endswith('today.js') else original(method, target, **kw))
++    before = copy.deepcopy(c.ingest.state)
++    with pytest.raises(ValueError, match='价格格式'):
++        await c.execute()
++    assert c.ingest.state == before and not c.ingest.events and c.stats['status'] == 'paused'
++    c.records.add_error.assert_awaited_once()
+--- /dev/null
++++ b/tests/integration/test_fx_native_day_pipeline.py
+@@ -0,0 +1,56 @@
++"""A separately counted active day must never enter durable daily history."""
++import asyncio
++from datetime import timedelta
++from types import SimpleNamespace
++
++import httpx
++import pytest
++from sqlalchemy import event
++from sqlalchemy.engine import Engine
++
++from empire.contracts.collector import CollectionSourceGap
++from empire.features.fx.contract import DAILY_JOB
++from tests.integration.test_fx_archive import fx, pytestmark  # noqa: F401
++from tests.test_fx import CODE, envelope, source, today_source
++from tests.test_fx_verification import CLOSED, CURRENT, NOW, OLD
++
++
++async def test_reserved_day_source_to_archive_query_replay_and_conflict(fx, monkeypatch):  # noqa: F811
++    _, c, query, redis, publish = fx
++    monkeypatch.setattr('empire.features.fx.transport.datetime', SimpleNamespace(now=lambda _: NOW + timedelta(seconds=1)))
++    await publish(envelope([OLD], year=2026, source_count=1, start=OLD[0], end=OLD[0])
++        .model_copy(update={'observed_at': NOW}))
++    conflict = False
++    def request(method, target, **kwargs):
++        assert '/realhead/' not in target
++        if target.endswith('today.js'):
++            body = today_source(CURRENT)
++        elif target.endswith('last.js'):
++            body = source(rows=[CLOSED], start='20261109', year={'2026': 2}, total='2')
++        else:
++            body = source(2026, [OLD if conflict else CLOSED])
++        return httpx.Response(200, content=body.encode())
++    c.http.request.side_effect = request
++    assert (await asyncio.wait_for(c.execute(), 20))['phase'] == 'complete'
++    assert await query.history(CODE, 2026) == [CLOSED]
++    inventory = await query.inventory(CLOSED[0])
++    assert inventory[CODE]['2026']['source_count'] == inventory[CODE]['2026']['row_count'] == 1
++    assert await redis.client.xlen(redis.stream) == 0
++    writes = []
++    def capture(conn, cursor, sql, *args):
++        if 'fx_' in sql and sql.lstrip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
++            writes.append(sql)
++    event.listen(Engine, 'before_cursor_execute', capture)
++    try:
++        before = await c.ingest.checkpoint(DAILY_JOB)
++        assert (await c.execute(baseline_revision=before['revision']))['phase'] == 'complete'
++        assert writes == [] and await redis.client.xlen(redis.stream) == 0
++        before = await c.ingest.checkpoint(DAILY_JOB)
++        conflict = True
++        with pytest.raises(CollectionSourceGap, match='内容不一致|来源日线核验缺口'):
++            await c.execute(baseline_revision=before['revision'])
++        assert await c.ingest.checkpoint(DAILY_JOB) == before
++        assert await query.history(CODE, 2026) == [CLOSED]
++        assert writes == [] and await redis.client.xlen(redis.stream) == 0
++    finally:
++        event.remove(Engine, 'before_cursor_execute', capture)

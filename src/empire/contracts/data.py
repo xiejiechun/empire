@@ -7,7 +7,7 @@ import json
 from datetime import UTC, datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, create_model, field_validator
 
 
 class UnsupportedSchema(RuntimeError):
@@ -54,6 +54,26 @@ class Envelope(BaseModel):
                 raise ValueError("Timestamps must include a timezone")
             return value.astimezone(UTC)
         return value
+
+
+class _PayloadShape(BaseModel):
+    # Check the required JSON object shape while the Rust JSON reader skips its
+    # arbitrary values. Full payload validation remains in the formal kernel.
+    model_config = ConfigDict(extra='ignore')
+
+
+_EnvelopeMetadata = create_model('_EnvelopeMetadata', __base__=Envelope,
+                                 raw_payload=(_PayloadShape, ...))
+
+
+def read_envelope_metadata(raw: str) -> Envelope:
+    """Validate the entire envelope header and payload object, retaining no body.
+
+    Only an index or a process job with the exact original wire may use this
+    projection. It is never a normalized unit or permission to acknowledge it.
+    """
+    header = _EnvelopeMetadata.model_validate_json(raw)
+    return Envelope.model_construct(**header.model_dump(exclude={'raw_payload'}), raw_payload={})
 
 
 def make_envelope(

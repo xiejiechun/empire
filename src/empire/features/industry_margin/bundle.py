@@ -24,7 +24,7 @@ def bundle(cfg):
                 6200,
                 TaskContribution(
                     PROJECT,
-                    "行业融资融券（通达信）",
+                    "行业融资融券",
                     "collector.tdx_industry_margin",
                     "tdx",
                     "2016年起完整日期补缺；近7日回看及90日轮转历史核验",
